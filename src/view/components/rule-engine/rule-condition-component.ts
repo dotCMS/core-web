@@ -25,7 +25,7 @@ import {ConditionTypeService, ConditionTypeModel} from "../../../api/rule-engine
     <cw-input-dropdown class="cw-condition-type-dropdown" [model]="conditionTypesDropdown" (change)="handleConditionTypeChange($event)"></cw-input-dropdown>
   </div>
   <div flex layout-fill class="cw-condition-row-main" [ng-switch]="condition.conditionType?.key">
-    <template [ng-switch-when]="'UsersBrowserHeaderConditionlet'">
+    <template [ng-switch-when]="'RequestHeaderConditionlet'">
       <cw-request-header-condition
           class="cw-condition-component"
           [comparator-value]="condition.comparison"

@@ -7,7 +7,7 @@ import {ApiRoot} from '../../../api/persistence/ApiRoot';
 import {EntityMeta, EntitySnapshot} from '../../../api/persistence/EntityBase';
 import {UserModel} from "../../../api/auth/UserModel";
 import {I18NCountryProvider} from '../../../api/system/locale/I18NCountryProvider'
-
+import {RequestHeaderConditionletProvider} from '../../../api/system/ruleengine/conditionlets/RequestHeaderConditionletProvider'
 
 import {RuleComponent} from './rule-component';
 import {RuleService, RuleModel} from "../../../api/rule-engine/Rule";
@@ -138,6 +138,7 @@ export class RuleEngineApp {
       ActionTypeService,
       UserModel,
       I18NCountryProvider,
+      RequestHeaderConditionletProvider,
       RuleService,
       ActionService,
       ConditionGroupService,
