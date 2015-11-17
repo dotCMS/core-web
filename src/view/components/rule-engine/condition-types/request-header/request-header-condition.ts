@@ -101,15 +101,6 @@ export class RequestHeaderConditionModel {
 </div>`
 })
 export class RequestHeaderCondition {
-  // @todo populate the comparisons options from the server.
-  comparisonOptions:Array<DropdownOption> = [
-    new DropdownOption("exists", "exists", "Exists"),
-    new DropdownOption("is", "is", "Is"),
-    new DropdownOption("is not", "is not", "Is Not"),
-    new DropdownOption("startsWith", "startsWith", "Starts With"),
-    new DropdownOption("endsWith", "endsWith", "Ends With"),
-    new DropdownOption("contains", "contains", "Contains"),
-    new DropdownOption("regex", "regex", "Regex")];
 
   value:RequestHeaderConditionModel;
 
