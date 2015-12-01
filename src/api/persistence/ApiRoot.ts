@@ -13,6 +13,7 @@ export class ApiRoot {
   defaultSiteId: string = '48190c8c-42c4-46af-8d1a-0cd5db894797'
   authUser: UserModel;
   resourceRef: EntityMeta
+  conditionletsRef: EntityMeta
   dataStore:DataStore;
 
   constructor(@Inject(UserModel) authUser:UserModel, @Inject(DataStore) dataStore:DataStore){
@@ -30,6 +31,7 @@ export class ApiRoot {
       console.log('Proxy server Base URL set to ', baseUrl)
       this.setBaseUrl(baseUrl) // if null, just uses the base of the current URL
       this.resourceRef = this.root.child('system/i18n')
+      this.conditionletsRef = this.root.child('system/ruleengine/conditionlets')
     } catch (e) {
       console.log("Could not set baseUrl automatically.")
     }
