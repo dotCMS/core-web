@@ -475,6 +475,11 @@ input.ng-dirty.ng-valid,
   width:100%;
 }
 
+.cw-dialog-body-wrapper {
+  height:100%;
+  width:100%;
+}
+
 .cw-visitors-location {
   .cw-latLong .ui.input input, .cw-radius .ui.input input {
     text-align: right;
