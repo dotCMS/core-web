@@ -1,6 +1,6 @@
 {
   "name": "core-web",
-  "version": "3.5.0",
+  "version": "3.5.1-alpha",
   "license": "GPLv3",
   "description": "DotCMS Core-Web: ReST Client API and UI Components",
   "repository": {
@@ -62,11 +62,12 @@
     "idemo": "gulp serve --open=/build/integration-demo.html",
     "build": "gulp package",
     "publish": "gulp publish",
-    "publish-snapshot": "gulp publish-snapshot",
-    "webdriver-update": "webdriver-manager update",
-    "webdriver-update-ie": "webdriver-manager update --ie",
-    "webdriver-update-ie32": "webdriver-manager update --ie32",
-    "webdriver-start": "webdriver-manager start"
+    "publish:snapshot": "gulp publish-snapshot",
+    "publish:release": "gulp publish-release",
+    "webdriver:update": "webdriver-manager update",
+    "webdriver:update-ie": "webdriver-manager update --ie",
+    "webdriver:update-ie32": "webdriver-manager update --ie32",
+    "webdriver:start": "webdriver-manager start"
   },
   "dependencies": {
     "angular-material": "1.0.2",

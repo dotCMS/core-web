@@ -314,6 +314,59 @@ var project = {
 
   stopServer: function (callback) {
     project.server.close(callback)
+  },
+  
+  publish: function(isRelease, done){
+    var artifactoryUpload = require('gulp-artifactory-upload');
+    var getRev = require('git-rev')
+    var versionSuffix = ''
+    var deployConfig;
+    if(isRelease){
+      deployConfig = require('./deploy-config.js').artifactory.release
+    }  else {
+      versionSuffix = '-SNAPSHOT'
+      deployConfig = require('./deploy-config.js').artifactory.snapshot
+    }
+
+    var mvn = {
+      group: 'com.dotcms',
+      artifactId: 'core-web',
+      version: require('./package.json').version
+    }
+
+    getRev.short(function (rev) {
+      var versionStr = mvn.version + versionSuffix
+      var baseDeployName = 'core-web-' + versionStr
+      var deployName = baseDeployName + ".zip"
+      var artifactoryUrl = deployConfig.url + '/' + mvn.group.replace('.', '/') + '/' + mvn.artifactId + '/' + versionStr
+
+      console.log("Deploying artifact: PUT ", artifactoryUrl + '/' + deployName)
+
+      var pomPath;
+
+      generatePom(baseDeployName, mvn.group, mvn.artifactId, versionStr, 'zip', function (path, err) {
+        if (err) {
+          done(err)
+          return;
+        }
+        console.log('setting pomPath to: ', path)
+        pomPath = path
+        gulp.src(['./dist/core-web.zip', pomPath])
+            .pipe(artifactoryUpload({
+              url: artifactoryUrl,
+              username: deployConfig.username,
+              password: deployConfig.password,
+              rename: function (filename) {
+                return filename.replace(mvn.artifactId, baseDeployName)
+              }
+            }))
+            .on('error', function (err) {
+              throw err
+            }).on('end', function () {
+          console.log("All done.")
+        })
+      })
+    })
   }
 }
 
@@ -363,51 +416,14 @@ gulp.task('set-build-target-to-prod', function(done){
   done()
 })
 
+
+
+gulp.task('publish-release', ['package'], function (done) {
+  project.publish(true, done)
+});
+
 gulp.task('publish-snapshot', ['package'], function (done) {
-  var artifactoryUpload = require('gulp-artifactory-upload');
-  var getRev = require('git-rev')
-  var deployConfig = require('./deploy-config.js').artifactory.snapshot
-
-  var mvn = {
-    group: 'com.dotcms',
-    artifactId: 'core-web',
-    version: require('./package.json').version
-  }
-
-  getRev.short(function (rev) {
-    var versionStr = mvn.version + '-SNAPSHOT';
-    var baseDeployName = 'core-web-' + versionStr
-    var deployName = baseDeployName + ".zip"
-    var artifactoryUrl = deployConfig.url + '/' + mvn.group.replace('.', '/') + '/' + mvn.artifactId + '/' + versionStr
-
-    console.log("Deploying artifact: PUT ", artifactoryUrl + '/' + deployName)
-
-    var pomPath;
-
-    generatePom(baseDeployName, mvn.group, mvn.artifactId, versionStr, 'zip', function (path, err) {
-      if (err) {
-        done(err)
-        return;
-      }
-      console.log('setting pomPath to: ', path)
-      pomPath = path
-      gulp.src(['./dist/core-web.zip', pomPath])
-          .pipe(artifactoryUpload({
-            url: artifactoryUrl,
-            username: deployConfig.username,
-            password: deployConfig.password,
-            rename: function (filename) {
-              return filename.replace(mvn.artifactId, baseDeployName)
-            }
-          }))
-          .on('error', function (err) {
-            throw err
-          }).on('end', function () {
-        console.log("All done.")
-      })
-    })
-  })
-
+  project.publish(false, done)
 });
 
 gulp.task('ghPages-clone', ['package'], function (done) {
