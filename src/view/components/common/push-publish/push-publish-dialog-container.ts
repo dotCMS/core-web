@@ -36,7 +36,6 @@ export class PushPublishDialogContainer {
     this.bundleService.pushPublishRule(this.assetId, environment.id).subscribe((result:any)=> {
       if (!result.errors) {
         this.close.emit({isCanceled:false})
-        this.errorMessage = null
       } else {
         this.errorMessage.next("Sorry there was an error please try again")
       }

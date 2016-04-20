@@ -42,7 +42,6 @@ export class AddToBundleDialogContainer {
     this.bundleService.addRuleToBundle(this.assetId, bundle).subscribe((result:any)=> {
       if (!result.errors) {
         this.close.emit({isCanceled:false})
-        this.errorMessage = null
       } else {
         this.errorMessage.next(result.errors)
       }
