@@ -108,6 +108,8 @@ export class ServersideCondition {
   private _errorMessageFormatters = {
     required: "Required",
     minLength: "Input must be at least ${len} characters long.",
+    minValue: "Value must be equal or greater than ${minimumValue}.",
+    maxValue: "Value must be equal or less than ${maximumValue}",
     noQuotes: "Input cannot contain quote [\" or '] characters."
   }
 
@@ -166,11 +168,13 @@ export class ServersideCondition {
     let control = input.control
     let message = ""
     Object.keys(control.errors || {}).forEach((key) => {
-      let err = control.errors[key]
-       message +=  this._errorMessageFormatters[key]
-      if(Object.keys(err).length){
-        debugger
-      }
+        let err = control.errors[key]
+        message +=  this._errorMessageFormatters[key]
+        if(Object.keys(err).length){
+            Object.keys(err).forEach((keyErr) => {
+                message = message.replace("${"+keyErr+"}", err[keyErr])
+            })
+        }
     })
     return message
   }

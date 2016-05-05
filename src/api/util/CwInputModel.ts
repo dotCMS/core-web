@@ -33,11 +33,11 @@ const VALIDATIONS = {
   },
   maxValue: {
     key: 'maxValue',
-    providerFn: (constraint:TypeConstraint) => CustomValidators.max(constraint.args['value'])
+    providerFn: (constraint:TypeConstraint) => CustomValidators.maxValue(constraint.args['value'])
   },
   minValue: {
     key: 'minValue',
-    providerFn: (constraint:TypeConstraint) => CustomValidators.min(constraint.args['value'])
+    providerFn: (constraint:TypeConstraint) => CustomValidators.minValue(constraint.args['value'])
   }
 }
 

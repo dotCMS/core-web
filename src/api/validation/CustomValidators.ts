@@ -56,17 +56,17 @@ export class CustomValidators {
     }
   }
 
-  static min(min) {
+  static minValue(minValue) {
     return (control: Control): {[key: string]: any} => {
-      var v: string = control.value;
-      return !Verify.min(v, min) ? {"min": {"minimumValue": min, "actualValue": v}} : null
+      var v: number = parseInt(control.value, 10)
+      return v && !Verify.minValue(v, minValue) ? {"minValue": {"minimumValue": minValue, "actualValue": v}} : null
     }
   }
 
-  static max(max) {
+  static maxValue(maxValue) {
     return (control: Control): {[key: string]: any} => {
-      var v: string = control.value;
-      return !Verify.max(v, max) ? {"max": {"maximumValue": max, "actualValue": v}} : null
+      var v: number = parseInt(control.value, 10)
+      return v && !Verify.maxValue(v, maxValue) ? {"maxValue": {"maximumValue": maxValue, "actualValue": v}} : null
     }
   }
 

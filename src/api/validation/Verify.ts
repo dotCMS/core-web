@@ -110,12 +110,12 @@ export class LazyVerify {
     return (value % 1 === 0)
   }
 
-  static min(value, min) {
-    return value >= min
+  static minValue(value, minValue) {
+    return value >= minValue
   }
 
-  static max(value, max) {
-    return value <= max
+  static maxValue(value, maxValue) {
+    return value <= maxValue
   }
 
   static isBoolean(value) {
@@ -147,12 +147,12 @@ export class Verify extends LazyVerify {
     return Verify.isNumber(value) && LazyVerify.isInteger(value)
   }
 
-  static min(value, min) {
-    return Verify.isNumber(value) && LazyVerify.min(value, min)
+  static minValue(value, minValue) {
+    return Verify.isNumber(value) && LazyVerify.minValue(value, minValue)
   }
 
-  static max(value, max) {
-    return Verify.isNumber(value) && LazyVerify.max(value, max)
+  static maxValue(value, maxValue) {
+    return Verify.isNumber(value) && LazyVerify.maxValue(value, maxValue)
   }
 
   static isFunction(value) {
