@@ -37,7 +37,7 @@ export const RULE_CONDITION_UPDATE_OPERATOR = 'RULE_CONDITION_UPDATE_OPERATOR'
 @Injectable()
 export class CoreWebService {
 
-  constructor( private _apiRoot:ApiRoot, private _http:Http){
+  constructor(private _apiRoot:ApiRoot, private _http:Http){
 
   }
 
