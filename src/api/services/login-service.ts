@@ -6,8 +6,7 @@ import {Observable} from 'rxjs/Rx';
 import {ApiRoot} from '../persistence/ApiRoot';
 import {RequestMethod} from '@angular/http';
 import {CoreWebService} from '../services/core-web-service';
-import { Router } from '@ngrx/router';
-import {Observer} from "rxjs/Observer";
+import {Router} from '@ngrx/router';
 import {RoutingService} from "./routing-service";
 
 

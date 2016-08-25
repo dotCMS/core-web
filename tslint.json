@@ -11,7 +11,7 @@
             "check-space"
         ],
         "curly": true,
-        "eofline": true,
+        "eofline": false,
         "forin": true,
         "indent": [
             true,
@@ -79,7 +79,7 @@
         "semicolon": true,
         "switch-default": true,
         "trailing-comma": [
-            true,
+            false,
             {
                 "multiline": "always",
                 "singleline": "never"
