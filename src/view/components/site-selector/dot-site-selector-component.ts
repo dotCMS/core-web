@@ -1,6 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {Site} from '../../../api/services/site-service';
 import {SiteService} from '../../../api/services/site-service';
+import {LoginService} from '../../../api/services/login-service';
 import {MessageService} from '../../../api/services/messages-service';
 import {BaseComponent} from '../common/_base/base-component';
 
@@ -18,7 +19,7 @@ export class SiteSelectorComponent extends BaseComponent {
     private sites: Site[];
     private message: string;
 
-    constructor(private siteService: SiteService, messageService: MessageService) {
+    constructor(private siteService: SiteService, messageService: MessageService, private loginService: LoginService) {
         super(['updated-current-site-message', 'archived-current-site-message', 'modes.Close'], messageService);
     }
 
@@ -36,6 +37,16 @@ export class SiteSelectorComponent extends BaseComponent {
     switchSite(option: any): void {
         this.siteService.switchSite(option.value).subscribe(response => {
 
-        }, error => alert(error.errorsMessages));
+        }, (error) => {
+            if(error.resp.status == 401){
+                this.loginService.logOutUser().subscribe((data) =>{
+
+                    }, (error) => {
+                    console.log(error);
+                });
+            }else {
+                console.log(error);
+            }
+        });
     }
 }
