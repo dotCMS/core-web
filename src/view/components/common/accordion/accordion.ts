@@ -1,4 +1,5 @@
 import {Component, Input, OnDestroy} from '@angular/core';
+import {DotRouterService} from '../../../../api/services/dot-router-service';
 
 @Component({
     moduleId: __moduleName, // REQUIRED to use relative path in styleUrls
@@ -52,6 +53,7 @@ export class AccordionGroup implements OnDestroy {
 
     @Input() heading: string;
     @Input() icon: string;
+    @Input() url: string;
 
     set isOpen(value: boolean) {
         this._isOpen = value;
@@ -60,7 +62,7 @@ export class AccordionGroup implements OnDestroy {
         }
     }
 
-    constructor(private accordion: Accordion) {
+    constructor(private accordion: Accordion, private routerService: DotRouterService) {
         this.accordion.addGroup(this);
     }
 
@@ -75,6 +77,9 @@ export class AccordionGroup implements OnDestroy {
     toggleOpen(event: MouseEvent): void {
         event.preventDefault();
         this.isOpen = !this.isOpen;
+        if(this.isOpen){
+            this.routerService.goToURL(this.url);
+        }
     }
 
     ngOnDestroy(): void {
