@@ -119,8 +119,8 @@ export class EventsSocket extends Protocol {
                     let result: QueryParams = {};
 
                     if (data.length > 0) {
-                        this.lastcallback = data[data.length - 1].creationDate;
-                        result.lastcallback = data[data.length - 1].creationDate;
+                        this.lastcallback = data[data.length - 1].creationDate + 1;
+                        result.lastcallback = this.lastcallback;
                     }else if (this.lastcallback) {
                         result.lastcallback = this.lastcallback;
                     }
