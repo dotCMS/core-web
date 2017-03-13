@@ -12,10 +12,10 @@
             <p class="toolbar-user__email" id="dot-toolbar-email">{{auth.loginAsUser ? auth.loginAsUser.emailAddress : auth.user.emailAddress}}</p>
         </header>
         <ul class="toolbar-user__menu" id="dot-toolbar-user-menu">
-            <li class="user-menu__item"><a href="#" (click)='toggleMyAccount()' *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-my-account" messagekey>my-account</a></li>
-            <li class="user-menu__item"><a href="#" (click)="tooggleLoginAs($event)" *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-login-as" messagekey>login-as</a></li>
-            <li class="user-menu__item"><a href="#" (click)="logout($event)" *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-logout" messagekey>Logout</a></li>
-            <li class="user-menu__item"><a href="#" (click)="logoutAs($event)" *ngIf="auth.loginAsUser" id="dot-toolbar-user-link-logout-as" messagekey>logout-as</a></li>
+            <li class="toolbar-user__menu-item"><a href="#" (click)='toggleMyAccount()' *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-my-account" messagekey>my-account</a></li>
+            <li class="toolbar-user__menu-item"><a href="#" (click)="tooggleLoginAs($event)" *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-login-as" messagekey>login-as</a></li>
+            <li class="toolbar-user__menu-item"><a href="#" (click)="logout($event)" *ngIf="!auth.loginAsUser" id="dot-toolbar-user-link-logout" messagekey>Logout</a></li>
+            <li class="toolbar-user__menu-item"><a href="#" (click)="logoutAs($event)" *ngIf="auth.loginAsUser" id="dot-toolbar-user-link-logout-as" messagekey>logout-as</a></li>
         </ul>
     </div>
 </dot-dropdown-component>
