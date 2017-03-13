@@ -15,7 +15,10 @@ import {IframeOverlayService} from '../../../../api/services/iframe-overlay-serv
     moduleId: __moduleName, // REQUIRED to use relative path in styleUrls
     selector: 'dot-iframe',
     styleUrls: ['iframe-legacy-component.css'],
-    templateUrl: ['iframe-legacy-component.html']
+    templateUrl: ['iframe-legacy-component.html'],
+    host: {
+        '(window:resize)': 'onResize($event)'
+    }
 })
 export class IframeLegacyComponent extends SiteChangeListener {
     iframe: SafeResourceUrl;
@@ -41,16 +44,8 @@ export class IframeLegacyComponent extends SiteChangeListener {
 
     }
 
-    hideLoadingIndicator($event): void {
-        this.loadingInProgress = false;
-    }
-
     ngOnInit(): void {
         this.iframeOverlayService.overlay.subscribe(val => this.showOverlay = val);
-
-        // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
-        this.element.nativeElement.style.height = (window.innerHeight - 64) + 'px';
-        this.iframeElement = this.element.nativeElement.querySelector('iframe');
 
         this.initComponent();
 
@@ -68,6 +63,29 @@ export class IframeLegacyComponent extends SiteChangeListener {
                 // TODO: When we finish the migration of the site browser this event will be handle.....
             }
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.iframeElement = this.element.nativeElement.querySelector('iframe');
+        this.resizeComponent();
+    }
+
+    private onResize($event): void {
+        this.reloadIframe();
+        this.resizeComponent();
+    }
+
+    private resizeComponent(): void {
+        this.element.nativeElement.style.height = (window.innerHeight - 60) + 'px';
+    }
+
+    private reloadIframe(): void {
+        this.loadingInProgress = true;
+        this.iframeElement.contentWindow.location.reload();
+    }
+
+    private hideLoadingIndicator($event): void {
+        this.loadingInProgress = false;
     }
 
     /**
@@ -99,9 +117,7 @@ export class IframeLegacyComponent extends SiteChangeListener {
             this.iframeElement.contentWindow &&
             this.iframeElement.contentWindow.location.pathname !== 'blank' &&
             this.routingService.currentPortletId !== 'sites') {
-
-            this.loadingInProgress = true;
-            this.iframeElement.contentWindow.location.reload();
+            this.reloadIframe();
         }
     }
 
