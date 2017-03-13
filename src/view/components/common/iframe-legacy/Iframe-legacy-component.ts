@@ -76,7 +76,7 @@ export class IframeLegacyComponent extends SiteChangeListener {
     }
 
     private resizeComponent(): void {
-        this.element.nativeElement.style.height = (window.innerHeight - 60) + 'px';
+        this.element.nativeElement.style.height = (window.innerHeight - 64) + 'px';
     }
 
     private reloadIframe(): void {
