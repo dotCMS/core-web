@@ -56,7 +56,7 @@ export class ToolbarNotifications extends BaseComponent{
     private getNotifications(): void {
         this.notificationService.getNotifications().subscribe(res => {
             this.notificationsUnreadCount = res.entity.count;
-            this.notifications = res.entity.notifications;
+            this.notifications = res.entity.notifications.slice(0, 5);
         });
     }
 
