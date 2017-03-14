@@ -17,7 +17,7 @@ import {IframeOverlayService} from '../../../../api/services/iframe-overlay-serv
     styleUrls: ['iframe-legacy-component.css'],
     templateUrl: ['iframe-legacy-component.html'],
     host: {
-        '(window:resize)': 'onResize($event)'
+        '(window:resize)': 'resizeComponent($event)'
     }
 })
 export class IframeLegacyComponent extends SiteChangeListener {
@@ -67,11 +67,6 @@ export class IframeLegacyComponent extends SiteChangeListener {
 
     ngAfterViewInit(): void {
         this.iframeElement = this.element.nativeElement.querySelector('iframe');
-        this.resizeComponent();
-    }
-
-    private onResize($event): void {
-        this.reloadIframe();
         this.resizeComponent();
     }
 
