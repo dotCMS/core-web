@@ -19,6 +19,7 @@ export class ToolbarNotifications extends BaseComponent{
     private notifications: Array<INotification> = [];
     private notificationsUnreadCount: number = 0;
     private showNotifications: boolean = false;
+    private notificationsQuatity: number = 5;
 
 
     constructor(private dotcmsEventsService: DotcmsEventsService, private notificationService: NotificationsService,
@@ -55,8 +56,8 @@ export class ToolbarNotifications extends BaseComponent{
 
     private getNotifications(): void {
         this.notificationService.getNotifications().subscribe(res => {
-            this.notificationsUnreadCount = res.entity.count;
-            this.notifications = res.entity.notifications.slice(0, 5);
+            this.notifications = res.entity.notifications.slice(0, this.notificationsQuatity);
+            this.notificationsUnreadCount = this.notifications.length;
         });
     }
 
@@ -93,7 +94,8 @@ export class ToolbarNotifications extends BaseComponent{
     private subscribeToNotifications(): void {
         this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe((res) => {
             this.notifications.unshift(res.data);
-            this.notificationsUnreadCount++;
+            this.notifications = this.notifications.slice(0, this.notificationsQuatity);
+            this.notificationsUnreadCount = this.notifications.length;
             this.isNotificationsMarkedAsRead = false;
         });
     }
