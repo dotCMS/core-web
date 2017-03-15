@@ -5,6 +5,7 @@ import {INotification, NotificationsService} from '../../../../api/services/noti
 import {MessageService} from '../../../../api/services/messages-service';
 import {LoginService} from '../../../../api/services/login-service';
 import {IframeOverlayService} from "../../../../api/services/iframe-overlay-service";
+import {LoggerService} from "../../../../api/services/logger.service";
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -17,6 +18,7 @@ export class ToolbarNotifications extends BaseComponent{
     private elementRef;
     private isNotificationsMarkedAsRead: boolean = false;
     private notifications: Array<INotification> = [];
+    private notificationsIdList: Array<boolean> = [];
     private notificationsUnreadCount: number = 0;
     private showNotifications: boolean = false;
     private notificationsQuatity: number = 5;
@@ -24,7 +26,7 @@ export class ToolbarNotifications extends BaseComponent{
 
     constructor(private dotcmsEventsService: DotcmsEventsService, private notificationService: NotificationsService,
                 myElement: ElementRef, private messageService: MessageService, private loginService: LoginService,
-                private iframeOverlayService: IframeOverlayService) {
+                private iframeOverlayService: IframeOverlayService, private loggerService: LoggerService) {
         super(['notifications_dismissall', 'notifications_title'], messageService);
         this.elementRef = myElement;
     }
@@ -38,6 +40,7 @@ export class ToolbarNotifications extends BaseComponent{
 
     private clearNotitications(): void {
         this.notifications = [];
+        this.notificationsIdList = [];
         this.notificationsUnreadCount = 0;
         this.showNotifications = false;
     }
@@ -56,8 +59,17 @@ export class ToolbarNotifications extends BaseComponent{
 
     private getNotifications(): void {
         this.notificationService.getNotifications().subscribe(res => {
+
             this.notifications = res.entity.notifications.slice(0, this.notificationsQuatity);
             this.notificationsUnreadCount = this.notifications.length;
+            if (this.notifications) {
+                for (let i = 0; i < this.notifications.length; ++i) {
+                    let notification = this.notifications[i];
+                    this.notificationsIdList[notification.id] = true;
+                }
+
+                this.loggerService.debug("notificationsIdList", this.notificationsIdList);
+            }
         });
     }
 
@@ -93,10 +105,15 @@ export class ToolbarNotifications extends BaseComponent{
 
     private subscribeToNotifications(): void {
         this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe((res) => {
-            this.notifications.unshift(res.data);
-            this.notifications = this.notifications.slice(0, this.notificationsQuatity);
-            this.notificationsUnreadCount = this.notifications.length;
-            this.isNotificationsMarkedAsRead = false;
+
+            if (!this.notificationsIdList[res.data.id]) {
+                this.notifications.unshift(res.data);
+                this.notifications = this.notifications.slice(0, this.notificationsQuatity);
+                this.notificationsUnreadCount = this.notifications.length;
+                this.isNotificationsMarkedAsRead = false;
+                this.notificationsIdList[res.data.id] = true;
+                this.loggerService.debug("notificationsIdList", this.notificationsIdList);
+            }
         });
     }
 
