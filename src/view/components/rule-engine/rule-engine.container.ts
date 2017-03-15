@@ -104,15 +104,22 @@ export class RuleEngineContainer {
               private _conditionService:ConditionService,
               private _resources:I18nService,
               public bundleService:BundleService,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private siteService: SiteService
   ) {
     this.rules$.subscribe(( rules ) => {
       this.rules = rules;
     })
 
     this.bundleService.loadPublishEnvironments().subscribe((environments) => this.environments = environments);
-    this.initRules()
 
+    if (this.siteService.currentSite) {
+      this.initRules();
+    } else {
+      this.siteService.switchSite$.first().subscribe(res => {
+        this.initRules();
+      })
+    }
   }
 
   private preCacheCommonResources(resources:I18nService) {
