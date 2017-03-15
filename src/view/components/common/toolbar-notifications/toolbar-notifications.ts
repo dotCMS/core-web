@@ -57,7 +57,7 @@ export class ToolbarNotifications extends BaseComponent{
     private getNotifications(): void {
         this.notificationService.getNotifications().subscribe(res => {
             this.notifications = res.entity.notifications.slice(0, this.notificationsQuatity);
-            this.notificationsUnreadCount = this.notifications.length;
+            this.notificationsUnreadCount = res.entity.count > this.notificationsQuatity ? this.notificationsQuatity : res.entity.count;
         });
     }
 
@@ -95,7 +95,9 @@ export class ToolbarNotifications extends BaseComponent{
         this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe((res) => {
             this.notifications.unshift(res.data);
             this.notifications = this.notifications.slice(0, this.notificationsQuatity);
-            this.notificationsUnreadCount = this.notifications.length;
+            if (this.notificationsUnreadCount < this.notificationsQuatity) {
+                this.notificationsUnreadCount++;
+            }
             this.isNotificationsMarkedAsRead = false;
         });
     }
