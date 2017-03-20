@@ -17,7 +17,7 @@ export class StringUtils {
      * @param indexLine
      * @returns {string}
      */
-    getLine (text: string, indexLine: number) : string {
+    getLine(text: string, indexLine: number): string {
 
         let line: string = null;
 
@@ -30,5 +30,19 @@ export class StringUtils {
 
         return line;
     } // getLine.
+
+    /**
+     * Get slug from a string, that means: "this kind of text" to "this-kind-of-text"
+     * @param text
+     * @returns {string}
+     */
+    sluglify(text: string): string {
+        return text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+    }
 
 } // E:O:F:StringUtils.

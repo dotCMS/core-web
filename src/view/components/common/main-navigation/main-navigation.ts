@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation, ElementRef, ViewChild} from '@angular/core';
-import {RoutingService, Menu, MenuItem} from '../../../../api/services/routing-service';
+import {RoutingService, Menu} from '../../../../api/services/routing-service';
+import {StringUtils} from "../../../../api/util/string.utils";
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -17,10 +18,12 @@ export class MainNavigation {
     private menuActiveTabName: string;
     private open: boolean = true;
 
-    constructor(private routingService: RoutingService) {
+    constructor(private routingService: RoutingService, private stringUtils: StringUtils) {
         if (routingService.menus) {
             this.menuItems = routingService.menus;
         }
+
+        console.log(this.menuItems);
 
         routingService.menusChange$.subscribe(menu => {
             this.menuItems = menu;

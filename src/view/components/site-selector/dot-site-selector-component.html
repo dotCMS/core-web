@@ -1,5 +1,6 @@
 <!--TODO: get rid of this let autoComplete when this is fixed: https://github.com/primefaces/primeng/issues/745-->
-<p-autoComplete let autoComplete *ngIf="sitesCounter > 1"
+<p-autoComplete id="site-selector-field"
+                let autoComplete *ngIf="sitesCounter > 1"
                 (completeMethod)="filterSites($event)"
                 (onDropdownClick)="handleSitesDropdownClick($event)"
                 (onSelect)="switchSite($event)"
@@ -13,4 +14,4 @@
                 name="selectedSite">
 </p-autoComplete>
 
-<h1 *ngIf="sitesCounter == 1" class="site-selector__title">{{currentSite ? currentSite.label : ''}}</h1>
+<h1 id="site-selector-title" *ngIf="sitesCounter == 1" class="site-selector__title">{{currentSite ? currentSite.label : ''}}</h1>

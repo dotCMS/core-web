@@ -1,22 +1,22 @@
 <!--TODO: make this md-toolbar a dot-component-->
-<div class="layout" [class.collapsed]="isMenuCollapsed">
-    <p-toolbar class="layout__toolbar">
+<div class="layout" [class.collapsed]="isMenuCollapsed" id="layout-container">
+    <p-toolbar class="layout__toolbar" id="main-toolbar">
         <div class="layout__toolbar-inner">
             <div class="toolbar__host">
-                <button pButton iconButton icon="fa-bars" class="inverse" (click)="toggleSidenav()"></button>
+                <button pButton iconButton id="main-toolbar-menu-button" icon="fa-bars" class="inverse" (click)="toggleSidenav()"></button>
                 <dot-site-selector-component></dot-site-selector-component>
             </div>
-            <div class="toolbar__actions">
+            <div class="toolbar__actions" id="main-toolbar-actions">
                 <dot-toolbar-notifications></dot-toolbar-notifications>
                 <toolbar-user></toolbar-user>
                 <toolbar-add-contentlet></toolbar-add-contentlet>
             </div>
         </div>
     </p-toolbar>
-    <div class="layout__sidebar">
+    <div class="layout__sidebar" id="layout-sidebar">
         <dot-main-nav></dot-main-nav>
     </div>
-    <div class="layout__main">
+    <div class="layout__main" id="layout-main">
         <router-outlet></router-outlet>
     </div>
 </div>

@@ -34,24 +34,29 @@ export class Accordion {
     moduleId: __moduleName, // REQUIRED to use relative path in styleUrls
     selector: 'accordion-group',
     template: `
-        <a href="#" (click)="toggleOpen($event)" class="accordion-group__title" [ngClass]="{'is-active': isOpen}">
+        <a href="#"
+            id="accordion-title-{{id}}"
+            (click)="toggleOpen($event)"
+            class="accordion-group__title"
+            [ngClass]="{'is-active': isOpen}">
             <i class="fa fa-th-list {{icon}}" aria-hidden="true" *ngIf="icon"></i>
             <span class="accordion-group__title-text">
                 {{heading}}
             </span>
             
         </a>
-        <div class="accordion-group__content" [ngClass]="{'is-open': isOpen}">
+        <div id="accordion-content-{{id}}" class="accordion-group__content" [ngClass]="{'is-open': isOpen}">
             <ng-content></ng-content>
         </div>
     `,
     styleUrls: ['accordion-group.css']
 })
 export class AccordionGroup implements OnDestroy {
-    @Input('open') _isOpen:boolean = false;
+    @Input('open') _isOpen: boolean = false;
 
     @Input() heading: string;
     @Input() icon: string;
+    @Input() id: string;
 
     set isOpen(value: boolean) {
         this._isOpen = value;

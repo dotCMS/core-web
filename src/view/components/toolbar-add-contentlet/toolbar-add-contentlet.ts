@@ -1,10 +1,11 @@
-import {Component, ViewChild, Input, Output, EventEmitter} from '@angular/core';
-import {DropdownComponent} from '../common/dropdown-component/dropdown-component';
-import {ContentletService, StructureTypeView, ContentTypeView} from '../../../api/services/contentlet-service';
-import {RoutingService} from '../../../api/services/routing-service';
 import {BaseComponent} from '../common/_base/base-component';
-import {MessageService} from '../../../api/services/messages-service';
+import {Component, ViewChild, Input, Output, EventEmitter} from '@angular/core';
+import {ContentletService, StructureTypeView, ContentTypeView} from '../../../api/services/contentlet-service';
+import {DropdownComponent} from '../common/dropdown-component/dropdown-component';
 import {IframeOverlayService} from "../../../api/services/iframe-overlay-service";
+import {MessageService} from '../../../api/services/messages-service';
+import {RoutingService} from '../../../api/services/routing-service';
+import {StringUtils} from "../../../api/util/string.utils";
 
 @Component({
     directives: [],
@@ -21,7 +22,7 @@ export class ToolbarAddContenletBodyComponent {
     @Output() select = new EventEmitter<>();
     @Output() more = new EventEmitter<>();
 
-    constructor(private routingService: RoutingService) {}
+    constructor(private routingService: RoutingService, private stringUtils: StringUtils) {}
 
     goToAddContent(contentTypeView: ContentTypeView): boolean {
         this.routingService.goToPortlet(contentTypeView.name);
@@ -64,8 +65,8 @@ export class ToolbarAddContenletComponent extends BaseComponent {
     private selectedName: string = '';
 
     constructor(private contentletService: ContentletService, private routingService: RoutingService,
-                 messageService: MessageService, private iframeOverlayService: IframeOverlayService) {
-
+                messageService: MessageService, private stringUtils: StringUtils,
+                private iframeOverlayService: IframeOverlayService) {
         super(['more'], messageService);
     }
 
