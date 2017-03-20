@@ -42,7 +42,8 @@ export class RoutingPrivateAuthService implements CanActivate {
     }
 
     private goToFirstPortlet(obs: Observer<boolean>): void {
-        this.router.goToURL(`/c/${this.routingService.firstPortlet}`);
+        // TODO update this condition when we have more than one angular porlet
+        this.router.goToURL(this.routingService.firstPortlet === 'rules' ? 'rules' : `/c/${this.routingService.firstPortlet}`);
         obs.next(false);
     }
 
