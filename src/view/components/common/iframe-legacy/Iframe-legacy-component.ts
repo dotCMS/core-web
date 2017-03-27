@@ -110,6 +110,7 @@ export class IframeLegacyComponent extends SiteChangeListener {
 
         if (this.iframeElement &&
             this.iframeElement.contentWindow &&
+            this.iframeElement.contentWindow.location.href !== 'about:blank' && // For IE11
             this.iframeElement.contentWindow.location.origin !== 'null' &&
             this.routingService.currentPortletId !== 'sites') {
             this.reloadIframe();
