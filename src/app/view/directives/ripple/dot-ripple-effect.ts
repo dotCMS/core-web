@@ -36,7 +36,7 @@ export class DotRippleEffectDirective {
 
         window.setTimeout(() => {
             this.renderer.detachView([divElement]);
-        }, 2000);
+        }, this.ANIMATION_DURATION_MILLIS);
     }
 
     private createDiv(event: any): any {
@@ -46,23 +46,32 @@ export class DotRippleEffectDirective {
         let btnOffset = hostNativeElement.getBoundingClientRect();
         let  xPos = event.pageX - btnOffset.left;
         let  yPos = event.pageY - btnOffset.top;
-        let hostWidth = hostNativeElement.clientWidth;
         let hostHeight = hostNativeElement.clientHeight;
 
-        let divWidth = (hostWidth / 8);
-        let divHeight = (hostHeight / 2);
-        let divLeft = (xPos - (divWidth / 2));
-        let divTop = (yPos - (divHeight / 2));
+        let divSize = this.getDivSize();
+        let divLeft = (xPos - (divSize.width / 2));
+        let divTop = (yPos - (divSize.height / 2));
 
         this.renderer.setElementStyle(divElement, 'position', 'absolute');
-        this.renderer.setElementStyle(divElement, 'border-radius', '100%');
-        this.renderer.setElementStyle(divElement, 'width',  `${divWidth}px`);
-        this.renderer.setElementStyle(divElement, 'height',  `${divHeight}px`);
+        this.renderer.setElementStyle(divElement, 'border-radius', '50%');
+        this.renderer.setElementStyle(divElement, 'width',  `${divSize.width}px`);
+        this.renderer.setElementStyle(divElement, 'height',  `${divSize.height}px`);
         this.renderer.setElementStyle(divElement, 'background', this.getRippleEffectsColor());
         this.renderer.setElementStyle(divElement, 'top', `${divTop}px`);
         this.renderer.setElementStyle(divElement, 'left',  `${divLeft}px`);
 
         return divElement;
+    }
+
+    private getDivSize(): {width: number, height: number} {
+        let btnOffset = this.host.nativeElement.getBoundingClientRect();
+        let rippleSize = Math.sqrt(btnOffset.width * btnOffset.width +
+          btnOffset.height * btnOffset.height) * 2 + 2;
+
+        return {
+            height: rippleSize,
+            width: rippleSize
+        };
     }
 
     private getRippleEffectsColor(): string {
@@ -74,10 +83,14 @@ export class DotRippleEffectDirective {
     }
 
     private createAnimation(element: any): AnimationPlayer {
+        let hostNativeElement: any = this.host.nativeElement;
+        let clientWidth = hostNativeElement.clientWidth;
+        let scale = Math.floor(clientWidth / this.getDivSize().width);
+
         const startingStyles: AnimationStyles = {
             styles: [{
                 opacity: 0.4,
-                transform: 'scale(1)'
+                transform: 'scale(0.0001)'
             }]
         };
 
@@ -86,7 +99,7 @@ export class DotRippleEffectDirective {
             styles: {
                 styles: [{
                     opacity: 0,
-                    transform: 'scale(25)'
+                    transform: 'scale(1)'
                 }]
             }
         }];
