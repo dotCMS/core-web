@@ -21,7 +21,6 @@ export class ToolbarNotifications extends BaseComponent {
     private notifications: Array<INotification> = [];
     private notificationsUnreadCount = 0;
     private showNotifications = false;
-    
 
     constructor(private dotcmsEventsService: DotcmsEventsService, private notificationService: NotificationsService,
                 myElement: ElementRef, messageService: MessageService, private loginService: LoginService,
@@ -53,7 +52,7 @@ export class ToolbarNotifications extends BaseComponent {
             }
 
             this.clearNotitications();
-            
+
         });
     }
 
