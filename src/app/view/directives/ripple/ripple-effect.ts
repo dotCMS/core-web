@@ -10,18 +10,26 @@ import {
 } from '@angular/core';
 import { ColorUtil } from '../../../api/util/ColorUtil';
 
+/**
+ * Directives to ripple effects.
+ * How to use:
+ * <code>
+ *  <button ripple pButton id="login-component-login-submit-button" *ngIf="!isLoginInProgress"
+ *                           (click)="logInUser()" [label]="loginButton"></button>
+ * </code>
+ */
 @Directive({
     host: {
         '[style.overflow]': '"hidden"',
         '[style.position]': '"relative"',
     },
-    selector: '[dotRipple]'
+    selector: '[ripple]'
 })
 export class DotRippleEffectDirective {
 
-    private WHITE_COLOR = 'rgb(255, 255, 255)';
-    private ANIMATION_DURATION_MILLIS = 650;
-    private EFFECT_DEFAULT_COLOR = 'rgba(0, 0, 0, 0.2)';
+    private static readonly WHITE_COLOR = 'rgb(255, 255, 255)';
+    private static readonly ANIMATION_DURATION_MILLIS = 650;
+    private static readonly EFFECT_DEFAULT_COLOR = 'rgba(0, 0, 0, 0.2)';
 
     constructor(private host: ElementRef, private renderer: Renderer, private colorUtil: ColorUtil) {
     }
@@ -34,7 +42,7 @@ export class DotRippleEffectDirective {
 
         window.setTimeout(() => {
             this.renderer.detachView([divElement]);
-        }, this.ANIMATION_DURATION_MILLIS);
+        }, DotRippleEffectDirective.ANIMATION_DURATION_MILLIS);
     }
 
     private createDiv(event: any): any {
@@ -42,11 +50,11 @@ export class DotRippleEffectDirective {
         let divElement = this.renderer.createElement(hostNativeElement, 'div');
 
         let btnOffset = hostNativeElement.getBoundingClientRect();
-        let  xPos = event.pageX - btnOffset.left;
-        let  yPos = event.pageY - btnOffset.top;
+        let xPos = event.pageX - btnOffset.left;
+        let yPos = event.pageY - btnOffset.top;
         let hostHeight = hostNativeElement.clientHeight;
 
-        let divSize = this.getDivSize();
+        let divSize: Size = this.getDivSize();
         let divLeft = (xPos - (divSize.width / 2));
         let divTop = (yPos - (divSize.height / 2));
 
@@ -62,7 +70,7 @@ export class DotRippleEffectDirective {
         return divElement;
     }
 
-    private getDivSize(): {width: number, height: number} {
+    private getDivSize(): Size {
         let btnOffset = this.host.nativeElement.getBoundingClientRect();
         let rippleSize = Math.sqrt(btnOffset.width * btnOffset.width +
           btnOffset.height * btnOffset.height) * 2 + 2;
@@ -77,7 +85,12 @@ export class DotRippleEffectDirective {
         let hostNativeElement: any = this.host.nativeElement;
         let hostBackgroundColor = window.getComputedStyle(hostNativeElement, null).backgroundColor;
 
-        let isBright = this.colorUtil.getBrightness(hostBackgroundColor);
-        return  !isBright ?  this.EFFECT_DEFAULT_COLOR : this.WHITE_COLOR;
+        let isBright = this.colorUtil.isBrightness(hostBackgroundColor);
+        return !isBright ?  DotRippleEffectDirective.EFFECT_DEFAULT_COLOR : DotRippleEffectDirective.WHITE_COLOR;
     }
+}
+
+interface Size {
+    height: number;
+    width: number;
 }

@@ -12,8 +12,7 @@
 }
 
 .ripple-effect {
-    position: 'absolute';
     border-radius: '50%';
-
     animation: ripple-animation 0.65s linear;
+    position: 'absolute';
 }
