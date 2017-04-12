@@ -8,7 +8,7 @@ import {NotLicensedService} from './api/services/not-licensed-service';
     providers: [],
     selector: 'app',
     // TODO: make primeng into main.scss
-    styleUrls: ['app.scss'],
+    styleUrls: ['app.scss', './view/directives/ripple/dot-ripple-effects.scss'],
     templateUrl: 'app.html'
 })
 

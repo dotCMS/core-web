@@ -31,8 +31,6 @@ export class DotRippleEffectDirective {
         let hostNativeElement: any = this.host.nativeElement;
 
         let divElement = this.createDiv( event );
-        let animation = this.createAnimation(divElement);
-        animation.play();
 
         window.setTimeout(() => {
             this.renderer.detachView([divElement]);
@@ -52,8 +50,9 @@ export class DotRippleEffectDirective {
         let divLeft = (xPos - (divSize.width / 2));
         let divTop = (yPos - (divSize.height / 2));
 
-        this.renderer.setElementStyle(divElement, 'position', 'absolute');
-        this.renderer.setElementStyle(divElement, 'border-radius', '50%');
+        this.renderer.setElementClass(divElement, 'ripple-effect', true);
+        this.renderer.setElementStyle(divElement, 'position',  'absolute');
+        this.renderer.setElementStyle(divElement, 'border-radius',  '50%');
         this.renderer.setElementStyle(divElement, 'width',  `${divSize.width}px`);
         this.renderer.setElementStyle(divElement, 'height',  `${divSize.height}px`);
         this.renderer.setElementStyle(divElement, 'background', this.getRippleEffectsColor());
@@ -80,30 +79,5 @@ export class DotRippleEffectDirective {
 
         let isBright = this.colorUtil.getBrightness(hostBackgroundColor);
         return  !isBright ?  this.EFFECT_DEFAULT_COLOR : this.WHITE_COLOR;
-    }
-
-    private createAnimation(element: any): AnimationPlayer {
-        let hostNativeElement: any = this.host.nativeElement;
-        let clientWidth = hostNativeElement.clientWidth;
-        let scale = Math.floor(clientWidth / this.getDivSize().width);
-
-        const startingStyles: AnimationStyles = {
-            styles: [{
-                opacity: 0.4,
-                transform: 'scale(0.0001)'
-            }]
-        };
-
-        const keyframes: AnimationKeyframe[] = [{
-            offset: 0,
-            styles: {
-                styles: [{
-                    opacity: 0,
-                    transform: 'scale(1)'
-                }]
-            }
-        }];
-
-        return this.renderer.animate(element, startingStyles, keyframes, this.ANIMATION_DURATION_MILLIS, 0, 'linear');
     }
 }
