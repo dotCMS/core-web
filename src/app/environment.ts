@@ -38,6 +38,7 @@ import {SocketFactory} from './api/services/protocol/socket-factory';
 import {StringFormat} from './api/util/stringFormat';
 import {StringUtils} from './api/util/string.utils';
 import {UserModel} from './api/auth/UserModel';
+import {GravatarService} from './api/services/gravatar-service';
 
 // ROUTING
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
@@ -64,6 +65,7 @@ let PROVIDERS: any[] = [
   DotcmsConfig,
   DotcmsEventsService,
   FormatDateService,
+  GravatarService,
   IframeOverlayService,
   Logger,
   LoggerService,

@@ -1,14 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, trigger, style, state, transition, animate } from '@angular/core';
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
-    host: {
-        '(document:click)': 'handleClick($event)',
-    },
-
-    selector: 'dot-dropdown-component',
-    styles: [require('./dropdown-component.scss')],
-    templateUrl: 'dropdown-component.html',
     animations: [
     trigger(
       'enterAnimation', [
@@ -22,7 +14,15 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, 
         ])
       ]
     )
-  ]
+  ],
+    encapsulation: ViewEncapsulation.Emulated,
+    host: {
+        '(document:click)': 'handleClick($event)',
+    },
+
+    selector: 'dot-dropdown-component',
+    styles: [require('./dropdown-component.scss')],
+    templateUrl: 'dropdown-component.html'
 })
 
 export class DropdownComponent {
