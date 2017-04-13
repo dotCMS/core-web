@@ -17,7 +17,7 @@ export class NotificationsService {
     constructor(private coreWebService: CoreWebService) {
         this.urls = {
             dismissNotificationsUrl: 'v1/notification/delete',
-            getLastNotificationsUrl: 'v1/notification/getNotifications/offset/0/limit/24',
+            getLastNotificationsUrl: 'v1/notification/getNotifications/offset/0/limit/25',
             getNotificationsUrl: 'v1/notification/getNotifications/',
             markAsReadNotificationsUrl: 'v1/notification/markAsRead'
         };
