@@ -1,18 +1,16 @@
-
 @keyframes ripple-animation {
-    from {
-        opacity: 0.4; 
-        transform: scale(0.0001)
-    }
-
-    to {
+    100% {
         opacity: 0;
-        transform: scale(1)
+        transform: scale(1);
     }
 }
 
 .ripple-effect {
-    border-radius: '50%';
-    animation: ripple-animation 0.65s linear;
-    position: 'absolute';
+    border-radius: 50%;
+    position: absolute;
+    transform: scale(0);
+
+    &.animate {
+        animation: ripple-animation 0.4s linear;
+    }
 }
