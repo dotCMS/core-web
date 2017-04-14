@@ -1,10 +1,19 @@
-.gravatar__img {
-        width: 60px;
-        height: 60px;
-        margin: 20px auto;
+@import "../../../../../styles/variables";
 
-    img {
-        border-radius: 30px;
-        border: 1px solid #ededed;
-    }
+.profile {
+    display: flex;
+    justify-content: center;
+    padding: $basic-padding*2 0;
+    align-items: center;
+}
+
+.picture {
+    border: 1px solid $gray-light;
+}
+
+.dot-avatar {
+    border: 1px solid $gray-light;
+    background-color: $blue;
+    color: $white;
+    text-align: center;
 }
