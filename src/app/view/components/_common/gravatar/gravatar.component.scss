@@ -5,15 +5,17 @@
     justify-content: center;
     padding: $basic-padding*2 0;
     align-items: center;
+}
 
-    .gravatar__avatar {
-        border: 1px solid $gray-light;
-    }
+.gravatar__avatar {
+    border: 1px solid $gray-light;
+    border-radius: 50%;
+}
 
-    .gravatar_placeholder {
-        border: 1px solid $gray-light;
-        background-color: $blue;
-        color: $white;
-        text-align: center;
-    }
+.gravatar_placeholder {
+    border: 1px solid $gray-light;
+    border-radius: 50%;
+    background-color: $blue;
+    color: $white;
+    text-align: center;
 }

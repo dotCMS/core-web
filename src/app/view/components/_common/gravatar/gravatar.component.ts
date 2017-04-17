@@ -15,31 +15,29 @@ export class GravatarComponent {
     public gravatarProfile;
     public gravatarPlaceholder;
     public gravatarPlaceholderStyles;
+    public avatarUrl;
 
     constructor(private gravatarService: GravatarService) {
 
     }
 
     ngOnChanges(): void {
-        console.log('freddy test');
         const hash = md5(this.email);
         const profile$ = this.gravatarService.loadGravatarProfile(hash);
         profile$.subscribe(
             data => {
                 this.gravatarProfileStyles = {
-                    'background': 'url("' + data.entry[0].photos[0].value + '?s=' + this.size + '")',
-                    'border-radius': '50%',
                     'height': this.size + 'px',
                     'width': this.size + 'px'
                 };
 
                 this.gravatarProfile = true;
+                this.avatarUrl = data.entry[0].photos[0].value + '?s=' + this.size;
             },
             error => {
                 this.gravatarProfile = false;
                 this.gravatarPlaceholder = this.getDotAvatar(this.email);
                 this.gravatarPlaceholderStyles = {
-                    'border-radius': '50%',
                     'font-size': this.size - ((this.size * 25) / 100) + 'px',
                     'height': this.size + 'px',
                     'width': this.size + 'px'
