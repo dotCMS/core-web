@@ -1,19 +1,19 @@
 @import "../../../../../styles/variables";
 
-.profile {
+.gravatar {
     display: flex;
     justify-content: center;
     padding: $basic-padding*2 0;
     align-items: center;
-}
 
-.picture {
-    border: 1px solid $gray-light;
-}
+    .gravatar__avatar {
+        border: 1px solid $gray-light;
+    }
 
-.dot-avatar {
-    border: 1px solid $gray-light;
-    background-color: $blue;
-    color: $white;
-    text-align: center;
+    .gravatar_placeholder {
+        border: 1px solid $gray-light;
+        background-color: $blue;
+        color: $white;
+        text-align: center;
+    }
 }

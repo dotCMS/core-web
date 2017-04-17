@@ -1,8 +1,6 @@
-<div *ngIf="gravatarProfile" class="profile">
-    <div class="picture" [ngStyle]="gravatarProfileStyles"></div>
-</div>
-<div *ngIf="!gravatarProfile" class="profile">
-    <div class="dot-avatar" [ngStyle]="dotAvatarProfileStyles">
-        {{dotAvatarProfile}}
+<div  class="gravatar">
+    <div class="gravatar__avatar" *ngIf="gravatarProfile" [ngStyle]="gravatarProfileStyles"></div>
+    <div class="gravatar_placeholder" *ngIf="!gravatarProfile" [ngStyle]="gravatarPlaceholderStyles">
+        {{gravatarPlaceholder}}
     </div>
 </div>
