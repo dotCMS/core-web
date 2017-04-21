@@ -42,6 +42,11 @@ import {UserModel} from './api/auth/UserModel';
 // ROUTING
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ColorUtil } from './api/util/ColorUtil';
+import {
+  NotificationService as NotificationsServiceDotJS, HttpClient, AppConfig, SettingsStorageService,
+  LocalStoreService, SiteBrowserState, SiteSelectorService, FileSystemService, SiteTreetableService,
+  LoggerService as LoggerServiceDotJS, SiteBrowserService
+} from 'dotcms-js/dotcms-js';
 
 // Environment Providers
 const RULES_ENGINE_SERVICES = [
@@ -81,7 +86,18 @@ let PROVIDERS: any[] = [
   StringUtils,
   UserModel,
   ColorUtil,
-  {provide: LocationStrategy, useClass: HashLocationStrategy}
+  {provide: LocationStrategy, useClass: HashLocationStrategy},
+  {provide: SettingsStorageService, useClass: SettingsStorageService},
+  {provide: HttpClient, useClass: HttpClient},
+  {provide: SiteSelectorService, useClass: SiteSelectorService},
+  {provide: SiteBrowserService, useClass: SiteBrowserService},
+  {provide: NotificationsServiceDotJS, useClass: NotificationsServiceDotJS},
+  {provide: AppConfig, useValue: AppConfig},
+  {provide: SiteBrowserState, useClass: SiteBrowserState},
+  {provide: FileSystemService, useClass: FileSystemService},
+  {provide: SiteTreetableService, useClass: SiteTreetableService},
+  {provide: LoggerServiceDotJS, useClass: LoggerServiceDotJS},
+  {provide: LocalStoreService, useClass: LocalStoreService}
 ];
 
 // Angular debug tools in the dev console

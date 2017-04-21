@@ -20,6 +20,9 @@ import {ServersideCondition} from './portlets/rule-engine/condition-types/server
 import {VisitorsLocationComponent} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.component';
 import {VisitorsLocationContainer} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.container';
 import {DotBrowserComponent} from './portlets/dot-browser/dot-browser-component';
+import {BreadcrumbComponent} from 'dotcms-js/components/breadcrumb/breadcrumb.component';
+import {SiteDatatableComponent, SiteTreeTableComponent, TreeableDetailComponent} from 'dotcms-js/dotcms-js';
+import {SiteSelectorComponent as SiteSelectorComponentDotJS} from 'dotcms-js/dotcms-js';
 
 const RULES_ENGINE_COMPONENTS = [
     AddToBundleDialogComponent,
@@ -104,7 +107,12 @@ export const COMPONENTS = [
     ToolbarAddContenletBodyComponent,
     ToolbarAddContenletComponent,
     ToolbarNotifications,
-    ToolbarUserComponent
+    ToolbarUserComponent,
+    SiteSelectorComponentDotJS,
+    SiteTreeTableComponent,
+    BreadcrumbComponent,
+    SiteDatatableComponent,
+    TreeableDetailComponent
 ];
 
 // CUSTOM PIPES

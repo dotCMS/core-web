@@ -22,7 +22,7 @@ import { AppState, InternalStateType } from './app.service';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {InputTextModule} from 'primeng/primeng';
+import {BreadcrumbModule, DataTableModule, InputTextModule, TreeTableModule} from 'primeng/primeng';
 import {PasswordModule} from 'primeng/primeng';
 import {CheckboxModule} from 'primeng/primeng';
 import {ButtonModule} from 'primeng/primeng';
@@ -34,7 +34,9 @@ import {DialogModule} from 'primeng/primeng';
 import {RadioButtonModule} from 'primeng/primeng';
 
 const NGFACES_MODULES = [
+  BreadcrumbModule,
   InputTextModule,
+  DataTableModule,
   PasswordModule,
   CheckboxModule,
   RadioButtonModule,
@@ -42,6 +44,7 @@ const NGFACES_MODULES = [
   DropdownModule,
   AutoCompleteModule,
   ToolbarModule,
+  TreeTableModule,
   DialogModule
 ];
 
@@ -51,6 +54,11 @@ const NGFACES_MODULES = [
 import { COMPONENTS, DIRECTIVES, PIPES } from './components';
 
 import '../styles/main.scss';
+import {
+  SiteDatatableComponent, SiteSelectorComponent, SiteTreeTableComponent,
+  TreeableDetailComponent
+} from 'dotcms-js/dotcms-js';
+import {BreadcrumbComponent} from 'dotcms-js/components/breadcrumb/breadcrumb.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -73,7 +81,7 @@ type StoreType = {
     AppComponent,
     ...PIPES,
     ...COMPONENTS,
-    ...DIRECTIVES,
+    ...DIRECTIVES
   ],
   imports: [ // import Angular's modules
     BrowserModule,
