@@ -19,6 +19,7 @@ import {RuleEngineContainer} from './portlets/rule-engine/rule-engine.container'
 import {ServersideCondition} from './portlets/rule-engine/condition-types/serverside-condition/serverside-condition';
 import {VisitorsLocationComponent} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.component';
 import {VisitorsLocationContainer} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.container';
+import {DotBrowserComponent} from './portlets/dot-browser/dot-browser-component';
 
 const RULES_ENGINE_COMPONENTS = [
     AddToBundleDialogComponent,
@@ -77,6 +78,7 @@ export const COMPONENTS = [
     Accordion,
     AccordionGroup,
     CustomTimeComponent,
+    DotBrowserComponent,
     DotLoadingIndicator,
     DropdownComponent,
     ForgotPasswordComponent,
