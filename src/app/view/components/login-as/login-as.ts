@@ -27,9 +27,7 @@ export class LoginAsComponent extends BaseComponent {
     }
 
     ngOnInit(): void {
-        this.loginService.getLoginAsUsersList().subscribe(data => {
-            this.userLists = data;
-        });
+        this.filterUsers();
     }
 
     close(): boolean {
@@ -73,15 +71,19 @@ export class LoginAsComponent extends BaseComponent {
      *
      * @param event - The event with the query parameter to filter the users
      */
-    filterUsers(event): void {
-        this.filteredLoginAsUsersResults = this.userLists.
-        filter(user => user.fullName.toLowerCase().indexOf(event.query.toLowerCase()) >= 0)
-            .map(user => {
+    filterUsers(event?): void {
+        console.log('event', event);
+
+        let query = !event || !event.query ? null : event.query.toLowerCase();
+        console.log('query', query);
+        this.loginService.getLoginAsUsersList(query).subscribe( users => {
+            this.filteredLoginAsUsersResults =  users.map(user => {
                 return {
                     label: user.fullName,
-                    value: user.userId
+                    value: user.userId,
                 };
             });
+       });
     }
 
     /**
@@ -102,28 +104,7 @@ export class LoginAsComponent extends BaseComponent {
             this.autoCompleteComponent.show();
         }
 
-        this.filteredLoginAsUsersResults = [];
-
-        /**
-         * This time out is included to imitate a remote call and
-         * avoid that the suggestion box is not displayed, because
-         * the autocomplete hide method is execute after the the show
-         * method.
-         *
-         * TODO - remove the setTimeout when we add the pagination option
-         * making a call to the login service to get a subset of login as users
-         * paginated to display on the dropdown sugestions pannel.
-         *
-         */
-        setTimeout(() => {
-
-            this.filteredLoginAsUsersResults = this.userLists.map(user => {
-                return {
-                    label: user.fullName,
-                    value: user.userId,
-                };
-            });
-        }, 100);
+        this.filterUsers(event);
     }
 
 }
