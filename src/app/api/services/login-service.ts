@@ -128,8 +128,7 @@ export class LoginService {
     public getLoginAsUsersList(filter: string): Observable<User[]> {
 
         return Observable.create(observer => {
-            console.log('this.nUsers', this.nUsers);
-            console.log('this.loginAsUserList.length', this.loginAsUserList.length);
+
             let needLoadUsers = this.loginAsUserList.length === 0 || this.nUsers > this.loginAsUserList.length;
             this.loggerService.debug('is it need load users?', needLoadUsers);
 
@@ -148,11 +147,11 @@ export class LoginService {
 
                     observer.next(this.loginAsUserList);
                 });
-            }else{
+            }else {
                 this.loggerService.debug('filtering users...');
                 if (!filter) {
                     observer.next(this.loginAsUserList);
-                }else{
+                }else {
                     observer.next(
                         this.loginAsUserList.filter(user => user.fullName.toLowerCase().indexOf(filter.toLowerCase()) >= 0));
                 }
@@ -174,16 +173,6 @@ export class LoginService {
             method: RequestMethod.Post,
             url: this.urls.serverInfo,
         });
-    }
-
-    /**
-     * Request and store the login as _auth list.
-     */
-    private loadLoginAsUsersList(includeNUsers: boolean, filter: string): Observable<any> {
-        return this.coreWebService.requestView({
-            method: RequestMethod.Get,
-            url: `${this.urls.loginAsUserList}?includeUsersNumber=${includeNUsers}&filter=${filter}`
-        }).pluck('entity');
     }
 
     /**
@@ -358,6 +347,16 @@ export class LoginService {
             this.lang = '';
             this.country = '';
         }
+    }
+
+    /**
+     * Request and store the login as _auth list.
+     */
+    private loadLoginAsUsersList(includeNUsers: boolean, filter: string): Observable<any> {
+        return this.coreWebService.requestView({
+            method: RequestMethod.Get,
+            url: `${this.urls.loginAsUserList}?includeUsersNumber=${includeNUsers}&filter=${filter}`
+        }).pluck('entity');
     }
 }
 

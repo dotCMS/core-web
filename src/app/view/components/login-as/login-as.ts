@@ -75,7 +75,7 @@ export class LoginAsComponent extends BaseComponent {
         console.log('event', event);
 
         let query = !event || !event.query ? null : event.query.toLowerCase();
-        console.log('query', query);
+
         this.loginService.getLoginAsUsersList(query).subscribe( users => {
             this.filteredLoginAsUsersResults =  users.map(user => {
                 return {
