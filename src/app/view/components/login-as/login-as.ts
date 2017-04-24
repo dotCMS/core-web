@@ -72,15 +72,13 @@ export class LoginAsComponent extends BaseComponent {
      * @param event - The event with the query parameter to filter the users
      */
     filterUsers(event?): void {
-        console.log('event', event);
-
-        let query = !event || !event.query ? null : event.query.toLowerCase();
+        let query = event && event.query ? event.query.toLowerCase() : null;
 
         this.loginService.getLoginAsUsersList(query).subscribe( users => {
             this.filteredLoginAsUsersResults =  users.map(user => {
                 return {
                     label: user.fullName,
-                    value: user.userId,
+                    value: user.userId
                 };
             });
        });

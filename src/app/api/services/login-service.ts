@@ -137,7 +137,7 @@ export class LoginService {
 
                 this.loggerService.debug('loading users, filter:', filter);
 
-                this.loadLoginAsUsersList(includeNUsers, filter).subscribe( entity => {
+                this.loadLoginAsUsersList(includeNUsers, filter).subscribe(entity => {
                     this.loggerService.debug('Users Loaded', entity);
                     this.loginAsUserList = <User[]> entity['users'];
 
@@ -147,7 +147,7 @@ export class LoginService {
 
                     observer.next(this.loginAsUserList);
                 });
-            }else {
+            } else {
                 this.loggerService.debug('filtering users...');
                 if (!filter) {
                     observer.next(this.loginAsUserList);
