@@ -20,9 +20,11 @@ import {ServersideCondition} from './portlets/rule-engine/condition-types/server
 import {VisitorsLocationComponent} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.component';
 import {VisitorsLocationContainer} from './portlets/rule-engine/custom-types/visitors-location/visitors-location.container';
 import {DotBrowserComponent} from './portlets/dot-browser/dot-browser-component';
-import {BreadcrumbComponent} from 'dotcms-js/components/breadcrumb/breadcrumb.component';
-import {SiteDatatableComponent, SiteTreeTableComponent, TreeableDetailComponent} from 'dotcms-js/dotcms-js';
-import {SiteSelectorComponent as SiteSelectorComponentDotJS} from 'dotcms-js/dotcms-js';
+import {SiteSelectorComponent as SiteSelectorComponentDotJS} from '../dotcms-js/components/site-selector/site-selector.component';
+import {BreadcrumbComponent} from '../dotcms-js/components/breadcrumb/breadcrumb.component';
+import {SiteTreeTableComponent} from '../dotcms-js/components/site-treetable/site-treetable.component';
+import {SiteDatatableComponent} from '../dotcms-js/components/site-datatable/site-datatable.component';
+import {TreeableDetailComponent} from '../dotcms-js/components/treeable-detail/treeable-detail.component';
 
 const RULES_ENGINE_COMPONENTS = [
     AddToBundleDialogComponent,

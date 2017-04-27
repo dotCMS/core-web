@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {SettingsStorageService} from 'dotcms-js/dotcms-js';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -10,8 +9,10 @@ import {SettingsStorageService} from 'dotcms-js/dotcms-js';
 })
 
 export class DotBrowserComponent implements OnInit {
-    constructor(
-        // private settingsStorageService: SettingsStorageService
-    ) {}
-    ngOnInit(): void {}
+    constructor() {
+        console.log('test');
+    }
+    ngOnInit(): void {
+        console.log('EDITED AGAIN 3');
+    }
 }

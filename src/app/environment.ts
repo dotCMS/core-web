@@ -42,11 +42,17 @@ import {UserModel} from './api/auth/UserModel';
 // ROUTING
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { ColorUtil } from './api/util/ColorUtil';
-import {
-  NotificationService as NotificationsServiceDotJS, HttpClient, AppConfig, SettingsStorageService,
-  LocalStoreService, SiteBrowserState, SiteSelectorService, FileSystemService, SiteTreetableService,
-  LoggerService as LoggerServiceDotJS, SiteBrowserService
-} from 'dotcms-js/dotcms-js';
+import {SettingsStorageService} from '../dotcms-js/core/util/settings-storage.service';
+import {HttpClient} from '../dotcms-js/core/util/http.service';
+import {SiteSelectorService} from '../dotcms-js/components/site-selector/site-selector.service';
+import {SiteBrowserService} from '../dotcms-js/core/util/site-browser.service';
+import {AppConfig} from '../dotcms-js/core/app.config';
+import {SiteBrowserState} from '../dotcms-js/core/util/site-browser.state';
+import {FileSystemService} from '../dotcms-js/core/util/filesystem.service';
+import {SiteTreetableService} from '../dotcms-js/components/site-treetable/site-treetable.service';
+import {LocalStoreService} from '../dotcms-js/core/util/local-store.service';
+import {NotificationService as NotificationsServiceDotJS} from '../dotcms-js/core/util/notification.service';
+import {LoggerService as LoggerServiceDotJS} from '../dotcms-js/core/util/logger.service';
 
 // Environment Providers
 const RULES_ENGINE_SERVICES = [

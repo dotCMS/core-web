@@ -54,11 +54,6 @@ const NGFACES_MODULES = [
 import { COMPONENTS, DIRECTIVES, PIPES } from './components';
 
 import '../styles/main.scss';
-import {
-  SiteDatatableComponent, SiteSelectorComponent, SiteTreeTableComponent,
-  TreeableDetailComponent
-} from 'dotcms-js/dotcms-js';
-import {BreadcrumbComponent} from 'dotcms-js/components/breadcrumb/breadcrumb.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
