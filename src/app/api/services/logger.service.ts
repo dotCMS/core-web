@@ -69,12 +69,14 @@ export class LoggerService {
     private getCaller (): string {
 
         let caller = 'unknown';
+        // tslint:disable-next-line:no-magic-numbers
         try { throw new Error(); } catch (e) { caller = this.cleanCaller(this.stringUtils.getLine(e.stack, 4)); }
         return caller;
     }
 
     private cleanCaller (caller: string): string {
 
+        // tslint:disable-next-line:no-magic-numbers
         return (caller) ? caller.trim().substr(3) : 'unknown';
     }
 

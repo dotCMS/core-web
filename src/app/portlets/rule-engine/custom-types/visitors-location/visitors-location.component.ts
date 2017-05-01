@@ -20,20 +20,27 @@ interface VisitorsLocationParams {
 const UNITS = {
     km: {
     km: ((len) => len),
+    // tslint:disable-next-line:no-magic-numbers
     m: ((len) => len * 1000),
+    // tslint:disable-next-line:no-magic-numbers
     mi: ((len) => len / 1.60934 ),
   },
   m: {
+    // tslint:disable-next-line:no-magic-numbers
     km: ((len) => len / 1000),
     m: ((len) => len ),
+    // tslint:disable-next-line:no-magic-numbers
     mi: ((len) => len / 1609.34 ),
   },
   mi: {
+    // tslint:disable-next-line:no-magic-numbers
     km: ((len) => len / 1.60934),
+    // tslint:disable-next-line:no-magic-numbers
     m: ((len) => len * 1609.34),
     mi: ((len) => len  ),
   },
 };
+// tslint:disable-next-line:no-unused-variable
 const I8N_BASE = 'api.sites.ruleengine';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

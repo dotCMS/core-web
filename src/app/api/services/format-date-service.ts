@@ -15,6 +15,7 @@ export class FormatDateService {
     }
 
     getRelative(time): string {
+        // tslint:disable-next-line:no-magic-numbers
         return moment(parseInt(time, 10)).fromNow();
     }
 }

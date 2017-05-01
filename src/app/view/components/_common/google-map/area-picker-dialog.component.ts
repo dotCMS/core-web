@@ -1,5 +1,4 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
-import {ModalDialogComponent} from '../modal-dialog/dialog-component';
 import {GoogleMapService, GCircle} from '../../../../api/maps/GoogleMapService';
 import {LoggerService} from '../../../../api/services/logger.service';
 
@@ -77,6 +76,7 @@ export class AreaPickerDialogComponent {
   readyMap(): void {
     let el = document.getElementById(this.mapId);
     if (!el) {
+      // tslint:disable-next-line:no-magic-numbers
       window.setTimeout(() => this.readyMap(), 10);
     } else {
       this._prevCircle = this.circle;

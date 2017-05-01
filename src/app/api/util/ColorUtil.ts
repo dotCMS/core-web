@@ -6,6 +6,13 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class ColorUtil {
 
+    private static readonly HEX_BASE = 16;
+    private static readonly RED_COLOR_RGB_START = 0;
+    private static readonly GREEN_COLOR_RGB_START = 2;
+    private static readonly BLUE_COLOR_RGB_START = 4;
+    private static readonly COLOR_RGB_LENGTH = 2;
+    private static readonly BRIGHTNESS_BOUNDARY = 138;
+
     /**
      * Check color brightness.
      *
@@ -23,10 +30,11 @@ export class ColorUtil {
             color = this.rgb2hex(color);
         }
 
-        let c_r = parseInt(color.substr(0, 2), 16);
-        let c_g = parseInt(color.substr(2, 2), 16);
-        let c_b = parseInt(color.substr(4, 2), 16);
+        let c_r = parseInt(color.substr(ColorUtil.RED_COLOR_RGB_START, ColorUtil.COLOR_RGB_LENGTH), ColorUtil.HEX_BASE);
+        let c_g = parseInt(color.substr(ColorUtil.GREEN_COLOR_RGB_START, ColorUtil.COLOR_RGB_LENGTH), ColorUtil.HEX_BASE);
+        let c_b = parseInt(color.substr(ColorUtil.BLUE_COLOR_RGB_START, ColorUtil.COLOR_RGB_LENGTH), ColorUtil.HEX_BASE);
 
+        // tslint:disable-next-line:no-magic-numbers
         return ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
     }
 
@@ -36,7 +44,7 @@ export class ColorUtil {
      */
 
     public isBrightness(color): boolean {
-        return this.getBrightness(color) > 130;
+        return this.getBrightness(color) > ColorUtil.BRIGHTNESS_BOUNDARY;
     }
 
     /**
@@ -49,11 +57,13 @@ export class ColorUtil {
         } else {
             rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(\.\d+)?))?\)$/);
 
+            // tslint:disable-next-line:no-magic-numbers
             return '#' + this.hex(rgb[1]) + this.hex(rgb[2]) + this.hex(rgb[3]);
         }
     }
 
     private hex(x: string): string {
+        // tslint:disable-next-line:no-magic-numbers
         return ('0' + parseInt(x, 10).toString(16)).slice(-2);
     }
 }
