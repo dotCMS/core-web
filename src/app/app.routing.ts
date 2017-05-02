@@ -13,11 +13,11 @@ import {Routes, RouterModule, PreloadAllModules} from '@angular/router';
 import {RoutingPrivateAuthService} from './api/services/routing-private-auth-service';
 import {RoutingPublicAuthService} from './api/services/routing-public-auth-service';
 import {RuleEngineContainer} from './portlets/rule-engine/rule-engine.container';
-import {ContentTypesComponent} from './portlets/content-types/content-types-component';
+import {ContentTypesPortletComponent} from './portlets/content-types/content-types-component';
 
 let angularComponents: any[] = [];
 angularComponents.push({component: RuleEngineContainer, id: 'rules'});
-angularComponents.push({component: ContentTypesComponent, id: 'content-types-angular'});
+angularComponents.push({component: ContentTypesPortletComponent, id: 'content-types-angular'});
 
 let mainComponentChildren = [
     {

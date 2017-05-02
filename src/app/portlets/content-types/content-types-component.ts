@@ -4,5 +4,5 @@ import { Component } from '@angular/core';
     selector: 'content-types-component',
     templateUrl: 'content-types-component.html'
 })
-export class ContentTypesComponent {
+export class ContentTypesPortletComponent {
 }
