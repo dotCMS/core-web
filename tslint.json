@@ -47,7 +47,6 @@
         "no-inferrable-types": true,
         "no-internal-module": true,
         "no-null-keyword": false,
-        "no-magic-numbers": true,
         "no-require-imports": false,
         "no-shadowed-variable": false,
         "no-string-literal": false,

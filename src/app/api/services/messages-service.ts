@@ -22,7 +22,6 @@ export class MessageService {
         // There are tons of components asking for messages at the same time, when messages are not loaded yet
         // instead of doing tons of request, we acumulate the keys every component is asking for and then do one
         // request with all of them. More info: https://lodash.com/docs/4.15.0#debounce
-        // tslint:disable-next-line:no-magic-numbers
         this.doMessageLoad = _.debounce(this.requestMessages, 100);
 
         this.i18nUrl = 'v1/languages/i18n';

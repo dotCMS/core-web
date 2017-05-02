@@ -25,22 +25,16 @@ interface VisitorsLocationParams {
 const UNITS = {
   km: {
     toKm: ((len) => len),
-    // tslint:disable-next-line:no-magic-numbers
     toMeters: ((len) => len * 1000),
-    // tslint:disable-next-line:no-magic-numbers
     toMiles: ((len) => len / 1.60934 ),
   },
   m: {
-    // tslint:disable-next-line:no-magic-numbers
     toKm: ((len) => len / 1000),
     toMeters: ((len) => len ),
-    // tslint:disable-next-line:no-magic-numbers
     toMiles: ((len) => len / 1609.34 ),
   },
   mi: {
-    // tslint:disable-next-line:no-magic-numbers
     toKm: ((len) => len / 1.60934),
-    // tslint:disable-next-line:no-magic-numbers
     toMeters: ((len) => len * 1609.34),
     toMiles: ((len) => len  ),
   },
@@ -121,7 +115,6 @@ export class VisitorsLocationContainer {
 
       this.lat = parseFloat(params.latitude.value) || this.lat;
       this.lng = parseFloat(params.longitude.value) || this.lng;
-      // tslint:disable-next-line:no-magic-numbers
       this.radius = parseFloat(params.radius.value) || 50000;
       this.preferredUnit = params.preferredDisplayUnits.value || this.componentInstance.parameterDefs['preferredDisplayUnits'].defaultValue;
 

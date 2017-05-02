@@ -32,9 +32,7 @@ export class HttpRequestUtils {
         let regex = new RegExp('[?&]' + name.replace(/[\[\]]/g, '\\$&') + '(=([^&#]*)|&|#|$)');
         let results = regex.exec(window.location.href);
 
-        // tslint:disable-next-line:no-magic-numbers
         if (results && results[2]) {
-            // tslint:disable-next-line:no-magic-numbers
             value = decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 

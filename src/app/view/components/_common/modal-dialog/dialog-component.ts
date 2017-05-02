@@ -56,7 +56,6 @@ export class ModalDialogComponent {
         this.addEscapeListener();
 
         // wait until the dialog is really show up
-        // tslint:disable-next-line:no-magic-numbers
         setTimeout( () => this.open.emit(false), 2);
       } else {
         this.removeEscapeListener();

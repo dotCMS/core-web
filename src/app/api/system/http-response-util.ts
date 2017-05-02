@@ -20,12 +20,10 @@ export interface ResponseError {
 
 // tslint:disable-next-line:only-arrow-functions
 export function isSuccess(resp: Response): boolean {
-  // tslint:disable-next-line:no-magic-numbers
   return resp.status > 199 && resp.status < 300;
 }
 
 // tslint:disable-next-line:only-arrow-functions
 export function hasContent(resp: Response): boolean {
-  console.log('aaaa');
   return isSuccess(resp) && resp.status !== HttpCode.NO_CONTENT;
 }

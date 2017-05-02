@@ -74,9 +74,7 @@ export class DotRippleEffectDirective {
         let yPos = event.pageY - btnOffset.top;
 
         return {
-            // tslint:disable-next-line:no-magic-numbers
             x: (xPos - (this.rippleSize.width / 2)),
-            // tslint:disable-next-line:no-magic-numbers
             y: (yPos - (this.rippleSize.height / 2))
         };
     }
@@ -84,7 +82,6 @@ export class DotRippleEffectDirective {
     private getRippleSize(): RippleSize {
         let btnOffset = this.host.nativeElement.getBoundingClientRect();
         let rippleSize = Math.sqrt(btnOffset.width * btnOffset.width +
-          // tslint:disable-next-line:no-magic-numbers
           btnOffset.height * btnOffset.height) * 2 + 2;
 
         return {

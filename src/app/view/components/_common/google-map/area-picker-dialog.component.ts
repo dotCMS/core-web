@@ -76,7 +76,6 @@ export class AreaPickerDialogComponent {
   readyMap(): void {
     let el = document.getElementById(this.mapId);
     if (!el) {
-      // tslint:disable-next-line:no-magic-numbers
       window.setTimeout(() => this.readyMap(), 10);
     } else {
       this._prevCircle = this.circle;

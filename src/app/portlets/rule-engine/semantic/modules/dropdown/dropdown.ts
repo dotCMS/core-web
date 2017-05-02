@@ -184,14 +184,16 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
         }
         return this.onHide();
       },
-      onLabelCreate: (value, text) => {
+      // tslint:disable-next-line:only-arrow-functions
+      onLabelCreate:  function(value, text): any {
         let $label = this;
         return self.onLabelCreate($label, value, text);
       },
       onLabelSelect: ($selectedLabels) => {
         return this.onLabelSelect($selectedLabels);
       },
-      onNoResults: (searchValue) => {
+      // tslint:disable-next-line:only-arrow-functions
+      onNoResults: function (searchValue): any {
         if (!this.allowAdditions) {
             badSearch = searchValue;
         }
@@ -285,10 +287,9 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
 
   private applyValue(value): void {
     let count = 0;
-    // tslint:disable-next-line:no-magic-numbers
+
     Observable.interval(10).takeWhile(() => {
       count++;
-      // tslint:disable-next-line:no-magic-numbers
       if (count > 100) {
         throw 'Dropdown element not found.';
       }

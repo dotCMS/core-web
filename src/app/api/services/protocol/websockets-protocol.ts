@@ -106,7 +106,6 @@ export class WebSocketProtocol extends Protocol {
     }
 
     setInternalState(state): void {
-        // tslint:disable-next-line:no-magic-numbers
         if (Math.floor(state) !== state || state < 0 || state > 4) {
             throw new Error('state must be an integer between 0 and 4, got: ' + state);
         }

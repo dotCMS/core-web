@@ -207,7 +207,6 @@ class RuleComponent {
     this.hideFireOn = apiRoot.hideFireOn;
 
     /* Need to delay the firing of the state change toggle, to give any blur events time to fire. */
-    // tslint:disable-next-line:no-magic-numbers
     this._updateEnabledStateDelay.debounceTime(20).subscribe((event: RuleActionEvent) => {
       this.updateEnabledState.emit(event);
     });
@@ -237,7 +236,6 @@ class RuleComponent {
   initFormModel(fb: FormBuilder): void {
     let vFns = [];
     vFns.push(Validators.required);
-    // tslint:disable-next-line:no-magic-numbers
     vFns.push(Validators.minLength(3));
     this.formModel = fb.group({
       name: new FormControl(this.rule ? this.rule.name : '', Validators.compose(vFns))
@@ -259,7 +257,7 @@ class RuleComponent {
       let rule = this.rule;
       let ctrl: FormControl = <FormControl> this.formModel.controls['name'];
       ctrl.patchValue(this.rule.name, {});
-      // tslint:disable-next-line:no-magic-numbers
+
       ctrl.valueChanges.debounceTime(250).subscribe((name: string) => {
         if (ctrl.valid) {
           this.updateName.emit({payload: {rule: this.rule, value: name}, type: RULE_UPDATE_NAME});

@@ -38,7 +38,6 @@ export class GravatarComponent {
                 this.gravatarProfile = false;
                 this.gravatarPlaceholder = this.getDotAvatar(this.email);
                 this.gravatarPlaceholderStyles = {
-                    // tslint:disable-next-line:no-magic-numbers
                     'font-size': this.size - ((this.size * 25) / 100) + 'px',
                     'height': this.size + 'px',
                     'line-height': this.size + 'px',

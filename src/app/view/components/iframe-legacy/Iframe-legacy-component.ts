@@ -44,7 +44,6 @@ export class IframeLegacyComponent extends SiteChangeListener {
         this.iframeOverlayService.overlay.subscribe(val => this.showOverlay = val);
 
         // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
-        // tslint:disable-next-line:no-magic-numbers
         this.element.nativeElement.style.height = (window.innerHeight - 64) + 'px';
         this.iframeElement = this.element.nativeElement.querySelector('iframe');
 
