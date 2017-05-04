@@ -13,11 +13,11 @@ export class SiteBrowserState {
     currentSite: Observable<string>;
     currentTreeable: Observable<Treeable>;
     currentURI: Observable<string>;
-    private currentSiteSubject: BehaviorSubject<string>;
-    private currentFolderSubject: BehaviorSubject<string>;
-    private currentURISubject: BehaviorSubject<string>;
-    private currentTreeableSubject: BehaviorSubject<Treeable>;
-    private currentSettingsUpdatedSubject: BehaviorSubject<boolean>;
+    private currentSiteSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    private currentFolderSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    private currentURISubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+    private currentTreeableSubject: BehaviorSubject<Treeable> = new BehaviorSubject<Treeable>(null);
+    private currentSettingsUpdatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
     constructor() {
         this.currentFolder = this.currentFolderSubject.asObservable();
         this.currentSetingsUpdated = this.currentSettingsUpdatedSubject.asObservable();

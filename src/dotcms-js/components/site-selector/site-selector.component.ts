@@ -3,9 +3,7 @@ import {Component, Inject, NgModule} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {SiteSelectorService} from './site-selector.service';
 import {Site} from '../../core/treeable/shared/site.model';
-import {HttpClient} from '../../core/util/http.service';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
-import {NotificationService} from '../../core/util/notification.service';
 import {CommonModule} from '@angular/common';
 import {AutoCompleteModule} from 'primeng/components/autocomplete/autocomplete';
 import {InputTextModule} from 'primeng/components/inputtext/inputtext';
@@ -15,7 +13,7 @@ import {FormsModule} from '@angular/forms';
 @Component({
     selector: 'site-selector',
     styles: [require('./../app.css')],
-    template: require('./site-selector.html')
+    templateUrl: 'site-selector.html'
 })
 export class SiteSelectorComponent {
 
@@ -24,9 +22,7 @@ export class SiteSelectorComponent {
     host = '';
 
     constructor(
-        private _httpClient: HttpClient,
         private updateService: SiteBrowserState,
-        private messageService: NotificationService,
         private siteSelectorService: SiteSelectorService
     ) {
         this.host = updateService.getSelectedSite();
