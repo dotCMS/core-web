@@ -1,5 +1,3 @@
-$action-btn-height: 56px;
-
 @mixin button-state($props) {
     background: map-get($props, background);
     border: map-get($props, border);
@@ -74,17 +72,25 @@ $action-btn-height: 56px;
     }
 
     &[actionButton] {
-        color: $white;
-        font-size: $font-size-large;
-        height: $action-btn-height;
-        width: $action-btn-height;
+        color: $floating-action-button-color;
+        font-size: $floating-action-button-icon-size;
+        height: $floating-action-button-height;
+        width: $floating-action-button-height;
 
         &.ui-state-default {
             background: $blue;
         }
 
         &:not([disabled]):hover {
-            background: darken($blue, 10%)
+            background: $floating-action-button-bg-hover;
+        }
+
+        &:not([disabled]):active {
+            background: $floating-action-button-bg-active;
+        }
+
+        &:not([disabled]):focus {
+            background: $floating-action-button-bg-focus;
         }
 
         &[disabled] {
