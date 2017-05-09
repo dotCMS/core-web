@@ -1,3 +1,5 @@
+$action-btn-height: 56px;
+
 @mixin button-state($props) {
     background: map-get($props, background);
     border: map-get($props, border);
@@ -43,10 +45,13 @@
         }
     }
 
-    &[iconButton] {
-        border-radius: $field-height / 2;
+    &[iconButton], &[actionButton] {
+        border-radius: 50%;
         border: none;
         transition: background-color $basic-speed;
+    }
+
+    &[iconButton] {
         width: $field-height;
 
         &.inverse {
@@ -63,6 +68,27 @@
         }
 
         &[disabled] {
+            color: $body-font-color;
+            opacity: 0.25;
+        }
+    }
+
+    &[actionButton] {
+        color: $white;
+        font-size: $font-size-large;
+        height: $action-btn-height;
+        width: $action-btn-height;
+
+        &.ui-state-default {
+            background: $blue;
+        }
+
+        &:not([disabled]):hover {
+            background: darken($blue, 10%)
+        }
+
+        &[disabled] {
+            background: $gray;
             color: $body-font-color;
             opacity: 0.25;
         }
