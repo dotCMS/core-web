@@ -3,11 +3,11 @@
     .ui-datatable-tfoot > tr > td,
     .ui-datatable-data > tr > td {
         border-width: 0px;
-        padding: $basic-padding * 2 $basic-padding;
+        padding: $datatable-cell-padding;
     }
 
     .ui-datatable-data > tr > td {
-        border-bottom: 1px solid $datatable-gray;
+        border-bottom: $datatable-cell-border;
     }
 
     .ui-sortable-column {
@@ -29,17 +29,17 @@
     }
 
     .ui-widget-content .ui-state-highlight {
-        background: $datatable-gray;
-        color: $datatable-gray-dark;
+        background: $datatable-selected-row-bgcolor;
+        color: $datatable-row-color;
     }
 
     .ui-datatable-odd {
-        background: $datatable-white;
+        background: $datatable-row-bgcolor;
     }
 
     th.ui-state-active {
-        background: $datatable-gray-light;
-        color: $datatable-gray-dark;
+        background: $datatable-head-active-bgcolor;
+        color: $datatable-head-active-color;
     }
 
     .ui-paginator {

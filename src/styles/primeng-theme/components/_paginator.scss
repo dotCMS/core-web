@@ -1,19 +1,20 @@
 .ui-paginator {
 
     .ui-paginator-element {
-        width: 21px;
-        height: 21px;
+        min-width: $paginator-page-size;
+        height: $paginator-page-size;
+        padding-top: 3px;
     }
 
     .ui-paginator-page.ui-state-active {
-        background: $paginator-blue;
-        border-color: $paginator-blue;
-        border-radius: 50%;
+        background: $paginator-page-selected-bgcolor;
+        border-color: $paginator-page-selected-border-color;
+        border-radius: $paginator-page-border-radius;
     }
 
     .ui-paginator-pages a:not(.ui-state-active):hover {
-        background: $paginator-gray-light;
-        border-radius: 50%;
+        background: $paginator-page-hover-bgcolor;
+        border-radius: $paginator-page-border-radius;
     }
 
     .ui-paginator-next .fa-forward:before {
