@@ -1,0 +1,36 @@
+.ui-datatable .ui-datatable-thead > tr > th,
+.ui-datatable .ui-datatable-tfoot > tr > td,
+.ui-datatable .ui-datatable-data > tr > td {
+    border-width: 0px;
+    padding: 1.15em .5em;
+}
+
+.ui-datatable .ui-datatable-data > tr > td {
+    border-bottom: 1px solid $gray-lighter;
+}
+
+.ui-datatable .ui-sortable-column .fa-sort:before {
+    content: "";
+}
+
+.ui-datatable .ui-sortable-column .fa-sort-asc:before {
+    content: "\f063";
+}
+
+.ui-datatable .ui-sortable-column .fa-sort-desc:before {
+    content: "\f062";
+}
+
+.ui-datatable th.ui-state-active {
+    background: $gray-light;
+    color: $gray-dark;
+}
+
+.ui-datatable .ui-widget-content .ui-state-highlight {
+    background: $gray-lighter;
+    color: $gray-dark;
+}
+
+.ui-datatable .ui-datatable-odd {
+    background: $white;
+}
