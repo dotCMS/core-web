@@ -1,23 +1,20 @@
-.ui-paginator .ui-paginator-page.ui-state-active {
-    background: $blue;
-    border-color: $blue;
-    border-radius: 50%;
-}
-
-.ui-paginator .ui-paginator-pages a:not(.ui-state-active):hover {
-    background: $gray-light;
-    border-radius: 50%;
-}
-
 .ui-paginator {
-    padding-top: 1.15em;
-    padding-bottom: 1.15em;
-}
+    .ui-paginator-page.ui-state-active {
+        background: $blue;
+        border-color: $blue;
+        border-radius: 50%;
+    }
 
-.ui-paginator .ui-paginator-next .fa-forward:before {
-    content: "\f054";
-}
+    .ui-paginator-pages a:not(.ui-state-active):hover {
+        background: $gray-light;
+        border-radius: 50%;
+    }
 
-.ui-paginator .ui-paginator-prev .fa-backward:before {
-    content: "\f053";
+    .ui-paginator-next .fa-forward:before {
+        content: "\f054";
+    }
+
+    .ui-paginator-prev .fa-backward:before {
+        content: "\f053";
+    }
 }

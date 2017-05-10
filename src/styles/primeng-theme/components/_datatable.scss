@@ -1,36 +1,54 @@
-.ui-datatable .ui-datatable-thead > tr > th,
-.ui-datatable .ui-datatable-tfoot > tr > td,
-.ui-datatable .ui-datatable-data > tr > td {
-    border-width: 0px;
-    padding: 1.15em .5em;
-}
+// Variables
+$datatable-gray: $gray-lighter;
+$datatable-gray-light: $gray-light;
+$datatable-gray-dark: $gray-dark;
 
-.ui-datatable .ui-datatable-data > tr > td {
-    border-bottom: 1px solid $gray-lighter;
-}
+.ui-datatable {
+    .ui-datatable-thead > tr > th,
+    .ui-datatable-tfoot > tr > td,
+    .ui-datatable-data > tr > td {
+        border-width: 0px;
+        padding: $basic-padding * 2 $basic-padding;
+    }
 
-.ui-datatable .ui-sortable-column .fa-sort:before {
-    content: "";
-}
+    .ui-datatable-data > tr > td {
+        border-bottom: 1px solid $datatable-gray;
+    }
 
-.ui-datatable .ui-sortable-column .fa-sort-asc:before {
-    content: "\f063";
-}
+    .ui-sortable-column {
+        .fa-sort:before {
+            content: "";
+        }
 
-.ui-datatable .ui-sortable-column .fa-sort-desc:before {
-    content: "\f062";
-}
+        .fa-sort-asc:before {
+            content: "\f063";
+        }
 
-.ui-datatable th.ui-state-active {
-    background: $gray-light;
-    color: $gray-dark;
-}
+        .fa-sort-desc:before {
+            content: "\f062";
+        }
+    }
 
-.ui-datatable .ui-widget-content .ui-state-highlight {
-    background: $gray-lighter;
-    color: $gray-dark;
-}
+    .ui-selection-column {
+        width: 28px;
+    }
 
-.ui-datatable .ui-datatable-odd {
-    background: $white;
+    .ui-widget-content .ui-state-highlight {
+        background: $datatable-gray;
+        color: $datatable-gray-dark;
+    }
+
+    .ui-datatable-odd {
+        background: $white;
+    }
+
+    th.ui-state-active {
+        background: $datatable-gray-light;
+        color: $datatable-gray-dark;
+    }
+
+    .ui-paginator {
+        padding-top: $basic-padding * 2;
+        padding-bottom: $basic-padding * 2;
+    }
 }

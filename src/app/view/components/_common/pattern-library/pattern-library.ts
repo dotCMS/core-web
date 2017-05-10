@@ -10,7 +10,7 @@ import {SelectItem, AutoComplete} from 'primeng/primeng';
 })
 
 export class PatternLibrary {
-    public cars;
+    public dataTableDummyData;
 
     // tslint:disable-next-line:no-unused-variable
     private checkBoxValues: string[] = ['val3'];
@@ -39,7 +39,7 @@ export class PatternLibrary {
     ngOnInit(): any {
 
         // Fake data for datatable
-        this.cars = [
+        this.dataTableDummyData = [
             {vin: 'a1653d4d', brand: 'VW', year: 1998, color: 'White'},
             {vin: 'ddeb9b10', brand: 'Mercedes', year: 1985, color: 'Green'},
             {vin: 'd8ebe413', brand: 'Jaguar', year: 1979, color: 'Silver'},
