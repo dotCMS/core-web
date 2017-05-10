@@ -1,4 +1,10 @@
 .ui-paginator {
+
+    .ui-paginator-element {
+        width: 21px;
+        height: 21px;
+    }
+
     .ui-paginator-page.ui-state-active {
         background: $paginator-blue;
         border-color: $paginator-blue;
