@@ -1,8 +1,3 @@
-// Variables
-$datatable-gray: $gray-lighter;
-$datatable-gray-light: $gray-light;
-$datatable-gray-dark: $gray-dark;
-
 .ui-datatable {
     .ui-datatable-thead > tr > th,
     .ui-datatable-tfoot > tr > td,
@@ -39,7 +34,7 @@ $datatable-gray-dark: $gray-dark;
     }
 
     .ui-datatable-odd {
-        background: $white;
+        background: $datatable-white;
     }
 
     th.ui-state-active {

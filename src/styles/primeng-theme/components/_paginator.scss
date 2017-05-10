@@ -1,12 +1,12 @@
 .ui-paginator {
     .ui-paginator-page.ui-state-active {
-        background: $blue;
-        border-color: $blue;
+        background: $paginator-blue;
+        border-color: $paginator-blue;
         border-radius: 50%;
     }
 
     .ui-paginator-pages a:not(.ui-state-active):hover {
-        background: $gray-light;
+        background: $paginator-gray-light;
         border-radius: 50%;
     }
 
