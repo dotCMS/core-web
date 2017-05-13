@@ -1,0 +1,97 @@
+@import "../../../../../styles/variables";
+
+.action-header {
+    position: relative;
+    z-index: 1;
+    height: 120px;
+
+    [actionButton] {
+        top: -30px;
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        transition: 
+            visibility 1s linear 0.6s,
+            opacity 0.5s ease 0.3s,
+            transform 0.5s ease 0.5s;
+
+        &:first-child {
+            margin-left: 18px;
+        }
+    }
+
+    .action-header__global-search {
+        background: $white;
+        border-top: 1px solid $gray-light;
+        height: 60px;
+        position: relative;
+        opacity: 1;
+        transform: translateY(60px);
+        visibility: visible;
+        transition: 
+            visibility 1s linear 0.6s,
+            opacity 0.5s ease 0.2s,
+            transform 0.5s ease 0.2s;
+
+        [pInputText] {
+            margin-left: 28px;
+        }
+
+    }
+
+    .action-header__group-actions {
+        align-items: center;
+        background: $blue;
+        border-top: 1px solid $gray-light;
+        color: $white;
+        display: flex;
+        height: 60px;
+        opacity: 0;
+        transform: translateY(60px);
+        visibility: hidden;
+        transition: 
+            visibility 0.5s,
+            opacity 0.5s ease,
+            transform 0.5s ease;
+
+        span {
+            margin-left: 20px;
+            padding-right: 20px;
+            border-right: 1px solid white;
+            line-height: 28px;
+        }
+    }
+
+}
+
+.selected {
+    [actionButton] {
+        opacity: 0;
+        transform: translateY(-10px);
+        visibility: hidden;
+        transition: 
+            opacity 0.5s ease,
+            transform 0.5s ease,
+            visibility 0.5s;
+    }
+
+    .action-header__global-search {
+        opacity: 0;
+        transform: translateY(-60px);
+        visibility: hidden;
+        transition: 
+            opacity 0.5s ease 0.4s,
+            transform 0.5s ease 0.4s,
+            visibility 0.5s;
+    }
+
+    .action-header__group-actions {
+        opacity: 1;
+        transform: translateY(-0px);
+        visibility: visible;
+        transition:
+            opacity 0.5s ease 0.3s,
+            transform 0.5s ease 0.5s,
+            visibility 1s linear 0.7s;
+    }
+}

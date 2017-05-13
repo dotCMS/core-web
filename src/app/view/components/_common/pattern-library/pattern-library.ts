@@ -11,6 +11,7 @@ import {SelectItem, AutoComplete} from 'primeng/primeng';
 
 export class PatternLibrary {
     public dataTableDummyData;
+    public selectedDummyData = [];
 
     // tslint:disable-next-line:no-unused-variable
     private checkBoxValues: string[] = ['val3'];
