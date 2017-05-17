@@ -86,22 +86,19 @@ export class PatternLibrary {
 
     autocompleteComplete($event): void {
         this.autocompleteResults = [];
-        this.autocompleteResults = ['Hello', 'World'];
+        this.autocompleteResults = $event.query.split('');
     }
 
-    autocompleteCompleteDropdownClick(event: {originalEvent: Event, query: string}): void {
-        // TODO: get rid of this lines when this is fixed: https://github.com/primefaces/primeng/issues/745
-        event.originalEvent.preventDefault();
-        event.originalEvent.stopPropagation();
-        if (this.autoCompleteComponent.panelVisible) {
-            this.autoCompleteComponent.onDropdownBlur();
-            this.autoCompleteComponent.hide();
+    autocompleteCompleteDropdownClick($event: {originalEvent: Event, query: string}): void {
+        $event.originalEvent.preventDefault();
+        $event.originalEvent.stopPropagation();
+        this.autocompleteResults = [];
+        if ($event.query === '') {
+            this.autocompleteResults = ['Please', 'type', 'something'];
         } else {
-            this.autoCompleteComponent.onDropdownFocus();
-            this.autoCompleteComponent.show();
+            this.autocompleteResults = $event.query.split('');
         }
-
-        this.autocompleteResults = ['Hello', 'World'];
+        this.autoCompleteComponent.show();
     }
 
     showDialog(): void {

@@ -5,6 +5,7 @@ import {
     RULE_CONDITION_UPDATE_PARAMETER, RULE_CONDITION_UPDATE_TYPE,
     RULE_CONDITION_DELETE, RULE_CONDITION_UPDATE_OPERATOR, ConditionModel
 } from '../../api/rule-engine/Rule';
+import {LoggerService} from '../../api/services/logger.service';
 
 @Component({
   selector: 'rule-condition',
@@ -67,7 +68,7 @@ export class ConditionComponent {
 
   typeDropdown: any;
 
-  constructor(private _resources: I18nService) {
+  constructor(private _resources: I18nService, private loggerService: LoggerService) {
   }
 
   ngOnChanges(change): void {
@@ -90,12 +91,12 @@ export class ConditionComponent {
         });
       }
     } catch (e) {
-      console.error('ConditionComponent', 'ngOnChanges', e);
+      this.loggerService.error('ConditionComponent', 'ngOnChanges', e);
     }
   }
 
   onTypeChange(type: string): void {
-    console.log('ConditionComponent', 'onTypeChange');
+    this.loggerService.info('ConditionComponent', 'onTypeChange');
     this.updateConditionType.emit({
       payload: {condition: this.condition, value: type, index: this.index},
       type: RULE_CONDITION_UPDATE_TYPE
@@ -107,7 +108,7 @@ export class ConditionComponent {
   }
 
   onParameterValueChange(event: {name: string, value: string}): void {
-    console.log('ConditionComponent', 'onParameterValueChange');
+    this.loggerService.info('ConditionComponent', 'onParameterValueChange');
     this.updateConditionParameter.emit({
       payload: {condition: this.condition, name: event.name, value: event.value, index: this.index},
       type: RULE_CONDITION_UPDATE_PARAMETER

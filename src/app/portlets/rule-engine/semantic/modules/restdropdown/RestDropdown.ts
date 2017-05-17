@@ -12,7 +12,7 @@ import _ from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'cw-input-rest-dropdown',
   template: `
-  <cw-input-dropdown 
+  <cw-input-dropdown
       [value]="_modelValue"
       placeholder="{{placeholder}}"
       [maxSelections]="maxSelections"
@@ -109,7 +109,7 @@ export class RestDropdown implements AfterViewInit, ControlValueAccessor {
       });
     }
     return ary;
-  };
+  }
 
   private jsonEntryToOption(json: any, key: string = null): {value: string, label: string} {
     let opt = {value: null, label: null};

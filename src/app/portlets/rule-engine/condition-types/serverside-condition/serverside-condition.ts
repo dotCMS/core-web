@@ -9,6 +9,7 @@ import {ObservableHack} from '../../../../api/util/ObservableHack';
 import {CwRestDropdownInputModel} from '../../../../api/util/CwInputModel';
 import {Verify} from '../../../../api/validation/Verify';
 import {ParameterModel} from '../../../../api/rule-engine/Rule';
+import {LoggerService} from '../../../../api/services/logger.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,7 +130,7 @@ export class ServersideCondition {
     return opt;
   }
 
-  constructor(fb: FormBuilder, resources: I18nService) {
+  constructor(fb: FormBuilder, resources: I18nService, private loggerService: LoggerService) {
     this._resources = resources;
     this._inputs = [];
   }
@@ -151,7 +152,7 @@ export class ServersideCondition {
           this._inputs.push({flex: 40, type: 'spacer'});
         }
         prevPriority = paramDef.priority;
-        console.log('ServersideCondition', 'onChange', 'params', key, param);
+        this.loggerService.info('ServersideCondition', 'onChange', 'params', key, param);
         let input = this.getInputFor(paramDef.inputType.type, param, paramDef);
         this._inputs.push(input);
       });
@@ -216,7 +217,7 @@ export class ServersideCondition {
     let input;
     if (type === 'text' || type === 'number') {
       input = this.getTextInput(param, paramDef, i18nBaseKey);
-      console.log('ServersideCondition', 'getInputFor', type, paramDef);
+      this.loggerService.info('ServersideCondition', 'getInputFor', type, paramDef);
     } else if (type === 'datetime') {
       input = this.getDateTimeInput(param, paramDef, i18nBaseKey);
     } else if (type === 'restDropdown') {

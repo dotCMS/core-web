@@ -82,6 +82,7 @@ export class AppModule {
       return;
     }
 
+    // tslint:disable-next-line:no-console
     console.log('HMR store', JSON.stringify(store, null, 2));
     // set state
     this.appState._state = store.state;

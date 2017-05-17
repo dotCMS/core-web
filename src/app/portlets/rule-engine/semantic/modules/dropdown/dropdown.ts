@@ -4,6 +4,7 @@ import {ControlValueAccessor, NgControl} from '@angular/forms';
 import {BehaviorSubject, Observable} from 'rxjs/Rx';
 import _ from 'lodash';
 import { KeyCode } from '../../../../../api/util/key-util';
+import { LoggerService } from '../../../../../api/services/logger.service';
 
 /**
  * Angular 2 wrapper around Semantic UI Dropdown Module.
@@ -67,7 +68,7 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
  onChange: Function = (  ) => { };
  onTouched: Function = (  ) => { };
 
-  constructor(elementRef: ElementRef, @Optional() control: NgControl) {
+  constructor(elementRef: ElementRef, @Optional() control: NgControl, private loggerService: LoggerService) {
     if (control && !control.valueAccessor) {
       control.valueAccessor = this;
     }
@@ -88,7 +89,7 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
     try {
       this._$dropdown.children('input.search')[0].focus();
     }catch (e) {
-       console.log('Dropdown', 'could not focus search element');
+       this.loggerService.info('Dropdown', 'could not focus search element');
     }
   }
 
@@ -297,9 +298,9 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
     }).subscribe(() => {
       // still null!
     }, (e) => {
-      console.log('Dropdown', 'Error', e);
+      this.loggerService.info('Dropdown', 'Error', e);
     }, () => {
-      console.log('Dropdown', 'onComplete');
+      this.loggerService.info('Dropdown', 'onComplete');
       this._$dropdown.dropdown('set selected', value);
     });
   }
@@ -322,7 +323,7 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
         event.stopPropagation();
       }
     });
-  };
+  }
 }
 
 @Directive({
