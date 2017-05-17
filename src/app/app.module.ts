@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   NgModule,
   ApplicationRef
@@ -54,6 +56,7 @@ type StoreType = {
     ...DIRECTIVES,
   ],
   imports: [ // import Angular's modules
+    BrowserAnimationsModule,
     BrowserModule,
     HttpModule,
     JsonpModule,

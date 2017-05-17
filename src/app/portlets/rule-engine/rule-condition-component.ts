@@ -27,20 +27,20 @@ import {
         icon="{{opt.icon}}"></cw-input-option>
   </cw-input-dropdown>
   <div flex="75" class="cw-condition-row-main" [ngSwitch]="condition.type?.key">
-    <template [ngSwitchCase]="'NoSelection'">
+    <ng-template [ngSwitchCase]="'NoSelection'">
       <div class="cw-condition-component"></div>
-    </template>
-    <template [ngSwitchCase]="'VisitorsGeolocationConditionlet'">
+    </ng-template>
+    <ng-template [ngSwitchCase]="'VisitorsGeolocationConditionlet'">
       <cw-visitors-location-container
           [componentInstance]="condition"
           (parameterValuesChange)="onParameterValuesChange($event)"></cw-visitors-location-container>
-    </template>
-    <template ngSwitchDefault>
+    </ng-template>
+    <ng-template ngSwitchDefault>
       <cw-serverside-condition class="cw-condition-component"
                                [componentInstance]="condition"
                                (parameterValueChange)="onParameterValueChange($event)">
       </cw-serverside-condition>
-    </template>
+    </ng-template>
   </div>
 </div>
 <div class="cw-btn-group cw-delete-btn">

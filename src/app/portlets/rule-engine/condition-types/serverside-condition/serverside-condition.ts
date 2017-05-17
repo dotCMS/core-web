@@ -15,7 +15,7 @@ import {ParameterModel} from '../../../../api/rule-engine/Rule';
   selector: 'cw-serverside-condition',
   template: `<form>
   <div flex layout="row" class="cw-condition-component-body">
-    <template ngFor let-input [ngForOf]="_inputs">
+    <ng-template ngFor let-input [ngForOf]="_inputs">
       <div *ngIf="input.type == 'spacer'" flex class="cw-input cw-input-placeholder">&nbsp;</div>
       <cw-input-dropdown *ngIf="input.type == 'dropdown'"
                          flex
@@ -85,7 +85,7 @@ import {ParameterModel} from '../../../../api/rule-engine/Rule';
                      (blur)="onBlur(input)"
                      #gInput="ngForm"
       ></cw-input-date>
-    </template>
+    </ng-template>
   </div>
 </form>`
 })
