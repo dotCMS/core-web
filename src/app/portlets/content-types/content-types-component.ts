@@ -15,7 +15,7 @@ import { MessageService } from '../../api/services/messages-service';
     templateUrl: 'content-types-component.html'
 })
 export class ContentTypesPortletComponent extends BaseComponent {
-    private contentTypeColumns: DataTableColumn[];
+    contentTypeColumns: DataTableColumn[];
 
     constructor(messageService: MessageService) {
         super(['Structure-Name', 'Variable', 'Description', 'Entries'], messageService);

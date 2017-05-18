@@ -14,7 +14,7 @@ export class BaseComponent {
     constructor(i18nKeys: string[], private messageService: MessageService) {
         if (messageService !== null) {
             this.messageMapSubscription = this.messageService.getMessages(i18nKeys).subscribe(res => {
-                this.i18nMessages = i18nKeys;
+                this.i18nMessages = res;
                 this.onMessage();
             });
         }

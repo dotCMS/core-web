@@ -43,7 +43,7 @@ export class ListingDataTableComponent {
 
     getAlign(col: DataTableColumn): string {
         return col.textAlign ? col.textAlign :
-            (typeof this.items[0][col.fieldName] === 'number') ? 'right' : 'left';
+            (this.items && typeof this.items[0][col.fieldName] === 'number') ? 'right' : 'left';
     }
 }
 
