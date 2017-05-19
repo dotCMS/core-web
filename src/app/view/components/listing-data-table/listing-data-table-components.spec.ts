@@ -77,15 +77,15 @@ describe('BannerComponent (inline template)', () => {
     expect(4).toEqual(headers.length);
 
     comp.columns.forEach( (col, index ) =>
-        expect(index === 0 ? '' : comp.columns[index - 1].header).toEqual(headers[index].querySelector('span').textContent));
+        expect(!index ? '' : comp.columns[index - 1].header).toEqual(headers[index].querySelector('span').textContent));
 
     rows.forEach( (row, rowIndex) => {
-        if (rowIndex > 0) {
+        if (rowIndex) {
             let cells = row.querySelectorAll('td');
             let item = items[rowIndex - 1];
 
             cells.forEach((cell, cellIndex) => {
-                if (cellIndex > 0) {
+                if (cellIndex) {
                     expect(item[comp.columns[cellIndex - 1].fieldName])
                         .toEqual(cells[cellIndex].querySelector('span').textContent);
                 }
