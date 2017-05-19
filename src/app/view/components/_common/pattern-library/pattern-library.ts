@@ -3,14 +3,12 @@ import {SelectItem, AutoComplete} from 'primeng/primeng';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
-
     selector: 'pattern-library',
     styles: [require('./pattern-library.scss')],
     templateUrl: 'pattern-library.html'
 })
 
 export class PatternLibrary {
-    public dataTableDummyData;
     public selectedDummyData = [];
 
     // tslint:disable-next-line:no-unused-variable
@@ -19,11 +17,13 @@ export class PatternLibrary {
     private radioBoxValues: string[] = ['val3'];
     // tslint:disable-next-line:no-unused-variable
     private radioBoxDisabledValues: string[] = ['val'];
+    private autocompleteResults: Array<string> = [];
     private cities: SelectItem[];
+    private dataTableDummyData: [any];
+    private displayDialog = false;
+    private model: any = {};
     // tslint:disable-next-line:no-unused-variable
     private selectedCity: string;
-    private autocompleteResults: Array<string> = [];
-    private displayDialog = false;
     private splitButtonItems: [any];
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
@@ -45,6 +45,16 @@ export class PatternLibrary {
     }
 
     ngOnInit(): any {
+
+        this.model = {
+            checkboxValues: [],
+            dropdownNormal: '',
+            dropdownWithFilter: '',
+            inputTextFloatingLabel: '',
+            inputTextRegularLabel: '',
+            textareaFloatingLabel: '',
+            textareaRegularLabel: ''
+        };
 
         // Fake data for datatable
         this.dataTableDummyData = [

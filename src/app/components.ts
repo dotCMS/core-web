@@ -50,6 +50,7 @@ import {ActionHeaderComponent} from './view/components/_common/action-header/act
 import {CustomTimeComponent} from './view/components/_common/custom-time/custom-time';
 import {DotLoadingIndicator} from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
 import {DropdownComponent} from './view/components/_common/dropdown-component/dropdown-component';
+import {FieldValidationMessageComponent} from './view/components/_common/field-validation-message/field-validation-message';
 import {ForgotPasswordComponent} from './view/components/login/forgot-password-component/forgot-password-component';
 import {ForgotPasswordContainer} from './view/components/login/forgot-password-component/forgot-password-container';
 import {GlobalSearch} from './view/components/global-search/global-search';
@@ -74,16 +75,20 @@ import {ToolbarNotifications} from './view/components/toolbar-notifications/tool
 import {ToolbarUserComponent} from './view/components/toolbar-user/toolbar-user';
 import {GravatarComponent} from './view/components/_common/gravatar/gravatar.component';
 import {ContentTypesPortletComponent} from './portlets/content-types/content-types-component';
+import { ContentTypesCreateEditPortletComponent } from './portlets/content-types-create-edit/content-types-create-edit-component';
+
 
 export const COMPONENTS = [
     ...RULES_ENGINE_COMPONENTS,
     Accordion,
     AccordionGroup,
     ActionHeaderComponent,
+    ContentTypesCreateEditPortletComponent,
     ContentTypesPortletComponent,
     CustomTimeComponent,
     DotLoadingIndicator,
     DropdownComponent,
+    FieldValidationMessageComponent,
     ForgotPasswordComponent,
     ForgotPasswordContainer,
     GlobalSearch,
