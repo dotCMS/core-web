@@ -34,21 +34,77 @@ fdescribe('ActionHeaderComponent (inline template)', () => {
 
         de = fixture.debugElement.query(By.css('div'));
         el = de.nativeElement;
+
     }));
 
-    it('Selected class initial state', () => {
-        comp.selected = true;
-        fixture.detectChanges();
-        console.log(el);
-        // el.querySelector('.action-hnpmeader');
-        // expect(comp.selected).toBe(false);
+    it('should render default state correctly', () => {
+        let actionButton = de.query(By.css('button'));
+        let globalSearch  = de.query(By.css('input'));
+        let groupActions = de.query(By.css('.action-header__group-actions'));
+
+        expect(actionButton).not.toBeNull();
+        expect(globalSearch).not.toBeNull();
+        expect(groupActions).not.toBeNull();
     });
 
-    // it('Overflow initial state', () => {
-    //     expect(comp.dynamicOverflow).toBe('visible');
-    // });
+    it('should show the number of items selected', () => {
+        let fakeData = [{key: 'value'}, {key: 'value'}];
+        let items = 2;
+        let selectedItemsCounter = de.query(By.css('.action-header__selected-items-counter'));
 
-    // it('Overflow initial state', () => {
-    //     expect(comp.selectedItems).toBe([]);
-    // });
+        comp.selectedItems = fakeData;
+        comp.selected = true;
+        fixture.detectChanges();
+
+        expect(selectedItemsCounter.nativeElement.textContent).toBe(items + ' Selected');
+    });
+
+    it('should trigger the action button method', () => {
+        let actionButton = de.query(By.css('button'));
+        let btnAction;
+
+        btnAction = jasmine.createSpy('actionBtnCommand');
+        comp.primaryCommand = btnAction('actionBtnCommand');
+
+        fixture.detectChanges();
+
+        actionButton.triggerEventHandler('click', null);
+
+        expect(btnAction).toHaveBeenCalled();
+
+    });
+
+    it('should trigger the methods in the action buttons', () => {
+        let groupActions = de.query(By.css('.action-header__group-actions'));
+        let firstSpy = jasmine.createSpy('firstSpy');
+        let secondSpy = jasmine.createSpy('secondSpy');
+
+        let fakeData = [
+            {
+                label: 'Group Actions',
+                model: [
+                    {label: 'Update', icon: 'fa-refresh', command: firstSpy}
+                ]
+            },
+            {
+                label: 'Edit Content',
+                model: [
+                    {label: 'Publish', icon: 'fa-refresh', command: secondSpy}
+                ]
+            }
+        ];
+
+        comp.actionButtonItems = fakeData;
+        comp.selected = true;
+        fixture.detectChanges();
+
+        let primaryButton = groupActions.query(By.css('.actions .ui-menuitem'));
+        let secondButton = groupActions.query(By.css('.edit .ui-menuitem'));
+
+        primaryButton.triggerEventHandler('click', null);
+        secondButton.triggerEventHandler('click', null);
+
+        expect(firstSpy).toHaveBeenCalled();
+        expect(secondSpy).toHaveBeenCalled();
+    });
 });

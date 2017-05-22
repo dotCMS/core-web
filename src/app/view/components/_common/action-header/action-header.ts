@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'action-header',
@@ -8,24 +8,21 @@ import {Component} from '@angular/core';
 
 export class ActionHeaderComponent {
 
-    splitButtonItems = [];
+    public dynamicOverflow = 'visible';
 
-    show = false;
+    @Input() selected = false;
+    @Input() selectedItems = [];
+    @Input() actionButtonItems = [];
+    @Input() primaryCommand;
 
     constructor() {
 
-        // CLEAN <<<
-        this.splitButtonItems = [
-            {label: 'Update', icon: 'fa-refresh', command: () => {}},
-            {label: 'Delete', icon: 'fa-close', command: () => {}},
-            {label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'},
-            {label: 'Theming', icon: 'fa-paint-brush', routerLink: ['/theming']}
-        ];
-        // CLEAN >>>
     }
 
-    selected(): any {
-        this.show = (this.show === false ? true : false);
+    ngOnChanges(): any {
+        this.dynamicOverflow = 'hidden';
+        setTimeout(() => {
+            this.dynamicOverflow = 'visible';
+        }, 1000);
     }
-
 }

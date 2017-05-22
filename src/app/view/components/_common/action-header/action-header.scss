@@ -46,12 +46,10 @@
         color: $white;
         display: flex;
         height: 60px;
-        opacity: 0;
         transform: translateY(60px);
         visibility: hidden;
         transition: 
             visibility 0.5s,
-            opacity 0.5s ease,
             transform 0.5s ease;
 
         span {
@@ -64,7 +62,7 @@
 
 }
 
-.selected {
+.selected {    
     [actionButton] {
         opacity: 0;
         transform: translateY(-10px);
@@ -86,11 +84,11 @@
     }
 
     .action-header__group-actions {
-        opacity: 1;
+        // opacity: 1;
         transform: translateY(-0px);
         visibility: visible;
         transition:
-            opacity 0.5s ease 0.3s,
+            // opacity 0.5s ease 0.3s,
             transform 0.5s ease 0.5s,
             visibility 1s linear 0.7s;
     }
