@@ -43,6 +43,20 @@
                     <p-column field="color" header="Color" [sortable]="true"></p-column>
                 </p-dataTable>
             </article>
+            <h3 class="section__title">Tab View</h3>
+            <article>
+                <p-tabView>
+                    <p-tabPanel header="Header 1">
+                    Content 1
+                    </p-tabPanel>
+                    <p-tabPanel header="Header 2" [selected]="true">
+                        Content 2
+                    </p-tabPanel>
+                    <p-tabPanel header="Header 3">
+                        Content 3    
+                    </p-tabPanel>
+                </p-tabView>
+            </article>
         </div>
 
         <div class="col-sm-6 col-md-offset-1 section-fields">
