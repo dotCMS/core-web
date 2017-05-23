@@ -1,19 +1,28 @@
 @import "../../../../../styles/variables";
 
 .action-header {
+    height: 120px;
     position: relative;
     z-index: 1;
-    height: 120px;
+
+    .action-header__container{
+        border-top: 1px solid $gray-light;
+        height: 60px;
+        transform: translateY(60px);
+        overflow: hidden;
+    }
 
     [actionButton] {
-        top: -30px;
         opacity: 1;
+        position: absolute;
+        top: 30px;
         transform: translateY(0);
-        visibility: visible;
         transition: 
-            visibility 0.5s linear 0.4s,
-            opacity 0.3s ease 0.2s,
-            transform 0.3s ease 0.4s;
+            transform 0.3s ease,
+            visibility 0.3s ease,
+            opacity 0.3s ease;
+        visibility: visible;
+        z-index: 1;
 
         &:first-child {
             margin-left: $basic-padding * 2;
@@ -22,35 +31,32 @@
 
     .action-header__global-search {
         background: $white;
-        border-top: 1px solid $gray-light;
         height: 60px;
         position: relative;
-        opacity: 1;
-        transform: translateY(60px);
-        visibility: visible;
+        transform: translateY(0px);
         transition: 
-            visibility 0.5s linear 0.4s,
-            opacity 0.3s ease 0.2s,
-            transform 0.3s ease 0.2s;
+            transform 0.4s ease,
+            visibility 0.3s ease;
+        visibility: visible;
 
         [pInputText] {
-            margin-left: $basic-padding * 3;
+            bottom: 16px;
+            left: 90px;
+            position: absolute;
         }
-
     }
 
-    .action-header__group-actions {
+    .action-header__group-actions { 
         align-items: center;
         background: $blue;
-        border-top: 1px solid $gray-light;
         color: $white;
         display: flex;
         height: 60px;
-        transform: translateY(60px);
-        visibility: hidden;
+        transform: translateY(0px);
         transition: 
-            visibility 0.5s,
-            transform 0.5s ease;
+            transform 0.4s ease,
+            visibility 0.3s ease;
+        visibility: hidden;
 
         .action-header__selected-items-counter {
             border-right: 1px solid $white;
@@ -58,35 +64,32 @@
             padding: $basic-padding $basic-padding * 2;
         }
     }
-
 }
 
 .selected {    
     [actionButton] {
         opacity: 0;
-        transform: translateY(-10px);
-        visibility: hidden;
+        transform: translateY(-20px);
         transition: 
-            opacity 0.5s ease,
-            transform 0.5s ease,
-            visibility 0.5s;
+            transform 0.3s ease,
+            visibility 0.3s linear 0.3s,
+            opacity 0.3s ease;
+        visibility: hidden;
     }
 
     .action-header__global-search {
-        opacity: 0;
         transform: translateY(-60px);
-        visibility: hidden;
         transition: 
-            opacity 0.5s ease 0.3s,
-            transform 0.5s ease 0.3s,
-            visibility 0.5s;
+            transform 0.4s ease,
+            visibility 0.3s ease;
+        visibility: hidden;
     }
 
     .action-header__group-actions {
-        transform: translateY(-0px);
-        visibility: visible;
+        transform: translateY(-60px);
         transition:
-            transform 0.5s ease 0.2s,
-            visibility 0.5s linear 0.4s;
+            transform 0.4s ease,
+            visibility 0.3s ease;
+        visibility: visible;
     }
 }

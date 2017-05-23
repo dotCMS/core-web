@@ -26,6 +26,6 @@ export class ActionHeaderComponent extends BaseComponent {
         this.dynamicOverflow = 'hidden';
         setTimeout(() => {
             this.dynamicOverflow = 'visible';
-        }, 1000);
+        }, 400);
     }
 }
