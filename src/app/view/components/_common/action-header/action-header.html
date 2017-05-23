@@ -5,7 +5,7 @@
     </div>
     <div class="action-header__group-actions">
         <span class="action-header__selected-items-counter">{{selectedItems.length}} Selected</span>
-        <p-splitButton *ngIf="actionButtonItems[0]" flat label="{{actionButtonItems[0].label}}" class="inverted actions" [model]="actionButtonItems[0].model"></p-splitButton>
-        <p-splitButton *ngIf="actionButtonItems[1]" flat label="{{actionButtonItems[1].label}}" class="inverted edit" [model]="actionButtonItems[1].model"></p-splitButton>
+        <p-splitButton *ngIf="actionButtonItems[0]" flat label="{{actionButtonItems[0].label}}" class="inverted primaryActions" [model]="actionButtonItems[0].model"></p-splitButton>
+        <p-splitButton *ngIf="actionButtonItems[1]" flat label="{{actionButtonItems[1].label}}" class="inverted secondaryActions" [model]="actionButtonItems[1].model"></p-splitButton>
     </div>
 </div>

@@ -3,45 +3,34 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplitButtonModule, ButtonModule } from 'primeng/primeng';
-
 import { ActionHeaderComponent } from './action-header';
-
-
 class RouterMock {
     navigate(): string {
         return null;
     }
 }
-
-fdescribe('ActionHeaderComponent (inline template)', () => {
-
+describe('ActionHeaderComponent (inline template)', () => {
     let comp: ActionHeaderComponent;
     let fixture: ComponentFixture<ActionHeaderComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [SplitButtonModule, ButtonModule],
-            // tslint:disable-next-line:object-literal-sort-keys
             declarations: [ActionHeaderComponent],
+            imports: [SplitButtonModule, ButtonModule],
             providers: [{ provide: Router, useClass: RouterMock }]
         });
-
-        fixture = TestBed.createComponent(ActionHeaderComponent);
-
-        comp = fixture.componentInstance;
-
-        de = fixture.debugElement.query(By.css('div'));
-        el = de.nativeElement;
-
     }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ActionHeaderComponent);
+      comp = fixture.componentInstance;
+      de = fixture.debugElement.query(By.css('div'));
+    });
 
     it('should render default state correctly', () => {
         let actionButton = de.query(By.css('button'));
         let globalSearch  = de.query(By.css('input'));
         let groupActions = de.query(By.css('.action-header__group-actions'));
-
         expect(actionButton).not.toBeNull();
         expect(globalSearch).not.toBeNull();
         expect(groupActions).not.toBeNull();
@@ -51,60 +40,60 @@ fdescribe('ActionHeaderComponent (inline template)', () => {
         let fakeData = [{key: 'value'}, {key: 'value'}];
         let items = 2;
         let selectedItemsCounter = de.query(By.css('.action-header__selected-items-counter'));
-
         comp.selectedItems = fakeData;
         comp.selected = true;
         fixture.detectChanges();
-
         expect(selectedItemsCounter.nativeElement.textContent).toBe(items + ' Selected');
     });
 
     it('should trigger the action button method', () => {
         let actionButton = de.query(By.css('button'));
         let btnAction;
-
         btnAction = jasmine.createSpy('actionBtnCommand');
-        comp.primaryCommand = btnAction('actionBtnCommand');
-
+        comp.primaryCommand = btnAction;
         fixture.detectChanges();
-
         actionButton.triggerEventHandler('click', null);
-
         expect(btnAction).toHaveBeenCalled();
-
     });
 
     it('should trigger the methods in the action buttons', () => {
-        let groupActions = de.query(By.css('.action-header__group-actions'));
-        let firstSpy = jasmine.createSpy('firstSpy');
-        let secondSpy = jasmine.createSpy('secondSpy');
-
+        let primarySpy = jasmine.createSpy('spy');
+        let secondSpy = jasmine.createSpy('spy2');
         let fakeData = [
             {
-                label: 'Group Actions',
+                label: 'Group Actions 1',
                 model: [
-                    {label: 'Update', icon: 'fa-refresh', command: firstSpy}
+                    {
+                        command: primarySpy,
+                        icon: 'fa-refresh',
+                        label: 'Action 1-1'
+                    }
                 ]
             },
             {
-                label: 'Edit Content',
+                label: 'Group Actions 2',
                 model: [
-                    {label: 'Publish', icon: 'fa-refresh', command: secondSpy}
+                    {
+                        command: secondSpy,
+                        icon: 'fa-refresh',
+                        label: 'Action 2-1'
+                    }
                 ]
             }
         ];
-
         comp.actionButtonItems = fakeData;
         comp.selected = true;
         fixture.detectChanges();
+        let primaryButton = de.query(By.css('.primaryActions .ui-menuitem-link'));
+        let secondButton = de.query(By.css('.secondaryActions .ui-menuitem-link'));
 
-        let primaryButton = groupActions.query(By.css('.actions .ui-menuitem'));
-        let secondButton = groupActions.query(By.css('.edit .ui-menuitem'));
+        let primaryButtonEl = primaryButton.nativeElement;
+        let secondButtonEl = secondButton.nativeElement;
 
-        primaryButton.triggerEventHandler('click', null);
-        secondButton.triggerEventHandler('click', null);
+        primaryButtonEl.click();
+        secondButtonEl.click();
 
-        expect(firstSpy).toHaveBeenCalled();
+        expect(primarySpy).toHaveBeenCalled();
         expect(secondSpy).toHaveBeenCalled();
     });
 });
