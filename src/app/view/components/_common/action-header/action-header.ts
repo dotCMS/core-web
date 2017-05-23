@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {MessageService} from '../../../../api/services/messages-service';
+import {BaseComponent} from '../_base/base-component';
+import {MenuItems} from './menu-items.interface';
 
 @Component({
     selector: 'action-header',
@@ -6,17 +9,17 @@ import { Component, Input } from '@angular/core';
     templateUrl: 'action-header.html'
 })
 
-export class ActionHeaderComponent {
+export class ActionHeaderComponent extends BaseComponent {
 
     public dynamicOverflow = 'visible';
 
     @Input() selected = false;
     @Input() selectedItems = [];
-    @Input() actionButtonItems = [];
+    @Input() actionButtonItems: MenuItems[];
     @Input() primaryCommand;
 
-    constructor() {
-
+    constructor(messageService: MessageService) {
+        super(['selected', 'global-search'], messageService);
     }
 
     ngOnChanges(): any {

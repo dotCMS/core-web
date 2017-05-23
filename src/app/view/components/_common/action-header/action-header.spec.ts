@@ -96,4 +96,30 @@ describe('ActionHeaderComponent (inline template)', () => {
         expect(primarySpy).toHaveBeenCalled();
         expect(secondSpy).toHaveBeenCalled();
     });
+
+    it('should trigger one method in the action button', () => {
+        let primarySpy = jasmine.createSpy('spy');
+        let fakeData = [
+            {
+                label: 'Group Actions 1',
+                model: [
+                    {
+                        command: primarySpy,
+                        icon: 'fa-refresh',
+                        label: 'Action 1-1'
+                    }
+                ]
+            }
+        ];
+        comp.actionButtonItems = fakeData;
+        comp.selected = true;
+        fixture.detectChanges();
+        let primaryButton = de.query(By.css('.primaryActions .ui-menuitem-link'));
+
+        let primaryButtonEl = primaryButton.nativeElement;
+
+        primaryButtonEl.click();
+
+        expect(primarySpy).toHaveBeenCalled();
+    });
 });

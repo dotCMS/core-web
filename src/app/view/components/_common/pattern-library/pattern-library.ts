@@ -12,19 +12,11 @@ export class PatternLibrary {
     public selectedDummyData = [];
     public selectedCars = [];
 
-    // tslint:disable-next-line:no-unused-variable
-    private checkBoxValues: string[] = ['val3'];
-    // tslint:disable-next-line:no-unused-variable
-    private radioBoxValues: string[] = ['val3'];
-    // tslint:disable-next-line:no-unused-variable
-    private radioBoxDisabledValues: string[] = ['val'];
     private autocompleteResults: Array<string> = [];
     private cities: SelectItem[];
     private dataTableDummyData: [any];
     private displayDialog = false;
     private model: any = {};
-    // tslint:disable-next-line:no-unused-variable
-    private selectedCity: string;
     private buttonActions: [any];
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
@@ -114,7 +106,7 @@ export class PatternLibrary {
         this.displayDialog = true;
     }
 
-    showMessage(): void {
-        console.log('Primary action was triggered');
+    actionHeaderLog(): void {
+        console.log('Primary command was triggered');
     }
 }

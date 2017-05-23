@@ -11,12 +11,12 @@
         transform: translateY(0);
         visibility: visible;
         transition: 
-            visibility 1s linear 0.6s,
-            opacity 0.5s ease 0.3s,
-            transform 0.5s ease 0.5s;
+            visibility 0.5s linear 0.4s,
+            opacity 0.3s ease 0.2s,
+            transform 0.3s ease 0.4s;
 
         &:first-child {
-            margin-left: 18px;
+            margin-left: $basic-padding * 2;
         }
     }
 
@@ -29,12 +29,12 @@
         transform: translateY(60px);
         visibility: visible;
         transition: 
-            visibility 1s linear 0.6s,
-            opacity 0.5s ease 0.2s,
-            transform 0.5s ease 0.2s;
+            visibility 0.5s linear 0.4s,
+            opacity 0.3s ease 0.2s,
+            transform 0.3s ease 0.2s;
 
         [pInputText] {
-            margin-left: 28px;
+            margin-left: $basic-padding * 3;
         }
 
     }
@@ -52,11 +52,10 @@
             visibility 0.5s,
             transform 0.5s ease;
 
-        span {
-            margin-left: 20px;
-            padding-right: 20px;
-            border-right: 1px solid white;
-            line-height: 28px;
+        .action-header__selected-items-counter {
+            border-right: 1px solid $white;
+            margin-right: $basic-padding * 2;
+            padding: $basic-padding $basic-padding * 2;
         }
     }
 
@@ -78,18 +77,16 @@
         transform: translateY(-60px);
         visibility: hidden;
         transition: 
-            opacity 0.5s ease 0.4s,
-            transform 0.5s ease 0.4s,
+            opacity 0.5s ease 0.3s,
+            transform 0.5s ease 0.3s,
             visibility 0.5s;
     }
 
     .action-header__group-actions {
-        // opacity: 1;
         transform: translateY(-0px);
         visibility: visible;
         transition:
-            // opacity 0.5s ease 0.3s,
-            transform 0.5s ease 0.5s,
-            visibility 1s linear 0.7s;
+            transform 0.5s ease 0.2s,
+            visibility 0.5s linear 0.4s;
     }
 }
