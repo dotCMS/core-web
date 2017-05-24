@@ -1,4 +1,4 @@
-export interface MenuItems {
+export interface MenuItem {
     label: String;
     model: any[];
 }

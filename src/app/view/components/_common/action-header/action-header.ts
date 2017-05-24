@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MessageService} from '../../../../api/services/messages-service';
 import {BaseComponent} from '../_base/base-component';
-import {MenuItems} from './menu-items.interface';
+import {MenuItem} from './menu-item.interface';
 
 @Component({
     selector: 'action-header',
@@ -15,7 +15,7 @@ export class ActionHeaderComponent extends BaseComponent {
 
     @Input() selected = false;
     @Input() selectedItems = [];
-    @Input() actionButtonItems: MenuItems[];
+    @Input() actionButtonItems: MenuItem[];
     @Input() primaryCommand;
 
     constructor(messageService: MessageService) {
