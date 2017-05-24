@@ -46,14 +46,11 @@
             <h3 class="section__title">Tab View</h3>
             <article>
                 <p-tabView>
-                    <p-tabPanel header="Header 1">
-                    Content 1
+                    <p-tabPanel header="Header 1" rightIcon="fa-bookmark-o">
                     </p-tabPanel>
-                    <p-tabPanel header="Header 2" [selected]="true">
-                        Content 2
+                    <p-tabPanel header="Header 2" [closable]="true" [selected]="true">
                     </p-tabPanel>
                     <p-tabPanel header="Header 3">
-                        Content 3    
                     </p-tabPanel>
                 </p-tabView>
             </article>
