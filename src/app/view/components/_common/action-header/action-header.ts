@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {MessageService} from '../../../../api/services/messages-service';
 import {BaseComponent} from '../_base/base-component';
-import {MenuItem} from './menu-item.interface';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'action-header',
@@ -15,17 +15,63 @@ export class ActionHeaderComponent extends BaseComponent {
 
     @Input() selected = false;
     @Input() selectedItems = [];
-    @Input() actionButtonItems: MenuItem[];
+    @Input() actionButtonItems: ButtonAction[];
     @Input() primaryCommand;
 
-    constructor(messageService: MessageService) {
-        super(['selected', 'global-search'], messageService);
+    constructor(messageService: MessageService, private confirmationService: ConfirmationService) {
+        super(['selected'], messageService);
     }
 
-    ngOnChanges(): any {
+    ngOnChanges(changes: SimpleChanges): any {
+
+        if (changes.selected && changes.selected.currentValue) {
+            this.hideDinamycOverflow();
+        }
+
+        if (changes.actionButtonItems) {
+            this.setCommandWrapper(changes.actionButtonItems.currentValue);
+        }
+    }
+
+    setCommandWrapper(actionButtonItems: ButtonAction[]): void {
+
+        actionButtonItems.forEach(actionButton => {
+            actionButton.model
+                .filter( model => model.deleteOptions)
+                .forEach( model => {
+                    if (typeof model.command === 'function') {
+                        let callback = model.command ;
+                        model.command = () => {
+                            this.confirmationService.confirm({
+                                accept: () => {
+                                    callback();
+                                },
+                                header: model.deleteOptions.confirmHeader,
+                                message: model.deleteOptions.confirmMessage,
+                            });
+                        };
+                    }
+                });
+        });
+    }
+
+    hideDinamycOverflow(): void {
         this.dynamicOverflow = 'hidden';
         setTimeout(() => {
             this.dynamicOverflow = 'visible';
         }, 400);
     }
+}
+
+export interface ButtonAction {
+    label: string;
+    model: ButtonModel[];
+}
+
+export interface ButtonModel {
+    deleteOptions?: any;
+    icon: string;
+    command: any;
+    label: string;
+    isDelete?: boolean;
 }

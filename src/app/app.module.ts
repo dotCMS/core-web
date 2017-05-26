@@ -35,11 +35,13 @@ import {SplitButtonModule} from 'primeng/primeng';
 import {ToolbarModule} from 'primeng/primeng';
 import {TabViewModule} from 'primeng/primeng';
 import {DataTableModule, SharedModule} from 'primeng/primeng';
+import { ConfirmDialogModule } from 'primeng/primeng';
 
 const NGFACES_MODULES = [
   AutoCompleteModule,
   ButtonModule,
   CheckboxModule,
+  ConfirmDialogModule,
   DataTableModule,
   DialogModule,
   DropdownModule,

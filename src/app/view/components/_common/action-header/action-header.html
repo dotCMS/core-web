@@ -2,7 +2,7 @@
     <button pButton actionButton icon="fa-plus" (click)="primaryCommand()"></button>
     <div class="action-header__container" [ngStyle]="{'overflow': dynamicOverflow}">
         <div class="action-header__global-search">
-            <input pInputText type="text" placeholder="{{i18nMessages['global-search']}}" />
+            <ng-content></ng-content>
         </div>
         <div class="action-header__group-actions">
             <span class="action-header__selected-items-counter">{{selectedItems.length}} {{i18nMessages['selected']}}</span>
@@ -11,3 +11,5 @@
         </div>
     </div>
 </div>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>

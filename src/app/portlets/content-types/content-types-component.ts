@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DataTableColumn } from '../../view/components/listing-data-table/listing-data-table-component';
 import { BaseComponent } from '../../view/components/_common/_base/base-component';
 import { MessageService } from '../../api/services/messages-service';
+import { ButtonAction } from '../../view/components/_common/action-header/action-header';
 
 /**
  * List of Content Types
@@ -15,10 +16,12 @@ import { MessageService } from '../../api/services/messages-service';
     templateUrl: 'content-types-component.html'
 })
 export class ContentTypesPortletComponent extends BaseComponent {
-    contentTypeColumns: DataTableColumn[];
+    private contentTypeColumns: DataTableColumn[];
+    private buttonActions: ButtonAction[] = [];
 
     constructor(messageService: MessageService) {
-        super(['Structure-Name', 'Variable', 'Description', 'Entries'], messageService);
+        super(['Structure-Name', 'Variable', 'Description', 'Entries', 'delete', 'Actions', 'message.structure.delete.structure.and.content',
+                'message.structure.cantdelete'], messageService);
     }
 
     /**
@@ -26,6 +29,23 @@ export class ContentTypesPortletComponent extends BaseComponent {
      * @memberOf ContentTypesPortletComponent
      */
     onMessage(): void {
+        this.buttonActions = [
+            {
+                label: this.i18nMessages['Actions'],
+                model: [
+                    {
+                        command: () => console.log('Delete Content Type'),
+                        deleteOptions: {
+                            confirmHeader: this.i18nMessages['message.structure.cantdelete'],
+                            confirmMessage: this.i18nMessages['message.structure.delete.structure.and.content'],
+                        },
+                        icon: 'fa-close',
+                        label: this.i18nMessages['delete']
+                    }
+                ]
+            }
+        ];
+
         this.contentTypeColumns = [
             {fieldName: 'name', header: this.i18nMessages['Structure-Name'], width: '40%'},
             {fieldName: 'velocityVarName', header: this.i18nMessages['Variable'], width: '10%'},
