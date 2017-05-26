@@ -34,7 +34,9 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 label: this.i18nMessages['Actions'],
                 model: [
                     {
-                        command: () => console.log('Delete Content Type'),
+                        command: () => {
+                            // call service to delete content type
+                        },
                         deleteOptions: {
                             confirmHeader: this.i18nMessages['message.structure.cantdelete'],
                             confirmMessage: this.i18nMessages['message.structure.delete.structure.and.content'],

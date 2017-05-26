@@ -22,7 +22,8 @@ export class ActionHeaderComponent extends BaseComponent {
         super(['selected'], messageService);
     }
 
-    ngOnChanges(changes: SimpleChanges): any {
+    // tslint:disable-next-line:no-unused-variable
+    private ngOnChanges(changes: SimpleChanges): any {
 
         if (changes.selected && changes.selected.currentValue) {
             this.hideDinamycOverflow();
@@ -33,12 +34,12 @@ export class ActionHeaderComponent extends BaseComponent {
         }
     }
 
-    setCommandWrapper(actionButtonItems: ButtonAction[]): void {
+    private setCommandWrapper(actionButtonItems: ButtonAction[]): void {
 
         actionButtonItems.forEach(actionButton => {
             actionButton.model
-                .filter( model => model.deleteOptions)
-                .forEach( model => {
+                .filter(model => model.deleteOptions)
+                .forEach(model => {
                     if (typeof model.command === 'function') {
                         let callback = model.command ;
                         model.command = () => {
@@ -55,7 +56,7 @@ export class ActionHeaderComponent extends BaseComponent {
         });
     }
 
-    hideDinamycOverflow(): void {
+    private hideDinamycOverflow(): void {
         this.dynamicOverflow = 'hidden';
         setTimeout(() => {
             this.dynamicOverflow = 'visible';
