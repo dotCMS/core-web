@@ -8,6 +8,7 @@ import { ButtonAction } from '../_common/action-header/action-header';
 
 @Component({
     selector: 'listing-data-table-component',
+    styles: [require('./listing-data-table-component.scss')],
     templateUrl: 'listing-data-table-component.html'
 })
 export class ListingDataTableComponent extends BaseComponent {
@@ -24,7 +25,7 @@ export class ListingDataTableComponent extends BaseComponent {
     // tslint:disable-next-line:no-unused-variable
     private selectedItems = [];
 
-    constructor(private dotcmsConfig: DotcmsConfig, private listingService: ListingService, messageService: MessageService) {
+    constructor(private dotcmsConfig: DotcmsConfig, private listingService: ListingService,    messageService: MessageService) {
         super(['global-search'], messageService);
     }
 
@@ -32,7 +33,6 @@ export class ListingDataTableComponent extends BaseComponent {
         this.dotcmsConfig.getConfig().subscribe(configParams => {
             this.paginatorRows = configParams.paginatorRows;
             this.paginatorLinks = configParams.paginatorLinks;
-
             this.loadData(this.paginatorRows, -1);
         });
     }

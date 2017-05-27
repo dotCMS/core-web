@@ -1,9 +1,10 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import {MessageService} from '../../../../api/services/messages-service';
 import {BaseComponent} from '../_base/base-component';
 import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
+    encapsulation: ViewEncapsulation.None,
     selector: 'action-header',
     styles: [require('./action-header.scss')],
     templateUrl: 'action-header.html'
@@ -16,7 +17,7 @@ export class ActionHeaderComponent extends BaseComponent {
     @Input() selected = false;
     @Input() selectedItems = [];
     @Input() actionButtonItems: ButtonAction[];
-    @Input() primaryCommand;
+    @Input() primaryCommand: Function;
 
     constructor(messageService: MessageService, private confirmationService: ConfirmationService) {
         super(['selected'], messageService);
@@ -24,8 +25,7 @@ export class ActionHeaderComponent extends BaseComponent {
 
     // tslint:disable-next-line:no-unused-variable
     private ngOnChanges(changes: SimpleChanges): any {
-
-        if (changes.selected && changes.selected.currentValue) {
+        if (changes.selected) {
             this.hideDinamycOverflow();
         }
 
@@ -35,7 +35,6 @@ export class ActionHeaderComponent extends BaseComponent {
     }
 
     private setCommandWrapper(actionButtonItems: ButtonAction[]): void {
-
         actionButtonItems.forEach(actionButton => {
             actionButton.model
                 .filter(model => model.deleteOptions)
@@ -57,10 +56,12 @@ export class ActionHeaderComponent extends BaseComponent {
     }
 
     private hideDinamycOverflow(): void {
-        this.dynamicOverflow = 'hidden';
-        setTimeout(() => {
-            this.dynamicOverflow = 'visible';
-        }, 400);
+        this.dynamicOverflow = '';
+        if (this.selected) {
+            setTimeout(() => {
+                this.dynamicOverflow = 'visible';
+            }, 300);
+        }
     }
 }
 
