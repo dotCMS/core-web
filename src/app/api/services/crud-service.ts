@@ -6,10 +6,10 @@ import { Observable } from 'rxjs/Observable';
 /**
  * Provides util listing methods
  * @export
- * @class ListingService
+ * @class CrudService
  */
 @Injectable()
-export class ListingService {
+export class CrudService {
 
     constructor(private coreWebService: CoreWebService) {}
 
@@ -21,7 +21,7 @@ export class ListingService {
      * @param {sortOrder} sortOrder order with the follow sintax: fieldName-direction, direction could be 'asc' or 'desc'
      * @param {query} query text to filter
      * @returns {Observable<PaginationResponse>} response
-     * @memberOf ListingService
+     * @memberOf CrudService
      */
     loadData(baseUrl: string, limit: number, offset: number, sortField?: string, sortOrder?: OrderDirection,
                 query?: string): Observable<PaginationResponse> {
@@ -43,6 +43,22 @@ export class ListingService {
             method: RequestMethod.Get,
             search: params,
             url: baseUrl
+        }).pluck('entity');
+    }
+
+    /**
+     * Will do a POST request and return the response to the url provide
+     * and the data as body of the request.
+     * @param {string} baseUrl
+     * @param {*} data
+     * @returns {Observable<any>}
+     * @memberof CrudService
+     */
+    postData(baseUrl: string, data: any): Observable<any> {
+        return this.coreWebService.requestView({
+            body: data,
+            method: RequestMethod.Post,
+            url: `${baseUrl}`
         }).pluck('entity');
     }
 }

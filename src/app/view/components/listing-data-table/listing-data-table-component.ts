@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { LazyLoadEvent } from 'primeng/primeng';
-import { ListingService, OrderDirection } from '../../../api/services/listing-service';
 import { BaseComponent } from '../_common/_base/base-component';
 import { MessageService } from '../../../api/services/messages-service';
 import { ButtonAction } from '../_common/action-header/action-header';
+import { CrudService, OrderDirection } from '../../../api/services/crud-service';
 @Component({
     selector: 'listing-data-table-component',
     styles: [require('./listing-data-table-component.scss')],
@@ -25,7 +25,7 @@ export class ListingDataTableComponent extends BaseComponent {
     // tslint:disable-next-line:no-unused-variable
     private selectedItems = [];
 
-    constructor(private dotcmsConfig: DotcmsConfig, private listingService: ListingService,    messageService: MessageService) {
+    constructor(private dotcmsConfig: DotcmsConfig, private crudService: CrudService, messageService: MessageService) {
         super(['global-search'], messageService);
     }
 
@@ -49,10 +49,13 @@ export class ListingDataTableComponent extends BaseComponent {
      * Load data from the server
      * @param {number} limit limit of items
      * @param {number} offset items offset
+     * @param {number} sortField
+     * @param {number} sortOrder
+     * @param {number} query
      * @memberof ListingDataTableComponent
      */
     loadData(limit: number, offset: number, sortField?: string, sortOrder?: number, query?: string): void {
-        this.listingService.loadData(this.url, limit, offset, sortField,
+        this.crudService.loadData(this.url, limit, offset,  sortField,
                                         sortOrder < 0 ? OrderDirection.DESC : OrderDirection.ASC, query)
             .subscribe( response => {
                 this.items = response.items;
