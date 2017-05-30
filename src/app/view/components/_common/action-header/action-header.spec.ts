@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplitButtonModule, ButtonModule } from 'primeng/primeng';
 import { ActionHeaderComponent } from './action-header';
+import { MessageService } from '../../../../api/services/messages-service';
 class RouterMock {
     navigate(): string {
         return null;
@@ -13,11 +14,12 @@ describe('ActionHeaderComponent (inline template)', () => {
     let comp: ActionHeaderComponent;
     let fixture: ComponentFixture<ActionHeaderComponent>;
     let de: DebugElement;
+    let msjService;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ActionHeaderComponent],
             imports: [SplitButtonModule, ButtonModule],
-            providers: [{ provide: Router, useClass: RouterMock }]
+            providers: [{ provide: Router, useClass: RouterMock }, MessageService]
         });
     }));
 
@@ -25,6 +27,8 @@ describe('ActionHeaderComponent (inline template)', () => {
       fixture = TestBed.createComponent(ActionHeaderComponent);
       comp = fixture.componentInstance;
       de = fixture.debugElement.query(By.css('div'));
+
+      msjService = fixture.debugElement.injector.get(MessageService);
     });
 
     it('should render default state correctly', () => {
