@@ -39,7 +39,9 @@ describe('ListingService', () => {
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
           body: JSON.stringify(mockResponse),
         })));
+
         tick();
+
         expect(result).toBeDefined('result is not defined');
         expect(result.totalRecords).toEqual(5);
         expect(result.items.length).toEqual(4);

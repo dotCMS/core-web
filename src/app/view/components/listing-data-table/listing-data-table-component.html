@@ -3,7 +3,7 @@
                 [actionButtonItems]="buttonActions" 
                 [primaryCommand]="actionHeaderLog">
 
-    <input #gf pInputText type="text" placeholder="{{i18nMessages['global-search']}}" />
+    <input #gf pInputText type="text" placeholder="{{i18nMessages['global-search']}}" [(ngModel)]="query"/>
 </action-header>
 
 <p-dataTable [value]="items" 

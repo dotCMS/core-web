@@ -49,7 +49,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
         ];
 
         this.contentTypeColumns = [
-            {fieldName: 'name', header: this.i18nMessages['Structure-Name'], width: '40%'},
+            {fieldName: 'name', header: this.i18nMessages['Structure-Name'], width: '40%', sortable: true},
             {fieldName: 'velocityVarName', header: this.i18nMessages['Variable'], width: '10%'},
             {fieldName: 'description', header: this.i18nMessages['Description'], width: '40%'},
             {fieldName: 'nEntries', header: this.i18nMessages['Entries'], width: '10%'}
