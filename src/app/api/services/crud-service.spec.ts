@@ -8,7 +8,7 @@ import { MockBackend } from '@angular/http/testing';
 import { CrudService, OrderDirection } from './crud-service';
 import { DOTTestBed } from '../../test/dot-test-bed';
 
-fdescribe('CrudService', () => {
+describe('CrudService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             CrudService
