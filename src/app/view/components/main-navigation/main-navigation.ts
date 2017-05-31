@@ -1,5 +1,5 @@
-import {Component, ViewEncapsulation, ElementRef, ViewChild} from '@angular/core';
-import {RoutingService, Menu, MenuItem} from '../../../api/services/routing-service';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {RoutingService, Menu} from '../../../api/services/routing-service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -29,7 +29,8 @@ export class MainNavigation {
         routingService.currentPortlet$.subscribe(id => {
             this.open = !this.open;
             this.menuItemIdActive = id;
-            this.menuActiveTabName = this.getMenuSelected(id).tabName;
+            let menuSelected = this.getMenuSelected(id);
+            this.menuActiveTabName = menuSelected ? menuSelected.tabName : null;
         });
     }
 

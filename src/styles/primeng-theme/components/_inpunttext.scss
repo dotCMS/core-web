@@ -1,35 +1,72 @@
-/* Inputs */
+#inputtext-normal-border {
+    box-shadow: 0 $field-normal-border-size 0 $field-normal-border-color;
+}
+
+#inputtext-hover-border {
+    box-shadow: 0 $field-hover-border-size 0 $field-hover-border-color;
+}
+
+#inputtext-active-border {
+    box-shadow: 0 $field-active-border-size 0 $field-active-border-color;
+}
+
+#inputtext-disabled-border {
+    box-shadow: 0 $field-disabled-border-size 0 $field-disabled-border-color;
+}
+
+#inputtext-error-border {
+    box-shadow: 0 $field-active-border-size 0 $red;
+}
+
+textarea.ui-inputtext {
+    padding: $basic-padding 0;
+    height: auto;
+}
 
 .ui-inputtext {
+    @extend #inputtext-normal-border;
     @include placeholder($field-placeholder-color);
+    border-radius: 0;
     height: $field-height;
-    padding: 0 $field-padding;
-    transition: $field-animation-speed;
+    padding: 0;
+    transition: box-shadow $field-animation-speed ease-in;
 
-    &:hover,
-    &:focus {
+    &:hover {
         @extend #field-hover-state;
+        @extend #inputtext-hover-border;
     }
 
-    &:disabled {
+    &:focus,
+    &:active {
+        @extend #field-active-state;
+        @extend #inputtext-active-border;
+    }
+
+    &:disabled,
+    .ui-state-disabled & {
+        @include placeholder($field-disabled-color);
         @extend #field-disabled-state;
+        @extend #inputtext-disabled-border;
+        background: none;
+    }
+
+    &.ui-state-filled {
+        @extend #field-active-state;
+        @extend #inputtext-active-border;
     }
 }
 
-/* Validation */
+.ui-messages-error {
+    background: none;
+    color: $red;
+    font-size: $font-size-small;
+    margin-top: $basic-padding;
+}
 
-.ui-inputtext.ng-dirty.ng-invalid,
-p-autocomplete.ng-dirty.ng-invalid > .ui-autocomplete > .ui-inputtext,
-p-calendar.ng-dirty.ng-invalid .ui-inputtext,
-p-checkbox.ng-dirty.ng-invalid .ui-chkbox-box,
-p-dropdown.ng-dirty.ng-invalid > .ui-dropdown,
-p-inputmask.ng-dirty.ng-invalid > .ui-inputtext,
-p-inputswitch.ng-dirty.ng-invalid .ui-inputswitch,
-p-listbox.ng-dirty.ng-invalid .ui-inputtext,
-p-multiselect.ng-dirty.ng-invalid > .ui-multiselect,
-p-radiobutton.ng-dirty.ng-invalid .ui-radiobutton-box,
-p-selectbutton.ng-dirty.ng-invalid .ui-button,
-p-spinner.ng-dirty.ng-invalid > .ui-inputtext,
-p-togglebutton.ng-dirty.ng-invalid .ui-button {
-    border-color: $red;
+// Validation
+.ui-inputtext {
+    &.ng-dirty.ng-invalid,
+    &.ng-invalid.ng-touched {
+        @extend #inputtext-error-border;
+    }
 }

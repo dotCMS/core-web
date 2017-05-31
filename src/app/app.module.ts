@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpModule, JsonpModule } from '@angular/http';
 import {
   NgModule,
   ApplicationRef
@@ -20,32 +20,49 @@ import { AppComponent } from './app-component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {BreadcrumbModule, DataTableModule, InputTextModule, TreeTableModule} from 'primeng/primeng';
-import {PasswordModule} from 'primeng/primeng';
-import {CheckboxModule} from 'primeng/primeng';
-import {ButtonModule} from 'primeng/primeng';
-import {DropdownModule} from 'primeng/primeng';
-import {AutoCompleteModule} from 'primeng/primeng';
-import {MainCoreLegacyComponent} from './view/components/main-core-legacy/main-core-legacy-component';
-import {ToolbarModule} from 'primeng/primeng';
-import {DialogModule} from 'primeng/primeng';
-import {RadioButtonModule} from 'primeng/primeng';
+import {
+  AutoCompleteModule,
+  BreadcrumbModule,
+  ButtonModule,
+  CalendarModule,
+  CheckboxModule,
+  ConfirmDialogModule,
+  DataTableModule, SharedModule,
+  DialogModule,
+  DropdownModule,
+  InputTextModule,
+  InputTextareaModule,
+  OverlayPanelModule,
+  PasswordModule,
+  RadioButtonModule,
+  SplitButtonModule,
+  TabViewModule,
+  ToolbarModule,
+  TreeTableModule
+} from 'primeng/primeng';
 
 const NGFACES_MODULES = [
-  BreadcrumbModule,
-  InputTextModule,
-  DataTableModule,
-  PasswordModule,
-  CheckboxModule,
-  RadioButtonModule,
-  ButtonModule,
-  DropdownModule,
   AutoCompleteModule,
+  BreadcrumbModule,
+  ButtonModule,
+  CalendarModule,
+  CheckboxModule,
+  ConfirmDialogModule,
+  DataTableModule,
+  DialogModule,
+  DropdownModule,
+  InputTextModule,
+  InputTextareaModule,
+  OverlayPanelModule,
+  PasswordModule,
+  RadioButtonModule,
+  SharedModule,
+  SplitButtonModule,
+  TabViewModule,
   ToolbarModule,
-  TreeTableModule,
-  DialogModule
+  TreeTableModule
 ];
 
 /*
@@ -81,6 +98,7 @@ type StoreType = {
   imports: [ // import Angular's modules
     BrowserModule,
     HttpModule,
+    JsonpModule,
     ROUTES,
     FormsModule,
     ReactiveFormsModule,
@@ -102,6 +120,7 @@ export class AppModule {
     if (!store || !store.state) {
       return;
     }
+
     console.log('HMR store', JSON.stringify(store, null, 2));
     // set state
     this.appState._state = store.state;

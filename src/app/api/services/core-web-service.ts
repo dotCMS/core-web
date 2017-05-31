@@ -1,4 +1,4 @@
-import {Http, Response, Request, Headers, RequestOptionsArgs} from '@angular/http';
+import {Http, Response, Request, Headers, RequestOptionsArgs, URLSearchParams} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Rx';
@@ -10,6 +10,8 @@ import {
 import {ApiRoot} from '../persistence/ApiRoot';
 import {ResponseView} from './response-view';
 import {LoggerService} from './logger.service';
+import { BrowserUtil } from '../util/browser-util';
+import { HttpCode } from '../util/http-code';
 
 export const RULE_CREATE = 'RULE_CREATE';
 export const RULE_DELETE = 'RULE_DELETE';
@@ -40,7 +42,7 @@ export class CoreWebService {
 
   private httpErrosSubjects: Subject<any>[] = [];
 
-  constructor(private _apiRoot: ApiRoot, private _http: Http, private loggerService: LoggerService) {}
+  constructor(private _apiRoot: ApiRoot, private _http: Http, private loggerService: LoggerService, private browserUtil: BrowserUtil) {}
 
   request(options: any): Observable<any> {
     let request = this.getRequestOpts( options );
@@ -53,15 +55,18 @@ export class CoreWebService {
         .catch((response: Response, original: Observable<any>): Observable<any> => {
           if (response) {
             this.handleHttpError(response);
-            if (response.status === 500) {
+            if (response.status === HttpCode.SERVER_ERROR) {
               if (response.text() && response.text().indexOf('ECONNREFUSED') >= 0) {
-                throw new CwError(NETWORK_CONNECTION_ERROR, CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR], request, response, source);
+                throw new CwError(NETWORK_CONNECTION_ERROR, CLIENTS_ONLY_MESSAGES[NETWORK_CONNECTION_ERROR],
+                  request, response, source);
               } else {
-                throw new CwError(SERVER_RESPONSE_ERROR, response.headers.get('error-message'), request, response, source);
+                throw new CwError(SERVER_RESPONSE_ERROR, response.headers.get('error-message'), request,
+                  response, source);
               }
-            }  else if (response.status === 404) {
+            }  else if (response.status === HttpCode.NOT_FOUND) {
               this.loggerService.error('Could not execute request: 404 path not valid.', options.url);
-              throw new CwError(UNKNOWN_RESPONSE_ERROR, response.headers.get('error-message'), request, response, source);
+              throw new CwError(UNKNOWN_RESPONSE_ERROR, response.headers.get('error-message'), request,
+                response, source);
             }
           }
           return null;
@@ -113,7 +118,7 @@ export class CoreWebService {
     return this.httpErrosSubjects[httpErrorCode].asObservable();
   }
 
-  private getRequestOpts(options: any): Request {
+  private getRequestOpts(options: RequestOptionsArgs): Request {
     let headers: Headers = this._apiRoot.getDefaultRequestHeaders();
     let tempHeaders = options.headers ? options.headers : {'Content-Type': 'application/json'};
 
@@ -131,7 +136,14 @@ export class CoreWebService {
       options.url = `${this._apiRoot.baseUrl}api/${options.url}`;
     }
 
-    return new Request(options);
+    if (this.browserUtil.isIE11()) {
+      options = options || {};
+      options.search = options.search || new URLSearchParams();
+      let currentTime = (new Date()).getTime();
+      (<URLSearchParams> options.search).set('timestamp', String(currentTime));
+    }
+
+    return new Request(<any> options);
   }
 
   private handleHttpError(response): void {

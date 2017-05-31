@@ -15,8 +15,13 @@ import {RoutingPublicAuthService} from './api/services/routing-public-auth-servi
 import {RuleEngineContainer} from './portlets/rule-engine/rule-engine.container';
 import {DotBrowserComponent} from './portlets/dot-browser/dot-browser-component';
 
+import {ContentTypesPortletComponent} from './portlets/content-types/content-types-component';
+import { ContentTypesCreateEditPortletComponent } from './portlets/content-types-create-edit/content-types-create-edit-component';
+
 let angularComponents: any[] = [];
 angularComponents.push({component: RuleEngineContainer, id: 'rules'});
+angularComponents.push({component: ContentTypesPortletComponent, id: 'content-types-angular'});
+angularComponents.push({component: ContentTypesCreateEditPortletComponent, id: 'content-types-create-edit'});
 angularComponents.push({component: DotBrowserComponent, id: 'dot-browser'});
 
 let mainComponentChildren = [
@@ -59,13 +64,18 @@ let angularChildren: any[] = [
         canActivate: [RoutingPrivateAuthService],
         component: IframeLegacyComponent,
         path: 'c/:id',
+    },
+    {
+        canActivate: [RoutingPrivateAuthService],
+        component: ContentTypesCreateEditPortletComponent,
+        path: 'content-types/create',
     }
 ];
 angularComponents.forEach( component => {
     angularChildren.push({
         canActivate: [RoutingPrivateAuthService],
         component: component.component,
-        path: component.id
+        path: component.path ? component.path : component.id
     });
 
     fromCoreChildren.push({
@@ -116,6 +126,12 @@ const appRoutes: Routes = [
     {
         component: LogOutContainer,
         path: 'logout'
+    },
+    {
+        canActivate: [RoutingPublicAuthService],
+        path: '**',
+        pathMatch: 'full',
+        redirectTo: '/public/login',
     }
 ];
 

@@ -1,8 +1,7 @@
 @import "variables";
 @import "mixins";
-@import "grids";
+@import "forms";
 @import "typography";
-@import "material-design";
 
 // FONT AWESOME
 @import "../../node_modules/font-awesome/css/font-awesome.css";
@@ -11,7 +10,9 @@
 @import "../../node_modules/primeng/resources/primeng.css";
 @import "primeng-theme/base";
 
+// DIRECTIVES
 @import '../app/view/directives/ripple/ripple-effects.scss';
+@import '../app/view/directives/md-inputtext/md-inputtext.scss';
 
 *, *:before, *:after {
     box-sizing: border-box;
@@ -50,7 +51,6 @@ a {
 }
 
 // This is legacy code, needs to once we refactor rule-engine component and remove semantic-ui
-$rules-engine-fonts-url: "../app/view/components/rule-engine/styles/fonts" ;
 @font-face {
     font-family: 'Icons';
     src: url("${rules-engine-fonts-url}/icons.eot");
@@ -64,38 +64,4 @@ $rules-engine-fonts-url: "../app/view/components/rule-engine/styles/fonts" ;
     font-variant: normal;
     text-decoration: inherit;
     text-transform: none;
-}
-
-// TODO: we need a file for this classes
-.form-group {
-    margin: $basic-padding 0;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-
-    .ui-dialog-content &:first-child {
-        margin-top: 0;
-    }
-
-    .ui-dialog-content &:last-child {
-        margin-bottom: 0;
-    }
-}
-
-.form-group__two-cols {
-    & > *:first-child {
-        display: inline-block;
-        margin-bottom: $basic-padding;
-    }
-
-    @media (min-width: $screen-md-min) {
-        & > *:first-child {
-            margin-bottom: 0;
-        }
-
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-    }
 }

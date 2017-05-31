@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CoreWebService} from './core-web-service';
 import {Observable} from 'rxjs/Rx';
-import {RequestMethod, Http} from '@angular/http';
+import {RequestMethod} from '@angular/http';
 import {Subject} from 'rxjs/Subject';
 import {LoginService} from './login-service';
 import {DotcmsEventsService} from './dotcms-events-service';
@@ -62,6 +62,11 @@ export class SiteService {
 
     get currentSite(): Site {
         return this.selectedSite;
+    }
+
+    // TODO: change this when we update the site selector
+    get loadedSites(): Site[] {
+        return this.sites;
     }
 
     /**

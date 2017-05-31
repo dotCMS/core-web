@@ -1,5 +1,6 @@
+// tslint:disable-next-line:max-file-line-count
 import {Injectable} from '@angular/core';
-import {Http, RequestMethod} from '@angular/http';
+import {RequestMethod} from '@angular/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 
 import {ApiRoot} from '../persistence/ApiRoot';
@@ -8,7 +9,6 @@ import {I18nService} from '../system/locale/I18n';
 import {CoreWebService} from '../services/core-web-service';
 import {SiteService} from '../services/site-service';
 import {Subject} from 'rxjs/Subject';
-import {Site} from '../services/site-service';
 import {CwError} from '../system/http-response-util';
 
 export const RULE_CREATE = 'RULE_CREATE';
@@ -36,6 +36,7 @@ export const RULE_CONDITION_UPDATE_PARAMETER = 'RULE_CONDITION_UPDATE_PARAMETER'
 export const RULE_CONDITION_UPDATE_OPERATOR = 'RULE_CONDITION_UPDATE_OPERATOR';
 
 let idCounter = 1000;
+// tslint:disable-next-line:only-arrow-functions
 export function getNextId(): string {
   return 'tempId' + ++idCounter;
 }
@@ -249,7 +250,9 @@ export class RuleService {
 
   private _rules$: Subject<RuleModel[]> = new Subject();
 
+  // tslint:disable-next-line:no-unused-variable
   private _ruleActions: {[key: string]: ActionModel} = {};
+  // tslint:disable-next-line:no-unused-variable
   private _conditions: {[key: string]: ConditionModel} = {};
 
   private _ruleActionTypesAry: ServerSideTypeModel[] = [];
@@ -321,8 +324,8 @@ export class RuleService {
   constructor(public _apiRoot: ApiRoot, private _resources: I18nService, private siteService: SiteService,
               private coreWebService: CoreWebService) {
 
-    this._rulesEndpointUrl = `${this._apiRoot.defaultSiteUrl}/ruleengine/rules`;
-    this._actionsEndpointUrl = `${this._apiRoot.defaultSiteUrl}/ruleengine/actions`;
+    this._rulesEndpointUrl = `/ruleengine/rules`;
+    this._actionsEndpointUrl = `/ruleengine/actions`;
     this._conditionTypesEndpointUrl = `${this._apiRoot.baseUrl}api/v1/system/ruleengine/conditionlets`;
     this._ruleActionTypesEndpointUrl = `${this._apiRoot.baseUrl}api/v1/system/ruleengine/actionlets`;
 
@@ -331,15 +334,19 @@ export class RuleService {
     this.loadConditionTypes().subscribe((types: ServerSideTypeModel[]) => this.conditionTypes$.next(types));
 
     this.siteService.switchSite$.subscribe(site => {
-      this.sendLoadRulesRequest(site.identifier);
+      let siteId = this.loadRulesSiteId();
+      if (siteId === site.identifier) {
+        this.sendLoadRulesRequest(site.identifier);
+      }
     });
   }
 
  createRule(body: RuleModel): Observable<RuleModel|CwError> {
+    let siteId = this.loadRulesSiteId();
     return this.coreWebService.request({
       body: RuleService.fromClientRuleTransformFn(body),
       method: RequestMethod.Post,
-      url: this._rulesEndpointUrl
+      url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}`
     }).map((result: RuleModel) => {
       body.key = result['id']; // @todo:ggranum type the POST result correctly.
       return Object.assign({}, DEFAULT_RULE, body, result);
@@ -347,9 +354,10 @@ export class RuleService {
   }
 
   deleteRule(ruleId: string): Observable<{success: boolean}|CwError> {
+    let siteId = this.loadRulesSiteId();
     return this.coreWebService.request({
       method: RequestMethod.Delete,
-      url: `${this._rulesEndpointUrl}/${ruleId}`
+      url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${ruleId}`
     }).map((result) => {
       return {success: true};
     });
@@ -372,9 +380,10 @@ export class RuleService {
   }
 
   loadRule(id: string): Observable<RuleModel|CwError> {
+    let siteId = this.loadRulesSiteId();
     return this.coreWebService.request({
       method: RequestMethod.Get,
-      url: `${this._rulesEndpointUrl}/${id}`
+      url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
     }).map((result) => {
       return Object.assign({key: id}, DEFAULT_RULE, result);
     });
@@ -382,13 +391,14 @@ export class RuleService {
 
   updateRule(id: string, rule: RuleModel): Observable<RuleModel|CwError> {
     let result;
+    let siteId = this.loadRulesSiteId();
     if (!id) {
       result = this.createRule(rule);
     }else {
       result = this.coreWebService.request({
         body: RuleService.fromClientRuleTransformFn(rule),
         method: RequestMethod.Put,
-        url: `${this._rulesEndpointUrl}/${id}`
+        url: `${this._apiRoot.baseUrl}api/v1/sites/${siteId}${this._rulesEndpointUrl}/${id}`
       }).map((result) => {
         let r = Object.assign({}, DEFAULT_RULE, result);
         r.id = id;
@@ -486,5 +496,34 @@ export class RuleService {
       return this.actionAndConditionTypeLoader(this._doLoadConditionTypes(), this._conditionTypes);
     }
     return obs;
+  }
+
+  /**
+   * Return the Site Id or Page Id for the rules operations.
+   * First will check if the realmId parameter is included in the url.
+   * If not then search for the current site Id.
+   * @returns string
+   */
+  private loadRulesSiteId(): string {
+    let siteId;
+    let query = document.location.search.substring(1);
+    if (query === '') {
+      if (document.location.hash.indexOf('?') >= 0) {
+        query = document.location.hash.substr(document.location.hash.indexOf('?') + 1);
+      }
+    }
+
+    /**
+     * Search if the realId parameter is set
+     */
+    siteId = ApiRoot.parseQueryParam(query, 'realmId');
+
+    if (!siteId) {
+      /**
+       * If the realmId parameter is not set get the current Site Id
+       */
+      siteId = `${this.siteService.currentSite.identifier}`;
+    }
+    return siteId;
   }
 }

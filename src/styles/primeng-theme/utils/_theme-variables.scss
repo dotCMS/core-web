@@ -1,72 +1,73 @@
 @import "../../variables";
 
-// Common
-$field-animation-speed: .1s;
-$field-border-color: $gray-lighter;
+// COMMON
+$field-animation-speed: $basic-speed;
+$field-bgcolor: transparent;
+$field-border-color: $gray-light;
 $field-border-radius: $border-radius;
 $field-border-size: 1px;
 $field-padding: $basic-padding;
-$field-placeholder-color: rgba($gray-dark, .4);
+$field-placeholder-color: $label-color;
 
-$field-normal-bgcolor: $white;
-$field-normal-textcolor: $body-font-color;
-$field-normal-border: solid $field-border-size $gray-light;
-$field-normal-arrow-color: $gray;
 
-$field-hover-border-color: $brand-primary;
-$field-hover-bgcolor: $white;
-$field-hover-textcolor: $body-font-color;
-$field-hover-border: solid $field-border-size $field-hover-border-color;
-$field-hover-arrow-color: $brand-primary;
+// FIELDS
+$field-normal-bgcolor: $field-bgcolor;
+$field-normal-color: $body-font-color;
+$field-normal-border-size: $field-border-size;
+$field-normal-border-color: $field-border-color;
 
-$field-active-bgcolor: $brand-primary;
-$field-active-textcolor: $body-font-color;
-$field-active-border: $field-hover-border;
-$field-active-arrow-color: $brand-primary;
+$field-hover-bgcolor: $field-bgcolor;
+$field-hover-color: $body-font-color;
+$field-hover-border-size: $field-border-size;
+$field-hover-border-color: $field-border-color;
 
-$field-disabled-bgcolor: $white;
-$field-disabled-textcolor: $gray-light;
-$field-disabled-border: solid $field-border-size #E3E4E6;
-$field-disabled-arrow-color: $gray-light;
+$field-active-bgcolor: $field-bgcolor;
+$field-active-color: $body-font-color;
+$field-active-border-size: 2px;
+$field-active-border-color: $brand-primary;
 
-$field-focused-bgcolor: $gray-lighter;
-$field-focused-textcolor: $gray-dark;
-$field-focused-border: $field-hover-border;
-$field-focused-arrow-color: $brand-primary;
+$field-disabled-bgcolor: rgba($gray-dark, 0.1);
+$field-disabled-color: rgba($gray-dark, 0.3);
+$field-disabled-border-size: $field-border-size;
+$field-disabled-border-color: $gray-lighter;
 
 // BUTTONS
-$button-border: solid 1px transparent;
+$button-border: 0;
 $button-padding: $field-padding * 2;
+$button-height: $field-height;
+$button-disabled-color: $body-font-color;
+$button-radius: $field-border-radius;
+$button-inverted-color: $white;
 
 $buttons-map: (
     basic: (
         default: (
             background: $white,
-            color: $field-normal-textcolor,
+            color: $field-normal-color,
             border: $button-border,
             shadow: $md-shadow-1
         ),
         hover: (
-            background: $field-hover-bgcolor,
-            color: $field-hover-textcolor,
+            background: $white,
+            color: $field-hover-color,
             border: $button-border,
             shadow: $md-shadow-2
         ),
         focus: (
-            background: $field-hover-bgcolor,
-            color: $field-hover-textcolor,
+            background: $white,
+            color: $field-hover-color,
             border: $button-border,
             shadow: $md-shadow-2
         ),
         active: (
             background: $white,
-            color: $field-normal-textcolor,
+            color: $field-normal-color,
             border: $button-border,
             shadow: $md-shadow-1
         ),
         disabled: (
-            background: $gray-lighter,
-            color: $field-disabled-textcolor,
+            background: $field-disabled-bgcolor,
+            color: $field-disabled-color,
             border: $button-border,
             shadow: none
         )
@@ -79,7 +80,7 @@ $buttons-map: (
             shadow: none
         ),
         hover: (
-            background: $gray-lighter,
+            background: rgba($black, 0.1),
             color: $body-font-color,
             border: $button-border,
             shadow: none
@@ -92,13 +93,13 @@ $buttons-map: (
         ),
         active: (
             background: transparent,
-            color: $field-active-textcolor,
+            color: $field-active-color,
             border: $button-border,
             shadow: none
         ),
         disabled: (
             background: transparent,
-            color: $field-disabled-textcolor,
+            color: $field-disabled-color,
             border: $button-border,
             shadow: none
         ),
@@ -169,6 +170,21 @@ $buttons-map: (
     )
 );
 
+// FLOATING ACTION BUTTON
+$floating-action-button-height: 56px;
+$floating-action-button-icon-size: $font-size-large;
+$floating-action-button-color: $white;
+$floating-action-button-bg-hover: darken($blue, 10%);
+$floating-action-button-bg-active: darken($blue, 20%);
+$floating-action-button-bg-focus: darken($blue, 10%);
+
+// DROPDOWN
+$dropdown-active-color: $field-active-color;
+$dropdown-disabled-color: $field-disabled-color;
+$dropdown-height: $field-height;
+
+// AUTOCOMPLETE
+$autocomplete-height: $field-height;
 
 // CHECKBOX AND RADIO BUTTON
 $check-border-width: 1px;
@@ -181,8 +197,8 @@ $check-checked-color: $white;
 
 $check-disabled-border: solid $check-border-width $gray-light;
 $check-disabled-bgcolor: $gray-lighter;
-$check-disabled-color: $gray-light;
-$check-disabled-label-color: $gray-light;
+$check-disabled-color: $field-disabled-color;
+$check-disabled-label-color: $field-disabled-color;
 
 $check-normal-bgcolor: $white;
 $check-normal-border: solid $field-border-size $black;
@@ -190,17 +206,46 @@ $check-normal-border: solid $field-border-size $black;
 $check-hover-bgcolor: $white;
 $check-hover-border: $check-checked-border;
 
+$radio-size: $check-size;
+
 $radio-checked-bgcolor: $white;
 $radio-checked-border: solid $check-border-width $brand-primary;
 $radio-checked-color: $brand-primary;
 
 $radio-disabled-border: solid $check-border-width $gray-light;
-$radio-disabled-bgcolor: $gray-lighter;
-$radio-disabled-color: $gray-light;
-$radio-disabled-label-color: $gray-light;
+$radio-disabled-bgcolor: $field-disabled-bgcolor;
+$radio-disabled-color: $field-disabled-color;
+$radio-disabled-label-color: $field-disabled-color;
 
 $radio-normal-bgcolor: $white;
 $radio-normal-border: solid $field-border-size $black;
 
 $radio-hover-bgcolor: $white;
 $radio-hover-border: $check-checked-border;
+
+// DATATABLE
+$datatable-cell-padding: 11px $basic-padding * 2; // We need to have 40px min height in the cell
+$datatable-cell-border: 1px solid $gray-lighter;
+$datatable-head-active-bgcolor: $gray-light;
+$datatable-head-active-color: $gray-dark;
+$datatable-selected-row-bgcolor: $gray-lightest;
+$datatable-row-color: $gray-dark;
+$datatable-row-bgcolor: $white;
+
+// PAGINATOR
+$paginator-page-selected-bgcolor: $blue;
+$paginator-page-selected-border-color: $blue;
+$paginator-page-hover-bgcolor: $gray-light;
+$paginator-page-border-radius: 10px;
+$paginator-page-size: 21px;
+
+// TOOLBAR
+$toolbar-background: $brand-primary;
+$toolbar-color: $white;
+
+// TABVIEW
+$tabview-item-color: $gray-dark;
+$tabview-item-selected-color: $blue;
+$tabview-item-padding: $basic-padding;
+$tabview-item-border: 3px solid $white;
+$tabview-item-selected-border: 3px solid $blue;

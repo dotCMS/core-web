@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, trigger, style, state, transition, animate } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, trigger, style, transition, animate } from '@angular/core';
 
 @Component({
     animations: [
         trigger(
-        'enterAnimation', [
-            transition(':enter', [
-            style({transform: 'translateY(-10%)', opacity: 0}),
-            animate('100ms', style({transform: 'translateY(0)', opacity: 1}))
-            ]),
-            transition(':leave', [
-            style({transform: 'translateY(0)', opacity: 1}),
-            animate('100ms', style({transform: 'translateY(-10%)', opacity: 0}))
-            ])
-        ]
+            'enterAnimation', [
+                transition(':enter', [
+                    style({transform: 'translateY(-10%)', opacity: 0}),
+                    animate('100ms', style({transform: 'translateY(0)', opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({transform: 'translateY(0)', opacity: 1}),
+                    animate('100ms', style({transform: 'translateY(-10%)', opacity: 0}))
+                ])
+            ]
         )
     ],
     encapsulation: ViewEncapsulation.Emulated,
@@ -27,14 +27,13 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, 
 export class DropdownComponent {
     @Input() disabled= false;
     @Input() icon = null;
+    @Input() gravatar = null;
     @Input() title = null;
-    @Input() alignRight = false;
+    @Input() position: string;
     @Input() inverse = false;
-
     @Output() open = new EventEmitter<any>();
     @Output() toggle = new EventEmitter<boolean>();
     @Output() close = new EventEmitter<any>();
-
     private show = false;
 
     constructor(private elementRef: ElementRef) {}
@@ -43,6 +42,7 @@ export class DropdownComponent {
         this.show = false;
     }
 
+    // tslint:disable-next-line:no-unused-variable
     private onToggle(): void {
         this.show = !this.show;
 
@@ -56,6 +56,7 @@ export class DropdownComponent {
     }
 
     // TODO: we need doing this globally for all the components that need to detect if the click was outside it.
+    // tslint:disable-next-line:no-unused-variable
     private handleClick($event): void {
         let clickedComponent = $event.target;
         let inside = false;

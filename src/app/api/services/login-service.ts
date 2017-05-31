@@ -8,7 +8,8 @@ import {Observable} from 'rxjs/Rx';
 import {Router} from '@angular/router';
 import {Subject} from 'rxjs/Subject';
 import {DotcmsEventsService} from './dotcms-events-service';
-import {LoggerService} from './logger.service';
+import { LoggerService } from './logger.service';
+import { HttpCode } from '../util/http-code';
 
 /**
  * This Service get the server configuration to display in the login component
@@ -25,12 +26,13 @@ export class LoginService {
     private lang = '';
     private loginAsUserList: User[];
     private urls: any;
+    private nUsers = -1;
 
     constructor(private router: Router, private coreWebService: CoreWebService,
                 private dotcmsEventsService: DotcmsEventsService,
                 private loggerService: LoggerService) {
 
-        this._loginAsUsersList$ = <Subject<User[]>>new Subject();
+        this._loginAsUsersList$ = <Subject<User[]>> new Subject();
         this.loginAsUserList = [];
         this.urls = {
             changePassword: 'v1/changePassword',
@@ -44,7 +46,7 @@ export class LoginService {
             userAuth: 'v1/authentication'
         };
 
-        coreWebService.subscribeTo(401).subscribe(() => this.logOutUser().subscribe(() => {}));
+        coreWebService.subscribeTo(HttpCode.UNAUTHORIZED).subscribe(() => this.logOutUser().subscribe(() => {}));
 
         // when the session is expired/destroyed
         dotcmsEventsService.subscribeTo('SESSION_DESTROYED').pluck('data').subscribe( date => {
@@ -124,13 +126,36 @@ export class LoginService {
      * Get login as user list
      * @returns {Observable<User[]>}
      */
-    public getLoginAsUsersList(): Observable<User[]> {
+    public getLoginAsUsersList(filter: string): Observable<User[]> {
         return Observable.create(observer => {
-            this.loadLoginAsUsersList();
-            let loginAsUsersListSub = this._loginAsUsersList$.subscribe(res => {
-                observer.next(res);
-                loginAsUsersListSub.unsubscribe();
-            });
+
+            let needLoadUsers = this.loginAsUserList.length === 0 || this.nUsers > this.loginAsUserList.length;
+            this.loggerService.debug('is it need load users?', needLoadUsers);
+
+            if (needLoadUsers) {
+                let includeNUsers = this.nUsers === -1;
+
+                this.loggerService.debug('loading users, filter:', filter);
+
+                this.loadLoginAsUsersList(includeNUsers, filter).subscribe(entity => {
+                    this.loggerService.debug('Users Loaded', entity);
+                    this.loginAsUserList = <User[]> entity['users'];
+
+                    if (includeNUsers) {
+                        this.nUsers = <number> entity['nUsers'];
+                    }
+
+                    observer.next(this.loginAsUserList);
+                });
+            } else {
+                this.loggerService.debug('filtering users...');
+                if (!filter) {
+                    observer.next(this.loginAsUserList);
+                }else {
+                    observer.next(
+                        this.loginAsUserList.filter(user => user.fullName.toLowerCase().indexOf(filter.toLowerCase()) >= 0));
+                }
+            }
         });
     }
 
@@ -147,19 +172,6 @@ export class LoginService {
             body: {'messagesKey': i18nKeys, 'language': this.lang, 'country': this.country},
             method: RequestMethod.Post,
             url: this.urls.serverInfo,
-        });
-    }
-
-    /**
-     * Request and store the login as _auth list.
-     */
-    public loadLoginAsUsersList(): void {
-        this.coreWebService.requestView({
-            method: RequestMethod.Get,
-            url: this.urls.loginAsUserList
-        }).pluck('entity', 'users').subscribe(data => {
-            this.loginAsUserList = <User[]> data;
-            this._loginAsUsersList$.next(this.loginAsUserList);
         });
     }
 
@@ -277,8 +289,6 @@ export class LoginService {
      * or if there is an error
      */
     public recoverPassword(login: string): Observable<any> {
-        let body = JSON.stringify({'userId': login});
-
         return this.coreWebService.requestView({
             body: {'userId': login},
             method: RequestMethod.Post,
@@ -335,6 +345,16 @@ export class LoginService {
             this.lang = '';
             this.country = '';
         }
+    }
+
+    /**
+     * Request and store the login as _auth list.
+     */
+    private loadLoginAsUsersList(includeNUsers: boolean, filter: string): Observable<any> {
+        return this.coreWebService.requestView({
+            method: RequestMethod.Get,
+            url: `${this.urls.loginAsUserList}?includeUsersCount=${includeNUsers}&filter=${filter}`
+        }).pluck('entity');
     }
 }
 
