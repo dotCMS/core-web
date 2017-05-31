@@ -1,5 +1,6 @@
 import {Component, ViewEncapsulation, ViewChild} from '@angular/core';
 import {SelectItem, AutoComplete} from 'primeng/primeng';
+import { LoggerService } from '../../../../api/services/logger.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -22,7 +23,7 @@ export class PatternLibrary {
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
-    constructor() {
+    constructor(public loggerService: LoggerService) {
         this.cities = [];
         this.cities.push({label: 'Select City', value: null});
         this.cities.push({label: 'New York', value: {id: 1, name: 'New York', code: 'NY'}});
@@ -106,6 +107,6 @@ export class PatternLibrary {
     }
 
     actionHeaderLog(): void {
-        console.log('Primary command was triggered');
+        this.loggerService.info('Primary command was triggered');
     }
 }
