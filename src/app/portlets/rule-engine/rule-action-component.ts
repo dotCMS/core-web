@@ -18,7 +18,7 @@ import {LoggerService} from '../../api/services/logger.service';
       class="cw-type-dropdown"
       [value]="action.type?.key"
       placeholder="{{actionTypePlaceholder}}"
-      (change)="onTypeChange($event)">
+      (onDropDownChange)="onTypeChange($event)">
         <cw-input-option
         *ngFor="let opt of typeDropdown.options"
         [value]="opt.value"

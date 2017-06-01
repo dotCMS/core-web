@@ -54,7 +54,7 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
   @Input() minSelections: number;
   @Input() maxSelections: number;
 
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() onDropDownChange: EventEmitter<any> = new EventEmitter();
   @Output() touch: EventEmitter<any> = new EventEmitter();
   @Output() enter: EventEmitter<boolean> = new EventEmitter(false);
 
@@ -107,8 +107,8 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
   }
 
   fireChange($event): void {
-    if (this.change) {
-      this.change.emit($event);
+    if (this.onDropDownChange) {
+      this.onDropDownChange.emit($event);
       this.onChange($event);
     }
   }
@@ -116,10 +116,6 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
   fireTouch($event): void {
     this.touch.emit($event);
     this.onTouched($event);
-  }
-
-  ngOnChanges(change): void {
-
   }
 
   hasOption(option: InputOption): boolean {
@@ -150,7 +146,7 @@ export class Dropdown implements AfterViewInit, OnDestroy, ControlValueAccessor 
 
   ngOnDestroy(): void {
     // remove the change emitter so that we don't fire changes when we clear the dropdown.
-    this.change = null;
+    this.onDropDownChange = null;
     this._$dropdown.dropdown('clear');
   }
 

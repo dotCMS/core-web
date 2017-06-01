@@ -18,7 +18,7 @@ import _ from 'lodash';
       [maxSelections]="maxSelections"
       [minSelections]="minSelections"
        [allowAdditions]="allowAdditions"
-      (change)="fireChange($event)"
+      (onDropDownChange)="fireChange($event)"
       (touch)="fireTouch($event)"
       >
         <cw-input-option *ngFor="let opt of _options | async" [value]="opt.value" [label]="opt.label" [icon]="opt.icon"></cw-input-option>

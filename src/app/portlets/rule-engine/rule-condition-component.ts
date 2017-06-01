@@ -20,7 +20,7 @@ import {LoggerService} from '../../api/services/logger.service';
       class="cw-type-dropdown"
       [value]="condition.type?.key"
       placeholder="{{conditionTypePlaceholder}}"
-      (change)="onTypeChange($event)">
+      (onDropDownChange)="onTypeChange($event)">
     <cw-input-option
         *ngFor="let opt of typeDropdown.options"
         [value]="opt.value"
@@ -96,7 +96,7 @@ export class ConditionComponent {
   }
 
   onTypeChange(type: string): void {
-    this.loggerService.info('ConditionComponent', 'onTypeChange');
+    this.loggerService.info('ConditionComponent', 'onTypeChange', type);
     this.updateConditionType.emit({
       payload: {condition: this.condition, value: type, index: this.index},
       type: RULE_CONDITION_UPDATE_TYPE
