@@ -67,7 +67,7 @@ export class SiteTreeTableComponent {
                 break;
             }
         }
-        this.log.debug('Path : ' + pathToUploadTo);
+        this.log.debug('Path 2: ' + pathToUploadTo);
         // console.log('Is Directory : ' + fs.statSync(files[0].path).isDirectory());
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
         // console.log('Is Directory : ' + this.fsService.isDirectory(files[0].path));

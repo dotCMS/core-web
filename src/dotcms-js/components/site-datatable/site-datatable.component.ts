@@ -66,7 +66,7 @@ export class SiteDatatableComponent {
      */
     doubleClick(event: any): void {
         if (event.data.type !== 'folder') {return; }
-        let pathName: string = (<string>event.data.path);
+        let pathName: string = (<string> event.data.path);
         pathName = pathName.slice(0, pathName.length - 1);
         pathName = pathName.slice(pathName.lastIndexOf('/') + 1, pathName.length);
         this.updateService.changeFolder(pathName);
@@ -120,18 +120,23 @@ export class SiteDatatableComponent {
     handleDrop(e: any): void {
         e.preventDefault();
         let pathToUploadTo: string;
-        let files: File = e.dataTransfer.files;
+        let dataTrans: any =  e.dataTransfer;
+        let fileName: string =  e.dataTransfer.files[0].name;
+        let files: File[] = e.dataTransfer.files;
         let folderTitle: string = e.path[0].innerText;
-        console.log(files);
+        this.log.debug('dataTrans = ' + dataTrans);
+        this.log.debug('folderTitle = ' + folderTitle);
+        this.log.debug('files = ' + files);
+        this.log.debug('file name = ' + fileName);
         // files[0]
-        // for (let i = 0; i < this.treeables.length; i++) {
-        //     let node: Treeable = this.treeables[i];
-        //     if (node.title == folderTitle && node.type == 'folder') {
-        //         pathToUploadTo = (<Folder>node).path;
-        //         break;
-        //     }
-        // }
-        this.log.debug('Path : ' + pathToUploadTo);
+        for (let i = 0; i < this.treeables.length; i++) {
+            let node: Treeable = this.treeables[i];
+            if (node.title === folderTitle && node.type === 'folder') {
+                pathToUploadTo = (<Folder> node).path;
+                break;
+            }
+        }
+        this.log.debug('Path 4: ' + pathToUploadTo);
         // console.log('Is Directory : ' + fs.statSync(files[0].path).isDirectory());
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
         // console.log('Is Directory : ' + this.fsService.isDirectory(files[0].path));

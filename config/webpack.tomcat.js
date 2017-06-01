@@ -15,6 +15,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
 /**
  * Webpack Constants
@@ -152,6 +153,16 @@ module.exports = function (options) {
           'DEFAULT_LOCALE': JSON.stringify(METADATA.DEFAULT_LOCALE)
         }
       }),
+
+    new SourceMapDevToolPlugin({
+        // test:/\.js$/,
+        // moduleFilenameTemplate:'[absolute-resource-path]',
+        // fallbackModuleFilenameTemplate:'[absolute-resource-path]?[hash]',
+        filename: '[name].js.map',
+        exclude: ['vendor.js']
+        // sourceRoot:'../src'
+        }
+    ),
 
       new DllBundlesPlugin({
         bundles: {
