@@ -15,7 +15,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
+// const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin');
 
 /**
  * Webpack Constants
@@ -46,7 +46,7 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#devtool
      * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
      */
-    devtool: 'cheap-module-source-map',
+    devtool: 'source-map',
 
     /**
      * Options affecting the output of the compilation.
@@ -154,15 +154,15 @@ module.exports = function (options) {
         }
       }),
 
-    new SourceMapDevToolPlugin({
-        // test:/\.js$/,
-        // moduleFilenameTemplate:'[absolute-resource-path]',
-        // fallbackModuleFilenameTemplate:'[absolute-resource-path]?[hash]',
-        filename: '[name].js.map',
-        exclude: ['vendor.js']
-        // sourceRoot:'../src'
-        }
-    ),
+    // new SourceMapDevToolPlugin({
+    //     // test:/\.js$/,
+    //     // moduleFilenameTemplate:'[absolute-resource-path]',
+    //     // fallbackModuleFilenameTemplate:'[absolute-resource-path]?[hash]',
+    //     filename: '[name].js.map',
+    //     exclude: ['vendor.js']
+    //     // sourceRoot:'../src'
+    //     }
+    // ),
 
       new DllBundlesPlugin({
         bundles: {

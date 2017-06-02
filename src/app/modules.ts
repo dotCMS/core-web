@@ -1,0 +1,42 @@
+import {
+  AutoCompleteModule,
+  BreadcrumbModule,
+  ButtonModule,
+  CalendarModule,
+  CheckboxModule,
+  ConfirmDialogModule,
+  DataTableModule, SharedModule,
+  DialogModule,
+  DropdownModule,
+  InputTextModule,
+  InputTextareaModule,
+  OverlayPanelModule,
+  PasswordModule,
+  RadioButtonModule,
+  SplitButtonModule,
+  TabViewModule,
+  ToolbarModule,
+  TreeTableModule
+} from 'primeng/primeng';
+
+export const NGFACES_MODULES = [
+  AutoCompleteModule,
+  BreadcrumbModule,
+  ButtonModule,
+  CalendarModule,
+  CheckboxModule,
+  ConfirmDialogModule,
+  DataTableModule,
+  DialogModule,
+  DropdownModule,
+  InputTextModule,
+  InputTextareaModule,
+  OverlayPanelModule,
+  PasswordModule,
+  RadioButtonModule,
+  SharedModule,
+  SplitButtonModule,
+  TabViewModule,
+  ToolbarModule,
+  TreeTableModule
+];

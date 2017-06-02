@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   NgModule,
   ApplicationRef
@@ -19,51 +21,7 @@ import { ROUTES } from './app.routing';
 import { AppComponent } from './app-component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import {
-  AutoCompleteModule,
-  BreadcrumbModule,
-  ButtonModule,
-  CalendarModule,
-  CheckboxModule,
-  ConfirmDialogModule,
-  DataTableModule, SharedModule,
-  DialogModule,
-  DropdownModule,
-  InputTextModule,
-  InputTextareaModule,
-  OverlayPanelModule,
-  PasswordModule,
-  RadioButtonModule,
-  SplitButtonModule,
-  TabViewModule,
-  ToolbarModule,
-  TreeTableModule
-} from 'primeng/primeng';
-
-const NGFACES_MODULES = [
-  AutoCompleteModule,
-  BreadcrumbModule,
-  ButtonModule,
-  CalendarModule,
-  CheckboxModule,
-  ConfirmDialogModule,
-  DataTableModule,
-  DialogModule,
-  DropdownModule,
-  InputTextModule,
-  InputTextareaModule,
-  OverlayPanelModule,
-  PasswordModule,
-  RadioButtonModule,
-  SharedModule,
-  SplitButtonModule,
-  TabViewModule,
-  ToolbarModule,
-  TreeTableModule
-];
 
 /*
  * Custom Components
@@ -71,6 +29,8 @@ const NGFACES_MODULES = [
 import { COMPONENTS, DIRECTIVES, PIPES } from './components';
 
 import '../styles/main.scss';
+
+import { NGFACES_MODULES } from './modules';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -96,6 +56,7 @@ type StoreType = {
     ...DIRECTIVES
   ],
   imports: [ // import Angular's modules
+    BrowserAnimationsModule,
     BrowserModule,
     HttpModule,
     JsonpModule,
@@ -121,6 +82,7 @@ export class AppModule {
       return;
     }
 
+    // tslint:disable-next-line:no-console
     console.log('HMR store', JSON.stringify(store, null, 2));
     // set state
     this.appState._state = store.state;
