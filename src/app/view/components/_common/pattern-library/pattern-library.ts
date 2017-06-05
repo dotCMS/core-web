@@ -20,6 +20,7 @@ export class PatternLibrary {
     private displayDialog = false;
     private model: any = {};
     private buttonActions: [any];
+    private actionButtonItems: [any];
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
@@ -50,6 +51,30 @@ export class PatternLibrary {
                 ]
             }
         ];
+        this.actionButtonItems = [{
+            command: () => {
+                console.log('action update');
+            },
+            icon: 'fa-refresh',
+            label: 'Update'
+        },
+        {
+            command: () => {
+                console.log('action delete');
+            },
+            icon: 'fa-close',
+            label: 'Delete'
+        },
+        {
+            icon: 'fa-link',
+            label: 'Angular.io',
+            url: 'http://angular.io'
+        },
+        {
+            icon: 'fa-paint-brush',
+            label: 'Theming',
+            routerLink: ['/theming']
+        }];
     }
 
     ngOnInit(): any {
@@ -108,5 +133,9 @@ export class PatternLibrary {
 
     actionHeaderLog(): void {
         this.loggerService.info('Primary command was triggered');
+    }
+
+    actionButtonLog(): void {
+        console.log('Primary action triggered');
     }
 }

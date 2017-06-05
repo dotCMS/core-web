@@ -50,6 +50,7 @@ import { ContentTypesForm } from './portlets/content-types-create-edit/content-t
 import { ListingDataTableComponent } from './view/components/listing-data-table/listing-data-table-component';
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
 import { ActionHeaderComponent } from './view/components/_common/action-header/action-header';
+import { ActionButtonComponent } from './view/components/_common/action-button/action-button';
 import { ContentTypesPortletComponent } from './portlets/content-types/content-types-component';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicator } from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
@@ -84,6 +85,7 @@ export const COMPONENTS = [
     Accordion,
     AccordionGroup,
     ActionHeaderComponent,
+    ActionButtonComponent,
     ContentTypesForm,
     ContentTypesCreateEditPortletComponent,
     ContentTypesPortletComponent,
