@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { SplitButtonModule, ButtonModule } from 'primeng/primeng';
 import { ActionButtonComponent } from './action-button';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -12,7 +12,7 @@ class RouterMock {
     }
 }
 
-fdescribe('ActionButtonComponent (inline template)', () => {
+describe('ActionButtonComponent (inline template)', () => {
     let comp: ActionButtonComponent;
     let fixture: ComponentFixture<ActionButtonComponent>;
     let de: DebugElement;
@@ -32,23 +32,20 @@ fdescribe('ActionButtonComponent (inline template)', () => {
     },
     {
         icon: 'fa-link',
-        label: 'Angular.io',
-        url: 'http://angular.io'
+        label: 'Angular.io'
     },
     {
         icon: 'fa-paint-brush',
-        label: 'Theming',
-        routerLink: ['/theming']
+        label: 'Theming'
     }];
 
     beforeEach(async(() => {
 
         DOTTestBed.configureTestingModule({
             declarations: [ActionButtonComponent],
-            imports: [SplitButtonModule, ButtonModule],
-            providers: [
-                { provide: Router, useClass: RouterMock }
-            ]
+            imports: [SplitButtonModule, ButtonModule, RouterTestingModule.withRoutes([
+                { path: 'test', component: ActionButtonComponent }
+            ])]
         });
 
         fixture = TestBed.createComponent(ActionButtonComponent);
