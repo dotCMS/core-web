@@ -46,7 +46,6 @@ const RULES_ENGINE_COMPONENTS = [
 
 // CUSTOM COMPONENTS
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
-import { ActionButtonComponent } from './view/components/_common/action-button/action-button.component';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicator } from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
 import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
@@ -78,7 +77,6 @@ export const COMPONENTS = [
     ...RULES_ENGINE_COMPONENTS,
     Accordion,
     AccordionGroup,
-    ActionButtonComponent,
     ContentTypesForm,
     ContentTypesCreateEditPortletComponent,
     CustomTimeComponent,

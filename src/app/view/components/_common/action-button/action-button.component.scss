@@ -1,4 +1,5 @@
 @import "../../../../../styles/variables";
+@import "../../../../../styles/primeng-theme/utils/_theme-variables";
 
 .action-button {
     background: none;
@@ -15,35 +16,39 @@
         .ui-button {
             background-color: $blue;
             border-radius: 50%;
-            font-size: 16px;
-            height: 56px;
-            width: 56px;
+            font-size: $floating-action-button-icon-size;
+            height: $floating-action-button-height;
+            width: $floating-action-button-height;
             transition: background-color $basic-speed ease-in,
                         box-shadow $basic-speed ease-in;
 
             span {
-                color: $white;
+                color: $floating-action-button-color;
             }
 
             .ui-button-icon-left:before {
                 content: "\F067";
-                color: $white;
+                color: $floating-action-button-color;
             }
 
             &:not([disabled]) {
-                &:hover {
-                    background: darken($blue, 10%);
+
+                &:hover, 
+                &:active, 
+                &:focus {
                     box-shadow: $md-shadow-2;
+                }
+
+                &:hover {
+                    background: $floating-action-button-bg-hover;
                 }
 
                 &:active {
-                    background: darken($blue, 10%);
-                    box-shadow: $md-shadow-2;
+                    background: $floating-action-button-bg-active;
                 }
 
                 &:focus {
-                    background: darken($blue, 10%);
-                    box-shadow: $md-shadow-2;
+                    background: $floating-action-button-bg-focus;
                 }
             }
 
