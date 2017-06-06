@@ -13,6 +13,8 @@ import { SelectItem, AutoComplete } from 'primeng/primeng';
 export class PatternLibrary {
     public selectedDummyData = [];
     public submitAttempt = false;
+    public actionButtonLog;
+    public actionHeaderLog;
 
     private autocompleteResults: Array<string> = [];
     private cities: SelectItem[];
@@ -20,11 +22,8 @@ export class PatternLibrary {
     private displayDialog = false;
     private model: any = {};
     private buttonActions: [any];
-<<<<<<< HEAD
     private actionButtonItems: [any];
-=======
     private contentTypeColumns: any;
->>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
@@ -52,17 +51,16 @@ export class PatternLibrary {
                 ]
             }
         ];
-<<<<<<< HEAD
         this.actionButtonItems = [{
             command: () => {
-                console.log('action update');
+                this.loggerService.info('action update');
             },
             icon: 'fa-refresh',
             label: 'Update'
         },
         {
             command: () => {
-                console.log('action delete');
+                this.loggerService.info('action delete');
             },
             icon: 'fa-close',
             label: 'Delete'
@@ -77,14 +75,21 @@ export class PatternLibrary {
             label: 'Theming',
             routerLink: ['/theming']
         }];
-=======
+
         this.contentTypeColumns = [
             {fieldName: 'name', header: 'Name', width: '40%', sortable: true},
             {fieldName: 'velocityVarName', header: 'Variable', width: '10%'},
             {fieldName: 'description', header: 'Description', width: '40%'},
             {fieldName: 'nEntries', header: 'Entries', width: '10%'}
         ];
->>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
+
+        this.actionButtonLog = () => {
+            this.loggerService.info('Primary action triggered');
+        };
+
+        this.actionHeaderLog = () => {
+            this.loggerService.info('Primary command was triggered');
+        };
     }
 
     ngOnInit(): any {
@@ -139,13 +144,5 @@ export class PatternLibrary {
 
     showDialog(): void {
         this.displayDialog = true;
-    }
-
-    actionHeaderLog(): void {
-        this.loggerService.info('Primary command was triggered');
-    }
-
-    actionButtonLog(): void {
-        console.log('Primary action triggered');
     }
 }

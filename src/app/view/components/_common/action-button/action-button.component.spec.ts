@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SplitButtonModule, ButtonModule } from 'primeng/primeng';
+import { SplitButtonModule, ButtonModule, MenuItem } from 'primeng/primeng';
 import { ActionButtonComponent } from './action-button.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 
@@ -12,7 +12,7 @@ class RouterMock {
     }
 }
 
-fdescribe('ActionButtonComponent (inline template)', () => {
+describe('ActionButtonComponent (inline template)', () => {
     let comp: ActionButtonComponent;
     let fixture: ComponentFixture<ActionButtonComponent>;
     let de: DebugElement;
@@ -33,7 +33,7 @@ fdescribe('ActionButtonComponent (inline template)', () => {
     }));
 
     it('should display an action button with opctions', () => {
-        let fakeButtonItems = [{
+        let fakeButtonItems: MenuItem[] = [{
             command: () => {
                 console.log('action update');
             },

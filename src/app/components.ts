@@ -46,12 +46,7 @@ const RULES_ENGINE_COMPONENTS = [
 
 // CUSTOM COMPONENTS
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
-<<<<<<< HEAD
-import { ActionHeaderComponent } from './view/components/_common/action-header/action-header';
-import { ActionButtonComponent } from './view/components/_common/action-button/action-button';
-import { ContentTypesPortletComponent } from './portlets/content-types/content-types-component';
-=======
->>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
+import { ActionButtonComponent } from './view/components/_common/action-button/action-button.component';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicator } from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
 import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
@@ -83,14 +78,9 @@ export const COMPONENTS = [
     ...RULES_ENGINE_COMPONENTS,
     Accordion,
     AccordionGroup,
-<<<<<<< HEAD
-    ActionHeaderComponent,
     ActionButtonComponent,
     ContentTypesForm,
     ContentTypesCreateEditPortletComponent,
-    ContentTypesPortletComponent,
-=======
->>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
     CustomTimeComponent,
     DotLoadingIndicator,
     DropdownComponent,
@@ -132,6 +122,8 @@ export const PIPES = [
 import { MessageKeyDirective } from './view/directives/message-keys';
 import { DotRippleEffectDirective } from './view/directives/ripple/ripple-effect';
 import { MaterialDesignTextfield } from './view/directives/md-inputtext/md-inputtext';
+import { ContentTypesCreateEditPortletComponent } from './portlets/content-types/create-edit/main/content-types-create-edit-component';
+import { ContentTypesForm } from './portlets/content-types/create-edit/content-types-form/content-types-form';
 
 export const DIRECTIVES = [
     MessageKeyDirective,

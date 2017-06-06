@@ -1,4 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { MenuItem } from 'primeng/primeng';
 
 /**
  * The ActionButtonComponent is a configurable button with
@@ -16,12 +17,4 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 export class ActionButtonComponent {
     @Input() options: MenuItem[];
     @Input() primaryAction: Function;
-}
-
-export interface MenuItem {
-    label: String;
-    icon: String;
-    command: Function;
-    url: String;
-    routerLink: any[];
 }
