@@ -45,17 +45,16 @@ const RULES_ENGINE_COMPONENTS = [
 ];
 
 // CUSTOM COMPONENTS
-import { ContentTypesCreateEditPortletComponent } from './portlets/content-types-create-edit/content-types-create-edit-component';
-import { ContentTypesForm } from './portlets/content-types-create-edit/content-types-form/content-types-form';
-import { ListingDataTableComponent } from './view/components/listing-data-table/listing-data-table-component';
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
+<<<<<<< HEAD
 import { ActionHeaderComponent } from './view/components/_common/action-header/action-header';
 import { ActionButtonComponent } from './view/components/_common/action-button/action-button';
 import { ContentTypesPortletComponent } from './portlets/content-types/content-types-component';
+=======
+>>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicator } from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
 import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
-import { FieldValidationMessageComponent } from './view/components/_common/field-validation-message/field-validation-message';
 import { ForgotPasswordComponent } from './view/components/login/forgot-password-component/forgot-password-component';
 import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { GlobalSearch } from './view/components/global-search/global-search';
@@ -84,21 +83,22 @@ export const COMPONENTS = [
     ...RULES_ENGINE_COMPONENTS,
     Accordion,
     AccordionGroup,
+<<<<<<< HEAD
     ActionHeaderComponent,
     ActionButtonComponent,
     ContentTypesForm,
     ContentTypesCreateEditPortletComponent,
     ContentTypesPortletComponent,
+=======
+>>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
     CustomTimeComponent,
     DotLoadingIndicator,
     DropdownComponent,
-    FieldValidationMessageComponent,
     ForgotPasswordComponent,
     ForgotPasswordContainer,
     GlobalSearch,
     GravatarComponent,
     IframeLegacyComponent,
-    ListingDataTableComponent,
     LogOutContainer,
     LoginAsComponent,
     LoginComponent,

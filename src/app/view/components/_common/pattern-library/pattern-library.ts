@@ -1,6 +1,7 @@
-import {Component, ViewEncapsulation, ViewChild} from '@angular/core';
-import {SelectItem, AutoComplete} from 'primeng/primeng';
+import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { LoggerService } from '../../../../api/services/logger.service';
+import { Router } from '@angular/router';
+import { SelectItem, AutoComplete } from 'primeng/primeng';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -11,7 +12,6 @@ import { LoggerService } from '../../../../api/services/logger.service';
 
 export class PatternLibrary {
     public selectedDummyData = [];
-    public selectedCars = [];
     public submitAttempt = false;
 
     private autocompleteResults: Array<string> = [];
@@ -20,11 +20,15 @@ export class PatternLibrary {
     private displayDialog = false;
     private model: any = {};
     private buttonActions: [any];
+<<<<<<< HEAD
     private actionButtonItems: [any];
+=======
+    private contentTypeColumns: any;
+>>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
-    constructor(public loggerService: LoggerService) {
+    constructor(public loggerService: LoggerService, private router: Router) {
         this.cities = [];
         this.cities.push({label: 'Select City', value: null});
         this.cities.push({label: 'New York', value: {id: 1, name: 'New York', code: 'NY'}});
@@ -36,21 +40,19 @@ export class PatternLibrary {
             {
                 label: 'Group Actions',
                 model: [
-                    {label: 'Update', icon: 'fa-refresh', command: () => {}},
-                    {label: 'Delete', icon: 'fa-close', command: () => {}},
-                    {label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'},
-                    {label: 'Theming', icon: 'fa-paint-brush', routerLink: ['/theming']}
+                    {label: 'Action One', icon: 'fa-refresh', command: () => {}},
+                    {label: 'Action Two', icon: 'fa-close', command: () => {}},
                 ]
             },
             {
-                label: 'Edit Content',
+                label: 'More Actions',
                 model: [
-                    {label: 'Publish', icon: 'fa-refresh', command: () => {}},
-                    {label: 'Unpublish', icon: 'fa-close', command: () => {}},
-                    {label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'}
+                    {label: 'Action Three', icon: 'fa-refresh', command: () => {}},
+                    {label: 'Action Four', icon: 'fa-close', command: () => {}},
                 ]
             }
         ];
+<<<<<<< HEAD
         this.actionButtonItems = [{
             command: () => {
                 console.log('action update');
@@ -75,6 +77,14 @@ export class PatternLibrary {
             label: 'Theming',
             routerLink: ['/theming']
         }];
+=======
+        this.contentTypeColumns = [
+            {fieldName: 'name', header: 'Name', width: '40%', sortable: true},
+            {fieldName: 'velocityVarName', header: 'Variable', width: '10%'},
+            {fieldName: 'description', header: 'Description', width: '40%'},
+            {fieldName: 'nEntries', header: 'Entries', width: '10%'}
+        ];
+>>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
     }
 
     ngOnInit(): any {

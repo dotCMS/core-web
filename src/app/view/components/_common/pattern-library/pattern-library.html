@@ -43,6 +43,7 @@
                     <p-column field="color" header="Color" [sortable]="true"></p-column>
                 </p-dataTable>
             </article>
+<<<<<<< HEAD
             <h3 class="section__title">Action header</h3>
             <article>
                 <action-header [selected]="selectedCars.length > 0" 
@@ -64,6 +65,13 @@
             <article>
                 <action-button [options]="actionButtonItems" [primaryAction]="null"></action-button>
             </article>
+=======
+            <h3 class="section__title">Listing table</h3>
+            <listing-data-table-component url="v1/contenttype"
+                                        [columns]="contentTypeColumns"
+                                        [buttonActions]="buttonActions">
+            </listing-data-table-component>
+>>>>>>> e582ca383246ca70f739916294b5c35e2d7b510c
         </div>
 
         <div class="ui-g-5 section-fields">
