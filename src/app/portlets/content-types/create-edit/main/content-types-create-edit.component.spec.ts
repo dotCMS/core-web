@@ -3,7 +3,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesCreateEditPortletComponent } from './';
 import { ContentTypesFormComponent} from '../content-types-form';
-import { ContentTypesInfoService } from '../../../../api/services/content-types-info';
 import { CrudService } from '../../../../api/services/crud/crud.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
@@ -16,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
+import { ContentTypesInfoService } from '../../../../api/services/content-types-info';
 
 describe('ContentTypesCreateEditPortletComponent', () => {
     let comp: ContentTypesCreateEditPortletComponent;

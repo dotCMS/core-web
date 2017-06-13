@@ -66,14 +66,15 @@ export class ContentTypesFormComponent extends BaseComponent {
     };
     private publishDateFieldOptions: SelectItem[] = [];
     private sitesOrFolderOptions = [];
+    private url: string;
     private type: string;
     private workflowOptions: SelectItem[] = [];
 
-    constructor(messageService: MessageService, private crudService: CrudService,
+    constructor(public messageService: MessageService, private crudService: CrudService,
         private loginService: LoginService, private stringUtils: StringUtils,
         private renderer: Renderer, private fb: FormBuilder, private router: Router,
         private route: ActivatedRoute, private contentTypesInfoService: ContentTypesInfoService) {
-        super([
+            super([
             'Detail-Page',
             'Expire-Date-Field',
             'Host-Folder',
@@ -97,18 +98,31 @@ export class ContentTypesFormComponent extends BaseComponent {
             'Widget',
             'Page',
             'name'
-        ], messageService);
+            ], messageService);
     }
 
     ngOnInit(): void {
         this.initWorkflowtFieldOptions();
         this.initDatesFieldOptions();
-        let url = this.route.snapshot.url[0].path;
 
-        if (url === 'create') {
-            this.setIcon(this.type = this.route.snapshot.params.type);
-            this.addOptionalFields(this.type);
-        }
+        Observable.combineLatest([this.route.url, this.messageService.messageMap$]).map(res => {
+            return {
+                messages: res[1],
+                url: res[0]
+            };
+        }).subscribe((res) => {
+            let urlSegments = res.url;
+            this.url = urlSegments[0].path;
+
+            if (this.url === 'create') {
+                let type = urlSegments[1].path;
+                this.setIcon(this.type = type);
+                this.addOptionalFields(this.type);
+            }
+
+            this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
+            this.setPlaceholder();
+        });
     }
 
     ngOnChanges(changes): void {
@@ -148,13 +162,6 @@ export class ContentTypesFormComponent extends BaseComponent {
      */
     public goToListing(): void {
         this.router.navigate(['content-types-angular']);
-    }
-
-    // TODO: need to update the MessageService callback it's not a good approach
-    onMessage(): void {
-        this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
-        let type = this.i18nMessages[this.type.charAt(0).toUpperCase() + this.type.slice(1)];
-        this.fieldNamePlaceholder = `${type} ${this.i18nMessages['name']}`;
     }
 
     /**
@@ -305,5 +312,13 @@ export class ContentTypesFormComponent extends BaseComponent {
 
     private setIcon(type: string): void {
         this.icon = this.contentTypesInfoService.getIcon(type);
+    }
+
+    private setPlaceholder(): void {
+        let type = this.data && this.data.clazz || this.type;
+        let label = this.contentTypesInfoService.getLabel(type);
+        label = label.charAt(0).toUpperCase() + label.slice(1);
+        label = this.i18nMessages[label];
+        this.fieldNamePlaceholder = `${label} ${this.i18nMessages['name']}`;
     }
 }

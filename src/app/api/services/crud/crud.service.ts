@@ -10,8 +10,6 @@ import { RequestMethod, URLSearchParams } from '@angular/http';
  */
 @Injectable()
 export class CrudService {
-    private data: any[] = [];
-
     constructor(private coreWebService: CoreWebService) {}
 
     /**
@@ -43,10 +41,7 @@ export class CrudService {
             method: RequestMethod.Get,
             search: params,
             url: baseUrl
-        }).pluck('entity').map((res: any) => {
-            this.data = res.items;
-            return res;
-        });
+        }).pluck('entity');
     }
 
     /**
@@ -90,15 +85,6 @@ export class CrudService {
      * @memberof CrudService
      */
     getDataById(baseUrl: string, id: string): Observable<any> {
-        return this.loadItemById(baseUrl, id);
-        // TODO: after https://github.com/dotCMS/core/issues/11837 we can update this method
-        // return Observable.from(this.data)
-        //     .filter(item => item.identifier === id)
-        //     .defaultIfEmpty(null)
-        //     .flatMap(item => item ? Observable.of(item) : this.loadItemById(baseUrl, id));
-    }
-
-    private loadItemById(baseUrl: string, id: string): Observable<any> {
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
             url: `${baseUrl}/id/${id}`

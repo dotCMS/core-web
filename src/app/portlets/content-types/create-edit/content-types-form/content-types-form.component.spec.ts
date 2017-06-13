@@ -1,11 +1,10 @@
-import { ActivatedRoute, Params, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Params, UrlSegment, ActivatedRouteSnapshot } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { ContentType } from '../main';
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { ContentTypesInfoService } from '../../../../api/services/content-types-info';
-import { CrudService } from '../../../../api/services/crud/crud.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
@@ -17,6 +16,7 @@ import { MockMessageService } from '../../../../test/message-service.mock';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CrudService } from '../../../../api/services/crud';
 
 describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
@@ -26,25 +26,34 @@ describe('ContentTypesFormComponent', () => {
 
     let route: ActivatedRoute;
     let params: Params;
-    let url: UrlSegment[];
+    let url: Observable<UrlSegment[]>;
 
     beforeEach(async(() => {
+
         let messageServiceMock = new MockMessageService({
+            'Content': 'Content',
             'Detail-Page': 'Detail Page',
             'Expire-Date-Field': 'Expire Date Field',
+            'File': 'File',
+            'Form': 'Form',
             'Host-Folder': 'Host or Folder',
             'Identifier': 'Identifier',
+            'Page': 'Page',
+            'Persona': 'Persona',
             'Properties': 'Properties',
             'Publish-Date-Field': 'Publish Date Field',
             'URL-Map-Pattern-hint1': 'Hello World',
             'URL-Pattern': 'URL Pattern',
             'Variable': 'Variable',
+            'Widget': 'Widget',
             'Workflow': 'Workflow',
             'cancel': 'Cancel',
             'description': 'Description',
             'fields': 'Fields',
             'message.contentlet.required': 'This field is mandatory',
-            'save': 'Save'
+            'name': 'Name',
+            'save': 'Save',
+            'update': 'Update'
         });
 
         DOTTestBed.configureTestingModule({
@@ -66,12 +75,7 @@ describe('ContentTypesFormComponent', () => {
             providers: [
                 { provide: MessageService, useValue: messageServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        snapshot: {}
-                    }
-                },
+                { provide: ActivatedRoute, useValue: {}},
                 CrudService,
                 ContentTypesInfoService
             ]
@@ -89,18 +93,20 @@ describe('ContentTypesFormComponent', () => {
         });
     }));
 
-    it('should focus on the name field on load', () => {
-        params = {type: 'content'};
-        url = [new UrlSegment('create', { name: 'create' })];
-
-        route.snapshot.url = url;
-        route.snapshot.params = params;
+    it('should focus on the name field on load', async(() => {
+        let url = [
+            new UrlSegment('create', { name: 'create' }),
+            new UrlSegment('content', { name: 'content' })
+        ];
+        route.url = Observable.of(url);
 
         let nameDebugEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
         spyOn(nameDebugEl.nativeElement, 'focus');
+
         fixture.detectChanges();
+
         expect(nameDebugEl.nativeElement.focus).toHaveBeenCalledTimes(1);
-    });
+    }));
 
     it('should have a button to expand/collapse the form', () => {
         let expandFormButton: DebugElement = fixture.debugElement.query(By.css('#custom-type-form-expand-button'));
@@ -127,11 +133,13 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should not send form with invalid data', () => {
-        params = {type: 'content'};
-        url = [new UrlSegment('create', { name: 'create' })];
-        route.snapshot.url = url;
-        route.snapshot.params = params;
-        comp.ngOnInit();
+        let url = [
+            new UrlSegment('create', { name: 'create' }),
+            new UrlSegment('content', { name: 'content' })
+        ];
+        route.url = Observable.of(url);
+
+        fixture.detectChanges();
 
         let crudService = fixture.debugElement.injector.get(CrudService);
         spyOn(crudService, 'postData').and.returnValue(Observable.of({}));
@@ -159,10 +167,12 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should send form with valid data to create content type', () => {
-        params = {type: 'content'};
-        url = [new UrlSegment('create', { name: 'create' })];
-        route.snapshot.url = url;
-        route.snapshot.params = params;
+        let url = [
+            new UrlSegment('create', { name: 'create' }),
+            new UrlSegment('content', { name: 'content' })
+        ];
+
+        route.url = Observable.of(url);
         comp.ngOnInit();
 
         let crudService = fixture.debugElement.injector.get(CrudService);
@@ -199,11 +209,14 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should send form with valid data to create a file type', () => {
-        params = {type: 'file'};
-        url = [new UrlSegment('create', { name: 'create' })];
-        route.snapshot.url = url;
-        route.snapshot.params = params;
-        comp.ngOnInit();
+        let url = [
+            new UrlSegment('create', { name: 'create' }),
+            new UrlSegment('file', { name: 'file' })
+        ];
+
+        route.url = Observable.of(url);
+
+        fixture.detectChanges();
 
         let crudService = fixture.debugElement.injector.get(CrudService);
         spyOn(crudService, 'postData').and.returnValue(Observable.of({}));
@@ -235,6 +248,19 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should edit and send form with valid data', () => {
+        let url = [
+            new UrlSegment('edit', { name: 'edit' }),
+            new UrlSegment('file', { name: 'file' })
+        ];
+
+        // The isEditMode needs data and that is set until the second
+        // ngOnChanges, that's why we delay this a little bit
+        route.url = Observable.of(url).delay(100);
+
+        let snapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+        route.snapshot = snapshot;
+        route.snapshot.url = url;
+
         let data: any = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableFileAssetContentType',
             defaultType: false,
@@ -269,27 +295,27 @@ describe('ContentTypesFormComponent', () => {
             workflow: ''
         };
 
-        params = {id: 'file'};
-        url = [new UrlSegment('edit', { name: 'edit' })];
-        route.snapshot.url = url;
-        route.snapshot.params = params;
-        comp.ngOnInit();
         comp.data = data;
         let changes: SimpleChange = new SimpleChange(null, data, false);
         comp.ngOnChanges({
             data: changes
         });
 
-        let crudService = fixture.debugElement.injector.get(CrudService);
-        spyOn(crudService, 'putData').and.returnValue(Observable.of({}));
-
         comp.form.controls.name.setValue('Edited Name');
-        comp.submitContent();
-        expect(comp.form.controls.detailPage).toBeUndefined();
-        expect(comp.form.controls.urlMapPattern).toBeUndefined();
-        expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', mockData);
-        expect(comp.readyToAddFields).toBeTruthy();
-        expect(comp.submitAttempt).toBeFalsy();
+
+        // Because the delay in the route.url we need to delay the
+        // tests until everything it's ready.
+        // Try to remove this when I separate create/edit components.
+        setTimeout(() => {
+            let crudService = fixture.debugElement.injector.get(CrudService);
+            spyOn(crudService, 'putData').and.returnValue(Observable.of({}));
+            comp.submitContent();
+            expect(comp.form.controls.detailPage).toBeUndefined();
+            expect(comp.form.controls.urlMapPattern).toBeUndefined();
+            expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', mockData);
+            expect(comp.readyToAddFields).toBeTruthy();
+            expect(comp.submitAttempt).toBeFalsy();
+        }, 150);
     });
 
     xit('should have full form collapsed by default', () => {

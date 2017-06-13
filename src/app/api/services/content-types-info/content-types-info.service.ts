@@ -53,7 +53,7 @@ export class ContentTypesInfoService {
     }
 
     /**
-     * Return an icon clazz property base on the content type name
+     * Return an icon class property base on the content type name
      *
      * @param {string} type
      * @returns {string}
@@ -62,6 +62,18 @@ export class ContentTypesInfoService {
      */
     public getClazz(type: string): string {
         return this.getItem(type, 'clazz');
+    }
+
+    /**
+     * Return the label property base on the content type name
+     *
+     * @param {string} type
+     * @returns {string}
+     *
+     * @memberof ContentTypesInfoService
+     */
+    public getLabel(type: string): string {
+        return this.getItem(type, 'label');
     }
 
     private getItem(type: string, prop: string): string {
