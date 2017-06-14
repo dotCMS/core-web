@@ -8,6 +8,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/debounceTime';
 
 import {SettingsStorageService} from './settings-storage.service';
+import {LoggerService} from './logger.service';
 
 /**
  * The HTTPClient will use the JWTToken and Host/Site set in the SettingsStorageService to connect dotCMS REST Endpoints
@@ -20,6 +21,7 @@ export class HttpClient {
     private progress: number;
     constructor(
         private http: Http,
+        private log: LoggerService,
         private settingsStorageService: SettingsStorageService
 
     ) {
@@ -35,7 +37,8 @@ export class HttpClient {
      * @param headers
      */
     createAuthorizationHeader(headers: Headers): void {
-        if (this.settingsStorageService.getSettings() != null && this.settingsStorageService.getSettings().jwt != null && this.settingsStorageService.getSettings().jwt.trim().length > 0 ) {
+        if (this.settingsStorageService.getSettings() != null && this.settingsStorageService.getSettings().jwt != null
+            && this.settingsStorageService.getSettings().jwt.trim().length > 0 ) {
             headers.append('Authorization', 'Bearer ' + this.settingsStorageService.getSettings().jwt);
         }
     }
@@ -100,7 +103,7 @@ export class HttpClient {
             let formData: FormData = new FormData(), xhr: XMLHttpRequest = new XMLHttpRequest();
             formData.append('json', JSON.stringify(data));
 
-            console.log(file);
+            this.log.debug('File to push is : ' + file.name);
             formData.append('fileAsset', file);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
@@ -118,10 +121,13 @@ export class HttpClient {
 
                 this.progressObserver.next(this.progress);
             };
-
-            xhr.open('PUT', this.settingsStorageService.getSettings().site + path.toString(), true);
-            xhr.setRequestHeader('Authorization', 'Bearer ' + this.settingsStorageService.getSettings().jwt);
-            console.log(formData);
+            let site: String = this.settingsStorageService.getSettings().site;
+            xhr.open('PUT', (site ? site : '') + path.toString(), true);
+            if (this.settingsStorageService.getSettings() != null && this.settingsStorageService.getSettings().jwt != null
+                && this.settingsStorageService.getSettings().jwt.trim().length > 0 ) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + this.settingsStorageService.getSettings().jwt);
+            }
+            this.log.debug('FormData is ' + formData);
             xhr.send(formData);
         });
     }

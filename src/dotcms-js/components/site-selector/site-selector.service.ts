@@ -1,6 +1,6 @@
 import {Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '../../core/util/http.service';
 import {NotificationService} from '../../core/util/notification.service';
 import {Site} from '../../core/treeable/shared/site.model';
@@ -37,7 +37,7 @@ export class SiteSelectorService {
         return obj.entity.result;
     }
 
-    private handleError(error: any): ErrorObservable<String> {
+    private handleError(error: any): ErrorObservable {
         // we need use a remote logging infrastructure at some point
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';

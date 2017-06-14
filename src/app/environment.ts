@@ -50,6 +50,7 @@ import {SiteBrowserService} from '../dotcms-js/core/util/site-browser.service';
 import {AppConfig} from '../dotcms-js/core/app.config';
 import {SiteBrowserState} from '../dotcms-js/core/util/site-browser.state';
 import {FileSystemService} from '../dotcms-js/core/util/filesystem.service';
+import {FileService} from '../dotcms-js/core/util/file.services';
 import {SiteTreetableService} from '../dotcms-js/components/site-treetable/site-treetable.service';
 import {LocalStoreService} from '../dotcms-js/core/util/local-store.service';
 import {NotificationService as NotificationsServiceDotJS} from '../dotcms-js/core/util/notification.service';
@@ -113,6 +114,7 @@ let PROVIDERS: any[] = [
     {provide: SiteTreetableService, useClass: SiteTreetableService},
     {provide: LoggerServiceDotJS, useClass: LoggerServiceDotJS},
     {provide: LocalStoreService, useClass: LocalStoreService},
+    {provide: FileService, useClass: FileService},
     {provide: LocationStrategy, useClass: HashLocationStrategy}
 ];
 

@@ -2,7 +2,6 @@ import {Component, NgModule} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Treeable} from '../../core/treeable/shared/treeable.model';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
-import {FileSystemService} from '../../core/util/filesystem.service';
 import {LoggerService} from '../../core/util/logger.service';
 import {SiteBrowserService} from '../../core/util/site-browser.service';
 import {SettingsStorageService} from '../../core/util/settings-storage.service';
@@ -10,6 +9,7 @@ import {NotificationService} from '../../core/util/notification.service';
 import {Folder} from '../../core/treeable/shared/folder.model';
 import {CommonModule} from '@angular/common';
 import {DataTableModule} from 'primeng/components/datatable/datatable';
+import {FileService} from '../../core/util/file.services';
 
 /**
  * The SiteDataTableComponent is a PrimeNG Component which provides a DataTable to display dotCMS Host/Folder Navigation
@@ -30,18 +30,17 @@ export class SiteDatatableComponent {
     subscription: Subscription;
 
     constructor(private updateService: SiteBrowserState,
-                private fsService: FileSystemService,
+                private fileService: FileService,
                 private log: LoggerService,
                 private siteBrowserService: SiteBrowserService,
                 private settingsStorageService: SettingsStorageService,
                 private messageService: NotificationService) {
 
-        if (settingsStorageService.getSettings()) {this.dotCMSURL = settingsStorageService.getSettings().site; };
+        if (settingsStorageService.getSettings()) {this.dotCMSURL = settingsStorageService.getSettings().site; }
         this.siteName = updateService.getSelectedSite();
         if (updateService.getURI()) {
             this.loadFolder(updateService.getURI());
         }
-        ;
         this.subscription = updateService.currentSite
             .subscribe(siteName => {
                 if (siteName) {
@@ -120,10 +119,11 @@ export class SiteDatatableComponent {
     handleDrop(e: any): void {
         e.preventDefault();
         let pathToUploadTo: string;
+        let fileContentTypeID: string;
         let dataTrans: any =  e.dataTransfer;
         let fileName: string =  e.dataTransfer.files[0].name;
         let files: File[] = e.dataTransfer.files;
-        let folderTitle: string = e.path[0].innerText;
+        let folderTitle: string = e.path[0].innerText.trim();
         this.log.debug('dataTrans = ' + dataTrans);
         this.log.debug('folderTitle = ' + folderTitle);
         this.log.debug('files = ' + files);
@@ -133,13 +133,16 @@ export class SiteDatatableComponent {
             let node: Treeable = this.treeables[i];
             if (node.title === folderTitle && node.type === 'folder') {
                 pathToUploadTo = (<Folder> node).path;
+                fileContentTypeID = (<Folder> node).defaultFileType;
                 break;
             }
         }
+        for (let i = 0; i < files.length; i++) {
+            let file: File = files[i];
+            this.fileService.uploadFile(file, pathToUploadTo, fileContentTypeID);
+        }
         this.log.debug('Path 4: ' + pathToUploadTo);
-        // console.log('Is Directory : ' + fs.statSync(files[0].path).isDirectory());
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
-        // console.log('Is Directory : ' + this.fsService.isDirectory(files[0].path));
         return;
     }
 

@@ -61,7 +61,7 @@ export class SiteBrowserService {
         return treeables;
     }
 
-    private handleError(error: any): ErrorObservable<Object> {
+    private handleError(error: any): ErrorObservable {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {

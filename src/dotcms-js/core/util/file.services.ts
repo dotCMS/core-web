@@ -14,7 +14,6 @@ export class FileService {
     constructor
     (private httpClient: HttpClient,
      private siteBrowserState: SiteBrowserState,
-     private fileService: FileService,
      private loggerService: LoggerService,
      private notificationService: NotificationService) {
     }
@@ -35,9 +34,9 @@ export class FileService {
      * @param file File from teh File System to upload
      * @param path dotCMS Path to upload file to
      */
-    uploadFile(file: File, path: string): void {
+    uploadFile(file: File, path: string, fileContentTypeID: string): void {
         let data: {
-            stName: string;
+            stInode: string;
             hostFolder: string;
             title: string;
             fileName: string;
@@ -45,11 +44,10 @@ export class FileService {
         } = {
             fileName: file.name,
             hostFolder: this.siteBrowserState.getSelectedSite() + ':' + path,
-            stName: '',
+            stInode: fileContentTypeID,
             title: file.name,
             type: file.type
         };
-
         this.httpClient.filePut('/api/content/publish/1', file, data).subscribe();
     }
 
