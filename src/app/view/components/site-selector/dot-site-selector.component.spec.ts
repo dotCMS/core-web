@@ -67,7 +67,7 @@ describe('Site Selector Component', () => {
   it('Should change Page', fakeAsync(() => {
 
     let filter = 'filter';
-    let first = 2;
+    let page = 1;
 
     let siteService = de.injector.get(SiteService);
     spyOn(siteService, 'paginateSites').and.returnValue(Observable.of([]));
@@ -80,14 +80,14 @@ describe('Site Selector Component', () => {
 
     searchableDropdownComponent.pageChange.emit({
       filter: filter,
-      first: first,
-      page: 0,
+      first: 0,
+      page: 1,
       pageCount: 0,
       rows: 0
     });
 
     tick();
-    expect(siteService.paginateSites).toHaveBeenCalledWith(filter, false, first, paginatorRows);
+    expect(siteService.paginateSites).toHaveBeenCalledWith(filter, false, page + 1, paginatorRows);
   }));
 
   it('Should paginate when the filter change', fakeAsync(() => {
