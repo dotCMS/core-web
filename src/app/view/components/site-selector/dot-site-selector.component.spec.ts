@@ -76,7 +76,7 @@ describe('Site Selector Component', () => {
     comp.ngOnInit();
 
     fixture.detectChanges();
-    let searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown-component')).componentInstance;
+    let searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown')).componentInstance;
 
     searchableDropdownComponent.pageChange.emit({
       filter: filter,
@@ -102,7 +102,7 @@ describe('Site Selector Component', () => {
     comp.ngOnInit();
 
     fixture.detectChanges();
-    let searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown-component')).componentInstance;
+    let searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown')).componentInstance;
 
     searchableDropdownComponent.filterChange.emit(filter);
     comp.handleFilterChange(filter);
