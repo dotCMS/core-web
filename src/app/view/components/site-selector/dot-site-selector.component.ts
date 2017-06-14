@@ -84,7 +84,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      * @memberof SiteSelectorComponent
      */
     handlePageChange(event): void {
-        this.paginateSites(event.filter, event.first);
+        this.paginateSites(event.filter, event.page + 1);
     }
 
     /**
@@ -135,7 +135,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
     private selectCurrentSite(): void {
         if (this.sitesCurrentPage) {
             let selected = this.sitesCurrentPage.filter( site => site.identifier === this.value);
-            this.currentSite = selected.length > 0 ? selected[0] : null;
+            this.currentSite = selected.length > 0 ? selected[0] : this.currentSite;
         }
     }
 }
