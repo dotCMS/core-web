@@ -1,5 +1,5 @@
 <!--TODO: get rid of this let autoComplete when this is fixed: https://github.com/primefaces/primeng/issues/745-->
-<searchable-dropdown-component *ngIf="sitesCounter > 1"
+<searchable-dropdown *ngIf="sitesCounter > 1"
                             #searchableDropdown    
                             [data]="sitesCurrentPage"
                             [totalRecords]="sitesCounter"
@@ -11,6 +11,6 @@
                             (change)="siteChange($event)"
                             [(ngModel)]="currentSite"
                             class="site-selector__field">
-</searchable-dropdown-component>
+</searchable-dropdown>
 
 <h1 *ngIf="sitesCounter == 1" class="site-selector__title">{{currentSite ? currentSite.label : ''}}</h1>

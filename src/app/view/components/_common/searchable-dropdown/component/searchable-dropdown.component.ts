@@ -24,12 +24,12 @@ import { OverlayPanel } from 'primeng/primeng';
     encapsulation: ViewEncapsulation.Emulated,
     providers: [
         {
-        multi: true,
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => SearchableDropdownComponent)
+            multi: true,
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => SearchableDropdownComponent)
         }
     ],
-    selector: 'searchable-dropdown-component',
+    selector: 'searchable-dropdown',
     styles: [require('./searchable-dropdown.component.scss')],
     templateUrl: './searchable-dropdown.component.html',
 })

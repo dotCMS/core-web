@@ -35,9 +35,9 @@ describe('Site Service', () => {
 
             if (url.indexOf('v1/site/currentSite') !== -1) {
                 this.lastCurrentSiteConnection = connection;
-            }else if (url.indexOf('v1/site/switch') !== -1) {
+            } else if (url.indexOf('v1/site/switch') !== -1) {
                 this.lastSwitchSiteConnection = connection;
-            }else if (url.indexOf('v1/site') !== -1) {
+            } else if (url.indexOf('v1/site') !== -1) {
                 this.lastPaginateSiteConnection = connection;
             }
         });
@@ -75,7 +75,7 @@ describe('Site Service', () => {
 
     it('should switch site', fakeAsync(() => {
         this.siteService.switchSite(currentSite);
-        respondSiwtchSiteRequest.bind(this)();
+        respondSwitchSiteRequest.bind(this)();
 
         tick();
 
@@ -91,7 +91,7 @@ describe('Site Service', () => {
         };
 
         this.siteService.switchSite(currentSite);
-        respondSiwtchSiteRequest.bind(this)();
+        respondSwitchSiteRequest.bind(this)();
 
         let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
 
@@ -116,14 +116,14 @@ describe('Site Service', () => {
                 }
             })
         })));
-        respondSiwtchSiteRequest.bind(this)();
+        respondSwitchSiteRequest.bind(this)();
 
         tick();
         expect(newCurrentSite).toEqual(this.siteService.currentSite);
     }));
 
-    function respondSiwtchSiteRequest(): void {
-            this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
+    function respondSwitchSiteRequest(): void {
+        this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify({
                 entity: {
                 }
