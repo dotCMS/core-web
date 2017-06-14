@@ -26,12 +26,10 @@ export class LoginServiceMock {
     }
 
     public watchUser(func: Function): void {
-        console.log('watchUser', func);
         this.watchUserFunc = func;
     }
 
     public tiggerWatchUser(): void {
-        console.log('this.watchUserFunc', this.watchUserFunc);
         this.watchUserFunc(this.mockAuth);
     }
 }
