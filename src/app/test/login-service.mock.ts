@@ -15,11 +15,23 @@ export class LoginServiceMock {
         user: this.mockUser
     };
 
+    private watchUserFunc: Function;
+
     get auth(): Auth {
         return this.mockAuth;
     }
 
     get auth$(): Observable<Auth> {
         return Observable.of(this.mockAuth);
+    }
+
+    public watchUser(func: Function): void {
+        console.log('watchUser', func);
+        this.watchUserFunc = func;
+    }
+
+    public tiggerWatchUser(): void {
+        console.log('this.watchUserFunc', this.watchUserFunc);
+        this.watchUserFunc(this.mockAuth);
     }
 }

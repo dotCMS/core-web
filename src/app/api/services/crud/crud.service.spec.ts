@@ -80,7 +80,7 @@ describe('CrudService', () => {
         this.crudService.postData('v1/urldemo', body).subscribe(res => {
             result = res;
         });
-        let a = this.lastConnection.mockRespond(new Response(new ResponseOptions({
+        this.lastConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify(mockResponse)
         })));
 
