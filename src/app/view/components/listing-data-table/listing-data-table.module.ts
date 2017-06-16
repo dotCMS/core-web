@@ -4,13 +4,16 @@ import { CrudService } from '../../../api/services/crud';
 import { DataTableModule, InputTextModule} from 'primeng/primeng';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { FormsModule } from '@angular/forms';
-import { ListingDataTableComponent } from './listing-data-table.component';
+import { FormatDateService } from '../../../api/services/format-date-service';
+import { ListingDataTableComponent } from './listing-data-table-component';
 import { LoggerService } from '../../../api/services/logger.service';
 import { MessageService } from '../../../api/services/messages-service';
 import { NgModule } from '@angular/core';
+import { ConfirmDialogModule, DataTableModule, InputTextModule, SplitButtonModule} from 'primeng/primeng';
 
 @NgModule({
     declarations: [
+        ActionHeaderComponent,
         ListingDataTableComponent
     ],
     exports: [
@@ -25,6 +28,7 @@ import { NgModule } from '@angular/core';
     ],
     providers: [
         CrudService,
+        FormatDateService,
         DotcmsConfig,
         LoggerService,
         MessageService,

@@ -3,6 +3,7 @@ import { ActionHeaderOptions } from './action-header/action-header';
 import { Component, Input, Output } from '@angular/core';
 import { CrudService, OrderDirection } from '../../../api/services/crud';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
+import { FormatDateService } from '../../../api/services/format-date-service';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { LoggerService } from '../../../api/services/logger.service';
 import { MessageService } from '../../../api/services/messages-service';
@@ -17,6 +18,9 @@ export class ListingDataTableComponent extends BaseComponent {
     @Input() columns: DataTableColumn[];
     @Input() url: string;
     @Input() actionHeaderOptions: ActionHeaderOptions;
+    @Input() buttonActions: ButtonAction[] = [];
+    @Input() defaultSortOrder: string;
+    @Input() defaultSortField: string;
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter;
 
     private paginatorRows: number;
@@ -24,11 +28,11 @@ export class ListingDataTableComponent extends BaseComponent {
     private items: any[];
     private totalRecords: number;
     private query = '';
-    // tslint:disable-next-line:no-unused-variable
+    private sortField: string;
     private selectedItems = [];
 
     constructor(private dotcmsConfig: DotcmsConfig, private crudService: CrudService,
-    messageService: MessageService, public loggerService: LoggerService) {
+    messageService: MessageService, public loggerService: LoggerService, private formatDateService: FormatDateService) {
         super(['global-search'], messageService);
     }
 
@@ -38,6 +42,8 @@ export class ListingDataTableComponent extends BaseComponent {
             this.paginatorLinks = configParams.paginatorLinks;
             this.loadData(this.paginatorRows, -1);
         });
+
+        this.sortField = this.defaultSortField;
     }
 
     handleRowClick($event): void {
@@ -62,11 +68,12 @@ export class ListingDataTableComponent extends BaseComponent {
      * @memberof ListingDataTableComponent
      */
     loadData(limit: number, offset: number, sortField?: string, sortOrder?: number, query?: string): void {
-        this.crudService.loadData(this.url, limit, offset, sortField,
-        sortOrder < 0 ? OrderDirection.DESC : OrderDirection.ASC, query)
-            .subscribe( response => {
-                this.items = response.items;
-                this.totalRecords = response.totalRecords;
+        if (this.defaultSortOrder) {
+            sortField = this.defaultSortOrder;
+        }
+        this.crudService.loadData(this.url, limit, offset, sortField, sortOrder < 0 ? OrderDirection.DESC : OrderDirection.ASC, query)
+            .subscribe((response) => {
+                this.formatData(response);
             });
     }
 
@@ -81,6 +88,19 @@ export class ListingDataTableComponent extends BaseComponent {
         return col.textAlign ? col.textAlign :
             (this.items && this.items[0] && typeof this.items[0][col.fieldName] === 'number') ? 'right' : 'left';
     }
+
+     private formatData(data: any): void {
+        this.items = data.items.map((item) => {
+            this.columns.forEach((col) => {
+                if (col.format === 'date') {
+                    item[col.fieldName] = this.formatDateService.getModDate(item[col.fieldName]);
+                }
+            });
+            return item;
+        });
+
+        this.totalRecords = data.totalRecords;
+    }
 }
 
 export interface DataTableColumn {
@@ -89,4 +109,5 @@ export interface DataTableColumn {
     sortable?: boolean;
     width?: string;
     textAlign?: string;
+    format?: string;
 }
