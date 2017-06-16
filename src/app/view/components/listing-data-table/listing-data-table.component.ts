@@ -1,7 +1,7 @@
 import { BaseComponent } from '../_common/_base/base-component';
-import { ActionHeaderOptions } from './action-header/action-header';
+import { ActionHeaderOptions, ButtonAction } from './action-header/action-header';
 import { Component, Input, Output } from '@angular/core';
-import { CrudService, OrderDirection } from '../../../api/services/crud';
+import { CrudService, OrderDirection } from '../../../api/services/crud/crud.service';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { FormatDateService } from '../../../api/services/format-date-service';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -30,12 +30,12 @@ export class ListingDataTableComponent extends BaseComponent {
     private query = '';
     private sortField: string;
     private selectedItems = [];
+    private dateColumns: DataTableColumn[];
 
     constructor(private dotcmsConfig: DotcmsConfig, private crudService: CrudService,
     messageService: MessageService, public loggerService: LoggerService, private formatDateService: FormatDateService) {
         super(['global-search'], messageService);
     }
-
     ngOnInit(): void {
         this.dotcmsConfig.getConfig().subscribe(configParams => {
             this.paginatorRows = configParams.paginatorRows;
@@ -44,6 +44,12 @@ export class ListingDataTableComponent extends BaseComponent {
         });
 
         this.sortField = this.defaultSortField;
+    }
+
+    ngOnChanges(changes): void {
+        if (changes.columns) {
+            this.dateColumns = changes.columns.currentValue.filter(column => column.format === 'date');
+        }
     }
 
     handleRowClick($event): void {
@@ -68,12 +74,13 @@ export class ListingDataTableComponent extends BaseComponent {
      * @memberof ListingDataTableComponent
      */
     loadData(limit: number, offset: number, sortField?: string, sortOrder?: number, query?: string): void {
-        if (this.defaultSortOrder) {
+        if (sortField) {
             sortField = this.defaultSortOrder;
         }
         this.crudService.loadData(this.url, limit, offset, sortField, sortOrder < 0 ? OrderDirection.DESC : OrderDirection.ASC, query)
             .subscribe((response) => {
-                this.formatData(response);
+                this.items = this.dateColumns ? this.formatData(response.items) : response.items;
+                this.totalRecords = response.totalRecords;
             });
     }
 
@@ -89,17 +96,15 @@ export class ListingDataTableComponent extends BaseComponent {
             (this.items && this.items[0] && typeof this.items[0][col.fieldName] === 'number') ? 'right' : 'left';
     }
 
-     private formatData(data: any): void {
-        this.items = data.items.map((item) => {
-            this.columns.forEach((col) => {
+     private formatData(items: any[]): any[] {
+        return items.map((item) => {
+            this.dateColumns.forEach((col) => {
                 if (col.format === 'date') {
                     item[col.fieldName] = this.formatDateService.getModDate(item[col.fieldName]);
                 }
             });
             return item;
         });
-
-        this.totalRecords = data.totalRecords;
     }
 }
 

@@ -1,11 +1,10 @@
 import { ActionHeaderModule } from './action-header/action-header.module';
 import { CommonModule } from '@angular/common';
-import { CrudService } from '../../../api/services/crud';
-import { DataTableModule, InputTextModule} from 'primeng/primeng';
+import { CrudService } from '../../../api/services/crud/crud.service';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { FormsModule } from '@angular/forms';
 import { FormatDateService } from '../../../api/services/format-date-service';
-import { ListingDataTableComponent } from './listing-data-table-component';
+import { ListingDataTableComponent } from './listing-data-table.component';
 import { LoggerService } from '../../../api/services/logger.service';
 import { MessageService } from '../../../api/services/messages-service';
 import { NgModule } from '@angular/core';
@@ -13,7 +12,6 @@ import { ConfirmDialogModule, DataTableModule, InputTextModule, SplitButtonModul
 
 @NgModule({
     declarations: [
-        ActionHeaderComponent,
         ListingDataTableComponent
     ],
     exports: [

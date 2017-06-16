@@ -5,6 +5,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesPortletComponent } from './content-types.component';
 import { CrudService } from '../../../api/services/crud';
 import { DOTTestBed } from '../../../test/dot-test-bed';
+import { FormatDateService } from '../../../api/services/format-date-service';
 import { ListingDataTableComponent } from '../../../view/components/listing-data-table/listing-data-table.component';
 import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
@@ -34,7 +35,7 @@ describe('ContentTypesPortletComponent', () => {
             ])],
             providers: [
                  {provide: MessageService, useValue: messageServiceMock},
-                 CrudService
+                 CrudService, FormatDateService
             ],
         });
 
