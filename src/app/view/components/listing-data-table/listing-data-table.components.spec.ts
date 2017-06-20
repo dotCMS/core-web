@@ -5,7 +5,7 @@ import { ComponentFixture, async } from '@angular/core/testing';
 import { CrudService } from '../../../api/services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DataTableModule, SharedModule } from 'primeng/primeng';
-import { DebugElement } from '@angular/core';
+import { DebugElement, SimpleChange } from '@angular/core';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { FormatDateService } from '../../../api/services/format-date-service';
 import { ListingDataTableComponent } from './listing-data-table.component';
@@ -14,7 +14,7 @@ import { MockMessageService } from '../../../test/message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 
-fdescribe('Listing Component', () => {
+describe('Listing Component', () => {
 
   let comp: ListingDataTableComponent;
   let fixture: ComponentFixture<ListingDataTableComponent>;
@@ -50,10 +50,10 @@ fdescribe('Listing Component', () => {
         paginatorLinks: 2,
         paginatorRows: 3
     }));
+
   }));
 
   it('renderer title', () => {
-
     let items = [
         {field1: 'item1-value1', field2: 'item1-value2', field3: 'item1-value3'},
         {field1: 'item2-value1', field2: 'item2-value2', field3: 'item2-value3'},
@@ -75,6 +75,11 @@ fdescribe('Listing Component', () => {
         {fieldName: 'field2', header: 'Field 2', width: '10%'},
         {fieldName: 'field3', header: 'Field 3', width: '45%'},
     ];
+
+    comp.ngOnChanges({
+        columns: new SimpleChange(null, comp.columns, true)
+    });
+
     fixture.detectChanges();
 
     let rows = el.querySelectorAll('tr');
@@ -124,6 +129,10 @@ fdescribe('Listing Component', () => {
         {fieldName: 'field2', header: 'Field 2', width: '10%'},
         {fieldName: 'field3', header: 'Field 3', width: '45%', format: 'date'},
     ];
+
+    comp.ngOnChanges({
+        columns: new SimpleChange(null, comp.columns, true)
+    });
 
     fixture.detectChanges();
 

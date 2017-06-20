@@ -37,6 +37,7 @@ export class ListingDataTableComponent extends BaseComponent {
     messageService: MessageService, public loggerService: LoggerService, private formatDateService: FormatDateService) {
         super(['global-search'], messageService);
     }
+
     ngOnInit(): void {
         this.dotcmsConfig.getConfig().subscribe(configParams => {
             this.paginatorRows = configParams.paginatorRows;
@@ -52,7 +53,6 @@ export class ListingDataTableComponent extends BaseComponent {
             this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.dataFormat);
             this.loadData(this.paginatorRows, -1);
         }
-
     }
 
     handleRowClick($event): void {
