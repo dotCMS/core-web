@@ -12,7 +12,7 @@
              [(selection)]="selectedItems"
              (onRowClick)="handleRowClick($event)"
              [globalFilter]="gf"
-             sortOrder="{{defaultSortOrder}}">
+             [sortOrder]="sortOrder === 'desc' ? -1 : 1">
 
     <p-column selectionMode="multiple"></p-column>
 
