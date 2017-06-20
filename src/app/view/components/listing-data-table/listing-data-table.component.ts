@@ -19,8 +19,8 @@ export class ListingDataTableComponent extends BaseComponent {
     @Input() url: string;
     @Input() actionHeaderOptions: ActionHeaderOptions;
     @Input() buttonActions: ButtonAction[] = [];
-    @Input() defaultSortOrder: string;
-    @Input() defaultSortField: string;
+    @Input() sortOrder: string;
+    @Input() sortField: string;
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter;
 
     private paginatorRows: number;
@@ -28,9 +28,10 @@ export class ListingDataTableComponent extends BaseComponent {
     private items: any[];
     private totalRecords: number;
     private query = '';
-    private sortField: string;
     private selectedItems = [];
     private dateColumns: DataTableColumn[];
+    private defaultSortOrder: number;
+    private dataFormat: string;
 
     constructor(private dotcmsConfig: DotcmsConfig, private crudService: CrudService,
     messageService: MessageService, public loggerService: LoggerService, private formatDateService: FormatDateService) {
@@ -40,16 +41,18 @@ export class ListingDataTableComponent extends BaseComponent {
         this.dotcmsConfig.getConfig().subscribe(configParams => {
             this.paginatorRows = configParams.paginatorRows;
             this.paginatorLinks = configParams.paginatorLinks;
-            this.loadData(this.paginatorRows, -1);
         });
 
-        this.sortField = this.defaultSortField;
+        this.defaultSortOrder = (this.sortOrder === 'desc' ? -1 : 1);
+        this.dataFormat = 'date';
     }
 
     ngOnChanges(changes): void {
-        if (changes.columns) {
-            this.dateColumns = changes.columns.currentValue.filter(column => column.format === 'date');
+        if (changes.columns.currentValue) {
+            this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.dataFormat);
+            this.loadData(this.paginatorRows, -1);
         }
+
     }
 
     handleRowClick($event): void {
@@ -74,9 +77,9 @@ export class ListingDataTableComponent extends BaseComponent {
      * @memberof ListingDataTableComponent
      */
     loadData(limit: number, offset: number, sortField?: string, sortOrder?: number, query?: string): void {
-        if (sortField) {
-            sortField = this.defaultSortOrder;
-        }
+        sortField = sortField || this.sortField;
+        sortOrder = sortOrder || (this.sortOrder === 'desc' ? -1 : 1);
+
         this.crudService.loadData(this.url, limit, offset, sortField, sortOrder < 0 ? OrderDirection.DESC : OrderDirection.ASC, query)
             .subscribe((response) => {
                 this.items = this.dateColumns ? this.formatData(response.items) : response.items;
@@ -99,8 +102,8 @@ export class ListingDataTableComponent extends BaseComponent {
      private formatData(items: any[]): any[] {
         return items.map((item) => {
             this.dateColumns.forEach((col) => {
-                if (col.format === 'date') {
-                    item[col.fieldName] = this.formatDateService.getModDate(item[col.fieldName]);
+                if (col.format === this.dataFormat) {
+                    item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]);
                 }
             });
             return item;

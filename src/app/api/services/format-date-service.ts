@@ -17,9 +17,4 @@ export class FormatDateService {
     getRelative(time): string {
         return moment(parseInt(time, 10)).fromNow();
     }
-
-    getModDate(date): string {
-        let newDate = moment(date).fromNow();
-        return newDate;
-    }
 }
