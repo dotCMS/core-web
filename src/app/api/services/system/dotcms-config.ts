@@ -74,11 +74,7 @@ export class DotcmsConfig {
 
             this.configParams = {
                 disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
-                license: {
-                    displayServerId: '077cf077',
-                    isCommunity: false,
-                    levelName: 'COMMUNITY EDITION'
-                },
+                license: res.config.license,
                 menu: res.menu,
                 paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                 paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
@@ -95,9 +91,5 @@ export class DotcmsConfig {
             this.waiting = null;
             return res;
         });
-    }
-
-    getLicense(): Object {
-        return this.configParams.license;
     }
 }

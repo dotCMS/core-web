@@ -5,12 +5,13 @@ import { ContentTypesFormComponent } from './content-types-form.component';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
+import { DotcmsConfig } from '../../../../api/services/system/dotcms-config';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { MessageService } from '../../../../api/services/messages-service';
 import { MockMessageService } from '../../../../test/message-service.mock';
 import { ReactiveFormsModule } from '@angular/forms';
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -50,6 +51,7 @@ describe('ContentTypesFormComponent', () => {
             ],
             providers: [
                 { provide: MessageService, useValue: messageServiceMock },
+                DotcmsConfig,
             ]
         });
 
@@ -66,7 +68,14 @@ describe('ContentTypesFormComponent', () => {
 
     it('should focus on the name field on load', async(() => {
         let nameDebugEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
+        let fakeData = {
+            isCommunity: true,
+        };
         spyOn(nameDebugEl.nativeElement, 'focus');
+
+        comp.ngOnChanges({
+            data: new SimpleChange(null, fakeData, false)
+        });
 
         fixture.detectChanges();
 

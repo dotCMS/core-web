@@ -82,7 +82,10 @@ export class ContentTypesFormComponent extends BaseComponent {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
 
-        this.licenseInfo = this.dotcmsConfig.getLicense();
+        this.dotcmsConfig.getConfig().subscribe(res => {
+            this.licenseInfo = res.license;
+            this.updateFormControls(res);
+        });
     }
 
     ngOnChanges(changes): void {
@@ -227,7 +230,6 @@ export class ContentTypesFormComponent extends BaseComponent {
     }
 
     private initFormGroup(): void {
-        let licenseType = this.licenseInfo;
         this.form = this.fb.group({
             description: '',
             host: '',
@@ -264,5 +266,11 @@ export class ContentTypesFormComponent extends BaseComponent {
         }
 
         this.form.setValue(formData);
+    }
+
+    private updateFormControls(res): void {
+        if (res.license.isCommunity) {
+            this.form.controls.workflow.disable(true);
+        }
     }
 }
