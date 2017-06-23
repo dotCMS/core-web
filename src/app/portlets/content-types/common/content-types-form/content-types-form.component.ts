@@ -1,5 +1,6 @@
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, ViewChild, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { DotcmsConfig } from '../../../../api/services/system/dotcms-config';
 import { MessageService } from '../../../../api/services/messages-service';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -49,8 +50,10 @@ export class ContentTypesFormComponent extends BaseComponent {
     private dateVarOptions: SelectItem[] = [];
     private sitesOrFolderOptions = [];
     private workflowOptions: SelectItem[] = [];
+    private licenseInfo: object;
 
-    constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder) {
+    constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
+        private dotcmsConfig: DotcmsConfig) {
         super([
             'Detail-Page',
             'Expire-Date-Field',
@@ -63,6 +66,7 @@ export class ContentTypesFormComponent extends BaseComponent {
             'URL-Pattern',
             'Variable',
             'Workflow',
+            'Only-Default-Scheme-is-available-in-Community',
             'cancel',
             'description',
             'name',
@@ -77,6 +81,8 @@ export class ContentTypesFormComponent extends BaseComponent {
         this.messageService.messageMap$.subscribe(res => {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
+
+        this.licenseInfo = this.dotcmsConfig.getLicense();
     }
 
     ngOnChanges(changes): void {
@@ -221,6 +227,7 @@ export class ContentTypesFormComponent extends BaseComponent {
     }
 
     private initFormGroup(): void {
+        let licenseType = this.licenseInfo;
         this.form = this.fb.group({
             description: '',
             host: '',

@@ -32,6 +32,7 @@ export interface ConfigParams {
     menu: Menu[];
     paginatorRows: number;
     paginatorLinks: number;
+    license: object;
 }
 
 @Injectable()
@@ -69,11 +70,15 @@ export class DotcmsConfig {
             method: RequestMethod.Get,
             url: this.configUrl
         }).pluck('entity').subscribe((res: any) => {
-
             this.loggerService.debug('Configuration Loaded!', res);
 
             this.configParams = {
                 disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
+                license: {
+                    displayServerId: '077cf077',
+                    isCommunity: false,
+                    levelName: 'COMMUNITY EDITION'
+                },
                 menu: res.menu,
                 paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                 paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
@@ -81,7 +86,7 @@ export class DotcmsConfig {
                 websocketEndpoints: res.config[DOTCMS_WEBSOCKET_ENDPOINTS],
                 websocketProtocol: res.config[DOTCMS_WEBSOCKET_PROTOCOL],
                 websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
-                websocketsSystemEventsEndpoint: res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT]
+                websocketsSystemEventsEndpoint: res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT],
             };
 
             this.loggerService.debug('this.configParams', this.configParams);
@@ -90,5 +95,9 @@ export class DotcmsConfig {
             this.waiting = null;
             return res;
         });
+    }
+
+    getLicense(): Object {
+        return this.configParams.license;
     }
 }
