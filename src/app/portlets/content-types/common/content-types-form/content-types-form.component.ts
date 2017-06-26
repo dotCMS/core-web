@@ -50,7 +50,6 @@ export class ContentTypesFormComponent extends BaseComponent {
     private dateVarOptions: SelectItem[] = [];
     private sitesOrFolderOptions = [];
     private workflowOptions: SelectItem[] = [];
-    private licenseInfo: object;
 
     constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
         private dotcmsConfig: DotcmsConfig) {
@@ -82,10 +81,7 @@ export class ContentTypesFormComponent extends BaseComponent {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
 
-        this.dotcmsConfig.getConfig().subscribe(res => {
-            this.licenseInfo = res.license;
-            this.updateFormControls(res);
-        });
+        this.dotcmsConfig.getConfig().subscribe(this.updateFormControls);
     }
 
     ngOnChanges(changes): void {
@@ -270,7 +266,7 @@ export class ContentTypesFormComponent extends BaseComponent {
 
     private updateFormControls(res): void {
         if (res.license.isCommunity) {
-            this.form.controls.workflow.disable(true);
+            this.form.get('workflow').disable(true);
         }
     }
 }

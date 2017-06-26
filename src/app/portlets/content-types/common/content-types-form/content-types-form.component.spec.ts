@@ -6,12 +6,13 @@ import { DebugElement, SimpleChange } from '@angular/core';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
 import { DotcmsConfig } from '../../../../api/services/system/dotcms-config';
+import { Observable } from 'rxjs/Observable';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { MessageService } from '../../../../api/services/messages-service';
 import { MockMessageService } from '../../../../test/message-service.mock';
 import { ReactiveFormsModule } from '@angular/forms';
 
-fdescribe('ContentTypesFormComponent', () => {
+describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -66,16 +67,23 @@ fdescribe('ContentTypesFormComponent', () => {
         });
     }));
 
+    it('should show workflow if the license its diferent to comunity', async(() => {
+        let dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
+        let workflowMsg = de.query(By.css('.content-type__full-form div div .form__group-hint'));
+
+        spyOn(dotcmsConfig, 'loadConfig').and.returnValue(Observable.of({
+            isCommunity: true
+        }));
+
+        fixture.detectChanges();
+
+        expect(comp.form.get('workflow').disabled).toBeFalsy();
+    }));
+
     it('should focus on the name field on load', async(() => {
         let nameDebugEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
-        let fakeData = {
-            isCommunity: true,
-        };
-        spyOn(nameDebugEl.nativeElement, 'focus');
 
-        comp.ngOnChanges({
-            data: new SimpleChange(null, fakeData, false)
-        });
+        spyOn(nameDebugEl.nativeElement, 'focus');
 
         fixture.detectChanges();
 
