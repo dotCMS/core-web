@@ -21,7 +21,7 @@ export class LongPollingProtocol extends Protocol {
     }
 
     start(queryParameters?: QueryParams): void {
-        this.isClosed = false;
+        /*this.isClosed = false;
 
         this.loggerService.info('Starting long polling connection');
 
@@ -48,7 +48,7 @@ export class LongPollingProtocol extends Protocol {
             if (!this.isClosed) {
                 this.start();
             }
-        });
+        });*/
     }
 
     destroy(): void {
