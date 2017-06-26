@@ -6,7 +6,7 @@ import {
   Headers
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { PaginatorService } from './';
+import { PaginatorService, OrderDirection } from './';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 
 describe('PaginatorService', () => {
@@ -41,7 +41,7 @@ describe('PaginatorService', () => {
 
         this.paginatorService.query = 'name';
         this.paginatorService.url = 'v1/urldemo';
-        this.paginatorService.sortField = PaginatorService.OrderDirection.ASC;
+        this.paginatorService.sortField = OrderDirection.ASC;
         this.paginatorService.sortOrder = 'name';
 
         this.paginatorService.get().subscribe( items => this.result = items);
