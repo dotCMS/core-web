@@ -1,4 +1,4 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick, async } from '@angular/core/testing';
 import {
   Response,
   ResponseOptions,
@@ -48,8 +48,7 @@ describe('Site Service', () => {
         let newCurrentSite: Site;
         let loginService: LoginServiceMock = this.injector.get(LoginService);
 
-        this.siteService = this.injector.get(SiteService);
-        this.siteService.switchSite$.subscribe( site => newCurrentSite = site);
+        this.siteService.switchSite$.subscribe(site => newCurrentSite = site);
 
         let mockResponse = {
                 entity: {
@@ -123,4 +122,25 @@ describe('Site Service', () => {
             })
         })));
     }
+
+    it('get a site by id', async(() => {
+        this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
+            body: JSON.stringify({
+                entity: [
+                    {
+                        hostname: 'hello.host.com',
+                        identifier: '123'
+                    },
+                    {
+                        hostname: 'world.host.com',
+                        identifier: '456'
+                    }
+                ]
+            })
+        })));
+
+        this.siteService.getSiteyBId(123).subscribe(res => {
+            expect(res).toBe('something');
+        });
+    }));
 });
