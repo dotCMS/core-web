@@ -17,11 +17,6 @@ export class PaginatorService {
     public static readonly PAGINATION_MAX_LINK_PAGES_HEADER_NAME = 'X-Pagination-Link-Pages';
     public static readonly PAGINATION_TOTAL_ENTRIES_HEADER_NAME = 'X-Pagination-Total-Entries';
 
-    public static readonly OrderDirection = {
-        ASC: 'ASC',
-        DESC: 'DESC'
-    };
-
     public links: Links = {};
 
     public paginationPerPage: number;
@@ -32,9 +27,10 @@ export class PaginatorService {
     private _url: string;
     private _filter: string;
     private _sortField: string;
-    private _sortOrder = 1;
+    private _sortOrder = OrderDirection.ASC;
 
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(private coreWebService: CoreWebService) {
+    }
 
     get url(): string{
         return this._url;
@@ -96,8 +92,7 @@ export class PaginatorService {
         }
 
         if (this.sortOrder) {
-            params.set('direction', this.sortOrder === 1 ?
-                PaginatorService.OrderDirection.ASC : PaginatorService.OrderDirection.DESC);
+            params.set('direction', OrderDirection[this.sortOrder]);
         }
 
         if (this.filter) {
@@ -200,4 +195,9 @@ interface Links {
     next?: string;
     'x-page'?: string;
     prev?: string;
+}
+
+export enum OrderDirection {
+    ASC = 1,
+    DESC = -1
 }

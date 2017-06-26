@@ -8,7 +8,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { LoggerService } from '../../../api/services/logger.service';
 import { MessageService } from '../../../api/services/messages-service';
 import { EventEmitter } from '@angular/core';
-import { PaginatorService } from '../../../api/services/paginator';
+import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
 @Component({
     providers: [PaginatorService],
     selector: 'listing-data-table',
@@ -48,6 +48,7 @@ export class ListingDataTableComponent extends BaseComponent {
     ngOnChanges(changes): void {
         if (changes.columns.currentValue) {
             this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.DATE_FORMAT);
+            this.loadData(0);
         }
     }
 
@@ -60,14 +61,18 @@ export class ListingDataTableComponent extends BaseComponent {
      * @param event Pagination event
      */
     loadDataPaginationEvent(event: LazyLoadEvent): void {
-        let sortField = event.sortField || this.sortField;
-        let sortOrder = event.sortOrder || this.sortOrder;
+        this.loadData(event.first, event.sortField, event.sortOrder);
+    }
+
+    loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
+        let sortField = sortFieldParam || this.sortField;
+        let sortOrder = sortOrderParam || this.sortOrder;
 
         this.paginatorService.filter = this.filter;
         this.paginatorService.sortField = sortField;
         this.paginatorService.sortOrder = sortOrder;
 
-        this.paginatorService.getWithOffset(event.first).subscribe(
+        this.paginatorService.getWithOffset(offset).subscribe(
             items => this.items = this.dateColumns ? this.formatData(items) : items
         );
     }
