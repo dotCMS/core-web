@@ -35,7 +35,6 @@ export class SiteService {
             let siteToExclude = eventTypeWrapper.data.data.identifier;
 
             if (siteToExclude === this.selectedSite.identifier) {
-
                 this.getOneSite().subscribe( site => this.switchSite(site));
             }
         });
@@ -69,7 +68,6 @@ export class SiteService {
      * @memberof SiteService
      */
     switchSite(site: Site): void {
-        console.log('site', site);
         this.loggerService.debug('Applying a Site Switch', site.identifier);
 
         this.coreWebService.requestView({

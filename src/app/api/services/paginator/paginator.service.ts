@@ -17,7 +17,7 @@ export class PaginatorService {
     public static readonly PAGINATION_MAX_LINK_PAGES_HEADER_NAME = 'X-Pagination-Link-Pages';
     public static readonly PAGINATION_TOTAL_ENTRIES_HEADER_NAME = 'X-Pagination-Total-Entries';
 
-   public static readonly OrderDirection = {
+    public static readonly OrderDirection = {
         ASC: 'ASC',
         DESC: 'DESC'
     };

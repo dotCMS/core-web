@@ -23,10 +23,6 @@ describe('Listing Component', () => {
   let de: DebugElement;
   let el: HTMLElement;
 
-  let initPagiationService = () => {
-        
-  };
-
   beforeEach(async(() => {
     let messageServiceMock = new MockMessageService({
         'global-search': 'Global Serach'
@@ -50,8 +46,6 @@ describe('Listing Component', () => {
     // query for the title <h1> by CSS element selector
     de = fixture.debugElement.query(By.css('p-dataTable'));
     el = de.nativeElement;
-
-    initPagiationService();
   }));
 
   it('renderer basic datatable component', () => {

@@ -96,9 +96,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
             this.sitesCurrentPage = items;
             this.selectCurrentSite();
 
-            if (!this.totalRecords) {
-                this.totalRecords = this.paginationService.totalRecords;
-            }
+            this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
     }
 

@@ -21,7 +21,7 @@ export class ResponseView {
         try {
             this.bodyJsonObject = resp.json();
             this.headers = resp.headers;
-        }catch (e) {
+        } catch (e) {
             this.bodyJsonObject = {};
         }
     }
