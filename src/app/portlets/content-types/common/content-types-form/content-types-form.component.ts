@@ -81,7 +81,7 @@ export class ContentTypesFormComponent extends BaseComponent {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
 
-        this.dotcmsConfig.getConfig().subscribe(this.updateFormControls);
+        this.dotcmsConfig.getConfig().subscribe(this.updateFormControls.bind(this));
     }
 
     ngOnChanges(changes): void {

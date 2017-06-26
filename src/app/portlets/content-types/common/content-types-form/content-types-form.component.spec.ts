@@ -67,17 +67,38 @@ describe('ContentTypesFormComponent', () => {
         });
     }));
 
-    it('should show workflow if the license its diferent to comunity', async(() => {
+    it('should show workflow if the license its diferent to comunity(true)', async(() => {
         let dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
-        let workflowMsg = de.query(By.css('.content-type__full-form div div .form__group-hint'));
 
-        spyOn(dotcmsConfig, 'loadConfig').and.returnValue(Observable.of({
-            isCommunity: true
-        }));
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(Observable.of({
+            license: {isCommunity: true}
+        }).delay(100));
 
         fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            let workflowMsg = de.query(By.css('#field-workflow-hint'));
+            expect(workflowMsg).not.toBeNull();
+            expect(comp.form.get('workflow').disabled).toBeTruthy();
 
-        expect(comp.form.get('workflow').disabled).toBeFalsy();
+        });
+    }));
+
+    it('should show workflow if the license its diferent to comunity(false)', async(() => {
+        let dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
+
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(Observable.of({
+            license: {isCommunity: false}
+        }).delay(100));
+
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            let workflowMsg = de.query(By.css('#field-workflow-hint'));
+            expect(workflowMsg).toBeNull();
+            expect(comp.form.get('workflow').disabled).toBeFalsy();
+
+        });
     }));
 
     it('should focus on the name field on load', async(() => {
