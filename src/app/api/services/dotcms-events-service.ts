@@ -35,7 +35,6 @@ export class DotcmsEventsService {
 
                 socket.message$().subscribe(
                     data => {
-                        console.log('data', data);
                         if (!this.subjects[data.event]) {
                             this.subjects[data.event] = new Subject();
                         }

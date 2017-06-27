@@ -27,7 +27,7 @@ export class PaginatorService {
     private _url: string;
     private _filter: string;
     private _sortField: string;
-    private _sortOrder = OrderDirection.ASC;
+    private _sortOrder: OrderDirection = OrderDirection.ASC;
 
     constructor(private coreWebService: CoreWebService) {
     }
@@ -65,11 +65,11 @@ export class PaginatorService {
         }
     }
 
-    get sortOrder(): number{
+    get sortOrder(): OrderDirection{
         return this._sortOrder;
     }
 
-    set sortOrder(sortOrder: number){
+    set sortOrder(sortOrder: OrderDirection){
         if (this._sortOrder !== sortOrder) {
             this.links = {};
             this._sortOrder = sortOrder;
@@ -138,9 +138,9 @@ export class PaginatorService {
      * @memberof PaginatorServic
      */
     public getPage(pageParam = 1): Observable<any[]> {
-        let page = this.links['x-page'] ? this.links['x-page'].replace('{pageValue}', String(pageParam))
+        let urlPage = this.links['x-page'] ? this.links['x-page'].replace('{pageValue}', String(pageParam))
                         : undefined;
-        return this.get(page);
+        return this.get(urlPage);
     }
 
     /**

@@ -66,16 +66,18 @@ export class ListingDataTableComponent extends BaseComponent {
     }
 
     loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
-        let sortField = sortFieldParam || this.sortField;
-        let sortOrder = sortOrderParam || this.sortOrder;
+        if (this.columns) {
+            let sortField = sortFieldParam || this.sortField;
+            let sortOrder = sortOrderParam || this.sortOrder;
 
-        this.paginatorService.filter = this.filter;
-        this.paginatorService.sortField = sortField;
-        this.paginatorService.sortOrder = sortOrder;
+            this.paginatorService.filter = this.filter;
+            this.paginatorService.sortField = sortField;
+            this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-        this.paginatorService.getWithOffset(offset).subscribe(
-            items => this.items = this.dateColumns ? this.formatData(items) : items
-        );
+            this.paginatorService.getWithOffset(offset).subscribe(
+                items => this.items = this.dateColumns ? this.formatData(items) : items
+            );
+        }
     }
 
     /**
