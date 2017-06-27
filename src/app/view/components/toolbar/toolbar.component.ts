@@ -5,7 +5,7 @@ import { SiteSelectorComponent } from '../site-selector/dot-site-selector.compon
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'toolbar-component',
-    templateUrl: 'toolbar-component.html',
+    templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent {
     @Output() mainButtonClick: EventEmitter<MouseEvent> = new EventEmitter();
