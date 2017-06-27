@@ -47,11 +47,21 @@ describe('Site Selector Component', () => {
   }));
 
   it('Should call paginateSites', () => {
-    let paginatorService = de.injector.get(PaginatorService);
-    spyOn(paginatorService, 'getPage').and.returnValue(Observable.of([]));
+    let site1 = {
+      identifier: 1,
+      name: 'Site 1'
+    };
+
+    let site2 = {
+      identifier: 2,
+      name: 'Site 2'
+    };
 
     let siteService = de.injector.get(SiteService);
-    spyOn(siteService, 'switchSite$').and.returnValue(Observable.of({}));
+    spyOn(siteService, 'switchSite$').and.returnValue(Observable.of(site1));
+
+    let paginatorService = de.injector.get(PaginatorService);
+    spyOn(paginatorService, 'getPage').and.returnValue(Observable.of([site1, site2]));
 
     comp.ngOnInit();
 

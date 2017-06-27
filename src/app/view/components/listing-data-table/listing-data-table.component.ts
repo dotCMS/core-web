@@ -39,14 +39,15 @@ export class ListingDataTableComponent extends BaseComponent {
                     private paginatorService: PaginatorService, private formatDateService: FormatDateService) {
 
         super(['global-search'], messageService);
-    }
-
-    ngOnInit(): void {
         this.paginatorService.url = this.url;
     }
 
     ngOnChanges(changes): void {
-        if (changes.columns.currentValue) {
+        if (changes.url && changes.url.currentValue) {
+            this.paginatorService.url = changes.url.currentValue;
+        }
+
+        if (changes.columns && changes.columns.currentValue) {
             this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.DATE_FORMAT);
             this.loadData(0);
         }

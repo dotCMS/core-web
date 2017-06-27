@@ -61,9 +61,8 @@ export class SiteSelectorComponent implements ControlValueAccessor {
 
         this.currentSite = this.siteService.currentSite;
 
-        this.siteService.switchSite$.subscribe(site => {
-            this.writeValue(site.identifier);
-        });
+        this.siteService.switchSite$.subscribe(site => this.currentSite = site);
+        this.siteService.sitesCounter$.subscribe(nSites => this.totalRecords = nSites);
     }
 
     /**
@@ -94,7 +93,10 @@ export class SiteSelectorComponent implements ControlValueAccessor {
         this.paginationService.filter = filter;
         this.paginationService.getPage(page).subscribe( items => {
             this.sitesCurrentPage = items;
-            this.selectCurrentSite();
+
+            if (this.currentSite) {
+                this.selectCurrentSite(this.currentSite.identifier);
+            }
 
             this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
@@ -118,7 +120,6 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      */
     writeValue(value: string): void {
         this.value = value;
-        this.selectCurrentSite();
     }
 
     /**
@@ -132,7 +133,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
 
     registerOnTouched(): void {}
 
-    private selectCurrentSite(): void {
+    private selectCurrentSite(value: string): void {
         if (this.sitesCurrentPage) {
             let selected = this.sitesCurrentPage.filter( site => site.identifier === this.value);
             this.currentSite = selected.length > 0 ? selected[0] : this.currentSite;

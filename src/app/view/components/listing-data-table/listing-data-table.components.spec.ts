@@ -22,6 +22,7 @@ describe('Listing Component', () => {
   let fixture: ComponentFixture<ListingDataTableComponent>;
   let de: DebugElement;
   let el: HTMLElement;
+  let url = '/test/';
 
   beforeEach(async(() => {
     let messageServiceMock = new MockMessageService({
@@ -49,6 +50,7 @@ describe('Listing Component', () => {
   }));
 
   it('renderer basic datatable component', () => {
+
     let items = [
         {field1: 'item1-value1', field2: 'item1-value2', field3: 'item1-value3'},
         {field1: 'item2-value1', field2: 'item2-value2', field3: 'item2-value3'},
@@ -77,7 +79,8 @@ describe('Listing Component', () => {
     ];
 
     comp.ngOnChanges({
-        columns: new SimpleChange(null, comp.columns, true)
+        columns: new SimpleChange(null, comp.columns, true),
+        url: new SimpleChange(null, url, true)
     });
 
     let dataList = fixture.debugElement.query(By.css('p-dataTable'));
@@ -111,6 +114,8 @@ describe('Listing Component', () => {
             });
         }
     });
+
+    expect(url).toEqual(paginatorService.url);
   });
 
   it('renderer with format date column', () => {
@@ -142,7 +147,8 @@ describe('Listing Component', () => {
     ];
 
     comp.ngOnChanges({
-        columns: new SimpleChange(null, comp.columns, true)
+        columns: new SimpleChange(null, comp.columns, true),
+        url: new SimpleChange(null, url, true)
     });
 
     let dataList = fixture.debugElement.query(By.css('p-dataTable'));
@@ -175,5 +181,7 @@ describe('Listing Component', () => {
             });
         }
     });
+
+    expect(url).toEqual(paginatorService.url);
   });
 });
