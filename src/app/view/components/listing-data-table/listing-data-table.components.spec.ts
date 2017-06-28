@@ -78,6 +78,7 @@ describe('Listing Component', () => {
 
     comp.columns = this.columns;
     comp.url = this.url;
+    comp.multipleSelection = true;
 
     comp.ngOnChanges({
         columns: new SimpleChange(null, comp.columns, true),
@@ -129,7 +130,8 @@ describe('Listing Component', () => {
     this.columns[2].format = 'date';
     comp.columns = this.columns;
     comp.url = this.url;
-
+    comp.multipleSelection = true;
+    
     comp.ngOnChanges({
         columns: new SimpleChange(null, comp.columns, true),
         url: new SimpleChange(null, this.url, true)
@@ -174,7 +176,6 @@ describe('Listing Component', () => {
 
     comp.columns = this.columns;
     comp.url = this.url;
-    comp.multipleSelection = false;
 
     comp.ngOnChanges({
         columns: new SimpleChange(null, comp.columns, true),
