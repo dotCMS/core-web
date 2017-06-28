@@ -112,7 +112,6 @@ export class SearchableDropdownComponent implements ControlValueAccessor {
 export interface PaginationEvent {
     first: number; // Index of the first record
     filter: string;
-    page: number; // Index of the new page
     pageCount: number; // Total number of pages
     rows: number; // Number of rows to display in new page
 }
