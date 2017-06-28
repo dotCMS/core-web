@@ -23,7 +23,7 @@ export class ListingDataTableComponent extends BaseComponent {
     @Input() buttonActions: ButtonAction[] = [];
     @Input() sortOrder: number;
     @Input() sortField: string;
-    @Input() multipleSelection = true;
+    @Input() multipleSelection = false;
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter;
 
