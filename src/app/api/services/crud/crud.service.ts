@@ -59,4 +59,11 @@ export class CrudService {
             url: `${baseUrl}/id/${id}`
         }).pluck('entity');
     }
+
+    public deleteDataById(baseUrl: string, id: string): Observable<any> {
+        return this.coreWebService.requestView({
+            method: RequestMethod.Delete,
+            url: `${baseUrl}/${id}`
+        }).pluck('entity');
+    }
 }

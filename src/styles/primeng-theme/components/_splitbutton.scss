@@ -31,3 +31,25 @@ p-splitbutton {
         }
     }
 }
+p-splitbutton[iconButtonOptions] {
+    border: none;
+    box-shadow: none;
+    background: none;
+
+    .ui-splitbutton {
+        .ui-c::before {
+            content: "\F142";
+            color: $action-button-color;
+        }
+        .ui-corner-left {
+            display: none;
+        }
+
+        .ui-splitbutton-menubutton {
+            width: 32px;
+            border-radius: 50%;
+            background: $blue;
+        }
+
+    }
+}

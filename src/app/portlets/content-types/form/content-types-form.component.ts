@@ -1,9 +1,11 @@
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Component, ViewChild, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { MessageService } from '../../../api/services/messages-service';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { SplitButtonModule, MenuItem, ConfirmationService } from 'primeng/primeng';
 import { SelectItem } from 'primeng/components/common/api';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SiteSelectorComponent } from '../../../view/components/site-selector/dot-site-selector.component';
@@ -44,17 +46,21 @@ export class ContentTypesFormComponent extends BaseComponent {
     @Input() type: string;
     @Output() onCancel: EventEmitter<any> = new EventEmitter();
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() onDelete: EventEmitter<{id: string}> = new EventEmitter();
 
     @ViewChild('contentTypesForm') contentTypesForm: NgForm;
     public actionButtonLabel: string;
     public form: FormGroup;
     public formState = 'collapsed';
     public submitAttempt = false;
+    private contentTypeId: string;
     private dateVarOptions: SelectItem[] = [];
     private workflowOptions: SelectItem[] = [];
+    private editOptions: MenuItem[];
+    private display = false;
 
     constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
-        private dotcmsConfig: DotcmsConfig) {
+        private dotcmsConfig: DotcmsConfig, private activatedRoute: ActivatedRoute, private confirmationService: ConfirmationService) {
         super([
             'Detail-Page',
             'Expire-Date-Field',
@@ -72,18 +78,33 @@ export class ContentTypesFormComponent extends BaseComponent {
             'description',
             'name',
             'save',
-            'update'
+            'update',
+            'message.structure.cantdelete',
+            'message.structure.delete.structure.and.content'
         ], messageService);
     }
 
     ngOnInit(): void {
         this.initWorkflowtFieldOptions();
 
+        this.activatedRoute.params.subscribe((params: Params) => {
+            this.contentTypeId = params['id'];
+        });
+
         this.messageService.messageMap$.subscribe(res => {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
 
         this.dotcmsConfig.getConfig().subscribe(this.updateFormControls.bind(this));
+
+        this.editOptions = [
+            {
+                label: 'Edit', icon: 'fa-pencil', command: this.toggleForm.bind(this)
+            },
+            {
+                label: 'Delete', icon: 'fa-trash', command: this.confirmationDialog.bind(this)
+            }
+        ];
     }
 
     ngOnChanges(changes): void {
@@ -109,9 +130,9 @@ export class ContentTypesFormComponent extends BaseComponent {
 
     ngAfterViewInit(): void {
         let nameEl = this.renderer.selectRootElement('#content-type-form-name');
-        nameEl.focus();
+        // nameEl.focus();
 
-        Observable.fromEvent(nameEl, 'keyup')
+        Observable.fromEvent(nameEl, 'focus')
             .map((event: KeyboardEvent) => event.target)
             .debounceTime(250)
             .subscribe((target: EventTarget) => {
@@ -270,5 +291,21 @@ export class ContentTypesFormComponent extends BaseComponent {
         if (res.license.isCommunity) {
             this.form.get('workflow').disable();
         }
+    }
+
+    private confirmationDialog(): any {
+        this.confirmationService.confirm({
+            accept: () => {
+                this.onDelete.emit({
+                    id: this.contentTypeId
+                });
+            },
+            header: this.i18nMessages[
+                'message.structure.cantdelete'
+            ],
+            message: this.i18nMessages[
+                'message.structure.delete.structure.and.content'
+            ],
+        });
     }
 }

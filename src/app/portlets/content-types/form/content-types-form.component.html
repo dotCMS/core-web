@@ -14,7 +14,8 @@
                 </div>
             </div>
             <div class="ui-g-6 content-type__form-actions">
-                <button id="content-type-form-expand-button" type="button" tabindex="-1" pButton primary iconButton icon="fa-pencil" (click)="toggleForm()"></button>
+                <!--<button id="content-type-form-expand-button" type="button" tabindex="-1" pButton primary iconButton icon="fa-ellipsis-v" (click)="toggleForm()"></button>-->
+                <p-splitButton iconButtonOptions label="Save" icon="fa-check" *ngIf="contentTypeId" [model]="editOptions"></p-splitButton>
             </div>
         </div>
     </div>
@@ -69,8 +70,10 @@
             </div>
         </div>
         <div class="form__buttons">
+            <button pButton type="button" flat id="content-type-form-collapse" label="Collapse" (click)="toggleForm()"></button>
             <button pButton type="button" flat id="content-type-form-cancel" label="{{i18nMessages['cancel']}}" (click)="onCancelHandle($event)"></button>
             <button pButton type="submit" id="content-type-form-submit" label="{{actionButtonLabel}}"></button>
         </div>
     </div>
 </form>
+<p-confirmDialog icon="fa fa-question-circle" width="425"></p-confirmDialog>
