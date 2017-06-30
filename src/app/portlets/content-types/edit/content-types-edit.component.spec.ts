@@ -89,7 +89,7 @@ describe('ContentTypesEditComponent', () => {
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: MessageService, useValue: messageServiceMock },
-                { provide: ActivatedRoute, useValue: {'params': Observable.from([{ action: 'delete' }])} },
+                { provide: ActivatedRoute, useValue: {'params': Observable.from([{ id: '1234' }])} },
                 CrudService,
                 ContentTypesInfoService,
                 StringUtils,
