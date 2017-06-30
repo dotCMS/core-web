@@ -35,7 +35,7 @@ export class SiteService {
             let siteToExclude = eventTypeWrapper.data.data.identifier;
 
             if (siteToExclude === this.selectedSite.identifier) {
-                this.getOneSite().subscribe( site => this.switchSite(site));
+                this.getOneSite().subscribe(site => this.switchSite(site));
             }
         });
 
@@ -60,6 +60,25 @@ export class SiteService {
      */
     get currentSite(): Site {
         return this.selectedSite;
+    }
+
+    /**
+     * Get a site by the id
+     *
+     * @param {string} id
+     * @returns {Observable<Site>}
+     * @memberof SiteService
+     */
+    getSiteById(id: string): Observable<Site> {
+        // TODO: this is a mock, we need to create an endpoint to get
+        // sites by id: https://github.com/dotCMS/core/issues/12035
+        return this.coreWebService.requestView({
+            method: RequestMethod.Get,
+            url: this.urls.sitesUrl,
+        })
+        .pluck('entity')
+        .flatMap((res: any) => Observable.from(res))
+        .filter((site: Site) => site.identifier === id);
     }
 
     /**
