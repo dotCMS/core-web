@@ -16,12 +16,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RequestMethod } from '@angular/http';
 import { SiteSelectorModule } from '../../../view/components/site-selector/dot-site-selector.module';
 import { SocketFactory } from '../../../api/services/protocol/socket-factory';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let mockRouter = {
+        navigate: jasmine.createSpy('navigate')
+    };
 
     beforeEach(async(() => {
 
@@ -59,6 +63,8 @@ describe('ContentTypesFormComponent', () => {
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: MessageService, useValue: messageServiceMock },
+                { provide: ActivatedRoute, useValue: {'params': Observable.from([{ id: '1234' }])} },
+                { provide: Router, useValue: mockRouter },
                 DotcmsConfig,
                 SocketFactory
             ]
@@ -109,33 +115,41 @@ describe('ContentTypesFormComponent', () => {
         });
     }));
 
-    it('should focus on the name field on load', async(() => {
-        let nameDebugEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
-
-        spyOn(nameDebugEl.nativeElement, 'focus');
-
-        fixture.detectChanges();
-
-        expect(nameDebugEl.nativeElement.focus).toHaveBeenCalledTimes(1);
-    }));
-
     it('should have a button to expand/collapse the form', () => {
         let expandFormButton: DebugElement = fixture.debugElement.query(By.css('#custom-type-form-expand-button'));
         expect(expandFormButton).toBeDefined();
     });
 
     it('should call toogleForm method on action button click', () => {
+        let primarySpy = jasmine.createSpy('toggleForm');
+        let secondarySpy = jasmine.createSpy('toggleForm');
+        let options = [
+            {
+                command: primarySpy, label: 'Edit test'
+            },
+            {
+                command: secondarySpy,
+                label: 'Delete'
+            }
+        ];
         spyOn(comp, 'toggleForm');
-        let expandFormButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-expand-button'));
-        expandFormButton.triggerEventHandler('click', null);
+        comp.contentTypeId = 'test';
+        comp.editOptions = options;
+        fixture.detectChanges();
+        let expandFormButton: DebugElement = fixture
+            .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:first-child a'));
+
+        expandFormButton.nativeNode.click();
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle formState property on action button click', () => {
-        let expandFormButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-expand-button'));
-        expandFormButton.triggerEventHandler('click', null);
+        fixture.detectChanges();
+        let expandFormButton: DebugElement = fixture
+            .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:first-child a'));
+        expandFormButton.nativeNode.click();
         expect(comp.formState).toBe('expanded');
-        expandFormButton.triggerEventHandler('click', null);
+        expandFormButton.nativeNode.click();
         expect(comp.formState).toBe('collapsed');
     });
 

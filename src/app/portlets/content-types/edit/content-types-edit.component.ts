@@ -8,6 +8,7 @@ import { CrudService } from '../../../api/services/crud';
 import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Observable';
 import { StringUtils } from '../../../api/util/string.utils';
+import { ConfirmationService } from 'primeng/primeng';
 
 /**
  * Portlet component for edit content types
@@ -31,7 +32,7 @@ export class ContentTypesEditComponent extends BaseComponent {
 
     constructor(messageService: MessageService, private route: ActivatedRoute,
         private crudService: CrudService, public router: Router, private stringUtils: StringUtils,
-        private contentTypesInfoService: ContentTypesInfoService) {
+        private contentTypesInfoService: ContentTypesInfoService, private confirmationService: ConfirmationService) {
         super([
             'File',
             'Content',
@@ -39,6 +40,8 @@ export class ContentTypesEditComponent extends BaseComponent {
             'Persona',
             'Widget',
             'Page',
+            'message.structure.cantdelete',
+            'message.structure.delete.structure.and.content'
         ], messageService);
     }
 
@@ -72,10 +75,24 @@ export class ContentTypesEditComponent extends BaseComponent {
         this.form.resetForm();
     }
 
-    private deleteContentType($event): void {
-        this.crudService.deleteDataById(`v1/contenttype/id/`, $event.id)
+    private deleteContentType(id): void {
+        this.crudService.deleteDataById(`v1/contenttype/id/`, id)
             .subscribe((data) => {
                 this.router.navigate(['../'], { relativeTo: this.route });
             });
+    }
+
+    private deleteContentTypeDialog($event): any {
+        this.confirmationService.confirm({
+            accept: () => {
+                this.deleteContentType(this.data.id);
+            },
+            header: this.i18nMessages[
+                'message.structure.cantdelete'
+            ],
+            message: this.i18nMessages[
+                'message.structure.delete.structure.and.content'
+            ],
+        });
     }
 }

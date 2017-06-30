@@ -46,21 +46,21 @@ export class ContentTypesFormComponent extends BaseComponent {
     @Input() type: string;
     @Output() onCancel: EventEmitter<any> = new EventEmitter();
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
-    @Output() onDelete: EventEmitter<{id: string}> = new EventEmitter();
+    @Output() onDelete: EventEmitter<{action: string}> = new EventEmitter();
 
     @ViewChild('contentTypesForm') contentTypesForm: NgForm;
     public actionButtonLabel: string;
     public form: FormGroup;
     public formState = 'collapsed';
     public submitAttempt = false;
-    private contentTypeId: string;
+    public editOptions: MenuItem[];
+    public contentTypeId: string;
     private dateVarOptions: SelectItem[] = [];
     private workflowOptions: SelectItem[] = [];
-    private editOptions: MenuItem[];
     private display = false;
 
     constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
-        private dotcmsConfig: DotcmsConfig, private activatedRoute: ActivatedRoute, private confirmationService: ConfirmationService) {
+        private dotcmsConfig: DotcmsConfig, private activatedRoute: ActivatedRoute) {
         super([
             'Detail-Page',
             'Expire-Date-Field',
@@ -78,9 +78,7 @@ export class ContentTypesFormComponent extends BaseComponent {
             'description',
             'name',
             'save',
-            'update',
-            'message.structure.cantdelete',
-            'message.structure.delete.structure.and.content'
+            'update'
         ], messageService);
     }
 
@@ -99,10 +97,15 @@ export class ContentTypesFormComponent extends BaseComponent {
 
         this.editOptions = [
             {
-                label: 'Edit', icon: 'fa-pencil', command: this.toggleForm.bind(this)
+                command: this.toggleForm.bind(this), label: 'Edit'
             },
             {
-                label: 'Delete', icon: 'fa-trash', command: this.confirmationDialog.bind(this)
+                command: () => {
+                    this.onDelete.emit({
+                        action: 'delete'
+                    });
+                },
+                label: 'Delete'
             }
         ];
     }
@@ -129,15 +132,7 @@ export class ContentTypesFormComponent extends BaseComponent {
     }
 
     ngAfterViewInit(): void {
-        let nameEl = this.renderer.selectRootElement('#content-type-form-name');
-        // nameEl.focus();
 
-        Observable.fromEvent(nameEl, 'focus')
-            .map((event: KeyboardEvent) => event.target)
-            .debounceTime(250)
-            .subscribe((target: EventTarget) => {
-                this.handleNameFielEvent(target);
-            });
     }
 
     /**
@@ -241,13 +236,6 @@ export class ContentTypesFormComponent extends BaseComponent {
         }
     }
 
-    private handleNameFielEvent(el: EventTarget): void {
-        let value: string = (<HTMLInputElement> el).value;
-        if (!value && this.formState === 'expanded' || value && value.length && this.formState === 'collapsed') {
-            this.toggleForm();
-        }
-    }
-
     private initFormGroup(): void {
         this.form = this.fb.group({
             description: '',
@@ -291,21 +279,5 @@ export class ContentTypesFormComponent extends BaseComponent {
         if (res.license.isCommunity) {
             this.form.get('workflow').disable();
         }
-    }
-
-    private confirmationDialog(): any {
-        this.confirmationService.confirm({
-            accept: () => {
-                this.onDelete.emit({
-                    id: this.contentTypeId
-                });
-            },
-            header: this.i18nMessages[
-                'message.structure.cantdelete'
-            ],
-            message: this.i18nMessages[
-                'message.structure.delete.structure.and.content'
-            ],
-        });
     }
 }

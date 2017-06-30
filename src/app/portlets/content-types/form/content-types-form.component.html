@@ -8,13 +8,12 @@
             <div class="ui-g-6">
                 <div class="form__group content-type__form-title">
                     <i class="fa" [ngClass]="icon"></i>
-                    <input pInputText type="text" id="content-type-form-name" [placeholder]="name ? name + ' ' + i18nMessages['name'] : ''" name="name"
+                    <input pInputText type="text" id="content-type-form-name" (focus)="formState === 'collapsed' && toggleForm()" [placeholder]="name ? name + ' ' + i18nMessages['name'] : ''" name="name"
                         formControlName="name" />
                     <field-validation-message message="Name is required" [submitted]="submitAttempt" [field]="form.controls.name"></field-validation-message>
                 </div>
             </div>
             <div class="ui-g-6 content-type__form-actions">
-                <!--<button id="content-type-form-expand-button" type="button" tabindex="-1" pButton primary iconButton icon="fa-ellipsis-v" (click)="toggleForm()"></button>-->
                 <p-splitButton iconButtonOptions label="Save" icon="fa-check" *ngIf="contentTypeId" [model]="editOptions"></p-splitButton>
             </div>
         </div>
@@ -76,4 +75,3 @@
         </div>
     </div>
 </form>
-<p-confirmDialog icon="fa fa-question-circle" width="425"></p-confirmDialog>
