@@ -123,24 +123,24 @@ describe('Site Service', () => {
         })));
     }
 
-    it('get a site by id', async(() => {
-        this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
+    it('get a site by id', () => {
+        this.siteService.getSiteById('123').subscribe(res => {
+            expect(res).toEqual({ hostname: 'hello.host.com', identifier: '123' });
+        });
+
+        this.lastPaginateSiteConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify({
-                entity: [
+                'entity': [
                     {
-                        hostname: 'hello.host.com',
-                        identifier: '123'
+                        'hostname': 'hello.host.com',
+                        'identifier': '123'
                     },
                     {
-                        hostname: 'world.host.com',
-                        identifier: '456'
+                        'hostname': 'world.host.com',
+                        'identifier': '456'
                     }
                 ]
             })
         })));
-
-        this.siteService.getSiteyBId(123).subscribe(res => {
-            expect(res).toBe('something');
-        });
-    }));
+    });
 });
