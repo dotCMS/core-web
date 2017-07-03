@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="ui-g-6 content-type__form-actions">
-                <p-splitButton iconButtonOptions label="Save" icon="fa-check" *ngIf="contentTypeId" [model]="editOptions"></p-splitButton>
+                <p-splitButton iconButtonOptions label="Save" icon="fa-check" *ngIf="!onCreate" [model]="formOptions"></p-splitButton>
             </div>
         </div>
     </div>

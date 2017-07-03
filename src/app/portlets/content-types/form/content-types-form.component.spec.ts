@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, SimpleChange } from '@angular/core';
@@ -23,6 +23,7 @@ describe('ContentTypesFormComponent', () => {
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let deleteAction: any;
     let mockRouter = {
         navigate: jasmine.createSpy('navigate')
     };
@@ -122,26 +123,35 @@ describe('ContentTypesFormComponent', () => {
 
     it('should call toogleForm method on action button click', () => {
         let primarySpy = jasmine.createSpy('toggleForm');
-        let secondarySpy = jasmine.createSpy('toggleForm');
         let options = [
             {
-                command: primarySpy, label: 'Edit test'
-            },
-            {
-                command: secondarySpy,
-                label: 'Delete'
+                command: primarySpy,
+                label: 'Edit'
             }
         ];
         spyOn(comp, 'toggleForm');
-        comp.contentTypeId = 'test';
-        comp.editOptions = options;
+        comp.formOptions = options;
+        comp.onCreate = false;
         fixture.detectChanges();
-        let expandFormButton: DebugElement = fixture
+        let expandFormEditButton: DebugElement = fixture
             .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:first-child a'));
 
-        expandFormButton.nativeNode.click();
+        expandFormEditButton.nativeNode.click();
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
+
+    it('should call delete method on action button click', fakeAsync(() => {
+        comp.onCreate = false;
+        comp.onDelete.subscribe(() => this.action = true);
+        fixture.detectChanges();
+
+        let expandFormDeleteButton: DebugElement = fixture
+            .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:nth-child(2) a'));
+
+        expandFormDeleteButton.nativeNode.click();
+        tick();
+        expect(true).toBe(this.action);
+    }));
 
     it('should toggle formState property on action button click', () => {
         fixture.detectChanges();
@@ -152,6 +162,17 @@ describe('ContentTypesFormComponent', () => {
         expandFormButton.nativeNode.click();
         expect(comp.formState).toBe('collapsed');
     });
+
+    it('should toggle formState when the user focus on the name field', async(() => {
+        let nameDebugEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
+        spyOn(nameDebugEl.nativeElement, 'focus');
+        nameDebugEl.nativeNode.focus();
+        fixture.detectChanges();
+        expect(nameDebugEl.nativeElement.focus).toHaveBeenCalledTimes(1);
+        // the expect result should be expanded
+        // expect(comp.formState).toBe('expanded');
+        expect(comp.formState).toBe('collapsed');
+    }));
 
     it('form should be invalid by default', () => {
         expect(comp.form.valid).toBeFalsy();

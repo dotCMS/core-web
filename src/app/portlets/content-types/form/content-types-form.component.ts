@@ -44,23 +44,23 @@ export class ContentTypesFormComponent extends BaseComponent {
     @Input() icon: string;
     @Input() name: string;
     @Input() type: string;
+    @Input() onCreate = false;
     @Output() onCancel: EventEmitter<any> = new EventEmitter();
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
-    @Output() onDelete: EventEmitter<{action: string}> = new EventEmitter();
+    @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('contentTypesForm') contentTypesForm: NgForm;
     public actionButtonLabel: string;
     public form: FormGroup;
     public formState = 'collapsed';
     public submitAttempt = false;
-    public editOptions: MenuItem[];
-    public contentTypeId: string;
+    public formOptions: MenuItem[];
     private dateVarOptions: SelectItem[] = [];
     private workflowOptions: SelectItem[] = [];
     private display = false;
 
     constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
-        private dotcmsConfig: DotcmsConfig, private activatedRoute: ActivatedRoute) {
+        private dotcmsConfig: DotcmsConfig) {
         super([
             'Detail-Page',
             'Expire-Date-Field',
@@ -85,25 +85,20 @@ export class ContentTypesFormComponent extends BaseComponent {
     ngOnInit(): void {
         this.initWorkflowtFieldOptions();
 
-        this.activatedRoute.params.subscribe((params: Params) => {
-            this.contentTypeId = params['id'];
-        });
-
         this.messageService.messageMap$.subscribe(res => {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
         });
 
         this.dotcmsConfig.getConfig().subscribe(this.updateFormControls.bind(this));
 
-        this.editOptions = [
+        this.formOptions = [
             {
-                command: this.toggleForm.bind(this), label: 'Edit'
+                command: this.toggleForm.bind(this),
+                label: 'Edit'
             },
             {
                 command: () => {
-                    this.onDelete.emit({
-                        action: 'delete'
-                    });
+                    this.onDelete.emit();
                 },
                 label: 'Delete'
             }
@@ -129,10 +124,6 @@ export class ContentTypesFormComponent extends BaseComponent {
         if (changes.type && changes.type.currentValue === 'content') {
             this.addContentSpecificFields();
         }
-    }
-
-    ngAfterViewInit(): void {
-
     }
 
     /**
