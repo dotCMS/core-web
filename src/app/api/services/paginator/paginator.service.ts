@@ -143,6 +143,10 @@ export class PaginatorService {
         return this.get(urlPage);
     }
 
+    public getCurrentPage(): Observable<any[]> {
+        return this.getPage(this.currentPage);
+    }
+
     /**
      * Request the next page
      * @returns {Observable<any[]>}

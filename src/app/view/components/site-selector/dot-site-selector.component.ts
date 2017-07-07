@@ -69,15 +69,12 @@ export class SiteSelectorComponent implements ControlValueAccessor {
         this.paginationService.url = 'v1/site';
         this.paginateSites();
 
-        if (this.siteService.currentSite) {
-            this.currentSite = Observable.of(this.siteService.currentSite);
-            this.propagateChange(this.siteService.currentSite);
-        } else {
-            this.siteService.switchSite$.subscribe(site => {
-                this.currentSite = Observable.of(site);
-                this.propagateChange(site.identifier);
-            });
-        }
+        this.currentSite = this.siteService.currentSite;
+        this.siteService.switchSite$.subscribe(site => this.currentSite = site);
+        this.siteService.updateSitesList$.subscribe((site) => {
+            console.log(site);
+            this.paginateSites();
+        });
     }
 
     /**
@@ -106,8 +103,9 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      */
     paginateSites(filter = '', offset = 0): void {
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe(items => {
-            this.sitesCurrentPage = items;
+        this.paginationService.getWithOffset(offset).subscribe( items => {
+            console.log('paginate log', items);
+            this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
     }

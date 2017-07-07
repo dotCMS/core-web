@@ -17,8 +17,9 @@ export class SiteService {
     private sitesCounter: number;
     private selectedSite: Site;
     private urls: any;
-
+    private events: string[] = ['SAVE_SITE', 'PUBLISH_SITE', 'UPDATE_SITE_PERMISSIONS', 'UN_ARCHIVE_SITE', 'UPDATE_SITE', 'ARCHIVE_SITE'];
     private _switchSite$: Subject<Site> = new Subject<Site>();
+    private _sitesList$: Subject<Site> = new Subject<Site>();
 
     constructor(loginService: LoginService, dotcmsEventsService: DotcmsEventsService,
                 private coreWebService: CoreWebService, private loggerService: LoggerService) {
@@ -32,14 +33,22 @@ export class SiteService {
         dotcmsEventsService.subscribeTo('ARCHIVE_SITE').subscribe(eventTypeWrapper => {
             this.loggerService.debug('Capturing Site event', eventTypeWrapper.eventType, eventTypeWrapper.data);
 
-            let siteToExclude = eventTypeWrapper.data.data.identifier;
+            let siteToExclude = eventTypeWrapper.data.identifier;
 
             if (siteToExclude === this.selectedSite.identifier) {
                 this.getOneSite().subscribe(site => this.switchSite(site));
             }
         });
 
+        // dotcmsEventsService.subscribeToEvents(this.events).subscribe(eventTypeWrapper => {
+        //     this._sitesList$.next(eventTypeWrapper.data.data);
+        // });
+
         loginService.watchUser(this.loadCurrentSite.bind(this));
+    }
+
+    get updateSitesList$(): Observable<Site> {
+        return this._sitesList$.asObservable();
     }
 
     /**
