@@ -169,8 +169,6 @@ describe('ContentTypesFormComponent', () => {
         nameDebugEl.nativeNode.focus();
         fixture.detectChanges();
         expect(nameDebugEl.nativeElement.focus).toHaveBeenCalledTimes(1);
-        // the expect result should be expanded
-        // expect(comp.formState).toBe('expanded');
         expect(comp.formState).toBe('collapsed');
     }));
 
