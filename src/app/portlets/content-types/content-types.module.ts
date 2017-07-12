@@ -21,12 +21,15 @@ import { StringUtils } from '../../api/util/string.utils';
 import { TabViewModule, OverlayPanelModule, DropdownModule, ButtonModule, InputTextModule } from 'primeng/primeng';
 import {
     ContentTypesFieldsListComponent,
-    FieldsDropZoneComponent,
-    FieldsRowComponent,
-    ContentTypesFieldDragabbleItemComponent
+    ContentTypeFieldsDropZoneComponent,
+    ContentTypeFieldsRowComponent,
+    ContentTypesFieldDragabbleItemComponent,
+    ContentTypeFieldsRowListComponent
 } from './fields';
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
+import { FieldService, FieldDragDropService } from './fields/service';
+
 @NgModule({
     declarations: [
         ContentTypesCreateComponent,
@@ -36,8 +39,9 @@ import { DragulaService } from 'ng2-dragula';
         ContentTypesFormComponent,
         ContentTypesLayoutComponent,
         ContentTypesPortletComponent,
-        FieldsDropZoneComponent,
-        FieldsRowComponent
+        ContentTypeFieldsDropZoneComponent,
+        ContentTypeFieldsRowComponent,
+        ContentTypeFieldsRowListComponent
     ],
     exports: [
         ContentTypesPortletComponent
@@ -61,6 +65,8 @@ import { DragulaService } from 'ng2-dragula';
         CrudService,
         DotcmsConfig,
         DragulaService,
+        FieldDragDropService,
+        FieldService,
         FormatDateService,
         LoginService,
         MessageService,

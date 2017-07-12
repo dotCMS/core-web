@@ -266,7 +266,7 @@ export class ContentTypesFormComponent extends BaseComponent {
 
     private updateFormControls(res): void {
         if (res.license.isCommunity) {
-            this.form.get('workflow').disable(true);
+            this.form.get('workflow').disable();
         }
     }
 }

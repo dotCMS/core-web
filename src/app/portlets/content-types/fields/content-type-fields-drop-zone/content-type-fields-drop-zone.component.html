@@ -1,0 +1,14 @@
+<h1>Now you can add fields here</h1>
+<div class="fields-container"
+     dragula="fields-row-bag"
+     [dragulaModel]="fieldRows"
+     data-drag-type="target">
+
+    <content-type-fields-row  *ngFor="let fieldRow of fieldRows"
+                 [fieldRow]="fieldRow">
+    </content-type-fields-row>
+</div>  
+
+<button (click)="updateJson()">Json</button>  
+
+

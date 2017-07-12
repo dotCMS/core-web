@@ -26,7 +26,7 @@ export class ContentTypesEditComponent extends BaseComponent {
     private contentTypeName: Observable<string>;
     private contentTypeType: string;
     private contentTypeIcon: string;
-    private data: any;
+    private data: ContentType;
     private readyToAddFields = false;
     private licenseInfo: any;
 
