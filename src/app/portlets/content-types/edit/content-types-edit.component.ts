@@ -76,7 +76,7 @@ export class ContentTypesEditComponent extends BaseComponent {
     }
 
     private deleteContentType(id): void {
-        this.crudService.deleteDataById(`v1/contenttype/id/`, id)
+        this.crudService.delete(`v1/contenttype/id/`, id)
             .subscribe((data) => {
                 this.router.navigate(['../'], { relativeTo: this.route });
             });

@@ -47,7 +47,7 @@ p-splitbutton[iconButtonOptions] {
         }
 
         .ui-splitbutton-menubutton {
-            width: 32px;
+            width: $field-height;
             border-radius: 50%;
             background: $white;
             box-shadow: $md-shadow-1;

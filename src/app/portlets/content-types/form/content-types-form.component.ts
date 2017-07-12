@@ -78,7 +78,9 @@ export class ContentTypesFormComponent extends BaseComponent {
             'description',
             'name',
             'save',
-            'update'
+            'update',
+            'edit',
+            'delete'
         ], messageService);
     }
 
@@ -87,22 +89,21 @@ export class ContentTypesFormComponent extends BaseComponent {
 
         this.messageService.messageMap$.subscribe(res => {
             this.actionButtonLabel = this.isEditMode ? this.i18nMessages['update'] : this.i18nMessages['save'];
+            this.formOptions = [
+                {
+                    command: this.toggleForm.bind(this),
+                    label: this.i18nMessages['edit']
+                },
+                {
+                    command: () => {
+                        this.onDelete.emit();
+                    },
+                    label: this.i18nMessages['delete']
+                }
+            ];
         });
 
         this.dotcmsConfig.getConfig().subscribe(this.updateFormControls.bind(this));
-
-        this.formOptions = [
-            {
-                command: this.toggleForm.bind(this),
-                label: 'Edit'
-            },
-            {
-                command: () => {
-                    this.onDelete.emit();
-                },
-                label: 'Delete'
-            }
-        ];
     }
 
     ngOnChanges(changes): void {

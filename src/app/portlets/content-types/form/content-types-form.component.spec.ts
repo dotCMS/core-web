@@ -140,7 +140,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
 
-    it('should call delete method on action button click', fakeAsync(() => {
+    it('should call delete method on action button click', () => {
         comp.onCreate = false;
         comp.onDelete.subscribe(() => this.action = true);
         fixture.detectChanges();
@@ -149,9 +149,8 @@ describe('ContentTypesFormComponent', () => {
             .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:nth-child(2) a'));
 
         expandFormDeleteButton.nativeNode.click();
-        tick();
         expect(true).toBe(this.action);
-    }));
+    });
 
     it('should toggle formState property on action button click', () => {
         fixture.detectChanges();

@@ -68,7 +68,7 @@ export class CrudService {
      * @returns {Observable<any>}
      * @memberof CrudService
      */
-    deleteDataById(baseUrl: string, id: string): Observable<any> {
+    delete(baseUrl: string, id: string): Observable<any> {
         return this.coreWebService.requestView({
             method: RequestMethod.Delete,
             url: `${baseUrl}/${id}`
