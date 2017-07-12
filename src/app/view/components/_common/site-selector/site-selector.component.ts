@@ -9,16 +9,16 @@ import {
     SimpleChanges
 } from '@angular/core';
 import { AutoComplete } from 'primeng/primeng';
-import { BaseComponent } from '../_common/_base/base-component';
+import { BaseComponent } from '../_base/base-component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
-import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';
+import { DotcmsConfig } from '../../../../api/services/system/dotcms-config';
+import { IframeOverlayService } from '../../../../api/services/iframe-overlay-service';
 import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Rx';
-import { PaginatorService } from '../../../api/services/paginator';
-import { SearchableDropdownComponent } from '../_common/searchable-dropdown/component';
-import { Site } from '../../../api/services/site-service';
-import { SiteService } from '../../../api/services/site-service';
+import { PaginatorService } from '../../../../api/services/paginator';
+import { SearchableDropdownComponent } from '../searchable-dropdown/component';
+import { Site } from '../../../../api/services/site-service';
+import { SiteService } from '../../../../api/services/site-service';
 
 /**
  * It is dropdown of sites, it handle pagination and global search
@@ -37,9 +37,9 @@ import { SiteService } from '../../../api/services/site-service';
             useExisting: forwardRef(() => SiteSelectorComponent)
         }
     ],
-    selector: 'dot-site-selector-component',
-    styles: [require('./dot-site-selector.component.scss')],
-    templateUrl: 'dot-site-selector.component.html'
+    selector: 'site-selector-component',
+    styles: [require('./site-selector.component.scss')],
+    templateUrl: 'site-selector.component.html',
 })
 export class SiteSelectorComponent implements ControlValueAccessor {
     private static readonly MIN_CHARECTERS_TO_SERACH = 3;
@@ -67,13 +67,21 @@ export class SiteSelectorComponent implements ControlValueAccessor {
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/site';
+
         this.paginateSites();
 
         this.currentSite = this.siteService.currentSite;
-        this.siteService.switchSite$.subscribe(site => this.currentSite = site);
-        this.siteService.updateSitesList$.subscribe((site) => {
-            console.log(site);
-            this.paginateSites();
+
+        this.siteService.switchSite$.subscribe((site) => {
+            this.currentSite = site;
+        });
+
+        this.siteService.refreshSites$.subscribe((site) => {
+            this.paginationService.getCurrentPage().subscribe((items) => {
+                this.sitesCurrentPage = items.splice(0);
+                this.totalRecords = this.paginationService.totalRecords;
+                this.currentSite = this.siteService.currentSite;
+            });
         });
     }
 
@@ -104,7 +112,6 @@ export class SiteSelectorComponent implements ControlValueAccessor {
     paginateSites(filter = '', offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe( items => {
-            console.log('paginate log', items);
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
