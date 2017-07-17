@@ -122,15 +122,7 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should call toogleForm method on action button click', () => {
-        let primarySpy = jasmine.createSpy('toggleForm');
-        let options = [
-            {
-                command: primarySpy,
-                label: 'Edit'
-            }
-        ];
         spyOn(comp, 'toggleForm');
-        comp.formOptions = options;
         comp.onCreate = false;
         fixture.detectChanges();
         let expandFormEditButton: DebugElement = fixture
