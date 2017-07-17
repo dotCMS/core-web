@@ -26,7 +26,7 @@ export class ContentTypesCreateComponent extends BaseComponent {
     private contentTypeName: Observable<string>;
     private contentTypeType: string;
     private contentTypeIcon: string;
-    private readyToAddFields = false;
+    private readyToAddFields = true;
 
     constructor(private route: ActivatedRoute, private router: Router, private contentTypesInfoService: ContentTypesInfoService,
     private stringUtils: StringUtils, messageService: MessageService, private crudService: CrudService,

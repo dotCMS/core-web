@@ -9,6 +9,6 @@
         (onCancel)="router.navigate(['../'], { relativeTo: route })">
     </content-types-form>
     <div *ngIf="readyToAddFields">
-        <content-type-fields-drop-zone [fields]="data.fields"></content-type-fields-drop-zone>
+        <content-type-fields-drop-zone [fields]="data ? data.fields : []"></content-type-fields-drop-zone>
     </div>
 </content-type-layout>
