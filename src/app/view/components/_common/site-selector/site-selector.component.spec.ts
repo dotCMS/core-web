@@ -18,7 +18,7 @@ import { SearchableDropdownComponent } from '../searchable-dropdown/component/se
 import { fakeAsync, tick } from '@angular/core/testing';
 import { PaginatorService } from '../../../../api/services/paginator';
 
-fdescribe('Site Selector Component', () => {
+describe('Site Selector Component', () => {
 
   let comp: SiteSelectorComponent;
   let fixture: ComponentFixture<SiteSelectorComponent>;
@@ -46,7 +46,7 @@ fdescribe('Site Selector Component', () => {
     el = de.nativeElement;
   }));
 
-  it('Should call paginateSites', () => {
+  it('Should call getSitesList', () => {
     let site1 = {
       identifier: 1,
       name: 'Site 1'
@@ -59,17 +59,34 @@ fdescribe('Site Selector Component', () => {
 
     let siteService = de.injector.get(SiteService);
     spyOn(siteService, 'switchSite$').and.returnValue(Observable.of(site1));
-    spyOn(siteService, 'refreshSites$').and.returnValue(Observable.of(site1));
 
     let paginatorService = de.injector.get(PaginatorService);
     spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([site1, site2]));
-    spyOn(paginatorService, 'getCurrentPage').and.returnValue(Observable.of([site1, site2]));
 
     comp.ngOnInit();
 
     expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
-
   });
+
+  it('Should call refresh if a event happen', async(() => {
+    let site1 = {
+      identifier: 1,
+      name: 'Site 1'
+    };
+
+    let site2 = {
+      identifier: 2,
+      name: 'Site 2'
+    };
+
+    let siteService = de.injector.get(SiteService);
+    let spy = spyOn(siteService, 'refreshSites$').and.returnValue(Observable.of([site1, site2]));
+
+    comp.ngOnInit();
+    fixture.detectChanges();
+
+    expect(spy.calls.any()).toEqual(false);
+  }));
 
   it('Should change Page', fakeAsync(() => {
 

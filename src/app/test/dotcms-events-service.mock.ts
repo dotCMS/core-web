@@ -1,4 +1,3 @@
-
 import { Observable, Subject } from 'rxjs';
 
 export class DotcmsEventsServiceMock {
@@ -9,6 +8,14 @@ export class DotcmsEventsServiceMock {
             this.observers[clientEventType] = new Subject();
         }
         return this.observers[clientEventType].asObservable();
+    }
+
+    subscribeToEvents(clientEventTypes: string[]): Observable<any> {
+        let subject: Subject<any> = new Subject<any>();
+
+        clientEventTypes.forEach(eventType => this.subscribeTo(eventType).subscribe(data => subject.next(data)));
+
+        return subject.asObservable();
     }
 
     tiggerSubscribeTo(clientEventType: string, data: any): void {

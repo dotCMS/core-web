@@ -68,7 +68,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
     ngOnInit(): void {
         this.paginationService.url = 'v1/site';
 
-        this.paginateSites();
+        this.getSitesList();
 
         this.currentSite = this.siteService.currentSite;
 
@@ -91,7 +91,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      * @memberof SiteSelectorComponent
      */
     handleFilterChange(filter): void {
-        this.paginateSites(filter);
+        this.getSitesList(filter);
     }
 
     /**
@@ -100,7 +100,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      * @memberof SiteSelectorComponent
      */
     handlePageChange(event): void {
-        this.paginateSites(event.filter, event.first);
+        this.getSitesList(event.filter, event.first);
     }
 
     /**
@@ -109,7 +109,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      * @param {number} [page=1]
      * @memberof SiteSelectorComponent
      */
-    paginateSites(filter = '', offset = 0): void {
+    getSitesList(filter = '',  offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe( items => {
             this.sitesCurrentPage = items.splice(0);

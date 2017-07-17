@@ -30,17 +30,16 @@ export class SiteService {
             switchSiteUrl: 'v1/site/switch'
         };
 
-        dotcmsEventsService.subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE_PERMISSIONS', 'UPDATE_SITE']).subscribe(eventTypeWrapper => {
+        dotcmsEventsService.subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE']).subscribe(eventTypeWrapper => {
             this.loggerService.debug('Capturing Site event', eventTypeWrapper.eventType, eventTypeWrapper.data);
             let siteIdentifier = eventTypeWrapper.data.data.identifier;
-
             if (siteIdentifier === this.selectedSite.identifier) {
-                if (eventTypeWrapper.eventType === 'ARCHIVE_SITE' || eventTypeWrapper.eventType === 'UPDATE_SITE_PERMISSIONS') {
+                if (eventTypeWrapper.eventType === 'ARCHIVE_SITE') {
                     this.getOneSite().subscribe( site => this.switchSite(site));
+                } else {
+                    this.loadCurrentSite();
                 }
             }
-
-            this.loadCurrentSite();
         });
 
         dotcmsEventsService.subscribeToEvents(this.events).subscribe(eventTypeWrapper => {
@@ -50,6 +49,12 @@ export class SiteService {
         loginService.watchUser(this.loadCurrentSite.bind(this));
     }
 
+    /**
+     * Observable trigger when an site event happens
+     * @readonly
+     * @type {Observable<Site>}
+     * @memberof SiteService
+     */
     get refreshSites$(): Observable<Site> {
         return this._refreshSites$.asObservable();
     }
