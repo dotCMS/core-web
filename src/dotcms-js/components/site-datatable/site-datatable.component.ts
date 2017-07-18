@@ -27,7 +27,6 @@ export class SiteDatatableComponent {
     dotCMSURL = '';
     siteName = '';
     treeables: Treeable[];
-    subscription: Subscription;
 
     constructor(private updateService: SiteBrowserState,
                 private fileService: FileService,
@@ -41,13 +40,13 @@ export class SiteDatatableComponent {
         if (updateService.getURI()) {
             this.loadFolder(updateService.getURI());
         }
-        this.subscription = updateService.currentSite
+        updateService.currentSite
             .subscribe(siteName => {
                 if (siteName) {
                     this.loadSite(siteName);
                 }
             });
-        this.subscription = updateService.currentURI
+        updateService.currentURI
             .subscribe(uri => {
                 if (uri) {
                     this.loadFolder(uri);
@@ -107,9 +106,7 @@ export class SiteDatatableComponent {
         setTimeout(() => {}, 100);
     }
 
-    handleDragOver(e: any): void {
-        // this.dropzoneStylesVisible = true;
-    }
+    handleDragOver(e: any): void {}
 
     /**
      * Deals with the drop of 1 to many files and folders from the filesystem
@@ -128,7 +125,6 @@ export class SiteDatatableComponent {
         this.log.debug('folderTitle = ' + folderTitle);
         this.log.debug('files = ' + files);
         this.log.debug('file name = ' + fileName);
-        // files[0]
         for (let i = 0; i < this.treeables.length; i++) {
             let node: Treeable = this.treeables[i];
             if (node.title === folderTitle && node.type === 'folder') {

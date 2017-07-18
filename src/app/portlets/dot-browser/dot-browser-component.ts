@@ -9,10 +9,6 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 })
 
 export class DotBrowserComponent implements OnInit {
-    constructor() {
-        // console.log('test 1 ');
-    }
-    ngOnInit(): void {
-        // console.log('EDITED AGAIN 3');
-    }
+    constructor() {}
+    ngOnInit(): void {}
 }

@@ -3,13 +3,10 @@ import {Message, TreeNode} from 'primeng/components/common/api';
 import {Subscription} from 'rxjs';
 import {SiteTreetableService} from './site-treetable.service';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
-import {FileSystemService} from '../../core/util/filesystem.service';
 import {LoggerService} from '../../core/util/logger.service';
 import {NotificationService} from '../../core/util/notification.service';
 import {CommonModule} from '@angular/common';
 import {TreeTableModule} from 'primeng/components/treetable/treetable';
-
-// let fs = require('fs');
 
 @Component({
     selector: 'site-treetable',
@@ -29,7 +26,6 @@ export class SiteTreeTableComponent {
     subscription: Subscription;
 
     constructor(private updateService: SiteBrowserState,
-                private fsService: FileSystemService,
                 private log: LoggerService,
                 private siteTreetableService: SiteTreetableService,
                 private messageService: NotificationService) {
@@ -48,14 +44,21 @@ export class SiteTreeTableComponent {
         }, 100);
     }
 
+    /**
+     * Deals with the style for the drag and drop of files
+     * @param e
+     */
     handleDragOver(e: any): void {
         this.dropzoneStylesVisible = true;
     }
 
+    /**
+     * Handles uploading files on drag and drop
+     * @param e
+     */
     handleDrop(e: any): void {
         e.preventDefault();
         let pathToUploadTo: string;
-        // todo fix any to right type
         let files: any[] = e.dataTransfer.files;
         let folderTitle: string = e.path[0].innerText;
 
@@ -67,12 +70,14 @@ export class SiteTreeTableComponent {
             }
         }
         this.log.debug('Path 2: ' + pathToUploadTo);
-        // console.log('Is Directory : ' + fs.statSync(files[0].path).isDirectory());
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
-        // console.log('Is Directory : ' + this.fsService.isDirectory(files[0].path));
         return;
     }
 
+    /**
+     * Loads the objects under a host
+     * @param siteName
+     */
     loadHost(siteName: string): void {
         this.siteName = siteName;
         this.siteTreetableService.getAssetsUnderSite(siteName)
@@ -81,6 +86,10 @@ export class SiteTreeTableComponent {
         }, 100);
     }
 
+    /**
+     * Loades the objects under a folder
+     * @param uri
+     */
     loadFolder(uri: string): void {
         this.log.debug('loading folder with URI : ' + uri);
         this.siteTreetableService.getAssetsUnderFolder(this.siteName, uri)
@@ -90,16 +99,28 @@ export class SiteTreeTableComponent {
         }, 100);
     }
 
+    /**
+     * Handle clicking a node ie.. to show detail on a folder or file
+     * @param event
+     */
     nodeSelect(event: any): void {
         this.msgs = [];
         this.msgs.push({severity: 'info', summary: 'Node Selected', detail: event.node.data.name});
     }
 
+    /**
+     * Unselects the selected node ie... file or folder
+     * @param event
+     */
     nodeUnselect(event: any): void {
         this.msgs = [];
         this.msgs.push({severity: 'info', summary: 'Node Unselected', detail: event.node.data.name});
     }
 
+    /**
+     * Expands a node ie.. a folder
+     * @param event
+     */
     nodeExpand(event: any): void {
         let pathName: string = (<string> event.node.data.path);
         pathName = pathName.slice(0, pathName.length - 1);

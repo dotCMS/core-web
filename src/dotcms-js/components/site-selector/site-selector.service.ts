@@ -17,12 +17,21 @@ export class SiteSelectorService {
         private notificationService: NotificationService
     ) {}
 
+    /**
+     * Returns a list of sites searcing the hostname
+     * @param searchQuery
+     * @returns {Observable<R|T>}
+     */
     filterForSites(searchQuery: string): Observable<Site[]> {
     return this.httpClient.get('/api/v1/site?filter=' + searchQuery + '&archived=false')
         .map((res: Response) => this.extractDataFilter(res))
         .catch(err => this.handleError(err));
     }
 
+    /**
+     * Returns all sites
+     * @returns {Observable<R|T>}
+     */
     getSites(): Observable<Site[]> {
         return this.httpClient.get('/api/v1/site/')
             .map((res: Response) => this.extractDataDropdown(res))

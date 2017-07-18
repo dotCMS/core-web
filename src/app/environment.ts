@@ -26,7 +26,6 @@ import { DotRouterService } from './api/services/dot-router-service';
 import { DotcmsConfig } from './api/services/system/dotcms-config';
 import { DotcmsEventsService } from './api/services/dotcms-events-service';
 import {FileService} from '../dotcms-js/core/util/file.services';
-import {FileSystemService} from '../dotcms-js/core/util/filesystem.service';
 import { FormatDateService } from './api/services/format-date-service';
 import { GoogleMapService } from './api/maps/GoogleMapService';
 import { GravatarService } from './api/services/gravatar-service';
@@ -114,7 +113,6 @@ let PROVIDERS: any[] = [
     {provide: NotificationsServiceDotJS, useClass: NotificationsServiceDotJS},
     {provide: AppConfig, useValue: AppConfig},
     {provide: SiteBrowserState, useClass: SiteBrowserState},
-    {provide: FileSystemService, useClass: FileSystemService},
     {provide: SiteTreetableService, useClass: SiteTreetableService},
     {provide: LoggerServiceDotJS, useClass: LoggerServiceDotJS},
     {provide: LocalStoreService, useClass: LocalStoreService},

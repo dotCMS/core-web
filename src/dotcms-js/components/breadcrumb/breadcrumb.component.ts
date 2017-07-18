@@ -19,20 +19,19 @@ import {CommonModule} from '@angular/common';
 @Inject('updateService')
 export class BreadcrumbComponent {
 
-    subscription: Subscription;
     private pathItems: MenuItem[];
 
     constructor(private updateService: SiteBrowserState) {
         this.buildMenuItemsFromURI(this.updateService.getURI());
-        this.subscription = updateService.currentSite.subscribe(
+        updateService.currentSite.subscribe(
             siteName => {
                 this.onSiteChange(siteName);
             });
-        this.subscription = updateService.currentFolder.subscribe(
+        updateService.currentFolder.subscribe(
             folderName => {
                 this.onFolderClick(folderName);
             });
-        this.subscription = updateService.currentURI.subscribe(
+        updateService.currentURI.subscribe(
             uri => {
                 this.buildMenuItemsFromURI(uri);
             });

@@ -154,16 +154,6 @@ module.exports = function (options) {
         }
       }),
 
-    // new SourceMapDevToolPlugin({
-    //     // test:/\.js$/,
-    //     // moduleFilenameTemplate:'[absolute-resource-path]',
-    //     // fallbackModuleFilenameTemplate:'[absolute-resource-path]?[hash]',
-    //     filename: '[name].js.map',
-    //     exclude: ['vendor.js']
-    //     // sourceRoot:'../src'
-    //     }
-    // ),
-
       new DllBundlesPlugin({
         bundles: {
           polyfills: [

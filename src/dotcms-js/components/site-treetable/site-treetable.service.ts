@@ -16,12 +16,23 @@ export class SiteTreetableService {
         this.siteBrowserService = siteBrowserService;
     }
 
+    /**
+     * Returns the assets under a site/host
+     * @param siteName
+     * @returns {Observable<R>}
+     */
     getAssetsUnderSite(siteName: String): Observable<TreeNode[]> {
         let lazyFiles: TreeNode[];
         return this.siteBrowserService.getTreeableAssetsUnderSite(siteName)
             .map((treeables: Treeable[]) => this.extractDataFilter(treeables));
     }
 
+    /**
+     * Returns the assets under a folder
+     * @param siteName
+     * @param uri
+     * @returns {Observable<R>}
+     */
     getAssetsUnderFolder(siteName: String, uri: string): Observable<TreeNode[]> {
         let lazyFiles: TreeNode[];
         return this.siteBrowserService.getTreeableAssetsUnderFolder(siteName, uri)
@@ -47,23 +58,4 @@ export class SiteTreetableService {
         }
         return assets;
     }
-
-    // private formatResult(hosts : Site[], event :any = 0) {
-    //     this.filteredHosts = [];
-    //     this.sites = hosts;
-    //     for (let i = 0; i < this.sites.length; i++) {
-    //         let site = this.sites[i].hostname;
-    //         if(event && site.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-    //             this.filteredHosts.push(site);
-    //         }else{
-    //             this.filteredHosts[i] = this.sites[i].hostname;
-    //         }
-    //     }
-    // }
-
-    // private extractDataDropdown(res: Response): Site[] {
-    //     let obj = JSON.parse(res.text());
-    //     return obj.entity.sites;
-    // }
-
 }

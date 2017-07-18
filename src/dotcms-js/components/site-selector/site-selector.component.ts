@@ -1,6 +1,5 @@
 import {Component, Inject, NgModule} from '@angular/core';
 
-import 'rxjs/add/operator/map';
 import {SiteSelectorService} from './site-selector.service';
 import {Site} from '../../core/treeable/shared/site.model';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
@@ -28,16 +27,27 @@ export class SiteSelectorComponent {
         this.host = updateService.getSelectedSite();
     }
 
+    /**
+     * Is called when a site is selected in the dropdown
+     * @param event
+     */
     siteSelected(event: any): void {
         this.updateService.changeSite(this.host);
     }
 
+    /**
+     * Is called as the user tyoes in the filtering select
+     * @param event
+     */
     filterHosts(event: any): void {
         this.siteSelectorService.filterForSites(event.query)
             .subscribe((sites: Site[]) => this.handleSiteResults(sites, event));
         setTimeout(() => {}, 100);
     }
 
+    /**
+     * Is called when the user clicks to view all sites in the dropdown
+     */
     handleDropdownClick(): void {
         this.filteredHosts = [];
         this.siteSelectorService.getSites()
