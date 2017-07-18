@@ -110,7 +110,6 @@ export const COMPONENTS = [
     ResetPasswordComponent,
     ResetPasswordContainer,
     SiteDatatableComponent,
-    SiteSelectorComponent,
     SiteSelectorComponentDotJS,
     SiteTreeTableComponent,
     ToolbarAddContenletBodyComponent,

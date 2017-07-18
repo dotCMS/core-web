@@ -1,16 +1,16 @@
-<searchable-dropdown        
+<searchable-dropdown
+    *ngIf="totalRecords > 1"
     #searchableDropdown
     (change)="siteChange($event)"
     (filterChange)="handleFilterChange($event)"
     (pageChange)="handlePageChange($event)"
-    *ngIf="totalRecords > 1"
     [data]="sitesCurrentPage"
+    [ngModel]="currentSite | async"
     [pageLinkSize]="3"
     [rows]="10"
     [totalRecords]="paginationService.totalRecords"
     class="site-selector__field"
     labelPropertyName="hostname"
-    [ngModel]="currentSite | async"
     >
 </searchable-dropdown>
 

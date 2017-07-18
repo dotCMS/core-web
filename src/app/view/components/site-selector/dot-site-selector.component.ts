@@ -8,17 +8,17 @@ import {
     Input,
     SimpleChanges
 } from '@angular/core';
+import { AutoComplete } from 'primeng/primeng';
+import { BaseComponent } from '../_common/_base/base-component';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
+import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';
+import { MessageService } from '../../../api/services/messages-service';
+import { Observable } from 'rxjs/Rx';
+import { PaginatorService } from '../../../api/services/paginator';
+import { SearchableDropdownComponent } from '../_common/searchable-dropdown/component';
 import { Site } from '../../../api/services/site-service';
 import { SiteService } from '../../../api/services/site-service';
-import { MessageService } from '../../../api/services/messages-service';
-import { BaseComponent } from '../_common/_base/base-component';
-import { AutoComplete } from 'primeng/primeng';
-import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { SearchableDropdownComponent } from '../_common/searchable-dropdown/component';
-import { PaginatorService } from '../../../api/services/paginator';
-import { Observable } from 'rxjs/Rx';
 
 /**
  * It is dropdown of sites, it handle pagination and global search
@@ -44,8 +44,7 @@ import { Observable } from 'rxjs/Rx';
 export class SiteSelectorComponent implements ControlValueAccessor {
     private static readonly MIN_CHARECTERS_TO_SERACH = 3;
 
-    @ViewChild('searchableDropdown')
-    searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
     @Output() change: EventEmitter<Site> = new EventEmitter();
 
     private currentSite: Observable<Site>;
