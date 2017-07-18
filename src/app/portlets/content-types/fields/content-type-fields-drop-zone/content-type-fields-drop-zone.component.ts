@@ -1,8 +1,8 @@
 import { Component, SimpleChanges, Input } from '@angular/core';
-import { FieldRow, Field, FieldService, FieldColumn } from '../service';
-
+import { FieldService } from '../service';
+import { FieldRow, Field, FieldColumn } from '../';
 /**
- * Show all the Field Types
+ * Display all the Field Types
  *
  * @export
  * @class FieldTypesContainerComponent
@@ -27,7 +27,12 @@ export class ContentTypeFieldsDropZoneComponent {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.fields.currentValue) {
-            this.fieldRows = this.getRowFields(changes.fields.currentValue);
+            let fields = changes.fields.currentValue;
+            if (Array.isArray(fields)) {
+                this.fieldRows = this.getRowFields(changes.fields.currentValue);
+            } else {
+                throw 'Fields attribute must be a Array';
+            }
         }
     }
 
@@ -61,11 +66,11 @@ export class ContentTypeFieldsDropZoneComponent {
             }
         });
 
-        if (currentFieldColumn.fields.length > 0) {
+        if (currentFieldColumn.fields.length) {
             currentFieldRow.columns.push(currentFieldColumn);
         }
 
-        if (currentFieldRow.columns.length > 0) {
+        if (currentFieldRow.columns.length) {
             fieldRows.push(currentFieldRow);
         }
 
@@ -77,13 +82,13 @@ export class ContentTypeFieldsDropZoneComponent {
 
         this.fieldRows.forEach((fieldRow, rowIndex) => {
 
-            if (rowIndex > 0) {
+            if (rowIndex) {
                 fields.push(Object.assign({}, ContentTypeFieldsDropZoneComponent.LINE_DIVIDER));
             }
 
             fieldRow.columns.forEach( (fieldColumn, colIndex) => {
 
-                if (colIndex > 0) {
+                if (colIndex) {
                     fields.push(Object.assign({}, ContentTypeFieldsDropZoneComponent.TAB_DIVIDER));
                 }
 

@@ -1,9 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Field } from '../service';
+import { Field } from '../';
 
 /**
- * It is a Field after been Drag and Drop int a Content Type Drop zone
- *
+ * This display field after being dropped into a Content Type Drop zone
  * @export
  * @class ContentTypesFieldDragabbleItemComponent
  */

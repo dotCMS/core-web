@@ -3,7 +3,8 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
 import { ContentTypeFieldsRowListComponent } from './';
 import { By } from '@angular/platform-browser';
-import { Field, FieldDragDropService } from '../service';
+import { FieldDragDropService } from '../service';
+import { Field } from '../';
 import { DragulaModule } from 'ng2-dragula';
 import { Observable } from 'rxjs/Observable';
 

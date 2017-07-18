@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FieldService, Field, FieldType, FieldDragDropService } from '../service';
+import { FieldService, FieldDragDropService } from '../service';
+import { Field, FieldType } from '../';
 
 /**
  * Show all the Field Types
@@ -21,7 +22,7 @@ export class ContentTypesFieldsListComponent {
 
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
-            .subscribe(fields => this.fieldTypes = fields.map( fieldType =>   {
+            .subscribe(fields => this.fieldTypes = fields.map(fieldType =>   {
                 return {
                     dataType: fieldType.name,
                     fixed: false,

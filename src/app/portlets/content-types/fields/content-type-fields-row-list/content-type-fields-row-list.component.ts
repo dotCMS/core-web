@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Field, FieldRow, FieldService, FieldDragDropService } from '../service';
+import { FieldService, FieldDragDropService } from '../service';
 import { DragulaService } from 'ng2-dragula';
+import { FieldRow } from '../';
 
 /**
  * Fields row container
@@ -23,6 +24,6 @@ export class ContentTypeFieldsRowListComponent {
 
     ngOnInit(): void {
         this.fieldDragDropService.setFieldRowBagOptions();
-        this.fieldRows = this.rows.map( nColumns => new FieldRow(nColumns));
+        this.fieldRows = this.rows.map(nColumns => new FieldRow(nColumns));
     }
 }

@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { Component, ViewChild } from '@angular/core';
 import { ContentType } from '../main/index';
-import { ContentTypesFormComponent } from '../common/content-types-form';
+import { ContentTypesFormComponent } from '../form';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { CrudService } from '../../../api/services/crud';
 import { MessageService } from '../../../api/services/messages-service';
@@ -27,7 +27,6 @@ export class ContentTypesEditComponent extends BaseComponent {
     private contentTypeType: string;
     private contentTypeIcon: string;
     private data: ContentType;
-    private readyToAddFields = true;
     private licenseInfo: any;
 
     constructor(messageService: MessageService, private route: ActivatedRoute,
@@ -71,6 +70,5 @@ export class ContentTypesEditComponent extends BaseComponent {
 
     private handleFormSubmissionResponse(res: any): void {
         this.form.resetForm();
-        this.readyToAddFields = true;
     }
 }

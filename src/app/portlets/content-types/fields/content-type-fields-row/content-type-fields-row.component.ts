@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Field, FieldRow } from '../service';
+import { Field, FieldRow } from '../';
 
 /**
- * Show all the Field Types
+ * Display all the Field Types
  *
  * @export
  * @class FieldTypesContainerComponent
@@ -15,6 +15,10 @@ import { Field, FieldRow } from '../service';
 export class ContentTypeFieldsRowComponent {
     @Input() fieldRow: FieldRow;
 
+    /**
+     * Remove a field
+     * @param field field to remove
+     */
     removeField(field: Field): void {
         this.fieldRow.columns = this.fieldRow.columns.map(col => {
             let index: number = col.fields.indexOf(field);
@@ -26,7 +30,12 @@ export class ContentTypeFieldsRowComponent {
         });
     }
 
-    getSpanWidth(): string {
+    /**
+     * Return the width for each column
+     * @returns {string} Return the column's width width '%', for example, '30%'
+     * @memberof ContentTypeFieldsRowComponent
+     */
+    getColumnWidth(): string {
         let nColumns = this.fieldRow.columns.length;
         return `${(100 - nColumns) / nColumns}%`;
     }

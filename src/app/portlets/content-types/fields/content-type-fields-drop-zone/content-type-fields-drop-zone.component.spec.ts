@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, SimpleChange } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
-import { Field, FieldRow } from '../service';
+import { Field, FieldRow } from '../';
 import { DragulaModule } from 'ng2-dragula';
 
 @Component({
@@ -14,7 +14,7 @@ class TestContentTypeFieldsRow {
     @Input() fieldRow: FieldRow;
 }
 
-describe('ContentTypesFieldDragabbleItemComponent', () => {
+describe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;
@@ -44,7 +44,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         fixture.detectChanges();
 
-        let fieldsContainer = de.query(By.css('.fields-container'));
+        let fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
 
         expect(fieldsContainer).not.toBeNull();
 
@@ -81,7 +81,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         fixture.detectChanges();
 
-        let fieldsContainer = de.query(By.css('.fields-container'));
+        let fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
 
         expect(fieldsContainer).not.toBeNull();
 
@@ -89,7 +89,6 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
         expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
 
         let fieldRows = fieldsContainer.queryAll(By.css('content-type-fields-row'));
-        console.log('fieldRows', fieldRows);
         expect(2).toEqual(fieldRows.length);
 
         expect(2).toEqual(fieldRows[0].componentInstance.fieldRow.columns.length);

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ContentTypesCreateComponent } from './create';
 import { ContentTypesEditComponent } from './edit';
-import { ContentTypesFormComponent } from './common/content-types-form';
+import { ContentTypesFormComponent } from './form';
 import { ContentTypesInfoService } from '../../api/services/content-types-info';
-import { ContentTypesLayoutComponent } from './common/content-type-layout';
+import { ContentTypesLayoutComponent } from './layout';
 import { ContentTypesPortletComponent } from './main';
 import { ContentTypesRoutingModule } from './content-types-routing.module';
 import { CrudService } from '../../api/services/crud';

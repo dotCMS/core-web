@@ -1,10 +1,10 @@
  <div>
-    <span   *ngFor="let column of fieldRow.columns"
-            class="fields-container"
-            dragula='fields-bag'
-            data-drag-type="target"
-            [dragulaModel]='column.fields'
-            [style.width]='getSpanWidth()'>
+    <span *ngFor="let column of fieldRow.columns"
+          [dragulaModel]='column.fields'
+          [style.width]='getColumnWidth()'
+          class="fields-container"
+          data-drag-type="target"
+          dragula='fields-bag'>
        
         <content-type-field-dragabble-item *ngFor="let field of column.fields"
                                             [field]="field"

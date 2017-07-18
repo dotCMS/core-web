@@ -4,9 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesEditComponent } from './content-types-edit.component';
-import { ContentTypesFormComponent} from '../common/content-types-form';
+import { ContentTypesFormComponent} from '../form';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { ContentTypesLayoutComponent } from '../common/content-type-layout/content-types-layout.component';
+import { ContentTypesLayoutComponent } from '../layout';
 import { CrudService } from '../../../api/services/crud/crud.service';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
@@ -22,7 +22,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StringUtils } from '../../../api/util/string.utils';
 import { ContentType } from '../main';
 import { tick, fakeAsync } from '@angular/core/testing';
-import { Field } from '../fields/service';
+import { Field } from '../fields';
 
 @Component({
     selector: 'content-type-fields-drop-zone',
