@@ -52,16 +52,10 @@ const RULES_ENGINE_COMPONENTS = [
 ];
 
 // CUSTOM COMPONENTS
-import { ContentTypesCreateEditPortletComponent } from './portlets/content-types-create-edit/content-types-create-edit-component';
-import { ContentTypesForm } from './portlets/content-types-create-edit/content-types-form/content-types-form';
-import { ListingDataTableComponent } from './view/components/listing-data-table/listing-data-table-component';
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
-import { ActionHeaderComponent } from './view/components/_common/action-header/action-header';
-import { ContentTypesPortletComponent } from './portlets/content-types/content-types-component';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicator } from './view/components/_common/dot-loading-indicator/dot-loading-indicator';
 import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
-import { FieldValidationMessageComponent } from './view/components/_common/field-validation-message/field-validation-message';
 import { ForgotPasswordComponent } from './view/components/login/forgot-password-component/forgot-password-component';
 import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { GlobalSearch } from './view/components/global-search/global-search';
@@ -72,7 +66,7 @@ import { LoginAsComponent } from './view/components/login-as/login-as';
 import { LoginComponent } from './view/components/login/login-component/login-component';
 import { LoginContainer } from './view/components/login/login-component/login-container';
 import { LoginPageComponent } from './view/components/login/login-page-component';
-import { MainComponentLegacy } from './view/components/main-legacy/main-legacy-component';
+import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainNavigation } from './view/components/main-navigation/main-navigation';
 import { MyAccountComponent } from './view/components/my-account/dot-my-account-component';
@@ -81,30 +75,26 @@ import { NotificationsList, NotificationsItem } from './view/components/_common/
 import { PatternLibrary } from './view/components/_common/pattern-library/pattern-library';
 import { ResetPasswordComponent } from './view/components/login/reset-password-component/reset-password-component';
 import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
-import { SiteSelectorComponent } from './view/components/site-selector/dot-site-selector-component';
+import { SiteSelectorComponent } from './view/components/site-selector/dot-site-selector.component';
 import { ToolbarAddContenletComponent, ToolbarAddContenletBodyComponent } from './view/components/toolbar-add-contentlet/toolbar-add-contentlet';
 import { ToolbarNotifications } from './view/components/toolbar-notifications/toolbar-notifications';
 import { ToolbarUserComponent } from './view/components/toolbar-user/toolbar-user';
+import { ToolbarComponent } from './view/components/toolbar/toolbar.component';
 
 export const COMPONENTS = [
     ...RULES_ENGINE_COMPONENTS,
     Accordion,
     AccordionGroup,
-    ActionHeaderComponent,
-    ContentTypesForm,
-    ContentTypesCreateEditPortletComponent,
-    ContentTypesPortletComponent,
+    BreadcrumbComponent,
     CustomTimeComponent,
     DotBrowserComponent,
     DotLoadingIndicator,
     DropdownComponent,
-    FieldValidationMessageComponent,
     ForgotPasswordComponent,
     ForgotPasswordContainer,
     GlobalSearch,
     GravatarComponent,
     IframeLegacyComponent,
-    ListingDataTableComponent,
     LogOutContainer,
     LoginAsComponent,
     LoginComponent,
@@ -120,15 +110,15 @@ export const COMPONENTS = [
     PatternLibrary,
     ResetPasswordComponent,
     ResetPasswordContainer,
+    SiteDatatableComponent,
     SiteSelectorComponent,
-    ToolbarAddContenletBodyComponent,
-    ToolbarAddContenletComponent,
-    ToolbarNotifications,
-    ToolbarUserComponent,
     SiteSelectorComponentDotJS,
     SiteTreeTableComponent,
-    BreadcrumbComponent,
-    SiteDatatableComponent,
+    ToolbarAddContenletBodyComponent,
+    ToolbarAddContenletComponent,
+    ToolbarComponent,
+    ToolbarNotifications,
+    ToolbarUserComponent,
     TreeableDetailComponent
 ];
 

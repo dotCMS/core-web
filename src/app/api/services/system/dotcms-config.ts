@@ -23,7 +23,6 @@ const DOTCMS_PAGINATOR_ROWS = 'dotcms.paginator.rows';
 const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';
 
 export interface ConfigParams {
-    defaultRestPageCount: number;
     disabledWebsockets: string;
     websocketReconnectTime: number;
     websocketEndpoints: string;
@@ -33,6 +32,7 @@ export interface ConfigParams {
     menu: Menu[];
     paginatorRows: number;
     paginatorLinks: number;
+    license: object;
 }
 
 @Injectable()
@@ -70,12 +70,11 @@ export class DotcmsConfig {
             method: RequestMethod.Get,
             url: this.configUrl
         }).pluck('entity').subscribe((res: any) => {
-
             this.loggerService.debug('Configuration Loaded!', res);
 
             this.configParams = {
-                defaultRestPageCount: res.config[DEFAULT_REST_PAGE_COUNT],
                 disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
+                license: res.config.license,
                 menu: res.menu,
                 paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                 paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
@@ -83,7 +82,7 @@ export class DotcmsConfig {
                 websocketEndpoints: res.config[DOTCMS_WEBSOCKET_ENDPOINTS],
                 websocketProtocol: res.config[DOTCMS_WEBSOCKET_PROTOCOL],
                 websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
-                websocketsSystemEventsEndpoint: res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT]
+                websocketsSystemEventsEndpoint: res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT],
             };
 
             this.loggerService.debug('this.configParams', this.configParams);

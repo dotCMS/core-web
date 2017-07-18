@@ -27,7 +27,7 @@ $field-active-border-size: 2px;
 $field-active-border-color: $brand-primary;
 
 $field-disabled-bgcolor: rgba($gray-dark, 0.1);
-$field-disabled-color: rgba($gray-dark, 0.3);
+$field-disabled-color: rgba($gray-dark, 0.4);
 $field-disabled-border-size: $field-border-size;
 $field-disabled-border-color: $gray-lighter;
 
@@ -170,13 +170,15 @@ $buttons-map: (
     )
 );
 
-// FLOATING ACTION BUTTON
-$floating-action-button-height: 56px;
-$floating-action-button-icon-size: $font-size-large;
-$floating-action-button-color: $white;
-$floating-action-button-bg-hover: darken($blue, 10%);
-$floating-action-button-bg-active: darken($blue, 20%);
-$floating-action-button-bg-focus: darken($blue, 10%);
+// ACTION BUTTON
+$action-button-active-bgcolor: darken($blue, 20%);
+$action-button-focus-bgcolor: darken($blue, 10%);
+$action-button-hover-bgcolor: darken($blue, 10%);
+$action-button-color: $white;
+$action-button-height: 56px;
+$action-button-icon-size: $font-size-large;
+$action-button-normal-shadow: $md-shadow-1;
+$action-button-hover-shadow: $md-shadow-3;
 
 // DROPDOWN
 $dropdown-active-color: $field-active-color;
@@ -226,11 +228,12 @@ $radio-hover-border: $check-checked-border;
 // DATATABLE
 $datatable-cell-padding: 11px $basic-padding * 2; // We need to have 40px min height in the cell
 $datatable-cell-border: 1px solid $gray-lighter;
-$datatable-head-active-bgcolor: $gray-light;
-$datatable-head-active-color: $gray-dark;
-$datatable-selected-row-bgcolor: $gray-lightest;
-$datatable-row-color: $gray-dark;
+$datatable-highlight-row-bgcolor: $gray-lightest;
+$datatable-row-color: $black;
 $datatable-row-bgcolor: $white;
+
+$datatable-head-bgcolor: $gray-lighter;
+$datatable-head-color: $gray-dark;
 
 // PAGINATOR
 $paginator-page-selected-bgcolor: $blue;
@@ -246,6 +249,9 @@ $toolbar-color: $white;
 // TABVIEW
 $tabview-item-color: $gray-dark;
 $tabview-item-selected-color: $blue;
-$tabview-item-padding: $basic-padding;
+$tabview-item-padding: 10px $basic-padding * 2; // To match the 40px height
 $tabview-item-border: 3px solid $white;
 $tabview-item-selected-border: 3px solid $blue;
+
+// MENU
+$menu-link-color: $black;

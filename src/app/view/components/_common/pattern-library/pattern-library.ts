@@ -1,6 +1,8 @@
-import {Component, ViewEncapsulation, ViewChild} from '@angular/core';
-import {SelectItem, AutoComplete} from 'primeng/primeng';
+import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { LoggerService } from '../../../../api/services/logger.service';
+import { Router } from '@angular/router';
+import { SelectItem, AutoComplete } from 'primeng/primeng';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -11,8 +13,9 @@ import { LoggerService } from '../../../../api/services/logger.service';
 
 export class PatternLibrary {
     public selectedDummyData = [];
-    public selectedCars = [];
     public submitAttempt = false;
+    public actionButtonLog;
+    public actionHeaderLog;
 
     private autocompleteResults: Array<string> = [];
     private cities: SelectItem[];
@@ -20,10 +23,18 @@ export class PatternLibrary {
     private displayDialog = false;
     private model: any = {};
     private buttonActions: [any];
+    private actionButtonItems: [any];
+    private contentTypeColumns: any;
+
+    private searchableForm: FormGroup;
+    private totalRecords: number;
+    private sitesCurrentPage: any[] = [];
+    private sites: any[] = [];
+    private readonly ROWS = 10;
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
-    constructor(public loggerService: LoggerService) {
+    constructor(public loggerService: LoggerService, private router: Router, private fb: FormBuilder) {
         this.cities = [];
         this.cities.push({label: 'Select City', value: null});
         this.cities.push({label: 'New York', value: {id: 1, name: 'New York', code: 'NY'}});
@@ -35,21 +46,58 @@ export class PatternLibrary {
             {
                 label: 'Group Actions',
                 model: [
-                    {label: 'Update', icon: 'fa-refresh', command: () => {}},
-                    {label: 'Delete', icon: 'fa-close', command: () => {}},
-                    {label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'},
-                    {label: 'Theming', icon: 'fa-paint-brush', routerLink: ['/theming']}
+                    {label: 'Action One', icon: 'fa-refresh', command: () => {}},
+                    {label: 'Action Two', icon: 'fa-close', command: () => {}},
                 ]
             },
             {
-                label: 'Edit Content',
+                label: 'More Actions',
                 model: [
-                    {label: 'Publish', icon: 'fa-refresh', command: () => {}},
-                    {label: 'Unpublish', icon: 'fa-close', command: () => {}},
-                    {label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'}
+                    {label: 'Action Three', icon: 'fa-refresh', command: () => {}},
+                    {label: 'Action Four', icon: 'fa-close', command: () => {}},
                 ]
             }
         ];
+        this.actionButtonItems = [{
+            command: () => {
+                this.loggerService.info('action update');
+            },
+            icon: 'fa-refresh',
+            label: 'Update'
+        },
+        {
+            command: () => {
+                this.loggerService.info('action delete');
+            },
+            icon: 'fa-close',
+            label: 'Delete'
+        },
+        {
+            icon: 'fa-link',
+            label: 'Angular.io',
+            url: 'http://angular.io'
+        },
+        {
+            icon: 'fa-paint-brush',
+            label: 'Theming',
+            routerLink: ['/theming']
+        }];
+
+        this.contentTypeColumns = [
+            {fieldName: 'name', header: 'Name', width: '20%', sortable: true},
+            {fieldName: 'variable', header: 'Variable', width: '20%'},
+            {fieldName: 'description', header: 'Description', width: '30%'},
+            {fieldName: 'nEntries', header: 'Entries', width: '10%'},
+            {fieldName: 'modDate', header: 'Last Edit Date', width: '20%', format: 'date', sortable: true}
+        ];
+
+        this.actionButtonLog = () => {
+            this.loggerService.info('Primary action triggered');
+        };
+
+        this.actionHeaderLog = () => {
+            this.loggerService.info('Primary command was triggered');
+        };
     }
 
     ngOnInit(): any {
@@ -83,6 +131,8 @@ export class PatternLibrary {
             {vin: 'aab227b7', brand: 'Audi 3', year: 1970, color: 'Black'},
             {vin: '631f7412', brand: 'Volvo 3', year: 1992, color: 'Red'}
         ];
+
+        this.initSites();
     }
 
     autocompleteComplete($event): void {
@@ -106,7 +156,37 @@ export class PatternLibrary {
         this.displayDialog = true;
     }
 
-    actionHeaderLog(): void {
-        this.loggerService.info('Primary command was triggered');
+    handleFilterChange(filter): void {
+        this.sitesCurrentPage = this.sites.filter( site => site.name.indexOf(filter) !== -1);
+        this.totalRecords = this.sitesCurrentPage.length;
+        this.sitesCurrentPage = this.sitesCurrentPage.slice(0, this.ROWS);
+
+    }
+
+    handlePageChange(event): void {
+        this.sitesCurrentPage = this.sites.slice(event.first, event.first + this.ROWS);
+    }
+
+    private initSites(): void {
+        for (let k = 0; k < 50; k++) {
+            let text = '';
+            let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+            for ( let i = 0; i < 5; i++ ) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+
+            this.sites[k] = {
+                id: k,
+                name: text
+            };
+        }
+
+        this.sitesCurrentPage = this.sites.slice(0, this.ROWS);
+        this.totalRecords = this.sites.length;
+        this.searchableForm = this.fb.group({
+            currentSite: '',
+            fakeCurrentSite: this.sites[0]
+        });
     }
 }

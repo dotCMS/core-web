@@ -1,0 +1,32 @@
+<action-header [options]="actionHeaderOptions">
+    <input #gf pInputText type="text" placeholder="{{i18nMessages['global-search']}}" [(ngModel)]="filter"/>
+</action-header>
+
+<p-dataTable [value]="items" 
+             [rows]="paginatorService.paginationPerPage" 
+             [paginator]="true" 
+             [pageLinks]="paginatorService.maxLinksPage" 
+             [lazy]="true"
+             [totalRecords]="paginatorService.totalRecords"
+             (onLazyLoad)="loadDataPaginationEvent($event)"
+             [(selection)]="selectedItems"
+             (onRowClick)="handleRowClick($event)"
+             [globalFilter]="gf"
+             [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1">
+
+    <p-column selectionMode="multiple" *ngIf="multipleSelection"></p-column>
+
+    <ng-template ngFor let-col [ngForOf]="columns">
+        <p-column 
+            [field]="col.fieldName" 
+            [header]="col.header"
+            [sortable]="col.sortable"
+            [style]="{'width': col.width, 'text-align': getAlign(col)}">
+            <ng-template let-item="rowData" pTemplate="body">
+                <i class="fa {{col.icon(item)}} listing-datatable__icon" *ngIf="col.icon"></i>
+                {{item[col.fieldName]}}
+            </ng-template>
+        </p-column>
+    </ng-template>
+
+</p-dataTable>
