@@ -31,7 +31,7 @@ export class SiteBrowserState {
     }
 
     getSelectedSite(): string {
-        return <string>this.currentSiteSubject.getValue();
+        return <string> this.currentSiteSubject.getValue();
     }
 
     changeFolder(folderName: string): void {
@@ -39,14 +39,14 @@ export class SiteBrowserState {
     }
 
     getSelectedFolder(): string {
-        return <string>this.currentFolderSubject.getValue();
+        return <string> this.currentFolderSubject.getValue();
     }
 
     changeURI(uri: string): void {
         this.currentURISubject.next(uri);
     }
     getURI(): string {
-        return <string>this.currentURISubject.getValue();
+        return <string> this.currentURISubject.getValue();
     }
 
     changeTreeable(treeable: Treeable): void {
@@ -54,7 +54,7 @@ export class SiteBrowserState {
     }
 
     getSelectedTreeable(): Treeable {
-        return <Treeable>this.currentTreeableSubject.getValue();
+        return <Treeable> this.currentTreeableSubject.getValue();
     }
 
     changeSettingsUpdated(settingsUpdated: boolean): void {
@@ -62,7 +62,7 @@ export class SiteBrowserState {
     }
 
     getSettingsUpdated(): boolean {
-        return <boolean>this.currentSettingsUpdatedSubject.getValue();
+        return <boolean> this.currentSettingsUpdatedSubject.getValue();
     }
 
 }

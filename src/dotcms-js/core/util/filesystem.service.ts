@@ -1,5 +1,6 @@
 import {NotificationService} from './notification.service';
 import {Injectable} from '@angular/core';
+import {LoggerService} from '../../core/util/logger.service';
 
 // var fs = require('fs');
 
@@ -11,7 +12,8 @@ export class FileSystemService {
 
     constructor
     (
-        private messageService: NotificationService
+        private messageService: NotificationService,
+        private log: LoggerService
     ) {}
 
     /**
@@ -55,7 +57,7 @@ export class FileSystemService {
 
     private logFileReadingError(err: any): void {
         if (err) {
-            console.log(err);
+            this.log.error(err);
             this.messageService.displayErrorMessage('There was an error reading the file or directory; please try again');
         }
     }

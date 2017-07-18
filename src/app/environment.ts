@@ -21,7 +21,7 @@ import { Config } from './api/util/config';
 import { ConfirmationService } from 'primeng/primeng';
 import { ContentTypesInfoService } from './api/services/content-types-info';
 import { CoreWebService } from './api/services/core-web-service';
-import { CrudService } from './api/services/crud-service';
+import { CrudService } from './api/services/crud/crud.service';
 import { DotRouterService } from './api/services/dot-router-service';
 import { DotcmsConfig } from './api/services/system/dotcms-config';
 import { DotcmsEventsService } from './api/services/dotcms-events-service';

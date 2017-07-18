@@ -35,7 +35,7 @@ export class SiteTreeTableComponent {
                 private messageService: NotificationService) {
 
         this.siteName = updateService.getSelectedSite();
-        if (updateService.getURI()) {this.loadFolder(updateService.getURI()); };
+        if (updateService.getURI()) {this.loadFolder(updateService.getURI()); }
         this.subscription = updateService.currentSite
             .subscribe(siteName => {
                 if (siteName) {this.loadHost(siteName); }
@@ -58,7 +58,6 @@ export class SiteTreeTableComponent {
         // todo fix any to right type
         let files: any[] = e.dataTransfer.files;
         let folderTitle: string = e.path[0].innerText;
-        console.log(files);
 
         for (let i = 0; i < this.lazyFiles.length; i++) {
             let node: TreeNode = this.lazyFiles[i];
@@ -102,7 +101,7 @@ export class SiteTreeTableComponent {
     }
 
     nodeExpand(event: any): void {
-        let pathName: string = (<string>event.node.data.path);
+        let pathName: string = (<string> event.node.data.path);
         pathName = pathName.slice(0, pathName.length - 1);
         pathName = pathName.slice(pathName.lastIndexOf('/') + 1, pathName.length);
         this.updateService.changeFolder(pathName);
