@@ -1,21 +1,3 @@
-p-splitbutton {
-    display: inline-block;
-    border-radius: $button-radius;
-    @extend #buttons;
-
-    &[flat].inverted,
-    &[flat].inverted:hover {
-        .ui-button-text,
-        .ui-c {
-            color: $button-inverted-color;
-        }
-    }
-
-    .ui-state-disabled {
-        background: none;
-    }
-}
-
 .ui-splitbutton {
   .ui-button {
     background: none;
@@ -32,45 +14,63 @@ p-splitbutton {
     }
 }
 
-p-splitbutton[iconButtonOptions] {
-    border: none;
-    box-shadow: none;
-    background: none;
+p-splitbutton {
+    display: inline-block;
+    border-radius: $button-radius;
+    @extend #buttons;
 
-    .ui-splitbutton {
-        .ui-c::before {
-            content: "\F142";
-            color: $black;
+    &[flat].inverted,
+    &[flat].inverted:hover {
+        .ui-button-text,
+        .ui-c {
+            color: $button-inverted-color;
         }
-        .ui-corner-left {
-            display: none;
-        }
+    }
 
-        .ui-splitbutton-menubutton {
-            width: $field-height;
-            border-radius: 50%;
-            background: $white;
-            box-shadow: $md-shadow-1;
-            transition: background-color $basic-speed ease-in,
-                        box-shadow $basic-speed ease-in;
+    .ui-state-disabled {
+        background: none;
+    }
 
-            &:not([disabled]) {
-                &:hover,
-                &:active,
-                &:focus {
-                    box-shadow: $md-shadow-2;
-                }
+    &[iconButton] {
+        border: none;
+        box-shadow: none;
+        background: none;
 
-                &:hover {
-                    box-shadow: $md-shadow-2;
-                }
+        .ui-splitbutton {
+            .ui-c::before {
+                content: "\F142";
+                color: $black;
+            }
+            .ui-corner-left {
+                display: none;
+            }
 
-                &:active {
-                    box-shadow: $md-shadow-2;
-                }
+            .ui-splitbutton-menubutton {
+                width: $field-height;
+                border-radius: 50%;
+                background: $white;
+                box-shadow: $md-shadow-1;
+                transition: background-color $basic-speed ease-in,
+                            box-shadow $basic-speed ease-in;
 
-                &:focus {
-                    box-shadow: $md-shadow-2;
+                &:not([disabled]) {
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        box-shadow: $md-shadow-2;
+                    }
+
+                    &:hover {
+                        box-shadow: $md-shadow-2;
+                    }
+
+                    &:active {
+                        box-shadow: $md-shadow-2;
+                    }
+
+                    &:focus {
+                        box-shadow: $md-shadow-2;
+                    }
                 }
             }
         }

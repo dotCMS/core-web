@@ -3,7 +3,6 @@
         [type]="contentTypeType"
         [name]="contentTypeName | async"
         [icon]="contentTypeIcon"
-        [onCreate]="true"
         (onSubmit)="handleFormSubmit($event)"
         (onCancel)="router.navigate(['../'], { relativeTo: route })">
     </content-types-form>

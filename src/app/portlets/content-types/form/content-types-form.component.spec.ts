@@ -123,7 +123,19 @@ describe('ContentTypesFormComponent', () => {
 
     it('should call toogleForm method on action button click', () => {
         spyOn(comp, 'toggleForm');
-        comp.onCreate = false;
+        comp.data = {
+            fields: [
+                {
+                    dataType: 'DATE_TIME',
+                    id: '123',
+                    indexed: true,
+                    name: 'Date 1'
+                }
+            ]
+        };
+        comp.ngOnChanges({
+            data: new SimpleChange(null, comp.data, true)
+        });
         fixture.detectChanges();
         let expandFormEditButton: DebugElement = fixture
             .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:first-child a'));
@@ -133,7 +145,19 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should call delete method on action button click', () => {
-        comp.onCreate = false;
+        comp.data = {
+            fields: [
+                {
+                    dataType: 'DATE_TIME',
+                    id: '123',
+                    indexed: true,
+                    name: 'Date 1'
+                }
+            ]
+        };
+        comp.ngOnChanges({
+            data: new SimpleChange(null, comp.data, true)
+        });
         comp.onDelete.subscribe(() => this.action = true);
         fixture.detectChanges();
 
@@ -145,6 +169,19 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should toggle formState property on action button click', () => {
+        comp.data = {
+            fields: [
+                {
+                    dataType: 'DATE_TIME',
+                    id: '123',
+                    indexed: true,
+                    name: 'Date 1'
+                }
+            ]
+        };
+        comp.ngOnChanges({
+            data: new SimpleChange(null, comp.data, true)
+        });
         fixture.detectChanges();
         let expandFormButton: DebugElement = fixture
             .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:first-child a'));

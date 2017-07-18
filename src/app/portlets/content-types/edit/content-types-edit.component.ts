@@ -75,17 +75,13 @@ export class ContentTypesEditComponent extends BaseComponent {
         this.form.resetForm();
     }
 
-    private deleteContentType(id): void {
-        this.crudService.delete(`v1/contenttype/id/`, id)
-            .subscribe((data) => {
-                this.router.navigate(['../'], { relativeTo: this.route });
-            });
-    }
-
-    private deleteContentTypeDialog($event): any {
+    private deleteContentType($event): void {
         this.confirmationService.confirm({
             accept: () => {
-                this.deleteContentType(this.data.id);
+                this.crudService.delete(`v1/contenttype/id/`, this.data.id)
+                    .subscribe((data) => {
+                        this.router.navigate(['../'], { relativeTo: this.route });
+                    });
             },
             header: this.i18nMessages[
                 'message.structure.cantdelete'

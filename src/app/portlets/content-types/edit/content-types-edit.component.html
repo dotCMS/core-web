@@ -7,11 +7,16 @@
         [icon]="contentTypeIcon"
         (onSubmit)="handleFormSubmit($event)"
         (onCancel)="router.navigate(['../'], { relativeTo: route })"
-        (onDelete)="deleteContentTypeDialog($event)">
+        (onDelete)="deleteContentType($event)">
     </content-types-form>
 
     <content-type-fields-drop-zone *ngIf="data && data.fields"
                                    [fields]="data.fields">
                                 </content-type-fields-drop-zone>
 </content-type-layout>
-<p-confirmDialog width="425"></p-confirmDialog>
+<p-confirmDialog width="425" #cd>
+    <p-footer>
+        <button type="button" pButton label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton label="Yes" (click)="cd.accept()"></button>
+    </p-footer>
+</p-confirmDialog>

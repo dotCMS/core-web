@@ -44,7 +44,6 @@ export class ContentTypesFormComponent extends BaseComponent {
     @Input() icon: string;
     @Input() name: string;
     @Input() type: string;
-    @Input() onCreate = false;
     @Output() onCancel: EventEmitter<any> = new EventEmitter();
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
@@ -57,7 +56,6 @@ export class ContentTypesFormComponent extends BaseComponent {
     public formOptions: MenuItem[];
     private dateVarOptions: SelectItem[] = [];
     private workflowOptions: SelectItem[] = [];
-    private display = false;
 
     constructor(public messageService: MessageService, private renderer: Renderer2, private fb: FormBuilder,
         private dotcmsConfig: DotcmsConfig) {
