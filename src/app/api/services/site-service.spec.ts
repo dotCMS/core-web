@@ -39,6 +39,8 @@ describe('Site Service', () => {
                 this.lastSwitchSiteConnection = connection;
             } else if (url.indexOf('v1/site') !== -1) {
                 this.lastPaginateSiteConnection = connection;
+            } else if (url.indexOf('content') !== -1) {
+                this.lastContentApiConnection = connection;
             }
         });
     });
@@ -128,16 +130,12 @@ describe('Site Service', () => {
             expect(res).toEqual({ hostname: 'hello.host.com', identifier: '123' });
         });
 
-        this.lastPaginateSiteConnection.mockRespond(new Response(new ResponseOptions({
+        this.lastContentApiConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify({
-                'entity': [
+                'contentlets': [
                     {
                         'hostname': 'hello.host.com',
                         'identifier': '123'
-                    },
-                    {
-                        'hostname': 'world.host.com',
-                        'identifier': '456'
                     }
                 ]
             })

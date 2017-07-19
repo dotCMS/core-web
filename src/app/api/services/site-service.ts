@@ -70,15 +70,12 @@ export class SiteService {
      * @memberof SiteService
      */
     getSiteById(id: string): Observable<Site> {
-        // TODO: this is a mock, we need to create an endpoint to get
-        // sites by id: https://github.com/dotCMS/core/issues/12035
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
-            url: this.urls.sitesUrl,
+            url: `content/id/${id}`,
         })
-        .pluck('entity')
-        .flatMap((res: any) => Observable.from(res))
-        .filter((site: Site) => site.identifier === id);
+        .pluck('contentlets')
+        .map(sites => sites[0]);
     }
 
     /**
