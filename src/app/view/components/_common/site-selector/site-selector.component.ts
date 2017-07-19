@@ -14,11 +14,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotcmsConfig } from '../../../../api/services/system/dotcms-config';
 import { IframeOverlayService } from '../../../../api/services/iframe-overlay-service';
 import { MessageService } from '../../../api/services/messages-service';
-import { Observable } from 'rxjs/Rx';
 import { PaginatorService } from '../../../../api/services/paginator';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component';
 import { Site } from '../../../../api/services/site-service';
 import { SiteService } from '../../../../api/services/site-service';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * It is dropdown of sites, it handle pagination and global search
@@ -76,12 +76,21 @@ export class SiteSelectorComponent implements ControlValueAccessor {
             this.currentSite = site;
         });
 
-        this.siteService.refreshSites$.subscribe((site) => {
-            this.paginationService.getCurrentPage().subscribe((items) => {
-                this.sitesCurrentPage = items.splice(0);
-                this.totalRecords = this.paginationService.totalRecords;
-                this.currentSite = this.siteService.currentSite;
-            });
+        // this.currentSite = this.siteService.currentSite ? Observable.of(this.siteService.currentSite) : this.siteService.switchSite$;
+
+        this.siteService.refreshSites$.subscribe(site => this.handleSitesRefresh());
+    }
+
+    /**
+     * Manage the sites refresh when a event happen
+     * items.splice(0) is used to return a new object and refresh the data
+     * @memberof SiteSelectorComponent
+     */
+    handleSitesRefresh(): void {
+        this.paginationService.getCurrentPage().subscribe((items) => {
+            this.sitesCurrentPage = items.splice(0);
+            this.totalRecords = this.paginationService.totalRecords;
+            this.currentSite = this.siteService.currentSite;
         });
     }
 

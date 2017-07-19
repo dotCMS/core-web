@@ -30,23 +30,32 @@ export class SiteService {
             switchSiteUrl: 'v1/site/switch'
         };
 
-        dotcmsEventsService.subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE']).subscribe(eventTypeWrapper => {
-            this.loggerService.debug('Capturing Site event', eventTypeWrapper.eventType, eventTypeWrapper.data);
-            let siteIdentifier = eventTypeWrapper.data.data.identifier;
-            if (siteIdentifier === this.selectedSite.identifier) {
-                if (eventTypeWrapper.eventType === 'ARCHIVE_SITE') {
-                    this.getOneSite().subscribe( site => this.switchSite(site));
-                } else {
-                    this.loadCurrentSite();
-                }
-            }
-        });
+        dotcmsEventsService.subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE']).subscribe((data) => this.eventResponse(data));
 
         dotcmsEventsService.subscribeToEvents(this.events).subscribe(eventTypeWrapper => {
             this._refreshSites$.next(eventTypeWrapper.data.data);
         });
 
         loginService.watchUser(this.loadCurrentSite.bind(this));
+    }
+
+    /**
+     * Manage the response when an event happen
+     * @param {any} eventTypeWrapper
+     * @returns {*}
+     * @memberof SiteService
+     */
+    eventResponse(eventTypeWrapper): any {
+        this.loggerService.debug('Capturing Site event', eventTypeWrapper.eventType, eventTypeWrapper.data);
+        // TODO the backend needs a change in the response 'data.data'.
+        let siteIdentifier = eventTypeWrapper.data.data.identifier;
+        if (siteIdentifier === this.selectedSite.identifier) {
+            if (eventTypeWrapper.eventType === 'ARCHIVE_SITE') {
+                this.getOneSite().subscribe( site => this.switchSite(site));
+            } else {
+                this.loadCurrentSite();
+            }
+        }
     }
 
     /**
