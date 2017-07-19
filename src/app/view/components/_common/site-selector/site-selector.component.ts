@@ -70,13 +70,15 @@ export class SiteSelectorComponent implements ControlValueAccessor {
 
         this.getSitesList();
 
-        this.currentSite = this.siteService.currentSite;
-
-        this.siteService.switchSite$.subscribe((site) => {
-            this.currentSite = site;
-        });
-
-        // this.currentSite = this.siteService.currentSite ? Observable.of(this.siteService.currentSite) : this.siteService.switchSite$;
+        if (this.siteService.currentSite) {
+            this.currentSite = Observable.of(this.siteService.currentSite);
+            this.propagateChange(this.siteService.currentSite);
+        } else {
+            this.siteService.switchSite$.subscribe(site => {
+                this.currentSite = Observable.of(site);
+                this.propagateChange(site.identifier);
+            });
+        }
 
         this.siteService.refreshSites$.subscribe(site => this.handleSitesRefresh());
     }
@@ -90,7 +92,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
         this.paginationService.getCurrentPage().subscribe((items) => {
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.paginationService.totalRecords;
-            this.currentSite = this.siteService.currentSite;
+            this.currentSite = Observable.of(this.siteService.currentSite);
         });
     }
 
