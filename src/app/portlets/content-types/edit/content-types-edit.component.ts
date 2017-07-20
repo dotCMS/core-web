@@ -97,7 +97,6 @@ export class ContentTypesEditComponent extends BaseComponent {
 
     private handleFormSubmissionResponse(res: any): void {
         this.form.resetForm();
-        this.readyToAddFields = true;
     }
 
 }
