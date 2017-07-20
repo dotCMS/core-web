@@ -121,22 +121,27 @@ describe('Site Service', () => {
         let events: string[] = ['SAVE_SITE', 'PUBLISH_SITE', 'UPDATE_SITE_PERMISSIONS', 'UN_ARCHIVE_SITE', 'UPDATE_SITE', 'ARCHIVE_SITE'];
         let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
         let siteService = this.injector.get(SiteService);
-        let spy = spyOn(siteService, 'refreshSites$').and.returnValue(Observable);
-
-        dotcmsEventsService.subscribeToEvents(events);
-        tick();
-        // Need a better way to test this
-        expect(spy.calls.any()).toBe(false);
-    }));
-
-    function respondSwitchSiteRequest(): void {
-        this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
-            body: JSON.stringify({
-                entity: {
+        let data = {
+            data: {
+                data: {
+                    identifier: '5'
                 }
-            })
-        })));
-    }
+            },
+            eventType: 'ARCHIVE_SITE'
+        };
+
+        this.siteService.switchSite(currentSite);
+
+        respondSwitchSiteRequest.bind(this)();
+
+        spyOn(siteService, 'siteEventsHandler');
+
+        dotcmsEventsService.triggerSubscribeToEvents(events, data);
+
+        tick();
+
+        expect(siteService.siteEventsHandler).toHaveBeenCalled();
+    }));
 
     it('get a site by id', () => {
         this.siteService.getSiteById('123').subscribe(res => {
@@ -154,4 +159,13 @@ describe('Site Service', () => {
             })
         })));
     });
+
+    function respondSwitchSiteRequest(): void {
+        this.lastSwitchSiteConnection.mockRespond(new Response(new ResponseOptions({
+            body: JSON.stringify({
+                entity: {
+                }
+            })
+        })));
+    }
 });

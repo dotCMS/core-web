@@ -21,4 +21,10 @@ export class DotcmsEventsServiceMock {
     tiggerSubscribeTo(clientEventType: string, data: any): void {
         this.observers[clientEventType].next(data);
     }
+
+    triggerSubscribeToEvents(clientEventTypes: string[], data: any): void {
+        clientEventTypes.forEach((eventType) => {
+            this.observers[eventType].next(data);
+        });
+    }
 }

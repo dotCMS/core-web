@@ -32,9 +32,7 @@ export class SiteService {
 
         dotcmsEventsService.subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE']).subscribe((data) => this.eventResponse(data));
 
-        dotcmsEventsService.subscribeToEvents(this.events).subscribe(eventTypeWrapper => {
-            this._refreshSites$.next(eventTypeWrapper.data.data);
-        });
+        dotcmsEventsService.subscribeToEvents(this.events).subscribe((data) => this.siteEventsHandler(data));
 
         loginService.watchUser(this.loadCurrentSite.bind(this));
     }
@@ -56,6 +54,15 @@ export class SiteService {
                 this.loadCurrentSite();
             }
         }
+    }
+
+    /**
+     * Refresh the sites list if a event happen
+     * @param {any} eventTypeWrapper
+     * @memberof SiteService
+     */
+    siteEventsHandler(eventTypeWrapper): any {
+        this._refreshSites$.next(eventTypeWrapper.data.data);
     }
 
     /**
