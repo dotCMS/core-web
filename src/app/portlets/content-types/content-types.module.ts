@@ -8,17 +8,20 @@ import { ContentTypesPortletComponent } from './main';
 import { ContentTypesRoutingModule } from './content-types-routing.module';
 import { CrudService } from '../../api/services/crud';
 import { DotcmsConfig } from '../../api/services/system/dotcms-config';
-import { FormatDateService } from '../../api/services/format-date-service';
 import { FieldValidationMessageModule } from '../../view/components/_common/field-validation-message/file-validation-message.module';
+import { FormatDateService } from '../../api/services/format-date-service';
 import { ListingDataTableModule } from '../../view/components/listing-data-table/listing-data-table.module';
 import { LoginService } from '../../api/services/login-service';
 import { MessageService } from '../../api/services/messages-service';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RoutingPrivateAuthService } from '../../api/services/routing-private-auth-service';
+import { SiteSelectorModule } from '../../view/components/_common/site-selector/site-selector.module';
 import { SiteService } from '../../api/services/site-service';
 import { StringUtils } from '../../api/util/string.utils';
-import { TabViewModule, OverlayPanelModule, DropdownModule, ButtonModule, InputTextModule } from 'primeng/primeng';
+import { DragulaModule } from 'ng2-dragula';
+import { DragulaService } from 'ng2-dragula';
+import { FieldService, FieldDragDropService } from './fields/service';
 import {
     ContentTypesFieldsListComponent,
     ContentTypeFieldsDropZoneComponent,
@@ -26,9 +29,15 @@ import {
     ContentTypesFieldDragabbleItemComponent,
     ContentTypeFieldsRowListComponent
 } from './fields';
-import { DragulaModule } from 'ng2-dragula';
-import { DragulaService } from 'ng2-dragula';
-import { FieldService, FieldDragDropService } from './fields/service';
+import {
+    TabViewModule,
+    OverlayPanelModule,
+    DropdownModule,
+    ButtonModule,
+    InputTextModule,
+    SplitButtonModule,
+    ConfirmDialogModule
+} from 'primeng/primeng';
 
 @NgModule({
     declarations: [
@@ -52,13 +61,16 @@ import { FieldService, FieldDragDropService } from './fields/service';
         ContentTypesRoutingModule,
         DragulaModule,
         DropdownModule,
+        ConfirmDialogModule,
         FieldValidationMessageModule,
         FormsModule,
         InputTextModule,
+        SplitButtonModule,
         ListingDataTableModule,
         OverlayPanelModule,
         ReactiveFormsModule,
         TabViewModule,
+        SiteSelectorModule
     ],
     providers: [
         ContentTypesInfoService,

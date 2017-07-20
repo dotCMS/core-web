@@ -16,7 +16,7 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { OverlayPanelModule } from 'primeng/primeng';
+import { OverlayPanelModule, ConfirmationService } from 'primeng/primeng';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StringUtils } from '../../../api/util/string.utils';
@@ -90,14 +90,12 @@ describe('ContentTypesEditComponent', () => {
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
                 { provide: MessageService, useValue: messageServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {}
-                },
+                { provide: ActivatedRoute, useValue: {'params': Observable.from([{ id: '1234' }])} },
                 CrudService,
                 ContentTypesInfoService,
                 FieldService,
-                StringUtils
+                StringUtils,
+                ConfirmationService
             ]
         });
 
