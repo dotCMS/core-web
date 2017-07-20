@@ -85,11 +85,11 @@ export class SiteSelectorComponent implements ControlValueAccessor {
 
     /**
      * Manage the sites refresh when a event happen
-     * items.splice(0) is used to return a new object and refresh the data
      * @memberof SiteSelectorComponent
      */
     handleSitesRefresh(): void {
         this.paginationService.getCurrentPage().subscribe((items) => {
+            // items.splice(0) is used to return a new object and refresh the data
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.paginationService.totalRecords;
             this.currentSite = Observable.of(this.siteService.currentSite);

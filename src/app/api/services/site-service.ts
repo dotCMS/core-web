@@ -39,11 +39,11 @@ export class SiteService {
 
     /**
      * Manage the response when an event happen
-     * @param {any} eventTypeWrapper
+     * @param {void} eventTypeWrapper
      * @returns {*}
      * @memberof SiteService
      */
-    eventResponse(eventTypeWrapper): any {
+    eventResponse(eventTypeWrapper): void {
         this.loggerService.debug('Capturing Site event', eventTypeWrapper.eventType, eventTypeWrapper.data);
         // TODO the backend needs a change in the response 'data.data'.
         let siteIdentifier = eventTypeWrapper.data.data.identifier;
@@ -61,7 +61,7 @@ export class SiteService {
      * @param {any} eventTypeWrapper
      * @memberof SiteService
      */
-    siteEventsHandler(eventTypeWrapper): any {
+    siteEventsHandler(eventTypeWrapper): void {
         this._refreshSites$.next(eventTypeWrapper.data.data);
     }
 

@@ -140,7 +140,7 @@ describe('Site Service', () => {
 
         tick();
 
-        expect(siteService.siteEventsHandler).toHaveBeenCalled();
+        expect(siteService.siteEventsHandler).toHaveBeenCalledWith(data);
     }));
 
     it('get a site by id', () => {
