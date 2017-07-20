@@ -89,7 +89,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
      */
     handleSitesRefresh(): void {
         this.paginationService.getCurrentPage().subscribe((items) => {
-            // items.splice(0) is used to return a new object and refresh the data
+            // items.splice(0) is used to return a new object and trigger the change detection in angular
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.paginationService.totalRecords;
             this.currentSite = Observable.of(this.siteService.currentSite);
@@ -123,7 +123,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
     getSitesList(filter = '',  offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe( items => {
-            // items.splice(0) is used to return a new object and refresh the data
+            // items.splice(0) is used to return a new object and trigger the change detection in angular
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
