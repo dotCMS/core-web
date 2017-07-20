@@ -123,6 +123,7 @@ export class SiteSelectorComponent implements ControlValueAccessor {
     getSitesList(filter = '',  offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe( items => {
+            // items.splice(0) is used to return a new object and refresh the data
             this.sitesCurrentPage = items.splice(0);
             this.totalRecords = this.totalRecords | this.paginationService.totalRecords;
         });
