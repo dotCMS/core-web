@@ -8,6 +8,8 @@ import { CrudService } from '../../../api/services/crud';
 import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Observable';
 import { StringUtils } from '../../../api/util/string.utils';
+import { Field } from '../fields';
+import { FieldService } from '../fields/service';
 
 /**
  * Portlet component for edit content types
@@ -29,9 +31,10 @@ export class ContentTypesEditComponent extends BaseComponent {
     private data: ContentType;
     private licenseInfo: any;
 
-    constructor(messageService: MessageService, private route: ActivatedRoute,
-        private crudService: CrudService, public router: Router, private stringUtils: StringUtils,
-        private contentTypesInfoService: ContentTypesInfoService) {
+    constructor(messageService: MessageService, private route: ActivatedRoute, private router: Router,
+        private crudService: CrudService, private stringUtils: StringUtils, private contentTypesInfoService: ContentTypesInfoService,
+        private fieldService: FieldService) {
+
         super([
             'File',
             'Content',
@@ -66,6 +69,10 @@ export class ContentTypesEditComponent extends BaseComponent {
         let contentTypeData: ContentType = Object.assign({}, this.data, $event.value);
         this.crudService.putData(`v1/contenttype/id/${this.data.id}`, contentTypeData)
             .subscribe(this.handleFormSubmissionResponse.bind(this));
+    }
+
+    saveFields(fields: Field[]): void {
+        this.fieldService.saveFields(this.data.id, fields).subscribe(fields => this.data.fields = fields);
     }
 
     private handleFormSubmissionResponse(res: any): void {

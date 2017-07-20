@@ -23,6 +23,7 @@ import { StringUtils } from '../../../api/util/string.utils';
 import { ContentType } from '../main';
 import { tick, fakeAsync } from '@angular/core/testing';
 import { Field } from '../fields';
+import { FieldService } from '../fields/service';
 
 @Component({
     selector: 'content-type-fields-drop-zone',
@@ -95,6 +96,7 @@ describe('ContentTypesEditComponent', () => {
                 },
                 CrudService,
                 ContentTypesInfoService,
+                FieldService,
                 StringUtils
             ]
         });

@@ -9,6 +9,8 @@ import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Observable';
 import { StringUtils } from '../../../api/util/string.utils';
 import { ContentTypesFormComponent } from '../form';
+import { Field } from '../fields';
+import { FieldService } from '../fields/service';
 
 /**
  * Portlet component for edit content types
@@ -26,10 +28,12 @@ export class ContentTypesCreateComponent extends BaseComponent {
     private contentTypeName: Observable<string>;
     private contentTypeType: string;
     private contentTypeIcon: string;
+    private contentTypeId: string;
+    private fields: Field[] = [];
 
     constructor(private route: ActivatedRoute, private router: Router, private contentTypesInfoService: ContentTypesInfoService,
-    private stringUtils: StringUtils, messageService: MessageService, private crudService: CrudService,
-    private loginService: LoginService) {
+                    private stringUtils: StringUtils, messageService: MessageService, private crudService: CrudService,
+                    private loginService: LoginService, private fieldService: FieldService) {
         super([
             'File',
             'Content',
@@ -63,10 +67,15 @@ export class ContentTypesCreateComponent extends BaseComponent {
         contentTypeData.clazz = this.contentTypesInfoService.getClazz(this.contentTypeType);
 
         this.crudService.postData('v1/contenttype', contentTypeData)
-            .subscribe(this.handleFormSubmissionResponse.bind(this));
+            .subscribe(resp => this.handleFormSubmissionResponse(resp));
     }
 
-    private handleFormSubmissionResponse(res: any): void {
+    saveFields(fieldsToSave: Field[]): void {
+        this.fieldService.saveFields(this.contentTypeId, fieldsToSave).subscribe(fields => this.fields = fields);
+    }
+
+    private handleFormSubmissionResponse(res: ContentType[]): void {
+        this.contentTypeId = res[0].id;
         this.form.resetForm();
     }
 
