@@ -61,23 +61,11 @@ export class ContentTypesEditComponent extends BaseComponent {
     }
 
     /**
-     * Combine data from the form and submit to update content types
-     *
+     * Delete a content type using the ID
      * @param {any} $event
-     *
      * @memberof ContentTypesEditComponent
      */
-    public handleFormSubmit($event): void {
-        let contentTypeData: ContentType = Object.assign({}, this.data, $event.value);
-        this.crudService.putData(`v1/contenttype/id/${this.data.id}`, contentTypeData)
-            .subscribe(this.handleFormSubmissionResponse.bind(this));
-    }
-
-    private handleFormSubmissionResponse(res: any): void {
-        this.form.resetForm();
-    }
-
-    private deleteContentType($event): void {
+    public deleteContentType($event): void {
         this.confirmationService.confirm({
             accept: () => {
                 this.crudService.delete(`v1/contenttype/id/`, this.data.id)
@@ -93,4 +81,23 @@ export class ContentTypesEditComponent extends BaseComponent {
             ],
         });
     }
+
+    /**
+     * Combine data from the form and submit to update content types
+     *
+     * @param {any} $event
+     *
+     * @memberof ContentTypesEditComponent
+     */
+    public handleFormSubmit($event): void {
+        let contentTypeData: ContentType = Object.assign({}, this.data, $event.value);
+        this.crudService.putData(`v1/contenttype/id/${this.data.id}`, contentTypeData)
+            .subscribe(this.handleFormSubmissionResponse.bind(this));
+    }
+
+    private handleFormSubmissionResponse(res: any): void {
+        this.form.resetForm();
+        this.readyToAddFields = true;
+    }
+
 }
