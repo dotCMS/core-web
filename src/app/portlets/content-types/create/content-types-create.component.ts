@@ -1,5 +1,4 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { CONTENT_TYPE_INITIAL_DATA, ContentType } from '../main';
 import { Component, ViewChild } from '@angular/core';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
@@ -11,6 +10,7 @@ import { StringUtils } from '../../../api/util/string.utils';
 import { ContentTypesFormComponent } from '../form';
 import { Field } from '../fields';
 import { FieldService } from '../fields/service';
+import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 
 /**
  * Portlet component for edit content types
@@ -20,8 +20,8 @@ import { FieldService } from '../fields/service';
  * @extends {BaseComponent}
  */
 @Component({
-    selector: 'content-types-creaate',
-    templateUrl: './content-types-create.component.html',
+    selector: 'content-types-create',
+    templateUrl: './content-types-create.component.html'
 })
 export class ContentTypesCreateComponent extends BaseComponent {
     @ViewChild('form') form: ContentTypesFormComponent;
@@ -31,16 +31,23 @@ export class ContentTypesCreateComponent extends BaseComponent {
     private contentTypeId: string;
     private fields: Field[] = [];
 
-    constructor(private route: ActivatedRoute, private router: Router, private contentTypesInfoService: ContentTypesInfoService,
-                    private stringUtils: StringUtils, messageService: MessageService, private crudService: CrudService,
-                    private loginService: LoginService, private fieldService: FieldService) {
+    constructor(
+        messageService: MessageService,
+        private contentTypesInfoService: ContentTypesInfoService,
+        private crudService: CrudService,
+        private fieldService: FieldService,
+        private loginService: LoginService,
+        private route: ActivatedRoute,
+        public router: Router,
+        private stringUtils: StringUtils
+    ) {
         super([
             'File',
             'Content',
             'Form',
             'Persona',
             'Widget',
-            'Page',
+            'Page'
         ], messageService);
     }
 
@@ -63,10 +70,17 @@ export class ContentTypesCreateComponent extends BaseComponent {
      * @memberof ContentTypesCreateComponent
      */
     public handleFormSubmit($event): void {
-        let contentTypeData: ContentType = Object.assign({}, CONTENT_TYPE_INITIAL_DATA, $event.value);
-        contentTypeData.clazz = this.contentTypesInfoService.getClazz(this.contentTypeType);
+        let contentTypeData: ContentType = Object.assign(
+            {},
+            CONTENT_TYPE_INITIAL_DATA,
+            $event.value
+        );
+        contentTypeData.clazz = this.contentTypesInfoService.getClazz(
+            this.contentTypeType
+        );
 
-        this.crudService.postData('v1/contenttype', contentTypeData)
+        this.crudService
+            .postData('v1/contenttype', contentTypeData)
             .subscribe(resp => this.handleFormSubmissionResponse(resp));
     }
 
@@ -92,5 +106,4 @@ export class ContentTypesCreateComponent extends BaseComponent {
             CONTENT_TYPE_INITIAL_DATA.owner = res.user.userId;
         });
     }
-
 }
