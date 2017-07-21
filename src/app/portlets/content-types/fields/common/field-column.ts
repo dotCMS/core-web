@@ -6,7 +6,7 @@ export class FieldColumn {
     tabDivider: Field;
 
     constructor(fields: Field[] = []) {
-        if (fields.length > 0 && fields[0].clazz === TAB_DIVIDER.clazz) {
+        if (fields.length && fields[0].clazz === TAB_DIVIDER.clazz) {
             this.tabDivider = fields[0];
             this.fields = fields.splice(1);
         } else {

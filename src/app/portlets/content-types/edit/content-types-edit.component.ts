@@ -98,6 +98,10 @@ export class ContentTypesEditComponent extends BaseComponent {
             .subscribe(this.handleFormSubmissionResponse.bind(this));
     }
 
+    /**
+     * Save fields
+     * @param fieldsToSave Fields to be save
+     */
     saveFields(fields: Field[]): void {
         this.fieldService.saveFields(this.data.id, fields).subscribe(fields => this.data.fields = fields);
     }

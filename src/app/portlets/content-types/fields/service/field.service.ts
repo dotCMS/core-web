@@ -35,6 +35,13 @@ export class FieldService {
         ]);
     }
 
+    /**
+     * Save fields.
+     * @param {string} contentTypeId Content Type'id
+     * @param {Field[]} fields fields to add
+     * @returns {Observable<any>} 
+     * @memberof FieldService
+     */
     saveFields(contentTypeId: string, fields: Field[]): Observable<any> {
 
         let observables: Observable<any>[] = fields.map((field, index) => {
@@ -54,7 +61,6 @@ export class FieldService {
                     url: `v1/contenttype/${contentTypeId}/fields`
                 }).pluck('entity');
             } else {
-
                 return this.coreWebService.requestView({
                     body: fieldToSend,
                     method: RequestMethod.Put,

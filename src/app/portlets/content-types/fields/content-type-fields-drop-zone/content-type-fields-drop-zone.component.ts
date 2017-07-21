@@ -40,6 +40,9 @@ export class ContentTypeFieldsDropZoneComponent {
         }
     }
 
+    /**
+     * Emit the saveField event, this method is call when a Field is dropped into the content type drop zone
+     */
     saveFields(): void {
         this.saveFieldsEvent.emit(this.getFields());
     }

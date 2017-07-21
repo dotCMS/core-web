@@ -70,6 +70,10 @@ export class ContentTypesCreateComponent extends BaseComponent {
             .subscribe(resp => this.handleFormSubmissionResponse(resp));
     }
 
+    /**
+     * Save fields
+     * @param fieldsToSave Fields to be save
+     */
     saveFields(fieldsToSave: Field[]): void {
         this.fieldService.saveFields(this.contentTypeId, fieldsToSave).subscribe(fields => this.fields = fields);
     }
