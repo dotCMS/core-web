@@ -27,7 +27,7 @@ export class PaginatorService {
     private _url: string;
     private _filter: string;
     private _sortField: string;
-    private _sortOrder: OrderDirection = OrderDirection.ASC;
+    private _sortOrder: OrderDirection;
     private _extraParams: URLSearchParams = new URLSearchParams();
 
     constructor(private coreWebService: CoreWebService) {
