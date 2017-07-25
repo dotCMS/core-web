@@ -142,11 +142,11 @@ export class LoginService {
      * @returns {Observable<R>}
      */
     // TODO: password in the url is a no-no, fix asap. Sanchez and Jose have an idea.
-    public loginAs(user: User, password: string): Observable<any> {
+    public loginAs(userData: {user: User, password: string}): Observable<any> {
         return this.coreWebService.requestView({
             body: {
-                password: password,
-                userId: user.userId
+                password: userData.password,
+                userId: userData.user.userId
             },
             method: RequestMethod.Post,
             url: this.urls.loginAs,
@@ -156,7 +156,7 @@ export class LoginService {
             }
 
             this.setAuth({
-                loginAsUser: user,
+                loginAsUser: userData.user,
                 user: this._auth.user
             });
             return res;

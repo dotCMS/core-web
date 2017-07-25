@@ -61,19 +61,20 @@ export class LoginAsComponent extends BaseComponent {
         let password: string = this.form.value.password;
         let user: User = this.form.value.loginAsUser;
 
-        this.loginService.loginAs(user, password).subscribe(data => {
-            if (data) {
-                this.router.goToMain();
-                this.close();
-            }
-            // TODO: Replace the alert below with a modal error message.
-        }, response => {
-            if (response.entity) {
-                alert(response.errorsMessages);
-            } else {
-                alert(response);
-            }
-        });
+        this.loginService.loginAs({user: user, password: password})
+            .subscribe(data => {
+                if (data) {
+                    this.router.goToMain();
+                    this.close();
+                }
+                // TODO: Replace the alert below with a modal error message.
+            }, response => {
+                if (response.entity) {
+                    alert(response.errorsMessages);
+                } else {
+                    alert(response);
+                }
+            });
     }
 
     userSelectedHandler(user: User): void {
