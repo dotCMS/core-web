@@ -22,13 +22,28 @@ span {
     padding: 0 10px;
 }
 
-.row-drag-button {
+.header {
     background: black;
-    color: white;
-    display: block;
-    height: 24px;
-    line-height: 24px;
     margin: 0 auto;
-    text-align: center;
+    padding: 0;
+    width: 100px;
+    border: 0;
+
+    a {
+        color: white;
+        display: inline-block;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+    }
+}
+
+.row-drag-button {
+    cursor: move;
     width: 80px;
+}
+
+.row-remove {
+    background: red;
+    width: 20px;
 }

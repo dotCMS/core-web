@@ -1,4 +1,7 @@
-<a class="row-drag-button">Drag row</a>
+<div class="header">
+    <a class="row-drag-button">Drag row ({{fieldRow.columns.length}})</a>
+    <a class="row-remove">[x]</a>
+</div>
 <div>
     <span
         *ngFor="let column of fieldRow.columns"
