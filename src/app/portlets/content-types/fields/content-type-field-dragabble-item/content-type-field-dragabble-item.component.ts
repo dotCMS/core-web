@@ -8,6 +8,7 @@ import { Field } from '../';
  */
 @Component({
     selector: 'content-type-field-dragabble-item',
+    styles: [':host {display: block}'],
     templateUrl: './content-type-field-dragabble-item.component.html',
 })
 export class ContentTypesFieldDragabbleItemComponent {
