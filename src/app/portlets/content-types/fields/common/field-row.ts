@@ -58,9 +58,9 @@ export class FieldRow {
         }
 
         let fieldsSplitByTabDivider: Field[][] = this.splitFieldsByTabDiveder(fields.splice(offset));
-        fieldsSplitByTabDivider.forEach(
-            fields => this.columns.push(new FieldColumn(fields))
-        );
+        fieldsSplitByTabDivider.forEach(fields =>  {
+            this.columns.push(new FieldColumn(fields));
+        });
     }
 
     private splitFieldsByTabDiveder(fields: Field[]): Field[][] {

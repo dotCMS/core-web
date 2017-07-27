@@ -51,7 +51,7 @@ export class ContentTypeFieldsDropZoneComponent {
         let result: Field[][] = [];
         let currentFields: Field[];
 
-        fields.map(field => {
+        fields.forEach(field => {
             if (field.clazz === LINE_DIVIDER.clazz) {
                 currentFields = [];
                 result.push(currentFields);
@@ -80,11 +80,9 @@ export class ContentTypeFieldsDropZoneComponent {
         let fields: Field[] = [];
 
         this.fieldRows.forEach((fieldRow, rowIndex) => {
-
             fields.push(fieldRow.lineDivider);
 
             fieldRow.columns.forEach( (fieldColumn, colIndex) => {
-
                 fields.push(fieldColumn.tabDivider);
 
                 fieldColumn.fields.forEach( field => fields.push(field));
