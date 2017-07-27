@@ -25,6 +25,14 @@ module.exports = {
     module: {
         loaders: [
             {
+                test: /\.css$/,
+                use: ['to-string-loader', 'css-loader'],
+            },
+            {
+                test: /\.scss$/,
+                use: ['to-string-loader', 'css-loader', 'sass-loader'],
+            },
+            {
                 test: /\.ts$/,
                 loader: 'awesome-typescript-loader',
                 options:
@@ -37,12 +45,19 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
-                test: /\.(css|html)$/,
+                test: /\.(html)$/,
                 loader: 'raw-loader'
             },
             {
-                test: /\.(png|jpg)$/,
-                loader: 'url?limit=10000'
+                test: /\.(jpg|png|gif)$/,
+                use: 'file-loader?name=assets/img/[name]-[hash].[ext]'
+            },
+
+            /* File loader for supporting fonts, for example, in CSS files.
+             */
+            {
+                test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
+                use: 'file-loader?name=assets/fonts/[name]-[hash].[ext]'
             }
             ]
     },

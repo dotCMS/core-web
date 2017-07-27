@@ -18,7 +18,7 @@
     "build:docker": "npm run build:prod && docker build -t angular2-webpack-start:latest .",
     "build:prod": "npm run clean:dist && webpack --config config/webpack.prod.js  --progress --profile --bail",
     "build:pack": "npm run clean:dist && webpack --config config/webpack.generate.package.js  --progress --profile --bail",
-    "build:dotcms-js": "webpack --config config/webpack.generate.dotcms-js.js  --progress --profile --bail",
+    "build:dotcms-js": "webpack --config config/webpack.generate.dotcms-js.js --colors --progress --display-error-details --profile --bail",
     "build": "npm run build:dev",
     "ci:aot": "npm run lint && npm run test && npm run build:aot && npm run e2e",
     "ci:jit": "npm run lint && npm run test && npm run build:prod && npm run e2e",

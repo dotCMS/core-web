@@ -9,8 +9,8 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmit": true,
-    "noEmitHelpers": true,
+    "noEmit": false,
+    "noEmitHelpers": false,
     "importHelpers": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
@@ -42,9 +42,7 @@
     "src/app/e2e/**/*.ts",
     "src/**/boot.ts",
     "src/**/demo.ts",
-    "src/main.browser.aot.ts",
-    "src/app/portlets/rule-engine/condition-types/serverside-condition/index.ts",
-    "src/app/portlets/rule-engine/semantic/elements/input-date/index.ts"
+    "src/main.browser.aot.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
