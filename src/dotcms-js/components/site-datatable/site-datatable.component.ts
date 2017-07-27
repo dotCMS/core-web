@@ -135,6 +135,9 @@ export class SiteDatatableComponent {
         }
         for (let i = 0; i < files.length; i++) {
             let file: File = files[i];
+            if (fileContentTypeID == null || fileContentTypeID.trim() === '') {
+                this.log.error('st inode is empty');
+            }
             this.fileService.uploadFile(file, pathToUploadTo, fileContentTypeID);
         }
         this.log.debug('Path 4: ' + pathToUploadTo);
