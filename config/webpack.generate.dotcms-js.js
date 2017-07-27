@@ -11,11 +11,10 @@ module.exports = {
     },
 
     output: {
-        path: __dirname + '/build-dotcms-js/',
-        publicPath: 'build-dotcms-js/',
+        path: __dirname + '/../build-dotcms-js/',
+        publicPath: __dirname + '/../build-dotcms-js/',
         filename: '[name].js',
         sourceMapFilename: '[name].js.map',
-        chunkFilename: '[id].chunk.js'
     },
 
     resolve: {

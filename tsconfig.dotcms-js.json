@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "outDir": "./build-dotcms-js",
     "declaration": true,
     "target": "es5",
@@ -15,6 +16,7 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors":true,
+    "allowUnreachableCode": true,
     "lib": [
       "dom",
       "dom.iterable",
