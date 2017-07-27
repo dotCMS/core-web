@@ -49,19 +49,15 @@ export class ContentTypeFieldsDropZoneComponent {
 
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
         let result: Field[][] = [];
-        let currentFields: Field[] = [];
+        let currentFields: Field[];
 
         fields.map(field => {
             if (field.clazz === LINE_DIVIDER.clazz) {
-                result.push(currentFields);
                 currentFields = [];
+                result.push(currentFields);
             }
             currentFields.push(field);
         });
-
-        if (currentFields.length) {
-            result.push(currentFields);
-        }
 
         return result;
     }
@@ -85,15 +81,11 @@ export class ContentTypeFieldsDropZoneComponent {
 
         this.fieldRows.forEach((fieldRow, rowIndex) => {
 
-            if (rowIndex) {
-                fields.push(fieldRow.lineDivider);
-            }
+            fields.push(fieldRow.lineDivider);
 
             fieldRow.columns.forEach( (fieldColumn, colIndex) => {
 
-                if (colIndex) {
-                    fields.push(fieldColumn.tabDivider);
-                }
+                fields.push(fieldColumn.tabDivider);
 
                 fieldColumn.fields.forEach( field => fields.push(field));
             });

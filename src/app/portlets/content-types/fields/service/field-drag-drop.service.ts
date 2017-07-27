@@ -32,8 +32,7 @@ export class FieldDragDropService {
 
         if (!fieldBagOpts) {
             this.dragulaService.setOptions(FieldDragDropService.FIELD_BAG_NAME, {
-                copy: this.shouldCopy,
-                removeOnSpill: true
+                copy: this.shouldCopy
             });
         }
     }
@@ -48,8 +47,7 @@ export class FieldDragDropService {
         if (!fieldRowBagOpts) {
             this.dragulaService.setOptions(FieldDragDropService.FIELD_ROW_BAG_NAME, {
                 copy: this.shouldCopy,
-                moves: this.shouldMoveRow,
-                removeOnSpill: true
+                moves: this.shouldMoveRow
             });
         }
     }
