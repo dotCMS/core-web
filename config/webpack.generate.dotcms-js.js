@@ -1,10 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+// var glob = require("glob");
 
 module.exports = {
     devtool: 'source-map',
 
+    // entry: glob.sync("./src/**/*.ts"),
     entry: {
         'polyfills': './src/polyfills.browser.ts',
         'main': './src/main.browser.ts'
@@ -12,7 +14,6 @@ module.exports = {
 
     output: {
         path: __dirname + '/../build-dotcms-js/',
-        publicPath: __dirname + '/../build-dotcms-js/',
         filename: '[name].js',
         sourceMapFilename: '[name].js.map',
     },

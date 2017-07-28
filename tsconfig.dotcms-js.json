@@ -38,12 +38,14 @@
   "exclude": [
     "node_modules",
     "dist",
+    "build-dotcms-js",
     "src/**/*.spec.ts",
     "src/**/*.it-spec.ts",
     "src/**/*.e2e.ts",
     "src/app/e2e/**/*.ts",
     "src/**/boot.ts",
     "src/**/demo.ts",
+    "src/app/portlets/rule-engine/**/*.ts",
     "src/main.browser.aot.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
