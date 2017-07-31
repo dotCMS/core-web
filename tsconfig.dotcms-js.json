@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowJs": false,
     "outDir": "./build-dotcms-js",
+    "rootDir": "./",
     "declaration": true,
     "target": "es5",
     "module": "commonjs",
@@ -37,6 +38,7 @@
   },
   "exclude": [
     "node_modules",
+    "showcase",
     "dist",
     "build-dotcms-js",
     "src/**/*.spec.ts",
