@@ -1,41 +1,24 @@
 {
-  "compilerOptions": {
-    "allowJs": false,
-    "outDir": "./build-dotcms-js",
-    "rootDir": "./",
-    "declaration": true,
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "noEmit": false,
-    "noEmitHelpers": false,
-    "importHelpers": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors":true,
-    "allowUnreachableCode": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es6"
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es2015",
+        "declaration": true,
+        "allowJs": true,
+        "outDir": "./build-dotcms-js",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "rootDir": "./src",
+        "declarationDir": "./build-dotcms-js",
+        "lib": [
+            "es2015",
+            "dom",
+            "dom.iterable"
+        ]
+    },
+    "include": [
+        "src/**/*"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "googlemaps",
-      "jasmine",
-      "jquery",
-      "node",
-      "source-map",
-      "uglify-js",
-      "webpack"
-    ]
-  },
   "exclude": [
     "node_modules",
     "showcase",
@@ -50,13 +33,9 @@
     "src/app/portlets/rule-engine/**/*.ts",
     "src/main.browser.aot.ts"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "atom": {
-    "rewriteTsconfig": false
-  }
+    "filesGlob": [
+        "**/*.ts",
+        "!./node_modules/**/*.ts",
+        "typings/index.d.ts"
+    ]
 }
