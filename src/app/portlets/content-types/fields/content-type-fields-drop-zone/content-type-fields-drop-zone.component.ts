@@ -26,9 +26,13 @@ export class ContentTypeFieldsDropZoneComponent {
     }
 
     ngOnInit(): void {
-        this.fieldDragDropService.fieldDrop$.subscribe(() => {
-            this.setDroppedField();
-            this.showDialog();
+        this.fieldDragDropService.fieldDrop$.subscribe((data) => {
+            let dragType = data[0];
+
+            if (dragType === 'fields-bag') {
+                this.setDroppedField();
+                this.showDialog();
+            }
         });
     }
 
@@ -51,7 +55,7 @@ export class ContentTypeFieldsDropZoneComponent {
      */
     saveFields(fieldToSave: Field): void {
         let fields = this.getFields();
-
+        // Needs a better implementation
         fields.map(field => {
             if (!field.id && !(fieldToSave.clazz === TAB_DIVIDER.clazz || fieldToSave.clazz === LINE_DIVIDER.clazz)) {
                 field = Object.assign(field, fieldToSave);
@@ -73,7 +77,7 @@ export class ContentTypeFieldsDropZoneComponent {
      */
     editField(fieldToEdit: Field): void {
         let fields = this.getFields();
-
+        // Needs a better implementation
         fields.map((field) => {
             if (fieldToEdit.id === field.id) {
                 this.formData = fieldToEdit;
@@ -91,7 +95,7 @@ export class ContentTypeFieldsDropZoneComponent {
      */
     setDroppedField(): void {
         let fields = this.getFields();
-
+        // Needs a better implementation
         fields.map(field => {
             if (!field.id && !(field.clazz === TAB_DIVIDER.clazz || field.clazz === LINE_DIVIDER.clazz)) {
                 this.formData = field;
@@ -145,7 +149,6 @@ export class ContentTypeFieldsDropZoneComponent {
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
         let result: Field[][] = [];
         let currentFields: Field[];
-
         fields.forEach(field => {
             if (field.clazz === LINE_DIVIDER.clazz) {
                 currentFields = [];
