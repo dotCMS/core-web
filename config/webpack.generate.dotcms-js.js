@@ -1,6 +1,7 @@
-var path = require('path')
-var webpack = require('webpack')
-var WebpackBuildNotifierPlugin = require('webpack-build-notifier')
+var path = require('path');
+var webpack = require('webpack');
+var WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 // const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const PATHS = {
@@ -68,9 +69,10 @@ module.exports = {
     },
     resolve: {
         // you can now require('file') instead of require('file.js')
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js', '.json', '.css', '.html']
     },
     plugins: [
+        new CommonsChunkPlugin({names: ['@angular', 'common'], minChunks: Infinity}),
         new WebpackBuildNotifierPlugin({
             title: 'My Project Webpack Build'
         }),
