@@ -20,7 +20,7 @@ import {FileService} from '../../core/util/file.services';
 @Component({
     selector: 'site-datatable',
     styles: [require('./../app.css')],
-    template: require('./site-datatable.html')
+    templateUrl: 'site-datatable.html'
 })
 export class SiteDatatableComponent {
 

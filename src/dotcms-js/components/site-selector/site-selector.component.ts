@@ -12,7 +12,21 @@ import {FormsModule} from '@angular/forms';
 @Component({
     selector: 'site-selector',
     styles: [require('./../app.css')],
-    templateUrl: 'site-selector.html'
+    // template: 'site-selector.html'
+    template: `<div>
+        <p-autoComplete [(ngModel)]="host" [suggestions]="filteredHosts" (completeMethod)="filterHosts($event)"
+                        [size]="30"
+                        [minLength]="1" placeholder="Hint: type 'd'" [dropdown]="true"
+                        (onDropdownClick)="handleDropdownClick($event)"
+                        (onSelect)="siteSelected($event)" >
+            <template let-host>
+                <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                    <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{host}}</div>
+                </div>
+            </template>
+        </p-autoComplete>
+        <span style="margin-left:50px">Host: {{host||'none'}}</span>
+    </div>`
 })
 export class SiteSelectorComponent {
 

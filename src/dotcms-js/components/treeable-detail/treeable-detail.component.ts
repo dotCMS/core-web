@@ -10,7 +10,7 @@ import {FormsModule} from '@angular/forms';
 @Component({
     selector: 'treeable-detail',
     styles: [require('./../app.css')],
-    template: require('./treeable-detail.html')
+    templateUrl: './treeable-detail.html'
 })
 export class TreeableDetailComponent {
 

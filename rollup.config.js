@@ -12,5 +12,8 @@ export default {
         'rxjs/add/operator/mergeMap': 'Rx.Observable.prototype',
         'rxjs/add/observable/fromEvent': 'Rx.Observable',
         'rxjs/add/observable/of': 'Rx.Observable'
-    }
+    },
+    external: [ '@angular/core', 'rxjs', 'angular2-logger/core',
+    '@angular/http', 'rxjs/add/operator/catch', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/debounceTime',
+    'rxjs/add/operator/map', 'primeng/components/breadcrumb/breadcrumb', '@angular/common', '@angular/forms']
 }

@@ -25,14 +25,10 @@
             "dom.iterable"
         ]
     },
-    "include": [
-        "src/**/*"
-    ],
-    "files": [
+  "files": [
         "src/dotcms-js.ts"
     ],
   "exclude": [
-    "node_modules",
     "showcase",
     "dist",
     "build-dotcms-js",
@@ -48,10 +44,5 @@
   ],
     "angularCompilerOptions": {
         "strictMetadataEmit": true
-    },
-    "filesGlob": [
-        "**/*.ts",
-        "!./node_modules/**/*.ts",
-        "typings/index.d.ts"
-    ]
+    }
 }

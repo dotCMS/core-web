@@ -11,7 +11,7 @@ import {TreeTableModule} from 'primeng/components/treetable/treetable';
 @Component({
     selector: 'site-treetable',
     styles: [require('./../app.css')],
-    template: require('./site-treetable.html')
+    templateUrl: './site-treetable.html'
 })
 
 @Inject('log')
