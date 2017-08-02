@@ -33,6 +33,11 @@ export class ContentTypeFieldsRowComponent {
         });
     }
 
+    /**
+     * Emit the field to be edited
+     * @param {Field} field
+     * @memberof ContentTypeFieldsRowComponent
+     */
     fieldToEdit(field: Field): void {
         this.editField.emit(field);
     }
