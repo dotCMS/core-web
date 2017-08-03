@@ -15,12 +15,10 @@
          class="content-type-fields-drop-zone__message">Drop fields here
     </div>
 </div>
-<p-dialog header="Field Properties" [(visible)]="displayDialog" modal="modal" width="300" [responsive]="true">
-    <content-type-fields-properties-form #fieldPropertiesForm (fieldData)="saveFields($event)" [formFieldData]="formData"></content-type-fields-properties-form>
+<p-dialog [header]="formData && formData.id ? i18nMessages['edit'] : i18nMessages['created']" [(visible)]="displayDialog" modal="modal" width="300" [responsive]="true">
+    <content-type-fields-properties-form #fieldPropertiesForm (fieldProperties)="saveFields($event)" [formFieldData]="formData"></content-type-fields-properties-form>
     <p-footer>
-        <button type="button" pButton (click)="fieldPropertiesForm.saveFieldProperties(fieldPropertiesForm.form.value, fieldPropertiesForm.form.valid)" label="Save"></button>
-        <button type="button" pButton (click)="removeFieldsWithoutId()" label="Cancel"></button>
+        <button type="button" pButton (click)="fieldPropertiesForm.saveFieldProperties(fieldPropertiesForm.form.value, fieldPropertiesForm.form.valid)" [label]="i18nMessages['Save']"></button>
+        <button type="button" pButton (click)="removeFieldsWithoutId()" [label]="i18nMessages['Cancel']"></button>
     </p-footer>
 </p-dialog>
-
-

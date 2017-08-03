@@ -1,7 +1,9 @@
+import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FieldService, FieldDragDropService } from '../service';
 import { FieldRow, Field, FieldColumn, TAB_DIVIDER, LINE_DIVIDER } from '../';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form/index';
+import { MessageService } from '../../../../api/services/messages-service';
 
 /**
  * Display all the Field Types
@@ -14,15 +16,23 @@ import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields
     styles: [require('./content-type-fields-drop-zone.component.scss')],
     templateUrl: './content-type-fields-drop-zone.component.html',
 })
-export class ContentTypeFieldsDropZoneComponent {
-    displayDialog: boolean;
+export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
+    displayDialog = false;
     fieldRows: FieldRow[] = [];
     formData: Field;
     @Input() fields: Field[];
     @Output('saveFields') saveFieldsEvent = new EventEmitter<Field[]>();
 
-    constructor(private fieldDragDropService: FieldDragDropService) {
-
+    constructor(private fieldDragDropService: FieldDragDropService, messageService: MessageService) {
+        super(
+            [
+                'Save',
+                'Cancel',
+                'edit',
+                'Create-field'
+            ],
+            messageService
+        );
     }
 
     ngOnInit(): void {
@@ -31,7 +41,7 @@ export class ContentTypeFieldsDropZoneComponent {
 
             if (dragType === 'fields-bag') {
                 this.setDroppedField();
-                this.showDialog();
+                this.toggleDialog();
             }
         });
     }
@@ -57,7 +67,7 @@ export class ContentTypeFieldsDropZoneComponent {
         let fields = this.getFields();
         // Needs a better implementation
         fields.map(field => {
-            if (!field.id && !(fieldToSave.clazz === TAB_DIVIDER.clazz || fieldToSave.clazz === LINE_DIVIDER.clazz)) {
+            if (this.isNewField(field)) {
                 field = Object.assign(field, fieldToSave);
             } else if (field.id === this.formData.id) {
                 field = Object.assign(field, fieldToSave);
@@ -67,7 +77,7 @@ export class ContentTypeFieldsDropZoneComponent {
         });
 
         this.saveFieldsEvent.emit(fields);
-        this.cancelDialog();
+        this.toggleDialog();
     }
 
     /**
@@ -78,15 +88,13 @@ export class ContentTypeFieldsDropZoneComponent {
     editField(fieldToEdit: Field): void {
         let fields = this.getFields();
         // Needs a better implementation
-        fields.map((field) => {
+        fields.forEach((field) => {
             if (fieldToEdit.id === field.id) {
                 this.formData = fieldToEdit;
             }
-
-            return field;
         });
 
-        this.showDialog();
+        this.toggleDialog();
     }
 
     /**
@@ -96,27 +104,19 @@ export class ContentTypeFieldsDropZoneComponent {
     setDroppedField(): void {
         let fields = this.getFields();
         // Needs a better implementation
-        fields.map(field => {
-            if (!field.id && !(field.clazz === TAB_DIVIDER.clazz || field.clazz === LINE_DIVIDER.clazz)) {
+        fields.forEach(field => {
+            if (this.isNewField(field)) {
                 this.formData = field;
             }
         });
     }
 
     /**
-     * Show the properties field dialog
+     * Show or hide dialog
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    showDialog(): void {
-        this.displayDialog = true;
-    }
-
-    /**
-     * Close the properties field dialog
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    cancelDialog(): void {
-        this.displayDialog = false;
+    toggleDialog(): void {
+        this.displayDialog = !this.displayDialog;
     }
 
     /**
@@ -125,7 +125,7 @@ export class ContentTypeFieldsDropZoneComponent {
      */
     removeFieldsWithoutId(): void {
         let fieldRows: any = this.fieldRows;
-
+        // TODO needs an improvement for performance reasons
         fieldRows.forEach((row) => {
             row.columns.forEach((col, colIndex) => {
                 col.fields.forEach((field, fieldIndex) => {
@@ -136,16 +136,39 @@ export class ContentTypeFieldsDropZoneComponent {
             });
         });
 
-        this.cancelDialog();
+        this.toggleDialog();
     }
 
     /**
-     * Split the fields by line divider if is necessary
-     * @private
-     * @param {Field[]} fields
-     * @returns {Field[][]}
+     * Verify if the Field already exist
+     * @param {Field} field
+     * @returns {Boolean}
      * @memberof ContentTypeFieldsDropZoneComponent
      */
+    isNewField(field: Field): Boolean {
+        return !field.id && !(this.isRow(field) || this.isColumn(field));
+    }
+
+    /**
+     * Verify if the Field is a row
+     * @param {Field} field
+     * @returns {Boolean}
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    isRow(field: Field): Boolean {
+        return field.clazz === LINE_DIVIDER.clazz ? true : false;
+    }
+
+    /**
+     * Verify if the Field is a column
+     * @param {Field} field
+     * @returns {Boolean}
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    isColumn(field: Field): Boolean {
+        return field.clazz === TAB_DIVIDER.clazz ? true : false;
+    }
+
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
         let result: Field[][] = [];
         let currentFields: Field[];
@@ -160,13 +183,6 @@ export class ContentTypeFieldsDropZoneComponent {
         return result;
     }
 
-    /**
-     * Get the rows with the fields
-     * @private
-     * @param {Field[]} fields
-     * @returns {FieldRow[]}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private getRowFields(fields: Field[]): FieldRow[] {
         let fieldRows: FieldRow[] = [];
         let splitFields: Field[][] = this.splitFieldsByLineDiveder(fields);
@@ -180,12 +196,6 @@ export class ContentTypeFieldsDropZoneComponent {
         return fieldRows;
     }
 
-    /**
-     * Get all fields
-     * @private
-     * @returns {Field[]}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private getFields(): Field[] {
 
         let fields: Field[] = [];

@@ -1,12 +1,10 @@
-<form [formGroup]="form" (ngSubmit)="saveFieldProperties(form.value, form.valid)" novalidate>
+<form [formGroup]="form" (ngSubmit)="saveFieldProperties()" novalidate>
     <div class="ui-g">
         <div class="ui-g-12">
             <div class="form__group">
                 <label class="form__label">Name</label>
                 <input pInputText type="text" formControlName="name">
-                <small [hidden]="form.controls.name.valid || (form.controls.name.pristine && !submitted)">
-                    Name is required (minimum 5 characters).
-                </small>
+                <field-validation-message message="Name is required" [submitted]="submitted" [field]="form.controls.name"></field-validation-message>
             </div>
         </div>
     </div>

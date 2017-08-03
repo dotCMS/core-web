@@ -14,7 +14,6 @@ import { Field, FieldRow } from '../';
 })
 export class ContentTypeFieldsRowComponent {
     @Input() fieldRow: FieldRow;
-
     @Output() editField: EventEmitter<Field> = new EventEmitter();
 
     /**
@@ -30,15 +29,6 @@ export class ContentTypeFieldsRowComponent {
              }
             return col;
         });
-    }
-
-    /**
-     * Emit the field to be edited
-     * @param {Field} field
-     * @memberof ContentTypeFieldsRowComponent
-     */
-    fieldToEdit(field: Field): void {
-        this.editField.emit(field);
     }
 
     /**

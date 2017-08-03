@@ -8,7 +8,7 @@ import { Field } from '../index';
 })
 
 export class ContentTypeFieldsPropertiesFormComponent {
-    @Output() fieldData: EventEmitter<any> = new EventEmitter();
+    @Output() fieldProperties: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
 
     form: FormGroup;
@@ -32,10 +32,10 @@ export class ContentTypeFieldsPropertiesFormComponent {
      * @param {boolean} isValid
      * @memberof ContentTypeFieldsPropertiesFormComponent
      */
-    saveFieldProperties(value: any, isValid: boolean): void {
+    saveFieldProperties(): void {
         this.submitted = true;
-        if (isValid) {
-            this.fieldData.emit(value);
+        if (this.form.valid) {
+            this.fieldProperties.emit(this.form.value);
         }
     }
 
