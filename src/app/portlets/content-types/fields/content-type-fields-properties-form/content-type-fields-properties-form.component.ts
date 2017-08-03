@@ -39,11 +39,6 @@ export class ContentTypeFieldsPropertiesFormComponent {
         }
     }
 
-    /**
-     * Create the form fields
-     * @private
-     * @memberof ContentTypeFieldsPropertiesFormComponent
-     */
     private initFormGroup(): void {
         this.form = this.fb.group({
             name: ['', Validators.required]
