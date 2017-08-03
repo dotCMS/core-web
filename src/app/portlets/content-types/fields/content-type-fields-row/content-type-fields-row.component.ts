@@ -16,8 +16,6 @@ export class ContentTypeFieldsRowComponent {
     @Input() fieldRow: FieldRow;
     @Output() editField: EventEmitter<Field> = new EventEmitter();
 
-    @Output() editField: EventEmitter<Field> = new EventEmitter();
-
     /**
      * Remove a field
      * @param field field to remove
@@ -31,15 +29,6 @@ export class ContentTypeFieldsRowComponent {
              }
             return col;
         });
-    }
-
-    /**
-     * Emit the field to be edited
-     * @param {Field} field
-     * @memberof ContentTypeFieldsRowComponent
-     */
-    fieldToEdit(field: Field): void {
-        this.editField.emit(field);
     }
 
     /**

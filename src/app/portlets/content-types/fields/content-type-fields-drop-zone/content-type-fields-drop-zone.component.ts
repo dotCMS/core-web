@@ -169,13 +169,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         return field.clazz === TAB_DIVIDER.clazz ? true : false;
     }
 
-    /**
-     * Split the fields by line divider if is necessary
-     * @private
-     * @param {Field[]} fields
-     * @returns {Field[][]}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
         let result: Field[][] = [];
         let currentFields: Field[];
@@ -190,13 +183,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         return result;
     }
 
-    /**
-     * Get the rows with the fields
-     * @private
-     * @param {Field[]} fields
-     * @returns {FieldRow[]}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private getRowFields(fields: Field[]): FieldRow[] {
         let fieldRows: FieldRow[] = [];
         let splitFields: Field[][] = this.splitFieldsByLineDiveder(fields);
@@ -210,12 +196,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         return fieldRows;
     }
 
-    /**
-     * Get all fields
-     * @private
-     * @returns {Field[]}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private getFields(): Field[] {
 
         let fields: Field[] = [];
