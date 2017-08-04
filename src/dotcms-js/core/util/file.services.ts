@@ -48,7 +48,7 @@ export class FileService {
             title: file.name,
             type: file.type
         };
-        this.httpClient.filePut('/api/content/publish/1', file, data).subscribe();
+        this.httpClient.filePut('/api/content/save/1', file, data).subscribe();
     }
 
     /**

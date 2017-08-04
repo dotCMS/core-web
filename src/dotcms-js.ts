@@ -9,6 +9,7 @@ export * from './dotcms-js/core/util/notification.service';
 export * from './dotcms-js/core/util/settings-storage.service';
 export * from './dotcms-js/core/util/site-browser.service';
 export * from './dotcms-js/core/util/site-browser.state';
+export * from './dotcms-js/core/util/folder.service';
 
 // COMPONENTS
 export * from './dotcms-js/components/breadcrumb/breadcrumb.component';

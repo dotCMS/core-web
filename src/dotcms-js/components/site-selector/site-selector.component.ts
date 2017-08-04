@@ -25,7 +25,6 @@ import {FormsModule} from '@angular/forms';
                 </div>
             </template>
         </p-autoComplete>
-        <span style="margin-left:50px">Host: {{host||'none'}}</span>
     </div>`
 })
 export class SiteSelectorComponent {
