@@ -11,7 +11,15 @@ import {TreeTableModule} from 'primeng/components/treetable/treetable';
 @Component({
     selector: 'site-treetable',
     styles: [require('./../app.css')],
-    templateUrl: './site-treetable.html'
+    template: `<div class="ContentSideSections Implementation"
+                    (drop)="handleDrop($event, p-column)" (dragover)="handleDragOver($event)">
+        <p-treeTable [value]="lazyFiles" [(selection)]="selectedNode" [style]="&#123;'margin-top':'30px'&#125;"
+                     (onNodeExpand)="nodeExpand($event)" selectionMode="single">
+            <p-column class="browser-dropzone" field="title" header="Name"></p-column>
+            <p-column field="modDate" header="Mod Date" [style]="&#123;'width': '100px'&#125;"></p-column>
+            <p-column field="type" header="Type" [style]="&#123;'width': '65px'&#125;"></p-column>
+        </p-treeTable>
+    </div>`
 })
 
 @Inject('log')

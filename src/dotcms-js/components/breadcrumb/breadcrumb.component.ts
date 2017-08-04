@@ -14,7 +14,7 @@ import {CommonModule} from '@angular/common';
 @Component({
     selector: 'breadcrumb',
     styles: [require('./../app.css')],
-    templateUrl: './breadcrumb.html'
+    template: `<p-breadcrumb [model]="pathItems"></p-breadcrumb>`
 })
 @Inject('updateService')
 export class BreadcrumbComponent {
