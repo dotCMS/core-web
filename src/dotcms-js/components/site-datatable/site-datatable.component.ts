@@ -10,6 +10,7 @@ import {Folder} from '../../core/treeable/shared/folder.model';
 import {CommonModule} from '@angular/common';
 import {DataTableModule} from 'primeng/components/datatable/datatable';
 import {FileService} from '../../core/util/file.services';
+import {Site} from '../../core/treeable/shared/site.model';
 
 /**
  * The SiteDataTableComponent is a PrimeNG Component which provides a DataTable to display dotCMS Host/Folder Navigation
@@ -60,7 +61,7 @@ import {FileService} from '../../core/util/file.services';
 export class SiteDatatableComponent {
 
     dotCMSURL = '';
-    siteName = '';
+    site: Site;
     treeables: Treeable[];
 
     constructor(private updateService: SiteBrowserState,
@@ -71,14 +72,14 @@ export class SiteDatatableComponent {
                 private messageService: NotificationService) {
 
         if (settingsStorageService.getSettings()) {this.dotCMSURL = settingsStorageService.getSettings().site; }
-        this.siteName = updateService.getSelectedSite();
+        this.site = updateService.getSelectedSite();
         if (updateService.getURI()) {
             this.loadFolder(updateService.getURI());
         }
         updateService.currentSite
-            .subscribe(siteName => {
-                if (siteName) {
-                    this.loadSite(siteName);
+            .subscribe(site => {
+                if (site && site.hostname) {
+                    this.loadSite(site);
                 }
             });
         updateService.currentURI
@@ -125,7 +126,7 @@ export class SiteDatatableComponent {
      * @param uri
      */
     loadFolder(uri: string): void {
-        this.siteBrowserService.getTreeableAssetsUnderFolder(this.siteName, uri)
+        this.siteBrowserService.getTreeableAssetsUnderFolder(this.site.hostname, uri)
             .subscribe((treeables: Treeable[]) => this.treeables = treeables);
         setTimeout(() => {}, 100);
     }
@@ -134,9 +135,9 @@ export class SiteDatatableComponent {
      * This function is called when the [[SiteBrowserState]] Site is changed
      * @param siteName
      */
-    loadSite(siteName: string): void {
-        this.siteName = siteName;
-        this.siteBrowserService.getTreeableAssetsUnderSite(siteName)
+    loadSite(site: Site): void {
+        this.site = site;
+        this.siteBrowserService.getTreeableAssetsUnderSite(site.hostname)
             .subscribe((treeables: Treeable[]) => this.treeables = treeables);
         setTimeout(() => {}, 100);
     }
