@@ -28,7 +28,7 @@ module.exports = function (env) {
   }), {
   plugins: [
     new GenerateJsonPlugin('package.json', {
-      name: 'dotcms-ui',
+      name: packageJson.name,
       version: `${packageJson.version}-${new Date().getTime()}`,
       license: packageJson.license,
       author: packageJson.author,
