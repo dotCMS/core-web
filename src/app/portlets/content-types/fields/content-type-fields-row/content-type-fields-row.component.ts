@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Field, FieldRow } from '../';
 
 /**
@@ -14,6 +14,7 @@ import { Field, FieldRow } from '../';
 })
 export class ContentTypeFieldsRowComponent {
     @Input() fieldRow: FieldRow;
+    @Output() editField: EventEmitter<Field> = new EventEmitter();
 
     /**
      * Remove a field
@@ -37,6 +38,6 @@ export class ContentTypeFieldsRowComponent {
      */
     getColumnWidth(): string {
         let nColumns = this.fieldRow.columns.length;
-        return `${(100 - nColumns) / nColumns}%`;
+        return `${100 / nColumns}%`;
     }
 }

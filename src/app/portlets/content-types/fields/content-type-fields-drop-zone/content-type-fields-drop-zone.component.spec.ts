@@ -3,9 +3,20 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, SimpleChange } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
-import { Field, FieldRow } from '../';
+import { Field, FieldRow, ContentTypeFieldsPropertiesFormComponent } from '../';
 import { DragulaModule } from 'ng2-dragula';
 import { FieldDragDropService } from '../service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
+import { MessageService } from '../../../../api/services/messages-service';
+import { LoginService } from '../../../../api/services/login-service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
+import { SocketFactory } from '../../../../api/services/protocol/socket-factory';
+import { FormatDateService } from '../../../../api/services/format-date-service';
+import { MockMessageService } from '../../../../test/message-service.mock';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
     selector: 'content-type-fields-row',
@@ -15,24 +26,48 @@ class TestContentTypeFieldsRow {
     @Input() fieldRow: FieldRow;
 }
 
-describe('ContentTypeFieldsDropZoneComponent', () => {
+// Needs to find the way to test the drop event
+// https://github.com/valor-software/ng2-dragula/issues/758
+xdescribe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let mockRouter = {
+        navigate: jasmine.createSpy('navigate')
+    };
+    let messageServiceMock = new MockMessageService({
+            'Save': 'Save',
+            'Cancel': 'Cancel',
+            'edit': 'Edit',
+            'Create-field': 'Create field'
+        });
 
     beforeEach(async(() => {
 
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypeFieldsDropZoneComponent,
-                TestContentTypeFieldsRow
+                TestContentTypeFieldsRow,
+                ContentTypeFieldsPropertiesFormComponent
             ],
             imports: [
-                DragulaModule
+                RouterTestingModule.withRoutes([{
+                    component: ContentTypeFieldsDropZoneComponent,
+                    path: 'test'
+                }]),
+                DragulaModule,
+                FieldValidationMessageModule,
+                ReactiveFormsModule,
+                BrowserAnimationsModule
             ],
             providers: [
-                FieldDragDropService
+                FieldDragDropService,
+                LoginService,
+                SocketFactory,
+                FormatDateService,
+                { provide: MessageService, useValue: messageServiceMock },
+                { provide: Router, useValue: mockRouter }
             ]
         });
 
@@ -55,18 +90,17 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should has a fields container', () => {
-
         let fields: Field[] = [
             {
-                clazz: 'text',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableLineDividerField',
                 name: 'field 1'
             },
             {
-                clazz: 'text',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
                 name: 'field 2'
             },
             {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
+                clazz: 'text',
                 name: 'field 3'
             },
             {
@@ -74,13 +108,25 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 name: 'field 4'
             },
             {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
+                name: 'field 2'
+            },
+            {
+                clazz: 'text',
+                name: 'field 3'
+            },
+            {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableLineDividerField',
                 name: 'field 5'
             },
             {
-                clazz: 'text',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
                 name: 'field 6'
             },
+            {
+                clazz: 'text',
+                name: 'field 7'
+            }
         ];
 
         comp.ngOnChanges({
@@ -105,5 +151,13 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
         expect(1).toEqual(fieldRows[1].componentInstance.fieldRow.columns.length);
         expect(1).toEqual(fieldRows[1].componentInstance.fieldRow.columns[0].fields.length);
+    });
+
+    xit('should set dropped field if a drop event happen', () => {
+
+    });
+
+    xit('should display dialog if a drop event happen', () => {
+
     });
 });
