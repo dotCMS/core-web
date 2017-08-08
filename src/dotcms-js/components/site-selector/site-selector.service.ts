@@ -43,6 +43,9 @@ export class SiteSelectorService {
 
     private extractDataDropdown(res: Response): Site[] {
         let obj = JSON.parse(res.text());
+        if (obj.entity.sites && obj.entity.sites.results && obj.entity.sites.results.length > 0) {
+            return obj.entity.sites.results;
+        }
         return obj.entity;
     }
 

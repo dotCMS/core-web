@@ -17,7 +17,7 @@ import {FormsModule} from '@angular/forms';
                         [size]="30"
                         [minLength]="1" placeholder="Hint: type 'd'" [dropdown]="true"
                         (onDropdownClick)="handleDropdownClick($event)"
-                        (onSelect)="siteSelected($event)">
+                        (onSelect)="siteSelected($event)" field="hostname">
             <ng-template let-host pTemplate="item">
                 <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
                     <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{host.hostname}}</div>
