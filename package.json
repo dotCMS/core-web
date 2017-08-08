@@ -51,7 +51,6 @@
     "protractor": "protractor",
     "protractor:delay": "sleep 3 && npm run protractor",
     "protractor:live": "protractor --elementExplorer",
-    "publish-dotcms-js": "tsc && npm publish",
     "publish": "npm run build:pack && cd dist && npm publish && cd /",
     "rimraf": "rimraf",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
@@ -106,7 +105,6 @@
     "reflect-metadata": "^0.1.10",
     "require-dot-file": "0.4.0",
     "rxjs": "~5.4.0",
-    "webpack-build-notifier": "^0.1.16",
     "whatwg-fetch": "0.x.x",
     "zone.js": "~0.8.10"
   },
@@ -179,7 +177,8 @@
     "webpack-dev-middleware": "^1.10.2",
     "webpack-dev-server": "~2.4.5",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
-    "webpack-merge": "~4.1.0"
+    "webpack-merge": "~4.1.0",
+    "webpack-build-notifier": "^0.1.16"
   },
   "engines": {
     "node": ">= 4.2.1",
