@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpRequestUtils} from './httpRequestUtils';
+import { environment } from '../../../environments/environment';
 
 const DEV_MODE_PARAM = 'devMode';
 
@@ -22,16 +23,16 @@ export class Config {
      */
     isProduction(): boolean {
 
-        let runningMode: string = process.env.ENV;
-        let devMode: string = this.httpRequestUtils.getQueryStringParam(DEV_MODE_PARAM);
+        let runningMode: string = environment.name;
+        const devMode: string = this.httpRequestUtils.getQueryStringParam(DEV_MODE_PARAM);
 
         if (devMode) {
             // This service load before LoggerService, so we can't use it here.
             // tslint:disable-next-line:no-console
             console.log('Found a parameter in the url with a devMode: ', devMode);
-            runningMode = devMode === 'on' ? process.env.DEV_MODE : process.env.PROD_MODE;
+            runningMode = devMode === 'on' ? 'DEV' : 'PROD';
         }
 
-        return runningMode === process.env.PROD_MODE;
+        return runningMode === 'PROD';
     } // isProduction.
 } // E:O:F:Config
