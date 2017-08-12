@@ -7,16 +7,16 @@ import {
     ActionModel,
     IConditionGroup,
     ConditionGroupModel
-} from '../../api/rule-engine/Rule';
-import { ConditionService } from '../../api/rule-engine/Condition';
+} from './Rule';
+import { ConditionService } from './Condition';
 import { ReflectiveInjector } from '@angular/core';
-import { ApiRoot } from '../../api/persistence/ApiRoot';
-import { UserModel } from '../../api/auth/UserModel';
-import { ActionService } from '../../api/rule-engine/Action';
-import { ConditionGroupService } from '../../api/rule-engine/ConditionGroup';
-import { I18nService } from '../system/locale/I18n';
+import { ApiRoot } from '../../../api/persistence/ApiRoot';
+import { UserModel } from '../../../api/auth/UserModel';
+import { ActionService } from './Action';
+import { ConditionGroupService } from './ConditionGroup';
+import { I18nService } from '../../../api/system/locale/I18n';
 import { Observable } from 'rxjs/Observable';
-import { CwError } from '../system/http-response-util';
+import { CwError } from '../../../api/system/http-response-util';
 import { ServerSideTypeModel } from './ServerSideFieldModel';
 import { BrowserModule } from '@angular/platform-browser';
 

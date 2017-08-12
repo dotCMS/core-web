@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 
-import {ApiRoot} from '../persistence/ApiRoot';
+import {ApiRoot} from '../../../api/persistence/ApiRoot';
 import {ServerSideTypeModel} from './ServerSideFieldModel';
 import {Http, Response} from '@angular/http';
 import { ConditionGroupModel, ConditionModel, ICondition } from './Rule';
-import { HttpCode } from '../util/http-code';
-import { LoggerService } from '../services/logger.service';
+import { HttpCode } from '../../../api/util/http-code';
+import { LoggerService } from '../../../api/services/logger.service';
 
 // tslint:disable-next-line:no-unused-variable
 let noop = (...arg: any[]) => {

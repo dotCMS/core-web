@@ -3,14 +3,14 @@ import {Injectable} from '@angular/core';
 import {RequestMethod} from '@angular/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 
-import {ApiRoot} from '../persistence/ApiRoot';
+import {ApiRoot} from '../../../api/persistence/ApiRoot';
 import {ServerSideFieldModel, ServerSideTypeModel} from './ServerSideFieldModel';
-import {I18nService} from '../system/locale/I18n';
-import {CoreWebService} from '../services/core-web-service';
-import {SiteService} from '../services/site-service';
+import {I18nService} from '../../../api/system/locale/I18n';
+import {CoreWebService} from '../../../api/services/core-web-service';
+import {SiteService} from '../../../api/services/site-service';
 import {Subject} from 'rxjs/Subject';
-import {CwError} from '../system/http-response-util';
-import {LoggerService} from '../services/logger.service';
+import {CwError} from '../../../api/system/http-response-util';
+import {LoggerService} from '../../../api/services/logger.service';
 
 export const RULE_CREATE = 'RULE_CREATE';
 export const RULE_DELETE = 'RULE_DELETE';

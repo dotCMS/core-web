@@ -1,16 +1,16 @@
 import {} from 'jasmine';
 
 import { Observable, Subscription } from 'rxjs/Rx';
-import { CwError } from '../system/http-response-util';
+import { CwError } from '../../../api/system/http-response-util';
 
-import { RuleModel, RuleService, ActionModel } from '../rule-engine/Rule';
+import { RuleModel, RuleService, ActionModel } from './Rule';
 import { ReflectiveInjector } from '@angular/core';
-import { ApiRoot } from '../persistence/ApiRoot';
-import { UserModel } from '../auth/UserModel';
+import { ApiRoot } from '../../../api/persistence/ApiRoot';
+import { UserModel } from '../../../api/auth/UserModel';
 import { ActionService } from './Action';
 import { ConditionGroupService } from './ConditionGroup';
 import { ConditionService } from './Condition';
-import { I18nService } from '../system/locale/I18n';
+import { I18nService } from '../../../api/system/locale/I18n';
 import { BrowserModule } from '@angular/platform-browser';
 
 const injector = ReflectiveInjector.resolveAndCreate([

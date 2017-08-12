@@ -1,9 +1,9 @@
-import {CwModel} from '../util/CwModel';
-import {ParameterDefinition} from '../util/CwInputModel';
+import {CwModel} from '../../../api/util/CwModel';
+import {ParameterDefinition} from '../../../api/util/CwInputModel';
 import {ParameterModel} from './Rule';
 import {FormControl, Validators, ValidatorFn} from '@angular/forms';
-import {CustomValidators} from '../validation/CustomValidators';
-import {LoggerService} from '../services/logger.service';
+import {CustomValidators} from '../../../api/validation/CustomValidators';
+import {LoggerService} from '../../../api/services/logger.service';
 
 export class ServerSideFieldModel extends CwModel {
 

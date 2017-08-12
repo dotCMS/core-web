@@ -3,13 +3,10 @@ import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
 import { ApplicationRef, enableProdMode } from '@angular/core';
 
 import { AccountService } from './api/services/account-service';
-import { ActionService } from './api/rule-engine/Action';
 import { ApiRoot } from './api/persistence/ApiRoot';
 import { BrowserUtil } from './api/util/browser-util';
 import { BundleService } from './api/services/bundle-service';
 import { ColorUtil } from './api/util/ColorUtil';
-import { ConditionGroupService } from './api/rule-engine/ConditionGroup';
-import { ConditionService } from './api/rule-engine/Condition';
 import { Config } from './api/util/config';
 import { ConfirmationService } from 'primeng/primeng';
 import { ContentTypesInfoService } from './api/services/content-types-info';
@@ -19,9 +16,7 @@ import { DotRouterService } from './api/services/dot-router-service';
 import { DotcmsConfig } from './api/services/system/dotcms-config';
 import { DotcmsEventsService } from './api/services/dotcms-events-service';
 import { FormatDateService } from './api/services/format-date-service';
-import { GoogleMapService } from './api/maps/GoogleMapService';
 import { GravatarService } from './api/services/gravatar-service';
-import { I18nService } from './api/system/locale/I18n';
 import { IframeOverlayService } from './api/services/iframe-overlay-service';
 import { Logger } from 'angular2-logger/core';
 import { LoggerService } from './api/services/logger.service';
@@ -32,7 +27,6 @@ import { NotificationsService } from './api/services/notifications-service';
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
 import { RoutingPublicAuthService } from './api/services/routing-public-auth-service';
 import { RoutingService } from './api/services/routing-service';
-import { RuleService } from './api/rule-engine/Rule';
 
 import { SiteService } from './api/services/site-service';
 import { SocketFactory } from './api/services/protocol/socket-factory';
@@ -58,19 +52,10 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PaginatorService } from './api/services/paginator';
 import { environment } from '../environments/environment';
 
-// Environment Providers
-const RULES_ENGINE_SERVICES = [
-    RuleService,
-    I18nService,
-    GoogleMapService,
-    ConditionService,
-    ConditionGroupService,
-    ActionService
-];
+
 
 let PROVIDERS: any[] = [
     // common env directives
-    ...RULES_ENGINE_SERVICES,
     AccountService,
     ApiRoot,
     BrowserUtil,

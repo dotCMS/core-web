@@ -4,7 +4,7 @@ import {UserModel} from '../../api/auth/UserModel';
 import {I18nService} from '../system/locale/I18n';
 import { BrowserModule } from '@angular/platform-browser';
 import {BundleService, IUser, IBundle, IPublishEnvironment} from './bundle-service';
-import {RuleModel, IRule, RuleService} from '../rule-engine/Rule';
+import {RuleModel, IRule, RuleService} from '../../portlets/rule-engine/services/Rule';
 
 
 const injector = ReflectiveInjector.resolveAndCreate([

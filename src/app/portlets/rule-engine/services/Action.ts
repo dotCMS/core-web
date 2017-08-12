@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
-import {ApiRoot} from '../persistence/ApiRoot';
+import {ApiRoot} from '../../../api/persistence/ApiRoot';
 import {ServerSideTypeModel} from './ServerSideFieldModel';
 import {Http, Response} from '@angular/http';
 import {ActionModel} from './Rule';
 import {
     UNKNOWN_RESPONSE_ERROR, CwError, SERVER_RESPONSE_ERROR,
     NETWORK_CONNECTION_ERROR, CLIENTS_ONLY_MESSAGES
-} from '../system/http-response-util';
-import { LoggerService } from '../services/logger.service';
-import { HttpCode } from '../util/http-code';
+} from '../../../api/system/http-response-util';
+import { LoggerService } from '../../../api/services/logger.service';
+import { HttpCode } from '../../../api/util/http-code';
 
 // tslint:disable-next-line:no-unused-variable
 let noop = (...arg: any[]) => {

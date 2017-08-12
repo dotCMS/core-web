@@ -2,10 +2,10 @@ import {Observable} from 'rxjs/Rx';
 
 import {Http, Response} from '@angular/http';
 import {Injectable} from '@angular/core';
-import {ApiRoot} from '../persistence/ApiRoot';
+import {ApiRoot} from '../../../api/persistence/ApiRoot';
 import { ConditionGroupModel, IConditionGroup } from './Rule';
-import { HttpCode } from '../util/http-code';
-import { LoggerService } from '../services/logger.service';
+import { HttpCode } from '../../../api/util/http-code';
+import { LoggerService } from '../../../api/services/logger.service';
 
 @Injectable()
 export class ConditionGroupService {
