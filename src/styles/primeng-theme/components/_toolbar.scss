@@ -1,0 +1,16 @@
+.ui-toolbar {
+  align-items: center;
+  background-color: $toolbar-background;
+  color: $toolbar-color;
+  display: flex;
+  height: $toolbar-height;
+  padding: 0 $basic-padding * 2;
+
+  &.ui-corner-all {
+    border-radius: 0;
+  }
+
+  .btn {
+    color: $toolbar-background;
+  }
+}

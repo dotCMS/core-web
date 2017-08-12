@@ -7,7 +7,7 @@ import {BundleService, IUser, IBundle, IPublishEnvironment} from './bundle-servi
 import {RuleModel, IRule, RuleService} from '../rule-engine/Rule';
 
 
-let injector = ReflectiveInjector.resolveAndCreate([
+const injector = ReflectiveInjector.resolveAndCreate([
   ApiRoot,
   RuleService,
   BundleService,

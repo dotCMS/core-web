@@ -1,0 +1,53 @@
+.ui-autocomplete {
+    .ui-button {
+        @extend #inputtext-normal-border;
+        background: none;
+        border-radius: 0;
+        height: $autocomplete-height;
+
+        &:active, &:focus {
+            background: none;
+        }
+    }
+
+    .ui-inputtext {
+        border: none;
+
+        &::-ms-clear {
+            display: none;
+        }
+
+        &.ui-state-filled {
+            & + .ui-button {
+                @extend #inputtext-active-border;
+            }
+        }
+    }
+}
+
+.ui-inputwrapper-focus .ui-button,
+.ui-inputwrapper-focus .ui-button:hover,
+.ui-inputwrapper-focus .ui-button:active,
+.ui-inputwrapper-focus .ui-button:focus {
+    @extend #inputtext-active-border;
+}
+
+.ui-autocomplete-panel {
+    // TODO: get rid of this z-index when this is fixed: https://github.com/primefaces/primeng/issues/745
+    z-index: 1;
+
+    .ui-autocomplete-list {
+        padding: 0;
+    }
+
+    .ui-autocomplete-list-item {
+        margin: 0;
+        overflow-wrap: break-word;
+        padding: $basic-padding;
+        word-wrap: break-word;
+
+        &.ui-corner-all {
+            border-radius: 0;
+        }
+    }
+}
