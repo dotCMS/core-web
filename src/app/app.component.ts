@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NotLicensedService } from './api/services/not-licensed-service';
 
 @Component({
     selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'app';
+    constructor(notLicensedService: NotLicensedService) {
+        document.ondragover = document.ondrop = (ev) => {
+            notLicensedService.init();
+            ev.preventDefault();
+        };
+    }
 }

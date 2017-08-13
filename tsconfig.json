@@ -1,6 +1,8 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "allowJs": true, // TODO NG: remove with rules
+        "allowUnreachableCode": true, // TODO NG: remove with rules
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,

@@ -1,5 +1,3 @@
-// import { DotBrowserComponent } from './portlets/dot-browser/dot-browser-component';
-// import { RuleEngineContainer } from './portlets/rule-engine/rule-engine.container';
 import { RoutingPublicAuthService } from './api/services/routing-public-auth-service';
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
@@ -16,21 +14,21 @@ import { LogOutContainer } from './view/components/login/login-component/log-out
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
 import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { RuleEngineContainer } from './portlets/rule-engine/rule-engine.container';
+import { DotBrowserComponent } from './portlets/dot-browser/dot-browser-component';
 
 const angularComponents: any[] = [
+    {
+        id: 'content-types-angular',
+        loadChildren: './app/portlets/content-types/content-types.module#ContentTypesModule'
+    },
     {
         component: RuleEngineContainer,
         id: 'rules'
     },
     {
-        id: 'content-types-angular',
-        loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
+        component: DotBrowserComponent,
+        id: 'dot-browser',
     },
-    // TODO NG: bring back this
-    // {
-    //     component: DotBrowserComponent,
-    //     id: 'dot-browser'
-    // },
 ];
 
 const mainComponentChildren = [
@@ -38,7 +36,7 @@ const mainComponentChildren = [
         path: '',
         pathMatch: 'full',
         // redirectTo: (process.env.ENV && process.env.ENV === process.env.DEV_MODE) ? 'pl' : 'home',
-        redirectTo: 'pl',
+        redirectTo: 'pl'
     },
     {
         component: PatternLibrary,

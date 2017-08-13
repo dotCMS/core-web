@@ -34,19 +34,6 @@ import { StringFormat } from './api/util/stringFormat';
 import { StringUtils } from './api/util/string.utils';
 import { UserModel } from './api/auth/UserModel';
 
-
-// import { AppConfig } from '../dotcms-js/core/app.config';
-// import { FileService } from '../dotcms-js/core/util/file.services';
-// import { HttpClient } from '../dotcms-js/core/util/http.service';
-// import { LocalStoreService } from '../dotcms-js/core/util/local-store.service';
-// import { LoggerService as LoggerServiceDotJS } from '../dotcms-js/core/util/logger.service';
-// import { NotificationService as NotificationsServiceDotJS } from '../dotcms-js/core/util/notification.service';
-// import { SettingsStorageService } from '../dotcms-js/core/util/settings-storage.service';
-// import { SiteBrowserService } from '../dotcms-js/core/util/site-browser.service';
-// import { SiteBrowserState } from '../dotcms-js/core/util/site-browser.state';
-// import { SiteSelectorService } from '../dotcms-js/components/site-selector/site-selector.service';
-// import { SiteTreetableService } from '../dotcms-js/components/site-treetable/site-treetable.service';
-
 // ROUTING
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PaginatorService } from './api/services/paginator';
@@ -88,19 +75,6 @@ let PROVIDERS: any[] = [
     StringUtils,
     UserModel,
     ColorUtil,
-    // { provide: LocationStrategy, useClass: HashLocationStrategy },
-    // { provide: SettingsStorageService, useClass: SettingsStorageService },
-    // { provide: HttpClient, useClass: HttpClient },
-    // { provide: SiteSelectorService, useClass: SiteSelectorService },
-    // { provide: SiteBrowserService, useClass: SiteBrowserService },
-    // { provide: NotificationsServiceDotJS, useClass: NotificationsServiceDotJS },
-    // { provide: AppConfig, useValue: AppConfig },
-    // { provide: SiteBrowserState, useClass: SiteBrowserState },
-    // { provide: SiteTreetableService, useClass: SiteTreetableService },
-    // { provide: LoggerServiceDotJS, useClass: LoggerServiceDotJS },
-    // { provide: LocalStoreService, useClass: LocalStoreService },
-    // { provide: FileService, useClass: FileService },
-    // { provide: LocationStrategy, useClass: HashLocationStrategy }
 ];
 
 // Angular debug tools in the dev console

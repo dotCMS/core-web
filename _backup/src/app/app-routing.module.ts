@@ -18,17 +18,17 @@ import {DotBrowserComponent} from './portlets/dot-browser/dot-browser-component'
 
 let angularComponents: any[] = [
     {
+        id: 'content-types-angular',
+        loadChildren: './portlets/content-types/content-types.module#ContentTypesModule',
+    },
+    {
         component: RuleEngineContainer,
         id: 'rules'
     },
     {
         component: DotBrowserComponent,
         id: 'dot-browser'
-    },
-    {
-        id: 'content-types-angular',
-        loadChildren: './portlets/content-types/content-types.module#ContentTypesModule',
-    },
+    }
 ];
 
 let mainComponentChildren = [

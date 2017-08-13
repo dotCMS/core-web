@@ -25,11 +25,7 @@ import { ListingDataTableModule } from './view/components/listing-data-table/lis
 import { SiteSelectorModule } from './view/components/_common/site-selector/site-selector.module';
 import { SearchableDropDownModule } from './view/components/_common/searchable-dropdown';
 import { RuleEngineModule } from './portlets/rule-engine/rule-engine.module';
-
-// import { DotcmsTreeableDetailModule } from '../dotcms-js/components/treeable-detail/treeable-detail.component';
-// import { DotcmsSiteDatatableModule } from '../dotcms-js/components/site-datatable/site-datatable.component';
-// import { DotcmsSiteTreeTableModule } from '../dotcms-js/components/site-treetable/site-treetable.component';
-// import { DotcmsBreadcrumbModule } from '../dotcms-js/components/breadcrumb/breadcrumb.component';
+import { DotBrowserModule } from './portlets/dot-browser/dot-browser.module';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -52,6 +48,7 @@ import { RuleEngineModule } from './portlets/rule-engine/rule-engine.module';
         SearchableDropDownModule,
         SiteSelectorModule,
         RuleEngineModule,
+        DotBrowserModule,
         // DotcmsTreeableDetailModule,
         // DotcmsSiteDatatableModule,
         // DotcmsSiteTreeTableModule,
