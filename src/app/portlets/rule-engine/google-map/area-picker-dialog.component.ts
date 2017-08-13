@@ -1,7 +1,7 @@
 import {} from '@types/googlemaps';
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
-import {GoogleMapService, GCircle} from '../../../../api/maps/GoogleMapService';
-import {LoggerService} from '../../../../api/services/logger.service';
+import {GoogleMapService, GCircle} from '../../../api/maps/GoogleMapService';
+import {LoggerService} from '../../../api/services/logger.service';
 
 let mapIdCounter = 1;
 

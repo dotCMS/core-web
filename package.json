@@ -23,7 +23,6 @@
     "@angular/router": "^4.2.4",
     "angular2-logger": "^0.5.1",
     "core-js": "^2.4.1",
-    "jquery": "2.1.4",
     "lodash": "4.16.6",
     "md5": "^2.2.1",
     "moment": "2.14.1",

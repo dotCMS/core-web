@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { NgModule, ApplicationRef } from '@angular/core';
 
 /*
@@ -25,6 +24,7 @@ import { FieldValidationMessageModule } from './view/components/_common/field-va
 import { ListingDataTableModule } from './view/components/listing-data-table/listing-data-table.module';
 import { SiteSelectorModule } from './view/components/_common/site-selector/site-selector.module';
 import { SearchableDropDownModule } from './view/components/_common/searchable-dropdown';
+import { RuleEngineModule } from './portlets/rule-engine/rule-engine.module';
 
 // import { DotcmsTreeableDetailModule } from '../dotcms-js/components/treeable-detail/treeable-detail.component';
 // import { DotcmsSiteDatatableModule } from '../dotcms-js/components/site-datatable/site-datatable.component';
@@ -43,20 +43,15 @@ import { SearchableDropDownModule } from './view/components/_common/searchable-d
         ActionButtonModule,
         BrowserAnimationsModule,
         BrowserModule,
-        BrowserModule,
-        FieldValidationMessageModule,
         FieldValidationMessageModule,
         FormsModule,
-        FormsModule,
-        HttpModule,
         HttpModule,
         JsonpModule,
-        JsonpModule,
-        ListingDataTableModule,
         ListingDataTableModule,
         ReactiveFormsModule,
         SearchableDropDownModule,
         SiteSelectorModule,
+        RuleEngineModule,
         // DotcmsTreeableDetailModule,
         // DotcmsSiteDatatableModule,
         // DotcmsSiteTreeTableModule,

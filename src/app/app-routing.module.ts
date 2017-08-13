@@ -15,21 +15,22 @@ import { LoginContainer } from './view/components/login/login-component/login-co
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
 import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
+import { RuleEngineContainer } from './portlets/rule-engine/rule-engine.container';
 
 const angularComponents: any[] = [
+    {
+        component: RuleEngineContainer,
+        id: 'rules'
+    },
+    {
+        id: 'content-types-angular',
+        loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
+    },
     // TODO NG: bring back this
-    // {
-    //     component: RuleEngineContainer,
-    //     id: 'rules'
-    // },
     // {
     //     component: DotBrowserComponent,
     //     id: 'dot-browser'
     // },
-    {
-        id: 'content-types-angular',
-        loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule',
-    },
 ];
 
 const mainComponentChildren = [
@@ -124,13 +125,13 @@ const appRoutes: Routes = [
     },
     {
         canActivate: [RoutingPrivateAuthService],
-        // children: [
-        //     {
-        //         canActivate: [RoutingPrivateAuthService],
-        //         component: RuleEngineContainer,
-        //         path: 'rules'
-        //     }
-        // ],
+        children: [
+            {
+                canActivate: [RoutingPrivateAuthService],
+                component: RuleEngineContainer,
+                path: 'rules'
+            }
+        ],
         component: MainCoreLegacyComponent,
         path: 'fromCore'
     },

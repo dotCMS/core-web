@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { KeyCode } from '../../../../api/util/key-util';
+import { KeyCode } from '../../../api/util/key-util';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

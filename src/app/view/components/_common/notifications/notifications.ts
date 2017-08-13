@@ -29,7 +29,7 @@ export class NotificationsItem extends BaseComponent {
 
     ngOnInit(): void {
         // TODO: hand more than one action
-        let actions = this.data.actions ? this.data.actions[0] : null;
+        const actions = this.data.actions ? this.data.actions[0] : null;
         this.showLinkAction = actions && actions.actionType === 'LINK' &&
             (actions.text || actions.text !== '') && actions.action && actions.action !== '';
 
