@@ -20,6 +20,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
     displayDialog = false;
     fieldRows: FieldRow[] = [];
     formData: Field;
+    fieldProperties: string[];
     @Input() fields: Field[];
     @Output('saveFields') saveFieldsEvent = new EventEmitter<Field[]>();
 
@@ -38,12 +39,16 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
     ngOnInit(): void {
         this.fieldDragDropService.fieldDrop$.subscribe((data) => {
             let dragType = data[0];
+            let fieldProperties = data[1].dataset.fieldProperties;
 
             if (dragType === 'fields-bag') {
                 this.setDroppedField();
+                // this.setFieldProperties(fieldProperties);
                 this.toggleDialog();
             }
         });
+
+        // console.log('all fields: ', this.getFields());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -72,7 +77,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
             } else if (field.id === this.formData.id) {
                 field = Object.assign(field, fieldToSave);
             }
-
             return field;
         });
 
@@ -87,7 +91,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
      */
     editField(fieldToEdit: Field): void {
         let fields = this.getFields();
-        // Needs a better implementation
+        // TODO needs to assing the field properties to the form
         fields.forEach((field) => {
             if (fieldToEdit.id === field.id) {
                 this.formData = fieldToEdit;
@@ -109,6 +113,11 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
                 this.formData = field;
             }
         });
+    }
+
+    setFieldProperties(fieldProperties): void {
+        let properties = fieldProperties.split(',');
+        this.fieldProperties = properties;
     }
 
     /**
@@ -205,7 +214,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
 
             fieldRow.columns.forEach( (fieldColumn, colIndex) => {
                 fields.push(fieldColumn.tabDivider);
-
                 fieldColumn.fields.forEach( field => fields.push(field));
             });
         });

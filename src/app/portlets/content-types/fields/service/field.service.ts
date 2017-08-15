@@ -40,6 +40,8 @@ export class FieldService {
                 fieldToSend.name = `fields-${index}`;
             }
 
+            console.log('field to send: ', fieldToSend);
+
             if (!fieldToSend.id) {
                 return this.coreWebService.requestView({
                     body: fieldToSend,

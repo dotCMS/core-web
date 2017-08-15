@@ -38,8 +38,12 @@ import {
     InputTextModule,
     SplitButtonModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    RadioButtonModule,
+    CheckboxModule
 } from 'primeng/primeng';
+import { NamePropertyComponent, CheckboxPropertyComponent, CategoriesPropertyComponent } from './fields/content-type-fields-properties-form/field-properties';
+import { AdDirective } from '../../view/directives/ad/ad.directive';
 
 @NgModule({
     declarations: [
@@ -54,7 +58,12 @@ import {
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
+        NamePropertyComponent,
+        AdDirective,
+        CheckboxPropertyComponent,
+        CategoriesPropertyComponent,
     ],
+    entryComponents: [ NamePropertyComponent, CheckboxPropertyComponent, CategoriesPropertyComponent ],
     exports: [
         ContentTypesPortletComponent
     ],
@@ -62,6 +71,7 @@ import {
         ButtonModule,
         CommonModule,
         ContentTypesRoutingModule,
+        CheckboxModule,
         DragulaModule,
         DropdownModule,
         ConfirmDialogModule,
@@ -70,6 +80,7 @@ import {
         FormsModule,
         InputTextModule,
         SplitButtonModule,
+        RadioButtonModule,
         ListingDataTableModule,
         OverlayPanelModule,
         ReactiveFormsModule,

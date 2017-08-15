@@ -1,0 +1,11 @@
+<div class="form__group" *ngIf="form.get('regexCheck')">
+    <label class="form__label">Validation</label>
+    <input 
+        pInputText 
+        type="text" 
+        style="width:50%"
+        formControlName="regexCheck">
+    <p-dropdown 
+        [options]="[{label:'no HTML', value:null}]">
+    </p-dropdown>
+</div>

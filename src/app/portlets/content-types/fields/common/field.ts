@@ -13,4 +13,8 @@ export interface Field {
     sortOrder?: number;
     unique?: boolean;
     variable?: string;
+    properties?: string[];
+    dataType?: string;
+    hint?: string;
+    categories?: any[];
 }

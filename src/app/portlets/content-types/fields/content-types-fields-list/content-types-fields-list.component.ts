@@ -14,7 +14,8 @@ import { Field, FieldType } from '../';
     templateUrl: './content-types-fields-list.component.html',
 })
 export class ContentTypesFieldsListComponent {
-    private fieldTypes: Field[];
+    // fieldProperties: string[];
+    private fieldTypes: Field[]; // actualizar el tipo para tener properties
 
     constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService) {
 
@@ -22,10 +23,11 @@ export class ContentTypesFieldsListComponent {
 
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
-            .subscribe(fields => this.fieldTypes = fields.map(fieldType =>   {
+            .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
                 return {
+                    categories: ['Cateforie One', 'Cateforie two', 'Cateforie three'],
                     clazz: fieldType.clazz,
-                    name: fieldType.label
+                    name: fieldType.label,
                 };
             }));
 
