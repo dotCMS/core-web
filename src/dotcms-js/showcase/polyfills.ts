@@ -4,7 +4,7 @@ import 'zone.js/dist/zone';
 import { environment } from '../../environments/environment';
 
 
-if (environment.name === 'production') {
+if (environment.production) {
     // Production
 } else {
     // Development
