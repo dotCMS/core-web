@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Field, FieldRow } from '../';
+import { Field, FieldRow } from '../shared';
 
 /**
  * Display all the Field Types

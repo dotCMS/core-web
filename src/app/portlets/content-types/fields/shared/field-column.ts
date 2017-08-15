@@ -1,5 +1,5 @@
 import { Field } from './field';
-import { TAB_DIVIDER } from './';
+import { TAB_DIVIDER } from './field-dividers';
 
 export class FieldColumn {
     fields: Field[];

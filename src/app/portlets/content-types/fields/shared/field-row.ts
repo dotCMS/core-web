@@ -1,5 +1,6 @@
 import { FieldColumn } from './field-column';
-import { Field, LINE_DIVIDER, TAB_DIVIDER } from './';
+import { Field } from './field';
+import { TAB_DIVIDER, LINE_DIVIDER } from './field-dividers';
 
 export class FieldRow {
 
@@ -57,14 +58,14 @@ export class FieldRow {
             offset = 1;
         }
 
-        let fieldsSplitByTabDivider: Field[][] = this.splitFieldsByTabDiveder(fields.splice(offset));
+        const fieldsSplitByTabDivider: Field[][] = this.splitFieldsByTabDiveder(fields.splice(offset));
         fieldsSplitByTabDivider.forEach(fields =>  {
             this.columns.push(new FieldColumn(fields));
         });
     }
 
     private splitFieldsByTabDiveder(fields: Field[]): Field[][] {
-        let result: Field[][] = [];
+        const result: Field[][] = [];
         let currentFields: Field[];
 
         fields.map(field => {

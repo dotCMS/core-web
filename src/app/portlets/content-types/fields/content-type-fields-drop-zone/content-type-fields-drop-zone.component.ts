@@ -1,7 +1,7 @@
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FieldService, FieldDragDropService } from '../service';
-import { FieldRow, Field, FieldColumn, TAB_DIVIDER, LINE_DIVIDER } from '../';
+import { FieldRow, Field, FieldColumn, TAB_DIVIDER, LINE_DIVIDER } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form/index';
 import { MessageService } from '../../../../api/services/messages-service';
 

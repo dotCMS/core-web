@@ -1,9 +1,4 @@
-import {
-    RuleModel,
-    RuleService,
-    ConditionGroupModel,
-    ConditionModel
-} from './Rule';
+import { RuleModel, RuleService, ConditionGroupModel, ConditionModel } from './Rule';
 import { ConditionService } from './Condition';
 import { ReflectiveInjector } from '@angular/core';
 import { ApiRoot } from '../../../api/persistence/ApiRoot';
@@ -16,6 +11,7 @@ import { CwError } from '../../../api/system/http-response-util';
 import { BrowserModule } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Rx';
+import { ServerSideTypeModel } from './ServerSideFieldModel';
 
 const injector = ReflectiveInjector.resolveAndCreate([
     ApiRoot,
@@ -45,13 +41,12 @@ describe('Integration.api.rule-engine.ConditionService', () => {
         ruleService = injector.get(RuleService);
         conditionGroupService = injector.get(ConditionGroupService);
         conditionService = injector.get(ConditionService);
-        // TODO NG: Bring this back when ConditionModel it's available
-        // ruleService.getConditionTypes().subscribe((typesAry: ConditionModel[]) => {
-        //     typesAry.forEach(item => (conditionTypes[item.key] = item));
-        //     usersCountryConditionType = conditionTypes['UsersCountryConditionlet'];
-        //     requestHeaderConditionType = conditionTypes['RequestHeaderConditionlet'];
-        //     done();
-        // });
+        ruleService.getConditionTypes().subscribe((typesAry: ServerSideTypeModel[]) => {
+            typesAry.forEach(item => (conditionTypes[item.key] = item));
+            usersCountryConditionType = conditionTypes['UsersCountryConditionlet'];
+            requestHeaderConditionType = conditionTypes['RequestHeaderConditionlet'];
+            done();
+        });
     });
 
     beforeEach(done => {

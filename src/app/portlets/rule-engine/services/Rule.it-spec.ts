@@ -434,22 +434,21 @@ describe('Integration.api.rule-engine.RuleService', () => {
                 serverRule = rule;
                 rulesToRemove.push(serverRule.key);
                 return conditionGroupService.createConditionGroup(serverRule.key, aConditionGroup);
+            })
+            .subscribe((conditionGroup: ConditionGroupModel) => {
+                ruleService.loadRule(serverRule.key).subscribe((rule: RuleModel) => {
+                    expect(rule.conditionGroups[conditionGroup.key]).toBeDefined('Well that\'s odd');
+                    expect(rule.conditionGroups[conditionGroup.key].operator).toEqual('OR');
+                    /* Now read the ConditionGroups off the rule we just got back. Add listener first, then trigger call. */
+                    conditionGroupService
+                        .all(rule.key, Object.keys(rule.conditionGroups))
+                        .subscribe((condGroup: ConditionGroupModel) => {
+                            expect(conditionGroup.operator).toEqual('OR');
+                            expect(conditionGroup.priority).toEqual(99);
+                            done();
+                        });
+                });
             });
-            // TODO NG: bring this back when ConditionGroupModel it's available
-            // .subscribe((conditionGroup: ConditionGroupModel) => {
-            //     ruleService.loadRule(serverRule.key).subscribe((rule: RuleModel) => {
-            //         expect(rule.conditionGroups[conditionGroup.key]).toBeDefined('Well that\'s odd');
-            //         expect(rule.conditionGroups[conditionGroup.key].operator).toEqual('OR');
-            //         /* Now read the ConditionGroups off the rule we just got back. Add listener first, then trigger call. */
-            //         conditionGroupService
-            //             .all(rule.key, Object.keys(rule.conditionGroups))
-            //             .subscribe((condGroup: ConditionGroupModel) => {
-            //                 expect(conditionGroup.operator).toEqual('OR');
-            //                 expect(conditionGroup.priority).toEqual(99);
-            //                 done();
-            //             });
-            //     });
-            // });
     });
 
     it('Can list condition types, and they are all persisted and valid.', done => {

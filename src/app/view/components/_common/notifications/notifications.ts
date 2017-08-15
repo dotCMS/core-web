@@ -1,7 +1,8 @@
-import {BaseComponent} from '../_base/base-component';
-import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
-import {INotification} from '../../../../api/services/notifications-service';
-import {MessageService} from '../../../../api/services/messages-service';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
+
+import { BaseComponent } from '../_base/base-component';
+import { INotification } from '../../../../shared/models/notifications';
+import { MessageService } from '../../../../api/services/messages-service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,

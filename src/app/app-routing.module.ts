@@ -15,11 +15,12 @@ import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-le
 import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { RuleEngineContainer } from './portlets/rule-engine/rule-engine.container';
 import { DotBrowserComponent } from './portlets/dot-browser/dot-browser-component';
+import { environment } from '../environments/environment';
 
 const angularComponents: any[] = [
     {
         id: 'content-types-angular',
-        loadChildren: './app/portlets/content-types/content-types.module#ContentTypesModule'
+        loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
         component: RuleEngineContainer,
@@ -35,8 +36,7 @@ const mainComponentChildren = [
     {
         path: '',
         pathMatch: 'full',
-        // redirectTo: (process.env.ENV && process.env.ENV === process.env.DEV_MODE) ? 'pl' : 'home',
-        redirectTo: 'pl'
+        redirectTo: environment.production ? 'home' : 'pl'
     },
     {
         component: PatternLibrary,
@@ -57,8 +57,7 @@ const angularChildren: any[] = [
     {
         path: '',
         pathMatch: 'full',
-        // redirectTo: (process.env.ENV && process.env.ENV === 'DEV') ? 'c/pl' : 'c/home',
-        redirectTo: 'c/pl',
+        redirectTo: environment.production ? 'c/home' : 'c/pl'
     },
     {
         component: PatternLibrary,
