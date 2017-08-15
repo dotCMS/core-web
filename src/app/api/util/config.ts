@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {HttpRequestUtils} from './httpRequestUtils';
+import { Injectable } from '@angular/core';
+import { HttpRequestUtils } from './httpRequestUtils';
 import { environment } from '../../../environments/environment';
 
 const DEV_MODE_PARAM = 'devMode';
@@ -10,7 +10,6 @@ const DEV_MODE_PARAM = 'devMode';
  */
 @Injectable()
 export class Config {
-
     private httpRequestUtils: HttpRequestUtils;
 
     constructor() {
@@ -22,7 +21,6 @@ export class Config {
      * @returns {boolean}
      */
     isProduction(): boolean {
-
         let runningMode: string = environment.name;
         const devMode: string = this.httpRequestUtils.getQueryStringParam(DEV_MODE_PARAM);
 
