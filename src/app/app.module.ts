@@ -1,6 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, JsonpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule, JsonpModule } from '@angular/http';
 import { NgModule, ApplicationRef } from '@angular/core';
 
 /*
@@ -9,16 +10,14 @@ import { NgModule, ApplicationRef } from '@angular/core';
 // App is our top level component
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /*
  * Custom Components
  */
 import { COMPONENTS, DIRECTIVES, PIPES } from './components';
-
-import { ENV_PROVIDERS } from './environment';
-
+import { ENV_PROVIDERS } from './providers';
 import { NGFACES_MODULES } from './modules';
+
 import { ActionButtonModule } from './view/components/_common/action-button/action-button.module';
 import { FieldValidationMessageModule } from './view/components/_common/field-validation-message/file-validation-message.module';
 import { ListingDataTableModule } from './view/components/listing-data-table/listing-data-table.module';
@@ -49,11 +48,6 @@ import { DotBrowserModule } from './portlets/dot-browser/dot-browser.module';
         SiteSelectorModule,
         RuleEngineModule,
         DotBrowserModule,
-        // DotcmsTreeableDetailModule,
-        // DotcmsSiteDatatableModule,
-        // DotcmsSiteTreeTableModule,
-        // DotcmsBreadcrumbModule,
-        // AppRoutingModule should always be the last one
         AppRoutingModule
     ],
     providers: [
