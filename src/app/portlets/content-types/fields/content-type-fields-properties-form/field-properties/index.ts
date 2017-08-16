@@ -18,16 +18,16 @@ import { RegexCheckPropertyComponent }  from './regex-check-property/';
 import { ValuesPropertyComponent }  from './values-property/';
 
 export const PROPERTY_INFO = {
-    name: NamePropertyComponent,
-    vaues: ValuesPropertyComponent,
     categories: CategoriesPropertyComponent,
-    regexCheck: RegexCheckPropertyComponent,
+    dataType: DataTypePropertyComponent,
+    defaultValue: DefaultValuePropertyComponent,
     hint: HintPropertyComponent,
-    required: CheckboxPropertyComponent,
-    searchable: CheckboxPropertyComponent,
     indexed: CheckboxPropertyComponent,
     listed: CheckboxPropertyComponent,
+    name: NamePropertyComponent,
+    regexCheck: RegexCheckPropertyComponent,
+    required: CheckboxPropertyComponent,
+    searchable: CheckboxPropertyComponent,
     unique: CheckboxPropertyComponent,
-    defaultValue: DefaultValuePropertyComponent,
-    dataType: DataTypePropertyComponent
+    vaues: ValuesPropertyComponent,
 };

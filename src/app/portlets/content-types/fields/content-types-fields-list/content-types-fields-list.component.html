@@ -3,6 +3,5 @@
     [dragulaModel]="fieldTypes"
     dragula="fields-bag"   
     data-drag-type="source">
-    <!-- agregar data attr con la data  -->
-    <li *ngFor="let fieldType of fieldTypes" [attr.data-field-properties]="fieldType.properties">{{fieldType.name}}</li>
+    <li *ngFor="let fieldType of fieldTypes">{{fieldType.name}}</li>
 </ul>

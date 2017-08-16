@@ -1,8 +1,9 @@
-<div class="form__group">
+<div class="form__group" [formGroup]="group">
     <label class="form__label">Name</label>
     <input 
         pInputText 
-        type="text">
+        type="text"
+        formControlName="name">
     <!-- <field-validation-message 
         message="Label is required" 
         [submitted]="submitted" 

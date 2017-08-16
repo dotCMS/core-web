@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldService, FieldDragDropService } from '../service';
 import { Field, FieldType } from '../';
+import { PROPERTY_INFO } from '../content-type-fields-properties-form/field-properties/index';
 
 /**
  * Show all the Field Types
@@ -14,8 +15,7 @@ import { Field, FieldType } from '../';
     templateUrl: './content-types-fields-list.component.html',
 })
 export class ContentTypesFieldsListComponent {
-    // fieldProperties: string[];
-    private fieldTypes: Field[]; // actualizar el tipo para tener properties
+    private fieldTypes: Field[];
 
     constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService) {
 
@@ -24,11 +24,18 @@ export class ContentTypesFieldsListComponent {
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
             .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
-                return {
-                    categories: ['Cateforie One', 'Cateforie two', 'Cateforie three'],
+                let field = {
                     clazz: fieldType.clazz,
-                    name: fieldType.label,
+                    name: fieldType.label
                 };
+
+                fieldType.properties.forEach(property => {
+                    if (PROPERTY_INFO[property.toLowerCase()] && property !== 'name') {
+                        field[property.toLowerCase()] = '';
+                    }
+                });
+
+                return field;
             }));
 
         this.fieldDragDropService.setFieldBagOptions();

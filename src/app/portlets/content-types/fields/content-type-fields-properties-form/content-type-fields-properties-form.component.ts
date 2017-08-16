@@ -10,23 +10,25 @@ import { AdDirective } from '../../../../view/directives/ad/ad.directive';
 })
 
 export class ContentTypeFieldsPropertiesFormComponent {
-    @Output() fieldProperties: EventEmitter<any> = new EventEmitter();
+    @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
-    @Input() properties;
-    @ViewChild(AdDirective) adHost: AdDirective;
 
     form: FormGroup;
     submitted = false;
     requireFormFields = ['name'];
+    fieldProperties: string[] = [];
 
     constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('ng onChange', this.formFieldData);
-
         if (changes.formFieldData.currentValue && this.formFieldData) {
             this.initFormGroup();
-            this.loadComponents();
+            // tslint:disable-next-line:forin
+            for (let property in this.formFieldData) {
+                if (PROPERTY_INFO[property]) {
+                    this.fieldProperties.push(property);
+                }
+            }
         }
     }
 
@@ -43,38 +45,19 @@ export class ContentTypeFieldsPropertiesFormComponent {
     saveFieldProperties(): void {
         // this.submitted = true;
         // if (this.form.valid) {
-        //     this.fieldProperties.emit(this.form.value);
+        //     this.saveField.emit(this.form.value);
         // }
         console.log(this.form.value);
     }
 
-    private loadComponents(): void {
-        // tslint:disable-next-line:forin
-        for (let property in this.formFieldData) {
-            let component = PROPERTY_INFO[property];
-
-            if (component) {
-                this.createComponent(component, property);
-            }
-        }
-    }
-
-    private createComponent(component, property): void {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-        let viewContainerRef = this.adHost.viewContainerRef;
-        let componentRef: ComponentRef<any> = viewContainerRef.createComponent(componentFactory);
-
-        componentRef.instance.propertyName = this.form.get(property);
-        componentRef.instance.propertyValue = this.formFieldData[property];
-        componentRef.instance.field = this.formFieldData;
-    }
-
     private initFormGroup(): void {
+        // console.log('form field data: ', this.formFieldData);
         let formFields = {};
 
         if (this.formFieldData) {
             // tslint:disable-next-line:forin
             for (let property in this.formFieldData) {
+                console.log('FormFieldData property: ', property);
                 if (PROPERTY_INFO[property]) {
                     formFields[property] = [this.formFieldData[property]];
                 }

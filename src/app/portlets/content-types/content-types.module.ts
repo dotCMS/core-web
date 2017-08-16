@@ -22,6 +22,7 @@ import { StringUtils } from '../../api/util/string.utils';
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService } from './fields/service';
+
 import {
     ContentTypesFieldsListComponent,
     ContentTypeFieldsDropZoneComponent,
@@ -30,6 +31,7 @@ import {
     ContentTypeFieldsRowListComponent,
     ContentTypeFieldsPropertiesFormComponent
 } from './fields';
+
 import {
     TabViewModule,
     OverlayPanelModule,
@@ -42,8 +44,20 @@ import {
     RadioButtonModule,
     CheckboxModule
 } from 'primeng/primeng';
-import { NamePropertyComponent, CheckboxPropertyComponent, CategoriesPropertyComponent } from './fields/content-type-fields-properties-form/field-properties';
+
+import {
+    NamePropertyComponent,
+    CheckboxPropertyComponent,
+    CategoriesPropertyComponent,
+    DataTypePropertyComponent,
+    HintPropertyComponent
+} from './fields/content-type-fields-properties-form/field-properties';
+
 import { AdDirective } from '../../view/directives/ad/ad.directive';
+
+import {
+    DynamicFieldPropertyDirective
+} from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
 
 @NgModule({
     declarations: [
@@ -60,10 +74,18 @@ import { AdDirective } from '../../view/directives/ad/ad.directive';
         ContentTypeFieldsRowListComponent,
         NamePropertyComponent,
         AdDirective,
+        DynamicFieldPropertyDirective,
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,
+        DataTypePropertyComponent,
+        HintPropertyComponent
     ],
-    entryComponents: [ NamePropertyComponent, CheckboxPropertyComponent, CategoriesPropertyComponent ],
+    entryComponents: [
+        NamePropertyComponent,
+        CheckboxPropertyComponent,
+        CategoriesPropertyComponent,
+        DataTypePropertyComponent,
+        HintPropertyComponent],
     exports: [
         ContentTypesPortletComponent
     ],

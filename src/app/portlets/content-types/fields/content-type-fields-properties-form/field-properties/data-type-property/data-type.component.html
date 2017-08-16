@@ -1,45 +1,45 @@
-<div class="form__group">
-    <label class="form__label">property.label</label>
-    <p-radioButton *ngIf="form.get('property.name')"
+<div class="form__group" [formGroup]="group">
+    <label class="form__label">Data Type</label>
+    <p-radioButton
         label="property.label" 
         name="dataType" 
         value="TEXT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioText')"
+    <!-- <p-radioButton
         label="Text" 
         name="dataType" 
         value="TEXT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioDate')"
+    <p-radioButton
         label="Date" 
         name="dataType" 
         value="DATE" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioBlockText')"
+    <p-radioButton
         label="Large Block Of Text" 
         name="dataType" 
         value="LONG_TEXT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioBool')"
+    <p-radioButton
         label="True/False" 
         name="dataType" 
         value="BOOL" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioDecimal')"
+    <p-radioButton
         label="Decimal" 
         name="dataType" 
         value="FLOAT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton *ngIf="form.get('radioNumber')"
+    <p-radioButton
         label="Whole Number" 
         name="dataType" 
         value="INTEGER" 
         formControlName="dataType">
-    </p-radioButton>
+    </p-radioButton> -->
 </div>

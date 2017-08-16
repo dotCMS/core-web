@@ -1,7 +1,7 @@
-<div class="form__group">
-    <label class="form__label">{{property.label}}</label>
+<div class="form__group" [formGroup]="group">
+    <label class="form__label">hint</label>
     <input 
         pInputText 
         type="text" 
-        formControlName="property.name">
+        formControlName="hint">
 </div>

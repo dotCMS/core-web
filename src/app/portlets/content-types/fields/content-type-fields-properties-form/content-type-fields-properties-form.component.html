@@ -1,9 +1,13 @@
-<!-- <form [formGroup]="form" (ngSubmit)="saveFieldProperties()" novalidate>  -->
+ <form [formGroup]="form" (ngSubmit)="saveFieldProperties()" novalidate>  
     <div class="ui-g">
         <div class="ui-g-12">
-           <ng-template ad-host>
-
-           </ng-template>
+           <ng-container 
+                *ngFor="let property of fieldProperties"
+                dynamicFieldProperty
+                [propertyName]="property"
+                [field]="formFieldData"
+                [group]="form">
+            </ng-container>
         </div>
     </div>
-<!-- </form>  -->
+ </form>  

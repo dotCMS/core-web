@@ -39,16 +39,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
     ngOnInit(): void {
         this.fieldDragDropService.fieldDrop$.subscribe((data) => {
             let dragType = data[0];
-            let fieldProperties = data[1].dataset.fieldProperties;
 
             if (dragType === 'fields-bag') {
                 this.setDroppedField();
-                // this.setFieldProperties(fieldProperties);
                 this.toggleDialog();
             }
         });
-
-        // console.log('all fields: ', this.getFields());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -111,13 +107,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         fields.forEach(field => {
             if (this.isNewField(field)) {
                 this.formData = field;
+                console.log('set drop field: ', field);
             }
         });
-    }
-
-    setFieldProperties(fieldProperties): void {
-        let properties = fieldProperties.split(',');
-        this.fieldProperties = properties;
     }
 
     /**

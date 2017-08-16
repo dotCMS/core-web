@@ -19,9 +19,8 @@
     <!-- crear un input con los properties del li con el dataset  -->
     <content-type-fields-properties-form 
         #fieldPropertiesForm 
-        (fieldProperties)="saveFields($event)" 
-        [formFieldData]="formData" 
-        [properties]="fieldProperties">
+        (saveField)="saveFields($event)" 
+        [formFieldData]="formData">
     </content-type-fields-properties-form>
     <p-footer>
         <button type="button" pButton (click)="fieldPropertiesForm.saveFieldProperties(fieldPropertiesForm.form.value, fieldPropertiesForm.form.valid)" [label]="i18nMessages['Save']"></button>
