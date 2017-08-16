@@ -1,9 +1,9 @@
 <div class="form__group" [formGroup]="group">
-    <label class="form__label">Name</label>
+    <label class="form__label">{{i18nMessages['name']}}</label>
     <input 
         pInputText 
         type="text"
-        formControlName="name">
+        [formControlName]="property.name">
     <!-- <field-validation-message 
         message="Label is required" 
         [submitted]="submitted" 

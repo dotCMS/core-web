@@ -1,6 +1,7 @@
 <div class="form__group">
-    <label class="form__label">Category</label>
+    <label class="form__label">{{i18nMessages['categories']}}</label>
     <p-dropdown 
-        [options]="">
+        [options]=""
+        [formControlName]="property.name">
     </p-dropdown>
 </div>

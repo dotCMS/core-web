@@ -3,13 +3,15 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Field } from '../index';
 import { AdDirective } from '../../../../view/directives/ad/ad.directive';
 import { FieldPropertyService } from '../service';
+import { MessageService } from '../../../../api/services/messages-service';
+import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 
 @Component({
     selector: 'content-type-fields-properties-form',
     templateUrl: './content-type-fields-properties-form.component.html'
 })
 
-export class ContentTypeFieldsPropertiesFormComponent {
+export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
     @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
 
@@ -18,8 +20,23 @@ export class ContentTypeFieldsPropertiesFormComponent {
     requireFormFields = ['name'];
     fieldProperties: string[] = [];
 
-    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
-        private fieldPropertyService: FieldPropertyService) {}
+    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver, public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
+        super(
+            [
+                'name',
+                'Label',
+                'message.field.fieldType',
+                'categories',
+                'Data-Type',
+                'required',
+                'Default-Value',
+                'Hint',
+                'Validation-RegEx',
+                'Value'
+            ],
+            messageService
+        );
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {

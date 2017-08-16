@@ -25,9 +25,14 @@ export class DynamicFieldPropertyDirective {
         let componentFactory = this.resolver.resolveComponentFactory(component);
         let componentRef: ComponentRef<any> = this.viewContainerRef.createComponent(componentFactory);
 
-        componentRef.instance.propertyName = this.propertyName;
-        componentRef.instance.propertyValue = this.field[this.propertyName];
-        componentRef.instance.field = this.field;
+        componentRef.instance.property = {
+            field: this.field,
+            name: this.propertyName,
+            value: this.field[this.propertyName],
+        };
+
         componentRef.instance.group = this.group;
+
+        console.log('prop field: ', componentRef.instance.property.field);
     }
 }

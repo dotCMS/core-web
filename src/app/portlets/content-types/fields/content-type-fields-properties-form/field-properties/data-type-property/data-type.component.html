@@ -1,10 +1,10 @@
 <div class="form__group" [formGroup]="group">
-    <label class="form__label">Data Type</label>
+    <label class="form__label">{{i18nMessages['Data-Type']}}</label>
     <p-radioButton
-        label="property.label" 
+        label="i18nMessages['Binary']" 
         name="dataType" 
         value="TEXT" 
-        formControlName="dataType">
+        formControlName="property.name">
     </p-radioButton>
     <!-- <p-radioButton
         label="Text" 
