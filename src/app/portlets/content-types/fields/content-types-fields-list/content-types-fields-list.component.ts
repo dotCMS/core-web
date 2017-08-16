@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { FieldService, FieldDragDropService } from '../service';
+import { FieldService, FieldDragDropService, FieldPropertyService } from '../service';
 import { Field, FieldType } from '../';
-import { PROPERTY_INFO } from '../content-type-fields-properties-form/field-properties/index';
 
 /**
  * Show all the Field Types
@@ -17,7 +16,8 @@ import { PROPERTY_INFO } from '../content-type-fields-properties-form/field-prop
 export class ContentTypesFieldsListComponent {
     private fieldTypes: Field[];
 
-    constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService) {
+    constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService,
+        private fieldPropertyService: FieldPropertyService) {
 
     }
 
@@ -30,8 +30,8 @@ export class ContentTypesFieldsListComponent {
                 };
 
                 fieldType.properties.forEach(property => {
-                    if (PROPERTY_INFO[property.toLowerCase()] && property !== 'name') {
-                        field[property.toLowerCase()] = '';
+                    if (this.fieldPropertyService.existsInfo(property) && !field[property]) {
+                        field[property] = this.fieldPropertyService.getDefaultValue(property);
                     }
                 });
 

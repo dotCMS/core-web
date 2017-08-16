@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Field } from '../index';
-import { PROPERTY_INFO } from './field-properties';
 import { AdDirective } from '../../../../view/directives/ad/ad.directive';
+import { FieldPropertyService } from '../service';
 
 @Component({
     selector: 'content-type-fields-properties-form',
@@ -18,17 +18,21 @@ export class ContentTypeFieldsPropertiesFormComponent {
     requireFormFields = ['name'];
     fieldProperties: string[] = [];
 
-    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver) {}
+    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
+        private fieldPropertyService: FieldPropertyService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
             this.initFormGroup();
             // tslint:disable-next-line:forin
             for (let property in this.formFieldData) {
-                if (PROPERTY_INFO[property]) {
+                if (this.fieldPropertyService.existsInfo(property)) {
                     this.fieldProperties.push(property);
                 }
             }
+
+            this.fieldProperties.sort((pa, pb) =>
+                this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
         }
     }
 
@@ -57,8 +61,8 @@ export class ContentTypeFieldsPropertiesFormComponent {
         if (this.formFieldData) {
             // tslint:disable-next-line:forin
             for (let property in this.formFieldData) {
-                console.log('FormFieldData property: ', property);
-                if (PROPERTY_INFO[property]) {
+
+                if (this.fieldPropertyService.existsInfo(property)) {
                     formFields[property] = [this.formFieldData[property]];
                 }
             }

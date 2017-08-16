@@ -21,7 +21,7 @@ import { SiteService } from '../../api/services/site-service';
 import { StringUtils } from '../../api/util/string.utils';
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
-import { FieldService, FieldDragDropService } from './fields/service';
+import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
 
 import {
     ContentTypesFieldsListComponent,
@@ -115,6 +115,7 @@ import {
         DotcmsConfig,
         DragulaService,
         FieldDragDropService,
+        FieldPropertyService,
         FieldService,
         FormatDateService,
         LoginService,
