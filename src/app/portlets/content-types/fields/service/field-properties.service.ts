@@ -74,7 +74,7 @@ export class FieldPropertyService {
             defaultValue: false,
             order: 11
         },
-        vaues: {
+        values: {
             component: ValuesPropertyComponent,
             defaultValue: '',
             order: 3
