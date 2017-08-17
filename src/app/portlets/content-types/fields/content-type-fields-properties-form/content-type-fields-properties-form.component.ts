@@ -32,10 +32,22 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
                 'categories',
                 'Data-Type',
                 'required',
+                'User-Searchable',
+                'System-Indexed',
+                'listed',
+                'Unique',
                 'Default-Value',
                 'Hint',
                 'Validation-RegEx',
-                'Value'
+                'Value',
+                'Binary',
+                'Text',
+                'True-False',
+                'Date',
+                'Decimal',
+                'Whole-Number',
+                'Large-Block-of-Text',
+                'System-Field',
             ],
             messageService
         );

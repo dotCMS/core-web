@@ -1,45 +1,45 @@
 <div class="form__group" [formGroup]="group">
     <label class="form__label">{{i18nMessages['Data-Type']}}</label>
-    <p-radioButton
-        label="i18nMessages['Binary']" 
+    <p-radioButton *ngIf="radioInputs.binary"
+        [label]="i18nMessages['Binary']" 
         name="dataType" 
-        value="TEXT" 
-        formControlName="property.name">
+        value="BINARY" 
+        [formControlName]="property.name">
     </p-radioButton>
-    <!-- <p-radioButton
-        label="Text" 
+    <p-radioButton *ngIf="radioInputs.text"
+        [label]="i18nMessages['Text']" 
         name="dataType" 
         value="TEXT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton
-        label="Date" 
+    <p-radioButton *ngIf="radioInputs.date"
+        [label]="i18nMessages['Date']" 
         name="dataType" 
         value="DATE" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton
-        label="Large Block Of Text" 
+    <p-radioButton *ngIf="radioInputs.longText"
+        [label]="i18nMessages['Large-Block-of-Text']" 
         name="dataType" 
         value="LONG_TEXT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton
-        label="True/False" 
+    <p-radioButton *ngIf="radioInputs.bool"
+        [label]="i18nMessages['True-False']" 
         name="dataType" 
         value="BOOL" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton
-        label="Decimal" 
+    <p-radioButton *ngIf="radioInputs.float"
+        [label]="i18nMessages['Decimal']" 
         name="dataType" 
         value="FLOAT" 
         formControlName="dataType">
     </p-radioButton>
-    <p-radioButton
-        label="Whole Number" 
+    <p-radioButton *ngIf="radioInputs.integer"
+        [label]="i18nMessages['Whole-Number']" 
         name="dataType" 
         value="INTEGER" 
         formControlName="dataType">
-    </p-radioButton> -->
+    </p-radioButton>
 </div>

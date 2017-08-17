@@ -46,11 +46,12 @@ import {
 } from 'primeng/primeng';
 
 import {
-    NamePropertyComponent,
-    CheckboxPropertyComponent,
-    CategoriesPropertyComponent,
-    DataTypePropertyComponent,
-    HintPropertyComponent
+  NamePropertyComponent,
+  CheckboxPropertyComponent,
+  CategoriesPropertyComponent,
+  DataTypePropertyComponent,
+  HintPropertyComponent,
+  DefaultValuePropertyComponent
 } from './fields/content-type-fields-properties-form/field-properties';
 
 import {
@@ -75,14 +76,16 @@ import {
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,
         DataTypePropertyComponent,
-        HintPropertyComponent
+        HintPropertyComponent,
+        DefaultValuePropertyComponent
     ],
     entryComponents: [
         NamePropertyComponent,
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,
         DataTypePropertyComponent,
-        HintPropertyComponent],
+        HintPropertyComponent,
+        DefaultValuePropertyComponent],
     exports: [
         ContentTypesPortletComponent
     ],

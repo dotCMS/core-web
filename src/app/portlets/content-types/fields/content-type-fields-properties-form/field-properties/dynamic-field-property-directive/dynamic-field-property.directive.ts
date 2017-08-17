@@ -32,7 +32,5 @@ export class DynamicFieldPropertyDirective {
         };
 
         componentRef.instance.group = this.group;
-
-        console.log('prop field: ', componentRef.instance.property.field);
     }
 }
