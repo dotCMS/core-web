@@ -1,6 +1,6 @@
  <form [formGroup]="form" (ngSubmit)="saveFieldProperties()" novalidate>  
     <div class="ui-g">
-        <div class="ui-g-12">
+        <div class="ui-g-12" #properties>
            <ng-container 
                 *ngFor="let property of fieldProperties"
                 dynamicFieldProperty

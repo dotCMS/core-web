@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
-import { Component, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, SimpleChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FieldService, FieldDragDropService } from '../service';
 import { FieldRow, Field, FieldColumn, TAB_DIVIDER, LINE_DIVIDER } from '../';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form/index';
@@ -21,6 +21,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
     fieldRows: FieldRow[] = [];
     formData: Field;
     fieldProperties: string[];
+
+    @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
+
     @Input() fields: Field[];
     @Output('saveFields') saveFieldsEvent = new EventEmitter<Field[]>();
 
@@ -138,6 +141,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         });
 
         this.toggleDialog();
+        this.propertiesForm.destroy();
     }
 
     /**
@@ -204,9 +208,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent {
         this.fieldRows.forEach((fieldRow, rowIndex) => {
             fields.push(fieldRow.lineDivider);
 
-            fieldRow.columns.forEach( (fieldColumn, colIndex) => {
+            fieldRow.columns.forEach((fieldColumn, colIndex) => {
                 fields.push(fieldColumn.tabDivider);
-                fieldColumn.fields.forEach( field => fields.push(field));
+                fieldColumn.fields.forEach(field => fields.push(field));
             });
         });
 

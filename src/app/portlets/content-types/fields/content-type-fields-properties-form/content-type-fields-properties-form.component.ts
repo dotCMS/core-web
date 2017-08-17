@@ -15,9 +15,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
     @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
 
+    @ViewChild('properties') propertiesContainer;
+
     form: FormGroup;
     submitted = false;
-    requireFormFields = ['name'];
     fieldProperties: string[] = [];
 
     constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
@@ -43,6 +44,8 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
             this.initFormGroup();
+
+            console.log('formFieldData', this.formFieldData);
             // tslint:disable-next-line:forin
             for (let property in this.formFieldData) {
                 if (this.fieldPropertyService.existsInfo(property)) {
@@ -52,6 +55,8 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
 
             this.fieldProperties.sort((pa, pb) =>
                 this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
+
+            console.log('this.fieldProperties', this.fieldProperties);
         }
     }
 
@@ -71,6 +76,16 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
         //     this.saveField.emit(this.form.value);
         // }
         console.log(this.form.value);
+    }
+
+    public destroy(): void {
+        this.fieldProperties = [];
+        let propertiesContainer = this.propertiesContainer.nativeElement;
+        propertiesContainer.childNodes.forEach(child => {
+            if (child.tagName) {
+                propertiesContainer.removeChild(child);
+            }
+        });
     }
 
     private initFormGroup(): void {
