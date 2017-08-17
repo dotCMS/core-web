@@ -7,10 +7,7 @@ import { DotBrowserComponent } from './dot-browser-component';
 import {AutoCompleteModule} from 'primeng/primeng';
 import {
   DotBreadcrumbModule, DotFileModule, DotFolderModule, DotHttpModule, DotNotificationModule, DotSettingsStorageModule,
-  DotSiteBrowserModule,
-  DotSiteDatatableModule, DotSiteSelectorModule,
-  DotSiteTreeTableModule,
-  DotTreeableDetailModule
+  DotSiteBrowserModule, DotSiteDatatableModule, DotSiteSelectorModule, DotSiteTreeTableModule, DotTreeableDetailModule
 } from 'dotcms-js/dotcms-js';
 
 
