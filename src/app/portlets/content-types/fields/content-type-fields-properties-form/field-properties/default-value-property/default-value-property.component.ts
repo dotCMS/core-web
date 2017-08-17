@@ -13,12 +13,7 @@ export class DefaultValuePropertyComponent extends BaseComponent {
     group: FormGroup;
 
     constructor(public messageService: MessageService) {
-        super(
-            [
-                'Default-Value',
-            ],
-            messageService
-        );
+        super(['Default-Value'], messageService);
     }
 
     ngOnInit(): void {

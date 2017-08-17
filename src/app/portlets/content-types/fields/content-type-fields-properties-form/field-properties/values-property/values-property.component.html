@@ -1,8 +1,5 @@
-<div class="form__group">
+<div class="form__group" [formGroup]="group">
     <label class="form__label">{{i18nMessages['Value']}}</label>
-    <textarea 
-        rows="5" 
-        pInputTextarea 
-        [formControlName]="property.name">
+    <textarea rows="5" pInputTextarea [formControlName]="property.name">
     </textarea>
 </div>

@@ -50,7 +50,10 @@ import {
     CheckboxPropertyComponent,
     CategoriesPropertyComponent,
     DataTypePropertyComponent,
-    HintPropertyComponent
+    HintPropertyComponent,
+    DefaultValuePropertyComponent,
+    RegexCheckPropertyComponent,
+    ValuesPropertyComponent
 } from './fields/content-type-fields-properties-form/field-properties';
 
 import {
@@ -75,14 +78,21 @@ import {
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,
         DataTypePropertyComponent,
-        HintPropertyComponent
+        HintPropertyComponent,
+        DefaultValuePropertyComponent,
+        RegexCheckPropertyComponent,
+        ValuesPropertyComponent
     ],
     entryComponents: [
         NamePropertyComponent,
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,
         DataTypePropertyComponent,
-        HintPropertyComponent],
+        DefaultValuePropertyComponent,
+        HintPropertyComponent,
+        RegexCheckPropertyComponent,
+        ValuesPropertyComponent
+    ],
     exports: [
         ContentTypesPortletComponent
     ],
