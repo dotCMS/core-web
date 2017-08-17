@@ -1,7 +1,4 @@
 <div class="form__group" [formGroup]="group">
     <label class="form__label">{{i18nMessages['Hint']}}</label>
-    <input 
-        pInputText 
-        type="text" 
-        formControlName="property.name">
+    <input pInputText type="text" [formControlName]="property.name">
 </div>

@@ -20,7 +20,9 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
     requireFormFields = ['name'];
     fieldProperties: string[] = [];
 
-    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver, public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
+    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
+        public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
+
         super(
             [
                 'name',
@@ -85,13 +87,5 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
             }
         }
         this.form = this.fb.group(formFields);
-    }
-
-    private isRequire(requireFields, property): any {
-        requireFields.forEach(field => {
-            if (field === property) {
-                return Validators.required;
-            }
-        });
     }
 }

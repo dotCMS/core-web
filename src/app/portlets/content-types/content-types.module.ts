@@ -53,8 +53,6 @@ import {
     HintPropertyComponent
 } from './fields/content-type-fields-properties-form/field-properties';
 
-import { AdDirective } from '../../view/directives/ad/ad.directive';
-
 import {
     DynamicFieldPropertyDirective
 } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
@@ -73,7 +71,6 @@ import {
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
         NamePropertyComponent,
-        AdDirective,
         DynamicFieldPropertyDirective,
         CheckboxPropertyComponent,
         CategoriesPropertyComponent,

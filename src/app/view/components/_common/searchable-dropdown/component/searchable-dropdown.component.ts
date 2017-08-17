@@ -57,7 +57,7 @@ export class SearchableDropdownComponent extends BaseComponent
 
     value: any = {};
     valueString = '';
-    propagateChange = (_: any) => {};
+    propagateChange = (_: any) => { };
 
     constructor(messageService: MessageService) {
         super(['search'], messageService);
@@ -115,7 +115,7 @@ export class SearchableDropdownComponent extends BaseComponent
         this.propagateChange = fn;
     }
 
-    registerOnTouched(): void {}
+    registerOnTouched(): void { }
 
     /**
      * Call when a option is clicked, if this option is not the same of the current value then

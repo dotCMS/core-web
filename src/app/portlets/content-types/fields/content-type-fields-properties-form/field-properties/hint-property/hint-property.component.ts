@@ -13,12 +13,7 @@ export class HintPropertyComponent extends BaseComponent {
     group: FormGroup;
 
     constructor(public messageService: MessageService) {
-        super(
-            [
-                'Hint',
-            ],
-            messageService
-        );
+        super(['Hint'], messageService);
     }
 
     ngOnInit(): void {

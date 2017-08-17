@@ -1,7 +1,8 @@
-<div class="form__group">
+<div class="form__group" [formGroup]="group">
     <label class="form__label">{{i18nMessages['categories']}}</label>
-    <p-dropdown 
-        [options]=""
-        [formControlName]="property.name">
-    </p-dropdown>
+    <searchable-dropdown #searchableDropdown (filterChange)="handleFilterChange($event)" (pageChange)="handlePageChange($event)"
+        [data]="categoriesCurrentPage" [pageLinkSize]="paginationService.maxLinksPage" [rows]="paginationService.paginationPerPage"
+        [totalRecords]="paginationService.totalRecords" placeholder="{{i18nMessages['Select']}}" [formControlName]="property.name"
+        labelPropertyName="categoryName">
+    </searchable-dropdown>
 </div>

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FieldProperty } from '../field-properties.interface';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'required-property',
@@ -18,6 +19,7 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 })
 export class CheckboxPropertyComponent extends BaseComponent {
     property: FieldProperty;
+    group: FormGroup;
 
     constructor(public messageService: MessageService) {
         super(
