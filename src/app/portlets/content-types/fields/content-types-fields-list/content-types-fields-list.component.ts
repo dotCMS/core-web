@@ -24,6 +24,7 @@ export class ContentTypesFieldsListComponent {
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
             .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
+                console.log('fieldType: ', fieldType);
                 let field = {
                     clazz: fieldType.clazz,
                     name: fieldType.label
@@ -34,7 +35,7 @@ export class ContentTypesFieldsListComponent {
                         field[property] = this.fieldPropertyService.getDefaultValue(property);
                     }
                 });
-
+                console.log('field: ', field);
                 return field;
             }));
 

@@ -46,6 +46,7 @@ import {
 } from 'primeng/primeng';
 
 import {
+
     NamePropertyComponent,
     CheckboxPropertyComponent,
     CategoriesPropertyComponent,
