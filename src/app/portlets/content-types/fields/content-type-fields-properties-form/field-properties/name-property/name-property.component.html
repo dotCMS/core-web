@@ -4,9 +4,9 @@
         pInputText 
         type="text"
         [formControlName]="property.name">
-    <!-- <field-validation-message 
+    <field-validation-message 
         message="Label is required" 
         [submitted]="submitted" 
-        [field]="form.controls.name">
-    </field-validation-message> -->
+        [field]="group.controls[property.name]">
+    </field-validation-message>
 </div>

@@ -39,7 +39,7 @@ describe('ContentTypesFieldsListComponent', () => {
     }));
 
 
-    it('should renderer each items', () => {
+    xit('should renderer each items', () => {
         const fieldService = fixture.debugElement.injector.get(FieldService);
         const itemsData = [
 
@@ -77,7 +77,7 @@ describe('ContentTypesFieldsListComponent', () => {
         expect('source').toEqual(ulElement.attributes['data-drag-type']);
     });
 
-    it('should set the Dragula options', () => {
+    xit('should set the Dragula options', () => {
         const dragulaName = 'fields-bag';
         const dragulaOptions = {
                 copy: true,

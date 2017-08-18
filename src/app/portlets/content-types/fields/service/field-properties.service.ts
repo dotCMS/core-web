@@ -22,7 +22,8 @@ export class FieldPropertyService {
         categories: {
             component: CategoriesPropertyComponent,
             defaultValue: '',
-            order: 2
+            order: 2,
+            required: true
         },
         dataType: {
             component: DataTypePropertyComponent,
@@ -52,7 +53,8 @@ export class FieldPropertyService {
         name: {
             component: NamePropertyComponent,
             defaultValue: '',
-            order: 0
+            order: 0,
+            required: true
         },
         regexCheck: {
             component: RegexCheckPropertyComponent,
@@ -99,5 +101,9 @@ export class FieldPropertyService {
 
     getOrder(propertyName: string): any {
         return this.PROPERTY_INFO[propertyName].order;
+    }
+
+    isRequired(propertyName: string): boolean {
+        return this.PROPERTY_INFO[propertyName].required;
     }
 }
