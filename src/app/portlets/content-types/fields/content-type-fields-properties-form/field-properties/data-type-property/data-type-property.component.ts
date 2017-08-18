@@ -6,7 +6,7 @@ import { MessageService } from '../../../../../../api/services/messages-service'
 import { FieldProperty } from '../field-properties.interface';
 
 @Component({
-    selector: 'required-property',
+    selector: 'dataType-property',
     templateUrl: './data-type.component.html',
 })
 export class DataTypePropertyComponent extends BaseComponent  {
@@ -14,13 +14,52 @@ export class DataTypePropertyComponent extends BaseComponent  {
     group: FormGroup;
     radioInputs: object = {};
 
-    private readonly propertyRadioList = {
+    private propertyRadioList = {
         // Radio inputs: binary, text, date, longText, bool, float, integer
-        binary: ['binary'],
-        checkbox: ['text'],
-        date: ['date'],
-        dateAndTime: ['date'],
-        select: ['text', 'bool', 'float', 'integer'],
+        'com.dotcms.contenttype.model.field.ImmutableRadioField': [{
+            text: 'Text',
+            value: 'TEXT'
+        },
+        {
+            text: 'True-False',
+            value: 'BOOL'
+        },
+        {
+            text: 'Decimal',
+            value: 'FLOAT'
+        },
+        {
+            text: 'Whole-Number',
+            value: 'INTEGER'
+        }],
+        'com.dotcms.contenttype.model.field.ImmutableSelectField': [{
+            text: 'Text',
+            value: 'TEXT'
+        },
+        {
+            text: 'True-False',
+            value: 'BOOL'
+        },
+        {
+            text: 'Decimal',
+            value: 'FLOAT'
+        },
+        {
+            text: 'Whole-Number',
+            value: 'INTEGER'
+        }],
+        'com.dotcms.contenttype.model.field.ImmutableTextField': [{
+            text: 'Text',
+            value: 'TEXT'
+        },
+        {
+            text: 'Decimal',
+            value: 'FLOAT'
+        },
+        {
+            text: 'Whole-Number',
+            value: 'INTEGER'
+        }],
     };
 
     constructor(public messageService: MessageService) {
@@ -41,12 +80,6 @@ export class DataTypePropertyComponent extends BaseComponent  {
     }
 
     ngOnInit(): void {
-        this.propertyRadioList.select.forEach((item) => {
-            this.radioInputs[item] = true;
-        });
+        this.radioInputs = this.propertyRadioList[this.property.field.clazz];
     }
-
-    // setCheckboxLabel(field): string {
-    //     return this.map[field] || field;
-    // }
 }

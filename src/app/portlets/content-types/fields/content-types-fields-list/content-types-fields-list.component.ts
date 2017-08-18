@@ -38,7 +38,6 @@ export class ContentTypesFieldsListComponent implements  OnInit {
                         field[property] = this.fieldPropertyService.getDefaultValue(property);
                     }
                 });
-                console.log('field: ', field);
                 return field;
             }));
     }

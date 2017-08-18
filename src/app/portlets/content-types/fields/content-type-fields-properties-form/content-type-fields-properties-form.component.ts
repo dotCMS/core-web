@@ -57,7 +57,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         if (changes.formFieldData.currentValue && this.formFieldData) {
             this.initFormGroup();
 
-            console.log('formFieldData', this.formFieldData);
             // tslint:disable-next-line:forin
             for (const property in this.formFieldData) {
                 if (this.fieldPropertyService.existsInfo(property)) {
@@ -67,8 +66,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
             this.fieldProperties.sort((pa, pb) =>
                 this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
-
-            console.log('this.fieldProperties', this.fieldProperties);
         }
     }
 
@@ -105,11 +102,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         const formFields = {};
 
         if (this.formFieldData) {
-            // tslint:disable-next-line:forin
             for (const property in this.formFieldData) {
-
-                if (this.fieldPropertyService.existsInfo(property)) {
-                    formFields[property] = [this.formFieldData[property]];
+                if (this.formFieldData.hasOwnProperty(property)) {
+                    if (this.fieldPropertyService.existsInfo(property)) {
+                        formFields[property] = [this.formFieldData[property]];
+                    }
                 }
             }
         }

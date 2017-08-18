@@ -6,16 +6,7 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'required-property',
-    template: `
-        <div class="form__group" [formGroup]="group">
-            <p-checkbox
-                [label]="i18nMessages[setCheckboxLabel(property.name)]"
-                [value]="property.value"
-                [formControlName]="property.name"
-                binary="true">
-            </p-checkbox>
-        </div>
-    `,
+    templateUrl: './checkbox-property.component.html',
 })
 export class CheckboxPropertyComponent extends BaseComponent {
     property: FieldProperty;
