@@ -151,7 +151,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             });
         });
 
-        this.toggleDialog();
         this.propertiesForm.destroy();
     }
 

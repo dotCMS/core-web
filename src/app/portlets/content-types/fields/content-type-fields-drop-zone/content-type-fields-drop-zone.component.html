@@ -23,15 +23,17 @@
     [(visible)]="displayDialog"
     modal="modal"
     width="300"
-    [responsive]="true">
+    [responsive]="true"
+    (onHide)="removeFieldsWithoutId()">
     
     <content-type-fields-properties-form 
         [formFieldData]="formData"
         (fieldProperties)="saveFieldsHandler($event)"
         #fieldPropertiesForm>
     </content-type-fields-properties-form>
+    
     <p-footer>
         <button type="button" pButton (click)="fieldPropertiesForm.saveFieldProperties(fieldPropertiesForm.form.value, fieldPropertiesForm.form.valid)" [label]="i18nMessages['Save']"></button>
-        <button type="button" pButton (click)="removeFieldsWithoutId()" [label]="i18nMessages['Cancel']"></button>
+        <button type="button" pButton (click)="toggleDialog()" [label]="i18nMessages['Cancel']"></button>
     </p-footer>
 </p-dialog>
