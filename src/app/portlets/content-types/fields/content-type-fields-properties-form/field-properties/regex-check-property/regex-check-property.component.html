@@ -1,6 +1,6 @@
 <div class="form__group" [formGroup]="group">
     <label class="form__label">{{i18nMessages['Validation-RegEx']}}</label>
     <input pInputText type="text" style="width:50%" [formControlName]="property.name">
-    <p-dropdown [options]="[{label:'no HTML', value:null}]">
+    <p-dropdown [options]="REGEX_CHECK_TEMPLATE" (onChange)="templateSelect($event)" [formControlName]="property.name">
     </p-dropdown>
 </div>
