@@ -103,13 +103,13 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
         if (this.formFieldData) {
             for (const property in this.formFieldData) {
-                if (this.formFieldData.hasOwnProperty(property)) {
-                    if (this.fieldPropertyService.existsInfo(property)) {
-                        formFields[property] = [this.formFieldData[property]];
-                    }
+                if (this.fieldPropertyService.existsInfo(property)) {
+                    const validations = this.fieldPropertyService.isRequired(property) ? [Validators.required] : [];
+                    formFields[property] = [this.formFieldData[property], validations];
                 }
             }
         }
+
         this.form = this.fb.group(formFields);
     }
 }

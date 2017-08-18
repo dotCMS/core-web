@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Field } from '../../../index';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
@@ -9,7 +9,7 @@ import { FieldProperty } from '../field-properties.interface';
     selector: 'dataType-property',
     templateUrl: './data-type.component.html',
 })
-export class DataTypePropertyComponent extends BaseComponent  {
+export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     property: FieldProperty;
     group: FormGroup;
     radioInputs: object = {};
