@@ -1,17 +1,17 @@
-import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, OnChanges, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Field } from '../index';
-import { AdDirective } from '../../../../view/directives/ad/ad.directive';
 import { FieldPropertyService } from '../service';
 import { MessageService } from '../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
+import { Field } from '../shared';
+
 
 @Component({
     selector: 'content-type-fields-properties-form',
     templateUrl: './content-type-fields-properties-form.component.html'
 })
 
-export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
+export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent implements OnChanges, OnInit {
     @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
 
@@ -59,7 +59,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
 
             console.log('formFieldData', this.formFieldData);
             // tslint:disable-next-line:forin
-            for (let property in this.formFieldData) {
+            for (const property in this.formFieldData) {
                 if (this.fieldPropertyService.existsInfo(property)) {
                     this.fieldProperties.push(property);
                 }
@@ -92,7 +92,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
 
     public destroy(): void {
         this.fieldProperties = [];
-        let propertiesContainer = this.propertiesContainer.nativeElement;
+        const propertiesContainer = this.propertiesContainer.nativeElement;
         propertiesContainer.childNodes.forEach(child => {
             if (child.tagName) {
                 propertiesContainer.removeChild(child);
@@ -102,11 +102,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent {
 
     private initFormGroup(): void {
         // console.log('form field data: ', this.formFieldData);
-        let formFields = {};
+        const formFields = {};
 
         if (this.formFieldData) {
             // tslint:disable-next-line:forin
-            for (let property in this.formFieldData) {
+            for (const property in this.formFieldData) {
 
                 if (this.fieldPropertyService.existsInfo(property)) {
                     formFields[property] = [this.formFieldData[property]];

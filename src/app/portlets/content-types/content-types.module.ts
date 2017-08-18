@@ -10,6 +10,7 @@ import { CrudService } from '../../api/services/crud';
 import { DotcmsConfig } from '../../api/services/system/dotcms-config';
 import { FieldValidationMessageModule } from '../../view/components/_common/field-validation-message/file-validation-message.module';
 import { FormatDateService } from '../../api/services/format-date-service';
+import { IconButtonTooltipModule } from '../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ListingDataTableModule } from '../../view/components/listing-data-table/listing-data-table.module';
 import { LoginService } from '../../api/services/login-service';
 import { MessageService } from '../../api/services/messages-service';
@@ -24,25 +25,25 @@ import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
 
 import {
-    ContentTypesFieldsListComponent,
     ContentTypeFieldsDropZoneComponent,
+    ContentTypeFieldsPropertiesFormComponent,
     ContentTypeFieldsRowComponent,
-    ContentTypesFieldDragabbleItemComponent,
     ContentTypeFieldsRowListComponent,
-    ContentTypeFieldsPropertiesFormComponent
+    ContentTypesFieldDragabbleItemComponent,
+    ContentTypesFieldsListComponent
 } from './fields';
 
 import {
-    TabViewModule,
-    OverlayPanelModule,
-    DropdownModule,
     ButtonModule,
-    InputTextModule,
-    SplitButtonModule,
     ConfirmDialogModule,
     DialogModule,
+    DropdownModule,
+    InputTextModule,
+    OverlayPanelModule,
+    SplitButtonModule,
     RadioButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    TabViewModule
 } from 'primeng/primeng';
 
 import {
@@ -63,11 +64,14 @@ import {
 
 @NgModule({
     declarations: [
+        ContentTypeFieldsDropZoneComponent,
+        ContentTypeFieldsPropertiesFormComponent,
+        ContentTypeFieldsRowComponent,
+        ContentTypeFieldsRowListComponent,
         ContentTypesCreateComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
         ContentTypesFieldsListComponent,
-        ContentTypeFieldsPropertiesFormComponent,
         ContentTypesFormComponent,
         ContentTypesLayoutComponent,
         ContentTypesPortletComponent,
@@ -100,22 +104,24 @@ import {
     imports: [
         ButtonModule,
         CommonModule,
+        ConfirmDialogModule,
         ContentTypesRoutingModule,
         CheckboxModule,
+        DialogModule,
         DragulaModule,
         DropdownModule,
-        ConfirmDialogModule,
-        DialogModule,
         FieldValidationMessageModule,
         FormsModule,
+        IconButtonTooltipModule,
         InputTextModule,
         SplitButtonModule,
         RadioButtonModule,
         ListingDataTableModule,
         OverlayPanelModule,
         ReactiveFormsModule,
-        TabViewModule,
-        SiteSelectorModule
+        SiteSelectorModule,
+        SplitButtonModule,
+        TabViewModule
     ],
     providers: [
         ContentTypesInfoService,
