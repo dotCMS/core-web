@@ -7,12 +7,12 @@ import { FieldProperty } from '../field-properties.interface';
 
 @Component({
     selector: 'dataType-property',
-    templateUrl: './data-type.component.html',
+    templateUrl: './data-type-property.component.html',
 })
 export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     property: FieldProperty;
     group: FormGroup;
-    radioInputs: object = {};
+    radioInputs: object;
 
     private propertyRadioList = {
         // Radio inputs: binary, text, date, longText, bool, float, integer
@@ -81,5 +81,15 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.radioInputs = this.propertyRadioList[this.property.field.clazz];
+    }
+
+    isEmpty(obj) {
+        for (let prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                return false;
+            }
+        }
+
+        return JSON.stringify(obj) === JSON.stringify({});
     }
 }
