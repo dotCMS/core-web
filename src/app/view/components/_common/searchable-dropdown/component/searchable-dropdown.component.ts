@@ -42,6 +42,7 @@ export class SearchableDropdownComponent extends BaseComponent
     implements ControlValueAccessor, OnChanges, OnInit {
     @Input() data: string[];
     @Input() labelPropertyName;
+    @Input() valuePropertyName;
     @Input() pageLinkSize = 3;
     @Input() rows: number;
     @Input() totalRecords: number;
@@ -129,7 +130,7 @@ export class SearchableDropdownComponent extends BaseComponent
         if (this.value !== item) {
             this.value = item;
             this.valueString = item[this.labelPropertyName];
-            this.propagateChange(item);
+            this.propagateChange(![this.valuePropertyName] ? item : item[this.valuePropertyName]);
             this.change.emit(Object.assign({}, this.value));
         }
 

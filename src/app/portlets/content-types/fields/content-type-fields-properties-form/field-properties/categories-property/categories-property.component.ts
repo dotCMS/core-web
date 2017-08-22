@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { FieldProperty } from '../field-properties.interface';
@@ -14,7 +14,7 @@ import { FormGroup } from '@angular/forms';
     selector: 'categories-property',
     templateUrl: './categories-property.component.html',
 })
-export class CategoriesPropertyComponent extends BaseComponent {
+export class CategoriesPropertyComponent extends BaseComponent implements OnInit {
     categoriesCurrentPage: Category[];
     property: FieldProperty;
     group: FormGroup;

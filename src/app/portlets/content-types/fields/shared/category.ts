@@ -3,4 +3,5 @@ export interface Category {
     description: string;
     key: string;
     sortOrder: number;
+    inode: string;
 }
