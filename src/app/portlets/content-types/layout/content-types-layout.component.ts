@@ -6,7 +6,7 @@ import { DragulaService } from 'ng2-dragula';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'content-type-layout',
-    styles: [require('./content-types-layout.component.scss')],
+    styleUrls: ['./content-types-layout.component.scss'],
     templateUrl: 'content-types-layout.component.html'
 })
 
@@ -15,7 +15,9 @@ export class ContentTypesLayoutComponent extends BaseComponent {
 
     constructor(messageService: MessageService) {
         super([
+            'contenttypes.sidebar.components.title',
             'fields',
+            'contenttypes.sidebar.layouts.title',
             'Permissions',
             'publisher_push_history',
         ], messageService);
