@@ -80,11 +80,15 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
      * @memberof ContentTypeFieldsPropertiesFormComponent
      */
     saveFieldProperties(): void {
-        // this.submitted = true;
-        // if (this.form.valid) {
-        //     this.saveField.emit(this.form.value);
-        // }
-        console.log(this.form.value);
+        console.log(this.form.value, this.form.valid);
+
+        this.submitted = true;
+
+        if (this.form.valid) {
+             this.saveField.emit(this.form.value);
+        } else {
+            this.fieldProperties.forEach(property => this.form.get(property).markAsTouched());
+        }
     }
 
     public destroy(): void {
@@ -109,7 +113,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 }
             }
         }
-
+        console.log('formFields', formFields);
         this.form = this.fb.group(formFields);
     }
 }

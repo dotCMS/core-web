@@ -79,16 +79,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     saveFieldsHandler(fieldToSave: Field): void {
         const fields = this.getFields();
+        console.log('saveFieldsHandler', fields);
         // Needs a better implementation
         fields.map(field => {
+            console.log('saveFieldsHandler', field, this.isNewField(field));
             if (this.isNewField(field)) {
                 field = Object.assign(field, fieldToSave);
             } else if (field.id === this.formData.id) {
-                field = Object.assign(field, fieldToSave);
+                field = field;
             }
             return field;
         });
-
+        console.log('emit saveFields');
         this.saveFields.emit(fields);
         this.toggleDialog();
     }
@@ -185,13 +187,22 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
+        console.log('fields', fields);
         const result: Field[][] = [];
         let currentFields: Field[];
+
         fields.forEach(field => {
             if (field.clazz === LINE_DIVIDER.clazz) {
                 currentFields = [];
                 result.push(currentFields);
             }
+
+            // TODO: this code is for avoid error in edit mode, but I dont know if this it's the bets fix
+            if (!currentFields) {
+                currentFields = [];
+                result.push(currentFields);
+            }
+
             currentFields.push(field);
         });
 

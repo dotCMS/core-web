@@ -29,9 +29,10 @@ export class FieldService {
      * @memberof FieldService
      */
     saveFields(contentTypeId: string, fields: Field[]): Observable<any> {
+        console.log('fields', fields);
 
-        let observables: Observable<any>[] = fields.map((field, index) => {
-            let fieldToSend = Object.assign({}, field, {
+        const observables: Observable<any>[] = fields.map((field, index) => {
+            const fieldToSend = Object.assign({}, field, {
                 'contentTypeId': contentTypeId,
                 'sortOrder': index + 1
             });
@@ -40,6 +41,9 @@ export class FieldService {
                 fieldToSend.name = `fields-${index}`;
             }
 
+            if (fieldToSend['dataType'] === '') {
+                delete fieldToSend['dataType'];
+            }
             console.log('field to send: ', fieldToSend);
 
             if (!fieldToSend.id) {
@@ -55,6 +59,7 @@ export class FieldService {
                     url: `v1/contenttype/${contentTypeId}/fields/id/${fieldToSend.id}`
                 }).pluck('entity');
             }
+            return Observable.of(fieldToSend);
         });
 
         return Observable.forkJoin(observables);

@@ -59,8 +59,8 @@ export class FieldRow {
         }
 
         const fieldsSplitByTabDivider: Field[][] = this.splitFieldsByTabDiveder(fields.splice(offset));
-        fieldsSplitByTabDivider.forEach(fields =>  {
-            this.columns.push(new FieldColumn(fields));
+        fieldsSplitByTabDivider.forEach(tabDividerFields =>  {
+            this.columns.push(new FieldColumn(tabDividerFields));
         });
     }
 
@@ -73,8 +73,16 @@ export class FieldRow {
                 currentFields = [];
                 result.push(currentFields);
             }
+
+            // TODO: this code is for avoid error in edit mode, but I dont know if this it's the bets fix
+            if (!currentFields) {
+                currentFields = [];
+                result.push(currentFields);
+            }
+
             currentFields.push(field);
         });
+
         return result;
     }
 }
