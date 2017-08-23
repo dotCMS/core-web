@@ -5,7 +5,7 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'required-property',
+    selector: 'checkbox-property',
     templateUrl: './checkbox-property.component.html',
 })
 export class CheckboxPropertyComponent extends BaseComponent {
@@ -31,9 +31,6 @@ export class CheckboxPropertyComponent extends BaseComponent {
             ],
             messageService
         );
-    }
-
-    ngOnInit(): void {
     }
 
     setCheckboxLabel(field): string {

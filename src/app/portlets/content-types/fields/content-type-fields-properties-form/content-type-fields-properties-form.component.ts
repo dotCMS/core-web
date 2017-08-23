@@ -1,4 +1,17 @@
-import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  ComponentRef,
+  OnChanges,
+  OnInit,
+  ViewEncapsulation
+} from "@angular/core";
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from '../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
@@ -8,7 +21,9 @@ import { FieldPropertyService } from '../service/';
 
 @Component({
     selector: 'content-type-fields-properties-form',
-    templateUrl: './content-type-fields-properties-form.component.html'
+    styleUrls: ['./content-type-fields-properties-form.component.scss'],
+    templateUrl: './content-type-fields-properties-form.component.html',
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent implements OnChanges, OnInit {
@@ -20,6 +35,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     form: FormGroup;
     submitted = false;
     fieldProperties: string[] = [];
+    checkboxFields: string[] = ['indexed', 'listed', 'required', 'searchable', 'unique'];
 
     constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
         public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {

@@ -8,12 +8,12 @@ import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-inf
 
 @Component({
     selector: 'dataType-property',
-    templateUrl: './data-type.component.html',
+    templateUrl: './data-type-property.component.html',
 })
 export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     property: FieldProperty;
     group: FormGroup;
-    radioInputs: object = {};
+    radioInputs: object;
 
     constructor(public messageService: MessageService) {
         super(
@@ -34,5 +34,15 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.radioInputs = DATA_TYPE_PROPERTY_INFO[this.property.field.clazz];
+    }
+
+    isEmpty(obj) {
+        for (let prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                return false;
+            }
+        }
+
+        return JSON.stringify(obj) === JSON.stringify({});
     }
 }

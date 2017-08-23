@@ -1,4 +1,4 @@
-<div class="form__group" [formGroup]="group">
+<div [formGroup]="group">
     <label class="form__label">{{i18nMessages['categories']}}</label>
     <searchable-dropdown #searchableDropdown (filterChange)="handleFilterChange($event)" (pageChange)="handlePageChange($event)"
         [data]="categoriesCurrentPage" [pageLinkSize]="paginationService.maxLinksPage" [rows]="paginationService.paginationPerPage"
