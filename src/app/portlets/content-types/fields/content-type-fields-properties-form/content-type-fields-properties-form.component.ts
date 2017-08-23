@@ -126,9 +126,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                         disabled: this.formFieldData.id && this.fieldPropertyService.isDisabledInEditMode(property)
                     }, this.fieldPropertyService.getValidations(property)];
                 });
+
+            formFields['clazz'] = this.formFieldData.clazz;
         }
 
-        formFields['clazz'] = this.formFieldData.clazz;
         console.log('formFields', formFields);
         this.form = this.fb.group(formFields);
     }
