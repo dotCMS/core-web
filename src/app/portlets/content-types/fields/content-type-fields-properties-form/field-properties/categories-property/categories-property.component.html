@@ -5,4 +5,9 @@
         [totalRecords]="paginationService.totalRecords" placeholder="{{i18nMessages['Select']}}" [formControlName]="property.name"
         labelPropertyName="categoryName" valuePropertyName="inode">
     </searchable-dropdown>
+
+    <field-validation-message 
+        message="Category is required" 
+        [field]="group.controls[property.name]">
+    </field-validation-message>
 </div>

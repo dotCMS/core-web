@@ -35,6 +35,8 @@ export class ContentTypesFieldsListComponent implements  OnInit {
 
                 return field;
             }));
+
+            this.fieldDragDropService.setFieldBagOptions();
     }
 
 

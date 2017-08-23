@@ -4,4 +4,9 @@
         pInputText 
         type="text" 
         [formControlName]="property.name">
+
+    <field-validation-message 
+        message="error" 
+        [field]="group.controls[property.name]">
+    </field-validation-message>
 </div>

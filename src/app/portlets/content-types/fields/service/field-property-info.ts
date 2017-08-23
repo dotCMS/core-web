@@ -8,13 +8,15 @@ import {
     RegexCheckPropertyComponent,
     ValuesPropertyComponent
 } from '../content-type-fields-properties-form/field-properties';
+import { Validators } from '@angular/forms';
+import { validateDateDefaultValue } from './validators';
 
 export const PROPERTY_INFO = {
     categories: {
         component: CategoriesPropertyComponent,
         defaultValue: '',
         order: 2,
-        required: true
+        validations: [Validators.required]
     },
     dataType: {
         component: DataTypePropertyComponent,
@@ -25,7 +27,8 @@ export const PROPERTY_INFO = {
     defaultValue: {
         component: DefaultValuePropertyComponent,
         defaultValue: '',
-        order: 4
+        order: 4,
+        validations: [validateDateDefaultValue],
     },
     hint: {
         component: HintPropertyComponent,
@@ -46,7 +49,7 @@ export const PROPERTY_INFO = {
         component: NamePropertyComponent,
         defaultValue: '',
         order: 0,
-        required: true,
+        validations: [Validators.required],
         disabledInEdit: true
     },
     regexCheck: {
@@ -73,6 +76,6 @@ export const PROPERTY_INFO = {
         component: ValuesPropertyComponent,
         defaultValue: '',
         order: 3,
-        required: true
+        validations: [Validators.required]
     }
 };

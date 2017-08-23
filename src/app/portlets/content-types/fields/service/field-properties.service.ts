@@ -6,6 +6,7 @@ import { FieldService } from './index';
 import { FieldType } from '../index';
 import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
+import { ValidationErrors } from "@angular/forms/forms";
 
 /**
  * Provide method to handle with the Field Types's properties
@@ -42,8 +43,8 @@ export class FieldPropertyService {
         return PROPERTY_INFO[propertyName].order;
     }
 
-    isRequired(propertyName: string): boolean {
-        return PROPERTY_INFO[propertyName].required;
+    getValidations(propertyName: string): ValidationErrors[] {
+        return PROPERTY_INFO[propertyName].validations || [];
     }
 
     isDisabledInEditMode(propertyName: string): boolean {

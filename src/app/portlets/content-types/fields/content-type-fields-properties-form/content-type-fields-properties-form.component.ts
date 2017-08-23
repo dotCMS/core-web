@@ -11,7 +11,7 @@ import {
   OnChanges,
   OnInit,
   ViewEncapsulation
-} from "@angular/core";
+} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from '../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
@@ -71,6 +71,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
+            console.log('this.formFieldData', this.formFieldData);
             const properties = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
             this.initFormGroup(properties);
 
@@ -118,17 +119,16 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         if (properties) {
             properties.filter(property => this.fieldPropertyService.existsInfo(property))
                 .forEach(property => {
-                    const validations = this.fieldPropertyService.isRequired(property) ? Validators.required : [];
-
                     console.log('validations', property, this.fieldPropertyService.isDisabledInEditMode(property));
                     formFields[property] = [{
                         value: this.formFieldData[property] ||
                                 this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
                         disabled: this.formFieldData.id && this.fieldPropertyService.isDisabledInEditMode(property)
-                    }, validations];
+                    }, this.fieldPropertyService.getValidations(property)];
                 });
         }
 
+        formFields['clazz'] = this.formFieldData.clazz;
         console.log('formFields', formFields);
         this.form = this.fb.group(formFields);
     }
