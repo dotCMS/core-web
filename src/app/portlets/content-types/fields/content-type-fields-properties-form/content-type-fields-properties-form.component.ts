@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, OnChanges, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FieldPropertyService } from '../service';
 import { MessageService } from '../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Field } from '../shared';
+import { FieldPropertyService } from '../service/';
 
 
 @Component({
@@ -55,16 +55,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
-            this.initFormGroup();
+            const properties = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
+            this.initFormGroup(properties);
 
-            // tslint:disable-next-line:forin
-            for (const property in this.formFieldData) {
-                if (this.fieldPropertyService.existsInfo(property)) {
-                    this.fieldProperties.push(property);
-                }
-            }
-
-            this.fieldProperties.sort((pa, pb) =>
+            this.fieldProperties = properties.sort((pa, pb) =>
                 this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
         }
     }
@@ -101,18 +95,24 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         });
     }
 
-    private initFormGroup(): void {
+    private initFormGroup(properties?: string[]): void {
         // console.log('form field data: ', this.formFieldData);
         const formFields = {};
 
-        if (this.formFieldData) {
-            for (const property in this.formFieldData) {
-                if (this.fieldPropertyService.existsInfo(property)) {
-                    const validations = this.fieldPropertyService.isRequired(property) ? [Validators.required] : [];
-                    formFields[property] = [this.formFieldData[property], validations];
-                }
-            }
+        if (properties) {
+            properties.filter(property => this.fieldPropertyService.existsInfo(property))
+                .forEach(property => {
+                    const validations = this.fieldPropertyService.isRequired(property) ? Validators.required : [];
+
+                    console.log('validations', property, this.fieldPropertyService.isDisabledInEditMode(property));
+                    formFields[property] = [{
+                        value: this.formFieldData[property] ||
+                                this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
+                        disabled: this.formFieldData.id && this.fieldPropertyService.isDisabledInEditMode(property)
+                    }, validations];
+                });
         }
+
         console.log('formFields', formFields);
         this.form = this.fb.group(formFields);
     }

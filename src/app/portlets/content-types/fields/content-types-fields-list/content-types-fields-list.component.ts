@@ -33,11 +33,6 @@ export class ContentTypesFieldsListComponent implements  OnInit {
                     name: fieldType.label
                 };
 
-                fieldType.properties.forEach(property => {
-                    if (this.fieldPropertyService.existsInfo(property) && !field[property]) {
-                        field[property] = this.fieldPropertyService.getDefaultValue(property);
-                    }
-                });
                 return field;
             }));
     }

@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { FieldProperty } from '../field-properties.interface';
+import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-info';
 
 @Component({
     selector: 'dataType-property',
@@ -13,54 +14,6 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     property: FieldProperty;
     group: FormGroup;
     radioInputs: object = {};
-
-    private propertyRadioList = {
-        // Radio inputs: binary, text, date, longText, bool, float, integer
-        'com.dotcms.contenttype.model.field.ImmutableRadioField': [{
-            text: 'Text',
-            value: 'TEXT'
-        },
-        {
-            text: 'True-False',
-            value: 'BOOL'
-        },
-        {
-            text: 'Decimal',
-            value: 'FLOAT'
-        },
-        {
-            text: 'Whole-Number',
-            value: 'INTEGER'
-        }],
-        'com.dotcms.contenttype.model.field.ImmutableSelectField': [{
-            text: 'Text',
-            value: 'TEXT'
-        },
-        {
-            text: 'True-False',
-            value: 'BOOL'
-        },
-        {
-            text: 'Decimal',
-            value: 'FLOAT'
-        },
-        {
-            text: 'Whole-Number',
-            value: 'INTEGER'
-        }],
-        'com.dotcms.contenttype.model.field.ImmutableTextField': [{
-            text: 'Text',
-            value: 'TEXT'
-        },
-        {
-            text: 'Decimal',
-            value: 'FLOAT'
-        },
-        {
-            text: 'Whole-Number',
-            value: 'INTEGER'
-        }],
-    };
 
     constructor(public messageService: MessageService) {
         super(
@@ -80,6 +33,6 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.radioInputs = this.propertyRadioList[this.property.field.clazz];
+        this.radioInputs = DATA_TYPE_PROPERTY_INFO[this.property.field.clazz];
     }
 }

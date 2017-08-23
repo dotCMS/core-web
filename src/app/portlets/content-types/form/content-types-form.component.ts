@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { Component, ViewChild, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter, Renderer2, OnInit, OnChanges } from '@angular/core';
 import { DotcmsConfig } from '../../../api/services/system/dotcms-config';
 import { MessageService } from '../../../api/services/messages-service';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -41,7 +41,7 @@ import { SiteSelectorComponent } from '../../../view/components/_common/site-sel
     styleUrls: ['./content-types-form.component.scss'],
     templateUrl: 'content-types-form.component.html'
 })
-export class ContentTypesFormComponent extends BaseComponent {
+export class ContentTypesFormComponent extends BaseComponent implements OnInit, OnChanges {
     @Input() data: any;
     @Input() icon: string;
     @Input() name: string;
@@ -117,6 +117,7 @@ export class ContentTypesFormComponent extends BaseComponent {
     }
 
     ngOnChanges(changes): void {
+        console.log('ngOnChanges form ', changes);
         const isFirstChange =
             (changes.data && changes.data.firstChange) ||
             (changes.name && changes.name.firstChange) ||
@@ -128,8 +129,11 @@ export class ContentTypesFormComponent extends BaseComponent {
         }
 
         if (changes.data && changes.data.currentValue) {
+            console.log('POPULATE FORM');
             this.populateForm();
+            console.log('populateForm');
             this.addEditModeSpecificFields();
+            console.log('addEditModeSpecificFields');
         }
 
         if (changes.type && changes.type.currentValue === 'content') {
@@ -206,6 +210,8 @@ export class ContentTypesFormComponent extends BaseComponent {
             value: this.data.expireDateVar || null
         });
 
+        console.log('expireDateVar', expireDateVar);
+        console.log('publishDateVar', publishDateVar);
         this.form.addControl('publishDateVar', publishDateVar);
         this.form.addControl('expireDateVar', expireDateVar);
     }

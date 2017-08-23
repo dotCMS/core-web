@@ -83,10 +83,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         // Needs a better implementation
         fields.map(field => {
             console.log('saveFieldsHandler', field, this.isNewField(field));
-            if (this.isNewField(field)) {
+            if (this.isNewField(field) || (field.id && field.id === this.formData.id)) {
                 field = Object.assign(field, fieldToSave);
-            } else if (field.id === this.formData.id) {
-                field = field;
             }
             return field;
         });

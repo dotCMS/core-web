@@ -71,7 +71,7 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
                     this.contentTypeType = type;
                     this.contentTypeIcon = this.contentTypesInfoService.getIcon(contentType.clazz);
                     this.data = contentType;
-                    return res;
+                    return contentType;
                 });
         });
     }

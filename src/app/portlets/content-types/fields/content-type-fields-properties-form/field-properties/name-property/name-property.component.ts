@@ -11,7 +11,6 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 
 export class NamePropertyComponent extends BaseComponent {
     property: FieldProperty;
-
     group: FormGroup;
 
     constructor(public messageService: MessageService) {
@@ -21,8 +20,5 @@ export class NamePropertyComponent extends BaseComponent {
             ],
             messageService
         );
-    }
-
-    ngOnInit(): void {
     }
 }
