@@ -31,6 +31,7 @@ export class FieldDragDropService {
         const fieldBagOpts = this.dragulaService.find(FieldDragDropService.FIELD_BAG_NAME);
 
         if (!fieldBagOpts) {
+            console.log('set field bag', fieldBagOpts);
             this.dragulaService.setOptions(FieldDragDropService.FIELD_BAG_NAME, {
                 copy: this.shouldCopy
             });
