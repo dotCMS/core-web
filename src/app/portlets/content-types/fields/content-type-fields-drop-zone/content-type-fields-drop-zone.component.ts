@@ -52,10 +52,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     ngOnInit(): void {
         this.fieldDragDropService.fieldDrop$.subscribe((data) => {
             const dragType = data[0];
+            const source = data[3].dataset.dragType;
 
-            if (dragType === 'fields-bag') {
+            if (dragType === 'fields-bag' && source === 'source') {
                 this.setDroppedField();
                 this.toggleDialog();
+            } else if (source === 'target') {
+                this.saveFieldOnMove();
             }
         });
     }
@@ -79,18 +82,20 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     saveFieldsHandler(fieldToSave: Field): void {
         const fields = this.getFields();
-        console.log('saveFieldsHandler', fields);
         // Needs a better implementation
         fields.map(field => {
-            console.log('saveFieldsHandler', field, this.isNewField(field));
             if (this.isNewField(field) || (field.id && field.id === this.formData.id)) {
                 field = Object.assign(field, fieldToSave);
             }
             return field;
         });
-        console.log('emit saveFields');
         this.saveFields.emit(fields);
         this.toggleDialog();
+    }
+
+    saveFieldOnMove(): void {
+        const fields = this.getFields();
+        this.saveFields.emit(fields);
     }
 
     /**
@@ -121,7 +126,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         fields.forEach(field => {
             if (this.isNewField(field)) {
                 this.formData = field;
-                console.log('set drop field: ', field);
             }
         });
     }
@@ -185,7 +189,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
-        console.log('fields', fields);
         const result: Field[][] = [];
         let currentFields: Field[];
 

@@ -21,8 +21,8 @@ const angularComponents: any[] = [
     {
         id: 'content-types-angular',
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
-    },
-    /*{
+    }/*,
+    {
         component: RuleEngineContainer,
         id: 'rules'
     },

@@ -27,7 +27,7 @@ export class ContentTypesFieldsListComponent implements  OnInit {
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
             .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
-                console.log('fieldType: ', fieldType);
+                // console.log('fieldType: ', fieldType);
                 const field = {
                     clazz: fieldType.clazz,
                     name: fieldType.label
@@ -36,9 +36,8 @@ export class ContentTypesFieldsListComponent implements  OnInit {
                 return field;
             }));
 
-            this.fieldDragDropService.setFieldBagOptions();
-    }
-
+        this.fieldDragDropService.setFieldBagOptions();
+   }
 
     getIcon(id: string): string {
         return FIELD_ICONS[id];
