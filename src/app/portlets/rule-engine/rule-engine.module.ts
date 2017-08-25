@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
+
 import { AddToBundleDialogComponent } from './push-publish/add-to-bundle-dialog-component';
 import { AddToBundleDialogContainer } from './push-publish/add-to-bundle-dialog-container';
 import { AreaPickerDialogComponent } from './google-map/area-picker-dialog.component';
@@ -21,19 +24,30 @@ import { ServersideCondition } from './condition-types/serverside-condition/serv
 import { VisitorsLocationComponent } from './custom-types/visitors-location/visitors-location.component';
 import { VisitorsLocationContainer } from './custom-types/visitors-location/visitors-location.container';
 
-import { RuleService } from './services/Rule';
-import { I18nService } from '../../api/system/locale/I18n';
-import { GoogleMapService } from '../../api/maps/GoogleMapService';
-import { ConditionService } from './services/Condition';
-import { ConditionGroupService } from './services/ConditionGroup';
 import { ActionService } from './services/Action';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConditionGroupService } from './services/ConditionGroup';
+import { ConditionService } from './services/Condition';
+import { GoogleMapService } from '../../api/maps/GoogleMapService';
+import { I18nService } from '../../api/system/locale/I18n';
+import { RuleService } from './services/Rule';
 
 declare var jQuery: any;
 declare var $: any;
 
+const routes: Routes = [
+    {
+        component: RuleEngineContainer,
+        path: ''
+    }
+];
+
 @NgModule({
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(routes)
+    ],
     declarations: [
         AddToBundleDialogComponent,
         AddToBundleDialogContainer,
@@ -63,8 +77,8 @@ declare var $: any;
         GoogleMapService,
         ConditionService,
         ConditionGroupService,
-        ActionService,
-    ]
+        ActionService
+    ],
+    exports: [RuleEngineContainer]
 })
-
 export class RuleEngineModule {}

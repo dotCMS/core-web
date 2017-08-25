@@ -23,12 +23,12 @@ const angularComponents: any[] = [
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
-        component: RuleEngineContainer,
-        id: 'rules'
+        id: 'rules',
+        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
     },
     {
-        component: DotBrowserComponent,
         id: 'dot-browser',
+        loadChildren: 'app/portlets/dot-browser/dot-browser.module#DotBrowserModule'
     },
 ];
 

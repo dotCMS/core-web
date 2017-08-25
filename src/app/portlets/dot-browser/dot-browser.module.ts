@@ -9,26 +9,35 @@ import {
   DotBreadcrumbModule, DotFileModule, DotFolderModule, DotHttpModule, DotNotificationModule, DotSettingsStorageModule,
   DotSiteBrowserModule, DotSiteDatatableModule, DotSiteSelectorModule, DotSiteTreeTableModule, DotTreeableDetailModule
 } from 'dotcms-js/dotcms-js';
+import { Routes, RouterModule } from '@angular/router';
+
+const routes: Routes = [
+    {
+        component: DotBrowserComponent,
+        path: ''
+    }
+];
 
 
 @NgModule({
     declarations: [DotBrowserComponent],
     imports: [
+        AutoCompleteModule,
         CommonModule,
         DotBreadcrumbModule,
+        DotFileModule,
+        DotFolderModule,
+        DotHttpModule,
+        DotNotificationModule,
+        DotSettingsStorageModule,
+        DotSiteBrowserModule,
         DotSiteDatatableModule,
+        DotSiteSelectorModule,
         DotSiteTreeTableModule,
         DotTreeableDetailModule,
-        DotSiteSelectorModule,
-        DotHttpModule,
-        DotSettingsStorageModule,
-        DotNotificationModule,
-        DotFileModule,
-        DotSiteBrowserModule,
-        DotFolderModule,
-        AutoCompleteModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule.forChild(routes)
     ],
     exports: [],
     providers: [
