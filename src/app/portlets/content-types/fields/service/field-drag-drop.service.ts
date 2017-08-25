@@ -31,9 +31,9 @@ export class FieldDragDropService {
         const fieldBagOpts = this.dragulaService.find(FieldDragDropService.FIELD_BAG_NAME);
 
         if (!fieldBagOpts) {
-            console.log('set field bag', fieldBagOpts);
             this.dragulaService.setOptions(FieldDragDropService.FIELD_BAG_NAME, {
-                copy: this.shouldCopy
+                copy: this.shouldCopy,
+                accepts: this.shouldAccepts
             });
         }
     }
@@ -75,5 +75,14 @@ export class FieldDragDropService {
     ): boolean {
         const isDragButton = handle.parentElement.classList.contains('row-header__drag') || handle.classList.contains('row-header__drag');
         return source.dataset.dragType === 'source' || isDragButton;
+    }
+
+    private shouldAccepts(
+        el: HTMLElement,
+        source: HTMLElement,
+        handle: HTMLElement,
+        sibling: HTMLElement
+    ): boolean {
+        return source.dataset.dragType !== 'source';
     }
 }

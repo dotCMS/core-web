@@ -3,9 +3,9 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { FieldProperty } from '../field-properties.interface';
 import { Observable } from 'rxjs/Rx';
-import { Category } from '../../../index';
 import { PaginatorService } from '../../../../../../api/services/paginator';
 import { FormGroup } from '@angular/forms';
+import { Category } from '../../../shared/category';
 
 @Component({
     providers: [

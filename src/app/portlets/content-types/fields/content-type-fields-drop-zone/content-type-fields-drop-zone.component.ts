@@ -10,9 +10,10 @@ import {
     ViewChild
 } from '@angular/core';
 import { FieldService, FieldDragDropService } from '../service';
-import { FieldRow, Field, FieldColumn, TAB_DIVIDER, LINE_DIVIDER } from '../shared';
+import { FieldRow, Field, FieldColumn } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { MessageService } from '../../../../api/services/messages-service';
+import { FieldUtil } from '../util/field-util';
 
 /**
  * Display all the Field Types
@@ -84,7 +85,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields();
         // Needs a better implementation
         fields.map(field => {
-            if (this.isNewField(field) || (field.id && field.id === this.formData.id)) {
+            if (FieldUtil.isNewField(field) || (field.id && field.id === this.formData.id)) {
                 field = Object.assign(field, fieldToSave);
             }
             return field;
@@ -124,7 +125,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields();
         // Needs a better implementation
         fields.forEach(field => {
-            if (this.isNewField(field)) {
+            if (FieldUtil.isNewField(field)) {
                 this.formData = field;
             }
         });
@@ -158,61 +159,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         this.propertiesForm.destroy();
     }
 
-    /**
-     * Verify if the Field already exist
-     * @param {Field} field
-     * @returns {Boolean}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    isNewField(field: Field): Boolean {
-        return !field.id && !(this.isRow(field) || this.isColumn(field));
-    }
-
-    /**
-     * Verify if the Field is a row
-     * @param {Field} field
-     * @returns {Boolean}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    isRow(field: Field): Boolean {
-        return field.clazz === LINE_DIVIDER.clazz ? true : false;
-    }
-
-    /**
-     * Verify if the Field is a column
-     * @param {Field} field
-     * @returns {Boolean}
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    isColumn(field: Field): Boolean {
-        return field.clazz === TAB_DIVIDER.clazz ? true : false;
-    }
-
-    private splitFieldsByLineDiveder(fields: Field[]): Field[][] {
-        const result: Field[][] = [];
-        let currentFields: Field[];
-
-        fields.forEach(field => {
-            if (field.clazz === LINE_DIVIDER.clazz) {
-                currentFields = [];
-                result.push(currentFields);
-            }
-
-            // TODO: this code is for avoid error in edit mode, but I dont know if this it's the bets fix
-            if (!currentFields) {
-                currentFields = [];
-                result.push(currentFields);
-            }
-
-            currentFields.push(field);
-        });
-
-        return result;
-    }
 
     private getRowFields(fields: Field[]): FieldRow[] {
         let fieldRows: FieldRow[] = [];
-        const splitFields: Field[][] = this.splitFieldsByLineDiveder(fields);
+        const splitFields: Field[][] = FieldUtil.splitFieldsByLineDivider(fields);
 
         fieldRows = splitFields.map(fieldsByLineDivider => {
             const fieldRow: FieldRow = new FieldRow();

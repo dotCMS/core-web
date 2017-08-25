@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Field, FieldType, FieldRow, TAB_DIVIDER, LINE_DIVIDER } from '../shared';
+import { Field, FieldType, FieldRow } from '../shared';
 import { CoreWebService } from '../../../../api/services/core-web-service';
 import { RequestMethod } from '@angular/http';
+import { FieldUtil } from '../util/field-util';
 
 /**
  * Provide method to handle with the Field Types
@@ -37,7 +38,7 @@ export class FieldService {
                 'sortOrder': index + 1
             });
 
-            if (fieldToSend.clazz === TAB_DIVIDER.clazz || fieldToSend.clazz === LINE_DIVIDER.clazz) {
+            if (FieldUtil.isColumn(fieldToSend) || FieldUtil.isRow(fieldToSend)) {
                 fieldToSend.name = `fields-${index}`;
             }
 

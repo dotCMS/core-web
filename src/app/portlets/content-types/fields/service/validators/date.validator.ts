@@ -19,7 +19,7 @@ export function validateDateDefaultValue(formControl: FormControl) {
 
     if (formControl.parent && formControl.value) {
         const clazz: string = formControl.parent.controls['clazz'].value;
-        valid = moment(formControl.value, format[clazz], true).isValid();
+        valid = format[clazz] ? moment(formControl.value, format[clazz], true).isValid() : true;
     }
 
     return valid ? null : invalidResponse;

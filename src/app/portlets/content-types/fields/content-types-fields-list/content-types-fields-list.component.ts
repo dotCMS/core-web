@@ -39,7 +39,7 @@ export class ContentTypesFieldsListComponent implements  OnInit {
         this.fieldDragDropService.setFieldBagOptions();
    }
 
-    getIcon(id: string): string {
-        return FIELD_ICONS[id];
+    getIcon(fieldClazz: string): string {
+        return FIELD_ICONS[fieldClazz];
     }
 }

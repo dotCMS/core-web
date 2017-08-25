@@ -21,7 +21,7 @@ const angularComponents: any[] = [
     {
         id: 'content-types-angular',
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
-    }/*,
+    },
     {
         component: RuleEngineContainer,
         id: 'rules'
@@ -29,7 +29,7 @@ const angularComponents: any[] = [
     {
         component: DotBrowserComponent,
         id: 'dot-browser',
-    },*/
+    },
 ];
 
 const mainComponentChildren = [
