@@ -1,0 +1,103 @@
+import { PROPERTY_INFO } from './field-property-info';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { FieldPropertyService } from './field-properties.service';
+import {
+    CategoriesPropertyComponent,
+    DataTypePropertyComponent,
+    DefaultValuePropertyComponent
+} from '../content-type-fields-properties-form/field-properties';
+import { FieldService } from './field.service';
+import { Validators } from '@angular/forms';
+import { validateDateDefaultValue } from './validators';
+import { ConnectionBackend, ResponseOptions } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
+import { FieldType } from '../';
+import { Observable } from 'rxjs/Rx';
+
+class TestFieldService {
+    loadFieldTypes(): Observable<FieldType[]> {
+        return Observable.of([
+            {
+                clazz: 'fieldClass',
+                helpText: 'help',
+                id: '1',
+                label: 'label',
+                properties: ['property1', 'property2', 'property3']
+            }
+        ]);
+    }
+}
+
+describe('FieldPropertyService', () => {
+    beforeEach(() => {
+
+        this.injector = DOTTestBed.resolveAndCreate([
+            FieldPropertyService,
+            { provide: FieldService, useClass: TestFieldService },
+        ]);
+
+        this.fieldPropertiesService = this.injector.get(FieldPropertyService);
+    });
+
+    it('existsInfo', () => {
+        expect(true).toEqual(this.fieldPropertiesService.existsInfo('categories'));
+        expect(true).toEqual(this.fieldPropertiesService.existsInfo('dataType'));
+        expect(true).toEqual(this.fieldPropertiesService.existsInfo('defaultValue'));
+
+        expect(false).toEqual(this.fieldPropertiesService.existsInfo('property'));
+    });
+
+    it('getComponent', () => {
+        expect(CategoriesPropertyComponent).toEqual(this.fieldPropertiesService.getComponent('categories'));
+        expect(DataTypePropertyComponent).toEqual(this.fieldPropertiesService.getComponent('dataType'));
+        expect(DefaultValuePropertyComponent).toEqual(this.fieldPropertiesService.getComponent('defaultValue'));
+
+        expect(this.fieldPropertiesService.getComponent('property')).toBeNull();
+    });
+
+    it('getDefaultValue', () => {
+        expect('').toEqual(this.fieldPropertiesService.getDefaultValue('categories',
+                            'com.dotcms.contenttype.model.field.ImmutableRadioField'));
+        expect('TEXT').toEqual(this.fieldPropertiesService.getDefaultValue('dataType',
+                                                    'com.dotcms.contenttype.model.field.ImmutableRadioField'));
+        expect('').toEqual(this.fieldPropertiesService.getDefaultValue('defaultValue',
+                            'com.dotcms.contenttype.model.field.ImmutableRadioField'));
+
+        expect(this.fieldPropertiesService.getDefaultValue('property')).toBeNull();
+    });
+
+    it('getOrder', () => {
+        expect(2).toEqual(this.fieldPropertiesService.getOrder('categories'));
+        expect(1).toEqual(this.fieldPropertiesService.getOrder('dataType'));
+        expect(4).toEqual(this.fieldPropertiesService.getOrder('defaultValue'));
+
+        expect(this.fieldPropertiesService.getOrder('property')).toBeNull();
+    });
+
+    it('getValidations', () => {
+        let validations = this.fieldPropertiesService.getValidations('categories');
+        expect(1).toBe(validations.length);
+        expect(Validators.required).toBe(validations[0]);
+
+        expect(0).toBe(this.fieldPropertiesService.getValidations('dataType').length);
+
+        validations = this.fieldPropertiesService.getValidations('defaultValue');
+        expect(1).toBe(validations.length);
+        expect(validateDateDefaultValue).toBe(validations[0]);
+
+        expect(0).toBe(this.fieldPropertiesService.getValidations('property').length);
+    });
+
+    it('isDisabledInEditMode', () => {
+        expect(this.fieldPropertiesService.isDisabledInEditMode('categories')).toBeUndefined();
+        expect(true).toEqual(this.fieldPropertiesService.isDisabledInEditMode('dataType'));
+        expect(this.fieldPropertiesService.isDisabledInEditMode('defaultValue')).toBeUndefined();
+
+        expect(this.fieldPropertiesService.isDisabledInEditMode('property')).toBeNull();
+    });
+
+    it('getProperties', () => {
+        expect(['property1', 'property2', 'property3']).toEqual(this.fieldPropertiesService.getProperties('fieldClass'));
+        expect(this.fieldPropertiesService.getProperties('fieldClass2')).toBeUndefined();
+    });
+});

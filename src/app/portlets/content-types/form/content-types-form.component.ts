@@ -117,7 +117,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     ngOnChanges(changes): void {
-        console.log('ngOnChanges form ', changes);
         const isFirstChange =
             (changes.data && changes.data.firstChange) ||
             (changes.name && changes.name.firstChange) ||
@@ -129,11 +128,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
 
         if (changes.data && changes.data.currentValue) {
-            console.log('POPULATE FORM');
             this.populateForm();
-            console.log('populateForm');
             this.addEditModeSpecificFields();
-            console.log('addEditModeSpecificFields');
         }
 
         if (changes.type && changes.type.currentValue === 'content') {

@@ -15,7 +15,7 @@ import { ValidationErrors } from '@angular/forms/forms';
 export class FieldPropertyService {
     private fieldTypesProperties = new Map<string, string[]>();
 
-    constructor(private coreWebService: CoreWebService, fieldService: FieldService) {
+    constructor(fieldService: FieldService) {
         fieldService.loadFieldTypes().subscribe(fieldTypes => {
             fieldTypes.forEach(fieldType => {
                 this.fieldTypesProperties.set(fieldType.clazz, fieldType.properties);
@@ -24,31 +24,31 @@ export class FieldPropertyService {
     }
 
     existsInfo(propertyName: string): boolean {
-        return PROPERTY_INFO[propertyName];
+        return PROPERTY_INFO[propertyName] ? true : false;
     }
 
     getComponent(propertyName: string): Type<any> {
-        return PROPERTY_INFO[propertyName].component;
+        return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].component : null;
     }
 
     getDefaultValue(propertyName: string, fieldTypeClass?: string): any {
         if (propertyName === 'dataType') {
             return DATA_TYPE_PROPERTY_INFO[fieldTypeClass][0].value;
         } else {
-            return PROPERTY_INFO[propertyName].defaultValue;
+            return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].defaultValue : null;
         }
     }
 
     getOrder(propertyName: string): any {
-        return PROPERTY_INFO[propertyName].order;
+        return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].order : null;
     }
 
     getValidations(propertyName: string): ValidationErrors[] {
-        return PROPERTY_INFO[propertyName].validations || [];
+        return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].validations || [] : [];
     }
 
     isDisabledInEditMode(propertyName: string): boolean {
-        return PROPERTY_INFO[propertyName].disabledInEdit;
+        return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].disabledInEdit : null;
     }
 
     getProperties(fieldTypeClass: string): string[] {

@@ -7,6 +7,14 @@ import { PaginatorService } from '../../../../../../api/services/paginator';
 import { FormGroup } from '@angular/forms';
 import { Category } from '../../../shared/category';
 
+/**
+ * List all the categories and allow select one.
+ * 
+ * @export
+ * @class CategoriesPropertyComponent
+ * @extends {BaseComponent}
+ * @implements {OnInit}
+ */
 @Component({
     providers: [
         PaginatorService,
@@ -33,7 +41,7 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
      * @param {number} [page=1]
      * @memberof SiteSelectorComponent
      */
-    getCategoriesList(filter = '', offset = 0): void {
+    private getCategoriesList(filter = '', offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe(items => {
             // items.splice(0) is used to return a new object and trigger the change detection in angular

@@ -106,14 +106,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     editField(fieldToEdit: Field): void {
         const fields = this.getFields();
-        // Needs a better implementation
-
-        fields.forEach((field) => {
-            if (fieldToEdit.id === field.id) {
-                this.formData = fieldToEdit;
-            }
-        });
-
+        this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
         this.toggleDialog();
     }
 
@@ -123,12 +116,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     setDroppedField(): void {
         const fields = this.getFields();
-        // Needs a better implementation
-        fields.forEach(field => {
-            if (FieldUtil.isNewField(field)) {
-                this.formData = field;
-            }
-        });
+        this.formData = fields.filter(field => FieldUtil.isNewField(field))[0];
     }
 
     /**

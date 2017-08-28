@@ -8,7 +8,15 @@ const format = {
     'com.dotcms.contenttype.model.field.ImmutableTimeField': 'HH:mm:ss'
 };
 
+/**
+ * Validate defaultValue for date field, date_time Field and time field
+ *
+ * @export
+ * @param {FormControl} formControl
+ * @returns
+ */
 export function validateDateDefaultValue(formControl: FormControl) {
+    console.log('formControl', formControl);
     const invalidResponse = {
             validateDate: {
             valid: false

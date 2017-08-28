@@ -63,7 +63,6 @@ export class FieldDragDropService {
         handle: HTMLElement,
         sibling: HTMLElement
     ): boolean {
-        console.log('should copy', source.dataset.dragType === 'source');
         return source.dataset.dragType === 'source';
     }
 

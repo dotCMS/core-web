@@ -37,7 +37,7 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     }
 
     isEmpty(obj) {
-        for (let prop in obj) {
+        for (const prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 return false;
             }

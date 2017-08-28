@@ -33,7 +33,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     @ViewChild('properties') propertiesContainer;
 
     form: FormGroup;
-    submitted = false;
     fieldProperties: string[] = [];
     checkboxFields: string[] = ['indexed', 'listed', 'required', 'searchable', 'unique'];
 
@@ -71,12 +70,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
-            console.log('this.formFieldData', this.formFieldData);
             const properties = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
             this.initFormGroup(properties);
 
-            this.fieldProperties = properties.sort((pa, pb) =>
-                this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
+            this.fieldProperties = properties.filter(property => this.fieldPropertyService.existsInfo(property))
+                .sort((pa, pb) => this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
         }
     }
 
@@ -91,10 +89,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
      * @memberof ContentTypeFieldsPropertiesFormComponent
      */
     saveFieldProperties(): void {
-        console.log(this.form.value, this.form.valid);
-
-        this.submitted = true;
-
         if (this.form.valid) {
              this.saveField.emit(this.form.value);
         } else {
@@ -113,13 +107,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private initFormGroup(properties?: string[]): void {
-        // console.log('form field data: ', this.formFieldData);
         const formFields = {};
 
         if (properties) {
             properties.filter(property => this.fieldPropertyService.existsInfo(property))
                 .forEach(property => {
-                    console.log('validations', property, this.fieldPropertyService.isDisabledInEditMode(property));
                     formFields[property] = [{
                         value: this.formFieldData[property] ||
                                 this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
@@ -129,8 +121,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
             formFields['clazz'] = this.formFieldData.clazz;
         }
-
-        console.log('formFields', formFields);
         this.form = this.fb.group(formFields);
     }
 }
