@@ -4,10 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DotBrowserComponent } from './dot-browser-component';
 
-import {AutoCompleteModule} from 'primeng/primeng';
+import { AutoCompleteModule } from 'primeng/primeng';
 import {
-  DotBreadcrumbModule, DotFileModule, DotFolderModule, DotHttpModule, DotNotificationModule, DotSettingsStorageModule,
-  DotSiteBrowserModule, DotSiteDatatableModule, DotSiteSelectorModule, DotSiteTreeTableModule, DotTreeableDetailModule
+    DotBreadcrumbModule,
+    DotFileModule,
+    DotFolderModule,
+    DotHttpModule,
+    DotNotificationModule,
+    DotSettingsStorageModule,
+    DotSiteBrowserModule,
+    DotSiteDatatableModule,
+    DotSiteSelectorModule,
+    DotSiteTreeTableModule,
+    DotTreeableDetailModule
 } from 'dotcms-js/dotcms-js';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -17,7 +26,6 @@ const routes: Routes = [
         path: ''
     }
 ];
-
 
 @NgModule({
     declarations: [DotBrowserComponent],
@@ -40,8 +48,6 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     exports: [],
-    providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy }
-    ]
+    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
 })
 export class DotBrowserModule {}
