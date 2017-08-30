@@ -91,6 +91,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private updateCurrentField(fieldToSave: Field, fields: Field[]): void {
+        console.log('fieldToSave', fieldToSave);
         let field: Field = this.formData && this.formData.id ? this.getUpdatedField(this.formData.id, fields)
                                 : this.getNewField(fields);
 
@@ -100,7 +101,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getUpdatedField(fieldId: string, fields: Field[]): Field {
         let result: Field;
 
-        for (let i = 0; i < this.fields.length; i++) {
+        for (let i = 0; i < fields.length; i++) {
             const field = this.fields[i];
 
             if (fieldId === this.fields[i].id) {
@@ -113,16 +114,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private getNewField(fields: Field[]): Field {
-
+        console.log('getNewField', fields);
+        console.log('getNewField', fields.length);
         let result: Field;
 
-        for (let i = 0; i < this.fields.length; i++) {
+        for (let i = 0; i < fields.length; i++) {
+            console.log('FieldUtil.isNewField(fields[i])', FieldUtil.isNewField(fields[i]));
            if (FieldUtil.isNewField(fields[i])) {
                 result = fields[i];
                 break;
             }
         }
-
+        console.log('result', result);
         return result;
     }
 

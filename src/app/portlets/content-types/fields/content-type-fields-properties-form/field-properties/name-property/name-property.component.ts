@@ -16,7 +16,8 @@ export class NamePropertyComponent extends BaseComponent {
     constructor(public messageService: MessageService) {
         super(
             [
-                'contenttypes.field.properties.name.label'
+                'contenttypes.field.properties.name.label',
+                'contenttypes.field.properties.name.error.required'
             ],
             messageService
         );

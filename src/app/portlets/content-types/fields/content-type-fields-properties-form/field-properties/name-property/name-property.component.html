@@ -6,7 +6,7 @@
         [disabled]="true"
         [formControlName]="property.name">
     <field-validation-message 
-        message="{{i18nMessages['contenttypes.field.properties.name.error.required']}}" 
+        [message]="i18nMessages['contenttypes.field.properties.name.error.required']" 
         [field]="group.controls[property.name]">
     </field-validation-message>
 </div>
