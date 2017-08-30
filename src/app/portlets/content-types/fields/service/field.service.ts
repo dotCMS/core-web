@@ -30,8 +30,6 @@ export class FieldService {
      * @memberof FieldService
      */
     saveFields(contentTypeId: string, fields: Field[]): Observable<any> {
-        console.log('fields', fields);
-
         const observables: Observable<any>[] = fields.map((field, index) => {
             const fieldToSend = Object.assign({}, field, {
                 'contentTypeId': contentTypeId,
@@ -45,7 +43,6 @@ export class FieldService {
             if (fieldToSend['dataType'] === '') {
                 delete fieldToSend['dataType'];
             }
-            console.log('field to send: ', fieldToSend);
 
             if (!fieldToSend.id) {
                 return this.coreWebService.requestView({

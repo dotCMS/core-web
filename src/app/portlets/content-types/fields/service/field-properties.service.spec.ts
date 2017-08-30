@@ -39,12 +39,12 @@ describe('FieldPropertyService', () => {
         this.fieldPropertiesService = this.injector.get(FieldPropertyService);
     });
 
-    it('existsInfo', () => {
-        expect(true).toEqual(this.fieldPropertiesService.existsInfo('categories'));
-        expect(true).toEqual(this.fieldPropertiesService.existsInfo('dataType'));
-        expect(true).toEqual(this.fieldPropertiesService.existsInfo('defaultValue'));
+    it('existsComponent', () => {
+        expect(true).toEqual(this.fieldPropertiesService.existsComponent('categories'));
+        expect(true).toEqual(this.fieldPropertiesService.existsComponent('dataType'));
+        expect(true).toEqual(this.fieldPropertiesService.existsComponent('defaultValue'));
 
-        expect(false).toEqual(this.fieldPropertiesService.existsInfo('property'));
+        expect(false).toEqual(this.fieldPropertiesService.existsComponent('property'));
     });
 
     it('getComponent', () => {

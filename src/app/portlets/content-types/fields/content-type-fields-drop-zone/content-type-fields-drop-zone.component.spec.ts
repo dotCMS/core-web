@@ -165,17 +165,28 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             });
         }));
 
-        it('should has FieldRow and FieldColumn', () => {
+        it('should has fieldsContainer', () => {
 
             fixture.detectChanges();
 
             const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
 
             expect(fieldsContainer).not.toBeNull();
-
             expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
             expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
+        });
 
+        it('should has the right dragula attributes', () => {
+            fixture.detectChanges();
+            const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
+            expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
+            expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
+        });
+
+        it('should has FieldRow and FieldColumn', () => {
+            fixture.detectChanges();
+
+            const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
             const fieldRows = fieldsContainer.queryAll(By.css('content-type-fields-row'));
             expect(2).toEqual(fieldRows.length);
 

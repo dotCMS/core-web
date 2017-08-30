@@ -51,16 +51,14 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     ngOnInit(): void {
-        this.fieldDragDropService.fieldDrop$.subscribe((data) => {
-            const dragType = data[0];
-            const source = data[3].dataset.dragType;
+        this.fieldDragDropService.fieldDropFromSource$.subscribe(() => {
+            this.setDroppedField();
+            this.toggleDialog();
+        });
 
-            if (dragType === 'fields-bag' && source === 'source') {
-                this.setDroppedField();
-                this.toggleDialog();
-            } else if (source === 'target') {
-                this.saveFieldOnMove();
-            }
+        this.fieldDragDropService.fieldDropFromTarget$.subscribe(() => {
+            const fields = this.getFields();
+            this.emitSaveFields(fields);
         });
     }
 
@@ -83,20 +81,49 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     saveFieldsHandler(fieldToSave: Field): void {
         const fields = this.getFields();
-        // Needs a better implementation
-        fields.map(field => {
-            if (FieldUtil.isNewField(field) || (field.id && field.id === this.formData.id)) {
-                field = Object.assign(field, fieldToSave);
-            }
-            return field;
-        });
-        this.saveFields.emit(fields);
+        this.updateCurrentField(fieldToSave, fields);
+        this.emitSaveFields(fields);
         this.toggleDialog();
     }
 
-    saveFieldOnMove(): void {
-        const fields = this.getFields();
+    private emitSaveFields(fields: Field[]): void {
         this.saveFields.emit(fields);
+    }
+
+    private updateCurrentField(fieldToSave: Field, fields: Field[]): void {
+        let field: Field = this.formData && this.formData.id ? this.getUpdatedField(this.formData.id, fields)
+                                : this.getNewField(fields);
+
+        field = Object.assign(field, fieldToSave);
+    }
+
+    private getUpdatedField(fieldId: string, fields: Field[]): Field {
+        let result: Field;
+
+        for (let i = 0; i < this.fields.length; i++) {
+            const field = this.fields[i];
+
+            if (fieldId === this.fields[i].id) {
+                result = field;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private getNewField(fields: Field[]): Field {
+
+        let result: Field;
+
+        for (let i = 0; i < this.fields.length; i++) {
+           if (FieldUtil.isNewField(fields[i])) {
+                result = fields[i];
+                break;
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -123,7 +150,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      * Show or hide dialog
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    toggleDialog(): void {
+    private toggleDialog(): void {
         this.displayDialog = !this.displayDialog;
     }
 

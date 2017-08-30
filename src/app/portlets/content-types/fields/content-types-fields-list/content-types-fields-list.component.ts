@@ -27,13 +27,10 @@ export class ContentTypesFieldsListComponent implements  OnInit {
     ngOnInit(): void {
         this.fieldService.loadFieldTypes()
             .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
-                // console.log('fieldType: ', fieldType);
-                const field = {
+                return {
                     clazz: fieldType.clazz,
                     name: fieldType.label
                 };
-
-                return field;
             }));
 
         this.fieldDragDropService.setFieldBagOptions();

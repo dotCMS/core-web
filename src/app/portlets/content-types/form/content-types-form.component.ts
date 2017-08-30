@@ -206,8 +206,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             value: this.data.expireDateVar || null
         });
 
-        console.log('expireDateVar', expireDateVar);
-        console.log('publishDateVar', publishDateVar);
         this.form.addControl('publishDateVar', publishDateVar);
         this.form.addControl('expireDateVar', expireDateVar);
     }

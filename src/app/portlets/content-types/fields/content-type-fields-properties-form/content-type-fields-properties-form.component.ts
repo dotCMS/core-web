@@ -41,28 +41,38 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
         super(
             [
-                'name',
-                'Label',
-                'message.field.fieldType',
-                'categories',
-                'Data-Type',
-                'required',
-                'User-Searchable',
-                'System-Indexed',
-                'listed',
-                'Unique',
-                'Default-Value',
-                'Hint',
-                'Validation-RegEx',
-                'Value',
-                'Binary',
-                'Text',
-                'True-False',
-                'Date',
-                'Decimal',
-                'Whole-Number',
-                'Large-Block-of-Text',
-                'System-Field',
+                'contenttypes.field.properties.name.label',
+                'contenttypes.field.properties.category.label',
+                'contenttypes.field.properties.required.label',
+                'contenttypes.field.properties.User_Searchable.label',
+                'contenttypes.field.properties.System_Indexed.label',
+                'contenttypes.field.properties.listed.label',
+                'contenttypes.field.properties.unique.label',
+                'contenttypes.field.properties.default_value.label',
+                'contenttypes.field.properties.hint.label',
+                'contenttypes.field.properties.Validation_RegEx.label',
+                'contenttypes.field.properties.data_type.label',
+                'contenttypes.field.properties.value.label',
+                'contenttypes.field.properties.data_type.values.binary',
+                'contenttypes.field.properties.data_type.values.text',
+                'contenttypes.field.properties.data_type.values.boolean',
+                'contenttypes.field.properties.data_type.values.date',
+                'contenttypes.field.properties.data_type.values.decimal',
+                'contenttypes.field.properties.data_type.values.number',
+                'contenttypes.field.properties.data_type.values.large_text',
+                'contenttypes.field.properties.data_type.values.system',
+                'contenttypes.field.properties.category.error.required',
+                'contenttypes.field.properties.default_value..error.format',
+                'contenttypes.field.properties.name.error.required',
+                'contenttypes.field.properties.Validation_RegEx.values.select',
+                'contenttypes.field.properties.Validation_RegEx.values.no_html',
+                'contenttypes.field.properties.Validation_RegEx.values.us_phone',
+                'contenttypes.field.properties.Validation_RegEx.values.us_zip_code',
+                'contenttypes.field.properties.Validation_RegEx.values.letters_only',
+                'contenttypes.field.properties.Validation_RegEx.values.numbers_only',
+                'contenttypes.field.properties.Validation_RegEx.values.email',
+                'contenttypes.field.properties.Validation_RegEx.values.alphanumeric',
+                'contenttypes.field.properties.Validation_RegEx.values.url_pattern',
             ],
             messageService
         );
@@ -73,8 +83,9 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             const properties = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
             this.initFormGroup(properties);
 
-            this.fieldProperties = properties.filter(property => this.fieldPropertyService.existsInfo(property))
-                .sort((pa, pb) => this.fieldPropertyService.getOrder(pa) - this.fieldPropertyService.getOrder(pb));
+            this.fieldProperties = properties.filter(property => this.fieldPropertyService.existsComponent(property))
+                .sort((property1, proeprty2) =>
+                    this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2));
         }
     }
 
@@ -110,7 +121,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         const formFields = {};
 
         if (properties) {
-            properties.filter(property => this.fieldPropertyService.existsInfo(property))
+            properties.filter(property => this.fieldPropertyService.existsComponent(property))
                 .forEach(property => {
                     formFields[property] = [{
                         value: this.formFieldData[property] ||

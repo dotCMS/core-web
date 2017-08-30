@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms/forms';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 
@@ -16,7 +16,7 @@ export class NamePropertyComponent extends BaseComponent {
     constructor(public messageService: MessageService) {
         super(
             [
-                'Value',
+                'contenttypes.field.properties.name.label'
             ],
             messageService
         );

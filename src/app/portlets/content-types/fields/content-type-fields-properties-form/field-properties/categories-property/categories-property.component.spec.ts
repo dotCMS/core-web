@@ -49,8 +49,7 @@ describe('CategoriesPropertyComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
-        'categories': 'categories',
-        'Select': 'Select',
+        'contenttypes.field.properties.categories.label': 'contenttypes.field.properties.categories.label',
         'search': 'search'
     });
 

@@ -1,4 +1,4 @@
-import { Field } from './field';
+import { Field } from './field.model';
 import { FieldUtil } from '../util/field-util';
 
 export class FieldColumn {

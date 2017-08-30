@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { MessageService } from '../../../../../../api/services/messages-service';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { Observable } from 'rxjs/Rx';
 import { PaginatorService } from '../../../../../../api/services/paginator';
 import { FormGroup } from '@angular/forms';
-import { Category } from '../../../shared/category';
+import { Category } from '../../../shared';
 
 /**
  * List all the categories and allow select one.
@@ -28,19 +28,16 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
     group: FormGroup;
 
     constructor(public messageService: MessageService, private paginationService: PaginatorService) {
-        super(['categories', 'Select'], messageService);
+        super([
+            'contenttypes.field.properties.category.label',
+            'contenttypes.field.properties.category.error.required'
+        ], messageService);
     }
 
     ngOnInit(): void {
         this.paginationService.url = '/v1/categories';
     }
 
-    /**
-     * Call to load a new page of categories.
-     * @param {string} [filter='']
-     * @param {number} [page=1]
-     * @memberof SiteSelectorComponent
-     */
     private getCategoriesList(filter = '', offset = 0): void {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe(items => {

@@ -1,4 +1,3 @@
-
 import { DefaultValuePropertyComponent } from './index';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input } from '@angular/core';

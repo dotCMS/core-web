@@ -32,7 +32,6 @@ import {
     ContentTypesFieldDragabbleItemComponent,
     ContentTypesFieldsListComponent
 } from './fields';
-
 import {
     ButtonModule,
     ConfirmDialogModule,
@@ -45,7 +44,6 @@ import {
     CheckboxModule,
     TabViewModule
 } from 'primeng/primeng';
-
 import {
 
     NamePropertyComponent,
@@ -57,7 +55,6 @@ import {
     RegexCheckPropertyComponent,
     ValuesPropertyComponent
 } from './fields/content-type-fields-properties-form/field-properties';
-
 import {
     DynamicFieldPropertyDirective
 } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';

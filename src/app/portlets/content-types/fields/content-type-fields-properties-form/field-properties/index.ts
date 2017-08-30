@@ -1,4 +1,3 @@
-import { FieldType } from '../../index';
 export *  from './categories-property/';
 export *  from './checkbox-property/';
 export *  from './data-type-property/';

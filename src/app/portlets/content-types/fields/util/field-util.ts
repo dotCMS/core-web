@@ -65,7 +65,9 @@ export class FieldUtil {
                 result.push(currentFields);
             }
 
-            // TODO: this code is for avoid error in edit mode, but I dont know if this it's the bets fix
+            // TODO: this code is for avoid error in edit mode when the content types dont has LINE_DIVIDER and TAB_DIVIDER,
+            // this happend when the content types is saved in old UI
+            // but I dont know if this it's the bets fix
             if (!currentFields) {
                 currentFields = [];
                 result.push(currentFields);

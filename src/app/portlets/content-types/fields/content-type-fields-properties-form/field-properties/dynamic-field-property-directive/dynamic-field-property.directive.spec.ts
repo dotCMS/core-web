@@ -3,7 +3,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DynamicFieldPropertyDirective } from './dynamic-field-property.directive';
 import { FieldPropertyService } from '../../../service';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { FormGroup } from '@angular/forms';
 import { Field } from '../../../';
 import { By } from '@angular/platform-browser';

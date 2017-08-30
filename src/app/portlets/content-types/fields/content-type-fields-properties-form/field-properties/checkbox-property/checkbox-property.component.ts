@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { FormGroup } from '@angular/forms';
@@ -13,21 +13,21 @@ export class CheckboxPropertyComponent extends BaseComponent {
     group: FormGroup;
 
     private readonly map = {
-        indexed: 'System-Indexed',
-        listed: 'listed',
-        required: 'required',
-        searchable: 'User-Searchable',
-        unique: 'Unique',
+        indexed: 'contenttypes.field.properties.System_Indexed.label',
+        listed: 'contenttypes.field.properties.listed.label',
+        required: 'contenttypes.field.properties.required.label',
+        searchable: 'contenttypes.field.properties.User_Searchable.label',
+        unique: 'contenttypes.field.properties.unique.label',
     };
 
     constructor(public messageService: MessageService) {
         super(
             [
-                'required',
-                'User-Searchable',
-                'System-Indexed',
-                'listed',
-                'Unique',
+                'contenttypes.field.properties.required.label',
+                'contenttypes.field.properties.User_Searchable.label',
+                'contenttypes.field.properties.System_Indexed.label',
+                'contenttypes.field.properties.listed.label',
+                'contenttypes.field.properties.unique.label'
             ],
             messageService
         );

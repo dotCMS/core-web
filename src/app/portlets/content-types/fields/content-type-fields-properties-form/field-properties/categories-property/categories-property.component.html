@@ -2,12 +2,12 @@
     <label class="form__label">{{i18nMessages['categories']}}</label>
     <searchable-dropdown #searchableDropdown (filterChange)="handleFilterChange($event)" (pageChange)="handlePageChange($event)"
         [data]="categoriesCurrentPage" [pageLinkSize]="paginationService.maxLinksPage" [rows]="paginationService.paginationPerPage"
-        [totalRecords]="paginationService.totalRecords" placeholder="{{i18nMessages['Select']}}" [formControlName]="property.name"
-        labelPropertyName="categoryName" valuePropertyName="inode">
+        [totalRecords]="paginationService.totalRecords" placeholder="{{i18nMessages['contenttypes.field.properties.category.label']}}" 
+        [formControlName]="property.name" labelPropertyName="categoryName" valuePropertyName="inode">
     </searchable-dropdown>
 
     <field-validation-message 
-        message="Category is required" 
-        [field]="group.controls[property.name]">
+        [field]="group.controls[property.name]"
+        [message]="i18nMessages['contenttypes.field.properties.category.error.required']">
     </field-validation-message>
 </div>

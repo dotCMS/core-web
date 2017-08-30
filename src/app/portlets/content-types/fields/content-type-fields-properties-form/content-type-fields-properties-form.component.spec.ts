@@ -24,7 +24,7 @@ class TestFieldPropertiesService {
         return ['property1', 'property2', 'property3'];
     }
 
-    existsInfo(propertyName: string): boolean {
+    existsComponent(propertyName: string): boolean {
         return propertyName === 'property1' || propertyName === 'property2';
     }
 

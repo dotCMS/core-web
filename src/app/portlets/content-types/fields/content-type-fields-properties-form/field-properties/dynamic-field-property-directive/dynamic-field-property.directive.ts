@@ -15,7 +15,6 @@ export class DynamicFieldPropertyDirective implements OnChanges {
                 private fieldPropertyService: FieldPropertyService) { }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('ngOnChanges');
         if (changes.field.currentValue) {
             this.createComponent(this.propertyName);
         }

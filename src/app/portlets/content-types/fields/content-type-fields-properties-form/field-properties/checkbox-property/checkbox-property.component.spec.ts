@@ -1,4 +1,3 @@
-
 import { CheckboxPropertyComponent } from './';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -7,7 +6,7 @@ import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { By } from '@angular/platform-browser';
 import { MockMessageService } from '../../../../../../test/message-service.mock';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { FormGroup, FormControl } from '@angular/forms';
 
 describe('CheckboxPropertyComponent', () => {

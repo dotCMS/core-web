@@ -3,11 +3,11 @@ import { Field } from '../../../index';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { MessageService } from '../../../../../../api/services/messages-service';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-info';
 
 @Component({
-    selector: 'dataType-property',
+    selector: 'data-type-property',
     templateUrl: './data-type-property.component.html',
 })
 export class DataTypePropertyComponent extends BaseComponent implements OnInit {
@@ -18,15 +18,15 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     constructor(public messageService: MessageService) {
         super(
             [
-                'Data-Type',
-                'Binary',
-                'Text',
-                'True-False',
-                'Date',
-                'Decimal',
-                'Whole-Number',
-                'Large-Block-of-Text',
-                'System-Field',
+                'contenttypes.field.properties.data_type.label',
+                'contenttypes.field.properties.data_type.values.binary',
+                'contenttypes.field.properties.data_type.values.text',
+                'contenttypes.field.properties.data_type.values.boolean',
+                'contenttypes.field.properties.data_type.values.date',
+                'contenttypes.field.properties.data_type.values.decimal',
+                'contenttypes.field.properties.data_type.values.number',
+                'contenttypes.field.properties.data_type.values.large_text',
+                'contenttypes.field.properties.data_type.values.system'
             ],
             messageService
         );
@@ -43,6 +43,6 @@ export class DataTypePropertyComponent extends BaseComponent implements OnInit {
             }
         }
 
-        return JSON.stringify(obj) === JSON.stringify({});
+        return Object.keys(obj).length;
     }
 }

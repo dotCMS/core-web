@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FieldProperty } from '../field-properties.interface';
+import { FieldProperty } from '../field-properties.model';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { FormGroup } from '@angular/forms';
@@ -13,9 +13,6 @@ export class DefaultValuePropertyComponent extends BaseComponent {
     group: FormGroup;
 
     constructor(public messageService: MessageService) {
-        super(['Default-Value'], messageService);
-    }
-
-    ngOnInit(): void {
+        super(['contenttypes.field.properties.default_value.label'], messageService);
     }
 }
