@@ -37,13 +37,17 @@ class TestContentTypeFieldsPropertiesForm {
 }
 @Injectable()
 class TestFieldDragDropService {
-    _fieldDrop: Subject<any> = new Subject();
+    _fieldDropFromSource: Subject<any> = new Subject();
+    _fieldDropFromTarget: Subject<any> = new Subject();
 
-    get fieldDrop$(): Observable<any> {
-        return this._fieldDrop.asObservable();
+    get fieldDropFromSource$(): Observable<any> {
+        return this._fieldDropFromSource.asObservable();
+    }
+
+    get fieldDropFromTarget$(): Observable<any> {
+        return this._fieldDropFromTarget.asObservable();
     }
 }
-
 
 describe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
@@ -95,18 +99,18 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         el = de.nativeElement;
     }));
 
-    it('should has a fields container', () => {
-
+    it('should has fieldsContainer', () => {
         fixture.detectChanges();
-
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-
         expect(fieldsContainer).not.toBeNull();
+    });
 
+    it('should has the right dragula attributes', () => {
+        fixture.detectChanges();
+        const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
         expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
         expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
     });
-
 
     it('should has a dialog', () => {
         fixture.detectChanges();
@@ -165,24 +169,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             });
         }));
 
-        it('should has fieldsContainer', () => {
-
-            fixture.detectChanges();
-
-            const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-
-            expect(fieldsContainer).not.toBeNull();
-            expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
-            expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
-        });
-
-        it('should has the right dragula attributes', () => {
-            fixture.detectChanges();
-            const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-            expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
-            expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
-        });
-
         it('should has FieldRow and FieldColumn', () => {
             fixture.detectChanges();
 
@@ -201,7 +187,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         it('should set dropped field if a drop event happen from source', fakeAsync(() => {
             comp.ngOnInit();
 
-            this.testFieldDragDropService._fieldDrop.next(['fields-bag', null, null, {
+            this.testFieldDragDropService._fieldDropFromSource.next(['fields-bag', null, null, {
                 dataset: {
                     dragType: 'source'
                 }
@@ -215,7 +201,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         it('should display dialog if a drop event happen from source', fakeAsync(() => {
             comp.ngOnInit();
 
-            this.testFieldDragDropService._fieldDrop.next(['fields-bag', null, null, {
+            this.testFieldDragDropService._fieldDropFromSource.next(['fields-bag', null, null, {
                 dataset: {
                     dragType: 'source'
                 }
@@ -234,7 +220,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             spyOn(comp.saveFields, 'emit');
             comp.ngOnInit();
 
-            this.testFieldDragDropService._fieldDrop.next(['fields-bag', null, null, {
+            this.testFieldDragDropService._fieldDropFromTarget.next(['fields-bag', null, null, {
                 dataset: {
                     dragType: 'target'
                 }

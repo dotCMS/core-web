@@ -118,6 +118,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private initFormGroup(properties?: string[]): void {
+        console.log('this.formFieldData 1 ', this.formFieldData);
         const formFields = {};
 
         if (properties) {
@@ -131,6 +132,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 });
 
             formFields['clazz'] = this.formFieldData.clazz;
+            console.log('this.formFieldData 2 ', this.formFieldData);
         }
         this.form = this.fb.group(formFields);
     }

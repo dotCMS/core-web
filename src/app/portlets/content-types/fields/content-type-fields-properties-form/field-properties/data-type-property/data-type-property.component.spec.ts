@@ -15,15 +15,15 @@ describe('DataTypePropertyComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
-        'Data-Type': 'Data-Type',
-        'Binary': 'Binary',
-        'Text': 'Text',
-        'True-False': 'True-False',
-        'Date': 'Date',
-        'Decimal': 'Decimal',
-        'Whole-Number': 'Whole-Number',
-        'Large-Block-of-Text': 'Large-Block-of-Text',
-        'System-Field': 'System-Field',
+        'contenttypes.field.properties.data_type.label': 'Data-Type',
+        'contenttypes.field.properties.data_type.values.binary': 'Binary',
+        'contenttypes.field.properties.data_type.values.text': 'Text',
+        'contenttypes.field.properties.data_type.values.boolean': 'True-False',
+        'contenttypes.field.properties.data_type.values.date': 'Date',
+        'contenttypes.field.properties.data_type.values.decimal': 'Decimal',
+        'contenttypes.field.properties.data_type.values.number': 'Whole-Number',
+        'contenttypes.field.properties.data_type.values.large_text': 'Large-Block-of-Text',
+        'contenttypes.field.properties.data_type.values.system': 'System-Field',
     });
 
     beforeEach(async(() => {

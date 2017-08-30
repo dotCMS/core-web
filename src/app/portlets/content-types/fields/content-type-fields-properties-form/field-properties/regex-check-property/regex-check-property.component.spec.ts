@@ -1,6 +1,6 @@
 
 import { RegexCheckPropertyComponent } from './index';
-import { ComponentFixture, async } from '@angular/core/testing';
+import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement, Component, Input } from '@angular/core';
 import { MockMessageService } from '../../../../../../test/message-service.mock';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
@@ -14,7 +14,16 @@ describe('RegexCheckPropertyComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
-        'Validation-RegEx': 'Validation-RegEx'
+        'contenttypes.field.properties.Validation_RegEx.label': 'Validation-RegEx',
+        'contenttypes.field.properties.Validation_RegEx.values.select': 'Select',
+        'contenttypes.field.properties.Validation_RegEx.values.email': 'Email',
+        'contenttypes.field.properties.Validation_RegEx.values.numbers_only': 'Numbers only',
+        'contenttypes.field.properties.Validation_RegEx.values.letters_only': 'Letters only',
+        'contenttypes.field.properties.Validation_RegEx.values.alphanumeric': 'Alphanumeric',
+        'contenttypes.field.properties.Validation_RegEx.values.us_zip_code': 'US Zip Code',
+        'contenttypes.field.properties.Validation_RegEx.values.us_phone': 'US Phone',
+        'contenttypes.field.properties.Validation_RegEx.values.url_pattern': 'URL Pattern',
+        'contenttypes.field.properties.Validation_RegEx.values.no_html': 'No HTML',
     });
 
     beforeEach(async(() => {
@@ -69,19 +78,18 @@ describe('RegexCheckPropertyComponent', () => {
         const pDropDown: DebugElement = fixture.debugElement.query(By.css('p-dropdown'));
 
         expect(pDropDown).not.toBeNull();
-        expect(comp.REGEX_CHECK_TEMPLATE).toBe(pDropDown.componentInstance.options);
+        expect(comp.regexCheckTempletes).toBe(pDropDown.componentInstance.options);
     });
 
     it('should change the input value', () => {
         const divForm: DebugElement = fixture.debugElement.query(By.css('div'));
         const pDropDown: DebugElement = fixture.debugElement.query(By.css('p-dropdown'));
+
         pDropDown.triggerEventHandler('onChange', {
-            value: comp.REGEX_CHECK_TEMPLATE[1].value
+            value: '^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4})$'
         });
 
-        fixture.detectChanges();
-
         const pInput: DebugElement = fixture.debugElement.query(By.css('input[type="text"]'));
-        expect(comp.REGEX_CHECK_TEMPLATE[1].value).toBe(comp.group.get('regexCheck').value);
+        expect('^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,4})$').toBe(comp.group.get('regexCheck').value);
     });
 });
