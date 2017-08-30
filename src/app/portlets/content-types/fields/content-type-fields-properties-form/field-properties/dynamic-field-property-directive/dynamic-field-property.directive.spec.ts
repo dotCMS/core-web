@@ -1,4 +1,4 @@
-import { Component, DebugElement, Type, SimpleChange } from '@angular/core';
+import { Component, DebugElement, Type, SimpleChange, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DynamicFieldPropertyDirective } from './dynamic-field-property.directive';
@@ -9,21 +9,6 @@ import { Field } from '../../../';
 import { By } from '@angular/platform-browser';
 
 @Component({
-    template: `<ng-container dynamicFieldProperty
-                [propertyName]="propertyName"
-                [group]="group"
-                [field]="field"
-               >`
-})
-class TestDinamicFieldPropertyDirectiveComponent {
-    propertyName = 'name';
-    field: Field = {
-        name: 'fieldName'
-    };
-    group: FormGroup = new FormGroup({});
-}
-
-@Component({
     selector: 'test',
     template: '<h1>Testing</h1>'
 })
@@ -32,42 +17,68 @@ class TestComponent {
     group: FormGroup;
 }
 
-class MockFieldPropertyService {
+class TestFieldPropertyService {
     getComponent(propertyName: string): Type<any> {
         return null;
     }
 }
 
-xdescribe('Directive: DynamicFieldPropertyDirective', () => {
-    let component: TestDinamicFieldPropertyDirectiveComponent;
-    let fixture: ComponentFixture<TestDinamicFieldPropertyDirectiveComponent>;
-    let debugElement: DebugElement;
+class TestComponentFactoryResolver {
+    resolveComponentFactory<T>(component: Type<T>): any {}
+}
+
+class TestViewContainerRef {
+    // tslint:disable-next-line:max-line-length
+    createComponent<C>(componentFactory: any, index?: number, injector?: any, projectableNodes?: any[][], ngModule?: any): any {}
+}
+
+
+describe('Directive: DynamicFieldPropertyDirective', () => {
 
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                DynamicFieldPropertyDirective,
-                TestDinamicFieldPropertyDirectiveComponent,
-            ],
-            providers: [
-                { provide: FieldPropertyService, useClass: MockFieldPropertyService },
-            ]
+        this.component = new TestComponent();
+
+        this.propertyName = 'name';
+        this.group = new FormGroup({});
+        this.field = {
+            name: 'FieldName'
+        };
+
+        const viewContainerRef = new TestViewContainerRef();
+        const resolver = new TestComponentFactoryResolver();
+        const fieldPropertyService = new TestFieldPropertyService();
+        this.componentFactory = {};
+
+        this.getComponent = spyOn(fieldPropertyService, 'getComponent').and.returnValue(TestComponent);
+        this.resolveComponentFactory = spyOn(resolver, 'resolveComponentFactory').and.returnValue(this.componentFactory);
+        this.createComponent = spyOn(viewContainerRef, 'createComponent').and.returnValue({
+            instance: this.component
         });
 
-        fixture = DOTTestBed.createComponent(TestDinamicFieldPropertyDirectiveComponent);
-        component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
+        const dynamicFieldPropertyDirective = new DynamicFieldPropertyDirective(<ViewContainerRef> viewContainerRef,
+            <ComponentFactoryResolver> resolver, <FieldPropertyService> fieldPropertyService);
+
+        dynamicFieldPropertyDirective.propertyName = this.propertyName;
+        dynamicFieldPropertyDirective.field = this.field;
+        dynamicFieldPropertyDirective.group = this.group;
+
+        dynamicFieldPropertyDirective.ngOnChanges({
+            field: new SimpleChange(null, this.field, true),
+        });
     });
 
     it('Should create a element', () => {
-        /*comp.ngOnChanges({
-            field: new SimpleChange(null, {
-                name: 'fieldName'
-            }, true)
-        });*/
+        expect(this.getComponent).toHaveBeenCalledWith(this.propertyName);
+        expect(this.resolveComponentFactory).toHaveBeenCalledWith(TestComponent);
+        expect(this.createComponent).toHaveBeenCalledWith(this.componentFactory);
+    });
 
-        const testElement = fixture.debugElement.queryAllNodes(By.css('test'));
-        console.log('testElement', testElement);
-        console.log('fixture', fixture);
+    it('Should set component properties', () => {
+        expect(this.component.property).toEqual({
+            field: this.field,
+            name: this.propertyName,
+            value: 'FieldName',
+        });
+        expect(this.component.group).toEqual(this.group);
     });
 });

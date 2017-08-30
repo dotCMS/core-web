@@ -19,8 +19,7 @@ import { Field, FieldType } from '../';
 export class ContentTypesFieldsListComponent implements  OnInit {
     fieldTypes: Field[];
 
-    constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService,
-        private fieldPropertyService: FieldPropertyService) {
+    constructor(private fieldService: FieldService, private fieldDragDropService: FieldDragDropService) {
 
     }
 

@@ -17,7 +17,7 @@ import { By } from '@angular/platform-browser';
     @Input() message: string;
 }
 
-xdescribe('ValuesPropertyComponent', () => {
+describe('ValuesPropertyComponent', () => {
     let comp: ValuesPropertyComponent;
     let fixture: ComponentFixture<ValuesPropertyComponent>;
     let de: DebugElement;

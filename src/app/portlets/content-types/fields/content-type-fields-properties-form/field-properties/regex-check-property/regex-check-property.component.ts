@@ -32,7 +32,6 @@ export class RegexCheckPropertyComponent extends BaseComponent {
     }
 
     templateSelect(event): void {
-        console.log('templateSelect');
         this.group.controls[this.property.name].setValue(event.value);
     }
 
@@ -41,7 +40,6 @@ export class RegexCheckPropertyComponent extends BaseComponent {
      * @memberOf ContentTypesPortletComponent
      */
     onMessage(): void {
-        console.log('onMessage');
         this.regexCheckTempletes = [
             {
                 label: this.i18nMessages['contenttypes.field.properties.Validation_RegEx.values.select'],
