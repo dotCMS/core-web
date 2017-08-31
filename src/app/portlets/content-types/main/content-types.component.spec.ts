@@ -21,7 +21,7 @@ describe('ContentTypesPortletComponent', () => {
             'contenttypes.form.label.description': 'Description',
             'contenttypes.fieldname.entries': 'Entries',
             'contenttypes.fieldname.structure.name': 'Content Type Name',
-            'contenttypes.variable': 'Variable Name',
+            'contenttypes.content.variable': 'Variable Name',
             'mod_date': 'Last Edit Date'
         });
 

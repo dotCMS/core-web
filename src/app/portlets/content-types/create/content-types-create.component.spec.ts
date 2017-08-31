@@ -65,12 +65,12 @@ describe('ContentTypesCreateComponent', () => {
 
     beforeEach(async(() => {
         const messageServiceMock = new MockMessageService({
-            'contenttypes.content': 'Content',
-            'contenttypes.file': 'File',
-            'contenttypes.form': 'Form',
-            'contenttypes.page': 'Page',
-            'contenttypes.persona': 'Persona',
-            'contenttypes.widget': 'Widget'
+            'contenttypes.content.content': 'Content',
+            'contenttypes.content.file': 'File',
+            'contenttypes.content.form': 'Form',
+            'contenttypes.content.page': 'Page',
+            'contenttypes.content.persona': 'Persona',
+            'contenttypes.content.widget': 'Widget'
         });
 
         DOTTestBed.configureTestingModule({

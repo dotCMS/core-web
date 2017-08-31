@@ -33,16 +33,16 @@ export class ContentTypesPortletComponent extends BaseComponent {
         super(
             [
                 'contenttypes.fieldname.structure.name',
-                'contenttypes.variable',
+                'contenttypes.content.variable',
                 'contenttypes.form.label.description',
                 'contenttypes.fieldname.entries',
                 'message.structure.delete.structure.and.content',
                 'message.structure.cantdelete',
-                'contenttypes.file',
-                'contenttypes.content',
-                'contenttypes.persona',
-                'contenttypes.widget',
-                'contenttypes.page'
+                'contenttypes.content.file',
+                'contenttypes.content.content',
+                'contenttypes.content.persona',
+                'contenttypes.content.widget',
+                'contenttypes.content.page'
             ],
             messageService
         );
@@ -64,35 +64,35 @@ export class ContentTypesPortletComponent extends BaseComponent {
                             this.createContentType('content', $event);
                         },
                         icon: 'fa-newspaper-o',
-                        label: this.i18nMessages['contenttypes.content']
+                        label: this.i18nMessages['contenttypes.content.content']
                     },
                     {
                         command: $event => {
                             this.createContentType('widget', $event);
                         },
                         icon: 'fa-cog',
-                        label: this.i18nMessages['contenttypes.widget']
+                        label: this.i18nMessages['contenttypes.content.widget']
                     },
                     {
                         command: $event => {
                             this.createContentType('file', $event);
                         },
                         icon: 'fa-file-o',
-                        label: this.i18nMessages['contenttypes.file']
+                        label: this.i18nMessages['contenttypes.content.file']
                     },
                     {
                         command: $event => {
                             this.createContentType('page', $event);
                         },
                         icon: 'fa-file-text-o',
-                        label: this.i18nMessages['contenttypes.page']
+                        label: this.i18nMessages['contenttypes.content.page']
                     },
                     {
                         command: $event => {
                             this.createContentType('persona', $event);
                         },
                         icon: 'fa-user',
-                        label: this.i18nMessages['contenttypes.persona']
+                        label: this.i18nMessages['contenttypes.content.persona']
                     }
                 ]
             }
@@ -107,7 +107,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
             },
             {
                 fieldName: 'variable',
-                header: this.i18nMessages['contenttypes.variable']
+                header: this.i18nMessages['contenttypes.content.variable']
             },
             {
                 fieldName: 'description',
