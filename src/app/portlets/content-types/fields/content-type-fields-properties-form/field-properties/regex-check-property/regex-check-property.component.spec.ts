@@ -14,16 +14,16 @@ describe('RegexCheckPropertyComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
-        'contenttypes.field.properties.Validation_RegEx.label': 'Validation-RegEx',
-        'contenttypes.field.properties.Validation_RegEx.values.select': 'Select',
-        'contenttypes.field.properties.Validation_RegEx.values.email': 'Email',
-        'contenttypes.field.properties.Validation_RegEx.values.numbers_only': 'Numbers only',
-        'contenttypes.field.properties.Validation_RegEx.values.letters_only': 'Letters only',
-        'contenttypes.field.properties.Validation_RegEx.values.alphanumeric': 'Alphanumeric',
-        'contenttypes.field.properties.Validation_RegEx.values.us_zip_code': 'US Zip Code',
-        'contenttypes.field.properties.Validation_RegEx.values.us_phone': 'US Phone',
-        'contenttypes.field.properties.Validation_RegEx.values.url_pattern': 'URL Pattern',
-        'contenttypes.field.properties.Validation_RegEx.values.no_html': 'No HTML',
+        'contenttypes.field.properties.validation_regex.label': 'Validation-RegEx',
+        'contenttypes.field.properties.validation_regex.values.select': 'Select',
+        'contenttypes.field.properties.validation_regex.values.email': 'Email',
+        'contenttypes.field.properties.validation_regex.values.numbers_only': 'Numbers only',
+        'contenttypes.field.properties.validation_regex.values.letters_only': 'Letters only',
+        'contenttypes.field.properties.validation_regex.values.alphanumeric': 'Alphanumeric',
+        'contenttypes.field.properties.validation_regex.values.us_zip_code': 'US Zip Code',
+        'contenttypes.field.properties.validation_regex.values.us_phone': 'US Phone',
+        'contenttypes.field.properties.validation_regex.values.url_pattern': 'URL Pattern',
+        'contenttypes.field.properties.validation_regex.values.no_html': 'No HTML',
     });
 
     beforeEach(async(() => {

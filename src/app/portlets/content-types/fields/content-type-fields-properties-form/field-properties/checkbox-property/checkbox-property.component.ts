@@ -13,10 +13,10 @@ export class CheckboxPropertyComponent extends BaseComponent {
     group: FormGroup;
 
     private readonly map = {
-        indexed: 'contenttypes.field.properties.System_Indexed.label',
+        indexed: 'contenttypes.field.properties.system_indexed.label',
         listed: 'contenttypes.field.properties.listed.label',
         required: 'contenttypes.field.properties.required.label',
-        searchable: 'contenttypes.field.properties.User_Searchable.label',
+        searchable: 'contenttypes.field.properties.user_searchable.label',
         unique: 'contenttypes.field.properties.unique.label',
     };
 
@@ -24,8 +24,8 @@ export class CheckboxPropertyComponent extends BaseComponent {
         super(
             [
                 'contenttypes.field.properties.required.label',
-                'contenttypes.field.properties.User_Searchable.label',
-                'contenttypes.field.properties.System_Indexed.label',
+                'contenttypes.field.properties.user_searchable.label',
+                'contenttypes.field.properties.system_indexed.label',
                 'contenttypes.field.properties.listed.label',
                 'contenttypes.field.properties.unique.label'
             ],

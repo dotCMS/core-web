@@ -15,12 +15,11 @@ describe('CheckboxPropertyComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
-        'required': 'categories',
-        'User-Searchable': 'User-Searchable',
-        'System-Indexed': 'System-Indexed',
-        'listed': 'listed',
-        'Unique': 'Unique',
-        'name': 'Name'
+        'contenttypes.field.properties.required.label': 'required',
+        'contenttypes.field.properties.user_searchable.label': 'user_searchable.',
+        'contenttypes.field.properties.system_indexed.label': 'system_indexed',
+        'contenttypes.field.properties.listed.label': 'listed',
+        'contenttypes.field.properties.unique.label': 'unique'
     });
 
     beforeEach(async(() => {

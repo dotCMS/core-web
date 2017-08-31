@@ -44,13 +44,13 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 'contenttypes.field.properties.name.label',
                 'contenttypes.field.properties.category.label',
                 'contenttypes.field.properties.required.label',
-                'contenttypes.field.properties.User_Searchable.label',
-                'contenttypes.field.properties.System_Indexed.label',
+                'contenttypes.field.properties.user_searchable.label',
+                'contenttypes.field.properties.system_indexed.label',
                 'contenttypes.field.properties.listed.label',
                 'contenttypes.field.properties.unique.label',
                 'contenttypes.field.properties.default_value.label',
                 'contenttypes.field.properties.hint.label',
-                'contenttypes.field.properties.Validation_RegEx.label',
+                'contenttypes.field.properties.validation_regex.label',
                 'contenttypes.field.properties.data_type.label',
                 'contenttypes.field.properties.value.label',
                 'contenttypes.field.properties.data_type.values.binary',
@@ -64,15 +64,15 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 'contenttypes.field.properties.category.error.required',
                 'contenttypes.field.properties.default_value..error.format',
                 'contenttypes.field.properties.name.error.required',
-                'contenttypes.field.properties.Validation_RegEx.values.select',
-                'contenttypes.field.properties.Validation_RegEx.values.no_html',
-                'contenttypes.field.properties.Validation_RegEx.values.us_phone',
-                'contenttypes.field.properties.Validation_RegEx.values.us_zip_code',
-                'contenttypes.field.properties.Validation_RegEx.values.letters_only',
-                'contenttypes.field.properties.Validation_RegEx.values.numbers_only',
-                'contenttypes.field.properties.Validation_RegEx.values.email',
-                'contenttypes.field.properties.Validation_RegEx.values.alphanumeric',
-                'contenttypes.field.properties.Validation_RegEx.values.url_pattern',
+                'contenttypes.field.properties.validation_regex.values.select',
+                'contenttypes.field.properties.validation_regex.values.no_html',
+                'contenttypes.field.properties.validation_regex.values.us_phone',
+                'contenttypes.field.properties.validation_regex.values.us_zip_code',
+                'contenttypes.field.properties.validation_regex.values.letters_only',
+                'contenttypes.field.properties.validation_regex.values.numbers_only',
+                'contenttypes.field.properties.validation_regex.values.email',
+                'contenttypes.field.properties.validation_regex.values.alphanumeric',
+                'contenttypes.field.properties.validation_regex.values.url_pattern',
             ],
             messageService
         );
@@ -80,13 +80,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
-            const properties = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
+            const properties: string[] = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
             this.initFormGroup(properties);
-
-            this.fieldProperties = properties.filter(property => this.fieldPropertyService.existsComponent(property))
-                .sort((property1, proeprty2) =>
-                    this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2));
+            this.sortProperties(properties);
         }
+
     }
 
     ngOnInit(): void {
@@ -135,5 +133,12 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             console.log('this.formFieldData 2 ', this.formFieldData);
         }
         this.form = this.fb.group(formFields);
+    }
+
+    private sortProperties(properties: string[]): void {
+        this.fieldProperties = properties.filter(property => this.fieldPropertyService.existsComponent(property))
+        .sort((property1, proeprty2) =>
+            this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2));
+
     }
 }
