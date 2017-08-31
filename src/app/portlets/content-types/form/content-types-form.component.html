@@ -10,7 +10,7 @@
                     <i class="fa" [ngClass]="icon"></i>
                     <input pInputText type="text" id="content-type-form-name" (focus)="formState === 'collapsed' && toggleForm()" [placeholder]="name ? name + ' ' + i18nMessages['name'] : ''" name="name"
                         formControlName="name" />
-                    <field-validation-message message="Name is required" [field]="form.controls.name"></field-validation-message>
+                    <field-validation-message [message]="i18nMessages['contenttypes.form.name.error.required']" [field]="form.controls.name"></field-validation-message>
                 </div>
             </div>
             <div class="ui-g-6 content-type__form-actions">

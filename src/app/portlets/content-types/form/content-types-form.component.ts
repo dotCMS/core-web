@@ -86,7 +86,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'save',
                 'update',
                 'edit',
-                'delete'
+                'delete',
+                'contenttypes.form.name.error.required'
             ],
             messageService
         );

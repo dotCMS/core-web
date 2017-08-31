@@ -16,8 +16,8 @@ describe('CheckboxPropertyComponent', () => {
     let el: HTMLElement;
     const messageServiceMock = new MockMessageService({
         'contenttypes.field.properties.required.label': 'required',
-        'contenttypes.field.properties.user_searchable.label': 'user_searchable.',
-        'contenttypes.field.properties.system_indexed.label': 'system_indexed',
+        'contenttypes.field.properties.user_searchable.label': 'user searchable.',
+        'contenttypes.field.properties.system_indexed.label': 'system indexed',
         'contenttypes.field.properties.listed.label': 'listed',
         'contenttypes.field.properties.unique.label': 'unique'
     });
@@ -51,10 +51,10 @@ describe('CheckboxPropertyComponent', () => {
 
     it('should have a p-checkbox', () => {
         comp.group = new FormGroup({
-            name: new FormControl('')
+            indexed: new FormControl('')
         });
         comp.property = {
-            name: 'name',
+            name: 'indexed',
             value: 'value',
             field: {}
         };
@@ -65,7 +65,7 @@ describe('CheckboxPropertyComponent', () => {
         const pCheckbox: DebugElement = fixture.debugElement.query(By.css('p-checkbox'));
 
         expect(pCheckbox).not.toBeNull();
-        expect('Name').toBe(pCheckbox.componentInstance.label);
+        expect('system indexed').toBe(pCheckbox.componentInstance.label);
         expect('value').toBe(pCheckbox.componentInstance.value);
     });
 });
