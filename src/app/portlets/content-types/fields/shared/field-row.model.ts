@@ -1,5 +1,6 @@
-import { FieldColumn, Field } from './';
 import { FieldUtil } from '../util/field-util';
+import { FieldColumn } from './field-column.model';
+import { Field } from './field.model';
 
 export class FieldRow {
 

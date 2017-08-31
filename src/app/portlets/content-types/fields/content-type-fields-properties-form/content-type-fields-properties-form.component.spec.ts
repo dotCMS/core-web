@@ -122,7 +122,7 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
 
             expect(spyMethod).toHaveBeenCalledWith(this.field.clazz);
             expect(this.field.clazz).toBe(comp.form.get('clazz').value);
-            console.log(comp.form.get('property1'));
+
             expect('').toBe(comp.form.get('property1').value);
             expect(true).toBe(comp.form.get('property2').value);
             expect(comp.form.get('property3')).toBeNull();

@@ -19,7 +19,7 @@
     </div>
 </div>
 <p-dialog 
-    [header]="formData && formData.id ? i18nMessages['edit'] : i18nMessages['created']"
+    [header]="getDialogHeader()"
     [(visible)]="displayDialog"
     modal="modal"
     width="300"
@@ -33,7 +33,7 @@
     </content-type-fields-properties-form>
     
     <p-footer>
+        <button type="button" flat pButton (click)="toggleDialog()" [label]="i18nMessages['Cancel']"></button>
         <button type="button" pButton (click)="fieldPropertiesForm.saveFieldProperties(fieldPropertiesForm.form.value, fieldPropertiesForm.form.valid)" [label]="i18nMessages['Save']"></button>
-        <button type="button" pButton (click)="toggleDialog()" [label]="i18nMessages['Cancel']"></button>
     </p-footer>
 </p-dialog>

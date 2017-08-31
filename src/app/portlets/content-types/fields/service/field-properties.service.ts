@@ -2,11 +2,10 @@ import { Injectable, ComponentFactory, Type } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { CoreWebService } from '../../../../api/services/core-web-service';
-import { FieldService } from './index';
-import { FieldType } from '../index';
 import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
 import { ValidationErrors } from '@angular/forms';
+import { FieldService } from './field.service';
 
 /**
  * Provide method to handle with the Field Types's properties
@@ -81,7 +80,7 @@ export class FieldPropertyService {
 
     /**
      * Return true if a property have to been disable in edit mode, in otherwise return null
-     * @param {string} propertyName 
+     * @param {string} propertyName
      * @returns {boolean} true if the property have to been disable in edit mode
      * @memberof FieldPropertyService
      */

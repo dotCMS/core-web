@@ -79,7 +79,13 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('changes');
         if (changes.formFieldData.currentValue && this.formFieldData) {
+
+            if (!this.formFieldData.id) {
+                delete this.formFieldData['name'];
+            }
+
             const properties: string[] = this.fieldPropertyService.getProperties(this.formFieldData.clazz);
             this.initFormGroup(properties);
             this.sortProperties(properties);
@@ -116,7 +122,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private initFormGroup(properties?: string[]): void {
-        console.log('this.formFieldData 1 ', this.formFieldData);
         const formFields = {};
 
         if (properties) {
@@ -130,7 +135,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 });
 
             formFields['clazz'] = this.formFieldData.clazz;
-            console.log('this.formFieldData 2 ', this.formFieldData);
         }
         this.form = this.fb.group(formFields);
     }

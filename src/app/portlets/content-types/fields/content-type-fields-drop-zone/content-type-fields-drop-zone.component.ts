@@ -91,7 +91,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private updateCurrentField(fieldToSave: Field, fields: Field[]): void {
-        console.log('fieldToSave', fieldToSave);
         let field: Field = this.formData && this.formData.id ? this.getUpdatedField(this.formData.id, fields)
                                 : this.getNewField(fields);
 
@@ -114,18 +113,15 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private getNewField(fields: Field[]): Field {
-        console.log('getNewField', fields);
-        console.log('getNewField', fields.length);
         let result: Field;
 
         for (let i = 0; i < fields.length; i++) {
-            console.log('FieldUtil.isNewField(fields[i])', FieldUtil.isNewField(fields[i]));
            if (FieldUtil.isNewField(fields[i])) {
                 result = fields[i];
                 break;
             }
         }
-        console.log('result', result);
+
         return result;
     }
 
@@ -135,6 +131,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editField(fieldToEdit: Field): void {
+        console.log('fieldToEdit', fieldToEdit);
         const fields = this.getFields();
         this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
         this.toggleDialog();
@@ -174,9 +171,16 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             });
         });
 
+        this.formData = null;
         this.propertiesForm.destroy();
     }
 
+    getDialogHeader(): string {
+        const dialogTitle = this.formData && this.formData.id ? this.i18nMessages['edit'] : this.i18nMessages['Create-field'];
+        const name = this.formData ? this.formData.name : '';
+
+        return `${dialogTitle} ${name}`;
+    }
 
     private getRowFields(fields: Field[]): FieldRow[] {
         let fieldRows: FieldRow[] = [];
