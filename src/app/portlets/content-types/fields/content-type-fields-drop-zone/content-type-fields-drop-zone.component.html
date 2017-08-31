@@ -19,11 +19,13 @@
     </div>
 </div>
 <p-dialog 
-    [header]="getDialogHeader()"
-    [(visible)]="displayDialog"
     modal="modal"
     width="300"
+    [header]="getDialogHeader()"
+    [(visible)]="displayDialog"
     [responsive]="true"
+    [resizable]="false"
+    [draggable]="false"
     (onHide)="removeFieldsWithoutId()">
     
     <content-type-fields-properties-form 
