@@ -52,8 +52,8 @@ export class ContentTypesEditComponent extends BaseComponent {
                 'Page',
                 'message.structure.cantdelete',
                 'message.structure.delete.structure.and.content',
-                'Yes',
-                'No'
+                'contenttypes.action.yes',
+                'contenttypes.action.no'
             ],
             messageService
         );
