@@ -40,10 +40,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     constructor(private fieldDragDropService: FieldDragDropService, messageService: MessageService) {
         super(
             [
-                'Save',
-                'Cancel',
-                'edit',
-                'Create-field',
+                'contenttypes.dropzone.action.save',
+                'contenttypes.dropzone.action.cancel',
+                'contenttypes.dropzone.action.edit',
+                'contenttypes.dropzone.action.create.field',
                 'contenttypes.dropzone.empty.message'
             ],
             messageService
@@ -176,8 +176,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     getDialogHeader(): string {
-        const dialogTitle = this.formData && this.formData.id ? this.i18nMessages['edit'] : this.i18nMessages['Create-field'];
-        const name = this.formData ? this.formData.name : '';
+        const dialogTitle = this.formData && this.formData.id ?
+            this.i18nMessages['contenttypes.dropzone.action.edit'] : this.i18nMessages['contenttypes.dropzone.action.create.field'];
+        const name = this.formData && this.formData.name ? this.formData.name : '';
 
         return `${dialogTitle} ${name}`;
     }
