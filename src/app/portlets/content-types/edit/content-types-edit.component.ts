@@ -7,10 +7,10 @@ import { ContentTypesInfoService } from '../../../api/services/content-types-inf
 import { CrudService } from '../../../api/services/crud';
 import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Observable';
-import { StringUtils } from 'dotcms-js';
-import { Field } from '../fields';
+import { StringUtils } from 'dotcms-js/dotcms-js';
 import { FieldService } from '../fields/service';
 import { ConfirmationService } from 'primeng/primeng';
+import { Field } from '../fields/shared/field';
 
 /**
  * Portlet component for edit content types

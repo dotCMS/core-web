@@ -21,7 +21,7 @@ const angularComponents: any[] = [
     },
     {
         id: 'rules',
-        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
+        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
     },
     {
         id: 'dot-browser',
