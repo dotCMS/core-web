@@ -107,10 +107,14 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
      * Save fields
      * @param fieldsToSave Fields to be save
      */
-    saveFields(fields: Field[]): void {
-        this.fieldService.saveFields(this.data.id, fields).subscribe(fields => {
-            this.data.fields = fields;
-        });
+    saveFields(fieldsToSave: Field[]): void {
+        this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => this.data.fields = fields);
+    }
+
+    removeFields(fieldsToDelete: Field[]): void {
+        this.fieldService.deleteFields(this.data.id, fieldsToDelete)
+            .pluck('fields')
+            .subscribe(fields => this.data.fields = <Field[]> fields);
     }
 
     private handleFormSubmissionResponse(res: any): void {

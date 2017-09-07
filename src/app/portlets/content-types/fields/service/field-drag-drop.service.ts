@@ -13,6 +13,8 @@ export class FieldDragDropService {
 
     private _fieldDropFromSource: Subject<any> = new Subject();
     private _fieldDropFromTarget: Subject<any> = new Subject();
+    private _fieldRowDropFromSource: Subject<any> = new Subject();
+    private _fieldRowDropFromTarget: Subject<any> = new Subject();
 
     constructor(private dragulaService: DragulaService) {
         dragulaService.dropModel.subscribe(value => {
@@ -30,6 +32,12 @@ export class FieldDragDropService {
                 this._fieldDropFromSource.next();
             } else if (source === 'target') {
                 this._fieldDropFromTarget.next();
+            }
+        } else if (dragType === 'fields-row-bag') {
+            if (source === 'source') {
+                this._fieldRowDropFromSource.next();
+            } else if (source === 'target') {
+                this._fieldRowDropFromTarget.next();
             }
         }
     }
@@ -70,6 +78,14 @@ export class FieldDragDropService {
 
     get fieldDropFromTarget$(): Observable<any> {
         return this._fieldDropFromTarget.asObservable();
+    }
+
+    get fieldRowDropFromSource$(): Observable<any> {
+        return this._fieldRowDropFromSource.asObservable();
+    }
+
+    get fieldRowDropFromTarget$(): Observable<any> {
+        return this._fieldRowDropFromTarget.asObservable();
     }
 
     private shouldCopy(
