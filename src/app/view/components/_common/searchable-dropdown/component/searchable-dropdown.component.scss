@@ -6,7 +6,7 @@ searchable-dropdown {
         border-radius: 0;
         padding-right: $dropdown-height + $basic-padding;
         text-align: left;
-        width: 100%;
+        width: auto;
 
         &:hover,
         &:active,
@@ -17,6 +17,11 @@ searchable-dropdown {
 
         .ui-button-text {
             padding: 0;
+        }
+    }
+    &[fullWidth = true] { 
+        .ui-button {
+            width: 100%;
         }
     }
 }
