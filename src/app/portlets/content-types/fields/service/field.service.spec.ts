@@ -70,10 +70,9 @@ describe('FieldService', () => {
             expect(2).toBe(this.lastConnection.request.method); // 2 is PUT method
         });
 
-
         it('should set name and contentTypeId', () => {
             const requestBody = JSON.parse(this.lastConnection.request._body);
-            console.log('requestBody', requestBody);
+
             expect('1').toBe(requestBody[0].contentTypeId);
             expect('1').toBe(requestBody[1].contentTypeId);
             expect('fields-1').toBe(requestBody[1].name);

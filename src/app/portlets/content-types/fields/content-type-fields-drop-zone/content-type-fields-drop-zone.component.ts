@@ -61,9 +61,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             this.moveFields();
         });
 
-        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => {
-            this.moveFields();
-        });
+        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => this.moveFields());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -85,7 +83,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     saveFieldsHandler(fieldToSave: Field): void {
         const fields = this.getFieldsToSave(fieldToSave);
-        this.emitSaveFields(fields);
+        this.saveFields.emit(fields);
         this.toggleDialog();
     }
 
@@ -101,19 +99,11 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             }
         });
 
-        this.emitSaveFields(fields);
-    }
-
-    private emitSaveFields(fields: Field[]): void {
         this.saveFields.emit(fields);
     }
 
     private getFieldsToSave(fieldToSave: Field): Field[] {
-        if (this.formData.id) {
-            return [this.getUpdatedField(fieldToSave)];
-        } else {
-            return this.getNewFields(fieldToSave);
-        }
+        return this.formData.id ? [this.getUpdatedField(fieldToSave)] : this.getNewFields(fieldToSave);
     }
 
     private getUpdatedField(fieldToSave: Field): Field {
@@ -136,17 +126,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields();
         const result: Field[] = [];
 
-        for (let i = 0; i < fields.length; i++) {
-           if (FieldUtil.isNewField(fields[i])) {
-                fields[i].sortOrder = i + 1;
-
-                if (FieldUtil.isNotRowOrColumn(fields[i])) {
-                    result.push(Object.assign(fields[i], fieldToSave));
-                } else {
-                    result.push(fields[i]);
-                }
+        fields.forEach((field, index) => {
+           if (FieldUtil.isNewField(field)) {
+                field.sortOrder = index + 1;
+                const fieldToPush = FieldUtil.isRowOrColumn(field) ? field : Object.assign(field, fieldToSave);
+                result.push(fieldToPush);
             }
-        }
+        });
 
         return result;
     }
@@ -168,7 +154,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     setDroppedField(): void {
         const fields = this.getFields();
-        this.formData = fields.filter(field => FieldUtil.isNewField(field) && FieldUtil.isNotRowOrColumn(field))[0];
+        this.formData = fields.find(field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
     }
 
     /**
@@ -235,10 +221,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         return fields;
     }
 
+    /**
+     * Tigger the removeFields event with fieldToDelete
+     * @param fieldToDelete
+     */
     removeField(fieldToDelete: Field): void {
         this.removeFields.emit([fieldToDelete]);
     }
 
+    /**
+     * Tigger the removeFields event with all the fields in fieldRow
+     * @param fieldToDelete
+     */
     removeFieldRow(fieldRow: FieldRow): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
         const fieldsToDelete: Field[] = [];

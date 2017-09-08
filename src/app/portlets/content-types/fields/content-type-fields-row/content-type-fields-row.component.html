@@ -4,7 +4,7 @@
         class="row-header__remove"
         icon="fa-trash"
         [tooltipText]="i18nMessages['contenttypes.action.delete']"
-        (click)="removeRowHandler()">
+        (click)="onRemoveFieldRow()">
     </icon-button-tooltip>
 </div>
 <div class="row-columns">
@@ -24,7 +24,7 @@
         <content-type-field-dragabble-item 
             *ngFor="let field of column.fields"
             [field]="field"
-            (remove)="removeFieldHandler($event)"
+            (remove)="onRemoveField($event)"
             (edit)="this.editField.emit(field)">
         </content-type-field-dragabble-item>
     </span>

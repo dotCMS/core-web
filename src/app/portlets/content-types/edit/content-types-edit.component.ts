@@ -111,6 +111,10 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
         this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => this.data.fields = fields);
     }
 
+    /**
+     * Remove fields
+     * @param fieldsToDelete Fields to be removed
+     */
     removeFields(fieldsToDelete: Field[]): void {
         this.fieldService.deleteFields(this.data.id, fieldsToDelete)
             .pluck('fields')

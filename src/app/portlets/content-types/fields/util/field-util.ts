@@ -19,8 +19,8 @@ export class FieldUtil {
         return !field.id;
     }
 
-    static isNotRowOrColumn(field: Field) {
-        return !this.isRow(field) && !this.isColumn(field);
+    static isRowOrColumn(field: Field) {
+        return this.isRow(field) || this.isColumn(field);
     }
 
     /**

@@ -96,7 +96,7 @@ export class ContentTypesCreateComponent extends BaseComponent implements OnInit
     removeFields(fieldsToDelete: Field[]): void {
         this.fieldService.deleteFields(this.contentTypeId, fieldsToDelete)
         .pluck('fields')
-        .subscribe(fields => this.fields = <Field[]> fields);
+        .subscribe((fields: Field[]) => this.fields = fields);
     }
 
     private handleFormSubmissionResponse(res: ContentType[]): void {

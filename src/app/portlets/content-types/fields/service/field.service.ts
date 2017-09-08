@@ -32,7 +32,7 @@ export class FieldService {
         fields.forEach((field, index) => {
             field.contentTypeId = contentTypeId;
 
-            if (FieldUtil.isColumn(field) || FieldUtil.isRow(field)) {
+            if (FieldUtil.isRowOrColumn(field)) {
                 field.name = `fields-${index}`;
             }
 

@@ -36,7 +36,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
      * Remove a field
      * @param field field to remove
      */
-    removeFieldHandler(field: Field): void {
+    onRemoveField(field: Field): void {
         this.fieldRow.columns = this.fieldRow.columns.map(col => {
             const index: number = col.fields.indexOf(field);
 
@@ -59,7 +59,10 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
         return `${100 / nColumns}%`;
     }
 
-    removeRowHandler(): void {
+    /**
+     * Tigger the removeRow event whit the current FieldRow
+     */
+    onRemoveFieldRow(): void {
         this.removeRow.emit(this.fieldRow);
     }
 }

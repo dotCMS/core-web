@@ -56,7 +56,6 @@ class TestFieldDragDropService {
 }
 
 function becomeNewField(field) {
-    console.log('field', field);
     delete field.id;
 }
 
@@ -151,7 +150,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             name: 'nameField',
         };
         fieldRow.addFields([field]);
-
 
         comp.removeFields.subscribe(removeFields => fieldsToRemove = removeFields);
 

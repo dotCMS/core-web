@@ -18,27 +18,36 @@ export class FieldDragDropService {
 
     constructor(private dragulaService: DragulaService) {
         dragulaService.dropModel.subscribe(value => {
-            this.handleDropField(value[0], value[3].dataset.dragType);
+            this.handleDrop(value[0], value[3].dataset.dragType);
         });
 
         dragulaService.removeModel.subscribe(value => {
-            this.handleDropField(value[0], value[3].dataset.dragType);
+            this.handleDrop(value[0], value[3].dataset.dragType);
         });
     }
 
-    private handleDropField(dragType: string, source: string) {
+    private handleDrop(dragType: string, source: string) {
         if (dragType === 'fields-bag') {
-            if (source === 'source') {
-                this._fieldDropFromSource.next();
-            } else if (source === 'target') {
-                this._fieldDropFromTarget.next();
-            }
+            this.handleDropField(dragType, source);
         } else if (dragType === 'fields-row-bag') {
-            if (source === 'source') {
-                this._fieldRowDropFromSource.next();
-            } else if (source === 'target') {
-                this._fieldRowDropFromTarget.next();
-            }
+            this.handleDropFieldRow(dragType, source);
+
+        }
+    }
+
+    private handleDropField(dragType: string, source: string) {
+        if (source === 'source') {
+            this._fieldDropFromSource.next();
+        } else if (source === 'target') {
+            this._fieldDropFromTarget.next();
+        }
+    }
+
+    private handleDropFieldRow(dragType: string, source: string) {
+        if (source === 'source') {
+            this._fieldRowDropFromSource.next();
+        } else if (source === 'target') {
+            this._fieldRowDropFromTarget.next();
         }
     }
 
