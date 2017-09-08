@@ -19,11 +19,6 @@ searchable-dropdown {
             padding: 0;
         }
     }
-    &[fullWidth = true] { 
-        .ui-button {
-            width: 100%;
-        }
-    }
 }
 
 .searchable-dropdown__data-list {
