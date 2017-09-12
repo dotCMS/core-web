@@ -3,7 +3,6 @@ import { RoutingPrivateAuthService } from './api/services/routing-private-auth-s
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
 import { PatternLibrary } from './view/components/_common/pattern-library/pattern-library';
-import { NotLicensedComponent } from './view/components/not-licensed/not-licensed-component';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
@@ -40,8 +39,8 @@ const mainComponentChildren = [
         path: 'pl'
     },
     {
-        component: NotLicensedComponent,
-        path: 'notLicensed'
+        path: 'notLicensed',
+        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule',
     },
     {
         canActivate: [RoutingPrivateAuthService],
@@ -61,8 +60,8 @@ const angularChildren: any[] = [
         path: 'c/pl'
     },
     {
-        component: NotLicensedComponent,
-        path: 'c/notLicensed'
+        path: 'notLicensed',
+        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
     {
         canActivate: [RoutingPrivateAuthService],

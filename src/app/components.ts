@@ -17,7 +17,6 @@ import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.c
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainNavigation } from './view/components/main-navigation/main-navigation';
 import { MyAccountComponent } from './view/components/my-account/dot-my-account-component';
-import { NotLicensedComponent } from './view/components/not-licensed/not-licensed-component';
 import { NotificationsList, NotificationsItem } from './view/components/_common/notifications/notifications';
 import { PatternLibrary } from './view/components/_common/pattern-library/pattern-library';
 import { ResetPasswordComponent } from './view/components/login/reset-password-component/reset-password-component';
@@ -46,7 +45,6 @@ export const COMPONENTS = [
     MainCoreLegacyComponent,
     MainNavigation,
     MyAccountComponent,
-    NotLicensedComponent,
     NotificationsItem,
     NotificationsList,
     PatternLibrary,
