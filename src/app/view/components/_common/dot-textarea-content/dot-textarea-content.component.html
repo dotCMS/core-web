@@ -1,0 +1,4 @@
+<p-selectButton class="textarea-content__select-field" [options]="selectOptions" [(ngModel)]="selected"></p-selectButton>
+<textarea pInputTextarea class="textarea-content__plain-field" *ngIf="selected === 'plain'"></textarea>
+<div class="textarea-content__code-field" *ngIf="selected === 'code'"></div>
+<div class="textarea-content__wysiwyg-field" *ngIf="selected === 'wysiwyg'"></div>
