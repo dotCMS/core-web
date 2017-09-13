@@ -11,17 +11,17 @@ export class ForgotPasswordComponent {
     @Output() cancel = new EventEmitter<any>();
     @Output() recoverPassword = new EventEmitter<string>();
 
-    private forgotPasswordLogin: string;
+    public forgotPasswordLogin: string;
     private language = '';
 
     // labels
-    private cancelButton = '';
-    private forgotPasswordButton = '';
-    private forgotPasswordLabel = '';
-    private userIdOrEmailLabel = '';
+    public cancelButton = '';
+    public forgotPasswordButton = '';
+    public forgotPasswordLabel = '';
+    public userIdOrEmailLabel = '';
 
     // Messages
-    private emailMandatoryFieldError = '';
+    public emailMandatoryFieldError = '';
     private forgotPasswordConfirmationMessage = '';
 
     private i18nMessages: Array<string> = [
