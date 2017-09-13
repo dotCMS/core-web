@@ -1,4 +1,21 @@
-# DotcmsUi
+# DotCMS UI
+
+## Run in dev mode
+Watch and compile your files.
+
+1. ```npm run start```
+2. Open http://localhost:3000
+
+## Run in prod mode
+Watch and compile your files in prod mode and copy it into ```dotAdmin``` folder in core.
+
+1. ```npm run dotcms -- -op=your-path-to-dotadmin``` (ex. ~/dev/dotcms/tomcat8/webapps/ROOT/dotAdmin)
+2. Open http://localhost:8080/dotAdmin
+
+## Build to prod
+Compile your files in prod mode and copy it into ```dotAdmin``` folder in core.
+
+1. ```npm run build -- -op=your-path-to-dotadmin``` (ex. ~/dev/dotcms/tomcat8/webapps/ROOT/dotAdmin)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.0.
 
