@@ -3,8 +3,6 @@ import { Accordion, AccordionGroup } from './view/components/_common/accordion/a
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicatorComponent } from './view/components/_common/dot-loading-indicator/dot-loading-indicator.component';
 import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
-import { ForgotPasswordComponent } from './view/components/login/forgot-password-component/forgot-password-component';
-import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { GlobalSearch } from './view/components/global-search/global-search';
 import { GravatarComponent } from './view/components/_common/gravatar/gravatar.component';
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
@@ -18,7 +16,6 @@ import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main
 import { MainNavigation } from './view/components/main-navigation/main-navigation';
 import { MyAccountComponent } from './view/components/my-account/dot-my-account-component';
 import { NotificationsList, NotificationsItem } from './view/components/_common/notifications/notifications';
-import { PatternLibrary } from './view/components/_common/pattern-library/pattern-library';
 import { ResetPasswordComponent } from './view/components/login/reset-password-component/reset-password-component';
 import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
 import { ToolbarNotifications } from './view/components/toolbar-notifications/toolbar-notifications';
@@ -31,8 +28,6 @@ export const COMPONENTS = [
     CustomTimeComponent,
     DotLoadingIndicatorComponent,
     DropdownComponent,
-    ForgotPasswordComponent,
-    ForgotPasswordContainer,
     GlobalSearch,
     GravatarComponent,
     IframeLegacyComponent,
@@ -47,7 +42,6 @@ export const COMPONENTS = [
     MyAccountComponent,
     NotificationsItem,
     NotificationsList,
-    PatternLibrary,
     ResetPasswordComponent,
     ResetPasswordContainer,
     ToolbarAddContenletBodyComponent,

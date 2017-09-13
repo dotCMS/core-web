@@ -4,7 +4,7 @@ import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-forgot-password-component',
-    templateUrl: 'forgot-password-component.html'
+    templateUrl: 'forgot-password.component.html'
 })
 export class ForgotPasswordComponent {
     @Input() message: string;

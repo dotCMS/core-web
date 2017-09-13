@@ -2,7 +2,6 @@ import { RoutingPublicAuthService } from './api/services/routing-public-auth-ser
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
-import { PatternLibrary } from './view/components/_common/pattern-library/pattern-library';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
@@ -10,7 +9,6 @@ import { LoginPageComponent } from './view/components/login/login-page-component
 import { LoginContainer } from './view/components/login/login-component/login-container';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
-import { ForgotPasswordContainer } from './view/components/login/forgot-password-component/forgot-password-container';
 import { environment } from '../environments/environment';
 
 const angularComponents: any[] = [
@@ -35,12 +33,12 @@ const mainComponentChildren = [
         redirectTo: environment.production ? 'home' : 'pl'
     },
     {
-        component: PatternLibrary,
-        path: 'pl'
+        path: 'pl',
+        redirectTo: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
     },
     {
         path: 'notLicensed',
-        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule',
+        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
     {
         canActivate: [RoutingPrivateAuthService],
@@ -49,6 +47,7 @@ const mainComponentChildren = [
     }
 ];
 
+/*TODO: Should we remove 'angularChildren' since is not used anywhere ? */
 const angularChildren: any[] = [
     {
         path: '',
@@ -56,8 +55,8 @@ const angularChildren: any[] = [
         redirectTo: environment.production ? 'c/home' : 'c/pl'
     },
     {
-        component: PatternLibrary,
-        path: 'c/pl'
+        path: 'pl',
+        loadChildren: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
     },
     {
         path: 'notLicensed',
@@ -87,8 +86,8 @@ const appRoutes: Routes = [
         canActivate: [RoutingPublicAuthService],
         children: [
             {
-                component: ForgotPasswordContainer,
-                path: 'forgotPassword'
+                path: 'forgotPassword',
+                loadChildren: 'app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
             },
             {
                 component: LoginContainer,
