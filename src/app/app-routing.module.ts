@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
 import { LoginPageComponent } from './view/components/login/login-page-component';
-import { LoginContainer } from './view/components/login/login-component/login-container';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
 import { environment } from '../environments/environment';
@@ -34,7 +33,7 @@ const mainComponentChildren = [
     },
     {
         path: 'pl',
-        redirectTo: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
+        loadChildren: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
     },
     {
         path: 'notLicensed',
@@ -90,8 +89,8 @@ const appRoutes: Routes = [
                 loadChildren: 'app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
             },
             {
-                component: LoginContainer,
-                path: 'login'
+                path: 'login',
+                loadChildren: 'app/view/components/login/login-component/login.module#LoginModule'
             },
             {
                 component: ResetPasswordContainer,
@@ -131,8 +130,6 @@ const appRoutes: Routes = [
     ],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            // TODO: make sure we need this preloadingStrategy
-            preloadingStrategy: PreloadAllModules,
             useHash: true
         })
     ]

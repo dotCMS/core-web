@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, NgZone, Output, ViewEncapsulation } from '@angular/core';
-import { LoginData } from './login-container';
+import { LoginData } from './login-container.component';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
+
+
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-login-component',
-    templateUrl: 'login-component.html'
+    templateUrl: 'login.component.html'
 })
 export /**
  * The login component allows the user to fill all
@@ -94,7 +96,7 @@ class LoginComponent {
                 language: this.language,
                 login: this.myAccountLogin,
                 password: this.password,
-                remenberMe: this.myAccountRememberMe
+                rememberMe: this.myAccountRememberMe
             });
         } else {
             let error = '';

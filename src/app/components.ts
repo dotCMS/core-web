@@ -2,14 +2,10 @@
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotLoadingIndicatorComponent } from './view/components/_common/dot-loading-indicator/dot-loading-indicator.component';
-import { DropdownComponent } from './view/components/_common/dropdown-component/dropdown-component';
 import { GlobalSearch } from './view/components/global-search/global-search';
-import { GravatarComponent } from './view/components/_common/gravatar/gravatar.component';
 import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { LoginAsComponent } from './view/components/login-as/login-as';
-import { LoginComponent } from './view/components/login/login-component/login-component';
-import { LoginContainer } from './view/components/login/login-component/login-container';
 import { LoginPageComponent } from './view/components/login/login-page-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
@@ -27,14 +23,10 @@ export const COMPONENTS = [
     AccordionGroup,
     CustomTimeComponent,
     DotLoadingIndicatorComponent,
-    DropdownComponent,
     GlobalSearch,
-    GravatarComponent,
     IframeLegacyComponent,
     LogOutContainer,
     LoginAsComponent,
-    LoginComponent,
-    LoginContainer,
     LoginPageComponent,
     MainComponentLegacy,
     MainCoreLegacyComponent,
@@ -58,17 +50,7 @@ export const PIPES = [
     CapitalizePipe
 ];
 
-// CUSTOM DIRECTIVES
-import { MessageKeyDirective } from './view/directives/message-keys';
-import { DotRippleEffectDirective } from './view/directives/ripple/ripple-effect';
-import { MaterialDesignTextfield } from './view/directives/md-inputtext/md-inputtext';
 import {
     ToolbarAddContenletBodyComponent,
     ToolbarAddContenletComponent
 } from './view/components/toolbar-add-contentlet/toolbar-add-contentlet';
-
-export const DIRECTIVES = [
-    MessageKeyDirective,
-    DotRippleEffectDirective,
-    MaterialDesignTextfield
-];
