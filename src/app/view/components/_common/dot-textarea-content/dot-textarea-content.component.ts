@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem } from 'primeng/primeng'; 7;
 
 @Component({
     selector: 'dot-textarea-content',
@@ -8,7 +8,16 @@ import { SelectItem } from 'primeng/primeng';
 })
 export class DotTextareaContentComponent {
     @Input() selected = 'plain';
+    @Input() codeEditor: any = {
+        styles: {
+            height: '300px'
+        },
+        options: {
+            printMargin: false,
+        }
+    };
 
+    text = '';
     selectOptions: SelectItem[];
 
     constructor() {
