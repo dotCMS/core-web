@@ -41,4 +41,8 @@ export class DotTextareaContentComponent implements OnInit {
         }
         this.selected = this.selectOptions[0].value;
     }
+
+    onModelChange(value) {
+        this.value = value;
+    }
 }
