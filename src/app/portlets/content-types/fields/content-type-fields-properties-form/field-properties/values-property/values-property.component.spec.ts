@@ -65,7 +65,6 @@ describe('ValuesPropertyComponent', () => {
         expect(group).toEqual(divForm.componentInstance.group);
     });
 
-
     it('should have a field-message', () => {
         fixture.detectChanges();
 
@@ -74,5 +73,17 @@ describe('ValuesPropertyComponent', () => {
 
         expect(fieldValidationmessage).not.toBeNull();
         expect(comp.group.controls['values']).toBe(fieldValidationmessage.componentInstance.field);
+    });
+
+    it('should have value field', () => {
+        const valueField = de.query(By.css('dot-textarea-content'));
+        console.log(valueField);
+        expect(valueField).toBeTruthy();
+    });
+
+    it('should have value component with the right options', () => {
+        fixture.detectChanges();
+        expect(comp.value.show).toEqual(['code']);
+        expect(comp.value.height).toBe('90px');
     });
 });

@@ -103,7 +103,7 @@ describe('DotTextareaContentComponent', () => {
         );
         selectFieldWrapper.children.forEach(option => {
             const optionText = cleanOptionText(option.nativeElement.innerText);
-            expect(['Plain', 'Wysiwyg'].indexOf(optionText)).toBeGreaterThan(
+            expect(['Plain', 'WYSIWYG'].indexOf(optionText)).toBeGreaterThan(
                 -1,
                 `${optionText} exist`
             );

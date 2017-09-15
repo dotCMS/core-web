@@ -16,16 +16,22 @@ import { AceEditorComponent } from 'ng2-ace-editor';
     ]
 })
 export class DotTextareaContentComponent implements OnInit, ControlValueAccessor {
-    @Input() code: any = {
+    @ViewChild('ace') ace: AceEditorComponent;
+    @Input()
+    code: any = {
         mode: 'text',
         options: {}
     };
     @Input() height: string;
-    @Input() show = [];
+    @Input() show;
     @Input() value = '';
     @Input() width: string;
 
-    @ViewChild('ace') ace: AceEditorComponent;
+    private DEFAULT_OPTIONS: SelectItem[] = [
+        { label: 'Plain', value: 'plain' },
+        { label: 'Code', value: 'code' },
+        { label: 'WYSIWYG', value: 'wysiwyg' }
+    ];
 
     selectOptions: SelectItem[] = [];
     selected: string;
@@ -33,25 +39,17 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
 
     propagateChange = (_: any) => {};
 
-    constructor() {
-    }
+    constructor() {}
 
     ngOnInit() {
-        if (this.show.length) {
-            this.show.forEach(item => {
-                this.selectOptions.push({
-                    label: `${item.charAt(0).toUpperCase()}${item.slice(1)}`,
-                    value: item
-                });
-            });
-        } else {
-            this.selectOptions = [
-                { label: 'Plain', value: 'plain' },
-                { label: 'Code', value: 'code' },
-                { label: 'WYSIWYG', value: 'wysiwyg' }
-            ];
-        }
+        this.selectOptions = this.show
+            ? this.show.map(item => {
+                return this.DEFAULT_OPTIONS.find(option => option.value === item);
+            })
+            : this.DEFAULT_OPTIONS;
+
         this.selected = this.selectOptions[0].value;
+
         this.propagateChange(this.value);
 
         this.styles = {
