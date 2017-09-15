@@ -1,4 +1,5 @@
 <p-selectButton 
+    *ngIf="selectOptions.length > 1"
     class="textarea-content__select-field" 
     [options]="selectOptions"
     [(ngModel)]="selected">
@@ -6,7 +7,7 @@
 <textarea
     *ngIf="selected === 'plain'"
     class="textarea-content__plain-field" 
-    [(ngModel)]="text">
+    [(ngModel)]="value">
 </textarea>
 <ace-editor
     *ngIf="selected === 'code'"
@@ -18,10 +19,10 @@
     [durationBeforeCallback]="1000"
     [autoUpdateContent]="true"
     [ngStyle]="codeEditor.styles"
-    [(text)]="text">
+    [(text)]="value">
 </ace-editor>
 <app-tinymce
     *ngIf="selected === 'wysiwyg'"
     class="textarea-content__wysiwyg-field"
-    [(ngModel)]='text'>
+    [(ngModel)]="value">
 </app-tinymce>
