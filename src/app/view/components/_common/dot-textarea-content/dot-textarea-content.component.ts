@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectItem } from 'primeng/primeng';
+import { AceEditorComponent } from 'ng2-ace-editor';
 
 @Component({
     selector: 'dot-textarea-content',
@@ -15,19 +16,20 @@ import { SelectItem } from 'primeng/primeng';
     ]
 })
 export class DotTextareaContentComponent implements OnInit, ControlValueAccessor {
-    @Input() show = [];
-    @Input() codeEditor: any = {
-        styles: {
-            height: '300px'
-        },
-        options: {
-            printMargin: false,
-        }
+    @Input() code: any = {
+        mode: 'text',
+        options: {}
     };
-
+    @Input() height: string;
+    @Input() show = [];
     @Input() value = '';
+    @Input() width: string;
+
+    @ViewChild('ace') ace: AceEditorComponent;
+
     selectOptions: SelectItem[] = [];
     selected: string;
+    styles: any;
 
     propagateChange = (_: any) => {};
 
@@ -51,6 +53,11 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
         }
         this.selected = this.selectOptions[0].value;
         this.propagateChange(this.value);
+
+        this.styles = {
+            width: this.width || '100%',
+            height: this.height || '300px'
+        };
     }
 
     /**

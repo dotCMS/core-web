@@ -8,24 +8,25 @@
     *ngIf="selected === 'plain'"
     class="textarea-content__plain-field"
     (ngModelChange)="onModelChange($event)"
-    [ngModel]="value">
+    [ngModel]="value"
+    [ngStyle]="styles">
 </textarea>
 <ace-editor
     #ace
     *ngIf="selected === 'code'"
     class="textarea-content__code-field"
     theme="textmate"
-    mode="html"
+    [mode]="code.mode"
     [readOnly]="false"
-    [options]="codeEditor.options"
+    [options]="code.options"
     [durationBeforeCallback]="500"
     [autoUpdateContent]="true"
-    [ngStyle]="codeEditor.styles"
     (textChanged)="onModelChange($event)"
-    [text]="value">
+    [text]="value"
+    [ngStyle]="styles">
 </ace-editor>
 <app-tinymce
-    #mce
+    #wysiwyg
     *ngIf="selected === 'wysiwyg'"
     class="textarea-content__wysiwyg-field"
     (ngModelChange)="onModelChange($event)"
