@@ -77,7 +77,6 @@ describe('ValuesPropertyComponent', () => {
 
     it('should have value field', () => {
         const valueField = de.query(By.css('dot-textarea-content'));
-        console.log(valueField);
         expect(valueField).toBeTruthy();
     });
 
