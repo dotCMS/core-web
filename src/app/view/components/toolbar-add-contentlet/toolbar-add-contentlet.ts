@@ -45,11 +45,16 @@ export class ToolbarAddContenletBodyComponent {
 })
 export class ToolbarAddContenletComponent extends BaseComponent {
     @ViewChild(DropdownComponent) dropdown: DropdownComponent;
+    @Input() command?: ($event) => void;
 
-    private types: StructureTypeView[];
+    types: StructureTypeView[];
+    mainTypes: StructureTypeView[];
+    moreTypes: StructureTypeView[];
+    moreItems = [];
+    private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
     private recent: StructureTypeView[];
-    private structureTypeViewSelected: StructureTypeView[];
-    private showMore = false;
+    structureTypeViewSelected: StructureTypeView[];
+    showMore = false;
 
     private NUMBER_BY_PAGE = 4;
     private currentPage: number = -1;
@@ -65,22 +70,45 @@ export class ToolbarAddContenletComponent extends BaseComponent {
     ngOnInit(): void {
         this.contentletService.structureTypeView$.subscribe(structures => {
             this.types = structures;
-            this.recent = [];
 
-            this.types = this.types.filter(structure => {
-                    if (structure.name.startsWith('RECENT')) {
-                        this.recent.push(structure);
-                    } else {
-                        structure.types.forEach(type => {
-                            this.routingService.addPortletURL(type.name, type.action);
-                        });
+            this.recent = structures.filter(this.isRecentContentType);
+
+            this.types = structures.filter(structure => {
+                return !this.isRecentContentType(structure);
+            });
+
+            this.types.forEach(structure => {
+                structure.types.forEach(type => {
+                    this.routingService.addPortletURL(type.name, type.action);
+                });
+            });
+            this.mainTypes = this.getMainContentType(this.types);
+            this.moreTypes = this.getMoreContentTypes(this.types);
+
+            this.moreTypes.forEach(type => {
+                this.moreItems.push({
+                    label: type.label,
+                    icon: this.contentTypesInfoService.getIcon(type.name),
+                    command: () => {
+                        this.select(type);
                     }
-                    return !structure.name.startsWith('RECENT');
-                }
-            );
+                });
+            });
 
             this.nextRecent();
         });
+    }
+
+    private isRecentContentType(type: StructureTypeView): boolean {
+        return type.name.startsWith('RECENT');
+    }
+
+    getMainContentType(types: StructureTypeView[]): StructureTypeView[] {
+        return types.filter(type => this.MAIN_CONTENT_TYPES.includes(type.name));
+    }
+
+    getMoreContentTypes(types: StructureTypeView[]): StructureTypeView[] {
+        return types.filter(type => !this.MAIN_CONTENT_TYPES.includes(type.name));
     }
 
     select(selected: StructureTypeView): void {
