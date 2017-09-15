@@ -95,7 +95,7 @@ describe('DotTextareaContentComponent', () => {
         expect(wysiwygFieldTexarea == null).toBe(true, 'hide wysiwyg field');
     });
 
-    it('should have only options we passed in the select mode butons', () => {
+    it('should show only options we passed in the select mode butons', () => {
         component.show = ['wysiwyg', 'plain'];
         fixture.detectChanges();
         const selectFieldWrapper = de.query(
@@ -104,6 +104,21 @@ describe('DotTextareaContentComponent', () => {
         selectFieldWrapper.children.forEach(option => {
             const optionText = cleanOptionText(option.nativeElement.innerText);
             expect(['Plain', 'WYSIWYG'].indexOf(optionText)).toBeGreaterThan(
+                -1,
+                `${optionText} exist`
+            );
+        });
+    });
+
+    it('should show only the valid options we passed in the select mode butons', () => {
+        component.show = ['code', 'plain', 'sadf', 'hello', 'world'];
+        fixture.detectChanges();
+        const selectFieldWrapper = de.query(
+            By.css('.textarea-content__select-field .ui-selectbutton')
+        );
+        selectFieldWrapper.children.forEach(option => {
+            const optionText = cleanOptionText(option.nativeElement.innerText);
+            expect(['Plain', 'Code'].indexOf(optionText)).toBeGreaterThan(
                 -1,
                 `${optionText} exist`
             );

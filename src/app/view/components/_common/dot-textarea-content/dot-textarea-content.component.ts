@@ -43,9 +43,11 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
 
     ngOnInit() {
         this.selectOptions = this.show
-            ? this.show.map(item => {
-                return this.DEFAULT_OPTIONS.find(option => option.value === item);
-            })
+            ? this.show
+                .map(item => {
+                    return this.DEFAULT_OPTIONS.find(option => option.value === item);
+                })
+                .filter(item => item) // Remove undefined values in the array
             : this.DEFAULT_OPTIONS;
 
         this.selected = this.selectOptions[0].value;
