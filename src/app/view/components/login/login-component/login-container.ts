@@ -60,10 +60,10 @@ export class LoginContainer {
                 },
                 error => {
                     if (
-                        error.response.status === HttpCode.BAD_REQUEST ||
-                        error.response.status === HttpCode.UNAUTHORIZED
+                        error.status === HttpCode.BAD_REQUEST ||
+                        error.status === HttpCode.UNAUTHORIZED
                     ) {
-                        this.message = error.errorsMessages;
+                        this.message = JSON.parse(error._body).errors[0].message;
                     } else {
                         this.loggerService.debug(error);
                     }
