@@ -6,7 +6,6 @@ import { DotRouterService } from '../../../../api/services/dot-router-service';
     selector: 'dot-log-out-container',
     template: ''
 })
-
 export class LogOutContainer {
     constructor(loginService: LoginService, router: DotRouterService) {
         loginService.isLogin$.subscribe(isLogin => {

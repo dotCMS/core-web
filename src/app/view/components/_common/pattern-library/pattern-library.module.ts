@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { PatternLibraryComponent } from './pattern-library.component';
 import { NGFACES_MODULES } from './../../../../modules';
-
 // CUSTOM MDOULES
 import { ActionButtonModule } from '../action-button/action-button.module';
 import { ListingDataTableModule} from '../../listing-data-table/listing-data-table.module';
