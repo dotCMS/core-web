@@ -15,7 +15,6 @@ import {
     UserModel
 } from 'dotcms-js/dotcms-js';
 
-
 // Custom Directives
 import { MessageKeysModule } from '../view/directives/message-keys/message-keys.module';
 import { RippleEffectModule } from '../view/directives/ripple/ripple-effect.module';
@@ -33,17 +32,16 @@ import { GravatarModule } from '../view/components/_common/gravatar/gravatar.mod
         MessageKeysModule,
         RippleEffectModule,
         MdInputTextModule,
-
         DotDropdownModule,
         GravatarModule
     ],
     exports: [
         CommonModule,
-    // Custom Directives
+        // Custom Directives
         MessageKeysModule,
         RippleEffectModule,
         MdInputTextModule,
-    // Common Components
+        // Common Components
         DotDropdownModule,
         GravatarModule
     ],

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
+import { DotLoadingIndicatorModule  } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { ButtonModule, CheckboxModule, DropdownModule, InputTextModule } from 'primeng/primeng';
 
 import { LoginContainerComponent } from './login-container.component';
@@ -26,7 +26,8 @@ const routes: Routes = [
         CheckboxModule,
         DropdownModule,
         InputTextModule,
-        SharedModule
+        SharedModule,
+        DotLoadingIndicatorModule
     ],
     declarations: [
         LoginContainerComponent,

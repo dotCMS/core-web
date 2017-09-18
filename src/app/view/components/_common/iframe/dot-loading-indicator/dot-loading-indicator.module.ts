@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { GravatarComponent } from './gravatar.component';
+import {DotLoadingIndicatorComponent} from './dot-loading-indicator.component';
 
 @NgModule({
     imports: [
         CommonModule
     ],
     declarations: [
-        GravatarComponent
+        DotLoadingIndicatorComponent
     ],
     exports: [
-        GravatarComponent
+        DotLoadingIndicatorComponent
     ]
 })
-export class GravatarModule { }
+export class DotLoadingIndicatorModule { }

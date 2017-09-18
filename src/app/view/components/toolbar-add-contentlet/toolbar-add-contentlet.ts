@@ -44,10 +44,8 @@ export class ToolbarAddContenletBodyComponent {
 
 })
 export class ToolbarAddContenletComponent extends BaseComponent {
-
     @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
     @Input() command?: ($event) => void;
-
     types: StructureTypeView[];
     mainTypes: StructureTypeView[];
     moreTypes: StructureTypeView[];

@@ -1,7 +1,7 @@
 import { BaseComponent } from '../_common/_base/base-component';
 import { Component, ViewChild } from '@angular/core';
 import { DotRouterService } from '../../../api/services/dot-router-service';
-import {DotDropdownComponent} from '../_common/dropdown-component/dot-dropdown.component';
+import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
 import { LoginService, Auth, LoggerService } from 'dotcms-js/dotcms-js';
 import { MessageService } from '../../../api/services/messages-service';
 import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';

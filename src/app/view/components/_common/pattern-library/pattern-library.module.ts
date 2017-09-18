@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatternLibraryComponent } from './pattern-library.component';
 import { NGFACES_MODULES } from './../../../../modules';
 
-
 // CUSTOM MDOULES
 import { ActionButtonModule } from '../action-button/action-button.module';
 import { ListingDataTableModule} from '../../listing-data-table/listing-data-table.module';
@@ -14,7 +13,6 @@ import { FieldValidationMessageModule} from '../field-validation-message/file-va
 import { SiteSelectorModule} from '../site-selector/site-selector.module';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
 import { DotTextareaContentModule } from '../dot-textarea-content/dot-textarea-content.module';
-
 
 import { DotDropdownModule} from '../dropdown-component/dot-dropdown.module';
 
