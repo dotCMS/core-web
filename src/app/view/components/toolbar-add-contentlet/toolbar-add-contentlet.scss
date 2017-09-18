@@ -1,7 +1,6 @@
-@import "../../../../styles/mixins";
-@import "../../../../styles/variables";
-@import "../../../../styles/primeng-theme/utils/_theme-variables";
-
+@import "mixins";
+@import "variables";
+@import "theme-variables";
 
 .toolbar-add-contentlet__head {
     align-items: center;
