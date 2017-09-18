@@ -12,8 +12,6 @@ import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main
 import { MainNavigation } from './view/components/main-navigation/main-navigation';
 import { MyAccountComponent } from './view/components/my-account/dot-my-account-component';
 import { NotificationsList, NotificationsItem } from './view/components/_common/notifications/notifications';
-import { ResetPasswordComponent } from './view/components/login/reset-password-component/reset-password-component';
-import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
 import { ToolbarNotifications } from './view/components/toolbar-notifications/toolbar-notifications';
 import { ToolbarUserComponent } from './view/components/toolbar-user/toolbar-user';
 import { ToolbarComponent } from './view/components/toolbar/toolbar.component';
@@ -34,8 +32,6 @@ export const COMPONENTS = [
     MyAccountComponent,
     NotificationsItem,
     NotificationsList,
-    ResetPasswordComponent,
-    ResetPasswordContainer,
     ToolbarAddContenletBodyComponent,
     ToolbarAddContenletComponent,
     ToolbarComponent,

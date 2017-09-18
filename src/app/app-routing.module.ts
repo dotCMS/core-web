@@ -1,7 +1,6 @@
 import { RoutingPublicAuthService } from './api/services/routing-public-auth-service';
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { ResetPasswordContainer } from './view/components/login/reset-password-component/reset-password-container';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
@@ -93,8 +92,8 @@ const appRoutes: Routes = [
                 loadChildren: 'app/view/components/login/login-component/login.module#LoginModule'
             },
             {
-                component: ResetPasswordContainer,
-                path: 'resetPassword/:token'
+                path: 'resetPassword/:token',
+                loadChildren: 'app/view/components/login/reset-password-component/reset-password.module#ResetPasswordModule'
             }
         ],
         component: LoginPageComponent,

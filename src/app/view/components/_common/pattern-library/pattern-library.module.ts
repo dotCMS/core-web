@@ -4,27 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PatternLibraryComponent } from './pattern-library.component';
+import { NGFACES_MODULES } from './../../../../modules';
 
-import {
-  AutoCompleteModule,
-  BreadcrumbModule,
-  ButtonModule,
-  CalendarModule,
-  CheckboxModule,
-  ConfirmDialogModule,
-  DataTableModule,
-  DialogModule,
-  DropdownModule,
-  InputTextModule,
-  InputTextareaModule,
-  PasswordModule,
-  RadioButtonModule,
-  SharedModule,
-  SplitButtonModule,
-  TabViewModule,
-  ToolbarModule,
-  TreeTableModule
-} from 'primeng/primeng';
 
 // CUSTOM MDOULES
 import { ActionButtonModule } from '../action-button/action-button.module';
@@ -47,35 +28,16 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
     DotDropdownModule,
-
-    AutoCompleteModule,
-    BreadcrumbModule,
-    ButtonModule,
-    CalendarModule,
-    CheckboxModule,
-    ConfirmDialogModule,
-    DataTableModule,
-    DialogModule,
-    DropdownModule,
-    InputTextModule,
-    InputTextareaModule,
-    PasswordModule,
-    RadioButtonModule,
-    SharedModule,
-    SplitButtonModule,
-    TabViewModule,
-    ToolbarModule,
-    TreeTableModule,
-
+    ...NGFACES_MODULES,
     ActionButtonModule,
     ListingDataTableModule,
     FieldValidationMessageModule,
     SiteSelectorModule,
-    SearchableDropDownModule
+    SearchableDropDownModule,
+    RouterModule.forChild(routes),
   ],
   declarations: [
     PatternLibraryComponent
