@@ -8,7 +8,7 @@ import { DotRippleEffectDirective } from './ripple-effect.directive';
         CommonModule
     ],
     declarations: [
-      DotRippleEffectDirective
+        DotRippleEffectDirective
     ],
     exports: [
         DotRippleEffectDirective

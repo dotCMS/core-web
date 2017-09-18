@@ -19,29 +19,29 @@ import { SearchableDropDownModule } from '../searchable-dropdown/searchable-drop
 import { DotDropdownModule} from '../dropdown-component/dot-dropdown.module';
 
 const routes: Routes = [
-  {
-    component: PatternLibraryComponent,
-    path: ''
-  }
+    {
+        component: PatternLibraryComponent,
+        path: ''
+    }
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DotDropdownModule,
-    ...NGFACES_MODULES,
-    ActionButtonModule,
-    ListingDataTableModule,
-    FieldValidationMessageModule,
-    SiteSelectorModule,
-    SearchableDropDownModule,
-    RouterModule.forChild(routes),
-  ],
-  declarations: [
-    PatternLibraryComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        DotDropdownModule,
+        ...NGFACES_MODULES,
+        ActionButtonModule,
+        ListingDataTableModule,
+        FieldValidationMessageModule,
+        SiteSelectorModule,
+        SearchableDropDownModule,
+        RouterModule.forChild(routes),
+    ],
+    declarations: [
+        PatternLibraryComponent
+    ]
 })
 
 export class PatternLibraryModule { }

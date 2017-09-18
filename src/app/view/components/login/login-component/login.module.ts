@@ -11,10 +11,10 @@ import { LoginComponent } from './login.component';
 import { SharedModule} from '../../../../shared/shared.module';
 
 const routes: Routes = [
-  {
-    component: LoginContainerComponent,
-    path: ''
-  }
+    {
+        component: LoginContainerComponent,
+        path: ''
+    }
 ];
 
 @NgModule({

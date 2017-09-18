@@ -9,10 +9,10 @@ import { ResetPasswordContainerComponent} from './reset-password-container.compo
 import { ResetPasswordComponent} from './reset-password.component';
 
 const routes: Routes = [
-  {
-    component: ResetPasswordContainerComponent,
-    path: ''
-  }
+    {
+        component: ResetPasswordContainerComponent,
+        path: ''
+    }
 ];
 
 @NgModule({
