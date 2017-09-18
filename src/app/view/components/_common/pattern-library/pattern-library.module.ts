@@ -13,7 +13,7 @@ import { ListingDataTableModule} from '../../listing-data-table/listing-data-tab
 import { FieldValidationMessageModule} from '../field-validation-message/file-validation-message.module';
 import { SiteSelectorModule} from '../site-selector/site-selector.module';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
-
+import { DotTextareaContentModule } from '../dot-textarea-content/dot-textarea-content.module';
 
 
 import { DotDropdownModule} from '../dropdown-component/dot-dropdown.module';
@@ -31,6 +31,7 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         DotDropdownModule,
+        DotTextareaContentModule,
         ...NGFACES_MODULES,
         ActionButtonModule,
         ListingDataTableModule,
