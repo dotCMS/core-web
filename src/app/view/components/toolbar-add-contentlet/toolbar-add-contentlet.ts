@@ -50,7 +50,6 @@ export class ToolbarAddContenletComponent extends BaseComponent {
     types: StructureTypeView[];
     mainTypes: StructureTypeView[];
     moreTypes: StructureTypeView[];
-    moreItems = [];
     private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
     private recent: StructureTypeView[];
     structureTypeViewSelected: StructureTypeView[];
@@ -85,16 +84,6 @@ export class ToolbarAddContenletComponent extends BaseComponent {
             this.mainTypes = this.getMainContentType(this.types);
             this.moreTypes = this.getMoreContentTypes(this.types);
 
-            this.moreTypes.forEach(type => {
-                this.moreItems.push({
-                    label: type.label,
-                    icon: this.contentTypesInfoService.getIcon(type.name),
-                    command: () => {
-                        this.select(type);
-                    }
-                });
-            });
-
             this.nextRecent();
         });
     }
@@ -107,8 +96,16 @@ export class ToolbarAddContenletComponent extends BaseComponent {
         return types.filter(type => this.MAIN_CONTENT_TYPES.includes(type.name));
     }
 
-    getMoreContentTypes(types: StructureTypeView[]): StructureTypeView[] {
-        return types.filter(type => !this.MAIN_CONTENT_TYPES.includes(type.name));
+    getMoreContentTypes(types: StructureTypeView[]): any[] {
+        return types.filter(type => !this.MAIN_CONTENT_TYPES.includes(type.name)).map(type => {
+            return {
+                label: type.label,
+                icon: this.contentTypesInfoService.getIcon(type.name),
+                command: () => {
+                    this.select(type);
+                }
+            };
+        });
     }
 
     select(selected: StructureTypeView): void {

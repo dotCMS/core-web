@@ -4,6 +4,6 @@
     (onClick)="command()" 
     [model]="model" 
     [class.multiple-options]="model && model.length"
-    [class.toolbar-add-contentlet__head-button]="flat">
+    [class.toolbar-add-contentlet__flat-button]="flat">
 </p-splitButton>
-<span *ngIf="label" class="showMore">{{ label }}</span>
+<span *ngIf="label" class="toolbar-add-contentlet__show-more-label">{{ label }}</span>
