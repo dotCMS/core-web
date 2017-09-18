@@ -35,7 +35,7 @@ export class DotDropdownComponent {
     @Output() open = new EventEmitter<any>();
     @Output() toggle = new EventEmitter<boolean>();
     @Output() close = new EventEmitter<any>();
-    private show = false;
+    show = false;
 
     constructor(private elementRef: ElementRef) {}
 

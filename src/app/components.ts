@@ -1,9 +1,7 @@
 // CUSTOM COMPONENTS
 import { Accordion, AccordionGroup } from './view/components/_common/accordion/accordion';
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
-import { DotLoadingIndicatorComponent } from './view/components/_common/dot-loading-indicator/dot-loading-indicator.component';
 import { GlobalSearch } from './view/components/global-search/global-search';
-import { IframeLegacyComponent } from './view/components/iframe-legacy/iframe-legacy-component';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { LoginAsComponent } from './view/components/login-as/login-as';
 import { LoginPageComponent } from './view/components/login/login-page-component';
@@ -20,9 +18,7 @@ export const COMPONENTS = [
     Accordion,
     AccordionGroup,
     CustomTimeComponent,
-    DotLoadingIndicatorComponent,
     GlobalSearch,
-    IframeLegacyComponent,
     LogOutContainer,
     LoginAsComponent,
     LoginPageComponent,
