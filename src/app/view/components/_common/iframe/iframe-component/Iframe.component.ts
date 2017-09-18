@@ -1,4 +1,12 @@
-import { Component, ElementRef, ViewEncapsulation, OnInit, OnChanges, Input, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    ViewEncapsulation,
+    OnInit,
+    OnChanges,
+    Input,
+    ViewChild
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
@@ -10,16 +18,16 @@ import { IframeOverlayService } from '../../../../../api/services/iframe-overlay
     styleUrls: ['./iframe.component.scss'],
     templateUrl: 'iframe.component.html'
 })
-export class IFrameComponent implements OnInit, OnChanges, AfterViewInit {
+export class IframeComponent implements OnInit, OnChanges {
     private readonly DEFAULT_LOCATION = {
         pathname: '',
         href: ''
     };
 
     @Input() src: string;
+    @ViewChild('iframeElement') iframeElement: ElementRef;
 
-    iframe: SafeResourceUrl;
-    iframeElement;
+    iframeURL: SafeResourceUrl;
     loadingInProgress = true;
     showOverlay = false;
 
@@ -39,13 +47,9 @@ export class IFrameComponent implements OnInit, OnChanges, AfterViewInit {
         this.element.nativeElement.style.height = window.innerHeight - 64 + 'px';
     }
 
-    ngAfterViewInit(): void {
-        this.iframeElement = this.element.nativeElement.querySelector('iframe');
-    }
-
     ngOnChanges(changes): void {
         if (changes.src && changes.src.currentValue) {
-            this.iframe = this.loadURL(changes.src.currentValue);
+            this.iframeURL = this.loadURL(changes.src.currentValue);
         }
     }
 
@@ -59,7 +63,7 @@ export class IFrameComponent implements OnInit, OnChanges, AfterViewInit {
         }, 0);
     }
 
-    loadURL(url: string): SafeResourceUrl {
+    private loadURL(url: string): SafeResourceUrl {
         let urlWithParameters = url;
 
         this.loadingInProgress = true;
@@ -78,8 +82,8 @@ export class IFrameComponent implements OnInit, OnChanges, AfterViewInit {
      * then logout the user from angular session
      */
     checkSessionExpired(): void {
-        if (this.iframeElement && this.iframeElement.contentWindow) {
-            const currentPath = this.iframeElement.contentWindow.location.pathname;
+        if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
+            const currentPath = this.iframeElement.nativeElement.contentWindow.location.pathname;
 
             if (currentPath.indexOf('/c/portal_public/login') !== -1) {
                 this.loginService.logOutUser().subscribe(
@@ -92,15 +96,19 @@ export class IFrameComponent implements OnInit, OnChanges, AfterViewInit {
         }
     }
 
+    /**
+     * Reload the iframe with the current URL
+     * @memberof IframeComponent
+     */
     reload(): void {
-        if (this.iframeElement && this.iframeElement.contentWindow) {
+        if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
             this.loadingInProgress = true;
-            this.iframeElement.contentWindow.location.reload();
+            this.iframeElement.nativeElement.contentWindow.location.reload();
         }
     }
 
     get location(): any {
-        return this.iframeElement && this.iframeElement.contentWindow ?
-                    this.iframeElement.contentWindow.location : this.DEFAULT_LOCATION;
+        return this.iframeElement && this.iframeElement.nativeElement.contentWindow ?
+                    this.iframeElement.nativeElement.contentWindow.location : this.DEFAULT_LOCATION;
     }
 }

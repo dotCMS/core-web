@@ -87,7 +87,7 @@ export class IFramePortletLegacyComponent  implements OnInit {
         });
     }
 
-    initComponent(): void {
+    private initComponent(): void {
         this.route.params.pluck('id').subscribe((id: string) => {
             this.url = this.routingService.getPortletURL(id);
         });
@@ -99,6 +99,10 @@ export class IFramePortletLegacyComponent  implements OnInit {
         });
     }
 
+    /**
+     * Tigger when the current site is changed, this method reload the iframe if is neccesary
+     * @memberof IFramePortletLegacyComponent
+     */
     changeSiteReload(): void {
 
         if (this.iframe.location.href !== 'about:blank' && // For IE11
