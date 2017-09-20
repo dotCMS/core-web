@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Field } from '../shared';
 import { MessageService } from '../../../../api/services/messages-service';
+import { FIELD_ICONS } from '../content-types-fields-list/content-types-fields-icon-map';
 
 /**
  * This display field after being dropped into a Content Type Drop zone
@@ -21,5 +22,13 @@ export class ContentTypesFieldDragabbleItemComponent extends BaseComponent {
 
     constructor(messageService: MessageService) {
         super(['contenttypes.action.edit', 'contenttypes.action.delete'], messageService);
+    }
+
+    /**
+     * Get Field icon by field's class
+     * @param fieldClazz
+     */
+    getIcon(fieldClazz: string): string {
+        return FIELD_ICONS[fieldClazz];
     }
 }

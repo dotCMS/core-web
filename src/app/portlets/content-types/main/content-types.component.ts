@@ -17,6 +17,7 @@ import { MessageService } from '../../../api/services/messages-service';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'content-types',
+    styleUrls: ['./content-types.component.scss'],
     templateUrl: 'content-types.component.html'
 })
 export class ContentTypesPortletComponent extends BaseComponent {
