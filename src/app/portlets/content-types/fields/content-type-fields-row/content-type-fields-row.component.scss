@@ -28,7 +28,6 @@
 
 .row-columns__item {
     margin: 0 $basic-padding / 2;
-    display: -webkit-flex; /* Safari */
     display: flex;
     flex-direction: column;
     
@@ -46,9 +45,15 @@
     width: 100%;
     border: solid 1px $gray-lighter;
     color: $gray-light;
-    min-height: 25px;
+    min-height: 48px;
     
     flex: 1;
+
+    min-height: 48px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .row-header {
