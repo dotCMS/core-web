@@ -1,6 +1,6 @@
 <accordion>
     <nav #menuElement>
-        <ng-template ngFor let-menu [ngForOf]="menuItems" [ngForTrackBy]="trackBy">
+        <ng-template ngFor let-menu [ngForOf]="menuItems" >
 
             <accordion-group [heading]="menu.tabName" [icon]="menu.tabIcon" [open]="menu.isOpen">
                 <div class="main-nav__submenu">
@@ -21,7 +21,7 @@
 
                             {{menuItem.name}}
                         </a>
-                    </ng-template>
+                    </ng-template>tra
                 </div>
             </accordion-group>
         </ng-template>
