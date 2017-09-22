@@ -79,7 +79,7 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
     public deleteContentType($event): void {
         this.confirmationService.confirm({
             accept: () => {
-                this.crudService.delete(`v1/contenttype/id/`, this.data.id).subscribe(data => {
+                this.crudService.delete(`v1/contenttype/id`, this.data.id).subscribe(data => {
                     this.router.navigate(['../'], { relativeTo: this.route });
                 });
             },
