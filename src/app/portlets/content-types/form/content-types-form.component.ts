@@ -47,7 +47,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     @Input() icon: string;
     @Input() name: string;
     @Input() type: string;
-    @Output() onCancel: EventEmitter<any> = new EventEmitter();
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
@@ -80,14 +79,14 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.content.variable',
                 'contenttypes.form.label.workflow',
                 'contenttypes.form.hint.error.only.default.scheme.available.in.Community',
-                'contenttypes.action.cancel',
                 'contenttypes.form.label.description',
                 'contenttypes.form.name',
                 'contenttypes.action.save',
                 'contenttypes.action.update',
                 'contenttypes.action.edit',
                 'contenttypes.action.delete',
-                'contenttypes.form.name.error.required'
+                'contenttypes.form.name.error.required',
+                'contenttypes.action.form.hide'
             ],
             messageService
         );
@@ -131,19 +130,14 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         if (changes.data && changes.data.currentValue) {
             this.populateForm();
             this.addEditModeSpecificFields();
+            this.actionButtonLabel = this.isEditMode
+                ? this.i18nMessages['contenttypes.action.update']
+                : this.i18nMessages['contenttypes.action.save'];
         }
 
         if (changes.type && changes.type.currentValue === 'content') {
             this.addContentSpecificFields();
         }
-    }
-
-    /**
-     * Trigger the even of cancel form
-     * @param $event
-     */
-    public onCancelHandle($event): void {
-        this.onCancel.emit($event);
     }
 
     /**
@@ -181,7 +175,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     get isEditMode(): boolean {
-        return !!this.data;
+        return !!this.data && this.data.id;
     }
 
     private addContentSpecificFields(): void {
@@ -279,7 +273,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
 
         if (this.form.get('urlMapPattern')) {
-            formData.detailPage = this.data.urlMapPattern || '';
+            formData.urlMapPattern = this.data.urlMapPattern || '';
         }
 
         this.form.setValue(formData);
