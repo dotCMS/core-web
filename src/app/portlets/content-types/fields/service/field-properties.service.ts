@@ -51,7 +51,7 @@ export class FieldPropertyService {
      */
     getDefaultValue(propertyName: string, fieldTypeClass?: string): any {
         if (propertyName === 'dataType') {
-            return DATA_TYPE_PROPERTY_INFO[fieldTypeClass] ? DATA_TYPE_PROPERTY_INFO[fieldTypeClass][0].value : null;
+            return DATA_TYPE_PROPERTY_INFO[fieldTypeClass] ? DATA_TYPE_PROPERTY_INFO[fieldTypeClass][0].value : null; 
         } else {
             return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].defaultValue : null;
         }
