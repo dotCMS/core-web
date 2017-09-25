@@ -1,24 +1,20 @@
 <accordion>
     <nav #menuElement>
-        <ng-template ngFor let-menu [ngForOf]="menuItems" >
-
+        <ng-template ngFor let-menu [ngForOf]="menuItems | async" >
             <accordion-group [heading]="menu.tabName" [icon]="menu.tabIcon" [open]="menu.isOpen">
                 <div class="main-nav__submenu">
                     <ng-template ngFor let-menuItem [ngForOf]="menu.menuItems">
-                        <a ripple (click)="gotToPage($event, menuItem.menuLink)" [routerLink]="[menuItem.menuLink]"
+                        <a ripple (click)="onClick($event, menuItem.id)" [routerLink]="menuItem.menuLink"
                            *ngIf="menuItem.url && !menuItem.angular && !menuItem.ajax"
-                           [class.main-nav__submenu--active]="menuItemIdActive === menuItem.id">
-
+                           [class.main-nav__submenu--active]="isActive(menuItem.id)">
                             {{menuItem.name}}
                         </a>
                         <a ripple [routerLink]="[menuItem.url]" *ngIf="menuItem.angular && !menuItem.ajax"
-                           [class.main-nav__submenu--active]="menuItemIdActive === menuItem.id">
-
+                           [class.main-nav__submenu--active]="isActive(menuItem.id)">
                             {{menuItem.name}}
                         </a>
-                        <a ripple (click)="gotToPage($event, menuItem.menuLink)" [routerLink]="[menuItem.menuLink]" *ngIf="menuItem.url && menuItem.ajax"
-                            [class.main-nav__submenu--active]="menuItemIdActive === menuItem.id">
-
+                        <a ripple (click)="onClick($event, menuItem.id)" [routerLink]="[menuItem.menuLink]" *ngIf="menuItem.url && menuItem.ajax"
+                            [class.main-nav__submenu--active]="isActive(menuItem.id)">
                             {{menuItem.name}}
                         </a>
                     </ng-template>

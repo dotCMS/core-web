@@ -28,7 +28,7 @@ export class LoginContainerComponent {
 
     constructor(
         private loginService: LoginService,
-        private router: DotRouterService,
+        private dotRouterService: DotRouterService,
         private httprequestUtils: HttpRequestUtils,
         private loggerService: LoggerService
     ) {
@@ -56,7 +56,7 @@ export class LoginContainerComponent {
             .subscribe(
                 (result: any) => {
                     this.message = '';
-                    this.router.goToMain();
+                    this.dotRouterService.goToMain();
                 },
                 (error: ResponseView) => {
                     if (
@@ -76,7 +76,7 @@ export class LoginContainerComponent {
      * Display the forgot password card
      */
     showForgotPassword(): void {
-        this.router.goToForgotPassword();
+        this.dotRouterService.goToForgotPassword();
     }
 
     private getErrorMessage(origMessage: string): string {

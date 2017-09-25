@@ -14,7 +14,7 @@ import { NotLicensedService } from './api/services/not-licensed-service';
 import { NotificationsService } from './api/services/notifications-service';
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
 import { RoutingPublicAuthService } from './api/services/routing-public-auth-service';
-import { RoutingService } from './api/services/routing-service';
+import { DotNavigationService } from './api/services/dot-navigation.service';
 import { StringFormat } from './api/util/stringFormat';
 import { PaginatorService } from './api/services/paginator';
 
@@ -37,7 +37,7 @@ const PROVIDERS: any[] = [
     PaginatorService,
     RoutingPrivateAuthService,
     RoutingPublicAuthService,
-    RoutingService,
+    DotNavigationService,
     StringFormat,
 ];
 

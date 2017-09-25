@@ -1,17 +1,29 @@
 import { BaseComponent } from '../_common/_base/base-component';
-import { Component, ViewChild, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    ViewChild,
+    Input,
+    Output,
+    EventEmitter,
+    ViewEncapsulation,
+    OnInit
+} from '@angular/core';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { ContentletService, StructureTypeView, ContentTypeView } from '../../../api/services/contentlet-service';
+import {
+    ContentletService,
+    StructureTypeView,
+    ContentTypeView
+} from '../../../api/services/contentlet-service';
 import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
 import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';
 import { MessageService } from '../../../api/services/messages-service';
-import { RoutingService } from '../../../api/services/routing-service';
+import { DotRouterService } from '../../../api/services/dot-router-service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'toolbar-add-contentlet-body',
     styleUrls: ['./toolbar-add-contentlet-body.scss'],
-    templateUrl: 'toolbar-add-contentlet-body.html',
+    templateUrl: 'toolbar-add-contentlet-body.html'
 })
 export class ToolbarAddContenletBodyComponent {
     @Input() structureTypeViews: StructureTypeView[];
@@ -20,10 +32,10 @@ export class ToolbarAddContenletBodyComponent {
     @Output() select = new EventEmitter<any>();
     @Output() more = new EventEmitter<any>();
 
-    constructor(private routingService: RoutingService) {}
+    constructor(private dotRouterService: DotRouterService) {}
 
     goToAddContent(contentTypeView: ContentTypeView): boolean {
-        this.routingService.goToPortlet(contentTypeView.name);
+        this.dotRouterService.goToURL(contentTypeView.name);
         this.select.emit();
         return false;
     }
@@ -40,28 +52,29 @@ export class ToolbarAddContenletBodyComponent {
     providers: [ContentletService],
     selector: 'toolbar-add-contentlet',
     styleUrls: ['./toolbar-add-contentlet.scss'],
-    templateUrl: 'toolbar-add-contentlet.html',
-
+    templateUrl: 'toolbar-add-contentlet.html'
 })
-export class ToolbarAddContenletComponent extends BaseComponent {
+export class ToolbarAddContenletComponent extends BaseComponent implements OnInit {
     @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
     @Input() command?: ($event) => void;
+
     types: StructureTypeView[];
     mainTypes: StructureTypeView[];
     moreTypes: StructureTypeView[];
-    private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
-    private recent: StructureTypeView[];
     structureTypeViewSelected: StructureTypeView[];
     showMore = false;
 
+    private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
+    private recent: StructureTypeView[];
     private NUMBER_BY_PAGE = 4;
     private currentPage: number = -1;
     private selectedName = '';
 
-    constructor(private contentletService: ContentletService, private routingService: RoutingService,
-                 messageService: MessageService, private iframeOverlayService: IframeOverlayService,
-                 private contentTypesInfoService: ContentTypesInfoService) {
-
+    constructor(
+        private contentletService: ContentletService,
+        messageService: MessageService,
+        private contentTypesInfoService: ContentTypesInfoService
+    ) {
         super(['more'], messageService);
     }
 
@@ -77,7 +90,8 @@ export class ToolbarAddContenletComponent extends BaseComponent {
 
             this.types.forEach(structure => {
                 structure.types.forEach(type => {
-                    this.routingService.addPortletURL(type.name, type.action);
+                    // TODO: bring this back
+                    // this.dotRouterService.addPortletURL(type.name, type.action);
                 });
             });
             this.mainTypes = this.getMainContentType(this.types);
@@ -85,10 +99,6 @@ export class ToolbarAddContenletComponent extends BaseComponent {
 
             this.nextRecent();
         });
-    }
-
-    private isRecentContentType(type: StructureTypeView): boolean {
-        return type.name.startsWith('RECENT');
     }
 
     getMainContentType(types: StructureTypeView[]): StructureTypeView[] {
@@ -108,12 +118,15 @@ export class ToolbarAddContenletComponent extends BaseComponent {
     }
 
     select(selected: StructureTypeView): void {
-        if (this.structureTypeViewSelected !== this.recent && this.structureTypeViewSelected[0] === selected) {
+        if (
+            this.structureTypeViewSelected !== this.recent &&
+            this.structureTypeViewSelected[0] === selected
+        ) {
             this.currentPage = -1;
             this.nextRecent();
             this.selectedName = '';
-        }else {
-            this.structureTypeViewSelected = [ selected ];
+        } else {
+            this.structureTypeViewSelected = [selected];
             this.showMore = false;
             this.selectedName = selected.name;
         }
@@ -128,7 +141,8 @@ export class ToolbarAddContenletComponent extends BaseComponent {
         this.showMore = false;
 
         this.structureTypeViewSelected = this.recent.map(structureTypeView => {
-            const currentPage = this.currentPage % (structureTypeView.types.length / this.NUMBER_BY_PAGE );
+            const currentPage =
+                this.currentPage % (structureTypeView.types.length / this.NUMBER_BY_PAGE);
             this.showMore = this.showMore || structureTypeView.types.length > this.NUMBER_BY_PAGE;
 
             const startIndex = currentPage * this.NUMBER_BY_PAGE;
@@ -140,5 +154,9 @@ export class ToolbarAddContenletComponent extends BaseComponent {
                 types: structureTypeView.types.slice(startIndex, endIndex)
             };
         });
+    }
+
+    private isRecentContentType(type: StructureTypeView): boolean {
+        return type.name.startsWith('RECENT');
     }
 }

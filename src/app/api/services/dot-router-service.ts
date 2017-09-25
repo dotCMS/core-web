@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from 'dotcms-js/dotcms-js';
+
+import { PortletNav } from '../../shared/models/navigation';
 
 @Injectable()
 export class DotRouterService {
-    constructor(private router: Router, private loginService: LoginService) {}
+    constructor(private router: Router) {}
+
+    get currentPortlet(): PortletNav {
+        return {
+            url: this.router.routerState.snapshot.url,
+            id: this.getPortletId(this.router.routerState.snapshot.url)
+        };
+    }
 
     public goToMain(): void {
-        this.router.navigate(['/c']);
+        this.router.navigate(['/']);
     }
 
     public goToLogin(parameters?: any): void {
@@ -31,7 +39,8 @@ export class DotRouterService {
     }
 
     public gotoPortlet(portletId: string): void {
-        this.router.navigate([`c/${portletId.replace(' ', '_')}`]);
+        debugger;
+        this.router.navigate([portletId]);
     }
 
     public goToForgotPassword(): void {
@@ -40,5 +49,10 @@ export class DotRouterService {
 
     public goToNotLicensed(): void {
         this.router.navigate(['c/notLicensed']);
+    }
+
+    public getPortletId(url: string): string {
+        const urlSplit = url.split('/');
+        return urlSplit[urlSplit.length - 1];
     }
 }

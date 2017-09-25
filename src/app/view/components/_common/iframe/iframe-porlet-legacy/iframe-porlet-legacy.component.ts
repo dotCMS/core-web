@@ -1,45 +1,70 @@
-import { Component, ElementRef, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
-import { LoginService, SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
+import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
+import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
 import { ActivatedRoute } from '@angular/router';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { MessageService } from '../../../../../api/services/messages-service';
-import { RoutingService } from '../../../../../api/services/routing-service';
-import { IframeOverlayService } from '../service/iframe-overlay-service';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { DotNavigationService } from '../../../../../api/services/dot-navigation.service';
+import { Observable } from 'rxjs/Observable';
+import { DotRouterService } from '../../../../../api/services/dot-router-service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-iframe-porlet',
     templateUrl: 'iframe-porlet-legacy.component.html'
 })
-export class IFramePortletLegacyComponent  implements OnInit {
-    @ViewChild ('iframe') iframe;
-    url: SafeResourceUrl;
+export class IframePortletLegacyComponent implements OnInit {
+    @ViewChild('iframe') iframe;
+    url: Observable<SafeResourceUrl>;
 
     constructor(
         private dotcmsEventsService: DotcmsEventsService,
         private route: ActivatedRoute,
-        private routingService: RoutingService,
+        private dotNavigationService: DotNavigationService,
+        private dotRouterService: DotRouterService,
         public loggerService: LoggerService,
         public siteService: SiteService
     ) {
-        /**
-         * Subscribe to the portletUrl$ changes to force the
-         * reload of a portlet in the iframe legacy component
-         * when the user click the subnav link and the user is on the
-         * same portlet or other
-         */
-        routingService.portletUrl$.subscribe(url => {
-            this.reloadIframePortlet(url);
-        });
     }
 
     ngOnInit(): void {
-        this.siteService.switchSite$.subscribe(site => {
-            this.changeSiteReload();
+        this.dotNavigationService.portletReload$.subscribe(this.changeSiteReload.bind(this));
+        this.siteService.switchSite$.subscribe(this.changeSiteReload.bind(this));
+        this.setUrlFromRouteParams();
+        this.bindGlobalEvents();
+    }
+
+    /**
+     * Tigger when the current site is changed, this method reload the iframe if is neccesary
+     * @memberof IframePortletLegacyComponent
+     */
+    changeSiteReload(): void {
+        if (this.urlItsNotBlank && this.dotRouterService.currentPortlet.id !== 'sites') {
+            this.iframe.reload();
+        }
+    }
+
+    private urlItsNotBlank(): boolean {
+        return (
+            this.iframe.location.href !== 'about:blank' && this.iframe.location.pathname !== 'blank'
+        );
+    }
+
+    private setUrlFromRouteParams(): void {
+        this.url = this.route.params
+            .pluck('id')
+            .map(res => {
+                debugger;
+                return res;
+            })
+            .mergeMap((id: string) => this.dotNavigationService.getPortletURL(id));
+
+        this.route.queryParams.pluck('url').subscribe((url: string) => {
+            if (url) {
+                this.url = Observable.of(url);
+            }
         });
+    }
 
-        this.initComponent();
-
+    private bindGlobalEvents(): void {
         const events: string[] = [
             'SAVE_FOLDER',
             'UPDATE_FOLDER',
@@ -76,7 +101,7 @@ export class IFramePortletLegacyComponent  implements OnInit {
         ];
 
         this.dotcmsEventsService.subscribeToEvents(events).subscribe(eventTypeWrapper => {
-            if (this.routingService.currentPortletId === 'site-browser') {
+            if (this.dotRouterService.currentPortlet.id === 'site-browser') {
                 this.loggerService.debug(
                     'Capturing Site Browser event',
                     eventTypeWrapper.eventType,
@@ -85,44 +110,5 @@ export class IFramePortletLegacyComponent  implements OnInit {
                 // TODO: When we finish the migration of the site browser this event will be handle.....
             }
         });
-    }
-
-    private initComponent(): void {
-        this.route.params.pluck('id').subscribe((id: string) => {
-            this.url = this.routingService.getPortletURL(id);
-        });
-
-        this.route.queryParams.pluck('url').subscribe((url: string) => {
-            if (url) {
-                this.url = url;
-            }
-        });
-    }
-
-    /**
-     * Tigger when the current site is changed, this method reload the iframe if is neccesary
-     * @memberof IFramePortletLegacyComponent
-     */
-    changeSiteReload(): void {
-
-        if (this.iframe.location.href !== 'about:blank' && // For IE11
-            this.iframe.location.pathname !== 'blank' &&
-            this.routingService.currentPortletId !== 'sites'
-        ) {
-            this.iframe.reload();
-        }
-    }
-
-    /**
-     * Force to reload the current iframe component portlet,
-     * with the specified portlet url
-     * @param url Url of the portlet to display
-     */
-    reloadIframePortlet(url: string): void {
-        if (url !== undefined && url !== '') {
-            const urlSplit = url.split('/');
-            const id = urlSplit[urlSplit.length - 1];
-            this.url = this.routingService.getPortletURL(id);
-        }
     }
 }

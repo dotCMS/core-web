@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { RoutingService } from './routing-service';
+import { DotNavigationService } from './dot-navigation.service';
 import { Observable, Observer } from 'rxjs/Rx';
 import { DotcmsConfig, LoginService } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './dot-router-service';
@@ -8,65 +8,45 @@ import { DotRouterService } from './dot-router-service';
 @Injectable()
 export class RoutingPrivateAuthService implements CanActivate {
     constructor(
-        private router: DotRouterService,
-        private routingService: RoutingService,
+        private dotRouterService: DotRouterService,
+        private dotNavigationService: DotNavigationService,
         private loginService: LoginService,
         private dotcmsConfig: DotcmsConfig
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return Observable.create(obs => {
-            this.loginService.isLogin$.subscribe(isLogin => {
-                if (isLogin) {
-                    this.dotcmsConfig.getConfig().subscribe(configParams => {
-                        if (state.url.indexOf('home') > -1) {
-                            if (this.routingService.firstPortlet) {
-                                this.goToFirstPortlet(obs);
-                            } else {
-                                this.routingService.menusChange$.subscribe(res => {
-                                    this.goToFirstPortlet(obs);
-                                });
-                            }
-                        } else {
-                            this.checkAccess(state.url).subscribe(checkAccess => {
-                                if (!checkAccess) {
-                                    this.router.goToMain();
-                                }
-                                obs.next(checkAccess);
-                            });
-                        }
-                    });
-                } else {
-                    this.router.goToLogin();
-                    obs.next(false);
+        debugger;
+        return this.loginService.isLogin$.do(isLogin => {
+            if (!isLogin) {
+                this.dotRouterService.goToLogin();
+            } else if (state.url === '/') {
+                this.dotNavigationService.goToFirstPortlet();
+            }
+            return isLogin;
+        });
+    }
+
+    canActivateChild(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<boolean> {
+        debugger;
+        // this.dotNavigationService.isPortletInMenu(state.url).subscribe(res => {
+        //     debugger;
+        //     console.log(res);
+        // });
+        // return Observable.of(true);
+
+        return this.dotNavigationService.isPortletInMenu(this.dotRouterService.getPortletId(state.url))
+            .defaultIfEmpty(false)
+            .map(res => {
+                debugger;
+                if (!res) {
+                    this.dotNavigationService.goToFirstPortlet();
                 }
+                return res;
             });
-        }).take(1);
-    }
 
-    private goToFirstPortlet(obs: Observer<boolean>): void {
-        this.router.goToURL(`/c/${this.routingService.firstPortlet}`);
-        obs.next(false);
-    }
-
-    private checkAccess(url: string): Observable<boolean> {
-        return Observable.create(obs => {
-            if (this.routingService.currentMenu) {
-                obs.next(this.check(url));
-            } else {
-                this.routingService.menusChange$.subscribe(() => obs.next(this.check(url)));
-            }
-        }).take(1);
-    }
-
-    private check(url: string): boolean {
-        if (url !== '/c/pl') {
-            const isRouteLoaded = this.routingService.isPortlet(url);
-
-            if (isRouteLoaded) {
-                this.routingService.setCurrentPortlet(url);
-            }
-        }
-        return true;
+        // return Observable.of(true);
     }
 }

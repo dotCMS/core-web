@@ -7,76 +7,80 @@ import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.c
 import { LoginPageComponent } from './view/components/login/login-page-component';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { environment } from '../environments/environment';
-import { IFramePortletLegacyComponent } from './view/components/_common/iframe/iframe-porlet-legacy/index';
+import { IframePortletLegacyComponent } from './view/components/_common/iframe/iframe-porlet-legacy/index';
 
-
-
-const mainComponentChildren = [
+const PORTLETS_ANGULAR: Routes = [
     {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: environment.production ? 'home' : 'pl'
-    },
-    {
-        path: 'pl',
-        loadChildren: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
-    },
-    {
-        path: 'notLicensed',
-        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
-    },
-    {
-        canActivate: [RoutingPrivateAuthService],
-        component: IFramePortletLegacyComponent,
-        path: ':id'
-    }
-];
-
-const angularComponents: any[] = [
-    {
+        canActivateChild: [RoutingPrivateAuthService],
         path: 'content-types-angular',
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
+        canActivateChild: [RoutingPrivateAuthService],
         path: 'rules',
-        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
-        canActivate: [RoutingPrivateAuthService]
+        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
     },
     {
+        canActivateChild: [RoutingPrivateAuthService],
         path: 'dot-browser',
         loadChildren: 'app/portlets/dot-browser/dot-browser.module#DotBrowserModule'
     },
     {
-        path: 'c',
-        children: mainComponentChildren,
+        canActivateChild: [RoutingPrivateAuthService],
+        path: 'pl',
+        loadChildren:
+            'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
+    },
+    {
+        canActivateChild: [RoutingPrivateAuthService],
+        path: 'notLicensed',
+        loadChildren:
+            'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
+    }
+];
+
+const PORTLETS_IFRAME: Routes = [
+    {
+        canActivateChild: [RoutingPrivateAuthService],
+        children: [
+            {
+                component: IframePortletLegacyComponent,
+                path: ':id'
+            }
+        ],
+        path: 'c'
+    }
+];
+
+const AUTH_MODULES: Routes = [
+    {
+        path: 'forgotPassword',
+        loadChildren:
+            'app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
+    },
+    {
+        path: 'login',
+        loadChildren: 'app/view/components/login/login-component/login.module#LoginModule'
+    },
+    {
+        path: 'resetPassword/:token',
+        loadChildren:
+            'app/view/components/login/reset-password-component/reset-password.module#ResetPasswordModule'
     }
 ];
 
 const appRoutes: Routes = [
     {
         canActivate: [RoutingPrivateAuthService],
-        children: angularComponents,
+        children: [...PORTLETS_ANGULAR, ...PORTLETS_IFRAME],
         component: MainComponentLegacy,
-        path: '',
+        path: ''
     },
     {
         canActivate: [RoutingPublicAuthService],
-        children: [
-            {
-                path: 'forgotPassword',
-                loadChildren: 'app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
-            },
-            {
-                path: 'login',
-                loadChildren: 'app/view/components/login/login-component/login.module#LoginModule'
-            },
-            {
-                path: 'resetPassword/:token',
-                loadChildren: 'app/view/components/login/reset-password-component/reset-password.module#ResetPasswordModule'
-            }
-        ],
+        children: AUTH_MODULES,
         component: LoginPageComponent,
-        path: 'public',
+        path: 'public'
     },
     {
         canActivate: [RoutingPrivateAuthService],
@@ -98,14 +102,12 @@ const appRoutes: Routes = [
         canActivate: [RoutingPublicAuthService],
         path: '**',
         pathMatch: 'full',
-        redirectTo: '/public/login',
+        redirectTo: '/public/login'
     }
 ];
 
 @NgModule({
-    exports: [
-        RouterModule
-    ],
+    exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
             useHash: true

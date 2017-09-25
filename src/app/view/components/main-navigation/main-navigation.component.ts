@@ -1,5 +1,8 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { RoutingService, Menu } from '../../../api/services/routing-service';
+import { DotNavigationService } from '../../../api/services/dot-navigation.service';
+import { Observable } from 'rxjs/Observable';
+import { Menu } from '../../../shared/models/navigation';
+import { DotRouterService } from '../../../api/services/dot-router-service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -10,55 +13,39 @@ import { RoutingService, Menu } from '../../../api/services/routing-service';
 })
 
 export class MainNavigationComponent implements OnInit {
-    private menuItems: Menu[];
-    private menuItemIdActive: string;
-    private menuActiveTabName: string;
-    private open = true;
+    menuItems: Observable<Menu[]>;
 
-    constructor(private routingService: RoutingService) {}
-
-    /**
-     * Change or refresh the portlets from the main menu
-     * @param menuItem portlet url
-     */
-    public gotToPage(event: any, link: string): void {
-        if (!event.ctrlKey && !event.metaKey) {
-            this.routingService.changeRefreshPortlet(link);
-        }
-    }
-
-    private getMenuSelected(menuItemSelectedId: string): Menu {
-        return this.menuItems.filter(
-            menu => menu.menuItems.filter(menuItem => menuItem.id === menuItemSelectedId).length > 0
-        )[0];
-    }
-
-    public  setMenuActiveTabName(id?: string) {
-        this.open = !this.open;
-        this.menuItemIdActive  = id || this.routingService.currentPortletId;
-        const menuSelected = this.getMenuSelected(this.menuItemIdActive);
-        this.menuActiveTabName = menuSelected ? menuSelected.tabName : null;
-        if (menuSelected) {
-            setTimeout(() => {
-                menuSelected.isOpen = true;
-            }, 0);
-        }
-    }
+    constructor(
+        private dotNavigationService: DotNavigationService,
+        private dotRouterService: DotRouterService
+    ) {}
 
     ngOnInit() {
-        if (this.routingService.currentMenu) {
-            this.menuItems = this.routingService.currentMenu;
+        // TOOD: remove the .subcribe
+        this.menuItems = this.dotNavigationService.loadMenu();
+    }
+
+    /**
+     * Change or refresh the portlets
+     *
+     * @param {*} event click event
+     * @param {string} id menu item id
+     * @memberof MainNavigationComponent
+     */
+    onClick(event: any, id: string): void {
+        if (!event.ctrlKey && !event.metaKey) {
+            this.dotNavigationService.reloadCurrentPortlet(id);
         }
+    }
 
-        this.routingService.menusChange$.subscribe(menu => {
-            this.menuItems = menu;
-        });
-
-        this.routingService.currentPortlet$.subscribe(id => {
-            this.setMenuActiveTabName(id);
-        });
-
-        // Set the Menu Active Tab when the page first loads.
-        this.setMenuActiveTabName();
+    /**
+     * Check if menu option is active
+     *
+     * @param {string} id
+     * @returns {boolean}
+     * @memberof MainNavigationComponent
+     */
+    isActive(id: string): boolean {
+        return this.dotRouterService.currentPortlet.id === id;
     }
 }
