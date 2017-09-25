@@ -3,15 +3,14 @@ import { RoutingService, Menu } from '../../../api/services/routing-service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
-
     providers: [],
     selector: 'dot-main-nav',
     styleUrls: ['./main-navigation.component.scss'],
     templateUrl: 'main-navigation.component.html'
 })
+
 export class MainNavigationComponent implements OnInit {
     private menuItems: Menu[];
-
     private menuItemIdActive: string;
     private menuActiveTabName: string;
     private open = true;
@@ -36,7 +35,7 @@ export class MainNavigationComponent implements OnInit {
 
     public  setMenuActiveTabName(id?: string) {
         this.open = !this.open;
-        this.menuItemIdActive  = id ? id : this.routingService.currentPortletId;
+        this.menuItemIdActive  = id || this.routingService.currentPortletId;
         const menuSelected = this.getMenuSelected(this.menuItemIdActive);
         this.menuActiveTabName = menuSelected ? menuSelected.tabName : null;
         if (menuSelected) {
