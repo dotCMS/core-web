@@ -1,7 +1,7 @@
 <i class="fa field__icon" [ngClass]="fieldService.getIcon(field.clazz)"></i>
 <span class="field__name">{{field.name}}</span>
 <div class="field__actions">
-    <icon-button-tooltip 
+    <icon-button-tooltip *ngIf="!field.fixed"
         class="field__actions-delete"
         icon="fa-trash"
         [tooltipText]="i18nMessages['contenttypes.action.delete']"
