@@ -121,6 +121,7 @@ export class ContentTypesCreateComponent extends BaseComponent implements OnInit
 
     private handleFormSubmissionResponse(res: ContentType[]): void {
         this.data = res[0];
+        this.fields = this.data.fields;
         this.contentTypeId = this.data.id;
         this.form.resetForm();
     }
