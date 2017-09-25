@@ -57,12 +57,11 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
         expect(span.nativeElement.textContent).toEqual(field.name);
     });
 
-    it(
-        'should has a remove button',
+    it('should has a remove button',
         fakeAsync(() => {
             const field = {
                 fieldType: 'fieldType',
-                fixed: true,
+                fixed: false,
                 indexed: true,
                 name: 'Field name',
                 required: true,
@@ -84,6 +83,25 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
             tick();
 
             expect(resp).toEqual(field);
+        })
+    );
+
+    it('should not has a remove button (Fixed Field)', fakeAsync(() => {
+            const field = {
+                fieldType: 'fieldType',
+                fixed: true,
+                indexed: true,
+                name: 'Field name',
+                required: true,
+                velocityVarName: 'velocityName'
+            };
+
+            comp.field = field;
+
+            fixture.detectChanges();
+
+            const button = de.query(By.css('.field__actions-delete'));
+            expect(button).toBeNull();
         })
     );
 
