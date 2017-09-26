@@ -44,6 +44,25 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
             fixed: true,
             indexed: true,
             name: 'Field name',
+            required: false,
+            velocityVarName: 'velocityName'
+        };
+
+        comp.field = field;
+
+        fixture.detectChanges();
+
+        const span = de.query(By.css('.field__name'));
+        expect(span).not.toBeNull();
+        expect(span.nativeElement.textContent.trim()).toEqual(field.name);
+    });
+
+    it('should have a name and required mark', () => {
+        const field = {
+            fieldType: 'fieldType',
+            fixed: true,
+            indexed: true,
+            name: 'Field name',
             required: true,
             velocityVarName: 'velocityName'
         };
@@ -54,7 +73,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         const span = de.query(By.css('.field__name'));
         expect(span).not.toBeNull();
-        expect(span.nativeElement.textContent).toEqual(field.name);
+        expect(span.nativeElement.textContent).toEqual(field.name + ' *');
     });
 
     it('should has a remove button',
