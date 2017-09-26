@@ -25,11 +25,10 @@ import { BaseComponent } from '../../../view/components/_common/_base/base-compo
 export class ContentTypesCreateComponent extends BaseComponent implements OnInit {
     contentTypeType: string;
     @ViewChild('form') form: ContentTypesFormComponent;
-    private contentTypeName: Observable<string>;
-    private contentTypeIcon: string;
+    public contentTypeName: Observable<string>;
+    public contentTypeIcon: string;
     data: ContentType;
     contentTypeId: string;
-    private fields: Field[] = [];
 
     constructor(
         public contentTypesInfoService: ContentTypesInfoService,
@@ -110,18 +109,23 @@ export class ContentTypesCreateComponent extends BaseComponent implements OnInit
      * @param fieldsToSave Fields to be save
      */
     saveFields(fieldsToSave: Field[]): void {
-        this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => this.fields = fields);
+        this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => {
+            this.data.fields = fields;
+            this.form.updateFormFields();
+        });
     }
 
     removeFields(fieldsToDelete: Field[]): void {
         this.fieldService.deleteFields(this.data.id, fieldsToDelete)
         .pluck('fields')
-        .subscribe((fields: Field[]) => this.fields = fields);
+        .subscribe((fields: Field[]) => {
+            this.data.fields = fields;
+            this.form.updateFormFields();
+        });
     }
 
     private handleFormSubmissionResponse(res: ContentType[]): void {
         this.data = res[0];
-        this.fields = this.data.fields;
         this.contentTypeId = this.data.id;
         this.form.resetForm();
     }

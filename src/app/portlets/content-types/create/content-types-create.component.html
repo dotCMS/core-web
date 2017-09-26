@@ -1,6 +1,6 @@
 <content-type-layout [contentTypeId]="contentTypeId">
     <content-types-form #form
-        [data]="data" 
+        [data]="data"
         [type]="contentTypeType"
         [name]="contentTypeName | async"
         [icon]="contentTypeIcon"
@@ -8,7 +8,7 @@
     </content-types-form>
 
     <content-type-fields-drop-zone *ngIf="contentTypeId"
-        [fields]="fields" 
+        [fields]="data.fields"
         (saveFields)="saveFields($event)"
         (removeFields)="removeFields($event)">
 
