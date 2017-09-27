@@ -57,7 +57,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     public formState = 'collapsed';
     public submitAttempt = false;
     public formOptions: MenuItem[];
-    private dateVarOptions: SelectItem[] = [];
+    public dateVarOptions: SelectItem[] = [];
     private workflowOptions: SelectItem[] = [];
 
     constructor(
@@ -174,6 +174,17 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         this.formState = this.formState === 'collapsed' ? 'expanded' : 'collapsed';
     }
 
+    /**
+     * Function to update the dropdown fields manually, from the parent component.
+     */
+    public updateFormFields(): void {
+        this.dateVarOptions = this.getDateVarOptions(this.data.fields);
+        if (this.dateVarOptions.length > 0) {
+            this.form.get('publishDateVar').enable();
+            this.form.get('expireDateVar').enable();
+        }
+    }
+
     get isEditMode(): boolean {
         return !!this.data && this.data.id;
     }
@@ -200,7 +211,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             disabled: !this.dateVarOptions.length,
             value: this.data.expireDateVar || null
         });
-
         this.form.addControl('publishDateVar', publishDateVar);
         this.form.addControl('expireDateVar', expireDateVar);
     }
