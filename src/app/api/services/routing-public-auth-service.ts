@@ -9,7 +9,6 @@ export class RoutingPublicAuthService implements CanActivate {
     constructor(private router: DotRouterService, private loginService: LoginService) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        console.log('canActivate');
         return this.loginService.isLogin$
             .map(isLogin => {
                 if (isLogin) {

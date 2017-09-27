@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../../../../../api/services/iframe-overlay-service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -18,18 +19,18 @@ import { IframeOverlayService } from '../../../../../api/services/iframe-overlay
     styleUrls: ['./iframe.component.scss'],
     templateUrl: 'iframe.component.html'
 })
-export class IframeComponent implements OnInit, OnChanges {
+export class IframeComponent implements OnInit {
+    @ViewChild('iframeElement') iframeElement: ElementRef;
+    @Input() src: string;
+
+    iframeURL: SafeResourceUrl;
+    loading = true;
+    showOverlay = false;
+
     private readonly DEFAULT_LOCATION = {
         pathname: '',
         href: ''
     };
-
-    @Input() src: string;
-    @ViewChild('iframeElement') iframeElement: ElementRef;
-
-    iframeURL: SafeResourceUrl;
-    loadingInProgress = true;
-    showOverlay = false;
 
     constructor(
         private element: ElementRef,
@@ -42,15 +43,13 @@ export class IframeComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.iframeOverlayService.overlay.subscribe(val => (this.showOverlay = val));
+        this.element.nativeElement.style.height = this.getIframeHeight(window.innerHeight);
 
-        // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
-        this.element.nativeElement.style.height = window.innerHeight - 64 + 'px';
-    }
-
-    ngOnChanges(changes): void {
-        if (changes.src && changes.src.currentValue) {
-            this.iframeURL = this.loadURL(changes.src.currentValue);
-        }
+        Observable.fromEvent(window, 'resize')
+            .debounceTime(250)
+            .subscribe(($event: any) => {
+                this.element.nativeElement.style.height = this.getIframeHeight($event.target.innerHeight);
+            });
     }
 
     /**
@@ -59,24 +58,9 @@ export class IframeComponent implements OnInit, OnChanges {
      */
     hideLoadingIndicator($event): void {
         setTimeout(() => {
-            this.loadingInProgress = false;
+            this.loading = false;
         }, 0);
     }
-
-    private loadURL(url: string): SafeResourceUrl {
-        let urlWithParameters = url;
-
-        this.loadingInProgress = true;
-
-        urlWithParameters += urlWithParameters.indexOf('?') === -1 ? '?' : '&';
-        urlWithParameters +=
-            urlWithParameters.indexOf('in_frame') === -1
-                ? 'in_frame=true&frame=detailFrame&container=true'
-                : '';
-
-        return this.sanitizer.bypassSecurityTrustResourceUrl(urlWithParameters);
-    }
-
     /**
      * Validate if the iframe window is send to the login page after jsessionid expired
      * then logout the user from angular session
@@ -102,13 +86,19 @@ export class IframeComponent implements OnInit, OnChanges {
      */
     reload(): void {
         if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
-            this.loadingInProgress = true;
+            this.loading = true;
             this.iframeElement.nativeElement.contentWindow.location.reload();
         }
     }
 
+    getIframeHeight(height: number): string {
+        // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
+        return height - 64 + 'px';
+    }
+
     get location(): any {
-        return this.iframeElement && this.iframeElement.nativeElement.contentWindow ?
-                    this.iframeElement.nativeElement.contentWindow.location : this.DEFAULT_LOCATION;
+        return this.iframeElement && this.iframeElement.nativeElement.contentWindow
+            ? this.iframeElement.nativeElement.contentWindow.location
+            : this.DEFAULT_LOCATION;
     }
 }

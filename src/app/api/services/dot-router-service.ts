@@ -38,9 +38,8 @@ export class DotRouterService {
         return url === '/';
     }
 
-    public gotoPortlet(portletId: string): void {
-        debugger;
-        this.router.navigate([portletId]);
+    public gotoPortlet(link: string): void {
+        this.router.navigate([link]);
     }
 
     public goToForgotPassword(): void {

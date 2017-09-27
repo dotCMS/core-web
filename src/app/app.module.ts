@@ -21,7 +21,7 @@ import { SharedModule } from './shared/shared.module';
  */
 @NgModule({
     bootstrap: [AppComponent],
-    declarations: [AppComponent, ...PIPES, ...COMPONENTS],
+    declarations: [AppComponent, ...COMPONENTS],
     imports: [
         ...CUSTOM_MODULES,
         ...NGFACES_MODULES,

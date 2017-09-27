@@ -31,10 +31,11 @@ export const COMPONENTS = [
 ];
 
 // CUSTOM PIPES
-import { CapitalizePipe } from './api/pipes/capitalize-pipe';
+import { CapitalizePipe, SafePipe } from './api/pipes';
 
 export const PIPES = [
-    CapitalizePipe
+    CapitalizePipe,
+    SafePipe
 ];
 
 import {

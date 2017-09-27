@@ -42,13 +42,13 @@ const PORTLETS_ANGULAR: Routes = [
 const PORTLETS_IFRAME: Routes = [
     {
         canActivateChild: [RoutingPrivateAuthService],
+        path: '',
         children: [
             {
                 component: IframePortletLegacyComponent,
-                path: ':id'
+                path: 'c/:id'
             }
-        ],
-        path: 'c'
+        ]
     }
 ];
 

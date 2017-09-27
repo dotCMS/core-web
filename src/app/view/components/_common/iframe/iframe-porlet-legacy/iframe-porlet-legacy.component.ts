@@ -13,7 +13,7 @@ import { DotRouterService } from '../../../../../api/services/dot-router-service
 })
 export class IframePortletLegacyComponent implements OnInit {
     @ViewChild('iframe') iframe;
-    url: Observable<SafeResourceUrl>;
+    url: Observable<string>;
 
     constructor(
         private dotcmsEventsService: DotcmsEventsService,
@@ -22,13 +22,12 @@ export class IframePortletLegacyComponent implements OnInit {
         private dotRouterService: DotRouterService,
         public loggerService: LoggerService,
         public siteService: SiteService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.dotNavigationService.portletReload$.subscribe(this.changeSiteReload.bind(this));
         this.siteService.switchSite$.subscribe(this.changeSiteReload.bind(this));
-        this.setUrlFromRouteParams();
+        this.setIframeUrl();
         this.bindGlobalEvents();
     }
 
@@ -37,7 +36,7 @@ export class IframePortletLegacyComponent implements OnInit {
      * @memberof IframePortletLegacyComponent
      */
     changeSiteReload(): void {
-        if (this.urlItsNotBlank && this.dotRouterService.currentPortlet.id !== 'sites') {
+        if (this.urlItsNotBlank() && this.dotRouterService.currentPortlet.id !== 'sites') {
             this.iframe.reload();
         }
     }
@@ -48,20 +47,11 @@ export class IframePortletLegacyComponent implements OnInit {
         );
     }
 
-    private setUrlFromRouteParams(): void {
+    private setIframeUrl(): void {
+
         this.url = this.route.params
             .pluck('id')
-            .map(res => {
-                debugger;
-                return res;
-            })
-            .mergeMap((id: string) => this.dotNavigationService.getPortletURL(id));
-
-        this.route.queryParams.pluck('url').subscribe((url: string) => {
-            if (url) {
-                this.url = Observable.of(url);
-            }
-        });
+            .concatMap((id: string) => this.dotNavigationService.getIframeUrl(id));
     }
 
     private bindGlobalEvents(): void {

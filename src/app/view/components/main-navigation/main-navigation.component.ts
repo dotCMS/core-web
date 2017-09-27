@@ -3,6 +3,7 @@ import { DotNavigationService } from '../../../api/services/dot-navigation.servi
 import { Observable } from 'rxjs/Observable';
 import { Menu } from '../../../shared/models/navigation';
 import { DotRouterService } from '../../../api/services/dot-router-service';
+import { DotcmsEventsService } from 'dotcms-js/dotcms-js';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -13,16 +14,20 @@ import { DotRouterService } from '../../../api/services/dot-router-service';
 })
 
 export class MainNavigationComponent implements OnInit {
-    menuItems: Observable<Menu[]>;
+    menu: Observable<Menu[]>;
 
     constructor(
         private dotNavigationService: DotNavigationService,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        private dotcmsEventsService: DotcmsEventsService,
     ) {}
 
     ngOnInit() {
-        // TOOD: remove the .subcribe
-        this.menuItems = this.dotNavigationService.loadMenu();
+        this.menu = this.dotNavigationService.loadMenu();
+
+        this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
+            this.menu = this.dotNavigationService.reloadMenu();
+        });
     }
 
     /**

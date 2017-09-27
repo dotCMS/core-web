@@ -4,8 +4,9 @@ import { Observable } from 'rxjs/Rx';
 import { RequestMethod } from '@angular/http';
 import { DotRouterService } from './dot-router-service';
 import { Subject } from 'rxjs/Subject';
-import { Menu } from '../../shared/models/navigation';
+import { Menu, MenuItem } from '../../shared/models/navigation';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Injectable()
 export class DotNavigationService {
@@ -15,14 +16,9 @@ export class DotNavigationService {
     private urlMenus = 'v1/CORE_WEB/menu';
 
     constructor(
-        dotcmsEventsService: DotcmsEventsService,
         private coreWebService: CoreWebService,
         private dotRouterService: DotRouterService
-    ) {
-        // dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
-        //     this.loadMenu();
-        // });
-    }
+    ) {}
 
     /**
      * Load and set menu from endpoint
@@ -31,19 +27,16 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     loadMenu(): Observable<Menu[]> {
-        debugger;
         if (!this.menu$) {
-            debugger;
             this.menu$ = this.coreWebService
                 .requestView({
                     method: RequestMethod.Get,
                     url: this.urlMenus
                 })
-                .pluck('entity')
-                .map((menu: Menu[]) => this.formatMenuItems(menu))
-                // .share();
                 .publishLast()
-                .refCount();
+                .refCount()
+                .pluck('entity')
+                .map((menu: Menu[]) => this.formatMenuItems(menu));
         }
 
         return this.menu$;
@@ -56,29 +49,24 @@ export class DotNavigationService {
      * @returns {Observable<string>}
      * @memberof DotNavigationService
      */
-    getPortletURL(id: string): Observable<string> {
-        debugger;
-        return this.loadMenu()
-            .flatMap((menus: Menu[]) => menus)
-            .flatMap((menu: Menu) => menu.menuItems)
-            .filter((res: any) => {
-                const a = !res.angular && res.id === id;
-                debugger;
-                return a;
-            })
+    getIframeUrl(id: string): Observable<string> {
+        return this.getMenuItems()
+            .filter((res: any) => !res.angular && res.id === id)
             .first()
             .pluck('url');
     }
 
+    /**
+     * Check if a portlet exist in the current loaded menu
+     *
+     * @param {string} url
+     * @returns {Observable<boolean>}
+     * @memberof DotNavigationService
+     */
     isPortletInMenu(url: string): Observable<boolean> {
-        debugger;
-        return this.loadMenu()
-            .flatMap((menus: Menu[]) => menus)
-            .flatMap((menu: Menu) => menu.menuItems)
+        return this.getMenuItems()
             .pluck('id')
-            .map((id: string) => {
-                return url === id;
-            })
+            .map((id: string) => url === id)
             .filter(val => !!val);
     }
 
@@ -88,9 +76,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     goToFirstPortlet(): void {
-        debugger;
-        this.getFirstPortletUrl().subscribe((firstPortletUrl: string) => {
-            debugger;
+        this.getFirstPortletLink().subscribe((firstPortletUrl: string) => {
             this.dotRouterService.gotoPortlet(firstPortletUrl);
         });
     }
@@ -107,9 +93,15 @@ export class DotNavigationService {
         }
     }
 
-    private getFirstPortletUrl(): Observable<string> {
-        debugger;
-        return this.loadMenu().map((menus: Menu[]) => menus[0].menuItems[0].menuLink);
+    /**
+     * Clear the "cache" in the menu and reloads
+     *
+     * @returns {Observable<Menu[]>}
+     * @memberof DotNavigationService
+     */
+    reloadMenu(): Observable<Menu[]> {
+        this.menu$ = null;
+        return this.loadMenu();
     }
 
     private formatMenuItems(menu: Menu[]): Menu[] {
@@ -124,5 +116,18 @@ export class DotNavigationService {
             });
             return menuGroup;
         });
+    }
+
+    private getFirstPortletLink(): Observable<string> {
+        return this.loadMenu().map((menus: Menu[]) => {
+            const firstPortlet = menus[0].menuItems[0];
+            return firstPortlet.menuLink || firstPortlet.url;
+        });
+    }
+
+    private getMenuItems(): Observable<MenuItem> {
+        return this.loadMenu()
+            .flatMap((menus: Menu[]) => menus)
+            .flatMap((menu: Menu) => menu.menuItems);
     }
 }
