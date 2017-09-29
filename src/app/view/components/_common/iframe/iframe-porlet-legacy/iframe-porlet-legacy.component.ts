@@ -1,10 +1,12 @@
 import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
 import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { DotNavigationService } from '../../../../../api/services/dot-navigation.service';
+import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 import { DotRouterService } from '../../../../../api/services/dot-router-service';
+import { ContentletService } from '../../../../../api/services/contentlet.service';
+import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -18,14 +20,16 @@ export class IframePortletLegacyComponent implements OnInit {
     constructor(
         private dotcmsEventsService: DotcmsEventsService,
         private route: ActivatedRoute,
-        private dotNavigationService: DotNavigationService,
+        private dotNavigationService: DotMenuService,
         private dotRouterService: DotRouterService,
         public loggerService: LoggerService,
-        public siteService: SiteService
+        public siteService: SiteService,
+        private contentletService: ContentletService,
+        private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
 
     ngOnInit(): void {
-        this.dotNavigationService.portletReload$.subscribe(this.changeSiteReload.bind(this));
+        this.dotRouterService.portletReload$.subscribe(this.changeSiteReload.bind(this));
         this.siteService.switchSite$.subscribe(this.changeSiteReload.bind(this));
         this.setIframeUrl();
         this.bindGlobalEvents();
@@ -37,21 +41,9 @@ export class IframePortletLegacyComponent implements OnInit {
      */
     changeSiteReload(): void {
         if (this.urlItsNotBlank() && this.dotRouterService.currentPortlet.id !== 'sites') {
+            this.dotLoadingIndicatorService.show();
             this.iframe.reload();
         }
-    }
-
-    private urlItsNotBlank(): boolean {
-        return (
-            this.iframe.location.href !== 'about:blank' && this.iframe.location.pathname !== 'blank'
-        );
-    }
-
-    private setIframeUrl(): void {
-
-        this.url = this.route.params
-            .pluck('id')
-            .concatMap((id: string) => this.dotNavigationService.getIframeUrl(id));
     }
 
     private bindGlobalEvents(): void {
@@ -100,5 +92,25 @@ export class IframePortletLegacyComponent implements OnInit {
                 // TODO: When we finish the migration of the site browser this event will be handle.....
             }
         });
+    }
+
+    private setIframeUrl(): void {
+        this.url = this.route.params
+            .pluck('id')
+            .map((id: string) => id)
+            .withLatestFrom(this.route.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
+            .map(([id, url]) => {
+                this.dotLoadingIndicatorService.show();
+                return url === 'add'
+                    ? this.contentletService.getUrlById(id)
+                    : this.dotNavigationService.getUrlById(id);
+            })
+            .flatMap(res => res);
+    }
+
+    private urlItsNotBlank(): boolean {
+        return (
+            this.iframe.location.href !== 'about:blank' && this.iframe.location.pathname !== 'blank'
+        );
     }
 }

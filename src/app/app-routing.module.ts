@@ -8,6 +8,7 @@ import { LoginPageComponent } from './view/components/login/login-page-component
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
 import { environment } from '../environments/environment';
 import { IframePortletLegacyComponent } from './view/components/_common/iframe/iframe-porlet-legacy/index';
+import { RoutingContentletAuthService } from './api/services/routing-contentlet-auth.service';
 
 const PORTLETS_ANGULAR: Routes = [
     {
@@ -40,6 +41,16 @@ const PORTLETS_ANGULAR: Routes = [
 ];
 
 const PORTLETS_IFRAME: Routes = [
+    {
+        canActivateChild: [RoutingContentletAuthService],
+        path: '',
+        children: [
+            {
+                component: IframePortletLegacyComponent,
+                path: 'add/:id'
+            }
+        ]
+    },
     {
         canActivateChild: [RoutingPrivateAuthService],
         path: '',

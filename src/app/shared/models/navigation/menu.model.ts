@@ -1,9 +1,9 @@
-import { MenuItem } from './menu-item.model';
+import { DotMenuItem } from './menu-item.model';
 
-export interface Menu {
+export interface DotMenu {
     tabDescription: string;
     tabName: string;
     url: string;
-    menuItems: MenuItem[];
+    menuItems: DotMenuItem[];
     isOpen: boolean;
 }

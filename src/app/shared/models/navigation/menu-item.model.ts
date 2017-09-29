@@ -1,4 +1,4 @@
-export interface MenuItem {
+export interface DotMenuItem {
     ajax: boolean;
     angular: boolean;
     id: string;

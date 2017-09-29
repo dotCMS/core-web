@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { DotNavigationService } from './dot-navigation.service';
+import { DotMenuService } from './dot-menu.service';
 import { Observable, Observer } from 'rxjs/Rx';
-import { DotcmsConfig, LoginService } from 'dotcms-js/dotcms-js';
+import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './dot-router-service';
+import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
 
 @Injectable()
 export class RoutingPrivateAuthService implements CanActivate {
     constructor(
         private dotRouterService: DotRouterService,
+        private dotMenuService: DotMenuService,
         private dotNavigationService: DotNavigationService,
-        private loginService: LoginService,
-        private dotcmsConfig: DotcmsConfig
-    ) {
-    }
+        private loginService: LoginService
+    ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        debugger;
         return this.loginService.isLogin$.do(isLogin => {
             if (!isLogin) {
                 this.dotRouterService.goToLogin();
@@ -30,14 +31,11 @@ export class RoutingPrivateAuthService implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> {
-        return this.dotNavigationService.isPortletInMenu(this.dotRouterService.getPortletId(state.url))
-            .defaultIfEmpty(false)
+        debugger;
+        return this.dotMenuService
+            .isPortletInMenu(this.dotRouterService.getPortletId(state.url))
             .map(res => {
-                if (!res) {
-                    this.dotNavigationService.goToFirstPortlet();
-                }
                 return res;
             });
-
     }
 }

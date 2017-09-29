@@ -5,13 +5,15 @@ import {
     OnInit,
     OnChanges,
     Input,
-    ViewChild
+    ViewChild,
+    SimpleChanges
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../../../../../api/services/iframe-overlay-service';
 import { Observable } from 'rxjs/Observable';
+import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -19,12 +21,11 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./iframe.component.scss'],
     templateUrl: 'iframe.component.html'
 })
-export class IframeComponent implements OnInit {
+export class IframeComponent implements OnInit  {
     @ViewChild('iframeElement') iframeElement: ElementRef;
     @Input() src: string;
 
     iframeURL: SafeResourceUrl;
-    loading = true;
     showOverlay = false;
 
     private readonly DEFAULT_LOCATION = {
@@ -38,7 +39,8 @@ export class IframeComponent implements OnInit {
         private sanitizer: DomSanitizer,
         public iframeOverlayService: IframeOverlayService,
         private loginService: LoginService,
-        private loggerService: LoggerService
+        private loggerService: LoggerService,
+        private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
 
     ngOnInit(): void {
@@ -57,9 +59,7 @@ export class IframeComponent implements OnInit {
      * @param $event
      */
     hideLoadingIndicator($event): void {
-        setTimeout(() => {
-            this.loading = false;
-        }, 0);
+        this.dotLoadingIndicatorService.hide();
     }
     /**
      * Validate if the iframe window is send to the login page after jsessionid expired
@@ -86,7 +86,7 @@ export class IframeComponent implements OnInit {
      */
     reload(): void {
         if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
-            this.loading = true;
+            this.dotLoadingIndicatorService.show();
             this.iframeElement.nativeElement.contentWindow.location.reload();
         }
     }

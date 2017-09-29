@@ -6,14 +6,17 @@ export class SafePipe implements PipeTransform {
     constructor(private sanitizer: DomSanitizer) {}
 
     transform(url) {
-        let urlWithParameters = url;
+        if (url) {
+            let urlWithParameters = url;
+            urlWithParameters += urlWithParameters.indexOf('?') === -1 ? '?' : '&';
+            urlWithParameters +=
+                urlWithParameters.indexOf('in_frame') === -1
+                    ? 'in_frame=true&frame=detailFrame&container=true'
+                    : '';
 
-        urlWithParameters += urlWithParameters.indexOf('?') === -1 ? '?' : '&';
-        urlWithParameters +=
-            urlWithParameters.indexOf('in_frame') === -1
-                ? 'in_frame=true&frame=detailFrame&container=true'
-                : '';
-
-        return this.sanitizer.bypassSecurityTrustResourceUrl(urlWithParameters);
+            return this.sanitizer.bypassSecurityTrustResourceUrl(urlWithParameters);
+        } else {
+            return this.sanitizer.bypassSecurityTrustResourceUrl('');
+        }
     }
 }
