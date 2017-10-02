@@ -36,18 +36,6 @@ import {
     VisitorsLocationComponent,
     VisitorsLocationContainer
 } from 'dotcms-rules-engine/dotcms-rules-engine';
-import { RoutingPrivateAuthService } from '../../api/services/routing-private-auth-service';
-
-// const routes: Routes = [
-//     {
-//         canActivateChild: [RoutingPrivateAuthService],
-//         path: '',
-//         children: [{
-//             component: AppRulesComponent,
-//             path: ''
-//         }]
-//     }
-// ];
 
 const routes: Routes = [{
     component: AppRulesComponent,

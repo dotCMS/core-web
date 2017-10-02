@@ -1,10 +1,9 @@
-import { PlatformLocation, LocationChangeEvent } from '@angular/common';
+import { PlatformLocation } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../api/services/dot-router-service';
-import { Subject } from 'rxjs/Subject';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';

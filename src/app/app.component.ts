@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NotLicensedService } from './api/services/not-licensed-service';
 
 @Component({
-    selector: 'app-root',
+    selector: 'dot-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })

@@ -2,9 +2,7 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { RequestMethod } from '@angular/http';
-import { DotRouterService } from './dot-router-service';
 import { DotMenu, DotMenuItem } from '../../shared/models/navigation';
-import { LoginService } from 'dotcms-js/core/login.service';
 
 @Injectable()
 export class DotMenuService {

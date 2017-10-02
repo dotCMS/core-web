@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';

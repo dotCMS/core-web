@@ -2,7 +2,6 @@ import { BaseComponent } from '../_common/_base/base-component';
 import { Component, Output, EventEmitter, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { MessageService } from '../../../api/services/messages-service';
-import { DotRouterService } from '../../../api/services/dot-router-service';
 import { PaginatorService } from '../../../api/services/paginator';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
@@ -22,11 +21,10 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
     private form: FormGroup;
 
     constructor(
-        private loginService: LoginService,
-        private router: DotRouterService,
         messageService: MessageService,
-        public paginationService: PaginatorService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private loginService: LoginService,
+        public paginationService: PaginatorService
     ) {
         super(
             ['Change', 'cancel', 'password', 'loginas.select.loginas.user', 'login-as'],
@@ -63,7 +61,6 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
         this.loginService.loginAs({ user: user, password: password }).subscribe(
             data => {
                 if (data) {
-                    // this.router.goToMain();
                     this.close();
                 }
                 // TODO: Replace the alert below with a modal error message.

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DotMenuService } from './dot-menu.service';
-import { Observable, Observer } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './dot-router-service';
 import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';

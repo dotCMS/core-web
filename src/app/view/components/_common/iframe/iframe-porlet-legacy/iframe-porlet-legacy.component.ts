@@ -1,13 +1,10 @@
 import { Component, ViewEncapsulation, OnInit, ViewChild } from '@angular/core';
 import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { SafeResourceUrl } from '@angular/platform-browser';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
-import { Observable } from 'rxjs/Observable';
 import { DotRouterService } from '../../../../../api/services/dot-router-service';
 import { ContentletService } from '../../../../../api/services/contentlet.service';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
-import { Site } from 'dotcms-js/dotcms-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
 
@@ -21,15 +18,14 @@ export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor(
+        private contentletService: ContentletService,
         private dotcmsEventsService: DotcmsEventsService,
-        private route: ActivatedRoute,
+        private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotNavigationService: DotMenuService,
         private dotRouterService: DotRouterService,
+        private route: ActivatedRoute,
         public loggerService: LoggerService,
         public siteService: SiteService,
-        private contentletService: ContentletService,
-        private dotLoadingIndicatorService: DotLoadingIndicatorService,
-        private location: Location
     ) {}
 
     ngOnInit(): void {
@@ -132,11 +128,5 @@ export class IframePortletLegacyComponent implements OnInit {
         } else {
             this.url.next(nextUrl);
         }
-    }
-
-    private urlItsNotBlank(): boolean {
-        return (
-            this.iframe.location.href !== 'about:blank' && this.iframe.location.pathname !== 'blank'
-        );
     }
 }

@@ -18,11 +18,6 @@ export class ToolbarAddContenletBodyComponent {
 
     constructor(private router: Router) {}
 
-    goToAddContent(contentTypeView: ContentTypeView): boolean {
-        this.select.emit();
-        return false;
-    }
-
     clickMore(event): boolean {
         event.preventDefault();
         this.more.emit();

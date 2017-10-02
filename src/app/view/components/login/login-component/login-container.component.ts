@@ -27,10 +27,10 @@ export class LoginContainerComponent {
     public resetEmailSent = false;
 
     constructor(
-        private loginService: LoginService,
         private dotRouterService: DotRouterService,
         private httprequestUtils: HttpRequestUtils,
-        private loggerService: LoggerService
+        private loggerService: LoggerService,
+        private loginService: LoginService
     ) {
         // TODO: change the httpRequestUtils.getQueryParams() with an NG2 method equivalent to QueryParams on NGRX.
         const queryParams: Map<string, any> = this.httprequestUtils.getQueryParams();

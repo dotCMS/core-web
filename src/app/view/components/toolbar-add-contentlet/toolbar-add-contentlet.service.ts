@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { ContentletService } from '../../../api/services/contentlet.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { StructureTypeView } from '../../../shared/models/contentlet';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { MenuItem } from 'primeng/primeng';
 import { DotcmsEventsService } from 'dotcms-js/dotcms-js';
 
 @Injectable()

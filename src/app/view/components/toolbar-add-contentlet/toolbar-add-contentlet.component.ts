@@ -3,15 +3,12 @@ import {
     Component,
     ViewChild,
     Input,
-    Output,
-    EventEmitter,
     ViewEncapsulation,
     OnInit
 } from '@angular/core';
 import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
 import { IframeOverlayService } from '../../../api/services/iframe-overlay-service';
 import { MessageService } from '../../../api/services/messages-service';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MenuItem } from 'primeng/primeng';
 import { StructureTypeView } from '../../../shared/models/contentlet';
@@ -41,9 +38,9 @@ export class ToolbarAddContenletComponent extends BaseComponent implements OnIni
 
     constructor(
         messageService: MessageService,
+        private contentTypesInfoService: ContentTypesInfoService,
         private toolbarAddContenletService: ToolbarAddContenletService,
-        public iframeOverlayService: IframeOverlayService,
-        private contentTypesInfoService: ContentTypesInfoService
+        public iframeOverlayService: IframeOverlayService
     ) {
         super(['more'], messageService);
     }

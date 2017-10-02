@@ -1,12 +1,11 @@
-import { RoutingPublicAuthService } from './api/services/routing-public-auth-service';
-import { RoutingPrivateAuthService } from './api/services/routing-private-auth-service';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { RoutingPublicAuthService } from './api/services/routing-public-auth.service';
+import { RoutingPrivateAuthService } from './api/services/routing-private-auth.service';
+import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacy } from './view/components/main-legacy/main-legacy.component';
 import { LoginPageComponent } from './view/components/login/login-page-component';
 import { LogOutContainer } from './view/components/login/login-component/log-out-container';
-import { environment } from '../environments/environment';
 import { IframePortletLegacyComponent } from './view/components/_common/iframe/iframe-porlet-legacy/index';
 import { RoutingContentletAuthService } from './api/services/routing-contentlet-auth.service';
 

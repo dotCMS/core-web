@@ -2,14 +2,12 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { RequestMethod } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
 import { StructureType, StructureTypeView, ContentTypeView } from '../../shared/models/contentlet';
 
 @Injectable()
 export class ContentletService {
     private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
     private structureTypeView: StructureTypeView[];
-    private _structureTypeView$: Subject<StructureTypeView[]> = new Subject<StructureTypeView[]>();
     private types$: Observable<StructureTypeView[]>;
 
     constructor(private coreWebService: CoreWebService) {
@@ -112,12 +110,6 @@ export class ContentletService {
     reloadContentTypes(): Observable<StructureTypeView[]> {
         this.types$ = null;
         return this.getContentTypes();
-    }
-
-    private getStructureTypeView(type: StructureType): StructureTypeView {
-        return this.structureTypeView.filter(
-            structureTypeView => structureTypeView.name === type.toString()
-        )[0];
     }
 
     private isRecentContentType(type: StructureTypeView): boolean {
