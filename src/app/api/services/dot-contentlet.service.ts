@@ -5,7 +5,7 @@ import { RequestMethod } from '@angular/http';
 import { StructureType, StructureTypeView, ContentTypeView } from '../../shared/models/contentlet';
 
 @Injectable()
-export class ContentletService {
+export class DotContentletService {
     private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
     private structureTypeView: StructureTypeView[];
     private types$: Observable<StructureTypeView[]>;

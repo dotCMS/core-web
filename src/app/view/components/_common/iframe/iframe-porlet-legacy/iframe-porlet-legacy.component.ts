@@ -3,7 +3,7 @@ import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcm
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../../api/services/dot-router-service';
-import { ContentletService } from '../../../../../api/services/contentlet.service';
+import { DotContentletService } from '../../../../../api/services/dot-contentlet.service';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
@@ -18,7 +18,7 @@ export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor(
-        private contentletService: ContentletService,
+        private contentletService: DotContentletService,
         private dotcmsEventsService: DotcmsEventsService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotNavigationService: DotMenuService,

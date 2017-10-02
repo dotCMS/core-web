@@ -93,7 +93,7 @@ export class DotNavigationService {
             this.dotMenuService
                 .isPortletInMenu(
                     this.dotRouterService.currentPortlet.id ||
-                        this.getPortletIdFromHash(window.location.hash)
+                        this.getPortletIdFromHash(this.location.hash)
                 )
                 .subscribe((isPortletInMenu: boolean) => {
                     if (!isPortletInMenu) {
@@ -113,7 +113,7 @@ export class DotNavigationService {
     }
 
     private formatMenuItems(menu: DotMenu[]): DotMenu[] {
-        const currentUrl = window.location.hash;
+        const currentUrl = this.location.hash;
 
         return menu.map((menuGroup: DotMenu, menuIndex: number) => {
             menuGroup.menuItems.forEach((menuItem: DotMenuItem) => {
