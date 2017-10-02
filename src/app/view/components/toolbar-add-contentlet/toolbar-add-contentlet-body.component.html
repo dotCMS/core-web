@@ -3,7 +3,7 @@
         <h4 class="toolbar-add-contentlet-body__title">{{structureTypeView && structureTypeView.label}}</h4>
         <ul class="toolbar-add-contentlet-body__list" [class.toolbar-add-contentlet-body__list--split]="structureTypeViews.length === 1" *ngIf="structureTypeView.types">
             <li class="toolbar-add-contentlet-body__list-item" *ngFor="let type of structureTypeView.types">
-                <a [routerLink]="'/add/' + type.variable.toLowerCase()" (click)="select.emit()">{{type.name}}</a>
+                <a [routerLink]="'/add/' + type.variable.toLowerCase()" (click)="onClick($event, type.variable.toLowerCase())">{{type.name}}</a>
             </li>
         </ul>
     </div>

@@ -30,9 +30,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     reloadCurrentPortlet(id: string): void {
-        if (id === this.currentPortlet.id) {
-            this.portletReload$.next();
-        }
+        this.portletReload$.next();
     }
 
     goToMain(): void {

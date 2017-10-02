@@ -77,7 +77,9 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     reloadCurrentPortlet(id: string): void {
-        this.dotRouterService.reloadCurrentPortlet(id);
+        if (this.dotRouterService.currentPortlet.id === id) {
+            this.dotRouterService.reloadCurrentPortlet(id);
+        }
     }
 
     /**

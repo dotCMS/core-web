@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
+import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 
 
 @Component({
@@ -16,7 +16,14 @@ export class ToolbarAddContenletBodyComponent {
     @Output() select = new EventEmitter<any>();
     @Output() more = new EventEmitter<any>();
 
-    constructor(private router: Router) {}
+    constructor(private dotNavigationService: DotNavigationService) {}
+
+    onClick(event: any, id: string): void {
+        if (!event.ctrlKey && !event.metaKey) {
+            this.dotNavigationService.reloadCurrentPortlet(id);
+        }
+        this.select.emit();
+    }
 
     clickMore(event): boolean {
         event.preventDefault();
