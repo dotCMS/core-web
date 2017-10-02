@@ -86,7 +86,7 @@ export class ContentletService {
             .flatMap((structures: StructureTypeView[]) => structures)
             .pluck('types')
             .flatMap((contentTypeViews: ContentTypeView[]) => contentTypeViews)
-            .filter((contentTypeView: ContentTypeView) => contentTypeView.inode === id)
+            .filter((contentTypeView: ContentTypeView) => contentTypeView.variable.toLocaleLowerCase() === id)
             .pluck('action');
     }
 

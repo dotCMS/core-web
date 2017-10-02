@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/Observable';
 import { DotRouterService } from '../../../../../api/services/dot-router-service';
 import { ContentletService } from '../../../../../api/services/contentlet.service';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
+import { Site } from 'dotcms-js/dotcms-js';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Location } from '@angular/common';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -15,7 +18,7 @@ import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading
 })
 export class IframePortletLegacyComponent implements OnInit {
     @ViewChild('iframe') iframe;
-    url: Observable<string>;
+    url: BehaviorSubject<string> = new BehaviorSubject('');
 
     constructor(
         private dotcmsEventsService: DotcmsEventsService,
@@ -25,13 +28,18 @@ export class IframePortletLegacyComponent implements OnInit {
         public loggerService: LoggerService,
         public siteService: SiteService,
         private contentletService: ContentletService,
-        private dotLoadingIndicatorService: DotLoadingIndicatorService
+        private dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private location: Location
     ) {}
 
     ngOnInit(): void {
-        this.dotRouterService.portletReload$.subscribe(this.changeSiteReload.bind(this));
-        this.siteService.switchSite$.subscribe(this.changeSiteReload.bind(this));
-        this.setIframeUrl();
+        this.dotRouterService.portletReload$.subscribe(() => {
+            this.reloadIframePortlet();
+        });
+        this.siteService.switchSite$.subscribe(() => {
+            this.reloadIframePortlet();
+        });
+        this.setIframeSrc();
         this.bindGlobalEvents();
     }
 
@@ -39,11 +47,9 @@ export class IframePortletLegacyComponent implements OnInit {
      * Tigger when the current site is changed, this method reload the iframe if is neccesary
      * @memberof IframePortletLegacyComponent
      */
-    changeSiteReload(): void {
-        if (this.urlItsNotBlank() && this.dotRouterService.currentPortlet.id !== 'sites') {
-            this.dotLoadingIndicatorService.show();
-            this.iframe.reload();
-        }
+    reloadIframePortlet(): void {
+        this.dotLoadingIndicatorService.show();
+        this.setUrl(this.url.getValue());
     }
 
     private bindGlobalEvents(): void {
@@ -94,18 +100,38 @@ export class IframePortletLegacyComponent implements OnInit {
         });
     }
 
-    private setIframeUrl(): void {
-        this.url = this.route.params
+    private setIframeSrc(): void {
+        this.route.params
             .pluck('id')
             .map((id: string) => id)
             .withLatestFrom(this.route.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
-            .map(([id, url]) => {
+            .flatMap(([id, url]) => {
                 this.dotLoadingIndicatorService.show();
                 return url === 'add'
                     ? this.contentletService.getUrlById(id)
                     : this.dotNavigationService.getUrlById(id);
             })
-            .flatMap(res => res);
+            .subscribe((url: string) => {
+                this.setUrl(url);
+            });
+    }
+    private setUrl(nextUrl: string): void {
+        const currentUrl = this.url.getValue();
+        if (currentUrl === nextUrl) {
+            /*
+                When user navigates deeper in the jsp (Like: Sites > Templates > Create/Edit a template)
+                the iframe src remains the same, so in order to reload the "original" iframe page we
+                need to first change the url to "something else" an empty string in this case to
+                trigger the angular change detection and then set the original url again to the <iframe>
+                and this will trigger the iframe load/reload.
+            */
+            this.url.next('');
+            setTimeout(() => {
+                this.url.next(nextUrl);
+            }, 0);
+        } else {
+            this.url.next(nextUrl);
+        }
     }
 
     private urlItsNotBlank(): boolean {

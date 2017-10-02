@@ -16,7 +16,6 @@ export class RoutingPrivateAuthService implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        debugger;
         return this.loginService.isLogin$.do(isLogin => {
             if (!isLogin) {
                 this.dotRouterService.goToLogin();
@@ -31,11 +30,13 @@ export class RoutingPrivateAuthService implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean> {
-        debugger;
         return this.dotMenuService
             .isPortletInMenu(this.dotRouterService.getPortletId(state.url))
-            .map(res => {
-                return res;
+            .map((isPortletInMenu: boolean) => {
+                if (!isPortletInMenu) {
+                    this.dotNavigationService.goToFirstPortlet();
+                }
+                return isPortletInMenu;
             });
     }
 }

@@ -1,11 +1,5 @@
 import { BaseComponent } from '../_common/_base/base-component';
-import {
-    Component,
-    Output,
-    EventEmitter,
-    Input,
-    ViewEncapsulation
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input, ViewEncapsulation, OnInit } from '@angular/core';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { MessageService } from '../../../api/services/messages-service';
 import { DotRouterService } from '../../../api/services/dot-router-service';
@@ -19,7 +13,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
     styleUrls: ['./login-as.scss'],
     templateUrl: 'login-as.html'
 })
-export class LoginAsComponent extends BaseComponent {
+export class LoginAsComponent extends BaseComponent implements OnInit {
     @Output() cancel = new EventEmitter<boolean>();
     @Input() visible: boolean;
 
@@ -69,7 +63,7 @@ export class LoginAsComponent extends BaseComponent {
         this.loginService.loginAs({ user: user, password: password }).subscribe(
             data => {
                 if (data) {
-                    this.router.goToMain();
+                    // this.router.goToMain();
                     this.close();
                 }
                 // TODO: Replace the alert below with a modal error message.

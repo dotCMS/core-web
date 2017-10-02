@@ -121,7 +121,8 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
+            enableTracing: true
         })
     ]
 })

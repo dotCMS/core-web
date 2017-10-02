@@ -12,17 +12,9 @@ export class DotRouterService {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
+        private activatedRoute: ActivatedRoute,
         private dotMenuService: DotMenuService
-    ) {
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(() => this.route)
-            .subscribe(event => {
-                console.log('NavigationEnd:', event);
-                debugger;
-            });
-    }
+    ) {}
 
     get currentPortlet(): PortletNav {
         return {
@@ -39,7 +31,7 @@ export class DotRouterService {
      */
     reloadCurrentPortlet(id: string): void {
         if (id === this.currentPortlet.id) {
-            this.portletReload$.next(this.dotMenuService.getUrlById(id));
+            this.portletReload$.next();
         }
     }
 
@@ -67,8 +59,8 @@ export class DotRouterService {
         return url === '/';
     }
 
-    gotoPortlet(link: string): void {
-        this.router.navigate([link]);
+    gotoPortlet(link: string, replaceUrl: boolean): Promise<boolean> {
+        return this.router.navigate([link], { replaceUrl: replaceUrl });
     }
 
     goToForgotPassword(): void {

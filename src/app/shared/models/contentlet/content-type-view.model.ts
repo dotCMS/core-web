@@ -5,4 +5,5 @@ export interface ContentTypeView {
     name: string;
     inode: string;
     action: string;
+    variable: string;
 }

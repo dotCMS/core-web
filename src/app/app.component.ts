@@ -8,7 +8,7 @@ import { NotLicensedService } from './api/services/not-licensed-service';
 })
 export class AppComponent {
     constructor(notLicensedService: NotLicensedService) {
-        document.ondragover = document.ondrop = (ev) => {
+        document.ondragover = document.ondrop = ev => {
             notLicensedService.init();
             ev.preventDefault();
         };

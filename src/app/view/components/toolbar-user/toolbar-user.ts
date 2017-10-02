@@ -52,7 +52,7 @@ export class ToolbarUserComponent extends BaseComponent {
         $event.preventDefault();
         this.loginService.logoutAs().subscribe(
             data => {
-                this.router.goToMain();
+                // this.router.goToMain();
                 this.dropdown.closeIt();
             },
             error => {

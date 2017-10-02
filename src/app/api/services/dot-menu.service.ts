@@ -35,12 +35,12 @@ export class DotMenuService {
      * @returns {Observable<boolean>}
      * @memberof DotNavigationService
      */
-    isPortletInMenu(url: string): Observable<boolean> {
+    isPortletInMenu(menuId: string): Observable<boolean> {
         return this.getMenuItems()
-            .defaultIfEmpty(false)
             .pluck('id')
-            .map((id: string) => url === id)
-            .filter(val => !!val);
+            .map((id: string) => menuId === id)
+            .filter(val => !!val)
+            .defaultIfEmpty(false);
     }
 
     /**

@@ -1,6 +1,7 @@
+import { PlatformLocation, LocationChangeEvent } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { DotMenu } from '../../../shared/models/navigation/menu.model';
+import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../api/services/dot-router-service';
 import { Subject } from 'rxjs/Subject';
@@ -17,9 +18,10 @@ export class DotNavigationService {
         private dotMenuService: DotMenuService,
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private location: PlatformLocation
     ) {
-        this.getNavigation().subscribe((menu: DotMenu[]) => {
+        this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
             this.setMenu(menu);
         });
 
@@ -27,8 +29,14 @@ export class DotNavigationService {
             this.reloadNavigation();
         });
 
+        this.location.onPopState((popStateEvent: any) => {
+            if (this.isHashHome(popStateEvent.target.location.hash)) {
+                this.goToFirstPortlet(true);
+            }
+        });
+
         /*
-            When the page reload the auth$ triggers for the "first time" and because of that
+            When the browser refresh the auth$ triggers for the "first time" and because of that
             on page reload we are doing 2 requests to menu enpoint.
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
@@ -43,37 +51,13 @@ export class DotNavigationService {
      *
      * @memberof DotNavigationService
      */
-    goToFirstPortlet(): void {
-        this.getFirstMenuLink().subscribe((link: string) => {
-            this.dotRouterService.gotoPortlet(link);
-        });
-    }
-
-    /**
-     * Get menu and formatted as navigation component requirements
-     *
-     * @returns {Observable<DotMenu[]>}
-     * @memberof DotNavigationService
-     */
-    getNavigation(): Observable<DotMenu[]> {
-        return this.dotMenuService.loadMenu().map((menu: DotMenu[]) => this.formatMenuItems(menu));
-    }
-
-    /**
-     * Reloads and return a new version of the menu
-     *
-     * @returns {Observable<DotMenu[]>}
-     * @memberof DotNavigationService
-     */
-    reloadNavigation(): void {
-        this.dotMenuService
-            .reloadMenu()
-            .map((menu: DotMenu[]) => this.formatMenuItems(menu))
-            .subscribe((menu: DotMenu[]) => {
-                this.setMenu(menu);
-                // this.dotRouterService.gotoPortlet(this.dotRouterService.currentPortlet.id);
-                debugger;
-            });
+    goToFirstPortlet(replaceUrl?: boolean): Promise<boolean> {
+        return this.getFirstMenuLink()
+            .map((link: string) => {
+                return this.dotRouterService.gotoPortlet(link, replaceUrl);
+            })
+            .toPromise()
+            .then((isRouted: Promise<boolean>) => isRouted);
     }
 
     /**
@@ -97,17 +81,47 @@ export class DotNavigationService {
         this.dotRouterService.reloadCurrentPortlet(id);
     }
 
+    /**
+     * Reloads and return a new version of the menu
+     *
+     * @returns {Observable<DotMenu[]>}
+     * @memberof DotNavigationService
+     */
+    reloadNavigation(): void {
+        this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
+            this.dotMenuService
+                .isPortletInMenu(
+                    this.dotRouterService.currentPortlet.id ||
+                        this.getPortletIdFromHash(window.location.hash)
+                )
+                .subscribe((isPortletInMenu: boolean) => {
+                    if (!isPortletInMenu) {
+                        this.goToFirstPortlet().then(res => {
+                            this.setMenu(menu);
+                        });
+                    } else {
+                        this.setMenu(menu);
+                    }
+                });
+        });
+    }
+
     private extractFirtsMenuLink(menus: DotMenu[]): string {
-        return menus[0].menuItems[0].menuLink || menus[0].menuItems[0].url;
+        const firstMenuItem: DotMenuItem = menus[0].menuItems[0];
+        return firstMenuItem.angular ? firstMenuItem.url : this.getMenuLink(firstMenuItem.id);
     }
 
     private formatMenuItems(menu: DotMenu[]): DotMenu[] {
-        return menu.map(menuGroup => {
-            menuGroup.menuItems.forEach(menuItem => {
-                if (!menuItem.angular) {
-                    menuItem.menuLink = `/c/${menuItem.id}`;
-                }
-                if (menuItem.id === this.dotRouterService.currentPortlet.id) {
+        const currentUrl = window.location.hash;
+
+        return menu.map((menuGroup: DotMenu, menuIndex: number) => {
+            menuGroup.menuItems.forEach((menuItem: DotMenuItem) => {
+                menuItem.menuLink = menuItem.angular ? menuItem.url : this.getMenuLink(menuItem.id);
+
+                if (
+                    this.isFirstMenuActive(currentUrl, menuIndex) ||
+                    this.isMenuItemCurrentUrl(currentUrl, menuItem.id)
+                ) {
                     menuGroup.isOpen = true;
                 }
             });
@@ -116,12 +130,32 @@ export class DotNavigationService {
     }
 
     private getFirstMenuLink(): Observable<string> {
-        return this.getNavigation()
-            .map((menu: DotMenu[]) => this.formatMenuItems(menu))
+        return this.dotMenuService
+            .loadMenu()
             .map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
     }
 
+    private getPortletIdFromHash(hash: string): string {
+        return hash.split('/').slice(-1)[0];
+    }
+
+    private getMenuLink(menuItemId: string): string {
+        return `/c/${menuItemId}`;
+    }
+
+    private isFirstMenuActive(currentUrl: string, index: number): boolean {
+        return currentUrl === '#/' && index === 0;
+    }
+
+    private isHashHome(hash: string): boolean {
+        return hash === '#/c' || hash === '#/c/' || hash === '' || hash === '#/';
+    }
+
+    private isMenuItemCurrentUrl(currentUrl: string, menuItemId: string): boolean {
+        return this.getPortletIdFromHash(currentUrl) === menuItemId;
+    }
+
     private setMenu(menu: DotMenu[]) {
-        this.items$.next(menu);
+        this.items$.next(this.formatMenuItems(menu));
     }
 }

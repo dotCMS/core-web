@@ -3,7 +3,6 @@ import {
     ElementRef,
     ViewEncapsulation,
     OnInit,
-    OnChanges,
     Input,
     ViewChild,
     SimpleChanges
@@ -35,12 +34,12 @@ export class IframeComponent implements OnInit  {
 
     constructor(
         private element: ElementRef,
+        private loggerService: LoggerService,
+        private loginService: LoginService,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
-        public iframeOverlayService: IframeOverlayService,
-        private loginService: LoginService,
-        private loggerService: LoggerService,
-        private dotLoadingIndicatorService: DotLoadingIndicatorService
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
+        public iframeOverlayService: IframeOverlayService
     ) {}
 
     ngOnInit(): void {
@@ -55,15 +54,10 @@ export class IframeComponent implements OnInit  {
     }
 
     /**
-     * Hide the loading indicator
-     * @param $event
-     */
-    hideLoadingIndicator($event): void {
-        this.dotLoadingIndicatorService.hide();
-    }
-    /**
      * Validate if the iframe window is send to the login page after jsessionid expired
      * then logout the user from angular session
+     *
+     * @memberof IframeComponent
      */
     checkSessionExpired(): void {
         if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
@@ -80,25 +74,14 @@ export class IframeComponent implements OnInit  {
         }
     }
 
-    /**
-     * Reload the iframe with the current URL
-     * @memberof IframeComponent
-     */
-    reload(): void {
-        if (this.iframeElement && this.iframeElement.nativeElement.contentWindow) {
-            this.dotLoadingIndicatorService.show();
-            this.iframeElement.nativeElement.contentWindow.location.reload();
-        }
-    }
-
-    getIframeHeight(height: number): string {
-        // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
-        return height - 64 + 'px';
-    }
-
     get location(): any {
         return this.iframeElement && this.iframeElement.nativeElement.contentWindow
             ? this.iframeElement.nativeElement.contentWindow.location
             : this.DEFAULT_LOCATION;
+    }
+
+    private getIframeHeight(height: number): string {
+        // TODO there is a weird 4px bug here that make unnecessary scroll, need to look into it.
+        return height - 64 + 'px';
     }
 }
