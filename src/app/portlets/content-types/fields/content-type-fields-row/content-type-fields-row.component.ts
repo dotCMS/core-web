@@ -28,10 +28,10 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
             [
                 'contenttypes.dropzone.rows.empty.message',
                 'contenttypes.action.delete',
-                'message.structure.delete.structure',
-                'message.structure.delete.content',
-                'message.structure.delete.notice',
-                'Field',
+                'contenttypes.confirm.message.delete',
+                'contenttypes.confirm.message.delete.content',
+                'contenttypes.confirm.message.delete.warning',
+                'contenttypes.content.field',
                 'contenttypes.content.row',
                 'contenttypes.action.cancel'
             ],
@@ -49,9 +49,10 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 this.getField(field);
                 this.removeField.emit(field);
             },
-            header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['Field']}`,
-            message: `${this.i18nMessages['message.structure.delete.structure']} ${this.i18nMessages['Field']} '${field.name}'?
-                        <span>${this.i18nMessages['message.structure.delete.notice']}</span>`,
+            header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.field']}`,
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.field']}
+                        '${field.name}'?
+                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
             footerLabel: {
                 acceptLabel: this.i18nMessages['contenttypes.action.delete'],
                 rejectLabel: this.i18nMessages['contenttypes.action.cancel']
@@ -78,9 +79,9 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 this.removeRow.emit(this.fieldRow);
             },
             header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.row']}`,
-            message: `${this.i18nMessages['message.structure.delete.structure']} ${this.i18nMessages['contenttypes.content.row']}
-                        ${this.i18nMessages['message.structure.delete.content']}
-                        <span>${this.i18nMessages['message.structure.delete.notice']}</span>`,
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.row']}
+                        ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
+                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
             footerLabel: {
                 acceptLabel: this.i18nMessages['contenttypes.action.delete'],
                 rejectLabel: this.i18nMessages['contenttypes.action.cancel']

@@ -47,9 +47,9 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
         super(
             [
                 'message.structure.cantdelete',
-                'message.structure.delete.structure',
-                'message.structure.delete.content',
-                'message.structure.delete.notice',
+                'contenttypes.confirm.message.delete',
+                'contenttypes.confirm.message.delete.content',
+                'contenttypes.confirm.message.delete.warning',
                 'contenttypes.action.delete',
                 'contenttypes.action.cancel',
                 'Content-Type'
@@ -87,9 +87,9 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
                 });
             },
             header: this.i18nMessages['message.structure.cantdelete'],
-            message: `${this.i18nMessages['message.structure.delete.structure']} ${this.i18nMessages['Content-Type']}
-                        ${this.i18nMessages['message.structure.delete.content']}
-                        <span>${this.i18nMessages['message.structure.delete.notice']}</span>`,
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['Content-Type']}
+                        ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
+                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
             footerLabel: {
                 acceptLabel: this.i18nMessages['contenttypes.action.delete'],
                 rejectLabel: this.i18nMessages['contenttypes.action.cancel']
