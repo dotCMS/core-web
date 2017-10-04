@@ -31,6 +31,14 @@ class TestDotIframe {
     @Input() src: string;
 }
 
+@Component({
+    selector: 'dot-content-types-relationship-listing',
+    template: ''
+})
+class TestContentTypesRelationshipListingComponent {
+
+}
+
 describe('ContentTypesLayoutComponent', () => {
     let comp: ContentTypesLayoutComponent;
     let fixture: ComponentFixture<ContentTypesLayoutComponent>;
@@ -41,10 +49,11 @@ describe('ContentTypesLayoutComponent', () => {
 
         const messageServiceMock = new MockMessageService({
             'contenttypes.sidebar.components.title': 'Field Title',
-            'contenttypes.tab.header.fields': 'Fields Header Tab',
+            'contenttypes.tab.fields.header': 'Fields Header Tab',
             'contenttypes.sidebar.layouts.title': 'Layout Title',
-            'contenttypes.tab.header.permissions': 'Permissions Tab',
-            'contenttypes.tab.header.publisher.push.history': 'Push History',
+            'contenttypes.tab.permissions.header': 'Permissions Tab',
+            'contenttypes.tab.publisher.push.history.header': 'Push History',
+            'contenttypes.tab.relationship.header': 'Relationship'
         });
 
         DOTTestBed.configureTestingModule({
@@ -52,7 +61,8 @@ describe('ContentTypesLayoutComponent', () => {
                 ContentTypesLayoutComponent,
                 TestContentTypeFieldsList,
                 TestContentTypeFieldsRowList,
-                TestDotIframe
+                TestDotIframe,
+                TestContentTypesRelationshipListingComponent
             ],
             imports: [
                 TabViewModule
@@ -73,6 +83,14 @@ describe('ContentTypesLayoutComponent', () => {
         const pTabView = contentType.query(By.css('p-tabView'));
 
         expect(pTabView).not.toBeNull();
+    });
+
+    it('should has just one tab', () => {
+        fixture.detectChanges();
+
+        const contentType = fixture.debugElement.query(By.css('.content-type'));
+        const pTabPanels = contentType.queryAll(By.css('p-tabPanel'));
+        expect(1).toBe(pTabPanels.length);
     });
 
     describe('Fields Tab', () => {
@@ -129,18 +147,11 @@ describe('ContentTypesLayoutComponent', () => {
             this.contentType = fixture.debugElement.query(By.css('.content-type'));
         });
 
-        it('should not has a permission panel', () => {
-            fixture.detectChanges();
-
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
-            expect(pTabPanel).not.toBeDefined();
-        });
-
         it('should has a permission panel', () => {
             comp.contentTypeId = '1';
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
 
             expect(pTabPanel).not.toBeNull();
             expect('Permissions Tab').toBe(pTabPanel.componentInstance.header);
@@ -150,7 +161,7 @@ describe('ContentTypesLayoutComponent', () => {
             comp.contentTypeId = '1';
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
             const iframe = pTabPanel.query(By.css('dot-iframe'));
 
             expect(iframe).not.toBeNull();
@@ -164,7 +175,7 @@ describe('ContentTypesLayoutComponent', () => {
             });
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
             const iframe = pTabPanel.query(By.css('dot-iframe'));
 
             expect('/html/content_types/permissions.jsp?contentTypeId=2&popup=true').toBe(iframe.componentInstance.src);
@@ -176,18 +187,11 @@ describe('ContentTypesLayoutComponent', () => {
             this.contentType = fixture.debugElement.query(By.css('.content-type'));
         });
 
-        it('should not has a push history panel', () => {
-            fixture.detectChanges();
-
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
-            expect(pTabPanel).not.toBeDefined();
-        });
-
         it('should has a permission panel', () => {
             comp.contentTypeId = '1';
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[3];
 
             expect(pTabPanel).not.toBeNull();
             expect('Push History').toBe(pTabPanel.componentInstance.header);
@@ -197,7 +201,7 @@ describe('ContentTypesLayoutComponent', () => {
             comp.contentTypeId = '1';
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[3];
             const iframe = pTabPanel.query(By.css('dot-iframe'));
 
             expect(iframe).not.toBeNull();
@@ -211,10 +215,55 @@ describe('ContentTypesLayoutComponent', () => {
             });
 
             fixture.detectChanges();
-            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[2];
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[3];
             const iframe = pTabPanel.query(By.css('dot-iframe'));
 
             expect('/html/content_types/push_history.jsp?contentTypeId=2&popup=true').toBe(iframe.componentInstance.src);
+        });
+    });
+
+    describe('Relationship tab', () => {
+        beforeEach(() => {
+            this.contentType = fixture.debugElement.query(By.css('.content-type'));
+            comp.contentTypeId = '1';
+
+            fixture.detectChanges();
+
+            this.relationshipTab = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+        });
+
+        it('should has a Relationship tab', () => {
+            expect(this.relationshipTab).toBeDefined();
+        });
+
+        it('should has a right header', () => {
+            expect('Relationship').toBe(this.relationshipTab.componentInstance.header);
+        });
+
+        it('should has a iframe', () => {
+            comp.contentTypeId = '1';
+
+            fixture.detectChanges();
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+            const iframe = pTabPanel.query(By.css('dot-iframe'));
+
+            expect(iframe).not.toBeNull();
+        });
+
+        it('should set the src attribute', () => {
+            comp.contentTypeId = '1';
+
+            comp.ngOnChanges({
+                contentTypeId: new SimpleChange(null, '1', true),
+            });
+
+            fixture.detectChanges();
+            const pTabPanel = this.contentType.queryAll(By.css('p-tabPanel'))[1];
+            const iframe = pTabPanel.query(By.css('dot-iframe'));
+
+            // tslint:disable-next-line:max-line-length
+            expect('c/portal/layout?p_l_id=56fedb43-dbbf-4ce2-8b77-41fb73bad015&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=1')
+                .toBe(iframe.componentInstance.src);
         });
     });
 });

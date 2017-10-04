@@ -15,14 +15,16 @@ export class ContentTypesLayoutComponent extends BaseComponent implements OnChan
 
     permissionURL: string;
     pushHistoryURL: string;
+    relationshipURL: string;
 
     constructor(messageService: MessageService) {
         super([
             'contenttypes.sidebar.components.title',
-            'contenttypes.tab.header.fields',
+            'contenttypes.tab.fields.header',
             'contenttypes.sidebar.layouts.title',
-            'contenttypes.tab.header.permissions',
-            'contenttypes.tab.header.publisher.push.history',
+            'contenttypes.tab.permissions.header',
+            'contenttypes.tab.publisher.push.history.header',
+            'contenttypes.tab.relationship.header',
         ], messageService);
     }
 
@@ -30,6 +32,8 @@ export class ContentTypesLayoutComponent extends BaseComponent implements OnChan
         if (changes.contentTypeId.currentValue) {
             this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
             this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
+            // tslint:disable-next-line:max-line-length
+            this.relationshipURL = `c/portal/layout?p_l_id=56fedb43-dbbf-4ce2-8b77-41fb73bad015&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=${changes.contentTypeId.currentValue}`;
         }
     }
 }
