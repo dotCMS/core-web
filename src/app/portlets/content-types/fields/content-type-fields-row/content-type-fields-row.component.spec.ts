@@ -11,7 +11,7 @@ import { IconButtonTooltipModule } from '../../../../view/components/_common/ico
 import { MessageService } from '../../../../api/services/messages-service';
 import { ConfirmDialogModule } from 'primeng/primeng';
 import { MockMessageService } from '../../../../test/message-service.mock';
-import { DotConfirmationService } from '../../../../api/services/dot-confirmation/index';
+import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
 
 @Component({
     selector: 'content-type-field-dragabble-item',

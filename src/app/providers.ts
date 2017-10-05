@@ -17,7 +17,7 @@ import { RoutingContentletAuthService } from './api/services/routing-contentlet-
 import { RoutingPrivateAuthService } from './api/services/routing-private-auth.service';
 import { RoutingPublicAuthService } from './api/services/routing-public-auth.service';
 import { StringFormat } from './api/util/stringFormat';
-import { DotConfirmationService } from './api/services/dot-confirmation/index';
+import { DotConfirmationService } from './api/services/dot-confirmation';
 
 
 const PROVIDERS: any[] = [

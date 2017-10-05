@@ -12,7 +12,7 @@ import { CrudService } from '../../../api/services/crud';
 import { Field } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { MessageService } from '../../../api/services/messages-service';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation/index';
+import { DotConfirmationService } from '../../../api/services/dot-confirmation';
 
 /**
  * Portlet component for edit content types
