@@ -73,7 +73,6 @@ describe('Listing Component', () => {
 
     it('renderer basic datatable component', () => {
         const actionHeader = fixture.debugElement.query(By.css('action-header'));
-        console.log('actionHeader', actionHeader);
         const globalSearch = actionHeader.query(By.css('input'));
 
         comp.ngOnInit();
