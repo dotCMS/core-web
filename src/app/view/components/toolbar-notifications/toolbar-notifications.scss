@@ -17,7 +17,7 @@
     }
 
     .toolbar-notifications {
-        padding: $basic-padding * 2;
+        padding: $basic-padding*2 0 $basic-padding*2 $basic-padding*2 ;
         width: 350px;
 
         &:before {
@@ -45,7 +45,7 @@
     }
 
     .toolbar-notifications__footer{
-        text-align: center; 
+        text-align: center;
     }
 
     .toolbar-notifications__footer button{
