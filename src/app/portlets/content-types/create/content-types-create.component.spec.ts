@@ -56,7 +56,7 @@ class TestContentTypesForm {
     public resetForm(): void {}
 }
 
-fdescribe('ContentTypesCreateComponent', () => {
+describe('ContentTypesCreateComponent', () => {
     let comp: ContentTypesCreateComponent;
     let fixture: ComponentFixture<ContentTypesCreateComponent>;
     let de: DebugElement;
