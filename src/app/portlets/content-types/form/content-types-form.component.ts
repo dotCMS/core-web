@@ -1,14 +1,17 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, ViewChild, Input, Output, EventEmitter, Renderer2, OnInit, OnChanges } from '@angular/core';
-import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-import { SplitButtonModule, MenuItem, ConfirmationService, SelectItem } from 'primeng/primeng';
+import { DotcmsConfig } from 'dotcms-js/dotcms-js';
+import { SelectItem } from 'primeng/primeng';
 
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 import { MessageService } from '../../../api/services/messages-service';
 import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
+import { ContentTypesInfoService } from '../../../api/services/content-types-info';
+
+// TODO: move this to models
+import { Field } from '../fields';
 
 /**
  * Form component to create or edit content types
@@ -38,33 +41,40 @@ import { SiteSelectorComponent } from '../../../view/components/_common/site-sel
         ])
     ],
     providers: [SiteSelectorComponent],
-    selector: 'content-types-form',
+    selector: 'dot-content-types-form',
     styleUrls: ['./content-types-form.component.scss'],
     templateUrl: 'content-types-form.component.html'
 })
 export class ContentTypesFormComponent extends BaseComponent implements OnInit, OnChanges {
     @Input() data: any;
-    @Input() icon: string;
-    @Input() name: string;
-    @Input() type: string;
+    @Input() fields: Field[];
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('contentTypesForm') contentTypesForm: NgForm;
+    // TODO: remove this input, no one is using it.
+    @Input() name: string;
+    @Input() type: string;
+    @Input() icon: string;
+    //
 
-    public actionButtonLabel: string;
-    public form: FormGroup;
-    public formState = 'collapsed';
-    public submitAttempt = false;
-    public formOptions: MenuItem[];
-    public dateVarOptions: SelectItem[] = [];
-    private workflowOptions: SelectItem[] = [];
+    dateVarOptions: SelectItem[] = [];
+    form: FormGroup;
+    formState = 'collapsed';
+    placeholder: string;
+    submitAttempt = false;
+    workflowOptions: SelectItem[] = [];
+
+    templateInfo = {
+        icon: null,
+        placeholder: null,
+        action: null
+    };
 
     constructor(
-        public messageService: MessageService,
-        private renderer: Renderer2,
+        private dotcmsConfig: DotcmsConfig,
         private fb: FormBuilder,
-        private dotcmsConfig: DotcmsConfig
+        public contentTypesInfoService: ContentTypesInfoService,
+        public messageService: MessageService
     ) {
         super(
             [
@@ -86,74 +96,93 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.action.edit',
                 'contenttypes.action.delete',
                 'contenttypes.form.name.error.required',
-                'contenttypes.action.form.hide'
+                'contenttypes.action.form.hide',
+                'contenttypes.content.file',
+                'contenttypes.content.content',
+                'contenttypes.content.form',
+                'contenttypes.content.persona',
+                'contenttypes.content.widget',
+                'contenttypes.content.page'
             ],
             messageService
         );
     }
 
     ngOnInit(): void {
+        this.initFormGroup();
+        this.populateForm();
         this.initWorkflowtFieldOptions();
+        this.setTemplateInfo();
 
-        this.messageService.messageMap$.subscribe(res => {
-            this.actionButtonLabel = this.isEditMode
-                ? this.i18nMessages['contenttypes.action.update']
-                : this.i18nMessages['contenttypes.action.save'];
-            this.formOptions = [
-                {
-                    command: this.toggleForm.bind(this),
-                    label: this.i18nMessages['contenttypes.action.edit']
-                },
-                {
-                    command: () => {
-                        this.onDelete.emit();
-                    },
-                    label: this.i18nMessages['contenttypes.action.delete']
-                }
-            ];
-        });
+        if (this.fields) {
+            this.setDateVarFieldsState();
+        }
 
-        this.dotcmsConfig.getConfig().subscribe(this.updateFormControls.bind(this));
+        this.dotcmsConfig
+            .getConfig()
+            .take(1)
+            .subscribe(this.updateFormControls.bind(this));
     }
 
     ngOnChanges(changes): void {
-        const isFirstChange =
-            (changes.data && changes.data.firstChange) ||
-            (changes.name && changes.name.firstChange) ||
-            (changes.type && changes.type.firstChange) ||
-            (changes.icon && changes.icon.firstChange);
-
-        if (isFirstChange) {
-            this.initFormGroup();
-        }
-
-        if (changes.data && changes.data.currentValue) {
-            this.populateForm();
-            this.addEditModeSpecificFields();
-            this.actionButtonLabel = this.isEditMode
-                ? this.i18nMessages['contenttypes.action.update']
-                : this.i18nMessages['contenttypes.action.save'];
-        }
-
+        debugger;
+        // TODO: this will probably goes to the ngOnInit
         if (changes.type && changes.type.currentValue === 'content') {
-            this.addContentSpecificFields();
+            this.setBaseTypeContentSpecificFields();
+        }
+
+        if (changes.fields && !changes.fields.firstChange) {
+            debugger;
+            this.setDateVarFieldsState();
         }
     }
 
     /**
-     * Reset from to basic state
+     * Check if the form is in edit mode
+     *
+     * @returns {boolean}
      * @memberof ContentTypesFormComponent
      */
-    public resetForm(): void {
+    isEditMode(): boolean {
+        return !!(this.data && this.data.id);
+    }
+
+    /**
+     * Reset from to basic state
+     *
+     * @memberof ContentTypesFormComponent
+     */
+    resetForm(): void {
         this.formState = 'collapsed';
         this.submitAttempt = false;
     }
 
     /**
-     * Set the variable property base on the name and sbmit the form if it's valid
+     * Set the icon, labels and placeholder in the template
+     *
      * @memberof ContentTypesFormComponent
      */
-    public submitContent($event): void {
+    setTemplateInfo(): void {
+        this.messageService.messageMap$.subscribe(() => {
+            const type = this.data.baseType.toLowerCase();
+
+            this.templateInfo = {
+                icon: this.contentTypesInfoService.getIcon(type),
+                placeholder: `${this.i18nMessages[`contenttypes.content.${type}`]} ${this
+                    .i18nMessages['contenttypes.form.name']}`,
+                action: this.isEditMode()
+                    ? this.i18nMessages['contenttypes.action.update']
+                    : this.i18nMessages['contenttypes.action.save']
+            };
+        });
+    }
+
+    /**
+     * Set the variable property base on the name and sbmit the form if it's valid
+     *
+     * @memberof ContentTypesFormComponent
+     */
+    submitContent($event): void {
         if (!this.submitAttempt) {
             this.submitAttempt = true;
         }
@@ -168,67 +197,24 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
     /**
      * Toggle the variable that expand or collapse the form
+     *
      * @memberof ContentTypesFormComponent
      */
-    public toggleForm(): void {
+    toggleForm(): void {
         this.formState = this.formState === 'collapsed' ? 'expanded' : 'collapsed';
     }
 
-    /**
-     * Function to update the dropdown fields manually, from the parent component.
-     */
-    public updateFormFields(): void {
-        this.dateVarOptions = this.getDateVarOptions(this.data.fields);
-        if (this.dateVarOptions.length > 0) {
-            this.form.get('publishDateVar').enable();
-            this.form.get('expireDateVar').enable();
-        }
+    private getDateVarFieldOption(field: Field): SelectItem {
+        return {
+            label: field.name,
+            value: field.variable
+        };
     }
 
-    get isEditMode(): boolean {
-        return !!this.data && this.data.id;
-    }
-
-    private addContentSpecificFields(): void {
-        this.form.addControl(
-            'detailPage',
-            new FormControl((this.data && this.data.detailPage) || '')
-        );
-        this.form.addControl(
-            'urlMapPattern',
-            new FormControl((this.data && this.data.urlMapPattern) || '')
-        );
-    }
-
-    private addEditModeSpecificFields(): void {
-        this.dateVarOptions = this.getDateVarOptions(this.data.fields);
-
-        const publishDateVar = new FormControl({
-            disabled: !this.dateVarOptions.length,
-            value: this.data.publishDateVar || null
-        });
-        const expireDateVar = new FormControl({
-            disabled: !this.dateVarOptions.length,
-            value: this.data.expireDateVar || null
-        });
-        this.form.addControl('publishDateVar', publishDateVar);
-        this.form.addControl('expireDateVar', expireDateVar);
-    }
-
-    private getDateVarOptions(fields): SelectItem[] {
-        const dateVarOptions = fields
-            .filter(item => {
-                return (
-                    item.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' &&
-                    item.indexed
-                );
-            })
-            .map(item => {
-                return {
-                    label: item.name,
-                    value: item.variable
-                };
-            });
+    private getDateVarOptions(): SelectItem[] {
+        const dateVarOptions = this.fields
+            .filter((field: Field) => this.isDateVarField(field))
+            .map((field: Field) => this.getDateVarFieldOption(field));
 
         if (dateVarOptions.length) {
             dateVarOptions.unshift({
@@ -257,7 +243,11 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             description: '',
             host: '',
             name: ['', [Validators.required]],
-            workflow: ''
+            workflow: '',
+            clazz: '',
+            id: '',
+            publishDateVar: [{value: '', disabled: true}],
+            expireDateVar: [{value: '', disabled: true}]
         });
     }
 
@@ -270,12 +260,27 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         ];
     }
 
+    private isDateVarField(field: Field): boolean {
+        return (
+            field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' &&
+            field.indexed
+        );
+    }
+
+    private isNewDateVarFields(newOptions: SelectItem[]): boolean {
+        return this.dateVarOptions.length !== newOptions.length;
+    }
+
     private populateForm(): void {
         const formData: any = {
+            clazz: this.data.clazz || '',
             description: this.data.description || '',
             host: this.data.host || '',
+            id: this.data.id || '',
             name: this.data.name || '',
-            workflow: this.data.workflow || ''
+            workflow: this.data.workflow || '',
+            publishDateVar: this.data.publishDateVar || '',
+            expireDateVar: this.data.expireDateVar || ''
         };
 
         if (this.form.get('detailPage')) {
@@ -287,6 +292,38 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
 
         this.form.setValue(formData);
+    }
+
+    private setBaseTypeContentSpecificFields(): void {
+        this.form.addControl(
+            'detailPage',
+            new FormControl((this.data && this.data.detailPage) || '')
+        );
+        this.form.addControl(
+            'urlMapPattern',
+            new FormControl((this.data && this.data.urlMapPattern) || '')
+        );
+    }
+
+    private setDateVarFieldsState(): void {
+        const dateVarNewOptions = this.getDateVarOptions();
+
+        if (this.isNewDateVarFields(dateVarNewOptions)) {
+            this.dateVarOptions = dateVarNewOptions;
+        }
+
+        const publishDateVar = this.form.get('publishDateVar');
+        const expireDateVar = this.form.get('expireDateVar');
+
+        if (this.dateVarOptions.length) {
+            publishDateVar.enable();
+            expireDateVar.enable();
+        } else {
+            publishDateVar.disable();
+            expireDateVar.disable();
+            publishDateVar.patchValue(null);
+            expireDateVar.patchValue(null);
+        }
     }
 
     private updateFormControls(res): void {

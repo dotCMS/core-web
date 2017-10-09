@@ -191,7 +191,7 @@ describe('ContentTypesEditComponent', () => {
         const saveFieldsSpy = spyOn(fieldService, 'saveFields').and.returnValue(Observable.of(fieldsReturnByServer));
 
         // given: a data set...
-        comp.data = {
+        comp.data$ = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
             fields: [
                 {
@@ -218,9 +218,9 @@ describe('ContentTypesEditComponent', () => {
 
         tick();
         // then: the saveFields method has to be called in FileService ...
-        expect(saveFieldsSpy).toHaveBeenCalledWith(comp.data.id, fields);
+        expect(saveFieldsSpy).toHaveBeenCalledWith(comp.data$.id, fields);
         // ...and the comp.data.fields has to be set to the fields return by the service
-        expect(comp.data.fields).toEqual(fieldsReturnByServer);
+        expect(comp.data$.fields).toEqual(fieldsReturnByServer);
     }));
 
     it('should handle removeFields event', () => {
@@ -257,7 +257,7 @@ describe('ContentTypesEditComponent', () => {
         ));
 
         // given: a data set...
-        comp.data = {
+        comp.data$ = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
             fields: [
             ],
@@ -279,9 +279,9 @@ describe('ContentTypesEditComponent', () => {
         contentTypeFieldsDropZone.componentInstance.removeFields.emit(fields);
 
         // then: the saveFields method has to be called in FileService ...
-        expect(deleteFieldsSpy).toHaveBeenCalledWith(comp.data.id, fields);
+        expect(deleteFieldsSpy).toHaveBeenCalledWith(comp.data$.id, fields);
         // ...and the comp.data.fields has to be set to the fields return by the service
-        expect(comp.data.fields).toEqual(fieldsReturnByServer);
+        expect(comp.data$.fields).toEqual(fieldsReturnByServer);
     });
 });
 

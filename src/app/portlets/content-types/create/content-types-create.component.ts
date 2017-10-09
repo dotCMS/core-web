@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { CONTENT_TYPE_INITIAL_DATA, ContentType } from '../main';
+import { CONTENT_TYPE_INITIAL_DATA, ContentType } from '../shared/content-type.model';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { CrudService } from '../../../api/services/crud';
@@ -10,7 +10,11 @@ import { ContentTypesFormComponent } from '../form';
 import { Field } from '../fields';
 import { FieldService } from '../fields/service';
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
+<<<<<<< HEAD
 import { DotConfirmationService } from './../../../api/services/dot-confirmation';
+=======
+import { DotConfirmationService } from '../../../api/services/dot-confirmation';
+>>>>>>> 0724bd5d... dotCMS/core#12747 [NC] Update the content type create/edit form
 
 /**
  * Portlet component for edit content types
@@ -129,7 +133,7 @@ export class ContentTypesCreateComponent extends BaseComponent implements OnInit
     saveFields(fieldsToSave: Field[]): void {
         this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => {
             this.data.fields = fields;
-            this.form.updateFormFields();
+            // this.form.updateFormFields();
         });
     }
 
@@ -138,11 +142,11 @@ export class ContentTypesCreateComponent extends BaseComponent implements OnInit
         .pluck('fields')
         .subscribe((fields: Field[]) => {
             this.data.fields = fields;
-            this.form.updateFormFields();
+            // this.form.updateFormFields();
         });
     }
 
-    private  saveContentType(contentType: ContentType): void {
+    private saveContentType(contentType: ContentType): void {
         const contentTypeData: ContentType = Object.assign(
             {},
             CONTENT_TYPE_INITIAL_DATA,

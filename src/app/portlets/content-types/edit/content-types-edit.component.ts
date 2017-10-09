@@ -1,18 +1,15 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { StringUtils } from 'dotcms-js/dotcms-js';
 
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { ContentType } from '../main/index';
+import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { CrudService } from '../../../api/services/crud';
 import { Field } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { MessageService } from '../../../api/services/messages-service';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation';
 
 /**
  * Portlet component for edit content types
@@ -22,78 +19,47 @@ import { DotConfirmationService } from '../../../api/services/dot-confirmation';
  * @extends {BaseComponent}
  */
 @Component({
-    selector: 'content-types-edit',
+    selector: 'dot-content-types-edit',
     templateUrl: './content-types-edit.component.html'
 })
 export class ContentTypesEditComponent extends BaseComponent implements OnInit {
     @ViewChild('form') form: ContentTypesFormComponent;
-    contentTypeItem: Observable<ContentType>;
-    contentTypeName: Observable<string>;
-    contentTypeType: string;
-    contentTypeIcon: string;
-    data: ContentType;
-    licenseInfo: any;
+
+    data$: Observable<ContentType>;
+    fields: Field[];
+    contentTypeId: string;
 
     constructor(
         messageService: MessageService,
-        private dotConfirmationService: DotConfirmationService,
-        private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
         private fieldService: FieldService,
         private route: ActivatedRoute,
-        private stringUtils: StringUtils,
         public router: Router
     ) {
         super(
             [
+                'Content-Type',
                 'message.structure.cantdelete',
+
+                'contenttypes.action.cancel',
+                'contenttypes.action.delete',
                 'contenttypes.confirm.message.delete',
                 'contenttypes.confirm.message.delete.content',
-                'contenttypes.confirm.message.delete.warning',
-                'contenttypes.action.delete',
-                'contenttypes.action.cancel',
-                'Content-Type'
+                'contenttypes.confirm.message.delete.warning'
             ],
             messageService
         );
     }
 
     ngOnInit(): void {
-        this.route.url.subscribe(res => {
-            this.crudService
-                .getDataById('v1/contenttype', res[1].path)
-                .subscribe(contentType => {
-                    const type = this.contentTypesInfoService.getLabel(contentType.clazz);
-                    this.contentTypeName = this.messageService.messageMap$.pluck(
-                        this.stringUtils.titleCase(type)
-                    );
-                    this.contentTypeType = type;
-                    this.contentTypeIcon = this.contentTypesInfoService.getIcon(contentType.clazz);
-                    this.data = contentType;
-                });
-        });
-    }
-
-    /**
-     * Delete a content type using the ID
-     * @param {any} $event
-     * @memberof ContentTypesEditComponent
-     */
-    public deleteContentType($event): void {
-        this.dotConfirmationService.confirm({
-            accept: () => {
-                this.crudService.delete(`v1/contenttype/id`, this.data.id).subscribe(data => {
-                    this.router.navigate(['../'], { relativeTo: this.route });
-                });
-            },
-            header: this.i18nMessages['message.structure.cantdelete'],
-            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['Content-Type']}
-                        ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
-                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
-            footerLabel: {
-                acceptLabel: this.i18nMessages['contenttypes.action.delete'],
-                rejectLabel: this.i18nMessages['contenttypes.action.cancel']
+        this.data$ = this.route.data.pluck('contentType').map((contentType: ContentType) => {
+            if (contentType.id) {
+                this.contentTypeId = contentType.id;
             }
+            if (contentType.fields) {
+                this.fields = contentType.fields;
+            }
+            return contentType;
         });
     }
 
@@ -104,22 +70,12 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
      *
      * @memberof ContentTypesEditComponent
      */
-    public handleFormSubmit($event): void {
-        const contentTypeData: ContentType = Object.assign({}, this.data, $event.value);
+    handleFormSubmit($event): void {
         this.crudService
-            .putData(`v1/contenttype/id/${this.data.id}`, contentTypeData)
-            .subscribe(this.handleFormSubmissionResponse.bind(this));
-    }
-
-    /**
-     * Save fields
-     * @param fieldsToSave Fields to be save
-     */
-    saveFields(fieldsToSave: Field[]): void {
-        this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(fields => {
-            this.data.fields = fields;
-            this.form.updateFormFields();
-        });
+            .putData(`v1/contenttype/id/${this.contentTypeId}`, $event.value)
+            .subscribe(() => {
+                this.form.resetForm();
+            });
     }
 
     /**
@@ -127,15 +83,23 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
      * @param fieldsToDelete Fields to be removed
      */
     removeFields(fieldsToDelete: Field[]): void {
-        this.fieldService.deleteFields(this.data.id, fieldsToDelete)
+        this.fieldService
+            .deleteFields(this.contentTypeId, fieldsToDelete)
             .pluck('fields')
-            .subscribe(fields => {
-                this.data.fields = <Field[]> fields;
-                this.form.updateFormFields();
+            .subscribe((fields: Field[]) => {
+                this.fields = fields;
             });
     }
 
-    private handleFormSubmissionResponse(res: any): void {
-        this.form.resetForm();
+    /**
+     * Save fields
+     * @param fieldsToSave Fields to be save
+     */
+    saveFields(fieldsToSave: Field[]): void {
+        this.fieldService
+            .saveFields(this.contentTypeId, fieldsToSave)
+            .subscribe((fields: Field[]) => {
+                this.fields = fields;
+            });
     }
 }

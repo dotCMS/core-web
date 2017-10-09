@@ -16,6 +16,7 @@ import { SiteSelectorModule } from '../../view/components/_common/site-selector/
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
+import { ContentTypeResolver } from './content-types-resolver.service';
 
 import {
     ContentTypeFieldsDropZoneComponent,
@@ -122,7 +123,8 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         FieldDragDropService,
         FieldPropertyService,
         FieldService,
-        FormatDateService
+        FormatDateService,
+        ContentTypeResolver
     ]
 })
 export class ContentTypesModule {}

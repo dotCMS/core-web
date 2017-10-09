@@ -1,12 +1,12 @@
 <content-type-layout [contentTypeId]="contentTypeId">
-    <content-types-form #form
+    <dot-content-types-form #form
         [data]="data"
         [type]="contentTypeType"
         [name]="contentTypeName | async"
         [icon]="contentTypeIcon"
         (onSubmit)="handleFormSubmit($event)"
         (onDelete)="deleteContentType($event)">
-    </content-types-form>
+    </dot-content-types-form>
 
     <content-type-fields-drop-zone *ngIf="contentTypeId"
         [fields]="data.fields"

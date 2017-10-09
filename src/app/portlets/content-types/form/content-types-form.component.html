@@ -7,18 +7,16 @@
         <div class="ui-g">
             <div class="ui-g-6">
                 <div class="form__group content-type__form-title">
-                    <i class="fa" [ngClass]="icon"></i>
-                    <input pInputText type="text" id="content-type-form-name" (focus)="formState === 'collapsed' && toggleForm()" [placeholder]="name ? name + ' ' + i18nMessages['contenttypes.form.name'] : ''" name="name"
+                    <i class="fa" [ngClass]="templateInfo.icon"></i>
+                    <input pInputText type="text" id="content-type-form-name" (focus)="formState === 'collapsed' && toggleForm()" [placeholder]="templateInfo.placeholder" name="name"
                         formControlName="name" />
                     <field-validation-message [message]="i18nMessages['contenttypes.form.name.error.required']" [field]="form.get('name')"></field-validation-message>
                 </div>
             </div>
-            <div class="ui-g-6 content-type__form-actions">
-                <!-- 
-                    [menuStyle] we need to align the menu options to the left because absoluted positioned
-                    elements are "hidden" with the overflow: auto of the parent
-                -->
-                <p-splitButton iconButton *ngIf="data" [model]="formOptions" [menuStyle]="{'margin-left':'-130px'}"></p-splitButton>
+            <div class="ui-g-6" *ngIf="isEditMode()">
+                <div class="content-type__form-actions">
+                    <button type="button" pButton flat label="Edit" (click)="toggleForm()"></button>
+                </div>
             </div>
         </div>
     </div>
@@ -73,7 +71,7 @@
         </div>
         <div class="form__buttons">
             <button pButton type="button" flat id="content-type-form-cancel" label="{{i18nMessages['contenttypes.action.form.hide']}}" (click)="toggleForm()"></button>
-            <button pButton type="submit" id="content-type-form-submit" label="{{actionButtonLabel}}"></button>
+            <button pButton type="submit" id="content-type-form-submit" [label]="templateInfo.action"></button>
         </div>
     </div>
 </form>
