@@ -7,7 +7,7 @@ import { DotMenuService } from './api/services/dot-menu.service';
 import { DotRouterService } from './api/services/dot-router-service';
 import { FormatDateService } from './api/services/format-date-service';
 import { GravatarService } from './api/services/gravatar-service';
-import { IframeOverlayService } from './api/services/iframe-overlay-service';
+import { IframeOverlayService } from './view/components/_common/iframe/service/iframe-overlay.service';
 import { Logger } from 'angular2-logger/core';
 import { MessageService } from './api/services/messages-service';
 import { NotLicensedService } from './api/services/not-licensed-service';
