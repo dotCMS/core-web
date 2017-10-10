@@ -63,7 +63,6 @@ export class MyAccountComponent extends BaseComponent {
         this.changePasswordOption = false;
         this.loginService.watchUser(this.loadUser.bind(this));
         this.dotcmsConfig.getConfig().subscribe(res => this.emailRegex=res.emailRegex);
-        console.log("REGEX", this.emailRegex);
     }
 
     checkPasswords(): void {
