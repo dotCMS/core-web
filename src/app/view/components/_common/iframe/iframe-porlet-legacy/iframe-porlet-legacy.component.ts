@@ -33,7 +33,8 @@ export class IframePortletLegacyComponent implements OnInit {
             this.reloadIframePortlet();
         });
         this.siteService.switchSite$.subscribe(() => {
-            this.reloadIframePortlet();
+            // TODO: Double check if this is needed after the refactor of the routing.
+            //  this.reloadIframePortlet();
         });
         this.setIframeSrc();
         this.bindGlobalEvents();
@@ -100,7 +101,7 @@ export class IframePortletLegacyComponent implements OnInit {
         this.route.params
             .pluck('id')
             .map((id: string) => id)
-            .withLatestFrom(this.route.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
+            .withLatestFrom(this.route.parent.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
             .flatMap(([id, url]) => {
                 this.dotLoadingIndicatorService.show();
                 return url === 'add'

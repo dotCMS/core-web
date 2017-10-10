@@ -28,11 +28,11 @@ export class DotNavigationService {
             this.reloadNavigation();
         });
 
-        this.location.onPopState((popStateEvent: any) => {
+        /*this.location.onPopState((popStateEvent: any) => {
             if (this.isHashHome(popStateEvent.target.location.hash)) {
                 this.goToFirstPortlet(true);
             }
-        });
+        }); */
 
         /*
             When the browser refresh the auth$ triggers for the "first time" and because of that
@@ -40,7 +40,7 @@ export class DotNavigationService {
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
             if (auth.loginAsUser || auth.user) {
-                this.reloadNavigation();
+              //  this.reloadNavigation();
             }
         });
     }
