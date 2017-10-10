@@ -49,31 +49,23 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     @Input() data: any;
     @Input() fields: Field[];
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
-    @Output() onDelete: EventEmitter<any> = new EventEmitter();
-
-    // TODO: remove this input, no one is using it.
-    @Input() name: string;
-    @Input() type: string;
-    @Input() icon: string;
-    //
 
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
-    formState = 'collapsed';
+    formState = 'expanded';
     placeholder: string;
     submitAttempt = false;
-    workflowOptions: SelectItem[] = [];
-
     templateInfo = {
-        icon: null,
-        placeholder: null,
-        action: null
+        icon: '',
+        placeholder: '',
+        action: ''
     };
+    workflowOptions: SelectItem[] = [];
 
     constructor(
         private dotcmsConfig: DotcmsConfig,
         private fb: FormBuilder,
-        public contentTypesInfoService: ContentTypesInfoService,
+        private contentTypesInfoService: ContentTypesInfoService,
         public messageService: MessageService
     ) {
         super(
@@ -96,7 +88,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.action.edit',
                 'contenttypes.action.delete',
                 'contenttypes.form.name.error.required',
-                'contenttypes.action.form.hide',
+                'contenttypes.action.form.cancel',
                 'contenttypes.content.file',
                 'contenttypes.content.content',
                 'contenttypes.content.form',
@@ -118,6 +110,14 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             this.setDateVarFieldsState();
         }
 
+        if (this.isEditMode()) {
+            this.toggleForm();
+        }
+
+        if (this.isBaseTypeContent()) {
+            this.setBaseTypeContentSpecificFields();
+        }
+
         this.dotcmsConfig
             .getConfig()
             .take(1)
@@ -125,14 +125,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     ngOnChanges(changes): void {
-        debugger;
-        // TODO: this will probably goes to the ngOnInit
-        if (changes.type && changes.type.currentValue === 'content') {
-            this.setBaseTypeContentSpecificFields();
-        }
-
         if (changes.fields && !changes.fields.firstChange) {
-            debugger;
             this.setDateVarFieldsState();
         }
     }
@@ -182,16 +175,13 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
      *
      * @memberof ContentTypesFormComponent
      */
-    submitContent($event): void {
+    submitContent(): void {
         if (!this.submitAttempt) {
             this.submitAttempt = true;
         }
 
         if (this.form.valid) {
-            this.onSubmit.emit({
-                originalEvent: $event,
-                value: this.form.value
-            });
+            this.onSubmit.emit(this.form.value);
         }
     }
 
@@ -240,14 +230,13 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
     private initFormGroup(): void {
         this.form = this.fb.group({
+            clazz: '',
             description: '',
+            expireDateVar: [{ value: '', disabled: true }],
             host: '',
             name: ['', [Validators.required]],
-            workflow: '',
-            clazz: '',
-            id: '',
-            publishDateVar: [{value: '', disabled: true}],
-            expireDateVar: [{value: '', disabled: true}]
+            publishDateVar: [{ value: '', disabled: true }],
+            workflow: ''
         });
     }
 
@@ -258,6 +247,10 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 value: null
             }
         ];
+    }
+
+    private isBaseTypeContent(): boolean {
+        return this.data && this.data.baseType === 'CONTENT';
     }
 
     private isDateVarField(field: Field): boolean {
@@ -275,12 +268,11 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         const formData: any = {
             clazz: this.data.clazz || '',
             description: this.data.description || '',
+            expireDateVar: this.data.expireDateVar || '',
             host: this.data.host || '',
-            id: this.data.id || '',
             name: this.data.name || '',
-            workflow: this.data.workflow || '',
             publishDateVar: this.data.publishDateVar || '',
-            expireDateVar: this.data.expireDateVar || ''
+            workflow: this.data.workflow || ''
         };
 
         if (this.form.get('detailPage')) {

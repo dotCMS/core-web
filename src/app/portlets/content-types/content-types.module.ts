@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { ContentTypesCreateComponent } from './create';
 import { ContentTypesEditComponent } from './edit';
 import { ContentTypesFormComponent } from './form';
 import { ContentTypesInfoService } from '../../api/services/content-types-info';
@@ -66,7 +65,6 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypeFieldsRowListComponent,
-        ContentTypesCreateComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
         ContentTypesFieldsListComponent,

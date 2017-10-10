@@ -1,4 +1,3 @@
-import { ContentTypesCreateComponent } from './create';
 import { ContentTypesEditComponent } from './edit';
 import { ContentTypesPortletComponent } from './main';
 import { NgModule } from '@angular/core';
@@ -8,7 +7,7 @@ import { ContentTypeResolver } from './content-types-resolver.service';
 const contentTypesRoutes: Routes = [
     {
         component: ContentTypesPortletComponent,
-        path: '',
+        path: ''
     },
     {
         path: 'create',

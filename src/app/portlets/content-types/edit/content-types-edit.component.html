@@ -1,15 +1,15 @@
-<content-type-layout [contentTypeId]="(data$ | async)?.id">
+<dot-content-type-layout [contentTypeId]="data?.id">
     <dot-content-types-form
         #form
         [fields]="fields"
-        [data]="data$ | async"
+        [data]="data"
         (onSubmit)="handleFormSubmit($event)">
     </dot-content-types-form>
 
-    <content-type-fields-drop-zone
-        *ngIf="contentTypeId"
+    <dot-content-type-fields-drop-zone
+        *ngIf="data.id"
         [fields]="fields"
         (saveFields)="saveFields($event)"
         (removeFields)="removeFields($event)">
-    </content-type-fields-drop-zone>
-</content-type-layout>
+    </dot-content-type-fields-drop-zone>
+</dot-content-type-layout>

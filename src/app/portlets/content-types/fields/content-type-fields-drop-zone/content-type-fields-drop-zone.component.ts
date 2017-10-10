@@ -24,7 +24,7 @@ import { FieldPropertyService } from '../service/field-properties.service';
  * @class FieldTypesContainerComponent
  */
 @Component({
-    selector: 'content-type-fields-drop-zone',
+    selector: 'dot-content-type-fields-drop-zone',
     styleUrls: ['./content-type-fields-drop-zone.component.scss'],
     templateUrl: './content-type-fields-drop-zone.component.html'
 })
@@ -72,7 +72,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.fields.currentValue) {
-            const fields = changes.fields.currentValue;
+            const fields = this.fields;
 
             if (Array.isArray(fields)) {
                 this.fieldRows = this.getRowFields(fields);

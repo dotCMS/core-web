@@ -1,9 +1,8 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RequestMethod } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -24,7 +23,6 @@ describe('ContentTypesFormComponent', () => {
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let el: HTMLElement;
-    let deleteAction: any;
     const mockRouter = {
         navigate: jasmine.createSpy('navigate')
     };
@@ -158,7 +156,7 @@ describe('ContentTypesFormComponent', () => {
         comp.ngOnChanges({
             data: new SimpleChange(null, comp.data, true)
         });
-        comp.onDelete.subscribe(() => this.action = true);
+        comp.delete.subscribe(() => this.action = true);
         fixture.detectChanges();
 
         const expandFormDeleteButton: DebugElement = fixture

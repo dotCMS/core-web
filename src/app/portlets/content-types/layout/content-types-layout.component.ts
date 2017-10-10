@@ -6,7 +6,7 @@ import { DotMenuService } from '../../../api/services/dot-menu.service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
-    selector: 'content-type-layout',
+    selector: 'dot-content-type-layout',
     styleUrls: ['./content-types-layout.component.scss'],
     templateUrl: 'content-types-layout.component.html'
 })

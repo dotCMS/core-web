@@ -25,7 +25,6 @@ export interface ContentType {
 export const CONTENT_TYPE_INITIAL_DATA: ContentType = {
     clazz: null,
     defaultType: false,
-    fields: [],
     fixed: false,
     folder: 'SYSTEM_FOLDER',
     host: null,

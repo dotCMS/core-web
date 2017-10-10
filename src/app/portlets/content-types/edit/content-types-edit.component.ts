@@ -1,15 +1,15 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
-import { Observable } from 'rxjs/Observable';
+import { LoginService } from 'dotcms-js/dotcms-js';
 
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { ContentType } from '../shared/content-type.model';
+import { ContentType, CONTENT_TYPE_INITIAL_DATA } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '../../../api/services/crud';
 import { Field } from '../fields/index';
 import { FieldService } from '../fields/service';
-import { MessageService } from '../../../api/services/messages-service';
 
 /**
  * Portlet component for edit content types
@@ -22,69 +22,62 @@ import { MessageService } from '../../../api/services/messages-service';
     selector: 'dot-content-types-edit',
     templateUrl: './content-types-edit.component.html'
 })
-export class ContentTypesEditComponent extends BaseComponent implements OnInit {
+export class ContentTypesEditComponent implements OnInit {
     @ViewChild('form') form: ContentTypesFormComponent;
 
-    data$: Observable<ContentType>;
+    data: ContentType;
     fields: Field[];
-    contentTypeId: string;
 
     constructor(
-        messageService: MessageService,
         private crudService: CrudService,
         private fieldService: FieldService,
+        private location: Location,
+        private loginService: LoginService,
         private route: ActivatedRoute,
         public router: Router
     ) {
-        super(
-            [
-                'Content-Type',
-                'message.structure.cantdelete',
-
-                'contenttypes.action.cancel',
-                'contenttypes.action.delete',
-                'contenttypes.confirm.message.delete',
-                'contenttypes.confirm.message.delete.content',
-                'contenttypes.confirm.message.delete.warning'
-            ],
-            messageService
-        );
     }
 
     ngOnInit(): void {
-        this.data$ = this.route.data.pluck('contentType').map((contentType: ContentType) => {
-            if (contentType.id) {
-                this.contentTypeId = contentType.id;
-            }
+        this.route.data.pluck('contentType').subscribe((contentType: ContentType) => {
+            this.data = contentType;
             if (contentType.fields) {
                 this.fields = contentType.fields;
             }
-            return contentType;
         });
     }
 
     /**
-     * Combine data from the form and submit to update content types
+     * Check if we need to update or create a content type
      *
-     * @param {any} $event
-     *
+     * @param {*} value;
      * @memberof ContentTypesEditComponent
      */
-    handleFormSubmit($event): void {
-        this.crudService
-            .putData(`v1/contenttype/id/${this.contentTypeId}`, $event.value)
-            .subscribe(() => {
-                this.form.resetForm();
-            });
+    handleFormSubmit(value: any): void {
+        if (this.isEditMode()) {
+            this.updateContentType(value);
+        } else {
+            this.createContentType(value);
+        }
     }
 
     /**
-     * Remove fields
+     * Check if the component is in edit mode
+     *
+     * @returns {boolean}
+     * @memberof ContentTypesFormComponent
+     */
+    isEditMode(): boolean {
+        return !!(this.data && this.data.id);
+    }
+
+    /**
+     * Remove fields from the content type
      * @param fieldsToDelete Fields to be removed
      */
     removeFields(fieldsToDelete: Field[]): void {
         this.fieldService
-            .deleteFields(this.contentTypeId, fieldsToDelete)
+            .deleteFields(this.data.id, fieldsToDelete)
             .pluck('fields')
             .subscribe((fields: Field[]) => {
                 this.fields = fields;
@@ -92,14 +85,41 @@ export class ContentTypesEditComponent extends BaseComponent implements OnInit {
     }
 
     /**
-     * Save fields
+     * Save fields to the content type
      * @param fieldsToSave Fields to be save
      */
     saveFields(fieldsToSave: Field[]): void {
-        this.fieldService
-            .saveFields(this.contentTypeId, fieldsToSave)
-            .subscribe((fields: Field[]) => {
-                this.fields = fields;
+        this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe((fields: Field[]) => {
+            this.fields = fields;
+        });
+    }
+
+    private createContentType(value: any): void {
+        const data = this.getCreateContentTypeData(value);
+        this.crudService
+            .postData('v1/contenttype', data)
+            .flatMap((contentTypes: ContentType[]) => contentTypes)
+            .take(1)
+            .subscribe((contentType: ContentType) => {
+                this.data = contentType;
+                this.form.resetForm();
+                this.location.replaceState(`/content-types-angular/edit/${this.data.id}`);
+            });
+    }
+
+    private getCreateContentTypeData(value: any): ContentType {
+        CONTENT_TYPE_INITIAL_DATA.owner = this.loginService.auth.user.userId;
+        return Object.assign(CONTENT_TYPE_INITIAL_DATA, value);
+    }
+
+    private updateContentType(value: any): void {
+        const data = Object.assign(value, {id: this.data.id});
+
+        this.crudService
+            .putData(`v1/contenttype/id/${this.data.id}`, data)
+            .subscribe((contentType: ContentType) => {
+                this.data = contentType;
+                this.form.resetForm();
             });
     }
 }
