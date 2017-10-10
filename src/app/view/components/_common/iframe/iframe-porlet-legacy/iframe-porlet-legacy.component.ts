@@ -33,7 +33,10 @@ export class IframePortletLegacyComponent implements OnInit {
             this.reloadIframePortlet();
         });
         this.siteService.switchSite$.subscribe(() => {
-            this.reloadIframePortlet();
+            // prevent set empty URL - when the page first loads.
+            if (this.url.getValue() !== '') {
+                this.reloadIframePortlet();
+            }
         });
         this.setIframeSrc();
         this.bindGlobalEvents();

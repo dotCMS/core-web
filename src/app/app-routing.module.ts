@@ -134,7 +134,7 @@ const appRoutes: Routes = [
         path: '',
     },
     {
-        canActivate: [AuthGuardService],
+        canActivate: [MenuGuardService],
         path: '**',
         children: []
     }
@@ -144,7 +144,7 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
         })
     ]
 })

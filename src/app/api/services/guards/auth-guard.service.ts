@@ -12,7 +12,7 @@ export class AuthGuardService implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.loginService.isLogin$.do(isLogin => {
+        return this.loginService.isLogin$.map(isLogin => {
             if (isLogin) {
                 return isLogin;
             }else {

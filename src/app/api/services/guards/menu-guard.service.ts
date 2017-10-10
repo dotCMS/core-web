@@ -6,9 +6,9 @@ import { DotRouterService } from '../dot-router-service';
 import { DotNavigationService } from '../../../view/components/dot-navigation/dot-navigation.service';
 
 @Injectable()
-export class MenuGuardService implements CanActivate  {
+export class MenuGuardService implements CanActivate {
 
-  constructor(private dotMenuService: DotMenuService,
+    constructor(private dotMenuService: DotMenuService,
               private dotRouterService: DotRouterService,
               private dotNavigationService: DotNavigationService) { }
 

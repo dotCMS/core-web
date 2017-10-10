@@ -32,9 +32,9 @@ export class DotNavigationService {
             on page reload we are doing 2 requests to menu enpoint.
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
+            debugger;
             if (auth.loginAsUser || auth.user) {
-                // TODO: Double check if this is needed after the refactor of the routing.
-                //  this.reloadNavigation();
+                this.reloadNavigation();
             }
         });
     }
