@@ -33,8 +33,7 @@ export class IframePortletLegacyComponent implements OnInit {
             this.reloadIframePortlet();
         });
         this.siteService.switchSite$.subscribe(() => {
-            // TODO: Double check if this is needed after the refactor of the routing.
-            //  this.reloadIframePortlet();
+            this.reloadIframePortlet();
         });
         this.setIframeSrc();
         this.bindGlobalEvents();
