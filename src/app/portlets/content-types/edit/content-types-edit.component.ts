@@ -2,8 +2,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { LoginService } from 'dotcms-js/dotcms-js';
-
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { ContentType, CONTENT_TYPE_INITIAL_DATA } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
@@ -32,11 +30,9 @@ export class ContentTypesEditComponent implements OnInit {
         private crudService: CrudService,
         private fieldService: FieldService,
         private location: Location,
-        private loginService: LoginService,
         private route: ActivatedRoute,
         public router: Router
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.route.data.pluck('contentType').subscribe((contentType: ContentType) => {
@@ -96,24 +92,25 @@ export class ContentTypesEditComponent implements OnInit {
 
     private createContentType(value: any): void {
         const data = this.getCreateContentTypeData(value);
+
         this.crudService
             .postData('v1/contenttype', data)
             .flatMap((contentTypes: ContentType[]) => contentTypes)
             .take(1)
             .subscribe((contentType: ContentType) => {
                 this.data = contentType;
+                this.fields = this.data.fields;
                 this.form.resetForm();
                 this.location.replaceState(`/content-types-angular/edit/${this.data.id}`);
             });
     }
 
     private getCreateContentTypeData(value: any): ContentType {
-        CONTENT_TYPE_INITIAL_DATA.owner = this.loginService.auth.user.userId;
-        return Object.assign(CONTENT_TYPE_INITIAL_DATA, value);
+        return Object.assign({}, CONTENT_TYPE_INITIAL_DATA, value);
     }
 
     private updateContentType(value: any): void {
-        const data = Object.assign(value, {id: this.data.id});
+        const data = Object.assign(value, { id: this.data.id });
 
         this.crudService
             .putData(`v1/contenttype/id/${this.data.id}`, data)

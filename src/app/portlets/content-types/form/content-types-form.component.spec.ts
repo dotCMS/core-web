@@ -142,30 +142,6 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
 
-    it('should call delete method on action button click', () => {
-        comp.data = {
-            fields: [
-                {
-                    dataType: 'DATE_TIME',
-                    id: '123',
-                    indexed: true,
-                    name: 'Date 1'
-                }
-            ]
-        };
-        comp.ngOnChanges({
-            data: new SimpleChange(null, comp.data, true)
-        });
-        comp.delete.subscribe(() => this.action = true);
-        fixture.detectChanges();
-
-        const expandFormDeleteButton: DebugElement = fixture
-            .debugElement.query(By.css('.content-type__form-actions p-splitButton .ui-menu-list .ui-menuitem:nth-child(2) a'));
-
-        expandFormDeleteButton.nativeNode.click();
-        expect(true).toBe(this.action);
-    });
-
     it('should toggle formState property on action button click', () => {
         comp.data = {
             fields: [

@@ -4,13 +4,15 @@ import { Observable } from 'rxjs/Observable';
 import { CrudService } from '../../api/services/crud';
 import { ContentType, CONTENT_TYPE_INITIAL_DATA } from './shared/content-type.model';
 import { ContentTypesInfoService } from '../../api/services/content-types-info';
+import { LoginService } from 'dotcms-js/dotcms-js';
 
 @Injectable()
 export class ContentTypeResolver implements Resolve<ContentType> {
     constructor(
-        private router: Router,
+        private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
-        private contentTypesInfoService: ContentTypesInfoService
+        private loginService: LoginService,
+        private router: Router
     ) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ContentType> {
@@ -30,6 +32,7 @@ export class ContentTypeResolver implements Resolve<ContentType> {
             const type = route.paramMap.get('type').toUpperCase();
             return Observable.of(
                 Object.assign({}, CONTENT_TYPE_INITIAL_DATA, {
+                    owner: this.loginService.auth.user.userId,
                     baseType: type,
                     clazz: this.contentTypesInfoService.getClazz(type)
                 })
