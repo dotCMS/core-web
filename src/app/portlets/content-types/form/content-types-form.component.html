@@ -2,7 +2,7 @@
     <div [innerHTML]="i18nMessages['contenttypes.hint.URL.map.pattern.hint1']"></div>
 </p-overlayPanel>
 
-<form [formGroup]="form" class="content-type__form container-fluid" (ngSubmit)="submitContent($event)" id="content-type-form-form" novalidate>
+<form [formGroup]="form" class="content-type__form container-fluid" (ngSubmit)="submitContent($event)" id="content-type-form" novalidate>
     <div class="content-type__form-header" id="content-type-form-header">
         <div class="ui-g">
             <div class="ui-g-6">
@@ -15,12 +15,12 @@
             </div>
             <div class="ui-g-6" *ngIf="isEditMode()">
                 <div class="content-type__form-actions">
-                    <button type="button" pButton flat label="Edit" (click)="toggleForm()" icon="fa-edit"></button>
+                    <button type="button" pButton flat label="Edit" (click)="toggleForm()" icon="fa-edit" id="form-edit-button"></button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="content-type__full-form" [class.content-type__full-form--expanded]="formState === 'expanded'" [@enterAnimation]="formState" id="content-type-form-full">
+    <div class="content-type__full-form" [class.content-type__full-form--expanded]="formState === 'expanded'" [@enterAnimation]="formState">
         <div class="ui-g">
             <div class="ui-g-6">
                 <div class="form__group" *ngIf="isEditMode()">

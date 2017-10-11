@@ -52,7 +52,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
-    formState = 'expanded';
+    formState = 'collapsed';
     placeholder: string;
     submitAttempt = false;
     templateInfo = {
@@ -110,7 +110,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             this.setDateVarFieldsState();
         }
 
-        if (this.isEditMode()) {
+        if (!this.isEditMode()) {
             this.toggleForm();
         }
 
@@ -118,10 +118,15 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             this.setBaseTypeContentSpecificFields();
         }
 
+
+        // this.updateFormControls({license: {isCommunity: true}});
+
         this.dotcmsConfig
             .getConfig()
             .take(1)
-            .subscribe(this.updateFormControls.bind(this));
+            .subscribe((res) => {
+                this.updateFormControls(res);
+            });
     }
 
     ngOnChanges(changes): void {
