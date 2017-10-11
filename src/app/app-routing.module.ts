@@ -98,7 +98,6 @@ const appRoutes: Routes = [
             {
                 path: 'rules',
                 loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
-                canActivate: [RoutingPrivateAuthService]
             }
         ],
         component: MainCoreLegacyComponent,

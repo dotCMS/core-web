@@ -34,7 +34,7 @@ export class DotMenuService {
      * @memberof DotNavigationService
      */
     isPortletInMenu(menuId: string): Observable<boolean> {
-        return this.getMenuItems()
+        return menuId === 'fromCore' ? Observable.of(true) : this.getMenuItems()
             .pluck('id')
             .map((id: string) => menuId === id)
             .filter(val => !!val)
