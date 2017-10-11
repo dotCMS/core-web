@@ -72,7 +72,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.fields.currentValue) {
-            const fields = this.fields;
+            const fields = changes.fields.currentValue;
 
             if (Array.isArray(fields)) {
                 this.fieldRows = this.getRowFields(fields);
