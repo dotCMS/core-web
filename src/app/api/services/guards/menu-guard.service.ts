@@ -5,12 +5,16 @@ import { DotMenuService } from '../dot-menu.service';
 import { DotRouterService } from '../dot-router-service';
 import { DotNavigationService } from '../../../view/components/dot-navigation/dot-navigation.service';
 
+/**
+ * Route Guard that checks if a User have access to the specified Menu portlet.
+ */
 @Injectable()
 export class MenuGuardService implements CanActivate {
 
     constructor(private dotMenuService: DotMenuService,
               private dotRouterService: DotRouterService,
               private dotNavigationService: DotNavigationService) { }
+
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
       return this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));

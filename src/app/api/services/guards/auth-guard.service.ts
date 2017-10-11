@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Rx';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './../dot-router-service';
 
+/**
+ * Route Guard that checks if a User is logged in.
+ */
 @Injectable()
 export class AuthGuardService implements CanActivate {
     constructor(

@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Rx';
 import { DotContentletService } from './../dot-contentlet.service';
 import { DotNavigationService } from '../../../view/components/dot-navigation/dot-navigation.service';
 
+/**
+ * Route Guard that checks if a User have access to the specified Content Type.
+ */
 @Injectable()
 export class ContentletGuardService implements CanActivateChild {
     constructor(
