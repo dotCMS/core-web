@@ -32,7 +32,6 @@ export class DotNavigationService {
             on page reload we are doing 2 requests to menu enpoint.
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
-            debugger;
             if (auth.loginAsUser || auth.user) {
                 this.reloadNavigation();
             }
