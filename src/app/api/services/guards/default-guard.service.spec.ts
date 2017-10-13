@@ -8,7 +8,7 @@ class MockDotRouterService {
     goToMain = jasmine.createSpy('goToMain');
 }
 
-fdescribe('ValidDefaultGuardService', () => {
+describe('ValidDefaultGuardService', () => {
     let defaultGuardService: DefaultGuardService;
     let dotRouterService: DotRouterService;
 
