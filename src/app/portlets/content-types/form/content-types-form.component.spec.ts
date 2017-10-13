@@ -23,6 +23,12 @@ import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { SiteSelectorModule } from '../../../view/components/_common/site-selector/site-selector.module';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
+import { HotkeysService, HotkeyOptions } from 'angular2-hotkeys';
+
+class HotkeysServiceMock {
+    add() {}
+    remove() {}
+}
 
 describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
@@ -65,6 +71,7 @@ describe('ContentTypesFormComponent', () => {
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
                     { provide: MessageService, useValue: messageServiceMock },
+                    { provide: HotkeysService, useClass: HotkeysServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
                     SocketFactory
@@ -82,6 +89,32 @@ describe('ContentTypesFormComponent', () => {
             });
         })
     );
+
+    it('should be invalid by default', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+        expect(comp.form.valid).toBeFalsy();
+    });
+
+    it('should be valid when all name have value', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+
+        comp.form.get('name').setValue('content type name');
+        expect(comp.form.valid).toBeTruthy();
+    });
+
+    it('should have name focus by default on create mode', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+        expect(comp.name.nativeElement).toBe(document.activeElement);
+    });
 
     it('should be collapsed by default in edit mode', () => {
         comp.data = {
@@ -105,12 +138,106 @@ describe('ContentTypesFormComponent', () => {
 
         const form = de.query(By.css('.content-type__full-form'));
 
-        expect(comp.formState).toBe('expanded', 'form state extpanded');
+        expect(comp.formState).toBe('expanded', 'form state expanded');
         expect(form.nativeElement.style.height).toBe('', 'form height not set to be auto');
         expect(form.nativeElement.style.overflow).toBe('visible', 'form overflow visible');
     });
 
-    it('should have a button to edit button', () => {
+    it('should have submit button disabled when form is invalid', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+
+        // Form is only valid when "name" property is set
+        comp.form.get('description').setValue('hello world');
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-submit')
+        );
+        expect(submittButton.nativeElement.disabled).toBeTruthy();
+    });
+
+    it('should have submit button enabled when form is valid', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+
+        // Form is only valid when "name" property is set
+        comp.form.get('name').setValue('hello world');
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-submit')
+        );
+        expect(submittButton.nativeElement.disabled).toBeFalsy();
+    });
+
+    it('should have submit button enabled when form is valid and the value change in edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        // Form is only valid when "name" property is set
+        comp.form.get('name').setValue('A new name');
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-submit')
+        );
+        expect(submittButton.nativeElement.disabled).toBeFalsy();
+    });
+
+    it('should have submit button disabled when form is invalid and the value change in edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        // Form is only valid when "name" property is set
+        comp.form.get('name').setValue(null);
+        comp.form.get('description').setValue('a description');
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-submit')
+        );
+        expect(submittButton.nativeElement.disabled).toBeTruthy();
+    });
+
+    it('should not have cancel button on create mode', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        expect(cancelButton).toBeFalsy();
+    });
+
+    it('should have cancel button on edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        expect(cancelButton).not.toBeNull();
+    });
+
+    it('should have edit button on edit mode', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
@@ -120,7 +247,7 @@ describe('ContentTypesFormComponent', () => {
         expect(editButton).toBeTruthy();
     });
 
-    it('should call toogleForm method on action button click', () => {
+    it('should call toogleForm method on edit button click', () => {
         spyOn(comp, 'toggleForm');
         comp.data = {
             baseType: 'CONTENT',
@@ -133,7 +260,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
 
-    it('should toggle formState property on action button click', () => {
+    it('should toggle formState property on edit button click', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
@@ -148,34 +275,129 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.formState).toBe('collapsed');
     });
 
-    // .focus() it's not being triggered
-    xit(
-        'should toggle formState when the user focus on the name field',
-        async(() => {
-            comp.data = {
-                baseType: 'CONTENT',
-                id: '123'
-            };
-            fixture.detectChanges();
+    it('should call cancelForm() on cancel button click', () => {
+        spyOn(comp, 'cancelForm');
 
-            expect(comp.formState).toBe('collapsed', 'collapsed by default');
-
-            const nameEl: DebugElement = fixture.debugElement.query(
-                By.css('#content-type-form-name')
-            );
-            nameEl.nativeNode.focus();
-            fixture.detectChanges();
-
-            expect(comp.formState).toBe('expanded', 'expanded on focus');
-        })
-    );
-
-    it('should be invalid by default', () => {
         comp.data = {
-            baseType: 'CONTENT'
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        comp.formState = 'extended';
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        cancelButton.nativeNode.click();
+
+        expect(comp.cancelForm).toHaveBeenCalledTimes(1);
+    });
+
+    it('should collapse the form on cancel button click', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        comp.formState = 'extended';
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        cancelButton.nativeNode.click();
+        fixture.detectChanges();
+        const form = de.query(By.css('.content-type__full-form'));
+
+        expect(comp.formState).toBe('collapsed', 'form state collapsed');
+        expect(form.nativeElement.style.height).toBe('0px', 'form height 0px');
+        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
+    });
+
+    it('should reset the form value on cancel button click', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World',
+            description: 'Hello Description',
+            clazz: 'clazz'
         };
         fixture.detectChanges();
-        expect(comp.form.valid).toBeFalsy();
+
+        comp.form.get('name').setValue('a new name');
+        comp.form.get('description').setValue('a new desc');
+
+        expect(comp.form.value).toEqual({
+            clazz: 'clazz',
+            description: 'a new desc',
+            detailPage: '',
+            host: null,
+            name: 'a new name',
+            urlMapPattern: ''
+        });
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        cancelButton.nativeNode.click();
+        fixture.detectChanges();
+
+        expect(comp.form.value).toEqual({
+            clazz: 'clazz',
+            description: 'Hello Description',
+            detailPage: '',
+            host: null,
+            name: 'Hello World',
+            urlMapPattern: ''
+        });
+    });
+
+    it('should remove focus from name on cancel button click', () => {
+        spyOn(comp.name.nativeElement, 'blur');
+
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-cancel')
+        );
+        cancelButton.nativeNode.click();
+
+        expect(comp.name.nativeElement.blur).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call submitContent() on submit event', () => {
+        spyOn(comp, 'submitContent');
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        const form = fixture.debugElement.query(By.css('form'));
+        form.nativeElement.dispatchEvent(new Event('submit'));
+
+        expect(comp.submitContent).toHaveBeenCalledTimes(1);
+    });
+
+    // .focus() it's not being triggered
+    xit('should toggle formState when the user focus on the name field', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+
+        expect(comp.formState).toBe('collapsed', 'collapsed by default');
+
+        const nameEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
+        nameEl.nativeElement.focus();
+        fixture.detectChanges();
+
+        expect(comp.formState).toBe('expanded', 'expanded on focus');
     });
 
     it('should have basic form controls for non-content base types', () => {
@@ -292,20 +514,23 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('workflow').disabled).toBeFalsy();
     });
 
-    it('should render disabled dates fields', () => {
+    it('should render disabled dates fields and hint when date fields are not passed', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
         };
         fixture.detectChanges();
 
+        const dateFieldMsg = de.query(By.css('#field-dates-hint'));
+
+        expect(dateFieldMsg).toBeTruthy();
         expect(comp.form.get('publishDateVar').disabled).toBe(true);
         expect(comp.form.get('expireDateVar').disabled).toBe(true);
     });
 
-    it('should render enabled dates fields', () => {
+    it('should render enabled dates fields when date fields are passed', () => {
         comp.data = {
-            baseType: 'CONTENT',
+            baseType: 'CONTENT'
         };
         comp.fields = [
             {
@@ -327,9 +552,42 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('expireDateVar').disabled).toBe(false);
     });
 
-    it('should not send data with invalid form', () => {
+    it('should update date var fields from disable to enable when date fields are passed', () => {
         comp.data = {
             baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+
+        expect(comp.form.get('publishDateVar').disabled).toBe(true);
+        expect(comp.form.get('expireDateVar').disabled).toBe(true);
+
+        comp.fields = [
+            {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                id: '123',
+                indexed: true,
+                name: 'Date 1'
+            },
+            {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                id: '456',
+                indexed: true,
+                name: 'Date 2'
+            }
+        ];
+
+        comp.ngOnChanges({
+            fields: new SimpleChange(null, comp.fields, false)
+        });
+
+        expect(comp.form.get('publishDateVar').disabled).toBe(false);
+        expect(comp.form.get('expireDateVar').disabled).toBe(false);
+    });
+
+    it('should not send data with invalid form', () => {
+        comp.data = {
+            baseType: 'CONTENT'
         };
         fixture.detectChanges();
 
@@ -342,13 +600,13 @@ describe('ContentTypesFormComponent', () => {
         );
         submitFormButton.nativeElement.click();
 
-        expect(comp.submitContent).toHaveBeenCalledTimes(1);
+        expect(comp.submitContent).not.toHaveBeenCalled();
         expect(data).toBeNull();
     });
 
     it('should send data with valid form', () => {
         comp.data = {
-            baseType: 'CONTENT',
+            baseType: 'CONTENT'
         };
         fixture.detectChanges();
 
@@ -358,6 +616,8 @@ describe('ContentTypesFormComponent', () => {
         comp.onSubmit.subscribe(res => (data = res));
 
         comp.form.controls.name.setValue('A content type name');
+
+        fixture.detectChanges();
 
         const submitFormButton: DebugElement = fixture.debugElement.query(
             By.css('#content-type-form-submit')
@@ -369,10 +629,9 @@ describe('ContentTypesFormComponent', () => {
             clazz: '',
             description: '',
             detailPage: '',
-            host: '',
+            host: null,
             name: 'A content type name',
-            urlMapPattern: '',
-            workflow: ''
+            urlMapPattern: ''
         });
     });
 });
