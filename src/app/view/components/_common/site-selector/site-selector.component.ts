@@ -174,10 +174,9 @@ export class SiteSelectorComponent implements ControlValueAccessor, OnInit, Afte
             this.currentSite = Observable.of(this.siteService.currentSite);
             this.propagateChange(this.siteService.currentSite.identifier);
         } else {
-            const sub = this.siteService.switchSite$.subscribe(site => {
+            this.siteService.switchSite$.subscribe(site => {
                 this.currentSite = Observable.of(site);
                 this.propagateChange(site.identifier);
-                sub.unsubscribe();
             });
         }
     }
