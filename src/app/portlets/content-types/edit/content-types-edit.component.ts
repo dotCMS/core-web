@@ -50,11 +50,7 @@ export class ContentTypesEditComponent implements OnInit {
      * @memberof ContentTypesEditComponent
      */
     handleFormSubmit(value: any): void {
-        if (this.isEditMode()) {
-            this.updateContentType(value);
-        } else {
-            this.createContentType(value);
-        }
+        this.isEditMode() ? this.updateContentType(value) : this.createContentType(value);
     }
 
     /**
