@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { CrudService } from '../../api/services/crud';
 import { ContentType, CONTENT_TYPE_INITIAL_DATA } from './shared/content-type.model';
 import { ContentTypesInfoService } from '../../api/services/content-types-info';
 import { LoginService } from 'dotcms-js/dotcms-js';
+import { DotRouterService } from '../../api/services/dot-router-service';
 
 @Injectable()
 export class ContentTypeResolver implements Resolve<ContentType> {
@@ -12,10 +13,10 @@ export class ContentTypeResolver implements Resolve<ContentType> {
         private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
         private loginService: LoginService,
-        private router: Router
+        private dotRouterService: DotRouterService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ContentType> {
+    resolve(route: ActivatedRouteSnapshot): Observable<ContentType> {
         if (route.paramMap.get('id')) {
             return this.crudService
                 .getDataById('v1/contenttype', route.paramMap.get('id'))
@@ -24,7 +25,7 @@ export class ContentTypeResolver implements Resolve<ContentType> {
                     if (contentType) {
                         return contentType;
                     } else {
-                        this.router.navigate(['/content-types-angular']);
+                        this.dotRouterService.gotoPortlet('/content-types-angular');
                         return null;
                     }
                 });
