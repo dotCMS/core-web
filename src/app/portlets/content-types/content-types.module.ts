@@ -16,6 +16,7 @@ import { SiteSelectorModule } from '../../view/components/_common/site-selector/
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
+import { TooltipModule } from 'primeng/primeng';
 
 import {
     ContentTypeFieldsDropZoneComponent,
@@ -23,7 +24,8 @@ import {
     ContentTypeFieldsRowComponent,
     ContentTypeFieldsRowListComponent,
     ContentTypesFieldDragabbleItemComponent,
-    ContentTypesFieldsListComponent
+    ContentTypesFieldsListComponent,
+    ContentTypeFieldsAddRowComponent
 } from './fields';
 import {
     ButtonModule,
@@ -60,6 +62,7 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsDropZoneComponent,
+        ContentTypeFieldsAddRowComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowComponent,
@@ -114,7 +117,8 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         SiteSelectorModule,
         SplitButtonModule,
         TabViewModule,
-        DotTextareaContentModule
+        DotTextareaContentModule,
+        TooltipModule
     ],
     providers: [
         ContentTypesInfoService,
