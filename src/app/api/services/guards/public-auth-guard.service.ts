@@ -22,10 +22,9 @@ export class PublicAuthGuardService implements CanActivate {
             .map(isLogin => {
                 if (isLogin) {
                     this.router.goToMain();
-                } else {
-                    return true;
+                    return !isLogin;
                 }
-            })
-            .take(1);
+                return !isLogin;
+            });
     }
 }

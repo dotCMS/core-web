@@ -28,11 +28,14 @@ const AUTH_MODULES: Routes = [
     {
         path: '',
         children: []
+    },
+    {
+        path: '**',
+        children: []
     }
 ];
 
-const MAIN_COMPONENT_ROUTES = [
-    // START PORTLETS_ANGULAR
+const PORTLETS_ANGULAR = [
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
@@ -65,8 +68,17 @@ const MAIN_COMPONENT_ROUTES = [
         loadChildren:
             'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
-    // END PORTLETS_ANGULAR
-    // START PORTLETS_IFRAME
+    {
+        canActivate: [MenuGuardService],
+        path: '',
+        children: []
+    },
+    {
+        path: '**',
+        children: []
+    }
+];
+const PORTLETS_IFRAME = [
     {
         canActivateChild: [MenuGuardService],
         path: 'c',
@@ -77,6 +89,10 @@ const MAIN_COMPONENT_ROUTES = [
             },
             {
                 path: '',
+                children: []
+            },
+            {
+                path: '**',
                 children: []
             }
         ]
@@ -92,14 +108,12 @@ const MAIN_COMPONENT_ROUTES = [
             {
                 path: '',
                 children: []
+            },
+            {
+                path: '**',
+                children: []
             }
         ]
-    },
-    // END PORTLETS_IFRAME
-    {
-        canActivate: [MenuGuardService],
-        path: '',
-        children: []
     }
 ];
 
@@ -130,7 +144,7 @@ const appRoutes: Routes = [
     {
         canActivate: [AuthGuardService],
         component: MainComponentLegacy,
-        children: MAIN_COMPONENT_ROUTES,
+        children: [...PORTLETS_IFRAME, ...PORTLETS_IFRAME],
         path: '',
     },
     {
@@ -145,6 +159,7 @@ const appRoutes: Routes = [
     imports: [
         RouterModule.forRoot(appRoutes, {
             useHash: true,
+            enableTracing: true
         })
     ]
 })

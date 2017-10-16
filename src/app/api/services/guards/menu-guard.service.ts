@@ -17,7 +17,7 @@ export class MenuGuardService implements CanActivate {
 
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-      return this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));
+        return this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));
     }
 
     canActivateChild( route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -25,17 +25,17 @@ export class MenuGuardService implements CanActivate {
     }
 
     /**
-     * Check if User has access to the requested route (url) based on the Menu, otherwise return to the 'First Portlet'.
+     * Check if User has access to the requested route (url) based on the Menu, otherwise go to the 'First Portlet' and return false.
      *
      * @param {string} url
      * @returns {boolean}
      */
-    canAccessPortlet (url: string): Observable<boolean> {
+    private canAccessPortlet (url: string): Observable<boolean> {
         return this.dotMenuService.isPortletInMenu(url).map(isValidPortlet => {
-            if (isValidPortlet) {
-                return isValidPortlet;
+            if (!isValidPortlet) {
+                this.dotNavigationService.goToFirstPortlet();
             }
-            this.dotNavigationService.goToFirstPortlet();
+            return isValidPortlet;
         });
     }
 }

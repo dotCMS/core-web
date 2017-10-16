@@ -10,7 +10,7 @@ import { DotNavigationService } from '../../../view/components/dot-navigation/do
 @Injectable()
 export class ContentletGuardService implements CanActivateChild {
     constructor(
-        private contentletService: DotContentletService,
+        private dotContentletService: DotContentletService,
         private dotNavigationService: DotNavigationService,
     ) {}
 
@@ -25,7 +25,7 @@ export class ContentletGuardService implements CanActivateChild {
      * @returns {boolean}
      */
     canAccessContentType (url: string): Observable<boolean> {
-        return this.contentletService.isContentTypeInMenu(url).map(res => {
+        return this.dotContentletService.isContentTypeInMenu(url).map(res => {
             if (!res) {
                 this.dotNavigationService.goToFirstPortlet();
             }
