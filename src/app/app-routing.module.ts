@@ -144,7 +144,7 @@ const appRoutes: Routes = [
     {
         canActivate: [AuthGuardService],
         component: MainComponentLegacy,
-        children: [...PORTLETS_IFRAME, ...PORTLETS_IFRAME],
+        children: [...PORTLETS_IFRAME, ...PORTLETS_ANGULAR],
         path: '',
     },
     {
@@ -158,8 +158,7 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true,
-            enableTracing: true
+            useHash: true
         })
     ]
 })
