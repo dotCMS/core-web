@@ -5,7 +5,6 @@ import {
     RouterStateSnapshot
 } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './../dot-router-service';
 
