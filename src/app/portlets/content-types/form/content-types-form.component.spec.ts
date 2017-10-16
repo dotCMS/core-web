@@ -23,7 +23,7 @@ import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { SiteSelectorModule } from '../../../view/components/_common/site-selector/site-selector.module';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { HotkeysService, HotkeyOptions } from 'angular2-hotkeys';
+import { HotkeysService } from 'angular2-hotkeys';
 
 class HotkeysServiceMock {
     add() {}
@@ -40,10 +40,12 @@ describe('ContentTypesFormComponent', () => {
         async(() => {
             const messageServiceMock = new MockMessageService({
                 'contenttypes.form.field.detail.page': 'Detail Page',
-                'contenttypes.form.field.expire.date.field': 'Expire Date Field',
+                'contenttypes.form.field.expire.date.field':
+                    'Expire Date Field',
                 'contenttypes.form.field.host_folder.label': 'Host or Folder',
                 'contenttypes.form.identifier': 'Identifier',
-                'contenttypes.form.label.publish.date.field': 'Publish Date Field',
+                'contenttypes.form.label.publish.date.field':
+                    'Publish Date Field',
                 'contenttypes.hint.URL.map.pattern.hint1': 'Hello World',
                 'contenttypes.form.label.URL.pattern': 'URL Pattern',
                 'contenttypes.content.variable': 'Variable',
@@ -127,7 +129,10 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.formState).toBe('collapsed', 'form state collapsed');
         expect(form.nativeElement.style.height).toBe('0px', 'form height 0');
-        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
+        expect(form.nativeElement.style.overflow).toBe(
+            'hidden',
+            'form overflow hidden'
+        );
     });
 
     it('should be expanded by default in create mode', () => {
@@ -139,8 +144,14 @@ describe('ContentTypesFormComponent', () => {
         const form = de.query(By.css('.content-type__full-form'));
 
         expect(comp.formState).toBe('expanded', 'form state expanded');
-        expect(form.nativeElement.style.height).toBe('', 'form height not set to be auto');
-        expect(form.nativeElement.style.overflow).toBe('visible', 'form overflow visible');
+        expect(form.nativeElement.style.height).toBe(
+            '',
+            'form height not set to be auto'
+        );
+        expect(form.nativeElement.style.overflow).toBe(
+            'visible',
+            'form overflow visible'
+        );
     });
 
     it('should have submit button disabled when form is invalid', () => {
@@ -190,7 +201,7 @@ describe('ContentTypesFormComponent', () => {
         const submittButton: DebugElement = fixture.debugElement.query(
             By.css('#content-type-form-submit')
         );
-        expect(submittButton.nativeElement.disabled).toBeFalsy();
+        expect(submittButton.nativeElement.disabled).toBe(false);
     });
 
     it('should have submit button disabled when form is invalid and the value change in edit mode', () => {
@@ -209,7 +220,7 @@ describe('ContentTypesFormComponent', () => {
         const submittButton: DebugElement = fixture.debugElement.query(
             By.css('#content-type-form-submit')
         );
-        expect(submittButton.nativeElement.disabled).toBeTruthy();
+        expect(submittButton.nativeElement.disabled).toBe(true);
     });
 
     it('should not have cancel button on create mode', () => {
@@ -243,7 +254,9 @@ describe('ContentTypesFormComponent', () => {
             id: '123'
         };
         fixture.detectChanges();
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        const editButton: DebugElement = fixture.debugElement.query(
+            By.css('#form-edit-button')
+        );
         expect(editButton).toBeTruthy();
     });
 
@@ -255,7 +268,9 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        const editButton: DebugElement = fixture.debugElement.query(
+            By.css('#form-edit-button')
+        );
         editButton.nativeNode.click();
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
@@ -267,7 +282,9 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        const editButton: DebugElement = fixture.debugElement.query(
+            By.css('#form-edit-button')
+        );
 
         editButton.nativeNode.click();
         expect(comp.formState).toBe('expanded');
@@ -310,7 +327,10 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.formState).toBe('collapsed', 'form state collapsed');
         expect(form.nativeElement.style.height).toBe('0px', 'form height 0px');
-        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
+        expect(form.nativeElement.style.overflow).toBe(
+            'hidden',
+            'form overflow hidden'
+        );
     });
 
     it('should reset the form value on cancel button click', () => {
@@ -393,7 +413,9 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.formState).toBe('collapsed', 'collapsed by default');
 
-        const nameEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
+        const nameEl: DebugElement = fixture.debugElement.query(
+            By.css('#content-type-form-name')
+        );
         nameEl.nativeElement.focus();
         fixture.detectChanges();
 
@@ -534,13 +556,15 @@ describe('ContentTypesFormComponent', () => {
         };
         comp.fields = [
             {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz:
+                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
                 indexed: true,
                 name: 'Date 1'
             },
             {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz:
+                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '456',
                 indexed: true,
                 name: 'Date 2'
@@ -564,13 +588,15 @@ describe('ContentTypesFormComponent', () => {
 
         comp.fields = [
             {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz:
+                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
                 indexed: true,
                 name: 'Date 1'
             },
             {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz:
+                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '456',
                 indexed: true,
                 name: 'Date 2'
