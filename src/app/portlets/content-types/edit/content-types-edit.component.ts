@@ -3,7 +3,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { ContentType, CONTENT_TYPE_INITIAL_DATA } from '../shared/content-type.model';
+import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '../../../api/services/crud';
 import { Field } from '../fields/index';
@@ -86,11 +86,9 @@ export class ContentTypesEditComponent implements OnInit {
         });
     }
 
-    private createContentType(value: any): void {
-        const data = this.getCreateContentTypeData(value);
-
+    private createContentType(value: ContentType): void {
         this.crudService
-            .postData('v1/contenttype', data)
+            .postData('v1/contenttype', value)
             .flatMap((contentTypes: ContentType[]) => contentTypes)
             .take(1)
             .subscribe((contentType: ContentType) => {
@@ -99,10 +97,6 @@ export class ContentTypesEditComponent implements OnInit {
                 this.form.resetForm();
                 this.location.replaceState(`/content-types-angular/edit/${this.data.id}`);
             });
-    }
-
-    private getCreateContentTypeData(value: any): ContentType {
-        return Object.assign({}, CONTENT_TYPE_INITIAL_DATA, value);
     }
 
     private updateContentType(value: any): void {

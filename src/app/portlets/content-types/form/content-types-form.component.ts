@@ -223,7 +223,6 @@ export class ContentTypesFormComponent extends BaseComponent
      * @memberof ContentTypesFormComponent
      */
     submitContent($event): void {
-        console.log($event);
         if (!this.submitAttempt) {
             this.submitAttempt = true;
         }
@@ -304,7 +303,11 @@ export class ContentTypesFormComponent extends BaseComponent
             host: this.data.host || null,
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
-            workflow: [{ value: this.data.workflow || '', disabled: true }]
+            workflow: [{ value: this.data.workflow || '', disabled: true }],
+            defaultType: this.data.defaultType,
+            fixed: this.data.fixed,
+            folder: this.data.folder,
+            system: this.data.system
         });
 
         if (this.isBaseTypeContent()) {

@@ -1,17 +1,19 @@
 import { ActivatedRoute } from '@angular/router';
-import { async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesEditComponent } from './content-types-edit.component';
-import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
+import { CrudService } from '../../../api/services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
+import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
+import { Field } from '../fields';
+import { FieldService } from '../fields/service';
+import { Location } from '@angular/common';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Field } from '../fields';
-import { FieldService } from '../fields/service';
-import { CrudService } from '../../../api/services/crud/crud.service';
+import { async } from '@angular/core/testing';
+import { ContentType } from '../shared/content-type.model';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -74,6 +76,7 @@ describe('ContentTypesEditComponent', () => {
                         provide: ActivatedRoute,
                         useValue: { params: Observable.from([{ id: '1234' }]) }
                     },
+                    Location,
                     CrudService,
                     FieldService
                 ]
@@ -116,7 +119,22 @@ describe('ContentTypesEditComponent', () => {
     });
 
     it('should create content type', () => {
-        spyOn(crudService, 'postData').and.returnValue(Observable.of([{ id: '123' }]));
+        const fakeContentType: ContentType = {
+            clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
+            defaultType: false,
+            fixed: false,
+            folder: 'SYSTEM_FOLDER',
+            host: null,
+            name: 'Hello World',
+            owner: '123',
+            system: false
+        };
+
+        const responseContentType = Object.assign({}, fakeContentType, {
+            fields: [{ hello: 'world' }]
+        });
+
+        spyOn(crudService, 'postData').and.returnValue(Observable.of([responseContentType]));
 
         route.data = Observable.of({
             contentType: {
@@ -126,47 +144,44 @@ describe('ContentTypesEditComponent', () => {
         fixture.detectChanges();
 
         const contentTypeForm = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.onSubmit.emit({
-            name: 'Hello World',
-            clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
-            owner: '123'
-        });
+        contentTypeForm.onSubmit.emit(fakeContentType);
 
-        expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', {
+        expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', fakeContentType);
+        expect(contentTypeForm.resetForm).toHaveBeenCalledTimes(1);
+        expect(comp.data).toEqual(responseContentType, 'set data with response');
+        expect(comp.fields).toEqual(responseContentType.fields, 'ser fields with response');
+    });
+
+    it('should udpate content type', () => {
+        const fakeContentType: ContentType = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
             defaultType: false,
             fixed: false,
             folder: 'SYSTEM_FOLDER',
             host: null,
+            id: '1234567890',
             name: 'Hello World',
             owner: '123',
             system: false
-        });
-        expect(contentTypeForm.resetForm).toHaveBeenCalledTimes(1);
-    });
+        };
 
-    it('should udpate content type', () => {
-        spyOn(crudService, 'putData').and.returnValue(Observable.of({}));
+        const responseContentType = Object.assign({}, fakeContentType, {
+            fields: [{ hello: 'world' }]
+        });
+
+        spyOn(crudService, 'putData').and.returnValue(Observable.of(responseContentType));
 
         route.data = Observable.of({
-            contentType: {
-                id: '1234567890'
-            }
+            contentType: fakeContentType
         });
         fixture.detectChanges();
 
         const contentTypeForm = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.onSubmit.emit({
-            name: 'New name',
-            description: 'New description'
-        });
+        contentTypeForm.onSubmit.emit(fakeContentType);
 
-        expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', {
-            name: 'New name',
-            description: 'New description',
-            id: '1234567890'
-        });
+        expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', fakeContentType);
         expect(contentTypeForm.resetForm).toHaveBeenCalledTimes(1);
+        expect(comp.data).toEqual(responseContentType, 'set data with response');
     });
 
     it('should save fields on dropzone event', () => {
@@ -264,9 +279,7 @@ describe('ContentTypesEditComponent', () => {
 
         const fieldsReturnByServer: Field[] = currentFieldsInServer.slice(-1);
         const fieldService = fixture.debugElement.injector.get(FieldService);
-        spyOn(fieldService, 'deleteFields').and.returnValue(
-            Observable.of({ fields: fieldsReturnByServer })
-        );
+        spyOn(fieldService, 'deleteFields').and.returnValue(Observable.of({ fields: fieldsReturnByServer }));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 

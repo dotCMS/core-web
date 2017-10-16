@@ -261,12 +261,12 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should call toogleForm method on edit button click', () => {
-        spyOn(comp, 'toggleForm');
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
         };
         fixture.detectChanges();
+        spyOn(comp, 'toggleForm');
 
         const editButton: DebugElement = fixture.debugElement.query(
             By.css('#form-edit-button')
@@ -352,7 +352,11 @@ describe('ContentTypesFormComponent', () => {
             detailPage: '',
             host: null,
             name: 'a new name',
-            urlMapPattern: ''
+            urlMapPattern: '',
+            defaultType: null,
+            fixed: null,
+            folder: null,
+            system: null,
         });
 
         const cancelButton: DebugElement = fixture.debugElement.query(
@@ -367,7 +371,11 @@ describe('ContentTypesFormComponent', () => {
             detailPage: '',
             host: null,
             name: 'Hello World',
-            urlMapPattern: ''
+            urlMapPattern: '',
+            defaultType: null,
+            fixed: null,
+            folder: null,
+            system: null,
         });
     });
 
@@ -428,7 +436,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        expect(Object.keys(comp.form.controls).length).toBe(7);
+        expect(Object.keys(comp.form.controls).length).toBe(11);
         expect(comp.form.get('clazz')).not.toBeNull();
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
@@ -436,6 +444,11 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('workflow')).not.toBeNull();
         expect(comp.form.get('publishDateVar')).not.toBeNull();
         expect(comp.form.get('expireDateVar')).not.toBeNull();
+        expect(comp.form.get('defaultType')).not.toBeNull();
+        expect(comp.form.get('fixed')).not.toBeNull();
+        expect(comp.form.get('system')).not.toBeNull();
+        expect(comp.form.get('folder')).not.toBeNull();
+
         expect(comp.form.get('detailPage')).toBeNull();
         expect(comp.form.get('urlMapPattern')).toBeNull();
     });
@@ -466,7 +479,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        expect(Object.keys(comp.form.controls).length).toBe(9);
+        expect(Object.keys(comp.form.controls).length).toBe(13);
         expect(comp.form.get('clazz')).not.toBeNull();
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
@@ -476,6 +489,10 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('expireDateVar')).not.toBeNull();
         expect(comp.form.get('detailPage')).not.toBeNull();
         expect(comp.form.get('urlMapPattern')).not.toBeNull();
+        expect(comp.form.get('defaultType')).not.toBeNull();
+        expect(comp.form.get('fixed')).not.toBeNull();
+        expect(comp.form.get('system')).not.toBeNull();
+        expect(comp.form.get('folder')).not.toBeNull();
     });
 
     it('should render extra fields for content types', () => {
@@ -657,7 +674,15 @@ describe('ContentTypesFormComponent', () => {
             detailPage: '',
             host: null,
             name: 'A content type name',
-            urlMapPattern: ''
+            urlMapPattern: '',
+            defaultType: null,
+            fixed: null,
+            folder: null,
+            system: null,
         });
+    });
+
+    xit('should reset and collapse the form on ESC key', () => {
+        // TODO: waiting for Luis mock hotkeys.
     });
 });

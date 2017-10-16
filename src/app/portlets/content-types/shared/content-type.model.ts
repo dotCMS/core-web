@@ -21,14 +21,3 @@ export interface ContentType {
     variable?: string;
     workflow?: string;
 }
-
-export const CONTENT_TYPE_INITIAL_DATA: ContentType = {
-    clazz: null,
-    defaultType: false,
-    fixed: false,
-    folder: 'SYSTEM_FOLDER',
-    host: null,
-    name: null,
-    owner: null,
-    system: false
-};
