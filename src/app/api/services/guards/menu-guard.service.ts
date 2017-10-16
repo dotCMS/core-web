@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import {
-    CanActivate,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot
-} from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DotMenuService } from '../dot-menu.service';
 import { DotRouterService } from '../dot-router-service';
 import { DotNavigationService } from '../../../view/components/dot-navigation/dot-navigation.service';
@@ -20,22 +16,12 @@ export class MenuGuardService implements CanActivate {
         private dotNavigationService: DotNavigationService
     ) {}
 
-    canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean> {
-        return this.canAccessPortlet(
-            this.dotRouterService.getPortletId(state.url)
-        );
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        return this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));
     }
 
-    canActivateChild(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean> {
-        return this.canAccessPortlet(
-            this.dotRouterService.getPortletId(state.url)
-        );
+    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        return this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));
     }
 
     /**

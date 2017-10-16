@@ -72,10 +72,6 @@ const PORTLETS_ANGULAR = [
         canActivate: [MenuGuardService],
         path: '',
         children: []
-    },
-    {
-        path: '**',
-        children: []
     }
 ];
 const PORTLETS_IFRAME = [
@@ -90,10 +86,6 @@ const PORTLETS_IFRAME = [
             {
                 path: '',
                 children: []
-            },
-            {
-                path: '**',
-                children: []
             }
         ]
     },
@@ -107,10 +99,6 @@ const PORTLETS_IFRAME = [
             },
             {
                 path: '',
-                children: []
-            },
-            {
-                path: '**',
                 children: []
             }
         ]
@@ -148,7 +136,7 @@ const appRoutes: Routes = [
         path: '',
     },
     {
-        canActivate: [MenuGuardService],
+        canActivate: [PublicAuthGuardService],
         path: '**',
         children: []
     }
@@ -158,7 +146,8 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
+            enableTracing: true
         })
     ]
 })
