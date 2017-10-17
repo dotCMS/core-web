@@ -1,0 +1,17 @@
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { DotRouterService } from './../dot-router-service';
+
+/**
+ * Route Guard the only function is to redirect to the Main Portlet.
+ */
+@Injectable()
+export class DefaultGuardService implements CanActivate {
+    constructor(private router: DotRouterService) {}
+
+    canActivate(): boolean {
+        debugger;
+        this.router.goToMain();
+        return true;
+    }
+}

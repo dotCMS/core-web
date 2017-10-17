@@ -9,6 +9,7 @@ import { AuthGuardService } from './api/services/guards/auth-guard.service';
 import { ContentletGuardService} from './api/services/guards/contentlet-guard.service';
 import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
+import { DefaultGuardService } from './api/services/guards/default-guard.service';
 
 const AUTH_MODULES: Routes = [
     {
@@ -27,10 +28,6 @@ const AUTH_MODULES: Routes = [
     },
     {
         path: '',
-        children: []
-    },
-    {
-        path: '**',
         children: []
     }
 ];
@@ -136,7 +133,7 @@ const appRoutes: Routes = [
         path: '',
     },
     {
-        canActivate: [PublicAuthGuardService],
+        canActivate: [DefaultGuardService],
         path: '**',
         children: []
     }
@@ -146,7 +143,8 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
+            enableTracing: true
         })
     ]
 })

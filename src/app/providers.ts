@@ -18,6 +18,7 @@ import { AuthGuardService } from './api/services/guards/auth-guard.service';
 import { ContentletGuardService} from './api/services/guards/contentlet-guard.service';
 import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
+import { DefaultGuardService } from './api/services/guards/default-guard.service';
 import { StringFormat } from './api/util/stringFormat';
 
 
@@ -43,7 +44,8 @@ const PROVIDERS: any[] = [
     ContentletGuardService,
     MenuGuardService,
     PublicAuthGuardService,
-    StringFormat,
+    DefaultGuardService,
+    StringFormat
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];
