@@ -9,6 +9,7 @@ import { DotNavigationService } from '../../view/components/dot-navigation/dot-n
 @Injectable()
 export class DotRouterService {
     portletReload$ = new Subject();
+    private _previousSavedURL: string;
 
     constructor(
         private router: Router,
@@ -34,7 +35,8 @@ export class DotRouterService {
     }
 
     goToMain(): void {
-        this.router.navigate(['/']);
+        this.router.navigate([this._previousSavedURL || '/']);
+        this._previousSavedURL = null;
     }
 
     goToLogin(parameters?: any): void {
@@ -72,5 +74,9 @@ export class DotRouterService {
     getPortletId(url: string): string {
         const urlSegments = url.split('/').filter(item => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
+    }
+
+    set previousSavedURL(url: string){
+        this._previousSavedURL = url;
     }
 }

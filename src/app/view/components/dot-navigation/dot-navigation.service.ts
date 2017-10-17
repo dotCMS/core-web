@@ -44,6 +44,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     goToFirstPortlet(replaceUrl?: boolean): Promise<boolean> {
+        debugger;
         return this.getFirstMenuLink()
             .map((link: string) => {
                 return this.dotRouterService.gotoPortlet(link, replaceUrl);
@@ -89,13 +90,14 @@ export class DotNavigationService {
                     this.dotRouterService.getPortletId(this.location.hash)
                 )
                 .subscribe((isPortletInMenu: boolean) => {
-                    if (!isPortletInMenu) {
+                 /*   if (!isPortletInMenu) {
                         this.goToFirstPortlet().then(res => {
                             this.setMenu(menu);
                         });
-                    } else {
+                    } else { */
+                        //TODO: Reload route to trigger can Activate.
                         this.setMenu(menu);
-                    }
+                  //  }
                 });
         });
     }
