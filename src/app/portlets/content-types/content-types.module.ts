@@ -35,7 +35,8 @@ import {
     SplitButtonModule,
     RadioButtonModule,
     CheckboxModule,
-    TabViewModule
+    TabViewModule,
+    DataTableModule
 } from 'primeng/primeng';
 import {
 
@@ -53,6 +54,8 @@ import {
 } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
 import { IFrameModule } from '../../view/components/_common/iframe';
 import { DotTextareaContentModule } from '../../view/components/_common/dot-textarea-content/dot-textarea-content.module';
+import { ContentTypeFieldsFormLayoutComponent } from './fields/content-type-fields-form-layout';
+import { ContentTypeFieldsVariablesComponent } from './fields/content-type-fields-variables/content-type-fields-variables.component';
 
 @NgModule({
     declarations: [
@@ -60,11 +63,13 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsDropZoneComponent,
+        ContentTypeFieldsFormLayoutComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypeFieldsRowListComponent,
+        ContentTypeFieldsVariablesComponent,
         ContentTypesCreateComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
@@ -78,7 +83,7 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         HintPropertyComponent,
         NamePropertyComponent,
         RegexCheckPropertyComponent,
-        ValuesPropertyComponent,
+        ValuesPropertyComponent
     ],
     entryComponents: [
         NamePropertyComponent,
@@ -114,7 +119,8 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         SiteSelectorModule,
         SplitButtonModule,
         TabViewModule,
-        DotTextareaContentModule
+        DotTextareaContentModule,
+        DataTableModule
     ],
     providers: [
         ContentTypesInfoService,

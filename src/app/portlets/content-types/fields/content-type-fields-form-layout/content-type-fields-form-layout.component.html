@@ -1,0 +1,13 @@
+<p-tabView>
+    <p-tabPanel header="{{i18nMessages['contenttypes.field.properties.label']}}">
+        <dot-content-type-fields-properties-form [form]="form"
+                                                 [formFieldData]="field">
+        </dot-content-type-fields-properties-form>
+    </p-tabPanel>
+    <p-tabPanel class="fields-variables-tab" header="{{i18nMessages['contenttypes.field.variables.label']}}" [disabled]="!fieldPropertiesValid">
+        <dot-content-type-fields-variables #fieldVariables
+                                           [form]="form" 
+                                           [field]="field">
+        </dot-content-type-fields-variables>
+    </p-tabPanel>
+</p-tabView>  

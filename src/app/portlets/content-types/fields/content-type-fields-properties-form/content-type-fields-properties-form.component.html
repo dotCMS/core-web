@@ -1,14 +1,12 @@
- <form [formGroup]="form" (ngSubmit)="saveFieldProperties()" class="content-type-fields__properties-form" novalidate>  
-    <div class="ui-g">
-        <div class="ui-g-12" #properties>
-            <div [ngClass]="{'form__group': !checkboxFields.includes(property)}" *ngFor="let property of fieldProperties">
-                <ng-container 
-                    dynamicFieldProperty
-                    [propertyName]="property"
-                    [field]="formFieldData"
-                    [group]="form">
-                </ng-container>
-            </div>
+<div class="ui-g content-type-fields__properties-form" [formGroup]="form">
+    <div class="ui-g-12" #properties>
+        <div [ngClass]="{'form__group': !checkboxFields.includes(property)}" *ngFor="let property of fieldProperties">
+            <ng-container 
+                dynamicFieldProperty
+                [propertyName]="property"
+                [field]="formFieldData"
+                [group]="form">
+            </ng-container>
         </div>
     </div>
- </form>
+</div>

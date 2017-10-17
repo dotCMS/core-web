@@ -25,7 +25,7 @@ import { CONTENT_TYPE_INITIAL_DATA, ContentType } from '../main';
 import { Field } from '../fields/shared';
 
 @Component({
-    selector: 'content-type-fields-drop-zone',
+    selector: 'dot-content-type-fields-drop-zone',
     template: ''
 })
 class TestContentTypeFieldsRowComponent {

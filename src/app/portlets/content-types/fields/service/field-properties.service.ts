@@ -4,7 +4,7 @@ import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
-import { ValidationErrors } from '@angular/forms';
+import { ValidationErrors, ValidatorFn } from '@angular/forms';
 import { FieldService } from './field.service';
 import { FieldType} from '../shared/field-type.model';
 
@@ -72,10 +72,10 @@ export class FieldPropertyService {
      * Return the Validations for a property, this has to be ValidationError objects.
      * to see more abour ValidationError: https://angular.io/guide/form-validation
      * @param {string} propertyName
-     * @returns {ValidationErrors[]}
+     * @returns {ValidatorFn[]}
      * @memberof FieldPropertyService
      */
-    getValidations(propertyName: string): ValidationErrors[] {
+    getValidations(propertyName: string): ValidatorFn[] {
         return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].validations || [] : [];
     }
 
@@ -107,7 +107,7 @@ export class FieldPropertyService {
      * @memberof FieldPropertyService
      */
     getFieldType(fieldTypeClass: string): FieldType {
-        return this.fieldTypes.get(fieldTypeClass);;
+        return this.fieldTypes.get(fieldTypeClass);
     }
 
     /**

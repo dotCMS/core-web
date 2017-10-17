@@ -1,0 +1,34 @@
+<p-dataTable [value]="this.form.get('fieldVariables').value" 
+             [editable]="true"
+             (onEditInit)="onEditInit($event)"
+             #dataTable>
+    <p-column field="key" 
+              header="{{i18nMessages['contenttypes.field.variables.key.label']}}" 
+              [editable]="true">
+
+        <ng-template let-col let-fieldVariable="rowData" let-index="rowIndex" pTemplate="editor">
+            <input type="text" pInputText [attr.placeholder]="index == 0 ? i18nMessages['contenttypes.field.variables.key.new'] : ''"
+                                          [(ngModel)]="fieldVariable[col.field]" 
+                                          (blur)="editComplete(index, fieldVariable)" />
+        </ng-template>
+    </p-column>
+
+    <p-column field="value" 
+        header="{{i18nMessages['contenttypes.field.variables.value.label']}}" 
+        [editable]="true">
+
+        <ng-template let-col let-fieldVariable="rowData" let-index="rowIndex" pTemplate="editor">
+            <input type="text" pInputText [attr.placeholder]="index == 0 ? i18nMessages['contenttypes.field.variables.value.new'] : ''"
+                                          [(ngModel)]="fieldVariable[col.field]" 
+                                          (blur)="editComplete(index, fieldVariable)" />
+        </ng-template>
+    </p-column>
+
+    <p-column styleClass="col-button">
+        <ng-template pTemplate="body" let-fieldVariable="rowData" let-index="rowIndex" >
+            <button pButton flat iconButton icon="fa-trash" *ngIf="index !== 0"
+                                                            (click)="removeFieldVariable(fieldVariable)">
+            </button>
+        </ng-template>
+    </p-column>
+</p-dataTable>

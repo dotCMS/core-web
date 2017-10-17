@@ -8,10 +8,10 @@
         (onDelete)="deleteContentType($event)">
     </content-types-form>
 
-    <content-type-fields-drop-zone *ngIf="contentTypeId"
+    <dot-content-type-fields-drop-zone *ngIf="contentTypeId"
         [fields]="data.fields"
         (saveFields)="saveFields($event)"
         (removeFields)="removeFields($event)">
 
-    </content-type-fields-drop-zone>
+    </dot-content-type-fields-drop-zone>
 </content-type-layout>

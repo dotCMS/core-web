@@ -1,0 +1,19 @@
+@import "mixins";
+@import "variables";
+
+.ui-tabview {
+    .ui-tabview-panel {
+        padding: $basic-padding * 4 $basic-padding * 3;
+    }
+
+    .fields-variables-tab {
+        .ui-tabview-panel {
+            padding: $basic-padding * 4 0px;
+        }
+    }
+}
+
+.ui-widget-content .ui-state-disabled {
+    background: transparent;
+    opacity: 0.5;
+}

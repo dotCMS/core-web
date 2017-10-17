@@ -29,6 +29,5 @@ export class BaseComponent implements OnDestroy {
      * @memberOf BaseComponent
      */
     onMessage(): void {
-
     }
 }

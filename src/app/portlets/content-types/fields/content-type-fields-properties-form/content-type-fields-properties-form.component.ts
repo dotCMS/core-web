@@ -20,23 +20,22 @@ import { FieldPropertyService } from '../service/';
 
 
 @Component({
-    selector: 'content-type-fields-properties-form',
+    selector: 'dot-content-type-fields-properties-form',
     styleUrls: ['./content-type-fields-properties-form.component.scss'],
     templateUrl: './content-type-fields-properties-form.component.html',
     encapsulation: ViewEncapsulation.None
 })
 
 export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent implements OnChanges, OnInit {
-    @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: Field;
+    @Input() form: FormGroup;
 
     @ViewChild('properties') propertiesContainer;
 
-    form: FormGroup;
     fieldProperties: string[] = [];
     checkboxFields: string[] = ['indexed', 'listed', 'required', 'searchable', 'unique'];
 
-    constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
+    constructor(private componentFactoryResolver: ComponentFactoryResolver,
         public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
 
         super(
@@ -96,20 +95,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         this.initFormGroup();
     }
 
-    /**
-     * Emit the form data to be saved
-     * @param {*} value
-     * @param {boolean} isValid
-     * @memberof ContentTypeFieldsPropertiesFormComponent
-     */
-    saveFieldProperties(): void {
-        if (this.form.valid) {
-             this.saveField.emit(this.form.value);
-        } else {
-            this.fieldProperties.forEach(property => this.form.get(property).markAsTouched());
-        }
-    }
-
     public destroy(): void {
         this.fieldProperties = [];
         const propertiesContainer = this.propertiesContainer.nativeElement;
@@ -121,21 +106,20 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private initFormGroup(properties?: string[]): void {
-        const formFields = {};
-
         if (properties) {
             properties.filter(property => this.fieldPropertyService.existsComponent(property))
                 .forEach(property => {
-                    formFields[property] = [{
-                        value: this.formFieldData[property] ||
-                                this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
+                    const value = this.formFieldData[property]
+                        || this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz);
+
+                    this.form.addControl(property, new FormControl({
+                        value: value,
                         disabled: this.formFieldData.id && this.fieldPropertyService.isDisabledInEditMode(property)
-                    }, this.fieldPropertyService.getValidations(property)];
+                    }, this.fieldPropertyService.getValidations(property)));
                 });
 
-            formFields['clazz'] = this.formFieldData.clazz;
+                this.form.addControl('clazz', new FormControl(this.formFieldData.clazz));
         }
-        this.form = this.fb.group(formFields);
     }
 
     private sortProperties(properties: string[]): void {

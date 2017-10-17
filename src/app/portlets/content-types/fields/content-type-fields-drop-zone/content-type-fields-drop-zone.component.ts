@@ -8,7 +8,8 @@ import {
     EventEmitter,
     OnInit,
     OnChanges,
-    ViewChild
+    ViewChild,
+    ViewEncapsulation
 } from '@angular/core';
 import { FieldDragDropService } from '../service';
 import { FieldRow, Field, FieldType } from '../shared';
@@ -16,6 +17,7 @@ import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields
 import { MessageService } from '../../../../api/services/messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
+import { ContentTypeFieldsFormLayoutComponent } from '../content-type-fields-form-layout/content-type-fields-form-layout.component';
 
 
 /**
@@ -25,7 +27,8 @@ import { FieldPropertyService } from '../service/field-properties.service';
  * @class FieldTypesContainerComponent
  */
 @Component({
-    selector: 'content-type-fields-drop-zone',
+    encapsulation: ViewEncapsulation.None,
+    selector: 'dot-content-type-fields-drop-zone',
     styleUrls: ['./content-type-fields-drop-zone.component.scss'],
     templateUrl: './content-type-fields-drop-zone.component.html',
 })
@@ -35,13 +38,14 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     formData: Field;
     public currentFieldType: FieldType;
 
-    @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
+    @ViewChild('fieldsForm') fieldsForm: ContentTypeFieldsFormLayoutComponent;
 
     @Input() fields: Field[];
     @Output() saveFields = new EventEmitter<Field[]>();
     @Output() removeFields = new EventEmitter<Field[]>();
 
-    constructor(private fieldDragDropService: FieldDragDropService, messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
+    constructor(private fieldDragDropService: FieldDragDropService, messageService: MessageService,
+                    private fieldPropertyService: FieldPropertyService) {
         super(
             [
                 'contenttypes.dropzone.action.save',
@@ -84,10 +88,138 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      * @param {Field} fieldToSave
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    saveFieldsHandler(fieldToSave: Field): void {
+    saveFieldsHandler(): void {
+        const fieldToSave = this.fieldsForm.value;
         const fields = this.getFieldsToSave(fieldToSave);
         this.saveFields.emit(fields);
         this.toggleDialog();
+    }
+
+    /**
+     * Get the field to be edited
+     * @param {Field} fieldToEdit
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    editField(fieldToEdit: Field): void {
+        const fields = this.getFields();
+        this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
+        this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
+        this.toggleDialog();
+    }
+
+    /**
+     * Set the field to be edited
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    setDroppedField(): void {
+        const fields = this.getFields();
+        this.formData = fields.find(field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
+        if (this.formData) {
+            this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
+        }
+
+        if (this.formData) {
+            this.formData.fieldVariables = [
+                {
+                    key: 'key1',
+                    value: 'value1'
+                },
+                {
+                    key: 'key2',
+                    value: 'value2'
+                }
+            ];
+        }
+    }
+
+    /**
+     * Remove the last dropped field added without ID
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    removeFieldsWithoutId(): void {
+        const fieldRows: any = this.fieldRows;
+        // TODO needs an improvement for performance reasons
+        fieldRows.forEach((row) => {
+            row.columns.forEach((col, colIndex) => {
+                col.fields.forEach((field, fieldIndex) => {
+                    if (!field.id) {
+                        row.columns[colIndex].fields.splice(fieldIndex, 1);
+                    }
+                });
+            });
+        });
+
+        this.formData = null;
+        // this.fieldsForm.destroy();
+    }
+
+    // TODO: Remove if we will not use this anymore.
+    getDialogHeader(): string {
+        const dialogTitle = this.formData && this.formData.id ?
+            this.i18nMessages['contenttypes.dropzone.action.edit'] : this.i18nMessages['contenttypes.dropzone.action.create.field'];
+        return `${dialogTitle}`;
+    }
+
+    /**
+     * Tigger the removeFields event with fieldToDelete
+     * @param fieldToDelete
+     */
+    removeField(fieldToDelete: Field): void {
+        this.removeFields.emit([fieldToDelete]);
+    }
+
+    /**
+     * Tigger the removeFields event with all the fields in fieldRow
+     * @param fieldToDelete
+     */
+    removeFieldRow(fieldRow: FieldRow): void {
+        this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
+        const fieldsToDelete: Field[] = [];
+
+        fieldsToDelete.push(fieldRow.lineDivider);
+        fieldRow.columns.forEach(fieldColumn => {
+            fieldsToDelete.push(fieldColumn.tabDivider);
+            fieldColumn.fields.forEach(field => fieldsToDelete.push(field));
+        });
+
+        this.removeFields.emit(fieldsToDelete);
+    }
+
+    /**
+     * Show or hide dialog
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    private toggleDialog(): void {
+        this.displayDialog = !this.displayDialog;
+    }
+
+    private getRowFields(fields: Field[]): FieldRow[] {
+        let fieldRows: FieldRow[] = [];
+        const splitFields: Field[][] = FieldUtil.splitFieldsByLineDivider(fields);
+
+        fieldRows = splitFields.map(fieldsByLineDivider => {
+            const fieldRow: FieldRow = new FieldRow();
+            fieldRow.addFields(fieldsByLineDivider);
+            return fieldRow;
+        });
+
+        return fieldRows;
+    }
+
+    private getFields(): Field[] {
+
+        const fields: Field[] = [];
+
+        this.fieldRows.forEach((fieldRow, rowIndex) => {
+            fields.push(fieldRow.lineDivider);
+
+            fieldRow.columns.forEach((fieldColumn, colIndex) => {
+                fields.push(fieldColumn.tabDivider);
+                fieldColumn.fields.forEach(field => fields.push(field));
+            });
+        });
+
+        return fields;
     }
 
     private moveFields(): void {
@@ -138,119 +270,5 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         });
 
         return result;
-    }
-
-    /**
-     * Get the field to be edited
-     * @param {Field} fieldToEdit
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    editField(fieldToEdit: Field): void {
-        const fields = this.getFields();
-        this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
-        this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
-        this.toggleDialog();
-    }
-
-    /**
-     * Set the field to be edited
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    setDroppedField(): void {
-        const fields = this.getFields();
-        this.formData = fields.find(field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
-        if (this.formData) {
-            this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
-        }
-    }
-
-    /**
-     * Show or hide dialog
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    private toggleDialog(): void {
-        this.displayDialog = !this.displayDialog;
-    }
-
-    /**
-     * Remove the last dropped field added without ID
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
-    removeFieldsWithoutId(): void {
-        const fieldRows: any = this.fieldRows;
-        // TODO needs an improvement for performance reasons
-        fieldRows.forEach((row) => {
-            row.columns.forEach((col, colIndex) => {
-                col.fields.forEach((field, fieldIndex) => {
-                    if (!field.id) {
-                        row.columns[colIndex].fields.splice(fieldIndex, 1);
-                    }
-                });
-            });
-        });
-
-        this.formData = null;
-        this.propertiesForm.destroy();
-    }
-
-    // TODO: Remove if we will not use this anymore.
-    getDialogHeader(): string {
-        const dialogTitle = this.formData && this.formData.id ?
-            this.i18nMessages['contenttypes.dropzone.action.edit'] : this.i18nMessages['contenttypes.dropzone.action.create.field'];
-        return `${dialogTitle}`;
-    }
-
-    private getRowFields(fields: Field[]): FieldRow[] {
-        let fieldRows: FieldRow[] = [];
-        const splitFields: Field[][] = FieldUtil.splitFieldsByLineDivider(fields);
-
-        fieldRows = splitFields.map(fieldsByLineDivider => {
-            const fieldRow: FieldRow = new FieldRow();
-            fieldRow.addFields(fieldsByLineDivider);
-            return fieldRow;
-        });
-
-        return fieldRows;
-    }
-
-    private getFields(): Field[] {
-
-        const fields: Field[] = [];
-
-        this.fieldRows.forEach((fieldRow, rowIndex) => {
-            fields.push(fieldRow.lineDivider);
-
-            fieldRow.columns.forEach((fieldColumn, colIndex) => {
-                fields.push(fieldColumn.tabDivider);
-                fieldColumn.fields.forEach(field => fields.push(field));
-            });
-        });
-
-        return fields;
-    }
-
-    /**
-     * Tigger the removeFields event with fieldToDelete
-     * @param fieldToDelete
-     */
-    removeField(fieldToDelete: Field): void {
-        this.removeFields.emit([fieldToDelete]);
-    }
-
-    /**
-     * Tigger the removeFields event with all the fields in fieldRow
-     * @param fieldToDelete
-     */
-    removeFieldRow(fieldRow: FieldRow): void {
-        this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
-        const fieldsToDelete: Field[] = [];
-
-        fieldsToDelete.push(fieldRow.lineDivider);
-        fieldRow.columns.forEach(fieldColumn => {
-            fieldsToDelete.push(fieldColumn.tabDivider);
-            fieldColumn.fields.forEach(field => fieldsToDelete.push(field));
-        });
-
-        this.removeFields.emit(fieldsToDelete);
     }
 }

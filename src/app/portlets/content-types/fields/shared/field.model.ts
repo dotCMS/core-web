@@ -1,3 +1,5 @@
+import { FieldVariable } from './field-variables.model';
+
 
 export interface Field {
     clazz?: string;
@@ -14,4 +16,5 @@ export interface Field {
     dataType?: string;
     hint?: string;
     variable?: string;
+    fieldVariables?: FieldVariable[];
 }

@@ -27,7 +27,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { DotConfirmationService } from '../../../api/services/dot-confirmation';
 
 @Component({
-    selector: 'content-type-fields-drop-zone',
+    selector: 'dot-content-type-fields-drop-zone',
     template: ''
 })
 class TestContentTypeFieldsDropZone {
@@ -211,7 +211,7 @@ describe('ContentTypesEditComponent', () => {
         fixture.detectChanges();
 
         const contentTypeLayout = de.query(By.css('content-type-layout'));
-        const contentTypeFieldsDropZone = contentTypeLayout.query(By.css('content-type-fields-drop-zone'));
+        const contentTypeFieldsDropZone = contentTypeLayout.query(By.css('dot-content-type-fields-drop-zone'));
 
         // when: the saveFields event is tiggered in content-type-fields-drop-zone
         contentTypeFieldsDropZone.componentInstance.saveFields.emit(fields);
@@ -273,7 +273,7 @@ describe('ContentTypesEditComponent', () => {
         fixture.detectChanges();
 
         const contentTypeLayout = de.query(By.css('content-type-layout'));
-        const contentTypeFieldsDropZone = contentTypeLayout.query(By.css('content-type-fields-drop-zone'));
+        const contentTypeFieldsDropZone = contentTypeLayout.query(By.css('dot-content-type-fields-drop-zone'));
 
         // when: the deleteFields event is tiggered in content-type-fields-drop-zone
         contentTypeFieldsDropZone.componentInstance.removeFields.emit(fields);

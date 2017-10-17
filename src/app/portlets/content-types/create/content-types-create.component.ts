@@ -10,7 +10,8 @@ import { ContentTypesFormComponent } from '../form';
 import { Field } from '../fields';
 import { FieldService } from '../fields/service';
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { DotConfirmationService } from './../../../api/services/dot-confirmation';
+import { DotConfirmationService } from '../../../api/services/dot-confirmation';
+
 
 /**
  * Portlet component for edit content types

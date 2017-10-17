@@ -2,7 +2,7 @@ import { ConnectionBackend, RequestOptions, BaseRequestOptions, Http } from '@an
 import { Logger } from 'angular2-logger/core';
 import { MockBackend } from '@angular/http/testing';
 import { TestBed, TestModuleMetadata, ComponentFixture } from '@angular/core/testing';
-import { Type, Provider, Injector, ReflectiveInjector, Component, LOCALE_ID } from '@angular/core';
+import { Type, Provider, Injector, ReflectiveInjector, Component, LOCALE_ID, EventEmitter, Input, Output } from '@angular/core';
 import {
     ApiRoot,
     BrowserUtil,
@@ -15,16 +15,34 @@ import {
     UserModel
 } from 'dotcms-js/dotcms-js';
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, DialogModule } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGFACES_MODULES } from '../modules';
 import { CommonModule } from '@angular/common';
+import { ComponentFixtureAutoDetect } from '@angular/core/testing';
 
 @Component({
     selector: 'p-confirmDialog',
     template: ''
 })
 class FakeConfirmDialogComponent {}
+
+@Component({
+    selector: 'p-dialog',
+    template: '<ng-content></ng-content>'
+})
+class FakeDialogComponent {
+    @Input() modal: boolean;
+    @Input() visible: boolean;
+    @Input() width: any;
+    @Input() responsive: boolean;
+    @Input() resizable: boolean;
+    @Input() draggable: boolean;
+    @Input() header: string;
+    @Input() closable: boolean;
+
+    @Output() onHide: EventEmitter<any> = new EventEmitter();
+}
 
 export class DOTTestBed {
     private static DEFAULT_CONFIG = {
@@ -69,10 +87,22 @@ export class DOTTestBed {
 
         TestBed.overrideModule(ConfirmDialogModule, {
             set: {
-                declarations: [FakeConfirmDialogComponent],
+                declarations: [
+                    FakeConfirmDialogComponent,
+                ],
                 exports: [FakeConfirmDialogComponent]
             }
         });
+
+        TestBed.overrideModule(DialogModule, {
+            set: {
+                declarations: [
+                    FakeDialogComponent,
+                ],
+                exports: [FakeDialogComponent]
+            }
+        });
+
         TestBed.compileComponents();
     }
 

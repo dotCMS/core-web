@@ -34,3 +34,20 @@
     font-size: 14px;
     margin-left: 5px;
 }
+
+.ui-dialog {
+    padding: 0px;
+
+    .ui-dialog-titlebar {
+        display: none;
+        margin-bottom: 0;
+    }
+
+    .ui-dialog-content {
+        margin-bottom: 0px;
+    }
+
+    .ui-dialog-footer {
+        padding: $basic-padding;    
+    }
+}
