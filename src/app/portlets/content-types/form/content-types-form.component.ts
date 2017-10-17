@@ -73,6 +73,7 @@ export class ContentTypesFormComponent extends BaseComponent
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
     formState = 'collapsed';
+    isButtonDisabled = true;
     placeholder: string;
     submitAttempt = false;
     templateInfo = {
@@ -81,9 +82,7 @@ export class ContentTypesFormComponent extends BaseComponent
         action: ''
     };
     workflowOptions: SelectItem[] = [];
-    isButtonDisabled = true;
 
-    private escHotKey: Hotkey;
     private originalValue: any;
 
     constructor(
@@ -150,7 +149,7 @@ export class ContentTypesFormComponent extends BaseComponent
     }
 
     ngOnDestroy() {
-        this.hotkeysService.remove(this.escHotKey);
+        this.hotkeysService.remove(this.hotkeysService.get('esc'));
     }
 
     /**
@@ -251,14 +250,12 @@ export class ContentTypesFormComponent extends BaseComponent
     }
 
     private bindKeyboardEvents(): void {
-        this.escHotKey = new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
+        this.hotkeysService.add(new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
             if (this.formState === 'expanded' && this.isEditMode()) {
                 this.cancelForm();
             }
             return false;
-        });
-
-        this.hotkeysService.add(this.escHotKey);
+        }));
     }
 
     private getDateVarFieldOption(field: Field): SelectItem {

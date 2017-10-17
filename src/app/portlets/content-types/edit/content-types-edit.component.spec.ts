@@ -52,6 +52,7 @@ describe('ContentTypesEditComponent', () => {
     let el: HTMLElement;
     let route: ActivatedRoute;
     let crudService: CrudService;
+    let location: Location;
 
     beforeEach(
         async(() => {
@@ -76,9 +77,9 @@ describe('ContentTypesEditComponent', () => {
                         provide: ActivatedRoute,
                         useValue: { params: Observable.from([{ id: '1234' }]) }
                     },
-                    Location,
                     CrudService,
-                    FieldService
+                    FieldService,
+                    Location
                 ]
             });
 
@@ -89,6 +90,7 @@ describe('ContentTypesEditComponent', () => {
             route = fixture.debugElement.injector.get(ActivatedRoute);
 
             crudService = fixture.debugElement.injector.get(CrudService);
+            location = fixture.debugElement.injector.get(Location);
         })
     );
 
@@ -130,11 +132,12 @@ describe('ContentTypesEditComponent', () => {
             system: false
         };
 
-        const responseContentType = Object.assign({}, fakeContentType, {
+        const responseContentType = Object.assign({}, {id: '123'}, fakeContentType, {
             fields: [{ hello: 'world' }]
         });
 
         spyOn(crudService, 'postData').and.returnValue(Observable.of([responseContentType]));
+        spyOn(location, 'replaceState').and.returnValue(Observable.of([responseContentType]));
 
         route.data = Observable.of({
             contentType: {
@@ -150,6 +153,7 @@ describe('ContentTypesEditComponent', () => {
         expect(contentTypeForm.resetForm).toHaveBeenCalledTimes(1);
         expect(comp.data).toEqual(responseContentType, 'set data with response');
         expect(comp.fields).toEqual(responseContentType.fields, 'ser fields with response');
+        expect(location.replaceState).toHaveBeenCalledWith('/content-types-angular/edit/123');
     });
 
     it('should udpate content type', () => {
