@@ -10,7 +10,6 @@ export class DefaultGuardService implements CanActivate {
     constructor(private router: DotRouterService) {}
 
     canActivate(): boolean {
-        debugger;
         this.router.goToMain();
         return true;
     }
