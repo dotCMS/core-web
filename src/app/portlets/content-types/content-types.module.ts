@@ -17,6 +17,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
 import { TooltipModule } from 'primeng/primeng';
+import { ContentTypeFieldsAddRowModule } from './fields/content-type-fields-add-row';
 
 import {
     ContentTypeFieldsDropZoneComponent,
@@ -24,8 +25,7 @@ import {
     ContentTypeFieldsRowComponent,
     ContentTypeFieldsRowListComponent,
     ContentTypesFieldDragabbleItemComponent,
-    ContentTypesFieldsListComponent,
-    ContentTypeFieldsAddRowComponent
+    ContentTypesFieldsListComponent
 } from './fields';
 import {
     ButtonModule,
@@ -62,7 +62,6 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsDropZoneComponent,
-        ContentTypeFieldsAddRowComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowComponent,
@@ -115,6 +114,7 @@ import { DotTextareaContentModule } from '../../view/components/_common/dot-text
         RadioButtonModule,
         ReactiveFormsModule,
         SiteSelectorModule,
+        ContentTypeFieldsAddRowModule,
         SplitButtonModule,
         TabViewModule,
         DotTextareaContentModule,

@@ -1,8 +1,6 @@
 import { BaseComponent } from './../../../../view/components/_common/_base/base-component';
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { FieldRow } from '../shared';
+import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MessageService } from './../../../../api/services/messages-service';
 
 /**
@@ -11,92 +9,53 @@ import { MessageService } from './../../../../api/services/messages-service';
  * @export
  * @class ContentTypeFieldsAddRowComponent
  */
+
+const MAX_COLUMNS = 3;
+
 @Component({
-    selector: 'content-type-fields-add-row',
-    animations: [
-        trigger('enterAnimation', [
-            state(
-                'expanded',
-                style({
-                    height: '*',
-                    overflow: 'visible'
-                })
-            ),
-            state(
-                'collapsed',
-                style({
-                    height: '0px',
-                    overflow: 'hidden'
-                })
-            ),
-            transition('expanded <=> collapsed', animate('300ms ease-in-out'))
-        ])
-    ],
+    selector: 'dot-add-rows',
     styleUrls: ['./content-type-fields-add-row.component.scss'],
     templateUrl: './content-type-fields-add-row.component.html',
 })
-export class ContentTypeFieldsAddRowComponent extends BaseComponent implements OnInit, OnDestroy {
+export class ContentTypeFieldsAddRowComponent extends BaseComponent implements OnDestroy {
     rows: number[] = [1, 2, 3, 4];
-    row: number;
-    fieldRows: FieldRow[];
-    addRowSelected = 'collapsed';
-    selectedCol = 0;
-    disabledButton = false;
-    comboHotKeys: Hotkey;
-    @Output() selectedColums: EventEmitter<number> = new EventEmitter<number>();
-    @ViewChild('rowList') rowList: ElementRef;
+    rowState = 'add';
+    selectedLi = 0;
+    @Input() disabledButton = false;
+    @Output() selectColums: EventEmitter<number> = new EventEmitter<number>();
 
     constructor(private hotkeysService: HotkeysService , public messageService: MessageService) {
         super(
             [
-                'contenttypes.content.add_rows'
+                'contenttypes.dropzone.rows.add',
+                'contenttypes.content.one_column',
+                'contenttypes.content.two_columns',
+                'contenttypes.content.three_columns',
+                'contenttypes.content.four_columns'
             ],
             messageService
         );
     }
 
-    ngOnInit(): void {
-        this.comboHotKeys = new Hotkey(['left', 'right', 'enter', 'esc'], (event: KeyboardEvent, combo: string): boolean => {
-            switch (combo) {
-                case 'left':
-                    this.leftKeyboardSelect();
-                    break;
-                case 'right':
-                    this.rightKeyboardSelect();
-                    break;
-                case 'enter':
-                    this.row = this.setRowListChild(this.selectedCol).children.length;
-                    this.selectRow(this.row);
-                    break;
-                case 'esc':
-                    this.resetRow();
-                    break;
-            }
-            return false;
-        });
-
-        this.hotkeysService.add(this.comboHotKeys);
-    }
-
     ngOnDestroy(): void {
-        this.hotkeysService.remove(this.comboHotKeys);
+        this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));
     }
 
     /**
      * Set columns active when mouse enter
      * @param col
      */
-    public mouseEnter(col: number) {
-        this.selectedCol = col;
+    onMouseOver(col: number, event) {
+        this.selectedLi = col;
+        event.stopPropagation();
     }
 
     /**
      * Emit number of columns after select colum the reset row
-     * @param {number} row
      * @memberof ContentTypeFieldsAddRowComponent
      */
-    public selectRow(row: number): void {
-        this.selectedColums.emit(row);
+    selectRow(): void {
+        this.selectColums.emit(this.selectedLi + 1);
         this.resetRow();
     }
 
@@ -106,7 +65,7 @@ export class ContentTypeFieldsAddRowComponent extends BaseComponent implements O
      * @returns {number[]}
      * @memberof ContentTypeFieldsAddRowComponent
      */
-    public numberOfCols(n: number): number[] {
+    numberOfCols(n: number): number[] {
         return Array(n).fill('');
     }
 
@@ -114,49 +73,50 @@ export class ContentTypeFieldsAddRowComponent extends BaseComponent implements O
      * Display row when click on add rows button
      * @memberof ContentTypeFieldsAddRowComponent
      */
-    public addRow(): void {
-        this.addRowSelected = 'expanded';
+    selectColumnState(): void {
+        this.rowState = 'select';
+
+        this.setKeyboardEvent('left', this.leftKeyboardEvent.bind(this));
+        this.setKeyboardEvent('right', this.rightKeyboardEvent.bind(this));
+        this.setKeyboardEvent('esc', this.resetRow.bind(this));
+        this.setKeyboardEvent('enter', this.selectRow.bind(this));
     }
 
-    private leftKeyboardSelect(): any {
-        this.selectedCol = this.selectedCol - 1;
-        if (this.selectedCol < 0) {
-            this.selectedCol = 3;
+    private setKeyboardEvent(key: string, keyEvent): any {
+        this.hotkeysService.add(new Hotkey(key, (event: KeyboardEvent): boolean => {
+            keyEvent();
+            return false;
+        }));
+    }
+
+    private leftKeyboardEvent(): any {
+        this.selectedLi = this.selectedLi - 1;
+        if (this.selectedLi < 0) {
+            this.selectedLi = MAX_COLUMNS;
         }
     }
 
-    private rightKeyboardSelect(): any {
-        this.selectedCol = this.selectedCol + 1;
-        if (this.selectedCol > 3) {
-            this.selectedCol = 0;
+    private rightKeyboardEvent(): any {
+        this.selectedLi = this.selectedLi + 1;
+        if (this.selectedLi > MAX_COLUMNS) {
+            this.selectedLi = 0;
         }
-    }
-
-    private setRowListChild(col: number): any {
-        return this.rowList.nativeElement.children[col];
     }
 
     private resetRow(): any {
-        this.selectedCol = 0;
-        this.addRowSelected = 'collapsed';
+        this.selectedLi = 0;
+        this.rowState = 'add';
+        this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));
     }
 
     private setTooltipValue(col: number): string {
-        let tooltipValue: string;
-        switch (col) {
-            case 0:
-                tooltipValue = this.i18nMessages['contenttypes.content.one_column'];
-                break;
-            case 1:
-                tooltipValue = this.i18nMessages['contenttypes.content.two_columns'];
-                break;
-            case 2:
-                tooltipValue = this.i18nMessages['contenttypes.content.three_columns'];
-                break;
-            case 3:
-                tooltipValue = this.i18nMessages['contenttypes.content.four_columns'];
-                break;
-        }
-        return tooltipValue;
+        const toolTipValueMap = [
+            'contenttypes.content.one_column',
+            'contenttypes.content.two_columns',
+            'contenttypes.content.three_columns',
+            'contenttypes.content.four_columns'
+        ];
+
+        return this.i18nMessages[toolTipValueMap[col]];
     }
 }

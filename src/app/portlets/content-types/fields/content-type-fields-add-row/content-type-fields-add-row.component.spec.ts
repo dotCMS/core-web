@@ -1,10 +1,10 @@
+import { ContentTypeFieldsAddRowComponent } from './content-type-fields-add-row.component';
 import { MessageService } from './../../../../api/services/messages-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'primeng/primeng';
 import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
-import { ContentTypeFieldsAddRowComponent } from './';
 import { By } from '@angular/platform-browser';
 import { Field } from '../';
 import { Observable } from 'rxjs/Observable';
@@ -44,55 +44,81 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         el = de.nativeElement;
+    }));
 
-        comp.ngOnInit();
+    it('should display the add rows button by default', () => {
+        const addRowContainer = de.nativeElement.querySelector('.dot-add-rows__container');
 
         fixture.detectChanges();
 
-        const addButton = de.nativeElement.querySelector('.content-type-fields-add-row button');
-        spyOn(comp, 'addRow');
-        addButton.click();
-        comp.addRowSelected = 'expanded';
-    }));
+        expect(addRowContainer.classList.contains('dot-add-rows__add')).toEqual(true);
+    });
 
     it('should display a row after click on AddRows button', () => {
-        const ul = de.query(By.css('ul'));
+        fixture.detectChanges();
         const lis = de.queryAll(By.css('li'));
 
-        expect(4).toEqual(lis.length);
+        const addButton = de.nativeElement.querySelector('.dot-add-rows-button__container button');
+        spyOn(comp, 'selectColumnState');
+        addButton.click();
+
+        expect(lis.length).toEqual(4);
     });
 
     it('should escape to previous step', () => {
-        testHotKeysMock.callback('esc');
+        comp.selectColumnState();
 
-        expect(comp.addRowSelected).toBe('collapsed');
+        testHotKeysMock.callback(['esc']);
+
+        expect(comp.rowState).toBe('add');
     });
 
     it('should be able to use left keyboard to highlight columns', () => {
-        testHotKeysMock.callback('left');
+        comp.selectColumnState();
 
-        expect(comp.selectedCol).toBe(3);
+        for (let i = 0; i < 5; i++) {
+            testHotKeysMock.callback(['left']);
+            expect(comp.selectedLi).not.toBeLessThan(0);
+        }
     });
 
     it('should be able to use right keyboard to highlight columns', () => {
-        testHotKeysMock.callback('right');
+        comp.selectColumnState();
 
-        expect(comp.selectedCol).toBe(1);
+        for (let i = 0; i < 5; i++) {
+            testHotKeysMock.callback(['right']);
+            expect(comp.selectedLi).not.toBeGreaterThan(3);
+        }
     });
 
     it('should select columns number after click on li', () => {
-        spyOn(comp.selectedColums, 'emit');
-        comp.selectRow(3);
+        fixture.detectChanges();
+        const lis = de.queryAll(By.css('li'));
 
-        expect(comp.selectedColums.emit).toHaveBeenCalledWith(3);
+        spyOn(comp.selectColums, 'emit');
+        comp.selectColums.subscribe(col => {
+            expect(col).toEqual(2);
+        });
+
+        lis[1].nativeElement.click(2);
     });
 
     it('should select columns number after use enter keyboard on li', () => {
-        spyOn(comp.selectedColums, 'emit');
+        comp.selectColumnState();
 
-        testHotKeysMock.callback('enter');
-        comp.selectRow(comp.row);
+        spyOn(comp.selectColums, 'emit');
 
-        expect(comp.selectedColums.emit).toHaveBeenCalledWith(1);
+        testHotKeysMock.callback(['enter']);
+
+        expect(comp.selectColums.emit).toHaveBeenCalledWith(1);
+    });
+
+    it('should remove hotkeysService on destroy', () => {
+        const hoykeys: Hotkey[] = <Hotkey[]> testHotKeysMock.get(['left', 'right', 'enter', 'esc']);
+        const spyMethod = spyOn(testHotKeysMock, 'remove');
+
+        comp.ngOnDestroy();
+
+        expect(spyMethod).toHaveBeenCalledWith(hoykeys);
     });
 });

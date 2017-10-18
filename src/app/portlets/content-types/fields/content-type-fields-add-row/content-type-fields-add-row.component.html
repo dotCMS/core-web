@@ -1,21 +1,19 @@
-<div class="content-type-fields_add-row__container">
-    <div class="content-type-fields-add-row" 
-        [ngClass]="{'content-type-fields-add-row__expanded': addRowSelected === 'expanded', 'content-type-fields-add-row__collapsed': addRowSelected === 'collapsed'}">    
+<div class="dot-add-rows__container" 
+    [ngClass]="{'dot-add-rows__select': rowState === 'select', 'dot-add-rows__add': rowState === 'add'}">
+    <div class="dot-add-rows-button__container">    
         <button type="button" pButton flat 
-            label="{{i18nMessages['contenttypes.content.add_rows']}}" (click)="addRow()" 
+            label="{{i18nMessages['contenttypes.dropzone.rows.add']}}" (click)="selectColumnState()" 
             icon="fa-plus" [class.disabled]="disabledButton">
         </button>  
     </div>
     
-    <ul #rowList class="content-types-row-list"
-        [@enterAnimation]="addRowSelected"
-        class="content-type-fields-select-column__container">
+    <ul #rowList class="dot-add-rows-columns-list__container">
         <li *ngFor="let row of rows; let i = index" 
-            [ngClass]="{'active': i == selectedCol}" class="content-types-row-list__item"
+            [ngClass]="{'active': i == selectedLi}" class="dot-add-rows-columns-list__item"
             pTooltip="{{setTooltipValue(i)}}" tooltipPosition="bottom"
-            (mouseenter) ="mouseEnter(i)"
-            (click)="selectRow(row)">
-            <div class="content-types-row-list__item-col" *ngFor="let i of numberOfCols(row)"></div>
+            (mouseover) ="onMouseOver(i, $event)"
+            (click)="selectRow()">
+            <div class="dot-add-rows-columns-list__item-col" *ngFor="let i of numberOfCols(row)"></div>
         </li>
     </ul>      
 </div>
