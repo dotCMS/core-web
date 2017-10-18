@@ -12,7 +12,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { TestHotkeysMock } from './../../../../test/hotkeys-service.mock';
 import { MockMessageService } from './../../../../test/message-service.mock';
 
-fdescribe('ContentTypeFieldsAddRowComponent', () => {
+describe('ContentTypeFieldsAddRowComponent', () => {
     let comp: ContentTypeFieldsAddRowComponent;
     let fixture: ComponentFixture<ContentTypeFieldsAddRowComponent>;
     let de: DebugElement;
