@@ -14,7 +14,7 @@
             </div>
             <div class="ui-g-6" *ngIf="isEditMode()">
                 <div class="content-type__form-actions">
-                    <button type="button" pButton flat label="Edit" (click)="editForm()" icon="fa-edit" id="form-edit-button"></button>
+                    <button type="button" pButton flat label="Edit" (click)="editForm()" icon="fa-edit" id="form-edit-button" [disabled]="formState === 'expanded'"></button>
                 </div>
             </div>
         </div>

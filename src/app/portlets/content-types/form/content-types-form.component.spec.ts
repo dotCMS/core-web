@@ -10,13 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotcmsConfig, LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
-import {
-    DropdownModule,
-    OverlayPanelModule,
-    ButtonModule,
-    InputTextModule,
-    TabViewModule
-} from 'primeng/primeng';
+import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
 import { FieldValidationMessageModule } from '../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MessageService } from '../../../api/services/messages-service';
@@ -30,22 +24,21 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let dotcmsConfig: DotcmsConfig;
 
     beforeEach(
         async(() => {
             const messageServiceMock = new MockMessageService({
                 'contenttypes.form.field.detail.page': 'Detail Page',
-                'contenttypes.form.field.expire.date.field':
-                    'Expire Date Field',
+                'contenttypes.form.field.expire.date.field': 'Expire Date Field',
                 'contenttypes.form.field.host_folder.label': 'Host or Folder',
                 'contenttypes.form.identifier': 'Identifier',
-                'contenttypes.form.label.publish.date.field':
-                    'Publish Date Field',
+                'contenttypes.form.label.publish.date.field': 'Publish Date Field',
                 'contenttypes.hint.URL.map.pattern.hint1': 'Hello World',
                 'contenttypes.form.label.URL.pattern': 'URL Pattern',
                 'contenttypes.content.variable': 'Variable',
@@ -85,10 +78,7 @@ describe('ContentTypesFormComponent', () => {
             de = fixture.debugElement.query(By.css('form'));
             el = de.nativeElement;
 
-            const changes: SimpleChange = new SimpleChange(null, null, true);
-            comp.ngOnChanges({
-                data: changes
-            });
+            dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
         })
     );
 
@@ -129,10 +119,7 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.formState).toBe('collapsed', 'form state collapsed');
         expect(form.nativeElement.style.height).toBe('0px', 'form height 0');
-        expect(form.nativeElement.style.overflow).toBe(
-            'hidden',
-            'form overflow hidden'
-        );
+        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
     });
 
     it('should be expanded by default in create mode', () => {
@@ -144,14 +131,8 @@ describe('ContentTypesFormComponent', () => {
         const form = de.query(By.css('.content-type__full-form'));
 
         expect(comp.formState).toBe('expanded', 'form state expanded');
-        expect(form.nativeElement.style.height).toBe(
-            '',
-            'form height not set to be auto'
-        );
-        expect(form.nativeElement.style.overflow).toBe(
-            'visible',
-            'form overflow visible'
-        );
+        expect(form.nativeElement.style.height).toBe('', 'form height not set to be auto');
+        expect(form.nativeElement.style.overflow).toBe('visible', 'form overflow visible');
     });
 
     it('should have submit button disabled when form is invalid', () => {
@@ -164,9 +145,7 @@ describe('ContentTypesFormComponent', () => {
         comp.form.get('description').setValue('hello world');
         fixture.detectChanges();
 
-        const submittButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         expect(submittButton.nativeElement.disabled).toBeTruthy();
     });
 
@@ -180,10 +159,8 @@ describe('ContentTypesFormComponent', () => {
         comp.form.get('name').setValue('hello world');
         fixture.detectChanges();
 
-        const submittButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
-        expect(submittButton.nativeElement.disabled).toBeFalsy();
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        expect(submittButton.nativeElement.disabled).toBe(false);
     });
 
     it('should have submit button enabled when form is valid and the value change in edit mode', () => {
@@ -198,9 +175,7 @@ describe('ContentTypesFormComponent', () => {
         comp.form.get('name').setValue('A new name');
         fixture.detectChanges();
 
-        const submittButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         expect(submittButton.nativeElement.disabled).toBe(false);
     });
 
@@ -217,10 +192,99 @@ describe('ContentTypesFormComponent', () => {
         comp.form.get('description').setValue('a description');
         fixture.detectChanges();
 
-        const submittButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         expect(submittButton.nativeElement.disabled).toBe(true);
+    });
+
+    // tslint:disable-next-line:max-line-length
+    it('should have the submit button disabled when the form value change and the gets back to the original content (no community license)', () => {
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(
+            Observable.of({
+                license: { isCommunity: false }
+            })
+        );
+
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+
+        expect(submittButton.nativeElement.disabled).toBe(true, 'by default button disabled');
+
+        comp.form.get('name').setValue('A new  name');
+        fixture.detectChanges();
+        expect(submittButton.nativeElement.disabled).toBe(false, 'name updated button enabled');
+
+        comp.form.get('name').setValue('Hello World');
+        fixture.detectChanges();
+        expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
+    });
+
+    // tslint:disable-next-line:max-line-length
+    it('should have the submit button disabled when the form value change and the gets back to the original content (community license)', () => {
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(
+            Observable.of({
+                license: { isCommunity: true }
+            })
+        );
+
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+
+        expect(submittButton.nativeElement.disabled).toBe(true, 'by default button disabled');
+
+        comp.form.get('name').setValue('A new  name');
+        fixture.detectChanges();
+        expect(submittButton.nativeElement.disabled).toBe(false, 'name updated button enabled');
+
+        comp.form.get('name').setValue('Hello World');
+        fixture.detectChanges();
+        expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
+    });
+
+    it('should have the submit button disabled date fields updates', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        expect(submittButton.nativeElement.disabled).toBe(true, 'by default button disabled');
+
+        const changes: SimpleChange = new SimpleChange(null, [
+            {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                id: '123',
+                indexed: true,
+                name: 'Date 1'
+            },
+            {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                id: '456',
+                indexed: true,
+                name: 'Date 2'
+            }
+        ], false);
+
+        comp.fields = changes.currentValue;
+        comp.ngOnChanges({
+            fields: changes
+        });
+        fixture.detectChanges();
+
+        expect(submittButton.nativeElement.disabled).toBe(true, 'button should remain disabled');
     });
 
     it('should not have cancel button on create mode', () => {
@@ -229,9 +293,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         expect(cancelButton).toBeFalsy();
     });
 
@@ -242,9 +304,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         expect(cancelButton).not.toBeNull();
     });
 
@@ -254,10 +314,21 @@ describe('ContentTypesFormComponent', () => {
             id: '123'
         };
         fixture.detectChanges();
-        const editButton: DebugElement = fixture.debugElement.query(
-            By.css('#form-edit-button')
-        );
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        expect(editButton.nativeElement.disabled).toBe(false);
         expect(editButton).toBeTruthy();
+    });
+
+    it('should have edit button disabled when form is expanded', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        comp.toggleForm();
+        fixture.detectChanges();
+
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        expect(editButton.nativeElement.disabled).toBe(true);
     });
 
     it('should call toogleForm method on edit button click', () => {
@@ -268,9 +339,7 @@ describe('ContentTypesFormComponent', () => {
         fixture.detectChanges();
         spyOn(comp, 'toggleForm');
 
-        const editButton: DebugElement = fixture.debugElement.query(
-            By.css('#form-edit-button')
-        );
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
         editButton.nativeNode.click();
         expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
@@ -282,9 +351,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const editButton: DebugElement = fixture.debugElement.query(
-            By.css('#form-edit-button')
-        );
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
 
         editButton.nativeNode.click();
         expect(comp.formState).toBe('expanded');
@@ -302,9 +369,7 @@ describe('ContentTypesFormComponent', () => {
         comp.formState = 'extended';
         fixture.detectChanges();
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         cancelButton.nativeNode.click();
 
         expect(comp.cancelForm).toHaveBeenCalledTimes(1);
@@ -318,19 +383,14 @@ describe('ContentTypesFormComponent', () => {
         comp.formState = 'extended';
         fixture.detectChanges();
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         cancelButton.nativeNode.click();
         fixture.detectChanges();
         const form = de.query(By.css('.content-type__full-form'));
 
         expect(comp.formState).toBe('collapsed', 'form state collapsed');
         expect(form.nativeElement.style.height).toBe('0px', 'form height 0px');
-        expect(form.nativeElement.style.overflow).toBe(
-            'hidden',
-            'form overflow hidden'
-        );
+        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
     });
 
     it('should reset the form value on cancel button click', () => {
@@ -350,18 +410,16 @@ describe('ContentTypesFormComponent', () => {
             clazz: 'clazz',
             description: 'a new desc',
             detailPage: '',
-            host: null,
+            host: '',
             name: 'a new name',
             urlMapPattern: '',
             defaultType: null,
             fixed: null,
             folder: null,
-            system: null,
+            system: null
         });
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         cancelButton.nativeNode.click();
         fixture.detectChanges();
 
@@ -369,13 +427,13 @@ describe('ContentTypesFormComponent', () => {
             clazz: 'clazz',
             description: 'Hello Description',
             detailPage: '',
-            host: null,
+            host: '',
             name: 'Hello World',
             urlMapPattern: '',
             defaultType: null,
             fixed: null,
             folder: null,
-            system: null,
+            system: null
         });
     });
 
@@ -388,9 +446,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        const cancelButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-cancel')
-        );
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
         cancelButton.nativeNode.click();
 
         expect(comp.name.nativeElement.blur).toHaveBeenCalledTimes(1);
@@ -421,9 +477,7 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.formState).toBe('collapsed', 'collapsed by default');
 
-        const nameEl: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-name')
-        );
+        const nameEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
         nameEl.nativeElement.focus();
         fixture.detectChanges();
 
@@ -518,7 +572,6 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should show workflow disabled and with message if the license community it\'s true', () => {
-        const dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
         spyOn(dotcmsConfig, 'getConfig').and.returnValue(
             Observable.of({
                 license: { isCommunity: true }
@@ -536,7 +589,6 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should show workflow enable and no message if the license community it\'s false', () => {
-        const dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
         spyOn(dotcmsConfig, 'getConfig').and.returnValue(
             Observable.of({
                 license: { isCommunity: false }
@@ -573,15 +625,13 @@ describe('ContentTypesFormComponent', () => {
         };
         comp.fields = [
             {
-                clazz:
-                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
                 indexed: true,
                 name: 'Date 1'
             },
             {
-                clazz:
-                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '456',
                 indexed: true,
                 name: 'Date 2'
@@ -605,15 +655,13 @@ describe('ContentTypesFormComponent', () => {
 
         comp.fields = [
             {
-                clazz:
-                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
                 indexed: true,
                 name: 'Date 1'
             },
             {
-                clazz:
-                    'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '456',
                 indexed: true,
                 name: 'Date 2'
@@ -638,9 +686,7 @@ describe('ContentTypesFormComponent', () => {
         spyOn(comp, 'submitContent').and.callThrough();
 
         comp.onSubmit.subscribe(res => (data = res));
-        const submitFormButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
+        const submitFormButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         submitFormButton.nativeElement.click();
 
         expect(comp.submitContent).not.toHaveBeenCalled();
@@ -662,9 +708,7 @@ describe('ContentTypesFormComponent', () => {
 
         fixture.detectChanges();
 
-        const submitFormButton: DebugElement = fixture.debugElement.query(
-            By.css('#content-type-form-submit')
-        );
+        const submitFormButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         submitFormButton.nativeElement.click();
 
         expect(comp.submitContent).toHaveBeenCalledTimes(1);
@@ -672,13 +716,13 @@ describe('ContentTypesFormComponent', () => {
             clazz: '',
             description: '',
             detailPage: '',
-            host: null,
+            host: '',
             name: 'A content type name',
             urlMapPattern: '',
             defaultType: null,
             fixed: null,
             folder: null,
-            system: null,
+            system: null
         });
     });
 

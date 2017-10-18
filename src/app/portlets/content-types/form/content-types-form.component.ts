@@ -26,7 +26,7 @@ import { ContentTypesInfoService } from '../../../api/services/content-types-inf
 // TODO: move this to models
 import { Field } from '../fields';
 
- /**
+/**
   * Form component to create or edit content types
   *
   * @export
@@ -62,9 +62,7 @@ import { Field } from '../fields';
     styleUrls: ['./content-types-form.component.scss'],
     templateUrl: 'content-types-form.component.html'
 })
-
-export class ContentTypesFormComponent extends BaseComponent
-    implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class ContentTypesFormComponent extends BaseComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     @ViewChild('name') name: ElementRef;
     @Input() data: any;
     @Input() fields: Field[];
@@ -207,8 +205,9 @@ export class ContentTypesFormComponent extends BaseComponent
 
             this.templateInfo = {
                 icon: this.contentTypesInfoService.getIcon(type),
-                placeholder: `${this.i18nMessages[`contenttypes.content.${type}`]} ${this
-                    .i18nMessages['contenttypes.form.name']} *`,
+                placeholder: `${this.i18nMessages[`contenttypes.content.${type}`]} ${this.i18nMessages[
+                    'contenttypes.form.name'
+                ]} *`,
                 action: this.isEditMode()
                     ? this.i18nMessages['contenttypes.action.update']
                     : this.i18nMessages['contenttypes.action.save']
@@ -242,20 +241,24 @@ export class ContentTypesFormComponent extends BaseComponent
     }
 
     private bindActionButtonState(): void {
-        this.form.valueChanges.subscribe(res => {
-            this.isButtonDisabled = this.isEditMode()
-                ? !this.form.valid || !this.isFormValueUpdated()
-                : !this.form.valid;
+        this.form.valueChanges.subscribe(() => {
+            this.setButtonState();
         });
     }
 
+    private setButtonState() {
+        this.isButtonDisabled = this.isEditMode() ? !this.form.valid || !this.isFormValueUpdated() : !this.form.valid;
+    }
+
     private bindKeyboardEvents(): void {
-        this.hotkeysService.add(new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
-            if (this.formState === 'expanded' && this.isEditMode()) {
-                this.cancelForm();
-            }
-            return false;
-        }));
+        this.hotkeysService.add(
+            new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
+                if (this.formState === 'expanded' && this.isEditMode()) {
+                    this.cancelForm();
+                }
+                return false;
+            })
+        );
     }
 
     private getDateVarFieldOption(field: Field): SelectItem {
@@ -273,7 +276,7 @@ export class ContentTypesFormComponent extends BaseComponent
         if (dateVarOptions.length) {
             dateVarOptions.unshift({
                 label: '',
-                value: null
+                value: ''
             });
         }
 
@@ -285,10 +288,10 @@ export class ContentTypesFormComponent extends BaseComponent
         const publishDateVar = this.form.get('publishDateVar');
 
         if (field === 'publishDateVar' && expireDateVar.value === $event.value) {
-            expireDateVar.patchValue(null);
+            expireDateVar.patchValue('');
         }
         if (field === 'expireDateVar' && publishDateVar.value === $event.value) {
-            publishDateVar.patchValue(null);
+            publishDateVar.patchValue('');
         }
     }
 
@@ -297,7 +300,7 @@ export class ContentTypesFormComponent extends BaseComponent
             clazz: this.data.clazz || '',
             description: this.data.description || '',
             expireDateVar: [{ value: this.data.description || '', disabled: true }],
-            host: this.data.host || null,
+            host: this.data.host || '',
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
             workflow: [{ value: this.data.workflow || '', disabled: true }],
@@ -324,7 +327,7 @@ export class ContentTypesFormComponent extends BaseComponent
         this.workflowOptions = [
             {
                 label: 'Select Workflow',
-                value: null
+                value: ''
             }
         ];
 
@@ -341,10 +344,7 @@ export class ContentTypesFormComponent extends BaseComponent
     }
 
     private isDateVarField(field: Field): boolean {
-        return (
-            field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' &&
-            field.indexed
-        );
+        return field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' && field.indexed;
     }
 
     private isFormValueUpdated(): boolean {
@@ -356,14 +356,8 @@ export class ContentTypesFormComponent extends BaseComponent
     }
 
     private setBaseTypeContentSpecificFields(): void {
-        this.form.addControl(
-            'detailPage',
-            new FormControl((this.data && this.data.detailPage) || '')
-        );
-        this.form.addControl(
-            'urlMapPattern',
-            new FormControl((this.data && this.data.urlMapPattern) || '')
-        );
+        this.form.addControl('detailPage', new FormControl((this.data && this.data.detailPage) || ''));
+        this.form.addControl('urlMapPattern', new FormControl((this.data && this.data.urlMapPattern) || ''));
     }
 
     private setDateVarFieldsState(): void {
@@ -379,17 +373,33 @@ export class ContentTypesFormComponent extends BaseComponent
         if (this.dateVarOptions.length) {
             publishDateVar.enable();
             expireDateVar.enable();
+
+            if (this.originalValue) {
+                this.originalValue.publishDateVar = publishDateVar.value;
+                this.originalValue.expireDateVar = expireDateVar.value;
+            }
         } else {
             publishDateVar.disable();
             expireDateVar.disable();
-            publishDateVar.patchValue(null);
-            expireDateVar.patchValue(null);
+
+            if (this.originalValue) {
+                delete this.originalValue.publishDateVar;
+                delete this.originalValue.expireDateVar;
+            }
         }
+
+        this.setButtonState();
     }
 
     private updateWorkflowFormControl(license): void {
         if (!license.isCommunity) {
-            this.form.get('workflow').enable();
+            const workflowControl = this.form.get('workflow');
+            workflowControl.enable();
+
+            if (this.originalValue) {
+                this.originalValue.workflow = workflowControl.value;
+            }
+            this.setButtonState();
         }
     }
 }
