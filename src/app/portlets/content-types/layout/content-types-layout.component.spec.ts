@@ -8,6 +8,7 @@ import { MessageService } from '../../../api/services/messages-service';
 import { By } from '@angular/platform-browser';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
+import { FieldDragDropService } from '../fields/service';
 
 @Component({
     selector: 'content-types-fields-list',
@@ -55,6 +56,11 @@ export class MockDotMenuService {
     getDotMenuId(portletId: string): Observable<string> {
         return Observable.of('1234');
     }
+
+}
+
+class FieldDragDropServiceMock {
+    setBagOptions() {}
 }
 
 describe('ContentTypesLayoutComponent', () => {
@@ -90,7 +96,8 @@ describe('ContentTypesLayoutComponent', () => {
             ],
             providers: [
                 { provide: MessageService, useValue: messageServiceMock },
-                { provide: DotMenuService, useClass: MockDotMenuService }
+                { provide: DotMenuService, useClass: MockDotMenuService },
+                { provide: FieldDragDropService, useClass: FieldDragDropServiceMock }
             ]
         });
 
@@ -111,6 +118,14 @@ describe('ContentTypesLayoutComponent', () => {
         const contentType = fixture.debugElement.query(By.css('.content-type'));
         const pTabPanels = fixture.debugElement.queryAll(By.css('p-tabPanel'));
         expect(pTabPanels.length).toBe(1);
+    });
+
+    it('should set the field and row bag options', () => {
+        const fieldDragDropService: FieldDragDropService = fixture.debugElement.injector.get(FieldDragDropService);
+        spyOn(fieldDragDropService, 'setBagOptions');
+        fixture.detectChanges();
+
+        expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
     });
 
     describe('Fields Tab', () => {

@@ -27,12 +27,21 @@ export class FieldDragDropService {
     }
 
     /**
+     * Set options for fields bag and rows bag
+     *
+     * @memberof FieldDragDropService
+     */
+    setBagOptions(): void {
+        this.setFieldBagOptions();
+        this.setFieldRowBagOptions();
+    }
+
+    /**
      * Set the options for the 'fields-bag' dragula group
      * @memberof FieldDragDropService
      */
     setFieldBagOptions(): void {
         const fieldBagOpts = this.dragulaService.find(FieldDragDropService.FIELD_BAG_NAME);
-
         if (!fieldBagOpts) {
             this.dragulaService.setOptions(FieldDragDropService.FIELD_BAG_NAME, {
                 copy: this.shouldCopy,
@@ -48,7 +57,6 @@ export class FieldDragDropService {
      */
     setFieldRowBagOptions(): void {
         const fieldRowBagOpts = this.dragulaService.find(FieldDragDropService.FIELD_ROW_BAG_NAME);
-
         if (!fieldRowBagOpts) {
             this.dragulaService.setOptions(FieldDragDropService.FIELD_ROW_BAG_NAME, {
                 copy: this.shouldCopy,
