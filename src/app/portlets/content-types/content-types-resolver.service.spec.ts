@@ -18,9 +18,9 @@ class DotRouterServiceMock {
     gotoPortlet() {}
 }
 
-const activatedRouteSnapshotMock: any = jasmine.createSpyObj<
-    ActivatedRouteSnapshot
->('ActivatedRouteSnapshot', ['toString']);
+const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
+    'toString'
+]);
 activatedRouteSnapshotMock.paramMap = {};
 
 describe('ContentTypeResolver', () => {
@@ -57,40 +57,30 @@ describe('ContentTypeResolver', () => {
 
     it('should get and return a content type', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
-        spyOn(crudService, 'getDataById').and.returnValue(Observable.of({
-            fake: 'content-type',
-            object: 'right?'
-        }));
-        contentTypeResolver
-            .resolve(activatedRouteSnapshotMock)
-            .subscribe((fakeContentType: any) => {
-                expect(fakeContentType).toEqual({
-                    fake: 'content-type',
-                    object: 'right?'
-                });
-            });
-        expect(crudService.getDataById).toHaveBeenCalledWith(
-            'v1/contenttype',
-            '123'
+        spyOn(crudService, 'getDataById').and.returnValue(
+            Observable.of({
+                fake: 'content-type',
+                object: 'right?'
+            })
         );
+        contentTypeResolver.resolve(activatedRouteSnapshotMock).subscribe((fakeContentType: any) => {
+            expect(fakeContentType).toEqual({
+                fake: 'content-type',
+                object: 'right?'
+            });
+        });
+        expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
     });
 
     it('should get and return null and go to home', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
         spyOn(dotRouterService, 'gotoPortlet');
         spyOn(crudService, 'getDataById').and.returnValue(Observable.of(false));
-        contentTypeResolver
-            .resolve(activatedRouteSnapshotMock)
-            .subscribe((res: any) => {
-                expect(res).toBeNull();
-            });
-        expect(crudService.getDataById).toHaveBeenCalledWith(
-            'v1/contenttype',
-            '123'
-        );
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith(
-            '/content-types-angular'
-        );
+        contentTypeResolver.resolve(activatedRouteSnapshotMock).subscribe((res: any) => {
+            expect(res).toBeNull();
+        });
+        expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
+        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
     });
 
     it('should return a content type placeholder base on type', () => {
@@ -99,20 +89,18 @@ describe('ContentTypeResolver', () => {
         };
         spyOn(dotRouterService, 'gotoPortlet');
         spyOn(crudService, 'getDataById').and.returnValue(Observable.of(false));
-        contentTypeResolver
-            .resolve(activatedRouteSnapshotMock)
-            .subscribe((res: any) => {
-                expect(res).toEqual({
-                    clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
-                    defaultType: false,
-                    fixed: false,
-                    folder: 'SYSTEM_FOLDER',
-                    host: null,
-                    name: null,
-                    owner: '123',
-                    system: false,
-                    baseType: 'CONTENT'
-                });
+        contentTypeResolver.resolve(activatedRouteSnapshotMock).subscribe((res: any) => {
+            expect(res).toEqual({
+                clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
+                defaultType: false,
+                fixed: false,
+                folder: 'SYSTEM_FOLDER',
+                host: null,
+                name: null,
+                owner: '123',
+                system: false,
+                baseType: 'CONTENT'
             });
+        });
     });
 });

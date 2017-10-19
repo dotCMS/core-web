@@ -26,31 +26,6 @@ export class FieldDragDropService {
         });
     }
 
-    private handleDrop(dragType: string, source: string) {
-        if (dragType === 'fields-bag') {
-            this.handleDropField(dragType, source);
-        } else if (dragType === 'fields-row-bag') {
-            this.handleDropFieldRow(dragType, source);
-
-        }
-    }
-
-    private handleDropField(dragType: string, source: string) {
-        if (source === 'source') {
-            this._fieldDropFromSource.next();
-        } else if (source === 'target') {
-            this._fieldDropFromTarget.next();
-        }
-    }
-
-    private handleDropFieldRow(dragType: string, source: string) {
-        if (source === 'source') {
-            this._fieldRowDropFromSource.next();
-        } else if (source === 'target') {
-            this._fieldRowDropFromTarget.next();
-        }
-    }
-
     /**
      * Set the options for the 'fields-bag' dragula group
      * @memberof FieldDragDropService
@@ -98,13 +73,37 @@ export class FieldDragDropService {
         return this._fieldRowDropFromTarget.asObservable();
     }
 
+    private handleDrop(dragType: string, source: string) {
+        if (dragType === 'fields-bag') {
+            this.handleDropField(dragType, source);
+        } else if (dragType === 'fields-row-bag') {
+            this.handleDropFieldRow(dragType, source);
+
+        }
+    }
+
+    private handleDropField(dragType: string, source: string) {
+        if (source === 'source') {
+            this._fieldDropFromSource.next();
+        } else if (source === 'target') {
+            this._fieldDropFromTarget.next();
+        }
+    }
+
+    private handleDropFieldRow(dragType: string, source: string) {
+        if (source === 'source') {
+            this._fieldRowDropFromSource.next();
+        } else if (source === 'target') {
+            this._fieldRowDropFromTarget.next();
+        }
+    }
+
     private shouldCopy(
         el: HTMLElement,
         source: HTMLElement,
         handle: HTMLElement,
         sibling: HTMLElement
     ): boolean {
-
         return source.dataset.dragType === 'source';
     }
 

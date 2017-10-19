@@ -1,15 +1,6 @@
 ///<reference path="../shared/field-type.model.ts"/>
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
-import {
-    Component,
-    SimpleChanges,
-    Input,
-    Output,
-    EventEmitter,
-    OnInit,
-    OnChanges,
-    ViewChild
-} from '@angular/core';
+import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { FieldDragDropService } from '../service';
 import { FieldRow, Field, FieldType } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
@@ -111,9 +102,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     setDroppedField(): void {
         const fields = this.getFields();
-        this.formData = fields.find(
-            field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field)
-        );
+        this.formData = fields.find(field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
         if (this.formData) {
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         }
@@ -189,9 +178,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private getFieldsToSave(fieldToSave: Field): Field[] {
-        return this.formData.id
-            ? [this.getUpdatedField(fieldToSave)]
-            : this.getNewFields(fieldToSave);
+        return this.formData.id ? [this.getUpdatedField(fieldToSave)] : this.getNewFields(fieldToSave);
     }
 
     private getUpdatedField(fieldToSave: Field): Field {
@@ -217,9 +204,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         fields.forEach((field, index) => {
             if (FieldUtil.isNewField(field)) {
                 field.sortOrder = index + 1;
-                const fieldToPush = FieldUtil.isRowOrColumn(field)
-                    ? field
-                    : Object.assign(field, fieldToSave);
+                const fieldToPush = FieldUtil.isRowOrColumn(field) ? field : Object.assign(field, fieldToSave);
                 result.push(fieldToPush);
             }
         });

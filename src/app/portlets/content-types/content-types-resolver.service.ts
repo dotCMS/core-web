@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    Resolve,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot
-} from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { CrudService } from '../../api/services/crud';
 import { ContentType } from './shared/content-type.model';

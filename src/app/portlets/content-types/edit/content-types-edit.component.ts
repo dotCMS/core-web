@@ -102,11 +102,9 @@ export class ContentTypesEditComponent implements OnInit {
     private updateContentType(value: any): void {
         const data = Object.assign(value, { id: this.data.id });
 
-        this.crudService
-            .putData(`v1/contenttype/id/${this.data.id}`, data)
-            .subscribe((contentType: ContentType) => {
-                this.data = contentType;
-                this.form.resetForm();
-            });
+        this.crudService.putData(`v1/contenttype/id/${this.data.id}`, data).subscribe((contentType: ContentType) => {
+            this.data = contentType;
+            this.form.resetForm();
+        });
     }
 }
