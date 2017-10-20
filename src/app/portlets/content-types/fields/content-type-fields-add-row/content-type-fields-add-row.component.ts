@@ -15,14 +15,19 @@ import { MessageService } from './../../../../api/services/messages-service';
     styleUrls: ['./content-type-fields-add-row.component.scss'],
     templateUrl: './content-type-fields-add-row.component.html',
 })
-export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, OnInit {
+export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     rowState = 'add';
     selectedColumnIndex = 0;
     i18nMessages = {};
 
     @Input() colNumberOptions: number[] = [1, 2, 3, 4];
     @Input() disabled = false;
-    @Input() toolTips: string[];
+    @Input() toolTips: string[] = [
+        'contenttypes.content.one_column',
+        'contenttypes.content.two_columns',
+        'contenttypes.content.three_columns',
+        'contenttypes.content.four_columns'
+    ];
     @Output() selectColums: EventEmitter<number> = new EventEmitter<number>();
     @ViewChild('colContainer') colContainer: ElementRef;
 
@@ -30,17 +35,8 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
     }
 
     ngOnInit(): void {
-        if (!this.toolTips) {
-            this.reloadDefaultTooltips();
-        }
-
         this.setKeyboardEvent('ctrl+a', this.selectColumnState.bind(this));
-    }
-
-    ngOnChanges(change: SimpleChanges): void {
-        if (change.toolTips) {
-            this.loadMessages();
-        }
+        this.loadMessages();
     }
 
     ngOnDestroy(): void {
@@ -51,9 +47,9 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
      * Set columns active when mouse enter
      * @param col
      */
-    onMouseEnter(col: number, event) {
-        this.setFocus(event.target);
+    onMouseEnter(col: number): void {
         this.selectedColumnIndex = col;
+        this.setFocus(this.getElementSelected());
         event.preventDefault();
     }
 
@@ -67,7 +63,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
      */
     emitColumnNumber(): void {
         this.selectColums.emit(this.getNumberColumnsSelected());
-        this.resetRow();
+        this.resetState();
     }
 
     /**
@@ -86,25 +82,15 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
      */
     selectColumnState(): void {
         this.rowState = 'select';
-        this.setFocus(null, this.selectedColumnIndex);
-
-        this.setKeyboardEvent('left', this.leftKeyboardEvent.bind(this));
-        this.setKeyboardEvent('right', this.rightKeyboardEvent.bind(this));
-        this.setKeyboardEvent('esc', this.resetRow.bind(this));
-        this.setKeyboardEvent('enter', this.emitColumnNumber.bind(this));
+        this.setFocus(this.getElementSelected());
+        this.bindKeyboardEvents();
     }
 
-    setFocus(elem: any, colIndex?: number): any {
-        if (colIndex || colIndex === 0) {
-            return this.colContainer.nativeElement.children[colIndex].focus();
-        }
-        return elem.focus();
+    setFocus(elem: any): void {
+        elem.focus();
     }
 
-    removeFocus(elem: any, colIndex?: number): any {
-        if (colIndex || colIndex === 0) {
-            return this.colContainer.nativeElement.children[colIndex].blur();
-        }
+    removeFocus(elem: any): any {
         return elem.blur();
     }
 
@@ -122,17 +108,19 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
             this.selectedColumnIndex = this.getMaxIndex();
         }
 
-        this.setFocus(null, this.selectedColumnIndex);
+        this.setFocus(this.getElementSelected());
+
     }
 
-    private reloadDefaultTooltips(): void {
-        this.toolTips = [
-            'contenttypes.content.one_column',
-            'contenttypes.content.two_columns',
-            'contenttypes.content.three_columns',
-            'contenttypes.content.four_columns'
-        ];
-        this.loadMessages();
+    private getElementSelected(): HTMLElement {
+        return this.colContainer.nativeElement.children[this.selectedColumnIndex];
+    }
+
+    private bindKeyboardEvents(): void {
+        this.setKeyboardEvent('left', this.leftKeyboardEvent.bind(this));
+        this.setKeyboardEvent('right', this.rightKeyboardEvent.bind(this));
+        this.setKeyboardEvent('esc', this.resetState.bind(this));
+        this.setKeyboardEvent('enter', this.emitColumnNumber.bind(this));
     }
 
     private loadMessages(): void {
@@ -161,11 +149,11 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnChanges, O
             this.selectedColumnIndex = 0;
         }
 
-        this.setFocus(null, this.selectedColumnIndex);
+        this.setFocus(this.getElementSelected());
     }
 
-    private resetRow(): any {
-        this.removeFocus(null, this.selectedColumnIndex);
+    private resetState(): any {
+        this.removeFocus(this.getElementSelected());
         this.selectedColumnIndex = 0;
         this.rowState = 'add';
         this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));

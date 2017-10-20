@@ -22,7 +22,7 @@ import { MockMessageService } from './../../../../test/message-service.mock';
 //     @Input() toolTips: string[];
 // }
 
-fdescribe('ContentTypeFieldsAddRowComponent', () => {
+describe('ContentTypeFieldsAddRowComponent', () => {
     let comp: ContentTypeFieldsAddRowComponent;
     // let fixture: ComponentFixture<TestHostComponent>;
     let fixture: ComponentFixture<ContentTypeFieldsAddRowComponent>;
@@ -39,13 +39,10 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
 
         DOTTestBed.configureTestingModule({
             declarations: [
-                ContentTypeFieldsAddRowComponent,
+                ContentTypeFieldsAddRowComponent
                 // TestHostComponent
             ],
-            imports: [
-                TooltipModule,
-                BrowserAnimationsModule
-            ],
+            imports: [TooltipModule, BrowserAnimationsModule],
             providers: [
                 { provide: HotkeysService, useValue: testHotKeysMock },
                 { provide: MessageService, useValue: messageServiceMock }
@@ -62,73 +59,101 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
     });
 
     it('should display the add rows button by default', () => {
-        const addRowContainer = de.nativeElement.querySelector('.dot-add-rows__container');
+        const addRowContainer = de.query(By.css('.dot-add-rows__container'));
+        const buttonElement = de.query(By.css('button'));
 
         fixture.detectChanges();
 
-        expect(addRowContainer.classList.contains('dot-add-rows__add')).toEqual(true);
+        expect(addRowContainer.nativeElement.classList.contains('dot-add-rows__add')).toEqual(true);
+        expect(buttonElement).toBeTruthy();
     });
 
-    it('should display a row after click on AddRows button', () => {
+    it('should display a rows seelction after click on Add Rows button', () => {
         fixture.detectChanges();
-        const addRowsContainer = de.query(By.css('.dot-add-rows__container'));
-
-        console.log('addRowsContainer', addRowsContainer);
+        const addRowContainer = de.query(By.css('.dot-add-rows__container'));
 
         const addButton = de.nativeElement.querySelector('.dot-add-rows-button__container button');
-        spyOn(comp, 'selectColumnState');
         addButton.click();
+        fixture.detectChanges();
 
-        // expect(lis.length).toEqual(4);
+        expect(addRowContainer.nativeElement.classList.contains('dot-add-rows__select')).toEqual(true);
     });
 
-    it('should escape to previous step', () => {
-        spyOn(comp, 'setFocus');
-        spyOn(comp, 'removeFocus');
+    it('should focus the first column selection after click on Add Rows button', () => {
+        fixture.detectChanges();
+
         comp.selectColumnState();
-        comp.setFocus(null, 0);
-        comp.removeFocus(null, 0);
+
+        const columnSelectionList = de.query(By.css('.dot-add-rows-columns-list__container'));
+        const firstElement = columnSelectionList.children[0];
+
+        expect(firstElement.nativeElement.classList).toContain('active');
+
+        expect(document.activeElement).toBe(firstElement.nativeElement);
+    });
+
+    it('should bind keyboard events after click on Add Rows button', () => {
+        fixture.detectChanges();
+
+        spyOn(comp, 'setKeyboardEvent');
+
+        const addButton = de.nativeElement.querySelector('.dot-add-rows-button__container button');
+        addButton.click();
+        fixture.detectChanges();
+
+        expect(comp.setKeyboardEvent).toHaveBeenCalledTimes(4);
+    });
+
+    it('should escape to add state', () => {
+        spyOn(comp, 'removeFocus');
+        spyOn(testHotKeysMock, 'remove');
+
+        fixture.detectChanges();
+
+        const addButton = de.nativeElement.querySelector('.dot-add-rows-button__container button');
+        addButton.click();
+        fixture.detectChanges();
+
+        expect(comp.rowState).toBe('select');
 
         testHotKeysMock.callback(['esc']);
-
-        expect(comp.rowState).toBe('add');
-    });
-
-    it('When using left keyboard event column index should not be less than 0', () => {
-        spyOn(comp, 'setFocus');
-        comp.selectColumnState();
-        comp.setFocus(null, 0);
-
-        for (let i = 0; i < 5; i++) {
-            testHotKeysMock.callback(['left']);
-            expect(comp.selectedColumnIndex).not.toBeLessThan(0);
-        }
-    });
-
-    it('Should add focus and active li after using left keyboard', () => {
         fixture.detectChanges();
-        const lis = de.queryAll(By.css('li'));
-        const previousLiBeforeLeftEvent = lis[0];
-        let nextLiAfterLeftEvent;
 
-        spyOn(comp, 'setFocus');
+        expect(comp.rowState).toEqual('add', 'set state to add');
+        expect(comp.selectedColumnIndex).toEqual(0, 'set column index to zero');
+        expect(testHotKeysMock.remove).toHaveBeenCalledTimes(1);
+        expect(comp.removeFocus).toHaveBeenCalledTimes(1);
+    });
+
+    it('should go to last item when left key is preseed while in first item', () => {
+        fixture.detectChanges();
         comp.selectColumnState();
+        fixture.detectChanges();
+        testHotKeysMock.callback(['left']);
+
+        expect(comp.selectedColumnIndex).toEqual(comp.colNumberOptions.length - 1);
+    });
+
+    it('should add focus and active to previous item after using left keyboard', () => {
+        fixture.detectChanges();
+        comp.selectColumnState();
+        comp.onMouseEnter(2);
+        fixture.detectChanges();
+
+        const items = de.queryAll(By.css('li'));
+
+        expect(items[2].nativeElement.classList).toContain('active');
 
         testHotKeysMock.callback(['left']);
-        if (comp.selectedColumnIndex > 0) {
-            fixture.detectChanges();
-            comp.setFocus(null, comp.selectedColumnIndex);
-            nextLiAfterLeftEvent = lis[comp.selectedColumnIndex];
-        }
+        fixture.detectChanges();
 
-        expect(previousLiBeforeLeftEvent.nativeElement.className).toEqual('dot-add-rows-columns-list__item');
-        expect(nextLiAfterLeftEvent.nativeElement.className).toEqual('dot-add-rows-columns-list__item active');
+        expect(items[1].nativeElement.classList).toContain('active');
     });
 
     it('When using right keyboard event column index should not be greater than 3', () => {
         spyOn(comp, 'setFocus');
         comp.selectColumnState();
-        comp.setFocus(null, 0);
+        // comp.setFocus(null, 0);
 
         for (let i = 0; i < 5; i++) {
             testHotKeysMock.callback(['right']);
@@ -148,7 +173,7 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
         testHotKeysMock.callback(['right']);
         if (comp.selectedColumnIndex > 0) {
             fixture.detectChanges();
-            comp.setFocus(null, comp.selectedColumnIndex);
+            // comp.setFocus(null, comp.selectedColumnIndex);
             nextLiAfterLeftEvent = lis[comp.selectedColumnIndex];
         }
 
@@ -172,8 +197,8 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
         spyOn(comp, 'setFocus');
         spyOn(comp, 'removeFocus');
         comp.selectColumnState();
-        comp.setFocus(null, 0);
-        comp.removeFocus(null, 0);
+        // comp.setFocus(null, 0);
+        // comp.removeFocus(null, 0);
 
         spyOn(comp.selectColums, 'emit');
 
@@ -183,7 +208,7 @@ fdescribe('ContentTypeFieldsAddRowComponent', () => {
     });
 
     it('should remove hotkeysService on destroy', () => {
-        const hoykeys: Hotkey[] = <Hotkey[]> testHotKeysMock.get(['left', 'right', 'enter', 'esc']);
+        const hoykeys: Hotkey[] = <Hotkey[]>testHotKeysMock.get(['left', 'right', 'enter', 'esc']);
         const spyMethod = spyOn(testHotKeysMock, 'remove');
 
         comp.ngOnDestroy();

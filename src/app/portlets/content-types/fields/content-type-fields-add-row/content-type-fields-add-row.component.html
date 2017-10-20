@@ -12,7 +12,7 @@
         <li *ngFor="let colNum of colNumberOptions; let i = index" 
             [ngClass]="{'active': i == selectedColumnIndex}" class="dot-add-rows-columns-list__item"
             pTooltip="{{setTooltipValue(i)}}" tooltipPosition="bottom" tabindex="-1" tooltipEvent="focus"
-            (mouseenter)="onMouseEnter(i, $event)" (mouseleave)="onMouseLeave($event)"
+            (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave($event)"
             (click)="emitColumnNumber()">
             <div class="dot-add-rows-columns-list__item-col" *ngFor="let i of numberOfCols(colNum)"></div>
         </li>

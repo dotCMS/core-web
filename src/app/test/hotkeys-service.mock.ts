@@ -33,7 +33,7 @@ export class TestHotkeysMock {
         return hotKeyCombo.length === 1 ? hotKeyCombo[0] : hotKeyCombo;
     }
 
-    remove(combo: string[]): Hotkey | Hotkey[] {
+    remove(hotkey?: Hotkey | Hotkey[]): Hotkey | Hotkey[] {
         return null;
     }
 
