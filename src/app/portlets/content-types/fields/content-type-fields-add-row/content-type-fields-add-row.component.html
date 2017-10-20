@@ -3,17 +3,18 @@
     <div class="dot-add-rows-button__container">    
         <button type="button" pButton flat 
             label="{{i18nMessages['contenttypes.dropzone.rows.add']}}" (click)="selectColumnState()" 
-            icon="fa-plus" [class.disabled]="disabledButton">
+            icon="fa-plus"
+            [disabled]="disabled">
         </button>  
     </div>
     
-    <ul #rowList class="dot-add-rows-columns-list__container">
-        <li *ngFor="let row of rows; let i = index" 
-            [ngClass]="{'active': i == selectedLi}" class="dot-add-rows-columns-list__item"
-            pTooltip="{{setTooltipValue(i)}}" tooltipPosition="bottom"
-            (mouseover) ="onMouseOver(i, $event)"
-            (click)="selectRow()">
-            <div class="dot-add-rows-columns-list__item-col" *ngFor="let i of numberOfCols(row)"></div>
+    <ul #colContainer class="dot-add-rows-columns-list__container">
+        <li *ngFor="let colNum of colNumberOptions; let i = index" 
+            [ngClass]="{'active': i == selectedColumnIndex}" class="dot-add-rows-columns-list__item"
+            pTooltip="{{setTooltipValue(i)}}" tooltipPosition="bottom" tabindex="-1" tooltipEvent="focus"
+            (mouseenter)="onMouseEnter(i, $event)" (mouseleave)="onMouseLeave($event)"
+            (click)="emitColumnNumber()">
+            <div class="dot-add-rows-columns-list__item-col" *ngFor="let i of numberOfCols(colNum)"></div>
         </li>
     </ul>      
 </div>

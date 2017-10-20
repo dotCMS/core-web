@@ -1,52 +1,49 @@
 @import "mixins";
 @import "variables";
 
+$row-height: 70px;
+
 :host {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
     margin-bottom: $basic-padding;
     padding: 0 $basic-padding * 2;
-    max-height: 70px;
 }
 
 .dot-add-rows-button__container {
     text-align: center;
     position: relative;
-
-    button {
-        color: $brand-primary;
-
-        &:hover {
-            color: $black;
-        }
-
-        &.disabled {
-            color: $gray-light;
-            pointer-events: none;
-            cursor: default;
-        }
-    }
+    height: $row-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 150ms ease-out; // UPDATE THIS!
 }
 
 .dot-add-rows__container {
     border: 1px solid $gray-light;
     overflow: hidden;
+    height: $row-height;
+    position: relative;
 
     &.dot-add-rows__select {
         .dot-add-rows-button__container {
             height: 0;
-            top: -35px;
+            top: -$row-height;
             padding: 0;
-            transition: all 300ms ease-out;
+        }
+        .dot-add-rows-columns-list__container {
+            height: $row-height;
         }
     }
 
     &.dot-add-rows__add {
         .dot-add-rows-button__container {
             top: 0;
-            padding: $basic-padding * 2 + 2 0;
-            transition: all 300ms ease-out;
+        }
+        .dot-add-rows-columns-list__container {
+            bottom: -$row-height;
         }
     }
 }
@@ -54,11 +51,14 @@
 .dot-add-rows-columns-list__container {
     display: flex;
     @include naked-list;
+    height: 0;
+    position: absolute;
+    width: 100%;
 }
 
 .dot-add-rows-columns-list__item {
     cursor: pointer;
-    height: 70px;
+    height: $row-height;
     display: flex;
     flex-grow: 1;
     padding: $basic-padding * 2;
@@ -72,7 +72,6 @@
         background-color: $gray-light;
         flex-grow: 1;
         margin: 0 $basic-padding / 2;
-        transition: background-color $basic-speed ease-in;
     
         &:first-child {
             margin-left: 0;
