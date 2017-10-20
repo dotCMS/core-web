@@ -1,11 +1,13 @@
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, Component, Input, SimpleChange } from '@angular/core';
+import { DebugElement, Component, Input, SimpleChange, Injectable } from '@angular/core';
 import { TabViewModule } from 'primeng/primeng';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { MessageService } from '../../../api/services/messages-service';
 import { By } from '@angular/platform-browser';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'content-types-fields-list',
@@ -47,11 +49,21 @@ class TestContentTypesRelationshipListingComponent {
 
 }
 
+@Injectable()
+export class MockDotMenuService {
+
+    getDotMenuId(portletId: string): Observable<string> {
+        return Observable.of('1234');
+    }
+}
+
 describe('ContentTypesLayoutComponent', () => {
     let comp: ContentTypesLayoutComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+
+    const mockDotMenuService: MockDotMenuService = new MockDotMenuService();
 
     beforeEach(() => {
 
@@ -77,7 +89,8 @@ describe('ContentTypesLayoutComponent', () => {
                 TabViewModule
             ],
             providers: [
-                { provide: MessageService, useValue: messageServiceMock }
+                { provide: MessageService, useValue: messageServiceMock },
+                { provide: DotMenuService, useClass: MockDotMenuService }
             ]
         });
 
@@ -218,7 +231,7 @@ describe('ContentTypesLayoutComponent', () => {
 
             // tslint:disable-next-line:max-line-length
             expect(iframe.componentInstance.src)
-                .toBe('c/portal/layout?p_l_id=56fedb43-dbbf-4ce2-8b77-41fb73bad015&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2');
+                .toBe('c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2');
         });
     });
 });
