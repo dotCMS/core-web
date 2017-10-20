@@ -1,9 +1,14 @@
 <div class="page-content">
-    <site-selector></site-selector>
-    <breadcrumb></breadcrumb>
+    <!--<site-selector></site-selector>-->
+    <app-breadcrumb-hostselector></app-breadcrumb-hostselector>
+    <a (click)="changeViewToTree()">Tree View</a>
+    <a (click)="changeViewToIcon()">Icon View</a>
     <div class="ui-g">
-        <div class="ui-g-9">
+        <div class="ui-g-9" *ngIf="siteView == 'tree'">
             <site-datatable></site-datatable>
+        </div>
+        <div class="ui-g-9" *ngIf="siteView == 'icon'">
+            <site-datagrid></site-datagrid>
         </div>
         <div class="ui-g-3 treeable-detail">
             <treeable-detail></treeable-detail>

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
+    // encapsulation: ViewEncapsulation.None,
     providers: [],
     selector: 'dot-browser',
     styleUrls: ['./dot-browser.scss'],
@@ -9,6 +9,15 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 })
 
 export class DotBrowserComponent implements OnInit {
+
+    siteView = 'tree';
+
     constructor() {}
     ngOnInit(): void {}
+    changeViewToTree(): void {
+        this.siteView = 'tree';
+    }
+    changeViewToIcon(): void {
+        this.siteView = 'icon';
+    }
 }
