@@ -56,7 +56,6 @@ export class LoginContainerComponent {
             .subscribe(
                 (result: any) => {
                     this.message = '';
-                    this.dotRouterService.goToMain();
                 },
                 (error: ResponseView) => {
                     if (

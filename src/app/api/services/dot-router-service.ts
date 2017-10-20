@@ -34,9 +34,8 @@ export class DotRouterService {
         this.portletReload$.next();
     }
 
-    goToMain(): void {
-        this.router.navigate([this._previousSavedURL || '/']);
-        this._previousSavedURL = null;
+    goToMain(): Promise<boolean> {
+        return this.router.navigate([this._previousSavedURL || '/']);
     }
 
     goToLogin(parameters?: any): void {
@@ -76,7 +75,11 @@ export class DotRouterService {
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
 
-    set previousSavedURL(url: string){
+    set previousSavedURL(url: string) {
         this._previousSavedURL = url;
+    }
+
+    get previousSavedURL(): string {
+        return this._previousSavedURL;
     }
 }

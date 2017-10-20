@@ -44,7 +44,6 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     goToFirstPortlet(replaceUrl?: boolean): Promise<boolean> {
-        debugger;
         return this.getFirstMenuLink()
             .map((link: string) => {
                 return this.dotRouterService.gotoPortlet(link, replaceUrl);
@@ -86,18 +85,25 @@ export class DotNavigationService {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
             this.dotMenuService
                 .isPortletInMenu(
-                    this.dotRouterService.currentPortlet.id ||
-                    this.dotRouterService.getPortletId(this.location.hash)
+                    this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
                 )
                 .subscribe((isPortletInMenu: boolean) => {
-                 /*   if (!isPortletInMenu) {
-                        this.goToFirstPortlet().then(res => {
-                            this.setMenu(menu);
-                        });
-                    } else { */
-                        //TODO: Reload route to trigger can Activate.
+                    if (!isPortletInMenu) {
+                        if (this.dotRouterService.previousSavedURL) {
+                            this.dotRouterService
+                                .gotoPortlet(this.dotRouterService.previousSavedURL, true)
+                                .then(res => {
+                                    this.setMenu(menu);
+                                    this.dotRouterService.previousSavedURL = null;
+                                });
+                        } else {
+                            this.goToFirstPortlet().then(res => {
+                                this.setMenu(menu);
+                            });
+                        }
+                    } else {
                         this.setMenu(menu);
-                  //  }
+                    }
                 });
         });
     }
@@ -126,9 +132,7 @@ export class DotNavigationService {
     }
 
     private getFirstMenuLink(): Observable<string> {
-        return this.dotMenuService
-            .loadMenu()
-            .map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
+        return this.dotMenuService.loadMenu().map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
     }
 
     private getMenuLink(menuItemId: string): string {
