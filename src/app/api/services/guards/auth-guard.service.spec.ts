@@ -31,7 +31,7 @@ describe('ValidAuthGuardService', () => {
             providers: [
                 AuthGuardService,
                 { provide: DotRouterService, useClass: MockDotRouterService },
-                { provide: LoginService, useClass: MockLoginService },
+                { provide: LoginService, useClass: MockLoginService }
             ]
         });
 
