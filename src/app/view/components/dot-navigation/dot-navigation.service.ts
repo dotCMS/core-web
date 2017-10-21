@@ -99,13 +99,11 @@ export class DotNavigationService {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
                                 .then(res => {
-                                    // this.setMenu(menu);
+                                    // Menu update happens on NavigationEnd event
                                     this.dotRouterService.previousSavedURL = null;
                                 });
                         } else {
-                            this.goToFirstPortlet().then(res => {
-                               // this.setMenu(menu);
-                            });
+                            this.goToFirstPortlet(); // Menu update happens on NavigationEnd event
                         }
                     } else {
                         this.setMenu(menu);
@@ -159,15 +157,5 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
-    }
-
-    refreshSelectedMenuItem(): void {
-        this.setMenu(this.items$.value);
-    }
-
-    loadMenu(): void {
-        this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
-            this.setMenu(menu);
-        });
     }
 }
