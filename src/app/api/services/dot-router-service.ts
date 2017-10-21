@@ -83,7 +83,6 @@ export class DotRouterService {
     }
 
     isPublicPage(): boolean {
-        console.log(this.currentPortlet.url);
         return this.currentPortlet.url.startsWith('/public');
     }
 }

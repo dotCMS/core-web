@@ -82,7 +82,8 @@ export class DotNavigationService {
     }
 
     /**
-     * Reloads and return a new version of the menu
+     * Reloads and return a new version of the menu and
+     * decide where to go if the user do not have access to the current route.
      *
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
