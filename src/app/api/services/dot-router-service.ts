@@ -4,7 +4,6 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { PortletNav } from '../../shared/models/navigation';
 import { DotMenuService } from './dot-menu.service';
 import { Subject } from 'rxjs/Subject';
-import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
 
 @Injectable()
 export class DotRouterService {
@@ -81,5 +80,10 @@ export class DotRouterService {
 
     get previousSavedURL(): string {
         return this._previousSavedURL;
+    }
+
+    isPublicPage(): boolean {
+        console.log(this.currentPortlet.url);
+        return this.currentPortlet.url.startsWith('/public');
     }
 }

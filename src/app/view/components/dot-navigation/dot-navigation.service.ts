@@ -8,6 +8,7 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
 import { Auth } from 'dotcms-js/core/login.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class DotNavigationService {
@@ -18,11 +19,16 @@ export class DotNavigationService {
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
         private loginService: LoginService,
-        private location: PlatformLocation
+        private location: PlatformLocation,
+        private router: Router
     ) {
-        this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
-            this.setMenu(menu);
-        });
+        router.events
+            .filter(event => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
+            .subscribe((event: NavigationEnd) => {
+                this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
+                    this.setMenu(menu);
+                });
+            });
 
         this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
             this.reloadNavigation();
@@ -93,12 +99,12 @@ export class DotNavigationService {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
                                 .then(res => {
-                                    this.setMenu(menu);
+                                    // this.setMenu(menu);
                                     this.dotRouterService.previousSavedURL = null;
                                 });
                         } else {
                             this.goToFirstPortlet().then(res => {
-                                this.setMenu(menu);
+                               // this.setMenu(menu);
                             });
                         }
                     } else {
@@ -153,5 +159,15 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
+    }
+
+    refreshSelectedMenuItem(): void {
+        this.setMenu(this.items$.value);
+    }
+
+    loadMenu(): void {
+        this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
+            this.setMenu(menu);
+        });
     }
 }

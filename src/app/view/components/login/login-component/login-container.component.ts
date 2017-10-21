@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpRequestUtils, LoginService, LoggerService, HttpCode, ResponseView } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../api/services/dot-router-service';
+import { DotNavigationService } from '../../dot-navigation/dot-navigation.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -28,6 +29,7 @@ export class LoginContainerComponent {
 
     constructor(
         private dotRouterService: DotRouterService,
+        private dotNavigationService: DotNavigationService,
         private httprequestUtils: HttpRequestUtils,
         private loggerService: LoggerService,
         private loginService: LoginService
@@ -47,21 +49,13 @@ export class LoginContainerComponent {
         this.message = '';
 
         this.loginService
-            .loginUser(
-                loginData.login,
-                loginData.password,
-                loginData.rememberMe,
-                loginData.language
-            )
+            .loginUser(loginData.login, loginData.password, loginData.rememberMe, loginData.language)
             .subscribe(
                 (result: any) => {
                     this.message = '';
                 },
                 (error: ResponseView) => {
-                    if (
-                        error.status === HttpCode.BAD_REQUEST ||
-                        error.status === HttpCode.UNAUTHORIZED
-                    ) {
+                    if (error.status === HttpCode.BAD_REQUEST || error.status === HttpCode.UNAUTHORIZED) {
                         this.message = error.errorsMessages || this.getErrorMessage(error.response.json().error);
                     } else {
                         this.loggerService.debug(error);
