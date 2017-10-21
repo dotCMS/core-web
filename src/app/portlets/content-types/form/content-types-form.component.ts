@@ -192,6 +192,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     resetForm(): void {
         this.formState = 'collapsed';
         this.submitAttempt = false;
+        this.originalValue = this.form.value;
+        this.setButtonState();
     }
 
     /**
@@ -226,7 +228,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
 
         if (this.form.valid) {
-            this.originalValue = this.form.value;
             this.onSubmit.emit(this.form.value);
         }
     }

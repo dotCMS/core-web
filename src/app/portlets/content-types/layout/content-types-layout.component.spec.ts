@@ -36,7 +36,7 @@ class TestDotIframe {
 
 @Component({
     selector: 'test-host-component',
-    template: '<content-type-layout [contentTypeId]="contentTypeId"></content-type-layout>'
+    template: '<dot-content-type-layout [contentTypeId]="contentTypeId"></dot-content-type-layout>'
 })
 class TestHostComponent {
     @Input() contentTypeId: string;
@@ -102,7 +102,7 @@ describe('ContentTypesLayoutComponent', () => {
         });
 
         fixture = DOTTestBed.createComponent(TestHostComponent);
-        de = fixture.debugElement.query(By.css('content-type-layout'));
+        de = fixture.debugElement.query(By.css('dot-content-type-layout'));
         comp = de.componentInstance;
         el = de.nativeElement;
     });

@@ -21,6 +21,7 @@ import { HotkeysService } from 'angular2-hotkeys';
 
 class HotkeysServiceMock {
     add() {}
+    get() {}
     remove() {}
 }
 
@@ -250,6 +251,30 @@ describe('ContentTypesFormComponent', () => {
         comp.form.get('name').setValue('Hello World');
         fixture.detectChanges();
         expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
+    });
+
+    it('should have submit button disabled after then form it\'s submitted correctly', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        comp.form.get('name').setValue('a new name');
+        expect(comp.form.valid).toEqual(true, 'make sure form is valid after update it');
+
+        fixture.detectChanges();
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        editButton.nativeNode.click();
+
+        // We trigger the reset as the parent (edit content type) does it.
+        comp.resetForm();
+
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        expect(submittButton.nativeElement.disabled).toBe(true, 'button should be disabled after update');
     });
 
     it('should have the submit button disabled date fields updates', () => {
