@@ -1,5 +1,4 @@
-import { BaseComponent } from './../../../../view/components/_common/_base/base-component';
-import { Component, OnDestroy, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { MessageService } from './../../../../api/services/messages-service';
 
@@ -20,7 +19,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     selectedColumnIndex = 0;
     i18nMessages = {};
 
-    @Input() colNumberOptions: number[] = [1, 2, 3, 4];
+    @Input() columns: number[] = [1, 2, 3, 4];
     @Input() disabled = false;
     @Input() toolTips: string[] = [
         'contenttypes.content.one_column',
@@ -58,7 +57,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     }
 
     /**
-     * Emit number of columns after select colum the reset row
+     * Emit number of columns after select colum then reset state
      * @memberof ContentTypeFieldsAddRowComponent
      */
     emitColumnNumber(): void {
@@ -86,14 +85,31 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         this.bindKeyboardEvents();
     }
 
+    /**
+     * Set focus on element sent as param
+     * @param elem
+     */
     setFocus(elem: any): void {
         elem.focus();
     }
 
-    removeFocus(elem: any): any {
-        return elem.blur();
+    /**
+     * Remove focus on element sent as param
+     * @param {*} elem
+     * @returns {*}
+     * @memberof ContentTypeFieldsAddRowComponent
+     */
+    removeFocus(elem: any): void {
+        elem.blur();
     }
 
+    /**
+     * Set keyboard event receiving key and function as param
+     * @param {(string | string[])} key
+     * @param {any} keyEvent
+     * @returns {*}
+     * @memberof ContentTypeFieldsAddRowComponent
+     */
     setKeyboardEvent(key: string | string[], keyEvent): any {
         this.hotkeysService.add(new Hotkey(key, (event: KeyboardEvent): boolean => {
             keyEvent();
@@ -101,15 +117,15 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         }));
     }
 
-    leftKeyboardEvent(): any {
-        this.selectedColumnIndex = this.selectedColumnIndex - 1;
-
-        if (this.selectedColumnIndex < 0) {
-            this.selectedColumnIndex = this.getMaxIndex();
-        }
-
-        this.setFocus(this.getElementSelected());
-
+    /**
+     * Set tooltip value to pTooltip directive
+     * Receives column index as param
+     * @param {number} col
+     * @returns {string}
+     * @memberof ContentTypeFieldsAddRowComponent
+     */
+    setTooltipValue(col: number): string {
+        return this.i18nMessages[this.toolTips[col]];
     }
 
     private getElementSelected(): HTMLElement {
@@ -135,11 +151,21 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     }
 
     private getNumberColumnsSelected() {
-        return this.colNumberOptions[this.selectedColumnIndex];
+        return this.columns[this.selectedColumnIndex];
     }
 
     private getMaxIndex(): number {
-        return this.colNumberOptions.length - 1;
+        return this.columns.length - 1;
+    }
+
+    private leftKeyboardEvent(): any {
+        this.selectedColumnIndex = this.selectedColumnIndex - 1;
+
+        if (this.selectedColumnIndex < 0) {
+            this.selectedColumnIndex = this.getMaxIndex();
+        }
+
+        this.setFocus(this.getElementSelected());
     }
 
     private rightKeyboardEvent(): any {
@@ -157,9 +183,5 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         this.selectedColumnIndex = 0;
         this.rowState = 'add';
         this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));
-    }
-
-    private setTooltipValue(col: number): string {
-        return this.i18nMessages[this.toolTips[col]];
     }
 }

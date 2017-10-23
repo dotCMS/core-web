@@ -9,16 +9,7 @@ $row-height: 70px;
     flex-direction: column;
     margin-bottom: $basic-padding;
     padding: 0 $basic-padding * 2;
-}
-
-.dot-add-rows-button__container {
-    text-align: center;
-    position: relative;
-    height: $row-height;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 150ms ease-out; // UPDATE THIS!
+    max-height: $row-height;
 }
 
 .dot-add-rows__container {
@@ -27,33 +18,34 @@ $row-height: 70px;
     height: $row-height;
     position: relative;
 
-    &.dot-add-rows__select {
-        .dot-add-rows-button__container {
-            height: 0;
-            top: -$row-height;
-            padding: 0;
-        }
-        .dot-add-rows-columns-list__container {
-            height: $row-height;
-        }
-    }
+    .dot-add-rows-button__container {
+        text-align: center;
+        position: absolute;
+        height: $row-height;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: top 150ms ease-in-out;
+        width: 100%;
+        top: -70px;
 
-    &.dot-add-rows__add {
-        .dot-add-rows-button__container {
+        &.dot-add-rows__add { 
             top: 0;
         }
-        .dot-add-rows-columns-list__container {
-            bottom: -$row-height;
+    }
+
+    .dot-add-rows-columns-list__container {
+        display: flex;
+        @include naked-list;
+        position: absolute;
+        transition: bottom 150ms ease-out;
+        width: 100%;
+        bottom: -70px;
+
+        &.dot-add-rows__select {
+            bottom: 0;
         }
     }
-}
-
-.dot-add-rows-columns-list__container {
-    display: flex;
-    @include naked-list;
-    height: 0;
-    position: absolute;
-    width: 100%;
 }
 
 .dot-add-rows-columns-list__item {

@@ -1,6 +1,6 @@
-<div class="dot-add-rows__container" 
-    [ngClass]="{'dot-add-rows__select': rowState === 'select', 'dot-add-rows__add': rowState === 'add'}">
-    <div class="dot-add-rows-button__container">    
+<div class="dot-add-rows__container">
+    <div class="dot-add-rows-button__container" 
+        [ngClass]="{'dot-add-rows__add': rowState === 'add'}">    
         <button type="button" pButton flat 
             label="{{i18nMessages['contenttypes.dropzone.rows.add']}}" (click)="selectColumnState()" 
             icon="fa-plus"
@@ -8,8 +8,9 @@
         </button>  
     </div>
     
-    <ul #colContainer class="dot-add-rows-columns-list__container">
-        <li *ngFor="let colNum of colNumberOptions; let i = index" 
+    <ul #colContainer class="dot-add-rows-columns-list__container" 
+        [ngClass]="{'dot-add-rows__select': rowState === 'select'}">
+        <li *ngFor="let colNum of columns; let i = index" 
             [ngClass]="{'active': i == selectedColumnIndex}" class="dot-add-rows-columns-list__item"
             pTooltip="{{setTooltipValue(i)}}" tooltipPosition="bottom" tabindex="-1" tooltipEvent="focus"
             (mouseenter)="onMouseEnter(i)" (mouseleave)="onMouseLeave($event)"
