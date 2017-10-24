@@ -1,5 +1,5 @@
 import { Component, OnDestroy, Input, Output, EventEmitter, OnInit,
-         ViewChild, ElementRef, AfterViewInit, QueryList } from '@angular/core';
+         ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { MessageService } from './../../../../api/services/messages-service';
 
