@@ -18,28 +18,27 @@ $row-height: 70px;
     height: $row-height;
     position: relative;
 
+    .dot-add-rows-button__container, .dot-add-rows-columns-list__container {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        transition: top 200ms ease-in-out, bottom 200ms ease-out;
+    }
+
     .dot-add-rows-button__container {
         text-align: center;
-        position: absolute;
         height: $row-height;
-        display: flex;
         align-items: center;
         justify-content: center;
-        transition: top 150ms ease-in-out;
-        width: 100%;
         top: -70px;
 
-        &.dot-add-rows__add { 
+        &.dot-add-rows__add {
             top: 0;
         }
     }
 
     .dot-add-rows-columns-list__container {
-        display: flex;
         @include naked-list;
-        position: absolute;
-        transition: bottom 150ms ease-out;
-        width: 100%;
         bottom: -70px;
 
         &.dot-add-rows__select {

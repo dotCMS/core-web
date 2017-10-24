@@ -1,4 +1,5 @@
-import { Component, OnDestroy, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, Input, Output, EventEmitter, OnInit,
+         ViewChild, ElementRef, AfterViewInit, QueryList } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { MessageService } from './../../../../api/services/messages-service';
 
@@ -14,7 +15,7 @@ import { MessageService } from './../../../../api/services/messages-service';
     styleUrls: ['./content-type-fields-add-row.component.scss'],
     templateUrl: './content-type-fields-add-row.component.html',
 })
-export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
+export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit, AfterViewInit {
     rowState = 'add';
     selectedColumnIndex = 0;
     i18nMessages = {};
@@ -28,7 +29,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         'contenttypes.content.four_columns'
     ];
     @Output() selectColums: EventEmitter<number> = new EventEmitter<number>();
-    @ViewChild('colContainer') colContainer: ElementRef;
+    @ViewChild('colContainer') colContainerElem: ElementRef;
 
     constructor(private hotkeysService: HotkeysService , public messageService: MessageService) {
     }
@@ -36,6 +37,10 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     ngOnInit(): void {
         this.setKeyboardEvent('ctrl+a', this.selectColumnState.bind(this));
         this.loadMessages();
+    }
+
+    ngAfterViewInit(): void {
+        this.getElementSelected();
     }
 
     ngOnDestroy(): void {
@@ -46,7 +51,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      * Set columns active when mouse enter
      * @param col
      */
-    onMouseEnter(col: number): void {
+    onMouseEnter(col: number, event): void {
         this.selectedColumnIndex = col;
         this.setFocus(this.getElementSelected());
         event.preventDefault();
@@ -81,8 +86,8 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      */
     selectColumnState(): void {
         this.rowState = 'select';
-        this.setFocus(this.getElementSelected());
         this.bindKeyboardEvents();
+        setTimeout(() => { this.setFocus(this.getElementSelected()); }, 400);
     }
 
     /**
@@ -129,7 +134,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     }
 
     private getElementSelected(): HTMLElement {
-        return this.colContainer.nativeElement.children[this.selectedColumnIndex];
+        return this.colContainerElem.nativeElement.children[this.selectedColumnIndex];
     }
 
     private bindKeyboardEvents(): void {

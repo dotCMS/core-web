@@ -108,7 +108,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         expect(addRowContainer.nativeElement.classList.contains('dot-add-rows__select')).toEqual(true);
     });
 
-    it('should focus the first column selection after click on Add Rows button', () => {
+   it('should focus the first column selection after click on Add Rows button', (done) => {
         fixture.detectChanges();
 
         comp.selectColumnState();
@@ -116,9 +116,12 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         const columnSelectionList = de.query(By.css('.dot-add-rows-columns-list__container'));
         const firstElement = columnSelectionList.children[0];
 
-        expect(firstElement.nativeElement.classList).toContain('active');
+        setTimeout(() => {
+            expect(document.activeElement).toBe(firstElement.nativeElement);
+            done();
+        }, 400);
 
-        expect(document.activeElement).toBe(firstElement.nativeElement);
+        expect(firstElement.nativeElement.classList).toContain('active');
     });
 
     it('should bind keyboard events after click on Add Rows button', () => {
@@ -166,7 +169,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
     it('should add focus and active to previous item after using left keyboard', () => {
         fixture.detectChanges();
         comp.selectColumnState();
-        comp.onMouseEnter(2);
+        comp.onMouseEnter(2, new Event('MouseEvent'));
         fixture.detectChanges();
 
         const items = de.queryAll(By.css('li'));
@@ -191,7 +194,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
     it('Should add focus and active to next item after using right keyboard', () => {
         fixture.detectChanges();
         comp.selectColumnState();
-        comp.onMouseEnter(2);
+        comp.onMouseEnter(2, new Event('MouseEvent'));
         fixture.detectChanges();
 
         const items = de.queryAll(By.css('li'));
