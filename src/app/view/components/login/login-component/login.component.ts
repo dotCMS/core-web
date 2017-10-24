@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, NgZone, Output, ViewEncapsulation } from '@angular/core';
 import { LoginData } from './login-container.component';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
+import {DotLoadingIndicatorService} from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 
 
@@ -71,10 +72,12 @@ class LoginComponent {
     constructor(
         private loginService: LoginService,
         private ngZone: NgZone,
-        private loggerService: LoggerService
+        private loggerService: LoggerService,
+        private dotLoadingIndicatorService : DotLoadingIndicatorService
     ) {
         this.language = '';
         this.renderPageData();
+        dotLoadingIndicatorService.hide();
     }
 
     ngAfterViewInit(): void {
@@ -111,6 +114,7 @@ class LoginComponent {
                 error += this.mandatoryFieldError.replace('{0}', this.passwordLabel);
             }
             this.message = error;
+            this.dotLoadingIndicatorService.hide();
             this.isLoginInProgress = false;
         }
     }
