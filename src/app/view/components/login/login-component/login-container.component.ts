@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpRequestUtils, LoginService, LoggerService, HttpCode, ResponseView } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../api/services/dot-router-service';
-import { DotLoadingIndicatorService} from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -32,7 +32,7 @@ export class LoginContainerComponent {
         private httprequestUtils: HttpRequestUtils,
         private loggerService: LoggerService,
         private loginService: LoginService,
-        private dotLoadingIndicatorService : DotLoadingIndicatorService
+        private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {
         this.dotLoadingIndicatorService.hide();
         // TODO: change the httpRequestUtils.getQueryParams() with an NG2 method equivalent to QueryParams on NGRX.
@@ -51,22 +51,14 @@ export class LoginContainerComponent {
         this.message = '';
 
         this.loginService
-            .loginUser(
-                loginData.login,
-                loginData.password,
-                loginData.rememberMe,
-                loginData.language
-            )
+            .loginUser(loginData.login, loginData.password, loginData.rememberMe, loginData.language)
             .subscribe(
                 (result: any) => {
                     this.message = '';
                     this.dotRouterService.goToMain();
                 },
                 (error: ResponseView) => {
-                    if (
-                        error.status === HttpCode.BAD_REQUEST ||
-                        error.status === HttpCode.UNAUTHORIZED
-                    ) {
+                    if (error.status === HttpCode.BAD_REQUEST || error.status === HttpCode.UNAUTHORIZED) {
                         this.message = error.errorsMessages || this.getErrorMessage(error.response.json().error);
                     } else {
                         this.loggerService.debug(error);
