@@ -1,5 +1,5 @@
 import { Component, OnDestroy, Input, Output, EventEmitter, OnInit,
-         ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+         ViewChild, ElementRef } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { MessageService } from './../../../../api/services/messages-service';
 
@@ -15,7 +15,7 @@ import { MessageService } from './../../../../api/services/messages-service';
     styleUrls: ['./content-type-fields-add-row.component.scss'],
     templateUrl: './content-type-fields-add-row.component.html',
 })
-export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit, AfterViewInit {
+export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     rowState = 'add';
     selectedColumnIndex = 0;
     i18nMessages = {};
@@ -37,10 +37,6 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit, Afte
     ngOnInit(): void {
         this.setKeyboardEvent('ctrl+a', this.selectColumnState.bind(this));
         this.loadMessages();
-    }
-
-    ngAfterViewInit(): void {
-        this.getElementSelected();
     }
 
     ngOnDestroy(): void {
