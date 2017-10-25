@@ -29,4 +29,16 @@
         </p-column>
     </ng-template>
 
+    <p-column styleClass="col-button" [style]="{'width': '4%'}">
+        <ng-template pTemplate="header"></ng-template>
+        <ng-template let-car="rowData" pTemplate="body">
+            <icon-button-tooltip 
+                class="field-action__remove"
+                icon="fa-trash"
+                [tooltipText]="Remove"
+                (click)="alert('test')">
+            </icon-button-tooltip>
+        </ng-template>
+    </p-column>
+
 </p-dataTable>

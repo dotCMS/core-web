@@ -1,3 +1,4 @@
+import { IconButtonTooltipModule } from './../_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionHeaderModule } from './action-header/action-header.module';
 import { CommonModule } from '@angular/common';
 import { CrudService } from '../../../api/services/crud/crud.service';
@@ -22,6 +23,7 @@ import { DataTableModule, InputTextModule } from 'primeng/primeng';
         DataTableModule,
         FormsModule,
         InputTextModule,
+        IconButtonTooltipModule
     ],
     providers: [
         CrudService,
