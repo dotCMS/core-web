@@ -4,7 +4,7 @@ import {FileService, FolderService, SiteBrowserState, SiteDatagridComponent} fro
 import {FileUpload} from 'primeng/primeng';
 
 @Component({
-    // encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None,
     providers: [],
     selector: 'dot-browser',
     styleUrls: ['./dot-browser.scss'],
@@ -63,7 +63,6 @@ export class DotBrowserComponent implements OnInit {
             this.fileService.uploadFile(file, folder.path, fileContentTypeID);
         }
 
-        console.log('Uploaded all files');
         this.uploadedFiles = [];
         this.fieldUpload.clear();
         this.uploadDialog = false;
