@@ -48,7 +48,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "~3.1.1",
-    "dotcms-js": "file:../dotcms-js/build-dotcms-js/dotcms-js-4.2.0-dev.tgz",
+    "dotcms-js": "^4.2.0-b93",
     "font-awesome": "^4.7.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",

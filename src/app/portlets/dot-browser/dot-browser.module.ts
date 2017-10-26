@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DotBrowserComponent } from './dot-browser-component';
 
-import { AutoCompleteModule } from 'primeng/primeng';
+import {AutoCompleteModule, DialogModule, FileUploadModule} from 'primeng/primeng';
 import {
     DotBreadcrumbHostselectorModule,
     DotBreadcrumbModule,
@@ -47,6 +47,8 @@ const routes: Routes = [
         DotTreeableDetailModule,
         DotBreadcrumbHostselectorModule,
         FormsModule,
+        DialogModule,
+        FileUploadModule,
         ReactiveFormsModule,
         RouterModule.forChild(routes)
     ],
