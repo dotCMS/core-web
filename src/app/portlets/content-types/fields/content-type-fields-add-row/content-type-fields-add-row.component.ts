@@ -35,12 +35,12 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        this.setKeyboardEvent('ctrl+a', this.selectColumnState.bind(this));
+        this.setKeyboardEvent('ctrl+a', this.setColumnSelect.bind(this));
         this.loadMessages();
     }
 
     ngOnDestroy(): void {
-        this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));
+        this.removeHotKeys();
     }
 
     /**
@@ -80,10 +80,12 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      * Display row when click on add rows button
      * @memberof ContentTypeFieldsAddRowComponent
      */
-    selectColumnState(): void {
+    setColumnSelect(): void {
         this.rowState = 'select';
         this.bindKeyboardEvents();
-        setTimeout(() => { this.setFocus(this.getElementSelected()); }, 400);
+        // Transitions over focus event doesn't work, It needs a setTimeout
+        // with time over the CSS transition 200 ms
+        setTimeout(() => { this.setFocus(this.getElementSelected()); }, 201);
     }
 
     /**
@@ -183,6 +185,10 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
         this.removeFocus(this.getElementSelected());
         this.selectedColumnIndex = 0;
         this.rowState = 'add';
+        this.removeHotKeys();
+    }
+
+    private removeHotKeys(): void {
         this.hotkeysService.remove(this.hotkeysService.get(['left', 'right', 'enter', 'esc']));
     }
 }

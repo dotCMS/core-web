@@ -18,8 +18,6 @@ describe('ContentTypeFieldsAddRowComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     let testHotKeysMock: TestHotkeysMock;
-    let columns: number[];
-    let disabled: boolean;
     let toolTips: string[];
 
     const messageServiceMock = new MockMessageService({
@@ -51,40 +49,35 @@ describe('ContentTypeFieldsAddRowComponent', () => {
     });
 
     it('should render disabled input', () => {
-        disabled = true;
-        comp.disabled = disabled;
+        comp.disabled = true;
 
         fixture.detectChanges();
 
         const buttonElement = de.query(By.css('button'));
 
-        expect(comp.disabled).toEqual(buttonElement.nativeElement.disabled);
+        expect(buttonElement.nativeElement.disabled).toEqual(true);
     });
 
     it('should render columns input', () => {
         const columnSelectionList = de.query(By.css('.dot-add-rows-columns-list__container'));
-        columns = [1, 2, 3];
 
-        comp.columns = columns;
+        comp.columns = [1, 2, 3];
 
         fixture.detectChanges();
 
-        expect(comp.columns.length).toEqual(columnSelectionList.children.length);
+        expect(columnSelectionList.children.length).toEqual(3);
     });
 
     it('should render tooltip input data', () => {
-        toolTips = ['contenttypes.content.one_column',
+        comp.toolTips = ['contenttypes.content.one_column',
         'contenttypes.content.four_columns'];
-
-        comp.ngOnInit();
-        comp.toolTips = toolTips;
 
         fixture.detectChanges();
 
         const columnSelectionList = de.query(By.css('.dot-add-rows-columns-list__container'));
         const columnSelectionItems = columnSelectionList.nativeElement.children;
 
-        expect(comp.i18nMessages[toolTips[1]]).toEqual(columnSelectionItems[1].attributes[9].textContent);
+        expect(columnSelectionItems[1].attributes[9].textContent).toEqual('Four columns');
     });
 
     it('should display the add rows button by default', () => {
@@ -108,21 +101,20 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         expect(addRowContainer.nativeElement.classList.contains('dot-add-rows__select')).toEqual(true);
     });
 
-   it('should focus the first column selection after click on Add Rows button', (done) => {
+   it('should focus the first column selection after click on Add Rows button', async(() => {
         fixture.detectChanges();
 
-        comp.selectColumnState();
+        comp.setColumnSelect();
 
         const columnSelectionList = de.query(By.css('.dot-add-rows-columns-list__container'));
         const firstElement = columnSelectionList.children[0];
 
         setTimeout(() => {
             expect(document.activeElement).toBe(firstElement.nativeElement);
-            done();
-        }, 400);
+        }, 201);
 
         expect(firstElement.nativeElement.classList).toContain('active');
-    });
+    }));
 
     it('should bind keyboard events after click on Add Rows button', () => {
         fixture.detectChanges();
@@ -159,7 +151,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
 
     it('should go to last item when left key is pressed while in first item', () => {
         fixture.detectChanges();
-        comp.selectColumnState();
+        comp.setColumnSelect();
         fixture.detectChanges();
         testHotKeysMock.callback(['left']);
 
@@ -168,7 +160,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
 
     it('should add focus and active to previous item after using left keyboard', () => {
         fixture.detectChanges();
-        comp.selectColumnState();
+        comp.setColumnSelect();
         comp.onMouseEnter(2, new Event('MouseEvent'));
         fixture.detectChanges();
 
@@ -184,7 +176,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
 
     it('should go to second item when right key is pressed while in first item', () => {
         fixture.detectChanges();
-        comp.selectColumnState();
+        comp.setColumnSelect();
         fixture.detectChanges();
         testHotKeysMock.callback(['right']);
 
@@ -193,7 +185,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
 
     it('Should add focus and active to next item after using right keyboard', () => {
         fixture.detectChanges();
-        comp.selectColumnState();
+        comp.setColumnSelect();
         comp.onMouseEnter(2, new Event('MouseEvent'));
         fixture.detectChanges();
 
@@ -224,7 +216,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
 
     it('should select columns number after use enter keyboard on li', () => {
         fixture.detectChanges();
-        comp.selectColumnState();
+        comp.setColumnSelect();
 
         const spy = spyOn(comp.selectColums, 'emit');
 

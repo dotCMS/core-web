@@ -17,33 +17,33 @@ $row-height: 70px;
     overflow: hidden;
     height: $row-height;
     position: relative;
+}
 
-    .dot-add-rows-button__container, .dot-add-rows-columns-list__container {
-        display: flex;
-        position: absolute;
-        width: 100%;
-        transition: top 200ms ease-in-out, bottom 200ms ease-out;
+.dot-add-rows-button__container, .dot-add-rows-columns-list__container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    transition: top 200ms ease-in-out, bottom 200ms ease-out;
+}
+
+.dot-add-rows-button__container {
+    text-align: center;
+    height: $row-height;
+    align-items: center;
+    justify-content: center;
+    top: -$row-height;
+
+    &.dot-add-rows__add {
+        top: 0;
     }
+}
 
-    .dot-add-rows-button__container {
-        text-align: center;
-        height: $row-height;
-        align-items: center;
-        justify-content: center;
-        top: -70px;
+.dot-add-rows-columns-list__container {
+    @include naked-list;
+    bottom: -#{$row-height};
 
-        &.dot-add-rows__add {
-            top: 0;
-        }
-    }
-
-    .dot-add-rows-columns-list__container {
-        @include naked-list;
-        bottom: -70px;
-
-        &.dot-add-rows__select {
-            bottom: 0;
-        }
+    &.dot-add-rows__select {
+        bottom: 0;
     }
 }
 
@@ -54,6 +54,7 @@ $row-height: 70px;
     flex-grow: 1;
     padding: $basic-padding * 2;
     border-right: 1px $gray-light solid;
+    outline: none;
 
     &:last-child {
         border-right: none;
