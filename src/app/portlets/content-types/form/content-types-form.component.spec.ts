@@ -277,7 +277,7 @@ describe('ContentTypesFormComponent', () => {
         expect(submittButton.nativeElement.disabled).toBe(true, 'button should be disabled after update');
     });
 
-    it('should have the submit button disabled date fields updates', () => {
+    it('should have the submit button disabled when date fields updates', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123',
@@ -288,7 +288,41 @@ describe('ContentTypesFormComponent', () => {
         const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
         expect(submittButton.nativeElement.disabled).toBe(true, 'by default button disabled');
 
-        const changes: SimpleChange = new SimpleChange(null, [
+        const changes: SimpleChange = new SimpleChange(
+            null,
+            [
+                {
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                    id: '123',
+                    indexed: true,
+                    name: 'Date 1'
+                },
+                {
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                    id: '456',
+                    indexed: true,
+                    name: 'Date 2'
+                }
+            ],
+            false
+        );
+
+        comp.fields = changes.currentValue;
+        comp.ngOnChanges({
+            fields: changes
+        });
+        fixture.detectChanges();
+
+        expect(submittButton.nativeElement.disabled).toBe(true, 'button should remain disabled');
+    });
+
+    it('should have the submit button disabled when edit a content with fields', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        comp.fields = [
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
@@ -301,15 +335,12 @@ describe('ContentTypesFormComponent', () => {
                 indexed: true,
                 name: 'Date 2'
             }
-        ], false);
-
-        comp.fields = changes.currentValue;
-        comp.ngOnChanges({
-            fields: changes
-        });
+        ];
         fixture.detectChanges();
 
-        expect(submittButton.nativeElement.disabled).toBe(true, 'button should remain disabled');
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+
+        expect(submittButton.nativeElement.disabled).toBe(true);
     });
 
     it('should not have cancel button on create mode', () => {
@@ -344,6 +375,19 @@ describe('ContentTypesFormComponent', () => {
         expect(editButton).toBeTruthy();
     });
 
+    it('should call toogleForm method on edit button click', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+        spyOn(comp, 'toggleForm').and.callThrough();
+
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        editButton.nativeNode.click();
+        expect(comp.toggleForm).toHaveBeenCalledTimes(1);
+    });
+
     it('should have edit button disabled when form is expanded', () => {
         comp.data = {
             baseType: 'CONTENT',
@@ -354,19 +398,6 @@ describe('ContentTypesFormComponent', () => {
 
         const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
         expect(editButton.nativeElement.disabled).toBe(true);
-    });
-
-    it('should call toogleForm method on edit button click', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-        spyOn(comp, 'toggleForm');
-
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        editButton.nativeNode.click();
-        expect(comp.toggleForm).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle formState property on edit button click', () => {

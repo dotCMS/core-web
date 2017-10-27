@@ -315,12 +315,12 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             this.setBaseTypeContentSpecificFields();
         }
 
-        if (this.fields) {
-            this.setDateVarFieldsState();
-        }
-
         if (this.isEditMode() && !this.originalValue) {
             this.originalValue = this.form.value;
+        }
+
+        if (this.fields && this.fields.length) {
+            this.setDateVarFieldsState();
         }
     }
 
