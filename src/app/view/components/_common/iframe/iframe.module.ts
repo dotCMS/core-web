@@ -7,6 +7,7 @@ import { DotLoadingIndicatorModule } from './dot-loading-indicator/dot-loading-i
 import { IframePortletLegacyComponent } from './iframe-porlet-legacy';
 import { IframeOverlayService } from './service/iframe-overlay.service';
 import { PIPES } from '../../../../components';
+import {SafePipe} from '../../../pipes/safe-url.pipe';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { PIPES } from '../../../../components';
     ],
     providers: [
         IframeOverlayService,
+        SafePipe
     ],
 })
 

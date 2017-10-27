@@ -7,6 +7,7 @@ import { DotContentletService } from '../../../../../api/services/dot-contentlet
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
+import { SafePipe } from '../../../../pipes/safe-url.pipe';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -16,6 +17,7 @@ import { Location } from '@angular/common';
 export class IframePortletLegacyComponent implements OnInit {
     @ViewChild('iframe') iframe;
     url: BehaviorSubject<string> = new BehaviorSubject('');
+    isLoading = false;
 
     constructor(
         private contentletService: DotContentletService,
@@ -26,6 +28,7 @@ export class IframePortletLegacyComponent implements OnInit {
         private route: ActivatedRoute,
         public loggerService: LoggerService,
         public siteService: SiteService,
+        private safePipe: SafePipe
     ) {}
 
     ngOnInit(): void {
@@ -115,7 +118,11 @@ export class IframePortletLegacyComponent implements OnInit {
             });
     }
     private setUrl(nextUrl: string): void {
+        this.isLoading =  true;
         const currentUrl = this.url.getValue();
+       // const iframe =  <HTMLIFrameElement> document.getElementById('detailFrame');
+        console.log('------>call setURL');
+        // console.log('------>'+this.safePipe.transform(nextUrl).toString());
         if (currentUrl === nextUrl) {
             /*
                 When user navigates deeper in the jsp (Like: Sites > Templates > Create/Edit a template)
@@ -124,12 +131,30 @@ export class IframePortletLegacyComponent implements OnInit {
                 trigger the angular change detection and then set the original url again to the <iframe>
                 and this will trigger the iframe load/reload.
             */
-            this.url.next('');
+
+            console.log('------>SAME URL');
+            //this.url.next('');
+            // iframe.contentWindow.location.replace('');
             setTimeout(() => {
-                this.url.next(nextUrl);
+               // this.url.next(nextUrl);
+                //iframe.contentWindow.location.replace(nextUrl);
+                this.isLoading =  false;
             }, 0);
         } else {
             this.url.next(nextUrl);
+            //iframe.contentWindow.location.replace(nextUrl);
+            console.log('------>NEW URL');
+            setTimeout(() => {
+                this.isLoading =  false;
+            }, 0);
+
         }
     }
 }
+
+
+//var ifr =  <HTMLIFrameElement> document.getElementById('detailFrame');
+
+// console.log('-----------REPLACE-----------');
+//ifr.contentWindow.location.replace('');
+//ifr.contentWindow.location.replace('http://localhost:3000/#/content-types-angular');
