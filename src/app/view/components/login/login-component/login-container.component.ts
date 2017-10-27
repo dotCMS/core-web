@@ -34,7 +34,7 @@ export class LoginContainerComponent {
         private loginService: LoginService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {
-        this.dotLoadingIndicatorService.hide();
+        //this.dotLoadingIndicatorService.hide();
         // TODO: change the httpRequestUtils.getQueryParams() with an NG2 method equivalent to QueryParams on NGRX.
         const queryParams: Map<string, any> = this.httprequestUtils.getQueryParams();
         if (<boolean>queryParams.get('changedPassword')) {

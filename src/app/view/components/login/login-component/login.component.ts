@@ -74,7 +74,6 @@ export class LoginComponent {
     ) {
         this.language = '';
         this.renderPageData();
-        dotLoadingIndicatorService.hide();
     }
 
     ngAfterViewInit(): void {
@@ -111,7 +110,6 @@ export class LoginComponent {
                 error += this.mandatoryFieldError.replace('{0}', this.passwordLabel);
             }
             this.message = error;
-            this.dotLoadingIndicatorService.hide();
             this.isLoginInProgress = false;
         }
     }
