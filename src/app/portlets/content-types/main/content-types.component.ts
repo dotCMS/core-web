@@ -1,3 +1,4 @@
+import { MenuItem } from 'primeng/primeng';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
 
@@ -23,6 +24,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
+    private rowActions: MenuItem[];
 
     constructor(
         messageService: MessageService,
@@ -127,6 +129,23 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 sortable: true,
                 width: '13%'
             }
+        ];
+
+        this.rowActions = [
+            {
+                label: 'Edit',
+                icon: 'fa-pencil-square',
+                command: (event) => {
+                    console.log('event: ', event);
+                }
+            },
+            {
+                label: 'Remove',
+                icon: 'fa-trash',
+                command: (event) => {
+                    console.log('event: ', event);
+                }
+            },
         ];
     }
 

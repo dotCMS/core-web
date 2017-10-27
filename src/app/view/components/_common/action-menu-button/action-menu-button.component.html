@@ -1,0 +1,13 @@
+<!-- <p-splitButton 
+    icon="fa-plus"
+    class="action-button" 
+    (onClick)="command()"
+    [model]="model" 
+    [class.multiple-options]="model && model.length"
+    [class.listing-datatable__action__flat-button]="flat">
+</p-splitButton> -->
+<!-- <button pButton flat iconButton icon="fa-ellipsis-v" (click)="handleRemove($event)"></button> -->
+<!-- <p-menu [model]="model"></p-menu> -->
+
+<p-menu #menu popup="popup" [model]="model"></p-menu>
+<button type="button" pButton icon="fa-ellipsis-v" (click)="menu.toggle($event)"></button>

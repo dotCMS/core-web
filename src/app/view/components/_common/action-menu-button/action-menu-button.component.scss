@@ -1,0 +1,76 @@
+@import "variables";
+@import "primeng-theme/utils/_theme-variables";
+
+.action-button {
+    background: none;
+    border: none;
+    box-shadow: none;
+    height: 100%;
+
+    &:hover {
+        border: none;
+        box-shadow: none;
+    }
+
+    .ui-splitbutton {
+        .ui-button {
+            background-color: $blue;
+            border-radius: 50%;
+            font-size: $action-button-icon-size;
+            height: $action-button-height;
+            width: $action-button-height;
+            box-shadow: $action-button-normal-shadow;
+            transition: background-color $basic-speed ease-in,
+                        box-shadow $basic-speed ease-in;
+
+            span {
+                color: $action-button-color;
+            }
+
+            .ui-button-icon-left:before {
+                content: "\F067";
+                color: $action-button-color;
+            }
+
+            &:not([disabled]) {
+                &:hover,
+                &:active,
+                &:focus {
+                    box-shadow: $action-button-hover-shadow;
+                }
+
+                &:hover {
+                    background: $action-button-hover-bgcolor;
+                }
+
+                &:active {
+                    background: $action-button-active-bgcolor;
+                }
+
+                &:focus {
+                    background: $action-button-focus-bgcolor;
+                }
+            }
+
+            &[disabled] {
+                background: $gray;
+            }
+        }
+
+        .ui-button.ui-corner-right {
+            display: none;
+        }
+    }
+
+    &.multiple-options {
+        .ui-corner-left {
+            display: none;
+        }
+
+        .ui-splitbutton {
+            .ui-button.ui-corner-right {
+                display: block;
+            }
+        }
+    }
+}

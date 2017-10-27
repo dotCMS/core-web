@@ -1,5 +1,6 @@
 @import "mixins";
 @import "variables";
+@import "primeng-theme/utils/_theme-variables";
 
 action-header {
     display: block;
@@ -11,6 +12,30 @@ action-header {
     width: 16px;
 }
 
-.col-button{
-    width: 7%;
+.ui-widget-content {
+    position: relative;
+}
+
+.listing-datatable__action-button {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 $basic-padding;
+
+    .ui-button {
+        box-shadow: none;
+        border-radius: 50%;
+        height: $field-height;
+        width: $field-height;
+
+        &:hover {
+            background: rgba($black, 0.1);
+            box-shadow: none;
+        }
+    }
+
+    .ui-menu-dynamic {
+        margin-left: -195px;
+        margin-top: -160px; 
+    }
 }

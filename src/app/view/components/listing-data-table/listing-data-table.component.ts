@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
+import { LazyLoadEvent, MenuItem } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
 import { BaseComponent } from '../_common/_base/base-component';
 import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
@@ -9,6 +9,7 @@ import { MessageService } from '../../../api/services/messages-service';
 import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
 
 @Component({
+    encapsulation: ViewEncapsulation.None,
     providers: [PaginatorService],
     selector: 'listing-data-table',
     styleUrls: ['./listing-data-table.component.scss'],
@@ -23,6 +24,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     @Input() sortField: string;
     @Input() multipleSelection = false;
     @Input() paginationPerPage: number;
+    @Input() actions = [];
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
@@ -67,6 +69,10 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
     handleRowClick($event): void {
         this.rowWasClicked.emit($event);
+    }
+
+    handleRemove($event): void {
+        console.log('clicked $event: ', $event);
     }
 
     /**
