@@ -34,7 +34,7 @@ class TestDotIframe {
 }
 
 @Component({
-    selector: '<test></test>',
+    selector: 'test-host-component',
     template: '<content-type-layout [contentTypeId]="contentTypeId"></content-type-layout>'
 })
 class TestHostComponent {
