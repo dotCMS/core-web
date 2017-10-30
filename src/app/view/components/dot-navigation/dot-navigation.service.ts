@@ -9,7 +9,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
 import { Auth } from 'dotcms-js/core/login.service';
 import { Router, NavigationEnd } from '@angular/router';
-import set = Reflect.set;
 
 @Injectable()
 export class DotNavigationService {
@@ -101,7 +100,7 @@ export class DotNavigationService {
                         if (this.dotRouterService.previousSavedURL) {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
-                                .then((res) => {
+                                .then((res: boolean) => {
                                     if (res) {
                                         this.dotRouterService.previousSavedURL = null;
                                         this.setMenu(menu);
