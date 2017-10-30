@@ -119,7 +119,7 @@ describe('ContentTypeFieldsFormLayout', () => {
 
         beforeEach(async(() => {
             tabView = de.query(By.css('p-tabView'));
-            tabPanel = tabView.queryAll(By.css('p-tabPanel'))[0];
+            tabPanel = tabView.query(By.css('.content-type-field__properties'));
         }));
 
         it('should has a properties tab', () => {
@@ -165,7 +165,7 @@ describe('ContentTypeFieldsFormLayout', () => {
             setUnvalidForm(comp.form);
             fixture.detectChanges();
 
-            const tabPanel = tabView.queryAll(By.css('p-tabPanel'))[1];
+            const tabPanel = tabView.query(By.css('.content-type-field__variables'));
             expect(true).toEqual(tabPanel.componentInstance.disabled);
         });
 
@@ -173,7 +173,7 @@ describe('ContentTypeFieldsFormLayout', () => {
             setValidForm(comp.form);
             fixture.detectChanges();
 
-            const tabPanel = tabView.queryAll(By.css('p-tabPanel'))[1];
+            const tabPanel = tabView.query(By.css('.content-type-field__variables'));
             expect(tabPanel).toBeDefined('should exists a variables tab');
             expect('Variables').toBe(tabPanel.componentInstance.header, 'should has the right header');
         });
@@ -182,9 +182,15 @@ describe('ContentTypeFieldsFormLayout', () => {
             setValidForm(comp.form);
             fixture.detectChanges();
 
-            const tabPanel = tabView.queryAll(By.css('p-tabPanel'))[1];
+            const tabPanel = tabView.query(By.css('.content-type-field__variables'));
             const fieldVariablesElement = tabPanel.query(By.css('dot-content-type-fields-variables'));
             expect(fieldVariablesElement).toBeDefined();
+        });
+
+        it('should set the field attributes', () => {
+            fixture.detectChanges();
+            const fieldVariablesElement = tabView.query(By.css('dot-content-type-fields-variables'));
+            expect(comp.field).toBe(fieldVariablesElement.componentInstance.field);
         });
 
         it('should set the field attributes', () => {

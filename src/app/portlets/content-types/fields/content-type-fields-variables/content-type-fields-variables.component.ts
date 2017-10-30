@@ -59,6 +59,8 @@ export class ContentTypeFieldsVariablesComponent extends BaseComponent implement
         if (index === 0 && !this.isFirstRowNew()) {
             this.addNewVariablesRow(<FormArray> this.form.get('fieldVariables'));
         }
+
+        console.log('fieldVariablesControl.value[0]', this.form.get('fieldVariables'));
     }
 
     removeEmptyRow(): void {
@@ -77,9 +79,12 @@ export class ContentTypeFieldsVariablesComponent extends BaseComponent implement
     }
 
     removeFieldVariable(fieldVariable: FieldVariable): void {
+        console.log('fieldVariable', fieldVariable);
         const fieldVariablesControl: FormArray = <FormArray>  this.form.get('fieldVariables');
         const fieldVariableIndex = fieldVariablesControl.value.indexOf(fieldVariable);
+        console.log('fieldVariableIndex', fieldVariableIndex);
         fieldVariablesControl.value.splice(fieldVariableIndex, 1);
+        console.log('fieldVariablesControl.value', fieldVariablesControl.value);
     }
 
     isFirstRowEmpty(): boolean {
@@ -96,7 +101,7 @@ export class ContentTypeFieldsVariablesComponent extends BaseComponent implement
 
         const keyEmptyValue = this.i18nMessages['contenttypes.field.variables.key.new'];
         const valueEmptyValue = this.i18nMessages['contenttypes.field.variables.value.new'];
-        console.log('fieldVariablesControl.value[0]', fieldVariablesControl.value[0]);
+
         return fieldVariablesControl.value[0].key === keyEmptyValue || fieldVariablesControl.value[0].value === valueEmptyValue;
     }
 
