@@ -24,7 +24,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
-    private rowActions: MenuItem[];
+    public rowActions: MenuItem[];
 
     constructor(
         messageService: MessageService,
@@ -131,22 +131,22 @@ export class ContentTypesPortletComponent extends BaseComponent {
             }
         ];
 
-        this.rowActions = [
-            {
-                label: 'Edit',
-                icon: 'fa-pencil-square',
-                command: (event) => {
-                    console.log('event: ', event);
-                }
-            },
-            {
-                label: 'Remove',
-                icon: 'fa-trash',
-                command: (event) => {
-                    console.log('event: ', event);
-                }
-            },
-        ];
+        // this.rowActions = [
+        //     {
+        //         label: 'Edit',
+        //         icon: 'fa-pencil-square',
+        //         command: (event) => {
+        //             console.log('event: ', event);
+        //         }
+        //     },
+        //     {
+        //         label: 'Remove',
+        //         icon: 'fa-trash',
+        //         command: (event) => {
+        //             console.log('event: ', event);
+        //         }
+        //     },
+        // ];
     }
 
     private createContentType(type: string, $event?): void {
