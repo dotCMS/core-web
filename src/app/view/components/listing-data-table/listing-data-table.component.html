@@ -10,12 +10,10 @@
              [totalRecords]="paginatorService.totalRecords"
              (onLazyLoad)="loadDataPaginationEvent($event)"
              [(selection)]="selectedItems"
-             
              [globalFilter]="gf"
              [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1">
 
     <p-column selectionMode="multiple" *ngIf="multipleSelection"></p-column> 
-    <!-- (onRowClick)="handleRowClick($event)" -->
 
     <ng-template ngFor let-col [ngForOf]="columns">
         <p-column 
@@ -30,15 +28,13 @@
         </p-column>
     </ng-template>
 
-    <p-column styleClass="listing-datatable__action-column" [style]="{'width': '4%'}">
+    <p-column styleClass="listing-datatable__action-column" [style]="{'width': '5%'}">
         <ng-template pTemplate="header"></ng-template>
         <ng-template let-item="rowData" pTemplate="body">
             <action-menu-button 
-                *ngIf="actions.length > 1" 
-                actionButton 
-                class="listing-datatable__action-button"  
+                *ngIf="actions.length > 1"  
+                class="listing-datatable__action-button"
                 [model]="actions" 
-                command="() => {}"
                 [eventRow]="item"> 
             </action-menu-button>
             <icon-button-tooltip 

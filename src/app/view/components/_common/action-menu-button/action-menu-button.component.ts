@@ -2,13 +2,12 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 
 /**
- * The ActionButtonComponent is a configurable button with
- * options to add to the primary actions in the portlets.
+ * The ActionMenuButtonComponent is a configurable button with
+ * menu component as a pop up
  * @export
  * @class ActionMenuButtonComponent
  */
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'action-menu-button',
     styleUrls: ['./action-menu-button.component.scss'],
     templateUrl: 'action-menu-button.component.html'
@@ -16,7 +15,6 @@ import { MenuItem } from 'primeng/primeng';
 
 export class ActionMenuButtonComponent {
     @Input() model?: MenuItem[];
-    @Input() command?: ($event) => void;
-    @Input() label: string;
     @Input() eventRow: any;
+    @Input() icon? = 'fa-ellipsis-v';
 }

@@ -15,3 +15,11 @@
         color: $menu-link-color;
     }
 }
+
+.action-menu__list {
+    .ui-menu-dynamic {
+        // Reset styles to be absolute to parent button <action-menu-button>
+        top: 23px !important; 
+        left: -145px !important;
+    }
+}
