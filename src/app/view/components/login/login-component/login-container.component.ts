@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { HttpRequestUtils, LoginService, LoggerService, HttpCode, ResponseView } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../api/services/dot-router-service';
 import { DotNavigationService } from '../../dot-navigation/dot-navigation.service';
+import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -32,8 +33,10 @@ export class LoginContainerComponent {
         private dotNavigationService: DotNavigationService,
         private httprequestUtils: HttpRequestUtils,
         private loggerService: LoggerService,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {
+        //this.dotLoadingIndicatorService.hide();
         // TODO: change the httpRequestUtils.getQueryParams() with an NG2 method equivalent to QueryParams on NGRX.
         const queryParams: Map<string, any> = this.httprequestUtils.getQueryParams();
         if (<boolean>queryParams.get('changedPassword')) {
@@ -46,6 +49,7 @@ export class LoginContainerComponent {
 
     logInUser(loginData: LoginData): void {
         this.isLoginInProgress = true;
+        this.dotLoadingIndicatorService.show();
         this.message = '';
 
         this.loginService
@@ -61,6 +65,7 @@ export class LoginContainerComponent {
                         this.loggerService.debug(error);
                     }
                     this.isLoginInProgress = false;
+                    this.dotLoadingIndicatorService.hide();
                 }
             );
     }

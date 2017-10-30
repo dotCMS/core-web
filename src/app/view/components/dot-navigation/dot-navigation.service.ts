@@ -24,6 +24,7 @@ export class DotNavigationService {
     ) {
         router.events
             .filter(event => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
+            .take(1)
             .subscribe((event: NavigationEnd) => {
                 this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
                     this.setMenu(menu);
@@ -100,11 +101,11 @@ export class DotNavigationService {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
                                 .then(res => {
-                                    // Menu update happens on NavigationEnd event
                                     this.dotRouterService.previousSavedURL = null;
+                                    this.setMenu(menu);
                                 });
                         } else {
-                            this.goToFirstPortlet(); // Menu update happens on NavigationEnd event
+                            this.goToFirstPortlet().then(() => this.setMenu(menu));
                         }
                     } else {
                         this.setMenu(menu);
