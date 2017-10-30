@@ -71,10 +71,6 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
         this.rowWasClicked.emit($event);
     }
 
-    handleRemove($event): void {
-        console.log('clicked $event: ', $event);
-    }
-
     /**
      * Call when click on any pagination link
      * @param event Pagination event
