@@ -57,7 +57,7 @@ export class DotRouterService {
         return url === '/';
     }
 
-    gotoPortlet(link: string, replaceUrl: boolean): Promise<boolean> {
+    gotoPortlet(link: string, replaceUrl?: boolean): Promise<boolean> {
         return this.router.navigate([link], { replaceUrl: replaceUrl });
     }
 
@@ -70,6 +70,7 @@ export class DotRouterService {
     }
 
     getPortletId(url: string): string {
-        return url.split('/').filter(item => item !== '' && item !== '#' && item !== 'c')[0];
+        const urlSegments = url.split('/').filter(item => item !== '' && item !== '#' && item !== 'c');
+        return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
 }

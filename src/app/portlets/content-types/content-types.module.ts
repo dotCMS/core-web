@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { ContentTypesCreateComponent } from './create';
 import { ContentTypesEditComponent } from './edit';
 import { ContentTypesFormComponent } from './form';
 import { ContentTypesInfoService } from '../../api/services/content-types-info';
@@ -16,6 +15,8 @@ import { SiteSelectorModule } from '../../view/components/_common/site-selector/
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
+import { ContentTypeFieldsAddRowModule } from './fields/content-type-fields-add-row';
+import { ContentTypeResolver } from './content-types-resolver.service';
 
 import {
     ContentTypeFieldsDropZoneComponent,
@@ -70,7 +71,6 @@ import { ContentTypeFieldsVariablesComponent } from './fields/content-type-field
         ContentTypeFieldsRowListComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypeFieldsVariablesComponent,
-        ContentTypesCreateComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
         ContentTypesFieldsListComponent,
@@ -117,6 +117,7 @@ import { ContentTypeFieldsVariablesComponent } from './fields/content-type-field
         RadioButtonModule,
         ReactiveFormsModule,
         SiteSelectorModule,
+        ContentTypeFieldsAddRowModule,
         SplitButtonModule,
         TabViewModule,
         DotTextareaContentModule,
@@ -128,7 +129,8 @@ import { ContentTypeFieldsVariablesComponent } from './fields/content-type-field
         FieldDragDropService,
         FieldPropertyService,
         FieldService,
-        FormatDateService
+        FormatDateService,
+        ContentTypeResolver
     ]
 })
 export class ContentTypesModule {}
