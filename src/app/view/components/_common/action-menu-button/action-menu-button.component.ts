@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 
 /**
@@ -14,7 +14,7 @@ import { MenuItem } from 'primeng/primeng';
 })
 
 export class ActionMenuButtonComponent {
-    @Input() model?: MenuItem[];
+    @Input() actions?: MenuItem[];
     @Input() eventRow: any;
     @Input() icon? = 'fa-ellipsis-v';
 }

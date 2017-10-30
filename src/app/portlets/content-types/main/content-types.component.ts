@@ -136,14 +136,12 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 label: 'Edit',
                 icon: 'fa-pencil-square',
                 command: (event) => {
-                    console.log('event: ', event);
                 }
             },
             {
                 label: 'Remove',
                 icon: 'fa-trash',
                 command: (event) => {
-                    console.log('event: ', event);
                 }
             },
         ];

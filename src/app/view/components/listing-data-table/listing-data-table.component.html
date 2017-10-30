@@ -31,19 +31,11 @@
     <p-column styleClass="listing-datatable__action-column" [style]="{'width': '5%'}">
         <ng-template pTemplate="header"></ng-template>
         <ng-template let-item="rowData" pTemplate="body">
-            <action-menu-button 
-                *ngIf="actions.length > 1"  
+            <action-menu-button  
                 class="listing-datatable__action-button"
-                [model]="actions" 
+                [actions]="actions" 
                 [eventRow]="item"> 
             </action-menu-button>
-            <icon-button-tooltip 
-                *ngIf="actions.length === 1"
-                class="field-action__remove"
-                [icon]="actions[0].icon"
-                [tooltipText]="actions[0].label"
-                (click)="actions[0].command(item)">
-            </icon-button-tooltip>
         </ng-template>
     </p-column>
 

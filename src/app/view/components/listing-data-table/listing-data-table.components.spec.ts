@@ -126,10 +126,10 @@ describe('Listing Component', () => {
                 const item = this.items[rowIndex - 1];
 
                 cells.forEach((cell, cellIndex) => {
-                    if (cellIndex) {
-                        // expect(cells[cellIndex].querySelector('span').textContent).toContain(
-                        //     item[comp.columns[cellIndex - 1].fieldName]
-                        // );
+                    if (cellIndex && cellIndex < 5) {
+                        expect(cells[cellIndex].querySelector('span').textContent).toContain(
+                            item[comp.columns[cellIndex - 1].fieldName]
+                        );
                     }
                 });
             }
@@ -182,10 +182,10 @@ describe('Listing Component', () => {
                 const item = this.items[rowIndex - 1];
 
                 cells.forEach((cell, cellIndex) => {
-                    if (cellIndex) {
+                    if (cellIndex && cellIndex < 5) {
                         const textContent = cells[cellIndex].querySelector('span').textContent;
-                        // const itemCOntent = item[comp.columns[cellIndex - 1].fieldName];
-                        // expect(textContent).toContain(itemCOntent);
+                        const itemCOntent = item[comp.columns[cellIndex - 1].fieldName];
+                        expect(textContent).toContain(itemCOntent);
                     }
                 });
             }
