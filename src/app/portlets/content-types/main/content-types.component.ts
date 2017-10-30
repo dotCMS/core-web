@@ -1,3 +1,5 @@
+import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
+import { CrudService } from './../../../api/services/crud';
 import { MenuItem } from 'primeng/primeng';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
@@ -30,7 +32,9 @@ export class ContentTypesPortletComponent extends BaseComponent {
         messageService: MessageService,
         private router: Router,
         private route: ActivatedRoute,
-        private contentTypesInfoService: ContentTypesInfoService
+        private contentTypesInfoService: ContentTypesInfoService,
+        private crudService: CrudService,
+        private dotConfirmationService: DotConfirmationService
     ) {
         super(
             [
@@ -44,7 +48,13 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 'contenttypes.content.content',
                 'contenttypes.content.persona',
                 'contenttypes.content.widget',
-                'contenttypes.content.page'
+                'contenttypes.content.page',
+                'contenttypes.confirm.message.delete',
+                'contenttypes.confirm.message.delete.content',
+                'contenttypes.confirm.message.delete.warning',
+                'contenttypes.action.delete',
+                'contenttypes.action.cancel',
+                'Content-Type'
             ],
             messageService
         );
@@ -133,15 +143,10 @@ export class ContentTypesPortletComponent extends BaseComponent {
 
         this.rowActions = [
             {
-                label: 'Edit',
-                icon: 'fa-pencil-square',
-                command: (event) => {
-                }
-            },
-            {
                 label: 'Remove',
                 icon: 'fa-trash',
-                command: (event) => {
+                command: ($event) => {
+                    this.removeContentType($event);
                 }
             },
         ];
@@ -152,8 +157,26 @@ export class ContentTypesPortletComponent extends BaseComponent {
     }
 
     private editContentType($event): void {
-        this.router.navigate([`edit/${$event.data.id}`], {
-            relativeTo: this.route
+        // this.router.navigate([`edit/${$event.data.id}`], {
+        //     relativeTo: this.route
+        // });
+    }
+
+    private removeContentType($event): void {
+        this.dotConfirmationService.confirm({
+            accept: () => {
+                this.crudService.delete(`v1/contenttype/id`, $event.id).subscribe(data => {
+                    this.router.navigate(['content-types-angular']);
+                });
+            },
+            header: this.i18nMessages['message.structure.cantdelete'],
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['Content-Type']}
+                        ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
+                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
+            footerLabel: {
+                acceptLabel: this.i18nMessages['contenttypes.action.delete'],
+                rejectLabel: this.i18nMessages['contenttypes.action.cancel']
+            }
         });
     }
 }

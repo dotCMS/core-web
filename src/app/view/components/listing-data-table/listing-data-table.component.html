@@ -10,6 +10,7 @@
              [totalRecords]="paginatorService.totalRecords"
              (onLazyLoad)="loadDataPaginationEvent($event)"
              [(selection)]="selectedItems"
+             (onRowClick)="handleRowClick($event)"
              [globalFilter]="gf"
              [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1">
 
