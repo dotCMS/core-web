@@ -100,9 +100,11 @@ export class DotNavigationService {
                         if (this.dotRouterService.previousSavedURL) {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
-                                .then(res => {
-                                    this.dotRouterService.previousSavedURL = null;
-                                    this.setMenu(menu);
+                                .then((res: boolean) => {
+                                    if (res) {
+                                        this.dotRouterService.previousSavedURL = null;
+                                        this.setMenu(menu);
+                                    }
                                 });
                         } else {
                             this.goToFirstPortlet().then(() => this.setMenu(menu));

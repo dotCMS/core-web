@@ -57,6 +57,7 @@ export class LoginContainerComponent {
             .subscribe(
                 (result: any) => {
                     this.message = '';
+                    this.dotLoadingIndicatorService.hide();
                 },
                 (error: ResponseView) => {
                     if (error.status === HttpCode.BAD_REQUEST || error.status === HttpCode.UNAUTHORIZED) {
