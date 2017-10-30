@@ -1,3 +1,6 @@
+import { IconButtonTooltipModule } from './../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
+import { MenuModule } from 'primeng/primeng';
+import { ActionMenuButtonComponent } from './../../../view/components/_common/action-menu-button/action-menu-button.component';
 import { ActionButtonComponent } from '../../../view/components/_common/action-button/action-button.component';
 import { ActionHeaderComponent } from '../../../view/components/listing-data-table/action-header/action-header';
 import { By } from '@angular/platform-browser';
@@ -30,11 +33,16 @@ describe('ContentTypesPortletComponent', () => {
                 ActionHeaderComponent,
                 ActionButtonComponent,
                 ContentTypesPortletComponent,
-                ListingDataTableComponent
+                ListingDataTableComponent,
+                ActionMenuButtonComponent
             ],
-            imports: [RouterTestingModule.withRoutes([
-                { path: 'test', component: ContentTypesPortletComponent }
-            ])],
+            imports: [
+                RouterTestingModule.withRoutes([
+                    { path: 'test', component: ContentTypesPortletComponent },
+                ]),
+                IconButtonTooltipModule,
+                MenuModule
+            ],
             providers: [
                  {provide: MessageService, useValue: messageServiceMock},
                  CrudService,
@@ -47,29 +55,29 @@ describe('ContentTypesPortletComponent', () => {
         comp = fixture.componentInstance;
     });
 
-    // it('should display a listing-data-table.component', () => {
-    //     let de = fixture.debugElement.query(By.css('listing-data-table'));
+    it('should display a listing-data-table.component', () => {
+        let de = fixture.debugElement.query(By.css('listing-data-table'));
 
-    //     expect('v1/contenttype').toEqual(de.nativeElement.getAttribute('url'));
+        expect('v1/contenttype').toEqual(de.nativeElement.getAttribute('url'));
 
-    //     let columns = comp.contentTypeColumns;
-    //     expect(5).toEqual(columns.length);
+        let columns = comp.contentTypeColumns;
+        expect(5).toEqual(columns.length);
 
-    //     expect('name').toEqual(columns[0].fieldName);
-    //     expect('Content Type Name').toEqual(columns[0].header);
+        expect('name').toEqual(columns[0].fieldName);
+        expect('Content Type Name').toEqual(columns[0].header);
 
-    //     expect('variable').toEqual(columns[1].fieldName);
-    //     expect('Variable Name').toEqual(columns[1].header);
+        expect('variable').toEqual(columns[1].fieldName);
+        expect('Variable Name').toEqual(columns[1].header);
 
-    //     expect('description').toEqual(columns[2].fieldName);
-    //     expect('Description').toEqual(columns[2].header);
+        expect('description').toEqual(columns[2].fieldName);
+        expect('Description').toEqual(columns[2].header);
 
-    //     expect('nEntries').toEqual(columns[3].fieldName);
-    //     expect('Entries').toEqual(columns[3].header);
-    //     expect('7%').toEqual(columns[3].width);
+        expect('nEntries').toEqual(columns[3].fieldName);
+        expect('Entries').toEqual(columns[3].header);
+        expect('7%').toEqual(columns[3].width);
 
-    //     expect('modDate').toEqual(columns[4].fieldName);
-    //     expect('Last Edit Date').toEqual(columns[4].header);
-    //     expect('13%').toEqual(columns[4].width);
-    // });
+        expect('modDate').toEqual(columns[4].fieldName);
+        expect('Last Edit Date').toEqual(columns[4].header);
+        expect('13%').toEqual(columns[4].width);
+    });
 });
