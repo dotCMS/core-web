@@ -6,8 +6,6 @@ import { DotRouterService } from '../../../../../api/services/dot-router-service
 import { DotContentletService } from '../../../../../api/services/dot-contentlet.service';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Location } from '@angular/common';
-import { SafePipe } from '../../../../pipes/safe-url.pipe';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -27,8 +25,7 @@ export class IframePortletLegacyComponent implements OnInit {
         private dotRouterService: DotRouterService,
         private route: ActivatedRoute,
         public loggerService: LoggerService,
-        public siteService: SiteService,
-        private safePipe: SafePipe
+        public siteService: SiteService
     ) {}
 
     ngOnInit(): void {
@@ -109,52 +106,23 @@ export class IframePortletLegacyComponent implements OnInit {
             .withLatestFrom(this.route.parent.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
             .flatMap(([id, url]) => {
                 this.dotLoadingIndicatorService.show();
-                return url === 'add'
-                    ? this.contentletService.getUrlById(id)
-                    : this.dotNavigationService.getUrlById(id);
+                return url === 'add' ? this.contentletService.getUrlById(id) : this.dotNavigationService.getUrlById(id);
             })
             .subscribe((url: string) => {
                 this.setUrl(url);
             });
     }
+
+    /**
+     * This function set isLoading to true, to remove the Legacy Iframe from the DOM while the src attribute is updated.
+     * @param {string} nextUrl
+     */
     private setUrl(nextUrl: string): void {
-        this.isLoading =  true;
-        const currentUrl = this.url.getValue();
-       // const iframe =  <HTMLIFrameElement> document.getElementById('detailFrame');
-        console.log('------>call setURL');
-        // console.log('------>'+this.safePipe.transform(nextUrl).toString());
-        if (currentUrl === nextUrl) {
-            /*
-                When user navigates deeper in the jsp (Like: Sites > Templates > Create/Edit a template)
-                the iframe src remains the same, so in order to reload the "original" iframe page we
-                need to first change the url to "something else" an empty string in this case to
-                trigger the angular change detection and then set the original url again to the <iframe>
-                and this will trigger the iframe load/reload.
-            */
-
-            console.log('------>SAME URL');
-            //this.url.next('');
-            // iframe.contentWindow.location.replace('');
-            setTimeout(() => {
-               // this.url.next(nextUrl);
-                //iframe.contentWindow.location.replace(nextUrl);
-                this.isLoading =  false;
-            }, 0);
-        } else {
-            this.url.next(nextUrl);
-            //iframe.contentWindow.location.replace(nextUrl);
-            console.log('------>NEW URL');
-            setTimeout(() => {
-                this.isLoading =  false;
-            }, 0);
-
-        }
+        this.isLoading = true;
+        this.url.next(nextUrl);
+        // Need's this time to update the iFrame src.
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 0);
     }
 }
-
-
-//var ifr =  <HTMLIFrameElement> document.getElementById('detailFrame');
-
-// console.log('-----------REPLACE-----------');
-//ifr.contentWindow.location.replace('');
-//ifr.contentWindow.location.replace('http://localhost:3000/#/content-types-angular');
