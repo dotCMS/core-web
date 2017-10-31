@@ -6,6 +6,8 @@ import { BaseComponent } from '../../../view/components/_common/_base/base-compo
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { DataTableColumn } from '../../../shared/models/data-table';
 import { MessageService } from '../../../api/services/messages-service';
+import { DotContentletService } from '../../../api/services/dot-contentlet.service';
+import { StructureTypeView } from '../../../shared/models/contentlet';
 
 /**
  * List of Content Types
@@ -28,7 +30,8 @@ export class ContentTypesPortletComponent extends BaseComponent {
         messageService: MessageService,
         private router: Router,
         private route: ActivatedRoute,
-        private contentTypesInfoService: ContentTypesInfoService
+        private contentTypesInfoService: ContentTypesInfoService,
+        private dotContentletService : DotContentletService
     ) {
         super(
             [
@@ -38,11 +41,14 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 'contenttypes.fieldname.entries',
                 'message.structure.delete.structure.and.content',
                 'message.structure.cantdelete',
-                'contenttypes.content.file',
+                'contenttypes.content.fileasset',
                 'contenttypes.content.content',
                 'contenttypes.content.persona',
                 'contenttypes.content.widget',
-                'contenttypes.content.page'
+                'contenttypes.content.htmlpage',
+                'contenttypes.content.key_value',
+                'contenttypes.content.vanity_url',
+                'contenttypes.content.form'
             ],
             messageService
         );
@@ -53,50 +59,74 @@ export class ContentTypesPortletComponent extends BaseComponent {
      * @memberOf ContentTypesPortletComponent
      */
     onMessage(): void {
-        this.actionHeaderOptions = {
-            primary: {
-                command: $event => {
-                    this.createContentType($event);
-                },
-                model: [
-                    {
-                        command: $event => {
-                            this.createContentType('content', $event);
-                        },
-                        icon: 'fa-newspaper-o',
-                        label: this.i18nMessages['contenttypes.content.content']
+        this.dotContentletService.getContentTypes().subscribe((res : StructureTypeView[]) => {
+            console.log(res);
+            this.actionHeaderOptions = {
+                primary: {
+                    command: $event => {
+                        this.createContentType($event);
                     },
-                    {
-                        command: $event => {
-                            this.createContentType('widget', $event);
-                        },
-                        icon: 'fa-cog',
-                        label: this.i18nMessages['contenttypes.content.widget']
+                    model: []
+                }
+            };
+            res.filter(r=> ['RECENT_CONTENT','RECENT_WIDGET'].indexOf(r.name) === -1)
+                .forEach(obj=>{
+                    console.log(obj.name);
+                    this.actionHeaderOptions.primary.model.push(
+                        {
+                            command: $event => {
+                                this.createContentType(obj.name.toLocaleLowerCase(), $event);
+                            },
+                            icon: this.contentTypesInfoService.getIcon(obj.name),
+                            label: this.i18nMessages['contenttypes.content.'+obj.name.toLocaleLowerCase()]
+                        }
+                    );
+            });
+           /* this.actionHeaderOptions = {
+                primary: {
+                    command: $event => {
+                        this.createContentType($event);
                     },
-                    {
-                        command: $event => {
-                            this.createContentType('file', $event);
+                    model: [
+                        {
+                            command: $event => {
+                                this.createContentType('content', $event);
+                            },
+                            icon: 'fa-newspaper-o',
+                            label: this.i18nMessages['contenttypes.content.content']
                         },
-                        icon: 'fa-file-o',
-                        label: this.i18nMessages['contenttypes.content.file']
-                    },
-                    {
-                        command: $event => {
-                            this.createContentType('page', $event);
+                        {
+                            command: $event => {
+                                this.createContentType('widget', $event);
+                            },
+                            icon: 'fa-cog',
+                            label: this.i18nMessages['contenttypes.content.widget']
                         },
-                        icon: 'fa-file-text-o',
-                        label: this.i18nMessages['contenttypes.content.page']
-                    },
-                    {
-                        command: $event => {
-                            this.createContentType('persona', $event);
+                        {
+                            command: $event => {
+                                this.createContentType('file', $event);
+                            },
+                            icon: 'fa-file-o',
+                            label: this.i18nMessages['contenttypes.content.file']
                         },
-                        icon: 'fa-user',
-                        label: this.i18nMessages['contenttypes.content.persona']
-                    }
-                ]
-            }
-        };
+                        {
+                            command: $event => {
+                                this.createContentType('page', $event);
+                            },
+                            icon: 'fa-file-text-o',
+                            label: this.i18nMessages['contenttypes.content.page']
+                        },
+                        {
+                            command: $event => {
+                                this.createContentType('persona', $event);
+                            },
+                            icon: 'fa-user',
+                            label: this.i18nMessages['contenttypes.content.persona']
+                        }
+                    ]
+                }
+            }; */
+        });
 
         this.contentTypeColumns = [
             {
