@@ -35,6 +35,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     items: any[];
     filter;
     dateColumns: DataTableColumn[];
+    currentOffset: number;
 
     constructor(
         messageService: MessageService,
@@ -79,7 +80,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
         this.loadData(event.first, event.sortField, event.sortOrder);
     }
 
-    loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
+    loadData(offset?: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
         if (this.columns) {
             const sortField = sortFieldParam || this.sortField;
             const sortOrder = sortOrderParam || this.sortOrder;
@@ -89,8 +90,12 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.paginatorService.sortOrder =
                 sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
+            if (offset) {
+                this.currentOffset = offset;
+            }
+
             this.paginatorService
-                .getWithOffset(offset)
+                .getWithOffset(this.currentOffset)
                 .subscribe(
                     items => (this.items = this.dateColumns ? this.formatData(items) : items)
                 );

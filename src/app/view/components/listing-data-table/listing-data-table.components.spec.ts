@@ -1,3 +1,4 @@
+import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { IconButtonTooltipModule } from './../_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionMenuButtonComponent } from './../_common/action-menu-button/action-menu-button.component';
 import { ActionButtonComponent } from '../_common/action-button/action-button.component';
@@ -47,7 +48,8 @@ describe('Listing Component', () => {
                 { provide: MessageService, useValue: messageServiceMock },
                 CrudService,
                 FormatDateService,
-                PaginatorService
+                PaginatorService,
+                DotConfirmationService
             ]
         });
 

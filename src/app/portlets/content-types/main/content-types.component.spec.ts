@@ -1,3 +1,4 @@
+import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { IconButtonTooltipModule } from './../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { MenuModule } from 'primeng/primeng';
 import { ActionMenuButtonComponent } from './../../../view/components/_common/action-menu-button/action-menu-button.component';
@@ -47,7 +48,8 @@ describe('ContentTypesPortletComponent', () => {
                  {provide: MessageService, useValue: messageServiceMock},
                  CrudService,
                  FormatDateService,
-                 ContentTypesInfoService
+                 ContentTypesInfoService,
+                 DotConfirmationService
             ],
         });
 

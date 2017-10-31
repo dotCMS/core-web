@@ -1,8 +1,9 @@
+import { ListingDataTableComponent } from './../../../view/components/listing-data-table/listing-data-table.component';
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { CrudService } from './../../../api/services/crud';
 import { MenuItem } from 'primeng/primeng';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { ActionHeaderOptions } from '../../../shared/models/action-header';
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
@@ -27,6 +28,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: MenuItem[];
+    @ViewChild('listing') listing: ListingDataTableComponent;
 
     constructor(
         messageService: MessageService,
@@ -145,10 +147,10 @@ export class ContentTypesPortletComponent extends BaseComponent {
             {
                 label: 'Remove',
                 icon: 'fa-trash',
-                command: ($event) => {
-                    this.removeContentType($event);
+                command: ($rowEvent) => {
+                    this.removeConfirmation($rowEvent, event);
                 }
-            },
+            }
         ];
     }
 
@@ -157,17 +159,16 @@ export class ContentTypesPortletComponent extends BaseComponent {
     }
 
     private editContentType($event): void {
-        // this.router.navigate([`edit/${$event.data.id}`], {
-        //     relativeTo: this.route
-        // });
+        this.router.navigate([`edit/${$event.data.id}`], {
+            relativeTo: this.route
+        });
     }
 
-    private removeContentType($event): void {
+    private removeConfirmation($event, mouseEvent): void {
+        mouseEvent.cancelBubble = true;
         this.dotConfirmationService.confirm({
             accept: () => {
-                this.crudService.delete(`v1/contenttype/id`, $event.id).subscribe(data => {
-                    this.router.navigate(['content-types-angular']);
-                });
+                this.removeContentType($event);
             },
             header: this.i18nMessages['message.structure.cantdelete'],
             message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['Content-Type']}
@@ -177,6 +178,12 @@ export class ContentTypesPortletComponent extends BaseComponent {
                 acceptLabel: this.i18nMessages['contenttypes.action.delete'],
                 rejectLabel: this.i18nMessages['contenttypes.action.cancel']
             }
+        });
+    }
+
+    private removeContentType($event): void {
+        this.crudService.delete(`v1/contenttype/id`, $event.id).subscribe(data => {
+            this.listing.loadData();
         });
     }
 }
