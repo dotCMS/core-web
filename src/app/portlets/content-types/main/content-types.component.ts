@@ -31,7 +31,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
         private router: Router,
         private route: ActivatedRoute,
         private contentTypesInfoService: ContentTypesInfoService,
-        private dotContentletService : DotContentletService
+        private dotContentletService: DotContentletService
     ) {
         super(
             [
@@ -59,8 +59,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
      * @memberOf ContentTypesPortletComponent
      */
     onMessage(): void {
-        this.dotContentletService.getContentTypes().subscribe((res : StructureTypeView[]) => {
-            console.log(res);
+        this.dotContentletService.getContentTypes().subscribe((res: StructureTypeView[]) => {
             this.actionHeaderOptions = {
                 primary: {
                     command: $event => {
@@ -69,63 +68,16 @@ export class ContentTypesPortletComponent extends BaseComponent {
                     model: []
                 }
             };
-            res.filter(r=> ['RECENT_CONTENT','RECENT_WIDGET'].indexOf(r.name) === -1)
-                .forEach(obj=>{
-                    console.log(obj.name);
-                    this.actionHeaderOptions.primary.model.push(
-                        {
-                            command: $event => {
-                                this.createContentType(obj.name.toLocaleLowerCase(), $event);
-                            },
-                            icon: this.contentTypesInfoService.getIcon(obj.name),
-                            label: this.i18nMessages['contenttypes.content.'+obj.name.toLocaleLowerCase()]
-                        }
-                    );
-            });
-           /* this.actionHeaderOptions = {
-                primary: {
+            res.filter(r => ['RECENT_CONTENT', 'RECENT_WIDGET'].indexOf(r.name) === -1).forEach(obj => {
+                console.log(obj.name);
+                this.actionHeaderOptions.primary.model.push({
                     command: $event => {
-                        this.createContentType($event);
+                        this.createContentType(obj.name.toLocaleLowerCase(), $event);
                     },
-                    model: [
-                        {
-                            command: $event => {
-                                this.createContentType('content', $event);
-                            },
-                            icon: 'fa-newspaper-o',
-                            label: this.i18nMessages['contenttypes.content.content']
-                        },
-                        {
-                            command: $event => {
-                                this.createContentType('widget', $event);
-                            },
-                            icon: 'fa-cog',
-                            label: this.i18nMessages['contenttypes.content.widget']
-                        },
-                        {
-                            command: $event => {
-                                this.createContentType('file', $event);
-                            },
-                            icon: 'fa-file-o',
-                            label: this.i18nMessages['contenttypes.content.file']
-                        },
-                        {
-                            command: $event => {
-                                this.createContentType('page', $event);
-                            },
-                            icon: 'fa-file-text-o',
-                            label: this.i18nMessages['contenttypes.content.page']
-                        },
-                        {
-                            command: $event => {
-                                this.createContentType('persona', $event);
-                            },
-                            icon: 'fa-user',
-                            label: this.i18nMessages['contenttypes.content.persona']
-                        }
-                    ]
-                }
-            }; */
+                    icon: this.contentTypesInfoService.getIcon(obj.name),
+                    label: this.i18nMessages['contenttypes.content.' + obj.name.toLocaleLowerCase()]
+                });
+            });
         });
 
         this.contentTypeColumns = [

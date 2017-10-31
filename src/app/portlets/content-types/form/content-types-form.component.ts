@@ -116,7 +116,9 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.content.form',
                 'contenttypes.content.persona',
                 'contenttypes.content.widget',
-                'contenttypes.content.htmlpage'
+                'contenttypes.content.htmlpage',
+                'contenttypes.content.key_value',
+                'contenttypes.content.vanity_url'
             ],
             messageService
         );
