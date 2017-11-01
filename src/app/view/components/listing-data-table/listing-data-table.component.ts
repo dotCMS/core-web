@@ -9,7 +9,6 @@ import { MessageService } from '../../../api/services/messages-service';
 import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     providers: [PaginatorService],
     selector: 'listing-data-table',
     styleUrls: ['./listing-data-table.component.scss'],
@@ -24,7 +23,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     @Input() sortField: string;
     @Input() multipleSelection = false;
     @Input() paginationPerPage: number;
-    @Input() actions = [];
+    @Input() actions;
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
@@ -35,7 +34,6 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     items: any[];
     filter;
     dateColumns: DataTableColumn[];
-    currentOffset: number;
 
     constructor(
         messageService: MessageService,
@@ -80,7 +78,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
         this.loadData(event.first, event.sortField, event.sortOrder);
     }
 
-    loadData(offset?: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
+    loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
         if (this.columns) {
             const sortField = sortFieldParam || this.sortField;
             const sortOrder = sortOrderParam || this.sortOrder;
@@ -90,15 +88,21 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.paginatorService.sortOrder =
                 sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-            if (offset) {
-                this.currentOffset = offset;
-            }
-
             this.paginatorService
-                .getWithOffset(this.currentOffset)
-                .subscribe(
-                    items => (this.items = this.dateColumns ? this.formatData(items) : items)
-                );
+                .getWithOffset(offset)
+                .subscribe(items => this.setItems(items));
+        }
+    }
+
+    /**
+     * Reloads data table with updated data on current page
+     * @memberof ListingDataTableComponent
+     */
+    loadCurrentPage(): void {
+        if (this.columns) {
+            this.paginatorService
+                .getCurrentPage()
+                .subscribe(items => this.setItems(items));
         }
     }
 
@@ -125,5 +129,9 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             );
             return item;
         });
+    }
+
+    private setItems(items: any[]): void {
+        this.items = this.dateColumns ? this.formatData(items) : items;
     }
 }

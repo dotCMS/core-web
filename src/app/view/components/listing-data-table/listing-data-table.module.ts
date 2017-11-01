@@ -7,7 +7,7 @@ import { FormatDateService } from '../../../api/services/format-date-service';
 import { ListingDataTableComponent } from './listing-data-table.component';
 import { MessageService } from '../../../api/services/messages-service';
 import { NgModule } from '@angular/core';
-import { DataTableModule, InputTextModule, ButtonModule, SplitButtonModule } from 'primeng/primeng';
+import { DataTableModule, InputTextModule } from 'primeng/primeng';
 import { ActionMenuButtonModule } from './../_common/action-menu-button/action-menu-button.module';
 
 @NgModule({
@@ -23,7 +23,6 @@ import { ActionMenuButtonModule } from './../_common/action-menu-button/action-m
         DataTableModule,
         FormsModule,
         InputTextModule,
-        ButtonModule,
         ActionMenuButtonModule
     ],
     providers: [

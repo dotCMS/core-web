@@ -29,13 +29,13 @@
         </p-column>
     </ng-template>
 
-    <p-column styleClass="listing-datatable__action-column" [style]="{'width': '5%'}">
+    <p-column *ngIf="actions && actions.length > 0" styleClass="listing-datatable__action-column" [style]="{'width': '5%'}">
         <ng-template pTemplate="header"></ng-template>
         <ng-template let-item="rowData" pTemplate="body">
             <action-menu-button  
                 class="listing-datatable__action-button"
                 [actions]="actions" 
-                [eventRow]="item"> 
+                [item]="item">
             </action-menu-button>
         </ng-template>
     </p-column>

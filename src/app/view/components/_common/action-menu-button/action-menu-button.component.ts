@@ -15,6 +15,17 @@ import { MenuItem } from 'primeng/primeng';
 
 export class ActionMenuButtonComponent {
     @Input() actions?: MenuItem[];
-    @Input() eventRow: any;
+    @Input() item: any;
     @Input() icon? = 'fa-ellipsis-v';
+
+    /**
+     * Set action command with content type item as param
+     * @param action
+     * @param item
+     * @param
+     */
+    handleActionCommand(action, item, $event): any {
+        $event.stopPropagation();
+        return action.command(item);
+    }
 }

@@ -1,3 +1,4 @@
+import { ContentType } from './../shared/content-type.model';
 import { ListingDataTableComponent } from './../../../view/components/listing-data-table/listing-data-table.component';
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { CrudService } from './../../../api/services/crud';
@@ -147,9 +148,7 @@ export class ContentTypesPortletComponent extends BaseComponent {
             {
                 label: 'Remove',
                 icon: 'fa-trash',
-                command: ($rowEvent) => {
-                    this.removeConfirmation($rowEvent, event);
-                }
+                command: (item) => this.removeConfirmation(item)
             }
         ];
     }
@@ -164,11 +163,10 @@ export class ContentTypesPortletComponent extends BaseComponent {
         });
     }
 
-    private removeConfirmation($event, mouseEvent): void {
-        mouseEvent.cancelBubble = true;
+    private removeConfirmation(item: any): void {
         this.dotConfirmationService.confirm({
             accept: () => {
-                this.removeContentType($event);
+                this.removeContentType(item);
             },
             header: this.i18nMessages['message.structure.cantdelete'],
             message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['Content-Type']}
@@ -181,9 +179,9 @@ export class ContentTypesPortletComponent extends BaseComponent {
         });
     }
 
-    private removeContentType($event): void {
-        this.crudService.delete(`v1/contenttype/id`, $event.id).subscribe(data => {
-            this.listing.loadData();
+    private removeContentType(item): void {
+        this.crudService.delete(`v1/contenttype/id`, item.id).subscribe(data => {
+            this.listing.loadCurrentPage();
         });
     }
 }

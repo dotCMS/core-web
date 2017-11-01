@@ -4,22 +4,3 @@ action-header {
     display: block;
     margin-top: $basic-padding * 2;
 }
-
-.listing-datatable__icon {
-    text-align: center;
-    width: 16px;
-}
-
-.listing-datatable__action-button {
-    .ui-button {
-        box-shadow: none;
-        border-radius: 50%;
-        height: $field-height;
-        width: $field-height;
-
-        &:hover {
-            background: rgba($black, 0.1);
-            box-shadow: none;
-        }
-    }
-}

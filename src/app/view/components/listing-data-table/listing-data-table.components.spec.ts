@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { CrudService } from '../../../api/services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DataTableModule, SharedModule, MenuModule } from 'primeng/primeng';
+import { DataTableModule, SharedModule, MenuModule, MenuItem } from 'primeng/primeng';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { FormatDateService } from '../../../api/services/format-date-service';
 import { ListingDataTableComponent } from './listing-data-table.component';
@@ -114,7 +114,7 @@ describe('Listing Component', () => {
         expect(5).toEqual(rows.length);
 
         const headers = rows[0].querySelectorAll('th');
-        expect(6).toEqual(headers.length);
+        expect(5).toEqual(headers.length);
 
         comp.columns.forEach((col, index) =>
             expect(!index ? '' : comp.columns[index - 1].header).toEqual(
@@ -170,7 +170,7 @@ describe('Listing Component', () => {
         expect(5).toEqual(rows.length, 'tr');
 
         const headers = rows[0].querySelectorAll('th');
-        expect(6).toEqual(headers.length, 'th');
+        expect(5).toEqual(headers.length, 'th');
 
         comp.columns.forEach((col, index) =>
             expect(!index ? '' : comp.columns[index - 1].header).toEqual(
@@ -224,9 +224,68 @@ describe('Listing Component', () => {
         expect(5).toEqual(rows.length);
 
         const headers = rows[0].querySelectorAll('th');
-        expect(5).toEqual(headers.length);
+        expect(4).toEqual(headers.length);
 
         const checkboxs = fixture.debugElement.queryAll(By.css('input[type="checkbox"]'));
         expect(0).toEqual(checkboxs.length);
+    });
+
+   it('should add a column if actions are received', () => {
+        const fakeActions: MenuItem[] = [{
+            icon: 'fa-trash',
+            label: 'Remove',
+            command: () => {}
+        }];
+        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+            return Observable.create(observer => {
+                observer.next(Object.assign([], this.items));
+            });
+        });
+
+        comp.columns = this.columns;
+
+        comp.ngOnChanges({
+            columns: new SimpleChange(null, comp.columns, true)
+        });
+
+        fixture.detectChanges();
+
+        const rows = el.querySelectorAll('tr');
+        expect(rows[0].cells.length).toEqual(4);
+
+        comp.actions = fakeActions;
+        fixture.detectChanges();
+
+        expect(rows[0].cells.length).toEqual(5);
+    });
+
+    it('should receive an action an execute the command after clickling over the action button', () => {
+        const fakeActions: MenuItem[] = [{
+            icon: 'fa-trash',
+            label: 'Remove',
+            command: () => {}
+        }];
+        spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
+            return Observable.create(observer => {
+                observer.next(Object.assign([], this.items));
+            });
+        });
+
+        comp.columns = this.columns;
+        comp.actions = fakeActions;
+
+        comp.ngOnChanges({
+            columns: new SimpleChange(null, comp.columns, true)
+        });
+
+        fixture.detectChanges();
+        const rows = el.querySelectorAll('tr');
+        const actionButton = de.query(By.css('action-menu-button'));
+
+        const spy = spyOn(fakeActions[0], 'command');
+
+        actionButton.nativeElement.children[0].click();
+
+        expect(spy).toHaveBeenCalled();
     });
 });
