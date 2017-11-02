@@ -18,6 +18,6 @@ import { DotConfirmationService } from '../../../../api/services/dot-confirmatio
         ActionButtonModule,
         SplitButtonModule
     ],
-    providers: [ DotConfirmationService ]
+    providers: []
 })
 export class ActionHeaderModule {}
