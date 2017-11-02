@@ -15,8 +15,20 @@ export class SiteServiceMock {
         }
     ];
 
+    getSiteById(): Site {
+        return null;
+    }
+
+    paginateSites(filter: string, archived: boolean, page: number, count: number): Observable<Site[]> {
+        return Observable.of(this.mockSites);
+    }
+
     get loadedSites(): Site[] {
         return this.mockSites;
+    }
+
+    get refreshSites$(): Observable<Site> {
+        return Observable.of(this.mockSites[0]);
     }
 
     get sites$(): Observable<Site[]> {
@@ -27,15 +39,7 @@ export class SiteServiceMock {
         return Observable.of(this.mockSites.length * 3);
     }
 
-    paginateSites(filter: string, archived: boolean, page: number, count: number): Observable<Site[]> {
-        return Observable.of(this.mockSites);
-    }
-
     get switchSite$(): Observable<Site> {
-        return Observable.of(this.mockSites[0]);
-    }
-
-    get refreshSites$(): Observable<Site> {
-        return Observable.of(this.mockSites[0]);
+        return Observable.from(this.mockSites).first();
     }
 }
