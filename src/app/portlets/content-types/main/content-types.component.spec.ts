@@ -92,7 +92,6 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should populate the actionHeaderOptions based on a call to dotContentletService', () => {
-
         comp.ngOnInit();
         expect(dotContentletService.getContentTypes).toHaveBeenCalled();
         expect(comp.actionHeaderOptions.primary.model.length).toEqual(3);
