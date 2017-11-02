@@ -76,7 +76,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         } else if (!this.currentSite) {
             this.setCurrentSiteAsDefault();
         }
-
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -162,7 +161,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         } else {
             this.siteService.switchSite$.first().subscribe((site: Site) => {
                 this.currentSite = Observable.of(site);
-                this.siteChange(this.siteService.currentSite);
+                this.siteChange(site);
             });
         }
     }

@@ -62,6 +62,10 @@ export class SiteSelectorFieldComponent implements ControlValueAccessor {
     writeValue(value: string): void {
         if (value) {
             this.value = value;
+
+            if (this.isCurrentSiteSubscripted()) {
+                this.currentSiteSubscription.unsubscribe();
+            }
         } else {
             this.currentSiteSubscription = this.siteService.switchSite$.subscribe((site: Site) => {
                 this.value = site.identifier;
@@ -70,10 +74,13 @@ export class SiteSelectorFieldComponent implements ControlValueAccessor {
         }
     }
 
+    private isCurrentSiteSubscripted(): boolean {
+        return this.currentSiteSubscription && !this.currentSiteSubscription.closed;
+    }
+
     private isSelectingNewValue(site: Site): boolean {
         return (
-            this.currentSiteSubscription &&
-            !this.currentSiteSubscription.closed &&
+            this.isCurrentSiteSubscripted() &&
             site.identifier !== this.siteService.currentSite.identifier
         );
     }

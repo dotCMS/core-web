@@ -488,7 +488,7 @@ describe('ContentTypesFormComponent', () => {
             clazz: 'clazz',
             description: 'Hello Description',
             detailPage: '',
-            host: '123-xyz-567-xxl',
+            host: '',
             name: 'Hello World',
             urlMapPattern: '',
             defaultType: null,
