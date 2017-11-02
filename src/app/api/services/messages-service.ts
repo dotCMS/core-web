@@ -58,12 +58,14 @@ export class MessageService {
         return Observable.create(observer => {
             if (_.every(keys, _.partial(_.has, [this.messagesLoaded]))) {
                 observer.next(_.pick(this.messagesLoaded, keys));
+                observer.complete();
             } else {
                 this.messageKeys = _.concat(this.messageKeys, _.difference(keys, this.messageKeys));
                 this.doMessageLoad();
                 const messageMapSub = this.messageMap$.subscribe(res => {
                     observer.next(_.pick(res, keys));
                     messageMapSub.unsubscribe();
+                    observer.complete();
                 });
             }
         });
