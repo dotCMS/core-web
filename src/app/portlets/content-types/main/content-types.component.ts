@@ -1,4 +1,3 @@
-import { ContentType } from './../shared/content-type.model';
 import { ListingDataTableComponent } from './../../../view/components/listing-data-table/listing-data-table.component';
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { CrudService } from './../../../api/services/crud';
@@ -7,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActionHeaderOptions } from '../../../shared/models/action-header';
-import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { DataTableColumn } from '../../../shared/models/data-table';
 import { MessageService } from '../../../api/services/messages-service';
@@ -21,7 +19,7 @@ import { ButtonModel } from '../../../shared/models/action-header/button.model';
  * use: listing-data-table.component
  * @export
  * @class ContentTypesPortletComponent
- * @extends {BaseComponent}
+
  */
 @Component({
     selector: 'content-types',
