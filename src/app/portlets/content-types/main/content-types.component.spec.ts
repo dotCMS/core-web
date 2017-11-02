@@ -23,7 +23,7 @@ class MockDotContentletService {
     getContentTypes() {}
 }
 
-fdescribe('ContentTypesPortletComponent', () => {
+describe('ContentTypesPortletComponent', () => {
     let comp: ContentTypesPortletComponent;
     let fixture: ComponentFixture<ContentTypesPortletComponent>;
     let de: DebugElement;
