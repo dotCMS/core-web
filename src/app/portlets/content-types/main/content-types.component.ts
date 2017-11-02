@@ -13,6 +13,8 @@ import { DataTableColumn } from '../../../shared/models/data-table';
 import { MessageService } from '../../../api/services/messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotContentletService } from '../../../api/services/dot-contentlet.service';
+import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
+import { ButtonModel } from '../../../shared/models/action-header/button.model';
 
 /**
  * List of Content Types
@@ -55,6 +57,7 @@ export class ContentTypesPortletComponent implements OnInit {
         'Content-Type'
     ];
     @ViewChild('listing') listing: ListingDataTableComponent;
+    private static contentTypesToBeRemoved = new Set(['RECENT_CONTENT', 'RECENT_WIDGET']);
 
     constructor(
         private messageService: MessageService,
@@ -77,48 +80,10 @@ export class ContentTypesPortletComponent implements OnInit {
                     command: $event => {
                         this.createContentType($event);
                     },
-                    model: []
+                    model: this.setContentTypes(val[1])
                 }
             };
-            val[1].filter(r => ['RECENT_CONTENT', 'RECENT_WIDGET'].indexOf(r.name) === -1).forEach(obj => {
-                this.actionHeaderOptions.primary.model.push({
-                    command: $event => {
-                        this.createContentType(obj.name.toLocaleLowerCase(), $event);
-                    },
-                    icon: this.contentTypesInfoService.getIcon(obj.name),
-                    label: this.i18nMessages['contenttypes.content.' + obj.name.toLocaleLowerCase()]
-                });
-            });
-            this.contentTypeColumns = [
-                {
-                    fieldName: 'name',
-                    header: this.i18nMessages['contenttypes.fieldname.structure.name'],
-                    icon: (item: any): string => this.contentTypesInfoService.getIcon(item.baseType),
-                    sortable: true
-                },
-                {
-                    fieldName: 'variable',
-                    header: this.i18nMessages['contenttypes.content.variable'],
-                    sortable: true
-                },
-                {
-                    fieldName: 'description',
-                    header: this.i18nMessages['contenttypes.form.label.description'],
-                    sortable: true
-                },
-                {
-                    fieldName: 'nEntries',
-                    header: this.i18nMessages['contenttypes.fieldname.entries'],
-                    width: '7%'
-                },
-                {
-                    fieldName: 'modDate',
-                    format: 'date',
-                    header: 'Last Edit Date',
-                    sortable: true,
-                    width: '13%'
-                }
-            ];
+            this.contentTypeColumns = this.setContentTypeColumns();
             this.rowActions = [
                 {
                     label: 'Remove',
@@ -127,6 +92,51 @@ export class ContentTypesPortletComponent implements OnInit {
                 }
             ];
         });
+    }
+
+    private setContentTypes(arr: StructureTypeView[]): ButtonModel[] {
+        return arr.filter(r => !ContentTypesPortletComponent.contentTypesToBeRemoved.has(r.name)).map(obj => {
+            return {
+                command: $event => {
+                    this.createContentType(obj.name.toLocaleLowerCase(), $event);
+                },
+                icon: this.contentTypesInfoService.getIcon(obj.name),
+                label: this.i18nMessages['contenttypes.content.' + obj.name.toLocaleLowerCase()]
+            };
+        });
+    }
+
+    private setContentTypeColumns(): DataTableColumn[] {
+        return [
+            {
+                fieldName: 'name',
+                header: this.i18nMessages['contenttypes.fieldname.structure.name'],
+                icon: (item: any): string => this.contentTypesInfoService.getIcon(item.baseType),
+                sortable: true
+            },
+            {
+                fieldName: 'variable',
+                header: this.i18nMessages['contenttypes.content.variable'],
+                sortable: true
+            },
+            {
+                fieldName: 'description',
+                header: this.i18nMessages['contenttypes.form.label.description'],
+                sortable: true
+            },
+            {
+                fieldName: 'nEntries',
+                header: this.i18nMessages['contenttypes.fieldname.entries'],
+                width: '7%'
+            },
+            {
+                fieldName: 'modDate',
+                format: 'date',
+                header: 'Last Edit Date',
+                sortable: true,
+                width: '13%'
+            }
+        ];
     }
 
     private createContentType(type: string, $event?): void {
