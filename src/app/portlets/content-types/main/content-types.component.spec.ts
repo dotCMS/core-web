@@ -1,14 +1,10 @@
-import { ActionHeaderModule } from './../../../view/components/listing-data-table/action-header/action-header.module';
 import { Observable } from 'rxjs';
 import { CrudService } from './../../../api/services/crud/crud.service';
 import { ContentType } from './../shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActionMenuButtonModule } from './../../../view/components/_common/action-menu-button/action-menu-button.module';
 import { ListingDataTableModule } from './../../../view/components/listing-data-table/listing-data-table.module';
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
-import { IconButtonTooltipModule } from './../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
-import { MenuModule, MenuItem } from 'primeng/primeng';
-import { ActionHeaderComponent } from '../../../view/components/listing-data-table/action-header/action-header';
+import { MenuItem } from 'primeng/primeng';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -21,7 +17,7 @@ import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('ContentTypesPortletComponent', () => {
+fdescribe('ContentTypesPortletComponent', () => {
     let comp: ContentTypesPortletComponent;
     let fixture: ComponentFixture<ContentTypesPortletComponent>;
     let de: DebugElement;
@@ -46,11 +42,7 @@ describe('ContentTypesPortletComponent', () => {
                     { path: 'test', component: ContentTypesPortletComponent },
                 ]),
                 BrowserAnimationsModule,
-                IconButtonTooltipModule,
-                ListingDataTableModule,
-                ActionMenuButtonModule,
-                MenuModule,
-                ActionHeaderModule
+                ListingDataTableModule
             ],
             providers: [
                  {provide: MessageService, useValue: messageServiceMock},
