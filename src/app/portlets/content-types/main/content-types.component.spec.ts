@@ -17,7 +17,7 @@ import { MessageService } from '../../../api/services/messages-service';
 import { MockMessageService } from '../../../test/message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 
-fdescribe('ContentTypesPortletComponent', () => {
+describe('ContentTypesPortletComponent', () => {
     let comp: ContentTypesPortletComponent;
     let fixture: ComponentFixture<ContentTypesPortletComponent>;
     let de: DebugElement;
