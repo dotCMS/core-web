@@ -1,7 +1,7 @@
 import { ActionButtonComponent } from '../../../view/components/_common/action-button/action-button.component';
 import { ActionHeaderComponent } from '../../../view/components/listing-data-table/action-header/action-header';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { DotContentletService } from '../../../api/services/dot-contentlet.service';
 import { Observable } from 'rxjs/Observable';
