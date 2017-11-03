@@ -20,7 +20,7 @@ export class SiteSelectorFieldComponent implements ControlValueAccessor {
     @Input() live: boolean;
     @Input() system: boolean;
 
-    value: any;
+    value: string;
 
     private currentSiteSubscription: Subscription;
 
