@@ -3,8 +3,6 @@
         [label]="i18nMessages[setCheckboxLabel(property.name)]"
         [value]="property.value"
         [formControlName]="property.name"
-        binary="true"
-        [(ngModel)]="checked"
-        (onChange)="handleCheckedPropery()">
+        binary="true">
     </p-checkbox>
 </div>

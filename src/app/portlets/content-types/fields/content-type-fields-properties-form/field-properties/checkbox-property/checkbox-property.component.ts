@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FieldProperty } from '../field-properties.model';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
@@ -8,12 +8,9 @@ import { FormGroup, AbstractControl } from '@angular/forms';
     selector: 'checkbox-property',
     templateUrl: './checkbox-property.component.html',
 })
-export class CheckboxPropertyComponent extends BaseComponent implements OnInit {
+export class CheckboxPropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
-    checked = false;
-    indexedCheckbox: AbstractControl;
-    requiredCheckbox: AbstractControl;
 
     private readonly map = {
         indexed: 'contenttypes.field.properties.system_indexed.label',
@@ -36,37 +33,7 @@ export class CheckboxPropertyComponent extends BaseComponent implements OnInit {
         );
     }
 
-    ngOnInit(): void {
-        this.indexedCheckbox = this.group.controls.indexed;
-        this.requiredCheckbox = this.group.controls.required;
-    }
-
     setCheckboxLabel(field): string {
         return this.map[field] || field;
-    }
-
-    handleCheckedPropery(): void {
-        if (this.checked) {
-            if (this.property.name === 'searchable' || this.property.name === 'listed') {
-                this.setIndexedPropertyChecked();
-            }
-            if (this.property.name === 'unique') {
-                this.setIndexedPropertyChecked();
-                this.setRequiredPropertyChecked();
-            }
-        } else {
-            this.indexedCheckbox.enable();
-            this.requiredCheckbox.enable();
-        }
-    }
-
-    setIndexedPropertyChecked(): void {
-        this.indexedCheckbox.setValue('checked');
-        this.indexedCheckbox.disable();
-    }
-
-    setRequiredPropertyChecked(): void {
-        this.requiredCheckbox.setValue('checked');
-        this.requiredCheckbox.disable();
     }
 }

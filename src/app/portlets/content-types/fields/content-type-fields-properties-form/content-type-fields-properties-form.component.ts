@@ -136,6 +136,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             formFields['clazz'] = this.formFieldData.clazz;
         }
         this.form = this.fb.group(formFields);
+
+        this.subscribePropertyChange('searchable');
+        this.subscribePropertyChange('listed');
+        this.subscribePropertyChange('unique');
     }
 
     private sortProperties(properties: string[]): void {
@@ -143,5 +147,33 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         .sort((property1, proeprty2) =>
             this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2));
 
+    }
+
+    private subscribePropertyChange(property: string): void {
+        const requiredControl = this.form.get('required');
+
+        if (requiredControl) {
+            this.form.get(property).valueChanges.subscribe((res: any) => {
+                this.form.get('indexed').setValue(res);
+                if (property === 'unique') {
+                    this.form.get('required').setValue(res);
+                }
+                this.setDisabledProperties(res, property);
+            });
+        }
+    }
+
+    private setDisabledProperties(disable: boolean, propertyChecked: string): void {
+        if (disable) {
+            this.form.get('indexed').disable();
+            if (propertyChecked === 'unique') {
+                this.form.get('required').disable();
+            }
+        } else {
+            this.form.get('indexed').enable();
+            if (propertyChecked === 'unique') {
+                this.form.get('required').enable();
+            }
+        }
     }
 }
