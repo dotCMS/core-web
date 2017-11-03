@@ -12,7 +12,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { MessageService } from '../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Field } from '../shared';
@@ -137,9 +137,12 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         }
         this.form = this.fb.group(formFields);
 
-        this.subscribePropertyChange('searchable');
-        this.subscribePropertyChange('listed');
-        this.subscribePropertyChange('unique');
+        if (properties) {
+            console.log(this.form.get('searchable'));
+            this.form.get('searchable').valueChanges.subscribe(res => this.handleSearchableValue(res));
+            this.form.get('listed').valueChanges.subscribe(res => this.handleSearchableValue(res));
+            this.form.get('unique').valueChanges.subscribe(res => this.handleUniqueValue(res));
+        }
     }
 
     private sortProperties(properties: string[]): void {
@@ -149,31 +152,23 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     }
 
-    private subscribePropertyChange(property: string): void {
-        const requiredControl = this.form.get('required');
-
-        if (requiredControl) {
-            this.form.get(property).valueChanges.subscribe((res: any) => {
-                this.form.get('indexed').setValue(res);
-                if (property === 'unique') {
-                    this.form.get('required').setValue(res);
-                }
-                this.setDisabledProperties(res, property);
-            });
-        }
+    private handleSearchableValue(propertyValue: boolean): void {
+        this.form.get('indexed').setValue(propertyValue);
+        this.handleDisabledIndexed(propertyValue);
     }
 
-    private setDisabledProperties(disable: boolean, propertyChecked: string): void {
-        if (disable) {
-            this.form.get('indexed').disable();
-            if (propertyChecked === 'unique') {
-                this.form.get('required').disable();
-            }
-        } else {
-            this.form.get('indexed').enable();
-            if (propertyChecked === 'unique') {
-                this.form.get('required').enable();
-            }
-        }
+    private handleUniqueValue(propertyValue: boolean): void {
+        this.form.get('indexed').setValue(propertyValue);
+        this.form.get('required').setValue(propertyValue);
+        this.handleDisabledIndexed(propertyValue);
+        this.handleDisabledRequired(propertyValue);
+    }
+
+    private handleDisabledIndexed(disable: boolean): void {
+        disable ? this.form.get('indexed').disable() : this.form.get('indexed').enable();
+    }
+
+    private handleDisabledRequired(disable: boolean): void {
+        disable ? this.form.get('required').disable() : this.form.get('required').enable();
     }
 }
