@@ -68,4 +68,38 @@ describe('CheckboxPropertyComponent', () => {
         expect('system indexed').toBe(pCheckbox.componentInstance.label);
         expect('value').toBe(pCheckbox.componentInstance.value);
     });
+
+    it('should auto select checkboxs', () => {
+        comp.group = new FormGroup({
+            indexed: new FormControl(''),
+            required: new FormControl(''),
+            searchable: new FormControl(''),
+            unique: new FormControl('')
+        });
+
+        comp.property = {
+            name: 'searchable',
+            value: 'value',
+            field: {}
+        };
+
+        comp.ngOnInit();
+
+        const spySetIndexChecked = spyOn(comp, 'setIndexedPropertyChecked');
+        const spySetRequiredChecked = spyOn(comp, 'setRequiredPropertyChecked');
+
+        comp.checked = true;
+        comp.handleCheckedPropery();
+
+        expect(spySetIndexChecked).toHaveBeenCalled();
+
+        comp.property = {
+            name: 'unique',
+            value: 'value',
+            field: {}
+        };
+
+        comp.handleCheckedPropery();
+        expect(spySetRequiredChecked).toHaveBeenCalled();
+    });
 });
