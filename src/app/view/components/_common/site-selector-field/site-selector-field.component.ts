@@ -2,7 +2,13 @@ import { Component, OnInit, Renderer2, ElementRef, forwardRef, Input } from '@an
 import { SelectControlValueAccessor, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
 import { Subscription } from 'rxjs/Subscription';
-
+/**
+ * Form control to select DotCMS instance host identifier.
+ *
+ * @export
+ * @class SiteSelectorFieldComponent
+ * @implements {ControlValueAccessor}
+ */
 @Component({
     selector: 'dot-site-selector-field',
     templateUrl: './site-selector-field.component.html',
@@ -15,6 +21,7 @@ import { Subscription } from 'rxjs/Subscription';
         }
     ]
 })
+
 export class SiteSelectorFieldComponent implements ControlValueAccessor {
     @Input() archive: boolean;
     @Input() live: boolean;
@@ -49,7 +56,7 @@ export class SiteSelectorFieldComponent implements ControlValueAccessor {
             this.propagateChange(site.identifier);
         }, 0);
 
-        if (this.isSelectingNewValue(site)) {
+        if (this.isCurrentSiteSubscripted() && this.isSelectingNewValue(site)) {
             this.currentSiteSubscription.unsubscribe();
         }
     }
@@ -79,9 +86,6 @@ export class SiteSelectorFieldComponent implements ControlValueAccessor {
     }
 
     private isSelectingNewValue(site: Site): boolean {
-        return (
-            this.isCurrentSiteSubscripted() &&
-            site.identifier !== this.siteService.currentSite.identifier
-        );
+        return site.identifier !== this.siteService.currentSite.identifier;
     }
 }

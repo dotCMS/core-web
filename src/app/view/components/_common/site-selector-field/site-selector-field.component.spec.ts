@@ -101,4 +101,29 @@ describe('SiteSelectorFieldComponent', () => {
         });
     });
 
+
+    it('should have undefined params by default', () => {
+        const siteSelector = de.query(By.css('dot-site-selector'));
+
+        expect(siteSelector.componentInstance.archive).toBeUndefined();
+        expect(siteSelector.componentInstance.system).toBeUndefined();
+        expect(siteSelector.componentInstance.live).toBeUndefined();
+    });
+
+    it('should bind params correctly', () => {
+        const siteSelectorField: SiteSelectorFieldComponent = de.query(By.css('dot-site-selector-field'))
+            .componentInstance;
+
+        siteSelectorField.archive = true;
+        siteSelectorField.system = false;
+        siteSelectorField.live = false;
+
+        fixture.detectChanges();
+
+        const siteSelector = de.query(By.css('dot-site-selector'));
+
+        expect(siteSelector.componentInstance.archive).toBe(true);
+        expect(siteSelector.componentInstance.system).toBe(false);
+        expect(siteSelector.componentInstance.live).toBe(false);
+    });
 });
