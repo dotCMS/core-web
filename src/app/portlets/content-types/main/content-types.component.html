@@ -1,7 +1,3 @@
-{{messageService.get('contenttypes.content.form')}}
-<hr>
-{{messageService.messagesLoaded['contenttypes.content.form']}}
-
 <listing-data-table
     #listing
     (rowWasClicked)="editContentType($event)"
@@ -9,7 +5,7 @@
     placeholder="i18nMessages['contenttypes.fieldname.structure.name']"
     [columns]="contentTypeColumns"
     [paginationPerPage]="40"
-    sortField="modDate" 
+    sortField="modDate"
     sortOrder="DESC"
     url="v1/contenttype"
     [actions]="rowActions">
