@@ -41,6 +41,10 @@ export class MessageService {
         });
     }
 
+    get(key: string): string {
+        return this.messagesLoaded[key];
+    }
+
     /**
      * Get the messages objects as an Observable
      * @returns {Observable<any>}

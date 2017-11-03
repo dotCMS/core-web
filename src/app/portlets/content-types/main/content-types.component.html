@@ -1,7 +1,12 @@
+{{messageService.get('contenttypes.content.form')}}
+<hr>
+{{messageService.messagesLoaded['contenttypes.content.form']}}
+
 <listing-data-table
     #listing
     (rowWasClicked)="editContentType($event)"
     [actionHeaderOptions]="actionHeaderOptions"
+    placeholder="i18nMessages['contenttypes.fieldname.structure.name']"
     [columns]="contentTypeColumns"
     [paginationPerPage]="40"
     sortField="modDate" 
