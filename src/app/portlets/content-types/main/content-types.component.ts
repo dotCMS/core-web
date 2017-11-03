@@ -71,7 +71,7 @@ export class ContentTypesPortletComponent implements OnInit {
             this.messageService.getMessages(this.i18nKeys),
             this.dotContentletService.getAllContentTypes()
         ).subscribe(res => {
-            const baseTypes : StructureTypeView[] = res[1];
+            const baseTypes: StructureTypeView[] = res[1];
             this.actionHeaderOptions = {
                 primary: {
                     command: $event => {
@@ -152,7 +152,9 @@ export class ContentTypesPortletComponent implements OnInit {
                 this.removeContentType(item);
             },
             header: this.messageService.get('message.structure.cantdelete'),
-            message: `${this.messageService.get('contenttypes.confirm.message.delete')} ${this.messageService.get('Content-Type')}
+            message: `${this.messageService.get('contenttypes.confirm.message.delete')} ${this.messageService.get(
+                'Content-Type'
+            )}
                         ${this.messageService.get('contenttypes.confirm.message.delete.content')}
                         <span>${this.messageService.get('contenttypes.confirm.message.delete.warning')}</span>`,
             footerLabel: {
