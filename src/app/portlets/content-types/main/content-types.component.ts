@@ -55,7 +55,6 @@ export class ContentTypesPortletComponent implements OnInit {
         'Content-Type'
     ];
     @ViewChild('listing') listing: ListingDataTableComponent;
-    private static contentTypesToBeRemoved = new Set(['RECENT_CONTENT', 'RECENT_WIDGET']);
 
     constructor(
         private messageService: MessageService,
@@ -70,7 +69,7 @@ export class ContentTypesPortletComponent implements OnInit {
     ngOnInit() {
         Observable.forkJoin(
             this.messageService.getMessages(this.i18nKeys),
-            this.dotContentletService.getContentTypes()
+            this.dotContentletService.getAllContentTypes()
         ).subscribe(val => {
             this.i18nMessages = val[0];
             this.actionHeaderOptions = {
@@ -93,7 +92,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private setContentTypes(arr: StructureTypeView[]): ButtonModel[] {
-        return arr.filter(r => !ContentTypesPortletComponent.contentTypesToBeRemoved.has(r.name)).map(obj => {
+        return arr.map(obj => {
             return {
                 command: $event => {
                     this.createContentType(obj.name.toLocaleLowerCase(), $event);
