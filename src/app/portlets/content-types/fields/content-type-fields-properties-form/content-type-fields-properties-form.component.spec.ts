@@ -112,9 +112,7 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
             comp.formFieldData = this.field;
         }));
 
-        xit('should init form right', () => {
-            // TypeError: Cannot read property 'valueChanges' of null, content-type-fields-properties-form.component.ts line 141
-            // TODO: It needs a real mock of FieldPropertyService
+        it('should init form right', () => {
             const mockFieldPropertyService = fixture.debugElement.injector.get(FieldPropertyService);
             const spyMethod = spyOn(mockFieldPropertyService, 'getProperties').and.returnValue(['property1', 'property2', 'property3']);
 
@@ -130,9 +128,7 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
             expect(comp.form.get('property3')).toBeNull();
         });
 
-        xit('should init field proeprties', () => {
-            // TypeError: Cannot read property 'valueChanges' of null, content-type-fields-properties-form.component.ts line 141
-            // TODO: It needs a real mock of FieldPropertyService
+        it('should init field proeprties', () => {
             comp.ngOnChanges({
                 formFieldData: new SimpleChange(null, this.field, true),
             });

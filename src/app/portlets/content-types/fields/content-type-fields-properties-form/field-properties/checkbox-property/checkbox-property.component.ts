@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FieldProperty } from '../field-properties.model';
 import { MessageService } from '../../../../../../api/services/messages-service';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'checkbox-property',

@@ -137,11 +137,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         }
         this.form = this.fb.group(formFields);
 
-        if (properties) {
-            this.form.get('searchable').valueChanges.subscribe(res => this.handleSearchableValue(res));
-            this.form.get('listed').valueChanges.subscribe(res => this.handleSearchableValue(res));
-            this.form.get('unique').valueChanges.subscribe(res => this.handleUniqueValue(res));
-        }
+        this.handleAutoCheckValues();
     }
 
     private sortProperties(properties: string[]): void {
@@ -151,16 +147,32 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     }
 
-    private handleSearchableValue(propertyValue: boolean): void {
-        this.form.get('indexed').setValue(propertyValue);
-        this.handleDisabledIndexed(propertyValue);
+    private handleAutoCheckValues(): void {
+        if (this.form.get('searchable')) {
+            this.form.get('searchable').valueChanges.subscribe(res => this.setIndexedValueChecked(res));
+        }
+        if (this.form.get('listed')) {
+            this.form.get('listed').valueChanges.subscribe(res => this.setIndexedValueChecked(res));
+        }
+        if (this.form.get('unique')) {
+            this.form.get('unique').valueChanges.subscribe(res => this.handleUniqueValuesChecked(res));
+        }
     }
 
-    private handleUniqueValue(propertyValue: boolean): void {
-        this.form.get('indexed').setValue(propertyValue);
-        this.form.get('required').setValue(propertyValue);
-        this.handleDisabledIndexed(propertyValue);
-        this.handleDisabledRequired(propertyValue);
+    private setIndexedValueChecked(propertyValue: boolean): void {
+        if (this.form.get('indexed')) {
+            this.form.get('indexed').setValue(propertyValue);
+            this.handleDisabledIndexed(propertyValue);
+        }
+    }
+
+    private handleUniqueValuesChecked(propertyValue: boolean): void {
+        this.setIndexedValueChecked(propertyValue);
+
+        if (this.form.get('required')) {
+            this.form.get('required').setValue(propertyValue);
+            this.handleDisabledRequired(propertyValue);
+        }
     }
 
     private handleDisabledIndexed(disable: boolean): void {
