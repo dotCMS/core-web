@@ -14,7 +14,7 @@ import { DotDataTableAction } from '../../../../shared/models/data-table/dot-dat
     templateUrl: 'action-menu-button.component.html'
 })
 export class ActionMenuButtonComponent implements OnInit {
-    @Input() filteredActions: MenuItem[];
+    filteredActions: MenuItem[];
     @Input() item: any;
     @Input() icon? = 'fa-ellipsis-v';
     @Input() actions?: DotDataTableAction[];
