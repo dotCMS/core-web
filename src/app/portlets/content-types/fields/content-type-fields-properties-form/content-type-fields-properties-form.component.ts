@@ -138,7 +138,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         this.form = this.fb.group(formFields);
 
         if (properties) {
-            console.log(this.form.get('searchable'));
             this.form.get('searchable').valueChanges.subscribe(res => this.handleSearchableValue(res));
             this.form.get('listed').valueChanges.subscribe(res => this.handleSearchableValue(res));
             this.form.get('unique').valueChanges.subscribe(res => this.handleUniqueValue(res));
