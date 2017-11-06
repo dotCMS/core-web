@@ -129,7 +129,7 @@ describe('ContentTypesPortletComponent', () => {
 
         spyOn(crudService, 'delete').and.returnValue(Observable.of(mockContentType));
 
-        comp.rowActions[0].command(mockContentType);
+        comp.rowActions[0].menuItem.command(mockContentType);
 
         fixture.detectChanges();
 
