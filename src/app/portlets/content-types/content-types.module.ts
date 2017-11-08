@@ -1,3 +1,4 @@
+import { PushPublishDialogModule } from './../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 import { CommonModule } from '@angular/common';
 import { ContentTypesEditComponent } from './edit';
 import { ContentTypesFormComponent } from './form';
@@ -99,8 +100,10 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
         CheckboxModule,
         CommonModule,
         ConfirmDialogModule,
+        ContentTypeFieldsAddRowModule,
         ContentTypesRoutingModule,
         DialogModule,
+        DotTextareaContentModule,
         DragulaModule,
         DropdownModule,
         FieldValidationMessageModule,
@@ -110,14 +113,13 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
         InputTextModule,
         ListingDataTableModule,
         OverlayPanelModule,
+        // PushPublishDialogModule,
         RadioButtonModule,
         ReactiveFormsModule,
         SearchableDropDownModule,
         SiteSelectorFieldModule,
-        ContentTypeFieldsAddRowModule,
         SplitButtonModule,
-        TabViewModule,
-        DotTextareaContentModule
+        TabViewModule
     ],
     providers: [
         ContentTypesInfoService,

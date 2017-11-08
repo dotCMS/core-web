@@ -32,6 +32,9 @@ export class ContentTypesPortletComponent implements OnInit {
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: MenuItem[];
+    displayDialog = false;
+    radioPushButton = 'Push';
+    date: Date;
 
     private i18nKeys = [
         'contenttypes.fieldname.structure.name',
@@ -86,6 +89,11 @@ export class ContentTypesPortletComponent implements OnInit {
                     label: 'Remove',
                     icon: 'fa-trash',
                     command: item => this.removeConfirmation(item)
+                },
+                {
+                    label: 'Push Publish',
+                    icon: 'fa-trash',
+                    command: item => this.pushPublish(item)
                 }
             ];
         });
@@ -168,5 +176,15 @@ export class ContentTypesPortletComponent implements OnInit {
         this.crudService.delete(`v1/contenttype/id`, item.id).subscribe(data => {
             this.listing.loadCurrentPage();
         });
+    }
+
+    private toggleDialog(): void {
+        this.displayDialog = !this.displayDialog;
+    }
+
+    private pushPublish(item: any) {
+        event.stopPropagation();
+        console.log('push publish');
+        this.toggleDialog();
     }
 }

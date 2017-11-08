@@ -1,0 +1,38 @@
+<p-dialog
+    modal="modal"
+    width="500"
+    [dismissableMask]="true"
+    [(visible)]="displayDialog"
+    [responsive]="true"
+    [resizable]="false"
+    [draggable]="false">
+
+    <p-header>
+        Push Publish
+    </p-header>
+
+    <form novalidate>
+        <div class="form__group">
+            <label class="form__label">I want to: </label>
+            <p-radioButton name="pushAction" value="Push" label="Push" [(ngModel)]="radioPushButton"></p-radioButton>
+            <p-radioButton name="pushAction" value="Remove" label="Remove"></p-radioButton>
+            <p-radioButton name="pushAction" value="Push Remove" label="Push Remove"></p-radioButton>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label">Publish: </label>
+            <p-calendar [(ngModel)]="date" [showTime]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
+            {{ date }} 
+        </div>
+
+        <div class="form__group">
+            <label class="form__label">Push to: </label>
+        </div>
+    </form>
+    <!-- <dot-push-publish-env-selector></dot-push-publish-env-selector> -->
+
+    <p-footer>
+        <button type="button" flat pButton (click)="toggleDialog()" label="Cancel"></button>
+        <button type="button" pButton label="Push"></button>
+    </p-footer>
+</p-dialog>
