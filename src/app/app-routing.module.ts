@@ -60,6 +60,10 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
     {
+        path:'page',
+        loadChildren: 'app/portlets/dot-page/dot-page.module#DotPageModule'
+    },
+    {
         canActivate: [MenuGuardService],
         path: '',
         children: []

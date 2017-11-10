@@ -1,0 +1,29 @@
+
+<div class="block__main">
+    <div class="block__header">
+
+        <select>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+            <option>Lorem Ipsum</option>
+        </select>
+
+        <div class="block__actions">
+            <icon-button-tooltip
+                class="block__actions-delete"
+                icon="fa-close"
+                [tooltipText]="'Lorem Ipsum'"
+                (click)="removeBlock($event)">
+            </icon-button-tooltip>
+        </div>
+    </div>
+
+    <div class="block__content">
+        <p>Block Content</p>
+
+    </div>
+</div>
+
