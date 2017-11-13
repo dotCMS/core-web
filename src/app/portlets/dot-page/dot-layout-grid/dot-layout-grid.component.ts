@@ -85,25 +85,8 @@ export class DotLayoutGridComponent implements OnInit {
         }
     }
 
-    updateItem(index: number, event: NgGridItemEvent): void {
-        // Do something here
-    }
-
-    onDrag(index: number, event: NgGridItemEvent): void {
-        // Do something here
-    }
-
-    onResize(index: number, event: NgGridItemEvent): void {
-        // Do something here
-    }
-
-    //check for empty rows
-    onDragStop(boxes): void {
-        this.deleteEmptyRows(boxes);
-    }
-
-    onGridChanges(items) {
-        // Do something here
+    dotOnDragStop(): void {
+        this.deleteEmptyRows();
     }
 
     private getLastBoxOnGrid(): NgGridItemConfig {
@@ -127,7 +110,7 @@ export class DotLayoutGridComponent implements OnInit {
         return newRow;
     }
 
-    private deleteEmptyRows(boxes): void {
+    private deleteEmptyRows(): void {
         setTimeout(() => {
             debugger;
             let containersByRow = [];
