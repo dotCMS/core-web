@@ -1,0 +1,54 @@
+@import "variables";
+@import "mixins";
+
+.container-selector {
+    height: 206px; 
+    border: 1px solid $gray-lighter; 
+}
+
+.head-container {
+    height: 48px; 
+    padding: $basic-padding $basic-padding * 2; 
+    background-color: $gray-lighter; 
+
+    .ui-button {
+        background: transparent;
+    }
+}
+
+.head-container__close-containers {
+    float: right;
+    padding-top: $basic-padding;
+    cursor: pointer;
+    color: $gray;
+
+    &:hover {
+        color: $black;
+    }
+}
+
+.container-selector__list {
+    padding: 0 $basic-padding * 2; 
+    height: 137px;
+    overflow-y: scroll;
+
+    li {
+        @include naked-list;
+        border-top: 1px solid $gray-lighter;
+        padding: $basic-padding 0;
+
+        &:first-child {
+            border-top: none;
+        }
+    }
+}
+
+.ui-button[iconButton] {
+    [class^="ui-button-icon"] {
+        color: $gray;
+    }
+    
+    &:hover {
+        color: $black;
+    }
+}
