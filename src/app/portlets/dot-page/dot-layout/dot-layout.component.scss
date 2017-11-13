@@ -1,0 +1,26 @@
+:host{
+    display: block;
+    min-width: 750px;
+}
+
+$body-width: 960px;
+$baseline: 22px;
+@mixin baseline-grid {
+    $columns: 12;
+    $column-color: rgba(200,0,0,.2);
+    $baseline-color: rgba(56,255,255,.8);
+
+    // These are all automatically calculated
+    $gutter-width: 20px;  // Change if you like
+    $gutters: ($columns - 1);
+    $column-width: $body-width / $columns;
+
+    background-image: -webkit-linear-gradient(0deg, $column-color $column-width, transparent $gutter-width),
+    -webkit-linear-gradient(top, rgba(0,0,0,0) 95%, $baseline-color 100%);
+    background-image: -moz-linear-gradient(0deg, $column-color $column-width, transparent $gutter-width),
+    -moz-linear-gradient(top, rgba(0,0,0,0) 95%, $baseline-color 100%);
+    background-image: -o-linear-gradient(0deg, $column-color $column-width, transparent $gutter-width),
+    -o-linear-gradient(top, rgba(0,0,0,0) 95%, $baseline-color 100%);
+    background-size: ($column-width + $gutter-width) 100%, 100% $baseline;
+    background-position: 10px 0px; // Use to offset and center your grid
+}

@@ -1,17 +1,17 @@
 <div>
     <action-button [command]="addButton"></action-button>
-    <div [ngGrid]="gridConfig" (onItemChange)="onGridChanges(boxes)" style="background: red">
-        <div style="background: #ccc; border: 1px solid red;" *ngFor="let box of boxes; let i = index" [(ngGridItem)]="box.config" (onItemChange)="updateItem(i, $event)" (onResize)="onResize(i, $event)" (onDrag)="onDrag(i, $event)">
-            {{box.config | json }}
+    <div [ngGrid]="gridConfig" (onItemChange)="onGridChanges(boxes)" (onDragStop)="onDragStop(boxes)">
+        <div style="background: #ccc; border: 1px solid red;"
+            *ngFor="let box of boxes; let i = index"
+            [(ngGridItem)]="box.config"
+            (onItemChange)="updateItem(i, $event)"
+            (onResize)="onResize(i, $event)"
+            (onDrag)="onDrag(i, $event)">
+
+
+            Index: {{i}}
+            <a (click)="removeWidget(i)" >Remove</a>
         </div>
-
-
     </div>
-
-    Grid Config: {{gridConfig | json }}
-    <br/><br/>
-
-    Boxes: {{boxes | json}}
-
-    <br/><br/>
+    {{boxes | json}}
 </div>

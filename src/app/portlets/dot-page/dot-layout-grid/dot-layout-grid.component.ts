@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgGrid, NgGridConfig, NgGridItemConfig, NgGridItemEvent } from 'angular2-grid';
+import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
 
 interface DotLayoutBlock {
     id: number;
@@ -14,9 +15,14 @@ interface DotLayoutBlock {
 export class DotLayoutGridComponent implements OnInit {
     public boxes: Array<DotLayoutBlock> = [];
     private static newRowTemplate: NgGridItemConfig = { fixed: true, sizex: 3, maxCols: 12, maxRows: 1 };
-    private static defaultEmptyGridRows: NgGridItemConfig[] = [
-        { fixed: true, sizex: 12, maxCols: 12, maxRows: 1, col: 1, row: 1 }
-    ];
+    private static defaultEmptyGridRows: NgGridItemConfig = {
+        fixed: true,
+        sizex: 12,
+        maxCols: 12,
+        maxRows: 1,
+        col: 1,
+        row: 1
+    };
     actionItems: [any];
     addButton;
     gridConfig: NgGridConfig = <NgGridConfig>{
@@ -68,7 +74,7 @@ export class DotLayoutGridComponent implements OnInit {
     }
 
     addBox(): void {
-        const conf: NgGridItemConfig = this.getLastBoxOnGrid();
+        let conf: NgGridItemConfig = this.getLastBoxOnGrid();
         conf.payload = 1;
         this.boxes.push({ id: conf.payload, config: conf });
     }
@@ -91,29 +97,53 @@ export class DotLayoutGridComponent implements OnInit {
         // Do something here
     }
 
+    //check for empty rows
+    onDragStop(boxes): void {
+        this.deleteEmptyRows(boxes);
+    }
+
     onGridChanges(items) {
-        // debugger;
+        // Do something here
     }
 
     private getLastBoxOnGrid(): NgGridItemConfig {
         let lastBox;
         let newRow: NgGridItemConfig = Object.assign({}, DotLayoutGridComponent.newRowTemplate);
-        lastBox = this.boxes.reduce((a, b) => {
-            /*if (a.config.row > b.config.row) return a;
-            else if (a.config.row == b.config.row) return a.config.col > b.config.col ? a : b;
-            return b; */
-
-            return a.config.row > b.config.row
-                ? a
-                : a.config.row == b.config.row ? (a.config.col > b.config.col ? a : b) : b;
-        });
-        if (lastBox.config.col + 3 < 12) {
-            newRow.row = lastBox.config.row;
-            newRow.col = lastBox.config.col + lastBox.config.sizex;
-        } else {
-            newRow.row = lastBox.config.row + 1;
-            newRow.col = 1;
+        if (this.boxes.length) {
+            // check last row && last column in last row
+            lastBox = this.boxes.reduce((a, b) => {
+                return a.config.row > b.config.row
+                    ? a
+                    : a.config.row == b.config.row ? (a.config.col > b.config.col ? a : b) : b;
+            });
+            if (lastBox.config.col + 3 < 12) {
+                newRow.row = lastBox.config.row;
+                newRow.col = lastBox.config.col + lastBox.config.sizex;
+            } else {
+                newRow.row = lastBox.config.row + 1;
+                newRow.col = 1;
+            }
         }
         return newRow;
+    }
+
+    private deleteEmptyRows(boxes): void {
+        setTimeout(() => {
+            debugger;
+            let containersByRow = [];
+            this.boxes.forEach(container => {
+                containersByRow[container.config.row] === undefined
+                    ? (containersByRow[container.config.row] = new Array(container))
+                    : containersByRow[container.config.row].push(container);
+            });
+            let filteredContainers = containersByRow.filter(contArr => contArr);
+            // If is the same size don't re-Order nothing.
+            if (filteredContainers.length != containersByRow.length - 1) {
+                filteredContainers.forEach((containerArr, index) => {
+                    if (containerArr[0].config.row != index + 1)
+                        containerArr.forEach(container => (container.config.row = index + 1));
+                });
+            }
+        }, 0);
     }
 }
