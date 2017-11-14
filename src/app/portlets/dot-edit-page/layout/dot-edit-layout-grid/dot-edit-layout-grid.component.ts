@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgGrid, NgGridConfig, NgGridItemConfig, NgGridItemEvent } from 'angular2-grid';
-
+import { NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 
 //Final Object need to be defined.
 interface DotLayoutBlock {
@@ -27,7 +26,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     };
     addButton;
     gridConfig: NgGridConfig = <NgGridConfig>{
-        margins: [6,6,0,0],
+        margins: [6, 6, 0, 0],
         draggable: true,
         resizable: true,
         max_cols: DotEditLayoutGridComponent.maxColumns,
@@ -66,7 +65,7 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     addBox(): void {
         let conf: NgGridItemConfig = this.getLastContainerOnGrid();
-        this.gridContainers.push({ id: Math.random().toString(),  config: conf });
+        this.gridContainers.push({ id: Math.random().toString(), config: conf });
     }
 
     removeWidget(index: number): void {
@@ -90,7 +89,10 @@ export class DotEditLayoutGridComponent implements OnInit {
                     ? a
                     : a.config.row == b.config.row ? (a.config.col > b.config.col ? a : b) : b;
             });
-            if (lastContainer.config.col + DotEditLayoutGridComponent.newRowTemplate.sizex < DotEditLayoutGridComponent.maxColumns) {
+            if (
+                lastContainer.config.col + DotEditLayoutGridComponent.newRowTemplate.sizex <
+                DotEditLayoutGridComponent.maxColumns
+            ) {
                 newRow.row = lastContainer.config.row;
                 newRow.col = lastContainer.config.col + lastContainer.config.sizex;
             } else {
@@ -103,18 +105,10 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     private deleteEmptyRows(): void {
         setTimeout(() => {
-            let containersByRow = [];
-            //TODO: sacar la funcion
-            this.gridContainers.forEach(container => {
-                containersByRow[container.config.row] === undefined
-                    ? (containersByRow[container.config.row] = new Array(container))
-                    : containersByRow[container.config.row].push(container);
-            });
-           // [[row1][row3]]
-
+            let containersByRow = this.sortContainersByRow(this.gridContainers);
             let filteredRows = containersByRow.filter(contArr => contArr);
-            // If is the same size don't re-Order nothing.
 
+            // If is the same size don't re-Order nothing.
             if (filteredRows.length != containersByRow.length - 1) {
                 filteredRows.forEach((containerArr, index) => {
                     if (containerArr[0].config.row != index + 1)
@@ -122,5 +116,15 @@ export class DotEditLayoutGridComponent implements OnInit {
                 });
             }
         }, 0);
+    }
+
+    private sortContainersByRow(containers: Array<DotLayoutBlock>) {
+        let containersByRow = [];
+        containers.forEach(container => {
+            containersByRow[container.config.row] === undefined
+                ? (containersByRow[container.config.row] = new Array(container))
+                : containersByRow[container.config.row].push(container);
+        });
+        return containersByRow;
     }
 }
