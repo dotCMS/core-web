@@ -4,10 +4,19 @@
 .container-selector {
     height: 206px; 
     border: 1px solid $gray-lighter; 
+
+    .ui-button[iconButton] {
+
+        [class^="ui-button-icon"] {
+            color: $body-font-color;
+        }
+    }
 }
 
-.head-container {
+.container-selector__header {
     height: 48px; 
+    display: flex;
+    justify-content: space-between;
     padding: $basic-padding $basic-padding * 2; 
     background-color: $gray-lighter; 
 
@@ -16,15 +25,8 @@
     }
 }
 
-.head-container__close-containers {
-    float: right;
+.container-selector__header-remove {
     padding-top: $basic-padding;
-    cursor: pointer;
-    color: $gray;
-
-    &:hover {
-        color: $black;
-    }
 }
 
 .container-selector__list {
@@ -40,15 +42,5 @@
         &:first-child {
             border-top: none;
         }
-    }
-}
-
-.ui-button[iconButton] {
-    [class^="ui-button-icon"] {
-        color: $gray;
-    }
-    
-    &:hover {
-        color: $black;
     }
 }

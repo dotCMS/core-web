@@ -24,7 +24,7 @@ export class ContainerSelectorComponent implements OnInit {
     ngOnInit(): void {
         this.paginationService.url = 'v1/containers';
         this.messageService.getMessages([
-            'page.container.add-container'
+            'editpage.container.add-container'
         ]).subscribe();
     }
 

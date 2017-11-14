@@ -14,11 +14,13 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, ElementRef } from '@angular/core';
 import { ContainerSelectorComponent } from './container-selector.component';
 
-describe('ContainerSelectorComponent', () => {
+fdescribe('ContainerSelectorComponent', () => {
     let comp: ContainerSelectorComponent;
     let fixture: ComponentFixture<ContainerSelectorComponent>;
     let de: DebugElement;
     let el: HTMLElement;
+    let searchableDropdownComponent;
+    let containers: Container[];
 
     beforeEach(async(() => {
         const messageServiceMock = new MockMessageService({
@@ -40,9 +42,9 @@ describe('ContainerSelectorComponent', () => {
         de = fixture.debugElement;
         el = de.nativeElement;
 
-        this.searchableDropdownComponent = de.query(By.css('searchable-dropdown')).componentInstance;
+        searchableDropdownComponent = de.query(By.css('searchable-dropdown')).componentInstance;
 
-        this.containers = [
+        containers = [
             {
                 categoryId: '427c47a4-c380-439f-a6d0-97d81deed57e',
                 deleted: false,
@@ -74,7 +76,7 @@ describe('ContainerSelectorComponent', () => {
 
         fixture.detectChanges();
 
-        this.searchableDropdownComponent.pageChange.emit({
+        searchableDropdownComponent.pageChange.emit({
             filter: filter,
             first: 10,
             page: page,
@@ -97,8 +99,7 @@ describe('ContainerSelectorComponent', () => {
 
         fixture.detectChanges();
 
-        this.searchableDropdownComponent.filterChange.emit(filter);
-        comp.handleFilterChange(filter);
+        searchableDropdownComponent.filterChange.emit(filter);
 
         tick();
         expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
@@ -106,7 +107,7 @@ describe('ContainerSelectorComponent', () => {
     }));
 
     it('should emit an event of close when click on the X icon top-right', () => {
-        const removeBlockElem: DebugElement = de.query(By.css('.head-container__close-containers'));
+        const removeBlockElem: DebugElement = de.query(By.css('.container-selector__header-remove'));
         let removeAction;
 
         comp.remove.subscribe(res => {
@@ -120,11 +121,11 @@ describe('ContainerSelectorComponent', () => {
 
     it('should add containers to containers list and emit a change event', () => {
 
-        comp.currentContainers = this.containers;
+        comp.currentContainers = containers;
 
-        this.searchableDropdownComponent.change.emit(this.containers[0]);
+        searchableDropdownComponent.change.emit(containers[0]);
 
-        expect(comp.selectedContainersList).toContain(this.containers[0]);
+        expect(comp.selectedContainersList).toContain(containers[0]);
         expect(comp.selectedContainersList.length).toEqual(1);
     });
 
@@ -133,15 +134,15 @@ describe('ContainerSelectorComponent', () => {
         const bodySelectorList = de.query(By.css('.container-selector__list'));
         const bodySelectorListItems = bodySelectorList.nativeElement.children;
 
-        comp.currentContainers = this.containers;
+        comp.currentContainers = containers;
 
-        this.searchableDropdownComponent.change.emit(this.containers[0]);
+        searchableDropdownComponent.change.emit(containers[0]);
 
         fixture.detectChanges();
 
         bodySelectorListItems[0].children[0].click();
 
-        expect(comp.selectedContainersList).not.toContain(this.containers[0]);
+        expect(comp.selectedContainersList).not.toContain(containers[0]);
         expect(comp.selectedContainersList.length).toEqual(0);
     });
 });

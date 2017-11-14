@@ -1,18 +1,18 @@
 <div class="container-selector">
-    <div class="head-container">
+    <div class="container-selector__header">
         <searchable-dropdown
             (change)="containerChange($event)"
             (filterChange)="handleFilterChange($event)"
             (pageChange)="handlePageChange($event)"
             [data]="currentContainers"
-            [pageLinkSize]="3"
+            [pageLinkSize]="5"
             [rows]="paginationService.paginationPerPage"
             [totalRecords]="paginationService.totalRecords"
-            class="container-selector"
             labelPropertyName="name"
-            persistentPlaceholder="{{messageService.get('page.container.add-container')}}">
+            placeholder="{{messageService.get('editpage.container.add-container')}}"
+            persistentPlaceholder="true">
         </searchable-dropdown>
-        <button class="head-container__close-containers" pButton iconButton flat icon="fa-close" (click)="remove.emit($event)"></button>
+        <button class="container-selector__header-remove" pButton iconButton flat icon="fa-close" (click)="remove.emit($event)"></button>
     </div>
     <ul class="container-selector__list">
         <li *ngFor="let container of selectedContainersList; let i = index">
