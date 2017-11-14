@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotLayoutGridComponent } from './dot-layout-grid.component';
+import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
 
-describe('DotLayoutGridComponent', () => {
-  let component: DotLayoutGridComponent;
-  let fixture: ComponentFixture<DotLayoutGridComponent>;
+describe('DotEditLayoutGridComponent', () => {
+  let component: DotEditLayoutGridComponent;
+  let fixture: ComponentFixture<DotEditLayoutGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DotLayoutGridComponent ]
+      declarations: [ DotEditLayoutGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotLayoutGridComponent);
+    fixture = TestBed.createComponent(DotEditLayoutGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

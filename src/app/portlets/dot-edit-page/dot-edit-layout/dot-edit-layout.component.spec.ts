@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotLayoutComponent } from './dot-layout.component';
+import { DotEditLayoutComponent } from './dot-edit-layout.component';
 
-describe('DotLayoutComponent', () => {
-  let component: DotLayoutComponent;
-  let fixture: ComponentFixture<DotLayoutComponent>;
+describe('DotEditLayoutComponent', () => {
+  let component: DotEditLayoutComponent;
+  let fixture: ComponentFixture<DotEditLayoutComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DotLayoutComponent ]
+      declarations: [ DotEditLayoutComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotLayoutComponent);
+    fixture = TestBed.createComponent(DotEditLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

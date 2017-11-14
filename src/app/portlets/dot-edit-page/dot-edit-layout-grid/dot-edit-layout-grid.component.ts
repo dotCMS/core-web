@@ -8,12 +8,13 @@ interface DotLayoutBlock {
 }
 
 @Component({
-    selector: 'dot-layout-grid',
-    templateUrl: './dot-layout-grid.component.html',
-    styleUrls: ['./dot-layout-grid.component.scss']
+    selector: 'dot-edit-layout-grid',
+    templateUrl: './dot-edit-layout-grid.component.html',
+    styleUrls: ['./dot-edit-layout-grid.component.scss']
 })
-export class DotLayoutGridComponent implements OnInit {
+export class DotEditLayoutGridComponent implements OnInit {
     public boxes: Array<DotLayoutBlock> = [];
+    private static maxColumns: number = 12;
     private static newRowTemplate: NgGridItemConfig = { fixed: true, sizex: 3, maxCols: 12, maxRows: 1 };
     private static defaultEmptyGridRows: NgGridItemConfig = {
         fixed: true,
@@ -23,15 +24,16 @@ export class DotLayoutGridComponent implements OnInit {
         col: 1,
         row: 1
     };
+
     actionItems: [any];
     addButton;
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [3],
         draggable: true,
         resizable: true,
-        max_cols: 12,
+        max_cols: DotEditLayoutGridComponent.maxColumns,
         max_rows: 0,
-        visible_cols: 12,
+        visible_cols: DotEditLayoutGridComponent.maxColumns,
         // 'visible_rows': 12,
         min_cols: 1,
         min_rows: 1,
@@ -55,7 +57,7 @@ export class DotLayoutGridComponent implements OnInit {
         this.boxes = [
             {
                 id: 0,
-                config: Object.assign({}, DotLayoutGridComponent.defaultEmptyGridRows)
+                config: Object.assign({}, DotEditLayoutGridComponent.defaultEmptyGridRows)
             }
         ];
         this.addButton = () => {
@@ -91,7 +93,7 @@ export class DotLayoutGridComponent implements OnInit {
 
     private getLastBoxOnGrid(): NgGridItemConfig {
         let lastBox;
-        let newRow: NgGridItemConfig = Object.assign({}, DotLayoutGridComponent.newRowTemplate);
+        let newRow: NgGridItemConfig = Object.assign({}, DotEditLayoutGridComponent.newRowTemplate);
         if (this.boxes.length) {
             // check last row && last column in last row
             lastBox = this.boxes.reduce((a, b) => {
@@ -99,7 +101,7 @@ export class DotLayoutGridComponent implements OnInit {
                     ? a
                     : a.config.row == b.config.row ? (a.config.col > b.config.col ? a : b) : b;
             });
-            if (lastBox.config.col + 3 < 12) {
+            if (lastBox.config.col + DotEditLayoutGridComponent.newRowTemplate.sizex < DotEditLayoutGridComponent.maxColumns) {
                 newRow.row = lastBox.config.row;
                 newRow.col = lastBox.config.col + lastBox.config.sizex;
             } else {
