@@ -103,6 +103,9 @@ export class DotEditLayoutGridComponent implements OnInit {
         return newRow;
     }
 
+    /**
+     *
+     */
     private deleteEmptyRows(): void {
         setTimeout(() => {
             let containersByRow = this.sortContainersByRow(this.gridContainers);
@@ -118,7 +121,7 @@ export class DotEditLayoutGridComponent implements OnInit {
         }, 0);
     }
 
-    private sortContainersByRow(containers: Array<DotLayoutBlock>) {
+    private sortContainersByRow(containers: Array<DotLayoutBlock>): Array<DotLayoutBlock[]> {
         let containersByRow = [];
         containers.forEach(container => {
             containersByRow[container.config.row] === undefined
