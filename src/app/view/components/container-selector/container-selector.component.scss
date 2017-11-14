@@ -17,16 +17,13 @@
     height: 48px; 
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: $basic-padding $basic-padding * 2; 
     background-color: $gray-lighter; 
 
     .ui-button {
         background: transparent;
     }
-}
-
-.container-selector__header-remove {
-    padding-top: $basic-padding;
 }
 
 .container-selector__list {
