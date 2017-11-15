@@ -1,6 +1,6 @@
-<action-button [command]="addButton"></action-button>
+<action-button [command]="addContainer()"></action-button>
 <div [ngGrid]="gridConfig"
-     (onDragStop)="dotOnDragStop()"
+     (onDragStop)="OnDragStop()"
      class="dot-edit-layout-grid__grid">
 
     <div style="background: #b2b2b2; border: 1px solid red;"
