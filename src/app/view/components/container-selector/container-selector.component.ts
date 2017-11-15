@@ -34,8 +34,10 @@ export class ContainerSelectorComponent implements OnInit {
      * @memberof ContainerSelectorComponent
      */
     containerChange(container: Container): void {
-        this.selectedContainersList.push(container);
-        this.change.emit(this.selectedContainersList);
+        if (this.selectedContainersList.indexOf(container) < 0) {
+            this.selectedContainersList.push(container);
+            this.change.emit(this.selectedContainersList);
+        }
     }
 
     /**
