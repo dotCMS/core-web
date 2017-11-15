@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgGridConfig, NgGridItemConfig } from 'angular2-grid';
+import _ from 'lodash';
 
 //Final Object need to be defined.
-interface DotLayoutBlock {
+interface DotLayoutContainer {
     id: string;
-    config: any;
+    config: NgGridItemConfig;
 }
 
 @Component({
@@ -13,7 +14,7 @@ interface DotLayoutBlock {
     styleUrls: ['./dot-edit-layout-grid.component.scss']
 })
 export class DotEditLayoutGridComponent implements OnInit {
-    public gridContainers: Array<DotLayoutBlock> = [];
+    public gridContainers: Array<DotLayoutContainer> = [];
     private static maxColumns: number = 12;
     private static newRowTemplate: NgGridItemConfig = { fixed: true, sizex: 3, maxCols: 12, maxRows: 1 };
     private static defaultEmptyGridRows: NgGridItemConfig = {
@@ -52,6 +53,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
+        console.log('test');
         this.gridContainers = [
             {
                 id: Math.random().toString(),
@@ -64,11 +66,11 @@ export class DotEditLayoutGridComponent implements OnInit {
     }
 
     addBox(): void {
-        let conf: NgGridItemConfig = this.getLastContainerOnGrid();
+        let conf: NgGridItemConfig = this.setConfigOfNewContainer();
         this.gridContainers.push({ id: Math.random().toString(), config: conf });
     }
 
-    removeWidget(index: number): void {
+    removeContainer(index: number): void {
         if (this.gridContainers[index]) {
             this.gridContainers.splice(index, 1);
             this.deleteEmptyRows();
@@ -79,20 +81,21 @@ export class DotEditLayoutGridComponent implements OnInit {
         this.deleteEmptyRows();
     }
 
-    private getLastContainerOnGrid(): NgGridItemConfig {
+    private setConfigOfNewContainer(): NgGridItemConfig {
         let lastContainer;
         let newRow: NgGridItemConfig = Object.assign({}, DotEditLayoutGridComponent.newRowTemplate);
         if (this.gridContainers.length) {
+            //TODO: Try to make this simpler with lodash.
             // check last row && last column in last row
             lastContainer = this.gridContainers.reduce((a, b) => {
                 return a.config.row > b.config.row
                     ? a
                     : a.config.row == b.config.row ? (a.config.col > b.config.col ? a : b) : b;
             });
-            if (
-                lastContainer.config.col + DotEditLayoutGridComponent.newRowTemplate.sizex <
+            if ((lastContainer.config.col-1 + lastContainer.config.sizex +
+                    DotEditLayoutGridComponent.newRowTemplate.sizex) <=
                 DotEditLayoutGridComponent.maxColumns
-            ) {
+            ){
                 newRow.row = lastContainer.config.row;
                 newRow.col = lastContainer.config.col + lastContainer.config.sizex;
             } else {
@@ -103,31 +106,26 @@ export class DotEditLayoutGridComponent implements OnInit {
         return newRow;
     }
 
-    /**
-     *
-     */
     private deleteEmptyRows(): void {
+        //TODO: Find a solution to remove setTimeOut
         setTimeout(() => {
-            let containersByRow = this.sortContainersByRow(this.gridContainers);
-            let filteredRows = containersByRow.filter(contArr => contArr);
-
-            // If is the same size don't re-Order nothing.
-            if (filteredRows.length != containersByRow.length - 1) {
-                filteredRows.forEach((containerArr, index) => {
-                    if (containerArr[0].config.row != index + 1)
-                        containerArr.forEach(container => (container.config.row = index + 1));
-                });
-            }
+            this.gridContainers = _.chain(this.gridContainers)
+                .sortBy('config.row')
+                .groupBy('config.row')
+                .values()
+                .map(this.updateContainerIndex)
+                .flatten()
+                .value();
         }, 0);
     }
 
-    private sortContainersByRow(containers: Array<DotLayoutBlock>): Array<DotLayoutBlock[]> {
-        let containersByRow = [];
-        containers.forEach(container => {
-            containersByRow[container.config.row] === undefined
-                ? (containersByRow[container.config.row] = new Array(container))
-                : containersByRow[container.config.row].push(container);
-        });
-        return containersByRow;
+    private updateContainerIndex(rowArray, index) {
+        if (rowArray[0].row != index + 1) {
+            return rowArray.map(container => {
+                container.config.row = index + 1;
+                return container;
+            });
+        }
+        return rowArray;
     }
 }
