@@ -28,6 +28,7 @@ fdescribe('DotEditLayoutGridComponent', () => {
         fixture = DOTTestBed.createComponent(DotEditLayoutGridComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+
         addContainer = component.addContainer();
     });
 
@@ -60,4 +61,13 @@ fdescribe('DotEditLayoutGridComponent', () => {
         component.removeContainer(0);
         expect(component.gridContainers.length).toEqual(1);
     });
+
+    it('should create a new row with a basic configuration object', () => {
+        addContainer();
+        expect(component.gridContainers[1].config).toBeDefined();
+        expect(component.gridContainers[1].config.row).toBeDefined();
+        expect(component.gridContainers[1].config.sizex).toBeDefined();
+        expect(component.gridContainers[1].config.col).toBeDefined();
+    });
+
 });
