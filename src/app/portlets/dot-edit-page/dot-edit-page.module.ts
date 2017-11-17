@@ -1,3 +1,4 @@
+import { PageViewResolver } from './dot-edit-page-resolver.service';
 import { PageViewService } from './../../api/services/page-view/page-view.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,6 +12,6 @@ import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';
 @NgModule({
     imports: [ CommonModule, NgGridModule, IconButtonTooltipModule, ActionButtonModule, DotEditPageRoutingModule ],
     declarations: [ DotEditLayoutGridComponent, DotEditLayoutComponent ],
-    providers: [ PageViewService ]
+    providers: [ PageViewService, PageViewResolver ]
 })
 export class DotEditPageModule {}
