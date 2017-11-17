@@ -50,10 +50,6 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/portlets/dot-browser/dot-browser.module#DotBrowserModule'
     },
     {
-        path: 'dot-edit-page',
-        loadChildren: 'app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
-    },
-    {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'pl',
@@ -64,7 +60,7 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
     {
-        path: 'page',
+        path: 'edit-page',
         loadChildren: 'app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
     },
     {

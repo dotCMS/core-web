@@ -1,3 +1,4 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./dot-edit-layout.component.scss']
 })
 export class DotEditLayoutComponent implements OnInit {
-    constructor() {}
+    data: any;
 
-    ngOnInit() {}
+    constructor(public router: Router, private route: ActivatedRoute) {}
+
+    ngOnInit(): void {
+        this.route.data.pluck('pageView').subscribe(res => this.data = res);
+        console.log('data: ', this.data);
+    }
 }

@@ -6,6 +6,8 @@ import { DotEditLayoutComponent } from './layout/dot-edit-layout/dot-edit-layout
 import { NgGridModule } from 'angular2-grid';
 import { IconButtonTooltipModule} from '../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionButtonModule } from '../../view/components/_common/action-button/action-button.module';
+import { PageViewResolver } from './dot-edit-page-resolver.service';
+import { PageViewService } from './../../api/services/page-view/page-view.service';
 
 const dotPageRoutes: Routes = [
     {
@@ -14,7 +16,14 @@ const dotPageRoutes: Routes = [
     },
     {
         component: DotEditLayoutComponent,
-        path: 'layout'
+        path: 'layout',
+        resolve: {
+            pageView: PageViewResolver
+        }
+    },
+    {
+        component: DotEditLayoutComponent,
+        path: 'layout/:url'
     }
 ];
 
@@ -29,6 +38,10 @@ const dotPageRoutes: Routes = [
     declarations: [
         DotEditLayoutGridComponent,
         DotEditLayoutComponent
+    ],
+    providers: [
+        PageViewService,
+        PageViewResolver
     ]
 })
 export class DotEditPageModule {}
