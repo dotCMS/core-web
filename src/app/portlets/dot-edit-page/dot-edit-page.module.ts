@@ -8,10 +8,18 @@ import { NgGridModule } from 'angular2-grid';
 import { IconButtonTooltipModule } from '../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionButtonModule } from '../../view/components/_common/action-button/action-button.module';
 import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';
+import { ContainerSelectorModule } from '../../view/components/container-selector/container-selector.module';
 
 @NgModule({
-    imports: [ CommonModule, NgGridModule, IconButtonTooltipModule, ActionButtonModule, DotEditPageRoutingModule ],
-    declarations: [ DotEditLayoutGridComponent, DotEditLayoutComponent ],
-    providers: [ PageViewService, PageViewResolver ]
+    imports: [
+        CommonModule,
+        NgGridModule,
+        IconButtonTooltipModule,
+        ActionButtonModule,
+        DotEditPageRoutingModule,
+        ContainerSelectorModule
+    ],
+    declarations: [DotEditLayoutGridComponent, DotEditLayoutComponent],
+    providers: [PageViewService, PageViewResolver]
 })
 export class DotEditPageModule {}
