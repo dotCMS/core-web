@@ -9,12 +9,10 @@ import { TestBed, async } from '@angular/core/testing';
 import { PageViewResolver } from './dot-edit-page-resolver.service';
 
 class PageViewServiceMock {
-    get() {}
+    get(url) { }
 }
 
-class DotRouterServiceMock {
-    gotoPortlet() {}
-}
+class DotRouterServiceMock { }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
     'toString'
@@ -39,7 +37,7 @@ describe('ContentTypeResolver', () => {
                         useValue: activatedRouteSnapshotMock
                     }
                 ],
-                imports: [RouterTestingModule]
+                imports: [ RouterTestingModule ]
             });
 
             router = TestBed.get(ActivatedRouteSnapshot);
@@ -48,8 +46,8 @@ describe('ContentTypeResolver', () => {
         })
     );
 
-    xit('should get and return a pageView', () => {
-        activatedRouteSnapshotMock.queryParams.url = () => 'about-us';
+    it('should do a resolve and return an object', () => {
+        let result: any;
 
         spyOn(pageViewService, 'get').and.returnValue(
             Observable.of({
@@ -57,13 +55,21 @@ describe('ContentTypeResolver', () => {
             })
         );
 
-        pageViewResolver.resolve(activatedRouteSnapshotMock).subscribe((fakeRes: any) => {
-            expect(fakeRes).toEqual({
-                object: 'Fake object'
-            });
-        });
+        pageViewResolver.resolve(activatedRouteSnapshotMock).subscribe((fakeRes: any) => result = fakeRes);
+
+        expect(result).toEqual({ object: 'Fake object' });
+    });
+
+    it('should do a get request with url param', () => {
+        let result: any;
+        // activatedRouteSnapshotMock.queryParams.url = () => 'about-us';
+
+        spyOn(pageViewService, 'get').and.returnValue(
+            Observable.of({})
+        );
+
+        pageViewService.get('about-us').subscribe(items => result = items);
 
         expect(pageViewService.get).toHaveBeenCalledWith('about-us');
-
     });
 });
