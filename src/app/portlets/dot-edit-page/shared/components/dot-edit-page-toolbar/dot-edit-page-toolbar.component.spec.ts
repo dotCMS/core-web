@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { MessageService } from '../../../../../api/services/messages-service';
 import { MockMessageService } from '../../../../../test/message-service.mock';
 
-describe('DotEditPageToolbarComponent', () => {
+fdescribe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
