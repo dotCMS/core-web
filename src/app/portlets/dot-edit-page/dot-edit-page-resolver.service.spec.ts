@@ -48,7 +48,7 @@ describe('ContentTypeResolver', () => {
         })
     );
 
-    it('should get and return a pageView', () => {
+    xit('should get and return a pageView', () => {
         activatedRouteSnapshotMock.queryParams.url = () => 'about-us';
 
         spyOn(pageViewService, 'get').and.returnValue(
