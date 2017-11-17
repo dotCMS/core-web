@@ -12,12 +12,13 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } fro
     styleUrls: ['./container-selector.component.scss']
 })
 export class ContainerSelectorComponent implements OnInit {
+    @Input() selectedContainersList: Container[] = [];
     @Output() change: EventEmitter<Container[]> = new EventEmitter();
     @Output() remove: EventEmitter<any> = new EventEmitter();
 
     totalRecords: number;
     currentContainers: Container[] = [];
-    selectedContainersList: Container[] = [];
+
 
     constructor(public paginationService: PaginatorService, public messageService: MessageService) { }
 
@@ -72,6 +73,7 @@ export class ContainerSelectorComponent implements OnInit {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe(items => {
             this.currentContainers = items.splice(0);
+            console.log( this.currentContainers);
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
     }

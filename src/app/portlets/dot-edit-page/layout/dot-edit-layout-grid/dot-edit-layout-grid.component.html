@@ -2,10 +2,9 @@
 <div [ngGrid]="gridConfig"
      (onDragStop)="OnDragStop()"
      class="dot-edit-layout-grid__grid">
-
-    <div style="background: #b2b2b2; border: 1px solid red;"
-         *ngFor="let container of gridContainers; let i = index"
-         [(ngGridItem)]="container.config">Index: {{i}}
-        <a (click)="removeContainer(i)">Remove</a>
-    </div>
+    <dot-container-selector *ngFor="let container of gridContainers; let i = index"
+        [(ngGridItem)]="container.config"
+        [selectedContainersList]="container.containers"
+        (remove)="onRemoveContainer(i)">
+    </dot-container-selector>
 </div>
