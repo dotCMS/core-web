@@ -4,7 +4,10 @@ import _ from 'lodash';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { MessageService } from '../../../../api/services/messages-service';
 import { LayoutGridBox } from '../../shared/models/layout-grid-box.model';
-import { PageView} from '../../shared/models/page-view.model';
+import { PageView } from '../../shared/models/page-view.model';
+import { LayoutBody } from '../../shared/models/layout-body.model';
+import { LayoutRow } from '../../shared/models/layout-row.model';
+import { LayoutColumn } from '../../shared/models/layout-column.model';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -175,10 +178,13 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     private transformDataToDisplayOnGrid(resp): any {
         let grid = [];
+        debugger;
         resp.layout.body.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
-                    containers: column.containers.map(containerId => resp.containers[containerId].container),
+                    containers: column.containers.map(
+                        containerId => (resp.containers[containerId] ? resp.containers[containerId].container : containerId)
+                    ),
                     config: Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,
@@ -190,7 +196,32 @@ export class DotEditLayoutGridComponent implements OnInit {
         return grid;
     }
 
-    private transformDataforSafe(): any {
-        return null;
+    public getLayoutBody(): LayoutBody {
+        return this.transformDataToLayoutBody();
+    }
+
+    private transformDataToLayoutBody(): LayoutBody {
+        return <LayoutBody>{
+            rows: _.chain(this.gridContainers)
+                .sortBy('config.row')
+                .sortBy('config.col')
+                .groupBy('config.row')
+                .values()
+                .map(this.convertToLayoutRow)
+                .value()
+        };
+    }
+
+    private convertToLayoutRow(gridBoxes: LayoutGridBox[]): LayoutRow {
+        return {
+            columns: gridBoxes.map(
+                (layoutGridBox: LayoutGridBox) =>
+                    <LayoutColumn>{
+                        leftOffset: layoutGridBox.config.col,
+                        width: layoutGridBox.config.sizex,
+                        containers: layoutGridBox.containers.map(container => container.identifier)
+                    }
+            )
+        };
     }
 }

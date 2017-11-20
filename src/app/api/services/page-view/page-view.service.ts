@@ -34,7 +34,9 @@ export class PageViewService {
      */
     save(pageView: PageView): Observable<any> {
         return this.coreWebService.requestView({
-            body: pageView.layout,
+            body: {
+                layout: pageView.layout
+            },
             method: RequestMethod.Post,
             url: `v1/page/${pageView.page.identifier}/layout`
         }).pluck('entity');
