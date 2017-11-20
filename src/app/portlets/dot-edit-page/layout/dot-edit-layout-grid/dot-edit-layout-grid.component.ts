@@ -178,7 +178,6 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     private transformDataToDisplayOnGrid(resp): any {
         let grid = [];
-        debugger;
         resp.layout.body.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
