@@ -14,7 +14,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { DebugElement, ElementRef } from '@angular/core';
 import { ContainerSelectorComponent } from './container-selector.component';
 
-describe('ContainerSelectorComponent', () => {
+fdescribe('ContainerSelectorComponent', () => {
     let comp: ContainerSelectorComponent;
     let fixture: ComponentFixture<ContainerSelectorComponent>;
     let de: DebugElement;
