@@ -72,7 +72,7 @@ describe('DotEditLayoutGridComponent', () => {
     });
 
     it('should remove one Container from the Grid', () => {
-        //TODO: This test need to be updated with the lastest functionality.
+        //TODO: This test need to be updated with the latest functionality.
         // addContainer();
         // component.removeContainer(0);
         // expect(component.gridContainers.length).toEqual(1);
