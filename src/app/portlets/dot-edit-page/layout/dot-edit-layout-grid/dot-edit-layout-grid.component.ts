@@ -2,14 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 import _ from 'lodash';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
-import { Container } from '../../shared/models/container.model';
 import { MessageService } from '../../../../api/services/messages-service';
-
-//Final Object need to be defined.
-interface DotLayoutContainer {
-    config: NgGridItemConfig;
-    containers: Container[];
-}
+import { LayoutGridBox } from '../../shared/models/layout-grid-box.model';
+import { PageView} from '../../shared/models/page-view.model';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -22,8 +17,8 @@ interface DotLayoutContainer {
     styleUrls: ['./dot-edit-layout-grid.component.scss']
 })
 export class DotEditLayoutGridComponent implements OnInit {
-    @Input() layout: any;
-    public gridContainers: DotLayoutContainer[];
+    @Input() pageView: PageView;
+    public gridContainers: LayoutGridBox[];
     private static MAX_COLUMNS: number = 12;
     private static NEW_ROW_TEMPLATE: NgGridItemConfig = { fixed: true, sizex: 3, maxCols: 12, maxRows: 1 };
     private static DEFAULT_EMPTY_GRID_ROWS: NgGridItemConfig = {
@@ -71,8 +66,8 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
-        if (this.layout) {
-            this.gridContainers = this.transformDataToDisplayOnGrid(this.layout);
+        if (this.pageView) {
+            this.gridContainers = this.transformDataToDisplayOnGrid(this.pageView);
         } else {
             this.gridContainers = [
                 {
@@ -135,7 +130,7 @@ export class DotEditLayoutGridComponent implements OnInit {
         if (this.gridContainers.length) {
             // check last row && last column in last row
             lastContainer = this.gridContainers.reduce(
-                (currentContainer: DotLayoutContainer, nextContainer: DotLayoutContainer) => {
+                (currentContainer: LayoutGridBox, nextContainer: LayoutGridBox) => {
                     return currentContainer.config.row > currentContainer.config.row
                         ? currentContainer
                         : currentContainer.config.row == nextContainer.config.row
@@ -186,7 +181,7 @@ export class DotEditLayoutGridComponent implements OnInit {
                     containers: column.containers.map(containerId => resp.containers[containerId].container),
                     config: Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE, {
                         sizex: column.width,
-                        col: column.leftIndex,
+                        col: column.leftOffset,
                         row: rowIndex + 1
                     })
                 });

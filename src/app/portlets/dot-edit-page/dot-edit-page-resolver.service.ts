@@ -2,12 +2,11 @@ import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { PageViewService } from './../../api/services/page-view/page-view.service';
 import { Injectable } from '@angular/core';
-import { DotRouterService } from './../../api/services/dot-router-service';
+import { PageView } from './shared/models/page-view.model';
 
 @Injectable()
 export class PageViewResolver implements Resolve<any> {
     constructor(
-        private dotRouterService: DotRouterService,
         private pageViewService: PageViewService
     ) {}
 
@@ -21,7 +20,7 @@ export class PageViewResolver implements Resolve<any> {
         return this.getPageView(route.queryParams.url);
     }
 
-    private getPageView(url: string): Observable<any> {
+    private getPageView(url: string): Observable<PageView> {
         return this.pageViewService.get(url);
     }
 }

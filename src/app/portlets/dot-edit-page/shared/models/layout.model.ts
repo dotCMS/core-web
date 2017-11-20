@@ -1,21 +1,10 @@
+import { LayoutBody } from './layout-body.model';
+import { LayoutSideBar } from './layout-sidebar.model';
+
 export interface Layout {
-    body: Body;
+    body: LayoutBody;
     footer: boolean;
     header: boolean;
-    layout: string;
-    pageWidth: string;
-    sidebar: boolean;
+    sidebar: LayoutSideBar;
     title: string;
-    width: string;
-}
-
-interface Body {
-    containers: object;
-    location: object;
-    preview: boolean;
-    rows: Array<any>;
-    sidebar: boolean;
-    type: string;
-    width: string;
-    widthPercent: number;
 }
