@@ -6,7 +6,7 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { PageViewService } from './page-view.service';
 import { DOTTestBed } from './../../../test/dot-test-bed';
 
-describe('PageViewService', () => {
+fdescribe('PageViewService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             PageViewService
@@ -21,7 +21,7 @@ describe('PageViewService', () => {
         let result: any;
         this.pageViewService.get('about-us').subscribe(items => result = items);
 
-        expect(this.lastConnection.request.url).toContain('v1/page/render/about-us');
+        expect(this.lastConnection.request.url).toContain('v1/page/render/about-us?live=false');
     });
 
     xit('should do a get request and return a pageView', fakeAsync(() => {
@@ -46,5 +46,22 @@ describe('PageViewService', () => {
         tick();
 
         expect(result).toEqual(mockResponse);
+    }));
+
+    xit('should post data and return an entity', fakeAsync(() => {
+        let result;
+        const mockPageView = {
+            layout: {
+                body: {
+                    containers: ['string1', 'string2'],
+                    rows: ['column']
+                }
+            },
+            page: {}
+        };
+
+        // this.pageViewService.save(mockPageView).subscribe(res => {
+        //     result = res;
+        // });
     }));
 });

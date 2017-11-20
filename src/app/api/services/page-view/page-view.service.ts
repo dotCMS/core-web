@@ -16,13 +16,27 @@ export class PageViewService {
     /**
      * Get object response by url endpoint
      * @param {string} url
-     * @returns {Observable<any>}
+     * @returns {Observable<PageView>}
      * @memberof PageViewService
      */
     get(url: string): Observable<PageView> {
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
-            url: `v1/page/render/${url}`
+            url: `v1/page/render/${url}?live=false`
         }).pluck('bodyJsonObject');
+    }
+
+    /**
+     * Will do a POST request and return the response of the URL provided
+     * @param {PageView} pageView
+     * @returns {Observable<any>}
+     * @memberof PageViewService
+     */
+    save(pageView: PageView): Observable<any> {
+        return this.coreWebService.requestView({
+            body: pageView.layout,
+            method: RequestMethod.Post,
+            url: `v1/page/${pageView.page.identifier}/layout`
+        }).pluck('entity');
     }
 }
