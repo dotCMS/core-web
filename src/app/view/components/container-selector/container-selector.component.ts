@@ -73,8 +73,14 @@ export class ContainerSelectorComponent implements OnInit {
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe(items => {
             this.currentContainers = items.splice(0);
-            console.log( this.currentContainers);
+            // this.currentContainers = items.splice(0).map(container => this.handleCurrentContainers(container, this.selectedContainersList));
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
+    }
+
+    private handleCurrentContainers(container: any, selectedContainersList: Container[]): any {
+        if (selectedContainersList.includes(container)) {
+            console.log('container', container);
+        }
     }
 }

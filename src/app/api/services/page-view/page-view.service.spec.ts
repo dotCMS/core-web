@@ -17,7 +17,7 @@ describe('PageViewService', () => {
         this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
     });
 
-    xit('should do a get request with url param', () => {
+    it('should do a get request with url param', () => {
         let result: any;
         this.pageViewService.get('about-us').subscribe(items => result = items);
 
@@ -39,14 +39,12 @@ describe('PageViewService', () => {
 
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify({
-                bodyJsonObject: mockResponse
+                entity: mockResponse
             }),
         })));
 
         tick();
 
-        console.log('result: ', result);
-        console.log('mockResponse: ', mockResponse);
         expect(result).toEqual(mockResponse);
     }));
 });
