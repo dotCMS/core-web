@@ -22,6 +22,6 @@ export class PageViewService {
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
             url: `v1/page/render/${url}`
-        });
+        }).pluck('bodyJsonObject');
     }
 }
