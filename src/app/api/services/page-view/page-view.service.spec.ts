@@ -1,3 +1,4 @@
+import { PageView } from './../../../portlets/dot-edit-page/shared/models/page-view.model';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, ResponseOptions } from '@angular/http';
@@ -57,11 +58,33 @@ fdescribe('PageViewService', () => {
                     rows: ['column']
                 }
             },
-            page: {}
+            page: {
+                identifier: 'test38923-82393842-23823'
+            }
         };
 
-        // this.pageViewService.save(mockPageView).subscribe(res => {
-        //     result = res;
-        // });
+        const mockResponse = {
+            entity: [
+                Object.assign({}, mockPageView, {
+                    'iDate': 1495670226000,
+                    'identifier': '1234-id-7890-entifier',
+                    'modDate': 1495670226000
+                })
+            ]
+        };
+
+        this.pageViewService.save(mockPageView).subscribe(res => {
+            console.log('res: ', res);
+            result = res;
+        });
+        this.lastConnection.mockRespond(new Response(new ResponseOptions({
+            body: JSON.stringify(mockResponse)
+        })));
+
+        tick();
+        console.log('Mock Response: ', mockResponse.entity[0]);
+
+        expect(this.lastConnection.request.url).toContain('v1/page/test38923-82393842-23823/layout');
+        expect(result[0]).toEqual(mockResponse.entity[0]);
     }));
 });
