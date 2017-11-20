@@ -120,7 +120,6 @@ describe('ContainerSelectorComponent', () => {
     });
 
     it('should add containers to containers list and emit a change event', () => {
-
         comp.currentContainers = containers;
 
         searchableDropdownComponent.change.emit(containers[0]);
@@ -130,7 +129,6 @@ describe('ContainerSelectorComponent', () => {
     });
 
     it('should remove containers after click on trash icon', () => {
-
         const bodySelectorList = de.query(By.css('.container-selector__list'));
         const bodySelectorListItems = bodySelectorList.nativeElement.children;
 
@@ -144,5 +142,19 @@ describe('ContainerSelectorComponent', () => {
 
         expect(comp.selectedContainersList).not.toContain(containers[0]);
         expect(comp.selectedContainersList.length).toEqual(0);
+    });
+
+   it('should not add duplicated containers to the list', () => {
+        comp.currentContainers = containers;
+
+        searchableDropdownComponent.change.emit(containers[0]);
+        fixture.detectChanges();
+
+        expect(comp.selectedContainersList.length).toEqual(1);
+
+        searchableDropdownComponent.change.emit(containers[0]);
+        fixture.detectChanges();
+
+        expect(comp.selectedContainersList.length).toEqual(1);
     });
 });

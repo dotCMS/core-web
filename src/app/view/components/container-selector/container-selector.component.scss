@@ -20,24 +20,21 @@
     align-items: center;
     padding: $basic-padding $basic-padding * 2; 
     background-color: $gray-lighter; 
-
-    .ui-button {
-        background: transparent;
-    }
 }
 
 .container-selector__list {
-    padding: 0 $basic-padding * 2; 
-    height: 137px;
+    height: 140px;
+    margin: $basic-padding 0;
     overflow-y: scroll;
+    padding: 0 $basic-padding; 
+}
 
-    li {
-        @include naked-list;
-        border-top: 1px solid $gray-lighter;
-        padding: $basic-padding 0;
+.container-selector__list-item {
+    @include naked-list;
+    border-top: 1px solid $gray-lighter;
+    padding: $basic-padding / 2 0;
 
-        &:first-child {
-            border-top: none;
-        }
+    &:first-child {
+        border-top: none;
     }
 }
