@@ -62,7 +62,6 @@ describe('ContentTypeResolver', () => {
 
     it('should do a get request with url param', () => {
         let result: any;
-        // activatedRouteSnapshotMock.queryParams.url = () => 'about-us';
 
         spyOn(pageViewService, 'get').and.returnValue(
             Observable.of({})

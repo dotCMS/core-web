@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { PageView } from '../../../portlets/dot-edit-page/shared/models/page-view.model';
 
 /**
- * Provide util pageView methods
+ * Provide util methods to get and save a PageView object
  * @export
  * @class PageViewService
  */

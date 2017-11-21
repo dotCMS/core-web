@@ -6,21 +6,15 @@ import { PageView } from './shared/models/page-view.model';
 
 @Injectable()
 export class PageViewResolver implements Resolve<any> {
-    constructor(
-        private pageViewService: PageViewService
-    ) {}
+  constructor(private pageViewService: PageViewService) {}
 
-    /**
+  /**
      * Route resolver for layout/:url
      * @param {ActivatedRouteSnapshot} route
      * @returns {Observable<any>}
      * @memberof PageViewResolver
      */
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        return this.getPageView(route.queryParams.url);
-    }
-
-    private getPageView(url: string): Observable<PageView> {
-        return this.pageViewService.get(url);
-    }
+  resolve(route: ActivatedRouteSnapshot): Observable<PageView> {
+    return this.pageViewService.get(route.queryParams.url);
+  }
 }
