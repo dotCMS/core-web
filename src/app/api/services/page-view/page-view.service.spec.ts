@@ -1,9 +1,6 @@
-import { PageView } from '../../../portlets/dot-edit-page/shared/models/dot-page-view.model';
-import { ResponseView } from 'dotcms-js/dotcms-js';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick } from '@angular/core/testing';
 import { PageViewService } from './page-view.service';
 import { DOTTestBed } from './../../../test/dot-test-bed';
 

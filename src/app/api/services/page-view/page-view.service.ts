@@ -32,7 +32,7 @@ export class PageViewService {
      * @returns {Observable<any>}
      * @memberof PageViewService
      */
-    save(pageView: DotPageView): Observable<any> {
+    save(pageView: DotPageView): Observable<DotPageView> {
         return this.coreWebService.requestView({
             body: {
                 layout: pageView.layout

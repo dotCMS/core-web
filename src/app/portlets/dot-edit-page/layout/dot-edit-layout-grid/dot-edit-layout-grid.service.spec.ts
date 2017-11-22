@@ -1,5 +1,3 @@
-import { TestBed, inject, ComponentFixture } from '@angular/core/testing';
-
 import { DotEditLayoutGridService } from './dot-edit-layout-grid.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
@@ -7,20 +5,14 @@ import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model'
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 
 describe('DotEditLayoutGridService', () => {
-    let fixture: ComponentFixture<DotEditLayoutGridService>;
-    let component: DotEditLayoutGridService;
-
     beforeEach(() => {
-        DOTTestBed.configureTestingModule({
-            providers: [DotEditLayoutGridService]
-        });
+        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutGridService]);
 
-        fixture = DOTTestBed.createComponent(DotEditLayoutGridService);
-        component = fixture.componentInstance;
+        this.dotEditLayoutGridService = this.injector.get(DotEditLayoutGridService);
     });
 
     it('should transform the data from the service to the grid format ', () => {
-        let pageView: DotPageView = {
+        const pageView: DotPageView = {
             containers: {
                 '5363c6c6-5ba0-4946-b7af-cf875188ac2e': {
                     container: {
@@ -106,7 +98,7 @@ describe('DotEditLayoutGridService', () => {
                 sidebar: null
             }
         };
-        let grid: DotLayoutGridBox[] = component.getDotLayoutGridBox(pageView, {
+        const grid: DotLayoutGridBox[] = this.dotEditLayoutGridService.getDotLayoutGridBox(pageView, {
             fixed: true,
             sizex: 3,
             maxCols: 12,
@@ -115,13 +107,18 @@ describe('DotEditLayoutGridService', () => {
 
         expect(grid.length).toEqual(4);
         expect(grid[2].containers.length).toEqual(2);
-        expect(grid[3].config.col).toEqual(4);
-        expect(grid[3].config.row).toEqual(2);
-        expect(grid[3].config.sizex).toEqual(3);
+        expect(grid[3].config).toEqual({
+            col: 4,
+            row: 2,
+            sizex: 3,
+            fixed: true,
+            maxCols: 12,
+            maxRows: 1
+        });
     });
 
     it('should transform the grid data to LayoutBody to export the data', () => {
-        let grid: DotLayoutGridBox[] = [
+        const grid: DotLayoutGridBox[] = [
             {
                 containers: [
                     {
@@ -177,12 +174,12 @@ describe('DotEditLayoutGridService', () => {
                 }
             }
         ];
-        let layoutBody: DotLayoutBody = component.getDotLayoutBody(grid);
+        const layoutBody: DotLayoutBody = this.dotEditLayoutGridService.getDotLayoutBody(grid);
 
         expect(layoutBody.rows.length).toEqual(1);
-        expect(layoutBody.rows[0].columns.length).toEqual(2);
-        expect(layoutBody.rows[0].columns[1].containers.length).toEqual(2);
-        expect(layoutBody.rows[0].columns[1].leftOffset).toEqual(9);
-        expect(layoutBody.rows[0].columns[1].width).toEqual(4);
+        expect(layoutBody.rows[0].columns.length).toEqual(2, 'Should create two columns');
+        expect(layoutBody.rows[0].columns[1].containers.length).toEqual(2, 'Should create two containers');
+        expect(layoutBody.rows[0].columns[1].leftOffset).toEqual(9, 'Should set LeftOffset to 9');
+        expect(layoutBody.rows[0].columns[1].width).toEqual(4, 'should create 4 containers for the first row');
     });
 });

@@ -19,13 +19,11 @@ export class DotEditLayoutComponent implements OnInit {
     constructor(public router: Router, private route: ActivatedRoute, private pageViewService: PageViewService) {}
 
     ngOnInit(): void {
-        this.route.data
-            .pluck('pageView')
-            .subscribe((pageView: DotPageView) => (this.pageView = Observable.of(pageView)));
+        this.pageView = this.route.data.pluck('pageView');
     }
 
     public saveLayout() {
-        let layoutBody: DotLayoutBody = this.editLayoutGrid.getLayoutBody();
+        const layoutBody: DotLayoutBody = this.editLayoutGrid.getLayoutBody();
         this.pageView.subscribe(pageView => {
             this.pageViewService
                 .save(<DotPageView>{

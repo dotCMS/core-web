@@ -3,7 +3,7 @@ import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotLayoutRow } from '../../shared/models/dot-layout-row.model';
 import { DotLayoutColumn } from '../../shared/models/dot-layout-column.model';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 
@@ -24,7 +24,7 @@ export class DotEditLayoutGridService {
      * @returns {DotLayoutGridBox[]}
      */
     getDotLayoutGridBox(dotPageView: DotPageView, newRow: NgGridItemConfig): DotLayoutGridBox[] {
-        let grid: DotLayoutGridBox[] = [];
+        const grid: DotLayoutGridBox[] = [];
         dotPageView.layout.body.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({

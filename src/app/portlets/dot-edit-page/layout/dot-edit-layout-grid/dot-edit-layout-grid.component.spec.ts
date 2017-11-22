@@ -3,13 +3,14 @@ import { MockMessageService } from './../../../../test/message-service.mock';
 import { PaginatorService } from './../../../../api/services/paginator/paginator.service';
 import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { ContainerSelectorModule } from './../../../../view/components/container-selector/container-selector.module';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 
 import { NgGridModule } from 'angular2-grid';
 import { Input, Component } from '@angular/core';
 
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DotEditLayoutGridService } from './dot-edit-layout-grid.service';
 
 @Component({
     selector: 'action-button',
@@ -35,6 +36,7 @@ describe('DotEditLayoutGridComponent', () => {
             providers: [
                 DotConfirmationService,
                 PaginatorService,
+                DotEditLayoutGridService,
                 { provide: MessageService, useValue: messageServiceMock }
             ]
         });
@@ -75,11 +77,11 @@ describe('DotEditLayoutGridComponent', () => {
     it('should remove one Container from the Grid', () => {
         component.ngOnInit();
         addContainer();
-        component.onRemoveContainer(1);
         const dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
         spyOn(dotConfirmationService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
+        component.onRemoveContainer(1);
         expect(component.gridContainers.length).toEqual(1);
     });
 
@@ -90,21 +92,32 @@ describe('DotEditLayoutGridComponent', () => {
         expect(component.gridContainers[1].config.row).toBeDefined();
         expect(component.gridContainers[1].config.sizex).toBeDefined();
         expect(component.gridContainers[1].config.col).toBeDefined();
-        expect(component.gridContainers[1].config.row).toEqual(2);
-        expect(component.gridContainers[1].config.sizex).toEqual(3);
-        expect(component.gridContainers[1].config.col).toEqual(1);
+        expect(component.gridContainers[1].config).toEqual({
+            row: 2,
+            sizex: 3,
+            col: 1,
+            fixed: true,
+            maxCols: 12,
+            maxRows: 1
+        });
     });
 
-    it('should remove the empty rows in the grid', () => {
-        component.ngOnInit();
-        addContainer();
-        addContainer();
-        component.gridContainers[0].config.row = 5;
-        component.gridContainers[1].config.row = 2;
-        component.gridContainers[2].config.row = 4;
-        component.OnDragStop();
-        expect(component.gridContainers[0].config.row).toEqual(3);
-        expect(component.gridContainers[1].config.row).toEqual(1);
-        expect(component.gridContainers[2].config.row).toEqual(2);
-    });
+    it(
+        'should remove the empty rows in the grid',
+        fakeAsync(() => {
+            component.ngOnInit();
+            addContainer();
+            addContainer();
+            component.gridContainers[0].config.row = 5;
+            component.gridContainers[0].config.sizex = 5;
+            component.gridContainers[1].config.row = 2;
+            component.gridContainers[2].config.row = 4;
+            component.gridContainers[2].config.sizex = 1;
+            component.OnDragStop();
+            tick();
+            expect(component.gridContainers[0].config.sizex).toEqual(3);
+            expect(component.gridContainers[1].config.sizex).toEqual(1);
+            expect(component.gridContainers[2].config.sizex).toEqual(5);
+        })
+    );
 });

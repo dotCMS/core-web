@@ -1,13 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgGridConfig, NgGridItemConfig } from 'angular2-grid';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { MessageService } from '../../../../api/services/messages-service';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { DotEditLayoutGridService } from './dot-edit-layout-grid.service';
-import { Observable } from 'rxjs/Observable';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -20,9 +19,7 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./dot-edit-layout-grid.component.scss']
 })
 export class DotEditLayoutGridComponent implements OnInit {
-    @Input() pageView: DotPageView;
-    public gridContainers: DotLayoutGridBox[];
-    private static MAX_COLUMNS: number = 12;
+    private static MAX_COLUMNS = 12;
     private static NEW_ROW_TEMPLATE: NgGridItemConfig = { fixed: true, sizex: 3, maxCols: 12, maxRows: 1 };
     private static DEFAULT_EMPTY_GRID_ROWS: NgGridItemConfig = {
         fixed: true,
@@ -32,6 +29,8 @@ export class DotEditLayoutGridComponent implements OnInit {
         col: 1,
         row: 1
     };
+    @Input() pageView: DotPageView;
+    public gridContainers: DotLayoutGridBox[];
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [4, 8, 4, 0],
         draggable: true,
@@ -92,9 +91,9 @@ export class DotEditLayoutGridComponent implements OnInit {
      * Add new container to the gridContainers Arrray.
      */
     addContainer(): () => void {
-        //TODO: This will change when Action Button get fixed.
+        // TODO: This will change when Action Button get fixed.
         return () => {
-            let conf: NgGridItemConfig = this.setConfigOfNewContainer();
+            const conf: NgGridItemConfig = this.setConfigOfNewContainer();
             this.gridContainers.push({ config: conf, containers: [] });
         };
     }
@@ -109,8 +108,9 @@ export class DotEditLayoutGridComponent implements OnInit {
                 this.removeContainer(index);
             },
             header: this.messageService.get('editpage.confirm.header'),
-            message: `${this.messageService.get('editpage.confirm.message.delete')} 
-                        <span>${this.messageService.get('editpage.confirm.message.delete.warning')}</span>`,
+            message: `${this.messageService.get('editpage.confirm.message.delete')}<span>${this.messageService.get(
+                'editpage.confirm.message.delete.warning'
+            )}</span>`,
             footerLabel: {
                 acceptLabel: this.messageService.get('editpage.action.delete'),
                 rejectLabel: this.messageService.get('editpage.action.cancel')
@@ -143,7 +143,7 @@ export class DotEditLayoutGridComponent implements OnInit {
 
     private setConfigOfNewContainer(): NgGridItemConfig {
         let lastContainer;
-        let newRow: NgGridItemConfig = Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE);
+        const newRow: NgGridItemConfig = Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE);
         let busyColumns: number = DotEditLayoutGridComponent.NEW_ROW_TEMPLATE.sizex;
         if (this.gridContainers.length) {
             // check last row && last column in last row
@@ -151,7 +151,7 @@ export class DotEditLayoutGridComponent implements OnInit {
                 (currentContainer: DotLayoutGridBox, nextContainer: DotLayoutGridBox) => {
                     return currentContainer.config.row > currentContainer.config.row
                         ? currentContainer
-                        : currentContainer.config.row == nextContainer.config.row
+                        : currentContainer.config.row === nextContainer.config.row
                           ? currentContainer.config.col > nextContainer.config.col ? currentContainer : nextContainer
                           : nextContainer;
                 }
@@ -169,7 +169,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     }
 
     private deleteEmptyRows(): void {
-        //TODO: Find a solution to remove setTimeOut
+        // TODO: Find a solution to remove setTimeOut
         setTimeout(() => {
             this.gridContainers = _.chain(this.gridContainers)
                 .sortBy('config.row')
@@ -182,7 +182,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     }
 
     private updateContainerIndex(rowArray, index) {
-        if (rowArray[0].row != index + 1) {
+        if (rowArray[0].row !== index + 1) {
             return rowArray.map(container => {
                 container.config.row = index + 1;
                 return container;
