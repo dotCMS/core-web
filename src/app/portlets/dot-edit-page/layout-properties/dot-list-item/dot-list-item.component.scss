@@ -1,0 +1,11 @@
+@import "variables";
+
+:host { 
+    display: block;
+    cursor: pointer;
+    line-height: 28px;
+
+    &:hover {
+        background-color: $gray-lighter; 
+    }
+}
