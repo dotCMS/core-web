@@ -30,7 +30,7 @@ export class DotEditLayoutGridComponent implements OnInit {
         row: 1
     };
     @Input() pageView: DotPageView;
-    public gridContainers: DotLayoutGridBox[];
+    public gridBoxes: DotLayoutGridBox[];
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [4, 8, 4, 0],
         draggable: true,
@@ -73,12 +73,12 @@ export class DotEditLayoutGridComponent implements OnInit {
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
         if (this.pageView) {
-            this.gridContainers = this.dotEditLayoutGridService.getDotLayoutGridBox(
+            this.gridBoxes = this.dotEditLayoutGridService.getDotLayoutGridBox(
                 this.pageView,
                 DotEditLayoutGridComponent.NEW_ROW_TEMPLATE
             );
-        } else if (!this.gridContainers) {
-            this.gridContainers = [
+        } else if (!this.gridBoxes) {
+            this.gridBoxes = [
                 {
                     config: Object.assign({}, DotEditLayoutGridComponent.DEFAULT_EMPTY_GRID_ROWS),
                     containers: []
@@ -88,18 +88,18 @@ export class DotEditLayoutGridComponent implements OnInit {
     }
 
     /**
-     * Add new container to the gridContainers Arrray.
+     * Add new Box to the gridBoxes Arrray.
      */
     addContainer(): () => void {
         // TODO: This will change when Action Button get fixed.
         return () => {
             const conf: NgGridItemConfig = this.setConfigOfNewContainer();
-            this.gridContainers.push({ config: conf, containers: [] });
+            this.gridBoxes.push({ config: conf, containers: [] });
         };
     }
 
     /**
-     * Removes the given index to the gridContainers Array after the user confirms.
+     * Removes the given index to the gridBoxes Array after the user confirms.
      * @param {number} index
      */
     onRemoveContainer(index: number): void {
@@ -131,12 +131,12 @@ export class DotEditLayoutGridComponent implements OnInit {
      * @returns {DotLayoutBody}
      */
     getLayoutBody(): DotLayoutBody {
-        return this.dotEditLayoutGridService.getDotLayoutBody(this.gridContainers);
+        return this.dotEditLayoutGridService.getDotLayoutBody(this.gridBoxes);
     }
 
     private removeContainer(index: number): void {
-        if (this.gridContainers[index]) {
-            this.gridContainers.splice(index, 1);
+        if (this.gridBoxes[index]) {
+            this.gridBoxes.splice(index, 1);
             this.deleteEmptyRows();
         }
     }
@@ -145,9 +145,9 @@ export class DotEditLayoutGridComponent implements OnInit {
         let lastContainer;
         const newRow: NgGridItemConfig = Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE);
         let busyColumns: number = DotEditLayoutGridComponent.NEW_ROW_TEMPLATE.sizex;
-        if (this.gridContainers.length) {
+        if (this.gridBoxes.length) {
             // check last row && last column in last row
-            lastContainer = this.gridContainers.reduce(
+            lastContainer = this.gridBoxes.reduce(
                 (currentContainer: DotLayoutGridBox, nextContainer: DotLayoutGridBox) => {
                     return currentContainer.config.row > currentContainer.config.row
                         ? currentContainer
@@ -171,7 +171,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     private deleteEmptyRows(): void {
         // TODO: Find a solution to remove setTimeOut
         setTimeout(() => {
-            this.gridContainers = _.chain(this.gridContainers)
+            this.gridBoxes = _.chain(this.gridBoxes)
                 .sortBy('config.row')
                 .groupBy('config.row')
                 .values()

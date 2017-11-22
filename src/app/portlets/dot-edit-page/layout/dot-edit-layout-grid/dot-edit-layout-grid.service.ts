@@ -8,7 +8,7 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 
 /**
- * Provide methods to trasform data types, to be able to display it in the NgGrid.
+ * Provide methods to transform data types, to be able to display it in the NgGrid.
  *
  * @class DotEditLayoutGridService
  */
