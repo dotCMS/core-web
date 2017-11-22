@@ -2,7 +2,7 @@ import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { PageView } from '../../../portlets/dot-edit-page/shared/models/page-view.model';
+import { DotPageView } from '../../../portlets/dot-edit-page/shared/models/dot-page-view.model';
 
 /**
  * Provide util methods to get and save a PageView object
@@ -19,7 +19,7 @@ export class PageViewService {
      * @returns {Observable<PageView>}
      * @memberof PageViewService
      */
-    get(url: string): Observable<PageView> {
+    get(url: string): Observable<DotPageView> {
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
             url: `v1/page/render/${url}?live=false`
@@ -32,7 +32,7 @@ export class PageViewService {
      * @returns {Observable<any>}
      * @memberof PageViewService
      */
-    save(pageView: PageView): Observable<any> {
+    save(pageView: DotPageView): Observable<any> {
         return this.coreWebService.requestView({
             body: {
                 layout: pageView.layout

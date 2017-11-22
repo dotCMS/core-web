@@ -1,7 +1,7 @@
 import { NgGridItemConfig } from 'angular2-grid';
-import { Container } from './dot-container.model';
+import { DotContainer } from './dot-container.model';
 
-export interface LayoutGridBox {
+export interface DotLayoutGridBox {
     config: NgGridItemConfig;
-    containers: Container[];
+    containers: DotContainer[];
 }

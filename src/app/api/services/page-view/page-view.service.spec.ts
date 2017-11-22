@@ -1,4 +1,4 @@
-import { PageView } from './../../../portlets/dot-edit-page/shared/models/page-view.model';
+import { PageView } from '../../../portlets/dot-edit-page/shared/models/dot-page-view.model';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';

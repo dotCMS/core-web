@@ -1,6 +1,6 @@
 import { ContentType } from './../../../content-types/shared/content-type.model';
 
-export interface Page {
+export interface DotPage {
     archived?: boolean;
     categoryId?: string;
     content?: boolean;

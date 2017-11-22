@@ -1,5 +1,5 @@
-import { LayoutColumn } from './dot-layout-column.model';
+import { DotLayoutColumn } from './dot-layout-column.model';
 
-export interface LayoutRow {
-    columns: LayoutColumn[];
+export interface DotLayoutRow {
+    columns: DotLayoutColumn[];
 }

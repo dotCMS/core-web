@@ -1,8 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PageView } from '../../shared/models/page-view.model';
+import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotEditLayoutGridComponent } from '../dot-edit-layout-grid/dot-edit-layout-grid.component';
-import { LayoutBody } from '../../shared/models/layout-body.model';
+import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 
 @Component({
@@ -13,18 +13,18 @@ import { PageViewService } from '../../../../api/services/page-view/page-view.se
 export class DotEditLayoutComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
 
-    pageView: PageView;
+    pageView: DotPageView;
 
     constructor(public router: Router, private route: ActivatedRoute, private pageViewService: PageViewService) {}
 
     ngOnInit(): void {
-        this.route.data.pluck('pageView').subscribe((res: PageView) => (this.pageView = res));
+        this.route.data.pluck('pageView').subscribe((res: DotPageView) => (this.pageView = res));
     }
 
     public saveLayout() {
-        let layoutBody: LayoutBody = this.editLayoutGrid.getLayoutBody();
+        let layoutBody: DotLayoutBody = this.editLayoutGrid.getLayoutBody();
         this.pageViewService.save(
-            <PageView> {
+            <DotPageView> {
                 page: this.pageView.page,
                 layout: {
                     body: layoutBody

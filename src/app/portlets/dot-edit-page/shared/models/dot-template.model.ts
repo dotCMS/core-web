@@ -1,4 +1,4 @@
-export interface Template {
+export interface DotTemplate {
     archived?: boolean;
     body?: string;
     categoryId?: string;

@@ -1,9 +1,9 @@
-import { Layout} from './dot-layout.model';
-import { Page } from './page.model';
+import { DotLayout } from './dot-layout.model';
+import { DotPage } from './dot-page.model';
 
-export interface PageView {
-    layout: Layout;
-    page: Page;
+export interface DotPageView {
+    layout: DotLayout;
+    page: DotPage;
     containers?: any
     site?:any
     template?:any

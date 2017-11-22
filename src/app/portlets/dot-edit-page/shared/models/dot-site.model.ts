@@ -1,6 +1,6 @@
 import { ContentType } from './../../../content-types/shared/content-type.model';
 
-export interface Site {
+export interface DotSite {
     archived?: string;
     categoryId?: string;
     contentType: ContentType;

@@ -1,5 +1,5 @@
-import { LayoutRow } from './layout-row.model';
+import { DotLayoutRow } from './dot-layout-row.model';
 
-export interface LayoutBody {
-    rows: LayoutRow[];
+export interface DotLayoutBody {
+    rows: DotLayoutRow[];
 }

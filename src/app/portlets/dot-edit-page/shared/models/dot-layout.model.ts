@@ -1,10 +1,10 @@
-import { LayoutBody } from './layout-body.model';
-import { LayoutSideBar } from './layout-sidebar.model';
+import { DotLayoutBody } from './dot-layout-body.model';
+import { DotLayoutSideBar } from './dot-layout-sidebar.model';
 
-export interface Layout {
-    body: LayoutBody;
+export interface DotLayout {
+    body: DotLayoutBody;
     footer: boolean;
     header: boolean;
-    sidebar: LayoutSideBar;
+    sidebar: DotLayoutSideBar;
     title: string;
 }
