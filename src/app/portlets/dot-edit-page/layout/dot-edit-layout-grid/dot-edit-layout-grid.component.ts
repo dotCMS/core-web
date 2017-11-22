@@ -71,7 +71,7 @@ export class DotEditLayoutGridComponent implements OnInit {
         this.messageService.getMessages(this.i18nKeys).subscribe();
         if (this.pageView) {
             this.gridContainers = this.transformDataToDisplayOnGrid(this.pageView);
-        } else {
+        } else if (!this.gridContainers) {
             this.gridContainers = [
                 {
                     config: Object.assign({}, DotEditLayoutGridComponent.DEFAULT_EMPTY_GRID_ROWS),
@@ -99,6 +99,8 @@ export class DotEditLayoutGridComponent implements OnInit {
     onRemoveContainer(index: number): void {
         this.dotConfirmationService.confirm({
             accept: () => {
+                debugger;
+                console.log('is REAL');
                 this.removeContainer(index);
             },
             header: this.messageService.get('editpage.confirm.header'),
