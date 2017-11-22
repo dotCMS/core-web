@@ -7,7 +7,7 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { PageViewService } from './page-view.service';
 import { DOTTestBed } from './../../../test/dot-test-bed';
 
-fdescribe('PageViewService', () => {
+describe('PageViewService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             PageViewService

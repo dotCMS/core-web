@@ -14,7 +14,7 @@ export class PageViewService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Get object response by url endpoint
+     * Get a PageView object from url endpoint
      * @param {string} url
      * @returns {Observable<PageView>}
      * @memberof PageViewService
@@ -27,7 +27,7 @@ export class PageViewService {
     }
 
     /**
-     * Will do a POST request and return the response of the URL provided
+     * Will do a POST request and save the PageView layout object
      * @param {PageView} pageView
      * @returns {Observable<any>}
      * @memberof PageViewService

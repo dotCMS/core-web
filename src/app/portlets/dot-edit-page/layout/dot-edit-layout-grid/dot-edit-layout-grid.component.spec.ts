@@ -20,7 +20,7 @@ class TestActionButtonComponent {
     @Input() command?: ($event) => void;
 }
 
-fdescribe('DotEditLayoutGridComponent', () => {
+describe('DotEditLayoutGridComponent', () => {
     let component: DotEditLayoutGridComponent;
     let fixture: ComponentFixture<DotEditLayoutGridComponent>;
     let addContainer: () => void;

@@ -59,16 +59,4 @@ describe('ContentTypeResolver', () => {
 
         expect(result).toEqual({ object: 'Fake object' });
     });
-
-    it('should do a get request with url param', () => {
-        let result: any;
-
-        spyOn(pageViewService, 'get').and.returnValue(
-            Observable.of({})
-        );
-
-        pageViewService.get('about-us').subscribe(items => result = items);
-
-        expect(pageViewService.get).toHaveBeenCalledWith('about-us');
-    });
 });

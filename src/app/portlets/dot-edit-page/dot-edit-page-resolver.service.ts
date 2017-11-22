@@ -9,7 +9,7 @@ export class PageViewResolver implements Resolve<any> {
   constructor(private pageViewService: PageViewService) {}
 
   /**
-     * Route resolver for layout/:url
+     * Route resolver for layout/:url that resolves into a PageView object
      * @param {ActivatedRouteSnapshot} route
      * @returns {Observable<any>}
      * @memberof PageViewResolver
