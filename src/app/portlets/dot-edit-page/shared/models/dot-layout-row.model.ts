@@ -1,4 +1,4 @@
-import { LayoutColumn } from './layout-column.model';
+import { LayoutColumn } from './dot-layout-column.model';
 
 export interface LayoutRow {
     columns: LayoutColumn[];
