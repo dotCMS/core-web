@@ -9,6 +9,7 @@ import { IconButtonTooltipModule } from '../../view/components/_common/icon-butt
 import { ActionButtonModule } from '../../view/components/_common/action-button/action-button.module';
 import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';
 import { ContainerSelectorModule } from '../../view/components/container-selector/container-selector.module';
+import { DotEditLayoutGridService } from './layout/dot-edit-layout-grid/dot-edit-layout-grid.service';
 
 @NgModule({
     imports: [
@@ -20,6 +21,6 @@ import { ContainerSelectorModule } from '../../view/components/container-selecto
         ContainerSelectorModule
     ],
     declarations: [DotEditLayoutGridComponent, DotEditLayoutComponent],
-    providers: [PageViewService, PageViewResolver]
+    providers: [PageViewService, PageViewResolver, DotEditLayoutGridService]
 })
 export class DotEditPageModule {}

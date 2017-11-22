@@ -6,8 +6,8 @@ import { MessageService } from '../../../../api/services/messages-service';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { DotLayoutRow } from '../../shared/models/dot-layout-row.model';
-import { DotLayoutColumn } from '../../shared/models/dot-layout-column.model';
+import { DotEditLayoutGridService } from './dot-edit-layout-grid.service';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -65,12 +65,19 @@ export class DotEditLayoutGridComponent implements OnInit {
         'editpage.action.save'
     ];
 
-    constructor(public messageService: MessageService, private dotConfirmationService: DotConfirmationService) {}
+    constructor(
+        public messageService: MessageService,
+        private dotConfirmationService: DotConfirmationService,
+        private dotEditLayoutGridService: DotEditLayoutGridService
+    ) {}
 
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
         if (this.pageView) {
-            this.gridContainers = this.transformDataToDisplayOnGrid(this.pageView);
+            this.gridContainers = this.dotEditLayoutGridService.getDotLayoutGridBox(
+                this.pageView,
+                DotEditLayoutGridComponent.NEW_ROW_TEMPLATE
+            );
         } else if (!this.gridContainers) {
             this.gridContainers = [
                 {
@@ -99,8 +106,6 @@ export class DotEditLayoutGridComponent implements OnInit {
     onRemoveContainer(index: number): void {
         this.dotConfirmationService.confirm({
             accept: () => {
-                debugger;
-                console.log('is REAL');
                 this.removeContainer(index);
             },
             header: this.messageService.get('editpage.confirm.header'),
@@ -113,19 +118,27 @@ export class DotEditLayoutGridComponent implements OnInit {
         });
     }
 
-    private removeContainer(index: number): void {
-        if (this.gridContainers[index]) {
-            this.gridContainers.splice(index, 1);
-            this.deleteEmptyRows();
-        }
-    }
-
     /**
      * Event fired when the grad of a container ends, remove empty rows if any.
      * @constructor
      */
     OnDragStop(): void {
         this.deleteEmptyRows();
+    }
+
+    /**
+     * Transform the grid data into DotLayoutBody.
+     * @returns {DotLayoutBody}
+     */
+    getLayoutBody(): DotLayoutBody {
+        return this.dotEditLayoutGridService.getDotLayoutBody(this.gridContainers);
+    }
+
+    private removeContainer(index: number): void {
+        if (this.gridContainers[index]) {
+            this.gridContainers.splice(index, 1);
+            this.deleteEmptyRows();
+        }
     }
 
     private setConfigOfNewContainer(): NgGridItemConfig {
@@ -176,53 +189,5 @@ export class DotEditLayoutGridComponent implements OnInit {
             });
         }
         return rowArray;
-    }
-
-    private transformDataToDisplayOnGrid(resp): any {
-        let grid = [];
-        resp.layout.body.rows.forEach((row, rowIndex) => {
-            row.columns.forEach(column => {
-                grid.push({
-                    containers: column.containers.map(
-                        containerId => (resp.containers[containerId] ? resp.containers[containerId].container : containerId)
-                    ),
-                    config: Object.assign({}, DotEditLayoutGridComponent.NEW_ROW_TEMPLATE, {
-                        sizex: column.width,
-                        col: column.leftOffset,
-                        row: rowIndex + 1
-                    })
-                });
-            });
-        });
-        return grid;
-    }
-
-    public getLayoutBody(): DotLayoutBody {
-        return this.transformDataToLayoutBody();
-    }
-
-    private transformDataToLayoutBody(): DotLayoutBody {
-        return <DotLayoutBody>{
-            rows: _.chain(this.gridContainers)
-                .sortBy('config.row')
-                .sortBy('config.col')
-                .groupBy('config.row')
-                .values()
-                .map(this.convertToLayoutRow)
-                .value()
-        };
-    }
-
-    private convertToLayoutRow(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {
-        return {
-            columns: gridBoxes.map(
-                (layoutGridBox: DotLayoutGridBox) =>
-                    <DotLayoutColumn>{
-                        leftOffset: layoutGridBox.config.col,
-                        width: layoutGridBox.config.sizex,
-                        containers: layoutGridBox.containers.map(container => container.identifier)
-                    }
-            )
-        };
     }
 }
