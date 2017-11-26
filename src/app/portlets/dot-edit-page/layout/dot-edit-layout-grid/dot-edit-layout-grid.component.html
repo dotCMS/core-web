@@ -1,6 +1,6 @@
 <action-button [command]="addContainer()"></action-button>
 <div [ngGrid]="gridConfig"
-     (onDragStop)="OnDragStop()"
+     (onDragStop)="onDragStop()"
      class="dot-edit-layout-grid__grid">
     <dot-container-selector *ngFor="let gridBox of gridBoxes; let i = index"
         [(ngGridItem)]="gridBox.config"

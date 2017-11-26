@@ -6,15 +6,15 @@ import { DotPageView } from './shared/models/dot-page-view.model';
 
 @Injectable()
 export class PageViewResolver implements Resolve<any> {
-  constructor(private pageViewService: PageViewService) {}
+    constructor(private pageViewService: PageViewService) {}
 
-  /**
+    /**
      * Route resolver for layout/:url that resolves into a PageView object
      * @param {ActivatedRouteSnapshot} route
      * @returns {Observable<any>}
      * @memberof PageViewResolver
      */
-  resolve(route: ActivatedRouteSnapshot): Observable<DotPageView> {
-    return this.pageViewService.get(route.queryParams.url);
-  }
+    resolve(route: ActivatedRouteSnapshot): Observable<DotPageView> {
+        return this.pageViewService.get(route.queryParams.url);
+    }
 }

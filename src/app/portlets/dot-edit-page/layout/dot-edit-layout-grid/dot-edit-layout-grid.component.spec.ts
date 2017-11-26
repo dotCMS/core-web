@@ -44,23 +44,21 @@ describe('DotEditLayoutGridComponent', () => {
         fixture = DOTTestBed.createComponent(DotEditLayoutGridComponent);
         component = fixture.componentInstance;
         addContainer = component.addContainer();
+        fixture.detectChanges();
     });
 
     it('should show set one element in the grid of 12 columns', () => {
-        component.ngOnInit();
         expect(component.gridBoxes.length).toEqual(1);
         expect(component.gridBoxes[0].config.sizex).toEqual(12);
     });
 
     it('should add one Container to the grid of 3 columns', () => {
-        component.ngOnInit();
         addContainer();
         expect(component.gridBoxes.length).toEqual(2);
         expect(component.gridBoxes[1].config.sizex).toEqual(3);
     });
 
     it('should add a new Container in the same row', () => {
-        component.ngOnInit();
         addContainer();
         addContainer();
         expect(component.gridBoxes.length).toEqual(3);
@@ -68,14 +66,12 @@ describe('DotEditLayoutGridComponent', () => {
     });
 
     it('should add a new Container in a new row, when there is no space in the last row', () => {
-        component.ngOnInit();
         addContainer();
         expect(component.gridBoxes.length).toEqual(2);
         expect(component.gridBoxes[1].config.row).toEqual(2);
     });
 
     it('should remove one Container from the Grid', () => {
-        component.ngOnInit();
         addContainer();
         const dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
         spyOn(dotConfirmationService, 'confirm').and.callFake(conf => {
@@ -86,12 +82,7 @@ describe('DotEditLayoutGridComponent', () => {
     });
 
     it('should create a new row with a basic configuration object', () => {
-        component.ngOnInit();
         addContainer();
-        expect(component.gridBoxes[1].config).toBeDefined();
-        expect(component.gridBoxes[1].config.row).toBeDefined();
-        expect(component.gridBoxes[1].config.sizex).toBeDefined();
-        expect(component.gridBoxes[1].config.col).toBeDefined();
         expect(component.gridBoxes[1].config).toEqual({
             row: 2,
             sizex: 3,
@@ -105,7 +96,6 @@ describe('DotEditLayoutGridComponent', () => {
     it(
         'should remove the empty rows in the grid',
         fakeAsync(() => {
-            component.ngOnInit();
             addContainer();
             addContainer();
             component.gridBoxes[0].config.row = 5;
@@ -113,7 +103,7 @@ describe('DotEditLayoutGridComponent', () => {
             component.gridBoxes[1].config.row = 2;
             component.gridBoxes[2].config.row = 4;
             component.gridBoxes[2].config.sizex = 1;
-            component.OnDragStop();
+            component.onDragStop();
             tick();
             expect(component.gridBoxes[0].config.sizex).toEqual(3);
             expect(component.gridBoxes[1].config.sizex).toEqual(1);

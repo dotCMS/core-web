@@ -30,7 +30,7 @@ export class DotEditLayoutGridComponent implements OnInit {
         row: 1
     };
     @Input() pageView: DotPageView;
-    public gridBoxes: DotLayoutGridBox[];
+    gridBoxes: DotLayoutGridBox[];
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [4, 8, 4, 0],
         draggable: true,
@@ -122,7 +122,7 @@ export class DotEditLayoutGridComponent implements OnInit {
      * Event fired when the grad of a container ends, remove empty rows if any.
      * @constructor
      */
-    OnDragStop(): void {
+    onDragStop(): void {
         this.deleteEmptyRows();
     }
 
@@ -169,7 +169,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     }
 
     private deleteEmptyRows(): void {
-        // TODO: Find a solution to remove setTimeOut
+        // TODO: Find a solution to remove setTimeout
         setTimeout(() => {
             this.gridBoxes = _.chain(this.gridBoxes)
                 .sortBy('config.row')

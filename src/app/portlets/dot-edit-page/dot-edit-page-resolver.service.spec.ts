@@ -1,8 +1,5 @@
-import { DotRouterService } from './../../api/services/dot-router-service';
 import { Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoginServiceMock } from './../../test/login-service.mock';
-import { LoginService, Url } from 'dotcms-js/dotcms-js';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { PageViewService } from './../../api/services/page-view/page-view.service';
 import { TestBed, async } from '@angular/core/testing';
@@ -11,8 +8,6 @@ import { PageViewResolver } from './dot-edit-page-resolver.service';
 class PageViewServiceMock {
     get(url) { }
 }
-
-class DotRouterServiceMock { }
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
     'toString'
@@ -29,8 +24,6 @@ describe('ContentTypeResolver', () => {
             TestBed.configureTestingModule({
                 providers: [
                     PageViewResolver,
-                    { provide: DotRouterService, useClass: DotRouterServiceMock },
-                    { provide: LoginService, useClass: LoginServiceMock },
                     { provide: PageViewService, useClass: PageViewServiceMock },
                     {
                         provide: ActivatedRouteSnapshot,
