@@ -35,7 +35,7 @@ export class ContainerSelectorComponent implements OnInit {
      * @memberof ContainerSelectorComponent
      */
     containerChange(container: Container): void {
-        if (this.selectedContainersList.indexOf(container) < 0) {
+        if (!this.isContainerSelected(container)) {
             this.selectedContainersList.push(container);
             this.change.emit(this.selectedContainersList);
         }
@@ -67,6 +67,10 @@ export class ContainerSelectorComponent implements OnInit {
     removeContainerItem(i: number): void {
         this.selectedContainersList.splice(i, 1);
         this.change.emit(this.selectedContainersList);
+    }
+
+    isContainerSelected(container: Container): boolean {
+        return this.selectedContainersList.some(containerItem => containerItem.identifier === container.identifier);
     }
 
     private getContainersList(filter = '', offset = 0): void {
