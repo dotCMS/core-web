@@ -2,7 +2,7 @@ import { DotGlobal } from './../layout-properties.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 @Component({
-    selector: 'dot-list-item',
+    selector: 'dot-page-layout-prop-item',
     templateUrl: './dot-list-item.component.html',
     styleUrls: ['./dot-list-item.component.scss'],
     providers: [

@@ -1,6 +1,7 @@
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ViewEncapsulation } from '@angular/core';
 @Component({
+    encapsulation: ViewEncapsulation.None,
     selector: 'dot-sidebar',
     templateUrl: './dot-sidebar.component.html',
     styleUrls: ['./dot-sidebar.component.scss'],
