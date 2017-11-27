@@ -6,35 +6,32 @@ import { DotLayoutColumn } from '../../shared/models/dot-layout-column.model';
 import * as _ from 'lodash';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
+import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
 
 /**
- * Provide methods to transform data types, to be able to display it in the NgGrid.
+ * Provide methods to transform NgGrid model into PageView model and viceversa.
  *
- * @class DotEditLayoutGridService
+ * @class DotEditLayoutService
  */
 @Injectable()
-export class DotEditLayoutGridService {
+export class DotEditLayoutService {
     constructor() {}
 
     /**
-     * Transform and Object from  DotPageView to DotLayoutGridBox to be able to display it on the Grid
+     * Take an DotPageView and return an array of DotLayoutGridBox
      *
      * @param {DotPageView} dotPageView
      * @param {NgGridItemConfig} newRow
      * @returns {DotLayoutGridBox[]}
      */
-    getDotLayoutGridBox(dotPageView: DotPageView, newRow: NgGridItemConfig): DotLayoutGridBox[] {
+    getDotLayoutGridBox(dotPageView: DotPageView): DotLayoutGridBox[] {
         const grid: DotLayoutGridBox[] = [];
+
         dotPageView.layout.body.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
-                    containers: column.containers.map(
-                        containerId =>
-                            dotPageView.containers[containerId]
-                                ? dotPageView.containers[containerId].container
-                                : containerId
-                    ),
-                    config: Object.assign({}, newRow, {
+                    containers: column.containers.map(containerId => dotPageView.containers[containerId].container),
+                    config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,
                         row: rowIndex + 1
@@ -42,11 +39,12 @@ export class DotEditLayoutGridService {
                 });
             });
         });
+
         return grid;
     }
 
     /**
-     * Transform an array of DotLayoutGridBox to DotLayoutBody.
+     * Take an array of DotLayoutGridBox and return a DotLayoutBody.
      *
      * @param {DotLayoutGridBox[]} grid
      * @returns {DotLayoutBody}
@@ -58,12 +56,12 @@ export class DotEditLayoutGridService {
                 .sortBy('config.col')
                 .groupBy('config.row')
                 .values()
-                .map(this.convertToLayoutRow)
+                .map(this.getLayoutRowFromLayoutGridBoxes)
                 .value()
         };
     }
 
-    private convertToLayoutRow(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {
+    private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {
         return {
             columns: gridBoxes.map(
                 (layoutGridBox: DotLayoutGridBox) =>

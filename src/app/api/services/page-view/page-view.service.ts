@@ -3,6 +3,7 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { DotPageView } from '../../../portlets/dot-edit-page/shared/models/dot-page-view.model';
+import { DotLayoutBody } from '../../../portlets/dot-edit-page/shared/models/dot-layout-body.model';
 
 /**
  * Provide util methods to get and save a PageView object

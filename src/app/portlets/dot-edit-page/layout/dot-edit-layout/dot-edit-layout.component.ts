@@ -5,6 +5,7 @@ import { DotEditLayoutGridComponent } from '../dot-edit-layout-grid/dot-edit-lay
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { Observable } from 'rxjs/Observable';
+import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -14,25 +15,24 @@ import { Observable } from 'rxjs/Observable';
 export class DotEditLayoutComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
 
-    pageView: Observable<DotPageView>;
+    pageView: DotPageView;
 
-    constructor(public router: Router, private route: ActivatedRoute, private pageViewService: PageViewService) {}
+    constructor(private pageViewService: PageViewService, private route: ActivatedRoute, public router: Router) {}
 
     ngOnInit(): void {
-        this.pageView = this.route.data.pluck('pageView');
+        this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
+            this.pageView = pageView;
+        });
     }
 
-    public saveLayout() {
-        const layoutBody: DotLayoutBody = this.editLayoutGrid.getLayoutBody();
-        this.pageView.subscribe(pageView => {
-            this.pageViewService
-                .save(<DotPageView>{
-                    page: pageView.page,
-                    layout: {
-                        body: layoutBody
-                    }
-                })
-                .subscribe();
-        });
+    /**
+     * Get the LayoutBody and call the service to save the layout
+     *
+     * @memberof DotEditLayoutComponent
+     */
+    saveLayout(): void {
+        const layoutBody: DotLayoutBody = this.editLayoutGrid.getModel();
+        const pageView: DotPageView = Object.assign({}, this.pageView, { layout: { body: layoutBody } });
+        this.pageViewService.save(pageView).subscribe();
     }
 }

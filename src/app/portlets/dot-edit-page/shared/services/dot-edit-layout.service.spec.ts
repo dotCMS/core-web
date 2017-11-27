@@ -1,14 +1,13 @@
-import { DotEditLayoutGridService } from './dot-edit-layout-grid.service';
+import { DotEditLayoutService } from './dot-edit-layout.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 
-describe('DotEditLayoutGridService', () => {
+describe('DotEditLayoutService', () => {
     beforeEach(() => {
-        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutGridService]);
-
-        this.dotEditLayoutGridService = this.injector.get(DotEditLayoutGridService);
+        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutService]);
+        this.DotEditLayoutService = this.injector.get(DotEditLayoutService);
     });
 
     it('should transform the data from the service to the grid format ', () => {
@@ -98,7 +97,7 @@ describe('DotEditLayoutGridService', () => {
                 sidebar: null
             }
         };
-        const grid: DotLayoutGridBox[] = this.dotEditLayoutGridService.getDotLayoutGridBox(pageView, {
+        const grid: DotLayoutGridBox[] = this.DotEditLayoutService.getDotLayoutGridBox(pageView, {
             fixed: true,
             sizex: 3,
             maxCols: 12,
@@ -174,12 +173,12 @@ describe('DotEditLayoutGridService', () => {
                 }
             }
         ];
-        const layoutBody: DotLayoutBody = this.dotEditLayoutGridService.getDotLayoutBody(grid);
+        const layoutBody: DotLayoutBody = this.DotEditLayoutService.getDotLayoutBody(grid);
 
         expect(layoutBody.rows.length).toEqual(1);
-        expect(layoutBody.rows[0].columns.length).toEqual(2, 'Should create two columns');
-        expect(layoutBody.rows[0].columns[1].containers.length).toEqual(2, 'Should create two containers');
-        expect(layoutBody.rows[0].columns[1].leftOffset).toEqual(9, 'Should set LeftOffset to 9');
-        expect(layoutBody.rows[0].columns[1].width).toEqual(4, 'should create 4 containers for the first row');
+        expect(layoutBody.rows[0].columns.length).toEqual(2, 'create two columns');
+        expect(layoutBody.rows[0].columns[1].containers.length).toEqual(2, 'reate two containers');
+        expect(layoutBody.rows[0].columns[1].leftOffset).toEqual(9, 'set leftOffset to 9');
+        expect(layoutBody.rows[0].columns[1].width).toEqual(4, 'create 4 containers for the first row');
     });
 });
