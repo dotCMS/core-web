@@ -29,7 +29,7 @@ export class DotEditLayoutGridComponent implements OnInit {
     grid: DotLayoutGridBox[];
 
     gridConfig: NgGridConfig = <NgGridConfig>{
-        margins: [4, 8, 4, 0],
+        margins: [0, 8, 8, 0],
         draggable: true,
         resizable: true,
         max_cols: DOT_LAYOUT_GRID_MAX_COLUMNS,
