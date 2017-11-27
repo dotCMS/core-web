@@ -71,7 +71,6 @@ export class DotEditLayoutGridComponent implements OnInit {
         this.grid = this.isHaveRows(this.pageView)
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.pageView)
             : [... DOT_LAYOUT_DEFAULT_GRID];
-
     }
 
     /**
@@ -129,7 +128,13 @@ export class DotEditLayoutGridComponent implements OnInit {
         const newRow: NgGridItemConfig = Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE);
 
         if (this.grid.length) {
-            const lastContainer = _.last(_.sortBy(this.grid, 'config.row'));
+            const lastContainer = _.chain(this.grid)
+                .groupBy('config.row')
+                .values()
+                .last()
+                .maxBy('config.col')
+                .value();
+
             let busyColumns: number = DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE.sizex;
 
             busyColumns += lastContainer.config.col - 1 + lastContainer.config.sizex;
