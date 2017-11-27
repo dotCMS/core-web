@@ -1,19 +1,20 @@
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, forwardRef, ViewEncapsulation } from '@angular/core';
+
 @Component({
     encapsulation: ViewEncapsulation.None,
-    selector: 'dot-sidebar',
-    templateUrl: './dot-sidebar.component.html',
-    styleUrls: ['./dot-sidebar.component.scss'],
+    selector: 'dot-layout-sidebar',
+    templateUrl: './dot-layout-sidebar.component.html',
+    styleUrls: ['./dot-layout-sidebar.component.scss'],
     providers: [
         {
             multi: true,
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => DotSidebarComponent)
+            useExisting: forwardRef(() => DotLayoutSidebarComponent)
         }
     ]
 })
-export class DotSidebarComponent implements ControlValueAccessor {
+export class DotLayoutSidebarComponent implements ControlValueAccessor {
     value: string;
 
     constructor() {}
