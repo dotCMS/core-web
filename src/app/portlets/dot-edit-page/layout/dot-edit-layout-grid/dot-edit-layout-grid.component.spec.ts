@@ -10,13 +10,14 @@ import { NgGridModule } from 'angular2-grid';
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
-import {Component, DebugElement, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {By} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, DebugElement } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
 @Component({
     selector: 'dot-test-host-component',
-    template:   `<form [formGroup]="form">
+    template: `<form [formGroup]="form">
                     <dot-edit-layout-grid formControlName="pageView" ></dot-edit-layout-grid>
                 </form>`
 })
@@ -33,7 +34,7 @@ describe('DotEditLayoutGridComponent', () => {
     let component: DotEditLayoutGridComponent;
     let fixture: ComponentFixture<DotEditLayoutGridComponent>;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
-    let de: DebugElement
+    let de: DebugElement;
 
     beforeEach(() => {
         const messageServiceMock = new MockMessageService({
@@ -42,7 +43,7 @@ describe('DotEditLayoutGridComponent', () => {
 
         DOTTestBed.configureTestingModule({
             declarations: [DotEditLayoutGridComponent, TestHostComponent],
-            imports: [NgGridModule, DotContainerSelectorModule],
+            imports: [NgGridModule, DotContainerSelectorModule, BrowserAnimationsModule],
             providers: [
                 DotConfirmationService,
                 DotEditLayoutService,
@@ -152,5 +153,4 @@ describe('DotEditLayoutGridComponent', () => {
         hostComponentfixture.detectChanges();
         expect(comp.writeValue).toHaveBeenCalledWith('pageViewObj');
     });
-
 });
