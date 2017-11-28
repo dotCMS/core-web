@@ -2,40 +2,74 @@
 @import "variables";
 
 :host {
+    background-color: $gray-lightest;
     display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     min-width: 750px;
 }
 
-.edit-page__toolbar,
-.edit-page__toolbar-actions {
-    display: flex;
+.dot-edit-layout__grid-guides {
+    background: repeating-linear-gradient(-90deg, transparent, transparent $basic-padding, $gray-lighter $basic-padding, $gray-lighter calc(100% / 12));
+    margin: 0 $basic-padding 0 $basic-padding * 2;
+    flex-grow: 1;
 }
 
-.edit-page__toolbar {
-    align-items: center;
-    justify-content: space-between;
-}
-
-.edit-page__toolbar-actions {
-    align-items: center;
-    flex: 1;
-    justify-content: flex-end;
-}
-
-.edit-page__toolbar-add {
-    margin-right: $basic-padding * 2;
- }
-
-.edit-page__toolbar-template-name {
-    width: 280px;
-}
-
-.edit-page__page-title {
+.dot-edit-layout__page-title {
     align-self: center;
     color: $body-font-color;
     margin: 0;
 }
 
-.edit-page__toolbar-save-template {
+.dot-edit-layout__toolbar,
+.dot-edit-layout__toolbar-actions {
+    display: flex;
+}
+
+.dot-edit-layout__toolbar {
+    align-items: center;
+    justify-content: space-between;
+    margin: $basic-padding * 2 $basic-padding * 2 $basic-padding * 3;
+}
+
+.dot-edit-layout__toolbar-actions {
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+
+    & > * {
+        margin-left: $basic-padding;
+    }
+}
+
+.dot-edit-layout__toolbar-add {
+    margin-right: $basic-padding * 2;
+ }
+
+.dot-edit-layout__toolbar-template-name {
+    width: 280px;
+}
+
+.dot-edit-layout__toolbar-save-template {
     margin-right: $basic-padding * 3;
+}
+
+.dot-edit-layout__template {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dot-edit-layout__template-header,
+.dot-edit-layout__template-footer {
+    align-items: center;
+    background: $gray-lighter;
+    color: $gray;
+    display: flex;
+    flex-shrink: 0;
+    font-size: $font-size-x-large;
+    height: 100px;
+    justify-content: center;
+    margin: $basic-padding $basic-padding * 2;
 }
