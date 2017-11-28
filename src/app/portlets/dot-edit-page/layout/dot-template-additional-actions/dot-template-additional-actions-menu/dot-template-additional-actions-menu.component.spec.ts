@@ -64,15 +64,15 @@ describe('DotLegacyAdditionalActionsMenuComponent', () => {
         const itemsExpected = [
             {
                 label: 'properties',
-                url: '/#/edit-page/template/1/properties'
+                routerLink: 'template/1/properties'
             },
             {
                 label: 'permissions',
-                url: '/#/edit-page/template/1/permissions'
+                routerLink: 'template/1/permissions'
             },
             {
                 label: 'history',
-                url: '/#/edit-page/template/1/history'
+                routerLink: 'template/1/history'
             }
         ];
 
