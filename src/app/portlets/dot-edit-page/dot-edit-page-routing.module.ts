@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { DotEditLayoutComponent } from './layout/dot-edit-layout/dot-edit-layout.component';
 import { RouterModule, Routes } from '@angular/router';
 import {
-    DotLegacyAdditionalActionsComponent
-} from './layout/dot-additional-actions/dot-legacy-additional-actions-iframe/dot-legacy-additional-actions-iframe.component';
+    DotLegacyTemplateAdditionalActionsComponent
+// tslint:disable-next-line:max-line-length
+} from './layout/dot-template-additional-actions/dot-legacy-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
 
 const dotEditPage: Routes = [
     {
@@ -23,7 +24,7 @@ const dotEditPage: Routes = [
         path: 'layout/:url'
     },
     {
-        component: DotLegacyAdditionalActionsComponent,
+        component: DotLegacyTemplateAdditionalActionsComponent,
         path: 'template/:id/:tabName'
     }
 ];

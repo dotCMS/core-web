@@ -4,10 +4,10 @@ import { MessageService } from '../../../../../api/services/messages-service';
 
 
 @Component({
-    selector: 'dot-legacy-addtional-actions-menu',
-    templateUrl: './dot-legacy-additional-actions-menu.component.html'
+    selector: 'dot-template-addtional-actions-menu',
+    templateUrl: './dot-template-additional-actions-menu.component.html'
 })
-export class DotLegacyAdditionalActionsMenuComponent implements OnInit {
+export class DotTemplateAdditionalActionsMenuComponent implements OnInit {
     @Input() templateId: string;
     items: MenuItem[];
 
@@ -26,15 +26,15 @@ export class DotLegacyAdditionalActionsMenuComponent implements OnInit {
             this.items = [
                 {
                     label: messages['template.action.additional.properties'],
-                    url: `/#/edit-page/template/${this.templateId}/properties`
+                    routerLink: `template/${this.templateId}/properties`
                 },
                 {
                     label: messages['template.action.additional.permissions'],
-                    url: `/#/edit-page/template/${this.templateId}/permissions`
+                    routerLink: `template/${this.templateId}/permissions`
                 },
                 {
                     label: messages['template.action.additional.history'],
-                    url: `/#/edit-page/template/${this.templateId}/history`
+                    routerLink: `template/${this.templateId}/history`
                 }
             ];
         });

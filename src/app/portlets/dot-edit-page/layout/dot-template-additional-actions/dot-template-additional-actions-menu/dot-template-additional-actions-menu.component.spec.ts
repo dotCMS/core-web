@@ -5,11 +5,11 @@ import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Component, Input } from '@angular/core';
-import { DotLegacyAdditionalActionsMenuComponent } from './dot-legacy-additional-actions-menu.component';
 import { MockMessageService } from '../../../../../test/message-service.mock';
 import { MessageService } from '../../../../../api/services/messages-service';
 import { By } from '@angular/platform-browser';
 import { MenuItem } from 'primeng/components/common/menuitem';
+import { DotTemplateAdditionalActionsMenuComponent } from './dot-template-additional-actions-menu.component';
 
 @Component({
     selector: 'p-menu',
@@ -22,8 +22,8 @@ class MockPrimeNGMenuComponent {
 
 describe('DotLegacyAdditionalActionsMenuComponent', () => {
 
-    let component: DotLegacyAdditionalActionsMenuComponent;
-    let fixture: ComponentFixture<DotLegacyAdditionalActionsMenuComponent>;
+    let component: DotTemplateAdditionalActionsMenuComponent;
+    let fixture: ComponentFixture<DotTemplateAdditionalActionsMenuComponent>;
 
     beforeEach(() => {
 
@@ -35,7 +35,7 @@ describe('DotLegacyAdditionalActionsMenuComponent', () => {
 
         DOTTestBed.configureTestingModule({
             declarations: [
-                DotLegacyAdditionalActionsMenuComponent,
+                DotTemplateAdditionalActionsMenuComponent,
                 MockPrimeNGMenuComponent
             ],
             providers: [
@@ -43,7 +43,7 @@ describe('DotLegacyAdditionalActionsMenuComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(DotLegacyAdditionalActionsMenuComponent);
+        fixture = DOTTestBed.createComponent(DotTemplateAdditionalActionsMenuComponent);
         component = fixture.componentInstance;
         component.templateId = '1';
     });
@@ -61,17 +61,23 @@ describe('DotLegacyAdditionalActionsMenuComponent', () => {
     });
 
     it('should has a items attributes', () => {
+        const itemsExpected = [
+            {
+                label: 'properties',
+                url: '/#/edit-page/template/1/properties'
+            },
+            {
+                label: 'permissions',
+                url: '/#/edit-page/template/1/permissions'
+            },
+            {
+                label: 'history',
+                url: '/#/edit-page/template/1/history'
+            }
+        ];
+
         fixture.detectChanges();
 
-        expect(component.items.length).toEqual(3);
-
-        expect(component.items[0].label).toEqual('properties', 'the first item should be properties');
-        expect(component.items[0].url).toEqual('/#/edit-page/template/1/properties', 'the first item should be properties url');
-
-        expect(component.items[1].label).toEqual('permissions', 'the first item should be permissions');
-        expect(component.items[1].url).toEqual('/#/edit-page/template/1/permissions', 'the first item should be permissions url');
-
-        expect(component.items[2].label).toEqual('history', 'the first item should be history');
-        expect(component.items[2].url).toEqual('/#/edit-page/template/1/history', 'the first item should be history url');
+        expect(component.items).toEqual(itemsExpected);
     });
 });

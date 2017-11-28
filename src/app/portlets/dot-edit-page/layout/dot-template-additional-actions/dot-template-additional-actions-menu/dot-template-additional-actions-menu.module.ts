@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { MenuModule, ButtonModule } from 'primeng/primeng';
-import { DotLegacyAdditionalActionsMenuComponent } from './dot-legacy-additional-actions-menu.component';
 import { MessageService } from '../../../../../api/services/messages-service';
 import { CommonModule } from '@angular/common';
+import { DotTemplateAdditionalActionsMenuComponent } from './dot-template-additional-actions-menu.component';
+
 
 @NgModule({
-    declarations: [DotLegacyAdditionalActionsMenuComponent],
+    declarations: [DotTemplateAdditionalActionsMenuComponent],
     imports: [MenuModule, ButtonModule, CommonModule],
-    exports: [DotLegacyAdditionalActionsMenuComponent],
+    exports: [DotTemplateAdditionalActionsMenuComponent],
     providers: [MessageService]
 })
-export class DotAdditionalActionsMenuModule {}
+export class DotTemplateAdditionalActionsMenuModule {}
