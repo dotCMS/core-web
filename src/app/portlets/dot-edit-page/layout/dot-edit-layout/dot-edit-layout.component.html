@@ -1,4 +1,8 @@
-<dot-layout-properties formControlName="layout"></dot-layout-properties>
+<form [formGroup]="form">
+    <dot-layout-properties [group]="form.get('layout')"></dot-layout-properties>
+</form>
+
+<pre>form value: <br>{{form.value | json}}</pre> 
 
 <button (click)="editLayoutGrid.addBox()">Add Box</button>
 <button (click)="saveLayout()">Save</button>

@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DotLayoutPropertiesModule } from './../../layout-properties/dot-layout-properties/dot-layout-properties.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,7 @@ import { DotEditLayoutGridModule } from '../dot-edit-layout-grid/dot-edit-layout
 
 @NgModule({
     declarations: [DotEditLayoutComponent],
-    imports: [CommonModule, DotEditLayoutGridModule, DotLayoutPropertiesModule],
+    imports: [CommonModule, DotEditLayoutGridModule, DotLayoutPropertiesModule, FormsModule, ReactiveFormsModule],
     exports: [DotEditLayoutComponent],
     providers: [DotEditLayoutService]
 })

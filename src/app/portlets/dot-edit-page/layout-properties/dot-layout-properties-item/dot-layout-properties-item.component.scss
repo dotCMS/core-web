@@ -4,8 +4,23 @@
     display: block;
     cursor: pointer;
     line-height: 28px;
+    display: flex;
+    padding: $basic-padding $basic-padding * 2;
 
     &:hover {
         background-color: $gray-lighter; 
     }
+}
+
+.properties-item__iconGroup {
+    stroke: $gray-light;
+}
+
+.properties-item__iconGroup-selected {
+    stroke: #FFFFFF;
+    fill: $blue;
+}
+
+.layout-properties-item__label {
+    padding-left: $basic-padding;
 }

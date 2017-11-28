@@ -17,12 +17,22 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
 
     pageView: DotPageView;
+    form: FormGroup;
 
-    constructor(private pageViewService: PageViewService, private route: ActivatedRoute, public router: Router) {}
+
+    constructor(private pageViewService: PageViewService, private route: ActivatedRoute, public router: Router, private _fb: FormBuilder) {}
 
     ngOnInit(): void {
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
+        });
+
+        this.form = this._fb.group({
+            layout: this._fb.group({
+                header: false,
+                footer: false,
+                sidebar: {}
+            })
         });
     }
 

@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
 import { DotLayoutSidebarModule } from './../dot-layout-sidebar/dot-layout-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
@@ -7,7 +8,7 @@ import { NgModule } from '@angular/core';
 
 @NgModule({
     declarations: [DotLayoutPropertiesComponent],
-    imports: [CommonModule, DotLayoutPropertiesItemModule, DotLayoutSidebarModule, OverlayPanelModule, ButtonModule],
+    imports: [CommonModule, DotLayoutPropertiesItemModule, DotLayoutSidebarModule, OverlayPanelModule, ButtonModule, ReactiveFormsModule],
     exports: [DotLayoutPropertiesComponent],
     providers: []
 })

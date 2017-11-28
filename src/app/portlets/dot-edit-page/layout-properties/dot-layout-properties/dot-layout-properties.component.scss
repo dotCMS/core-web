@@ -1,3 +1,9 @@
+@import "variables";
+
 .list-item__footer svg {
     transform: rotate(180deg);
+}
+
+.ui-overlaypanel-content {
+    padding: $basic-padding * 2 0;
 }

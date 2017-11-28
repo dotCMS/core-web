@@ -1,7 +1,9 @@
 <p-overlayPanel #op>
-    <dot-layout-properties-item icon="fa-close" label="Header" class="list-item__header"></dot-layout-properties-item>
-    <dot-layout-properties-item icon="fa-close" label="Footer" class="list-item__footer"></dot-layout-properties-item> 
-    <dot-layout-sidebar></dot-layout-sidebar>
+    <div [formGroup]="group">
+        <dot-layout-properties-item icon="fa-close" label="Header" class="list-item__header" formControlName="header"></dot-layout-properties-item>
+        <dot-layout-properties-item icon="fa-close" label="Footer" class="list-item__footer" formControlName="footer"></dot-layout-properties-item> 
+        <dot-layout-sidebar formControlName="sidebar"></dot-layout-sidebar>  
+    </div>
 </p-overlayPanel>
 
-<button class="" pButton iconButton flat icon="fa-ellipsis-h" (click)="op.toggle($event)"></button>
+<button class="" pButton iconButton flat icon="fa-th-large" (click)="op.toggle($event)"></button>

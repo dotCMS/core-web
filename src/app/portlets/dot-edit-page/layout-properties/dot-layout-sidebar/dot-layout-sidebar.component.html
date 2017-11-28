@@ -1,2 +1,2 @@
-<dot-layout-properties-item icon="fa-close" label="Sidebar left" class="list-item__sidebar-left"></dot-layout-properties-item>
-<dot-layout-properties-item icon="fa-close" label="Sidebar right" class="list-item__sidebar-right"></dot-layout-properties-item>
+<dot-layout-properties-item icon="fa-close" label="Sidebar left" class="list-item__sidebar-left" #propertyItemLeft (change)="setValue($event, 'left')"></dot-layout-properties-item> 
+<dot-layout-properties-item icon="fa-close" label="Sidebar right" class="list-item__sidebar-right" #propertyItemRight (change)="setValue($event, 'right')"></dot-layout-properties-item>

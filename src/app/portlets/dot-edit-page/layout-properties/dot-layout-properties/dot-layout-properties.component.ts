@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -6,7 +7,9 @@ import { Component, ViewEncapsulation } from '@angular/core';
     templateUrl: './dot-layout-properties.component.html',
     styleUrls: ['./dot-layout-properties.component.scss']
 })
-export class DotLayoutPropertiesComponent { }
+export class DotLayoutPropertiesComponent {
+    @Input() group: FormGroup;
+}
 
 
 
