@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {
     DotLegacyTemplateAdditionalActionsComponent
 // tslint:disable-next-line:max-line-length
-} from './layout/dot-template-additional-actions/dot-legacy-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
+} from './layout/dot-template-additional-actions/dot-legacy-template-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
 
 const dotEditPage: Routes = [
     {
