@@ -12,8 +12,13 @@
 
 <div class="dot-edit-layout__template">
     <div class="dot-edit-layout__template-header">HEADER</div>
-    <div class="dot-edit-layout__grid-guides">
-        <dot-edit-layout-grid #editLayoutGrid [pageView]="pageView"></dot-edit-layout-grid>
+    <div class="dot-edit-layout__template-main">
+        <div class="dot-edit-layout__grid-guides">
+            <dot-edit-layout-grid #editLayoutGrid [pageView]="pageView"></dot-edit-layout-grid>
+        </div>
+        <div class="dot-edit-layout__template-sidebar">
+            SIDEBAR
+        </div>
     </div>
     <div class="dot-edit-layout__template-footer">FOOTER</div>
 </div>
