@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { Component, ViewEncapsulation, Input, OnInit } from '@angular/core';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-layout-properties',
     templateUrl: './dot-layout-properties.component.html',
     styleUrls: ['./dot-layout-properties.component.scss']

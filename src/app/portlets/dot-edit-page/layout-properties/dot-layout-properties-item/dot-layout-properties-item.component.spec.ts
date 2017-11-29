@@ -40,9 +40,13 @@ describe('DotLayoutPropertiesItemComponent', () => {
     });
 
     it('should propagate value on host click', () => {
+        comp.value = false;
+        expect(comp.value).toEqual(false);
+
         spyOn(comp, 'propagateChange');
         de.nativeElement.click();
 
+        expect(comp.value).toEqual(true);
         expect(comp.propagateChange).toHaveBeenCalled();
     });
 
@@ -68,10 +72,13 @@ describe('DotLayoutPropertiesItemComponent', () => {
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         de = hostComponentfixture.debugElement.query(By.css('dot-layout-properties-item'));
         const component: DotLayoutPropertiesItemComponent = de.componentInstance;
+        comp.value = false;
 
         spyOn(component, 'writeValue');
+        fixture.debugElement.nativeElement.click();
         hostComponentfixture.detectChanges();
 
+        expect(comp.value).toEqual(true);
         expect(component.writeValue).toHaveBeenCalledWith(({ header: true }));
     });
 });

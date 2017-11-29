@@ -1,17 +1,13 @@
 @import "variables";
 
-.list-item__footer svg {
-    transform: rotate(180deg);
-}
-
-.ui-overlaypanel {
-    width: 220px;
-}
-
-.ui-overlaypanel-content {
-    padding: $basic-padding * 2 0;
-}
-
-.ui-button[flat] [class^="ui-button-icon"] {
-    color: $black;
+:host {
+    ::ng-deep {
+        .ui-overlaypanel {
+            width: 220px;
+        }
+        
+        .ui-overlaypanel-content {
+            padding: $basic-padding * 2 0;
+        }
+    }
 }

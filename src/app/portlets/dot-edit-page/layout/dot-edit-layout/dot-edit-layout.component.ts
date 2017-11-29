@@ -19,7 +19,6 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
 
     pageView: DotPageView;
-    form: FormGroup;
     saveAsTemplate: boolean;
 
     constructor(

@@ -1,3 +1,4 @@
+import { DotLayoutPropertiesItemComponent } from './../dot-layout-properties-item/dot-layout-properties-item.component';
 import { DotLayoutSidebarComponent } from './dot-layout-property-sidebar.component';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
@@ -20,21 +21,21 @@ class TestHostComponent {
     constructor() {
         this.group = new FormGroup({
             sidebar: new FormControl({
-                sidebar: {}
+                sidebar: 'left'
             })
         });
     }
 }
 
-fdescribe('DotLayoutSidebarComponent', () => {
+describe('DotLayoutSidebarComponent', () => {
     let comp: DotLayoutSidebarComponent;
     let fixture: ComponentFixture<DotLayoutSidebarComponent>;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
 
     const messageServiceMock = new MockMessageService({
-        'editpage.toolbar.primary.action': 'Hello',
-        'editpage.toolbar.secondary.action': 'World'
+        'editpage.layout.properties.sidebar.left': 'Sidebar left',
+        'editpage.layout.properties.sidebar.right': 'Sidebar right'
     });
 
     beforeEach(() => {
@@ -53,26 +54,50 @@ fdescribe('DotLayoutSidebarComponent', () => {
     });
 
     it('should propagate change after sidebar property item is clicked', () => {
+        let res = false;
+        const dotLayoutPropertiesItem  = de.query(By.css('dot-layout-properties-item')).componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+
+        dotLayoutPropertiesItem.change.subscribe(value => res = value);
+        layoutPropertyItemEl.click();
+
         spyOn(comp, 'propagateChange');
         comp.setValue(true, 'left');
 
+        expect(res).toEqual(true);
         expect(comp.propagateChange).toHaveBeenCalled();
     });
 
     it('should check left value and unchecked right value', () => {
+        let res = false;
+        const dotLayoutPropertiesItem  = de.query(By.css('dot-layout-properties-item')).componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+
+        dotLayoutPropertiesItem.change.subscribe(value => res = value);
+        layoutPropertyItemEl.click();
+
         spyOn(comp.propertyItemLeft, 'setChecked');
         spyOn(comp.propertyItemRight, 'setUnchecked');
         comp.setValue(true, 'left');
 
+        expect(res).toEqual(true);
         expect(comp.propertyItemLeft.setChecked).toHaveBeenCalled();
         expect(comp.propertyItemRight.setUnchecked).toHaveBeenCalled();
     });
 
     it('should check right value and unchecked left value', () => {
+        let res = false;
+        const dotLayoutPropertiesItem  = de.query(By.css('dot-layout-properties-item')).componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+
+        dotLayoutPropertiesItem.change.subscribe(value => res = value);
+        layoutPropertyItemEl.click();
+
         spyOn(comp.propertyItemLeft, 'setUnchecked');
         spyOn(comp.propertyItemRight, 'setChecked');
         comp.setValue(true, 'right');
 
+        expect(res).toEqual(true);
         expect(comp.propertyItemLeft.setUnchecked).toHaveBeenCalled();
         expect(comp.propertyItemRight.setChecked).toHaveBeenCalled();
     });
@@ -81,9 +106,13 @@ fdescribe('DotLayoutSidebarComponent', () => {
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         de = hostComponentfixture.debugElement.query(By.css('dot-layout-property-sidebar'));
         const component: DotLayoutSidebarComponent = de.componentInstance;
+        comp.value = '';
+
         spyOn(component, 'writeValue');
+        comp.setValue(true, 'left');
         hostComponentfixture.detectChanges();
 
-        expect(component.writeValue).toHaveBeenCalledWith(({ sidebar: {} }));
+        expect(comp.value).toEqual('left');
+        expect(component.writeValue).toHaveBeenCalledWith(({ sidebar: 'left' }));
     });
 });

@@ -4,10 +4,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup } from '@angular/for
 import { Component, forwardRef, ViewEncapsulation, Input, group, ViewChild, OnInit } from '@angular/core';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-layout-property-sidebar',
     templateUrl: './dot-layout-property-sidebar.component.html',
-    styleUrls: ['./dot-layout-property-sidebar.component.scss'],
     providers: [
         {
             multi: true,
@@ -19,7 +17,7 @@ import { Component, forwardRef, ViewEncapsulation, Input, group, ViewChild, OnIn
 export class DotLayoutSidebarComponent implements ControlValueAccessor, OnInit {
     @ViewChild('propertyItemLeft') propertyItemLeft: DotLayoutPropertiesItemComponent;
     @ViewChild('propertyItemRight') propertyItemRight: DotLayoutPropertiesItemComponent;
-    value: {};
+    value: string;
 
     constructor(public messageService: MessageService) {}
 
@@ -60,7 +58,7 @@ export class DotLayoutSidebarComponent implements ControlValueAccessor, OnInit {
             this.propertyItemRight.setChecked();
         }
 
-        this.value = value ? { location: location } : {};
+        this.value = value ? location : '';
         this.propagateChange(this.value);
     }
 

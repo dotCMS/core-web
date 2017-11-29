@@ -1,14 +1,31 @@
 @import "variables";
 
 :host { 
-    display: block;
-    cursor: pointer;
-    line-height: 28px;
     display: flex;
+    cursor: pointer;
+    align-content: center;
     padding: $basic-padding $basic-padding * 2;
 
     &:hover {
         background-color: $gray-lighter; 
+    }
+
+    &.property-item__footer {
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+
+    &.property-item__sidebar-left {
+        svg {
+            transform: rotate(270deg);
+        }
+    }
+
+    &.property-item__sidebar-right {
+        svg {
+            transform: rotate(90deg);
+        }
     }
 }
 
@@ -16,19 +33,20 @@
     width: 24px;
     height: 24px;
 
-    .property-item-icon__iconGroup {
+    & > g {
         stroke: $gray-light;
         fill: none;
     }
 }
 
 .property-item-icon--selected {
-    .property-item-icon__iconGroup {
-        stroke: #FFFFFF;
-        fill: $blue;
+    & > g {
+        stroke: $white;
+        fill: $brand-primary;
     }
 }
 
 .property-item-label {
     padding-left: $basic-padding;
+    align-self: center;
 }
