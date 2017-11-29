@@ -1,6 +1,6 @@
 import { ReactiveFormsModule } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
-import { DotLayoutSidebarModule } from './../dot-layout-sidebar/dot-layout-sidebar.module';
+import { DotLayoutSidebarModule } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
 import { CommonModule } from '@angular/common';
 import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';

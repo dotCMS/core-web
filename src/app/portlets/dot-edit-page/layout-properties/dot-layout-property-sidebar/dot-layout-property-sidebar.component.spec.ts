@@ -1,4 +1,4 @@
-import { DotLayoutSidebarComponent } from './dot-layout-sidebar.component';
+import { DotLayoutSidebarComponent } from './dot-layout-property-sidebar.component';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';

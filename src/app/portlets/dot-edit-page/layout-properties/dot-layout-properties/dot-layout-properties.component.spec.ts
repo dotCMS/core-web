@@ -1,6 +1,6 @@
 import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
-import { DotLayoutSidebarModule } from './../dot-layout-sidebar/dot-layout-sidebar.module';
+import { DotLayoutSidebarModule } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
 import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';
 import { MockMessageService } from './../../../../test/message-service.mock';

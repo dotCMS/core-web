@@ -5,9 +5,9 @@ import { Component, forwardRef, ViewEncapsulation, Input, group, ViewChild, OnIn
 
 @Component({
     encapsulation: ViewEncapsulation.None,
-    selector: 'dot-layout-sidebar',
-    templateUrl: './dot-layout-sidebar.component.html',
-    styleUrls: ['./dot-layout-sidebar.component.scss'],
+    selector: 'dot-layout-property-sidebar',
+    templateUrl: './dot-layout-property-sidebar.component.html',
+    styleUrls: ['./dot-layout-property-sidebar.component.scss'],
     providers: [
         {
             multi: true,

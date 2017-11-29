@@ -1,4 +1,4 @@
-import { DotLayoutSidebarComponent } from './dot-layout-sidebar.component';
+import { DotLayoutSidebarComponent } from './dot-layout-property-sidebar.component';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
 import { OverlayPanelModule } from 'primeng/primeng';
 import { CommonModule } from '@angular/common';
