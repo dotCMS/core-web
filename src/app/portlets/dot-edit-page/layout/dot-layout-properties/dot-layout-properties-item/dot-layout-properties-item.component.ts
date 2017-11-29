@@ -1,4 +1,4 @@
-import { DotLayoutSidebarComponent } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.component';
+import { DotLayoutSidebarComponent } from '../dot-layout-property-sidebar/dot-layout-property-sidebar.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, Input, Output, EventEmitter, forwardRef, HostListener, ViewChild } from '@angular/core';
 

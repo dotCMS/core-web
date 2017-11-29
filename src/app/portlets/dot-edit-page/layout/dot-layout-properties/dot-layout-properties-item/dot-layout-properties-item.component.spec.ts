@@ -1,4 +1,4 @@
-import { DOTTestBed } from './../../../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotLayoutPropertiesItemComponent } from './dot-layout-properties-item.component';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';

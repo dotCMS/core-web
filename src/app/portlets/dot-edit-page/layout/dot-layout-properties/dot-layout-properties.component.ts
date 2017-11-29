@@ -1,4 +1,4 @@
-import { MessageService } from './../../../../../api/services/messages-service';
+import { MessageService } from '../../../../api/services/messages-service';
 import { FormGroup } from '@angular/forms';
 import { Component, ViewEncapsulation, Input, OnInit } from '@angular/core';
 
