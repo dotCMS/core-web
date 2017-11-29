@@ -79,7 +79,7 @@ describe('DotLayoutSidebarComponent', () => {
 
     it('should call writeValue to define the initial value of sidebar item', () => {
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
-        de = hostComponentfixture.debugElement.query(By.css('dot-layout-sidebar'));
+        de = hostComponentfixture.debugElement.query(By.css('dot-layout-property-sidebar'));
         const component: DotLayoutSidebarComponent = de.componentInstance;
         spyOn(component, 'writeValue');
         hostComponentfixture.detectChanges();
