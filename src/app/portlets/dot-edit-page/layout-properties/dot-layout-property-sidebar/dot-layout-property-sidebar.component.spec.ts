@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 @Component({
     selector: 'dot-test-host-component',
     template:   `<form [formGroup]="group">
-                    <dot-layout-sidebar formControlName="sidebar"></dot-layout-sidebar>
+                    <dot-layout-property-sidebar formControlName="sidebar"></dot-layout-property-sidebar>
                 </form>`
 })
 class TestHostComponent {
@@ -26,7 +26,7 @@ class TestHostComponent {
     }
 }
 
-describe('DotLayoutSidebarComponent', () => {
+fdescribe('DotLayoutSidebarComponent', () => {
     let comp: DotLayoutSidebarComponent;
     let fixture: ComponentFixture<DotLayoutSidebarComponent>;
     let de: DebugElement;
