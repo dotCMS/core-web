@@ -1,0 +1,77 @@
+import { DotLayoutPropertiesItemComponent } from './dot-layout-properties-item.component';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
+import { DOTTestBed } from './../../../../test/dot-test-bed';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement, Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
+@Component({
+    selector: 'dot-test-host-component',
+    template:   `<form [formGroup]="group">
+                    <dot-layout-properties-item formControlName="header" ></dot-layout-properties-item>
+                </form>`
+})
+class TestHostComponent {
+    group: FormGroup;
+    constructor() {
+        this.group = new FormGroup({
+            header: new FormControl({
+                header: true
+            })
+        });
+    }
+}
+
+describe('DotLayoutPropertiesItemComponent', () => {
+    let comp: DotLayoutPropertiesItemComponent;
+    let fixture: ComponentFixture<DotLayoutPropertiesItemComponent>;
+    let de: DebugElement;
+    let hostComponentfixture: ComponentFixture<TestHostComponent>;
+
+    beforeEach(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DotLayoutPropertiesItemComponent, TestHostComponent]
+        });
+
+        fixture = DOTTestBed.createComponent(DotLayoutPropertiesItemComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+    });
+
+    it('should propagate value on host click', () => {
+        spyOn(comp, 'propagateChange');
+        de.nativeElement.click();
+
+        expect(comp.propagateChange).toHaveBeenCalled();
+    });
+
+    it('should emit change value on host click', () => {
+        let res: boolean;
+
+        comp.change.subscribe(value => res = value);
+        de.nativeElement.click();
+
+        expect(res).toEqual(true);
+    });
+
+    it('should add a selected class to the item if value is true', () => {
+        const svgEl = de.children[0].nativeElement;
+
+        de.nativeElement.click();
+
+        fixture.detectChanges();
+        expect(svgEl.classList).toContain('property-item-icon--selected');
+    });
+
+    it('should call writeValue to define the initial value of the property item', () => {
+        hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
+        de = hostComponentfixture.debugElement.query(By.css('dot-layout-properties-item'));
+        const component: DotLayoutPropertiesItemComponent = de.componentInstance;
+
+        spyOn(component, 'writeValue');
+        hostComponentfixture.detectChanges();
+
+        expect(component.writeValue).toHaveBeenCalledWith(({ header: true }));
+    });
+});

@@ -26,12 +26,6 @@ export class DotLayoutPropertiesItemComponent implements ControlValueAccessor {
 
     propagateChange = (_: any) => {};
 
-    writeValue(value: boolean): void {
-        if (value) {
-            this.value = value;
-        }
-    }
-
     @HostListener('click', ['$event'])
     onClick() {
         this.value = !this.value;
@@ -39,15 +33,39 @@ export class DotLayoutPropertiesItemComponent implements ControlValueAccessor {
         this.change.emit(this.value);
     }
 
+    /**
+     * Write a new value to the property item
+     * @param {boolean} value
+     * @memberof DotLayoutPropertiesItemComponent
+     */
+    writeValue(value: boolean): void {
+        if (value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * Check item and set value to true
+     * @memberof DotLayoutPropertiesItemComponent
+     */
     setChecked() {
         this.value = true;
     }
 
+    /**
+     * Uncheck item and set value to false
+     * @memberof DotLayoutPropertiesItemComponent
+     */
     setUnchecked() {
         this.value = false;
     }
 
-    registerOnChange(fn): void {
+    /**
+     * Set the function to be called when the control receives a change event
+     * @param {any} fn
+     * @memberof DotLayoutPropertiesItemComponent
+     */
+    registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
 

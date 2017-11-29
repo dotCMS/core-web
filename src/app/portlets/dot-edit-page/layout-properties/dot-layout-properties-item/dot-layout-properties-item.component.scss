@@ -12,15 +12,23 @@
     }
 }
 
-.properties-item__iconGroup {
-    stroke: $gray-light;
+.property-item-icon {
+    width: 24px;
+    height: 24px;
+
+    .property-item-icon__iconGroup {
+        stroke: $gray-light;
+        fill: none;
+    }
 }
 
-.properties-item__iconGroup-selected {
-    stroke: #FFFFFF;
-    fill: $blue;
+.property-item-icon--selected {
+    .property-item-icon__iconGroup {
+        stroke: #FFFFFF;
+        fill: $blue;
+    }
 }
 
-.layout-properties-item__label {
+.property-item-label {
     padding-left: $basic-padding;
 }

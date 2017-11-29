@@ -8,7 +8,14 @@ import { NgModule } from '@angular/core';
 
 @NgModule({
     declarations: [DotLayoutPropertiesComponent],
-    imports: [CommonModule, DotLayoutPropertiesItemModule, DotLayoutSidebarModule, OverlayPanelModule, ButtonModule, ReactiveFormsModule],
+    imports: [
+        CommonModule,
+        DotLayoutPropertiesItemModule,
+        DotLayoutSidebarModule,
+        OverlayPanelModule,
+        ButtonModule,
+        ReactiveFormsModule
+    ],
     exports: [DotLayoutPropertiesComponent],
     providers: []
 })
