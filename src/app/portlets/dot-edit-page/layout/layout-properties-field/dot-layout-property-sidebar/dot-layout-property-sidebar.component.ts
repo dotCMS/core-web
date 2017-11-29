@@ -1,4 +1,4 @@
-import { MessageService } from './../../../../api/services/messages-service';
+import { MessageService } from './../../../../../api/services/messages-service';
 import { DotLayoutPropertiesItemComponent } from './../dot-layout-properties-item/dot-layout-properties-item.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup } from '@angular/forms';
 import { Component, forwardRef, ViewEncapsulation, Input, group, ViewChild, OnInit } from '@angular/core';

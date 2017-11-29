@@ -1,11 +1,11 @@
+import { DOTTestBed } from './../../../../../test/dot-test-bed';
+import { MessageService } from './../../../../../api/services/messages-service';
+import { MockMessageService } from './../../../../../test/message-service.mock';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
 import { DotLayoutSidebarModule } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
 import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';
-import { MockMessageService } from './../../../../test/message-service.mock';
-import { DOTTestBed } from './../../../../test/dot-test-bed';
-import { MessageService } from './../../../../api/services/messages-service';
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';

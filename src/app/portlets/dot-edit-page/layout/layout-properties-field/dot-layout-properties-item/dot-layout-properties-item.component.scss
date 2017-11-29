@@ -29,7 +29,7 @@
     }
 }
 
-.property-item-icon {
+.property-item__icon {
     width: 24px;
     height: 24px;
 
@@ -39,14 +39,14 @@
     }
 }
 
-.property-item-icon--selected {
+.property-item__icon--selected {
     & > g {
         stroke: $white;
         fill: $brand-primary;
     }
 }
 
-.property-item-label {
+.property-item__label {
     padding-left: $basic-padding;
     align-self: center;
 }

@@ -1,7 +1,7 @@
+import { DOTTestBed } from './../../../../../test/dot-test-bed';
 import { DotLayoutPropertiesItemComponent } from './dot-layout-properties-item.component';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
-import { DOTTestBed } from './../../../../test/dot-test-bed';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -65,7 +65,7 @@ describe('DotLayoutPropertiesItemComponent', () => {
         de.nativeElement.click();
 
         fixture.detectChanges();
-        expect(svgEl.classList).toContain('property-item-icon--selected');
+        expect(svgEl.classList).toContain('property-item__icon--selected');
     });
 
     it('should call writeValue to define the initial value of the property item', () => {

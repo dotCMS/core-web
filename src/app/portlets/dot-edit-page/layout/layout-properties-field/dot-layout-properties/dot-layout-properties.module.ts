@@ -1,10 +1,10 @@
+import { DotLayoutSidebarModule } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
-import { DotLayoutSidebarModule } from './../dot-layout-property-sidebar/dot-layout-property-sidebar.module';
 import { DotLayoutPropertiesItemModule } from './../dot-layout-properties-item/dot-layout-properties-item.module';
 import { CommonModule } from '@angular/common';
-import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';
 import { NgModule } from '@angular/core';
+import { DotLayoutPropertiesComponent } from './dot-layout-properties.component';
 
 @NgModule({
     declarations: [DotLayoutPropertiesComponent],
