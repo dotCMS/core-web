@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, DebugElement } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import {DotEventsService} from '../../../../api/services/dot-events.service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -48,6 +49,7 @@ describe('DotEditLayoutGridComponent', () => {
                 DotConfirmationService,
                 DotEditLayoutService,
                 PaginatorService,
+                DotEventsService,
                 { provide: MessageService, useValue: messageServiceMock }
             ]
         });
