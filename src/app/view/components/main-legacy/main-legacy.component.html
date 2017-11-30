@@ -1,5 +1,5 @@
 <div class="layout" [class.collapsed]="isMenuCollapsed">
-    <dot-toolbar-component [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)"></dot-toolbar-component>
+    <dot-toolbar [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)"></dot-toolbar>
     <div class="layout__content">
         <aside class="layout__sidebar">
             <dot-main-nav></dot-main-nav>

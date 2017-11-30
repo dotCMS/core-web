@@ -79,7 +79,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
         this.setGridValue();
-        this.dotEventsService.listen('dot-toolbar-toggle').subscribe(() => {
+        this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
+            // timeOut here is needed because the menu animation time.
             setTimeout(() => {
                 this.ngGrid.triggerResize();
             }, 150);
