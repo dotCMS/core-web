@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, forwardRef, ViewChild} from '@angular/core';
-import {NgGrid, NgGridConfig, NgGridItemConfig} from 'angular2-grid';
+import { Component, OnInit, Input, forwardRef, ViewChild } from '@angular/core';
+import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 import * as _ from 'lodash';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { MessageService } from '../../../../api/services/messages-service';
@@ -13,7 +13,7 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {DotEventsService} from '../../../../api/services/dot-events.service';
+import { DotEventsService } from '../../../../api/services/dot-events.service';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -84,7 +84,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                 this.ngGrid.triggerResize();
             }, 150);
         });
-    };
+    }
 
     /**
      * Add new Box to the gridBoxes Arrray.

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DotEventsService } from './dot-events.service';
 import { DotEvent } from '../../shared/models/event/dot-event';
 
-fdescribe('DotEventsService', () => {
+describe('DotEventsService', () => {
     let dotEventsService: DotEventsService;
     const testEvent: DotEvent = {
         name: 'test',
