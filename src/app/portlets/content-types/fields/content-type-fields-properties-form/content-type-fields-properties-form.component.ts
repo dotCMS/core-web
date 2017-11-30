@@ -157,7 +157,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         }
     }
 
-    private handleCheckValues(checkbox: any): void {
+    private handleCheckValues(checkbox: AbstractControl): void {
         if (checkbox.value) {
             if (checkbox === this.form.get('unique')) {
                 this.handleDisabledRequired(true);
@@ -165,12 +165,9 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             this.handleDisabledIndexed(true);
         }
 
-        checkbox === this.form.get('unique') ? checkbox.valueChanges.subscribe(
-                res => this.handleUniqueValuesChecked(res)
-            ) : checkbox.valueChanges.subscribe(res =>
-                this.setIndexedValueChecked(res)
-            );
-
+        checkbox.valueChanges.subscribe(res => {
+            checkbox === this.form.get('unique') ? this.handleUniqueValuesChecked(res) : this.setIndexedValueChecked(res);
+        });
     }
 
     private setIndexedValueChecked(propertyValue: boolean): void {
