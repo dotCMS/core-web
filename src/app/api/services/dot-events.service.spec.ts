@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DotEventsService } from './dot-events.service';
-import { DotEvent } from '../../shared/models/event/dot-event';
+import { DotEvent } from '../../shared/models/dot-event/dot-event';
 
 describe('DotEventsService', () => {
     let dotEventsService: DotEventsService;
