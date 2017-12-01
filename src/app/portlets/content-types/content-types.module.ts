@@ -36,7 +36,7 @@ import {
     SplitButtonModule,
     RadioButtonModule,
     CheckboxModule,
-    TabViewModule
+    TabViewModule, MultiSelectModule
 } from 'primeng/primeng';
 import {
 
@@ -117,7 +117,8 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
         ContentTypeFieldsAddRowModule,
         SplitButtonModule,
         TabViewModule,
-        DotTextareaContentModule
+        DotTextareaContentModule,
+        MultiSelectModule
     ],
     providers: [
         ContentTypesInfoService,
