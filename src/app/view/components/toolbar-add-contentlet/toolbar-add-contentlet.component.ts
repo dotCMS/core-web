@@ -38,8 +38,8 @@ export class ToolbarAddContenletComponent extends BaseComponent implements OnIni
 
     constructor(
         messageService: MessageService,
-        private contentTypesInfoService: ContentTypesInfoService,
         private toolbarAddContenletService: ToolbarAddContenletService,
+        public contentTypesInfoService: ContentTypesInfoService,
         public iframeOverlayService: IframeOverlayService
     ) {
         super(['more'], messageService);

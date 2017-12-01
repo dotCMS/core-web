@@ -12,6 +12,11 @@
             color: $body-font-color;
         }
     }
+
+    searchable-dropdown .ui-button,
+    searchable-dropdown .ui-button:hover {
+        box-shadow: none;
+    }
 }
 
 .container-selector__header {
