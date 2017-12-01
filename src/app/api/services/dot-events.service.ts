@@ -17,19 +17,19 @@ export class DotEventsService {
     /**
      * Method to register a listener of a specif event.
      *
-     * @param {string} event
+     * @param {string} eventName
      * @returns {Observable<DotEvent>}
      */
-    listen(event: string): Observable<DotEvent> {
-        return this.subject.asObservable().filter(res => res.name === event);
+    listen(eventName: string): Observable<DotEvent> {
+        return this.subject.asObservable().filter(res => res.name === eventName);
     }
 
     /**
      * Method to notify subscribers of a specific event.
      *
-     * @param {DotEvent} event
+     * @param {DotEvent} dotEvent
      */
-    notify(event: DotEvent): void {
-        this.subject.next(event);
+    notify(dotEvent: DotEvent): void {
+        this.subject.next(dotEvent);
     }
 }

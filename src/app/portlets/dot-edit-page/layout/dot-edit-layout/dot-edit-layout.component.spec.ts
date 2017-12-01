@@ -67,7 +67,6 @@ describe('DotEditLayoutComponent', () => {
                 PaginatorService,
                 SocketFactory,
                 DotEditLayoutService,
-                DotEventsService,
                 {
                     provide: ActivatedRoute,
                     useValue: {

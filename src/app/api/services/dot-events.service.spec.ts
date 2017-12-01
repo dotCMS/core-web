@@ -17,17 +17,20 @@ describe('DotEventsService', () => {
         dotEventsService = TestBed.get(DotEventsService);
     });
     it('should filter notifications based on event name', () => {
-        let timesCalled = 0;
+        let timesCalled = 0,
+            randomEvent = 0;
         dotEventsService.listen('test').subscribe(value => {
             timesCalled++;
         });
         dotEventsService.listen('randomEvent').subscribe(value => {
-            timesCalled++;
+            randomEvent++;
         });
 
         dotEventsService.notify(testEvent);
+        dotEventsService.notify({ name: 'randomEvent' });
 
         expect(timesCalled).toEqual(1);
+        expect(randomEvent).toEqual(1);
     });
 
     it('should notify subscribers', () => {
@@ -38,6 +41,6 @@ describe('DotEventsService', () => {
 
         dotEventsService.notify(testEvent);
 
-        expect(numbersArray.length).toEqual(3);
+        expect(numbersArray).toEqual([1, 2, 3]);
     });
 });
