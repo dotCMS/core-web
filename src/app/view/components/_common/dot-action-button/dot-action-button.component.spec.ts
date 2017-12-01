@@ -7,7 +7,7 @@ import { DotActionButtonComponent } from './dot-action-button.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('ActionButtonComponent', () => {
+describe('ActionButtonComponent', () => {
     let comp: DotActionButtonComponent;
     let fixture: ComponentFixture<DotActionButtonComponent>;
     let de: DebugElement;
@@ -55,15 +55,49 @@ fdescribe('ActionButtonComponent', () => {
         expect(label.nativeElement.textContent).toBe('Hello World');
     });
 
-    it('should have menu and pass the model', () => {
-        comp.model = [{
+    it('should have p-menu and pass the model to it', () => {
+        const model = [{
             command: () => {},
             icon: 'whatever',
             label: 'Whatever'
         }];
+
+        comp.model = model;
         fixture.detectChanges();
         const menu = fixture.debugElement.query(By.css('p-menu'));
         expect(menu).toBeDefined();
+
+        expect(menu.componentInstance.model).toEqual(model, 'model its being pass to primeng component');
+    });
+
+    it('should emit event on button click', () => {
+        let res;
+
+        comp.onClick.subscribe(event => {
+            res = event;
+        });
+
+        const button = fixture.debugElement.query(By.css('button'));
+        button.nativeNode.click();
+        expect(res).toBeDefined();
+    });
+
+    it('should toggle the menu on button click', () => {
+        const model = [{
+            command: () => {},
+            icon: 'whatever',
+            label: 'Whatever'
+        }];
+
+        comp.model = model;
+        fixture.detectChanges();
+
+        spyOn(comp.menu, 'toggle');
+
+
+        const button = fixture.debugElement.query(By.css('button'));
+        button.nativeNode.click();
+        expect(comp.menu.toggle).toHaveBeenCalledTimes(1);
     });
 
 });
