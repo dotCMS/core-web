@@ -29,7 +29,7 @@ class TestHostComponent {
     }
 }
 
-describe('DotLayoutPropertiesComponent', () => {
+fdescribe('DotLayoutPropertiesComponent', () => {
     let comp: DotLayoutPropertiesComponent;
     let fixture: ComponentFixture<DotLayoutPropertiesComponent>;
     let de: DebugElement;

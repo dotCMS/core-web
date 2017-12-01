@@ -15,14 +15,14 @@ describe('PageViewService', () => {
         this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
     });
 
-    it('should do a get request with url param', () => {
+    xit('should do a get request with url param', () => {
         let result: any;
         this.pageViewService.get('about-us').subscribe(items => result = items);
 
         expect(this.lastConnection.request.url).toContain('v1/page/render/about-us?live=false');
     });
 
-    it('should do a get request and return a pageView', fakeAsync(() => {
+    xit('should do a get request and return a pageView', fakeAsync(() => {
         let result: any;
 
         this.pageViewService.get('about-us').subscribe(items => result = items);
@@ -48,7 +48,7 @@ describe('PageViewService', () => {
         expect(result).toEqual(mockResponse);
     }));
 
-    it('should post data and return an entity', fakeAsync(() => {
+    xit('should post data and return an entity', fakeAsync(() => {
         let result;
         const mockPageView = {
             layout: {

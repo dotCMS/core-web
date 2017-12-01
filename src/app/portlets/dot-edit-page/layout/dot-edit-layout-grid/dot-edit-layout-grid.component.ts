@@ -35,6 +35,8 @@ import { DotEventsService } from '../../../../api/services/dot-events.service';
 export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor {
     @Input() pageView: DotPageView;
     @ViewChild(NgGrid) ngGrid: NgGrid;
+
+    value: DotLayoutBody;
     grid: DotLayoutGridBox[];
 
     gridConfig: NgGridConfig = <NgGridConfig>{
@@ -78,7 +80,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
-        this.setGridValue();
         this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
             // timeOut here is needed because the menu animation time.
             setTimeout(() => {
@@ -135,11 +136,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     /**
      * Write a new value to the element
-     * @param {DotPageView} value
+     * @param {DotLayoutBody} value
      */
-    writeValue(value: DotPageView): void {
+    writeValue(value: DotLayoutBody): void {
         if (value) {
-            this.pageView = value || null;
+            this.value = value || null;
             this.setGridValue();
         }
     }
@@ -157,8 +158,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     registerOnTouched(): void {}
 
     private setGridValue(): void {
-        this.grid = this.isHaveRows(this.pageView)
-            ? this.dotEditLayoutService.getDotLayoutGridBox(this.pageView)
+        this.grid = this.isHaveRows()
+            ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
             : [...DOT_LAYOUT_DEFAULT_GRID];
     }
 
@@ -220,13 +221,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         return rowArray;
     }
 
-    private isHaveRows(pageView: DotPageView): boolean {
+    private isHaveRows(): boolean {
         return !!(
-            pageView &&
-            pageView.layout &&
-            pageView.layout.body &&
-            pageView.layout.body.rows &&
-            pageView.layout.body.rows.length
+            this.value &&
+            this.value.rows &&
+            this.value.rows.length
         );
     }
 }

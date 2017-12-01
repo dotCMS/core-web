@@ -8,6 +8,8 @@ import { PageViewService } from '../../../../api/services/page-view/page-view.se
 import { Observable } from 'rxjs/Observable';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { MessageService } from '../../../../api/services/messages-service';
+import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotLayout } from '../../shared/models/dot-layout.model';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -18,6 +20,8 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
     @ViewChild('templateName') templateName: ElementRef;
 
+    form: FormGroup;
+
     pageView: DotPageView;
     saveAsTemplate: boolean;
 
@@ -26,8 +30,21 @@ export class DotEditLayoutComponent implements OnInit {
         private route: ActivatedRoute,
         public messageService: MessageService,
         public router: Router,
-        private _fb: FormBuilder
-    ) {}
+        private fb: FormBuilder,
+        private templateContainersCacheService: TemplateContainersCacheService
+    ) {
+        this.form = this.fb.group({
+            title: '',
+            layout: this.fb.group({
+                body: {},
+                header: false,
+                footer: false,
+                sidebar: this.fb.group({
+                    location: ''
+                })
+            })
+        });
+    }
 
     ngOnInit(): void {
         this.messageService
@@ -41,6 +58,20 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
+            console.log('pageView', pageView);
+            this.form.setValue({
+                title: this.isLayout() ? null : this.pageView.template.title,
+                layout: {
+                    body: this.pageView.layout.body || {},
+                    header: this.pageView.layout.header,
+                    footer: this.pageView.layout.footer,
+                    sidebar: {
+                        location: this.pageView.layout.sidebar ? this.pageView.layout.sidebar.location : ''
+                    }
+                }
+            });
+
+            this.templateContainersCacheService.setContainers(this.pageView.containers);
         });
     }
 
@@ -64,7 +95,7 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     isLayout(): boolean {
-        return /anonymous_layout_\d+/.test(this.pageView.template.name);
+       return this.pageView.template.anonymous;
     }
 
     /**
@@ -90,9 +121,8 @@ export class DotEditLayoutComponent implements OnInit {
      *
      * @memberof DotEditLayoutComponent
      */
-    saveLayout(): void {
-        const layoutBody: DotLayoutBody = this.editLayoutGrid.getModel();
-        const pageView: DotPageView = Object.assign({}, this.pageView, { layout: { body: layoutBody } });
-        this.pageViewService.save(pageView).subscribe();
+    saveLayout(event): void {
+        const dotLayout: DotLayout = this.form.value;
+        this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
     }
 }
