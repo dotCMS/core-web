@@ -34,7 +34,6 @@ import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
     ]
 })
 export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor {
-    @Input() pageView: DotPageView;
     @ViewChild(NgGrid) ngGrid: NgGrid;
 
     value: DotLayoutBody;
@@ -91,6 +90,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     /**
      * Add new Box to the gridBoxes Arrray.
+     *
+     * @memberof DotEditLayoutGridComponent
      */
     addBox(): void {
         const conf: NgGridItemConfig = this.setConfigOfNewContainer();
@@ -99,8 +100,30 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     /**
+     * Return ng-grid model.
+     *
+     * @returns {DotLayoutBody}
+     * @memberof DotEditLayoutGridComponent
+     */
+    getModel(): DotLayoutBody {
+        return this.dotEditLayoutService.getDotLayoutBody(this.grid);
+    }
+
+    /**
+     * Event fired when the drag of a container ends, remove empty rows if any.
+     *
+     * @memberof DotEditLayoutGridComponent
+     */
+    onDragStop(): void {
+        this.deleteEmptyRows();
+        this.propagateChange(this.getModel());
+    }
+
+    /**
      * Removes the given index to the gridBoxes Array after the user confirms.
+     *
      * @param {number} index
+     * @memberof DotEditLayoutGridComponent
      */
     onRemoveContainer(index: number): void {
         this.dotConfirmationService.confirm({
@@ -118,26 +141,34 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         });
     }
 
+    propagateChange = (_: any) => {};
+
     /**
-     * Event fired when the drag of a container ends, remove empty rows if any.
+     * Set the function to be called when the control receives a change event.
      *
+     * @param {*} fn
+     * @memberof DotEditLayoutGridComponent
      */
-    onDragStop(): void {
-        this.deleteEmptyRows();
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
+    }
+
+    registerOnTouched(): void {}
+
+    /**
+     * Update the model when a container is added to a box
+     *
+     * @memberof DotEditLayoutGridComponent
+     */
+    updateContainers(): void {
         this.propagateChange(this.getModel());
     }
 
     /**
-     * Return ng-grid model.
-     * @returns {DotLayoutBody}
-     */
-    getModel(): DotLayoutBody {
-        return this.dotEditLayoutService.getDotLayoutBody(this.grid);
-    }
-
-    /**
      * Write a new value to the element
+     *
      * @param {DotLayoutBody} value
+     * @memberof DotEditLayoutGridComponent
      */
     writeValue(value: DotLayoutBody): void {
         if (value) {
@@ -145,18 +176,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
             this.setGridValue();
         }
     }
-
-    propagateChange = (_: any) => {};
-
-    /**
-     * Set the function to be called when the control receives a change event.
-     * @param fn
-     */
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
-
-    registerOnTouched(): void {}
 
     private setGridValue(): void {
         this.grid = this.isHaveRows()

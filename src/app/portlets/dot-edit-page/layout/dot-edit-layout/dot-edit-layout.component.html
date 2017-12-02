@@ -1,5 +1,3 @@
-{{form.value | json}}
-
 <form [formGroup]="form" (ngSubmit)="saveLayout($event)" novalidate class="dot-edit-layout__form">
     <div class="dot-edit-layout__toolbar">
         <dot-action-button [command]="addGridBox()" class="dot-edit-layout__toolbar-add"></dot-action-button>
@@ -21,7 +19,7 @@
                 SIDEBAR
             </div>
             <div class="dot-edit-layout__grid-guides" formGroupName="layout">
-                <dot-edit-layout-grid #editLayoutGrid [pageView]="pageView" formControlName="body"></dot-edit-layout-grid>
+                <dot-edit-layout-grid #editLayoutGrid formControlName="body"></dot-edit-layout-grid>
             </div>
             <div class="dot-edit-layout__template-sidebar--right" *ngIf="form.value.layout.sidebar.location === 'right'">
                 SIDEBAR
@@ -29,4 +27,5 @@
         </div>
         <div class="dot-edit-layout__template-footer" *ngIf="form.value.layout.footer">FOOTER</div>
     </div>
+
 </form>    
