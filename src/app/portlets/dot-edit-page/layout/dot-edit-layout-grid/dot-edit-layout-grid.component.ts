@@ -14,6 +14,7 @@ import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -80,11 +81,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     ngOnInit() {
         this.messageService.getMessages(this.i18nKeys).subscribe();
-        this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
-            // timeOut here is needed because the menu animation time.
+        this.dotEventsService.listen('dot-side-nav-toggle').subscribe((event: DotEvent) => {
+            // setTimeout is need it because the side nav animation time.
             setTimeout(() => {
                 this.ngGrid.triggerResize();
-            }, 150);
+            }, event.data === 'template' ? 0 : 200);
         });
     }
 

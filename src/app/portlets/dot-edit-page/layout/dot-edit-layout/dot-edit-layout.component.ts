@@ -42,7 +42,11 @@ export class DotEditLayoutComponent implements OnInit {
                 header: false,
                 footer: false,
                 sidebar: this.fb.group({
-                    location: ''
+                    location: '',
+                    containers: [],
+                    width: '',
+                    widthPercent: '',
+                    preview: false
                 })
             })
         });
@@ -66,16 +70,18 @@ export class DotEditLayoutComponent implements OnInit {
                     body: this.pageView.layout.body || {},
                     header: this.pageView.layout.header,
                     footer: this.pageView.layout.footer,
-                    sidebar: {
-                        location: this.pageView.layout.sidebar ? this.pageView.layout.sidebar.location : ''
-                    }
+                    sidebar: this.pageView.layout.sidebar
+                    // sidebar: {
+                    //     location: this.pageView.layout.sidebar ? this.pageView.layout.sidebar.location : ''
+                    // }
                 }
             });
 
             this.templateContainersCacheService.set(this.pageView.containers);
 
+            // Emit event to redraw the grid when the sidebar change
             this.form.get('layout.sidebar').valueChanges.subscribe(() => {
-                this.dotEventsService.notify('dot-side-nav-toggle');
+                this.dotEventsService.notify('dot-side-nav-toggle', 'template');
             });
         });
     }

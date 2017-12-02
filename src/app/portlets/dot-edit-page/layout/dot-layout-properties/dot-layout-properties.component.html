@@ -1,5 +1,5 @@
 <p-overlayPanel #op>
-    <div [formGroup]="group" >
+    <div [formGroup]="group">
         <dot-layout-properties-item [label]="messageService.get('editpage.layout.properties.header')" 
                                     class="property-item__header"
                                     formControlName="header">
@@ -8,9 +8,8 @@
         <dot-layout-properties-item [label]="messageService.get('editpage.layout.properties.footer')" 
                                     class="property-item__footer"
                                     formControlName="footer">
-        </dot-layout-properties-item> 
-
-        <div formGroupName="sidebar">
+        </dot-layout-properties-item>
+        <div [formGroup]="group.get('sidebar')">
             <dot-layout-property-sidebar formControlName="location"></dot-layout-property-sidebar>
         </div>
     </div>
