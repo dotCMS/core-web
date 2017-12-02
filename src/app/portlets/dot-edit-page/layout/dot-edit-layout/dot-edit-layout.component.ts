@@ -34,25 +34,11 @@ export class DotEditLayoutComponent implements OnInit {
         private templateContainersCacheService: TemplateContainersCacheService,
         public messageService: MessageService,
         public router: Router
-    ) {
-        this.form = this.fb.group({
-            title: '',
-            layout: this.fb.group({
-                body: {},
-                header: false,
-                footer: false,
-                sidebar: this.fb.group({
-                    location: '',
-                    containers: [],
-                    width: '',
-                    widthPercent: '',
-                    preview: false
-                })
-            })
-        });
-    }
+    ) {}
 
     ngOnInit(): void {
+        this.initForm();
+
         this.messageService
             .getMessages([
                 'editpage.layout.toolbar.action.save',
@@ -64,24 +50,12 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            this.form.setValue({
-                title: this.isLayout() ? null : this.pageView.template.title,
-                layout: {
-                    body: this.pageView.layout.body || {},
-                    header: this.pageView.layout.header,
-                    footer: this.pageView.layout.footer,
-                    sidebar: this.pageView.layout.sidebar
-                    // sidebar: {
-                    //     location: this.pageView.layout.sidebar ? this.pageView.layout.sidebar.location : ''
-                    // }
-                }
-            });
-
+            this.setFormValue(pageView);
             this.templateContainersCacheService.set(this.pageView.containers);
 
             // Emit event to redraw the grid when the sidebar change
             this.form.get('layout.sidebar').valueChanges.subscribe(() => {
-                this.dotEventsService.notify('dot-side-nav-toggle', 'template');
+                this.dotEventsService.notify('layout-sidebar-change');
             });
         });
     }
@@ -135,5 +109,35 @@ export class DotEditLayoutComponent implements OnInit {
     saveLayout(event): void {
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
+    }
+
+    private initForm(): void {
+        this.form = this.fb.group({
+            title: '',
+            layout: this.fb.group({
+                body: {},
+                header: false,
+                footer: false,
+                sidebar: this.fb.group({
+                    location: '',
+                    containers: [],
+                    width: '',
+                    widthPercent: '',
+                    preview: false
+                })
+            })
+        });
+    }
+
+    private setFormValue(pageView: DotPageView): void {
+        this.form.setValue({
+            title: this.isLayout() ? null : pageView.template.title,
+            layout: {
+                body: pageView.layout.body || {},
+                header: pageView.layout.header,
+                footer: pageView.layout.footer,
+                sidebar: pageView.layout.sidebar
+            }
+        });
     }
 }

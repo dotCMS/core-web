@@ -21,6 +21,7 @@ export class DotEventsService {
      * @returns {Observable<DotEvent>}
      */
     listen(eventName: string): Observable<DotEvent> {
+        // TODO: need to make this method to support multiple events
         return this.subject.asObservable().filter(res => res.name === eventName);
     }
 

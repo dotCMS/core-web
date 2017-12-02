@@ -19,7 +19,6 @@ import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.serv
 import { DotActionButtonModule } from '../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
-import {DotEventsService} from '../../../../api/services/dot-event/dot-events.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 @Component({
@@ -69,6 +68,13 @@ describe('DotEditLayoutComponent', () => {
             layout: {
                 header: false,
                 footer: false,
+                sidebar: {
+                    location: '',
+                    containers: [],
+                    width: '',
+                    widthPercent: '',
+                    preview: false
+                },
                 body: {
                     rows: []
                 }
@@ -90,11 +96,7 @@ describe('DotEditLayoutComponent', () => {
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [
-                DotEditLayoutComponent,
-                MockAdditionalOptionsComponent,
-                MockDotLayoutPropertiesComponent
-            ],
+            declarations: [DotEditLayoutComponent, MockAdditionalOptionsComponent, MockDotLayoutPropertiesComponent],
             imports: [
                 DotEditLayoutGridModule,
                 RouterTestingModule,
@@ -132,7 +134,9 @@ describe('DotEditLayoutComponent', () => {
 
     it('should have dot-template-addtional-actions-menu', () => {
         fixture.detectChanges();
-        const aditionalOptions: DebugElement = fixture.debugElement.query(By.css('dot-template-addtional-actions-menu'));
+        const aditionalOptions: DebugElement = fixture.debugElement.query(
+            By.css('dot-template-addtional-actions-menu')
+        );
 
         expect(aditionalOptions).toBeDefined();
         expect(aditionalOptions.componentInstance.templateId).toEqual(fakePageView.pageView.template.inode);
@@ -151,7 +155,7 @@ describe('DotEditLayoutComponent', () => {
         expect(addBoxButton).toBeDefined();
     });
 
-    it ('should have page title', () => {
+    it('should have page title', () => {
         fixture.detectChanges();
         const pageTitle: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__page-title'));
         expect(pageTitle.nativeElement.textContent).toEqual('Hello World');
@@ -159,7 +163,9 @@ describe('DotEditLayoutComponent', () => {
 
     it('should have cancel button', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-action-cancel')
+        );
 
         expect(cancelButton).toBeDefined();
         expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
@@ -175,7 +181,9 @@ describe('DotEditLayoutComponent', () => {
 
     it('should have checkbox to save as template', () => {
         fixture.detectChanges();
-        const checkboxSave: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-save-template'));
+        const checkboxSave: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-save-template')
+        );
 
         expect(checkboxSave).toBeDefined();
         expect(checkboxSave.nativeElement.textContent).toContain('Save as template');
@@ -188,33 +196,23 @@ describe('DotEditLayoutComponent', () => {
         const pageTitle: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__page-title'));
         expect(pageTitle === null).toBe(true);
 
-        const templateNameInput: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-template-name'));
+        const templateNameInput: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-template-name')
+        );
         expect(templateNameInput).toBeDefined();
     });
 
-    xit('should have header in the template', () => {
+    xit('should have header in the template', () => {});
 
-    });
+    xit('should NOT have header in the template', () => {});
 
-    xit('should NOT have header in the template', () => {
+    xit('should have footer in the template', () => {});
 
-    });
+    xit('should NOT have footer in the template', () => {});
 
-    xit('should have footer in the template', () => {
+    xit('should have sidebar in the template', () => {});
 
-    });
-
-    xit('should NOT have footer in the template', () => {
-
-    });
-
-    xit('should have sidebar in the template', () => {
-
-    });
-
-    xit('should NOT have sidebar in the template', () => {
-
-    });
+    xit('should NOT have sidebar in the template', () => {});
 
     it('should have a form', () => {
         const form: DebugElement = fixture.debugElement.query(By.css('form'));
@@ -241,7 +239,9 @@ describe('DotEditLayoutComponent', () => {
         component.saveAsTemplate = true;
         fixture.detectChanges();
 
-        const templateNameInput: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-template-name'));
+        const templateNameInput: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-template-name')
+        );
         expect(templateNameInput.attributes.formControlName).toEqual('title');
     });
 
@@ -256,8 +256,9 @@ describe('DotEditLayoutComponent', () => {
     });
 
     it('should set containers in TemplateContainersCacheService', () => {
-        const templateContainersCacheService: TemplateContainersCacheService =
-            fixture.debugElement.injector.get(TemplateContainersCacheService);
+        const templateContainersCacheService: TemplateContainersCacheService = fixture.debugElement.injector.get(
+            TemplateContainersCacheService
+        );
 
         spyOn(templateContainersCacheService, 'set');
         fixture.detectChanges();

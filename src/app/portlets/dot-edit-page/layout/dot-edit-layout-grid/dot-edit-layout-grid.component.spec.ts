@@ -1,21 +1,19 @@
-import { MessageService } from './../../../../api/services/messages-service';
-import { MockMessageService } from './../../../../test/message-service.mock';
-import { PaginatorService } from './../../../../api/services/paginator/paginator.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { DotContainerSelectorModule } from './../../../../view/components/dot-container-selector/dot-container-selector.module';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-
-import { NgGridModule } from 'angular2-grid';
-
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
-import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Component, DebugElement } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { By } from '@angular/platform-browser';
-import {DotEventsService} from '../../../../api/services/dot-event/dot-events.service';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MessageService } from './../../../../api/services/messages-service';
+import { MockMessageService } from './../../../../test/message-service.mock';
+import { NgGridModule } from 'angular2-grid';
+import { PaginatorService } from './../../../../api/services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 let fakeValue: DotLayoutBody;
@@ -49,7 +47,7 @@ describe('DotEditLayoutGridComponent', () => {
                             // containers: ['1'],
                             containers: [],
                             leftOffset: 1,
-                            width: 2,
+                            width: 2
                         }
                     ]
                 }
@@ -186,20 +184,30 @@ describe('DotEditLayoutGridComponent', () => {
         fakeValue.rows[0].columns.push({
             containers: [],
             leftOffset: 3,
-            width: 3,
+            width: 3
         });
         spyOn(component, 'propagateChange');
         component.addBox();
         expect(component.propagateChange).toHaveBeenCalled();
     });
 
-    it( 'should resize the grid when the left menu is toggle', fakeAsync(() => {
+    it(
+        'should resize the grid when the left menu is toggle',
+        fakeAsync(() => {
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            spyOn(component.ngGrid, 'triggerResize');
+            dotEventsService.notify('dot-side-nav-toggle');
+            tick(210);
+            expect(component.ngGrid.triggerResize).toHaveBeenCalled();
+        })
+    );
+
+    it('should resize the grid when the layout sidebar change', () => {
         const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
-        spyOn( component.ngGrid, 'triggerResize');
-        dotEventsService.notify( {name: 'dot-side-nav-toggle'});
-        tick(160);
+        spyOn(component.ngGrid, 'triggerResize');
+        dotEventsService.notify('layout-sidebar-change');
         expect(component.ngGrid.triggerResize).toHaveBeenCalled();
-    }));
+    });
 
     it('should call writeValue to define the initial value of grid', () => {
         hostComponentfixture.detectChanges();

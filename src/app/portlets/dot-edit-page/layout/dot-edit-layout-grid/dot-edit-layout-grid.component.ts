@@ -86,6 +86,9 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                 this.ngGrid.triggerResize();
             }, event.data === 'template' ? 0 : 200);
         });
+        this.dotEventsService.listen('layout-sidebar-change').subscribe((event: DotEvent) => {
+            this.ngGrid.triggerResize();
+        });
     }
 
     /**
