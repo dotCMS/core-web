@@ -99,7 +99,7 @@ describe('DotEditLayoutService', () => {
         };
 
         const grid: DotLayoutGridBox[] = dotEditLayoutService.getDotLayoutGridBox(dotLayoutBody);
-        console.log('grid', grid);
+
         expect(grid.length).toEqual(4);
         expect(grid[2].containers.length).toEqual(2);
         expect(grid[3].config).toEqual({
