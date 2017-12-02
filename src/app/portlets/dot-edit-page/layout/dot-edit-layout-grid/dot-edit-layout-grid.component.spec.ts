@@ -14,9 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, DebugElement } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import {DotEventsService} from '../../../../api/services/dot-events.service';
+import {DotEventsService} from '../../../../api/services/dot-event/dot-events.service';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 let fakeValue: DotLayoutBody;
 
@@ -66,7 +66,7 @@ describe('DotEditLayoutGridComponent', () => {
             providers: [
                 DotConfirmationService,
                 DotEditLayoutService,
-                DotTemplateContainersCacheService,
+                TemplateContainersCacheService,
                 PaginatorService,
                 { provide: MessageService, useValue: messageServiceMock }
             ]

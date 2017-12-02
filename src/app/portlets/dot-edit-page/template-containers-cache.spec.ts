@@ -1,17 +1,17 @@
-import { DotTemplateContainersCacheService } from './dot-template-containers-cache.service';
+import { TemplateContainersCacheService } from './template-containers-cache.service';
 import { TestBed } from '@angular/core/testing';
 import { DotContainer } from '../../shared/models/container/dot-container.model';
 
 describe('TemplateContainersCacheService', () => {
-    let service: DotTemplateContainersCacheService;
+    let service: TemplateContainersCacheService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [DotTemplateContainersCacheService],
+            providers: [TemplateContainersCacheService],
             imports: [  ]
         });
 
-        service = TestBed.get(DotTemplateContainersCacheService);
+        service = TestBed.get(TemplateContainersCacheService);
     });
 
 

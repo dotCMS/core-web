@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { DotEvent } from '../../shared/models/dot-event/dot-event';
+import { DotEvent } from '../../../shared/models/dot-event/dot-event';
 
 /**
  * Provide a Global service to Subscribe to custom events and notify subscribers when those events occur.
@@ -29,7 +29,10 @@ export class DotEventsService {
      *
      * @param {DotEvent} dotEvent
      */
-    notify(dotEvent: DotEvent): void {
-        this.subject.next(dotEvent);
+    notify(name: string, data?: any): void {
+        this.subject.next({
+            name: name,
+            data: data
+        });
     }
 }

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
-import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -16,7 +16,7 @@ import { DotTemplateContainersCacheService } from '../../dot-template-containers
  */
 @Injectable()
 export class DotEditLayoutService {
-    constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
+    constructor(private templateContainersCacheService: TemplateContainersCacheService) {}
 
     /**
      * Take an DotPageView and return an array of DotLayoutGridBox

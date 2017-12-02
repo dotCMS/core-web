@@ -1,4 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="saveLayout($event)" novalidate>
+{{pageView.layout | json}}
+
+<form [formGroup]="form" (ngSubmit)="saveLayout($event)" novalidate class="dot-edit-layout__form">
     <div class="dot-edit-layout__toolbar">
         <dot-action-button [command]="addGridBox()" class="dot-edit-layout__toolbar-add"></dot-action-button>
         <h3 class="dot-edit-layout__page-title" *ngIf="!saveAsTemplate">{{pageView.page.title}}</h3>
@@ -15,13 +17,13 @@
     <div class="dot-edit-layout__template">
         <div class="dot-edit-layout__template-header" *ngIf="form.value.layout.header">HEADER</div>
         <div class="dot-edit-layout__template-main">
-            <div class="dot-edit-layout__template-sidebar" *ngIf="form.value.layout.sidebar.location === 'left'">
+            <div class="dot-edit-layout__template-sidebar--left" *ngIf="form.value.layout.sidebar.location === 'left'">
                 SIDEBAR
             </div>
             <div class="dot-edit-layout__grid-guides" formGroupName="layout">
                 <dot-edit-layout-grid #editLayoutGrid [pageView]="pageView" formControlName="body"></dot-edit-layout-grid>
             </div>
-            <div class="dot-edit-layout__template-sidebar" *ngIf="form.value.layout.sidebar.location === 'right'">
+            <div class="dot-edit-layout__template-sidebar--right" *ngIf="form.value.layout.sidebar.location === 'right'">
                 SIDEBAR
             </div>
         </div>

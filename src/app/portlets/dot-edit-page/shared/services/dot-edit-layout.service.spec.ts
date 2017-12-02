@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 describe('DotEditLayoutService', () => {
 
@@ -51,12 +51,12 @@ describe('DotEditLayoutService', () => {
     };
 
     let dotEditLayoutService: DotEditLayoutService;
-    let templateContainersCacheService: DotTemplateContainersCacheService;
+    let templateContainersCacheService: TemplateContainersCacheService;
 
     beforeEach(() => {
-        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutService, DotTemplateContainersCacheService]);
+        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutService, TemplateContainersCacheService]);
         dotEditLayoutService = this.injector.get(DotEditLayoutService);
-        templateContainersCacheService = this.injector.get(DotTemplateContainersCacheService);
+        templateContainersCacheService = this.injector.get(TemplateContainersCacheService);
 
         templateContainersCacheService.set(containers);
     });

@@ -19,8 +19,8 @@ import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.serv
 import { DotActionButtonModule } from '../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
-import {DotEventsService} from '../../../../api/services/dot-events.service';
-import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import {DotEventsService} from '../../../../api/services/dot-event/dot-events.service';
+import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -110,7 +110,7 @@ describe('DotEditLayoutComponent', () => {
                 PaginatorService,
                 SocketFactory,
                 DotEditLayoutService,
-                DotTemplateContainersCacheService,
+                TemplateContainersCacheService,
                 {
                     provide: ActivatedRoute,
                     useValue: {
@@ -256,8 +256,8 @@ describe('DotEditLayoutComponent', () => {
     });
 
     it('should set containers in TemplateContainersCacheService', () => {
-        const templateContainersCacheService: DotTemplateContainersCacheService =
-            fixture.debugElement.injector.get(DotTemplateContainersCacheService);
+        const templateContainersCacheService: TemplateContainersCacheService =
+            fixture.debugElement.injector.get(TemplateContainersCacheService);
 
         spyOn(templateContainersCacheService, 'set');
         fixture.detectChanges();
