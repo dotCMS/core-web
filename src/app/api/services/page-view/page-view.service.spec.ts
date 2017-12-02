@@ -3,6 +3,7 @@ import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { PageViewService } from './page-view.service';
 import { DOTTestBed } from './../../../test/dot-test-bed';
+import { DotLayout } from '../../../portlets/dot-edit-page/shared/models/dot-layout.model';
 
 describe('PageViewService', () => {
     beforeEach(() => {
@@ -15,14 +16,14 @@ describe('PageViewService', () => {
         this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
     });
 
-    xit('should do a get request with url param', () => {
+    it('should do a get request with url param', () => {
         let result: any;
         this.pageViewService.get('about-us').subscribe(items => result = items);
 
         expect(this.lastConnection.request.url).toContain('v1/page/render/about-us?live=false');
     });
 
-    xit('should do a get request and return a pageView', fakeAsync(() => {
+    it('should do a get request and return a pageView', fakeAsync(() => {
         let result: any;
 
         this.pageViewService.get('about-us').subscribe(items => result = items);
@@ -48,23 +49,18 @@ describe('PageViewService', () => {
         expect(result).toEqual(mockResponse);
     }));
 
-    xit('should post data and return an entity', fakeAsync(() => {
+    it('should post data and return an entity', fakeAsync(() => {
         let result;
-        const mockPageView = {
-            layout: {
-                body: {
-                    containers: ['string1', 'string2'],
-                    rows: ['column']
-                }
-            },
-            page: {
-                identifier: 'test38923-82393842-23823'
+        const mockDotLayout = {
+            body: {
+                containers: ['string1', 'string2'],
+                rows: ['column']
             }
         };
 
         const mockResponse = {
             entity: [
-                Object.assign({}, mockPageView, {
+                Object.assign({}, mockDotLayout, {
                     'iDate': 1495670226000,
                     'identifier': '1234-id-7890-entifier',
                     'modDate': 1495670226000
@@ -72,7 +68,7 @@ describe('PageViewService', () => {
             ]
         };
 
-        this.pageViewService.save(mockPageView).subscribe(res => result = res);
+        this.pageViewService.save('test38923-82393842-23823', mockDotLayout).subscribe(res => result = res);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify(mockResponse)
         })));

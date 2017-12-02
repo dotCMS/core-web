@@ -16,7 +16,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {DotEventsService} from '../../../../api/services/dot-events.service';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
 
 let fakeValue: DotLayoutBody;
 
@@ -66,7 +66,7 @@ describe('DotEditLayoutGridComponent', () => {
             providers: [
                 DotConfirmationService,
                 DotEditLayoutService,
-                TemplateContainersCacheService,
+                DotTemplateContainersCacheService,
                 PaginatorService,
                 { provide: MessageService, useValue: messageServiceMock }
             ]

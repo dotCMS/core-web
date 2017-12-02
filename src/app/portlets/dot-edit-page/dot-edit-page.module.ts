@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';
 import { DotEditLayoutModule } from './layout/dot-edit-layout/dot-edit-layout.module';
 import { DotTemplateAdditionalActionsModule } from './layout/dot-template-additional-actions/dot-template-additional-actions.module';
-import { TemplateContainersCacheService } from './dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from './dot-template-containers-cache.service';
 
 @NgModule({
     imports: [
@@ -15,6 +15,6 @@ import { TemplateContainersCacheService } from './dot-template-containers-cache.
         DotTemplateAdditionalActionsModule
     ],
     declarations: [],
-    providers: [PageViewService, PageViewResolver, TemplateContainersCacheService]
+    providers: [PageViewService, PageViewResolver, DotTemplateContainersCacheService]
 })
 export class DotEditPageModule {}

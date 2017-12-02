@@ -8,7 +8,7 @@ import { PageViewService } from '../../../../api/services/page-view/page-view.se
 import { Observable } from 'rxjs/Observable';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { MessageService } from '../../../../api/services/messages-service';
-import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 
 @Component({
@@ -31,7 +31,7 @@ export class DotEditLayoutComponent implements OnInit {
         public messageService: MessageService,
         public router: Router,
         private fb: FormBuilder,
-        private templateContainersCacheService: TemplateContainersCacheService
+        private templateContainersCacheService: DotTemplateContainersCacheService
     ) {
         this.form = this.fb.group({
             title: '',
@@ -58,7 +58,7 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            console.log('pageView', pageView);
+            console.log('this.pageView', this.pageView);
             this.form.setValue({
                 title: this.isLayout() ? null : this.pageView.template.title,
                 layout: {
@@ -71,7 +71,7 @@ export class DotEditLayoutComponent implements OnInit {
                 }
             });
 
-            this.templateContainersCacheService.setContainers(this.pageView.containers);
+            this.templateContainersCacheService.set(this.pageView.containers);
         });
     }
 

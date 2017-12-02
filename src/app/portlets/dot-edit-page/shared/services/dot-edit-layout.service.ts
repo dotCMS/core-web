@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
-import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -16,7 +16,7 @@ import { TemplateContainersCacheService } from '../../dot-template-containers-ca
  */
 @Injectable()
 export class DotEditLayoutService {
-    constructor(private templateContainersCacheService: TemplateContainersCacheService) {}
+    constructor(private templateContainersCacheService: DotTemplateContainersCacheService) {}
 
     /**
      * Take an DotPageView and return an array of DotLayoutGridBox
@@ -30,7 +30,7 @@ export class DotEditLayoutService {
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
-                    containers: column.containers.map(containerId => this.templateContainersCacheService.getContainer(containerId)),
+                    containers: column.containers.map(containerId => this.templateContainersCacheService.get(containerId)),
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,

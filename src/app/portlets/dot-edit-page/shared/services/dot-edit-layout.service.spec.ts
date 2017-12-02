@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
-import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
 
 describe('DotEditLayoutService', () => {
 
@@ -51,14 +51,14 @@ describe('DotEditLayoutService', () => {
     };
 
     let dotEditLayoutService: DotEditLayoutService;
-    let templateContainersCacheService: TemplateContainersCacheService;
+    let templateContainersCacheService: DotTemplateContainersCacheService;
 
     beforeEach(() => {
-        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutService, TemplateContainersCacheService]);
+        this.injector = DOTTestBed.resolveAndCreate([DotEditLayoutService, DotTemplateContainersCacheService]);
         dotEditLayoutService = this.injector.get(DotEditLayoutService);
-        templateContainersCacheService = this.injector.get(TemplateContainersCacheService);
+        templateContainersCacheService = this.injector.get(DotTemplateContainersCacheService);
 
-        templateContainersCacheService.setContainers(containers);
+        templateContainersCacheService.set(containers);
     });
 
     it('should transform the data from the service to the grid format ', () => {

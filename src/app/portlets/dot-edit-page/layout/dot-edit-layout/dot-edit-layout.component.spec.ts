@@ -20,7 +20,7 @@ import { DotActionButtonModule } from '../../../../view/components/_common/dot-a
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import {DotEventsService} from '../../../../api/services/dot-events.service';
-import { TemplateContainersCacheService } from '../../dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from '../../dot-template-containers-cache.service';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -67,6 +67,8 @@ describe('DotEditLayoutComponent', () => {
                 title: 'Hello World'
             },
             layout: {
+                header: false,
+                footer: false,
                 body: {
                     rows: []
                 }
@@ -108,7 +110,7 @@ describe('DotEditLayoutComponent', () => {
                 PaginatorService,
                 SocketFactory,
                 DotEditLayoutService,
-                TemplateContainersCacheService,
+                DotTemplateContainersCacheService,
                 {
                     provide: ActivatedRoute,
                     useValue: {
@@ -254,12 +256,12 @@ describe('DotEditLayoutComponent', () => {
     });
 
     it('should set containers in TemplateContainersCacheService', () => {
-        const templateContainersCacheService: TemplateContainersCacheService =
-            fixture.debugElement.injector.get(TemplateContainersCacheService);
+        const templateContainersCacheService: DotTemplateContainersCacheService =
+            fixture.debugElement.injector.get(DotTemplateContainersCacheService);
 
-        spyOn(templateContainersCacheService, 'setContainers');
+        spyOn(templateContainersCacheService, 'set');
         fixture.detectChanges();
 
-        expect(templateContainersCacheService.setContainers).toHaveBeenCalledWith(fakePageView.pageView.containers);
+        expect(templateContainersCacheService.set).toHaveBeenCalledWith(fakePageView.pageView.containers);
     });
 });

@@ -1,17 +1,17 @@
-import { TemplateContainersCacheService } from './dot-template-containers-cache.service';
+import { DotTemplateContainersCacheService } from './dot-template-containers-cache.service';
 import { TestBed } from '@angular/core/testing';
 import { DotContainer } from '../../shared/models/container/dot-container.model';
 
 describe('TemplateContainersCacheService', () => {
-    let service: TemplateContainersCacheService;
+    let service: DotTemplateContainersCacheService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [TemplateContainersCacheService],
+            providers: [DotTemplateContainersCacheService],
             imports: [  ]
         });
 
-        service = TestBed.get(TemplateContainersCacheService);
+        service = TestBed.get(DotTemplateContainersCacheService);
     });
 
 
@@ -33,10 +33,10 @@ describe('TemplateContainersCacheService', () => {
             }
         };
 
-        service.setContainers(containers);
+        service.set(containers);
 
-        expect(service.getContainer('1')).toEqual(containers[1].container);
-        expect(service.getContainer('2')).toEqual(containers[2].container);
-        expect(service.getContainer('3')).toBeNull();
+        expect(service.get('1')).toEqual(containers[1].container);
+        expect(service.get('2')).toEqual(containers[2].container);
+        expect(service.get('3')).toBeNull();
     });
 });
