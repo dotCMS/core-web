@@ -202,12 +202,16 @@ describe('DotEditLayoutGridComponent', () => {
         })
     );
 
-    it('should resize the grid when the layout sidebar change', () => {
-        const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
-        spyOn(component.ngGrid, 'triggerResize');
-        dotEventsService.notify('layout-sidebar-change');
-        expect(component.ngGrid.triggerResize).toHaveBeenCalled();
-    });
+    it(
+        'should resize the grid when the layout sidebar change',
+        fakeAsync(() => {
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            spyOn(component.ngGrid, 'triggerResize');
+            dotEventsService.notify('layout-sidebar-change');
+            tick(0);
+            expect(component.ngGrid.triggerResize).toHaveBeenCalled();
+        })
+    );
 
     it('should call writeValue to define the initial value of grid', () => {
         hostComponentfixture.detectChanges();

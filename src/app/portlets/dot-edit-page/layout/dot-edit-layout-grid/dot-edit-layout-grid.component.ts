@@ -84,10 +84,13 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
             // setTimeout is need it because the side nav animation time.
             setTimeout(() => {
                 this.ngGrid.triggerResize();
-            }, event.data === 'template' ? 0 : 200);
+            }, 200);
         });
         this.dotEventsService.listen('layout-sidebar-change').subscribe((event: DotEvent) => {
-            this.ngGrid.triggerResize();
+            // We need to "wait" until the template remove the sidebar div.
+            setTimeout(() => {
+                this.ngGrid.triggerResize();
+            }, 0);
         });
     }
 

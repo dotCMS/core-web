@@ -37,8 +37,6 @@ export class DotEditLayoutComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.initForm();
-
         this.messageService
             .getMessages([
                 'editpage.layout.toolbar.action.save',
@@ -50,7 +48,7 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            this.setFormValue(pageView);
+            this.initForm(pageView);
             this.templateContainersCacheService.set(this.pageView.containers);
 
             // Emit event to redraw the grid when the sidebar change
@@ -111,14 +109,14 @@ export class DotEditLayoutComponent implements OnInit {
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
     }
 
-    private initForm(): void {
+    private initForm(pageView: DotPageView): void {
         this.form = this.fb.group({
-            title: '',
+            title: this.isLayout() ? null : pageView.template.title,
             layout: this.fb.group({
-                body: {},
-                header: false,
-                footer: false,
-                sidebar: this.fb.group({
+                body: pageView.layout.body || {},
+                header: pageView.layout.header,
+                footer: pageView.layout.footer,
+                sidebar: this.fb.group(pageView.layout.sidebar || {
                     location: '',
                     containers: [],
                     width: '',
@@ -126,18 +124,6 @@ export class DotEditLayoutComponent implements OnInit {
                     preview: false
                 })
             })
-        });
-    }
-
-    private setFormValue(pageView: DotPageView): void {
-        this.form.setValue({
-            title: this.isLayout() ? null : pageView.template.title,
-            layout: {
-                body: pageView.layout.body || {},
-                header: pageView.layout.header,
-                footer: pageView.layout.footer,
-                sidebar: pageView.layout.sidebar
-            }
         });
     }
 }
