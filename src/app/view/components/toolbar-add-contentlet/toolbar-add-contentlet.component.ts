@@ -102,7 +102,8 @@ export class ToolbarAddContenletComponent extends BaseComponent implements OnIni
             return {
                 label: type.label,
                 icon: this.contentTypesInfoService.getIcon(type.name),
-                command: () => {
+                command: ($event) => {
+                    $event.originalEvent.stopPropagation();
                     this.select(type);
                 }
             };
