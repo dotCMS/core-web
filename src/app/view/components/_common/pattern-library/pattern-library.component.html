@@ -50,13 +50,6 @@
                     <p-column field="color" header="Color" [sortable]="true"></p-column>
                 </p-dataTable>
             </article>
-            <h3 class="section__title">Action button</h3>
-            <article>
-                <dot-action-button (onClick)="actionButtonLog()"></dot-action-button>
-                <dot-action-button [model]="actionButtonItems"></dot-action-button>
-                <dot-action-button [model]="actionButtonItems" [disabled]="true"></dot-action-button>
-                <dot-action-button [model]="actionButtonItems" icon="fa-chevron-down" label="Label"></dot-action-button>
-            </article>
             <h3 class="section__title">Listing table</h3>
             <listing-data-table url="v1/contenttype" [columns]="contentTypeColumns" [buttonActions]="buttonActions" sortOrder="ASC" sortField="modDate">
             </listing-data-table>-
@@ -143,6 +136,15 @@
                         <button pButton class="inverted" icon="fa-bell"></button>
                         <button pButton class="inverted" disabled icon="fa-bell"></button>
                     </p>
+                </article>
+
+                <article>
+                    <h4 class="section__subtitle">Action Button</h4>
+                    <dot-action-button (onClick)="actionButtonLog()"></dot-action-button>
+                    <dot-action-button [model]="actionButtonItems"></dot-action-button>
+                    <dot-action-button [model]="actionButtonItems" [disabled]="true"></dot-action-button>
+                    <dot-action-button [model]="actionButtonItems" icon="fa-chevron-down" label="Label"></dot-action-button>
+                    <dot-action-button [model]="actionButtonItems" icon="fa-chevron-down" label="Label" [disabled]="true"></dot-action-button>
                 </article>
             </div>
 

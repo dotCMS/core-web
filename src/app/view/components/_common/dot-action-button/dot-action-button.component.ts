@@ -14,7 +14,7 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
     templateUrl: 'dot-action-button.component.html'
 })
 
-export class DotActionButtonComponent implements OnInit {
+export class DotActionButtonComponent implements OnInit, OnChanges {
     @ViewChild('menu') menu: Menu;
 
     @Input() disabled: boolean;
@@ -25,11 +25,17 @@ export class DotActionButtonComponent implements OnInit {
 
     @Output() onClick: EventEmitter<any> = new EventEmitter();
 
-    @HostBinding('class.action-button--no-label') isLabeled = true;
+    @HostBinding('class.action-button--no-label') isNotLabeled = true;
 
     ngOnInit(): void {
-        this.isLabeled = !this.label;
+        this.isNotLabeled = !this.label;
         this.icon = this.icon ? `fa ${this.icon}` : 'fa fa-plus';
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.label && changes.label.currentValue) {
+            this.isNotLabeled = !changes.label.currentValue;
+        }
     }
 
     /**

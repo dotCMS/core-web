@@ -94,10 +94,19 @@ describe('ActionButtonComponent', () => {
 
         spyOn(comp.menu, 'toggle');
 
-
         const button = fixture.debugElement.query(By.css('button'));
         button.nativeNode.click();
         expect(comp.menu.toggle).toHaveBeenCalledTimes(1);
+    });
+
+    it('should set button to disabled state', () => {
+        comp.disabled = true;
+        comp.label = 'Label';
+        fixture.detectChanges();
+        const button = fixture.debugElement.query(By.css('button'));
+        const label = fixture.debugElement.query(By.css('.action-button__label'));
+        expect(button.nativeElement.attributes.disabled).toBeDefined('Button disabled attr');
+        expect(label.nativeElement.classList).toContain('action-button__label--disabled', 'Label disabled class');
     });
 
 });
