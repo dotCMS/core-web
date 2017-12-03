@@ -122,13 +122,6 @@ export class IframePortletLegacyComponent implements OnInit {
                     url === 'add' ? this.contentletService.getUrlById(id) : this.dotMenuService.getUrlById(id)
             )
             .subscribe((url: string) => {
-                console.log(url);
-                // url = 'http://localhost:8080/c/portal/layout?p_l_id=b7ab5d3c-5ee0-4195-a17e-8f5579d718dd&p_p_id=site-browser&p_p_action=1&p_p_state=maximized&p_p_mode=view&_site_browser_struts_action=%2Fext%2Fhtmlpages%2Fpreview_htmlpage&_site_browser_previewPage=1&inode=cc2cdf9c-a20d-4862-9454-2a76c1132123&referer=http://localhost:8080/c/portal/layout?p_l_id=b7ab5d3c-5ee0-4195-a17e-8f5579d718dd&p_p_id=site-browser&p_p_action=0&p_p_state=maximized&p_p_mode=view&_site_browser_struts_action=%2Fext%2Fbrowser%2Fview_browser&random=185348028';
-
-                // original = "http://localhost:8080/c/portal/layout?p_l_id=b7ab5d3c-5ee0-4195-a17e-8f5579d718dd&p_p_id=site-browser&p_p_action=0&&dm_rlout=1&r=1512132122867"
-
-                url += '&_site_browser_struts_action=%2Fext%2Fhtmlpages%2Fpreview_htmlpage';
-
                 this.setUrl(url);
             });
     }
