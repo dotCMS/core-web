@@ -90,9 +90,8 @@ export class ContentTypesPortletComponent implements OnInit {
                         icon: 'fa-trash',
                         command: item => this.removeConfirmation(item)
                     },
-                    shouldShow: item => !item.fixed  && !item.defaultType
-                },
-                {
+                    shouldShow: item => !item.fixed
+                }, {
                     menuItem: {
                         label: 'Push Publish',
                         icon: 'fa-trash',
