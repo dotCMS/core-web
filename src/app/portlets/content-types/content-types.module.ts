@@ -113,7 +113,7 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
         InputTextModule,
         ListingDataTableModule,
         OverlayPanelModule,
-        // PushPublishDialogModule,
+        PushPublishDialogModule,
         RadioButtonModule,
         ReactiveFormsModule,
         SearchableDropDownModule,

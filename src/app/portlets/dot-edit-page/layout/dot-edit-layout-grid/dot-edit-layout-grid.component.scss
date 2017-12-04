@@ -1,0 +1,7 @@
+@import "mixins";
+@import "variables";
+
+:host {
+    display: block;
+    width: 100%;
+}

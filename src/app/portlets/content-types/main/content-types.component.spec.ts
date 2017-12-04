@@ -20,7 +20,7 @@ import { DotContentletService } from '../../../api/services/dot-contentlet.servi
 
 @Injectable()
 class MockDotContentletService {
-    getContentTypes() {}
+    getAllContentTypes() {}
 }
 
 describe('ContentTypesPortletComponent', () => {
@@ -32,7 +32,7 @@ describe('ContentTypesPortletComponent', () => {
     let dotContentletService: DotContentletService;
 
     beforeEach(() => {
-        let messageServiceMock = new MockMessageService({
+        const messageServiceMock = new MockMessageService({
             'contenttypes.form.label.description': 'Description',
             'contenttypes.fieldname.entries': 'Entries',
             'contenttypes.fieldname.structure.name': 'Content Type Name',
@@ -63,7 +63,7 @@ describe('ContentTypesPortletComponent', () => {
         el = de.nativeElement;
         crudService = fixture.debugElement.injector.get(CrudService);
         dotContentletService = fixture.debugElement.injector.get(DotContentletService);
-        spyOn(dotContentletService, 'getContentTypes').and.returnValue(
+        spyOn(dotContentletService, 'getAllContentTypes').and.returnValue(
             Observable.of([
                 { name: 'CONTENT', label: 'Content', types: [] },
                 { name: 'WIDGET', label: 'Widget', types: [] },
@@ -73,10 +73,10 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should display a listing-data-table.component', () => {
-        let de = fixture.debugElement.query(By.css('listing-data-table'));
+        const listingDataTable = fixture.debugElement.query(By.css('listing-data-table'));
         comp.ngOnInit();
 
-        expect('v1/contenttype').toEqual(de.nativeElement.getAttribute('url'));
+        expect('v1/contenttype').toEqual(listingDataTable.nativeElement.getAttribute('url'));
 
         const columns = comp.contentTypeColumns;
         expect(5).toEqual(columns.length);
@@ -129,7 +129,7 @@ describe('ContentTypesPortletComponent', () => {
 
         spyOn(crudService, 'delete').and.returnValue(Observable.of(mockContentType));
 
-        comp.rowActions[0].command(mockContentType);
+        comp.rowActions[0].menuItem.command(mockContentType);
 
         fixture.detectChanges();
 
@@ -138,7 +138,7 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should populate the actionHeaderOptions based on a call to dotContentletService', () => {
         comp.ngOnInit();
-        expect(dotContentletService.getContentTypes).toHaveBeenCalled();
+        expect(dotContentletService.getAllContentTypes).toHaveBeenCalled();
         expect(comp.actionHeaderOptions.primary.model.length).toEqual(3);
     });
 });

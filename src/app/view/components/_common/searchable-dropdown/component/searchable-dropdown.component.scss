@@ -3,9 +3,11 @@
 searchable-dropdown {
     .ui-button {
         @extend #inputtext-normal-border;
+        background: none;
         border-radius: 0;
         padding-right: $dropdown-height + $basic-padding;
         text-align: left;
+        text-transform: none;
         width: auto;
 
         &:hover,

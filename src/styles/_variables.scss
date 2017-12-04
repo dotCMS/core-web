@@ -8,6 +8,7 @@ $gray-light: #C5C5C5;
 $gray-lighter: #ECEDEE;
 $gray-lightest: #FAFAFA;
 $green-ligth: #E7E7E7;
+$gray-lightest-x: #F2F2F2;
 $green: #4A9D51;
 $orange: #F3762A;
 $white: #fff;
@@ -39,6 +40,8 @@ $basic-speed: 100ms;
 // LAYOUT
 $basic-padding: 8px;
 $toolbar-height: 60px;
+$toolbar-background: $brand-primary;
+$toolbar-color: $white;
 
 // GRIDS
 $gutter-width: $basic-padding * 4;

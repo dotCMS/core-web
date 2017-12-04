@@ -1,7 +1,7 @@
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { IconButtonTooltipModule } from './../_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionMenuButtonComponent } from './../_common/action-menu-button/action-menu-button.component';
-import { ActionButtonComponent } from '../_common/action-button/action-button.component';
+import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { CrudService } from '../../../api/services/crud/crud.service';
@@ -16,8 +16,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { PaginatorService } from '../../../api/services/paginator';
 import { ActionHeaderComponent } from './action-header/action-header';
+import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
 
-describe('Listing Component', () => {
+describe('ListingDataTableComponent', () => {
     let comp: ListingDataTableComponent;
     let fixture: ComponentFixture<ListingDataTableComponent>;
     let de: DebugElement;
@@ -31,16 +32,14 @@ describe('Listing Component', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ActionHeaderComponent,
-                ActionButtonComponent,
+                DotActionButtonComponent,
                 ListingDataTableComponent,
                 ActionMenuButtonComponent
             ],
             imports: [
                 DataTableModule,
                 SharedModule,
-                RouterTestingModule.withRoutes([
-                    { path: 'test', component: ListingDataTableComponent }
-                ]),
+                RouterTestingModule.withRoutes([{ path: 'test', component: ListingDataTableComponent }]),
                 IconButtonTooltipModule,
                 MenuModule
             ],
@@ -77,7 +76,7 @@ describe('Listing Component', () => {
             { fieldName: 'field1', header: 'Field 1', width: '45%' },
             { fieldName: 'field2', header: 'Field 2', width: '10%' },
             { fieldName: 'field3', header: 'Field 3', width: '30%' },
-            { fieldName: 'field4', header: 'Field 4', width: '5%' },
+            { fieldName: 'field4', header: 'Field 4', width: '5%' }
         ];
 
         this.url = '/test/';
@@ -230,12 +229,16 @@ describe('Listing Component', () => {
         expect(0).toEqual(checkboxs.length);
     });
 
-   it('should add a column if actions are received', () => {
-        const fakeActions: MenuItem[] = [{
-            icon: 'fa-trash',
-            label: 'Remove',
-            command: () => {}
-        }];
+    it('should add a column if actions are received', () => {
+        const fakeActions: DotDataTableAction[] = [
+            {
+                menuItem: {
+                    icon: 'fa-trash',
+                    label: 'Remove',
+                    command: () => {}
+                }
+            }
+        ];
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
                 observer.next(Object.assign([], this.items));
@@ -260,11 +263,15 @@ describe('Listing Component', () => {
     });
 
     it('should receive an action an execute the command after clickling over the action button', () => {
-        const fakeActions: MenuItem[] = [{
-            icon: 'fa-trash',
-            label: 'Remove',
-            command: () => {}
-        }];
+        const fakeActions: DotDataTableAction[] = [
+            {
+                menuItem: {
+                    icon: 'fa-trash',
+                    label: 'Remove',
+                    command: () => {}
+                }
+            }
+        ];
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
             return Observable.create(observer => {
                 observer.next(Object.assign([], this.items));
@@ -282,7 +289,7 @@ describe('Listing Component', () => {
         const rows = el.querySelectorAll('tr');
         const actionButton = de.query(By.css('action-menu-button'));
 
-        const spy = spyOn(fakeActions[0], 'command');
+        const spy = spyOn(fakeActions[0].menuItem, 'command');
 
         actionButton.nativeElement.children[0].click();
 

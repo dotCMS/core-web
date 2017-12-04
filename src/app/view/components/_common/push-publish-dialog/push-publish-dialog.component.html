@@ -5,7 +5,7 @@
     [(visible)]="displayDialog"
     [responsive]="true"
     [resizable]="false"
-    [draggable]="false">
+    [draggable]="false"> 
 
     <p-header>
         Push Publish
@@ -22,17 +22,17 @@
         <div class="form__group">
             <label class="form__label">Publish: </label>
             <p-calendar [(ngModel)]="date" [showTime]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
-            {{ date }} 
+            {{ date | date:'medium' }} 
         </div>
 
         <div class="form__group">
             <label class="form__label">Push to: </label>
+            <dot-push-publish-env-selector></dot-push-publish-env-selector>
         </div>
     </form>
-    <!-- <dot-push-publish-env-selector></dot-push-publish-env-selector> -->
 
     <p-footer>
-        <button type="button" flat pButton (click)="toggleDialog()" label="Cancel"></button>
+        <button type="button" flat pButton (click)="close($event)" label="Cancel"></button>
         <button type="button" pButton label="Push"></button>
     </p-footer>
 </p-dialog>

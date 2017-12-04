@@ -2,7 +2,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { PushPublishDialogComponent } from './push-publish-dialog.component';
-import { CalendarModule } from 'primeng/primeng';
+import { CalendarModule, DialogModule, RadioButtonModule } from 'primeng/primeng';
+import { PushPublishEnvSelectorModule } from '../dot-push-publish-env-selector/dot-push-publish-env-selector.module';
 
 
 @NgModule({
@@ -15,7 +16,10 @@ import { CalendarModule } from 'primeng/primeng';
     imports: [
         CommonModule,
         FormsModule,
-        CalendarModule
+        CalendarModule,
+        DialogModule,
+        RadioButtonModule,
+        PushPublishEnvSelectorModule
     ]
 })
 
