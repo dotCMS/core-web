@@ -20,6 +20,7 @@ import { HotkeysService } from 'angular2-hotkeys';
 import { SiteSelectorFieldModule } from '../../../view/components/_common/site-selector-field/site-selector-field.module';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
+import {WorkflowService} from '../../../api/services/workflow/workflow.service';
 
 class HotkeysServiceMock {
     add() {}
@@ -27,7 +28,7 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -75,7 +76,8 @@ describe('ContentTypesFormComponent', () => {
                     { provide: SiteService, useValue: siteServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
-                    SocketFactory
+                    SocketFactory,
+                    WorkflowService
                 ]
             });
 

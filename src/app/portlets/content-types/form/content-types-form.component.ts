@@ -25,6 +25,8 @@ import { ContentTypesInfoService } from '../../../api/services/content-types-inf
 
 // TODO: move this to models
 import { Field } from '../fields';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
 
 /**
   * Form component to create or edit content types
@@ -80,6 +82,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         action: ''
     };
     workflowOptions: SelectItem[] = [];
+    cities1: SelectItem[];
 
     private originalValue: any;
 
@@ -88,7 +91,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         private fb: FormBuilder,
         private contentTypesInfoService: ContentTypesInfoService,
         public messageService: MessageService,
-        private hotkeysService: HotkeysService
+        private hotkeysService: HotkeysService,
+        private workflowService: WorkflowService
     ) {
         super(
             [
@@ -102,6 +106,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.form.label.URL.pattern',
                 'contenttypes.content.variable',
                 'contenttypes.form.label.workflow',
+                'contenttypes.form.label.default.select.workflow',
                 'contenttypes.form.hint.error.only.default.scheme.available.in.Community',
                 'contenttypes.form.label.description',
                 'contenttypes.form.name',
@@ -134,6 +139,14 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         if (!this.isEditMode()) {
             this.toggleForm();
         }
+
+        this.cities1 = [
+            { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
+            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
+            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
+            { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
+            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
+        ];
     }
 
     ngAfterViewInit() {
@@ -306,7 +319,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             host: this.data.host || '',
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
-            workflow: [{ value: this.data.workflow || '', disabled: true }],
+            workflow: [{ value: this.data.workflow || [], disabled: true }],
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -327,12 +340,15 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     private initWorkflowField(): void {
-        this.workflowOptions = [
-            {
-                label: 'Select Workflow',
-                value: ''
-            }
-        ];
+        // this.workflowOptions = this.workflowService
+        //     .get()
+        //     .map((workflow: Workflow) => this.getWorkflowFieldOption(workflow));
+
+        this.workflowService.get().subscribe((resp: Workflow[]) => {
+            resp.forEach(workflow => {
+                this.workflowOptions.push(this.getWorkflowFieldOption(workflow));
+            });
+        });
 
         this.dotcmsConfig
             .getConfig()
@@ -340,6 +356,13 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             .subscribe(res => {
                 this.updateWorkflowFormControl(res.license);
             });
+    }
+
+    private getWorkflowFieldOption(workflow: Workflow): SelectItem {
+        return {
+            label: workflow.name,
+            value: workflow.identifier
+        };
     }
 
     private isBaseTypeContent(): boolean {

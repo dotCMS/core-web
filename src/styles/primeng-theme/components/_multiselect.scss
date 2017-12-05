@@ -1,0 +1,140 @@
+#multiselect-item {
+    margin: 0;
+    padding: $basic-padding;
+
+    &:hover {
+        @extend #ui-hover-state;
+    }
+}
+
+.ui-multiselect {
+    @extend #inputtext-normal-border;
+    border-radius: 0;
+
+    &.ui-state-focus {
+        @extend #inputtext-active-border;
+    }
+
+    &:not(.ui-state-disabled) {
+        &:hover,
+        &:active {
+            @extend #field-hover-state;
+        }
+
+        &.ui-state-focus {
+            .ui-multiselect-trigger {
+                border-color: $dropdown-active-color;
+            }
+        }
+    }
+
+    &.ui-state-disabled {
+        background: none;
+
+        .ui-multiselect-trigger {
+            color: $dropdown-disabled-color;
+        }
+
+        .ui-multiselect-label {
+            &:hover {
+                color: $dropdown-disabled-color;
+            }
+        }
+    }
+
+    .ui-multiselect-trigger {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        width: $dropdown-height;
+
+        .fa {
+            margin: 0;
+        }
+    }
+
+    .ui-multiselect-label {
+        border: 0;
+        line-height: $dropdown-height;
+        padding-right: $dropdown-height + $basic-padding;
+    }
+
+    .ui-state-highlight {
+        background: none;
+        color: $dropdown-active-color;
+    }
+
+    .ui-inputtext {
+        @extend #inputtext-normal-border;
+        @include placeholder($field-placeholder-color);
+        border-radius: 0;
+        height: $field-height;
+        padding: 0 18px 0 0;
+        transition: box-shadow $field-animation-speed ease-in;
+        -webkit-appearance: none;
+
+        &:hover {
+            @extend #field-hover-state;
+            @extend #inputtext-hover-border;
+        }
+
+        &:focus,
+        &:active {
+            @extend #field-active-state;
+            @extend #inputtext-active-border;
+        }
+
+        &:disabled,
+        .ui-state-disabled & {
+            @include placeholder($field-disabled-color);
+            @extend #field-disabled-state;
+            @extend #inputtext-disabled-border;
+            background: none;
+        }
+
+        &.ui-state-filled {
+            @extend #field-active-state;
+            @extend #inputtext-active-border;
+        }
+    }
+}
+
+p-multiselect {
+    &.ng-dirty.ng-invalid.ng-touched,
+    &.ng-invalid.ng-touched {
+        .ui-multiselect:not(.ui-multiselect-open) {
+            .ui-inputtext {
+                @extend #inputtext-error-border;
+            }
+            .ui-multiselect-label,
+            .ui-inputtext,
+            .ui-multiselect-trigger {
+                color: $red;
+            }
+        }
+    }
+}
+
+.ui-multiselect-panel {
+    .ui-multiselect-filter-container {
+       width: 75%;
+        .fa {
+            top: 9px;
+            right: 0;
+            color: $gray-light;
+            left: inherit;
+        }
+    }
+
+    .ui-multiselect-list {
+        padding: 0;
+    }
+
+    .ui-multiselect-item {
+        @extend #multiselect-item;
+
+        &.ui-corner-all {
+            border-radius: 0;
+        }
+    }
+}
