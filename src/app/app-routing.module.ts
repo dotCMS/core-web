@@ -102,6 +102,10 @@ const PORTLETS_IFRAME = [
 
 const appRoutes: Routes = [
     {
+        path: 'edit-content',
+        loadChildren: 'app/portlets/dot-edit-content/dot-edit-content.module#DotEditContentModule'
+    },
+    {
         canActivate: [PublicAuthGuardService],
         children: AUTH_MODULES,
         component: LoginPageComponent,
