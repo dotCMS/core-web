@@ -1,3 +1,4 @@
+import { DotContainer } from './../../../../../shared/models/container/dot-container.model';
 import {
     Component,
     ElementRef,
@@ -39,8 +40,8 @@ import { OverlayPanel } from 'primeng/primeng';
 })
 export class SearchableDropdownComponent extends BaseComponent implements ControlValueAccessor, OnChanges, OnInit {
     @Input() data: string[];
-    @Input() labelPropertyName;
-    @Input() valuePropertyName;
+    @Input() labelPropertyName: string | string[];
+    @Input() valuePropertyName: string;
     @Input() pageLinkSize = 3;
     @Input() rows: number;
     @Input() totalRecords: number;
@@ -105,7 +106,11 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
      */
     writeValue(value: any): void {
         this.value = value;
-        this.valueString = value ? value[this.labelPropertyName] : this.placeholder;
+        if (typeof this.labelPropertyName === 'object') {
+            this.valueString = value ? value[this.labelPropertyName[0]] : this.placeholder;
+        } else {
+            this.valueString = value ? value[this.labelPropertyName] : this.placeholder;
+        }
     }
 
     /**
@@ -119,6 +124,30 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
 
     registerOnTouched(): void {}
 
+    /* Check param type */
+    getLabelProperties(container: DotContainer): string | string[] {
+        let resultProps;
+
+        if (typeof this.labelPropertyName === 'object') {
+            resultProps = this.labelPropertyName.map(item => {
+                if (item.indexOf('.') > -1) {
+                    let propertyName;
+                    item.split('.').forEach(nested => {
+                        propertyName = propertyName ? propertyName[nested] : container[nested];
+                    });
+
+                    return propertyName;
+                }
+
+                return container[item];
+            });
+
+            return resultProps.join(' - ');
+        } else {
+            return container[this.labelPropertyName];
+        }
+    }
+
     /**
      * Call when a option is clicked, if this option is not the same of the current value then
      * the change events is emitted
@@ -129,7 +158,11 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
     private handleClick(item: any): void {
         if (this.value !== item) {
             this.value = item;
-            this.valueString = item[this.labelPropertyName];
+            if (typeof this.labelPropertyName === 'object') {
+                this.valueString = item[this.labelPropertyName[0]];
+            } else {
+                this.valueString = item[this.labelPropertyName];
+            }
             this.propagateChange(!this.valuePropertyName ? item : item[this.valuePropertyName]);
             this.change.emit(Object.assign({}, this.value));
         }
