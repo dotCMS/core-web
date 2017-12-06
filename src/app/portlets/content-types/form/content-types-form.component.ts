@@ -27,6 +27,7 @@ import { ContentTypesInfoService } from '../../../api/services/content-types-inf
 import { Field } from '../fields';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
+import { Observable } from 'rxjs/Observable';
 
 /**
   * Form component to create or edit content types
@@ -81,7 +82,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         placeholder: '',
         action: ''
     };
-    workflowOptions: SelectItem[] = [];
+    workflowOptions: Observable<SelectItem[]>;
 
     private originalValue: any;
 
@@ -105,7 +106,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.form.label.URL.pattern',
                 'contenttypes.content.variable',
                 'contenttypes.form.label.workflow',
-                'contenttypes.form.label.default.select.workflow',
                 'contenttypes.form.hint.error.only.default.scheme.available.in.Community',
                 'contenttypes.form.label.description',
                 'contenttypes.form.name',
@@ -331,15 +331,12 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     private initWorkflowField(): void {
-        // this.workflowOptions = this.workflowService
-        //     .get()
-        //     .map((workflow: Workflow) => this.getWorkflowFieldOption(workflow));
-
-        this.workflowService.get().subscribe((resp: Workflow[]) => {
-            resp.forEach(workflow => {
-                this.workflowOptions.push(this.getWorkflowFieldOption(workflow));
-            });
-        });
+        // TODO: labels for defaultLabel and selectedItemsLabel in p-multiselect need to be changed after refactor of Message Service.
+        this.workflowOptions = this.workflowService
+            .get()
+            .flatMap((workflows: Workflow[]) => workflows)
+            .map((workflow: Workflow) => this.getWorkflowFieldOption(workflow))
+            .toArray();
 
         this.dotcmsConfig
             .getConfig()

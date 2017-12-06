@@ -31,7 +31,7 @@ export class WorkflowService {
                 identifier: '2'
             },
             {
-                name: 'Long Description WorkFlow #3. Lorem Ipsum. Lorem Ipsum. Lorem Ipsum ',
+                name: 'Long Description WorkFlow #3. Lorem Ipsum. Lorem Ipsum',
                 identifier: '3'
             },
             {
