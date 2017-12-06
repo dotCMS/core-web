@@ -331,7 +331,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     private initWorkflowField(): void {
-        // TODO: labels for defaultLabel and selectedItemsLabel in p-multiselect need to be changed after refactor of Message Service.
         this.workflowOptions = this.workflowService
             .get()
             .flatMap((workflows: Workflow[]) => workflows)
