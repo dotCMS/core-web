@@ -9,7 +9,7 @@ import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let comp: SearchableDropdownComponent;
