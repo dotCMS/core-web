@@ -15,6 +15,6 @@ export class PageViewResolver implements Resolve<any> {
      * @memberof PageViewResolver
      */
     resolve(route: ActivatedRouteSnapshot): Observable<DotPageView> {
-        return this.pageViewService.get(route.queryParams.url);
+        return this.pageViewService.get(route.queryParams.url.replace(/^\//, ''));
     }
 }
