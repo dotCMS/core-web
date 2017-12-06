@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FAKE_EDIT_PAGE_HTML } from './fake-edit-page-html';
 import { DomSanitizer } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
     selector: 'dot-edit-content',
@@ -9,9 +10,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class DotEditContentComponent implements OnInit {
     @ViewChild('iframe') iframe: ElementRef;
-    source: any;
+
     dialogTitle: string;
     editContentUrl: any;
+    model: BehaviorSubject<any> = new BehaviorSubject({});
+    source: any;
+
 
     constructor(private sanitizer: DomSanitizer) {}
 
@@ -23,6 +27,12 @@ export class DotEditContentComponent implements OnInit {
         doc.open();
         doc.write(FAKE_EDIT_PAGE_HTML);
         doc.close();
+
+        iframeEl.contentWindow.model = this.model;
+
+        this.model.subscribe(res => {
+            console.log(res);
+        });
     }
 
     onClick($event): void {
@@ -66,10 +76,25 @@ export class DotEditContentComponent implements OnInit {
             const dragAndDropScript = doc.createElement('script');
             dragAndDropScript.type = 'text/javascript';
             dragAndDropScript.text = `
+                var containers = Array.from(document.getElementsByTagName('dotedit-container'));
+
+                function getModel() {
+                    var model = {};
+                    containers.forEach(function(container) {
+                        var contentlets = Array.from(container.children);
+
+                        model[container.dataset.identifier] = contentlets.map(function(contentlet) {
+                            return contentlet.dataset.identifier
+                        })
+                    })
+
+                    return model;
+                }
+
                 var forbiddenTarget;
 
                 var drake = dragula(
-                    Array.from(document.getElementsByTagName('dotedit-container')), {
+                    containers, {
                     accepts: function (el, target, source, sibling) {
                         var canDrop = target.dataset.acceptTypes.indexOf(el.dataset.type) > -1;
 
@@ -93,6 +118,8 @@ export class DotEditContentComponent implements OnInit {
                     if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
                         forbiddenTarget.classList.remove('no');
                     }
+
+                    window.model.next(getModel());
                 })
             `;
             doc.body.appendChild(dragAndDropScript);

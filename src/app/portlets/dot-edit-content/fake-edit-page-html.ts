@@ -201,7 +201,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                 <div class="row">
 
                     <div class="col-sm-8">
-                        <dotedit-container id="test1" data-accept-types="one,two">
+                        <dotedit-container data-identifier="test1" data-accept-types="one,two">
                             <dotedit-contentlet data-identifier="123" data-type="one">
                                 <div class="large-column">
                                     <p>
@@ -234,7 +234,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 
                     <div class="col-sm-4">
                         <div class="medium-column">
-                            <dotedit-container id="test2" data-accept-types="two,three">
+                            <dotedit-container data-identifier="test2" data-accept-types="two,three">
                                 <dotedit-contentlet data-identifier="456" data-type="three">
                                     <h3>Management Team</h3>
                                     <ul class="media-list employee-management-team">
@@ -354,7 +354,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 </dotedit-contentlet>
                             </dotedit-container>
 
-                            <dotedit-container id="test3"  data-accept-types="two" data-max-limit="1">
+                            <dotedit-container data-identifier="test3" data-accept-types="two" data-max-limit="1">
                                 <dotedit-contentlet data-identifier="111" data-type="two">
                                     <h4>Some heading</h4>
                                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
