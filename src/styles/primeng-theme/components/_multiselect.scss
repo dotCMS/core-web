@@ -80,6 +80,7 @@ p-multiselect {
 
 .ui-multiselect-panel {
     padding: $basic-padding * 2;
+    min-width: 300px;
     .ui-widget-content {
         .ui-state-highlight {
             background: none;
