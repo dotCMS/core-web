@@ -23,7 +23,7 @@
 
         &.ui-state-focus {
             .ui-multiselect-trigger {
-                border-color: $dropdown-active-color;
+                border-color: $multiselect-active-color;
             }
         }
     }
@@ -32,12 +32,12 @@
         background: none;
 
         .ui-multiselect-trigger {
-            color: $dropdown-disabled-color;
+            color: $multiselect-disabled-color;
         }
 
         .ui-multiselect-label {
             &:hover {
-                color: $dropdown-disabled-color;
+                color: $multiselect-disabled-color;
             }
         }
     }
@@ -46,7 +46,7 @@
         align-items: center;
         display: flex;
         justify-content: center;
-        width: $dropdown-height;
+        width: $multiselect-height;
 
         .fa {
             margin: 0;
@@ -55,9 +55,9 @@
 
     .ui-multiselect-label {
         border: 0;
-        line-height: $dropdown-height;
-        padding: 0 $dropdown-height + $basic-padding 0 0;
-        max-height: $dropdown-height;
+        line-height: $multiselect-height;
+        padding: 0 $multiselect-height + $basic-padding 0 0;
+        max-height: $multiselect-height;
     }
 }
 
@@ -87,7 +87,7 @@ p-multiselect {
     .ui-widget-content {
         .ui-state-highlight {
             background: none;
-            color: $dropdown-active-color;
+            color: $multiselect-active-color;
         }
     }
 
@@ -105,7 +105,7 @@ p-multiselect {
         }
 
         .ui-inputtext {
-            padding: 0 $basic-padding*2 0 0;
+            padding: 0 $basic-padding * 2 0 0;
         }
     }
 
@@ -126,7 +126,7 @@ p-multiselect {
     }
 
     .ui-multiselect-item {
-        padding: $basic-padding/2 0;
+        padding: $basic-padding / 2 0;
         margin: 0;
 
         &.ui-corner-all {
