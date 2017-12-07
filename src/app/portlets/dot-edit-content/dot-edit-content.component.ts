@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FAKE_EDIT_PAGE_HTML } from './fake-edit-page-html';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
@@ -10,14 +10,15 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DotEditContentComponent implements OnInit {
     @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('editContentIframe') editContentIframe: ElementRef;
 
     dialogTitle: string;
-    editContentUrl: any;
-    model: BehaviorSubject<any> = new BehaviorSubject({});
+    editContentUrl: SafeResourceUrl;
+    model: BehaviorSubject<any> = new BehaviorSubject(null);
+    editContentlet: BehaviorSubject<any> = new BehaviorSubject({});
     source: any;
 
-
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor(private sanitizer: DomSanitizer, private ref: ChangeDetectorRef) {}
 
     ngOnInit() {
         const iframeEl = this.iframe.nativeElement;
@@ -31,16 +32,40 @@ export class DotEditContentComponent implements OnInit {
         iframeEl.contentWindow.model = this.model;
 
         this.model.subscribe(res => {
-            console.log(res);
+            this.ref.detectChanges();
+        });
+
+        this.editContentlet.subscribe(res => {
+            if (res === 'cancel') {
+                this.dialogTitle = null;
+                this.editContentUrl = null;
+            }
+
+            /*
+                I think because we are triggering the .next() from the jsp the Angular detect changes it's not
+                happenning automatically, so I have to triggered manually so the changes propagates to the template
+            */
+            this.ref.detectChanges();
         });
     }
 
     onClick($event): void {
         this.dialogTitle = `Editing content with id ${$event.target.dataset.identifier}`;
-        // tslint:disable-next-line:max-line-length
         this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+            // tslint:disable-next-line:max-line-length
             '/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=aaee9776-8fb7-4501-8048-844912a20405&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D71b8a1ca-37b6-4b6e-a43b-c7482f28db6c%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets'
         );
+
+        /*
+            We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
+            element it's available in the DOM
+        */
+        setTimeout(() => {
+            const editContentletIframeEl = this.editContentIframe.nativeElement;
+            editContentletIframeEl.addEventListener('load', () => {
+                editContentletIframeEl.contentWindow.editContentlet = this.editContentlet;
+            });
+        }, 0);
     }
 
     onHide(): void {
@@ -121,6 +146,8 @@ export class DotEditContentComponent implements OnInit {
 
                     window.model.next(getModel());
                 })
+
+                window.model.next(getModel());
             `;
             doc.body.appendChild(dragAndDropScript);
         };
