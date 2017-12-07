@@ -53,7 +53,7 @@ import { DynamicFieldPropertyDirective } from './fields/content-type-fields-prop
 import { IFrameModule } from '../../view/components/_common/iframe';
 import { DotTextareaContentModule } from '../../view/components/_common/dot-textarea-content/dot-textarea-content.module';
 import { SearchableDropDownModule } from '../../view/components/_common/searchable-dropdown';
-import {WorkflowService} from '../../api/services/workflow/workflow.service';
+import { WorkflowService } from '../../api/services/workflow/workflow.service';
 
 @NgModule({
     declarations: [

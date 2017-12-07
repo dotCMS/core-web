@@ -1,6 +1,6 @@
 #multiselect-item {
+    padding: $basic-padding / 2 0;
     margin: 0;
-    padding: $basic-padding;
 
     &:hover {
         @extend #ui-hover-state;
@@ -126,8 +126,11 @@ p-multiselect {
     }
 
     .ui-multiselect-item {
-        padding: $basic-padding / 2 0;
-        margin: 0;
+        @extend #multiselect-item;
+
+        label {
+            cursor: inherit
+        }
 
         &.ui-corner-all {
             border-radius: 0;
