@@ -106,7 +106,7 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
      */
     writeValue(value: any): void {
         this.value = value;
-        if (typeof this.labelPropertyName === 'object') {
+        if (Array.isArray(this.labelPropertyName)) {
             this.valueString = value ? value[this.labelPropertyName[0]] : this.placeholder;
         } else {
             this.valueString = value ? value[this.labelPropertyName] : this.placeholder;
@@ -124,11 +124,17 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
 
     registerOnTouched(): void {}
 
-    /* Check param type */
-    getLabelProperties(container: DotContainer): string | string[] {
+    /**
+     * Get labels from container, if labelPropertyName is an array then loop through it and returns
+     * a string containing the labels joining by "-" if is not just returns a label
+     * @param {DotContainer} container
+     * @returns {string}
+     * @memberof SearchableDropdownComponent
+     */
+    getLabel(container: DotContainer): string {
         let resultProps;
 
-        if (typeof this.labelPropertyName === 'object') {
+        if (Array.isArray(this.labelPropertyName)) {
             resultProps = this.labelPropertyName.map(item => {
                 if (item.indexOf('.') > -1) {
                     let propertyName;
@@ -158,7 +164,7 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
     private handleClick(item: any): void {
         if (this.value !== item) {
             this.value = item;
-            if (typeof this.labelPropertyName === 'object') {
+            if (Array.isArray(this.labelPropertyName)) {
                 this.valueString = item[this.labelPropertyName[0]];
             } else {
                 this.valueString = item[this.labelPropertyName];
