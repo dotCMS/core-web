@@ -52,10 +52,4 @@ describe('ContentTypeResolver', () => {
 
         expect(result).toEqual({ object: 'Fake object' });
     });
-    it('should remove the leading slash if present when calling pageViewService', () => {
-        router.queryParams = { url: '/aboutUs/index' };
-        spyOn(pageViewService, 'get');
-        pageViewResolver.resolve(router);
-        expect(pageViewService.get).toHaveBeenCalledWith('aboutUs/index');
-    });
 });
