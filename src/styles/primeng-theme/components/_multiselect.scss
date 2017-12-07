@@ -1,12 +1,3 @@
-#multiselect-item {
-    padding: $basic-padding / 2 0;
-    margin: 0;
-
-    &:hover {
-        @extend #ui-hover-state;
-    }
-}
-
 .ui-multiselect {
     @extend #inputtext-normal-border;
     border-radius: 0;
@@ -97,6 +88,7 @@ p-multiselect {
         .ui-chkbox {
             position: absolute;
             top: 10px;
+            left: $basic-padding / 2;
             z-index: 1;
         }
 
@@ -111,7 +103,7 @@ p-multiselect {
 
     .ui-multiselect-filter-container {
         width: 100%;
-        padding-left: 21px;
+        padding-left: 25px;
 
         .fa {
             top: 9px;
@@ -126,7 +118,12 @@ p-multiselect {
     }
 
     .ui-multiselect-item {
-        @extend #multiselect-item;
+        padding: $basic-padding / 2;
+        margin: 0;
+
+        &:hover {
+            @extend #ui-hover-state;
+        }
 
         label {
             cursor: inherit
