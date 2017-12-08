@@ -54,6 +54,29 @@ export class DotEditContentComponent implements OnInit {
         this.editContentUrl = null;
     }
 
+    private addContentlet($event): void {
+        console.log('Add contenlet to container', $event.target.dataset.identifier);
+    }
+
+    private bindContainersEvents(iframeEl: any): void {
+        this.bindAddContentletEvents(iframeEl);
+    }
+
+    private bindAddContentletEvents(iframeEl: any): void {
+        const addButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-container__add');
+
+        addButtons.forEach(button => {
+            button.addEventListener('click', $event => {
+                this.addContentlet($event);
+            });
+        });
+    }
+
+    private bindContenletsEvents(iframeEl: any): void {
+        this.bindEditContentletEvents(iframeEl);
+        this.bindRemoveContentletEvents(iframeEl);
+    }
+
     private bindEditContentletEvents(iframeEl: any): void {
         const editButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-contentlet__edit');
 
@@ -122,7 +145,7 @@ export class DotEditContentComponent implements OnInit {
                 function getModel() {
                     var model = {};
                     containers.forEach(function(container) {
-                        var contentlets = Array.from(container.children);
+                        var contentlets = Array.from(container.querySelectorAll('dotedit-contentlet'));
 
                         model[container.dataset.identifier] = contentlets.map(function(contentlet) {
                             return contentlet.dataset.identifier
@@ -227,8 +250,8 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private setEditMode(iframeEl: any): void {
-        this.bindEditContentletEvents(iframeEl);
-        this.bindRemoveContentletEvents(iframeEl);
+        this.bindContenletsEvents(iframeEl);
+        this.bindContainersEvents(iframeEl);
 
         const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
         this.initDragAndDropContentlets(doc);

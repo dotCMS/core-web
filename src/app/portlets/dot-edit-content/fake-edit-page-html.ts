@@ -201,6 +201,9 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                 <div class="row">
 
                     <div class="col-sm-8">
+                        <div class="dotedit-container__toolbar">
+                            <button type="button" data-identifier="test1" class="dotedit-container__add">Add</button>
+                        </div>
                         <dotedit-container data-identifier="test1" data-accept-types="one,two">
                             <dotedit-contentlet data-identifier="123" data-type="one">
                                 <div class="dotedit-contentlet__toolbar">
@@ -238,6 +241,9 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 
                     <div class="col-sm-4">
                         <div class="medium-column">
+                            <div class="dotedit-container__toolbar">
+                                <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
+                            </div>
                             <dotedit-container data-identifier="test2" data-accept-types="two,three">
                                 <dotedit-contentlet data-identifier="456" data-type="three">
                                     <div class="dotedit-contentlet__toolbar">
@@ -370,6 +376,9 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 </dotedit-contentlet>
                             </dotedit-container>
 
+                            <div class="dotedit-container__toolbar">
+                                <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
+                            </div>
                             <dotedit-container data-identifier="test3" data-accept-types="two" data-max-limit="1">
                                 <dotedit-contentlet data-identifier="111" data-type="two">
                                     <div class="dotedit-contentlet__toolbar">
