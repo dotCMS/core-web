@@ -203,6 +203,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                     <div class="col-sm-8">
                         <dotedit-container data-identifier="test1" data-accept-types="one,two">
                             <dotedit-contentlet data-identifier="123" data-type="one">
+                                <div class="dotedit-contentlet__toolbar">
+                                    <button type="button" data-identifier="123" class="dotedit-contentlet__edit">Edit</button>
+                                    <button type="button" data-identifier="123" class="dotedit-contentlet__remove">Remove</button>
+                                </div>
                                 <div class="large-column">
                                     <p>
                                         <img src="/dA/7de092d3-d051/700w/custom-house.jpg" class="img-responsive" />
@@ -236,6 +240,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                         <div class="medium-column">
                             <dotedit-container data-identifier="test2" data-accept-types="two,three">
                                 <dotedit-contentlet data-identifier="456" data-type="three">
+                                    <div class="dotedit-contentlet__toolbar">
+                                        <button type="button" data-identifier="456" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="456" class="dotedit-contentlet__remove">Remove</button>
+                                    </div>
                                     <h3>Management Team</h3>
                                     <ul class="media-list employee-management-team">
                                         <li class="media">
@@ -310,6 +318,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 </dotedit-contentlet>
 
                                 <dotedit-contentlet data-identifier="789" data-type="two">
+                                    <div class="dotedit-contentlet__toolbar">
+                                        <button type="button" data-identifier="789" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="789" class="dotedit-contentlet__remove">Remove</button>
+                                    </div>
                                     <div class="media">
                                         <a class="pull-left" href="/news-events/events/technology-job-fair">
                                             <div class="date-badge">
@@ -332,6 +344,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 </dotedit-contentlet>
 
                                 <dotedit-contentlet data-identifier="000" data-type="two">
+                                    <div class="dotedit-contentlet__toolbar">
+                                        <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>
+                                    </div>
                                     <div class="media">
                                         <a class="pull-left" href="/news-events/events/wealth-management-annual-client-meeting">
                                             <div class="date-badge">
@@ -356,6 +372,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 
                             <dotedit-container data-identifier="test3" data-accept-types="two" data-max-limit="1">
                                 <dotedit-contentlet data-identifier="111" data-type="two">
+                                    <div class="dotedit-contentlet__toolbar">
+                                        <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>
+                                    </div>
                                     <h4>Some heading</h4>
                                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
                                 </dotedit-contentlet>

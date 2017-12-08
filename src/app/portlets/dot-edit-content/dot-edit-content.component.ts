@@ -15,7 +15,7 @@ export class DotEditContentComponent implements OnInit {
     dialogTitle: string;
     editContentUrl: SafeResourceUrl;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
-    editContentlet: BehaviorSubject<any> = new BehaviorSubject({});
+    iframeEvents: BehaviorSubject<any> = new BehaviorSubject({});
     source: any;
 
     constructor(private sanitizer: DomSanitizer, private ref: ChangeDetectorRef) {}
@@ -35,7 +35,7 @@ export class DotEditContentComponent implements OnInit {
             this.ref.detectChanges();
         });
 
-        this.editContentlet.subscribe(res => {
+        this.iframeEvents.subscribe(res => {
             if (res === 'cancel') {
                 this.dialogTitle = null;
                 this.editContentUrl = null;
@@ -49,12 +49,42 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
-    onClick($event): void {
+    onHide(): void {
+        this.dialogTitle = null;
+        this.editContentUrl = null;
+    }
+
+    private bindEditContentletEvents(iframeEl: any): void {
+        const editButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-contentlet__edit');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', $event => {
+                this.editContentlet($event);
+            });
+        });
+    }
+
+    private bindRemoveContentletEvents(iframeEl: any): void {
+        const editButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-contentlet__remove');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', $event => {
+                this.removeContentlet($event);
+            });
+        });
+    }
+
+    private editContentlet($event): void {
         this.dialogTitle = `Editing content with id ${$event.target.dataset.identifier}`;
         this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
             // tslint:disable-next-line:max-line-length
             '/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=aaee9776-8fb7-4501-8048-844912a20405&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D71b8a1ca-37b6-4b6e-a43b-c7482f28db6c%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets'
         );
+
+        /*
+            Again, because the click event it's comming form the iframe, we need to trigger the detect changes manually.
+        */
+        this.ref.detectChanges();
 
         /*
             We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
@@ -63,23 +93,9 @@ export class DotEditContentComponent implements OnInit {
         setTimeout(() => {
             const editContentletIframeEl = this.editContentIframe.nativeElement;
             editContentletIframeEl.addEventListener('load', () => {
-                editContentletIframeEl.contentWindow.editContentlet = this.editContentlet;
+                editContentletIframeEl.contentWindow.iframeEvents = this.iframeEvents;
             });
         }, 0);
-    }
-
-    onHide(): void {
-        this.dialogTitle = null;
-        this.editContentUrl = null;
-    }
-
-    private addEditButtons(iframeEl: any): void {
-        const editContents: HTMLElement[] = iframeEl.contentDocument.getElementsByTagName('dotedit-contentlet');
-
-        for (let i = 0; i < editContents.length; i++) {
-            const editContent = editContents[i];
-            editContent.insertAdjacentElement('afterbegin', this.getEditButton(editContent));
-        }
     }
 
     private getDragAndDropCss(doc: any): any {
@@ -155,30 +171,13 @@ export class DotEditContentComponent implements OnInit {
         return script;
     }
 
-    private getEditButton(editContent: HTMLElement): HTMLButtonElement {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.innerText = 'Edit this';
-        button.className = 'button-edit';
-        button.dataset.identifier = editContent.getAttribute('data-identifier');
-        button.addEventListener('click', $event => {
-            this.onClick($event);
-        });
-
-        return button;
-    }
-
     private initDragAndDropContentlets(doc: any): void {
         doc.head.appendChild(this.getDragAndDropCss(doc));
         doc.body.appendChild(this.getDragAndDropScript(doc));
     }
 
-    private setEditMode(iframeEl: any): void {
-        this.addEditButtons(iframeEl);
-
-        const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
-        this.initDragAndDropContentlets(doc);
-        this.setEditContentletZones(doc);
+    private removeContentlet($event): void {
+        console.log('Remove contenlet', $event.target.dataset.identifier);
     }
 
     private setEditContentletZones(doc: any): void {
@@ -225,5 +224,14 @@ export class DotEditContentComponent implements OnInit {
         }
 
         doc.head.appendChild(style);
+    }
+
+    private setEditMode(iframeEl: any): void {
+        this.bindEditContentletEvents(iframeEl);
+        this.bindRemoveContentletEvents(iframeEl);
+
+        const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
+        this.initDragAndDropContentlets(doc);
+        this.setEditContentletZones(doc);
     }
 }
