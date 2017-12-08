@@ -4,6 +4,7 @@ import { DotEditContentComponent } from './dot-edit-content.component';
 import { DialogModule } from 'primeng/primeng';
 import { IFrameModule } from '../../view/components/_common/iframe/index';
 import { Routes, RouterModule } from '@angular/router';
+import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 
 const routes: Routes = [
     {
@@ -17,6 +18,6 @@ const routes: Routes = [
     declarations: [DotEditContentComponent],
     imports: [CommonModule, DialogModule, RouterModule.forChild(routes)],
     exports: [DotEditContentComponent],
-    providers: []
+    providers: [DotContainerContentletService]
 })
 export class DotEditContentModule {}

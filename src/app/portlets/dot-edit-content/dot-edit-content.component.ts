@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetector
 import { FAKE_EDIT_PAGE_HTML } from './fake-edit-page-html';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { DotContainerContentletService } from './services/dot-container-contentlet.service';
+import { EDIT_PAGE_CSS } from './iframe-edit-mode.css';
 
 @Component({
     selector: 'dot-edit-content',
@@ -13,12 +15,17 @@ export class DotEditContentComponent implements OnInit {
     @ViewChild('editContentIframe') editContentIframe: ElementRef;
 
     dialogTitle: string;
+    drop: BehaviorSubject<any> = new BehaviorSubject(null);
     editContentUrl: SafeResourceUrl;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
     iframeEvents: BehaviorSubject<any> = new BehaviorSubject({});
     source: any;
 
-    constructor(private sanitizer: DomSanitizer, private ref: ChangeDetectorRef) {}
+    constructor(
+        private sanitizer: DomSanitizer,
+        private ref: ChangeDetectorRef,
+        private dotContainerContentletService: DotContainerContentletService
+    ) {}
 
     ngOnInit() {
         const iframeEl = this.iframe.nativeElement;
@@ -30,9 +37,47 @@ export class DotEditContentComponent implements OnInit {
         doc.close();
 
         iframeEl.contentWindow.model = this.model;
+        iframeEl.contentWindow.drop = this.drop;
 
         this.model.subscribe(res => {
             this.ref.detectChanges();
+        });
+
+        this.drop.subscribe(res => {
+            if (res) {
+                const contenletEl = doc.querySelector(`dotedit-contentlet[data-identifier="${res.contentlet}"]`);
+                const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
+
+                contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
+
+                this.dotContainerContentletService.getContentletToContainer(
+                    res.container,
+                    res.contentlet
+                ).subscribe(contentletHtml => {
+                    const div = doc.createElement('div');
+                    div.innerHTML = contentletHtml;
+
+                    contentletContentEl.innerHTML = '';
+
+                    // TODO: need to come up with a more efficient way to do this
+                    Array.from(div.children).forEach((node: any) => {
+                        if (node.tagName === 'SCRIPT') {
+                            const script = doc.createElement('script');
+                            script.type = 'text/javascript';
+
+                            if (node.src) {
+                                script.src = node.src;
+                            } else {
+                                script.text = node.textContent;
+                            }
+
+                            contentletContentEl.appendChild(script);
+                        } else {
+                            contentletContentEl.appendChild(node);
+                        }
+                    });
+                });
+            }
         });
 
         this.iframeEvents.subscribe(res => {
@@ -178,14 +223,24 @@ export class DotEditContentComponent implements OnInit {
                     },
                 });
 
-                drake.on('dragend', function(el, container, source) {
+                drake.on('dragend', function(el) {
                     if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
                         forbiddenTarget.classList.remove('no');
                     }
 
                     window.model.next(getModel());
+                });
+
+                drake.on('drop', function(el, target, source, sibling) {
+                    if (target !== source) {
+                        window.drop.next({
+                            container: target.dataset.identifier,
+                            contentlet: el.dataset.identifier
+                        });
+                    }
                 })
 
+                // Init the model
                 window.model.next(getModel());
             `;
             doc.body.appendChild(dragAndDropScript);
@@ -207,43 +262,10 @@ export class DotEditContentComponent implements OnInit {
         const style = doc.createElement('style');
         style.type = 'text/css';
 
-        const css = `
-            dotedit-container,
-            dotedit-contentlet {
-                display: block;
-            }
-
-            dotedit-container {
-                border: solid 1px #f2f2f2;
-                min-height: 100px;
-                margin: 10px 0
-            }
-
-            dotedit-container.no {
-                border-color: red;
-                box-shadow: 0 0 20px red;
-                border-radious: 2px;
-                background-color: #ff00000f;
-            }
-
-            dotedit-container:hover {
-                border-color: #dddddd;
-            }
-
-            dotedit-contentlet {
-                padding: 10px;
-            }
-
-            dotedit-contentlet:hover {
-                background-color: #f2f2f2;
-                cursor: move
-            }
-        `;
-
         if (style.styleSheet) {
-            style.styleSheet.cssText = css;
+            style.styleSheet.cssText = EDIT_PAGE_CSS;
         } else {
-            style.appendChild(document.createTextNode(css));
+            style.appendChild(document.createTextNode(EDIT_PAGE_CSS));
         }
 
         doc.head.appendChild(style);

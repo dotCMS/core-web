@@ -250,77 +250,79 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                         <button type="button" data-identifier="456" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="456" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
-                                    <h3>Management Team</h3>
-                                    <ul class="media-list employee-management-team">
-                                        <li class="media">
-                                            <article>
-                                                <a class="pull-left" href="#">
-                                                    <img src="/images/icons/profile-male.png" alt="Robert Anderson" width="75" />
-                                                </a>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading name">Robert Anderson</h4>
-                                                    <ul class="member-info">
-                                                        <li class="job-title">Chief Risk Officer</li>
-                                                        <li class="phone">978-594-5555 ext 270</li>
-                                                        <li class="email">
-                                                            <a href="mailto:robert.anderson@questfake.com">robert.anderson@questfake.com</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </article>
-                                        </li>
-                                        <li class="media">
-                                            <article>
-                                                <a class="pull-left" href="#">
-                                                    <img src="/images/icons/profile-male.png" alt="Tony Johnson" width="75" />
-                                                </a>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading name">Tony Johnson</h4>
-                                                    <ul class="member-info">
-                                                        <li class="job-title">Chief Financial Officer</li>
-                                                        <li class="phone">408-555-3424 etx: 4324</li>
-                                                        <li class="email">
-                                                            <a href="mailto:tony.johnson@questfake.com">tony.johnson@questfake.com</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </article>
-                                        </li>
-                                        <li class="media">
-                                            <article>
-                                                <a class="pull-left" href="#">
-                                                    <img src="/images/icons/profile-male.png" alt="Timothy Martinez" width="75" />
-                                                </a>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading name">Timothy Martinez</h4>
-                                                    <ul class="member-info">
-                                                        <li class="job-title">Chief Executive Officer</li>
-                                                        <li class="phone">786-594-5555 ext 270</li>
-                                                        <li class="email">
-                                                            <a href="mailto:timothy.martinez@questfake.com">timothy.martinez@questfake.com</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </article>
-                                        </li>
-                                        <li class="media">
-                                            <article>
-                                                <a class="pull-left" href="#">
-                                                    <img src="/images/icons/profile-male.png" alt="David White" width="75" />
-                                                </a>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading name">David White</h4>
-                                                    <ul class="member-info">
-                                                        <li class="job-title">Chief Information Officer</li>
-                                                        <li class="phone">843-555-8228 ext:217</li>
-                                                        <li class="email">
-                                                            <a href="mailto:david.white@questfake.com">david.white@questfake.com</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </article>
-                                        </li>
-                                    </ul>
+                                    <div class="dotedit-contentlet__content">
+                                        <h3>Management Team</h3>
+                                        <ul class="media-list employee-management-team">
+                                            <li class="media">
+                                                <article>
+                                                    <a class="pull-left" href="#">
+                                                        <img src="/images/icons/profile-male.png" alt="Robert Anderson" width="75" />
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading name">Robert Anderson</h4>
+                                                        <ul class="member-info">
+                                                            <li class="job-title">Chief Risk Officer</li>
+                                                            <li class="phone">978-594-5555 ext 270</li>
+                                                            <li class="email">
+                                                                <a href="mailto:robert.anderson@questfake.com">robert.anderson@questfake.com</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </article>
+                                            </li>
+                                            <li class="media">
+                                                <article>
+                                                    <a class="pull-left" href="#">
+                                                        <img src="/images/icons/profile-male.png" alt="Tony Johnson" width="75" />
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading name">Tony Johnson</h4>
+                                                        <ul class="member-info">
+                                                            <li class="job-title">Chief Financial Officer</li>
+                                                            <li class="phone">408-555-3424 etx: 4324</li>
+                                                            <li class="email">
+                                                                <a href="mailto:tony.johnson@questfake.com">tony.johnson@questfake.com</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </article>
+                                            </li>
+                                            <li class="media">
+                                                <article>
+                                                    <a class="pull-left" href="#">
+                                                        <img src="/images/icons/profile-male.png" alt="Timothy Martinez" width="75" />
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading name">Timothy Martinez</h4>
+                                                        <ul class="member-info">
+                                                            <li class="job-title">Chief Executive Officer</li>
+                                                            <li class="phone">786-594-5555 ext 270</li>
+                                                            <li class="email">
+                                                                <a href="mailto:timothy.martinez@questfake.com">timothy.martinez@questfake.com</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </article>
+                                            </li>
+                                            <li class="media">
+                                                <article>
+                                                    <a class="pull-left" href="#">
+                                                        <img src="/images/icons/profile-male.png" alt="David White" width="75" />
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading name">David White</h4>
+                                                        <ul class="member-info">
+                                                            <li class="job-title">Chief Information Officer</li>
+                                                            <li class="phone">843-555-8228 ext:217</li>
+                                                            <li class="email">
+                                                                <a href="mailto:david.white@questfake.com">david.white@questfake.com</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </article>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </dotedit-contentlet>
 
                                 <dotedit-contentlet data-identifier="789" data-type="two">
@@ -328,23 +330,25 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                         <button type="button" data-identifier="789" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="789" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
-                                    <div class="media">
-                                        <a class="pull-left" href="/news-events/events/technology-job-fair">
-                                            <div class="date-badge">
-                                                <span class="date-month">Aug</span>
-                                                <span class="date-day">1</span>
-                                            </div>
-                                        </a>
-                                        <div class="media-body">
-                                            <span class="label label-default pull-right">Event</span>
-                                            <div class="media-heading">
-                                                <a href="/news-events/events/technology-job-fair">Technology Job Fair</a>
-                                            </div>
-                                            <div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
+                                    <div class="dotedit-contentlet__content">
+                                        <div class="media">
+                                            <a class="pull-left" href="/news-events/events/technology-job-fair">
+                                                <div class="date-badge">
+                                                    <span class="date-month">Aug</span>
+                                                    <span class="date-day">1</span>
+                                                </div>
+                                            </a>
+                                            <div class="media-body">
+                                                <span class="label label-default pull-right">Event</span>
+                                                <div class="media-heading">
+                                                    <a href="/news-events/events/technology-job-fair">Technology Job Fair</a>
+                                                </div>
+                                                <div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
 
-                                                August 1, 7:00 AM - 5:00 PM
+                                                    August 1, 7:00 AM - 5:00 PM
+                                                </div>
+                                                <!-- <p>Technological skills are always in demand - our advanced technology and information systems job fairs are targeted specifically toward qualified candidates and the high-tech industry professionals ... -->
                                             </div>
-                                            <!-- <p>Technological skills are always in demand - our advanced technology and information systems job fairs are targeted specifically toward qualified candidates and the high-tech industry professionals ... -->
                                         </div>
                                     </div>
                                 </dotedit-contentlet>
@@ -354,23 +358,25 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
-                                    <div class="media">
-                                        <a class="pull-left" href="/news-events/events/wealth-management-annual-client-meeting">
-                                            <div class="date-badge">
-                                                <span class="date-month">Nov</span>
-                                                <span class="date-day">10</span>
-                                            </div>
-                                        </a>
-                                        <div class="media-body">
-                                            <span class="label label-default pull-right">Event</span>
-                                            <div class="media-heading">
-                                                <a href="/news-events/events/wealth-management-annual-client-meeting">Wealth Management Annual Client Meeting</a>
-                                            </div>
-                                            <div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
+                                    <div class="dotedit-contentlet__content">
+                                        <div class="media">
+                                            <a class="pull-left" href="/news-events/events/wealth-management-annual-client-meeting">
+                                                <div class="date-badge">
+                                                    <span class="date-month">Nov</span>
+                                                    <span class="date-day">10</span>
+                                                </div>
+                                            </a>
+                                            <div class="media-body">
+                                                <span class="label label-default pull-right">Event</span>
+                                                <div class="media-heading">
+                                                    <a href="/news-events/events/wealth-management-annual-client-meeting">Wealth Management Annual Client Meeting</a>
+                                                </div>
+                                                <div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
 
-                                                November 10, 11:00 AM - 12:00 PM
+                                                    November 10, 11:00 AM - 12:00 PM
+                                                </div>
+                                                <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, ... -->
                                             </div>
-                                            <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, ... -->
                                         </div>
                                     </div>
                                 </dotedit-contentlet>
@@ -385,8 +391,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
-                                    <h4>Some heading</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
+                                    <div class="dotedit-contentlet__content">
+                                        <h4>Some heading</h4>
+                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
+                                    </div>
                                 </dotedit-contentlet>
                             </dotedit-container>
                         </div>
