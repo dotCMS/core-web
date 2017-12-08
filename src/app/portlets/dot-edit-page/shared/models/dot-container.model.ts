@@ -5,4 +5,5 @@ export interface DotContainer {
     identifier: string;
     name: string;
     type: string;
+    uuid: string;
 }

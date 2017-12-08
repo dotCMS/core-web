@@ -68,7 +68,12 @@ export class DotEditLayoutService {
                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
-                        containers: layoutGridBox.containers.map(container => container.identifier)
+                        containers: layoutGridBox.containers.map(container => {
+                            return {
+                                identifier: container.identifier,
+                                uuid: container.uuid
+                            };
+                        })
                     }
             )
         };
