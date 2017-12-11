@@ -205,34 +205,36 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                             <button type="button" data-identifier="test1" class="dotedit-container__add">Add</button>
                         </div>
                         <dotedit-container data-identifier="test1" data-accept-types="one,two">
-                            <dotedit-contentlet data-identifier="123" data-type="one">
+                            <dotedit-contentlet data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" data-type="one">
                                 <div class="dotedit-contentlet__toolbar">
-                                    <button type="button" data-identifier="123" class="dotedit-contentlet__edit">Edit</button>
-                                    <button type="button" data-identifier="123" class="dotedit-contentlet__remove">Remove</button>
+                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" class="dotedit-contentlet__edit">Edit</button>
+                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" class="dotedit-contentlet__remove">Remove</button>
                                 </div>
-                                <div class="large-column">
-                                    <p>
-                                        <img src="/dA/7de092d3-d051/700w/custom-house.jpg" class="img-responsive" />
-                                    </p>
-                                    <p>Neque sit amet fermentum vulputate, arcu augue eleifend diam, malesuada molestie quam nibh at
-                                        neque. In non risus at felis adipiscing molestie ac sed diam. Vivamus sit amet purus at libero
-                                        pellentesque sagittis. Integer a enim turpis, vitae dignissim dui. Nulla eu leo id sapien
-                                        facilisis pulvinar non quis justo. Morbi tempor, est quis elementum euismod, nibh metus faucibus
-                                        enim, a viverra mi massa sit amet dui. Aenean id sapien mi, vel dapibus enim. Duis diam erat,
-                                        malesuada sed fringilla non, rhoncus eget mauris. Praesent sit amet orci purus. Mauris hendrerit
-                                        lectus ut justo aliquam eleifend. Curabitur bibendum congue luctus.</p>
-                                    <blockquote>Nulla rutrum facilisis odio sed interdum. Cum sociis natoque penatibus et magnis dis parturient
-                                        montes, nascetur ridiculus mus. Phasellus risus libero, cursus nec iaculis eget, pretium
-                                        et augue. Proin ultricies dapibus elit et ornare. Phasellus feugiat suscipit leo. Morbi eu
-                                        mi volutpat quam aliquam fringilla vitae vitae libero. Duis convallis dapibus molestie. In
-                                        egestas lorem vitae eros varius adipiscing. &mdash;&nbsp;Timothy Brigham, CEO Quest Financial</blockquote>
-                                    <p>Nulla rutrum facilisis odio sed interdum. Cum sociis natoque penatibus et magnis dis parturient
-                                        montes, nascetur ridiculus mus. Phasellus risus libero, cursus nec iaculis eget, pretium
-                                        et augue. Proin ultricies dapibus elit et ornare. Phasellus feugiat suscipit leo. Morbi eu
-                                        mi volutpat quam aliquam fringilla vitae vitae libero. Duis convallis dapibus molestie. In
-                                        egestas lorem vitae eros varius adipiscing. Nulla accumsan tincidunt blandit. Duis elementum
-                                        sapien at turpis pellentesque faucibus. Pellentesque rhoncus lobortis vulputate. Nullam placerat
-                                        fringilla tincidunt.</p>
+                                <div class="dotedit-contentlet__content">
+                                    <div class="large-column">
+                                        <p>
+                                            <img src="/dA/7de092d3-d051/700w/custom-house.jpg" class="img-responsive" />
+                                        </p>
+                                        <p>Neque sit amet fermentum vulputate, arcu augue eleifend diam, malesuada molestie quam nibh at
+                                            neque. In non risus at felis adipiscing molestie ac sed diam. Vivamus sit amet purus at libero
+                                            pellentesque sagittis. Integer a enim turpis, vitae dignissim dui. Nulla eu leo id sapien
+                                            facilisis pulvinar non quis justo. Morbi tempor, est quis elementum euismod, nibh metus faucibus
+                                            enim, a viverra mi massa sit amet dui. Aenean id sapien mi, vel dapibus enim. Duis diam erat,
+                                            malesuada sed fringilla non, rhoncus eget mauris. Praesent sit amet orci purus. Mauris hendrerit
+                                            lectus ut justo aliquam eleifend. Curabitur bibendum congue luctus.</p>
+                                        <blockquote>Nulla rutrum facilisis odio sed interdum. Cum sociis natoque penatibus et magnis dis parturient
+                                            montes, nascetur ridiculus mus. Phasellus risus libero, cursus nec iaculis eget, pretium
+                                            et augue. Proin ultricies dapibus elit et ornare. Phasellus feugiat suscipit leo. Morbi eu
+                                            mi volutpat quam aliquam fringilla vitae vitae libero. Duis convallis dapibus molestie. In
+                                            egestas lorem vitae eros varius adipiscing. &mdash;&nbsp;Timothy Brigham, CEO Quest Financial</blockquote>
+                                        <p>Nulla rutrum facilisis odio sed interdum. Cum sociis natoque penatibus et magnis dis parturient
+                                            montes, nascetur ridiculus mus. Phasellus risus libero, cursus nec iaculis eget, pretium
+                                            et augue. Proin ultricies dapibus elit et ornare. Phasellus feugiat suscipit leo. Morbi eu
+                                            mi volutpat quam aliquam fringilla vitae vitae libero. Duis convallis dapibus molestie. In
+                                            egestas lorem vitae eros varius adipiscing. Nulla accumsan tincidunt blandit. Duis elementum
+                                            sapien at turpis pellentesque faucibus. Pellentesque rhoncus lobortis vulputate. Nullam placerat
+                                            fringilla tincidunt.</p>
+                                    </div>
                                 </div>
                             </dotedit-contentlet>
                         </dotedit-container>
@@ -245,7 +247,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
                             </div>
                             <dotedit-container data-identifier="test2" data-accept-types="two,three">
-                                <dotedit-contentlet data-identifier="456" data-type="three">
+                                <dotedit-contentlet data-identifier="456" data-inode="789" data-type="three">
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="456" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="456" class="dotedit-contentlet__remove">Remove</button>
@@ -325,10 +327,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     </div>
                                 </dotedit-contentlet>
 
-                                <dotedit-contentlet data-identifier="789" data-type="two">
+                                <dotedit-contentlet data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" data-type="two">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="789" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="789" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -353,10 +355,10 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     </div>
                                 </dotedit-contentlet>
 
-                                <dotedit-contentlet data-identifier="000" data-type="two">
+                                <dotedit-contentlet data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" data-type="two">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" class="dotedit-contentlet__remove">Remove</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -386,7 +388,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
                             </div>
                             <dotedit-container data-identifier="test3" data-accept-types="two" data-max-limit="1">
-                                <dotedit-contentlet data-identifier="111" data-type="two">
+                                <dotedit-contentlet data-identifier="111-222-333-444" data-inode="333-444" data-type="two">
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="000" class="dotedit-contentlet__remove">Remove</button>

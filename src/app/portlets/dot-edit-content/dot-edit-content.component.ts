@@ -46,9 +46,21 @@ export class DotEditContentComponent implements OnInit {
         });
 
         this.editContentletEvents.subscribe(res => {
-            if (res === 'cancel') {
+            console.log(res);
+
+            if (res.event === 'cancel') {
                 this.dialogTitle = null;
                 this.editContentUrl = null;
+            }
+
+            if (res.event === 'save') {
+                this.dialogTitle = null;
+                this.editContentUrl = null;
+                this.renderRelocatedContentlet({
+                    contentlet: {
+                        inode: '5aef0c62' || res.contentletInode
+                    }
+                });
             }
 
             /*
@@ -108,7 +120,9 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private editContentlet($event): void {
-        this.dialogTitle = `Editing content with id ${$event.target.dataset.identifier}`;
+        const id = $event.target.dataset.identifier;
+
+        this.dialogTitle = `Editing content with id ${id}`;
         this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
             // tslint:disable-next-line:max-line-length
             '/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=aaee9776-8fb7-4501-8048-844912a20405&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D71b8a1ca-37b6-4b6e-a43b-c7482f28db6c%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets'
@@ -125,8 +139,12 @@ export class DotEditContentComponent implements OnInit {
         */
         setTimeout(() => {
             const editContentletIframeEl = this.editContentIframe.nativeElement;
+
+            /*
+                TODO: should I remove this listener when when the dialog closes?
+            */
             editContentletIframeEl.addEventListener('load', () => {
-                editContentletIframeEl.contentWindow.iframeEvents = this.editContentletEvents;
+                editContentletIframeEl.contentWindow.ngEditContentletEvents = this.editContentletEvents;
             });
         }, 0);
     }
@@ -202,7 +220,10 @@ export class DotEditContentComponent implements OnInit {
                     if (target !== source) {
                         window.relocateContentlet.next({
                             container: target.dataset.identifier,
-                            contentlet: el.dataset.identifier
+                            contentlet: {
+                                identifier: el.dataset.identifier,
+                                inode: el.dataset.inode
+                            }
                         });
                     }
                 })
@@ -238,12 +259,17 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {
+        console.log(relocateInfo);
         const doc = this.getEditPageDocument();
 
-        const contenletEl = doc.querySelector(`dotedit-contentlet[data-identifier="${relocateInfo.contentlet}"]`);
+        const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${relocateInfo.contentlet.inode}"]`);
+        console.log(contenletEl);
+
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
+
+        relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.identifier;
 
         this.dotContainerContentletService.getContentletToContainer(
             relocateInfo.container,
