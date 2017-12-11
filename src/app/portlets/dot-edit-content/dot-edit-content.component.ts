@@ -15,10 +15,10 @@ export class DotEditContentComponent implements OnInit {
     @ViewChild('editContentIframe') editContentIframe: ElementRef;
 
     dialogTitle: string;
-    drop: BehaviorSubject<any> = new BehaviorSubject(null);
     editContentUrl: SafeResourceUrl;
+    editContentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     model: BehaviorSubject<any> = new BehaviorSubject(null);
-    iframeEvents: BehaviorSubject<any> = new BehaviorSubject({});
+    relocateContentlet: BehaviorSubject<any> = new BehaviorSubject(null);
     source: any;
 
     constructor(
@@ -28,59 +28,24 @@ export class DotEditContentComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        const iframeEl = this.iframe.nativeElement;
-        iframeEl.addEventListener('load', () => this.setEditMode(iframeEl));
-
-        const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
-        doc.open();
-        doc.write(FAKE_EDIT_PAGE_HTML);
-        doc.close();
-
+        const iframeEl = this.getEditPageIframe();
+        iframeEl.addEventListener('load', () => this.setEditMode());
         iframeEl.contentWindow.model = this.model;
-        iframeEl.contentWindow.drop = this.drop;
+        iframeEl.contentWindow.relocateContentlet = this.relocateContentlet;
+
+        this.loadCodeIntoIframe();
 
         this.model.subscribe(res => {
             this.ref.detectChanges();
         });
 
-        this.drop.subscribe(res => {
+        this.relocateContentlet.subscribe(res => {
             if (res) {
-                const contenletEl = doc.querySelector(`dotedit-contentlet[data-identifier="${res.contentlet}"]`);
-                const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
-
-                contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
-
-                this.dotContainerContentletService.getContentletToContainer(
-                    res.container,
-                    res.contentlet
-                ).subscribe(contentletHtml => {
-                    const div = doc.createElement('div');
-                    div.innerHTML = contentletHtml;
-
-                    contentletContentEl.innerHTML = '';
-
-                    // TODO: need to come up with a more efficient way to do this
-                    Array.from(div.children).forEach((node: any) => {
-                        if (node.tagName === 'SCRIPT') {
-                            const script = doc.createElement('script');
-                            script.type = 'text/javascript';
-
-                            if (node.src) {
-                                script.src = node.src;
-                            } else {
-                                script.text = node.textContent;
-                            }
-
-                            contentletContentEl.appendChild(script);
-                        } else {
-                            contentletContentEl.appendChild(node);
-                        }
-                    });
-                });
+                this.renderRelocatedContentlet(res);
             }
         });
 
-        this.iframeEvents.subscribe(res => {
+        this.editContentletEvents.subscribe(res => {
             if (res === 'cancel') {
                 this.dialogTitle = null;
                 this.editContentUrl = null;
@@ -103,12 +68,12 @@ export class DotEditContentComponent implements OnInit {
         console.log('Add contenlet to container', $event.target.dataset.identifier);
     }
 
-    private bindContainersEvents(iframeEl: any): void {
-        this.bindAddContentletEvents(iframeEl);
+    private bindContainersEvents(): void {
+        this.bindAddContentletEvents();
     }
 
-    private bindAddContentletEvents(iframeEl: any): void {
-        const addButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-container__add');
+    private bindAddContentletEvents(): void {
+        const addButtons = this.getEditPageDocument().querySelectorAll('.dotedit-container__add');
 
         addButtons.forEach(button => {
             button.addEventListener('click', $event => {
@@ -117,13 +82,13 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
-    private bindContenletsEvents(iframeEl: any): void {
-        this.bindEditContentletEvents(iframeEl);
-        this.bindRemoveContentletEvents(iframeEl);
+    private bindContenletsEvents(): void {
+        this.bindEditContentletEvents();
+        this.bindRemoveContentletEvents();
     }
 
-    private bindEditContentletEvents(iframeEl: any): void {
-        const editButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-contentlet__edit');
+    private bindEditContentletEvents(): void {
+        const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit');
 
         editButtons.forEach(button => {
             button.addEventListener('click', $event => {
@@ -132,8 +97,8 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
-    private bindRemoveContentletEvents(iframeEl: any): void {
-        const editButtons = iframeEl.contentDocument.querySelectorAll('.dotedit-contentlet__remove');
+    private bindRemoveContentletEvents(): void {
+        const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove');
 
         editButtons.forEach(button => {
             button.addEventListener('click', $event => {
@@ -161,13 +126,13 @@ export class DotEditContentComponent implements OnInit {
         setTimeout(() => {
             const editContentletIframeEl = this.editContentIframe.nativeElement;
             editContentletIframeEl.addEventListener('load', () => {
-                editContentletIframeEl.contentWindow.iframeEvents = this.iframeEvents;
+                editContentletIframeEl.contentWindow.iframeEvents = this.editContentletEvents;
             });
         }, 0);
     }
 
-    private getDragAndDropCss(doc: any): any {
-        const dragulaCss = doc.createElement('link');
+    private getDragAndDropCss(): any {
+        const dragulaCss = this.getEditPageDocument().createElement('link');
         dragulaCss.rel = 'stylesheet';
         dragulaCss.type = 'text/css';
         dragulaCss.media = 'all';
@@ -176,7 +141,9 @@ export class DotEditContentComponent implements OnInit {
         return dragulaCss;
     }
 
-    private getDragAndDropScript(doc: any): any {
+    private getDragAndDropScript(): any {
+        const doc = this.getEditPageDocument();
+
         const script = doc.createElement('script');
 
         script.type = 'text/javascript';
@@ -233,7 +200,7 @@ export class DotEditContentComponent implements OnInit {
 
                 drake.on('drop', function(el, target, source, sibling) {
                     if (target !== source) {
-                        window.drop.next({
+                        window.relocateContentlet.next({
                             container: target.dataset.identifier,
                             contentlet: el.dataset.identifier
                         });
@@ -249,16 +216,70 @@ export class DotEditContentComponent implements OnInit {
         return script;
     }
 
-    private initDragAndDropContentlets(doc: any): void {
-        doc.head.appendChild(this.getDragAndDropCss(doc));
-        doc.body.appendChild(this.getDragAndDropScript(doc));
+    private getEditPageDocument(): any {
+        return this.getEditPageIframe().contentDocument || this.getEditPageIframe().contentWindow.document;
+    }
+
+    private getEditPageIframe(): any {
+        return this.iframe.nativeElement;
+    }
+
+    private initDragAndDropContentlets(): void {
+        const doc = this.getEditPageDocument();
+        doc.head.appendChild(this.getDragAndDropCss());
+        doc.body.appendChild(this.getDragAndDropScript());
+    }
+
+    private loadCodeIntoIframe(): void {
+        const doc = this.getEditPageDocument();
+        doc.open();
+        doc.write(FAKE_EDIT_PAGE_HTML);
+        doc.close();
+    }
+
+    private renderRelocatedContentlet(relocateInfo: any): void {
+        const doc = this.getEditPageDocument();
+
+        const contenletEl = doc.querySelector(`dotedit-contentlet[data-identifier="${relocateInfo.contentlet}"]`);
+        const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
+
+        contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
+
+        this.dotContainerContentletService.getContentletToContainer(
+            relocateInfo.container,
+            relocateInfo.contentlet
+        ).subscribe(contentletHtml => {
+            const div = doc.createElement('div');
+            div.innerHTML = contentletHtml;
+
+            contentletContentEl.innerHTML = '';
+
+            // TODO: need to come up with a more efficient way to do this
+            Array.from(div.children).forEach((node: any) => {
+                if (node.tagName === 'SCRIPT') {
+                    const script = doc.createElement('script');
+                    script.type = 'text/javascript';
+
+                    if (node.src) {
+                        script.src = node.src;
+                    } else {
+                        script.text = node.textContent;
+                    }
+
+                    contentletContentEl.appendChild(script);
+                } else {
+                    contentletContentEl.appendChild(node);
+                }
+            });
+        });
     }
 
     private removeContentlet($event): void {
         console.log('Remove contenlet', $event.target.dataset.identifier);
     }
 
-    private setEditContentletZones(doc: any): void {
+    private setEditContentletStyles(): void {
+        const doc = this.getEditPageDocument();
         const style = doc.createElement('style');
         style.type = 'text/css';
 
@@ -271,12 +292,11 @@ export class DotEditContentComponent implements OnInit {
         doc.head.appendChild(style);
     }
 
-    private setEditMode(iframeEl: any): void {
-        this.bindContenletsEvents(iframeEl);
-        this.bindContainersEvents(iframeEl);
+    private setEditMode(): void {
+        this.bindContenletsEvents();
+        this.bindContainersEvents();
 
-        const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
-        this.initDragAndDropContentlets(doc);
-        this.setEditContentletZones(doc);
+        this.initDragAndDropContentlets();
+        this.setEditContentletStyles();
     }
 }
