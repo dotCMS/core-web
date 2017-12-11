@@ -46,8 +46,6 @@ export class DotEditContentComponent implements OnInit {
         });
 
         this.editContentletEvents.subscribe(res => {
-            console.log(res);
-
             if (res.event === 'cancel') {
                 this.dialogTitle = null;
                 this.editContentUrl = null;
@@ -259,7 +257,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {
-        console.log(relocateInfo);
         const doc = this.getEditPageDocument();
 
         const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${relocateInfo.contentlet.inode}"]`);
@@ -301,7 +298,11 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event): void {
-        console.log('Remove contenlet', $event.target.dataset.identifier);
+        const doc = this.getEditPageDocument();
+        const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${$event.target.dataset.inode}"]`);
+        contenletEl.remove();
+
+        this.model.next(this.getEditPageIframe().contentWindow.getModel());
     }
 
     private setEditContentletStyles(): void {
