@@ -4,6 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { EDIT_PAGE_CSS } from './iframe-edit-mode.css';
+import { DotConfirmationService } from '../../api/services/dot-confirmation';
 
 @Component({
     selector: 'dot-edit-content',
@@ -24,6 +25,7 @@ export class DotEditContentComponent implements OnInit {
     constructor(
         private sanitizer: DomSanitizer,
         private ref: ChangeDetectorRef,
+        private dotConfirmationService: DotConfirmationService,
         private dotContainerContentletService: DotContainerContentletService
     ) {}
 
@@ -298,11 +300,21 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event): void {
-        const doc = this.getEditPageDocument();
-        const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${$event.target.dataset.inode}"]`);
-        contenletEl.remove();
-
-        this.model.next(this.getEditPageIframe().contentWindow.getModel());
+        // TODO: dialog it's not showing until click in the overlay
+        this.dotConfirmationService.confirm({
+            accept: () => {
+                const doc = this.getEditPageDocument();
+                const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${$event.target.dataset.inode}"]`);
+                contenletEl.remove();
+                this.model.next(this.getEditPageIframe().contentWindow.getModel());
+            },
+            header: `Remove a content?`,
+            message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
+            footerLabel: {
+                acceptLabel: 'Yes',
+                rejectLabel: 'No'
+            }
+        });
     }
 
     private setEditContentletStyles(): void {
