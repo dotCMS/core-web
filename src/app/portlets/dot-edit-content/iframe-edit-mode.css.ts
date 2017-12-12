@@ -27,12 +27,15 @@ export const EDIT_PAGE_CSS = `
 
     dotedit-contentlet:hover {
         background-color: #f2f2f2;
-        cursor: move
     }
 
     .dotedit-contentlet__content {
         min-height: 100px;
         position: relative;
+    }
+
+    .dotedit-contentlet__drag {
+        cursor: move;
     }
 
     .loader,

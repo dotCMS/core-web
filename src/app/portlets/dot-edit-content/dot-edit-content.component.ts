@@ -206,6 +206,9 @@ export class DotEditContentComponent implements OnInit {
 
                         return canDrop;
                     },
+                    invalid: function(el, handle) {
+                        return !handle.classList.contains('dotedit-contentlet__drag');
+                    }
                 });
 
                 drake.on('dragend', function(el) {

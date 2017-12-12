@@ -209,7 +209,8 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                 <div class="dotedit-contentlet__toolbar">
                                     <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__edit">Edit</button>
                                     <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__remove">Remove</button>
-                                </div>
+                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__drag">Drag</button>
+                                    </div>
                                 <div class="dotedit-contentlet__content">
                                     <div class="large-column">
                                         <p>
@@ -251,6 +252,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="456"  data-inode="789" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="456" data-inode="789" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="456" data-inode="789" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <h3>Management Team</h3>
@@ -331,6 +333,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -359,6 +362,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -392,6 +396,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                     <div class="dotedit-contentlet__toolbar">
                                         <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__edit">Edit</button>
                                         <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <h4>Some heading</h4>
