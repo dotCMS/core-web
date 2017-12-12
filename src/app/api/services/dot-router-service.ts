@@ -14,7 +14,7 @@ export class DotRouterService {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private dotMenuService: DotMenuService
-    ) {}
+    ) { }
 
     get currentPortlet(): PortletNav {
         return {
@@ -70,6 +70,9 @@ export class DotRouterService {
     }
 
     getPortletId(url: string): string {
+        if (url.indexOf('?url=') > 0) {
+            url = url.substring(0, url.indexOf('?url='));
+        }
         const urlSegments = url.split('/').filter(item => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
