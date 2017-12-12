@@ -8,6 +8,7 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
+import { DotContainersColumn } from '../models/dot-containers-column.model';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -26,11 +27,18 @@ export class DotEditLayoutService {
      */
     getDotLayoutGridBox(dotLayoutBody: DotLayoutBody): DotLayoutGridBox[] {
         const grid: DotLayoutGridBox[] = [];
+        let columnContainers: DotContainersColumn[];
 
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
+                columnContainers = column.containers.map(containerId => {
+                    return {
+                        identifier: containerId.toString(),
+                        uuid: (new Date().getTime()).toString()
+                    };
+                });
                 grid.push({
-                    containers: column.containers.map(containerId => this.templateContainersCacheService.get(containerId)),
+                    containers: columnContainers.map(container => this.templateContainersCacheService.get(container.identifier)),
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,

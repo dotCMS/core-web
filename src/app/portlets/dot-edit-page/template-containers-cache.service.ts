@@ -18,7 +18,7 @@ export class TemplateContainersCacheService {
         this.containers = containers;
     }
 
-    get(containerId: any): DotContainer {
+    get(containerId: string): DotContainer {
         return this.containers[containerId] ? this.containers[containerId].container :  null;
     }
 }
