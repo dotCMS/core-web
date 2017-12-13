@@ -310,7 +310,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
             host: this.data.host || '',
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
-            workflow: [{ value: this.data.workflow || [], disabled: true }],
+            workflow: [{ value: this.data.workflows.map(workflow => workflow.id) || [], disabled: true }],
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -348,7 +348,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     private getWorkflowFieldOption(workflow: Workflow): SelectItem {
         return {
             label: workflow.name,
-            value: workflow.identifier
+            value: workflow.id
         };
     }
 

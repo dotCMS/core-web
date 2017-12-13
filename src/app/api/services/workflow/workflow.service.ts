@@ -12,7 +12,13 @@ import {Workflow} from '../../../shared/models/workflow/workflow.model';
  */
 @Injectable()
 export class WorkflowService {
-    constructor(private coreWebService: CoreWebService) {}
+    private urls: any;
+
+    constructor(private coreWebService: CoreWebService) {
+        this.urls = {
+            getWorkflowSchemes: 'v1/workflow/schemes'
+        };
+    }
 
     /**
      * Method to get Workflows
@@ -21,28 +27,9 @@ export class WorkflowService {
      * @memberof WorkflowService
      */
     get(): Observable<Workflow[]> {
-        const dummyWorkflows: Workflow[] = [
-            {
-                name: 'WorkFlow #1',
-                identifier: '1'
-            },
-            {
-                name: 'WorkFlow #2',
-                identifier: '2'
-            },
-            {
-                name: 'Long Description WorkFlow #3. Lorem Ipsum. Lorem Ipsum',
-                identifier: '3'
-            },
-            {
-                name: 'WorkFlow #4',
-                identifier: '4'
-            },
-            {
-                name: 'WorkFlow #5',
-                identifier: '5'
-            }
-        ];
-        return Observable.of(dummyWorkflows);
+        return this.coreWebService.request({
+            method: RequestMethod.Get,
+            url: this.urls.getWorkflowSchemes
+        }).pluck('entity');
     }
 }
