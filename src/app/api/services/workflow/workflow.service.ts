@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/primeng';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
-import {Workflow} from '../../../shared/models/workflow/workflow.model';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
 
 /**
  * Provide util methods to get Workflows.
@@ -27,9 +27,11 @@ export class WorkflowService {
      * @memberof WorkflowService
      */
     get(): Observable<Workflow[]> {
-        return this.coreWebService.request({
-            method: RequestMethod.Get,
-            url: this.urls.getWorkflowSchemes
-        }).pluck('entity');
+        return this.coreWebService
+            .request({
+                method: RequestMethod.Get,
+                url: this.urls.getWorkflowSchemes
+            })
+            .pluck('entity');
     }
 }
