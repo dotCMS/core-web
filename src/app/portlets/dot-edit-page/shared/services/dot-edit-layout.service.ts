@@ -27,18 +27,16 @@ export class DotEditLayoutService {
      */
     getDotLayoutGridBox(dotLayoutBody: DotLayoutBody): DotLayoutGridBox[] {
         const grid: DotLayoutGridBox[] = [];
-        let columnContainers: DotContainersColumn[];
 
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
-                columnContainers = column.containers.map(containerId => {
-                    return {
-                        identifier: containerId.toString(),
-                        uuid: (new Date().getTime()).toString()
-                    };
-                });
                 grid.push({
-                    containers: columnContainers.map(container => this.templateContainersCacheService.get(container.identifier)),
+                    containers: column.containers.map(container => {
+                        if (!container.uuid) {
+                            container.uuid = (new Date().getTime()).toString();
+                        }
+                        return this.templateContainersCacheService.get(container.identifier);
+                    }),
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,
