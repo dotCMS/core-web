@@ -48,16 +48,6 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            this.pageView.layout.body.rows.forEach(row => {
-                row.columns.forEach(column => {
-                    for (let i = 0; i < column.containers.length; i++) {
-                        column.containers[i] = {
-                            identifier: column.containers[i].toString(),
-                            uuid: (new Date().getTime()).toString()
-                        };
-                    }
-                });
-            });
             this.initForm(pageView);
             this.templateContainersCacheService.set(this.pageView.containers);
 
