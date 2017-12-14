@@ -56,7 +56,7 @@ export class PaginatorService {
     }
 
     addExtraParams(name: string, value: any): void {
-        if (value || name === 'archive') {
+        if (value || value === false && name === 'archive') {
             this.extraParams.append(name, value.toString());
         }
     }
