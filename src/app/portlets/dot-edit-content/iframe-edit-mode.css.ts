@@ -1,31 +1,26 @@
 export const EDIT_PAGE_CSS = `
-    dotedit-container,
-    dotedit-contentlet {
-        display: block;
-    }
-
-    dotedit-container {
+    [data-dot-object="container"] {
         border: solid 1px #f2f2f2;
         min-height: 100px;
         margin: 10px 0
     }
 
-    dotedit-container.no {
+    [data-dot-object="container"].no {
         border-color: red;
         box-shadow: 0 0 20px red;
         border-radious: 2px;
         background-color: #ff00000f;
     }
 
-    dotedit-container:hover {
+    [data-dot-object="container"]:hover {
         border-color: #dddddd;
     }
 
-    dotedit-contentlet {
+    [data-dot-object="contentlet"] {
         padding: 10px;
     }
 
-    dotedit-contentlet:hover {
+    [data-dot-object="contentlet"]:hover {
         background-color: #f2f2f2;
     }
 

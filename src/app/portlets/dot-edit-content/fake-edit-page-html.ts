@@ -1,3 +1,5 @@
+/* tslint:disable:max-line-length */
+
 export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -202,15 +204,15 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 
                     <div class="col-sm-8">
                         <div class="dotedit-container__toolbar">
-                            <button type="button" data-identifier="test1" class="dotedit-container__add">Add</button>
+                            <button type="button" data-dot-identifier="test1" class="dotedit-container__add">Add</button>
                         </div>
-                        <dotedit-container data-identifier="test1" data-accept-types="one,two">
-                            <dotedit-contentlet data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" data-type="one">
+                        <div data-dot-object="container" data-dot-inode="test1" data-dot-identifier="test1"  data-dot-accept-types="one,two" data-dot-max-contentlets="100">
+                            <div data-dot-object="contentlet" data-dot-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-dot-inode="e0e31ce27719" data-dot-type="one">
                                 <div class="dotedit-contentlet__toolbar">
-                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__edit">Edit</button>
-                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__remove">Remove</button>
-                                    <button type="button" data-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-inode="e0e31ce27719" class="dotedit-contentlet__drag">Drag</button>
-                                    </div>
+                                    <button type="button" data-dot-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-dot-inode="e0e31ce27719" class="dotedit-contentlet__edit">Edit</button>
+                                    <button type="button" data-dot-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-dot-inode="e0e31ce27719" class="dotedit-contentlet__remove">Remove</button>
+                                    <button type="button" data-dot-identifier="767509b1-2392-4661-a16b-e0e31ce27719" data-dot-inode="e0e31ce27719" class="dotedit-contentlet__drag">Drag</button>
+                                </div>
                                 <div class="dotedit-contentlet__content">
                                     <div class="large-column">
                                         <p>
@@ -237,22 +239,22 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                             fringilla tincidunt.</p>
                                     </div>
                                 </div>
-                            </dotedit-contentlet>
-                        </dotedit-container>
+                            </div>
+                        </div>
                     </div>
                     <!--/span-->
 
                     <div class="col-sm-4">
                         <div class="medium-column">
                             <div class="dotedit-container__toolbar">
-                                <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
+                                <button type="button" data-dot-identifier="test2" class="dotedit-container__add">Add</button>
                             </div>
-                            <dotedit-container data-identifier="test2" data-accept-types="two,three">
-                                <dotedit-contentlet data-identifier="456" data-inode="789" data-type="three">
+                            <div data-dot-object="container" data-dot-identifier="test2" data-dot-accept-types="two,three">
+                                <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="789" data-dot-type="three">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="456"  data-inode="789" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="456" data-inode="789" class="dotedit-contentlet__remove">Remove</button>
-                                        <button type="button" data-identifier="456" data-inode="789" class="dotedit-contentlet__drag">Drag</button>
+                                        <button type="button" data-dot-identifier="456"  data-dot-inode="789" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-dot-identifier="456" data-dot-inode="789" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-dot-identifier="456" data-dot-inode="789" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <h3>Management Team</h3>
@@ -327,13 +329,13 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                             </li>
                                         </ul>
                                     </div>
-                                </dotedit-contentlet>
+                                </div>
 
-                                <dotedit-contentlet data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" data-type="two">
+                                <div data-dot-object="contentlet" data-dot-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-dot-inode="5aef0c62" data-dot-type="two">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__remove">Remove</button>
-                                        <button type="button" data-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-inode="5aef0c62" class="dotedit-contentlet__drag">Drag</button>
+                                        <button type="button" data-dot-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-dot-inode="5aef0c62" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-dot-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-dot-inode="5aef0c62" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-dot-identifier="5aef0c62-b7d6-4805-9e7c-77a67f4822f3" data-dot-inode="5aef0c62" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -356,13 +358,13 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                             </div>
                                         </div>
                                     </div>
-                                </dotedit-contentlet>
+                                </div>
 
-                                <dotedit-contentlet data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" data-type="two">
+                                <div data-dot-object="contentlet" data-dot-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-dot-inode="b6c8c373d000" data-dot-type="two">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__remove">Remove</button>
-                                        <button type="button" data-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-inode="b6c8c373d000" class="dotedit-contentlet__drag">Drag</button>
+                                        <button type="button" data-dot-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-dot-inode="b6c8c373d000" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-dot-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-dot-inode="b6c8c373d000" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-dot-identifier="66d47ebf-7b11-4076-85b0-b6c8c373d000" data-dot-inode="b6c8c373d000" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <div class="media">
@@ -385,25 +387,25 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
                                             </div>
                                         </div>
                                     </div>
-                                </dotedit-contentlet>
-                            </dotedit-container>
+                                </div>
+                            </div>
 
                             <div class="dotedit-container__toolbar">
-                                <button type="button" data-identifier="test2" class="dotedit-container__add">Add</button>
+                                <button type="button" data-dot-identifier="test2" class="dotedit-container__add">Add</button>
                             </div>
-                            <dotedit-container data-identifier="test3" data-accept-types="two" data-max-limit="1">
-                                <dotedit-contentlet data-identifier="111-222-333-444" data-inode="333-444" data-type="two">
+                            <div data-dot-object="container" data-dot-identifier="test3" data-dot-accept-types="two" data-max-limit="1">
+                                <div data-dot-object="contentlet" data-dot-identifier="111-222-333-444" data-dot-inode="333-444" data-dot-type="two">
                                     <div class="dotedit-contentlet__toolbar">
-                                        <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__edit">Edit</button>
-                                        <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__remove">Remove</button>
-                                        <button type="button" data-identifier="000" data-inode="333-444" class="dotedit-contentlet__drag">Drag</button>
+                                        <button type="button" data-dot-identifier="000" data-dot-inode="333-444" class="dotedit-contentlet__edit">Edit</button>
+                                        <button type="button" data-dot-identifier="000" data-dot-inode="333-444" class="dotedit-contentlet__remove">Remove</button>
+                                        <button type="button" data-dot-identifier="000" data-dot-inode="333-444" class="dotedit-contentlet__drag">Drag</button>
                                     </div>
                                     <div class="dotedit-contentlet__content">
                                         <h4>Some heading</h4>
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.</p>
                                     </div>
-                                </dotedit-contentlet>
-                            </dotedit-container>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--/span-->

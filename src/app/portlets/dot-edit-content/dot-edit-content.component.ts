@@ -83,8 +83,8 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event): void {
-        this.addContentContainer = $event.target.dataset.identifier;
-        this.loadDialogEditor($event.target.dataset.identifier, '/html/ng-contentlet-selector.html?ng=true');
+        this.addContentContainer = $event.target.dataset.dotIdentifier;
+        this.loadDialogEditor($event.target.dataset.dotIdentifier, '/html/ng-contentlet-selector.html?ng=true');
     }
 
     private appendNewContentlets(contentletContentEl: any, renderedContentet: string): void {
@@ -154,17 +154,18 @@ export class DotEditContentComponent implements OnInit {
 
     private createNewContentlet(contentlet: any): any {
         const doc = this.getEditPageDocument();
-        const dotEditContentletEl = doc.createElement('dotedit-contentlet');
-        dotEditContentletEl.dataset.identifier = contentlet.identifier;
-        dotEditContentletEl.dataset.inode = contentlet.inode;
-        dotEditContentletEl.dataset.type = contentlet.type;
+        const dotEditContentletEl = doc.createElement('div');
+        dotEditContentletEl.dataset.dotObject = 'contentlet';
+        dotEditContentletEl.dataset.dotIdentifier = contentlet.identifier;
+        dotEditContentletEl.dataset.dotInode = contentlet.inode;
+        dotEditContentletEl.dataset.dotType = contentlet.type;
 
         dotEditContentletEl.innerHTML = `
             <div class="dotedit-contentlet__toolbar">
-                <button type="button" data-identifier="${contentlet.identifier}" data-inode="${contentlet.inode}" class="dotedit-contentlet__edit">Edit</button>
-                <button type="button" data-identifier="${contentlet.identifier}" data-inode="${contentlet.inode}" class="dotedit-contentlet__remove">Remove</button>
-                <button type="button" data-identifier="${contentlet.identifier}" data-inode="${contentlet.inode}" class="dotedit-contentlet__drag">Drag</button>
-                </div>
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__edit">Edit</button>
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__remove">Remove</button>
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__drag">Drag</button>
+            </div>
             <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>
         `;
 
@@ -183,7 +184,7 @@ export class DotEditContentComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         const url = '/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=aaee9776-8fb7-4501-8048-844912a20405&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D71b8a1ca-37b6-4b6e-a43b-c7482f28db6c%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets';
 
-        this.loadDialogEditor($event.target.dataset.identifier, url);
+        this.loadDialogEditor($event.target.dataset.dotIdentifier, url);
     }
 
     private getDragAndDropCss(): any {
@@ -207,15 +208,15 @@ export class DotEditContentComponent implements OnInit {
             const dragAndDropScript = doc.createElement('script');
             dragAndDropScript.type = 'text/javascript';
             dragAndDropScript.text = `
-                var containers = Array.from(document.getElementsByTagName('dotedit-container'));
+                var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
 
                 function getModel() {
                     var model = {};
                     containers.forEach(function(container) {
-                        var contentlets = Array.from(container.querySelectorAll('dotedit-contentlet'));
+                        var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
 
-                        model[container.dataset.identifier] = contentlets.map(function(contentlet) {
-                            return contentlet.dataset.identifier
+                        model[container.dataset.dotIdentifier] = contentlets.map(function(contentlet) {
+                            return contentlet.dataset.dotIdentifier
                         })
                     })
 
@@ -227,10 +228,10 @@ export class DotEditContentComponent implements OnInit {
                 var drake = dragula(
                     containers, {
                     accepts: function (el, target, source, sibling) {
-                        var canDrop = target.dataset.acceptTypes.indexOf(el.dataset.type) > -1;
+                        var canDrop = target.dataset.dotAcceptTypes.indexOf(el.dataset.dotType) > -1;
 
-                        if (target.dataset.maxLimit) {
-                            var containerMaxLimit = parseInt(target.dataset.maxLimit, 10);
+                        if (target.dataset.dotMaxLimit) {
+                            var containerMaxLimit = parseInt(target.dataset.dotMaxLimit, 10);
                             var containerChildrenQuantity = target.children.length
 
                             canDrop = containerChildrenQuantity < containerMaxLimit;
@@ -259,10 +260,10 @@ export class DotEditContentComponent implements OnInit {
                 drake.on('drop', function(el, target, source, sibling) {
                     if (target !== source) {
                         window.relocateContentlet.next({
-                            container: target.dataset.identifier,
+                            container: target.dataset.dotIdentifier,
                             contentlet: {
-                                identifier: el.dataset.identifier,
-                                inode: el.dataset.inode
+                                identifier: el.dataset.dotIdentifier,
+                                inode: el.dataset.dotInode
                             }
                         });
                     }
@@ -300,7 +301,7 @@ export class DotEditContentComponent implements OnInit {
 
     private renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
-        const containerEl = doc.querySelector(`dotedit-container[data-identifier="${this.addContentContainer}"]`);
+        const containerEl = doc.querySelector(`div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`);
         const contentletEl = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
@@ -325,13 +326,13 @@ export class DotEditContentComponent implements OnInit {
     private renderRelocatedContentlet(relocateInfo: any): void {
         const doc = this.getEditPageDocument();
 
-        const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${relocateInfo.contentlet.inode}"]`);
+        const contenletEl = doc.querySelector(`div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`);
 
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
 
-        relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.identifier;
+        relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
 
         this.dotContainerContentletService.getContentletToContainer(
             relocateInfo.container,
@@ -374,7 +375,7 @@ export class DotEditContentComponent implements OnInit {
         this.dotConfirmationService.confirm({
             accept: () => {
                 const doc = this.getEditPageDocument();
-                const contenletEl = doc.querySelector(`dotedit-contentlet[data-inode="${$event.target.dataset.inode}"]`);
+                const contenletEl = doc.querySelector(`dotedit-contentlet[data-dot-inode="${$event.target.dataset.dotInode}"]`);
                 contenletEl.remove();
                 this.model.next(this.getEditPageIframe().contentWindow.getModel());
             },
