@@ -57,7 +57,6 @@ describe('SiteSelectorComponent', () => {
 
     it('should set extra params to paginator service', () => {
         comp.archive = false;
-        comp.system = true;
 
         fixture.detectChanges();
 
@@ -65,10 +64,10 @@ describe('SiteSelectorComponent', () => {
 
 
         expect(paginatorService.extraParams.get('archive')).toBe('false');
-        expect(paginatorService.extraParams.get('system')).toBe('true');
+        expect(paginatorService.extraParams.get('system')).toBe(null);
     });
 
-    it('should set extra params to paginator service (system default)', () => {
+    it('should set extra params to paginator service (system default) and archived true', () => {
         comp.archive = true;
 
         fixture.detectChanges();
@@ -76,7 +75,7 @@ describe('SiteSelectorComponent', () => {
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
 
         expect(paginatorService.extraParams.get('archive')).toBe('true');
-        expect(paginatorService.extraParams.get('system')).toBe('true');
+        expect(paginatorService.extraParams.get('system')).toBe(null);
     });
 
     it('should call getSitesList', () => {

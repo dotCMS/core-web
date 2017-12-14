@@ -64,7 +64,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         this.paginationService.url = 'v1/site';
 
         this.paginationService.addExtraParams('archive', this.archive);
-        this.paginationService.addExtraParams('system', this.system);
 
         this.getSitesList();
 
