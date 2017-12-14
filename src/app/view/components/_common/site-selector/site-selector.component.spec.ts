@@ -23,7 +23,7 @@ import { PaginatorService } from '../../../../api/services/paginator';
 import { IframeOverlayService } from '../iframe/service/iframe-overlay.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('SiteSelectorComponent', () => {
+describe('SiteSelectorComponent', () => {
     let comp: SiteSelectorComponent;
     let fixture: ComponentFixture<SiteSelectorComponent>;
     let de: DebugElement;
