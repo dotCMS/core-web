@@ -56,30 +56,26 @@ describe('SiteSelectorComponent', () => {
     );
 
     it('should set extra params to paginator service', () => {
-        comp.archive = true;
-        comp.live = false;
-        comp.system = false;
+        comp.archive = false;
+        comp.system = true;
 
         fixture.detectChanges();
 
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
 
 
-        expect(paginatorService.extraParams.get('archive')).toBe('true');
-        expect(paginatorService.extraParams.get('live')).toBe(null);
-        expect(paginatorService.extraParams.get('system')).toBe(null);
+        expect(paginatorService.extraParams.get('archive')).toBe('false');
+        expect(paginatorService.extraParams.get('system')).toBe('true');
     });
 
     it('should set extra params to paginator service (system default)', () => {
         comp.archive = true;
-        comp.live = false;
 
         fixture.detectChanges();
 
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
 
         expect(paginatorService.extraParams.get('archive')).toBe('true');
-        expect(paginatorService.extraParams.get('live')).toBe(null);
         expect(paginatorService.extraParams.get('system')).toBe('true');
     });
 
@@ -93,6 +89,8 @@ describe('SiteSelectorComponent', () => {
             identifier: 2,
             name: 'Site 2'
         };
+
+        comp.archive = false;
 
         const siteService = de.injector.get(SiteService);
         spyOn(siteService, 'switchSite$').and.returnValue(Observable.of(site1));
@@ -116,6 +114,8 @@ describe('SiteSelectorComponent', () => {
             name: 'Site 2'
         };
 
+        comp.archive = false;
+
         const siteService = de.injector.get(SiteService);
         const spy = spyOn(siteService, 'refreshSites$').and.returnValue(
             Observable.of([site1, site2])
@@ -129,6 +129,7 @@ describe('SiteSelectorComponent', () => {
     it('should change Page', fakeAsync(() => {
         const filter = 'filter';
         const page = 1;
+        comp.archive = false;
 
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         paginatorService.totalRecords = 2;
@@ -159,6 +160,7 @@ describe('SiteSelectorComponent', () => {
     it('should paginate when the filter change', fakeAsync(() => {
         const filter = 'filter';
         const first = 2;
+        comp.archive = false;
 
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         paginatorService.totalRecords = 2;
@@ -182,6 +184,7 @@ describe('SiteSelectorComponent', () => {
     }));
 
     it('should be assign to filter if empty', fakeAsync(() => {
+        comp.archive = false;
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
