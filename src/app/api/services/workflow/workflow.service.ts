@@ -12,13 +12,7 @@ import { Workflow } from '../../../shared/models/workflow/workflow.model';
  */
 @Injectable()
 export class WorkflowService {
-    private urls: any;
-
-    constructor(private coreWebService: CoreWebService) {
-        this.urls = {
-            getWorkflowSchemes: 'v1/workflow/schemes'
-        };
-    }
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Method to get Workflows
@@ -28,9 +22,9 @@ export class WorkflowService {
      */
     get(): Observable<Workflow[]> {
         return this.coreWebService
-            .request({
+            .requestView({
                 method: RequestMethod.Get,
-                url: this.urls.getWorkflowSchemes
+                url: 'v1/workflow/schemes'
             })
             .pluck('entity');
     }
