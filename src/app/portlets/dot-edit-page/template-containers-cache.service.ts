@@ -9,12 +9,6 @@ export class TemplateContainersCacheService {
     private containers: { [key: string]: {container: DotContainer}};
 
     set(containers: { [key: string]: {container: DotContainer}}): void {
-        for (const key in containers) {
-            if (!containers[key].container.uuid) {
-                containers[key].container.uuid = (new Date().getTime()).toString();
-            }
-        }
-
         this.containers = containers;
     }
 
