@@ -1,16 +1,22 @@
+import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DotEditContentComponent } from './dot-edit-content.component';
+
 import { DialogModule } from 'primeng/primeng';
-import { IFrameModule } from '../../view/components/_common/iframe/index';
-import { Routes, RouterModule } from '@angular/router';
+
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
+import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
+import { EditContentResolver } from './services/dot-edit-content-resolver.service';
+import { IFrameModule } from '../../view/components/_common/iframe/index';
 
 const routes: Routes = [
     {
         component: DotEditContentComponent,
-        path: ''
+        path: '',
+        resolve: {
+            editPageHTML: EditContentResolver
+        }
     }
 ];
 
@@ -19,6 +25,6 @@ const routes: Routes = [
     declarations: [DotEditContentComponent],
     imports: [CommonModule, DialogModule, RouterModule.forChild(routes), DotEditPageToolbarModule],
     exports: [DotEditContentComponent],
-    providers: [DotContainerContentletService]
+    providers: [DotContainerContentletService, EditContentResolver]
 })
 export class DotEditContentModule {}

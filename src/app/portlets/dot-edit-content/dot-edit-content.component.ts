@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { FAKE_EDIT_PAGE_HTML } from './fake-edit-page-html';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { EDIT_PAGE_CSS } from './iframe-edit-mode.css';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'dot-edit-content',
@@ -25,19 +25,22 @@ export class DotEditContentComponent implements OnInit {
     private addContentContainer: string;
 
     constructor(
-        private sanitizer: DomSanitizer,
-        private ref: ChangeDetectorRef,
         private dotConfirmationService: DotConfirmationService,
         private dotContainerContentletService: DotContainerContentletService,
+        private ref: ChangeDetectorRef,
+        private route: ActivatedRoute,
+        private sanitizer: DomSanitizer,
     ) {}
 
     ngOnInit() {
+        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
+            this.loadCodeIntoIframe(editPageHTML);
+        });
+
         const iframeEl = this.getEditPageIframe();
         iframeEl.addEventListener('load', () => this.setEditMode());
         iframeEl.contentWindow.model = this.model;
         iframeEl.contentWindow.relocateContentlet = this.relocateContentlet;
-
-        this.loadCodeIntoIframe();
 
         this.model.subscribe((res) => {
             this.ref.detectChanges();
@@ -350,10 +353,10 @@ export class DotEditContentComponent implements OnInit {
         doc.body.appendChild(this.getDragAndDropScript());
     }
 
-    private loadCodeIntoIframe(): void {
+    private loadCodeIntoIframe(editPageHTML: string): void {
         const doc = this.getEditPageDocument();
         doc.open();
-        doc.write(FAKE_EDIT_PAGE_HTML);
+        doc.write(editPageHTML);
         doc.close();
     }
 
