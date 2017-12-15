@@ -13,13 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DotEditContentComponent implements OnInit {
     @ViewChild('iframe') iframe: ElementRef;
-    @ViewChild('editContentIframe') editContentIframe: ElementRef;
+    @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
 
     dialogTitle: string;
-    editContentUrl: SafeResourceUrl;
-    editContentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
+    contentletActionsUrl: SafeResourceUrl;
+    contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     model: BehaviorSubject<any> = new BehaviorSubject(null);
-    relocateContentlet: BehaviorSubject<any> = new BehaviorSubject(null);
     source: any;
 
     private addContentContainer: string;
@@ -40,21 +39,15 @@ export class DotEditContentComponent implements OnInit {
         const iframeEl = this.getEditPageIframe();
         iframeEl.addEventListener('load', () => this.setEditMode());
         iframeEl.contentWindow.model = this.model;
-        iframeEl.contentWindow.relocateContentlet = this.relocateContentlet;
+        iframeEl.contentWindow.contentletEvents = this.contentletEvents;
 
         this.model.subscribe((res) => {
             this.ref.detectChanges();
         });
 
-        this.relocateContentlet.subscribe((res) => {
-            if (res) {
-                this.renderRelocatedContentlet(res);
-            }
-        });
-
-        this.editContentletEvents.subscribe((res) => {
+        this.contentletEvents.subscribe((res) => {
             this.dialogTitle = null;
-            this.editContentUrl = null;
+            this.contentletActionsUrl = null;
 
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
@@ -72,6 +65,10 @@ export class DotEditContentComponent implements OnInit {
                 });
             }
 
+            if (res.event === 'relocate') {
+                this.renderRelocatedContentlet(res.data);
+            }
+
             /*
                 I think because we are triggering the .next() from the jsp the Angular detect changes it's not
                 happenning automatically, so I have to triggered manually so the changes propagates to the template
@@ -82,7 +79,7 @@ export class DotEditContentComponent implements OnInit {
 
     onHide(): void {
         this.dialogTitle = null;
-        this.editContentUrl = null;
+        this.contentletActionsUrl = null;
     }
 
     private addContainerToolbar(): void {
@@ -320,11 +317,17 @@ export class DotEditContentComponent implements OnInit {
 
                 drake.on('drop', function(el, target, source, sibling) {
                     if (target !== source) {
-                        window.relocateContentlet.next({
-                            container: target.dataset.dotIdentifier,
-                            contentlet: {
-                                identifier: el.dataset.dotIdentifier,
-                                inode: el.dataset.dotInode
+                        window.contentletEvents.next({
+                            event: 'relocate',
+                            data: {
+                                container: {
+                                    identifier: target.dataset.dotIdentifier,
+                                    uuid: 'fake-one'
+                                },
+                                contentlet: {
+                                    identifier: el.dataset.dotIdentifier,
+                                    inode: el.dataset.dotInode
+                                }
                             }
                         });
                     }
@@ -399,7 +402,7 @@ export class DotEditContentComponent implements OnInit {
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
 
         this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
+            .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
             .subscribe((contentletHtml) => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
@@ -409,7 +412,7 @@ export class DotEditContentComponent implements OnInit {
 
     private loadDialogEditor(containerId: string, url: string): void {
         this.dialogTitle = `Editing content with id ${containerId}`;
-        this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
         /*
             Again, because the click event it's comming form the iframe, we need to trigger the detect changes manually.
@@ -421,13 +424,13 @@ export class DotEditContentComponent implements OnInit {
             element it's available in the DOM
         */
         setTimeout(() => {
-            const editContentletIframeEl = this.editContentIframe.nativeElement;
+            const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
             /*
                 TODO: should I remove this listener when when the dialog closes?
             */
             editContentletIframeEl.addEventListener('load', () => {
-                editContentletIframeEl.contentWindow.ngEditContentletEvents = this.editContentletEvents;
+                editContentletIframeEl.contentWindow.ngEditContentletEvents = this.contentletEvents;
             });
         }, 0);
     }
