@@ -1,11 +1,4 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    ElementRef,
-    AfterViewInit,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FAKE_EDIT_PAGE_HTML } from './fake-edit-page-html';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -92,9 +85,7 @@ export class DotEditContentComponent implements OnInit {
     private addContainerToolbar(): void {
         const doc = this.getEditPageDocument();
 
-        const containers = doc.querySelectorAll(
-            'div[data-dot-object="container"]',
-        );
+        const containers = doc.querySelectorAll('div[data-dot-object="container"]');
 
         Array.from(containers).forEach((container: any) => {
             const containerToolbar = doc.createElement('div');
@@ -112,26 +103,27 @@ export class DotEditContentComponent implements OnInit {
 
     private addContentlet($event): void {
         this.addContentContainer = $event.target.dataset.dotIdentifier;
-        this.loadDialogEditor(
-            $event.target.dataset.dotIdentifier,
-            '/html/ng-contentlet-selector.html?ng=true',
-        );
+        this.loadDialogEditor($event.target.dataset.dotIdentifier, '/html/ng-contentlet-selector.html?ng=true');
     }
 
     private addContentletMarkup(): void {
         const doc = this.getEditPageDocument();
 
-        const contentlets = doc.querySelectorAll(
-            'div[data-dot-object="contentlet"]',
-        );
+        const contentlets = doc.querySelectorAll('div[data-dot-object="contentlet"]');
 
         Array.from(contentlets).forEach((contentlet: any) => {
             const contentletToolbar = doc.createElement('div');
             contentletToolbar.classList.add('dotedit-contentlet__toolbar');
-            contentletToolbar.innerHTML =  `
-                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${contentlet.dataset.dotInode}" class="dotedit-contentlet__edit">Edit</button>
-                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${contentlet.dataset.dotInode}" class="dotedit-contentlet__remove">Remove</button>
-                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${contentlet.dataset.dotInode}" class="dotedit-contentlet__drag">Drag</button>
+            contentletToolbar.innerHTML = `
+                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${
+                contentlet.dataset.dotInode
+            }" class="dotedit-contentlet__edit">Edit</button>
+                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${
+                contentlet.dataset.dotInode
+            }" class="dotedit-contentlet__remove">Remove</button>
+                <button type="button" data-dot-identifier="${contentlet.dataset.dotIdentifier}" data-dot-inode="${
+                contentlet.dataset.dotInode
+            }" class="dotedit-contentlet__drag">Drag</button>
             `;
 
             const contentletContent = doc.createElement('div');
@@ -146,10 +138,7 @@ export class DotEditContentComponent implements OnInit {
         this.bindContenletsEvents();
     }
 
-    private appendNewContentlets(
-        contentletContentEl: any,
-        renderedContentet: string,
-    ): void {
+    private appendNewContentlets(contentletContentEl: any, renderedContentet: string): void {
         const doc = this.getEditPageDocument();
 
         // Add innerHTML to a plain so we can get the HTML nodes later
@@ -180,9 +169,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private bindAddContentletEvents(): void {
-        const addButtons = this.getEditPageDocument().querySelectorAll(
-            '.dotedit-container__add',
-        );
+        const addButtons = this.getEditPageDocument().querySelectorAll('.dotedit-container__add');
 
         addButtons.forEach((button) => {
             button.addEventListener('click', ($event) => {
@@ -197,9 +184,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private bindEditContentletEvents(): void {
-        const editButtons = this.getEditPageDocument().querySelectorAll(
-            '.dotedit-contentlet__edit',
-        );
+        const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit');
 
         editButtons.forEach((button) => {
             button.addEventListener('click', ($event) => {
@@ -209,9 +194,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private bindRemoveContentletEvents(): void {
-        const editButtons = this.getEditPageDocument().querySelectorAll(
-            '.dotedit-contentlet__remove',
-        );
+        const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove');
 
         editButtons.forEach((button) => {
             button.addEventListener('click', ($event) => {
@@ -230,36 +213,26 @@ export class DotEditContentComponent implements OnInit {
 
         dotEditContentletEl.innerHTML = `
             <div class="dotedit-contentlet__toolbar">
-                <button type="button" data-dot-identifier="${
-                    contentlet.identifier
-                }" data-dot-inode="${
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${
             contentlet.inode
         }" class="dotedit-contentlet__edit">Edit</button>
-                <button type="button" data-dot-identifier="${
-                    contentlet.identifier
-                }" data-dot-inode="${
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${
             contentlet.inode
         }" class="dotedit-contentlet__remove">Remove</button>
-                <button type="button" data-dot-identifier="${
-                    contentlet.identifier
-                }" data-dot-inode="${
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${
             contentlet.inode
         }" class="dotedit-contentlet__drag">Drag</button>
             </div>
             <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>
         `;
 
-        dotEditContentletEl
-            .querySelector('.dotedit-contentlet__edit')
-            .addEventListener('click', ($event) => {
-                this.editContentlet($event);
-            });
+        dotEditContentletEl.querySelector('.dotedit-contentlet__edit').addEventListener('click', ($event) => {
+            this.editContentlet($event);
+        });
 
-        dotEditContentletEl
-            .querySelector('.dotedit-contentlet__remove')
-            .addEventListener('click', ($event) => {
-                this.removeContentlet($event);
-            });
+        dotEditContentletEl.querySelector('.dotedit-contentlet__remove').addEventListener('click', ($event) => {
+            this.removeContentlet($event);
+        });
 
         return dotEditContentletEl;
     }
@@ -364,10 +337,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private getEditPageDocument(): any {
-        return (
-            this.getEditPageIframe().contentDocument ||
-            this.getEditPageIframe().contentWindow.document
-        );
+        return this.getEditPageIframe().contentDocument || this.getEditPageIframe().contentWindow.document;
     }
 
     private getEditPageIframe(): any {
@@ -390,23 +360,16 @@ export class DotEditContentComponent implements OnInit {
     private renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${
-                this.addContentContainer
-            }"]`,
+            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`,
         );
         const contentletEl = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
-            .getContentletToContainer(
-                this.addContentContainer,
-                contentlet.contentlet,
-            )
+            .getContentletToContainer(this.addContentContainer, contentlet.contentlet)
             .subscribe((contentletHtml) => {
-                const contentletContentEl = contentletEl.querySelector(
-                    '.dotedit-contentlet__content',
-                );
+                const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
@@ -415,9 +378,7 @@ export class DotEditContentComponent implements OnInit {
                 this.addContentContainer = null;
 
                 // Update the model with the recently added contentlet
-                this.model.next(
-                    this.getEditPageIframe().contentWindow.getModel(),
-                );
+                this.model.next(this.getEditPageIframe().contentWindow.getModel());
             });
     }
 
@@ -425,27 +386,17 @@ export class DotEditContentComponent implements OnInit {
         const doc = this.getEditPageDocument();
 
         const contenletEl = doc.querySelector(
-            `div[data-dot-object="contentlet"][data-dot-inode="${
-                relocateInfo.contentlet.inode
-            }"]`,
+            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`,
         );
 
-        const contentletContentEl = contenletEl.querySelector(
-            '.dotedit-contentlet__content',
-        );
+        const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
-        contentletContentEl.innerHTML +=
-            '<div class="loader__overlay"><div class="loader"></div></div>';
+        contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
 
-        relocateInfo.container =
-            relocateInfo.container ||
-            contenletEl.parentNode.dataset.dotIdentifier;
+        relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
 
         this.dotContainerContentletService
-            .getContentletToContainer(
-                relocateInfo.container,
-                relocateInfo.contentlet,
-            )
+            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
             .subscribe((contentletHtml) => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
@@ -455,9 +406,7 @@ export class DotEditContentComponent implements OnInit {
 
     private loadDialogEditor(containerId: string, url: string): void {
         this.dialogTitle = `Editing content with id ${containerId}`;
-        this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-            url,
-        );
+        this.editContentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
         /*
             Again, because the click event it's comming form the iframe, we need to trigger the detect changes manually.
@@ -485,15 +434,9 @@ export class DotEditContentComponent implements OnInit {
         this.dotConfirmationService.confirm({
             accept: () => {
                 const doc = this.getEditPageDocument();
-                const contenletEl = doc.querySelector(
-                    `div[data-dot-inode="${
-                        $event.target.dataset.dotInode
-                    }"]`,
-                );
+                const contenletEl = doc.querySelector(`div[data-dot-inode="${$event.target.dataset.dotInode}"]`);
                 contenletEl.remove();
-                this.model.next(
-                    this.getEditPageIframe().contentWindow.getModel(),
-                );
+                this.model.next(this.getEditPageIframe().contentWindow.getModel());
             },
             header: `Remove a content?`,
             message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,

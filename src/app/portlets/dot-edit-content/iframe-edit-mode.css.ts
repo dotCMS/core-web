@@ -30,6 +30,7 @@ export const EDIT_PAGE_CSS = `
     }
 
     .dotedit-contentlet__drag {
+        touch-action: none;
         cursor: move;
     }
 
