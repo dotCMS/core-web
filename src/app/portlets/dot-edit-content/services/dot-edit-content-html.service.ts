@@ -6,7 +6,6 @@ import { EDIT_PAGE_JS } from '../shared/iframe-edit-mode.js';
 
 @Injectable()
 export class DotEditContentHtmlService {
-    actions: BehaviorSubject<any> = new BehaviorSubject(null);
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     iframe: ElementRef;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -172,8 +171,8 @@ export class DotEditContentHtmlService {
 
     private bindButtonsEvent(button: any, type: string): void {
         button.addEventListener('click', ($event) => {
-            this.actions.next({
-                type: type,
+            this.contentletEvents.next({
+                event: type,
                 dataset: $event.target.dataset,
                 contentletEvents: this.contentletEvents
             });

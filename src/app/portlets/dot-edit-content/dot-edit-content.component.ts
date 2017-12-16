@@ -36,34 +36,25 @@ export class DotEditContentComponent implements OnInit {
                 this.ref.detectChanges();
             });
 
-            this.dotEditContentHtmlService.contentletEvents
-                /*
-                    This event we only use it to hide the dialog so should only trigger if save or cancel edit contentlet
-                */
-                .filter((res) => res.event === 'cancel' || res.event === 'save')
-                .subscribe((res) => {
-                    console.log('contentletEvents', res);
-                    this.dialogTitle = null;
-                    this.contentletActionsUrl = null;
-
-                    /*
-                        I think because we are triggering the .next() from the jsp the Angular detect changes it's not
-                        happenning automatically, so I have to triggered manually so the changes propagates to the template
-                    */
-                    this.ref.detectChanges();
-                });
-
-            this.dotEditContentHtmlService.actions.filter((res) => !!res).subscribe((res) => {
-                if (res.type === 'edit') {
-                    this.editContentlet(res);
-                }
-
-                if (res.type === 'add') {
-                    this.addContentlet(res);
-                }
-
-                if (res.type === 'remove') {
-                    this.removeContentlet(res.dataset.dotInode);
+            this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
+                switch (res.event) {
+                    case 'edit':
+                        this.editContentlet(res);
+                        break;
+                    case 'add':
+                        this.editContentlet(res);
+                        break;
+                    case 'remove':
+                        this.removeContentlet(res);
+                        break;
+                    case 'cancel':
+                        this.closeDialog();
+                        break;
+                    case 'save':
+                        this.closeDialog();
+                        break;
+                    default:
+                        break;
                 }
             });
         });
@@ -81,6 +72,17 @@ export class DotEditContentComponent implements OnInit {
             '/html/ng-contentlet-selector.html?ng=true',
             $event.contentletEvents,
         );
+    }
+
+    private closeDialog(): void {
+        this.dialogTitle = null;
+        this.contentletActionsUrl = null;
+
+        /*
+            I think because we are triggering the .next() from the jsp the Angular detect changes it's not
+            happenning automatically, so I have to triggered manually so the changes propagates to the template
+        */
+        this.ref.detectChanges();
     }
 
     private editContentlet($event: any): void {
@@ -116,11 +118,11 @@ export class DotEditContentComponent implements OnInit {
         }, 0);
     }
 
-    private removeContentlet(inode: string): void {
+    private removeContentlet($event: any): void {
         // TODO: dialog it's not showing until click in the overlay
         this.dotConfirmationService.confirm({
             accept: () => {
-                this.dotEditContentHtmlService.removeContentlet(inode);
+                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
             },
             header: `Remove a content?`,
             message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
