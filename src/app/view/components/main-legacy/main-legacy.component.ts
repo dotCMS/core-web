@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener, ViewChild, ElementRef} from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { DotEventsService } from '../../../api/services/dot-events/dot-events.se
     providers: [],
     selector: 'dot-main-component',
     styleUrls: ['./main-legacy.component.scss'],
-    templateUrl: './main-legacy.component.html',
+    templateUrl: './main-legacy.component.html'
 })
 export class MainComponentLegacy implements OnInit, OnDestroy {
     isMenuCollapsed = false;
@@ -18,6 +18,14 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
+
+        this.isTabletScreenOrLess(window.screen.width);
+    }
+
+    isTabletScreenOrLess(screenWidth: number): void {
+        if (screenWidth < 1025) {
+            this.isMenuCollapsed = true;
+        }
     }
 
     ngOnDestroy(): void {
@@ -28,5 +36,10 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     toggleSidenav(): void {
         this.isMenuCollapsed = !this.isMenuCollapsed;
         this.dotEventsService.notify('dot-side-nav-toggle');
+    }
+
+    onMenuLinkClicked($event: MouseEvent): void {
+        $event.preventDefault();
+        this.isTabletScreenOrLess(window.screen.width);
     }
 }

@@ -1,4 +1,5 @@
 @import "mixins";
+@import "../../../../styles/primeng-theme/utils/_mixins.scss";
 @import "variables";
 $sidebar-width: 190px;
 
@@ -13,6 +14,7 @@ $sidebar-width: 190px;
     display: flex;
     flex-grow: 1;
     overflow: hidden;
+    position: relative;
 }
 
 .layout__main,
@@ -30,6 +32,12 @@ $sidebar-width: 190px;
     flex-shrink: 0;
     transition: width $basic-speed * 2 cubic-bezier(0.25, 0.8, 0.25, 1);
     width: $sidebar-width;
+
+    @include large-max {
+        position: absolute;
+        z-index: 10;
+        height: 100%;
+    }
 
     .collapsed & {
         overflow: hidden;

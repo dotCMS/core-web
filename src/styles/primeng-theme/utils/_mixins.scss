@@ -65,6 +65,12 @@
   }
 }
 
+@mixin large-max {
+  @media screen and (max-width: $screen-lg-min) {
+    @content;
+  }
+}
+
 @mixin x-large {
   @media screen and (min-width: $screen-xl-min) {
     @content;

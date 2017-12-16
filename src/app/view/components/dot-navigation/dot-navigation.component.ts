@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';
@@ -12,11 +12,28 @@ import { DotNavigationService } from './dot-navigation.service';
 })
 export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
+    @Output() onMenuLinkClicked = new EventEmitter<Event>();
 
-    constructor(private dotNavigationService: DotNavigationService) {}
+    constructor(private dotNavigationService: DotNavigationService, private el: ElementRef) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
+    }
+
+    /**
+     * Respond to document events and collapse the sidenav if is clicked outside
+     * TODO: not working on iframes
+     * @param {*} event
+     * @memberof DotNavigationComponent
+     */
+    @HostListener('document:click', ['$event'])
+    handleClick(event: any) {
+        if (!this.el.nativeElement.contains(event.target)) {
+            if (event.target.className !== 'layout__sidebar' &&
+                event.target.parentNode.parentNode.parentNode.className !== 'toolbar__button-wrapper') {
+                this.onMenuLinkClicked.emit(event);
+            }
+        }
     }
 
     /**
@@ -28,6 +45,7 @@ export class DotNavigationComponent implements OnInit {
      */
     onClick(event: any, id: string): void {
         if (!event.ctrlKey && !event.metaKey) {
+            this.onMenuLinkClicked.emit(event);
             this.dotNavigationService.reloadCurrentPortlet(id);
         }
     }

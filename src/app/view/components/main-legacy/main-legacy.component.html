@@ -2,7 +2,7 @@
     <dot-toolbar [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)"></dot-toolbar>
     <div class="layout__content">
         <aside class="layout__sidebar">
-            <dot-main-nav></dot-main-nav>
+            <dot-main-nav (onMenuLinkClicked)="onMenuLinkClicked($event)"></dot-main-nav>
         </aside>
         <main class="layout__main">
             <router-outlet></router-outlet>
