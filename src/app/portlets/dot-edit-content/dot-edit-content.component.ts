@@ -25,29 +25,35 @@ export class DotEditContentComponent implements OnInit {
         private ref: ChangeDetectorRef,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
-        public dotEditContentHtmlService: DotEditContentHtmlService
+        public dotEditContentHtmlService: DotEditContentHtmlService,
     ) {}
 
     ngOnInit() {
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
             this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
 
-            this.dotEditContentHtmlService.model.filter(res => !!res).subscribe((res) => {
+            this.dotEditContentHtmlService.model.filter((res) => !!res).subscribe((res) => {
                 this.ref.detectChanges();
             });
 
-            this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
-                this.dialogTitle = null;
-                this.contentletActionsUrl = null;
-
+            this.dotEditContentHtmlService.contentletEvents
                 /*
-                    I think because we are triggering the .next() from the jsp the Angular detect changes it's not
-                    happenning automatically, so I have to triggered manually so the changes propagates to the template
+                    This event we only use it to hide the dialog so should only trigger if save or cancel edit contentlet
                 */
-                this.ref.detectChanges();
-            });
+                .filter((res) => res.event === 'cancel' || res.event === 'save')
+                .subscribe((res) => {
+                    console.log('contentletEvents', res);
+                    this.dialogTitle = null;
+                    this.contentletActionsUrl = null;
 
-            this.dotEditContentHtmlService.actions.filter(res => !!res).subscribe(res => {
+                    /*
+                        I think because we are triggering the .next() from the jsp the Angular detect changes it's not
+                        happenning automatically, so I have to triggered manually so the changes propagates to the template
+                    */
+                    this.ref.detectChanges();
+                });
+
+            this.dotEditContentHtmlService.actions.filter((res) => !!res).subscribe((res) => {
                 if (res.type === 'edit') {
                     this.editContentlet(res);
                 }
@@ -70,7 +76,11 @@ export class DotEditContentComponent implements OnInit {
 
     private addContentlet($event: any): void {
         this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
-        this.loadDialogEditor($event.dataset.dotIdentifier, '/html/ng-contentlet-selector.html?ng=true', $event.contentletEvents);
+        this.loadDialogEditor(
+            $event.dataset.dotIdentifier,
+            '/html/ng-contentlet-selector.html?ng=true',
+            $event.contentletEvents,
+        );
     }
 
     private editContentlet($event: any): void {
