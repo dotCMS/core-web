@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 @Component({
