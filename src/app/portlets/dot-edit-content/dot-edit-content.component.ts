@@ -42,7 +42,7 @@ export class DotEditContentComponent implements OnInit {
                         this.editContentlet(res);
                         break;
                     case 'add':
-                        this.editContentlet(res);
+                        this.addContentlet(res);
                         break;
                     case 'remove':
                         this.removeContentlet(res);
@@ -51,6 +51,9 @@ export class DotEditContentComponent implements OnInit {
                         this.closeDialog();
                         break;
                     case 'save':
+                        this.closeDialog();
+                        break;
+                    case 'select':
                         this.closeDialog();
                         break;
                     default:

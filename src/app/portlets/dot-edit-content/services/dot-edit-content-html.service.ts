@@ -19,16 +19,14 @@ export class DotEditContentHtmlService {
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
                     contentlet: {
-                        inode: '5aef0c62' || res.contentletInode,
+                        inode: 'e0e31ce27719' || res.data.inode,
                     },
                 });
             }
 
-            if (res.event === 'add') {
+            if (res.event === 'select') {
                 this.renderAddedContentlet({
-                    inode: res.data.inode,
-                    identifier: res.data.identifier, // need to fix this name in the backend
-                    type: res.data.type,
+                    identifier: res.data.identifier
                 });
             }
 
@@ -70,7 +68,7 @@ export class DotEditContentHtmlService {
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
-            .getContentletToContainer(this.addContentContainer, contentlet.contentlet)
+            .getContentletToContainer(this.addContentContainer, contentlet.identifier)
             .subscribe((contentletHtml) => {
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
@@ -304,11 +302,9 @@ export class DotEditContentHtmlService {
 
     private renderRelocatedContentlet(relocateInfo: any): void {
         const doc = this.getEditPageDocument();
-
         const contenletEl = doc.querySelector(
             `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`,
         );
-
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
