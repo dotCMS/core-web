@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { DotEventsService } from '../../../api/services/dot-events/dot-events.se
 })
 export class MainComponentLegacy implements OnInit, OnDestroy {
     isMenuCollapsed = false;
+    isTablet = false;
     private messages: any = {};
     private label = '';
 
@@ -19,13 +20,37 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
 
-        this.isTabletScreenOrLess(window.screen.width);
+        this.isTabletScreenOrLess();
     }
 
-    isTabletScreenOrLess(screenWidth: number): void {
-        if (screenWidth < 1025) {
+    /**
+     * Set collapsed menu if window size is less than iPad landscape size
+     * @memberof MainComponentLegacy
+     */
+    isTabletScreenOrLess(): void {
+        if (window.innerWidth < 1025) {
+            this.isTablet = true;
             this.isMenuCollapsed = true;
         }
+    }
+
+    /**
+     * Set isTablet when resizing the window size
+     * @param {any} event
+     * @memberof MainComponentLegacy
+     */
+    @HostListener('window:resize', ['$event'])
+        onResize(event: any) {
+      event.target.innerWidth < 1025 ? this.isTablet = true : this.isTablet = false;
+    }
+
+    /**
+     * Set icon based on the window width
+     * @returns {string}
+     * @memberof MainComponentLegacy
+     */
+    setIcon(): string {
+        return window.innerWidth < 1025 ? 'fa-close' : 'fa-arrow-left';
     }
 
     ngOnDestroy(): void {
@@ -40,6 +65,6 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
 
     onMenuLinkClicked($event: MouseEvent): void {
         $event.preventDefault();
-        this.isTabletScreenOrLess(window.screen.width);
+        this.isTabletScreenOrLess();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Output, EventEmitter, ElementRef, HostListener, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';
@@ -14,7 +14,7 @@ export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
     @Output() onMenuLinkClicked = new EventEmitter<Event>();
 
-    constructor(private dotNavigationService: DotNavigationService, private el: ElementRef) {}
+    constructor(private dotNavigationService: DotNavigationService, private sideNavEl: ElementRef) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
@@ -22,18 +22,15 @@ export class DotNavigationComponent implements OnInit {
 
     /**
      * Respond to document events and collapse the sidenav if is clicked outside
-     * TODO: not working on iframes
      * @param {*} event
      * @memberof DotNavigationComponent
      */
     @HostListener('document:click', ['$event'])
-    handleClick(event: any) {
-        if (!this.el.nativeElement.contains(event.target)) {
-            if (event.target.className !== 'layout__sidebar' &&
-                event.target.parentNode.parentNode.parentNode.className !== 'toolbar__button-wrapper') {
-                this.onMenuLinkClicked.emit(event);
-            }
-        }
+    onClickOutside(event: any) {
+        const eTarget = event.target;
+
+        // tslint:disable-next-line:max-line-length
+        this.isClickedOutsideSidenav(eTarget, eTarget.className !== 'layout__sidebar' && eTarget.className.split(' ')[0] !== 'ui-button-icon-left');
     }
 
     /**
@@ -59,5 +56,11 @@ export class DotNavigationComponent implements OnInit {
      */
     isActive(id: string) {
         return this.dotNavigationService.isActive(id);
+    }
+
+    private isClickedOutsideSidenav(eventTarget: MouseEvent, isSafeToCollapse: boolean): void {
+        if (!this.sideNavEl.nativeElement.contains(eventTarget) && isSafeToCollapse) {
+                this.onMenuLinkClicked.emit(event);
+        }
     }
 }

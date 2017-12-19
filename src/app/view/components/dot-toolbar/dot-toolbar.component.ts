@@ -9,7 +9,8 @@ import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.s
     templateUrl: './dot-toolbar.component.html'
 })
 export class ToolbarComponent {
-    @Input() collapsed;
+    @Input() collapsed: boolean;
+    @Input() icon: string;
     @Output() mainButtonClick: EventEmitter<MouseEvent> = new EventEmitter();
 
     constructor(public iframeOverlayService: IframeOverlayService, private siteService: SiteService) {}
