@@ -55,8 +55,6 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     onClickOutside(event: any) {
         const eTarget = event.target;
 
-        console.log(event.target);
-
         // tslint:disable-next-line:max-line-length
         if (!this.mainNav.sideNavEl.nativeElement.contains(eTarget) && eTarget.className !== 'layout__sidebar' && eTarget.className.split(' ')[1] !== 'ui-clickable') {
             this.isMenuCollapsed = true;
