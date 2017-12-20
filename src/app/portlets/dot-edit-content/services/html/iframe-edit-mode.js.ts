@@ -1,3 +1,5 @@
+export const MODEL_VAR_NAME = 'dotNgModel';
+
 export const EDIT_PAGE_JS = `
 (function () {
     var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
@@ -35,7 +37,7 @@ export const EDIT_PAGE_JS = `
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
-        window.model.next(getModel());
+        window.${MODEL_VAR_NAME}.next(getModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
         if (target !== source) {
@@ -55,6 +57,6 @@ export const EDIT_PAGE_JS = `
         }
     })
     // Init the model
-    window.model.next(getModel());
+    window.${MODEL_VAR_NAME}.next(getModel());
 })();
 `;

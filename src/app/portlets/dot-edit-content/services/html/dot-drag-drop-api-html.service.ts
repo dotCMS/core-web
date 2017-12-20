@@ -33,10 +33,6 @@ export class DotDragDropAPIHtmlService {
         doc.body.appendChild(dragulsJSElement);
     }
 
-    private getDragAndDropCssElement(doc: any): any {
-        return ;
-    }
-
     private initDragula(doc: any): any {
         const dragAndDropScript = this.dotDOMHtmlUtilService.createInlineScriptElement(doc, EDIT_PAGE_JS);
         doc.body.appendChild(dragAndDropScript);

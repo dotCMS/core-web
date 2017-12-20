@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EDIT_PAGE_CSS } from '../shared/iframe-edit-mode.css';
 import { DotContainerContentletService } from './dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service';
+import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 
 @Injectable()
 export class DotEditContentHtmlService {
@@ -44,7 +45,7 @@ export class DotEditContentHtmlService {
 
         const iframeElement = this.getEditPageIframe();
 
-        iframeElement.contentWindow.model = this.model;
+        iframeElement.contentWindow[MODEL_VAR_NAME] = this.model;
         iframeElement.contentWindow.contentletEvents = this.contentletEvents;
 
         iframeElement.addEventListener('load', () => {
