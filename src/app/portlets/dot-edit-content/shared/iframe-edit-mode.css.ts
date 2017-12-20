@@ -139,12 +139,14 @@ export const EDIT_PAGE_CSS = `
           font-size: 13px;
           position: absolute;
           z-index:1003;
-          display:none;
-          transition: display 100ms easy-in
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 200ms linear;
      }
      
      .dotedit-container__toolbar.active .dotedit-container__menu{
-        display:block;
+        visibility: visible;
+        opacity: 1;
      }
      
      .dotedit-container__menu ul {
