@@ -10,7 +10,6 @@ import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.s
 })
 export class ToolbarComponent {
     @Input() collapsed: boolean;
-    @Input() icon: string;
     @Output() mainButtonClick: EventEmitter<MouseEvent> = new EventEmitter();
 
     constructor(public iframeOverlayService: IframeOverlayService, private siteService: SiteService) {}

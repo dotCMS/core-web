@@ -25,7 +25,7 @@ $sidebar-width: 190px;
 .layout__main {
     flex-grow: 1;
 
-    &.tabletOnly{
+    &.layout__main--tablet-only {
         &::after {
             background-color: $black;
             content: "";
@@ -37,33 +37,13 @@ $sidebar-width: 190px;
             right: 0;
             opacity: 0.3;
             z-index: 9;
-            animation: fadeIn 1s;
-    
-            @keyframes fadeIn {
-                from { 
-                    opacity: 0;
-                }
-    
-                to { 
-                    opacity: 0.3;
-                }
-            }
+            transition: opacity 2s ease-in;
         }
     
         .collapsed & {
             &::after { 
                 position: static;
-                animation: fadeOut 1s;
-                
-                @keyframes fadeOut {
-                    from { 
-                        opacity: 0.3;
-                    }
-        
-                    to { 
-                        opacity: 0;
-                    }
-                }
+                transition: opacity 2s ease-out;
             }
         }
     }

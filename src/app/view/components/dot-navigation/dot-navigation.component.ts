@@ -12,25 +12,12 @@ import { DotNavigationService } from './dot-navigation.service';
 })
 export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
-    @Output() onMenuLinkClicked = new EventEmitter<Event>();
+    @Output() menuLinkClicked = new EventEmitter<Event>();
 
-    constructor(private dotNavigationService: DotNavigationService, private sideNavEl: ElementRef) {}
+    constructor(private dotNavigationService: DotNavigationService, public sideNavEl: ElementRef) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
-    }
-
-    /**
-     * Respond to document events and collapse the sidenav if is clicked outside
-     * @param {*} event
-     * @memberof DotNavigationComponent
-     */
-    @HostListener('document:click', ['$event'])
-    onClickOutside(event: any) {
-        const eTarget = event.target;
-
-        // tslint:disable-next-line:max-line-length
-        this.isClickedOutsideSidenav(eTarget, eTarget.className !== 'layout__sidebar' && eTarget.className.split(' ')[0] !== 'ui-button-icon-left');
     }
 
     /**
@@ -42,7 +29,7 @@ export class DotNavigationComponent implements OnInit {
      */
     onClick(event: MouseEvent, id: string): void {
         if (!event.ctrlKey && !event.metaKey) {
-            this.onMenuLinkClicked.emit(event);
+            this.menuLinkClicked.emit(event);
             this.dotNavigationService.reloadCurrentPortlet(id);
         }
     }
@@ -56,11 +43,5 @@ export class DotNavigationComponent implements OnInit {
      */
     isActive(id: string) {
         return this.dotNavigationService.isActive(id);
-    }
-
-    private isClickedOutsideSidenav(eventTarget: MouseEvent, isSafeToCollapse: boolean): void {
-        if (!this.sideNavEl.nativeElement.contains(eventTarget) && isSafeToCollapse) {
-                this.onMenuLinkClicked.emit(event);
-        }
     }
 }

@@ -1,10 +1,10 @@
 <div class="layout" [class.collapsed]="isMenuCollapsed">
-    <dot-toolbar [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)" [icon]="setIcon()"></dot-toolbar>
+    <dot-toolbar [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)"></dot-toolbar>
     <div class="layout__content">
         <aside class="layout__sidebar">
-            <dot-main-nav (onMenuLinkClicked)="onMenuLinkClicked($event)"></dot-main-nav>
+            <dot-main-nav (menuLinkClicked)="menuLinkClicked($event)" #mainNav></dot-main-nav>
         </aside>
-        <main class="layout__main" [class.tabletOnly]="isTablet">
+        <main class="layout__main" [class.layout__main--tablet-only]="isTablet">
             <router-outlet></router-outlet>
         </main>
     </div>
