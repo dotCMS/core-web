@@ -22,19 +22,19 @@ export class DotDragDropAPIHtmlService {
      * - Inject dragula init code from iframe-edit-mode.js
      */
     public initDragAndDropContext(doc: any): void {
-        const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(doc, `${API_ROOT_PATH}/dragula.min.css`);
+        const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(`${API_ROOT_PATH}/dragula.min.css`);
         doc.head.appendChild(dragulaCSSElement);
 
         const dragulsJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
-            doc,
             `${API_ROOT_PATH}/dragula.min.js`,
             () => this.initDragula(doc)
         );
+
         doc.body.appendChild(dragulsJSElement);
     }
 
     private initDragula(doc: any): any {
-        const dragAndDropScript = this.dotDOMHtmlUtilService.createInlineScriptElement(doc, EDIT_PAGE_JS);
+        const dragAndDropScript = this.dotDOMHtmlUtilService.createInlineScriptElement(EDIT_PAGE_JS);
         doc.body.appendChild(dragAndDropScript);
     }
 }

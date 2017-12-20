@@ -9,8 +9,9 @@ const CSS_MIME_TYPE = 'text/css';
 @Injectable()
 export class DotDOMHtmlUtilService {
 
-    public createLinkElement(doc: any, href: string): any {
-        const cssElement = doc.createElement('link');
+    public createLinkElement(href: string): any {
+        const cssElement = document.createElement('link');
+
         cssElement.rel = 'stylesheet';
         cssElement.type = CSS_MIME_TYPE;
         cssElement.media = 'all';
@@ -19,24 +20,25 @@ export class DotDOMHtmlUtilService {
         return cssElement;
     }
 
-    public creatExternalScriptElement(doc: any, src: string, onLoadCallback?: () => void): any {
-        const script = this.createScriptElement(doc);
+    public creatExternalScriptElement(src: string, onLoadCallback?: () => void): any {
+        const script = this.createScriptElement();
         script.src = src;
         script.onload = onLoadCallback;
 
         return script;
     }
 
-    public createInlineScriptElement(doc: any, text: string): any {
-        const script = this.createScriptElement(doc);
+    public createInlineScriptElement(text: string): any {
+        const script = this.createScriptElement();
         script.text = text;
 
         return script;
     }
 
-    private createScriptElement(doc: any): any {
-        const script = doc.createElement('script');
+    private createScriptElement(): any {
+        const script: any = document.createElement('script');
         script.type = JS_MIME_TYPE;
+
         return script;
     }
 }

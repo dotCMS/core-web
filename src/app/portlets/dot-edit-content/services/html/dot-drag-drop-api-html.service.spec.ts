@@ -10,19 +10,17 @@ let lastAppendChildCallElementParam;
 
 @Injectable()
 export class MockDotDOMHtmlUtilService {
-    createInlineScriptElementlastCallDocParam;
     createInlineScriptElementLastCallTextParam;
 
-    createLinkElement(doc: any, href: string): any {
+    createLinkElement(href: string): any {
         return null;
     }
 
-    creatExternalScriptElement(doc: any, src: string, onLoadCallback?: () => void): any {
+    creatExternalScriptElement(src: string, onLoadCallback?: () => void): any {
         return null;
     }
 
-    createInlineScriptElement(doc: any, text: string): any {
-        this.createInlineScriptElementlastCallDocParam = doc;
+    createInlineScriptElement(text: string): any {
         this.createInlineScriptElementLastCallTextParam = text;
         return jsDragulaInlineElement;
     }
@@ -66,7 +64,7 @@ describe('DotDragDropAPIHtmlService', () => {
             spyOn(dotDOMHtmlUtilService, 'createLinkElement').and.returnValue(cssElement);
             spyOn(doc.head, 'appendChild');
 
-            spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake((element, src, callback) => {
+            spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake((src, callback) => {
                 callbackFunc = callback;
             });
         })
@@ -75,11 +73,11 @@ describe('DotDragDropAPIHtmlService', () => {
     it('should crate and set js and css draguls element', () => {
         dotDragDropAPIHtmlService.initDragAndDropContext(doc);
 
-        expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(doc, '/html/js/dragula-3.7.2/dragula.min.css');
+        expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith('/html/js/dragula-3.7.2/dragula.min.css');
         expect(doc.head.appendChild).toHaveBeenCalledWith(cssElement);
 
         expect(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
-            doc, '/html/js/dragula-3.7.2/dragula.min.js', jasmine.any(Function));
+            '/html/js/dragula-3.7.2/dragula.min.js', jasmine.any(Function));
             expect(doc.head.appendChild).toHaveBeenCalledWith(jsElement);
     });
 
@@ -88,7 +86,6 @@ describe('DotDragDropAPIHtmlService', () => {
 
         callbackFunc();
 
-        expect(dotDOMHtmlUtilService.createInlineScriptElementlastCallDocParam).toEqual(doc);
         expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(EDIT_PAGE_JS);
 
         expect(lastAppendChildCallElementParam).toEqual(jsDragulaInlineElement);

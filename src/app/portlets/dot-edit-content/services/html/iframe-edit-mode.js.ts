@@ -18,11 +18,18 @@ export const EDIT_PAGE_JS = `
         containers, {
         accepts: function (el, target, source, sibling) {
             var canDrop = target.dataset.dotAcceptTypes.indexOf(el.dataset.dotType) > -1;
+
             if (target.dataset.dotMaxLimit) {
                 var containerMaxLimit = parseInt(target.dataset.dotMaxLimit, 10);
                 var containerChildrenQuantity = target.children.length
                 canDrop = containerChildrenQuantity < containerMaxLimit;
             }
+
+           if (!canDrop && target !== source) {
+                forbiddenTarget = target;
+                forbiddenTarget.classList.add('no')
+            }
+
             return canDrop;
         },
         invalid: function(el, handle) {
@@ -30,6 +37,10 @@ export const EDIT_PAGE_JS = `
         }
     });
     drake.on('dragend', function(el) {
+        if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
+            forbiddenTarget.classList.remove('no');
+        }
+
         window.${MODEL_VAR_NAME}.next(getModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
