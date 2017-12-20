@@ -10,13 +10,13 @@ const CSS_MIME_TYPE = 'text/css';
 export class DotDOMHtmlUtilService {
 
     public createLinkElement(doc: any, href: string): any {
-        const dragulaCss = doc.createElement('link');
-        dragulaCss.rel = 'stylesheet';
-        dragulaCss.type = CSS_MIME_TYPE;
-        dragulaCss.media = 'all';
-        dragulaCss.href = href;
+        const cssElement = doc.createElement('link');
+        cssElement.rel = 'stylesheet';
+        cssElement.type = CSS_MIME_TYPE;
+        cssElement.media = 'all';
+        cssElement.href = href;
 
-        return dragulaCss;
+        return cssElement;
     }
 
     public creatExternalScriptElement(doc: any, src: string, onLoadCallback?: () => void): any {
