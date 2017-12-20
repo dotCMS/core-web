@@ -23,10 +23,6 @@ export const EDIT_PAGE_JS = `
                 var containerChildrenQuantity = target.children.length
                 canDrop = containerChildrenQuantity < containerMaxLimit;
             }
-            if (!canDrop && target !== source) {
-                forbiddenTarget = target;
-                forbiddenTarget.classList.add('no')
-            }
             return canDrop;
         },
         invalid: function(el, handle) {
@@ -34,9 +30,6 @@ export const EDIT_PAGE_JS = `
         }
     });
     drake.on('dragend', function(el) {
-        if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
-            forbiddenTarget.classList.remove('no');
-        }
         window.${MODEL_VAR_NAME}.next(getModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
