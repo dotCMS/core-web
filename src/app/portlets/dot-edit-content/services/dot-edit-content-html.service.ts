@@ -121,15 +121,15 @@ export class DotEditContentHtmlService {
             const contentletToolbar = doc.createElement('div');
             contentletToolbar.classList.add('dotedit-contentlet__toolbar');
             contentletToolbar.innerHTML = `
+                 <button type="button" data-dot-identifier="${contentlet.dataset
+                .dotIdentifier}" data-dot-inode="${contentlet.dataset
+                .dotInode}" class="dotedit-contentlet__drag">Drag</button>
                 <button type="button" data-dot-identifier="${contentlet.dataset
                     .dotIdentifier}" data-dot-inode="${contentlet.dataset
                 .dotInode}" class="dotedit-contentlet__edit">Edit</button>
                 <button type="button" data-dot-identifier="${contentlet.dataset
-                    .dotIdentifier}" data-dot-inode="${contentlet.dataset
+                .dotIdentifier}" data-dot-inode="${contentlet.dataset
                 .dotInode}" class="dotedit-contentlet__remove">Remove</button>
-                <button type="button" data-dot-identifier="${contentlet.dataset
-                    .dotIdentifier}" data-dot-inode="${contentlet.dataset
-                .dotInode}" class="dotedit-contentlet__drag">Drag</button>
             `;
 
             const contentletContent = doc.createElement('div');

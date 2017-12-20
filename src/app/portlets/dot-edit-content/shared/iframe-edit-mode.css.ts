@@ -17,16 +17,17 @@ export const EDIT_PAGE_CSS = `
     }
 
     [data-dot-object="contentlet"] {
-        border: solid #fff;
-        border-width: 36px 20px 20px 20px;
+        margin: 36px 20px 20px 20px;
+        position: relative;
+        padding-top:25px;
         background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/9KY8SnBqRgrS3bLJyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBAHYoIoCrUf5lAAAAAElFTkSuQmCC");
        
     }
 
-    [data-dot-object="contentlet"]:hover {
+    [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
         background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/38z4hPDUjBWjt2RpyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBADhDIxfuwmYjAAAAAElFTkSuQmCC");
     }
-
+   
     .dotedit-contentlet__content {
         min-height: 100px;
         position: relative;
@@ -97,6 +98,7 @@ export const EDIT_PAGE_CSS = `
     .dotedit-container__toolbar{
         position:relative;
         margin:0 0 -26px 8px;
+        display:table;
     }
     
     .dotedit-container__toolbar button, .dotedit-contentlet__toolbar button{
@@ -114,9 +116,19 @@ export const EDIT_PAGE_CSS = `
     }
     
     .dotedit-contentlet__toolbar{
-        text-align: right;
-        margin: -16px 0 5px 0;
+        position: absolute;
+        right: 0;
+        top: -16px;
         font-size:0;
+        visibility: hidden;
+        opacity: 0;
+        transition: 200ms linear;
+    }
+    
+    [data-dot-object="container"]:hover  .dotedit-contentlet__toolbar{
+        visibility: visible;
+        opacity: 1;
+        transition: 200ms linear;
     }
     
      .dotedit-contentlet__toolbar button{
@@ -172,12 +184,13 @@ export const EDIT_PAGE_CSS = `
           z-index:1003;
           visibility: hidden;
           opacity: 0;
-          transition: opacity 200ms linear;
+          transition: 200ms linear;
      }
      
      .dotedit-container__toolbar.active .dotedit-container__menu{
         visibility: visible;
         opacity: 1;
+        transition: 200ms linear;
      }
      
      .dotedit-container__menu ul {
