@@ -66,6 +66,7 @@ drake.on('drop', function(el, target, source, sibling) {
     }
 })
 
+
 // Init the model
 window.model.next(getModel());
 `;
