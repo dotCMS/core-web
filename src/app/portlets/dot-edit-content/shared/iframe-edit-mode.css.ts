@@ -2,9 +2,9 @@ export const EDIT_PAGE_CSS = `
     [data-dot-object="container"] {
         border: solid 1px #53c2f9;
         min-height: 120px;
-        margin: 10px 0
-    }
-
+        margin: 10px 0;
+        }
+   
     [data-dot-object="container"].no {
         border-color: red;
         box-shadow: 0 0 20px red;
@@ -13,15 +13,18 @@ export const EDIT_PAGE_CSS = `
     }
 
     [data-dot-object="container"]:hover {
-        border-color: #dddddd;
+       
     }
 
     [data-dot-object="contentlet"] {
-        padding: 10px;
+        border: solid #fff;
+        border-width: 36px 20px 20px 20px;
+        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/9KY8SnBqRgrS3bLJyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBAHYoIoCrUf5lAAAAAElFTkSuQmCC");
+       
     }
 
     [data-dot-object="contentlet"]:hover {
-        background-color: #f2f2f2;
+        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/38z4hPDUjBWjt2RpyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBADhDIxfuwmYjAAAAAElFTkSuQmCC");
     }
 
     .dotedit-contentlet__content {
@@ -29,10 +32,7 @@ export const EDIT_PAGE_CSS = `
         position: relative;
     }
 
-    .dotedit-contentlet__drag {
-        touch-action: none;
-        cursor: move;
-    }
+   
 
     .loader,
     .loader:after {
@@ -99,8 +99,7 @@ export const EDIT_PAGE_CSS = `
         margin:0 0 -26px 8px;
     }
     
-    .dotedit-container__toolbar button{
-        display: block;
+    .dotedit-container__toolbar button, .dotedit-contentlet__toolbar button{
         width: 32px;
         height: 32px;
         border: none;
@@ -110,6 +109,19 @@ export const EDIT_PAGE_CSS = `
         outline:none;
     }
     
+    .dotedit-container__toolbar button:hover, .dotedit-contentlet__toolbar button:hover{
+        box-shadow:0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    }
+    
+    .dotedit-contentlet__toolbar{
+        text-align: right;
+        margin: -16px 0 5px 0;
+        font-size:0;
+    }
+    
+     .dotedit-contentlet__toolbar button{
+        margin-right:8px;
+     }
     
     .dotedit-container__add{
         background-image: url("data:image/svg+xml;utf8,<svg fill='#fff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
@@ -120,7 +132,6 @@ export const EDIT_PAGE_CSS = `
     
      .dotedit-container__add:hover{
         background-color:#0b629b;
-        box-shadow:0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
      }
      
      .dotedit-container__add:focus{
@@ -131,6 +142,26 @@ export const EDIT_PAGE_CSS = `
         background-color: #07446c;
      }
      
+      .dotedit-contentlet__drag {
+        touch-action: none;
+        cursor: move;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='#3C3C3C' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><defs><path d='M0 0h24v24H0V0z' id='a'/></defs><clipPath id='b'><use overflow='visible' xlink:href='#a'/></clipPath><path clip-path='url(#b)' d='M20 9H4v2h16V9zM4 15h16v-2H4v2z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: 7px;
+    }
+     
+     .dotedit-contentlet__edit{
+        background-image: url("data:image/svg+xml;utf8,<svg fill='#3C3C3C' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position: 7px;
+     }
+     
+     .dotedit-contentlet__remove{
+        background-image: url("data:image/svg+xml;utf8,<svg fill='#3C3C3C' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position: 7px;
+     }
+          
      .dotedit-container__menu {
           width: 100px;
           background-color: #ffffff;
@@ -158,7 +189,6 @@ export const EDIT_PAGE_CSS = `
      }
      
      .dotedit-container__menu-item a {
-        width:100%;
         padding: 8px;
         line-height:16px;
         display:block;
