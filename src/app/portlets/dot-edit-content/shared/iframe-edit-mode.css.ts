@@ -163,7 +163,7 @@ export const EDIT_PAGE_CSS = `
         cursor:pointer;
      }
      
-     .dotedit-container__menu-item:hover {
+     .dotedit-container__menu-item a:hover {
         background-color: #e7e7e7;  
      }
      
@@ -171,8 +171,5 @@ export const EDIT_PAGE_CSS = `
         color:inherit;
         text-decoration:none;
      }
-     
-     
-    
 `;
 

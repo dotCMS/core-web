@@ -97,9 +97,12 @@ export class DotEditContentHtmlService {
                     .dotIdentifier}" class="dotedit-container__add">Add</button>
                 <div class="dotedit-container__menu">
                     <ul>
-                        <li class="dotedit-container__menu-item"><a><span>Content</span></a></li>
-                        <li class="dotedit-container__menu-item"><a><span>Widget</span></a></li>
-                        <li class="dotedit-container__menu-item"><a><span>Form</span></a></li>
+                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
+                            .dotIdentifier}" >Content</a></li>
+                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
+                            .dotIdentifier}" >Widget</a></li>
+                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
+                            .dotIdentifier}" >Form</a></li>
                     </ul>
                 </div>
             `;
