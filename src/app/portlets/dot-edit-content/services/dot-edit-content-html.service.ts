@@ -2,7 +2,8 @@ import { Injectable, ElementRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EDIT_PAGE_CSS } from '../shared/iframe-edit-mode.css';
 import { DotContainerContentletService } from './dot-container-contentlet.service';
-import { EDIT_PAGE_JS } from '../shared/iframe-edit-mode.js';
+import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service';
+import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 
 @Injectable()
 export class DotEditContentHtmlService {
@@ -12,13 +13,16 @@ export class DotEditContentHtmlService {
 
     private addContentContainer: string;
 
-    constructor(private dotContainerContentletService: DotContainerContentletService) {
-        this.contentletEvents.subscribe(res => {
+    constructor(
+        private dotContainerContentletService: DotContainerContentletService,
+        private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService
+    ) {
+        this.contentletEvents.subscribe((res) => {
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
                     contentlet: {
-                        inode: 'e0e31ce27719' || res.data.inode
-                    }
+                        inode: 'e0e31ce27719' || res.data.inode,
+                    },
                 });
             }
 
@@ -32,6 +36,7 @@ export class DotEditContentHtmlService {
                 this.renderRelocatedContentlet(res.data);
             }
         });
+
     }
 
     initEditMode(editPageHTML: string, iframeEl: ElementRef): void {
@@ -40,7 +45,7 @@ export class DotEditContentHtmlService {
 
         const iframeElement = this.getEditPageIframe();
 
-        iframeElement.contentWindow.model = this.model;
+        iframeElement.contentWindow[MODEL_VAR_NAME] = this.model;
         iframeElement.contentWindow.contentletEvents = this.contentletEvents;
 
         iframeElement.addEventListener('load', () => {
@@ -58,7 +63,7 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`
+            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`,
         );
         const contentletEl = this.createNewContentlet(contentlet);
 
@@ -66,7 +71,7 @@ export class DotEditContentHtmlService {
 
         this.dotContainerContentletService
             .getContentletToContainer(this.addContentContainer, contentlet.identifier)
-            .subscribe(contentletHtml => {
+            .subscribe((contentletHtml) => {
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
@@ -176,7 +181,7 @@ export class DotEditContentHtmlService {
     }
 
     private bindButtonsEvent(button: any, type: string): void {
-        button.addEventListener('click', $event => {
+        button.addEventListener('click', ($event) => {
             this.contentletEvents.next({
                 event: type,
                 dataset: $event.target.dataset,
@@ -223,7 +228,7 @@ export class DotEditContentHtmlService {
     private bindEditContentletEvents(): void {
         const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit');
 
-        editButtons.forEach(button => {
+        editButtons.forEach((button) => {
             this.bindButtonsEvent(button, 'edit');
         });
     }
@@ -259,33 +264,6 @@ export class DotEditContentHtmlService {
         return dotEditContentletEl;
     }
 
-    private getDragAndDropCss(): any {
-        const dragulaCss = this.getEditPageDocument().createElement('link');
-        dragulaCss.rel = 'stylesheet';
-        dragulaCss.type = 'text/css';
-        dragulaCss.media = 'all';
-        dragulaCss.href = '//bevacqua.github.io/dragula/dist/dragula.css';
-
-        return dragulaCss;
-    }
-
-    private getDragAndDropScript(): any {
-        const doc = this.getEditPageDocument();
-
-        const script = doc.createElement('script');
-
-        script.type = 'text/javascript';
-        script.src = '//bevacqua.github.io/dragula/dist/dragula.js';
-        script.onload = function() {
-            const dragAndDropScript = doc.createElement('script');
-            dragAndDropScript.type = 'text/javascript';
-            dragAndDropScript.text = EDIT_PAGE_JS;
-            doc.body.appendChild(dragAndDropScript);
-        };
-
-        return script;
-    }
-
     private getEditPageIframe(): any {
         return this.iframe.nativeElement;
     }
@@ -294,11 +272,7 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentDocument || this.getEditPageIframe().contentWindow.document;
     }
 
-    private initDragAndDropContentlets(): void {
-        const doc = this.getEditPageDocument();
-        doc.head.appendChild(this.getDragAndDropCss());
-        doc.body.appendChild(this.getDragAndDropScript());
-    }
+
 
     private loadCodeIntoIframe(editPageHTML: string): void {
         const doc = this.getEditPageDocument();
@@ -325,7 +299,7 @@ export class DotEditContentHtmlService {
         this.addContainerToolbar();
         this.addContentletMarkup();
 
-        this.initDragAndDropContentlets();
+        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageDocument());
         this.setEditContentletStyles();
         this.bindWindowEvents();
     }
@@ -333,7 +307,7 @@ export class DotEditContentHtmlService {
     private renderRelocatedContentlet(relocateInfo: any): void {
         const doc = this.getEditPageDocument();
         const contenletEl = doc.querySelector(
-            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
+            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`,
         );
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
@@ -343,7 +317,7 @@ export class DotEditContentHtmlService {
 
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
-            .subscribe(contentletHtml => {
+            .subscribe((contentletHtml) => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);
