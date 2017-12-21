@@ -1,0 +1,39 @@
+// @import "variables";
+
+:host {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 100%;
+}
+
+.edit-page__toolbar {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.edit-page__main {
+    display: flex;
+    background-color: #444444; //$dark-gray
+    order: 2;
+    width: 64px;
+    height: 100%;
+    flex-shrink: 0;
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style: none;
+            height: 64px;
+
+            a {
+                color: #ffffff;
+            }
+        }
+    }
+}

@@ -6,22 +6,30 @@ import {
     DotLegacyTemplateAdditionalActionsComponent
 // tslint:disable-next-line:max-line-length
 } from './layout/dot-template-additional-actions/dot-legacy-template-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
+import { DotEditContentComponent } from '../dot-edit-content/dot-edit-content.component';
+import { EditContentResolver } from '../dot-edit-content/services/dot-edit-content-resolver.service';
+import { DotEditPageComponent } from './dot-edit-page.component';
 
 const dotEditPage: Routes = [
     {
-        component: DotEditLayoutComponent,
-        path: ''
-    },
-    {
-        component: DotEditLayoutComponent,
-        path: 'layout',
-        resolve: {
-            pageView: PageViewResolver
-        }
-    },
-    {
-        component: DotEditLayoutComponent,
-        path: 'layout/:url'
+        component: DotEditPageComponent,
+        path: '',
+        children: [
+            {
+                component: DotEditContentComponent,
+                path: 'content',
+                resolve: {
+                    editPageHTML: EditContentResolver
+                }
+            },
+            {
+                component: DotEditLayoutComponent,
+                path: 'layout',
+                resolve: {
+                    pageView: PageViewResolver
+                }
+            }
+        ]
     },
     {
         component: DotLegacyTemplateAdditionalActionsComponent,
