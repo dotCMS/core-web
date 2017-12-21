@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, Output, EventEmitter, ElementRef, HostListener } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';
@@ -12,9 +12,8 @@ import { DotNavigationService } from './dot-navigation.service';
 })
 export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
-    @Output() menuLinkClicked = new EventEmitter<Event>();
 
-    constructor(private dotNavigationService: DotNavigationService, public sideNavEl: ElementRef) {}
+    constructor(private dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
@@ -28,8 +27,8 @@ export class DotNavigationComponent implements OnInit {
      * @memberof MainNavigationComponent
      */
     onClick(event: MouseEvent, id: string): void {
+        event.stopPropagation();
         if (!event.ctrlKey && !event.metaKey) {
-            this.menuLinkClicked.emit(event);
             this.dotNavigationService.reloadCurrentPortlet(id);
         }
     }

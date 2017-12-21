@@ -1,5 +1,6 @@
 import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
 
@@ -69,7 +70,7 @@ export class Accordion {
         </div>
     `
 })
-export class AccordionGroup implements AfterViewInit{
+export class AccordionGroup implements AfterViewInit, OnDestroy {
     @Input('open') _isOpen = false;
     @Input() heading: string;
     @Input() icon: string;
@@ -103,6 +104,7 @@ export class AccordionGroup implements AfterViewInit{
     }
 
     toggleOpen(event: MouseEvent): void {
+        event.stopPropagation();
         event.preventDefault();
         this.isOpen = !this.isOpen;
     }

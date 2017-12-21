@@ -19,6 +19,7 @@ export class ToolbarComponent {
     }
 
     handleMainButtonClick($event): void {
+        $event.stopPropagation();
         this.mainButtonClick.emit($event);
     }
 }

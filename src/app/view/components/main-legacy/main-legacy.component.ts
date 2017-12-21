@@ -1,6 +1,7 @@
 import { DotNavigationComponent } from './../dot-navigation/dot-navigation.component';
-import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
+import { Router } from '@angular/router';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -12,15 +13,16 @@ import { DotEventsService } from '../../../api/services/dot-events/dot-events.se
 export class MainComponentLegacy implements OnInit, OnDestroy {
     isMenuCollapsed = false;
     isTablet = false;
-    @ViewChild('mainNav') mainNav: DotNavigationComponent;
     private messages: any = {};
     private label = '';
 
-    constructor(private dotEventsService: DotEventsService) {}
+    constructor(private dotEventsService: DotEventsService, private router: Router) {}
 
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
+
+        this.router.events.subscribe(event => this.isTabletScreenOrLess());
 
         this.isTabletScreenOrLess();
     }
@@ -53,12 +55,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
      */
     @HostListener('document:click', ['$event'])
     onClickOutside(event: any) {
-        const eTarget = event.target;
-
-        // tslint:disable-next-line:max-line-length
-        if (!this.mainNav.sideNavEl.nativeElement.contains(eTarget) && eTarget.className !== 'layout__sidebar' && eTarget.className.split(' ')[1] !== 'ui-clickable') {
-            this.isMenuCollapsed = true;
-        }
+        this.isMenuCollapsed = true;
     }
 
     ngOnDestroy(): void {
@@ -69,10 +66,5 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     toggleSidenav(): void {
         this.isMenuCollapsed = !this.isMenuCollapsed;
         this.dotEventsService.notify('dot-side-nav-toggle');
-    }
-
-    menuLinkClicked($event: MouseEvent): void {
-        $event.preventDefault();
-        this.isTabletScreenOrLess();
     }
 }
