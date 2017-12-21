@@ -12,28 +12,22 @@ export const EDIT_PAGE_CSS = `
         background-color: #ff00000f;
     }
 
-    [data-dot-object="container"]:hover {
-       
-    }
-
     [data-dot-object="contentlet"] {
         margin: 36px 20px 20px 20px;
         position: relative;
         padding-top:25px;
-        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/9KY8SnBqRgrS3bLJyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBAHYoIoCrUf5lAAAAAElFTkSuQmCC");
-       
+        min-height:60px;
+        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/6VxkhIHUjRWlu2WXgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCguSaB0AmkRwAAAABJRU5ErkJggg==");
     }
 
     [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
-        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAPElEQVQoU2NkIACCD/38z4hPDUjBWjt2RpyKYApAhmBVhKwAqyJ0BRiKsClAUYRLAVwRPgVgRYQUgBQBADhDIxfuwmYjAAAAAElFTkSuQmCC");
+        background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/r5n5GQOpCitXbsjHgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCQPycYlScX0wAAAABJRU5ErkJggg==");
     }
    
     .dotedit-contentlet__content {
         min-height: 100px;
         position: relative;
     }
-
-   
 
     .loader,
     .loader:after {
