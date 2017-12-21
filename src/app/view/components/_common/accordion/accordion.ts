@@ -1,6 +1,5 @@
-import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
 

@@ -18,26 +18,6 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
 
     constructor(private dotEventsService: DotEventsService, private router: Router) {}
 
-    ngOnInit(): void {
-        document.body.style.backgroundColor = '';
-        document.body.style.backgroundImage = '';
-
-        this.router.events.subscribe(event => this.isTabletScreenOrLess());
-
-        this.isTabletScreenOrLess();
-    }
-
-    /**
-     * Set collapsed menu if window size is less than iPad landscape size
-     * @memberof MainComponentLegacy
-     */
-    isTabletScreenOrLess(): void {
-        if (window.innerWidth < 1025) {
-            this.isTablet = true;
-            this.isMenuCollapsed = true;
-        }
-    }
-
     /**
      * Set isTablet when resizing the window size
      * @param {any} event
@@ -53,9 +33,18 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
      * @param {*} event
      * @memberof DotNavigationComponent
      */
-    @HostListener('document:click', ['$event'])
+    @HostListener('click', ['$event'])
     onClickOutside(event: any) {
-        this.isMenuCollapsed = true;
+        if (this.isTablet && !this.isMenuCollapsed) {
+            this.isMenuCollapsed = true;
+        }
+    }
+
+    ngOnInit(): void {
+        document.body.style.backgroundColor = '';
+        document.body.style.backgroundImage = '';
+        this.router.events.subscribe(event => this.setMenuState());
+        this.setMenuState();
     }
 
     ngOnDestroy(): void {
@@ -63,6 +52,22 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
         this.label = null;
     }
 
+    /**
+     * Set collapsed menu state base on the screen size
+     * @memberof MainComponentLegacy
+     */
+    setMenuState(): void {
+        if (window.innerWidth < 1025) {
+            this.isTablet = true;
+            this.isMenuCollapsed = true;
+        }
+    }
+
+    /**
+     * Toggle show/hide sidenav
+     *
+     * @memberof MainComponentLegacy
+     */
     toggleSidenav(): void {
         this.isMenuCollapsed = !this.isMenuCollapsed;
         this.dotEventsService.notify('dot-side-nav-toggle');
