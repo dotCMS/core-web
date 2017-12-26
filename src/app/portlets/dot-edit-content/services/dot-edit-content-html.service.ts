@@ -17,12 +17,12 @@ export class DotEditContentHtmlService {
         private dotContainerContentletService: DotContainerContentletService,
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService
     ) {
-        this.contentletEvents.subscribe((res) => {
+        this.contentletEvents.subscribe(res => {
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
                     contentlet: {
-                        inode: 'e0e31ce27719' || res.data.inode,
-                    },
+                        inode: 'e0e31ce27719' || res.data.inode
+                    }
                 });
             }
 
@@ -36,7 +36,6 @@ export class DotEditContentHtmlService {
                 this.renderRelocatedContentlet(res.data);
             }
         });
-
     }
 
     initEditMode(editPageHTML: string, iframeEl: ElementRef): void {
@@ -63,7 +62,7 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`,
+            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`
         );
         const contentletEl = this.createNewContentlet(contentlet);
 
@@ -71,7 +70,7 @@ export class DotEditContentHtmlService {
 
         this.dotContainerContentletService
             .getContentletToContainer(this.addContentContainer, contentlet.identifier)
-            .subscribe((contentletHtml) => {
+            .subscribe(contentletHtml => {
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
@@ -93,7 +92,6 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
 
         const containers = doc.querySelectorAll('div[data-dot-object="container"]');
-
         Array.from(containers).forEach((container: any) => {
             const containerToolbar = doc.createElement('div');
             containerToolbar.classList.add('dotedit-container__toolbar');
@@ -121,19 +119,18 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
 
         const contentlets = doc.querySelectorAll('div[data-dot-object="contentlet"]');
-
         Array.from(contentlets).forEach((contentlet: any) => {
             const contentletToolbar = doc.createElement('div');
             contentletToolbar.classList.add('dotedit-contentlet__toolbar');
             contentletToolbar.innerHTML = `
                  <button type="button" data-dot-identifier="${contentlet.dataset
-                .dotIdentifier}" data-dot-inode="${contentlet.dataset
+                     .dotIdentifier}" data-dot-inode="${contentlet.dataset
                 .dotInode}" class="dotedit-contentlet__drag">Drag</button>
                 <button type="button" data-dot-identifier="${contentlet.dataset
                     .dotIdentifier}" data-dot-inode="${contentlet.dataset
                 .dotInode}" class="dotedit-contentlet__edit">Edit</button>
                 <button type="button" data-dot-identifier="${contentlet.dataset
-                .dotIdentifier}" data-dot-inode="${contentlet.dataset
+                    .dotIdentifier}" data-dot-inode="${contentlet.dataset
                 .dotInode}" class="dotedit-contentlet__remove">Remove</button>
             `;
 
@@ -155,7 +152,6 @@ export class DotEditContentHtmlService {
         // Add innerHTML to a plain so we can get the HTML nodes later
         const div = doc.createElement('div');
         div.innerHTML = renderedContentet;
-
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
             if (node.tagName === 'SCRIPT') {
@@ -181,7 +177,7 @@ export class DotEditContentHtmlService {
     }
 
     private bindButtonsEvent(button: any, type: string): void {
-        button.addEventListener('click', ($event) => {
+        button.addEventListener('click', $event => {
             this.contentletEvents.next({
                 event: type,
                 dataset: $event.target.dataset,
@@ -192,15 +188,16 @@ export class DotEditContentHtmlService {
 
     private bindContainersEvents(): void {
         const addButtons = this.getEditPageDocument().querySelectorAll('.dotedit-container__add');
-
-        addButtons.forEach(button => {
+        Array.from(addButtons).forEach((button: any) => {
             const parent = button.parentElement;
+            const menuItems = parent.querySelectorAll('.dotedit-container__menu-item a');
 
             button.addEventListener('click', $event => {
                 this.closeContainersToolBarMenu(parent);
                 parent.classList.toggle('active');
             });
-            parent.querySelectorAll('.dotedit-container__menu-item a').forEach(menuItem => {
+
+            Array.from(menuItems).forEach(menuItem => {
                 this.bindButtonsEvent(menuItem, 'add');
             });
         });
@@ -218,7 +215,8 @@ export class DotEditContentHtmlService {
 
     private closeContainersToolBarMenu(activeElement?): void {
         const doc = this.getEditPageDocument();
-        doc.querySelectorAll('.dotedit-container__toolbar.active').forEach(toolbar => {
+        const activeToolBarMenus = doc.querySelectorAll('.dotedit-container__toolbar.active');
+        Array.from(activeToolBarMenus).forEach( (toolbar: any) => {
             if (activeElement !== toolbar) {
                 toolbar.classList.remove('active');
             }
@@ -227,16 +225,14 @@ export class DotEditContentHtmlService {
 
     private bindEditContentletEvents(): void {
         const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit');
-
-        editButtons.forEach((button) => {
+        Array.from(editButtons).forEach(button => {
             this.bindButtonsEvent(button, 'edit');
         });
     }
 
     private bindRemoveContentletEvents(): void {
         const editButtons = this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove');
-
-        editButtons.forEach(button => {
+        Array.from(editButtons).forEach(button => {
             this.bindButtonsEvent(button, 'remove');
         });
     }
@@ -251,9 +247,9 @@ export class DotEditContentHtmlService {
 
         dotEditContentletEl.innerHTML = `
             <div class="dotedit-contentlet__toolbar">
+                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__drag">Drag</button>
                 <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__edit">Edit</button>
                 <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__remove">Remove</button>
-                <button type="button" data-dot-identifier="${contentlet.identifier}" data-dot-inode="${contentlet.inode}" class="dotedit-contentlet__drag">Drag</button>
             </div>
             <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>
         `;
@@ -271,8 +267,6 @@ export class DotEditContentHtmlService {
     private getEditPageDocument(): any {
         return this.getEditPageIframe().contentDocument || this.getEditPageIframe().contentWindow.document;
     }
-
-
 
     private loadCodeIntoIframe(editPageHTML: string): void {
         const doc = this.getEditPageDocument();
@@ -307,7 +301,7 @@ export class DotEditContentHtmlService {
     private renderRelocatedContentlet(relocateInfo: any): void {
         const doc = this.getEditPageDocument();
         const contenletEl = doc.querySelector(
-            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`,
+            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
         );
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
 
@@ -317,7 +311,7 @@ export class DotEditContentHtmlService {
 
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
-            .subscribe((contentletHtml) => {
+            .subscribe(contentletHtml => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);
