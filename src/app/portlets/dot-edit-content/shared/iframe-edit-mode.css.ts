@@ -3,7 +3,7 @@ export const EDIT_PAGE_CSS = `
         border: solid 1px #53c2f9;
         min-height: 120px;
         margin: 10px 0;
-        }
+    }
    
     [data-dot-object="container"].no {
         border-color: red;
