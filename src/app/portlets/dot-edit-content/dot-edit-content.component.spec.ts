@@ -16,6 +16,7 @@ import { LoginServiceMock } from '../../test/login-service.mock';
 import { MockMessageService } from '../../test/message-service.mock';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
+import {DotEditContentToolbarHtmlService} from './services/html/dot-edit-content-toolbar-html.service';
 
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
@@ -44,7 +45,8 @@ describe('DotEditContentComponent', () => {
                         },
                     },
                     DotDragDropAPIHtmlService,
-                    DotDOMHtmlUtilService
+                    DotDOMHtmlUtilService,
+                    DotEditContentToolbarHtmlService
                 ],
             });
         }),

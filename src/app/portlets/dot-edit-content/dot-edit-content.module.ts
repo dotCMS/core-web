@@ -12,6 +12,7 @@ import { EditContentResolver } from './services/dot-edit-content-resolver.servic
 import { IFrameModule } from '../../view/components/_common/iframe/index';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
+import {DotEditContentToolbarHtmlService} from './services/html/dot-edit-content-toolbar-html.service';
 
 const routes: Routes = [
     {
@@ -33,7 +34,8 @@ const routes: Routes = [
         EditContentResolver,
         DotEditContentHtmlService,
         DotDragDropAPIHtmlService,
-        DotDOMHtmlUtilService
+        DotDOMHtmlUtilService,
+        DotEditContentToolbarHtmlService
     ]
 })
 export class DotEditContentModule {}
