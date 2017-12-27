@@ -5,9 +5,11 @@ import { DotContainerContentletService } from './dot-container-contentlet.servic
 import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service';
 import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolbar-html.service';
+import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
 
 @Injectable()
 export class DotEditContentHtmlService {
+    static GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Open+Sans:300,700|Roboto:400,700';
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     iframe: ElementRef;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -17,7 +19,8 @@ export class DotEditContentHtmlService {
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
-        private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService
+        private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
+        private dotDOMHtmlUtilService: DotDOMHtmlUtilService
     ) {
         this.contentletEvents.subscribe(res => {
             if (res.event === 'save') {
@@ -209,13 +212,13 @@ export class DotEditContentHtmlService {
                     class="dotedit-contentlet__drag">
                     Drag
                 </button>
-                <button type="button" data-dot-identifier="${contentlet.identifier}" 
-                    data-dot-inode="${contentlet.inode}" 
+                <button type="button" data-dot-identifier="${contentlet.identifier}"
+                    data-dot-inode="${contentlet.inode}"
                     class="dotedit-contentlet__edit">
                     Edit
                 </button>
-                <button type="button" data-dot-identifier="${contentlet.identifier}" 
-                    data-dot-inode="${contentlet.inode}" 
+                <button type="button" data-dot-identifier="${contentlet.identifier}"
+                    data-dot-inode="${contentlet.inode}"
                     class="dotedit-contentlet__remove">
                     Remove
                 </button>
@@ -244,6 +247,7 @@ export class DotEditContentHtmlService {
 
     private setEditContentletStyles(): void {
         const doc = this.getEditPageDocument();
+        const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(DotEditContentHtmlService.GOOGLE_FONTS);
         const style = doc.createElement('style');
         style.type = 'text/css';
 
@@ -254,6 +258,7 @@ export class DotEditContentHtmlService {
         }
 
         doc.head.appendChild(style);
+        doc.head.appendChild(robotoFontElement);
     }
 
     private setEditMode(): void {
