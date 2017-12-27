@@ -5,8 +5,8 @@ export class DotEditContentToolbarHtmlService {
     constructor() {}
 
     addContainerToolbar(doc: any): void {
-        const containers = doc.querySelectorAll('div[data-dot-object="container"]');
-        Array.from(containers).forEach((container: any) => {
+        const containers = Array.from(doc.querySelectorAll('div[data-dot-object="container"]'));
+        containers.forEach((container: HTMLElement) => {
             const containerToolbar = document.createElement('div');
             containerToolbar.classList.add('dotedit-container__toolbar');
             containerToolbar.innerHTML = `
@@ -15,11 +15,11 @@ export class DotEditContentToolbarHtmlService {
                 <div class="dotedit-container__menu">
                     <ul>
                         <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}" >Content</a></li>
+                            .dotIdentifier}">Content</a></li>
                         <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}" >Widget</a></li>
+                            .dotIdentifier}">Widget</a></li>
                         <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}" >Form</a></li>
+                            .dotIdentifier}">Form</a></li>
                     </ul>
                 </div>
             `;
@@ -28,8 +28,8 @@ export class DotEditContentToolbarHtmlService {
     }
 
     addContentletMarkup(doc: any): void {
-        const contentlets = doc.querySelectorAll('div[data-dot-object="contentlet"]');
-        Array.from(contentlets).forEach((contentlet: any) => {
+        const contentlets = Array.from(doc.querySelectorAll('div[data-dot-object="contentlet"]'));
+        contentlets.forEach((contentlet: HTMLElement) => {
             const contentletToolbar = document.createElement('div');
             contentletToolbar.classList.add('dotedit-contentlet__toolbar');
             contentletToolbar.innerHTML = `
