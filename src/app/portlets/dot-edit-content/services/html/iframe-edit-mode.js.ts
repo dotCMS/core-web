@@ -62,5 +62,7 @@ export const EDIT_PAGE_JS = `
     })
     // Init the model
     window.${MODEL_VAR_NAME}.next(getModel());
+    // Set getModel in the global scope.
+    window.getModel = getModel;
 })();
 `;
