@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 /**
- * Service to generate the markup related to the Toolbars and  class for work directly with DOM element
+ * Service to generate the markup related with the Toolbars and sub-menu for containers.
  */
 @Injectable()
 export class DotEditContentToolbarHtmlService {
