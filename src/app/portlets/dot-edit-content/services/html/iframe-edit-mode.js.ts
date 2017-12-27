@@ -1,5 +1,5 @@
 export const MODEL_VAR_NAME = 'dotNgModel';
-
+export const GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Roboto:400,700';
 export const EDIT_PAGE_JS = `
 (function () {
     var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));

@@ -4,12 +4,12 @@ import { EDIT_PAGE_CSS } from '../shared/iframe-edit-mode.css';
 import { DotContainerContentletService } from './dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service';
 import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
+import { GOOGLE_FONTS } from './html/iframe-edit-mode.js';
 import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolbar-html.service';
 import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
 
 @Injectable()
 export class DotEditContentHtmlService {
-    static GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Open+Sans:300,700|Roboto:400,700';
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     iframe: ElementRef;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -247,7 +247,7 @@ export class DotEditContentHtmlService {
 
     private setEditContentletStyles(): void {
         const doc = this.getEditPageDocument();
-        const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(DotEditContentHtmlService.GOOGLE_FONTS);
+        const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
         const style = doc.createElement('style');
         style.type = 'text/css';
 
