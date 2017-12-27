@@ -33,7 +33,9 @@ export class DotEditContentComponent implements OnInit {
             this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
 
             this.dotEditContentHtmlService.model.filter((res) => !!res).subscribe((res) => {
-                this.ref.detectChanges();
+                if (!this.ref['destroyed']) {
+                    this.ref.detectChanges();
+                }
             });
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {

@@ -1,10 +1,16 @@
-<div class="edit-page__toolbar">
+<div class="edit-page__main">
     <router-outlet></router-outlet>
 </div>
 
-<div class="edit-page__main">
-    <ul>
-        <li><a routerLink="/edit-page/content">Content</a></li>
-        <li><a routerLink="/edit-page/layout">Layout</a></li>
+<div class="edit-page__toolbar">
+    <ul class="edit-page__list-container">
+        <li class="edit-page__list-element active" #contentEl>
+            <a routerLink="/edit-page/edit/content" (click)="setActiveClass(true)">Content</a>
+        </li>
+        <li class="edit-page__list-element" routerLinkActive="active">
+            <a [routerLink]="['/edit-page/edit/content/layout']" [queryParams]="{url:'about-us/index'}" (click)="setActiveClass(false)">
+                Layout
+            </a>
+        </li>
     </ul>
 </div>

@@ -11,11 +11,29 @@ import { MessageService } from '../../../../api/services/messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { transition, state, style, animate, trigger } from '@angular/animations';
+import { DotEditContentComponent } from '../../../dot-edit-content/dot-edit-content.component';
+
+const slideAnimation = trigger('slideAnimation', [
+    state('*', style({
+        height: '100%'
+    })),
+    transition(':enter', [
+        style({ transform: 'translateY(100vh)' }),
+        animate('700ms ease-in-out', style({ transform: 'translateY(0%)' }))
+    ]),
+    transition(':leave', [
+        style({ transform: 'translateY(0%)' }),
+        animate('700ms ease-in-out', style({ transform: 'translateY(100vh)' }))
+    ])
+]);
 
 @Component({
     selector: 'dot-edit-layout',
     templateUrl: './dot-edit-layout.component.html',
-    styleUrls: ['./dot-edit-layout.component.scss']
+    styleUrls: ['./dot-edit-layout.component.scss'],
+    animations: [slideAnimation],
+    host: { '[@slideAnimation]': '' }
 })
 export class DotEditLayoutComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;

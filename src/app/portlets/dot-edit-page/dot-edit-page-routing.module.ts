@@ -12,24 +12,32 @@ import { DotEditPageComponent } from './dot-edit-page.component';
 
 const dotEditPage: Routes = [
     {
-        component: DotEditPageComponent,
         path: '',
+        redirectTo: 'edit/content',
+        pathMatch: 'full'
+    },
+    {
+        component: DotEditPageComponent,
+        path: 'edit',
         children: [
             {
                 component: DotEditContentComponent,
                 path: 'content',
-                resolve: {
-                    editPageHTML: EditContentResolver
-                }
-            },
-            {
-                component: DotEditLayoutComponent,
-                path: 'layout',
-                resolve: {
-                    pageView: PageViewResolver
-                }
+                resolve: { editPageHTML: EditContentResolver },
+                children: [
+                    {
+                        component: DotEditLayoutComponent,
+                        path: 'layout',
+                        resolve: { pageView: PageViewResolver }
+                    }
+                ]
             }
         ]
+    },
+    {
+        component: DotEditLayoutComponent,
+        path: 'layout',
+        resolve: { pageView: PageViewResolver }
     },
     {
         component: DotLegacyTemplateAdditionalActionsComponent,
