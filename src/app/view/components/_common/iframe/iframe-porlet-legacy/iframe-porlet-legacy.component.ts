@@ -54,11 +54,12 @@ export class IframePortletLegacyComponent implements OnInit {
      * @memberof IframePortletLegacyComponent
      */
     onLoad($event): void {
-        // TODO: make this only when iframe is Site Browser
-        Observable.fromEvent($event.target.contentWindow.document, 'edit-page').subscribe((e: any) => {
-            this.ngZone.run(() => {
-                this.dotRouterService.goToEditPage(e.detail.url);
-            });
+        Observable.fromEvent($event.target.contentWindow.document, 'ng-event').subscribe((event: any) => {
+            if (event.detail.name === 'edit-page') {
+                this.ngZone.run(() => {
+                    this.dotRouterService.goToEditPage(event.detail.data.url);
+                });
+            }
         });
     }
 

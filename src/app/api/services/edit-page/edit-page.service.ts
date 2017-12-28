@@ -13,8 +13,6 @@ export class EditPageService {
     constructor(private coreWebService: CoreWebService) {}
 
     get(url: string): Observable<string> {
-        url = url || 'about-us/index';
-
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
