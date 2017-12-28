@@ -93,7 +93,7 @@ export class DotEditContentHtmlService {
         this.addContentContainer = identifier;
     }
 
-    private createContentToolBars(): void {
+    private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
         this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
         this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
@@ -156,10 +156,10 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private bindEventToAddContentSubMenu(btn: Node): void {
-        btn.addEventListener('click', $event => {
-            this.closeContainersToolBarMenu(btn.parentElement);
-            btn.parentElement.classList.toggle('active');
+    private bindEventToAddContentSubMenu(button: Node): void {
+        button.addEventListener('click', $event => {
+            this.closeContainersToolBarMenu(button.parentElement);
+            button.parentElement.classList.toggle('active');
         });
     }
 
@@ -246,23 +246,16 @@ export class DotEditContentHtmlService {
     }
 
     private setEditContentletStyles(): void {
-        const doc = this.getEditPageDocument();
+        const style = this.dotDOMHtmlUtilService.createStyleElement(EDIT_PAGE_CSS);
         const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
-        const style = doc.createElement('style');
-        style.type = 'text/css';
 
-        if (style.styleSheet) {
-            style.styleSheet.cssText = EDIT_PAGE_CSS;
-        } else {
-            style.appendChild(document.createTextNode(EDIT_PAGE_CSS));
-        }
-
+        const doc = this.getEditPageDocument();
         doc.head.appendChild(style);
         doc.head.appendChild(robotoFontElement);
     }
 
     private setEditMode(): void {
-        this.createContentToolBars();
+        this.addContentToolBars();
 
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageDocument());
         this.setEditContentletStyles();

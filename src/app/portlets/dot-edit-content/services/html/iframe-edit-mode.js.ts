@@ -62,7 +62,9 @@ export const EDIT_PAGE_JS = `
     })
     // Init the model
     window.${MODEL_VAR_NAME}.next(getModel());
+
     // Set getModel in the global scope.
+    // TODO: come up with a better name for this to avoid collision
     window.getModel = getModel;
 })();
 `;
