@@ -25,7 +25,7 @@ export class DotEditContentComponent implements OnInit {
         private ref: ChangeDetectorRef,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
-        public dotEditContentHtmlService: DotEditContentHtmlService,
+        public dotEditContentHtmlService: DotEditContentHtmlService
     ) {}
 
     ngOnInit() {

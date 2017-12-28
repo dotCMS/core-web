@@ -26,7 +26,11 @@
 }
 
 .dot-edit__layout {
-    position: absolute;
     width: 100%;
-    top: 62px;
+    height: 100%;
+    position: absolute;
+    z-index: 10;
+    &.dot-edit__layout--active {
+        overflow-y: scroll;
+    }
 }

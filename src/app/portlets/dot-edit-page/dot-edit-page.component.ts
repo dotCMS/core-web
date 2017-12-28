@@ -7,8 +7,15 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 })
 export class DotEditPageComponent {
     @ViewChild('contentEl') contentEl: ElementRef;
+    @ViewChild('editMain') editMain: ElementRef;
 
     setActiveClass(addClass: boolean): void {
-        addClass ? this.contentEl.nativeElement.classList.add('active') : this.contentEl.nativeElement.classList.remove('active');
+        this.editMain.nativeElement.children[1].children[2].classList.remove('dot-edit__layout--active');
+        if (addClass) {
+            this.contentEl.nativeElement.classList.add('active');
+        } else {
+            this.contentEl.nativeElement.classList.remove('active');
+            this.editMain.nativeElement.children[1].children[2].classList.add('dot-edit__layout--active');
+        }
     }
 }

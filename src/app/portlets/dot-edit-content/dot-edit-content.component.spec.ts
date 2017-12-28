@@ -4,7 +4,8 @@ import { DialogModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 import { DotConfirmationService } from '../../api/services/dot-confirmation/index';
-import { ActivatedRoute } from '@angular/router';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { ActivatedRoute, ChildrenOutletContexts } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
@@ -45,7 +46,8 @@ describe('DotEditContentComponent', () => {
                     },
                     DotDragDropAPIHtmlService,
                     DotDOMHtmlUtilService,
-                    DotEditContentToolbarHtmlService
+                    DotEditContentToolbarHtmlService,
+                    ChildrenOutletContexts
                 ]
             });
         })
