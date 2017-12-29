@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -19,6 +20,7 @@ export class DotEditContentComponent implements OnInit {
     dialogTitle: string;
     model: BehaviorSubject<any> = new BehaviorSubject(null);
     source: any;
+    pageIdentifier: string;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
@@ -26,17 +28,20 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         public dotEditContentHtmlService: DotEditContentHtmlService,
+        private dotContainerContentletService: DotContainerContentletService,
     ) {}
 
     ngOnInit() {
-        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
-            this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
+        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
+            this.pageIdentifier = editPageHTML.identifier;
+            this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
             this.dotEditContentHtmlService.model.filter((res) => !!res).subscribe((res) => {
                 this.ref.detectChanges();
             });
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
+                console.log('res2', res);
                 switch (res.event) {
                     case 'edit':
                         this.editContentlet(res);
@@ -51,9 +56,14 @@ export class DotEditContentComponent implements OnInit {
                         this.closeDialog();
                         break;
                     case 'save':
+                        this.dotContainerContentletService.addContentletToContainer(this.pageIdentifier,
+                            this.dotEditContentHtmlService.addContentContainerInode, res.data.inode).subscribe();
                         this.closeDialog();
                         break;
                     case 'select':
+                        console.log('SELECT');
+                        this.dotContainerContentletService.addContentletToContainer(this.pageIdentifier,
+                            this.dotEditContentHtmlService.addContentContainerInode, res.data.inode).subscribe();
                         this.closeDialog();
                         break;
                     default:
@@ -69,10 +79,11 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
+        console.log('$event333', $event);
+        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotInode);
         this.loadDialogEditor(
             $event.dataset.dotIdentifier,
-            '/html/ng-contentlet-selector.html?ng=true',
+            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}`,
             $event.contentletEvents,
         );
     }

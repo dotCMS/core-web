@@ -18,6 +18,6 @@ export class EditPageService {
                 method: RequestMethod.Get,
                 url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=EDIT_MODE`,
             })
-            .pluck('bodyJsonObject', 'render');
+            .pluck('bodyJsonObject');
     }
 }

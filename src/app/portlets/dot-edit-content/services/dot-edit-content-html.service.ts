@@ -15,6 +15,7 @@ export class DotEditContentHtmlService {
     model: BehaviorSubject<any> = new BehaviorSubject(null);
 
     private addContentContainer: string;
+    public addContentContainerInode: string;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -22,7 +23,10 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService
     ) {
+
         this.contentletEvents.subscribe(res => {
+            console.log('event', res);
+
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
                     contentlet: {
@@ -72,10 +76,11 @@ export class DotEditContentHtmlService {
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
-
+        console.log('contentlet', contentlet);
         this.dotContainerContentletService
             .getContentletToContainer(this.addContentContainer, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
+                console.log('contentletHtml', contentletHtml);
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
@@ -89,8 +94,9 @@ export class DotEditContentHtmlService {
             });
     }
 
-    setContainterToAppendContentlet(identifier: string): void {
+    setContainterToAppendContentlet(identifier: string, inode: string): void {
         this.addContentContainer = identifier;
+        this.addContentContainerInode = inode;
     }
 
     private addContentToolBars(): void {
@@ -157,6 +163,7 @@ export class DotEditContentHtmlService {
     }
 
     private bindEventToAddContentSubMenu(button: Node): void {
+        console.log('button', button);
         button.addEventListener('click', $event => {
             this.closeContainersToolBarMenu(button.parentElement);
             button.parentElement.classList.toggle('active');
@@ -272,10 +279,11 @@ export class DotEditContentHtmlService {
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
 
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
-
+        console.log('relocateInfo.contentlet', relocateInfo.contentlet);
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
             .subscribe((contentletHtml: string) => {
+                console.log('contentletHtml', contentletHtml);
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);

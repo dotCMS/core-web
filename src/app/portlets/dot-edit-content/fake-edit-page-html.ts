@@ -226,7 +226,7 @@ export const FAKE_EDIT_PAGE_HTML = `<!doctype html>
 
                     <div class="col-sm-4">
                         <div class="medium-column">
-                            <div data-dot-object="container" data-dot-identifier="test2" data-dot-accept-types="two,three">
+                            <div data-dot-object="container" data-dot-identifier="56bd55ea-b04b-480d-9e37-5d6f9217dcc3" data-dot-accept-types="two,three">
                                 <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="789" data-dot-type="three">
                                     <h3>Management Team</h3>
                                     <ul class="media-list employee-management-team">

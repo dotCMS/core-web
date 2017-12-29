@@ -10,19 +10,29 @@ export class DotEditContentToolbarHtmlService {
     addContainerToolbar(doc: any): void {
         const containers = Array.from(doc.querySelectorAll('div[data-dot-object="container"]'));
         containers.forEach((container: HTMLElement) => {
+            console.log('container', container);
             const containerToolbar = document.createElement('div');
             containerToolbar.classList.add('dotedit-container__toolbar');
             containerToolbar.innerHTML = `
                 <button type="button" data-dot-identifier="${container.dataset
-                    .dotIdentifier}" class="dotedit-container__add">Add</button>
+                    .dotIdentifier}" data-dot-inode="${container.dataset.dotInode}" class="dotedit-container__add">Add</button>
                 <div class="dotedit-container__menu">
                     <ul>
-                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}">Content</a></li>
-                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}">Widget</a></li>
-                        <li class="dotedit-container__menu-item"><a data-dot-identifier="${container.dataset
-                            .dotIdentifier}">Form</a></li>
+                        <li class="dotedit-container__menu-item">
+                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
+                                Content
+                            </a>
+                        </li>
+                        <li class="dotedit-container__menu-item">
+                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
+                                Widget
+                            </a>
+                        </li>
+                        <li class="dotedit-container__menu-item">
+                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
+                                Form
+                            </a>
+                        </li>
                     </ul>
                 </div>
             `;
