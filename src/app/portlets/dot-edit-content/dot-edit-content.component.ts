@@ -18,7 +18,6 @@ export class DotEditContentComponent implements OnInit {
     contentletActionsUrl: SafeResourceUrl;
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     dialogTitle: string;
-    model: BehaviorSubject<any> = new BehaviorSubject(null);
     source: any;
     pageIdentifier: string;
 
@@ -35,10 +34,6 @@ export class DotEditContentComponent implements OnInit {
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
             this.pageIdentifier = editPageHTML.identifier;
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
-
-            this.dotEditContentHtmlService.model.filter((res) => !!res).subscribe((res) => {
-                this.ref.detectChanges();
-            });
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
                 console.log('res2', res);
