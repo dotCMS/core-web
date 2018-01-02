@@ -31,9 +31,7 @@ export class DotEditLayoutComponent implements OnInit {
         private templateContainersCacheService: TemplateContainersCacheService,
         public messageService: MessageService,
         public router: Router
-    ) {
-        console.log('layout');
-    }
+    ) {}
 
     ngOnInit(): void {
         this.messageService
@@ -75,7 +73,7 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     isLayout(): boolean {
-       return this.pageView.template.anonymous;
+        return this.pageView.template.anonymous;
     }
 
     /**
@@ -113,13 +111,15 @@ export class DotEditLayoutComponent implements OnInit {
                 body: pageView.layout.body || {},
                 header: pageView.layout.header,
                 footer: pageView.layout.footer,
-                sidebar: this.fb.group(pageView.layout.sidebar || {
-                    location: '',
-                    containers: [],
-                    width: '',
-                    widthPercent: '',
-                    preview: false
-                })
+                sidebar: this.fb.group(
+                    pageView.layout.sidebar || {
+                        location: '',
+                        containers: [],
+                        width: '',
+                        widthPercent: '',
+                        preview: false
+                    }
+                )
             })
         });
     }
