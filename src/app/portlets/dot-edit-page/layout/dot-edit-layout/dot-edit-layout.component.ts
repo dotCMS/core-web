@@ -1,12 +1,9 @@
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotEditLayoutGridComponent } from '../dot-edit-layout-grid/dot-edit-layout-grid.component';
-import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
-import { Observable } from 'rxjs/Observable';
-import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import { MessageService } from '../../../../api/services/messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
