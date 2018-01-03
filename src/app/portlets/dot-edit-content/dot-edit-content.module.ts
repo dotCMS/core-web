@@ -13,6 +13,7 @@ import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-conte
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 import { EditContentResolver } from './services/dot-edit-content-resolver.service';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
+import { MessageService } from '../../api/services/messages-service';
 
 const routes: Routes = [
     {
@@ -35,7 +36,8 @@ const routes: Routes = [
         DotEditContentHtmlService,
         DotEditContentToolbarHtmlService,
         EditContentResolver,
-        EditPageService
+        EditPageService,
+        MessageService
     ]
 })
 export class DotEditContentModule {}
