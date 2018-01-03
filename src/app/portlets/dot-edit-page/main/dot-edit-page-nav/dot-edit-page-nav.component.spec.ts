@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageService } from '../../../../api/services/messages-service';
 import { MockMessageService } from '../../../../test/message-service.mock';
+import { By } from '@angular/platform-browser';
 
 describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
@@ -30,7 +30,18 @@ describe('DotEditPageNavComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
+    it('should have menu list', () => {
+        const menuList = fixture.debugElement.query(By.css('.edit-page-nav'));
+        expect(menuList).not.toBeNull();
+    });
+
+    it('should have menu items', () => {
+        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+        expect(menuListItems.length).toEqual(2);
+
+        const labels = ['Content', 'Layout'];
+        menuListItems.forEach((item, index) => {
+            expect(item.nativeElement.textContent).toContain(labels[index]);
+        });
     });
 });
