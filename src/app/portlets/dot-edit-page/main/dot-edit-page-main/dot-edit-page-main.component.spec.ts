@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-fdescribe('DotEditPageMainComponent', () => {
+describe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
 
