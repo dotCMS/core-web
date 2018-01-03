@@ -90,13 +90,13 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
-        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc).then(res => {
+        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc).then(() => {
             this.bindContainersEvents();
         }).catch(error => {
             this.loggerService.debug(error);
         });
 
-        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc).then(res => {
+        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc).then(() => {
             this.bindContenletsEvents();
         }).catch(error => {
             this.loggerService.debug(error);

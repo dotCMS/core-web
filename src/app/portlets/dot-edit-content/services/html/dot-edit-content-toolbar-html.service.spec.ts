@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { DotEditContentToolbarHtmlService } from './dot-edit-content-toolbar-html.service';
 import { MessageService } from '../../../../api/services/messages-service';
 import { MockMessageService } from '../../../../test/message-service.mock';
