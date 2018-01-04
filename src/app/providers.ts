@@ -20,6 +20,7 @@ import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
 import { DefaultGuardService } from './api/services/guards/default-guard.service';
 import { StringFormat } from './api/util/stringFormat';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 
 const PROVIDERS: any[] = [
@@ -44,7 +45,8 @@ const PROVIDERS: any[] = [
     MenuGuardService,
     PublicAuthGuardService,
     DefaultGuardService,
-    StringFormat
+    StringFormat,
+    MessageService
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];
