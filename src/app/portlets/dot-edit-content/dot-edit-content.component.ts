@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'dot-edit-content',
@@ -15,7 +16,6 @@ export class DotEditContentComponent implements OnInit {
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
-    contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     dialogTitle: string;
     source: any;
 
@@ -24,6 +24,7 @@ export class DotEditContentComponent implements OnInit {
         private ref: ChangeDetectorRef,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
+        private ngZone: NgZone,
         public dotEditContentHtmlService: DotEditContentHtmlService,
     ) {}
 
@@ -40,7 +41,9 @@ export class DotEditContentComponent implements OnInit {
                         this.addContentlet(res);
                         break;
                     case 'remove':
-                        this.removeContentlet(res);
+                        this.ngZone.run(() => {
+                            this.removeContentlet(res);
+                        });
                         break;
                     case 'cancel':
                         this.closeDialog();
@@ -117,7 +120,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        // TODO: dialog it's not showing until click in the overlay
         this.dotConfirmationService.confirm({
             accept: () => {
                 this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
