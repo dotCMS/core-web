@@ -1,3 +1,4 @@
+import { LoggerService } from 'dotcms-js/dotcms-js';
 import { Injectable, ElementRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EDIT_PAGE_CSS } from '../shared/iframe-edit-mode.css';
@@ -23,7 +24,8 @@ export class DotEditContentHtmlService {
         private dotContainerContentletService: DotContainerContentletService,
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
-        private dotDOMHtmlUtilService: DotDOMHtmlUtilService
+        private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
+        private loggerService: LoggerService
     ) {
 
         this.contentletEvents.subscribe(res => {
@@ -102,11 +104,17 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
-        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
-        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
+        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc).then(() => {
+            this.bindContainersEvents();
+        }).catch(error => {
+            this.loggerService.debug(error);
+        });
 
-        this.bindContainersEvents();
-        this.bindContenletsEvents();
+        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc).then(() => {
+            this.bindContenletsEvents();
+        }).catch(error => {
+            this.loggerService.debug(error);
+        });
     }
 
 

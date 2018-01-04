@@ -2,7 +2,7 @@ import { BaseComponent } from '../_common/_base/base-component';
 import { AccountService, AccountUser } from '../../../api/services/account-service';
 import { Component, EventEmitter, Output, ViewEncapsulation, Input } from '@angular/core';
 import { LoginService, User, Auth } from 'dotcms-js/dotcms-js';
-import { MessageService } from '../../../api/services/messages-service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { StringFormat } from '../../../api/util/stringFormat';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 
@@ -34,7 +34,7 @@ export class MyAccountComponent extends BaseComponent {
     constructor(
         private loginService: LoginService,
         private accountService: AccountService,
-        messageService: MessageService,
+        dotMessageService: DotMessageService,
         private stringFormat: StringFormat,
         private dotcmsConfig: DotcmsConfig
     ) {
@@ -56,7 +56,7 @@ export class MyAccountComponent extends BaseComponent {
                 'change-password',
                 'current-password'
             ],
-            messageService
+            dotMessageService
         );
 
         this.passwordMatch = false;

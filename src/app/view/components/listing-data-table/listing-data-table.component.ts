@@ -15,7 +15,7 @@ import { BaseComponent } from '../_common/_base/base-component';
 import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
 import { LoggerService } from 'dotcms-js/dotcms-js';
 import { FormatDateService } from '../../../api/services/format-date-service';
-import { MessageService } from '../../../api/services/messages-service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
 import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
 
@@ -47,12 +47,12 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     dateColumns: DataTableColumn[];
 
     constructor(
-        messageService: MessageService,
+        dotMessageService: DotMessageService,
         public loggerService: LoggerService,
         private paginatorService: PaginatorService,
         private formatDateService: FormatDateService
     ) {
-        super(['global-search'], messageService);
+        super(['global-search'], dotMessageService);
         this.paginatorService.url = this.url;
     }
 

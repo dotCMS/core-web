@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
+import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -33,7 +34,10 @@ export class DotEditContentComponent implements OnInit {
         public dotEditContentHtmlService: DotEditContentHtmlService,
         private dotContainerContentletService: DotContainerContentletService,
         private ngZone: NgZone,
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
     ) {}
+
+
 
     ngOnInit() {
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
@@ -89,6 +93,15 @@ export class DotEditContentComponent implements OnInit {
     setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
         this.originalValueChanged = false;
+    }
+
+    /**
+     * it hides the loading indicator when the component loads
+     * @param {any} $event
+     * @memberof DotEditContentComponent
+     */
+    onLoad($event): void {
+        this.dotLoadingIndicatorService.hide();
     }
 
     private addContentlet($event: any): void {
