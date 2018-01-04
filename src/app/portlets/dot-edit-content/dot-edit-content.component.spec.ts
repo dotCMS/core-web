@@ -76,19 +76,19 @@ fdescribe('DotEditContentComponent', () => {
 
     it('should show dotLoadingIndicatorService on init', () => {
         const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'show');
-        const loadingIndicatorElem: DebugElement = de.query(By.css('dot-loading-indicator'));
 
         component.ngOnInit();
 
-        expect(loadingIndicatorElem).not.toBeNull();
         expect(spyLoadingIndicator).toHaveBeenCalled();
     });
 
     it('should hide dotLoadingIndicatorService when the component loads', () => {
         const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'hide');
+        const loadingIndicatorElem: DebugElement = de.query(By.css('dot-loading-indicator'));
 
         component.onLoad(Event);
 
+        expect(loadingIndicatorElem).not.toBeNull();
         expect(spyLoadingIndicator).toHaveBeenCalled();
     });
 });
