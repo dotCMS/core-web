@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +12,6 @@ import { DotLoadingIndicatorService } from '../../view/components/_common/iframe
     styleUrls: ['./dot-edit-content.component.scss'],
 })
 export class DotEditContentComponent implements OnInit {
-    @Input() isLoading = false;
     @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
 
