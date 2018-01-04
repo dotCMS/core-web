@@ -1,18 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { By } from '@angular/platform-browser';
 
 describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
 
+    const messageServiceMock = new MockDotMessageService({
+        'editpage.toolbar.nav.content': 'Content',
+        'editpage.toolbar.nav.layout': 'Layout'
+    });
+
     beforeEach(
         async(() => {
             TestBed.configureTestingModule({
                 imports: [RouterTestingModule],
                 declarations: [DotEditPageNavComponent],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
             }).compileComponents();
         }),
     );

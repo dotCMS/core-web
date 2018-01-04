@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
-import { Subject } from 'rxjs/Subject';
-
+import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
@@ -26,9 +26,11 @@ export class DotEditContentComponent implements OnInit {
         private sanitizer: DomSanitizer,
         private ngZone: NgZone,
         public dotEditContentHtmlService: DotEditContentHtmlService,
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
     ) {}
 
     ngOnInit() {
+        this.dotLoadingIndicatorService.show();
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
             this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
 
@@ -64,6 +66,15 @@ export class DotEditContentComponent implements OnInit {
     onHide(): void {
         this.dialogTitle = null;
         this.contentletActionsUrl = null;
+    }
+
+    /**
+     * it hides the loading indicator when the component loads
+     * @param {any} $event
+     * @memberof DotEditContentComponent
+     */
+    onLoad($event): void {
+        this.dotLoadingIndicatorService.hide();
     }
 
     private addContentlet($event: any): void {

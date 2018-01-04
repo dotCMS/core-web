@@ -5,7 +5,7 @@ import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown
 import { DotcmsEventsService, LoginService } from 'dotcms-js/dotcms-js';
 import { INotification } from '../../../shared/models/notifications';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
-import { MessageService } from '../../../api/services/messages-service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { NotificationsService } from '../../../api/services/notifications-service';
 
 @Component({
@@ -27,13 +27,13 @@ export class ToolbarNotifications extends BaseComponent {
         private dotcmsEventsService: DotcmsEventsService,
         private notificationService: NotificationsService,
         myElement: ElementRef,
-        messageService: MessageService,
+        dotMessageService: DotMessageService,
         private loginService: LoginService,
         private iframeOverlayService: IframeOverlayService
     ) {
         super(
             ['notifications_dismissall', 'notifications_title', 'notifications_load_more'],
-            messageService
+            dotMessageService
         );
         this.elementRef = myElement;
     }
