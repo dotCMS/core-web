@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -11,6 +12,7 @@ import { DotConfirmationService } from '../../api/services/dot-confirmation';
     styleUrls: ['./dot-edit-content.component.scss'],
 })
 export class DotEditContentComponent implements OnInit {
+    @Input() isLoading = false;
     @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
 
@@ -25,9 +27,11 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         public dotEditContentHtmlService: DotEditContentHtmlService,
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
     ) {}
 
     ngOnInit() {
+        this.dotLoadingIndicatorService.show();
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
             this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
 
@@ -61,6 +65,15 @@ export class DotEditContentComponent implements OnInit {
     onHide(): void {
         this.dialogTitle = null;
         this.contentletActionsUrl = null;
+    }
+
+    /**
+     * it hides the loading indicator when the component loads
+     * @param {any} $event
+     * @memberof DotEditContentComponent
+     */
+    onLoad($event): void {
+        this.dotLoadingIndicatorService.hide();
     }
 
     private addContentlet($event: any): void {

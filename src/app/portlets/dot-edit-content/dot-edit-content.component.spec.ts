@@ -16,6 +16,7 @@ import { MockMessageService } from '../../test/message-service.mock';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
+import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
@@ -30,17 +31,30 @@ describe('DotEditContentComponent', () => {
 
             DOTTestBed.configureTestingModule({
                 declarations: [DotEditContentComponent],
-                imports: [DialogModule, BrowserAnimationsModule, DotEditPageToolbarModule],
+                imports: [
+                    DialogModule,
+                    BrowserAnimationsModule,
+                    DotEditPageToolbarModule,
+                    DotLoadingIndicatorModule
+                ],
                 providers: [
                     DotConfirmationService,
                     DotContainerContentletService,
                     DotEditContentHtmlService,
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: MessageService, useValue: messageServiceMock },
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    {
+                        provide: MessageService,
+                        useValue: messageServiceMock
+                    },
                     {
                         provide: ActivatedRoute,
                         useValue: {
-                            data: Observable.of({ editPageHTML: '' })
+                            data: Observable.of({
+                                editPageHTML: ''
+                            })
                         }
                     },
                     DotDragDropAPIHtmlService,
@@ -59,5 +73,21 @@ describe('DotEditContentComponent', () => {
 
     it('should be created', () => {
         expect(component).toBeTruthy();
+    });
+
+    it('should show dotLoadingIndicatorService on init', () => {
+        const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'show');
+
+        component.ngOnInit();
+
+        expect(spyLoadingIndicator).toHaveBeenCalled();
+    });
+
+    it('should hide dotLoadingIndicatorService when the component loads', () => {
+        const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'hide');
+
+        component.onLoad(Event);
+
+        expect(spyLoadingIndicator).toHaveBeenCalled();
     });
 });
