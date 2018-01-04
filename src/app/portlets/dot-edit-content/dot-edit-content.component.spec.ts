@@ -17,58 +17,57 @@ import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-htm
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
 import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let fixture: ComponentFixture<DotEditContentComponent>;
-
-    beforeEach(
-        async(() => {
-            const messageServiceMock = new MockMessageService({
-                'editpage.toolbar.primary.action': 'Save',
-                'editpage.toolbar.secondary.action': 'Cancel'
-            });
-
-            DOTTestBed.configureTestingModule({
-                declarations: [DotEditContentComponent],
-                imports: [
-                    DialogModule,
-                    BrowserAnimationsModule,
-                    DotEditPageToolbarModule,
-                    DotLoadingIndicatorModule
-                ],
-                providers: [
-                    DotConfirmationService,
-                    DotContainerContentletService,
-                    DotEditContentHtmlService,
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    {
-                        provide: MessageService,
-                        useValue: messageServiceMock
-                    },
-                    {
-                        provide: ActivatedRoute,
-                        useValue: {
-                            data: Observable.of({
-                                editPageHTML: ''
-                            })
-                        }
-                    },
-                    DotDragDropAPIHtmlService,
-                    DotDOMHtmlUtilService,
-                    DotEditContentToolbarHtmlService
-                ]
-            });
-        })
-    );
+    let de: DebugElement;
 
     beforeEach(() => {
+        const messageServiceMock = new MockMessageService({
+            'editpage.toolbar.primary.action': 'Save',
+            'editpage.toolbar.secondary.action': 'Cancel'
+        });
+
+        DOTTestBed.configureTestingModule({
+            declarations: [DotEditContentComponent],
+            imports: [
+                DialogModule,
+                BrowserAnimationsModule,
+                DotEditPageToolbarModule,
+                DotLoadingIndicatorModule
+            ],
+            providers: [
+                DotConfirmationService,
+                DotContainerContentletService,
+                DotEditContentHtmlService,
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                {
+                    provide: MessageService,
+                    useValue: messageServiceMock
+                },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        data: Observable.of({
+                            editPageHTML: ''
+                        })
+                    }
+                },
+                DotDragDropAPIHtmlService,
+                DotDOMHtmlUtilService,
+                DotEditContentToolbarHtmlService
+            ]
+        });
+
         fixture = DOTTestBed.createComponent(DotEditContentComponent);
         component = fixture.componentInstance;
-        fixture.detectChanges();
+        de = fixture.debugElement;
     });
 
     it('should be created', () => {
@@ -77,9 +76,11 @@ describe('DotEditContentComponent', () => {
 
     it('should show dotLoadingIndicatorService on init', () => {
         const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'show');
+        const loadingIndicatorElem: DebugElement = de.query(By.css('dot-loading-indicator'));
 
         component.ngOnInit();
 
+        expect(loadingIndicatorElem).not.toBeNull();
         expect(spyLoadingIndicator).toHaveBeenCalled();
     });
 
