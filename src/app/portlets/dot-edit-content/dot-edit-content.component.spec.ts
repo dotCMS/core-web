@@ -16,6 +16,8 @@ import { MockMessageService } from '../../test/message-service.mock';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
@@ -59,5 +61,10 @@ describe('DotEditContentComponent', () => {
 
     it('should be created', () => {
         expect(component).toBeTruthy();
+    });
+
+    it('should has a toolbar', () => {
+        const de: DebugElement = fixture.debugElement.query(By.css('dot-edit-page-toolbar'));
+        expect(de).not.toBeNull();
     });
 });

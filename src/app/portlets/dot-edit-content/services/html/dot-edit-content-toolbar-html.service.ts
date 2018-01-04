@@ -13,29 +13,7 @@ export class DotEditContentToolbarHtmlService {
             console.log('container', container);
             const containerToolbar = document.createElement('div');
             containerToolbar.classList.add('dotedit-container__toolbar');
-            containerToolbar.innerHTML = `
-                <button type="button" data-dot-identifier="${container.dataset
-                    .dotIdentifier}" data-dot-inode="${container.dataset.dotInode}" class="dotedit-container__add">Add</button>
-                <div class="dotedit-container__menu">
-                    <ul>
-                        <li class="dotedit-container__menu-item">
-                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
-                                Content
-                            </a>
-                        </li>
-                        <li class="dotedit-container__menu-item">
-                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
-                                Widget
-                            </a>
-                        </li>
-                        <li class="dotedit-container__menu-item">
-                            <a data-dot-identifier="${container.dataset.dotIdentifier}" data-dot-inode="${container.dataset.dotInode}">
-                                Form
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            `;
+            containerToolbar.innerHTML = this.getContainerToolbarHTML(container.dataset);
             container.parentNode.insertBefore(containerToolbar, container);
         });
     }
@@ -65,5 +43,29 @@ export class DotEditContentToolbarHtmlService {
             contentlet.insertAdjacentElement('afterbegin', contentletContent);
             contentlet.insertAdjacentElement('afterbegin', contentletToolbar);
         });
+    }
+
+    private getContainerToolbarHTML(container: DOMStringMap): string {
+        return `<button type="button" data-dot-identifier="${container.dotIdentifier}"
+            data-dot-inode="${container.dotInode}" class="dotedit-container__add">Add</button>
+        <div class="dotedit-container__menu">
+            <ul>
+                <li class="dotedit-container__menu-item">
+                    <a data-dot-identifier="${container.dotIdentifier}" data-dot-inode="${container.dotInode}">
+                        Content
+                    </a>
+                </li>
+                <li class="dotedit-container__menu-item">
+                    <a data-dot-identifier="${container.dotIdentifier}" data-dot-inode="${container.dotInode}">
+                        Widget
+                    </a>
+                </li>
+                <li class="dotedit-container__menu-item">
+                    <a data-dot-identifier="${container.dotIdentifier}" data-dot-inode="${container.dotInode}">
+                        Form
+                    </a>
+                </li>
+            </ul>
+        </div>`;
     }
 }

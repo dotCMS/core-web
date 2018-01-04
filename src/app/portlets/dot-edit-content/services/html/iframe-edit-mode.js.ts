@@ -1,7 +1,22 @@
 export const GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Roboto:400,700';
+export const MODEL_VAR_NAME = 'dotNgModel';
+
 export const EDIT_PAGE_JS = `
 (function () {
     var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
+
+    function getModel() {
+        var model = {};
+        containers.forEach(function(container) {
+            var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
+
+            model[container.dataset.dotIdentifier] = contentlets.map(function(contentlet) {
+                return contentlet.dataset.dotIdentifier;
+            });
+        });
+        return model;
+   }
+
     var forbiddenTarget;
     var drake = dragula(
         containers, {
@@ -26,9 +41,12 @@ export const EDIT_PAGE_JS = `
         }
     });
     drake.on('dragend', function(el) {
+        console.log('dragend');
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
+
+        window.${MODEL_VAR_NAME}.next(getModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
         if (target !== source) {
@@ -47,5 +65,8 @@ export const EDIT_PAGE_JS = `
             });
         }
     })
+
+    window.${MODEL_VAR_NAME}.next(getModel());
+    window.getModel = getModel;
 })();
 `;

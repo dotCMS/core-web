@@ -91,4 +91,16 @@ describe('DotEditPageToolbarComponent', () => {
 
         expect(res).toBeDefined();
     });
+
+    it('should disabled save and cancel buttons', () => {
+        component.disabled = true;
+
+        fixture.detectChanges();
+
+        const secondaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__secondary-action'));
+        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__primary-action'));
+
+        expect(secondaryAction.componentInstance.disabled).toBeTruthy('the cancel button have to be disabled');
+        expect(primaryAction.componentInstance.disabled).toBeTruthy('the save button have to be disabled');
+    });
 });

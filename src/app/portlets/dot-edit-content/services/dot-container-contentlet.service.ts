@@ -14,10 +14,11 @@ export class DotContainerContentletService {
         }).pluck('bodyJsonObject', 'render');
     }
 
-    addContentletToContainer(pageId: string, containerId: string, contentletId: string): Observable<string> {
+    saveContentlet(pageId: string, model: any): Observable<string> {
         return this.coreWebService.requestView({
             method: RequestMethod.Post,
-            url: `/v1/page/${pageId}/add/container/${containerId}/content/${contentletId}/uid/LEGACY_RELATION_TYPE/order/1`
+            body: model,
+            url: `/v1/page/${pageId}/content`
         }).pluck('entity');
     }
 }
