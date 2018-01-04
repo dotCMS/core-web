@@ -20,7 +20,7 @@ import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let de: DebugElement;
