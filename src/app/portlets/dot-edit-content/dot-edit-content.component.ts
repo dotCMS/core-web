@@ -40,6 +40,8 @@ export class DotEditContentComponent implements OnInit {
 
 
     ngOnInit() {
+        this.dotLoadingIndicatorService.show();
+
         this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
             this.pageIdentifier = editPageHTML.identifier;
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
@@ -105,7 +107,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        console.log('$event333', $event);
         this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotInode);
         this.loadDialogEditor(
             $event.dataset.dotIdentifier,
