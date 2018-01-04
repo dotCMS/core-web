@@ -23,7 +23,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
     @Output() removeField: EventEmitter<Field> = new EventEmitter();
     @Output() removeRow: EventEmitter<FieldRow> = new EventEmitter();
 
-    constructor(dotMessageService: DotMessageService, private dotConfirmationService: DotConfirmationService) {
+    constructor(messageService: DotMessageService, private dotConfirmationService: DotConfirmationService) {
         super(
             [
                 'contenttypes.dropzone.rows.empty.message',
@@ -35,7 +35,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 'contenttypes.content.row',
                 'contenttypes.action.cancel'
             ],
-            dotMessageService
+            messageService
         );
     }
 

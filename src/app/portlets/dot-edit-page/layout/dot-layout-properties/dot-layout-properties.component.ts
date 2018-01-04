@@ -10,10 +10,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DotLayoutPropertiesComponent implements OnInit {
     @Input() group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(public messageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
+        this.messageService.getMessages([
             'editpage.layout.properties.header',
             'editpage.layout.properties.footer',
         ]).subscribe();

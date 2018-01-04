@@ -18,12 +18,12 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     private showMyAccount = false;
 
     constructor(
-        dotMessageService: DotMessageService,
+        messageService: DotMessageService,
         private loggerService: LoggerService,
         private loginService: LoginService,
         public iframeOverlayService: IframeOverlayService
     ) {
-        super(['my-account'], dotMessageService);
+        super(['my-account'], messageService);
     }
 
     ngOnInit(): void {

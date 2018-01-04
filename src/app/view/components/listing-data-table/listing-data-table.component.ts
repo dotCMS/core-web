@@ -47,12 +47,12 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     dateColumns: DataTableColumn[];
 
     constructor(
-        dotMessageService: DotMessageService,
+        messageService: DotMessageService,
         public loggerService: LoggerService,
         private paginatorService: PaginatorService,
         private formatDateService: FormatDateService
     ) {
-        super(['global-search'], dotMessageService);
+        super(['global-search'], messageService);
         this.paginatorService.url = this.url;
     }
 

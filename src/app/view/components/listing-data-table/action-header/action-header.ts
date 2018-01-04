@@ -17,13 +17,13 @@ export class ActionHeaderComponent extends BaseComponent implements OnChanges {
     @Input() options: ActionHeaderOptions;
     public dynamicOverflow = 'visible';
 
-    constructor(dotMessageService: DotMessageService, private dotConfirmationService: DotConfirmationService) {
+    constructor(messageService: DotMessageService, private dotConfirmationService: DotConfirmationService) {
         super(
             [
                 'selected',
                 'contenttypes.action.delete',
                 'contenttypes.action.cancel'
-            ], dotMessageService
+            ], messageService
         );
     }
 

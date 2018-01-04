@@ -18,11 +18,11 @@ export class DotContainerSelectorComponent implements OnInit {
     currentContainers: DotContainer[] = [];
 
 
-    constructor(public paginationService: PaginatorService, public dotMessageService: DotMessageService) { }
+    constructor(public paginationService: PaginatorService, public messageService: DotMessageService) { }
 
     ngOnInit(): void {
         this.paginationService.url = 'v1/containers';
-        this.dotMessageService.getMessages([
+        this.messageService.getMessages([
             'editpage.container.add.label'
         ]).subscribe();
     }

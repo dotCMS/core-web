@@ -12,7 +12,7 @@ export class DefaultValuePropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {
-        super(['contenttypes.field.properties.default_value.label'], dotMessageService);
+    constructor(public messageService: DotMessageService) {
+        super(['contenttypes.field.properties.default_value.label'], messageService);
     }
 }

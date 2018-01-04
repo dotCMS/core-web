@@ -11,10 +11,10 @@ export class DotEditPageToolbarComponent implements OnInit {
     @Output() save = new EventEmitter<MouseEvent>();
     @Output() cancel = new EventEmitter<MouseEvent>();
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(public messageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
+        this.messageService.getMessages([
             'editpage.toolbar.primary.action',
             'editpage.toolbar.secondary.action',
         ]).subscribe();

@@ -14,12 +14,12 @@ export class ValuesPropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {
+    constructor(public messageService: DotMessageService) {
         super(
             [
                 'contenttypes.field.properties.value.label',
             ],
-            dotMessageService
+            messageService
         );
     }
 }

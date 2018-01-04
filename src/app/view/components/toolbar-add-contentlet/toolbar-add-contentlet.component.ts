@@ -37,12 +37,12 @@ export class ToolbarAddContenletComponent extends BaseComponent implements OnIni
     private currentPage: number = -1;
 
     constructor(
-        dotMessageService: DotMessageService,
+        messageService: DotMessageService,
         private toolbarAddContenletService: ToolbarAddContenletService,
         public contentTypesInfoService: ContentTypesInfoService,
         public iframeOverlayService: IframeOverlayService
     ) {
-        super(['more'], dotMessageService);
+        super(['more'], messageService);
     }
 
     ngOnInit(): void {

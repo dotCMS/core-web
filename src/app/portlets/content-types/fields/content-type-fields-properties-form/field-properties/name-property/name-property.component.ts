@@ -13,13 +13,13 @@ export class NamePropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {
+    constructor(public messageService: DotMessageService) {
         super(
             [
                 'contenttypes.field.properties.name.label',
                 'contenttypes.field.properties.name.error.required'
             ],
-            dotMessageService
+            messageService
         );
     }
 }

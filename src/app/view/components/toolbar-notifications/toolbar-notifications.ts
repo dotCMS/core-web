@@ -27,13 +27,13 @@ export class ToolbarNotifications extends BaseComponent {
         private dotcmsEventsService: DotcmsEventsService,
         private notificationService: NotificationsService,
         myElement: ElementRef,
-        dotMessageService: DotMessageService,
+        messageService: DotMessageService,
         private loginService: LoginService,
         private iframeOverlayService: IframeOverlayService
     ) {
         super(
             ['notifications_dismissall', 'notifications_title', 'notifications_load_more'],
-            dotMessageService
+            messageService
         );
         this.elementRef = myElement;
     }
