@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
-import { FAKE_EDIT_PAGE_HTML } from '../fake-edit-page-html';
 import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
 
 

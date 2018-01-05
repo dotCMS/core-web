@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import * as _ from 'lodash';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 @Component({
@@ -19,6 +21,10 @@ export class DotEditContentComponent implements OnInit {
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     dialogTitle: string;
     source: any;
+    pageIdentifier: string;
+
+    private originalValue: any;
+    private originalValueChanged = false;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
@@ -26,13 +32,19 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         public dotEditContentHtmlService: DotEditContentHtmlService,
+        private dotContainerContentletService: DotContainerContentletService,
+        private ngZone: NgZone,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
     ) {}
 
+
+
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
-        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: string) => {
-            this.dotEditContentHtmlService.initEditMode(editPageHTML, this.iframe);
+
+        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
+            this.pageIdentifier = editPageHTML.identifier;
+            this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
                 switch (res.event) {
@@ -46,11 +58,7 @@ export class DotEditContentComponent implements OnInit {
                         this.removeContentlet(res);
                         break;
                     case 'cancel':
-                        this.closeDialog();
-                        break;
                     case 'save':
-                        this.closeDialog();
-                        break;
                     case 'select':
                         this.closeDialog();
                         break;
@@ -58,12 +66,35 @@ export class DotEditContentComponent implements OnInit {
                         break;
                 }
             });
+
+            this.dotEditContentHtmlService.modelChange
+                .subscribe(model =>  {
+                    if (this.originalValue) {
+                        this.ngZone.run(() => {
+                            this.originalValueChanged = !_.isEqual(model, this.originalValue);
+                        });
+                    } else {
+                        this.setOriginalValue(model);
+                    }
+
+                    console.log('model', model);
+                });
         });
     }
 
     onHide(): void {
         this.dialogTitle = null;
         this.contentletActionsUrl = null;
+    }
+
+    saveContent(): void {
+        this.dotContainerContentletService.saveContentlet(this.pageIdentifier, this.dotEditContentHtmlService.getContentModel())
+            .subscribe(this.setOriginalValue);
+    }
+
+    setOriginalValue(model?: any): void {
+        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
+        this.originalValueChanged = false;
     }
 
     /**
@@ -76,23 +107,19 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
+        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotInode);
         this.loadDialogEditor(
             $event.dataset.dotIdentifier,
-            '/html/ng-contentlet-selector.html?ng=true',
+            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}`,
             $event.contentletEvents,
         );
     }
 
     private closeDialog(): void {
-        this.dialogTitle = null;
-        this.contentletActionsUrl = null;
-
-        /*
-            I think because we are triggering the .next() from the jsp the Angular detect changes it's not
-            happenning automatically, so I have to triggered manually so the changes propagates to the template
-        */
-        this.ref.detectChanges();
+        this.ngZone.run(() => {
+            this.dialogTitle = null;
+            this.contentletActionsUrl = null;
+        });
     }
 
     private editContentlet($event: any): void {
@@ -104,42 +131,41 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private loadDialogEditor(containerId: string, url: string, contentletEvents: BehaviorSubject<any>): void {
-        this.dialogTitle = containerId;
-        this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-
-        /*
-            Again, because the click event it's comming form the iframe, we need to trigger the detect changes manually.
-        */
-        this.ref.detectChanges();
-
-        /*
-            We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
-            element it's available in the DOM
-        */
-        setTimeout(() => {
-            const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
+        this.ngZone.run(() => {
+            this.dialogTitle = containerId;
+            this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
             /*
-                TODO: should I remove this listener when when the dialog closes?
+                We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
+                element it's available in the DOM
             */
-            editContentletIframeEl.addEventListener('load', () => {
-                editContentletIframeEl.contentWindow.ngEditContentletEvents = contentletEvents;
-            });
-        }, 0);
+            setTimeout(() => {
+                const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
+
+                /*
+                    TODO: should I remove this listener when when the dialog closes?
+                */
+                editContentletIframeEl.addEventListener('load', () => {
+                    editContentletIframeEl.contentWindow.ngEditContentletEvents = contentletEvents;
+                });
+            }, 0);
+        });
     }
 
     private removeContentlet($event: any): void {
-        // TODO: dialog it's not showing until click in the overlay
-        this.dotConfirmationService.confirm({
-            accept: () => {
-                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
-            },
-            header: `Remove a content?`,
-            message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
-            footerLabel: {
-                acceptLabel: 'Yes',
-                rejectLabel: 'No',
-            },
+        this.ngZone.run(() => {
+            // TODO: dialog it's not showing until click in the overlay
+            this.dotConfirmationService.confirm({
+                accept: () => {
+                    this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
+                },
+                header: `Remove a content?`,
+                message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
+                footerLabel: {
+                    acceptLabel: 'Yes',
+                    rejectLabel: 'No',
+                },
+            });
         });
     }
 }

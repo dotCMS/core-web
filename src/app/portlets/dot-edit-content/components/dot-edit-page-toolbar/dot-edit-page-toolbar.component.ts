@@ -8,6 +8,8 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 })
 export class DotEditPageToolbarComponent implements OnInit {
     @Input() pageTitle: string;
+    @Input() disabled: boolean;
+
     @Output() save = new EventEmitter<MouseEvent>();
     @Output() cancel = new EventEmitter<MouseEvent>();
 

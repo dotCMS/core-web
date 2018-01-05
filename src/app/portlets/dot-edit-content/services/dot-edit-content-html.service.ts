@@ -7,13 +7,18 @@ import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service
 import { GOOGLE_FONTS } from './html/iframe-edit-mode.js';
 import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolbar-html.service';
 import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
+import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     iframe: ElementRef;
 
-    private addContentContainer: string;
+    modelChange: Subject<any> = new Subject();
+
+    public addContentContainer: string;
+    public addContentContainerInode: string;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -22,22 +27,20 @@ export class DotEditContentHtmlService {
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private loggerService: LoggerService
     ) {
+
         this.contentletEvents.subscribe(res => {
+
             if (res.event === 'save') {
                 this.renderRelocatedContentlet({
                     contentlet: {
                         inode: 'e0e31ce27719' || res.data.inode
                     }
                 });
-            }
-
-            if (res.event === 'select') {
+            } else if (res.event === 'select') {
                 this.renderAddedContentlet({
                     identifier: res.data.identifier
                 });
-            }
-
-            if (res.event === 'relocate') {
+            } else if (res.event === 'relocate') {
                 this.renderRelocatedContentlet(res.data);
             }
         });
@@ -48,7 +51,7 @@ export class DotEditContentHtmlService {
         this.loadCodeIntoIframe(editPageHTML);
 
         const iframeElement = this.getEditPageIframe();
-
+        iframeElement.contentWindow[MODEL_VAR_NAME] = this.modelChange;
         iframeElement.contentWindow.contentletEvents = this.contentletEvents;
 
         iframeElement.addEventListener('load', () => {
@@ -60,6 +63,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const contenletEl = doc.querySelector(`div[data-dot-inode="${inode}"]`);
         contenletEl.remove();
+        this.modelChange.next(this.getContentModel());
     }
 
     renderAddedContentlet(contentlet: any): void {
@@ -70,10 +74,11 @@ export class DotEditContentHtmlService {
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
-
+        console.log('contentlet', contentlet);
         this.dotContainerContentletService
             .getContentletToContainer(this.addContentContainer, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
+                console.log('contentletHtml', contentletHtml);
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
@@ -81,11 +86,20 @@ export class DotEditContentHtmlService {
                 this.appendNewContentlets(contentletContentEl, contentletHtml);
 
                 this.addContentContainer = null;
+
+                // Update the model with the recently added contentlet
+                this.modelChange.next(this.getContentModel());
             });
     }
 
-    setContainterToAppendContentlet(identifier: string): void {
+    setContainterToAppendContentlet(identifier: string, inode: string): void {
         this.addContentContainer = identifier;
+        this.addContentContainerInode = inode;
+    }
+
+    getContentModel(): any {
+        console.log('contentModel');
+        return this.getEditPageIframe().contentWindow.getModel();
     }
 
     private addContentToolBars(): void {
@@ -103,6 +117,7 @@ export class DotEditContentHtmlService {
         });
     }
 
+
     private appendNewContentlets(contentletContentEl: any, renderedContentet: string): void {
         const doc = this.getEditPageDocument();
 
@@ -111,6 +126,7 @@ export class DotEditContentHtmlService {
         div.innerHTML = renderedContentet;
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
+            console.log('node', node);
             if (node.tagName === 'SCRIPT') {
                 const script = doc.createElement('script');
                 script.type = 'text/javascript';
@@ -123,6 +139,7 @@ export class DotEditContentHtmlService {
 
                 contentletContentEl.appendChild(script);
             } else {
+                node.removeAttribute('data-dot-object');
                 contentletContentEl.appendChild(node);
             }
         });
@@ -158,6 +175,7 @@ export class DotEditContentHtmlService {
     }
 
     private bindEventToAddContentSubMenu(button: Node): void {
+        console.log('button', button);
         button.addEventListener('click', $event => {
             this.closeContainersToolBarMenu(button.parentElement);
             button.parentElement.classList.toggle('active');
@@ -273,10 +291,11 @@ export class DotEditContentHtmlService {
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
 
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
-
+        console.log('relocateInfo.contentlet', relocateInfo.contentlet);
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
             .subscribe((contentletHtml: string) => {
+                console.log('contentletHtml', contentletHtml);
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);
