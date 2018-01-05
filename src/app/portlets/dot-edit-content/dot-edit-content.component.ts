@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
 import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotMessageService } from '../../api/services/dot-messages-service';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
@@ -27,6 +27,7 @@ export class DotEditContentComponent implements OnInit {
         private ngZone: NgZone,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -61,6 +62,15 @@ export class DotEditContentComponent implements OnInit {
                 }
             });
         });
+
+        this.dotMessageService
+            .getMessages([
+                'editpage.content.contentlet.remove.confirmation_message.header',
+                'editpage.content.contentlet.remove.confirmation_message.message',
+                'editpage.content.contentlet.remove.confirmation_message.accept',
+                'editpage.content.contentlet.remove.confirmation_message.reject'
+            ])
+            .subscribe();
     }
 
     onHide(): void {
@@ -105,7 +115,7 @@ export class DotEditContentComponent implements OnInit {
         this.loadDialogEditor($event.dataset.dotIdentifier, url, $event.contentletEvents);
     }
 
-    private loadDialogEditor(containerId: string, url: string, contentletEvents: BehaviorSubject<any>): void {
+    private loadDialogEditor(containerId: string, url: string, contentletEvents: Subject<any>): void {
         this.dialogTitle = containerId;
         this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
@@ -135,11 +145,11 @@ export class DotEditContentComponent implements OnInit {
             accept: () => {
                 this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
             },
-            header: `Remove a content?`,
-            message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
+            header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
+            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
-                acceptLabel: 'Yes',
-                rejectLabel: 'No',
+                acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
+                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject'),
             },
         });
     }
