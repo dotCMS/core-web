@@ -8,6 +8,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotConfirmationService } from '../../../../api/services/dot-confirmation/index';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -19,11 +20,12 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
 
     form: FormGroup;
-
     pageView: DotPageView;
     saveAsTemplate: boolean;
+    showDialogSelection = false;
 
     constructor(
+        private dotConfirmationService: DotConfirmationService,
         private dotEventsService: DotEventsService,
         private fb: FormBuilder,
         private pageViewService: PageViewService,
@@ -45,7 +47,12 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            this.initForm(pageView);
+
+            if (!this.isLayout()) {
+                this.showDialogSelection = true;
+            }
+
+            this.initForm();
             this.templateContainersCacheService.set(this.pageView.containers);
 
             // Emit event to redraw the grid when the sidebar change
@@ -104,15 +111,20 @@ export class DotEditLayoutComponent implements OnInit {
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
     }
 
-    private initForm(pageView: DotPageView): void {
+    setEditLayoutMode(): void {
+        this.form.get('title').setValue(null);
+        this.showDialogSelection = false;
+    }
+
+    private initForm(): void {
         this.form = this.fb.group({
-            title: this.isLayout() ? null : pageView.template.title,
+            title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
-                body: pageView.layout.body || {},
-                header: pageView.layout.header,
-                footer: pageView.layout.footer,
+                body: this.pageView.layout.body || {},
+                header: this.pageView.layout.header,
+                footer: this.pageView.layout.footer,
                 sidebar: this.fb.group(
-                    pageView.layout.sidebar || {
+                    this.pageView.layout.sidebar || {
                         location: '',
                         containers: [],
                         width: '',

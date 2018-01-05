@@ -4,7 +4,7 @@
         <h3 class="dot-edit-layout__page-title" *ngIf="!saveAsTemplate">{{pageView.page.title}}</h3>
         <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}}" class="dot-edit-layout__toolbar-template-name" *ngIf="saveAsTemplate" formControlName="title">
         <div class="dot-edit-layout__toolbar-actions">
-            <p-checkbox class="dot-edit-layout__toolbar-save-template" label="{{dotMessageService.get('editpage.layout.toolbar.save.template')}}" *ngIf="isLayout()" binary="true" (onChange)="saveAsTemplateHandleChange($event)"></p-checkbox>
+            <p-checkbox class="dot-edit-layout__toolbar-save-template" label="{{dotMessageService.get('editpage.layout.toolbar.save.template')}}" *ngIf="isLayout() || form.get('title').value === null" binary="true" (onChange)="saveAsTemplateHandleChange($event)"></p-checkbox>
             <button pButton flat type="button" label="{{dotMessageService.get('editpage.layout.toolbar.action.cancel')}}" class="dot-edit-layout__toolbar-action-cancel"></button>
             <button pButton flat type="submit"  label="{{dotMessageService.get('editpage.layout.toolbar.action.save')}}" class="dot-edit-layout__toolbar-action-save"></button>
             <dot-layout-properties [group]="form.get('layout')"></dot-layout-properties>
@@ -29,3 +29,11 @@
     </div>
 
 </form>
+
+<p-dialog header="Edit Layout" [(visible)]="showDialogSelection" modal="modal" width="400" [responsive]="true" [closeOnEscape]="false" [closable]="false">
+    <p>Edit the template <b>{{pageView.template.name}}</b> <span class="warn">will update all the pages that use this template</span>, you can edit the template or just the layout for this page.</p>
+    <p-footer>
+        <button type="button" pButton flat (click)="setEditLayoutMode($event)" class="dot-edit-layout__dialog-edit-layout" label="Edit Page"></button>
+        <button type="button" pButton flat (click)="showDialogSelection=false" class="dot-edit-layout__dialog-edit-template" label="Edit Template"></button>
+    </p-footer>
+</p-dialog>
