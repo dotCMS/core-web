@@ -8,7 +8,6 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
-import { MessageService } from 'primeng/components/common/messageservice';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import * as _ from 'lodash';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
@@ -37,7 +36,6 @@ export class DotEditLayoutComponent implements OnInit {
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService,
         public router: Router,
-        private messageService: MessageService,
         private dotEditLayoutService: DotEditLayoutService
     ) {}
 

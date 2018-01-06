@@ -33,5 +33,4 @@ export const COMPONENTS = [
 // CUSTOM PIPES
 import { CapitalizePipe, SafePipe } from './view/pipes/index';
 
-
 export const PIPES = [CapitalizePipe, SafePipe];
