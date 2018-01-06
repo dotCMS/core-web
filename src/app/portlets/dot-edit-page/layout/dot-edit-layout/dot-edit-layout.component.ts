@@ -8,6 +8,10 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { ResponseView } from 'dotcms-js/dotcms-js';
+import * as _ from 'lodash';
+import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -19,6 +23,8 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
 
     form: FormGroup;
+    initialFormValue: FormGroup;
+    isFormPristine = true;
 
     pageView: DotPageView;
     saveAsTemplate: boolean;
@@ -30,7 +36,9 @@ export class DotEditLayoutComponent implements OnInit {
         private route: ActivatedRoute,
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService,
-        public router: Router
+        public router: Router,
+        private messageService: MessageService,
+        private dotEditLayoutService: DotEditLayoutService
     ) {}
 
     ngOnInit(): void {
@@ -39,14 +47,16 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.toolbar.action.save',
                 'editpage.layout.toolbar.action.cancel',
                 'editpage.layout.toolbar.template.name',
-                'editpage.layout.toolbar.save.template'
+                'editpage.layout.toolbar.save.template',
+                'dot.common.message.saving',
+                'dot.common.message.saved'
             ])
             .subscribe();
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.pageView = pageView;
-            this.initForm(pageView);
             this.templateContainersCacheService.set(this.pageView.containers);
+            this.initForm(pageView);
 
             // Emit event to redraw the grid when the sidebar change
             this.form.get('layout.sidebar').valueChanges.subscribe(() => {
@@ -100,15 +110,42 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     saveLayout(event): void {
+        this.dotEventsService.notify('dot-toolbar-message', {
+            config: {
+                sticky: true,
+                iconClass: 'loading'
+            },
+            messageValue: this.dotMessageService.get('dot.common.message.saving')
+        });
         const dotLayout: DotLayout = this.form.value;
-        this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
+        this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
+            response => {
+                this.dotEventsService.notify('dot-toolbar-message', {
+                    messageValue: this.dotMessageService.get('dot.common.message.saved')
+                });
+                // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
+                this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
+                    this.pageView = pageView;
+                    this.templateContainersCacheService.set(this.pageView.containers);
+                    this.initForm(pageView);
+                });
+            },
+            (err: ResponseView) => {
+                this.dotEventsService.notify('dot-toolbar-message', {
+                    messageValue: err.response.statusText
+                });
+            }
+        );
     }
 
     private initForm(pageView: DotPageView): void {
         this.form = this.fb.group({
             title: this.isLayout() ? null : pageView.template.title,
             layout: this.fb.group({
-                body: pageView.layout.body || {},
+                body:
+                    this.dotEditLayoutService.getDotLayoutBody(
+                        this.dotEditLayoutService.getDotLayoutGridBox(pageView.layout.body)
+                    ) || {},
                 header: pageView.layout.header,
                 footer: pageView.layout.footer,
                 sidebar: this.fb.group(
@@ -122,5 +159,18 @@ export class DotEditLayoutComponent implements OnInit {
                 )
             })
         });
+        this.initialFormValue = _.cloneDeep(this.form);
+        this.isFormPristine = true;
+        this.bindActionButtonState();
+    }
+
+    private bindActionButtonState(): void {
+        this.form.valueChanges.subscribe(() => {
+            this.isFormValuePristine();
+        });
+    }
+
+    private isFormValuePristine() {
+        this.isFormPristine = _.isEqual(this.form.value, this.initialFormValue.value);
     }
 }

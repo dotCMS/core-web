@@ -1,0 +1,11 @@
+@import "primeng-theme/utils/theme-variables";
+
+.dot-message-wrapper__visible{
+    opacity: 1;
+    transition:  $basic-speed * 2;
+}
+
+.dot-message-wrapper__hidden{
+    opacity: 0;
+    transition:  $basic-speed * 2;
+}
