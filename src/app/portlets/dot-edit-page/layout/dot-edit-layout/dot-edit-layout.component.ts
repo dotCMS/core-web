@@ -114,6 +114,11 @@ export class DotEditLayoutComponent implements OnInit {
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe();
     }
 
+    /**
+     * Set component to edit layout mode, template have no name.
+     *
+     * @memberof DotEditLayoutComponent
+     */
     setEditLayoutMode(): void {
         this.form.get('title').setValue(null);
         this.showDialogSelection = false;
