@@ -45,6 +45,7 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.dialog.edit.page',
                 'editpage.layout.dialog.edit.template',
                 'editpage.layout.dialog.info',
+                'editpage.layout.dialog.header'
             ])
             .subscribe();
 

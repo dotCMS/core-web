@@ -45,9 +45,9 @@ export class DotMessageService {
         if (arguments.length > 1) {
             return this.messagesLoaded[key]
                 ? this.formatMessage(this.messagesLoaded[key], Array.from(arguments).slice(1))
-                : '';
+                : key;
         } else {
-            return this.messagesLoaded[key] || '';
+            return this.messagesLoaded[key] || key;
         }
     }
 
