@@ -86,7 +86,7 @@ const fakePageView = {
             },
         },
         template: {
-            title: 'A template named',
+            title: 'anonymous_layout_1511798005268',
             inode: '123',
             anonymous: true,
         },
@@ -253,7 +253,7 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
         expect(templateNameInput.attributes.formControlName).toEqual('title');
     });
 
-    it('layput body should has the right formControlName', () => {
+    it('layout body should has the right formControlName', () => {
         fixture.detectChanges();
 
         const dotEditLayoutGrid: DebugElement = fixture.debugElement.query(By.css('dot-edit-layout-grid'));
@@ -286,7 +286,7 @@ const templateRouteData = [
                     template: {
                         ...fakePageView.pageView.template,
                         anonymous: false,
-                        title: 'anonymous_layout_1511798005268'
+                        title: 'Hello Template Name'
                     },
                 },
             }),
@@ -294,7 +294,7 @@ const templateRouteData = [
     },
 ];
 
-fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
+describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
@@ -323,15 +323,21 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         expect(component.form.get('title').value).toBeNull('form title null');
     });
 
-    fit('should set edit template mode', () => {
+    it('should set edit template mode', () => {
         spyOn(component, 'setEditLayoutMode').and.callThrough();
 
         fixture.detectChanges();
         const editLayoutButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__dialog-edit-template'));
         editLayoutButton.nativeElement.click();
         fixture.detectChanges();
+
+        const checkboxSave: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-save-template'),
+        );
+
         expect(component.setEditLayoutMode).not.toHaveBeenCalled();
         expect(component.showDialogSelection).toEqual(false, 'hide the dialog');
-        expect(component.form.get('title').value).toEqual('anonymous_layout_1511798005268');
+        expect(component.form.get('title').value).toEqual('Hello Template Name');
+        expect(checkboxSave).toBeNull('checkbox not showing');
     });
 });

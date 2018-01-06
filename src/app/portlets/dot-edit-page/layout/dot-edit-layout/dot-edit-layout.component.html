@@ -31,9 +31,9 @@
 </form>
 
 <p-dialog header="Edit Layout" [(visible)]="showDialogSelection" modal="modal" width="400" [responsive]="true" [closeOnEscape]="false" [closable]="false">
-    <p>Edit the template <b>{{pageView.template.name}}</b> <span class="warn">will update all the pages that use this template</span>, you can edit the template or just the layout for this page.</p>
+    <span [innerHTML]="dotMessageService.get('editpage.layout.dialog.info', pageView.template.name)"></span>
     <p-footer>
-        <button type="button" pButton flat (click)="setEditLayoutMode($event)" class="dot-edit-layout__dialog-edit-layout" label="Edit Page"></button>
-        <button type="button" pButton flat (click)="showDialogSelection=false" class="dot-edit-layout__dialog-edit-template" label="Edit Template"></button>
+        <button type="button" pButton (click)="setEditLayoutMode($event)" class="dot-edit-layout__dialog-edit-layout" label="{{dotMessageService.get('editpage.layout.dialog.edit.page')}}"></button>
+        <button type="button" pButton (click)="showDialogSelection=false" class="dot-edit-layout__dialog-edit-template" label="{{dotMessageService.get('editpage.layout.dialog.edit.template')}}"></button>
     </p-footer>
 </p-dialog>

@@ -41,7 +41,10 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.toolbar.action.save',
                 'editpage.layout.toolbar.action.cancel',
                 'editpage.layout.toolbar.template.name',
-                'editpage.layout.toolbar.save.template'
+                'editpage.layout.toolbar.save.template',
+                'editpage.layout.dialog.edit.page',
+                'editpage.layout.dialog.edit.template',
+                'editpage.layout.dialog.info',
             ])
             .subscribe();
 
