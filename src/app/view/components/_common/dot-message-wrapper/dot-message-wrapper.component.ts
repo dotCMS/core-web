@@ -14,7 +14,7 @@ export class DotMessageWrapperComponent implements OnInit, OnChanges {
 
     private currentConfig: DotMessageConfiguration = {};
     private icons = {
-        loading: 'fa-circle-o-notch fa-spin'
+        loading: 'fa fa-circle-o-notch fa-spin'
     };
 
     private defaultConfig: DotMessageConfiguration = {

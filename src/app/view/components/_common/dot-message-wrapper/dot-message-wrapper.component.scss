@@ -1,11 +1,26 @@
 @import "primeng-theme/utils/theme-variables";
 
-.dot-message-wrapper__visible{
-    opacity: 1;
-    transition:  $basic-speed * 2;
-}
+:host{
+    display: flex;
 
-.dot-message-wrapper__hidden{
-    opacity: 0;
-    transition:  $basic-speed * 2;
+    .dot-message-wrapper__visible{
+        opacity: 1;
+        transition:  $basic-speed * 2;
+    }
+
+    .dot-message-wrapper__hidden{
+        opacity: 0;
+        transition:  $basic-speed * 2;
+    }
+
+    .dot-message-wrapper__icon{
+        margin: 0 $basic-padding / 2;
+        font-size: 19px;
+    }
+
+    .dot-message-wrapper__text{
+        font-size: $font-size-medium;
+        line-height: 19px;
+        vertical-align: top;
+    }
 }
