@@ -53,7 +53,7 @@ export class DotEditLayoutComponent implements OnInit {
             this.pageView = pageView;
 
             if (!this.isLayout()) {
-                this.showTemplateLayoutSelectionDialog = true;
+                this.showTemplateLayoutDialog();
             }
 
             this.initForm();
@@ -143,5 +143,9 @@ export class DotEditLayoutComponent implements OnInit {
                 )
             })
         });
+    }
+
+    private showTemplateLayoutDialog(): void {
+        this.showTemplateLayoutSelectionDialog = true;
     }
 }
