@@ -8,6 +8,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotConfirmationService } from '../../../../api/services/dot-confirmation/index';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import * as _ from 'lodash';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
@@ -28,8 +29,10 @@ export class DotEditLayoutComponent implements OnInit {
 
     pageView: DotPageView;
     saveAsTemplate: boolean;
+    showTemplateLayoutSelectionDialog = false;
 
     constructor(
+        private dotConfirmationService: DotConfirmationService,
         private dotEventsService: DotEventsService,
         private fb: FormBuilder,
         private pageViewService: PageViewService,
@@ -48,6 +51,10 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.toolbar.action.cancel',
                 'editpage.layout.toolbar.template.name',
                 'editpage.layout.toolbar.save.template',
+                'editpage.layout.dialog.edit.page',
+                'editpage.layout.dialog.edit.template',
+                'editpage.layout.dialog.info',
+                'editpage.layout.dialog.header',
                 'dot.common.message.saving',
                 'dot.common.message.saved'
             ])
@@ -55,6 +62,9 @@ export class DotEditLayoutComponent implements OnInit {
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
             this.setUpLayOut(pageView);
+            if (!this.isLayout()) {
+                this.showTemplateLayoutDialog();
+            }
             // Emit event to redraw the grid when the sidebar change
             this.form.get('layout.sidebar').valueChanges.subscribe(() => {
                 this.dotEventsService.notify('layout-sidebar-change');
@@ -123,6 +133,16 @@ export class DotEditLayoutComponent implements OnInit {
         );
     }
 
+    /**
+     * Set component to edit layout mode, template have no name.
+     *
+     * @memberof DotEditLayoutComponent
+     */
+    setEditLayoutMode(): void {
+        this.form.get('title').setValue(null);
+        this.showTemplateLayoutSelectionDialog = false;
+    }
+
     private setUpLayOut(pageView: DotPageView): void {
         this.pageView = pageView;
         this.templateContainersCacheService.set(this.pageView.containers);
@@ -134,9 +154,9 @@ export class DotEditLayoutComponent implements OnInit {
             title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
                 body:
-                    this.dotEditLayoutService.getDotLayoutBody(
-                        this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
-                    ) || {},
+                this.dotEditLayoutService.getDotLayoutBody(
+                    this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
+                ) || {},
                 header: this.pageView.layout.header,
                 footer: this.pageView.layout.footer,
                 sidebar: this.fb.group(
@@ -159,5 +179,9 @@ export class DotEditLayoutComponent implements OnInit {
 
     private isFormValuePristine() {
         return _.isEqual(this.form.value, this.initialFormValue.value);
+    }
+
+    private showTemplateLayoutDialog(): void {
+        this.showTemplateLayoutSelectionDialog = true;
     }
 }
