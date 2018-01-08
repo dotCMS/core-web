@@ -5,7 +5,7 @@ export const EDIT_PAGE_JS = `
 (function () {
     var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
 
-    function getModel() {
+    function getDotNgModel() {
         var model = {};
         containers.forEach(function(container) {
             var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
@@ -41,12 +41,11 @@ export const EDIT_PAGE_JS = `
         }
     });
     drake.on('dragend', function(el) {
-        console.log('dragend');
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
 
-        window.${MODEL_VAR_NAME}.next(getModel());
+        window.${MODEL_VAR_NAME}.next(getDotNgModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
         if (target !== source) {
@@ -66,7 +65,7 @@ export const EDIT_PAGE_JS = `
         }
     })
 
-    window.${MODEL_VAR_NAME}.next(getModel());
-    window.getModel = getModel;
+    window.${MODEL_VAR_NAME}.next(getDotNgModel());
+    window.getDotNgModel = getDotNgModel;
 })();
 `;

@@ -15,7 +15,7 @@ export class DotEditContentHtmlService {
     contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     iframe: ElementRef;
 
-    modelChange: Subject<any> = new Subject();
+    pageModelChange: Subject<any> = new Subject();
 
     public addContentContainer: string;
     public addContentContainerInode: string;
@@ -51,7 +51,7 @@ export class DotEditContentHtmlService {
         this.loadCodeIntoIframe(editPageHTML);
 
         const iframeElement = this.getEditPageIframe();
-        iframeElement.contentWindow[MODEL_VAR_NAME] = this.modelChange;
+        iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModelChange;
         iframeElement.contentWindow.contentletEvents = this.contentletEvents;
 
         iframeElement.addEventListener('load', () => {
@@ -63,7 +63,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const contenletEl = doc.querySelector(`div[data-dot-inode="${inode}"]`);
         contenletEl.remove();
-        this.modelChange.next(this.getContentModel());
+        this.pageModelChange.next(this.getContentModel());
     }
 
     renderAddedContentlet(contentlet: any): void {
@@ -74,11 +74,10 @@ export class DotEditContentHtmlService {
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
-        console.log('contentlet', contentlet);
+
         this.dotContainerContentletService
             .getContentletToContainer(this.addContentContainer, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
-                console.log('contentletHtml', contentletHtml);
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
                 // Removing the loading indicator
@@ -88,7 +87,7 @@ export class DotEditContentHtmlService {
                 this.addContentContainer = null;
 
                 // Update the model with the recently added contentlet
-                this.modelChange.next(this.getContentModel());
+                this.pageModelChange.next(this.getContentModel());
             });
     }
 
@@ -98,8 +97,7 @@ export class DotEditContentHtmlService {
     }
 
     getContentModel(): any {
-        console.log('contentModel');
-        return this.getEditPageIframe().contentWindow.getModel();
+        return this.getEditPageIframe().contentWindow.getDotNgModel();
     }
 
     private addContentToolBars(): void {
@@ -126,7 +124,6 @@ export class DotEditContentHtmlService {
         div.innerHTML = renderedContentet;
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
-            console.log('node', node);
             if (node.tagName === 'SCRIPT') {
                 const script = doc.createElement('script');
                 script.type = 'text/javascript';
@@ -175,7 +172,6 @@ export class DotEditContentHtmlService {
     }
 
     private bindEventToAddContentSubMenu(button: Node): void {
-        console.log('button', button);
         button.addEventListener('click', $event => {
             this.closeContainersToolBarMenu(button.parentElement);
             button.parentElement.classList.toggle('active');
@@ -287,15 +283,12 @@ export class DotEditContentHtmlService {
             `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
         );
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
-
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
-
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
-        console.log('relocateInfo.contentlet', relocateInfo.contentlet);
+
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
             .subscribe((contentletHtml: string) => {
-                console.log('contentletHtml', contentletHtml);
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);

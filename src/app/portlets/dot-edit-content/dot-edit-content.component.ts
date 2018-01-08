@@ -28,7 +28,6 @@ export class DotEditContentComponent implements OnInit {
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
-        private ref: ChangeDetectorRef,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         public dotEditContentHtmlService: DotEditContentHtmlService,
@@ -67,7 +66,7 @@ export class DotEditContentComponent implements OnInit {
                 }
             });
 
-            this.dotEditContentHtmlService.modelChange
+            this.dotEditContentHtmlService.pageModelChange
                 .subscribe(model =>  {
                     if (this.originalValue) {
                         this.ngZone.run(() => {
@@ -76,8 +75,6 @@ export class DotEditContentComponent implements OnInit {
                     } else {
                         this.setOriginalValue(model);
                     }
-
-                    console.log('model', model);
                 });
         });
     }
@@ -153,19 +150,17 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        this.ngZone.run(() => {
-            // TODO: dialog it's not showing until click in the overlay
-            this.dotConfirmationService.confirm({
-                accept: () => {
-                    this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
-                },
-                header: `Remove a content?`,
-                message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
-                footerLabel: {
-                    acceptLabel: 'Yes',
-                    rejectLabel: 'No',
-                },
-            });
+        // TODO: dialog it's not showing until click in the overlay
+        this.dotConfirmationService.confirm({
+            accept: () => {
+                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
+            },
+            header: `Remove a content?`,
+            message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
+            footerLabel: {
+                acceptLabel: 'Yes',
+                rejectLabel: 'No',
+            },
         });
     }
 }

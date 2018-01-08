@@ -14,6 +14,12 @@ export class DotContainerContentletService {
         }).pluck('bodyJsonObject', 'render');
     }
 
+    /**
+     * Save a page's content
+     * @param pageId Page's ID
+     * @param model content model
+     */
+    // TODO create a interface for model
     saveContentlet(pageId: string, model: any): Observable<string> {
         return this.coreWebService.requestView({
             method: RequestMethod.Post,
