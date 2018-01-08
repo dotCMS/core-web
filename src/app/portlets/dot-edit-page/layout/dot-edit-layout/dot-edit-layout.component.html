@@ -30,10 +30,10 @@
 
 </form>
 
-<p-dialog header="{{dotMessageService.get('editpage.layout.dialog.header')}}" [(visible)]="showDialogSelection" modal="modal" width="400" [responsive]="true" [closeOnEscape]="false" [closable]="false">
+<p-dialog header="{{dotMessageService.get('editpage.layout.dialog.header')}}" [(visible)]="showTemplateLayoutSelectionDialog" modal="modal" width="400" [responsive]="true" [closeOnEscape]="false" [closable]="false">
     <span [innerHTML]="dotMessageService.get('editpage.layout.dialog.info', pageView.template.name)"></span>
     <p-footer>
         <button type="button" pButton (click)="setEditLayoutMode($event)" class="dot-edit-layout__dialog-edit-layout" label="{{dotMessageService.get('editpage.layout.dialog.edit.page')}}"></button>
-        <button type="button" pButton (click)="showDialogSelection=false" class="dot-edit-layout__dialog-edit-template" label="{{dotMessageService.get('editpage.layout.dialog.edit.template')}}"></button>
+        <button type="button" pButton (click)="showTemplateLayoutSelectionDialog=false" class="dot-edit-layout__dialog-edit-template" label="{{dotMessageService.get('editpage.layout.dialog.edit.template')}}"></button>
     </p-footer>
 </p-dialog>

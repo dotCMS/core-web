@@ -18,7 +18,7 @@ export class DotMessageService {
     constructor(
         loginService: LoginService,
         private formatDateService: FormatDateService,
-        private coreWebService: CoreWebService,
+        private coreWebService: CoreWebService
     ) {
         // There are tons of components asking for messages at the same time, when messages are not loaded yet
         // instead of doing tons of request, we acumulate the keys every component is asking for and then do one
@@ -41,10 +41,17 @@ export class DotMessageService {
         });
     }
 
-    get(key: string): string {
-        if (arguments.length > 1) {
+    /**
+     * Return the message key value, formatted if more values are passed.
+     *
+     * @param {string} key
+     * @returns {string}
+     * @memberof DotMessageService
+     */
+    get(key: string, args?: IArguments): string {
+        if (args && args.length > 1) {
             return this.messagesLoaded[key]
-                ? this.formatMessage(this.messagesLoaded[key], Array.from(arguments).slice(1))
+                ? this.formatMessage(this.messagesLoaded[key], Array.from(args).slice(1))
                 : key;
         } else {
             return this.messagesLoaded[key] || key;
@@ -102,7 +109,7 @@ export class DotMessageService {
             'relativetime.M',
             'relativetime.MM',
             'relativetime.y',
-            'relativetime.yy',
+            'relativetime.yy'
         ];
         this.getMessages(relativeDateKeys).subscribe((res) => {
             const relativeDateMessages = _.mapKeys(res, (value, key: string) => {
@@ -119,10 +126,10 @@ export class DotMessageService {
         this.coreWebService
             .requestView({
                 body: {
-                    messagesKey: this.messageKeys,
+                    messagesKey: this.messageKeys
                 },
                 method: RequestMethod.Post,
-                url: this.i18nUrl,
+                url: this.i18nUrl
             })
             .pluck('i18nMessagesMap')
             .subscribe((messages) => {

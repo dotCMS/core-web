@@ -22,7 +22,7 @@ export class DotEditLayoutComponent implements OnInit {
     form: FormGroup;
     pageView: DotPageView;
     saveAsTemplate: boolean;
-    showDialogSelection = false;
+    showTemplateLayoutSelectionDialog = false;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
@@ -53,7 +53,7 @@ export class DotEditLayoutComponent implements OnInit {
             this.pageView = pageView;
 
             if (!this.isLayout()) {
-                this.showDialogSelection = true;
+                this.showTemplateLayoutSelectionDialog = true;
             }
 
             this.initForm();
@@ -122,7 +122,7 @@ export class DotEditLayoutComponent implements OnInit {
      */
     setEditLayoutMode(): void {
         this.form.get('title').setValue(null);
-        this.showDialogSelection = false;
+        this.showTemplateLayoutSelectionDialog = false;
     }
 
     private initForm(): void {
