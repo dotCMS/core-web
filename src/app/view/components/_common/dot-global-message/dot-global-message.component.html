@@ -1,4 +1,4 @@
-<div class="dot-global-message__{{visibilityStatus}}">
-    <span class="dot-global-message__icon {{iconClass}}"></span>
-    <span class="dot-global-message__text">{{value}}</span>
+<div [ngClass]="{'dot-global-message__visible': visibilityStatus}">
+    <span class="dot-global-message__icon {{message.type}}"></span>
+    <span class="dot-global-message__text">{{message.value}}</span>
 </div>

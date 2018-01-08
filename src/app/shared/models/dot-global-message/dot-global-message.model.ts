@@ -1,5 +1,5 @@
-export interface DotMessageConfiguration {
-    iconClass?: string;
+export interface DotGlobalMessage {
+    value: string;
+    type?: string;
     life?: number;
-    sticky?: boolean;
 }

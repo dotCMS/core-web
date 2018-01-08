@@ -11,6 +11,7 @@ import { DotEventsService } from '../../../../api/services/dot-events/dot-events
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import * as _ from 'lodash';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
+import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-edit-layout',
@@ -23,7 +24,7 @@ export class DotEditLayoutComponent implements OnInit {
 
     form: FormGroup;
     initialFormValue: FormGroup;
-    isFormPristine = true;
+    disableUpdateButton = true;
 
     pageView: DotPageView;
     saveAsTemplate: boolean;
@@ -36,7 +37,8 @@ export class DotEditLayoutComponent implements OnInit {
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService,
         public router: Router,
-        private dotEditLayoutService: DotEditLayoutService
+        private dotEditLayoutService: DotEditLayoutService,
+        private dotGlobalMessageService: DotGlobalMessageService
     ) {}
 
     ngOnInit(): void {
@@ -52,10 +54,7 @@ export class DotEditLayoutComponent implements OnInit {
             .subscribe();
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
-            this.pageView = pageView;
-            this.templateContainersCacheService.set(this.pageView.containers);
-            this.initForm(pageView);
-
+            this.setUpLayOut(pageView);
             // Emit event to redraw the grid when the sidebar change
             this.form.get('layout.sidebar').valueChanges.subscribe(() => {
                 this.dotEventsService.notify('layout-sidebar-change');
@@ -108,46 +107,40 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     saveLayout(event): void {
-        this.dotEventsService.notify('dot-toolbar-message', {
-            config: {
-                sticky: true,
-                iconClass: 'loading'
-            },
-            messageValue: this.dotMessageService.get('dot.common.message.saving')
-        });
+        this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
             response => {
-                this.dotEventsService.notify('dot-toolbar-message', {
-                    messageValue: this.dotMessageService.get('dot.common.message.saved')
-                });
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
                 this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
-                    this.pageView = pageView;
-                    this.templateContainersCacheService.set(this.pageView.containers);
-                    this.initForm(pageView);
+                    this.setUpLayOut(pageView);
                 });
             },
             (err: ResponseView) => {
-                this.dotEventsService.notify('dot-toolbar-message', {
-                    messageValue: err.response.statusText
-                });
+                this.dotGlobalMessageService.error(err.response.statusText);
             }
         );
     }
 
-    private initForm(pageView: DotPageView): void {
+    private setUpLayOut(pageView: DotPageView): void {
+        this.pageView = pageView;
+        this.templateContainersCacheService.set(this.pageView.containers);
+        this.initForm();
+    }
+
+    private initForm(): void {
         this.form = this.fb.group({
-            title: this.isLayout() ? null : pageView.template.title,
+            title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
                 body:
                     this.dotEditLayoutService.getDotLayoutBody(
-                        this.dotEditLayoutService.getDotLayoutGridBox(pageView.layout.body)
+                        this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
                     ) || {},
-                header: pageView.layout.header,
-                footer: pageView.layout.footer,
+                header: this.pageView.layout.header,
+                footer: this.pageView.layout.footer,
                 sidebar: this.fb.group(
-                    pageView.layout.sidebar || {
+                    this.pageView.layout.sidebar || {
                         location: '',
                         containers: [],
                         width: '',
@@ -158,17 +151,13 @@ export class DotEditLayoutComponent implements OnInit {
             })
         });
         this.initialFormValue = _.cloneDeep(this.form);
-        this.isFormPristine = true;
-        this.bindActionButtonState();
-    }
-
-    private bindActionButtonState(): void {
+        this.disableUpdateButton = true;
         this.form.valueChanges.subscribe(() => {
-            this.isFormValuePristine();
+            this.disableUpdateButton = this.isFormValuePristine();
         });
     }
 
     private isFormValuePristine() {
-        this.isFormPristine = _.isEqual(this.form.value, this.initialFormValue.value);
+        return _.isEqual(this.form.value, this.initialFormValue.value);
     }
 }

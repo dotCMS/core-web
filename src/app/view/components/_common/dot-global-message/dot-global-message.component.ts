@@ -1,45 +1,33 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { DotMessageConfiguration } from '../../../../shared/models/dot-message-configuration/dot-message-configuration.model';
+import { Component, OnInit } from '@angular/core';
+import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
 
 @Component({
     selector: 'dot-global-message',
     templateUrl: './dot-global-message.component.html',
     styleUrls: ['./dot-global-message.component.scss']
 })
-export class DotMessageWrapperComponent implements OnInit, OnChanges {
-    @Input() value: string;
-    @Input() config: DotMessageConfiguration;
-    iconClass: string;
-    visibilityStatus = 'hidden';
+export class DotGlobalMessageComponent implements OnInit {
+    visibilityStatus = false;
+    message: DotGlobalMessage = { value: '' };
 
-    private currentConfig: DotMessageConfiguration = {};
     private icons = {
         loading: 'fa fa-circle-o-notch fa-spin'
     };
 
-    private defaultConfig: DotMessageConfiguration = {
-        life: 3000,
-        sticky: false,
-        iconClass: '' // type
-    };
-
-    constructor() {}
+    constructor(private dotEventsService: DotEventsService) {}
 
     ngOnInit() {
-        Object.assign(this.currentConfig, this.defaultConfig, this.config); // remove  default.
-    }
-
-    ngOnChanges(changes: any) {
-        this.visibilityStatus = 'visible';
-        Object.assign(this.currentConfig, this.defaultConfig);
-        if (this.config) {
-            Object.assign(this.currentConfig, this.config);
-        }
-        this.iconClass = this.icons[this.currentConfig.iconClass] || '';
-        if (!this.currentConfig.sticky) {
-            setTimeout(() => {
-                this.visibilityStatus = 'hidden'; // angular animation.
-            }, this.currentConfig.life);
-        }
+        this.dotEventsService.listen('dot-global-message').subscribe((event: DotEvent) => {
+            this.message = event.data;
+            this.visibilityStatus = true;
+            this.message.type = this.icons[this.message.type] || '';
+            if (this.message.life) {
+                setTimeout(() => {
+                    this.visibilityStatus = false;
+                }, this.message.life);
+            }
+        });
     }
 }

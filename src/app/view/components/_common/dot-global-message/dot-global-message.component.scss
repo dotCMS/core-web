@@ -3,13 +3,13 @@
 :host{
     display: flex;
 
-    .dot-global-message__visible{
-        opacity: 1;
+    div:first-child{
+        opacity: 0;
         transition:  $basic-speed * 2;
     }
 
-    .dot-global-message__hidden{
-        opacity: 0;
+    div.dot-global-message__visible{
+        opacity: 1;
         transition:  $basic-speed * 2;
     }
 

@@ -11,7 +11,6 @@ import { NotificationsList, NotificationsItem } from './view/components/_common/
 import { ToolbarNotifications } from './view/components/toolbar-notifications/toolbar-notifications';
 import { ToolbarUserComponent } from './view/components/toolbar-user/toolbar-user';
 import { ToolbarComponent } from './view/components/dot-toolbar/dot-toolbar.component';
-import { DotMessageWrapperComponent } from './view/components/_common/dot-message-wrapper/dot-message-wrapper.component';
 
 export const COMPONENTS = [
     CustomTimeComponent,
@@ -26,8 +25,7 @@ export const COMPONENTS = [
     NotificationsList,
     ToolbarComponent,
     ToolbarNotifications,
-    ToolbarUserComponent,
-    DotMessageWrapperComponent
+    ToolbarUserComponent
 ];
 
 // CUSTOM PIPES
