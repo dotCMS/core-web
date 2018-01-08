@@ -8,6 +8,8 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
+import { DotContainersColumn } from '../models/dot-containers-column.model';
+import { DotContainersColumnBox } from '../models/dot-containers-column-box.model';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -30,7 +32,12 @@ export class DotEditLayoutService {
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
-                    containers: column.containers.map(containerId => this.templateContainersCacheService.get(containerId)),
+                    containers: column.containers.map((dotContainersColumn: DotContainersColumn) => {
+                        return {
+                            container: this.templateContainersCacheService.get(dotContainersColumn.identifier),
+                            uuid: dotContainersColumn.uuid
+                        };
+                    }),
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,
@@ -68,7 +75,12 @@ export class DotEditLayoutService {
                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
-                        containers: layoutGridBox.containers.map(container => container.identifier)
+                        containers: layoutGridBox.containers.map((dotContainersColumnBox: DotContainersColumnBox) => {
+                            return {
+                                identifier: dotContainersColumnBox.container.identifier,
+                                uuid: dotContainersColumnBox.uuid
+                            };
+                        }
                     }
             )
         };
