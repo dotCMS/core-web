@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotMessageWrapperComponent } from './dot-message-wrapper.component';
+import { DotGlobalMessageComponent } from './dot-global-message.component';
 
-describe('DotMessageWrapperComponent', () => {
-  let component: DotMessageWrapperComponent;
-  let fixture: ComponentFixture<DotMessageWrapperComponent>;
+describe('DotGlobalMessageComponent', () => {
+  let component: DotGlobalMessageComponent;
+  let fixture: ComponentFixture<DotGlobalMessageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DotMessageWrapperComponent ]
+      declarations: [ DotGlobalMessageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotMessageWrapperComponent);
+    fixture = TestBed.createComponent(DotGlobalMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

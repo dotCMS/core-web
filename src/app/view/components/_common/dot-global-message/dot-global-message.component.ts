@@ -2,9 +2,9 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { DotMessageConfiguration } from '../../../../shared/models/dot-message-configuration/dot-message-configuration.model';
 
 @Component({
-    selector: 'dot-dot-message-wrapper',
-    templateUrl: './dot-message-wrapper.component.html',
-    styleUrls: ['./dot-message-wrapper.component.scss']
+    selector: 'dot-global-message',
+    templateUrl: './dot-global-message.component.html',
+    styleUrls: ['./dot-global-message.component.scss']
 })
 export class DotMessageWrapperComponent implements OnInit, OnChanges {
     @Input() value: string;
@@ -20,13 +20,13 @@ export class DotMessageWrapperComponent implements OnInit, OnChanges {
     private defaultConfig: DotMessageConfiguration = {
         life: 3000,
         sticky: false,
-        iconClass: ''
+        iconClass: '' // type
     };
 
     constructor() {}
 
     ngOnInit() {
-        Object.assign(this.currentConfig, this.defaultConfig, this.config);
+        Object.assign(this.currentConfig, this.defaultConfig, this.config); // remove  default.
     }
 
     ngOnChanges(changes: any) {
@@ -38,7 +38,7 @@ export class DotMessageWrapperComponent implements OnInit, OnChanges {
         this.iconClass = this.icons[this.currentConfig.iconClass] || '';
         if (!this.currentConfig.sticky) {
             setTimeout(() => {
-                this.visibilityStatus = 'hidden';
+                this.visibilityStatus = 'hidden'; // angular animation.
             }, this.currentConfig.life);
         }
     }
