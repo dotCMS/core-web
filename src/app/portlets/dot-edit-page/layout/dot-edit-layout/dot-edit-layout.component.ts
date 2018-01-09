@@ -153,10 +153,7 @@ export class DotEditLayoutComponent implements OnInit {
         this.form = this.fb.group({
             title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
-                body:
-                    this.dotEditLayoutService.getDotLayoutBody(
-                        this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
-                    ) || {},
+                body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageView.layout.body) || {},
                 header: this.pageView.layout.header,
                 footer: this.pageView.layout.footer,
                 sidebar: this.fb.group(

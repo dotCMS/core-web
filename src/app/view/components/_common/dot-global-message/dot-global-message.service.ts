@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
-import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
 
 /**
  * Service to provide configurations for Global Messages.
@@ -10,8 +9,6 @@ import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/d
  */
 @Injectable()
 export class DotGlobalMessageService {
-    private config: DotGlobalMessage;
-
     constructor(public dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {
         this.dotMessageService
             .getMessages(['dot.common.message.loading', 'dot.common.message.loaded', 'dot.common.message.error'])
