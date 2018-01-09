@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
@@ -15,7 +15,7 @@ import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
     styleUrls: ['./dot-global-message.component.scss']
 })
 export class DotGlobalMessageComponent implements OnInit {
-    visibility = false;
+    @HostBinding('class.dot-global-message--visible') visibility = false;
     message: DotGlobalMessage = { value: '' };
 
     private icons = {
@@ -25,8 +25,10 @@ export class DotGlobalMessageComponent implements OnInit {
     constructor(private dotEventsService: DotEventsService) {}
 
     ngOnInit() {
-        this.dotEventsService.listen('dot-global-message').subscribe((event: DotEvent) => {
-            if (event.data) {
+        this.dotEventsService
+            .listen('dot-global-message')
+            .filter(event => !!event.data)
+            .subscribe((event: DotEvent) => {
                 this.message = event.data;
                 this.visibility = true;
                 this.message.type = this.icons[this.message.type] || '';
@@ -35,7 +37,6 @@ export class DotGlobalMessageComponent implements OnInit {
                         this.visibility = false;
                     }, this.message.life);
                 }
-            }
-        });
+            });
     }
 }

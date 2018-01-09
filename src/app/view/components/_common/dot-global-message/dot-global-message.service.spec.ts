@@ -36,14 +36,14 @@ describe('DotGlobalMessageService', () => {
         listenerDotGlobalMessage = dotEventsService.listen('dot-global-message');
     });
 
-    it('should set the default DotGlobalMessage Object to the display scenario', () => {
+    it('should set the default DotGlobalMessage Object to the Display scenario', () => {
         dotGlobalMessageService.display();
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
             expect(event.data).toEqual({ value: 'Loaded', life: 3000 });
         });
     });
 
-    it('should set a specific text for the display scenario', () => {
+    it('should set a specific text for the Display scenario', () => {
         dotGlobalMessageService.display('test');
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
             expect(event.data).toEqual({ value: 'test', life: 3000 });
@@ -57,7 +57,7 @@ describe('DotGlobalMessageService', () => {
         });
     });
 
-    it('', () => {
+    it('should set a specific text for the Loading scenario', () => {
         dotGlobalMessageService.loading('TEST');
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
             expect(event.data).toEqual({ value: 'TEST', type: 'loading' });
@@ -71,7 +71,7 @@ describe('DotGlobalMessageService', () => {
         });
     });
 
-    it('should set a specific text for the display scenario', () => {
+    it('should set a specific text for the Error scenario', () => {
         dotGlobalMessageService.error('test error');
         listenerDotGlobalMessage.subscribe((event: DotEvent) => {
             expect(event.data).toEqual({ value: 'test error', life: 3000 });

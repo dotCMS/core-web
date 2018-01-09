@@ -25,7 +25,7 @@ export class DotEditLayoutComponent implements OnInit {
 
     form: FormGroup;
     initialFormValue: FormGroup;
-    disableUpdateButton = true;
+    isModelUpdated = false;
 
     pageView: DotPageView;
     saveAsTemplate: boolean;
@@ -61,7 +61,7 @@ export class DotEditLayoutComponent implements OnInit {
             .subscribe();
 
         this.route.data.pluck('pageView').subscribe((pageView: DotPageView) => {
-            this.setUpLayOut(pageView);
+            this.setupLayout(pageView);
             if (!this.isLayout()) {
                 this.showTemplateLayoutDialog();
             }
@@ -121,10 +121,10 @@ export class DotEditLayoutComponent implements OnInit {
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
             response => {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
                 this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
-                    this.setUpLayOut(pageView);
+                    this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                    this.setupLayout(pageView);
                 });
             },
             (err: ResponseView) => {
@@ -143,7 +143,7 @@ export class DotEditLayoutComponent implements OnInit {
         this.showTemplateLayoutSelectionDialog = false;
     }
 
-    private setUpLayOut(pageView: DotPageView): void {
+    private setupLayout(pageView: DotPageView): void {
         this.pageView = pageView;
         this.templateContainersCacheService.set(this.pageView.containers);
         this.initForm();
@@ -171,14 +171,10 @@ export class DotEditLayoutComponent implements OnInit {
             })
         });
         this.initialFormValue = _.cloneDeep(this.form);
-        this.disableUpdateButton = true;
+        this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
-            this.disableUpdateButton = this.isFormValuePristine();
+            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue.value);
         });
-    }
-
-    private isFormValuePristine() {
-        return _.isEqual(this.form.value, this.initialFormValue.value);
     }
 
     private showTemplateLayoutDialog(): void {

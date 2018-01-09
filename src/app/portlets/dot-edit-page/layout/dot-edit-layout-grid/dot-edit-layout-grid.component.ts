@@ -119,7 +119,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      *
      * @memberof DotEditLayoutGridComponent
      */
-    onDragOrReseizeStop(): void {
+    updateModel(): void {
         this.deleteEmptyRows();
         this.propagateChange(this.getModel());
     }

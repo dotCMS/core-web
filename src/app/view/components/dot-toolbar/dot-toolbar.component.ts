@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, Output, EventEmitter, Input } from '@angular/core';
 import { SiteService, Site } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 

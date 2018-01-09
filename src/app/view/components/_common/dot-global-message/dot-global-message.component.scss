@@ -1,26 +1,22 @@
-@import "primeng-theme/utils/theme-variables";
+@import 'primeng-theme/utils/theme-variables';
 
-:host{
+:host {
     display: flex;
+    opacity: 0;
+    transition: $basic-speed * 2;
+}
 
-    div:first-child{
-        opacity: 0;
-        transition:  $basic-speed * 2;
-    }
+:host(.dot-global-message--visible) {
+    opacity: 1;
+}
 
-    div.dot-global-message__visible{
-        opacity: 1;
-        transition:  $basic-speed * 2;
-    }
+.dot-global-message__icon {
+    margin: 0 $basic-padding / 2;
+    font-size: 19px;
+}
 
-    .dot-global-message__icon{
-        margin: 0 $basic-padding / 2;
-        font-size: 19px;
-    }
-
-    .dot-global-message__text{
-        font-size: $font-size-medium;
-        line-height: 19px;
-        vertical-align: top;
-    }
+.dot-global-message__text {
+    font-size: $font-size-medium;
+    line-height: 19px;
+    vertical-align: top;
 }

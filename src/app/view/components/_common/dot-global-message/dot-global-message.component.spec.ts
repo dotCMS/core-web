@@ -28,8 +28,9 @@ describe('DotGlobalMessageComponent', () => {
 
     it('should set visibility to false after 10 ms', () => {
         dotEventsService.notify('dot-global-message', { value: 'test', life: 10 });
+        // TODO: Find a way to get rid of timeouts.
         setTimeout(() => {
             expect(component.visibility).toEqual(false);
-        }, 12);
+        }, 90);
     });
 });

@@ -1,9 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
-
-
 
 /**
  * Service to provide configurations for Global Messages.
@@ -11,12 +9,10 @@ import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/d
  * @class DotGlobalMessageService
  */
 @Injectable()
-export class DotGlobalMessageService implements OnInit {
+export class DotGlobalMessageService {
     private config: DotGlobalMessage;
 
-    constructor(public dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {}
-
-    ngOnInit(): void {
+    constructor(public dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {
         this.dotMessageService
             .getMessages(['dot.common.message.loading', 'dot.common.message.loaded', 'dot.common.message.error'])
             .subscribe();
@@ -27,11 +23,10 @@ export class DotGlobalMessageService implements OnInit {
      * @param {string} message
      */
     display(message?: string): void {
-        this.config = {
+        this.dotEventsService.notify('dot-global-message', {
             value: message ? message : this.dotMessageService.get('dot.common.message.loaded'),
             life: 3000
-        };
-        this.dotEventsService.notify('dot-global-message', this.config);
+        });
     }
 
     /**
@@ -39,11 +34,10 @@ export class DotGlobalMessageService implements OnInit {
      * @param {string} message
      */
     loading(message?: string): void {
-        this.config = {
+        this.dotEventsService.notify('dot-global-message', {
             value: message ? message : this.dotMessageService.get('dot.common.message.loading'),
             type: 'loading'
-        };
-        this.dotEventsService.notify('dot-global-message', this.config);
+        });
     }
 
     /**
@@ -52,10 +46,9 @@ export class DotGlobalMessageService implements OnInit {
      */
     error(message?: string): void {
         // TODO: Define the behaior of error messages.
-        this.config = {
+        this.dotEventsService.notify('dot-global-message', {
             value: message ? message : this.dotMessageService.get('dot.common.message.error'),
             life: 3000
-        };
-        this.dotEventsService.notify('dot-global-message', this.config);
+        });
     }
 }
