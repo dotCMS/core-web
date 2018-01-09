@@ -1,24 +1,24 @@
+
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotConfirmationService } from '../../api/services/dot-confirmation';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-
+import { DotMessageService } from '../../api/services/dot-messages-service';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
-    styleUrls: ['./dot-edit-content.component.scss'],
+    styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit {
     @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
-    contentletEvents: BehaviorSubject<any> = new BehaviorSubject({});
     dialogTitle: string;
     source: any;
     pageIdentifier: string;
@@ -30,10 +30,11 @@ export class DotEditContentComponent implements OnInit {
         private dotConfirmationService: DotConfirmationService,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
+        private ngZone: NgZone,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         private dotContainerContentletService: DotContainerContentletService,
-        private ngZone: NgZone,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private dotMessageService: DotMessageService
     ) {}
 
 
@@ -54,7 +55,9 @@ export class DotEditContentComponent implements OnInit {
                         this.addContentlet(res);
                         break;
                     case 'remove':
-                        this.removeContentlet(res);
+                        this.ngZone.run(() => {
+                            this.removeContentlet(res);
+                        });
                         break;
                     case 'cancel':
                     case 'save':
@@ -77,6 +80,15 @@ export class DotEditContentComponent implements OnInit {
                     }
                 });
         });
+
+        this.dotMessageService
+            .getMessages([
+                'editpage.content.contentlet.remove.confirmation_message.header',
+                'editpage.content.contentlet.remove.confirmation_message.message',
+                'editpage.content.contentlet.remove.confirmation_message.accept',
+                'editpage.content.contentlet.remove.confirmation_message.reject'
+            ])
+            .subscribe();
     }
 
     onHide(): void {
@@ -127,7 +139,7 @@ export class DotEditContentComponent implements OnInit {
         this.loadDialogEditor($event.dataset.dotIdentifier, url, $event.contentletEvents);
     }
 
-    private loadDialogEditor(containerId: string, url: string, contentletEvents: BehaviorSubject<any>): void {
+    private loadDialogEditor(containerId: string, url: string, contentletEvents: Subject<any>): void {
         this.ngZone.run(() => {
             this.dialogTitle = containerId;
             this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -137,6 +149,7 @@ export class DotEditContentComponent implements OnInit {
                 element it's available in the DOM
             */
             setTimeout(() => {
+                console.log('this.contentletActionsIframe', this.contentletActionsIframe);
                 const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
                 /*
@@ -150,16 +163,15 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        // TODO: dialog it's not showing until click in the overlay
         this.dotConfirmationService.confirm({
             accept: () => {
                 this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
             },
-            header: `Remove a content?`,
-            message: `Are you sure you want to remove this contentlet from the page? this action can't be undone`,
+            header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
+            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
-                acceptLabel: 'Yes',
-                rejectLabel: 'No',
+                acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
+                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject'),
             },
         });
     }

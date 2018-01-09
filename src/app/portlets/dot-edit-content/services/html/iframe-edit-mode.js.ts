@@ -6,13 +6,18 @@ export const EDIT_PAGE_JS = `
     var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
 
     function getDotNgModel() {
-        var model = {};
+        var model = [];
         containers.forEach(function(container) {
+            var dotContainerColumn = {};
+            dotContainerColumn.id = container.dataset.dotIdentifier;
+            dotContainerColumn.uuid = container.dataset.dotUuid;
             var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
 
-            model[container.dataset.dotIdentifier] = contentlets.map(function(contentlet) {
+            dotContainerColumn.contentletsId = contentlets.map(function(contentlet) {
                 return contentlet.dataset.dotIdentifier;
             });
+
+            model.push(dotContainerColumn);
         });
         return model;
    }

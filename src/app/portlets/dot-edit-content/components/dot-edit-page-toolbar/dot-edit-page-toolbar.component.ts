@@ -16,8 +16,7 @@ export class DotEditPageToolbarComponent implements OnInit {
 
     ngOnInit() {
         this.dotMessageService.getMessages([
-            'editpage.toolbar.primary.action',
-            'editpage.toolbar.secondary.action',
+            'editpage.toolbar.primary.action'
         ]).subscribe();
     }
 }

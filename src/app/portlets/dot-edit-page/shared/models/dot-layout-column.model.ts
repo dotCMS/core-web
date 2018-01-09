@@ -1,7 +1,7 @@
-import { DotContainersColumn } from './dot-containers-column.model';
+import { DotContainerColumn } from './dot-container-column.model';
 
 export interface DotLayoutColumn {
-    containers: DotContainersColumn[];
+    containers: DotContainerColumn[];
     leftOffset: number;
     width: number;
 }

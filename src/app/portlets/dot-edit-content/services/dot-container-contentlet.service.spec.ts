@@ -6,6 +6,7 @@ import { MockConnection } from '@angular/http/testing';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { tick } from '@angular/core/testing';
 import { fakeAsync } from '@angular/core/testing';
+import { DotContainerColumn } from '../../dot-edit-page/shared/models/dot-container-column.model';
 
 describe('DotContainerContentletService', () => {
     let dotContainerContentletService: DotContainerContentletService;
@@ -34,10 +35,18 @@ describe('DotContainerContentletService', () => {
 
     it('should do a request for save content', fakeAsync(() => {
         const pageId = '1';
-        const model = {
-            '1': ['3', '4'],
-            '2': ['5']
-        };
+        const model: DotContainerColumn[] = [
+            {
+                identifier: '1',
+                uuid: '2',
+                contentletsId: ['3', '4']
+            },
+            {
+                identifier: '5',
+                uuid: '6',
+                contentletsId: ['7', '8']
+            }
+        ];
 
         let response;
 

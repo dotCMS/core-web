@@ -1,6 +1,6 @@
 import { DotContainer } from '../../../../shared/models/container/dot-container.model';
 
-export interface DotContainersColumnBox {
+export interface DotContainerColumnBox {
     container: DotContainer;
-    uuid: string;
+    uuid?: string;
 }

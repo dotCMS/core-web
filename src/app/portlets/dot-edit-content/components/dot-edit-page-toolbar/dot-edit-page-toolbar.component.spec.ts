@@ -13,7 +13,6 @@ describe('DotEditPageToolbarComponent', () => {
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.primary.action': 'Hello',
-        'editpage.toolbar.secondary.action': 'World'
     });
 
     beforeEach(
@@ -58,14 +57,6 @@ describe('DotEditPageToolbarComponent', () => {
         expect(primaryActionEl.textContent).toEqual('Hello');
     });
 
-    it('should have a primary secondary button', () => {
-        const secondaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__secondary-action'));
-        expect(secondaryAction).toBeTruthy();
-
-        const secondaryActionEl: HTMLElement = secondaryAction.nativeElement;
-        expect(secondaryActionEl.textContent).toEqual('World');
-    });
-
     it('should emit save event on primary action button click', () => {
         const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__primary-action'));
 
@@ -79,28 +70,12 @@ describe('DotEditPageToolbarComponent', () => {
         expect(res).toBeDefined();
     });
 
-    it('should emit cancel event on secondary action button click', () => {
-        const secondaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__secondary-action'));
-
-        let res;
-        component.cancel.subscribe(event => {
-            res = event;
-        });
-
-        secondaryAction.nativeElement.click();
-
-        expect(res).toBeDefined();
-    });
-
-    it('should disabled save and cancel buttons', () => {
-        component.disabled = true;
+    it('should disabled save button', () => {
+        component.disabledSaveButton = true;
 
         fixture.detectChanges();
 
-        const secondaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__secondary-action'));
         const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__primary-action'));
-
-        expect(secondaryAction.componentInstance.disabled).toBeTruthy('the cancel button have to be disabled');
-        expect(primaryAction.componentInstance.disabled).toBeTruthy('the save button have to be disabled');
+        expect(primaryAction.nativeElement.disabled).toBeTruthy('the save button have to be disabled');
     });
 });
