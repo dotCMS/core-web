@@ -3,13 +3,19 @@ import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/d
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotEvent } from '../../../../shared/models/dot-event/dot-event';
 
+/**
+ * Set a listener to display Global Messages in the main top toolbar
+ * and hold icon classes to display them with the message.
+ * @export
+ * @class DotGlobalMessageComponent
+ */
 @Component({
     selector: 'dot-global-message',
     templateUrl: './dot-global-message.component.html',
     styleUrls: ['./dot-global-message.component.scss']
 })
 export class DotGlobalMessageComponent implements OnInit {
-    visibilityStatus = false;
+    visibility = false;
     message: DotGlobalMessage = { value: '' };
 
     private icons = {
@@ -20,13 +26,15 @@ export class DotGlobalMessageComponent implements OnInit {
 
     ngOnInit() {
         this.dotEventsService.listen('dot-global-message').subscribe((event: DotEvent) => {
-            this.message = event.data;
-            this.visibilityStatus = true;
-            this.message.type = this.icons[this.message.type] || '';
-            if (this.message.life) {
-                setTimeout(() => {
-                    this.visibilityStatus = false;
-                }, this.message.life);
+            if (event.data) {
+                this.message = event.data;
+                this.visibility = true;
+                this.message.type = this.icons[this.message.type] || '';
+                if (this.message.life) {
+                    setTimeout(() => {
+                        this.visibility = false;
+                    }, this.message.life);
+                }
             }
         });
     }

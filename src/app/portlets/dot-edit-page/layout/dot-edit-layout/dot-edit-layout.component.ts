@@ -154,9 +154,9 @@ export class DotEditLayoutComponent implements OnInit {
             title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
                 body:
-                this.dotEditLayoutService.getDotLayoutBody(
-                    this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
-                ) || {},
+                    this.dotEditLayoutService.getDotLayoutBody(
+                        this.dotEditLayoutService.getDotLayoutGridBox(this.pageView.layout.body)
+                    ) || {},
                 header: this.pageView.layout.header,
                 footer: this.pageView.layout.footer,
                 sidebar: this.fb.group(

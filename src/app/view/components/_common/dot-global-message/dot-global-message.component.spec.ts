@@ -1,25 +1,35 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DotGlobalMessageComponent } from './dot-global-message.component';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 describe('DotGlobalMessageComponent', () => {
-  let component: DotGlobalMessageComponent;
-  let fixture: ComponentFixture<DotGlobalMessageComponent>;
+    let component: DotGlobalMessageComponent;
+    let fixture: ComponentFixture<DotGlobalMessageComponent>;
+    let dotEventsService: DotEventsService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DotGlobalMessageComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [DotGlobalMessageComponent],
+            providers: [DotEventsService]
+        }).compileComponents();
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DotGlobalMessageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(DotGlobalMessageComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+        dotEventsService = TestBed.get(DotEventsService);
+    });
+
+    it('should set the value of the message with the corresponding icon and life time ', () => {
+        dotEventsService.notify('dot-global-message', { value: 'test', type: 'loading', life: 3000 });
+        expect(component.message).toEqual({ value: 'test', type: 'fa fa-circle-o-notch fa-spin', life: 3000 });
+    });
+
+    it('should set visibility to false after 10 ms', () => {
+        dotEventsService.notify('dot-global-message', { value: 'test', life: 10 });
+        setTimeout(() => {
+            expect(component.visibility).toEqual(false);
+        }, 12);
+    });
 });

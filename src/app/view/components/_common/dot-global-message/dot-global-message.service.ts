@@ -3,8 +3,12 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
 
+
+
 /**
- *  Service to provide configurations for Global Messages.
+ * Service to provide configurations for Global Messages.
+ * @export
+ * @class DotGlobalMessageService
  */
 @Injectable()
 export class DotGlobalMessageService implements OnInit {
@@ -13,14 +17,16 @@ export class DotGlobalMessageService implements OnInit {
     constructor(public dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {}
 
     ngOnInit(): void {
-        this.dotMessageService.getMessages(['dot.common.message.loading', 'dot.common.message.loaded']).subscribe();
+        this.dotMessageService
+            .getMessages(['dot.common.message.loading', 'dot.common.message.loaded', 'dot.common.message.error'])
+            .subscribe();
     }
 
     /**
      * Display text messages.
      * @param {string} message
      */
-    display(message: string): void {
+    display(message?: string): void {
         this.config = {
             value: message ? message : this.dotMessageService.get('dot.common.message.loaded'),
             life: 3000
@@ -35,7 +41,7 @@ export class DotGlobalMessageService implements OnInit {
     loading(message?: string): void {
         this.config = {
             value: message ? message : this.dotMessageService.get('dot.common.message.loading'),
-            type: 'loading',
+            type: 'loading'
         };
         this.dotEventsService.notify('dot-global-message', this.config);
     }
@@ -44,10 +50,10 @@ export class DotGlobalMessageService implements OnInit {
      * Display text messages with error configuration.
      * @param {string} message
      */
-    error(message: string): void {
-        // TODO: Define the behavior of error messages.
+    error(message?: string): void {
+        // TODO: Define the behaior of error messages.
         this.config = {
-            value: message,
+            value: message ? message : this.dotMessageService.get('dot.common.message.error'),
             life: 3000
         };
         this.dotEventsService.notify('dot-global-message', this.config);
