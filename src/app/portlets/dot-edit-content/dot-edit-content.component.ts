@@ -24,7 +24,7 @@ export class DotEditContentComponent implements OnInit {
     pageIdentifier: string;
 
     private originalValue: any;
-    private originalValueChanged = false;
+    private isModelUpdate = false;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
@@ -73,7 +73,7 @@ export class DotEditContentComponent implements OnInit {
                 .subscribe(model =>  {
                     if (this.originalValue) {
                         this.ngZone.run(() => {
-                            this.originalValueChanged = !_.isEqual(model, this.originalValue);
+                            this.isModelUpdate = !_.isEqual(model, this.originalValue);
                         });
                     } else {
                         this.setOriginalValue(model);
@@ -103,7 +103,7 @@ export class DotEditContentComponent implements OnInit {
 
     setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
-        this.originalValueChanged = false;
+        this.isModelUpdate = false;
     }
 
     /**
@@ -149,7 +149,6 @@ export class DotEditContentComponent implements OnInit {
                 element it's available in the DOM
             */
             setTimeout(() => {
-                console.log('this.contentletActionsIframe', this.contentletActionsIframe);
                 const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
                 /*
@@ -171,8 +170,8 @@ export class DotEditContentComponent implements OnInit {
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
                 acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject'),
-            },
+                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
+            }
         });
     }
 }
