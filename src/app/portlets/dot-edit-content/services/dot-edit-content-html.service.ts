@@ -17,8 +17,7 @@ export class DotEditContentHtmlService {
 
     pageModelChange: Subject<any> = new Subject();
 
-    public addContentContainer: string;
-    public addContentContainerInode: string;
+    public addContentContainerIdentifier: string;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -69,14 +68,14 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainer}"]`
+            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainerIdentifier}"]`
         );
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
-            .getContentletToContainer(this.addContentContainer, contentlet.identifier)
+            .getContentletToContainer(this.addContentContainerIdentifier, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
                 const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
 
@@ -84,16 +83,15 @@ export class DotEditContentHtmlService {
                 contentletContentEl.innerHTML = '';
                 this.appendNewContentlets(contentletContentEl, contentletHtml);
 
-                this.addContentContainer = null;
+                this.addContentContainerIdentifier = null;
 
                 // Update the model with the recently added contentlet
                 this.pageModelChange.next(this.getContentModel());
             });
     }
 
-    setContainterToAppendContentlet(identifier: string, inode: string): void {
-        this.addContentContainer = identifier;
-        this.addContentContainerInode = inode;
+    setContainterToAppendContentlet(identifier: string): void {
+        this.addContentContainerIdentifier = identifier;
     }
 
     getContentModel(): any {
@@ -143,7 +141,6 @@ export class DotEditContentHtmlService {
     }
 
     private bindContenletsEvents(): void {
-        
         this.bindEditContentletEvents();
         this.bindRemoveContentletEvents();
     }

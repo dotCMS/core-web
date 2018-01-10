@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoreWebService } from 'dotcms-js/core/core-web.service';
 import { RequestMethod } from '@angular/http';
-import { DotContainerColumn } from '../../dot-edit-page/shared/models/dot-container-column.model';
+import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
 
 @Injectable()
 export class DotContainerContentletService {
@@ -20,8 +20,7 @@ export class DotContainerContentletService {
      * @param pageId Page's ID
      * @param model content model
      */
-    // TODO create a interface for model
-    saveContentlet(pageId: string, content: DotContainerColumn[]): Observable<string> {
+    saveContentlet(pageId: string, content: DotPageContainer[]): Observable<string> {
         return this.coreWebService.requestView({
             method: RequestMethod.Post,
             body: content,

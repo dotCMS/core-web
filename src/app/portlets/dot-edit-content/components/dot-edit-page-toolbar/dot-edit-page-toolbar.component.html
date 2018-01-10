@@ -4,6 +4,6 @@
     </div>
 
     <div class="ui-toolbar-group-right">
-        <button pButton flat class="edit-page-toolbar__primary-action" [disabled]="disabledSaveButton"  [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
+        <button pButton flat class="edit-page-toolbar__primary-action" [disabled]="!canSave"  [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
     </div>
 </p-toolbar>

@@ -6,7 +6,7 @@ import { MockConnection } from '@angular/http/testing';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { tick } from '@angular/core/testing';
 import { fakeAsync } from '@angular/core/testing';
-import { DotContainerColumn } from '../../dot-edit-page/shared/models/dot-container-column.model';
+import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
 
 describe('DotContainerContentletService', () => {
     let dotContainerContentletService: DotContainerContentletService;
@@ -21,7 +21,7 @@ describe('DotContainerContentletService', () => {
         backend.connections.subscribe((connection: MockConnection) => (lastConnection = connection));
     });
 
-    it('should do a request for get the container html code', fakeAsync(() => {
+    it('should do a request for get the contentlet html code', fakeAsync(() => {
         const containerId = '1';
         const contentletId = '2';
 
@@ -35,7 +35,7 @@ describe('DotContainerContentletService', () => {
 
     it('should do a request for save content', fakeAsync(() => {
         const pageId = '1';
-        const model: DotContainerColumn[] = [
+        const model: DotPageContainer[] = [
             {
                 identifier: '1',
                 uuid: '2',

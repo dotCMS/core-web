@@ -9,6 +9,7 @@ import { DotConfirmationService } from '../../api/services/dot-confirmation';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '../../api/services/dot-messages-service';
+import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
@@ -23,8 +24,9 @@ export class DotEditContentComponent implements OnInit {
     source: any;
     pageIdentifier: string;
 
+    isModelUpdated = false;
+
     private originalValue: any;
-    private isModelUpdate = false;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
@@ -42,38 +44,38 @@ export class DotEditContentComponent implements OnInit {
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
 
-        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: {render: string, inode: string, identifier: string}) => {
+        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: DotRenderedPage) => {
             this.pageIdentifier = editPageHTML.identifier;
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
-                switch (res.event) {
-                    case 'edit':
-                        this.editContentlet(res);
-                        break;
-                    case 'add':
-                        this.addContentlet(res);
-                        break;
-                    case 'remove':
-                        this.ngZone.run(() => {
+                this.ngZone.run(() => {
+                    switch (res.event) {
+                        case 'edit':
+                            this.editContentlet(res);
+                            break;
+                        case 'add':
+                            this.addContentlet(res);
+                            break;
+                        case 'remove':
                             this.removeContentlet(res);
-                        });
-                        break;
-                    case 'cancel':
-                    case 'save':
-                    case 'select':
-                        this.closeDialog();
-                        break;
-                    default:
-                        break;
-                }
+                            break;
+                        case 'cancel':
+                        case 'save':
+                        case 'select':
+                            this.closeDialog();
+                            break;
+                        default:
+                            break;
+                    }
+                });
             });
 
             this.dotEditContentHtmlService.pageModelChange
                 .subscribe(model =>  {
                     if (this.originalValue) {
                         this.ngZone.run(() => {
-                            this.isModelUpdate = !_.isEqual(model, this.originalValue);
+                            this.isModelUpdated = !_.isEqual(model, this.originalValue);
                         });
                     } else {
                         this.setOriginalValue(model);
@@ -96,14 +98,12 @@ export class DotEditContentComponent implements OnInit {
         this.contentletActionsUrl = null;
     }
 
+    /**
+     * Save the page's content
+     */
     saveContent(): void {
         this.dotContainerContentletService.saveContentlet(this.pageIdentifier, this.dotEditContentHtmlService.getContentModel())
             .subscribe(this.setOriginalValue);
-    }
-
-    setOriginalValue(model?: any): void {
-        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
-        this.isModelUpdate = false;
     }
 
     /**
@@ -115,20 +115,23 @@ export class DotEditContentComponent implements OnInit {
         this.dotLoadingIndicatorService.hide();
     }
 
+    private setOriginalValue(model?: any): void {
+        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
+        this.isModelUpdated = false;
+    }
+
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotInode);
+        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
         this.loadDialogEditor(
             $event.dataset.dotIdentifier,
             `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}`,
-            $event.contentletEvents,
+            $event.contentletEvents
         );
     }
 
     private closeDialog(): void {
-        this.ngZone.run(() => {
-            this.dialogTitle = null;
-            this.contentletActionsUrl = null;
-        });
+        this.dialogTitle = null;
+        this.contentletActionsUrl = null;
     }
 
     private editContentlet($event: any): void {
@@ -140,25 +143,23 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private loadDialogEditor(containerId: string, url: string, contentletEvents: Subject<any>): void {
-        this.ngZone.run(() => {
-            this.dialogTitle = containerId;
-            this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.dialogTitle = containerId;
+        this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+        /*
+            We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
+            element it's available in the DOM
+        */
+        setTimeout(() => {
+            const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
             /*
-                We have an ngIf in the <iframe> to prevent the jsp to load before the dialog shows, so we need to wait that
-                element it's available in the DOM
+                TODO: should I remove this listener when when the dialog closes?
             */
-            setTimeout(() => {
-                const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
-
-                /*
-                    TODO: should I remove this listener when when the dialog closes?
-                */
-                editContentletIframeEl.addEventListener('load', () => {
-                    editContentletIframeEl.contentWindow.ngEditContentletEvents = contentletEvents;
-                });
-            }, 0);
-        });
+            editContentletIframeEl.addEventListener('load', () => {
+                editContentletIframeEl.contentWindow.ngEditContentletEvents = contentletEvents;
+            });
+        }, 0);
     }
 
     private removeContentlet($event: any): void {

@@ -71,7 +71,16 @@ describe('DotEditPageToolbarComponent', () => {
     });
 
     it('should disabled save button', () => {
-        component.disabledSaveButton = true;
+        component.canSave = false;
+
+        fixture.detectChanges();
+
+        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__primary-action'));
+        expect(primaryAction.nativeElement.disabled).toBeTruthy('the save button have to be disabled');
+    });
+
+    it('should enabled save button', () => {
+        component.canSave = true;
 
         fixture.detectChanges();
 

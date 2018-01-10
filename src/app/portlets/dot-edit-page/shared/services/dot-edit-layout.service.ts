@@ -8,7 +8,7 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { NgGridItemConfig } from 'angular2-grid';
 import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
-import { DotContainerColumn } from '../models/dot-container-column.model';
+import { DotPageContainer } from '../models/dot-page-container.model';
 import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
 
 /**
@@ -32,10 +32,10 @@ export class DotEditLayoutService {
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
                 grid.push({
-                    containers: column.containers.map((dotContainerColumn: DotContainerColumn) => {
+                    containers: column.containers.map((dotPageContainer: DotPageContainer) => {
                         return {
-                            container: this.templateContainersCacheService.get(dotContainerColumn.identifier),
-                            uuid: dotContainerColumn.uuid ? dotContainerColumn.uuid : (new Date().getTime()).toString()
+                            container: this.templateContainersCacheService.get(dotPageContainer.identifier),
+                            uuid: dotPageContainer.uuid ? dotPageContainer.uuid : (new Date().getTime()).toString()
                         };
                     }),
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
@@ -76,10 +76,10 @@ export class DotEditLayoutService {
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
                         containers: layoutGridBox.containers.map((dotContainersColumnBox: DotContainerColumnBox) =>
-                                                                    <DotContainerColumn> {
-                                                                        identifier: dotContainersColumnBox.container.identifier,
-                                                                        uuid: dotContainersColumnBox.uuid
-                                                                    })
+                                <DotPageContainer> {
+                                    identifier: dotContainersColumnBox.container.identifier,
+                                    uuid: dotContainersColumnBox.uuid
+                                })
                         })
         };
     }
