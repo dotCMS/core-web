@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { CoreWebService, LoginService, User } from 'dotcms-js/dotcms-js';
 import { FormatDateService } from './format-date-service';
 import { Injectable } from '@angular/core';
@@ -7,7 +7,7 @@ import { RequestMethod } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class MessageService {
+export class DotMessageService {
     private _messageMap$: Subject<any> = new Subject<any>();
     private doMessageLoad;
     private i18nUrl: string;
@@ -41,8 +41,21 @@ export class MessageService {
         });
     }
 
-    get(key: string): string {
-        return this.messagesLoaded[key];
+    /**
+     * Return the message key value, formatted if more values are passed.
+     *
+     * @param {string} key
+     * @returns {string}
+     * @memberof DotMessageService
+     */
+    get(key: string, args?: IArguments): string {
+        if (args && args.length > 1) {
+            return this.messagesLoaded[key]
+                ? this.formatMessage(this.messagesLoaded[key], Array.from(args).slice(1))
+                : key;
+        } else {
+            return this.messagesLoaded[key] || key;
+        }
     }
 
     /**
@@ -59,19 +72,26 @@ export class MessageService {
      * @returns {any}
      */
     public getMessages(keys: String[]): Observable<any> {
-        return Observable.create(observer => {
+        return Observable.create((observer) => {
             if (_.every(keys, _.partial(_.has, [this.messagesLoaded]))) {
                 observer.next(_.pick(this.messagesLoaded, keys));
                 observer.complete();
             } else {
                 this.messageKeys = _.concat(this.messageKeys, _.difference(keys, this.messageKeys));
                 this.doMessageLoad();
-                const messageMapSub = this.messageMap$.subscribe(res => {
+                const messageMapSub = this.messageMap$.subscribe((res) => {
                     observer.next(_.pick(res, keys));
                     messageMapSub.unsubscribe();
                     observer.complete();
                 });
             }
+        });
+    }
+
+    // Replace {n} in the string with the strings in the args array
+    private formatMessage(message: string, args: Array<string>): string {
+        return message.replace(/{(\d+)}/g, (match, number) => {
+            return typeof args[number] !== 'undefined' ? args[number] : match;
         });
     }
 
@@ -91,7 +111,7 @@ export class MessageService {
             'relativetime.y',
             'relativetime.yy'
         ];
-        this.getMessages(relativeDateKeys).subscribe(res => {
+        this.getMessages(relativeDateKeys).subscribe((res) => {
             const relativeDateMessages = _.mapKeys(res, (value, key: string) => {
                 return key.replace('relativetime.', '');
             });
@@ -112,7 +132,7 @@ export class MessageService {
                 url: this.i18nUrl
             })
             .pluck('i18nMessagesMap')
-            .subscribe(messages => {
+            .subscribe((messages) => {
                 this.messageKeys = [];
                 this.messagesLoaded = Object.assign({}, this.messagesLoaded, messages);
                 this._messageMap$.next(this.messagesLoaded);

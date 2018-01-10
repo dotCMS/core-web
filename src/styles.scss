@@ -29,6 +29,7 @@ html, body {
     font-family: $body-text;
     font-size: $body-font-size-base;
     height: 100%;
+    line-height: 1.5em;
     margin: 0;
     padding: 0;
 }
@@ -63,20 +64,4 @@ a {
     &.link-secondary {
         color: $brand-secondary;
     }
-}
-
-// This is legacy code, needs to once we refactor rule-engine component and remove semantic-ui
-@font-face {
-    font-family: "Icons";
-    src: url("${rules-engine-fonts-url}/icons.eot");
-    src: url("${rules-engine-fonts-url}/icons.eot?#iefix") format("embedded-opentype"),
-         url("${rules-engine-fonts-url}/icons.woff2") format("woff2"),
-         url("${rules-engine-fonts-url}/icons.woff") format("woff"),
-         url("${rules-engine-fonts-url}/icons.ttf") format("truetype"),
-         url("${rules-engine-fonts-url}/icons.svg#icons") format("svg");
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-decoration: inherit;
-    text-transform: none;
 }

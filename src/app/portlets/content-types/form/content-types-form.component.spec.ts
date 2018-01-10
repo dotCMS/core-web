@@ -3,7 +3,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -13,13 +12,14 @@ import { DotcmsConfig, LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
 import { FieldValidationMessageModule } from '../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
-import { MessageService } from '../../../api/services/messages-service';
-import { MockMessageService } from '../../../test/message-service.mock';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { HotkeysService } from 'angular2-hotkeys';
 import { SiteSelectorFieldModule } from '../../../view/components/_common/site-selector-field/site-selector-field.module';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 
 class HotkeysServiceMock {
     add() {}
@@ -36,7 +36,7 @@ describe('ContentTypesFormComponent', () => {
 
     beforeEach(
         async(() => {
-            const messageServiceMock = new MockMessageService({
+            const messageServiceMock = new MockDotMessageService({
                 'contenttypes.form.field.detail.page': 'Detail Page',
                 'contenttypes.form.field.expire.date.field': 'Expire Date Field',
                 'contenttypes.form.field.host_folder.label': 'Host or Folder',
@@ -70,12 +70,13 @@ describe('ContentTypesFormComponent', () => {
                 ],
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: MessageService, useValue: messageServiceMock },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: HotkeysService, useClass: HotkeysServiceMock },
                     { provide: SiteService, useValue: siteServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
-                    SocketFactory
+                    SocketFactory,
+                    WorkflowService
                 ]
             });
 
@@ -258,7 +259,7 @@ describe('ContentTypesFormComponent', () => {
         expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
     });
 
-    it('should have submit button disabled after then form it\'s submitted correctly', () => {
+    it('should have submit button disabled after then form its submitted correctly', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123',
@@ -528,7 +529,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.submitContent).toHaveBeenCalledTimes(1);
     });
 
-    // .focus() it's not being triggered
+    // .focus() its not being triggered
     xit('should toggle formState when the user focus on the name field', () => {
         comp.data = {
             baseType: 'CONTENT',
@@ -632,7 +633,7 @@ describe('ContentTypesFormComponent', () => {
         });
     });
 
-    it('should show workflow disabled and with message if the license community it\'s true', () => {
+    it('should show workflow disabled and with message if the license community its true', () => {
         spyOn(dotcmsConfig, 'getConfig').and.returnValue(
             Observable.of({
                 license: { isCommunity: true }
@@ -649,7 +650,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('workflow').disabled).toBeTruthy();
     });
 
-    it('should show workflow enable and no message if the license community it\'s false', () => {
+    it('should show workflow enable and no message if the license community its false', () => {
         spyOn(dotcmsConfig, 'getConfig').and.returnValue(
             Observable.of({
                 license: { isCommunity: false }
@@ -664,6 +665,21 @@ describe('ContentTypesFormComponent', () => {
         const workflowMsg = de.query(By.css('#field-workflow-hint'));
         expect(workflowMsg).toBeFalsy();
         expect(comp.form.get('workflow').disabled).toBeFalsy();
+    });
+
+    it('should call the WorkFlow endpoint if the license community its false', () => {
+        let workflowService: WorkflowService = fixture.debugElement.injector.get(WorkflowService);
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(
+            Observable.of({
+                license: { isCommunity: false }
+            })
+        );
+        spyOn(workflowService, 'get').and.returnValue(Observable.of([{'id': '123'}]));
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+        expect(workflowService.get).toHaveBeenCalled();
     });
 
     it('should render disabled dates fields and hint when date fields are not passed', () => {

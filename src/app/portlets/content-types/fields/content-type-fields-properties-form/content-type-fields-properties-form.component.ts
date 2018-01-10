@@ -12,8 +12,8 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { MessageService } from '../../../../api/services/messages-service';
+import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Field } from '../shared';
 import { FieldPropertyService } from '../service/';
@@ -37,7 +37,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     checkboxFields: string[] = ['indexed', 'listed', 'required', 'searchable', 'unique'];
 
     constructor(private fb: FormBuilder, private componentFactoryResolver: ComponentFactoryResolver,
-        public messageService: MessageService, private fieldPropertyService: FieldPropertyService) {
+        public dotMessageService: DotMessageService, private fieldPropertyService: FieldPropertyService) {
 
         super(
             [
@@ -74,7 +74,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
                 'contenttypes.field.properties.validation_regex.values.alphanumeric',
                 'contenttypes.field.properties.validation_regex.values.url_pattern',
             ],
-            messageService
+            dotMessageService
         );
     }
 
@@ -175,7 +175,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             this.form.get('indexed').setValue(propertyValue);
         }
 
-        this.handleDisabledIndexed(propertyValue);
+        this.form.get('unique').value ? this.handleDisabledIndexed(true) : this.handleDisabledIndexed(propertyValue);
     }
 
     private handleUniqueValuesChecked(propertyValue: boolean): void {

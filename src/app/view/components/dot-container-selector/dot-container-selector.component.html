@@ -8,8 +8,8 @@
             [pageLinkSize]="5"
             [rows]="paginationService.paginationPerPage"
             [totalRecords]="paginationService.totalRecords"
-            labelPropertyName="name"
-            placeholder="{{messageService.get('editpage.container.add.label')}}"
+            [labelPropertyName]="['name', 'parentPermissionable.hostname']"
+            placeholder="{{dotMessageService.get('editpage.container.add.label')}}"
             persistentPlaceholder="true">
         </searchable-dropdown>
         <button class="container-selector__header-remove" pButton icon="fa-close" (click)="remove.emit($event)"></button>

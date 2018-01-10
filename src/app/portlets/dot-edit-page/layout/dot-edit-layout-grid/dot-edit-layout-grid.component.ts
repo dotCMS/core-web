@@ -2,14 +2,13 @@ import { Component, OnInit, Input, forwardRef, ViewChild } from '@angular/core';
 import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 import * as _ from 'lodash';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
-import { MessageService } from '../../../../api/services/messages-service';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model';
 import {
     DOT_LAYOUT_GRID_MAX_COLUMNS,
     DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE,
     DOT_LAYOUT_DEFAULT_GRID
 } from '../../shared/models/dot-layout.const';
-import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -74,12 +73,12 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     constructor(
         private dotConfirmationService: DotConfirmationService,
         private dotEditLayoutService: DotEditLayoutService,
-        public messageService: MessageService,
+        public dotMessageService: DotMessageService,
         private dotEventsService: DotEventsService
     ) {}
 
     ngOnInit() {
-        this.messageService.getMessages(this.i18nKeys).subscribe();
+        this.dotMessageService.getMessages(this.i18nKeys).subscribe();
         this.dotEventsService.listen('dot-side-nav-toggle').subscribe((event: DotEvent) => {
             // setTimeout is need it because the side nav animation time.
             setTimeout(() => {
@@ -116,11 +115,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     /**
-     * Event fired when the drag of a container ends, remove empty rows if any.
+     * Event fired when the drag or resize of a container ends, remove empty rows if any.
      *
      * @memberof DotEditLayoutGridComponent
      */
-    onDragStop(): void {
+    updateModel(): void {
         this.deleteEmptyRows();
         this.propagateChange(this.getModel());
     }
@@ -136,13 +135,13 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
             accept: () => {
                 this.removeContainer(index);
             },
-            header: this.messageService.get('editpage.confirm.header'),
-            message: `${this.messageService.get('editpage.confirm.message.delete')} <span>${this.messageService.get(
+            header: this.dotMessageService.get('editpage.confirm.header'),
+            message: `${this.dotMessageService.get('editpage.confirm.message.delete')} <span>${this.dotMessageService.get(
                 'editpage.confirm.message.delete.warning'
             )}</span>`,
             footerLabel: {
-                acceptLabel: this.messageService.get('editpage.action.delete'),
-                rejectLabel: this.messageService.get('editpage.action.cancel')
+                acceptLabel: this.dotMessageService.get('editpage.action.delete'),
+                rejectLabel: this.dotMessageService.get('editpage.action.cancel')
             }
         });
     }

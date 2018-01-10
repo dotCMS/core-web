@@ -4,16 +4,8 @@ import { SiteSelectorComponent } from './site-selector.component';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
-import {
-    OverlayPanelModule,
-    ButtonModule,
-    InputTextModule,
-    PaginatorModule
-} from 'primeng/primeng';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MessageService } from '../../../../api/services/messages-service';
-import { MockMessageService } from '../../../../test/message-service.mock';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
 import { SiteService, DotcmsConfig } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
@@ -31,7 +23,7 @@ describe('SiteSelectorComponent', () => {
 
     beforeEach(
         async(() => {
-            const messageServiceMock = new MockMessageService({
+            const messageServiceMock = new MockDotMessageService({
                 search: 'Search'
             });
 
@@ -41,7 +33,7 @@ describe('SiteSelectorComponent', () => {
                 declarations: [SiteSelectorComponent],
                 imports: [SearchableDropDownModule, BrowserAnimationsModule],
                 providers: [
-                    { provide: MessageService, useValue: messageServiceMock },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: SiteService, useValue: siteServiceMock },
                     IframeOverlayService,
                     PaginatorService
@@ -55,8 +47,8 @@ describe('SiteSelectorComponent', () => {
         })
     );
 
-    it('should set extra params to paginator service', () => {
-        comp.archive = true;
+    it('should set extra params to paginator service to false', () => {
+        comp.archive = false;
         comp.live = false;
         comp.system = false;
 
@@ -65,21 +57,22 @@ describe('SiteSelectorComponent', () => {
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
 
 
-        expect(paginatorService.extraParams.get('archive')).toBe('true');
-        expect(paginatorService.extraParams.get('live')).toBe(null);
-        expect(paginatorService.extraParams.get('system')).toBe(null);
+        expect(paginatorService.extraParams.get('archive')).toBe('false');
+        expect(paginatorService.extraParams.get('live')).toBe('false');
+        expect(paginatorService.extraParams.get('system')).toBe('false');
     });
 
-    it('should set extra params to paginator service (system default)', () => {
+    it('should set extra params to paginator service to true', () => {
         comp.archive = true;
-        comp.live = false;
+        comp.live = true;
+        comp.system = true;
 
         fixture.detectChanges();
 
         const paginatorService: PaginatorService = de.injector.get(PaginatorService);
 
         expect(paginatorService.extraParams.get('archive')).toBe('true');
-        expect(paginatorService.extraParams.get('live')).toBe(null);
+        expect(paginatorService.extraParams.get('live')).toBe('true');
         expect(paginatorService.extraParams.get('system')).toBe('true');
     });
 

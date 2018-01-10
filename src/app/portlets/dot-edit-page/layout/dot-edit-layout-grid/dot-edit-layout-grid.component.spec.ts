@@ -10,8 +10,8 @@ import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.serv
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotLayoutBody } from '../../shared/models/dot-layout-body.model';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MessageService } from './../../../../api/services/messages-service';
-import { MockMessageService } from './../../../../test/message-service.mock';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { NgGridModule } from 'angular2-grid';
 import { PaginatorService } from './../../../../api/services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
@@ -54,7 +54,7 @@ describe('DotEditLayoutGridComponent', () => {
             ]
         };
 
-        const messageServiceMock = new MockMessageService({
+        const messageServiceMock = new MockDotMessageService({
             cancel: 'Cancel'
         });
 
@@ -66,7 +66,7 @@ describe('DotEditLayoutGridComponent', () => {
                 DotEditLayoutService,
                 TemplateContainersCacheService,
                 PaginatorService,
-                { provide: MessageService, useValue: messageServiceMock }
+                { provide: DotMessageService, useValue: messageServiceMock }
             ]
         });
 
@@ -155,7 +155,7 @@ describe('DotEditLayoutGridComponent', () => {
             component.grid[1].config.row = 2;
             component.grid[2].config.row = 4;
             component.grid[2].config.sizex = 1;
-            component.onDragStop();
+            component.updateModel();
             tick();
             expect(component.grid[0].config.sizex).toEqual(3);
             expect(component.grid[1].config.sizex).toEqual(1);
@@ -176,7 +176,7 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should Propagate Change after a grid box is moved', () => {
         spyOn(component, 'propagateChange');
-        component.onDragStop();
+        component.updateModel();
         expect(component.propagateChange).toHaveBeenCalledWith(fakeValue);
     });
 

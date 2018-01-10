@@ -2,8 +2,8 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DebugElement, SimpleChange } from '@angular/core';
-import { MessageService } from '../../../../../api/services/messages-service';
-import { MockMessageService } from '../../../../../test/message-service.mock';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { fakeAsync, tick } from '@angular/core/testing';
@@ -22,14 +22,14 @@ describe('SearchableDropdownComponent', () => {
 
     beforeEach(
         async(() => {
-            const messageServiceMock = new MockMessageService({
+            const messageServiceMock = new MockDotMessageService({
                 search: 'Search'
             });
 
             DOTTestBed.configureTestingModule({
                 declarations: [SearchableDropdownComponent],
                 imports: [...SEARCHABLE_NGFACES_MODULES, BrowserAnimationsModule],
-                providers: [{ provide: MessageService, useValue: messageServiceMock }]
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
             });
 
             fixture = DOTTestBed.createComponent(SearchableDropdownComponent);
@@ -40,7 +40,10 @@ describe('SearchableDropdownComponent', () => {
             for (let i = 0; i < NROWS; i++) {
                 data[i] = {
                     id: i,
-                    name: `site-${i}`
+                    name: `site-${i}`,
+                    parentPermissionable: {
+                        hostname: 'demo.dotcms.com'
+                    }
                 };
             }
 
@@ -76,6 +79,26 @@ describe('SearchableDropdownComponent', () => {
 
         const pDataList = fixture.debugElement.query(By.css('p-dataList')).componentInstance;
         expect(comp.data).toEqual(pDataList.value);
+    });
+
+    it('should render a string property in p-dataList', () => {
+        comp.data = data;
+        comp.labelPropertyName = 'name';
+
+        fixture.detectChanges();
+
+        const dataListDataEl = fixture.debugElement.query(By.css('p-dataList ul li span'));
+        expect(dataListDataEl.nativeElement.textContent).toEqual('site-0');
+    });
+
+    it('should render a string array of properties in p-dataList', () => {
+        comp.data = data;
+        comp.labelPropertyName = ['name', 'parentPermissionable.hostname'];
+
+        fixture.detectChanges();
+
+        const dataListDataEl = fixture.debugElement.query(By.css('p-dataList ul li span'));
+        expect(dataListDataEl.nativeElement.textContent).toEqual('site-0 - demo.dotcms.com');
     });
 
     it(

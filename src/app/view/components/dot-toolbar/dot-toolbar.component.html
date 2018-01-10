@@ -3,7 +3,7 @@
         <div class="ui-toolbar-group-left">
             <div class="toolbar__button-wrapper">
                 <div class="toolbar__button" [class.toolbar__button--hide]="collapsed">
-                    <button pButton icon="fa-arrow-left" class="inverted" (click)="handleMainButtonClick($event)"></button>
+                    <button pButton icon="fa-close" class="inverted" (click)="handleMainButtonClick($event)"></button>
                 </div>
                 <div class="toolbar__button" [class.toolbar__button--hide]="!collapsed">
                     <button pButton icon="fa-bars" class="inverted" (click)="handleMainButtonClick($event)"></button>
@@ -11,11 +11,13 @@
             </div>
             <div class="toolbar__host">
                 <dot-site-selector #siteSelector class="toolbar__site-selector" (change)="siteChange($event)" (hide)="iframeOverlayService.hide()"
-                    (show)="iframeOverlayService.show()" [archive]="false" [live]="true" [system]="false">
+                    (show)="iframeOverlayService.show()" [archive]="false">
                 </dot-site-selector>
             </div>
         </div>
         <div class="ui-toolbar-group-right">
+
+            <dot-global-message></dot-global-message>
             <div class="toolbar__actions">
                 <dot-toolbar-notifications></dot-toolbar-notifications>
                 <toolbar-user></toolbar-user>

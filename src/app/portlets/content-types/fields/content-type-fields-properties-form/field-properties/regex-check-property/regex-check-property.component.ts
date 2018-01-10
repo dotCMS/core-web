@@ -1,6 +1,6 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
-import { MessageService } from '../../../../../../api/services/messages-service';
+import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 import { FieldProperty } from '../field-properties.model';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class RegexCheckPropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public messageService: MessageService) {
+    constructor(public dotMessageService: DotMessageService) {
         super(
             [
                 'contenttypes.field.properties.validation_regex.label',
@@ -29,7 +29,7 @@ export class RegexCheckPropertyComponent extends BaseComponent {
                 'contenttypes.field.properties.validation_regex.values.us_phone',
                 'contenttypes.field.properties.validation_regex.values.url_pattern',
                 'contenttypes.field.properties.validation_regex.values.no_html'
-            ], messageService);
+            ], dotMessageService);
     }
 
     templateSelect(event): void {
