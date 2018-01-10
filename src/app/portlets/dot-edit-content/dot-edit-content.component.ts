@@ -116,8 +116,10 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private setOriginalValue(model?: any): void {
-        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
-        this.isModelUpdated = false;
+        this.ngZone.run(() => {
+            this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
+            this.isModelUpdated = false;
+        });
     }
 
     private addContentlet($event: any): void {
