@@ -26,8 +26,6 @@ export class DotContainerSelectorComponent implements OnInit {
         this.dotMessageService.getMessages([
             'editpage.container.add.label'
         ]).subscribe();
-
-        console.log('this.selectedContainersList', this.selectedContainersList);
     }
 
     /**

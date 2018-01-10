@@ -68,6 +68,15 @@ export class DotEditLayoutService {
         };
     }
 
+    /**
+     * Remove the extra attributes that come from the server and are not longer needed in DotLayoutBody.
+     * @param {DotLayoutBody} grid
+     * @returns {DotLayoutBody}
+     */
+    cleanupDotLayoutBody(grid: DotLayoutBody): DotLayoutBody {
+        return this.getDotLayoutBody(this.getDotLayoutGridBox(grid));
+    }
+
     private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {
         return {
             columns: gridBoxes.map(

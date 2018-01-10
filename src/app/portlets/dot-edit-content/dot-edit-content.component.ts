@@ -103,7 +103,7 @@ export class DotEditContentComponent implements OnInit {
      */
     saveContent(): void {
         this.dotContainerContentletService.saveContentlet(this.pageIdentifier, this.dotEditContentHtmlService.getContentModel())
-            .subscribe(this.setOriginalValue);
+            .subscribe(() => this.setOriginalValue());
     }
 
     /**
@@ -116,10 +116,8 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private setOriginalValue(model?: any): void {
-        this.ngZone.run(() => {
-            this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
-            this.isModelUpdated = false;
-        });
+        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
+        this.isModelUpdated = false;
     }
 
     private addContentlet($event: any): void {
