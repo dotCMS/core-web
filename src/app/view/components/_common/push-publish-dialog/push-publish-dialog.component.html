@@ -20,9 +20,8 @@
         </div>
 
         <div class="form__group">
-            <label class="form__label">Publish: </label>
-            <p-calendar [(ngModel)]="date" [showTime]="true" [ngModelOptions]="{standalone: true}"></p-calendar>
-            {{ date | date:'medium' }} 
+            <label class="form__label">Publish Date: </label>
+            <p-calendar [(ngModel)]="date" [showTime]="true" [ngModelOptions]="{standalone: true}" class="push-publish-dialog__date"></p-calendar>
         </div>
 
         <div class="form__group">

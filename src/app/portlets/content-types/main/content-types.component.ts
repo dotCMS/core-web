@@ -158,6 +158,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private removeConfirmation(item: any): void {
+        console.log('item: ', item.id);
         this.dotConfirmationService.confirm({
             accept: () => {
                 this.removeContentType(item);

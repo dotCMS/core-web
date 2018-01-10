@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
+    encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-dialog',
     styleUrls: ['./push-publish-dialog.component.scss'],
     templateUrl: 'push-publish-dialog.component.html'
