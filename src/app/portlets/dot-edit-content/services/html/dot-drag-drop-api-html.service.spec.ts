@@ -33,17 +33,21 @@ describe('DotDragDropAPIHtmlService', () => {
     const cssElement = {};
     const jsElement = {};
     let callbackFunc;
-
-    const doc = {
-        head: {
-            appendChild(element: any): any {
-                return null;
-            }
-        },
-        body: {
-            appendChild(element: any): any {
-                lastAppendChildCallElementParam = element;
-                return null;
+    const ifrm = document.createElement('iframe');
+    const iframe = {
+        contentWindow: {
+            document: {
+                head: {
+                    appendChild(element: any): any {
+                        return null;
+                    }
+                },
+                body: {
+                    appendChild(element: any): any {
+                        lastAppendChildCallElementParam = element;
+                        return null;
+                    }
+                }
             }
         }
     };
@@ -53,7 +57,7 @@ describe('DotDragDropAPIHtmlService', () => {
             TestBed.configureTestingModule({
                 providers: [
                     DotDragDropAPIHtmlService,
-                    { provide: DotDOMHtmlUtilService, useClass: MockDotDOMHtmlUtilService },
+                    { provide: DotDOMHtmlUtilService, useClass: MockDotDOMHtmlUtilService }
                 ],
                 imports: []
             });
@@ -62,7 +66,7 @@ describe('DotDragDropAPIHtmlService', () => {
             dotDOMHtmlUtilService = TestBed.get(DotDOMHtmlUtilService);
 
             spyOn(dotDOMHtmlUtilService, 'createLinkElement').and.returnValue(cssElement);
-            spyOn(doc.head, 'appendChild');
+            spyOn(iframe.contentWindow.document.head, 'appendChild');
 
             spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake((src, callback) => {
                 callbackFunc = callback;
@@ -71,18 +75,20 @@ describe('DotDragDropAPIHtmlService', () => {
     );
 
     it('should crate and set js and css draguls element', () => {
-        dotDragDropAPIHtmlService.initDragAndDropContext(doc);
+        dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
 
         expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith('/html/js/dragula-3.7.2/dragula.min.css');
-        expect(doc.head.appendChild).toHaveBeenCalledWith(cssElement);
+        expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(cssElement);
 
         expect(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
-            '/html/js/dragula-3.7.2/dragula.min.js', jasmine.any(Function));
-            expect(doc.head.appendChild).toHaveBeenCalledWith(jsElement);
+            '/html/js/dragula-3.7.2/dragula.min.js',
+            jasmine.any(Function)
+        );
+        expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(jsElement);
     });
 
     it('should init dragula context', () => {
-        dotDragDropAPIHtmlService.initDragAndDropContext(doc);
+        dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
 
         callbackFunc();
 
