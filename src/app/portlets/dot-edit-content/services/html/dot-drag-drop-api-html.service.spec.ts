@@ -33,7 +33,6 @@ describe('DotDragDropAPIHtmlService', () => {
     const cssElement = {};
     const jsElement = {};
     let callbackFunc;
-    const ifrm = document.createElement('iframe');
     const iframe = {
         contentWindow: {
             document: {
