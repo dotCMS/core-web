@@ -10,6 +10,7 @@ import { DotContainerContentletService } from './services/dot-container-contentl
 import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '../../api/services/dot-messages-service';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
@@ -36,7 +37,8 @@ export class DotEditContentComponent implements OnInit {
         public dotEditContentHtmlService: DotEditContentHtmlService,
         private dotContainerContentletService: DotContainerContentletService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private dotGlobalMessageService: DotGlobalMessageService
     ) {}
 
 
@@ -88,7 +90,9 @@ export class DotEditContentComponent implements OnInit {
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.accept',
-                'editpage.content.contentlet.remove.confirmation_message.reject'
+                'editpage.content.contentlet.remove.confirmation_message.reject',
+                'dot.common.message.saving',
+                'dot.common.message.saved'
             ])
             .subscribe();
     }
@@ -102,8 +106,12 @@ export class DotEditContentComponent implements OnInit {
      * Save the page's content
      */
     saveContent(): void {
+        this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         this.dotContainerContentletService.saveContentlet(this.pageIdentifier, this.dotEditContentHtmlService.getContentModel())
-            .subscribe(() => this.setOriginalValue());
+            .subscribe(() => {
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                this.setOriginalValue();
+            });
     }
 
     /**
