@@ -3,11 +3,21 @@ export const MODEL_VAR_NAME = 'dotNgModel';
 
 export const EDIT_PAGE_JS = `
 (function () {
-    var containers = Array.from(document.querySelectorAll('div[data-dot-object="container"]'));
+    function getContainers() {
+        var containers = [];
+        var containersNodeList = document.querySelectorAll('div[data-dot-object="container"]');
+        var forbiddenTarget;
+
+        for (var i = 0; i < containersNodeList.length; i++) {
+            containers.push(containersNodeList[i]);
+        };
+
+        return containers;
+    }
 
     function getDotNgModel() {
         var model = [];
-        containers.forEach(function(container) {
+        getContainers().forEach(function(container) {
             var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
 
             model.push({
@@ -19,11 +29,10 @@ export const EDIT_PAGE_JS = `
             });
         });
         return model;
-   }
+    }
 
-    var forbiddenTarget;
     var drake = dragula(
-        containers, {
+        getContainers(), {
         accepts: function (el, target, source, sibling) {
             var canDrop = target.dataset.dotAcceptTypes.indexOf(el.dataset.dotType) > -1;
 
@@ -73,3 +82,5 @@ export const EDIT_PAGE_JS = `
     window.getDotNgModel = getDotNgModel;
 })();
 `;
+
+export const EDIT_PAGE_JS_DOJO_REQUIRE = `require(['/html/js/dragula-3.7.2/dragula.min.js'], function(dragula) { ${EDIT_PAGE_JS} });  `;
