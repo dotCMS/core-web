@@ -9,7 +9,7 @@ import { DotMessageService } from '../../api/services/dot-messages-service';
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
-    styleUrls: ['./dot-edit-content.component.scss'],
+    styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit {
     @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
@@ -91,8 +91,8 @@ export class DotEditContentComponent implements OnInit {
         this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
         this.loadDialogEditor(
             $event.dataset.dotIdentifier,
-            '/html/ng-contentlet-selector.html?ng=true',
-            $event.contentletEvents,
+            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}`,
+            $event.contentletEvents
         );
     }
 
@@ -149,8 +149,8 @@ export class DotEditContentComponent implements OnInit {
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
                 acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject'),
-            },
+                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
+            }
         });
     }
 }
