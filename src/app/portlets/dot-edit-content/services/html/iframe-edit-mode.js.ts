@@ -3,10 +3,11 @@ export const MODEL_VAR_NAME = 'dotNgModel';
 
 export const EDIT_PAGE_JS = `
 (function () {
+    var forbiddenTarget;
+
     function getContainers() {
         var containers = [];
         var containersNodeList = document.querySelectorAll('div[data-dot-object="container"]');
-        var forbiddenTarget;
 
         for (var i = 0; i < containersNodeList.length; i++) {
             containers.push(containersNodeList[i]);

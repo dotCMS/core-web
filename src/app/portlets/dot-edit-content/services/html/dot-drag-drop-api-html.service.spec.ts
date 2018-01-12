@@ -26,7 +26,7 @@ export class MockDotDOMHtmlUtilService {
     }
 }
 
-fdescribe('DotDragDropAPIHtmlService', () => {
+describe('DotDragDropAPIHtmlService', () => {
     let dotDragDropAPIHtmlService: DotDragDropAPIHtmlService;
     let dotDOMHtmlUtilService: MockDotDOMHtmlUtilService;
 
