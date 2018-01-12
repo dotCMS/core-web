@@ -23,8 +23,7 @@ export class DotDragDropAPIHtmlService {
         const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(`${API_ROOT_PATH}/dragula.min.css`);
 
         doc.head.appendChild(dragulaCSSElement);
-
-        const dragulsJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
+        const dragulaJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
             `${API_ROOT_PATH}/dragula.min.js`,
             () => this.initDragula(doc)
         );
@@ -32,7 +31,7 @@ export class DotDragDropAPIHtmlService {
         if (iframe.contentWindow.hasOwnProperty('dojo')) {
             doc.body.appendChild(this.dotDOMHtmlUtilService.createInlineScriptElement(EDIT_PAGE_JS_DOJO_REQUIRE));
         } else {
-            doc.body.appendChild(dragulsJSElement);
+            doc.body.appendChild(dragulaJSElement);
         }
     }
 
