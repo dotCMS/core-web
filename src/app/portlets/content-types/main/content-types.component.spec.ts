@@ -17,6 +17,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Injectable } from '@angular/core';
 import { DotContentletService } from '../../../api/services/dot-contentlet.service';
+import { PushPublishContentTypesDialogModule } from '../../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 
 @Injectable()
 class MockDotContentletService {
@@ -45,7 +46,8 @@ describe('ContentTypesPortletComponent', () => {
             imports: [
                 RouterTestingModule.withRoutes([{ path: 'test', component: ContentTypesPortletComponent }]),
                 BrowserAnimationsModule,
-                ListingDataTableModule
+                ListingDataTableModule,
+                PushPublishContentTypesDialogModule
             ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
@@ -134,6 +136,43 @@ describe('ContentTypesPortletComponent', () => {
         fixture.detectChanges();
 
         expect(crudService.delete).toHaveBeenCalledWith('v1/contenttype/id', mockContentType.id);
+    });
+
+    it('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
+        comp.ngOnInit();
+        const fakeActions: MenuItem[] = [
+            {
+                icon: 'fa-trash',
+                label: 'Remove',
+                command: () => {}
+            },
+            {
+                icon: 'fa-cogs',
+                label: 'Push Publish',
+                command: () => {}
+            }
+        ];
+        const mockContentType: ContentType = {
+            clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
+            id: '1234567890',
+            name: 'Nuevo',
+            variable: 'Nuevo',
+            defaultType: false,
+            fixed: false,
+            folder: 'SYSTEM_FOLDER',
+            host: null,
+            owner: '123',
+            system: false
+        };
+        const pushPublishDialogEl = de.query(By.css('dot-push-publish-dialog'));
+        expect(comp.showDialog).toEqual(false);
+
+        comp.rowActions[1].menuItem.command(mockContentType);
+        fixture.detectChanges();
+
+        expect(pushPublishDialogEl).not.toBeNull();
+        expect(comp.showDialog).toEqual(true);
+        expect(comp.contentTypeId).toEqual(mockContentType.id);
     });
 
     it('should populate the actionHeaderOptions based on a call to dotContentletService', () => {

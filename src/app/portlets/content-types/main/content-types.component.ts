@@ -34,6 +34,7 @@ export class ContentTypesPortletComponent implements OnInit {
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: DotDataTableAction[];
     public showDialog = false;
+    public contentTypeId: string;
 
     private i18nKeys = [
         'contenttypes.fieldname.structure.name',
@@ -91,12 +92,14 @@ export class ContentTypesPortletComponent implements OnInit {
                         command: item => this.removeConfirmation(item)
                     },
                     shouldShow: item => !item.fixed
-                }, {
+                },
+                {
                     menuItem: {
                         label: 'Push Publish',
-                        icon: 'fa-trash',
+                        icon: 'fa-cogs',
                         command: item => this.pushPublish(item)
-                    }
+                    },
+                    shouldShow: item => !item.fixed
                 }
             ];
         });
@@ -158,7 +161,6 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private removeConfirmation(item: any): void {
-        console.log('item: ', item.id);
         this.dotConfirmationService.confirm({
             accept: () => {
                 this.removeContentType(item);
@@ -187,6 +189,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private pushPublish(item: any) {
+        this.contentTypeId = item.id;
         event.stopPropagation();
         this.toggleDialog();
     }

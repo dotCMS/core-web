@@ -8,30 +8,41 @@
     [draggable]="false"> 
 
     <p-header>
-        Push Publish
+        {{dotMessageService.get('contenttypes.content.push_publish')}}
     </p-header>
 
-    <form novalidate>
+    <form [formGroup]="form" (ngSubmit)="submitPushAction($event)" novalidate>
         <div class="form__group">
-            <label class="form__label">I want to: </label>
-            <p-radioButton name="pushAction" value="Push" label="Push" [(ngModel)]="radioPushButton"></p-radioButton>
-            <p-radioButton name="pushAction" value="Remove" label="Remove"></p-radioButton>
-            <p-radioButton name="pushAction" value="Push Remove" label="Push Remove"></p-radioButton>
+            <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.I_want_To')}}: </label>
+            <p-dropdown [style]="{'width':'100%'}" [options]="pushActions" (onChange)="pushActionChange($event)" formControlName="pushActionSelected"></p-dropdown>
+        </div>
+
+        <div class="form__group" *ngIf="publish">
+            <input type="checkbox" [(ngModel)]="forcePushCheckbox" formControlName="forcePush">
+            <label>{{dotMessageService.get('contenttypes.content.push_publish.force_push')}}</label>
+        </div>
+
+        <div class="form__group push-publish-dialog__publish-date" *ngIf="publish">
+            <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.publish_date')}}: </label>
+            <p-calendar [(ngModel)]="publishdate" [showTime]="true" [style]="{'width':'100%'}" formControlName="publishdate"></p-calendar>
+        </div>
+
+        <div class="form__group push-publish-dialog__expire-date" *ngIf="showExpireDate">
+            <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.expire_date')}}: </label>
+            <p-calendar [(ngModel)]="expiredate" [showTime]="true" [style]="{'width':'100%'}" formControlName="expiredate"></p-calendar>
         </div>
 
         <div class="form__group">
-            <label class="form__label">Publish Date: </label>
-            <p-calendar [(ngModel)]="date" [showTime]="true" [ngModelOptions]="{standalone: true}" class="push-publish-dialog__date"></p-calendar>
+            <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.push_to')}}: </label>
+            <dot-push-publish-env-selector [contentTypeId]="contentTypeId" formControlName="environment"></dot-push-publish-env-selector>
+            <small [hidden]="form.controls.environment.valid || (form.controls.environment.pristine && !submitted)" class="push-publish-dialog__error-message">
+                {{dotMessageService.get('contenttypes.content.push_publish.push_to_errormsg')}}
+            </small>
         </div>
 
-        <div class="form__group">
-            <label class="form__label">Push to: </label>
-            <dot-push-publish-env-selector></dot-push-publish-env-selector>
-        </div>
+        <p-footer class="push-publish-dialog__footer-form">
+            <button pButton type="button" flat (click)="close($event)" label="{{dotMessageService.get('contenttypes.content.push_publish.form.cancel')}}" class="push-publish-dialog__form-cancel"></button>
+            <button pButton type="submit" label="{{dotMessageService.get('contenttypes.content.push_publish.form.push')}}"></button>
+        </p-footer>
     </form>
-
-    <p-footer>
-        <button type="button" flat pButton (click)="close($event)" label="Cancel"></button>
-        <button type="button" pButton label="Push"></button>
-    </p-footer>
 </p-dialog>

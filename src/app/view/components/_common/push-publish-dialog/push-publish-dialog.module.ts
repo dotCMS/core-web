@@ -1,26 +1,27 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { PushPublishDialogComponent } from './push-publish-dialog.component';
-import { CalendarModule, DialogModule, RadioButtonModule } from 'primeng/primeng';
+import { PushPublishContentTypesDialogComponent } from './push-publish-dialog.component';
+import { CalendarModule, DialogModule, DropdownModule } from 'primeng/primeng';
 import { PushPublishEnvSelectorModule } from '../dot-push-publish-env-selector/dot-push-publish-env-selector.module';
 
 
 @NgModule({
     declarations: [
-        PushPublishDialogComponent,
+        PushPublishContentTypesDialogComponent
     ],
     exports: [
-        PushPublishDialogComponent
+        PushPublishContentTypesDialogComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
         CalendarModule,
         DialogModule,
-        RadioButtonModule,
-        PushPublishEnvSelectorModule
+        PushPublishEnvSelectorModule,
+        ReactiveFormsModule,
+        DropdownModule
     ]
 })
 
-export class PushPublishDialogModule {}
+export class PushPublishContentTypesDialogModule {}

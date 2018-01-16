@@ -1,1 +1,15 @@
-<p-dropdown [options]="pushEnvironments" name="pushTo" formControlName="selectedEnvironment" [filter]="true" optionLabel="name" [style]="{'width':'100%'}"></p-dropdown>
+<p-multiSelect 
+    [options]="pushEnvironments" 
+    [(ngModel)]="selectedEnvironment" 
+    optionLabel="name" 
+    defaultLabel="Select Environment" 
+    (onChange)="valueChange($event, selectedEnvironment)" 
+    #inputModel="ngModel">
+</p-multiSelect>
+
+<ul class="environment-selector__list">
+    <li *ngFor="let environment of selectedEnvironment; let i = index" class="environment-selector__list-item">
+        <button pButton icon="fa-trash" (click)="removeEnvironmentItem(i)"></button>
+        {{ environment?.name }}
+    </li>
+</ul>

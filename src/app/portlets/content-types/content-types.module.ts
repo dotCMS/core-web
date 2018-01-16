@@ -17,7 +17,6 @@ import { DragulaService } from 'ng2-dragula';
 import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
 import { ContentTypeFieldsAddRowModule } from './fields/content-type-fields-add-row';
 import { ContentTypeResolver } from './content-types-resolver.service';
-import { PushPublishDialogModule } from './../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 
 import {
     ContentTypeFieldsDropZoneComponent,
@@ -55,6 +54,7 @@ import { IFrameModule } from '../../view/components/_common/iframe';
 import { DotTextareaContentModule } from '../../view/components/_common/dot-textarea-content/dot-textarea-content.module';
 import { SearchableDropDownModule } from '../../view/components/_common/searchable-dropdown';
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
+import { PushPublishContentTypesDialogModule } from '../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 
 @NgModule({
     declarations: [
@@ -108,7 +108,7 @@ import { WorkflowService } from '../../api/services/workflow/workflow.service';
         InputTextModule,
         ListingDataTableModule,
         OverlayPanelModule,
-        PushPublishDialogModule,
+        PushPublishContentTypesDialogModule,
         RadioButtonModule,
         ReactiveFormsModule,
         SearchableDropDownModule,

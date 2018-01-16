@@ -1,7 +1,14 @@
+@import "variables";
+
 .ui-calendar, .ui-inputtext{
     width: 100%;
 }
 
-.push-publish-dialog__date {
-    width: 100%;
+.push-publish-dialog__error-message {
+    color: $error;
+}
+
+.push-publish-dialog__footer-form {
+    display: block;
+    text-align: center;
 }
