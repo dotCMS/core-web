@@ -63,12 +63,22 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
         });
     }
 
+    /**
+     * Close dialog after click on cancel button
+     * @returns {boolean}
+     * @memberof PushPublishContentTypesDialogComponent
+     */
     close(): boolean {
         this.cancel.emit(true);
         this.form.reset();
         return false;
     }
 
+    /**
+     * It shows publish date or expire date when selecting push action dropdown
+     * @param {any} $event
+     * @memberof PushPublishContentTypesDialogComponent
+     */
     pushActionChange($event): void {
         switch ($event.value) {
             case 'publish':
@@ -88,6 +98,12 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
         }
     }
 
+    /**
+     * When form is submitted
+     * If form is valid then call pushPublishService with contentTypeId and form value params
+     * @param {any} $event
+     * @memberof PushPublishContentTypesDialogComponent
+     */
     submitPushAction($event): void {
         this.submitted = true;
         if (this.form.valid) {

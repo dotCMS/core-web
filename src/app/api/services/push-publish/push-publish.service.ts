@@ -20,6 +20,11 @@ export class PushPublishService {
         this.publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
     }
 
+    /**
+     * Get environments and return observable of environments filtered by not empty name
+     * @returns {Observable<any>}
+     * @memberof PushPublishService
+     */
     getEnvironments(): Observable<any> {
         return this.getCurrentUser().flatMap(user => {
             return this.coreWebService.request({
@@ -30,6 +35,13 @@ export class PushPublishService {
         .map(environments => environments.filter(environment => environment.name !== ''));
     }
 
+    /**
+     * Do a Post request with push publish data and returns an object with errormessage, total, bundleId and errors
+     * @param {string} contentTypeId
+     * @param {*} formValue
+     * @returns {Observable<PushPublishResponse>}
+     * @memberof PushPublishService
+     */
     pushPublishContent(contentTypeId: string, formValue: any): Observable<PushPublishResponse> {
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(contentTypeId, formValue),
@@ -41,6 +53,11 @@ export class PushPublishService {
         });
     }
 
+    /**
+     * Do a Get request to get current users and returns an observable with current users
+     * @returns {Observable<any>}
+     * @memberof PushPublishService
+     */
     getCurrentUser(): Observable<any> {
         return this.coreWebService.request({
             method: RequestMethod.Get,

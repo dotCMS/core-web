@@ -39,12 +39,23 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     propagateChange = (_: any) => {};
 
+    /**
+     * Set the function to be called when the control receives a change event.
+     * @param {*} fn
+     * @memberof PushPublishEnvSelectorComponent
+     */
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
 
     registerOnTouched(): void {}
 
+    /**
+     * Write a new value to the element
+     * Reset value
+     * @param {string[]} value
+     * @memberof PushPublishEnvSelectorComponent
+     */
     writeValue(value: string[]): void {
         if (value) {
             this.value = value || null;
@@ -52,10 +63,21 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
         this.inputModel.reset();
     }
 
+    /**
+     * Propagate environment id when multiselect changes
+     * @param {any} $event
+     * @param {any} selectedEnvironment
+     * @memberof PushPublishEnvSelectorComponent
+     */
     valueChange($event, selectedEnvironment): void {
         this.propagateEnvironmentId(selectedEnvironment);
     }
 
+    /**
+     * Remove selected environments and progagate new environments
+     * @param {number} i
+     * @memberof PushPublishEnvSelectorComponent
+     */
     removeEnvironmentItem(i: number): void {
         this.selectedEnvironment.splice(i, 1);
         this.propagateEnvironmentId(this.selectedEnvironment);
