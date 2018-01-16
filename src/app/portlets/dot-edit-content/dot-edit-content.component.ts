@@ -34,7 +34,6 @@ export class DotEditContentComponent implements OnInit {
     constructor(
         private dotConfirmationService: DotConfirmationService,
         private dotMenuService: DotMenuService,
-        private ref: ChangeDetectorRef,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         private ngZone: NgZone,
