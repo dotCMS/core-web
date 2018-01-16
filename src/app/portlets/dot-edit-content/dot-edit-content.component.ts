@@ -45,8 +45,6 @@ export class DotEditContentComponent implements OnInit {
         private dotGlobalMessageService: DotGlobalMessageService
     ) {}
 
-
-
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
 
@@ -54,17 +52,17 @@ export class DotEditContentComponent implements OnInit {
             this.pageIdentifier = editPageHTML.identifier;
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
-            this.dotEditContentHtmlService.contentletEvents.subscribe((res) => {
+            this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {
-                    switch (res.event) {
+                    switch (contentletEvent.name) {
                         case 'edit':
-                            this.editContentlet(res);
+                            this.editContentlet(contentletEvent);
                             break;
                         case 'add':
-                            this.addContentlet(res);
+                            this.addContentlet(contentletEvent);
                             break;
                         case 'remove':
-                            this.removeContentlet(res);
+                            this.removeContentlet(contentletEvent);
                             break;
                         case 'cancel':
                         case 'save':
