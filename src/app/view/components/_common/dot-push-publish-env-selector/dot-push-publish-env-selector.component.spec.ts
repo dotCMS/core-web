@@ -46,7 +46,7 @@ class TestHostComponent {
     }
 }
 
-describe('PushPublishEnvSelectorComponent', () => {
+fdescribe('PushPublishEnvSelectorComponent', () => {
     let comp: PushPublishEnvSelectorComponent;
     let fixture: ComponentFixture<PushPublishEnvSelectorComponent>;
     let de: DebugElement;
@@ -76,8 +76,8 @@ describe('PushPublishEnvSelectorComponent', () => {
     });
 
     it('should propagate change on value change', () => {
-        comp.value = [];
-        expect(comp.value).toEqual([]);
+        comp.selectedEnvironmentIds = [];
+        expect(comp.selectedEnvironmentIds).toEqual([]);
 
         spyOn(comp, 'propagateChange');
         comp.valueChange(new Event('MouseEvent'), [{
@@ -85,26 +85,26 @@ describe('PushPublishEnvSelectorComponent', () => {
             name: 'my environment'
         }]);
 
-        expect(comp.value).toEqual(['22e332']);
+        expect(comp.selectedEnvironmentIds).toEqual(['22e332']);
         expect(comp.propagateChange).toHaveBeenCalled();
     });
 
     it('should propagate change on remove environment item', () => {
-        comp.selectedEnvironment = [
+        comp.selectedEnvironments = [
             { id: '22e332', name: 'my environment' },
             { id: '832l', name: 'my environment 2' },
             { id: 'se232', name: 'my environment 3' }
         ];
         comp.removeEnvironmentItem(1);
 
-        expect(comp.value).toEqual(['22e332', 'se232']);
+        expect(comp.selectedEnvironmentIds).toEqual(['22e332', 'se232']);
     });
 
     it('should call writeValue to define the initial value of the environment id', () => {
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         de = hostComponentfixture.debugElement.query(By.css('dot-push-publish-env-selector'));
         const component: PushPublishEnvSelectorComponent = de.componentInstance;
-        comp.value = [];
+        comp.selectedEnvironmentIds = [];
 
         spyOn(component, 'writeValue');
         comp.valueChange(new Event('MouseEvent'), [{
@@ -113,7 +113,7 @@ describe('PushPublishEnvSelectorComponent', () => {
         }]);
         hostComponentfixture.detectChanges();
 
-        expect(comp.value).toEqual(['22e332']);
+        expect(comp.selectedEnvironmentIds).toEqual(['22e332']);
         expect(component.writeValue).toHaveBeenCalledWith(({ environment: ['22e332'] }));
     });
 

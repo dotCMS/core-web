@@ -34,7 +34,7 @@
 
         <div class="form__group">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.push_to')}}: </label>
-            <dot-push-publish-env-selector [contentTypeId]="assetIdentifier" formControlName="environment"></dot-push-publish-env-selector>
+            <dot-push-publish-env-selector [assetIdentifier]="assetIdentifier" formControlName="environment"></dot-push-publish-env-selector>
             <small [hidden]="form.controls.environment.valid || (form.controls.environment.pristine && !submitted)" class="push-publish-dialog__error-message">
                 {{dotMessageService.get('contenttypes.content.push_publish.push_to_errormsg')}}
             </small>

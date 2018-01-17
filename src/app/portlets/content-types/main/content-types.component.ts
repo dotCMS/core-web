@@ -94,7 +94,7 @@ export class ContentTypesPortletComponent implements OnInit {
                 {
                     menuItem: {
                         label: 'Push Publish',
-                        command: item => this.pushPublish(item)
+                        command: item => this.setPushPublishIdentifier(item)
                     },
                     shouldShow: item => !item.fixed
                 }
@@ -185,7 +185,7 @@ export class ContentTypesPortletComponent implements OnInit {
         this.pushPublishIdentifier = '';
     }
 
-    private pushPublish(item: any) {
+    private setPushPublishIdentifier(item: any) {
         this.pushPublishIdentifier = item.id;
     }
 }

@@ -1,15 +1,15 @@
  <!--//TODO: labels for defaultLabel and selectedItemsLabel in p-multiselect need to be changed after refactor of Message Service. https://github.com/primefaces/primeng/issues/2857 -->
 <p-multiSelect 
     [options]="pushEnvironments | async" 
-    [(ngModel)]="selectedEnvironment" 
+    [(ngModel)]="selectedEnvironments" 
     optionLabel="name" 
     defaultLabel="Select environment" 
-    (onChange)="valueChange($event, selectedEnvironment)">
+    (onChange)="valueChange($event, selectedEnvironments)">
 </p-multiSelect>
 
 <ul class="environment-selector__list">
-    <li *ngFor="let environment of selectedEnvironment; let i = index" class="environment-selector__list-item">
+    <li *ngFor="let environment of selectedEnvironments; let i = index" class="environment-selector__list-item">
         <button pButton icon="fa-trash" (click)="removeEnvironmentItem(i)"></button>
-        {{ environment?.name }}
+        {{ environment.name }}
     </li>
 </ul>

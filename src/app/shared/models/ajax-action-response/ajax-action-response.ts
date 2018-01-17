@@ -3,7 +3,7 @@
  *
  * @interface
  */
-export interface PushPublishResponse {
+export interface AjaxActionResponseView {
     errorMessages: string[];
     total: number;
     bundleId: string;

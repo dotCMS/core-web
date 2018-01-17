@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
-import { PushPublishResponse } from '../../../shared/models/push-publish-response/push-publish-response';
+import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
 
 /**
  * Provide method to push publish to content types
@@ -23,7 +23,7 @@ export class PushPublishService {
      * @returns {Observable<any>}
      * @memberof PushPublishService
      */
-    getEnvironments(): Observable<any> {
+    getEnvironments(): Observable<DotEnvironment[]> {
         return this.getCurrentUser().flatMap(user => {
             return this.coreWebService.request({
                 method: RequestMethod.Get,
@@ -39,10 +39,10 @@ export class PushPublishService {
      * Push publish asset to specified environment.
      * @param {string} contentTypeId
      * @param {*} formValue
-     * @returns {Observable<PushPublishResponse>}
+     * @returns {Observable<AjaxActionResponseView>}
      * @memberof PushPublishService
      */
-    pushPublishContent(contentTypeId: string, formValue: any): Observable<PushPublishResponse> {
+    pushPublishContent(contentTypeId: string, formValue: any): Observable<AjaxActionResponseView> {
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(contentTypeId, formValue),
             headers: {

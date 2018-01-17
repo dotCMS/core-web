@@ -21,10 +21,10 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAccessor {
-    @Input() contentTypeId: string;
+    @Input() assetIdentifier: string;
     pushEnvironments: Observable<any>;
-    selectedEnvironment: DotEnvironment[];
-    value: string[] = [];
+    selectedEnvironments: DotEnvironment[];
+    selectedEnvironmentIds: string[] = [];
 
     constructor(private pushPublishService: PushPublishService, public dotMessageService: DotMessageService) {}
 
@@ -57,19 +57,19 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      */
     writeValue(value: string[]): void {
         if (value) {
-            this.value = value;
+            this.selectedEnvironmentIds = value;
         }
-        this.selectedEnvironment = [];
+        this.selectedEnvironments = [];
     }
 
     /**
      * Propagate environment id when multiselect changes
      * @param {any} $event
-     * @param {any} selectedEnvironment
+     * @param {any} selectedEnvironments
      * @memberof PushPublishEnvSelectorComponent
      */
-    valueChange($event, selectedEnvironment): void {
-        this.propagateEnvironmentId(selectedEnvironment);
+    valueChange($event, selectedEnvironments): void {
+        this.propagateEnvironmentId(selectedEnvironments);
     }
 
     /**
@@ -77,18 +77,18 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      * @param {number} i
      * @memberof PushPublishEnvSelectorComponent
      */
-    removeEnvironmentItem(i: number): void {
-        this.selectedEnvironment.splice(i, 1);
-        this.propagateEnvironmentId(this.selectedEnvironment);
+    removeEnvironmentItem(environmentIndex: number): void {
+        this.selectedEnvironments.splice(environmentIndex, 1);
+        this.propagateEnvironmentId(this.selectedEnvironments);
     }
 
-    private propagateEnvironmentId(selectedEnvironment): void {
-        const selectedEnvironmentIds = [];
-        selectedEnvironment.map(environment => {
-            selectedEnvironmentIds.push(environment.id);
+    private propagateEnvironmentId(selectedEnvironments): void {
+        const environmentIds = [];
+        selectedEnvironments.map(environment => {
+            environmentIds.push(environment.id);
         });
-        this.value = selectedEnvironmentIds;
-        this.propagateChange(this.value);
+        this.selectedEnvironmentIds = environmentIds;
+        this.propagateChange(this.selectedEnvironmentIds);
     }
 }
 

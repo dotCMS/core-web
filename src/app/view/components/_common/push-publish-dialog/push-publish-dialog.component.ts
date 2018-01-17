@@ -17,7 +17,6 @@ import { LoggerService } from 'dotcms-js/dotcms-js';
 export class PushPublishContentTypesDialogComponent implements OnInit {
     form: FormGroup;
     pushActions: SelectItem[];
-    showExpireDate = false;
     submitted = false;
     @Input() show = false;
     @Input() assetIdentifier: string;
@@ -32,9 +31,9 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
 
     ngOnInit() {
         this.pushActions = [
-            { label: 'Push', value: 'publish' },
-            { label: 'Remove', value: 'expire' },
-            { label: 'Push Expire', value: 'publishexpire' }
+            { label: 'Push', value: PushPublishActions[0].toLowerCase() },
+            { label: 'Remove', value: PushPublishActions[1].toLowerCase() },
+            { label: 'Push Expire', value: PushPublishActions[2].toLowerCase() }
         ];
 
         this.dotMessageService.getMessages([
@@ -91,4 +90,10 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
             forcePush: false
         });
     }
+}
+
+export enum PushPublishActions {
+    Publish,
+    Expire,
+    PublishExpire
 }
