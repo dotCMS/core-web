@@ -46,7 +46,7 @@ class TestHostComponent {
     }
 }
 
-fdescribe('PushPublishEnvSelectorComponent', () => {
+describe('PushPublishEnvSelectorComponent', () => {
     let comp: PushPublishEnvSelectorComponent;
     let fixture: ComponentFixture<PushPublishEnvSelectorComponent>;
     let de: DebugElement;
