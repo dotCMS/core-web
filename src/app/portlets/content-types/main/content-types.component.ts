@@ -33,8 +33,7 @@ export class ContentTypesPortletComponent implements OnInit {
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
     public rowActions: DotDataTableAction[];
-    public showDialog = false;
-    public contentTypeId: string;
+    public pushPublishIdentifier: string;
 
     private i18nKeys = [
         'contenttypes.fieldname.structure.name',
@@ -88,7 +87,6 @@ export class ContentTypesPortletComponent implements OnInit {
                 {
                     menuItem: {
                         label: 'Remove',
-                        icon: 'fa-trash',
                         command: item => this.removeConfirmation(item)
                     },
                     shouldShow: item => !item.fixed
@@ -96,7 +94,6 @@ export class ContentTypesPortletComponent implements OnInit {
                 {
                     menuItem: {
                         label: 'Push Publish',
-                        icon: 'fa-cogs',
                         command: item => this.pushPublish(item)
                     },
                     shouldShow: item => !item.fixed
@@ -184,13 +181,11 @@ export class ContentTypesPortletComponent implements OnInit {
         });
     }
 
-    private toggleDialog(): void {
-        this.showDialog = !this.showDialog;
+    private closeDialog(): void {
+        this.pushPublishIdentifier = '';
     }
 
     private pushPublish(item: any) {
-        this.contentTypeId = item.id;
-        event.stopPropagation();
-        this.toggleDialog();
+        this.pushPublishIdentifier = item.id;
     }
 }

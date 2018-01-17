@@ -118,18 +118,20 @@ describe('PushPublishEnvSelectorComponent', () => {
     });
 
     it('should get environments from PushPublishService', () => {
-        comp.ngOnInit();
+        fixture.detectChanges();
         spyOn(pushPublishServiceMock, 'getEnvironments');
 
-        expect(comp.pushEnvironments).toEqual([
-            {
-                id: '22e332',
-                name: 'my environment'
-            },
-            {
-                id: 'joa08',
-                name: 'my environment 2'
-            }
-        ]);
+        comp.pushEnvironments.subscribe(environments => {
+            expect(environments).toEqual([
+                {
+                    id: '22e332',
+                    name: 'my environment'
+                },
+                {
+                    id: 'joa08',
+                    name: 'my environment 2'
+                }
+            ]);
+        });
     });
 });

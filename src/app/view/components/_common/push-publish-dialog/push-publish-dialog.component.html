@@ -2,7 +2,7 @@
     modal="modal"
     width="500"
     [dismissableMask]="true"
-    [(visible)]="displayDialog"
+    [(visible)]="show"
     [responsive]="true"
     [resizable]="false"
     [draggable]="false"> 
@@ -14,35 +14,35 @@
     <form [formGroup]="form" (ngSubmit)="submitPushAction($event)" novalidate>
         <div class="form__group">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.I_want_To')}}: </label>
-            <p-dropdown [style]="{'width':'100%'}" [options]="pushActions" (onChange)="pushActionChange($event)" formControlName="pushActionSelected"></p-dropdown>
+            <p-dropdown [style]="{'width':'100%'}" [options]="pushActions" formControlName="pushActionSelected"></p-dropdown>
         </div>
 
-        <div class="form__group" *ngIf="publish">
-            <input type="checkbox" [(ngModel)]="forcePushCheckbox" formControlName="forcePush">
+        <div class="form__group" *ngIf="form.controls.pushActionSelected.value === 'publish' || form.controls.pushActionSelected.value === 'publishexpire'">
+            <input type="checkbox" formControlName="forcePush">
             <label>{{dotMessageService.get('contenttypes.content.push_publish.force_push')}}</label>
         </div>
 
-        <div class="form__group push-publish-dialog__publish-date" *ngIf="publish">
+        <div class="form__group push-publish-dialog__publish-date" *ngIf="form.controls.pushActionSelected.value === 'publish' || form.controls.pushActionSelected.value === 'publishexpire'">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.publish_date')}}: </label>
-            <p-calendar [(ngModel)]="publishdate" [showTime]="true" [style]="{'width':'100%'}" formControlName="publishdate"></p-calendar>
+            <p-calendar [showTime]="true" formControlName="publishdate" dateFormat="mm-dd-yy"></p-calendar>
         </div>
 
-        <div class="form__group push-publish-dialog__expire-date" *ngIf="showExpireDate">
+        <div class="form__group push-publish-dialog__expire-date" *ngIf="form.controls.pushActionSelected.value === 'expire' || form.controls.pushActionSelected.value === 'publishexpire'">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.expire_date')}}: </label>
-            <p-calendar [(ngModel)]="expiredate" [showTime]="true" [style]="{'width':'100%'}" formControlName="expiredate"></p-calendar>
+            <p-calendar [showTime]="true" formControlName="expiredate" dateFormat="mm-dd-yy"></p-calendar>
         </div>
 
         <div class="form__group">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.push_to')}}: </label>
-            <dot-push-publish-env-selector [contentTypeId]="contentTypeId" formControlName="environment"></dot-push-publish-env-selector>
+            <dot-push-publish-env-selector [contentTypeId]="assetIdentifier" formControlName="environment"></dot-push-publish-env-selector>
             <small [hidden]="form.controls.environment.valid || (form.controls.environment.pristine && !submitted)" class="push-publish-dialog__error-message">
                 {{dotMessageService.get('contenttypes.content.push_publish.push_to_errormsg')}}
             </small>
         </div>
 
-        <p-footer class="push-publish-dialog__footer-form">
-            <button pButton type="button" flat (click)="close($event)" label="{{dotMessageService.get('contenttypes.content.push_publish.form.cancel')}}" class="push-publish-dialog__form-cancel"></button>
-            <button pButton type="submit" label="{{dotMessageService.get('contenttypes.content.push_publish.form.push')}}"></button>
+        <p-footer class="push-publish-dialog__footer-form ui-dialog-footer">
+            <button pButton type="button" (click)="close($event)" label="{{dotMessageService.get('contenttypes.content.push_publish.form.cancel')}}" class="push-publish-dialog__form-cancel"></button>
+            <button pButton type="submit" label="{{dotMessageService.get('contenttypes.content.push_publish.form.push')}}" [disabled]="!form.valid"></button>
         </p-footer>
     </form>
 </p-dialog>

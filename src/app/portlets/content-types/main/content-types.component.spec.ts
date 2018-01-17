@@ -139,7 +139,7 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
-        comp.ngOnInit();
+        fixture.detectChanges();
         const fakeActions: MenuItem[] = [
             {
                 icon: 'fa-trash',
@@ -165,14 +165,13 @@ describe('ContentTypesPortletComponent', () => {
             system: false
         };
         const pushPublishDialogEl = de.query(By.css('dot-push-publish-dialog'));
-        expect(comp.showDialog).toEqual(false);
+        expect(comp.pushPublishIdentifier).not.toBeDefined();
 
         comp.rowActions[1].menuItem.command(mockContentType);
         fixture.detectChanges();
 
         expect(pushPublishDialogEl).not.toBeNull();
-        expect(comp.showDialog).toEqual(true);
-        expect(comp.contentTypeId).toEqual(mockContentType.id);
+        expect(comp.pushPublishIdentifier).toEqual(mockContentType.id);
     });
 
     it('should populate the actionHeaderOptions based on a call to dotContentletService', () => {

@@ -5,6 +5,7 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
 import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { LoggerService } from 'dotcms-js/dotcms-js';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -14,23 +15,19 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 })
 
 export class PushPublishContentTypesDialogComponent implements OnInit {
-    publishdate: Date;
-    expiredate: Date;
     form: FormGroup;
-    errorMessage: BehaviorSubject<string> = new BehaviorSubject(null);
-    forcePushCheckbox = false;
     pushActions: SelectItem[];
-    publish = true;
     showExpireDate = false;
     submitted = false;
-    @Input() displayDialog = false;
-    @Input() contentTypeId: string;
+    @Input() show = false;
+    @Input() assetIdentifier: string;
     @Output() cancel = new EventEmitter<boolean>();
 
     constructor(
         private pushPublishService: PushPublishService,
         public fb: FormBuilder,
-        public dotMessageService: DotMessageService
+        public dotMessageService: DotMessageService,
+        public loggerService: LoggerService
     ) {}
 
     ngOnInit() {
@@ -39,8 +36,6 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
             { label: 'Remove', value: 'expire' },
             { label: 'Push Expire', value: 'publishexpire' }
         ];
-        this.publishdate = new Date;
-        this.expiredate = new Date;
 
         this.dotMessageService.getMessages([
             'contenttypes.content.push_publish',
@@ -54,48 +49,17 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
             'contenttypes.content.push_publish.form.push'
         ]).subscribe();
 
-        this.form = this.fb.group({
-            pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
-            publishdate: [this.publishdate || '', [Validators.required]],
-            expiredate: [this.expiredate || '', [Validators.required]],
-            environment: ['', [Validators.required]],
-            forcePush: this.forcePushCheckbox || ''
-        });
+        this.initForm();
     }
 
     /**
-     * Close dialog after click on cancel button
-     * @returns {boolean}
+     * Close the dialog and reset the form
      * @memberof PushPublishContentTypesDialogComponent
      */
-    close(): boolean {
+    close(): void {
         this.cancel.emit(true);
-        this.form.reset();
-        return false;
-    }
-
-    /**
-     * It shows publish date or expire date when selecting push action dropdown
-     * @param {any} $event
-     * @memberof PushPublishContentTypesDialogComponent
-     */
-    pushActionChange($event): void {
-        switch ($event.value) {
-            case 'publish':
-                this.publish = true;
-                this.showExpireDate = false;
-                break;
-            case 'expire':
-                this.publish = false;
-                this.showExpireDate = true;
-                break;
-            case 'publishexpire':
-                this.publish = true;
-                this.showExpireDate = true;
-                break;
-            default:
-                break;
-        }
+        this.initForm();
+        this.submitted = false;
     }
 
     /**
@@ -107,15 +71,24 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     submitPushAction($event): void {
         this.submitted = true;
         if (this.form.valid) {
-            this.pushPublishService.pushPublishContent(this.contentTypeId, this.form.value).subscribe((result: any) => {
+            this.pushPublishService.pushPublishContent(this.assetIdentifier, this.form.value).subscribe((result: any) => {
                 if (!result.errors) {
                     this.close();
-                    this.errorMessage = null;
                 } else {
-                    this.errorMessage.next('Sorry there was an error please try again');
+                    this.loggerService.debug(result.errorMessages);
                 }
             });
             this.form.reset();
         }
+    }
+
+    private initForm(): void {
+        this.form = this.fb.group({
+            pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
+            publishdate: [new Date || '', [Validators.required]],
+            expiredate: [new Date || '', [Validators.required]],
+            environment: ['', [Validators.required]],
+            forcePush: false
+        });
     }
 }

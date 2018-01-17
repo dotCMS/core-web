@@ -2,6 +2,8 @@ import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
+import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
+import { PushPublishResponse } from '../../../shared/models/push-publish-response/push-publish-response';
 
 /**
  * Provide method to push publish to content types
@@ -10,18 +12,14 @@ import { RequestMethod } from '@angular/http';
  */
 @Injectable()
 export class PushPublishService {
-    private pushEnvironementsUrl: string;
-    private currentUsersUrl: string;
-    private publishUrl: string;
+    private pushEnvironementsUrl= `${this._apiRoot.baseUrl}api/environment/loadenvironments/roleId`;
+    private currentUsersUrl = `${this._apiRoot.baseUrl}api/v1/users/current/`;
+    private publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
 
-    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) {
-        this.pushEnvironementsUrl = `${this._apiRoot.baseUrl}api/environment/loadenvironments/roleId`;
-        this.currentUsersUrl =  `${this._apiRoot.baseUrl}api/v1/users/current/`;
-        this.publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
-    }
+    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) {}
 
     /**
-     * Get environments and return observable of environments filtered by not empty name
+     * Get push publish environments.
      * @returns {Observable<any>}
      * @memberof PushPublishService
      */
@@ -32,11 +30,13 @@ export class PushPublishService {
                 url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
             });
         })
-        .map(environments => environments.filter(environment => environment.name !== ''));
+        .flatMap((environments: DotEnvironment[]) => environments)
+        .filter(environment => environment.name !== '')
+        .toArray();
     }
 
     /**
-     * Do a Post request with push publish data and returns an object with errormessage, total, bundleId and errors
+     * Push publish asset to specified environment.
      * @param {string} contentTypeId
      * @param {*} formValue
      * @returns {Observable<PushPublishResponse>}
@@ -54,7 +54,8 @@ export class PushPublishService {
     }
 
     /**
-     * Do a Get request to get current users and returns an observable with current users
+     * Get logged user and role id.
+     * // TODO: We need to update the LoginService to get the roleid in the User object
      * @returns {Observable<any>}
      * @memberof PushPublishService
      */
@@ -88,9 +89,3 @@ export class PushPublishService {
     }
 }
 
-export interface PushPublishResponse {
-    errorMessages: string[];
-    total: number;
-    bundleId: string;
-    errors: number;
-}

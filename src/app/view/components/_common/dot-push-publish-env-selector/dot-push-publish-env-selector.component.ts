@@ -1,8 +1,10 @@
 import { SelectItem } from 'primeng/primeng';
-import { Component, OnInit, Input, ViewEncapsulation, forwardRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, forwardRef } from '@angular/core';
 import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel } from '@angular/forms';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotEnvironment } from '../../../../shared/models/dot-environment/dot-environment';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -20,17 +22,14 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 
 export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAccessor {
     @Input() contentTypeId: string;
-    @ViewChild('inputModel') inputModel: NgModel;
-    pushEnvironments: EnvironmentServers[] = [];
-    selectedEnvironment: EnvironmentServers[];
+    pushEnvironments: Observable<any>;
+    selectedEnvironment: DotEnvironment[];
     value: string[] = [];
 
     constructor(private pushPublishService: PushPublishService, public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.pushPublishService.getEnvironments().subscribe(environments => {
-            this.pushEnvironments = environments;
-        });
+        this.pushEnvironments = this.pushPublishService.getEnvironments();
 
         this.dotMessageService.getMessages([
             'contenttypes.content.push_publish.select_environment'
@@ -58,9 +57,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      */
     writeValue(value: string[]): void {
         if (value) {
-            this.value = value || null;
+            this.value = value;
         }
-        this.inputModel.reset();
+        this.selectedEnvironment = [];
     }
 
     /**
@@ -85,15 +84,11 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     private propagateEnvironmentId(selectedEnvironment): void {
         const selectedEnvironmentIds = [];
-        selectedEnvironment.forEach(environment => {
+        selectedEnvironment.map(environment => {
             selectedEnvironmentIds.push(environment.id);
         });
         this.value = selectedEnvironmentIds;
-        this.propagateChange(selectedEnvironmentIds);
+        this.propagateChange(this.value);
     }
 }
 
-export interface EnvironmentServers {
-    id: string;
-    name: string;
-}

@@ -1,5 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, OnInit, Component, Input } from '@angular/core';
+import { DebugElement, Component, Input } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { PushPublishEnvSelectorModule } from '../dot-push-publish-env-selector/dot-push-publish-env-selector.module';
@@ -23,11 +23,11 @@ class PushPublishServiceMock {
 
 @Component({
     selector: 'test-host-component',
-    template: '<dot-push-publish-dialog [displayDialog]="displayDialog" [contentTypeId]="contentTypeId"></dot-push-publish-dialog>'
+    template: '<dot-push-publish-dialog [show]="showDialog" [assetIdentifier]="pushPublishIdentifier"></dot-push-publish-dialog>'
 })
 class TestHostComponent {
-    @Input() contentTypeId: string;
-    @Input() displayDialog = false;
+    pushPublishIdentifier: string;
+    showDialog = false;
 }
 
 describe('PushPublishContentTypesDialogComponent', () => {
@@ -72,7 +72,7 @@ describe('PushPublishContentTypesDialogComponent', () => {
         comp = de.componentInstance;
         el = de.nativeElement;
 
-        fixture.componentInstance.displayDialog = true;
+        fixture.componentInstance.showDialog = true;
     });
 
     it('should have a form', () => {
@@ -82,7 +82,7 @@ describe('PushPublishContentTypesDialogComponent', () => {
     });
 
     it('should be valid if at least one environment was selected', () => {
-        comp.ngOnInit();
+        fixture.detectChanges();
         expect(comp.form.get('environment').value).toEqual('');
         expect(comp.form.valid).toEqual(false);
 
@@ -116,12 +116,12 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         cancelButton.nativeElement.click();
 
-        expect(comp.form.get('environment').value).toBeNull();
-        expect(comp.form.get('forcePush').value).toBeNull();
+        expect(comp.form.get('environment').value).toEqual('');
+        expect(comp.form.get('forcePush').value).toBeFalsy();
     });
 
     it('should display publish date field if publish or publishexpire is selected', () => {
-        comp.ngOnInit();
+        fixture.detectChanges();
         const formEl: DebugElement = de.query(By.css('form'));
 
         comp.form.get('pushActionSelected').setValue('publish');
@@ -135,15 +135,13 @@ describe('PushPublishContentTypesDialogComponent', () => {
         expect(expireDate).toBeNull();
     });
 
-    xit('should display expire date field if expire or publishexpire is selected', () => {
-        comp.ngOnInit();
+    it('should display expire date field if expire or publishexpire is selected', () => {
+        fixture.detectChanges();
         const formEl: DebugElement = de.query(By.css('form'));
 
         comp.form.get('pushActionSelected').setValue('expire');
-        comp.pushActionChange('expire');
 
-        // This is not working, it breaks the tests
-        // fixture.detectChanges();
+        fixture.detectChanges();
 
         const publishDate: DebugElement = formEl.query(By.css('.push-publish-dialog__publish-date'));
         const expireDate: DebugElement = formEl.query(By.css('.push-publish-dialog__expire-date'));
@@ -180,7 +178,7 @@ describe('PushPublishContentTypesDialogComponent', () => {
         spyOn(comp, 'submitPushAction').and.callThrough();
         spyOn(pushPublishServiceMock, 'pushPublishContent');
 
-        const newDate = new Date();
+        const newDate = new Date;
         const form = fixture.debugElement.query(By.css('form'));
 
         comp.form.get('pushActionSelected').setValue('publishexpire');
@@ -189,8 +187,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
         comp.form.get('environment').setValue(['my environment, my second environment']);
         comp.form.get('forcePush').setValue(true);
 
-        fixture.componentInstance.contentTypeId = '7ad979-89a-97ada9d9ad';
+        fixture.componentInstance.pushPublishIdentifier = '7ad979-89a-97ada9d9ad';
         fixture.detectChanges();
+
         form.nativeElement.dispatchEvent(new Event('submit'));
 
         expect(comp.submitPushAction).toHaveBeenCalledTimes(1);
