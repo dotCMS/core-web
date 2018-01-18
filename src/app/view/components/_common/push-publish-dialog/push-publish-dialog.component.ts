@@ -67,7 +67,6 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
      * @memberof PushPublishContentTypesDialogComponent
      */
     submitPushAction($event): void {
-        console.log('publishdate:', this.form.value.publishdate);
         this.submitted = true;
         if (this.form.valid) {
             this.pushPublishService.pushPublishContent(this.assetIdentifier, this.form.value).subscribe((result: any) => {

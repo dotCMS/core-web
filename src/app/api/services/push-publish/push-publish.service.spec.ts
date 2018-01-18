@@ -42,10 +42,7 @@ describe('PushPublishService', () => {
         //     roleId: '1234'
         // }));
         let result: any;
-        this.pushPublishService.getEnvironments().subscribe(items => {
-            console.log(items);
-            result = items;
-        });
+        this.pushPublishService.getEnvironments().subscribe(items => result = items);
 
         const mockResponse = [
             {
@@ -62,20 +59,15 @@ describe('PushPublishService', () => {
             }
         ];
 
-        console.log(this.lastConnection);
-
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
             body: mockResponse
         })));
 
         tick();
-
-        console.log('result', result);
-
         expect(result).toEqual(mockResponse);
     }));
 
-    fit('should do a post request and push publish a content type item', fakeAsync(() => {
+    it('should do a post request and push publish a content type item', fakeAsync(() => {
         let result: any;
         const mockResponse = {
             'errorMessages': [],
