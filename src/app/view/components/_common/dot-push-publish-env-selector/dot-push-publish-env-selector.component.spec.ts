@@ -95,7 +95,7 @@ describe('PushPublishEnvSelectorComponent', () => {
             { id: '832l', name: 'my environment 2' },
             { id: 'se232', name: 'my environment 3' }
         ];
-        comp.removeEnvironmentItem(1);
+        comp.removeEnvironmentItem({id: '832l', name: 'my environment 2'});
 
         expect(comp.selectedEnvironmentIds).toEqual(['22e332', 'se232']);
     });
@@ -133,5 +133,6 @@ describe('PushPublishEnvSelectorComponent', () => {
                 }
             ]);
         });
+        expect(pushPublishServiceMock.getEnvironments).toHaveBeenCalledTimes(1);
     });
 });

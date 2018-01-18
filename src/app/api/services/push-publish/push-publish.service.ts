@@ -4,8 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
+import { DotCurrentUser } from '../../../shared/models/dot-current-user/dot-current-user';
+import { PushPublishData } from '../../../shared/models/push-publish-data/push-publish-data';
 import * as moment from 'moment';
-import { DotUser } from '../../../shared/models/dot-user/dot-user';
 
 /**
  * Provide method to push publish to content types
@@ -14,8 +15,10 @@ import { DotUser } from '../../../shared/models/dot-user/dot-user';
  */
 @Injectable()
 export class PushPublishService {
-    private pushEnvironementsUrl= `${this._apiRoot.baseUrl}api/environment/loadenvironments/roleId`;
-    private currentUsersUrl = `${this._apiRoot.baseUrl}api/v1/users/current/`;
+    private pushEnvironementsUrl= 'environment/loadenvironments/roleId';
+    private currentUsersUrl = 'v1/users/current/';
+    // tslint:disable-next-line:max-line-length
+    // TODO: I had to do this because this line concat'api/' into the URL https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
     private publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
 
     constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) {}
@@ -44,9 +47,9 @@ export class PushPublishService {
      * @returns {Observable<AjaxActionResponseView>}
      * @memberof PushPublishService
      */
-    pushPublishContent(contentTypeId: string, formValue: any): Observable<AjaxActionResponseView> {
+    pushPublishContent(assetIdentifier: string, pushPublishData: PushPublishData): Observable<AjaxActionResponseView> {
         return this.coreWebService.request({
-            body: this.getPublishEnvironmentData(contentTypeId, formValue),
+            body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -55,31 +58,31 @@ export class PushPublishService {
         });
     }
 
+    // TODO: We need to update the LoginService to get the roleid in the User object
     /**
      * Get logged user and role id.
-     * // TODO: We need to update the LoginService to get the roleid in the User object
-     * @returns {Observable<DotUser>}
+     * @returns {Observable<DotCurrentUser>}
      * @memberof PushPublishService
      */
-    getCurrentUser(): Observable<DotUser> {
+    getCurrentUser(): Observable<DotCurrentUser> {
         return this.coreWebService.request({
             method: RequestMethod.Get,
             url: this.currentUsersUrl
         });
     }
 
-    private getPublishEnvironmentData(contentTypeId: string, formValue: any): string {
+    private getPublishEnvironmentData(assetIdentifier: string, pushPublishData: PushPublishData): string {
         let result = '';
-        result += `assetIdentifier=${contentTypeId}`;
-        result += `&remotePublishDate=${formValue.publishdate || moment(new Date).format('YYYY-MM-DD')}`;
-        result += `&remotePublishTime=${formValue.publishdatetime || moment(new Date).format('h:mm')}`;
-        result += `&remotePublishExpireDate=${formValue.expiredate || moment(new Date).format('YYYY-MM-DD')}`;
-        result += `&remotePublishExpireTime=${formValue.expiredatetime || moment(new Date).format('h:mm')}`;
-        result += `&iWantTo=${formValue.pushActionSelected}`;
-        result += `&whoToSend=${formValue.environment}`;
+        result += `assetIdentifier=${assetIdentifier}`;
+        result += `&remotePublishDate=${moment(pushPublishData.publishdate).format('YYYY-MM-DD')}`;
+        result += `&remotePublishTime=${moment(pushPublishData.publishdatetime).format('h-mm')}`;
+        result += `&remotePublishExpireDate=${moment(pushPublishData.expiredate).format('YYYY-MM-DD')}`;
+        result += `&remotePublishExpireTime=${moment(pushPublishData.expiredatetime).format('h-mm')}`;
+        result += `&iWantTo=${pushPublishData.pushActionSelected}`;
+        result += `&whoToSend=${pushPublishData.environment}`;
         result += '&bundleName=';
         result += '&bundleSelect=';
-        result += `&forcePush=${formValue.forcePush}`;
+        result += `&forcePush=${pushPublishData.forcePush}`;
         return result;
     }
 }

@@ -37,6 +37,7 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
     }
 
     propagateChange = (_: any) => {};
+    propagateTouched = (_: any) => {};
 
     /**
      * Set the function to be called when the control receives a change event.
@@ -47,7 +48,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
         this.propagateChange = fn;
     }
 
-    registerOnTouched(): void {}
+    registerOnTouched(fn: any): void {
+        this.propagateTouched = fn;
+    }
 
     /**
      * Write a new value to the element
@@ -74,21 +77,18 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     /**
      * Remove selected environments and progagate new environments
-     * @param {number} i
+     * @param {DotEnvironment} i
      * @memberof PushPublishEnvSelectorComponent
      */
-    removeEnvironmentItem(environmentIndex: number): void {
-        this.selectedEnvironments.splice(environmentIndex, 1);
+    removeEnvironmentItem(environmentItem: DotEnvironment): void {
+        this.selectedEnvironments = this.selectedEnvironments.filter(environment => environment.id !== environmentItem.id);
         this.propagateEnvironmentId(this.selectedEnvironments);
     }
 
     private propagateEnvironmentId(selectedEnvironments): void {
-        const environmentIds = [];
-        selectedEnvironments.map(environment => {
-            environmentIds.push(environment.id);
-        });
-        this.selectedEnvironmentIds = environmentIds;
+        this.selectedEnvironmentIds = selectedEnvironments.map(environment => environment.id);
         this.propagateChange(this.selectedEnvironmentIds);
+        this.propagateTouched(this.selectedEnvironmentIds);
     }
 }
 

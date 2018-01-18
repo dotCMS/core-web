@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs/Rx';
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
@@ -17,9 +17,10 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     form: FormGroup;
     pushActions: SelectItem[];
     submitted = false;
-    @Input() show = false;
+    @Input() show: boolean;
     @Input() assetIdentifier: string;
     @Output() cancel = new EventEmitter<boolean>();
+    @ViewChild('formEl') formEl;
 
     constructor(
         private pushPublishService: PushPublishService,
@@ -30,13 +31,25 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
 
     ngOnInit() {
         this.pushActions = [
-            { label: 'Push', value: PushPublishActions[0].toLowerCase() },
-            { label: 'Remove', value: PushPublishActions[1].toLowerCase() },
-            { label: 'Push Expire', value: PushPublishActions[2].toLowerCase() }
+            {
+                label: this.dotMessageService.get('contenttypes.content.push_publish.action.push'),
+                value: 'publish'
+            },
+            {
+                label: this.dotMessageService.get('contenttypes.content.push_publish.action.remove'),
+                value: 'expire'
+            },
+            {
+                label: this.dotMessageService.get('contenttypes.content.push_publish.action.pushremove'),
+                value: 'publishexpire'
+            }
         ];
 
         this.dotMessageService.getMessages([
             'contenttypes.content.push_publish',
+            'contenttypes.content.push_publish.action.push',
+            'contenttypes.content.push_publish.action.remove',
+            'contenttypes.content.push_publish.action.pushremove',
             'contenttypes.content.push_publish.I_want_To',
             'contenttypes.content.push_publish.force_push',
             'contenttypes.content.push_publish.publish_date',
@@ -80,21 +93,19 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
         }
     }
 
+    submitForm(): void {
+        this.formEl.ngSubmit.emit();
+    }
+
     private initForm(): void {
         this.form = this.fb.group({
             pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
-            publishdate: '',
-            publishdatetime: '',
-            expiredate: '',
-            expiredatetime: '',
+            publishdate: new Date,
+            publishdatetime: new Date,
+            expiredate: new Date,
+            expiredatetime: new Date,
             environment: ['', [Validators.required]],
             forcePush: false
         });
     }
-}
-
-export enum PushPublishActions {
-    Publish,
-    Expire,
-    PublishExpire
 }

@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { FieldValidationMessageModule } from '../field-validation-message/file-validation-message.module';
 
 class PushPublishServiceMock {
     pushPublishContent(contentTypeId: string, formValue: any): Observable<any> {
@@ -59,7 +60,8 @@ describe('PushPublishContentTypesDialogComponent', () => {
             ],
             imports: [
                 PushPublishEnvSelectorModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                FieldValidationMessageModule
             ],
             providers: [
                 { provide: PushPublishService, useValue: pushPublishServiceMock },
@@ -183,7 +185,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         comp.form.get('pushActionSelected').setValue('publishexpire');
         comp.form.get('publishdate').setValue(newDate);
+        comp.form.get('publishdatetime').setValue(newDate);
         comp.form.get('expiredate').setValue(newDate);
+        comp.form.get('expiredatetime').setValue(newDate);
         comp.form.get('environment').setValue(['my environment, my second environment']);
         comp.form.get('forcePush').setValue(true);
 
@@ -197,9 +201,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
         expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
             pushActionSelected: 'publishexpire',
             publishdate: newDate,
-            publishdatetime: '',
+            publishdatetime: newDate,
             expiredate: newDate,
-            expiredatetime: '',
+            expiredatetime: newDate,
             environment: ['my environment, my second environment'],
             forcePush: true
         });

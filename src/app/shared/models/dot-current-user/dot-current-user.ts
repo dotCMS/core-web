@@ -3,7 +3,7 @@
  *
  * @interface
  */
-export interface DotUser {
+export interface DotCurrentUser {
     email: string;
     givenName: string;
     roleId: string;

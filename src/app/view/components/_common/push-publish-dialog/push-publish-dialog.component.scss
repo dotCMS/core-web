@@ -8,16 +8,10 @@
     color: $error;
 }
 
-.push-publish-dialog__footer-form {
-    display: block;
+.push-publish-dialog__calendar {
+    display: flex;
 }
 
 .push-publish-dialog__calendar-date {
-    width: 70%;
-    display: inline-block;
+    flex-grow: 1;
 }
-
-.push-publish-dialog__calendar-time {
-    width: 29%;
-    display: inline-block;
-} 

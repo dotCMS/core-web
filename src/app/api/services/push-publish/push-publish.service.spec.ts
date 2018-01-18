@@ -34,6 +34,7 @@ describe('PushPublishService', () => {
         })));
 
         tick();
+        expect(this.lastConnection.request.url).toContain('api/v1/users/current');
         expect(currentUser).toEqual(mockCurrentUserResponse);
     }));
 

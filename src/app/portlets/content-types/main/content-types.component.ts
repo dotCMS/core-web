@@ -55,6 +55,8 @@ export class ContentTypesPortletComponent implements OnInit {
         'contenttypes.confirm.message.delete.warning',
         'contenttypes.action.delete',
         'contenttypes.action.cancel',
+        'contenttypes.action.remove',
+        'contenttypes.content.push_publish',
         'Content-Type'
     ];
 
@@ -86,17 +88,16 @@ export class ContentTypesPortletComponent implements OnInit {
             this.rowActions = [
                 {
                     menuItem: {
-                        label: 'Remove',
+                        label: this.dotMessageService.get('contenttypes.action.remove'),
                         command: item => this.removeConfirmation(item)
                     },
                     shouldShow: item => !item.fixed
                 },
                 {
                     menuItem: {
-                        label: 'Push Publish',
+                        label: this.dotMessageService.get('contenttypes.content.push_publish'),
                         command: item => this.setPushPublishIdentifier(item)
-                    },
-                    shouldShow: item => !item.fixed
+                    }
                 }
             ];
         });
@@ -182,7 +183,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private closeDialog(): void {
-        this.pushPublishIdentifier = '';
+        this.pushPublishIdentifier = null;
     }
 
     private setPushPublishIdentifier(item: any) {

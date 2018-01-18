@@ -138,20 +138,8 @@ describe('ContentTypesPortletComponent', () => {
         expect(crudService.delete).toHaveBeenCalledWith('v1/contenttype/id', mockContentType.id);
     });
 
-    it('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
+    fit('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
         fixture.detectChanges();
-        const fakeActions: MenuItem[] = [
-            {
-                icon: 'fa-trash',
-                label: 'Remove',
-                command: () => {}
-            },
-            {
-                icon: 'fa-cogs',
-                label: 'Push Publish',
-                command: () => {}
-            }
-        ];
         const mockContentType: ContentType = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
@@ -170,7 +158,6 @@ describe('ContentTypesPortletComponent', () => {
         comp.rowActions[1].menuItem.command(mockContentType);
         fixture.detectChanges();
 
-        expect(pushPublishDialogEl).not.toBeNull();
         expect(comp.pushPublishIdentifier).toEqual(mockContentType.id);
     });
 
