@@ -197,7 +197,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
         expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
             pushActionSelected: 'publishexpire',
             publishdate: newDate,
+            publishdatetime: '',
             expiredate: newDate,
+            expiredatetime: '',
             environment: ['my environment, my second environment'],
             forcePush: true
         });
