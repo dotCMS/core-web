@@ -6,7 +6,6 @@ import { PushPublishService } from '../../../../api/services/push-publish/push-p
 import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-dialog',
@@ -68,6 +67,7 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
      * @memberof PushPublishContentTypesDialogComponent
      */
     submitPushAction($event): void {
+        console.log('publishdate:', this.form.value.publishdate);
         this.submitted = true;
         if (this.form.valid) {
             this.pushPublishService.pushPublishContent(this.assetIdentifier, this.form.value).subscribe((result: any) => {
@@ -84,8 +84,10 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     private initForm(): void {
         this.form = this.fb.group({
             pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
-            publishdate: [new Date || '', [Validators.required]],
-            expiredate: [new Date || '', [Validators.required]],
+            publishdate: '',
+            publishdatetime: '',
+            expiredate: '',
+            expiredatetime: '',
             environment: ['', [Validators.required]],
             forcePush: false
         });

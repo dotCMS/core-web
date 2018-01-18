@@ -24,12 +24,14 @@
 
         <div class="form__group push-publish-dialog__publish-date" *ngIf="form.controls.pushActionSelected.value === 'publish' || form.controls.pushActionSelected.value === 'publishexpire'">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.publish_date')}}: </label>
-            <p-calendar [showTime]="true" formControlName="publishdate" dateFormat="mm-dd-yy"></p-calendar>
+            <p-calendar class="push-publish-dialog__calendar-date" formControlName="publishdate" dataType="string" dateFormat="yy-mm-dd" placeholder="yy-mm-dd"></p-calendar>
+            <p-calendar class="push-publish-dialog__calendar-time" formControlName="publishdatetime" [timeOnly]="true" dataType="string" hourFormat="24" placeholder="00-00"></p-calendar>
         </div>
 
         <div class="form__group push-publish-dialog__expire-date" *ngIf="form.controls.pushActionSelected.value === 'expire' || form.controls.pushActionSelected.value === 'publishexpire'">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.expire_date')}}: </label>
-            <p-calendar [showTime]="true" formControlName="expiredate" dateFormat="mm-dd-yy"></p-calendar>
+            <p-calendar class="push-publish-dialog__calendar-date" formControlName="expiredate" dataType="string" dateFormat="yy-mm-dd" placeholder="yy-mm-dd"></p-calendar>
+            <p-calendar class="push-publish-dialog__calendar-time" formControlName="expiredatetime" [timeOnly]="true" dataType="string" hourFormat="24" placeholder="00-00"></p-calendar>
         </div>
 
         <div class="form__group">
@@ -45,4 +47,5 @@
             <button pButton type="submit" label="{{dotMessageService.get('contenttypes.content.push_publish.form.push')}}" [disabled]="!form.valid"></button>
         </p-footer>
     </form>
+    {{form.value | json}}
 </p-dialog>

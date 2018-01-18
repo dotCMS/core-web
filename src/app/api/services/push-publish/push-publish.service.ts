@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
+import * as moment from 'moment';
 
 /**
  * Provide method to push publish to content types
@@ -20,11 +21,11 @@ export class PushPublishService {
 
     /**
      * Get push publish environments.
-     * @returns {Observable<any>}
+     * @returns {Observable<DotEnvironment[]>}
      * @memberof PushPublishService
      */
     getEnvironments(): Observable<DotEnvironment[]> {
-        return this.getCurrentUser().flatMap(user => {
+        return this.getCurrentUser().mergeMap(user => {
             return this.coreWebService.request({
                 method: RequestMethod.Get,
                 url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
@@ -66,20 +67,13 @@ export class PushPublishService {
         });
     }
 
-    private getFormattedDate(date: Date): string {
-        const yyyy = date.getFullYear().toString();
-        const mm = (date.getMonth() + 1).toString();
-        const dd  = date.getDate().toString();
-        return yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' + (dd[1] ? dd : '0' + dd[0]);
-    }
-
     private getPublishEnvironmentData(contentTypeId: string, formValue: any): string {
         let result = '';
         result += `assetIdentifier=${contentTypeId}`;
-        result += `&remotePublishDate=${this.getFormattedDate(formValue.publishdate)}`;
-        result += '&remotePublishTime=00-00';
-        result += `&remotePublishExpireDate=${this.getFormattedDate(formValue.expiredate)}`;
-        result += '&remotePublishExpireTime=00-00';
+        result += `&remotePublishDate=${formValue.publishdate || moment(new Date).format('YYYY-MM-DD')}`;
+        result += `&remotePublishTime=${formValue.publishdatetime || moment(new Date).format('h:mm')}`;
+        result += `&remotePublishExpireDate=${formValue.expiredate || moment(new Date).format('YYYY-MM-DD')}`;
+        result += `&remotePublishExpireTime=${formValue.expiredatetime || moment(new Date).format('h:mm')}`;
         result += `&iWantTo=${formValue.pushActionSelected}`;
         result += `&whoToSend=${formValue.environment}`;
         result += '&bundleName=';
@@ -88,4 +82,3 @@ export class PushPublishService {
         return result;
     }
 }
-
