@@ -5,6 +5,7 @@ import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
 import * as moment from 'moment';
+import { DotUser } from '../../../shared/models/dot-user/dot-user';
 
 /**
  * Provide method to push publish to content types
@@ -57,10 +58,10 @@ export class PushPublishService {
     /**
      * Get logged user and role id.
      * // TODO: We need to update the LoginService to get the roleid in the User object
-     * @returns {Observable<any>}
+     * @returns {Observable<DotUser>}
      * @memberof PushPublishService
      */
-    getCurrentUser(): Observable<any> {
+    getCurrentUser(): Observable<DotUser> {
         return this.coreWebService.request({
             method: RequestMethod.Get,
             url: this.currentUsersUrl
