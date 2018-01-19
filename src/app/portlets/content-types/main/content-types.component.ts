@@ -125,7 +125,8 @@ export class ContentTypesPortletComponent implements OnInit {
 
 
         /*
-            Only show Push Publish action if DotCMS instance have the appropriate license
+            Only show Push Publish action if DotCMS instance have the appropriate license and there are
+            push publish environments created.
         */
         if (rowActionsMap.pushPublish) {
             listingActions.push({
