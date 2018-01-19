@@ -1,4 +1,4 @@
-import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
+import { CoreWebService, ApiRoot, ResponseView } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
@@ -17,8 +17,10 @@ import * as moment from 'moment';
 export class PushPublishService {
     private pushEnvironementsUrl= 'environment/loadenvironments/roleId';
     private currentUsersUrl = 'v1/users/current/';
-    // tslint:disable-next-line:max-line-length
-    // TODO: I had to do this because this line concat'api/' into the URL https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
+    /*
+        TODO: I had to do this because this line concat'api/' into the URL
+        https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
+    */
     private publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
 
     constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) {}
@@ -30,10 +32,10 @@ export class PushPublishService {
      */
     getEnvironments(): Observable<DotEnvironment[]> {
         return this.getCurrentUser().mergeMap(user => {
-            return this.coreWebService.request({
+            return this.coreWebService.requestView({
                 method: RequestMethod.Get,
                 url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
-            });
+            }).map((res: any) => res.response._body);
         })
         .flatMap((environments: DotEnvironment[]) => environments)
         .filter(environment => environment.name !== '')
