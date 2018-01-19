@@ -127,6 +127,7 @@ export class DotEditLayoutComponent implements OnInit {
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
             response => {
+                debugger;
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
                 this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
                     this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
@@ -154,6 +155,7 @@ export class DotEditLayoutComponent implements OnInit {
         this.pageView = pageView;
         this.templateContainersCacheService.set(this.pageView.containers);
         this.initForm();
+        this.saveAsTemplateHandleChange(false);
     }
 
     private initForm(): void {

@@ -35,6 +35,7 @@
 
 <p-dialog header="{{dotMessageService.get('editpage.layout.dialog.header')}}" [(visible)]="showTemplateLayoutSelectionDialog" modal="modal" width="400" [responsive]="true" [closeOnEscape]="false" [closable]="false">
     <span [innerHTML]="dotMessageService.get('editpage.layout.dialog.info', pageView.template.name)"></span>
+    __{{pageView.template.name}}__
     <p-footer>
         <button type="button" pButton (click)="setEditLayoutMode($event)" class="dot-edit-layout__dialog-edit-layout" label="{{dotMessageService.get('editpage.layout.dialog.edit.page')}}"></button>
         <button type="button" pButton (click)="showTemplateLayoutSelectionDialog=false" class="dot-edit-layout__dialog-edit-template" label="{{dotMessageService.get('editpage.layout.dialog.edit.template')}}"></button>
