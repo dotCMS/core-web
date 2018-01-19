@@ -80,7 +80,7 @@ export class DotEditContentHtmlService {
         const currentContentlet = doc.querySelector(
             `div[data-dot-object="contentlet"][data-dot-identifier="${contentlet.identifier}"]`
         );
-        console.log('currentContentlet', currentContentlet);
+
         contentlet.type = currentContentlet.dataset.dotType;
 
         const containerEl = currentContentlet.parentNode;
