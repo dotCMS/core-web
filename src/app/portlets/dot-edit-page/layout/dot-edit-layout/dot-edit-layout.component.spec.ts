@@ -318,6 +318,7 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     });
 
     it('should set edit layout mode', () => {
+        debugger;
         spyOn(component, 'setEditLayoutMode').and.callThrough();
 
         fixture.detectChanges();
@@ -333,7 +334,6 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
 
     it('should set edit template mode', () => {
         spyOn(component, 'setEditLayoutMode').and.callThrough();
-
         fixture.detectChanges();
         const editLayoutButton: DebugElement = fixture.debugElement.query(
             By.css('.dot-edit-layout__dialog-edit-template')
@@ -351,24 +351,20 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         expect(checkboxSave).toBeNull('checkbox not showing');
     });
 
-    // it('should set the title field required', () => {
-    //     spyOn(component, 'setEditLayoutMode').and.callThrough();
-    //     spyOn(component, 'saveAsTemplateHandleChange').and.callThrough();
-    //     fixture.detectChanges();
-    //     const editLayoutButton: DebugElement = fixture.debugElement.query(
-    //         By.css('.dot-edit-layout__dialog-edit-template')
-    //     );
-    //     editLayoutButton.nativeElement.click();
-    //     fixture.detectChanges();
-    //
-    //     const checkboxSave: DebugElement = fixture.debugElement.query(
-    //         By.css('.dot-edit-layout__toolbar-save-template')
-    //     );
-    //     checkboxSave.nativeElement.click();
-    //
-    //     expect(component.saveAsTemplateHandleChange).toHaveBeenCalled();
-    //     // expect(component.showTemplateLayoutSelectionDialog).toEqual(false, 'hide the dialog');
-    //     expect(component.form.get('title').valid).toEqual(false);
-    //     // expect(checkboxSave).toBeNull('checkbox not showing');
-    // });
+    it('should set the title field required when save as a template is checked', () => {
+        spyOn(component, 'saveAsTemplateHandleChange').and.callThrough();
+        fixture.detectChanges();
+        const editLayoutButton: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__dialog-edit-layout')
+        );
+        editLayoutButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const checkboxSave: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-save-template')
+        );
+        checkboxSave.nativeElement.click();
+        expect(component.saveAsTemplateHandleChange).toHaveBeenCalled();
+        expect(component.form.get('title').valid).toEqual(true);
+    });
 });
