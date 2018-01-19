@@ -68,7 +68,7 @@ describe('PushPublishService', () => {
         expect(result).toEqual(mockResponse);
     }));
 
-    it('should do a post request and push publish a content type item', fakeAsync(() => {
+    it('should do a post request and push publish an asset', fakeAsync(() => {
         let result: any;
         const mockResponse = {
             'errorMessages': [],
