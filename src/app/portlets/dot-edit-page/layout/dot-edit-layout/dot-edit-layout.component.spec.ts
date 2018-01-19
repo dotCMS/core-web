@@ -318,7 +318,6 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     });
 
     it('should set edit layout mode', () => {
-        debugger;
         spyOn(component, 'setEditLayoutMode').and.callThrough();
 
         fixture.detectChanges();
@@ -352,7 +351,7 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     });
 
     it('should set the title field required when save as a template is checked', () => {
-        spyOn(component, 'saveAsTemplateHandleChange').and.callThrough();
+        spyOn(component, 'saveAsTemplateHandleChange');
         fixture.detectChanges();
         const editLayoutButton: DebugElement = fixture.debugElement.query(
             By.css('.dot-edit-layout__dialog-edit-layout')
