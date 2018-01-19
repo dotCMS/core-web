@@ -1,4 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -119,8 +119,6 @@ describe('PushPublishEnvSelectorComponent', () => {
 
     it('should get environments from PushPublishService', () => {
         fixture.detectChanges();
-        spyOn(pushPublishServiceMock, 'getEnvironments');
-
         comp.pushEnvironments.subscribe(environments => {
             expect(environments).toEqual([
                 {
@@ -133,6 +131,5 @@ describe('PushPublishEnvSelectorComponent', () => {
                 }
             ]);
         });
-        expect(pushPublishServiceMock.getEnvironments).toHaveBeenCalledTimes(1);
     });
 });

@@ -20,7 +20,7 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     @Input() show: boolean;
     @Input() assetIdentifier: string;
     @Output() cancel = new EventEmitter<boolean>();
-    @ViewChild('formEl') formEl;
+    @ViewChild('formEl') formEl: HTMLFormElement;
 
     constructor(
         private pushPublishService: PushPublishService,
@@ -93,6 +93,10 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
         }
     }
 
+    /**
+     * It submits the form from submit button
+     * @memberof PushPublishContentTypesDialogComponent
+     */
     submitForm(): void {
         this.formEl.ngSubmit.emit();
     }

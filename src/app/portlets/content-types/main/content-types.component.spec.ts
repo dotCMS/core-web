@@ -138,7 +138,7 @@ describe('ContentTypesPortletComponent', () => {
         expect(crudService.delete).toHaveBeenCalledWith('v1/contenttype/id', mockContentType.id);
     });
 
-    fit('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
+    it('should open push publish dialog and set ContentTypeId when click on push publish action', () => {
         fixture.detectChanges();
         const mockContentType: ContentType = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
@@ -152,12 +152,12 @@ describe('ContentTypesPortletComponent', () => {
             owner: '123',
             system: false
         };
-        const pushPublishDialogEl = de.query(By.css('dot-push-publish-dialog'));
         expect(comp.pushPublishIdentifier).not.toBeDefined();
 
         comp.rowActions[1].menuItem.command(mockContentType);
         fixture.detectChanges();
 
+        expect(de.query(By.css('p-dialog'))).toBeDefined();
         expect(comp.pushPublishIdentifier).toEqual(mockContentType.id);
     });
 

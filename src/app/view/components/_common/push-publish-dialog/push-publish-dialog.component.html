@@ -16,7 +16,6 @@
         <div class="form__group">
             <label class="form__label">{{dotMessageService.get('contenttypes.content.push_publish.I_want_To')}}: </label>
             <p-dropdown [style]="{'width':'100%'}" [options]="pushActions" formControlName="pushActionSelected"></p-dropdown>
-            <field-validation-message [message]="error" [field]="form.get('pushActionSelected')"></field-validation-message>
         </div>
 
         <div class="form__group" *ngIf="form.controls.pushActionSelected.value === 'publish' || form.controls.pushActionSelected.value === 'publishexpire'">
