@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
@@ -56,7 +56,8 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.dialog.info',
                 'editpage.layout.dialog.header',
                 'dot.common.message.saving',
-                'dot.common.message.saved'
+                'dot.common.message.saved',
+                'contenttypes.form.name.error.required'
             ])
             .subscribe();
 
@@ -90,6 +91,7 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     isLayout(): boolean {
+        console.log('this.pageView.template.anonymous',this.pageView.template.anonymous);
         return this.pageView.template.anonymous;
     }
 
@@ -99,16 +101,21 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     saveAsTemplateHandleChange(value: boolean): void {
+        const titleFormControl = this.form.get('title');
         this.saveAsTemplate = value;
-
+        titleFormControl.markAsUntouched();
         if (this.saveAsTemplate) {
+            titleFormControl.setValidators(Validators.required);
             /*
                 Need the timeout so the textfield it's loaded in the DOM before focus, wasn't able to find a better solution
             */
             setTimeout(() => {
                 this.templateName.nativeElement.focus();
             }, 0);
+        } else {
+            titleFormControl.setValidators(null);
         }
+        titleFormControl.updateValueAndValidity();
     }
 
     /**
@@ -141,6 +148,7 @@ export class DotEditLayoutComponent implements OnInit {
     setEditLayoutMode(): void {
         this.form.get('title').setValue(null);
         this.showTemplateLayoutSelectionDialog = false;
+        this.pageView.template.anonymous = true;
     }
 
     private setupLayout(pageView: DotPageView): void {
@@ -151,7 +159,12 @@ export class DotEditLayoutComponent implements OnInit {
 
     private initForm(): void {
         this.form = this.fb.group({
-            title: this.isLayout() ? null : this.pageView.template.title,
+            title: [
+                this.isLayout() ? null : this.pageView.template.title || '',
+                () => {
+                    return this.saveAsTemplate ? Validators.required : null;
+                }
+            ],
             layout: this.fb.group({
                 body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageView.layout.body) || {},
                 header: this.pageView.layout.header,

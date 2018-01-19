@@ -20,6 +20,7 @@ import { DotActionButtonModule } from '../../../../view/components/_common/dot-a
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
+import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -104,7 +105,8 @@ const testConfigObject = {
         RouterTestingModule,
         BrowserAnimationsModule,
         DotActionButtonModule,
-        FormsModule
+        FormsModule,
+        FieldValidationMessageModule
     ],
     providers: [
         DotConfirmationService,
@@ -298,7 +300,7 @@ const templateRouteData = [
     }
 ];
 
-describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
+fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
@@ -347,5 +349,26 @@ describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         expect(component.showTemplateLayoutSelectionDialog).toEqual(false, 'hide the dialog');
         expect(component.form.get('title').value).toEqual('Hello Template Name');
         expect(checkboxSave).toBeNull('checkbox not showing');
+    });
+
+    it('should set the title field required', () => {
+        spyOn(component, 'setEditLayoutMode').and.callThrough();
+        spyOn(component, 'saveAsTemplateHandleChange').and.callThrough();
+        fixture.detectChanges();
+        const editLayoutButton: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__dialog-edit-template')
+        );
+        editLayoutButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const checkboxSave: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-save-template')
+        );
+        checkboxSave.nativeElement.click();
+
+        expect(component.saveAsTemplateHandleChange).toHaveBeenCalled();
+        // expect(component.showTemplateLayoutSelectionDialog).toEqual(false, 'hide the dialog');
+        expect(component.form.get('title').valid).toEqual(false);
+        // expect(checkboxSave).toBeNull('checkbox not showing');
     });
 });
