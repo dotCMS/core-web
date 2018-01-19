@@ -35,7 +35,7 @@ export class PushPublishService {
             return this.coreWebService.requestView({
                 method: RequestMethod.Get,
                 url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
-            }).map((res: any) => res.response._body);
+            }).map((res: any) => JSON.parse(res.response._body));
         })
         .flatMap((environments: DotEnvironment[]) => environments)
         .filter(environment => environment.name !== '')

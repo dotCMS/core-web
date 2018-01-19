@@ -38,7 +38,7 @@ describe('PushPublishService', () => {
         expect(currentUser).toEqual(mockCurrentUserResponse);
     }));
 
-    it('should do a get request and return environments', fakeAsync(() => {
+    fit('should get push publish environments', fakeAsync(() => {
         spyOn(this.pushPublishService, 'getCurrentUser').and.returnValue(Observable.of({
             roleId: '1234'
         }));
@@ -61,7 +61,7 @@ describe('PushPublishService', () => {
         let result: any;
         this.pushPublishService.getEnvironments().subscribe(items => result = items);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
-            body: mockResponse
+            body: JSON.stringify(mockResponse)
         })));
 
         tick();
