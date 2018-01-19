@@ -57,7 +57,7 @@ export class DotEditLayoutComponent implements OnInit {
                 'editpage.layout.dialog.header',
                 'dot.common.message.saving',
                 'dot.common.message.saved',
-                'contenttypes.form.name.error.required'
+                'common.validation.name.error.required'
             ])
             .subscribe();
 
@@ -91,7 +91,6 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     isLayout(): boolean {
-        console.log('this.pageView.template.anonymous',this.pageView.template.anonymous);
         return this.pageView.template.anonymous;
     }
 
@@ -159,12 +158,7 @@ export class DotEditLayoutComponent implements OnInit {
 
     private initForm(): void {
         this.form = this.fb.group({
-            title: [
-                this.isLayout() ? null : this.pageView.template.title || '',
-                () => {
-                    return this.saveAsTemplate ? Validators.required : null;
-                }
-            ],
+            title: this.isLayout() ? null : this.pageView.template.title,
             layout: this.fb.group({
                 body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageView.layout.body) || {},
                 header: this.pageView.layout.header,

@@ -4,7 +4,7 @@
         <h3 class="dot-edit-layout__page-title" *ngIf="!saveAsTemplate">{{pageView.page.title}}</h3>
         <div class="form__group dot-edit-layout__form-group-tittle">
             <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}}" class="dot-edit-layout__toolbar-template-name" *ngIf="saveAsTemplate" formControlName="title">
-            <field-validation-message [message]="dotMessageService.get('contenttypes.form.name.error.required')" [field]="form.get('title')"></field-validation-message>
+            <field-validation-message [message]="dotMessageService.get('common.validation.name.error.required')" [field]="form.get('title')"></field-validation-message>
         </div>
         <div class="dot-edit-layout__toolbar-actions">
             <p-checkbox class="dot-edit-layout__toolbar-save-template" label="{{dotMessageService.get('editpage.layout.toolbar.save.template')}}" *ngIf="isLayout()" binary="true" (onChange)="saveAsTemplateHandleChange($event)"></p-checkbox>
@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="dot-edit-layout__template">
+    <div class="dot-edit-layout__template">content-types-form.component.html
         <div class="dot-edit-layout__template-header" *ngIf="form.value.layout.header">HEADER</div>
         <div class="dot-edit-layout__template-main">
             <div class="dot-edit-layout__template-sidebar--left" *ngIf="form.value.layout.sidebar.location === 'left'">
