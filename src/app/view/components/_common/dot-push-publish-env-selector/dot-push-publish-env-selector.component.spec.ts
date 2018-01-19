@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -39,9 +39,7 @@ class TestHostComponent {
     group: FormGroup;
     constructor() {
         this.group = new FormGroup({
-            environment: new FormControl({
-                environment: ['22e332']
-            })
+            environment: new FormControl('')
         });
     }
 }
@@ -100,21 +98,27 @@ describe('PushPublishEnvSelectorComponent', () => {
         expect(comp.selectedEnvironmentIds).toEqual(['22e332', 'se232']);
     });
 
-    it('should call writeValue to define the initial value of the environment id', () => {
+    it('should set the selectedEnvironments value when multiselect value changes', () => {
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
         de = hostComponentfixture.debugElement.query(By.css('dot-push-publish-env-selector'));
         const component: PushPublishEnvSelectorComponent = de.componentInstance;
         comp.selectedEnvironmentIds = [];
 
         spyOn(component, 'writeValue');
-        comp.valueChange(new Event('MouseEvent'), [{
-            id: '22e332',
-            name: 'my environment'
-        }]);
+        comp.valueChange(new Event('MouseEvent'), [
+            {
+                id: '12345ab',
+                name: 'my environment'
+            },
+            {
+                id: '6789bc',
+                name: 'my environment 2'
+            }
+        ]);
         hostComponentfixture.detectChanges();
 
-        expect(comp.selectedEnvironmentIds).toEqual(['22e332']);
-        expect(component.writeValue).toHaveBeenCalledWith(({ environment: ['22e332'] }));
+        expect(component.writeValue).toHaveBeenCalledWith('');
+        expect(comp.selectedEnvironmentIds).toEqual(['12345ab', '6789bc']);
     });
 
     it('should get environments from PushPublishService', () => {
