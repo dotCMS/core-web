@@ -179,15 +179,11 @@ export class DotEditLayoutComponent implements OnInit {
         this.initialFormValue = _.cloneDeep(this.form);
         this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
-            this.isModelUpdated = this.modelUpdated();
+            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue.value);
         });
     }
 
     private showTemplateLayoutDialog(): void {
         this.showTemplateLayoutSelectionDialog = true;
-    }
-
-    private modelUpdated(): boolean {
-        return !_.isEqual(this.form.value, this.initialFormValue.value);
     }
 }
