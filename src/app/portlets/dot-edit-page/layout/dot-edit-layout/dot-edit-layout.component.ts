@@ -24,7 +24,7 @@ export class DotEditLayoutComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
 
     form: FormGroup;
-    initialFormValue: FormGroup;
+    initialFormValue: any;
     isModelUpdated = false;
 
     pageView: DotPageView;
@@ -114,6 +114,9 @@ export class DotEditLayoutComponent implements OnInit {
             }, 0);
         } else {
             titleFormControl.setValidators(null);
+            if (this.initialFormValue.title === null) {
+                titleFormControl.setValue(null);
+            }
         }
         titleFormControl.updateValueAndValidity();
     }
@@ -146,7 +149,7 @@ export class DotEditLayoutComponent implements OnInit {
      * @memberof DotEditLayoutComponent
      */
     setEditLayoutMode(): void {
-        this.initialFormValue.get('title').setValue(null);
+        this.initialFormValue.title = null;
         this.form.get('title').setValue(null);
         this.showTemplateLayoutSelectionDialog = false;
         this.pageView.template.anonymous = true;
@@ -177,10 +180,10 @@ export class DotEditLayoutComponent implements OnInit {
                 )
             })
         });
-        this.initialFormValue = _.cloneDeep(this.form);
+        this.initialFormValue = _.cloneDeep(this.form.value);
         this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
-            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue.value);
+            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
         });
     }
 
