@@ -204,6 +204,7 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
     });
 
     it('should show template name input and hide page title if save as template is checked', () => {
+        fixture.detectChanges();
         component.saveAsTemplate = true;
         fixture.detectChanges();
 
@@ -211,7 +212,7 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
         expect(pageTitle === null).toBe(true);
 
         const templateNameInput: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__toolbar-template-name')
+            By.css('.dot-edit-layout__toolbar-template-name input')
         );
         expect(templateNameInput).toBeDefined();
     });
@@ -250,11 +251,12 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
     });
 
     it('template-name should has the right formControlName', () => {
+        fixture.detectChanges();
         component.saveAsTemplate = true;
         fixture.detectChanges();
 
         const templateNameInput: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__toolbar-template-name')
+            By.css('.dot-edit-layout__toolbar-template-name input')
         );
         expect(templateNameInput.attributes.formControlName).toEqual('title');
     });
@@ -300,7 +302,7 @@ const templateRouteData = [
     }
 ];
 
-fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
+describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
@@ -359,7 +361,14 @@ fdescribe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         );
         editLayoutButton.nativeElement.click();
         fixture.detectChanges();
+        const templateNameInput: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-template-name input')
+        );
         component.saveAsTemplateHandleChange(true);
+        fixture.detectChanges();
+        const focusElement: DebugElement = fixture.debugElement.query(By.css(':focus'));
+
+        expect(templateNameInput).toEqual(focusElement);
         expect(component.form.get('title').valid).toEqual(false);
     });
 });

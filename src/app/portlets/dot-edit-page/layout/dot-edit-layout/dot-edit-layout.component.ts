@@ -99,10 +99,11 @@ export class DotEditLayoutComponent implements OnInit {
      *
      * @memberof DotEditLayoutComponent
      */
-    saveAsTemplateHandleChange(value: boolean): void {
+    saveAsTemplateHandleChange(value: any): void {
         const titleFormControl = this.form.get('title');
-        this.saveAsTemplate = value;
         titleFormControl.markAsUntouched();
+        titleFormControl.markAsPristine();
+        this.saveAsTemplate = value;
         if (this.saveAsTemplate) {
             titleFormControl.setValidators(Validators.required);
             /*
