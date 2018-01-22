@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { SelectItem } from 'primeng/components/common/selectitem';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -8,15 +9,25 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 })
 export class DotEditPageToolbarComponent implements OnInit {
     @Input() pageTitle: string;
+    @Input() pageUrl: string;
     @Input() canSave: boolean;
 
     @Output() save = new EventEmitter<MouseEvent>();
 
-    constructor(public dotMessageService: DotMessageService) {}
+    states: SelectItem[];
+    stateSelected: string = 'edit';
+
+    constructor(public dotMessageService: DotMessageService) { }
 
     ngOnInit() {
         this.dotMessageService.getMessages([
             'editpage.toolbar.primary.action'
         ]).subscribe();
+
+        this.states = [
+            { label: 'Edit', value: 'edit' },
+            { label: 'Preview', value: 'preview' },
+            { label: 'Live', value: 'live' }
+        ];
     }
 }

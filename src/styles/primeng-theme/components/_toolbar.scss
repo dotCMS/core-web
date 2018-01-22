@@ -7,12 +7,16 @@
     }
 }
 
-
 .ui-toolbar-group-left,
-.ui-toolbar-group-right {
+.ui-toolbar-group-right,
+.ui-toolbar-group-center {
     align-items: center;
     display: flex;
     flex: 1;
+}
+
+.ui-toolbar-group-center {
+    justify-content: center;
 }
 
 .ui-toolbar-group-left {

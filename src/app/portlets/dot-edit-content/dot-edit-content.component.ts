@@ -34,6 +34,8 @@ export class DotEditContentComponent implements OnInit {
     isModelUpdated = false;
     pageIdentifier: string;
     source: any;
+    pageTitle: string;
+    pageUrl: string;
 
     private originalValue: any;
 
@@ -53,9 +55,12 @@ export class DotEditContentComponent implements OnInit {
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
 
-        this.route.data.pluck('editPageHTML').subscribe((editPageHTML: DotRenderedPage) => {
-            this.pageIdentifier = editPageHTML.identifier;
-            this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
+        this.route.data.pluck('editPageHTML').subscribe((renderedPage: DotRenderedPage) => {
+            this.pageTitle = renderedPage.pageTitle || 'Fake Page Title';
+            this.pageUrl = renderedPage.pageUrl || 'fake/page/url';
+
+            this.pageIdentifier = renderedPage.identifier;
+            this.dotEditContentHtmlService.initEditMode(renderedPage.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {

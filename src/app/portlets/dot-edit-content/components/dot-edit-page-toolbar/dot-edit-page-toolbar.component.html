@@ -1,9 +1,20 @@
 <p-toolbar>
     <div class="ui-toolbar-group-left">
-        <h3 class="edit-page-toolbar__page-title">{{pageTitle}}</h3>
+        <div class="edit-page-toolbar__header">
+            <div class="edit-page-toolbar__page-url-wrapper">
+                <h2 class="edit-page-toolbar__page-url">{{pageUrl}}</h2>
+                <button pButton icon="fa-clone"></button>
+            </div>
+            <h3 class="edit-page-toolbar__page-title">{{pageTitle}}</h3>
+        </div>
+    </div>
+
+    <div class="ui-toolbar-group-center">
+        <p-selectButton [options]="states" [(ngModel)]="stateSelected"></p-selectButton>
     </div>
 
     <div class="ui-toolbar-group-right">
+        <p-inputSwitch></p-inputSwitch>
         <button pButton flat class="edit-page-toolbar__primary-action" [disabled]="!canSave"  [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
     </div>
 </p-toolbar>
