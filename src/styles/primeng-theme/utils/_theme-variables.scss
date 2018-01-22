@@ -115,7 +115,7 @@ $selectbutton-hover-bgcolor: $white;
 $selectbutton-hover-border: $button-border;
 $selectbutton-hover-shadow: $md-shadow-2;
 
-$selectbutton-button-hover-bgcolor: $gray-lighter;
+$selectbutton-button-hover-bgcolor: rgba($brand-primary, 0.1);
 $selectbutton-button-active-bgcolor: $brand-primary;
 $selectbutton-button-active-color: $white;
 
