@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DotLayoutPropertiesModule } from '../dot-layout-properties/dot-layout-properties.module';
 import { Routes, RouterModule } from '@angular/router';
 import { PageViewResolver } from '../../dot-edit-page-resolver.service';
+import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 
 const routes: Routes = [
     {
@@ -18,7 +19,7 @@ const routes: Routes = [
         resolve: {
             pageView: PageViewResolver
         }
-    },
+    }
 ];
 
 @NgModule({
@@ -35,7 +36,8 @@ const routes: Routes = [
         ReactiveFormsModule,
         InputTextModule,
         DotLayoutPropertiesModule,
-        DialogModule
+        DialogModule,
+        DotSidebarPropertiesModule
     ],
     exports: [DotEditLayoutComponent],
     providers: [DotEditLayoutService]

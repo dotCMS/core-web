@@ -87,7 +87,29 @@
 }
 
 [class^="dot-edit-layout__template-sidebar"] {
+    justify-content: flex-end;
+
+    span {
+        width: 100%;
+        text-align: center;
+        margin-right: -$basic-padding * 4;
+    }
+}
+
+.dot-edit-layout__template-sidebar-properties {
+    align-self: flex-start;
+}
+
+.dot-edit-layout__template-sidebar--small {
     width: 200px;
+}
+
+.dot-edit-layout__template-sidebar--medium {
+    width: 250px;
+}
+
+.dot-edit-layout__template-sidebar--large {
+    width: 300px;
 }
 
 .dot-edit-layout__template-sidebar--left {

@@ -160,7 +160,7 @@ export class DotEditLayoutComponent implements OnInit {
                     this.pageView.layout.sidebar || {
                         location: '',
                         containers: [],
-                        width: '',
+                        width: 'small',
                         widthPercent: '',
                         preview: false
                     }
@@ -171,6 +171,7 @@ export class DotEditLayoutComponent implements OnInit {
         this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue.value);
+            // TODO: Set sidebar to null if sidebar location is empty
         });
     }
 
