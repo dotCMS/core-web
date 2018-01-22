@@ -3,7 +3,7 @@
         <dot-action-button (onClick)="addGridBox()" class="dot-edit-layout__toolbar-add"></dot-action-button>
         <h3 class="dot-edit-layout__page-title" *ngIf="!saveAsTemplate">{{pageView.page.title}}</h3>
         <div class="form__group dot-edit-layout__toolbar-template-name">
-            <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}}" class="" *ngIf="saveAsTemplate" formControlName="title">
+            <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}}" *ngIf="saveAsTemplate" formControlName="title">
             <field-validation-message [message]="dotMessageService.get('common.validation.name.error.required')" [field]="form.get('title')"></field-validation-message>
         </div>
         <div class="dot-edit-layout__toolbar-actions">
