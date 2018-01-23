@@ -80,3 +80,25 @@
     }
     
 }
+
+.edit-page-toolbar__locker ::ng-deep {
+    .ui-inputswitch-handle {
+        position: relative;
+
+        &:after {
+            content: "\F023";
+            display: inline-block;
+            font-size: inherit;
+            font: normal normal normal 14px/1 FontAwesome;
+            position: absolute;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            top: 3px;
+            left: 5px;            
+        }
+    }
+
+    &.ui-inputswitch-checked .ui-inputswitch-handle {
+        color: $white;
+    }
+}

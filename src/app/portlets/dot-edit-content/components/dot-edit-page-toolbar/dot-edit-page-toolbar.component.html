@@ -14,7 +14,7 @@
     </div>
 
     <div class="ui-toolbar-group-right">
-        <p-inputSwitch></p-inputSwitch>
+        <p-inputSwitch class="edit-page-toolbar__locker"></p-inputSwitch>
         <button pButton flat class="edit-page-toolbar__primary-action" [disabled]="!canSave"  [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
     </div>
 </p-toolbar>
