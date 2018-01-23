@@ -17,7 +17,8 @@ describe('DotSidebarPropertiesComponent', () => {
         const messageServiceMock = new MockDotMessageService({
             'editpage.layout.sidebar.width.small': 'Small',
             'editpage.layout.sidebar.width.medium': 'Medium',
-            'editpage.layout.sidebar.width.large': 'Large'
+            'editpage.layout.sidebar.width.large': 'Large',
+            'editpage.layout.sidebar.width.open': 'Open'
         });
 
         DOTTestBed.configureTestingModule({
@@ -42,5 +43,16 @@ describe('DotSidebarPropertiesComponent', () => {
         const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
 
         expect(radioButtons.children.length).toEqual(3);
+        expect(radioButtons.children[0].attributes.value).toEqual('small');
+        expect(radioButtons.children[1].attributes.value).toEqual('medium');
+        expect(radioButtons.children[2].attributes.value).toEqual('large');
+    });
+
+    it('should toggle overlay panel', () => {
+        const button = fixture.debugElement.query(By.css('button'));
+        spyOn(component.overlay, 'toggle');
+
+        button.nativeElement.click();
+        expect(component.overlay.toggle).toHaveBeenCalledTimes(1);
     });
 });

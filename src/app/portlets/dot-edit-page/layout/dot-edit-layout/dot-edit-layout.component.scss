@@ -87,17 +87,12 @@
 }
 
 [class^="dot-edit-layout__template-sidebar"] {
-    justify-content: flex-end;
-
-    span {
-        width: 100%;
-        text-align: center;
-        margin-right: -$basic-padding * 4;
-    }
+    position: relative;
 }
 
 .dot-edit-layout__template-sidebar-properties {
-    align-self: flex-start;
+    position: absolute;
+    top: $basic-padding;
 }
 
 .dot-edit-layout__template-sidebar--small {
@@ -114,10 +109,18 @@
 
 .dot-edit-layout__template-sidebar--left {
     margin-right: $basic-padding * 2;
+
+    .dot-edit-layout__template-sidebar-properties { 
+        left: $basic-padding;
+    }
 }
 
 .dot-edit-layout__template-sidebar--right {
     margin-left: $basic-padding * 2;
+
+    .dot-edit-layout__template-sidebar-properties { 
+        right: $basic-padding;
+    }
 }
 
 
