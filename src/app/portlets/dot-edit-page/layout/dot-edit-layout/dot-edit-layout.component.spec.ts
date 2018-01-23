@@ -130,7 +130,7 @@ const layoutRouteData = [
     }
 ];
 
-fdescribe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
+describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
