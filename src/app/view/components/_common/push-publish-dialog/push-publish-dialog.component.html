@@ -28,6 +28,8 @@
                 <p-calendar class="push-publish-dialog__calendar-date" formControlName="publishdate" dataType="string" dateFormat="yy-mm-dd" placeholder="yy-mm-dd"></p-calendar>
                 <p-calendar class="push-publish-dialog__calendar-time" formControlName="publishdatetime" [timeOnly]="true" hourFormat="24" placeholder="00-00"></p-calendar>
             </div>
+            <field-validation-message message="{{dotMessageService.get('contenttypes.content.push_publish.publish_date_errormsg')}}" [field]="form.get('publishdate')"></field-validation-message>
+            <field-validation-message message="{{dotMessageService.get('contenttypes.content.push_publish.publish_time_errormsg')}}" [field]="form.get('publishdatetime')"></field-validation-message>
         </div>
 
         <div class="form__group push-publish-dialog__expire-date" *ngIf="form.controls.pushActionSelected.value === 'expire' || form.controls.pushActionSelected.value === 'publishexpire'">
@@ -36,6 +38,8 @@
                 <p-calendar class="push-publish-dialog__calendar-date" formControlName="expiredate" dataType="string" dateFormat="yy-mm-dd" placeholder="yy-mm-dd"></p-calendar>
                 <p-calendar class="push-publish-dialog__calendar-time" formControlName="expiredatetime" [timeOnly]="true" hourFormat="24" placeholder="00-00"></p-calendar>
             </div>
+            <field-validation-message message="{{dotMessageService.get('contenttypes.content.push_publish.expire_date_errormsg')}}" [field]="form.get('expiredate')"></field-validation-message>
+            <field-validation-message message="{{dotMessageService.get('contenttypes.content.push_publish.expire_time_errormsg')}}" [field]="form.get('expiredatetime')"></field-validation-message>
         </div>
 
         <div class="form__group">

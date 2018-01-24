@@ -47,7 +47,11 @@ describe('PushPublishContentTypesDialogComponent', () => {
         'contenttypes.content.push_publish.push_to': 'Push To',
         'contenttypes.content.push_publish.push_to_errormsg': 'Must add at least one Environment',
         'contenttypes.content.push_publish.form.cancel': 'Cancel',
-        'contenttypes.content.push_publish.form.push': 'Push'
+        'contenttypes.content.push_publish.form.push': 'Push',
+        'contenttypes.content.push_publish.publish_date_errormsg': 'Publish Date is required',
+        'contenttypes.content.push_publish.publish_time_errormsg': 'Publish Time is required',
+        'contenttypes.content.push_publish.expire_date_errormsg': 'Expire Date is required',
+        'contenttypes.content.push_publish.expire_time_errormsg': 'Expire Date is required'
     });
 
     beforeEach(() => {
@@ -83,11 +87,33 @@ describe('PushPublishContentTypesDialogComponent', () => {
         expect(comp.form).toEqual(form.componentInstance.form);
     });
 
-    it('should be valid if at least one environment was selected', () => {
+    it('should be invalid if no environment was selected', () => {
         fixture.detectChanges();
-        expect(comp.form.get('environment').value).toEqual('');
         expect(comp.form.valid).toEqual(false);
+    });
 
+    it('should be invalid if publish date or publish time are empty', () => {
+        fixture.detectChanges();
+        comp.form.get('environment').setValue('my environment');
+        comp.form.get('publishdate').setValue('');
+        comp.form.get('publishdatetime').setValue('');
+        expect(comp.form.valid).toEqual(false);
+    });
+
+    it('should be invalid if expire date or expire time are empty', () => {
+        fixture.detectChanges();
+        comp.form.get('environment').setValue('my environment');
+        comp.form.get('expiredate').setValue('');
+        comp.form.get('expiredatetime').setValue('');
+        expect(comp.form.valid).toEqual(false);
+    });
+
+    it('should be valid if all required fields are filled', () => {
+        fixture.detectChanges();
+        comp.form.get('publishdate').setValue(new Date);
+        comp.form.get('publishdatetime').setValue(new Date);
+        comp.form.get('expiredate').setValue(new Date);
+        comp.form.get('expiredatetime').setValue(new Date);
         comp.form.get('environment').setValue('my environment');
         expect(comp.form.valid).toEqual(true);
     });
