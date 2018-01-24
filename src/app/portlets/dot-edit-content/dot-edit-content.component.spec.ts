@@ -122,8 +122,13 @@ describe('DotEditContentComponent', () => {
         component['removeContentlet'](mockResEvent);
 
         expect(dotEditContentHtmlService.removeContentlet).toHaveBeenCalledWith(
-            mockResEvent.dataset.dotContainerIdentifier,
-            mockResEvent.dataset.dotContainerUuid,
-            mockResEvent.dataset.dotContentInode);
+            {
+                identifier: mockResEvent.dataset.dotContainerIdentifier,
+                uuid: mockResEvent.dataset.dotContainerUuid
+            },
+            {
+                inode: mockResEvent.dataset.dotContentInode,
+                identifier: mockResEvent.dataset.dotContentIdentifier
+            });
     });
 });

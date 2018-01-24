@@ -12,6 +12,8 @@ import { DotMessageService } from '../../api/services/dot-messages-service';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotMenuService } from '../../api/services/dot-menu.service';
+import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -141,7 +143,10 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotUuid);
+        this.dotEditContentHtmlService.setContainterToAppendContentlet({
+            identifier: $event.dataset.dotIdentifier,
+            uuid: $event.dataset.dotUuid
+        });
         this.dialogTitle = this.dotMessageService.get('editpage.content.contentlet.add.content');
 
         this.loadDialogEditor(
@@ -189,11 +194,20 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
+        console.log('$event', $event);
         this.dotConfirmationService.confirm({
             accept: () => {
-                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotContainerIdentifier,
-                    $event.dataset.dotContainerUuid,
-                    $event.dataset.dotContentInode);
+                const pageContainer: DotPageContainer = {
+                    identifier: $event.dataset.dotContainerIdentifier,
+                    uuid: $event.dataset.dotContainerUuid
+                };
+
+                const pageContent: DotPageContent = {
+                    inode: $event.dataset.dotContentInode,
+                    identifier: $event.dataset.dotContentIdentifier
+                };
+
+                this.dotEditContentHtmlService.removeContentlet(pageContainer, pageContent);
             },
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),

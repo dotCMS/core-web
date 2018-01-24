@@ -7,6 +7,7 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { tick } from '@angular/core/testing';
 import { fakeAsync } from '@angular/core/testing';
 import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
 
 describe('DotContainerContentletService', () => {
     let dotContainerContentletService: DotContainerContentletService;
@@ -28,9 +29,15 @@ describe('DotContainerContentletService', () => {
             uuid: '3'
         };
 
+        const pageContent: DotPageContent = {
+            identifier: '2',
+            inode: '4',
+            type: 'content_type'
+        };
+
         let response;
 
-        dotContainerContentletService.getContentletToContainer(pageContainer, contentletId).subscribe(resp => response = resp);
+        dotContainerContentletService.getContentletToContainer(pageContainer, pageContent).subscribe(resp => response = resp);
 
         tick();
         expect(lastConnection.request.url).

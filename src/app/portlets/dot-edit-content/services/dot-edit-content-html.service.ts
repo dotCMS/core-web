@@ -9,6 +9,7 @@ import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
 import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 import { Subject } from 'rxjs/Subject';
 import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
 
 @Injectable()
 export class DotEditContentHtmlService {
@@ -63,10 +64,10 @@ export class DotEditContentHtmlService {
      * @param {string} inode
      * @memberof DotEditContentHtmlService
      */
-    removeContentlet(containerIdentifier: string, containerUUID: string, contentInode: string): void {
+    removeContentlet(container: DotPageContainer, content: DotPageContent): void {
         const doc = this.getEditPageDocument();
         // tslint:disable-next-line:max-line-length
-        const contenletEl = doc.querySelector(`div[data-dot-object="container"][data-dot-identifier="${containerIdentifier}"][data-dot-uuid="${containerUUID}"] div[data-dot-inode="${contentInode}"]`);
+        const contenletEl = doc.querySelector(`div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${container.uuid}"] div[data-dot-inode="${content.inode}"]`);
         contenletEl.remove();
         this.pageModelChange.next(this.getContentModel());
     }
@@ -77,7 +78,7 @@ export class DotEditContentHtmlService {
      * @param {*} contentlet
      * @memberof DotEditContentHtmlService
      */
-    renderEditedContentlet(contentlet: any): void {
+    renderEditedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
         const currentContentlet = doc.querySelector(
             `div[data-dot-object="contentlet"][data-dot-content-identifier="${contentlet.identifier}"]`
@@ -94,7 +95,7 @@ export class DotEditContentHtmlService {
             .getContentletToContainer({
                 identifier: containerEl.dataset.dotIdentifier,
                 uuid: containerEl.dataset.dotUuid
-            }, contentlet.identifier)
+            }, contentlet)
             .subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
             });
@@ -106,7 +107,7 @@ export class DotEditContentHtmlService {
      * @param {*} contentlet
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(contentlet: any): void {
+    renderAddedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
             // tslint:disable-next-line:max-line-length
@@ -117,7 +118,7 @@ export class DotEditContentHtmlService {
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
-            .getContentletToContainer(this.currentContainer, contentlet.identifier)
+            .getContentletToContainer(this.currentContainer, contentlet)
             .subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
                 this.currentContainer = null;
@@ -130,11 +131,8 @@ export class DotEditContentHtmlService {
      * @param {string} identifier
      * @memberof DotEditContentHtmlService
      */
-    setContainterToAppendContentlet(identifier: string, uuid: string): void {
-        this.currentContainer = {
-            uuid: uuid,
-            identifier: identifier
-        };
+    setContainterToAppendContentlet(pageContainer: DotPageContainer): void {
+        this.currentContainer = pageContainer;
     }
 
     /**
@@ -265,7 +263,7 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createNewContentlet(contentlet: any): HTMLElement {
+    private createNewContentlet(contentlet: DotPageContent): HTMLElement {
         const doc = this.getEditPageDocument();
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
         dotEditContentletEl.dataset.dotObject = 'contentlet';
@@ -361,9 +359,9 @@ export class DotEditContentHtmlService {
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
-        console.log('relocateInfo', relocateInfo);
+
         this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet.identifier)
+            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
             .subscribe((contentletHtml: string) => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';
