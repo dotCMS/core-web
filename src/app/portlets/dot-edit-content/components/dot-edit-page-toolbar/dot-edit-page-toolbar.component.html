@@ -10,11 +10,12 @@
     </div>
 
     <div class="ui-toolbar-group-center">
-        <p-selectButton flat class="edit-page-toolbar__state-selector" [options]="states" [(ngModel)]="stateSelected"></p-selectButton>
+        <p-inputSwitch class="edit-page-toolbar__locker" [ngModel]="pageLocked" (onChange)="lockPageHandler($event)"></p-inputSwitch>
+        <p-selectButton flat class="edit-page-toolbar__state-selector" [ngModel]="stateSelected" (onChange)="stateSelectorHandler($event.value)" [options]="states"></p-selectButton>
     </div>
 
     <div class="ui-toolbar-group-right">
-        <p-inputSwitch class="edit-page-toolbar__locker"></p-inputSwitch>
-        <button pButton flat class="edit-page-toolbar__primary-action" [disabled]="!canSave"  [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
+        <button pButton flat class="edit-page-toolbar__save" [disabled]="!canSave" [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
+        <p-splitButton flat *ngIf="workflowsActions.length" class="edit-page-toolbar__actions" [label]="dotMessageService.get('editpage.toolbar.primary.workflow.actions')" [model]="workflowsActions" #actionsButton></p-splitButton>
     </div>
 </p-toolbar>

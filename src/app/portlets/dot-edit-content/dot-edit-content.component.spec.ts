@@ -20,7 +20,19 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { DotMenuService } from '../../api/services/dot-menu.service';
+import { WorkflowService } from '../../api/services/workflow/workflow.service';
+import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
+class WorkflowServiceMock {
+    getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
+        return Observable.of([
+            { name: 'Workflow 1', id: 'one' },
+            { name: 'Workflow 2', id: 'two' },
+            { name: 'Workflow 3', id: 'three' }
+        ]);
+    }
+}
 
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
@@ -40,7 +52,13 @@ describe('DotEditContentComponent', () => {
                 DialogModule,
                 BrowserAnimationsModule,
                 DotEditPageToolbarModule,
-                DotLoadingIndicatorModule
+                DotLoadingIndicatorModule,
+                RouterTestingModule.withRoutes([
+                    {
+                        component: DotEditContentComponent,
+                        path: 'test'
+                    }
+                ])
             ],
             providers: [
                 DotConfirmationService,
@@ -55,10 +73,20 @@ describe('DotEditContentComponent', () => {
                     useValue: messageServiceMock
                 },
                 {
+                    provide: WorkflowService,
+                    useClass: WorkflowServiceMock
+                },
+                {
                     provide: ActivatedRoute,
                     useValue: {
                         data: Observable.of({
-                            editPageHTML: ''
+                            renderedPage: {
+                                title: 'A title',
+                                url: 'A url',
+                                identifier: '123',
+                                inode: '456',
+                                render: '<html></html>'
+                            }
                         })
                     }
                 },
@@ -75,10 +103,23 @@ describe('DotEditContentComponent', () => {
         dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
     });
 
-    it('should has a toolbar', () => {
+    it('should have a toolbar', () => {
         const toolbarElement: DebugElement = fixture.debugElement.query(By.css('dot-edit-page-toolbar'));
         expect(toolbarElement).not.toBeNull();
     });
+
+    it('should pass data to the toolbar', () => {
+        fixture.detectChanges();
+        expect(component.toolbar.pageTitle).toEqual('A title', 'toolbar have title');
+        expect(component.toolbar.pageUrl).toEqual('A url', 'toolbar have url');
+        expect(component.toolbar.pageWorkflows).toEqual([
+            { name: 'Workflow 1', id: 'one' },
+            { name: 'Workflow 2', id: 'two' },
+            { name: 'Workflow 3', id: 'three' }
+        ], 'toolbar have workflows');
+    });
+
+    xit('should check isModelUpdated', () => {});
 
     it('should show dotLoadingIndicatorService on init', () => {
         const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'show');

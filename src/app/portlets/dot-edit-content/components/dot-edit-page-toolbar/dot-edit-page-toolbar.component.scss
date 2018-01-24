@@ -1,5 +1,5 @@
-@import "mixins";
 @import "variables";
+@import "mixins";
 
 :host {
     background-color: $white;
@@ -12,12 +12,6 @@
             box-shadow: $md-shadow-1;
             height: 60px;
             margin-bottom: 2px;
-        }
-
-        .ui-toolbar-group-right {
-            .ui-button {
-                margin-left: $basic-padding;
-            }
         }
     }
 }
@@ -82,6 +76,9 @@
 }
 
 .edit-page-toolbar__locker ::ng-deep {
+    align-self: center;
+    margin-right: $basic-padding * 2;
+
     .ui-inputswitch-handle {
         position: relative;
 
@@ -89,12 +86,11 @@
             content: "\F023";
             display: inline-block;
             font-size: inherit;
-            font: normal normal normal 14px/1 FontAwesome;
+            font: normal normal normal 14px / 1 FontAwesome;
+            left: 5px;
             position: absolute;
             text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
             top: 3px;
-            left: 5px;            
         }
     }
 

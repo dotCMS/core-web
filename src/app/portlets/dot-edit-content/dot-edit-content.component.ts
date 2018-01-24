@@ -15,6 +15,10 @@ import { DotMenuService } from '../../api/services/dot-menu.service';
 import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
 import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
 import { DotContainer } from '../dot-edit-page/shared/models/dot-container.model';
+import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { Observable } from 'rxjs/Observable';
+import { WorkflowService } from '../../api/services/workflow/workflow.service';
+import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 
 @Component({
     selector: 'dot-edit-content',
@@ -24,6 +28,7 @@ import { DotContainer } from '../dot-edit-page/shared/models/dot-container.model
 export class DotEditContentComponent implements OnInit {
     @ViewChild('contentletActionsIframe') contentletActionsIframe: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('toolbar') toolbar: DotEditPageToolbarComponent;
 
     contentletActionsUrl: SafeResourceUrl;
     dialogSize = {
@@ -36,18 +41,20 @@ export class DotEditContentComponent implements OnInit {
     source: any;
     pageTitle: string;
     pageUrl: string;
+    pageWorkFlows: Observable<Workflow[]>;
 
     private originalValue: any;
 
     constructor(
         private dotConfirmationService: DotConfirmationService,
-        private dotMenuService: DotMenuService,
         private dotContainerContentletService: DotContainerContentletService,
         private dotGlobalMessageService: DotGlobalMessageService,
+        private dotMenuService: DotMenuService,
         private dotMessageService: DotMessageService,
         private ngZone: NgZone,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
+        private workflowsService: WorkflowService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
@@ -55,11 +62,12 @@ export class DotEditContentComponent implements OnInit {
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
 
-        this.route.data.pluck('editPageHTML').subscribe((renderedPage: DotRenderedPage) => {
-            this.pageTitle = renderedPage.pageTitle || 'Fake Page Title';
-            this.pageUrl = renderedPage.pageUrl || 'fake/page/url';
-
+        this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
+            this.pageTitle = renderedPage.title;
+            this.pageUrl = renderedPage.url;
             this.pageIdentifier = renderedPage.identifier;
+            this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.pageIdentifier);
+
             this.dotEditContentHtmlService.initEditMode(renderedPage.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
