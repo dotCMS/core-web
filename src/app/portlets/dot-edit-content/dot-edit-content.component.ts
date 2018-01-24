@@ -157,7 +157,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private editContentlet($event: any): void {
-        console.log('$event', $event);
         this.dotMenuService.getDotMenuId('content').subscribe((portletId: string) => {
             // tslint:disable-next-line:max-line-length
             const url =
