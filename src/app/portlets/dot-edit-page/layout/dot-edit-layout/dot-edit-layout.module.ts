@@ -11,6 +11,7 @@ import { DotLayoutPropertiesModule } from '../dot-layout-properties/dot-layout-p
 import { Routes, RouterModule } from '@angular/router';
 import { PageViewResolver } from '../../dot-edit-page-resolver.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
+import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 
 const routes: Routes = [
     {
@@ -38,6 +39,7 @@ const routes: Routes = [
         DotLayoutPropertiesModule,
         DialogModule,
         DotSidebarPropertiesModule
+        FieldValidationMessageModule
     ],
     exports: [DotEditLayoutComponent],
     providers: [DotEditLayoutService]

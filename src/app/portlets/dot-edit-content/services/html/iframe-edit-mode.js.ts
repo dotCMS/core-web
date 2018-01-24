@@ -35,7 +35,9 @@ export const EDIT_PAGE_JS = `
     var drake = dragula(
         getContainers(), {
         accepts: function (el, target, source, sibling) {
-            var canDrop = target.dataset.dotAcceptTypes.indexOf(el.dataset.dotType) > -1;
+
+            var canDrop =  el.dataset.dotBasetype === 'WIDGET' || el.dataset.dotBasetype === 'FORM' ||
+                            target.dataset.dotAcceptTypes.indexOf(el.dataset.dotType) > -1;
 
             if (target.dataset.dotMaxLimit) {
                 var containerMaxLimit = parseInt(target.dataset.dotMaxLimit, 10);

@@ -26,12 +26,22 @@ export class DotEditContentHtmlService {
         private loggerService: LoggerService
     ) {
         this.contentletEvents.subscribe((contentletEvent: any) => {
-            if (contentletEvent.name === 'save') {
-                this.renderEditedContentlet(contentletEvent.data);
-            } else if (contentletEvent.name === 'select') {
-                this.renderAddedContentlet(contentletEvent.data);
-            } else if (contentletEvent.name === 'relocate') {
-                this.renderRelocatedContentlet(contentletEvent.data);
+            switch (contentletEvent.name) {
+                case 'save':
+                    if (this.addContentContainerIdentifier) {
+                        this.renderAddedContentlet(contentletEvent.data);
+                    } else {
+                        this.renderEditedContentlet(contentletEvent.data);
+                    }
+                    break;
+                case 'select':
+                    this.renderAddedContentlet(contentletEvent.data);
+                    break;
+                case 'relocate':
+                    this.renderRelocatedContentlet(contentletEvent.data);
+                    break;
+                default:
+                    break;
             }
         });
     }
@@ -80,6 +90,7 @@ export class DotEditContentHtmlService {
         const currentContentlet = doc.querySelector(
             `div[data-dot-object="contentlet"][data-dot-identifier="${contentlet.identifier}"]`
         );
+
         contentlet.type = currentContentlet.dataset.dotType;
 
         const containerEl = currentContentlet.parentNode;
@@ -106,7 +117,6 @@ export class DotEditContentHtmlService {
             `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainerIdentifier}"]`
         );
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
-
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
