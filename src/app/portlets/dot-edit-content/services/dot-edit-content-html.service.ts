@@ -198,7 +198,6 @@ export class DotEditContentHtmlService {
 
     private bindButtonsEvent(button: HTMLElement, type: string): void {
         button.addEventListener('click', ($event: MouseEvent) => {
-            console.log('$event', $event);
             const target = <HTMLElement>$event.target;
             this.contentletEvents.next({
                 name: type,
@@ -271,7 +270,6 @@ export class DotEditContentHtmlService {
         dotEditContentletEl.dataset.dotInode = contentlet.inode;
         dotEditContentletEl.dataset.dotType = contentlet.type;
 
-        console.log('contentlet', contentlet);
         /*
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.

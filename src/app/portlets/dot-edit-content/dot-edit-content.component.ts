@@ -55,7 +55,6 @@ export class DotEditContentComponent implements OnInit {
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
-                console.log('contentletEvent', contentletEvent);
                 this.ngZone.run(() => {
                     switch (contentletEvent.name) {
                         case 'edit':
@@ -192,7 +191,6 @@ export class DotEditContentComponent implements OnInit {
     private removeContentlet($event: any): void {
         this.dotConfirmationService.confirm({
             accept: () => {
-                console.log('$event.dataset', $event.dataset);
                 this.dotEditContentHtmlService.removeContentlet($event.dataset.dotContainerIdentifier,
                     $event.dataset.dotContainerUuid,
                     $event.dataset.dotContentInode);
