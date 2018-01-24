@@ -23,6 +23,9 @@ import { DotMenuService } from '../../api/services/dot-menu.service';
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
 import { Workflow } from '../../shared/models/workflow/workflow.model';
 import { RouterTestingModule } from '@angular/router/testing';
+import { EditPageService } from '../../api/services/edit-page/edit-page.service';
+import { PageViewService } from '../../api/services/page-view/page-view.service';
+import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -39,11 +42,17 @@ describe('DotEditContentComponent', () => {
     let fixture: ComponentFixture<DotEditContentComponent>;
     let de: DebugElement;
     let dotConfirmationService: DotConfirmationService;
+    let pageViewService: PageViewService;
+    let dotGlobalMessageService: DotGlobalMessageService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
             'editpage.toolbar.primary.action': 'Save',
-            'editpage.toolbar.secondary.action': 'Cancel'
+            'editpage.toolbar.secondary.action': 'Cancel',
+            'dot.common.message.locking': 'Locking...',
+            'dot.common.message.locked': 'Locked',
+            'dot.common.message.unlocking': 'Unlocking...',
+            'dot.common.message.unlocked': 'Unlocked'
         });
 
         DOTTestBed.configureTestingModule({
@@ -61,9 +70,16 @@ describe('DotEditContentComponent', () => {
                 ])
             ],
             providers: [
+                DotGlobalMessageService,
                 DotConfirmationService,
                 DotContainerContentletService,
+                DotDOMHtmlUtilService,
+                DotDragDropAPIHtmlService,
                 DotEditContentHtmlService,
+                DotEditContentToolbarHtmlService,
+                DotMenuService,
+                EditPageService,
+                PageViewService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -89,11 +105,7 @@ describe('DotEditContentComponent', () => {
                             }
                         })
                     }
-                },
-                DotDragDropAPIHtmlService,
-                DotDOMHtmlUtilService,
-                DotEditContentToolbarHtmlService,
-                DotMenuService
+                }
             ]
         });
 
@@ -101,6 +113,8 @@ describe('DotEditContentComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
+        pageViewService = fixture.debugElement.injector.get(PageViewService);
+        dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
     });
 
     it('should have a toolbar', () => {
@@ -141,6 +155,7 @@ describe('DotEditContentComponent', () => {
 
     it('should display confirmation dialog and remove contentlet when user accepts', () => {
         fixture.detectChanges();
+
         const mockResEvent = {
             contentletEvents: {},
             dataset: {
@@ -171,5 +186,47 @@ describe('DotEditContentComponent', () => {
                 inode: mockResEvent.dataset.dotContentInode,
                 identifier: mockResEvent.dataset.dotContentIdentifier
             });
+    });
+
+    it('should lock the page on toolbar lock event', () => {
+        spyOn(component, 'lockPageHandler').and.callThrough();
+        spyOn(pageViewService, 'lock').and.callThrough();
+        spyOn(dotGlobalMessageService, 'display').and.callThrough();
+
+        fixture.detectChanges();
+
+        component.toolbar.lockPage.emit(true);
+
+        expect(component.lockPageHandler).toHaveBeenCalledWith(true);
+        expect(pageViewService.lock).toHaveBeenCalledWith('123');
+        expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Locking...');
+
+        // TODO: figure it out how to test this after the response of the lock method
+        // expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Locked');
+    });
+
+    it('should unlock the page on toolbar lock event', () => {
+        spyOn(component, 'lockPageHandler').and.callThrough();
+        spyOn(pageViewService, 'lock').and.callThrough();
+        spyOn(dotGlobalMessageService, 'display').and.callThrough();
+
+        fixture.detectChanges();
+
+        component.toolbar.lockPage.emit(false);
+
+        expect(component.lockPageHandler).toHaveBeenCalledWith(false);
+        expect(pageViewService.lock).toHaveBeenCalledWith('123');
+        expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Unlocking...');
+
+        // TODO: figure it out how to test this after the response of the method
+        // expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Unlocked');
+    });
+
+    it('should update the page on toolbar page state event', () => {
+        spyOn(component, 'statePageHandler').and.callThrough();
+        fixture.detectChanges();
+
+        component.toolbar.pageState.emit('live');
+        expect(component.statePageHandler).toHaveBeenCalledWith('live');
     });
 });
