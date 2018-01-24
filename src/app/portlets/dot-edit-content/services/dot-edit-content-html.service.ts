@@ -91,7 +91,10 @@ export class DotEditContentHtmlService {
         containerEl.replaceChild(contentletEl, currentContentlet);
 
         this.dotContainerContentletService
-            .getContentletToContainer(containerEl.dataset.dotIdentifier, contentlet.identifier)
+            .getContentletToContainer({
+                identifier: containerEl.dataset.dotIdentifier,
+                uuid: containerEl.dataset.dotUuid
+            }, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
             });
@@ -358,9 +361,9 @@ export class DotEditContentHtmlService {
         const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
         contentletContentEl.innerHTML += '<div class="loader__overlay"><div class="loader"></div></div>';
         relocateInfo.container = relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
-
+        console.log('relocateInfo', relocateInfo);
         this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container.identifier, relocateInfo.contentlet.identifier)
+            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet.identifier)
             .subscribe((contentletHtml: string) => {
                 // Removing the loading indicator
                 contentletContentEl.innerHTML = '';

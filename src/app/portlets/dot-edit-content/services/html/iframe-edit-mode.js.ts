@@ -69,7 +69,7 @@ export const EDIT_PAGE_JS = `
                 data: {
                     container: {
                         identifier: target.dataset.dotIdentifier,
-                        uuid: 'fake-one'
+                        uuid: target.dataset.dotUuid
                     },
                     contentlet: {
                         identifier: el.dataset.dotIdentifier,
