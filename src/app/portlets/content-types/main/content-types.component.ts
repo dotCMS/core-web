@@ -14,6 +14,9 @@ import { DotContentletService } from '../../../api/services/dot-contentlet.servi
 import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
 import { ButtonModel } from '../../../shared/models/action-header/button.model';
 import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
+import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
+import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
+import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 
 /**
  * List of Content Types
@@ -23,7 +26,7 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
 
  */
 @Component({
-    selector: 'content-types',
+    selector: 'dot-content-types',
     styleUrls: ['./content-types.component.scss'],
     templateUrl: 'content-types.component.html'
 })
@@ -61,21 +64,38 @@ export class ContentTypesPortletComponent implements OnInit {
     ];
 
     constructor(
-        public dotMessageService: DotMessageService,
-        private router: Router,
-        private route: ActivatedRoute,
         private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
         private dotConfirmationService: DotConfirmationService,
-        private dotContentletService: DotContentletService
-    ) {}
+        private dotContentletService: DotContentletService,
+        private dotcmsConfig: DotcmsConfig,
+        private route: ActivatedRoute,
+        private router: Router,
+        public dotMessageService: DotMessageService,
+        private pushPublishService: PushPublishService
+    ) { }
 
     ngOnInit() {
         Observable.forkJoin(
             this.dotMessageService.getMessages(this.i18nKeys),
-            this.dotContentletService.getAllContentTypes()
+            this.dotContentletService.getAllContentTypes(),
+            this.dotcmsConfig.getConfig().take(1).map((config: ConfigParams) => {
+                /*
+                    TODO: need to update ConfigParams interface and create a License interface
+                */
+                const license: any = config.license;
+                return license.isCommunity;
+            }),
+            this.pushPublishService.getEnvironments().map((environments: DotEnvironment[]) => !!environments.length)
         ).subscribe(res => {
             const baseTypes: StructureTypeView[] = res[1];
+            const rowActionsMap = {
+                delete: true,
+                pushPublish: !res[2] && res[3]
+            };
+
+            console.log(res[3]);
+
             this.actionHeaderOptions = {
                 primary: {
                     command: $event => {
@@ -84,23 +104,52 @@ export class ContentTypesPortletComponent implements OnInit {
                     model: this.setContentTypes(baseTypes)
                 }
             };
+
             this.contentTypeColumns = this.setContentTypeColumns();
-            this.rowActions = [
-                {
-                    menuItem: {
-                        label: this.dotMessageService.get('contenttypes.action.remove'),
-                        command: item => this.removeConfirmation(item)
-                    },
-                    shouldShow: item => !item.fixed
-                },
-                {
-                    menuItem: {
-                        label: this.dotMessageService.get('contenttypes.content.push_publish'),
-                        command: item => this.setPushPublishIdentifier(item)
-                    }
-                }
-            ];
+            this.rowActions = this.createRowActions(rowActionsMap);
         });
+    }
+
+    private createRowActions(rowActionsMap: any): DotDataTableAction[] {
+        const listingActions: DotDataTableAction[] = [];
+
+        if (rowActionsMap.delete) {
+            listingActions.push({
+                menuItem: {
+                    label: this.dotMessageService.get('contenttypes.action.delete'),
+                    command: item => this.removeConfirmation(item),
+                    icon: 'fa-trash'
+                },
+                shouldShow: item => !item.fixed
+            });
+        }
+
+
+        /*
+            Only show Push Publish action if DotCMS instance have the appropriate license and there are
+            push publish environments created.
+        */
+        if (rowActionsMap.pushPublish) {
+            listingActions.push({
+                menuItem: {
+                    label: this.dotMessageService.get('contenttypes.content.push_publish'),
+                    command: item => this.pushPublishContentType(item)
+                }
+            });
+        }
+
+        /*
+            If we have more than one action it means that we'll show the contextual menu and we don't want icons there
+        */
+        return listingActions.length > 1 ? listingActions.map(this.removeIconsFromMenuItem) : listingActions;
+    }
+
+    private removeIconsFromMenuItem(action: DotDataTableAction): DotDataTableAction {
+        const { icon, ...noIconMenuItem} = action.menuItem;
+        return {
+            ... action,
+            menuItem: noIconMenuItem
+        };
     }
 
     private setContentTypes(s: StructureTypeView[]): ButtonModel[] {
@@ -186,7 +235,7 @@ export class ContentTypesPortletComponent implements OnInit {
         this.pushPublishIdentifier = null;
     }
 
-    private setPushPublishIdentifier(item: any) {
+    private pushPublishContentType(item: any) {
         this.pushPublishIdentifier = item.id;
     }
 }

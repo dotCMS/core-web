@@ -38,12 +38,10 @@ describe('PushPublishService', () => {
         expect(currentUser).toEqual(mockCurrentUserResponse);
     }));
 
-    xit('should do a get request and return environments', fakeAsync(() => {
-        // spyOn(this.pushPublishService, 'getCurrentUser').and.returnValue(Observable.of({
-        //     roleId: '1234'
-        // }));
-        let result: any;
-        this.pushPublishService.getEnvironments().subscribe(items => result = items);
+    it('should get push publish environments', fakeAsync(() => {
+        spyOn(this.pushPublishService, 'getCurrentUser').and.returnValue(Observable.of({
+            roleId: '1234'
+        }));
 
         const mockResponse = [
             {
@@ -60,12 +58,15 @@ describe('PushPublishService', () => {
             }
         ];
 
+        let result: any;
+        this.pushPublishService.getEnvironments().subscribe(items => result = items);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
-            body: mockResponse
+            body: JSON.stringify(mockResponse)
         })));
 
         tick();
-        expect(result).toEqual(mockResponse);
+        expect(this.lastConnection.request.url).toContain('api/environment/loadenvironments/roleId/1234/name=0');
+        expect(result).toEqual(mockResponse.splice(1));
     }));
 
     it('should do a post request and push publish an asset', fakeAsync(() => {
