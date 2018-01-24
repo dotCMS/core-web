@@ -91,11 +91,13 @@ export class DotEditContentHtmlService {
 
         containerEl.replaceChild(contentletEl, currentContentlet);
 
+        const container: DotPageContainer = {
+            identifier: containerEl.dataset.dotIdentifier,
+            uuid: containerEl.dataset.dotUuid
+        };
+
         this.dotContainerContentletService
-            .getContentletToContainer({
-                identifier: containerEl.dataset.dotIdentifier,
-                uuid: containerEl.dataset.dotUuid
-            }, contentlet)
+            .getContentletToContainer(container, contentlet)
             .subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
             });

@@ -14,6 +14,7 @@ import { DotGlobalMessageService } from '../../view/components/_common/dot-globa
 import { DotMenuService } from '../../api/services/dot-menu.service';
 import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
 import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
+import { DotContainer } from '../dot-edit-page/shared/models/dot-container.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -143,14 +144,14 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet({
+        const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
             uuid: $event.dataset.dotUuid
-        });
+        };
+        this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
         this.dialogTitle = this.dotMessageService.get('editpage.content.contentlet.add.content');
 
         this.loadDialogEditor(
-            $event.dataset.dotIdentifier,
             `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset.dotAdd}`,
             $event.contentletEvents
         );
@@ -169,11 +170,11 @@ export class DotEditContentComponent implements OnInit {
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';
-            this.loadDialogEditor($event.dataset.dotIdentifier, url, $event.contentletEvents);
+            this.loadDialogEditor(url, $event.contentletEvents);
         });
     }
 
-    private loadDialogEditor(containerId: string, url: string, contentletEvents: Subject<any>): void {
+    private loadDialogEditor(url: string, contentletEvents: Subject<any>): void {
         this.setDialogSize();
         this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
@@ -194,7 +195,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        console.log('$event', $event);
         this.dotConfirmationService.confirm({
             accept: () => {
                 const pageContainer: DotPageContainer = {
