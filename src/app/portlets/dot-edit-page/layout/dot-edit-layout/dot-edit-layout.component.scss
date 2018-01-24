@@ -21,6 +21,13 @@
     background: repeating-linear-gradient(-90deg, transparent, transparent $basic-padding, $gray-lighter $basic-padding, $gray-lighter calc(100% / 12));
     flex-grow: 1;
     margin-right: -$basic-padding;
+    background-position: right 50px;
+    background-repeat: no-repeat;
+}
+
+.action-button--no-label .ui-button.ui-button-icon-only {
+    height: 32px!important;
+    width: 32px!important;
 }
 
 .dot-edit-layout__page-title {
@@ -101,6 +108,19 @@
 
 .dot-edit-layout__template-footer,
 .dot-edit-layout__template-header {
-    height: 100px;
+    height: 80px;
     margin: $basic-padding $basic-padding * 2;
+}
+
+.dot-edit-layout__template-body{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    border: solid 1px #c5c5c5;
+    padding: $basic-padding;
+}
+
+.dot-edit-layout__template-body .action-button--no-label .ui-button.ui-button-icon-only{
+    height: 32px;
+    width: 32px;
 }
