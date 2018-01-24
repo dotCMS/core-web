@@ -8,6 +8,7 @@ import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolba
 import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
 import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 import { Subject } from 'rxjs/Subject';
+import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
 
 @Injectable()
 export class DotEditContentHtmlService {
@@ -16,7 +17,7 @@ export class DotEditContentHtmlService {
 
     pageModelChange: Subject<any> = new Subject();
 
-    public addContentContainerIdentifier: string;
+    public currentContainer: DotPageContainer;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -62,9 +63,10 @@ export class DotEditContentHtmlService {
      * @param {string} inode
      * @memberof DotEditContentHtmlService
      */
-    removeContentlet(inode: string): void {
+    removeContentlet(containerIdentifier: string, containerUUID: string, contentInode: string): void {
         const doc = this.getEditPageDocument();
-        const contenletEl = doc.querySelector(`div[data-dot-inode="${inode}"]`);
+        // tslint:disable-next-line:max-line-length
+        const contenletEl = doc.querySelector(`div[data-dot-object="container"][data-dot-identifier="${containerIdentifier}"][data-dot-uuid="${containerUUID}"] div[data-dot-inode="${contentInode}"]`);
         contenletEl.remove();
         this.pageModelChange.next(this.getContentModel());
     }
@@ -78,7 +80,7 @@ export class DotEditContentHtmlService {
     renderEditedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const currentContentlet = doc.querySelector(
-            `div[data-dot-object="contentlet"][data-dot-identifier="${contentlet.identifier}"]`
+            `div[data-dot-object="contentlet"][data-dot-content-identifier="${contentlet.identifier}"]`
         );
 
         contentlet.type = currentContentlet.dataset.dotType;
@@ -104,17 +106,18 @@ export class DotEditContentHtmlService {
     renderAddedContentlet(contentlet: any): void {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${this.addContentContainerIdentifier}"]`
+            // tslint:disable-next-line:max-line-length
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
         const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
 
         containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
         this.dotContainerContentletService
-            .getContentletToContainer(this.addContentContainerIdentifier, contentlet.identifier)
+            .getContentletToContainer(this.currentContainer, contentlet.identifier)
             .subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
-                this.addContentContainerIdentifier = null;
+                this.currentContainer = null;
             });
     }
 
@@ -124,8 +127,11 @@ export class DotEditContentHtmlService {
      * @param {string} identifier
      * @memberof DotEditContentHtmlService
      */
-    setContainterToAppendContentlet(identifier: string): void {
-        this.addContentContainerIdentifier = identifier;
+    setContainterToAppendContentlet(identifier: string, uuid: string): void {
+        this.currentContainer = {
+            uuid: uuid,
+            identifier: identifier
+        };
     }
 
     /**
@@ -192,6 +198,7 @@ export class DotEditContentHtmlService {
 
     private bindButtonsEvent(button: HTMLElement, type: string): void {
         button.addEventListener('click', ($event: MouseEvent) => {
+            console.log('$event', $event);
             const target = <HTMLElement>$event.target;
             this.contentletEvents.next({
                 name: type,
@@ -264,23 +271,33 @@ export class DotEditContentHtmlService {
         dotEditContentletEl.dataset.dotInode = contentlet.inode;
         dotEditContentletEl.dataset.dotType = contentlet.type;
 
+        console.log('contentlet', contentlet);
         /*
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.
         */
         dotEditContentletEl.innerHTML = `<div class="dotedit-contentlet__toolbar">
-                <button type="button" data-dot-identifier="${contentlet.identifier}"
-                    data-dot-inode="${contentlet.inode}"
+                <button type="button"
+                    data-dot-content-identifier="${contentlet.identifier}"
+                    data-dot-content-inode="${contentlet.inode}"
+                    data-dot-container-uuid="${this.currentContainer.uuid}"
+                    data-dot-container-identifier="${this.currentContainer.identifier}"
                     class="dotedit-contentlet__drag">
                     Drag
                 </button>
-                <button type="button" data-dot-identifier="${contentlet.identifier}"
-                    data-dot-inode="${contentlet.inode}"
+                <button type="button"
+                    data-dot-content-identifier="${contentlet.identifier}"
+                    data-dot-content-inode="${contentlet.inode}"
+                    data-dot-container-uuid="${this.currentContainer.uuid}"
+                    data-dot-container-identifier="${this.currentContainer.identifier}"
                     class="dotedit-contentlet__edit">
                     Edit
                 </button>
-                <button type="button" data-dot-identifier="${contentlet.identifier}"
-                    data-dot-inode="${contentlet.inode}"
+                <button type="button"
+                    data-dot-content-identifier="${contentlet.identifier}"
+                    data-dot-content-inode="${contentlet.inode}"
+                    data-dot-container-uuid="${this.currentContainer.uuid}"
+                    data-dot-container-identifier="${this.currentContainer.identifier}"
                     class="dotedit-contentlet__remove">
                     Remove
                 </button>

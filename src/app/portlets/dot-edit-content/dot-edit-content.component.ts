@@ -55,6 +55,7 @@ export class DotEditContentComponent implements OnInit {
             this.dotEditContentHtmlService.initEditMode(editPageHTML.render, this.iframe);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
+                console.log('contentletEvent', contentletEvent);
                 this.ngZone.run(() => {
                     switch (contentletEvent.name) {
                         case 'edit':
@@ -141,7 +142,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private addContentlet($event: any): void {
-        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier);
+        this.dotEditContentHtmlService.setContainterToAppendContentlet($event.dataset.dotIdentifier, $event.dataset.dotUuid);
         this.dialogTitle = this.dotMessageService.get('editpage.content.contentlet.add.content');
 
         this.loadDialogEditor(
@@ -191,7 +192,10 @@ export class DotEditContentComponent implements OnInit {
     private removeContentlet($event: any): void {
         this.dotConfirmationService.confirm({
             accept: () => {
-                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotInode);
+                console.log('$event.dataset', $event.dataset);
+                this.dotEditContentHtmlService.removeContentlet($event.dataset.dotContainerIdentifier,
+                    $event.dataset.dotContainerUuid,
+                    $event.dataset.dotContentInode);
             },
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),

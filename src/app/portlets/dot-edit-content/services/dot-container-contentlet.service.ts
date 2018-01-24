@@ -8,10 +8,10 @@ import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-con
 export class DotContainerContentletService {
     constructor(private coreWebService: CoreWebService) {}
 
-    getContentletToContainer(containerId: string, contentletId: string): Observable<string> {
+    getContentletToContainer(container: DotPageContainer, contentletId: string): Observable<string> {
         return this.coreWebService.requestView({
             method: RequestMethod.Get,
-            url: `v1/containers/${containerId}/uuid/LEGACY_RELATION_TYPE/content/${contentletId}`
+            url: `v1/containers/${container.identifier}/uuid/${container.uuid}/content/${contentletId}`
         }).pluck('bodyJsonObject', 'render');
     }
 
