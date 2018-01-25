@@ -1,5 +1,5 @@
-@import "mixins";
-@import "variables";
+@import 'mixins';
+@import 'variables';
 
 :host {
     background-color: $gray-lightest;
@@ -18,7 +18,13 @@
 }
 
 .dot-edit-layout__grid-guides {
-    background: repeating-linear-gradient(-90deg, transparent, transparent $basic-padding, $gray-lighter $basic-padding, $gray-lighter calc(100% / 12));
+    background: repeating-linear-gradient(
+        -90deg,
+        transparent,
+        transparent $basic-padding,
+        $gray-lighter $basic-padding,
+        $gray-lighter calc(100% / 12)
+    );
     flex-grow: 1;
     margin-right: -$basic-padding;
 }
@@ -39,7 +45,7 @@
 .dot-edit-layout__toolbar {
     align-items: center;
     justify-content: space-between;
-    margin: $basic-padding * 2 $basic-padding * 2 0;
+    margin: $basic-padding * 2 $basic-padding * 2 $basic-padding;
 }
 
 .dot-edit-layout__toolbar-actions {
@@ -54,13 +60,9 @@
 
 .dot-edit-layout__toolbar-add {
     margin-bottom: $basic-padding;
- }
-
-.dot-edit-layout__toolbar-template-name {
-    height: 50px;
 }
 
-.dot-edit-layout__toolbar-template-name input {
+.dot-edit-layout__toolbar-template-name {
     width: 280px;
 }
 
@@ -82,7 +84,7 @@
 
 .dot-edit-layout__template-footer,
 .dot-edit-layout__template-header,
-[class^="dot-edit-layout__template-sidebar"] {
+[class^='dot-edit-layout__template-sidebar'] {
     align-items: center;
     background: $gray-lighter;
     color: $gray;
@@ -92,7 +94,7 @@
     justify-content: center;
 }
 
-[class^="dot-edit-layout__template-sidebar"] {
+[class^='dot-edit-layout__template-sidebar'] {
     position: relative;
 }
 
@@ -129,14 +131,13 @@
     }
 }
 
-
 .dot-edit-layout__template-footer,
 .dot-edit-layout__template-header {
     height: 80px;
     margin: $basic-padding $basic-padding * 2;
 }
 
-.dot-edit-layout__template-body{
+.dot-edit-layout__template-body {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
@@ -144,7 +145,7 @@
     padding: $basic-padding;
 }
 
-.dot-edit-layout__template-body::ng-deep .action-button--no-label .ui-button.ui-button-icon-only{
+.dot-edit-layout__template-body::ng-deep .action-button--no-label .ui-button.ui-button-icon-only {
     height: $field-height;
     width: $field-height;
     font-size: $font-size-small;
