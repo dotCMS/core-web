@@ -2,7 +2,7 @@
     <div class="dot-edit-layout__toolbar">
         <h3 class="dot-edit-layout__page-title" *ngIf="!saveAsTemplate">{{pageView.page.title}}</h3>
         <div class="form__group dot-edit-layout__toolbar-template-name">
-            <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}} *" *ngIf="saveAsTemplate" formControlName="title">
+            <input #templateName pInputText type="text" placeholder="{{dotMessageService.get('editpage.layout.toolbar.template.name')}}" *ngIf="saveAsTemplate" formControlName="title">
             <field-validation-message [message]="dotMessageService.get('common.validation.name.error.required')" [field]="form.get('title')"></field-validation-message>
         </div>
         <div class="dot-edit-layout__toolbar-actions">
@@ -17,8 +17,9 @@
     <div class="dot-edit-layout__template">
         <div class="dot-edit-layout__template-header" *ngIf="form.value.layout.header">HEADER</div>
         <div class="dot-edit-layout__template-main">
-            <div class="dot-edit-layout__template-sidebar--left" *ngIf="form.value.layout.sidebar.location === 'left'">
+            <div class="dot-edit-layout__template-sidebar--left" [ngClass]="'dot-edit-layout__template-sidebar--' + form.value.layout.sidebar.width" *ngIf="form.value.layout.sidebar.location === 'left'">
                 SIDEBAR
+                <dot-sidebar-properties [group]="form.get('layout.sidebar')" class="dot-edit-layout__template-sidebar-properties"></dot-sidebar-properties>
             </div>
             <div class="dot-edit-layout__template-body">
                 <dot-action-button (onClick)="addGridBox()" class="dot-edit-layout__toolbar-add"></dot-action-button>
@@ -26,9 +27,9 @@
                     <dot-edit-layout-grid #editLayoutGrid formControlName="body"></dot-edit-layout-grid>
                 </div>
             </div>
-
-            <div class="dot-edit-layout__template-sidebar--right" *ngIf="form.value.layout.sidebar.location === 'right'">
+            <div class="dot-edit-layout__template-sidebar--right" [ngClass]="'dot-edit-layout__template-sidebar--' + form.value.layout.sidebar.width" *ngIf="form.value.layout.sidebar.location === 'right'">
                 SIDEBAR
+                <dot-sidebar-properties [group]="form.get('layout.sidebar')" class="dot-edit-layout__template-sidebar-properties"></dot-sidebar-properties>
             </div>
         </div>
         <div class="dot-edit-layout__template-footer" *ngIf="form.value.layout.footer">FOOTER</div>
