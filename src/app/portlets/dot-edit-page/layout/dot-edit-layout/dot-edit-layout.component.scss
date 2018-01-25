@@ -21,19 +21,14 @@
     background: repeating-linear-gradient(-90deg, transparent, transparent $basic-padding, $gray-lighter $basic-padding, $gray-lighter calc(100% / 12));
     flex-grow: 1;
     margin-right: -$basic-padding;
-    background-position: right 50px;
-    background-repeat: no-repeat;
-}
-
-.action-button--no-label .ui-button.ui-button-icon-only {
-    height: 32px!important;
-    width: 32px!important;
 }
 
 .dot-edit-layout__page-title {
     align-self: center;
     color: $body-font-color;
     margin: 0;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .dot-edit-layout__toolbar,
@@ -58,11 +53,11 @@
 }
 
 .dot-edit-layout__toolbar-add {
-    margin-right: $basic-padding * 2;
+    margin-bottom: $basic-padding;
  }
 
 .dot-edit-layout__toolbar-template-name {
-    height: 75px;
+    height: 50px;
 }
 
 .dot-edit-layout__toolbar-template-name input {
@@ -124,7 +119,8 @@
     padding: $basic-padding;
 }
 
-.dot-edit-layout__template-body .action-button--no-label .ui-button.ui-button-icon-only{
+.dot-edit-layout__template-body::ng-deep .action-button--no-label .ui-button.ui-button-icon-only{
     height: 32px;
     width: 32px;
+    font-size: $font-size-small;
 }
