@@ -17,7 +17,7 @@ import { DotContainer } from '../dot-edit-page/shared/models/dot-container.model
 import { Workflow } from '../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
-import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
+import { DotEditPageToolbarComponent, PageState } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 
@@ -159,7 +159,7 @@ export class DotEditContentComponent implements OnInit {
      * @param {string} state
      * @memberof DotEditContentComponent
      */
-    statePageHandler(state: string): void {
+    statePageHandler(state: PageState): void {
         // TODO: do the request and set the new state
         // this.editPageService.get(this.pageUrl, state);
     }

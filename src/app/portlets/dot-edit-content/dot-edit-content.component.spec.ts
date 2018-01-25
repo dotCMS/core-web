@@ -26,6 +26,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
+import { PageState } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -226,7 +227,7 @@ describe('DotEditContentComponent', () => {
         spyOn(component, 'statePageHandler').and.callThrough();
         fixture.detectChanges();
 
-        component.toolbar.pageState.emit('live');
-        expect(component.statePageHandler).toHaveBeenCalledWith('live');
+        component.toolbar.pageState.emit(PageState.LIVE);
+        expect(component.statePageHandler).toHaveBeenCalledWith(PageState.LIVE);
     });
 });

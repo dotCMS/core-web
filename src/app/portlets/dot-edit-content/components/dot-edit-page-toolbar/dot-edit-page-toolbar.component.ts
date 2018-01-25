@@ -3,15 +3,18 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { SelectItem, MenuItem, SplitButton, InputSwitch } from 'primeng/primeng';
 import { Workflow } from '../../../../shared/models/workflow/workflow.model';
 
+export enum PageState {
+    EDIT,
+    PREVIEW,
+    LIVE
+}
+
 @Component({
     selector: 'dot-edit-page-toolbar',
     templateUrl: './dot-edit-page-toolbar.component.html',
     styleUrls: ['./dot-edit-page-toolbar.component.scss']
 })
 export class DotEditPageToolbarComponent implements OnInit {
-    @ViewChild('actionsButton') actionsButton: SplitButton;
-    @ViewChild('locker') locker: InputSwitch;
-
     @Input() canSave: boolean;
     @Input() pageLocked: boolean;
     @Input() pageTitle: string;
@@ -19,11 +22,11 @@ export class DotEditPageToolbarComponent implements OnInit {
     @Input() pageWorkflows: Workflow[];
 
     @Output() lockPage = new EventEmitter<boolean>();
-    @Output() pageState = new EventEmitter<string>();
+    @Output() pageState = new EventEmitter<PageState>();
     @Output() save = new EventEmitter<MouseEvent>();
 
     states: SelectItem[] = [];
-    stateSelected = 'preview';
+    stateSelected = PageState.PREVIEW;
     workflowsActions: MenuItem[] = [];
 
     constructor(public dotMessageService: DotMessageService) {}
@@ -39,9 +42,9 @@ export class DotEditPageToolbarComponent implements OnInit {
             ])
             .subscribe((res) => {
                 this.states = [
-                    { label: res['editpage.toolbar.edit.page'], value: 'edit' },
-                    { label: res['editpage.toolbar.preview.page'], value: 'preview' },
-                    { label: res['editpage.toolbar.live.page'], value: 'live' }
+                    { label: res['editpage.toolbar.edit.page'], value: PageState.EDIT },
+                    { label: res['editpage.toolbar.preview.page'], value: PageState.PREVIEW },
+                    { label: res['editpage.toolbar.live.page'], value: PageState.LIVE }
                 ];
             });
 
@@ -61,17 +64,12 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @memberof DotEditPageToolbarComponent
      */
     lockPageHandler($event): void {
-        this.pageLocked = $event.checked;
         this.lockPage.emit(this.pageLocked);
 
-        if (!this.pageLocked && this.stateSelected === 'edit') {
-            this.stateSelected = 'preview';
-            this.pageState.emit(this.stateSelected);
-        }
-
-        if (this.pageLocked && this.stateSelected === 'preview') {
-            this.stateSelected = 'edit';
-            this.pageState.emit(this.stateSelected);
+        if (!this.pageLocked && this.stateSelected === PageState.EDIT) {
+            this.setState(PageState.PREVIEW);
+        } else if (this.pageLocked && this.stateSelected === PageState.PREVIEW) {
+            this.setState(PageState.EDIT);
         }
     }
 
@@ -81,14 +79,17 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditPageToolbarComponent
      */
-    stateSelectorHandler(state: string): void {
-        this.stateSelected = state;
+    stateSelectorHandler(state: PageState): void {
         this.pageState.emit(this.stateSelected);
 
         if (!this.pageLocked) {
-            console.log('emit');
-            this.pageLocked = state === 'edit';
+            this.pageLocked = state === PageState.EDIT;
             this.lockPage.emit(this.pageLocked);
         }
+    }
+
+    private setState(state: PageState) {
+        this.stateSelected = state;
+        this.pageState.emit(this.stateSelected);
     }
 }

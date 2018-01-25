@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
+import { DotEditPageToolbarComponent, PageState } from './dot-edit-page-toolbar.component';
 import { DotEditPageToolbarModule } from './dot-edit-page-toolbar.module';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -7,11 +7,31 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SplitButton } from 'primeng/primeng';
 
 describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
+
+    function clickStateButton(state) {
+        const states = {
+            edit: 0,
+            preview: 1,
+            live: 2
+        };
+
+        const stateSelectorButtons: DebugElement[] = de.queryAll(
+            By.css('.edit-page-toolbar__state-selector .ui-button')
+        );
+        const button = stateSelectorButtons[states[state]].nativeElement;
+        button.click();
+    }
+
+    function clickLocker() {
+        const lockerSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker .ui-inputswitch'));
+        lockerSwitch.nativeElement.click();
+    }
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.primary.action': 'Hello',
@@ -65,7 +85,7 @@ describe('DotEditPageToolbarComponent', () => {
         expect(pageUrlEl.textContent).toEqual('/test/test');
     });
 
-    it('should have a primary action button', () => {
+    it('should have a save button', () => {
         fixture.detectChanges();
         const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
         expect(primaryAction).toBeTruthy();
@@ -95,9 +115,10 @@ describe('DotEditPageToolbarComponent', () => {
     it('should set action split buttons params', () => {
         component.pageWorkflows = [{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }];
         fixture.detectChanges();
+        const actionsButton: SplitButton = de.query(By.css('.edit-page-toolbar__actions')).componentInstance;
 
-        expect(component.actionsButton.label).toEqual('Acciones', 'actions label is set');
-        expect(component.actionsButton.model).toEqual([{ label: 'Workflow 1' }, { label: 'Workflow 2' }]);
+        expect(actionsButton.label).toEqual('Acciones', 'actions label is set');
+        expect(actionsButton.model).toEqual([{ label: 'Workflow 1' }, { label: 'Workflow 2' }]);
     });
 
     it('should emit save event on primary action button click', () => {
@@ -107,13 +128,13 @@ describe('DotEditPageToolbarComponent', () => {
 
         const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
 
-        let res;
+        let result;
         component.save.subscribe((event) => {
-            res = event;
+            result = event;
         });
         primaryAction.nativeElement.click();
 
-        expect(res).toBeDefined();
+        expect(result).toBeDefined();
     });
 
     it('should disabled save button', () => {
@@ -136,7 +157,6 @@ describe('DotEditPageToolbarComponent', () => {
 
     it('should turn on the locker and emit page state and lock state when user click on edit mode', () => {
         fixture.detectChanges();
-        const editButton = de.queryAll(By.css('.edit-page-toolbar__state-selector .ui-button'))[0].nativeElement;
 
         let pageStateResult;
         component.pageState.subscribe((res) => {
@@ -148,77 +168,80 @@ describe('DotEditPageToolbarComponent', () => {
             lockPageResult = res;
         });
 
-        editButton.click();
+        clickStateButton('edit');
 
         expect(component.pageLocked).toBe(true, 'lock page');
         expect(lockPageResult).toBe(true, 'lock page output emitted');
-        expect(pageStateResult).toEqual('edit', 'page state output emitted');
-    });
-
-    it('should keep the locker true while moving through states', () => {
-        component.pageLocked = true;
-        fixture.detectChanges();
-
-        expect(component.stateSelected).toEqual('preview', 'preview state by default');
-
-        const stateSelectorButtons: DebugElement[] = de.queryAll(
-            By.css('.edit-page-toolbar__state-selector .ui-button')
-        );
-        const editButton = stateSelectorButtons[0].nativeElement;
-        const previewButton = stateSelectorButtons[1].nativeElement;
-        const liveButton = stateSelectorButtons[2].nativeElement;
-
-        let pageStateResult;
-        component.pageState.subscribe((res) => {
-            pageStateResult = res;
-        });
-
-        let lockPageResult;
-        component.lockPage.subscribe((res) => {
-            lockPageResult = res;
-        });
-
-        editButton.click();
-        expect(component.stateSelected).toEqual('edit', 'edit state selected');
-        expect(component.pageLocked).toBe(true, 'page locked after click in edit');
-        expect(pageStateResult).toEqual('edit', 'emit edit');
-        expect(lockPageResult).toBeUndefined('should not emit lock output');
-
-        previewButton.click();
-        expect(component.stateSelected).toEqual('preview', 'edit state selected');
-        expect(component.pageLocked).toBe(true, 'page locked after click in preview');
-        expect(pageStateResult).toEqual('preview', 'emit preview');
-        expect(lockPageResult).toBeUndefined('should not emit lock output');
-
-        liveButton.click();
-        expect(component.stateSelected).toEqual('live', 'live state selected');
-        expect(component.pageLocked).toBe(true, 'page locked after click in preview');
-        expect(pageStateResult).toEqual('live', 'emit live');
-        expect(lockPageResult).toBeUndefined('should not emit lock output');
+        expect(pageStateResult).toEqual(PageState.EDIT, 'page state output emitted');
     });
 
     it('should go to preview if user unlock the page while is in edit', () => {
         fixture.detectChanges();
 
-        const lockerSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker .ui-inputswitch'));
-
         // Set the page locked and in edit mode
-        lockerSwitch.nativeElement.click();
+        clickLocker();
         expect(component.pageLocked).toBe(true, 'locked page');
-        expect(component.stateSelected).toEqual('edit', 'edit mode');
+        expect(component.stateSelected).toEqual(PageState.EDIT, 'edit mode');
 
-        lockerSwitch.nativeElement.click();
+        clickLocker();
         expect(component.pageLocked).toBe(false, 'unlocked page');
-        expect(component.stateSelected).toEqual('preview', 'preview mode');
+        expect(component.stateSelected).toEqual(PageState.PREVIEW, 'preview mode');
     });
 
     it('should go to edit if user lock the while is in preview', () => {
         fixture.detectChanges();
 
-        const lockerSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker .ui-inputswitch'));
-
-        lockerSwitch.nativeElement.click();
+        clickLocker();
         expect(component.pageLocked).toBe(true, 'locked page');
-        expect(component.stateSelected).toEqual('edit', 'edit mode');
+        expect(component.stateSelected).toEqual(PageState.EDIT, 'edit mode');
+    });
+
+    describe('moving through page states', () => {
+        let pageStateResult;
+        let lockPageResult;
+
+        beforeEach(() => {
+            component.pageState.subscribe((res) => {
+                pageStateResult = res;
+            });
+
+            component.lockPage.subscribe((res) => {
+                lockPageResult = res;
+            });
+
+            component.pageLocked = true;
+            fixture.detectChanges();
+        });
+
+        it('should keep the locker true from preview to edit', () => {
+            expect(component.stateSelected).toEqual(PageState.PREVIEW, 'preview state by default');
+
+            clickStateButton('edit');
+            expect(component.stateSelected).toEqual(PageState.EDIT, 'edit state selected');
+            expect(component.pageLocked).toBe(true, 'page locked after click in edit');
+            expect(pageStateResult).toEqual(PageState.EDIT, 'emit edit');
+            expect(lockPageResult).toBeUndefined('should not emit lock output');
+        });
+
+        it('should keep the locker true from preview to live', () => {
+            expect(component.stateSelected).toEqual(PageState.PREVIEW, 'preview state by default');
+
+            clickStateButton('live');
+            expect(component.stateSelected).toEqual(PageState.LIVE, 'live state selected');
+            expect(component.pageLocked).toBe(true, 'page locked after click in preview');
+            expect(pageStateResult).toEqual(PageState.LIVE, 'emit live');
+            expect(lockPageResult).toBeUndefined('should not emit lock output');
+        });
+
+        it('should keep the locker true from edit to preview', () => {
+            clickStateButton('edit');
+            expect(component.stateSelected).toEqual(PageState.EDIT, 'edit state by default');
+
+            clickStateButton('preview');
+            expect(component.stateSelected).toEqual(PageState.PREVIEW, 'edit state selected');
+            expect(component.pageLocked).toBe(true, 'page locked after click in preview');
+            expect(pageStateResult).toEqual(PageState.PREVIEW, 'emit preview');
+            expect(lockPageResult).toBeUndefined('should not emit lock output');
+        });
     });
 });

@@ -1,7 +1,7 @@
 import { WorkflowService } from './workflow.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { MockBackend } from '@angular/http/testing';
-import { ConnectionBackend } from '@angular/http';
+import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 
 describe('WorkflowService', () => {
@@ -13,7 +13,27 @@ describe('WorkflowService', () => {
     });
 
     it('should get workflows', () => {
-        this.workflowService.get().subscribe();
+        let result;
+        this.workflowService.get().subscribe(res => {
+            result = res;
+        });
+
+        this.lastConnection.mockRespond(new Response(new ResponseOptions({
+            body: {
+                entity: [
+                    {
+                        hello: 'world',
+                        hola: 'mundo'
+                    }
+                ]
+            }
+        })));
+        expect(result).toEqual([
+            {
+                hello: 'world',
+                hola: 'mundo'
+            }
+        ]);
         expect(this.lastConnection.request.url).toContain('v1/workflow/schemes');
     });
 
