@@ -20,6 +20,8 @@ import { DotActionButtonModule } from '../../../../view/components/_common/dot-a
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
+import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
+import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -101,10 +103,12 @@ const testConfigObject = {
     declarations: [DotEditLayoutComponent, MockAdditionalOptionsComponent, MockDotLayoutPropertiesComponent],
     imports: [
         DotEditLayoutGridModule,
+        DotSidebarPropertiesModule,
         RouterTestingModule,
         BrowserAnimationsModule,
         DotActionButtonModule,
-        FormsModule
+        FormsModule,
+        FieldValidationMessageModule
     ],
     providers: [
         DotConfirmationService,
@@ -202,6 +206,7 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
     });
 
     it('should show template name input and hide page title if save as template is checked', () => {
+        fixture.detectChanges();
         component.saveAsTemplate = true;
         fixture.detectChanges();
 
@@ -209,22 +214,88 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
         expect(pageTitle === null).toBe(true);
 
         const templateNameInput: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__toolbar-template-name')
+            By.css('.dot-edit-layout__toolbar-template-name input')
         );
         expect(templateNameInput).toBeDefined();
     });
 
-    xit('should have header in the template', () => {});
+    it('should have header in the template', () => {
+        fixture.detectChanges();
+        component.form.get('layout.header').setValue(true);
 
-    xit('should NOT have header in the template', () => {});
+        fixture.detectChanges();
+        const headerElem: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-header'));
 
-    xit('should have footer in the template', () => {});
+        expect(headerElem).toBeDefined();
+        expect(headerElem.nativeElement.innerHTML).toEqual('HEADER');
+    });
 
-    xit('should NOT have footer in the template', () => {});
+    it('should NOT have header in the template', () => {
+        fixture.detectChanges();
+        const headerElem: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-header'));
 
-    xit('should have sidebar in the template', () => {});
+        expect(headerElem).toBeNull();
+    });
 
-    xit('should NOT have sidebar in the template', () => {});
+    it('should have footer in the template', () => {
+        fixture.detectChanges();
+        component.form.get('layout.footer').setValue(true);
+
+        fixture.detectChanges();
+        const footerElem: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-footer'));
+
+        expect(footerElem).toBeDefined();
+        expect(footerElem.nativeElement.innerHTML).toEqual('FOOTER');
+    });
+
+    it('should NOT have footer in the template', () => {
+        fixture.detectChanges();
+        const footerElem: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-footer'));
+
+        expect(footerElem).toBeNull();
+    });
+
+    it('should NOT have sidebar in the template', () => {
+        fixture.detectChanges();
+        const sidebarLeft: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-sidebar--left'));
+        const sidebarRight: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-sidebar--right'));
+
+        expect(sidebarLeft).toBeNull();
+        expect(sidebarRight).toBeNull();
+    });
+
+    it('should set sidebar left with "dot-edit-layout__template-sidebar--small" class', () => {
+        fixture.detectChanges();
+        component.form.get('layout.sidebar.location').setValue('left');
+        component.form.get('layout.sidebar.width').setValue('small');
+
+        fixture.detectChanges();
+        const sidebarLeft: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-sidebar--left'));
+        expect(sidebarLeft).toBeDefined();
+        expect(sidebarLeft.nativeElement.classList.contains('dot-edit-layout__template-sidebar--small')).toEqual(true);
+    });
+
+    it('should set sidebar left with "dot-edit-layout__template-sidebar--medium" class', () => {
+        fixture.detectChanges();
+        component.form.get('layout.sidebar.location').setValue('left');
+        component.form.get('layout.sidebar.width').setValue('medium');
+
+        fixture.detectChanges();
+        const sidebarLeft: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-sidebar--left'));
+        expect(sidebarLeft.nativeElement.classList.contains('dot-edit-layout__template-sidebar--medium')).toEqual(true);
+        expect(sidebarLeft).toBeDefined();
+    });
+
+    it('should set sidebar left with "dot-edit-layout__template-sidebar--large" class', () => {
+        fixture.detectChanges();
+        component.form.get('layout.sidebar.location').setValue('left');
+        component.form.get('layout.sidebar.width').setValue('large');
+
+        fixture.detectChanges();
+        const sidebarLeft: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__template-sidebar--left'));
+        expect(sidebarLeft.nativeElement.classList.contains('dot-edit-layout__template-sidebar--large')).toEqual(true);
+        expect(sidebarLeft).toBeDefined();
+    });
 
     it('should have a form', () => {
         const form: DebugElement = fixture.debugElement.query(By.css('form'));
@@ -248,11 +319,12 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
     });
 
     it('template-name should has the right formControlName', () => {
+        fixture.detectChanges();
         component.saveAsTemplate = true;
         fixture.detectChanges();
 
         const templateNameInput: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__toolbar-template-name')
+            By.css('.dot-edit-layout__toolbar-template-name input')
         );
         expect(templateNameInput.attributes.formControlName).toEqual('title');
     });
@@ -315,6 +387,26 @@ describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         expect(dialog.styles.display).toEqual('block');
     });
 
+    it('should set edit template mode', () => {
+        fixture.detectChanges();
+        spyOn(component, 'setEditLayoutMode');
+
+        const editLayoutButton: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__dialog-edit-template')
+        );
+        editLayoutButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const checkboxSave: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-save-template')
+        );
+
+        expect(component.setEditLayoutMode).not.toHaveBeenCalled();
+        expect(component.showTemplateLayoutSelectionDialog).toEqual(false, 'hide the dialog');
+        expect(component.form.get('title').value).toEqual('Hello Template Name');
+        expect(checkboxSave === null).toBe(true, 'checkbox not showing');
+    });
+
     it('should set edit layout mode', () => {
         spyOn(component, 'setEditLayoutMode').and.callThrough();
 
@@ -329,23 +421,22 @@ describe('DotEditLayoutComponent - Template (anonymous = false)', () => {
         expect(component.form.get('title').value).toBeNull('form title null');
     });
 
-    it('should set edit template mode', () => {
-        spyOn(component, 'setEditLayoutMode').and.callThrough();
-
+    it('should set the title field required when save as a template is checked', () => {
+        spyOn(component, 'saveAsTemplateHandleChange').and.callThrough();
         fixture.detectChanges();
         const editLayoutButton: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__dialog-edit-template')
+            By.css('.dot-edit-layout__dialog-edit-layout')
         );
         editLayoutButton.nativeElement.click();
         fixture.detectChanges();
-
-        const checkboxSave: DebugElement = fixture.debugElement.query(
-            By.css('.dot-edit-layout__toolbar-save-template')
+        const templateNameInput: DebugElement = fixture.debugElement.query(
+            By.css('.dot-edit-layout__toolbar-template-name input')
         );
+        component.saveAsTemplateHandleChange(true);
+        fixture.detectChanges();
+        const focusElement: DebugElement = fixture.debugElement.query(By.css(':focus'));
 
-        expect(component.setEditLayoutMode).not.toHaveBeenCalled();
-        expect(component.showTemplateLayoutSelectionDialog).toEqual(false, 'hide the dialog');
-        expect(component.form.get('title').value).toEqual('Hello Template Name');
-        expect(checkboxSave).toBeNull('checkbox not showing');
+        expect(templateNameInput).toEqual(focusElement);
+        expect(component.form.get('title').valid).toEqual(false);
     });
 });
