@@ -116,7 +116,7 @@
 .dot-edit-layout__template-sidebar--left {
     margin-right: $basic-padding * 2;
 
-    .dot-edit-layout__template-sidebar-properties { 
+    .dot-edit-layout__template-sidebar-properties {
         left: $basic-padding;
     }
 }
@@ -124,7 +124,7 @@
 .dot-edit-layout__template-sidebar--right {
     margin-left: $basic-padding * 2;
 
-    .dot-edit-layout__template-sidebar-properties { 
+    .dot-edit-layout__template-sidebar-properties {
         right: $basic-padding;
     }
 }
@@ -140,12 +140,12 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    border: solid 1px #c5c5c5;
+    border: solid 1px $gray-light;
     padding: $basic-padding;
 }
 
 .dot-edit-layout__template-body::ng-deep .action-button--no-label .ui-button.ui-button-icon-only{
-    height: 32px;
-    width: 32px;
+    height: $field-height;
+    width: $field-height;
     font-size: $font-size-small;
 }
