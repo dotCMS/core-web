@@ -17,6 +17,8 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     form: FormGroup;
     pushActions: SelectItem[];
     submitted = false;
+    dateFieldMinDate = new Date();
+
     @Input() show: boolean;
     @Input() assetIdentifier: string;
     @Output() cancel = new EventEmitter<boolean>();
@@ -59,9 +61,7 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
             'contenttypes.content.push_publish.form.cancel',
             'contenttypes.content.push_publish.form.push',
             'contenttypes.content.push_publish.publish_date_errormsg',
-            'contenttypes.content.push_publish.publish_time_errormsg',
-            'contenttypes.content.push_publish.expire_date_errormsg',
-            'contenttypes.content.push_publish.expire_time_errormsg'
+            'contenttypes.content.push_publish.expire_date_errormsg'
         ]).subscribe();
 
         this.initForm();
@@ -109,9 +109,7 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
         this.form = this.fb.group({
             pushActionSelected: [this.pushActions[0].value || '', [Validators.required]],
             publishdate: [new Date, [Validators.required]],
-            publishdatetime: [new Date, [Validators.required]],
             expiredate: [new Date, [Validators.required]],
-            expiredatetime: [new Date, [Validators.required]],
             environment: ['', [Validators.required]],
             forcePush: false
         });
