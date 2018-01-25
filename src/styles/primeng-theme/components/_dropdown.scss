@@ -26,8 +26,6 @@
         }
 
         &.ui-state-focus {
-
-
             .fa {
                 color: $dropdown-active-color;
             }
@@ -138,12 +136,10 @@ p-dropdown {
             }
         }
     }
-
 }
 
 .ui-dropdown-panel {
-
-    &.ng-trigger-panelState{
+    &.ng-trigger-panelState {
         margin-left: -10px;
     }
 
