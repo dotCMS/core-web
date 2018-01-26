@@ -112,6 +112,7 @@ p-dropdown {
         &.ui-state-disabled {
             .ui-inputtext {
                 color: $white;
+                opacity: $field-disabled-opacity;
             }
         }
 
@@ -132,11 +133,13 @@ p-dropdown {
             &.ui-state-disabled {
                 .ui-dropdown-trigger {
                     color: $white;
+                    opacity: $field-disabled-opacity;
                 }
 
                 .ui-dropdown-label {
                     &:hover {
                         color: $white;
+                        opacity: $field-disabled-opacity;
                     }
                 }
             }
