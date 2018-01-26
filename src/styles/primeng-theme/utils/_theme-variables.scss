@@ -79,13 +79,13 @@ $button-flat: (
         border: $button-border,
         shadow: none
     ),
-    hover:(
+    hover: (
         background: rgba($brand-primary, $button-hover-background-opacity),
         color: $brand-primary,
         border: $button-border,
         shadow: none
     ),
-    focus:(
+    focus: (
         background: rgba($brand-primary, $button-hover-background-opacity),
         color: $brand-primary,
         border: $button-border,
