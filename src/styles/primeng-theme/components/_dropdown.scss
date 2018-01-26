@@ -135,6 +135,11 @@ p-dropdown {
                 }
             }
         }
+
+        .ui-state-disabled .ui-inputtext {
+                color: $white;
+
+        }
     }
 }
 
