@@ -88,10 +88,10 @@ describe('DotEditContentHtmlService', () => {
 
     it('should add contentlet', () => {
         spyOn(this.dotEditContentHtmlService, 'renderAddedContentlet');
-        this.dotEditContentHtmlService.currentContainer = {
+        this.dotEditContentHtmlService.setContainterToAppendContentlet( {
             identifier: '123',
             uuid: '456'
-        };
+        });
 
         this.dotEditContentHtmlService.contentletEvents.next({
             name: 'save',
@@ -106,6 +106,11 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should edit contentlet', () => {
+        this.dotEditContentHtmlService.setContainterToEditContentlet( {
+            identifier: '123',
+            uuid: '456'
+        });
+
         spyOn(this.dotEditContentHtmlService, 'renderEditedContentlet');
 
         this.dotEditContentHtmlService.contentletEvents.next({

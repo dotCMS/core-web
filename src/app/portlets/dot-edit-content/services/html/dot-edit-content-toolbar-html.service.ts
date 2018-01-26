@@ -6,6 +6,16 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
  */
 @Injectable()
 export class DotEditContentToolbarHtmlService {
+
+    private TOOLBAR_CONTENT_BUTTON_HTML_FORMAT =  `<button type="button" role="button"
+                                                            data-dot-identifier=":content_identifier"
+                                                            data-dot-inode=":content_inode"
+                                                            class=":button_class"
+                                                            aria-label=":labe">
+                                                        :label
+                                                    </button>`;
+
+
     constructor(private dotMessageService: DotMessageService) {}
 
     addContainerToolbar(doc: any): Promise<any> {
@@ -53,6 +63,7 @@ export class DotEditContentToolbarHtmlService {
                                 </ul>
                             </div>
                         `;
+
                         container.parentNode.insertBefore(containerToolbar, container);
                     });
                     resolve();
@@ -83,35 +94,31 @@ export class DotEditContentToolbarHtmlService {
 
                         const contentletToolbar = document.createElement('div');
                         contentletToolbar.classList.add('dotedit-contentlet__toolbar');
-                        contentletToolbar.innerHTML = `
-                            <button type="button" role="button"
-                                                  data-dot-content-identifier="${contentlet.dataset.dotIdentifier}"
-                                                  data-dot-content-inode="${contentlet.dataset.dotInode}"
-                                                  data-dot-container-uuid="${container.dataset.dotUuid}"
-                                                  data-dot-container-identifier="${container.dataset.dotIdentifier}"
-                                                  class="dotedit-contentlet__drag"
-                                                  aria-label="${res['editpage.content.contentlet.menu.drag']}">
-                                ${res['editpage.content.contentlet.menu.drag']}
-                            </button>
-                            <button type="button" role="button"
-                                                  data-dot-content-identifier="${contentlet.dataset.dotIdentifier}"
-                                                  data-dot-content-inode="${contentlet.dataset.dotInode}"
-                                                  data-dot-container-uuid="${container.dataset.dotUuid}"
-                                                  data-dot-container-identifier="${container.dataset.dotIdentifier}"
-                                                  class="dotedit-contentlet__edit"
-                                                  aria-label="${res['editpage.content.contentlet.menu.edit']}">
-                                ${res['editpage.content.contentlet.menu.edit']}
-                            </button>
-                            <button type="button" role="button"
-                                                  data-dot-content-identifier="${contentlet.dataset.dotIdentifier}"
-                                                  data-dot-content-inode="${contentlet.dataset.dotInode}"
-                                                  data-dot-container-uuid="${container.dataset.dotUuid}"
-                                                  data-dot-container-identifier="${container.dataset.dotIdentifier}"
-                                                  class="dotedit-contentlet__remove"
-                                                  aria-label="${res['editpage.content.contentlet.menu.remove']}">
-                                ${res['editpage.content.contentlet.menu.remove']}
-                            </button>
-                        `;
+
+                        const formatArguments = [
+                            {
+                                'content_identifier': contentlet.dataset.dotIdentifier,
+                                'content_inode': contentlet.dataset.dotInode,
+                                label: res['editpage.content.contentlet.menu.drag'],
+                                'button_class': 'dotedit-contentlet__drag'
+                            },
+                            {
+                                'content_identifier': contentlet.dataset.dotIdentifier,
+                                'content_inode': contentlet.dataset.dotInode,
+                                label: res['editpage.content.contentlet.menu.edit'],
+                                'button_class': 'dotedit-contentlet__edit'
+                            },
+                            {
+                                'content_identifier': contentlet.dataset.dotIdentifier,
+                                'content_inode': contentlet.dataset.dotInode,
+                                label: res['editpage.content.contentlet.menu.remove'],
+                                'button_class': 'dotedit-contentlet__remove'
+                            }
+                        ];
+
+                        contentletToolbar.innerHTML = this.dotMessageService.
+                            formatAndConcat(this.TOOLBAR_CONTENT_BUTTON_HTML_FORMAT, formatArguments);
+
 
                         const contentletContent = document.createElement('div');
                         contentletContent.classList.add('dotedit-contentlet__content');
