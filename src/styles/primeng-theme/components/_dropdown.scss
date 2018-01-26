@@ -96,6 +96,25 @@ p-dropdown {
     }
 
     &.invert {
+        .ui-state-default {
+            color: $white;
+        }
+
+        &:not(.ui-state-disabled) {
+            .ui-inputtext {
+                &:hover,
+                &:active {
+                    color: $white;
+                }
+            }
+        }
+
+        &.ui-state-disabled {
+            .ui-inputtext {
+                color: $white;
+            }
+        }
+
         .ui-dropdown {
             &:not(.ui-state-disabled) {
                 &:hover,
@@ -121,24 +140,6 @@ p-dropdown {
                     }
                 }
             }
-        }
-
-        .ui-state-default {
-            color: $white;
-        }
-
-        &:not(.ui-state-disabled) {
-            .ui-inputtext {
-                &:hover,
-                &:active {
-                    color: $white;
-                }
-            }
-        }
-
-        .ui-state-disabled .ui-inputtext {
-                color: $white;
-
         }
     }
 }
