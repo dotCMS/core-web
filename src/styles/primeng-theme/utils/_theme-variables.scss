@@ -40,31 +40,69 @@ $button-inverted-color: $white;
 $button-hover-background-opacity: 0.12;
 
 $button-raised: (
-    normal: (background: $white, color: $field-normal-color, border: $button-border, shadow: $md-shadow-1),
-    hover: (background: $white, color: $field-hover-color, border: $button-border, shadow: $md-shadow-2),
-    focus: (background: $white, color: $field-hover-color, border: $button-border, shadow: $md-shadow-2),
-    active: (background: $white, color: $field-normal-color, border: $button-border, shadow: $md-shadow-1),
-    disabled: (background: $field-disabled-bgcolor, color: $field-disabled-color, border: $button-border, shadow: none)
+    normal: (
+        background: $white,
+        color: $field-normal-color,
+        border: $button-border,
+        shadow: $md-shadow-1
+    ),
+    hover: (
+        background: $white,
+        color: $field-hover-color,
+        border: $button-border,
+        shadow: $md-shadow-2
+    ),
+    focus: (
+        background: $white,
+        color: $field-hover-color,
+        border: $button-border,
+        shadow: $md-shadow-2
+    ),
+    active: (
+        background: $white,
+        color: $field-normal-color,
+        border: $button-border,
+        shadow: $md-shadow-1
+    ),
+    disabled: (
+        background: $field-disabled-bgcolor,
+        color: $field-disabled-color,
+        border: $button-border,
+        shadow: none
+    )
 );
 
 $button-flat: (
-    normal: (background: transparent, color: $brand-primary, border: $button-border, shadow: none),
-    hover:
-        (
-            background: rgba($brand-primary, $button-hover-background-opacity),
-            color: $brand-primary,
-            border: $button-border,
-            shadow: none
-        ),
-    focus:
-        (
-            background: rgba($brand-primary, $button-hover-background-opacity),
-            color: $brand-primary,
-            border: $button-border,
-            shadow: none
-        ),
-    active: (background: rgba($brand-primary, 0.26), color: $brand-primary, border: $button-border, shadow: none),
-    disabled: (background: transparent, color: $field-disabled-color, border: $button-border, shadow: none)
+    normal: (
+        background: transparent,
+        color: $brand-primary,
+        border: $button-border,
+        shadow: none
+    ),
+    hover:(
+        background: rgba($brand-primary, $button-hover-background-opacity),
+        color: $brand-primary,
+        border: $button-border,
+        shadow: none
+    ),
+    focus:(
+        background: rgba($brand-primary, $button-hover-background-opacity),
+        color: $brand-primary,
+        border: $button-border,
+        shadow: none
+    ),
+    active: (
+        background: rgba($brand-primary, 0.26),
+        color: $brand-primary,
+        border: $button-border,
+        shadow: none
+    ),
+    disabled: (
+        background: transparent,
+        color: $field-disabled-color,
+        border: $button-border,
+        shadow: none
+    )
 );
 
 // SELECT BUTTON
