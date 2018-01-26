@@ -143,10 +143,10 @@
     flex-direction: column;
     border: solid 1px $gray-light;
     padding: $basic-padding;
-}
 
-.dot-edit-layout__template-body::ng-deep .action-button--no-label .ui-button.ui-button-icon-only {
-    height: $field-height;
-    width: $field-height;
-    font-size: $font-size-small;
+    &::ng-deep .action-button--no-label .ui-button.ui-button-icon-only {
+        height: $field-height;
+        width: $field-height;
+        font-size: $font-size-small;
+    }
 }
