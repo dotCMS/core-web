@@ -216,6 +216,7 @@ describe('DotEditLayoutComponent - Layout (anonymous = true)', () => {
         fixture.detectChanges();
         const saveButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-save'));
 
+        // This will make the template title required, it's like clicking the "Save as template" checkbox
         component.saveAsTemplateHandleChange(true);
         fixture.detectChanges();
 
