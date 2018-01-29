@@ -3,11 +3,10 @@ import { TestBed, async } from '@angular/core/testing';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { CrudService } from '../../../api/services/crud';
 import { LoginService } from 'dotcms-js/dotcms-js';
-import { ActivatedRouteSnapshot, ParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { inject } from '@angular/core/testing';
 import { DotRouterService } from '../../../api/services/dot-router-service';
 
 class CrudServiceMock {
