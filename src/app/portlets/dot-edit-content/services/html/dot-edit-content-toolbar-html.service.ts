@@ -8,15 +8,6 @@ import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 @Injectable()
 export class DotEditContentToolbarHtmlService {
 
-    private TOOLBAR_CONTENT_BUTTON_HTML_FORMAT =  `<button type="button" role="button"
-                                                            data-dot-identifier=":content_identifier"
-                                                            data-dot-inode=":content_inode"
-                                                            class=":button_class"
-                                                            aria-label=":labe">
-                                                        :label
-                                                    </button>`;
-
-
     constructor(private dotMessageService: DotMessageService, private dotDOMHtmlUtilService: DotDOMHtmlUtilService) {}
 
     addContainerToolbar(doc: any): Promise<any> {
