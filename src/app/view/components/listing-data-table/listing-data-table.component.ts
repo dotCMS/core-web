@@ -6,8 +6,7 @@ import {
     OnChanges,
     ViewChild,
     ElementRef,
-    OnInit,
-    ViewEncapsulation
+    OnInit
 } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
@@ -35,6 +34,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     @Input() multipleSelection = false;
     @Input() paginationPerPage: number;
     @Input() actions: DotDataTableAction[];
+    @Input() data: any;
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
@@ -45,6 +45,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     items: any[];
     filter;
     dateColumns: DataTableColumn[];
+    loading: boolean;
 
     constructor(
         dotMessageService: DotMessageService,
@@ -88,6 +89,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     }
 
     loadData(offset: number, sortFieldParam?: string, sortOrderParam?: OrderDirection): void {
+        this.loading = true;
         if (this.columns) {
             const sortField = sortFieldParam || this.sortField;
             const sortOrder = sortOrderParam || this.sortOrder;
@@ -96,7 +98,10 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.paginatorService.sortField = sortField;
             this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-            this.paginatorService.getWithOffset(offset).subscribe(items => this.setItems(items));
+            this.paginatorService.getWithOffset(offset).subscribe(items => {
+                this.setItems(items);
+                this.loading = false;
+            });
         }
     }
 
@@ -105,8 +110,12 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
      * @memberof ListingDataTableComponent
      */
     loadCurrentPage(): void {
+        this.loading = true;
         if (this.columns) {
-            this.paginatorService.getCurrentPage().subscribe(items => this.setItems(items));
+            this.paginatorService.getCurrentPage().subscribe(items => {
+                this.setItems(items);
+                this.loading = false;
+            });
         }
     }
 
