@@ -10,7 +10,6 @@ import { DotBundle } from '../../../../shared/models/dot-bundle/dot-bundle';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-add-to-bundle',
-    styleUrls: ['./dot-add-to-bundle.component.scss'],
     templateUrl: 'dot-add-to-bundle.component.html'
 })
 export class DotAddToBundleComponent implements OnInit {
