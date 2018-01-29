@@ -13,7 +13,7 @@ import { ConfirmationService } from 'primeng/primeng';
 
 @Injectable()
 export class DotConfirmationService {
-    rejectVisible: boolean;
+    showRejectButton: boolean;
     labels: Subject<FooterLabels> = new Subject();
     public i18nMessages = {};
     public i18nKeys: string[] = [
@@ -33,7 +33,7 @@ export class DotConfirmationService {
     // TODO: Import DotMessageService - Add message keys
     // (Not working right now since inyecting DotMessageService produces errors)
     confirm(confirmation: DotConfirmation): void {
-        this.rejectVisible = true;
+        this.showRejectButton = true;
         this.labels.next({
             acceptLabel: confirmation.footerLabel.acceptLabel || 'Yes',
             rejectLabel: confirmation.footerLabel.rejectLabel || 'No'
@@ -58,7 +58,7 @@ export class DotConfirmationService {
 
         };
 
-        this.rejectVisible = false;
+        this.showRejectButton = false;
         this.confirmationService.confirm(confirmation);
     }
 }

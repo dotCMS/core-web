@@ -178,7 +178,6 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.pageModelChange.subscribe((model) => currentModel = model);
 
         this.dotEditContentHtmlService.renderAddedContentlet(contentlet);
-        console.log('fakeIframeEl', fakeIframeEl);
 
         expect(dotEditContentToolbarHtmlService.getContentletToContainer)
             .toHaveBeenCalledWith(currentContainer, contentlet);
@@ -212,7 +211,6 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.pageModelChange.subscribe((model) => currentModel = model);
 
         this.dotEditContentHtmlService.renderAddedContentlet(contentlet);
-        console.log('fakeIframeEl', fakeIframeEl);
 
         expect(dotEditContentToolbarHtmlService.getContentletToContainer).not.toHaveBeenCalled();
         expect(this.dotEditContentHtmlService.currentContainer).toBeNull('The current container must be null');

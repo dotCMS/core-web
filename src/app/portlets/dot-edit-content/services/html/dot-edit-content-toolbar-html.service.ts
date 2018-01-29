@@ -8,6 +8,10 @@ import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 @Injectable()
 export class DotEditContentToolbarHtmlService {
 
+    private dragLabel: string;
+    private removeLabel: string;
+    private editLabel: string;
+
     constructor(private dotMessageService: DotMessageService, private dotDOMHtmlUtilService: DotDOMHtmlUtilService) {}
 
     addContainerToolbar(doc: any): Promise<any> {
@@ -87,9 +91,11 @@ export class DotEditContentToolbarHtmlService {
                         const contentletToolbar = document.createElement('div');
                         contentletToolbar.classList.add('dotedit-contentlet__toolbar');
 
-                        contentletToolbar.innerHTML = this.getContentButton(contentlet.dataset.dotIdentifier, contentlet.dataset.dotInode,
-                            res['editpage.content.contentlet.menu.drag'], res['editpage.content.contentlet.menu.edit'],
-                            res['editpage.content.contentlet.menu.remove']);
+                        this.dragLabel = res['editpage.content.contentlet.menu.drag'],
+                        this.editLabel = res['editpage.content.contentlet.menu.edit'],
+                        this.removeLabel = res['editpage.content.contentlet.menu.remove']
+
+                        contentletToolbar.innerHTML = this.getContentButton(contentlet.dataset.dotIdentifier, contentlet.dataset.dotInode);
 
 
                         const contentletContent = document.createElement('div');
@@ -110,14 +116,14 @@ export class DotEditContentToolbarHtmlService {
         });
     }
 
-    private getContentButton(identifier: string, inode: string, dragLabel: string, editLabel: string, removeLabel: string): string {
+    public getContentButton(identifier, inode): string {
         const dataset = {
             'dot-identifier': identifier,
             'dot-inode': inode
         };
 
-        return `${this.dotDOMHtmlUtilService.getButtomHTML(dragLabel, 'dotedit-contentlet__drag', dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(editLabel, 'dotedit-contentlet__edit', dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(removeLabel, 'dotedit-contentlet__remove', dataset)}`;
+        return `${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, 'dotedit-contentlet__edit', dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}`;
     }
 }

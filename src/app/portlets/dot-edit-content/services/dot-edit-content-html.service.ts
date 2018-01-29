@@ -205,7 +205,6 @@ export class DotEditContentHtmlService {
     }
 
     private isContentExistInContainer(contentlet: DotPageContent, containerEL: HTMLElement): boolean {
-        // tslint:disable-next-line:max-line-length
         const contentsSelector = `div[data-dot-object="contentlet"]`;
         const doc = this.getEditPageDocument();
         const currentContentlets: HTMLElement[] = <HTMLElement[]> Array.from(containerEL.querySelectorAll(contentsSelector).values());
@@ -346,25 +345,10 @@ export class DotEditContentHtmlService {
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.
         */
+        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(contentlet.identifier, contentlet.inode);
+
         dotEditContentletEl.innerHTML = `<div class="dotedit-contentlet__toolbar">
-                <button type="button"
-                    data-dot--identifier="${contentlet.identifier}"
-                    data-dot--inode="${contentlet.inode}"
-                    class="dotedit-contentlet__drag">
-                    Drag
-                </button>
-                <button type="button"
-                    data-dot-identifier="${contentlet.identifier}"
-                    data-dot-inode="${contentlet.inode}"
-                    class="dotedit-contentlet__edit">
-                    Edit
-                </button>
-                <button type="button"
-                    data-dot-identifier="${contentlet.identifier}"
-                    data-dot-inode="${contentlet.inode}"
-                    class="dotedit-contentlet__remove">
-                    Remove
-                </button>
+                ${contenToolbarButtons}
             </div>
             <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>`;
 
