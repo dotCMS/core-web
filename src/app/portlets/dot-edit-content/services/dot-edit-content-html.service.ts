@@ -11,6 +11,7 @@ import { Subject } from 'rxjs/Subject';
 import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
 import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
 import { DotConfirmationService } from '../../../api/services/dot-confirmation/dot-confirmation.service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
 
 enum Action {
     EDIT,
@@ -33,7 +34,8 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private loggerService: LoggerService,
-        private dotConfirmationService: DotConfirmationService
+        private dotConfirmationService: DotConfirmationService,
+        private dotMessageService: DotMessageService
     ) {
         this.contentletEvents.subscribe((contentletEvent: any) => {
             switch (contentletEvent.name) {
@@ -54,6 +56,14 @@ export class DotEditContentHtmlService {
                     break;
             }
         });
+
+
+        this.dotMessageService
+            .getMessages([
+                'editpage.content.add.already.title',
+                'editpage.content.add.already.message'
+            ])
+            .subscribe();
     }
 
     /**
@@ -128,12 +138,14 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     renderAddedContentlet(contentlet: DotPageContent): void {
-        if (!this.isContentAdded(contentlet)) {
-            const doc = this.getEditPageDocument();
-            const containerEl = doc.querySelector(
-                // tslint:disable-next-line:max-line-length
-                `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
-            );
+
+        const doc = this.getEditPageDocument();
+        const containerEl = doc.querySelector(
+            // tslint:disable-next-line:max-line-length
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"]`
+        );
+
+        if (!this.isContentExistInContainer(contentlet, containerEl)) {
             const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
             containerEl.insertAdjacentElement('afterbegin', contentletEl);
 
@@ -182,23 +194,21 @@ export class DotEditContentHtmlService {
     }
 
     private showContentAlreadyAddedError(): void {
-        this.dotConfirmationService.confirm({
-            accept: () => {
-            },
-            header: 'Contentlet Added',
-            message: `Content is already added`,
-            rejectVisible: false,
+        this.currentContainer = null;
+        this.dotConfirmationService.alert({
+            header: this.dotMessageService.get('editpage.content.add.already.title'),
+            message: this.dotMessageService.get('editpage.content.add.already.message'),
             footerLabel: {
                 acceptLabel: 'Ok'
             }
         });
     }
 
-    private isContentAdded(contentlet: DotPageContent): boolean {
+    private isContentExistInContainer(contentlet: DotPageContent, containerEL: HTMLElement): boolean {
         // tslint:disable-next-line:max-line-length
-        const contentsSelector = `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${this.currentContainer.uuid}"] div[data-dot-object="contentlet"]`;
+        const contentsSelector = `div[data-dot-object="contentlet"]`;
         const doc = this.getEditPageDocument();
-        const currentContentlets: HTMLElement[] = <HTMLElement[]> Array.from(doc.querySelectorAll(contentsSelector).values());
+        const currentContentlets: HTMLElement[] = <HTMLElement[]> Array.from(containerEL.querySelectorAll(contentsSelector).values());
         return currentContentlets.some(contentElement => contentElement.dataset.dotIdentifier === contentlet.identifier);
     }
 
@@ -324,7 +334,6 @@ export class DotEditContentHtmlService {
     }
 
     private createNewContentlet(contentlet: DotPageContent): HTMLElement {
-        console.log('contentlet', contentlet);
         const doc = this.getEditPageDocument();
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
         dotEditContentletEl.dataset.dotObject = 'contentlet';
@@ -402,7 +411,6 @@ export class DotEditContentHtmlService {
         // Removing the loading indicator
         contentletContentEl.innerHTML = '';
         this.appendNewContentlets(contentletContentEl, contentletHtml);
-
         // Update the model with the recently added contentlet
         this.pageModelChange.next(this.getContentModel());
     }

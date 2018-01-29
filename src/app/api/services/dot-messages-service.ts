@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
-import { FormatMessageArguments } from './format-message-arguments.model';
 
 @Injectable()
 export class DotMessageService {
@@ -87,30 +86,6 @@ export class DotMessageService {
                 });
             }
         });
-    }
-
-    public format(message: string, messageArguments: FormatMessageArguments): string {
-        if (messageArguments) {
-            // tslint:disable-next-line:forin
-            for (const argumentName in messageArguments) {
-                const expression = '(:' + argumentName + ')';
-                const regExp = new RegExp(expression, 'ig');
-
-                message = message.replace(regExp, messageArguments[argumentName]);
-            }
-        }
-
-       return message;
-    }
-
-    public formatAndConcat(message: string, messageArguments: FormatMessageArguments[]): string {
-        let resultMessage = '';
-
-        messageArguments.forEach(messageArgument => {
-            resultMessage += this.format(message, messageArgument);
-        });
-
-        return resultMessage;
     }
 
     // Replace {n} in the string with the strings in the args array

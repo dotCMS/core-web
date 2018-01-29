@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
 /**
  * Service to generate the markup related with the Toolbars and sub-menu for containers.
@@ -16,7 +17,7 @@ export class DotEditContentToolbarHtmlService {
                                                     </button>`;
 
 
-    constructor(private dotMessageService: DotMessageService) {}
+    constructor(private dotMessageService: DotMessageService, private dotDOMHtmlUtilService: DotDOMHtmlUtilService) {}
 
     addContainerToolbar(doc: any): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -95,29 +96,9 @@ export class DotEditContentToolbarHtmlService {
                         const contentletToolbar = document.createElement('div');
                         contentletToolbar.classList.add('dotedit-contentlet__toolbar');
 
-                        const formatArguments = [
-                            {
-                                'content_identifier': contentlet.dataset.dotIdentifier,
-                                'content_inode': contentlet.dataset.dotInode,
-                                label: res['editpage.content.contentlet.menu.drag'],
-                                'button_class': 'dotedit-contentlet__drag'
-                            },
-                            {
-                                'content_identifier': contentlet.dataset.dotIdentifier,
-                                'content_inode': contentlet.dataset.dotInode,
-                                label: res['editpage.content.contentlet.menu.edit'],
-                                'button_class': 'dotedit-contentlet__edit'
-                            },
-                            {
-                                'content_identifier': contentlet.dataset.dotIdentifier,
-                                'content_inode': contentlet.dataset.dotInode,
-                                label: res['editpage.content.contentlet.menu.remove'],
-                                'button_class': 'dotedit-contentlet__remove'
-                            }
-                        ];
-
-                        contentletToolbar.innerHTML = this.dotMessageService.
-                            formatAndConcat(this.TOOLBAR_CONTENT_BUTTON_HTML_FORMAT, formatArguments);
+                        contentletToolbar.innerHTML = this.getContentButton(contentlet.dataset.dotIdentifier, contentlet.dataset.dotInode,
+                            res['editpage.content.contentlet.menu.drag'], res['editpage.content.contentlet.menu.edit'],
+                            res['editpage.content.contentlet.menu.remove']);
 
 
                         const contentletContent = document.createElement('div');
@@ -136,5 +117,16 @@ export class DotEditContentToolbarHtmlService {
                 reject(error);
             });
         });
+    }
+
+    private getContentButton(identifier: string, inode: string, dragLabel: string, editLabel: string, removeLabel: string): string {
+        const dataset = {
+            'dot-identifier': identifier,
+            'dot-inode': inode
+        };
+
+        return `${this.dotDOMHtmlUtilService.getButtomHTML(dragLabel, 'dotedit-contentlet__drag', dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(editLabel, 'dotedit-contentlet__edit', dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(removeLabel, 'dotedit-contentlet__remove', dataset)}`;
     }
 }

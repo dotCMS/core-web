@@ -46,6 +46,23 @@ export class DotDOMHtmlUtilService {
         return script;
     }
 
+    public getButtomHTML(label: string, className: string, dataset: {[key: string]: string}): string {
+
+        let datasetString = '';
+
+        // tslint:disable-next-line:forin
+        for (const property in dataset) {
+            datasetString += ` data-${property}="${dataset[property]}"`;
+        }
+
+        return  `<button type="button" role="button"
+                        ${datasetString}
+                        class="${className}"
+                        aria-label="${label}">
+                    ${label}
+                </button>`;
+    }
+
     private createScriptElement(): HTMLScriptElement {
         const script: HTMLScriptElement = document.createElement('script');
         script.type = JS_MIME_TYPE;

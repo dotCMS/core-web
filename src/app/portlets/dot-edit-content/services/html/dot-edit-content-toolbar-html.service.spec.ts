@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DotEditContentToolbarHtmlService } from './dot-edit-content-toolbar-html.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
 describe('DotEditContentToolbarHtmlService', () => {
     let dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService;
@@ -30,6 +31,7 @@ describe('DotEditContentToolbarHtmlService', () => {
         TestBed.configureTestingModule({
             providers: [
                 DotEditContentToolbarHtmlService,
+                DotDOMHtmlUtilService,
                 { provide: DotMessageService, useValue: messageServiceMock }
             ]
         });
@@ -42,7 +44,7 @@ describe('DotEditContentToolbarHtmlService', () => {
         expect(testDoc.getElementsByClassName('dotedit-container__menu-item').length).toEqual(3);
     });
 
-    xit('should create the Drag, Edit and Delete Button for the Content', () => {
+    it('should create the Drag, Edit and Delete Button for the Content', () => {
         dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
         expect(testDoc.getElementsByClassName('dotedit-contentlet__drag').length).toEqual(1);
         expect(testDoc.getElementsByClassName('dotedit-contentlet__edit').length).toEqual(1);
