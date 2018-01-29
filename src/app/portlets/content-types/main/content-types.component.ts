@@ -93,7 +93,7 @@ export class ContentTypesPortletComponent implements OnInit {
             const rowActionsMap = {
                 delete: true,
                 pushPublish: !res[2] && res[3],
-                addToBundle: !res[2] && res[3]
+                addToBundle: !res[2]
             };
 
             this.actionHeaderOptions = {
