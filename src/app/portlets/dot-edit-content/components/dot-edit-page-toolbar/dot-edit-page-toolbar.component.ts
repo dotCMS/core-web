@@ -2,8 +2,10 @@ import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angu
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { SelectItem, MenuItem, SplitButton, InputSwitch } from 'primeng/primeng';
 import { Workflow } from '../../../../shared/models/workflow/workflow.model';
+import { DotRenderedPage } from '../../../dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 
-export enum PageState {
+export enum PageMode {
     EDIT,
     PREVIEW,
     LIVE
@@ -16,17 +18,14 @@ export enum PageState {
 })
 export class DotEditPageToolbarComponent implements OnInit {
     @Input() canSave: boolean;
-    @Input() pageLocked: boolean;
-    @Input() pageTitle: string;
-    @Input() pageUrl: string;
     @Input() pageWorkflows: Workflow[];
+    @Input() page: DotRenderedPage;
 
-    @Output() lockPage = new EventEmitter<boolean>();
-    @Output() pageState = new EventEmitter<PageState>();
+    @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() save = new EventEmitter<MouseEvent>();
 
     states: SelectItem[] = [];
-    stateSelected = PageState.PREVIEW;
+    stateSelected: PageMode;
     workflowsActions: MenuItem[] = [];
 
     constructor(public dotMessageService: DotMessageService) {}
@@ -42,9 +41,9 @@ export class DotEditPageToolbarComponent implements OnInit {
             ])
             .subscribe((res) => {
                 this.states = [
-                    { label: res['editpage.toolbar.edit.page'], value: PageState.EDIT },
-                    { label: res['editpage.toolbar.preview.page'], value: PageState.PREVIEW },
-                    { label: res['editpage.toolbar.live.page'], value: PageState.LIVE }
+                    { label: res['editpage.toolbar.edit.page'], value: PageMode.EDIT },
+                    { label: res['editpage.toolbar.preview.page'], value: PageMode.PREVIEW },
+                    { label: res['editpage.toolbar.live.page'], value: PageMode.LIVE }
                 ];
             });
 
@@ -55,6 +54,39 @@ export class DotEditPageToolbarComponent implements OnInit {
                 };
             });
         }
+
+        this.stateSelected = this.page.locked ? PageMode.EDIT : PageMode.PREVIEW;
+    }
+
+    /**
+     * Copy url to clipboard
+     *
+     * @returns {boolean}
+     * @memberof DotEditPageToolbarComponent
+     */
+    copyUrlToClipboard(): boolean {
+        /*
+            Aparently this is the only crossbrowser solution so far. If we do this in another place we might have
+            to include an npm module.
+        */
+        const txtArea = document.createElement('textarea');
+
+        txtArea.style.position = 'fixed';
+        txtArea.style.top = '0';
+        txtArea.style.left = '0';
+        txtArea.style.opacity = '0';
+        txtArea.value = this.page.pageUri;
+        document.body.appendChild(txtArea);
+        txtArea.select();
+
+        try {
+            return document.execCommand('copy');
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+        document.body.removeChild(txtArea);
+
+        return false;
     }
 
     /**
@@ -64,13 +96,20 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @memberof DotEditPageToolbarComponent
      */
     lockPageHandler($event): void {
-        this.lockPage.emit(this.pageLocked);
+        const state: DotEditPageState = {
+            lock: this.page.locked,
+            mode: null
+        };
 
-        if (!this.pageLocked && this.stateSelected === PageState.EDIT) {
-            this.setState(PageState.PREVIEW);
-        } else if (this.pageLocked && this.stateSelected === PageState.PREVIEW) {
-            this.setState(PageState.EDIT);
+        if (!this.page.locked && this.stateSelected === PageMode.EDIT) {
+            this.stateSelected = PageMode.PREVIEW;
+            state.mode = this.stateSelected;
+        } else if (this.page.locked && this.stateSelected === PageMode.PREVIEW) {
+            this.stateSelected = PageMode.EDIT;
+            state.mode = this.stateSelected;
         }
+
+        this.changeState.emit(state);
     }
 
     /**
@@ -79,17 +118,17 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditPageToolbarComponent
      */
-    stateSelectorHandler(state: PageState): void {
-        this.pageState.emit(this.stateSelected);
+    stateSelectorHandler(pageState: PageMode): void {
+        const state: DotEditPageState = {
+            lock: null,
+            mode: pageState
+        };
 
-        if (!this.pageLocked) {
-            this.pageLocked = state === PageState.EDIT;
-            this.lockPage.emit(this.pageLocked);
+        if (!this.page.locked && pageState === PageMode.EDIT) {
+            this.page.locked = pageState === PageMode.EDIT;
+            state.lock = this.page.locked;
         }
-    }
 
-    private setState(state: PageState) {
-        this.stateSelected = state;
-        this.pageState.emit(this.stateSelected);
+        this.changeState.emit(state);
     }
 }
