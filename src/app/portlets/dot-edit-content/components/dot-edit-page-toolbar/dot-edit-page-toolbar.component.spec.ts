@@ -8,11 +8,14 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitButton } from 'primeng/primeng';
+import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
+    let dotGlobalMessageService: DotGlobalMessageService;
 
     function clickStateButton(state) {
         const states = {
@@ -38,7 +41,8 @@ describe('DotEditPageToolbarComponent', () => {
         'editpage.toolbar.edit.page': 'Edit',
         'editpage.toolbar.preview.page': 'Preview',
         'editpage.toolbar.live.page': 'Live',
-        'editpage.toolbar.primary.workflow.actions': 'Acciones'
+        'editpage.toolbar.primary.workflow.actions': 'Acciones',
+        'dot.common.message.pageurl.copied.clipboard': 'Copied to clipboard'
     });
 
     beforeEach(
@@ -54,7 +58,11 @@ describe('DotEditPageToolbarComponent', () => {
                     ]),
                     BrowserAnimationsModule
                 ],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    DotGlobalMessageService,
+                    DotEventsService
+                ]
             }).compileComponents();
         })
     );
@@ -76,6 +84,8 @@ describe('DotEditPageToolbarComponent', () => {
             shortyWorking: '',
             workingInode: ''
         };
+
+        dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
     });
 
     it('should have a toolbar element', () => {
@@ -199,7 +209,7 @@ describe('DotEditPageToolbarComponent', () => {
         clickStateButton('edit');
 
         expect(component.page.locked).toBe(true, 'lock page');
-        expect(pageStateResult).toEqual({mode: PageMode.EDIT, lock: true}, 'page state output emitted');
+        expect(pageStateResult).toEqual({ mode: PageMode.EDIT, lock: true }, 'page state output emitted');
     });
 
     it('should go to preview if user unlock the page while is in edit', () => {
@@ -224,7 +234,9 @@ describe('DotEditPageToolbarComponent', () => {
     });
 
     it('should copy to clipboard url', () => {
-        spyOn(component, 'copyUrlToClipboard');
+        spyOn(dotGlobalMessageService, 'display');
+        spyOn(component, 'copyUrlToClipboard').and.callThrough();
+        spyOn(document, 'execCommand');
         fixture.detectChanges();
 
         const copyUrlButton: DebugElement = de.query(By.css('.edit-page-toolbar__copy-url'));
@@ -232,7 +244,13 @@ describe('DotEditPageToolbarComponent', () => {
         copyUrlButton.nativeElement.click();
 
         expect(component.copyUrlToClipboard).toHaveBeenCalledTimes(1);
+        expect(document.execCommand).toHaveBeenCalledWith('copy');
 
+        /*
+            I want to test the global message being called but for some reason in the context of the test, the
+            document.execCommand('copy') returns undefined.
+        */
+        // expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Copied to clipboard');
     });
 
     describe('update page states', () => {
@@ -250,10 +268,13 @@ describe('DotEditPageToolbarComponent', () => {
             expect(component.stateSelected).toEqual(PageMode.PREVIEW, 'preview state by default');
 
             clickLocker();
-            expect(pageStateResult).toEqual({
-                mode: PageMode.EDIT,
-                lock: true
-            }, 'emit correct state');
+            expect(pageStateResult).toEqual(
+                {
+                    mode: PageMode.EDIT,
+                    lock: true
+                },
+                'emit correct state'
+            );
         });
 
         it('should emit only lock in true', () => {
@@ -263,10 +284,12 @@ describe('DotEditPageToolbarComponent', () => {
             fixture.detectChanges();
 
             clickLocker();
-            expect(pageStateResult).toEqual({
-                mode: null,
-                lock: true
-            }, 'emit correct state');
+            expect(pageStateResult).toEqual(
+                {
+                    lock: true
+                },
+                'emit correct state'
+            );
         });
 
         it('should emit only page state', () => {
@@ -274,10 +297,12 @@ describe('DotEditPageToolbarComponent', () => {
             fixture.detectChanges();
 
             clickStateButton('preview');
-            expect(pageStateResult).toEqual({
-                mode: PageMode.PREVIEW,
-                lock: null
-            }, 'emit correct state');
+            expect(pageStateResult).toEqual(
+                {
+                    mode: PageMode.PREVIEW
+                },
+                'emit correct state'
+            );
         });
 
         it('should keep the locker true from preview to edit', () => {
@@ -289,10 +314,13 @@ describe('DotEditPageToolbarComponent', () => {
             clickStateButton('edit');
             expect(component.stateSelected).toEqual(PageMode.EDIT, 'edit state selected');
             expect(component.page.locked).toBe(true, 'page locked after click in edit');
-            expect(pageStateResult).toEqual({
-                mode: PageMode.EDIT,
-                lock: true
-            }, 'emit state');
+            expect(pageStateResult).toEqual(
+                {
+                    mode: PageMode.EDIT,
+                    lock: true
+                },
+                'emit state'
+            );
         });
 
         it('should keep the locker true from edit to live', () => {
@@ -304,10 +332,12 @@ describe('DotEditPageToolbarComponent', () => {
             clickStateButton('live');
             expect(component.stateSelected).toEqual(PageMode.LIVE, 'live state selected');
             expect(component.page.locked).toBe(true, 'page locked after click in preview');
-            expect(pageStateResult).toEqual({
-                mode: PageMode.LIVE,
-                lock: null
-            }, 'emit state');
+            expect(pageStateResult).toEqual(
+                {
+                    mode: PageMode.LIVE
+                },
+                'emit state'
+            );
         });
 
         it('should keep the locker true from edit to preview', () => {
@@ -319,10 +349,12 @@ describe('DotEditPageToolbarComponent', () => {
             clickStateButton('preview');
             expect(component.stateSelected).toEqual(PageMode.PREVIEW, 'edit state selected');
             expect(component.page.locked).toBe(true, 'page locked after click in preview');
-            expect(pageStateResult).toEqual({
-                mode: PageMode.PREVIEW,
-                lock: null
-            }, 'emit state');
+            expect(pageStateResult).toEqual(
+                {
+                    mode: PageMode.PREVIEW
+                },
+                'emit state'
+            );
         });
     });
 });

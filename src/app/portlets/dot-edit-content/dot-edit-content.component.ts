@@ -145,7 +145,7 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     statePageHandler(state: DotEditPageState): void {
-        if (state.lock !== null) {
+        if (this.isLockModified(state.lock)) {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
         }
 
@@ -154,7 +154,7 @@ export class DotEditContentComponent implements OnInit {
                 this.setPage(dotRenderedPageState.dotRenderedPage);
             }
 
-            if (state.lock !== null) {
+            if (this.isLockModified(state.lock)) {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
             }
         });
@@ -229,6 +229,10 @@ export class DotEditContentComponent implements OnInit {
             this.dialogTitle = 'Edit Contentlet';
             this.loadDialogEditor(url, $event.contentletEvents);
         });
+    }
+
+    private isLockModified(lock: boolean) {
+        return lock === true || lock === false;
     }
 
     private loadDialogEditor(url: string, contentletEvents: Subject<any>): void {

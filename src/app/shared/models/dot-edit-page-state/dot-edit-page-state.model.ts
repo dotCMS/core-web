@@ -1,6 +1,6 @@
 import { PageMode } from '../../../portlets/dot-edit-content/components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 
 export interface DotEditPageState {
-    lock: boolean;
-    mode: PageMode;
+    lock?: boolean;
+    mode?: PageMode;
 }

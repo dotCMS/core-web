@@ -58,10 +58,12 @@ export class EditPageService {
      * @memberof PageViewService
      */
     lock(inode: string): Observable<any> {
-        return this.coreWebService.requestView({
-            method: RequestMethod.Put,
-            url: `content/lock/inode/${inode}`
-        });
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: `content/lock/inode/${inode}`
+            })
+            .pluck('bodyJsonObject');
     }
 
     /**
@@ -72,10 +74,12 @@ export class EditPageService {
      * @memberof PageViewService
      */
     unlock(inode: string): Observable<any> {
-        return this.coreWebService.requestView({
-            method: RequestMethod.Put,
-            url: `content/unlock/inode/${inode}`
-        });
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: `content/unlock/inode/${inode}`
+            })
+            .pluck('bodyJsonObject');
     }
 
     /**
@@ -87,53 +91,10 @@ export class EditPageService {
      * @memberof EditPageService
      */
     setPageState(page: DotRenderedPage, state: DotEditPageState): Observable<DotRenderedPageState> {
+        const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.lock);
+        const pageMode: Observable<DotRenderedPage> = this.getPageMode(state.mode, page.pageUri);
 
-        const methods = [];
-        let lockUnlock;
-        let pageMode;
-
-        // When lock prop is not set is null
-        if (state.lock === true) {
-            lockUnlock = this.lock(page.liveInode)
-                .pluck('bodyJsonObject')
-                .pluck('message');
-        } else if (state.lock === false) {
-            lockUnlock = this.unlock(page.liveInode)
-                .pluck('bodyJsonObject')
-                .pluck('message');
-
-        }
-
-        if (state.mode === PageMode.PREVIEW) {
-            pageMode = this.getPreview(page.pageUri);
-        } else if (state.mode === PageMode.EDIT) {
-            pageMode = this.getEdit(page.pageUri);
-        } else if (state.mode === PageMode.LIVE) {
-            pageMode = this.getPreview(page.pageUri);
-        }
-
-        if (lockUnlock && pageMode) {
-            return lockUnlock.mergeMap((lockState: string) => {
-                return pageMode.map((dotRenderedPage: DotRenderedPage) => {
-                    return {
-                        dotRenderedPage: dotRenderedPage,
-                        lockState: lockState
-                     };
-                });
-            });
-        } else if (lockUnlock) {
-            return lockUnlock.map((lockState: string) => {
-                return {
-                    lockState: lockState
-                };
-            });
-        } else if (pageMode) {
-            return pageMode.map((dotRenderedPage: DotRenderedPage) => {
-                return {
-                    dotRenderedPage: dotRenderedPage
-                };
-            });
-        }
+        return this.getStateRequest(lockUnlock, pageMode);
     }
 
     private get(url: string, mode: string): Observable<DotRenderedPage> {
@@ -149,5 +110,55 @@ export class EditPageService {
                     locked: !!dotRenderedPage.lockedBy
                 };
             });
+    }
+
+    private getLockMode(liveInode: string, lock: boolean): Observable<string> {
+        if (lock && lock === true) {
+            return this.lock(liveInode).pluck('message');
+        } else if (lock === false) {
+            return this.unlock(liveInode).pluck('message');
+        } else {
+            return null;
+        }
+    }
+
+    private getPageMode(mode: PageMode, pageUri: string): Observable<DotRenderedPage> {
+        if (mode === PageMode.PREVIEW) {
+            return this.getPreview(pageUri);
+        } else if (mode === PageMode.EDIT) {
+            return this.getEdit(pageUri);
+        } else if (mode === PageMode.LIVE) {
+            return this.getLive(pageUri);
+        } else {
+            return null;
+        }
+    }
+
+    private getStateRequest(
+        lockUnlock: Observable<string>,
+        pageMode: Observable<DotRenderedPage>
+    ): Observable<DotRenderedPageState> {
+        if (lockUnlock && pageMode) {
+            return lockUnlock.mergeMap((lockState: string) => {
+                return pageMode.map((dotRenderedPage: DotRenderedPage) => {
+                    return {
+                        dotRenderedPage: dotRenderedPage,
+                        lockState: lockState
+                    };
+                });
+            });
+        } else if (lockUnlock) {
+            return lockUnlock.map((lockState: string) => {
+                return {
+                    lockState: lockState
+                };
+            });
+        } else if (pageMode) {
+            return pageMode.map((dotRenderedPage: DotRenderedPage) => {
+                return {
+                    dotRenderedPage: dotRenderedPage
+                };
+            });
+        }
     }
 }

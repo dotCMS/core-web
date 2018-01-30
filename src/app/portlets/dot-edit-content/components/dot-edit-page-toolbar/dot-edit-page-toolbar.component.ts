@@ -4,6 +4,7 @@ import { SelectItem, MenuItem, SplitButton, InputSwitch } from 'primeng/primeng'
 import { Workflow } from '../../../../shared/models/workflow/workflow.model';
 import { DotRenderedPage } from '../../../dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
+import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 export enum PageMode {
     EDIT,
@@ -28,7 +29,10 @@ export class DotEditPageToolbarComponent implements OnInit {
     stateSelected: PageMode;
     workflowsActions: MenuItem[] = [];
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(
+        public dotMessageService: DotMessageService,
+        private dotGlobalMessageService: DotGlobalMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -37,7 +41,9 @@ export class DotEditPageToolbarComponent implements OnInit {
                 'editpage.toolbar.edit.page',
                 'editpage.toolbar.preview.page',
                 'editpage.toolbar.live.page',
-                'editpage.toolbar.primary.workflow.actions'
+                'editpage.toolbar.primary.workflow.actions',
+                'dot.common.message.pageurl.copied.clipboard',
+                'dot.common.message.pageurl.copied.clipboard.error'
             ])
             .subscribe((res) => {
                 this.states = [
@@ -79,14 +85,23 @@ export class DotEditPageToolbarComponent implements OnInit {
         document.body.appendChild(txtArea);
         txtArea.select();
 
+        let result;
+
         try {
-            return document.execCommand('copy');
+            result = document.execCommand('copy');
+            if (result) {
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard')
+                );
+            }
         } catch (err) {
-            console.log('Oops, unable to copy');
+            this.dotGlobalMessageService.error(
+                this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error')
+            );
         }
         document.body.removeChild(txtArea);
 
-        return false;
+        return result;
     }
 
     /**
@@ -97,8 +112,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     lockPageHandler($event): void {
         const state: DotEditPageState = {
-            lock: this.page.locked,
-            mode: null
+            lock: this.page.locked
         };
 
         if (!this.page.locked && this.stateSelected === PageMode.EDIT) {
@@ -120,7 +134,6 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     stateSelectorHandler(pageState: PageMode): void {
         const state: DotEditPageState = {
-            lock: null,
             mode: pageState
         };
 
