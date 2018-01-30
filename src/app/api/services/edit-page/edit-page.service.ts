@@ -25,7 +25,7 @@ export class EditPageService {
      * @memberof EditPageService
      */
     getEdit(url: string): Observable<DotRenderedPage> {
-        return this.get(url, 'EDIT_MODE');
+        return this.get(url, PageMode.EDIT);
     }
 
     /**
@@ -36,7 +36,7 @@ export class EditPageService {
      * @memberof EditPageService
      */
     getPreview(url: string): Observable<DotRenderedPage> {
-        return this.get(url, 'PREVIEW_MODE');
+        return this.get(url, PageMode.PREVIEW);
     }
 
     /**
@@ -47,7 +47,7 @@ export class EditPageService {
      * @memberof EditPageService
      */
     getLive(url: string): Observable<DotRenderedPage> {
-        return this.get(url, 'LIVE_MODE');
+        return this.get(url, PageMode.LIVE);
     }
 
     /**
@@ -91,13 +91,13 @@ export class EditPageService {
      * @memberof EditPageService
      */
     setPageState(page: DotRenderedPage, state: DotEditPageState): Observable<DotRenderedPageState> {
-        const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.lock);
-        const pageMode: Observable<DotRenderedPage> = this.getPageMode(state.mode, page.pageUri);
+        const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.locked);
+        const pageMode: Observable<DotRenderedPage> = state.mode !== undefined ? this.getPageMode(state.mode)(page.pageUri) : null;
 
         return this.getStateRequest(lockUnlock, pageMode);
     }
 
-    private get(url: string, mode: string): Observable<DotRenderedPage> {
+    private get(url: string, mode: PageMode): Observable<DotRenderedPage> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -122,16 +122,13 @@ export class EditPageService {
         }
     }
 
-    private getPageMode(mode: PageMode, pageUri: string): Observable<DotRenderedPage> {
-        if (mode === PageMode.PREVIEW) {
-            return this.getPreview(pageUri);
-        } else if (mode === PageMode.EDIT) {
-            return this.getEdit(pageUri);
-        } else if (mode === PageMode.LIVE) {
-            return this.getLive(pageUri);
-        } else {
-            return null;
-        }
+    private getPageMode(mode: PageMode): (string) => Observable<DotRenderedPage> {
+        const map = {};
+        map[PageMode.PREVIEW] = (url: string) => this.getPreview(url);
+        map[PageMode.EDIT] = (url: string) => this.getEdit(url);
+        map[PageMode.LIVE] = (url: string) => this.getLive(url);
+
+        return map[mode];
     }
 
     private getStateRequest(

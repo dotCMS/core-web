@@ -114,7 +114,7 @@ describe('EditPageService', () => {
         spyOn(editPageService, 'unlock');
 
         const state: DotEditPageState = {
-            lock: true,
+            locked: true,
             mode: PageMode.EDIT
         };
 
@@ -155,7 +155,7 @@ describe('EditPageService', () => {
         spyOn(editPageService, 'unlock');
 
         const state: DotEditPageState = {
-            lock: true
+            locked: true
         };
 
         let result: DotRenderedPageState;

@@ -7,9 +7,9 @@ import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 export enum PageMode {
-    EDIT,
-    PREVIEW,
-    LIVE
+    EDIT = 'EDIT_MODE',
+    PREVIEW = 'PREVIEW_MODE',
+    LIVE = 'LIVE_MODE'
 }
 
 @Component({
@@ -112,7 +112,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     lockPageHandler($event): void {
         const state: DotEditPageState = {
-            lock: this.page.locked
+            locked: this.page.locked
         };
 
         if (!this.page.locked && this.stateSelected === PageMode.EDIT) {
@@ -139,7 +139,7 @@ export class DotEditPageToolbarComponent implements OnInit {
 
         if (!this.page.locked && pageState === PageMode.EDIT) {
             this.page.locked = pageState === PageMode.EDIT;
-            state.lock = this.page.locked;
+            state.locked = this.page.locked;
         }
 
         this.changeState.emit(state);

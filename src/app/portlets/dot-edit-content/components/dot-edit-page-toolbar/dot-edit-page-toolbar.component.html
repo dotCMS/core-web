@@ -16,7 +16,7 @@
 
     <div class="ui-toolbar-group-right">
         <!-- Only show the button in edit mode -->
-        <button pButton flat class="edit-page-toolbar__save" *ngIf="stateSelected === 0" [disabled]="!canSave" [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
+        <button pButton flat class="edit-page-toolbar__save" *ngIf="stateSelected === 'EDIT_MODE'" [disabled]="!canSave" [label]="dotMessageService.get('editpage.toolbar.primary.action')" (click)="save.emit($event)"></button>
         <p-splitButton flat *ngIf="workflowsActions.length" class="edit-page-toolbar__actions" [label]="dotMessageService.get('editpage.toolbar.primary.workflow.actions')" [model]="workflowsActions" #actionsButton></p-splitButton>
     </div>
 </p-toolbar>

@@ -201,12 +201,10 @@ describe('DotEditContentComponent', () => {
         fixture.detectChanges();
 
         component.statePageHandler({
-            lock: false,
-            mode: null
+            locked: false
         });
         expect(editPageService.setPageState).toHaveBeenCalledWith(fakePageRendered, {
-            lock: false,
-            mode: null
+            locked: false
         });
     });
 
@@ -217,12 +215,12 @@ describe('DotEditContentComponent', () => {
         fixture.detectChanges();
 
         component.toolbar.changeState.emit({
-            lock: true,
+            locked: true,
             mode: null
         });
 
         expect(component.statePageHandler).toHaveBeenCalledWith({
-            lock: true,
+            locked: true,
             mode: null
         });
         expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Saving...');
@@ -243,12 +241,12 @@ describe('DotEditContentComponent', () => {
         spyOn(dotGlobalMessageService, 'display').and.callThrough();
 
         component.toolbar.changeState.emit({
-            lock: null,
+            locked: null,
             mode: PageMode.PREVIEW
         });
 
         expect(component.statePageHandler).toHaveBeenCalledWith({
-            lock: null,
+            locked: null,
             mode: PageMode.PREVIEW
         });
         expect(dotGlobalMessageService.display).not.toHaveBeenCalled();

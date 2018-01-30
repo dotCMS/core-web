@@ -145,7 +145,7 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     statePageHandler(state: DotEditPageState): void {
-        if (this.isLockModified(state.lock)) {
+        if (this.isLockModified(state.locked)) {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
         }
 
@@ -154,7 +154,7 @@ export class DotEditContentComponent implements OnInit {
                 this.setPage(dotRenderedPageState.dotRenderedPage);
             }
 
-            if (this.isLockModified(state.lock)) {
+            if (this.isLockModified(state.locked)) {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
             }
         });

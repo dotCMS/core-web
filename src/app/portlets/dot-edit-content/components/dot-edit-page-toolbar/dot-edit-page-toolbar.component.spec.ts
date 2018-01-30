@@ -209,7 +209,7 @@ describe('DotEditPageToolbarComponent', () => {
         clickStateButton('edit');
 
         expect(component.page.locked).toBe(true, 'lock page');
-        expect(pageStateResult).toEqual({ mode: PageMode.EDIT, lock: true }, 'page state output emitted');
+        expect(pageStateResult).toEqual({ mode: PageMode.EDIT, locked: true }, 'page state output emitted');
     });
 
     it('should go to preview if user unlock the page while is in edit', () => {
@@ -271,7 +271,7 @@ describe('DotEditPageToolbarComponent', () => {
             expect(pageStateResult).toEqual(
                 {
                     mode: PageMode.EDIT,
-                    lock: true
+                    locked: true
                 },
                 'emit correct state'
             );
@@ -286,7 +286,7 @@ describe('DotEditPageToolbarComponent', () => {
             clickLocker();
             expect(pageStateResult).toEqual(
                 {
-                    lock: true
+                    locked: true
                 },
                 'emit correct state'
             );
@@ -317,7 +317,7 @@ describe('DotEditPageToolbarComponent', () => {
             expect(pageStateResult).toEqual(
                 {
                     mode: PageMode.EDIT,
-                    lock: true
+                    locked: true
                 },
                 'emit state'
             );
