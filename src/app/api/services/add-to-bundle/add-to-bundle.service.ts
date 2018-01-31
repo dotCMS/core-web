@@ -5,10 +5,10 @@ import { RequestMethod } from '@angular/http';
 import { DotCurrentUser } from '../../../shared/models/dot-current-user/dot-current-user';
 import { DotBundle } from '../../../shared/models/dot-bundle/dot-bundle';
 import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
+import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 
 @Injectable()
 export class AddToBundleService {
-    private currentUsersUrl = 'v1/users/current/';
     private bundleUrl = `bundle/getunsendbundles/userid`;
     /*
         TODO: I had to do this because this line concat 'api/' into the URL
@@ -16,22 +16,21 @@ export class AddToBundleService {
     */
     private addToBundleUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
 
-    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService) { }
+    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService, private currentUser: DotCurrentUserService) { }
 
     /**
      * Get bundle items
      * @returns {Observable<any[]>}
      * @memberof AddToBundleService
      */
-    getBundle(): Observable<any[]> {
-        return this.getCurrentUser().mergeMap((user: DotCurrentUser) => {
+    getBundles(): Observable<any[]> {
+        return this.currentUser.getCurrentUser().mergeMap((user: DotCurrentUser) => {
             return this.coreWebService.requestView({
                 method: RequestMethod.Get,
                 url: `${this.bundleUrl}/${user.userId}`
-            }).map((res: any) => JSON.parse(res.resp._body));
-        })
-        .flatMap((bundle: any) => bundle.items)
-        .toArray();
+            })
+            .pluck('bodyJsonObject', 'items');
+        });
     }
 
     /**
@@ -49,19 +48,6 @@ export class AddToBundleService {
             },
             method: RequestMethod.Post,
             url: this.addToBundleUrl
-        });
-    }
-
-    // TODO: We need to update the LoginService to get the userId in the User object
-    /**
-     * Get logged user and userId.
-     * @returns {Observable<DotCurrentUser>}
-     * @memberof PushPublishService
-     */
-    getCurrentUser(): Observable<DotCurrentUser> {
-        return this.coreWebService.request({
-            method: RequestMethod.Get,
-            url: this.currentUsersUrl
         });
     }
 }

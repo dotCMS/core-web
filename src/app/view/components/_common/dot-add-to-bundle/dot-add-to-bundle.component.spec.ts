@@ -12,7 +12,7 @@ import { DotAddToBundleComponent } from './dot-add-to-bundle.component';
 import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
 
 class AddToBundleServiceMock {
-    getBundle(): Observable<any> {
+    getBundles(): Observable<any> {
         return Observable.of([]);
     }
 
@@ -39,7 +39,7 @@ describe('DotAddToBundleComponent', () => {
     const messageServiceMock = new MockDotMessageService({
         'contenttypes.content.add_to_bundle': 'Add to bundle',
         'contenttypes.content.add_to_bundle.select': 'Select or type bundle',
-        'contenttypes.content.add_to_bundle.type': 'Type bundle',
+        'contenttypes.content.add_to_bundle.type': 'Type bundle name',
         'contenttypes.content.add_to_bundle.errormsg': 'Please select a Bundle from the list or type a bundle name',
         'contenttypes.content.add_to_bundle.form.cancel': 'Cancel',
         'contenttypes.content.add_to_bundle.form.add': 'Add'
@@ -152,6 +152,23 @@ describe('DotAddToBundleComponent', () => {
             id: 'my new bundle',
             name: 'my new bundle'
         });
+    });
+
+    it('should set placeholder "Type bundle name" if NO bundles exist', () => {
+        spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(Observable.of([]));
+        fixture.detectChanges();
+        expect(comp.placeholder).toEqual('Type bundle name');
+    });
+
+    it('should set placeholder "Select or type bundle" if bundles exist', () => {
+        spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(Observable.of([
+            {
+                id: '1234',
+                name: 'my bundle'
+            }
+        ]));
+        fixture.detectChanges();
+        expect(comp.placeholder).toEqual('Select or type bundle');
     });
 
     it('should call addToBundle service method with the right params when the form is submitted and is valid', () => {

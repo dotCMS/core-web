@@ -4,42 +4,23 @@ import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { AddToBundleService } from './add-to-bundle.service';
+import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 
 describe('AddToBundleService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
-            AddToBundleService
+            AddToBundleService,
+            DotCurrentUserService
         ]);
 
         this.addToBundleService =  this.injector.get(AddToBundleService);
+        this.dotCurrentUserService =  this.injector.get(DotCurrentUserService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => this.lastConnection = connection);
     });
 
-    it('should get logged user', fakeAsync(() => {
-        const mockCurrentUserResponse = {
-            email: 'admin@dotcms.com',
-            givenName: 'TEST',
-            roleId: 'e7d23sde-5127-45fc-8123-d424fd510e3',
-            surnaname: 'User',
-            userId: 'testId'
-        };
-        let currentUser: any;
-        this.addToBundleService.getCurrentUser().subscribe(user => {
-            currentUser = user._body;
-        });
-
-        this.lastConnection.mockRespond(new Response(new ResponseOptions({
-            body: mockCurrentUserResponse
-        })));
-
-        tick();
-        expect(this.lastConnection.request.url).toContain('api/v1/users/current');
-        expect(currentUser).toEqual(mockCurrentUserResponse);
-    }));
-
     it('should get bundle list', fakeAsync(() => {
-        spyOn(this.addToBundleService, 'getCurrentUser').and.returnValue(Observable.of({
+        spyOn(this.dotCurrentUserService, 'getCurrentUser').and.returnValue(Observable.of({
             userId: '1234'
         }));
 
@@ -62,7 +43,7 @@ describe('AddToBundleService', () => {
         };
 
         let result: any;
-        this.addToBundleService.getBundle().subscribe(items => result = items);
+        this.addToBundleService.getBundles().subscribe(items => result = items);
         this.lastConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify(mockResponse)
         })));

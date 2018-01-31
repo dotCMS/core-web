@@ -29,20 +29,24 @@ export class DotAddToBundleComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.bundle$ = this.addToBundleService.getBundle();
-
-        this.dotMessageService.getMessages([
+        const keys = [
             'contenttypes.content.add_to_bundle',
             'contenttypes.content.add_to_bundle.select',
             'contenttypes.content.add_to_bundle.type',
             'contenttypes.content.add_to_bundle.errormsg',
             'contenttypes.content.add_to_bundle.form.cancel',
             'contenttypes.content.add_to_bundle.form.add'
+        ];
 
-        ]).subscribe();
+        this.bundle$ = this.addToBundleService.getBundles();
 
-        // tslint:disable-next-line:max-line-length
-        this.placeholder = this.bundle$ ? this.dotMessageService.get('contenttypes.content.add_to_bundle') : this.dotMessageService.get('contenttypes.content.add_to_type');
+        this.dotMessageService.getMessages(keys).subscribe(messages => {
+            this.addToBundleService.getBundles().subscribe(bundles => {
+                this.placeholder = bundles.length
+                    ? messages['contenttypes.content.add_to_bundle.select']
+                    : messages['contenttypes.content.add_to_bundle.type'];
+            });
+        });
 
         this.initForm();
     }
