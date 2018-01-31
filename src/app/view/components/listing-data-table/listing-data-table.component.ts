@@ -6,8 +6,7 @@ import {
     OnChanges,
     ViewChild,
     ElementRef,
-    OnInit,
-    ViewEncapsulation
+    OnInit
 } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
