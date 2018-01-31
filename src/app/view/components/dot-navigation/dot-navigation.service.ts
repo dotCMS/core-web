@@ -51,6 +51,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     goToFirstPortlet(replaceUrl?: boolean): Promise<boolean> {
+        console.log('goToFirstPortlet', replaceUrl);
         return this.getFirstMenuLink()
             .map((link: string) => {
                 return this.dotRouterService.gotoPortlet(link, replaceUrl);
@@ -90,20 +91,31 @@ export class DotNavigationService {
      */
     reloadNavigation(): void {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
-            this.dotMenuService
-                .isPortletInMenu(
-                    this.dotRouterService.currentPortlet.id ||
-                    this.dotRouterService.getPortletId(this.location.hash)
-                )
-                .subscribe((isPortletInMenu: boolean) => {
-                    if (!isPortletInMenu) {
-                        this.goToFirstPortlet().then(res => {
+            const editModeUrl = this.loginService.auth.user['editModeUrl'];
+
+            if (!editModeUrl) {
+                this.dotMenuService
+                    .isPortletInMenu(
+                        this.dotRouterService.currentPortlet.id ||
+                        this.dotRouterService.getPortletId(this.location.hash)
+                    )
+                    .subscribe((isPortletInMenu: boolean) => {
+                        if (!isPortletInMenu) {
+                            this.goToFirstPortlet().then(res => {
+                                this.setMenu(menu);
+                            });
+                        } else {
                             this.setMenu(menu);
-                        });
-                    } else {
-                        this.setMenu(menu);
-                    }
-                });
+                        }
+                    });
+            } else {
+                // here we should go to site-browser?url=editModeUrl
+                this.setMenu(menu);
+                //this.dotRouterService.goToURL('c/site-browser??url=%2Findex%3Fcom.dotmarketing.htmlpage.language%3D1%26host_id%3D48190c8c-42c4-46af-8d1a-0cd5db894797%26ranId%3D0.7733126247603874');
+                window.location.href = '/about-us/index';
+                this.loginService.auth.user['editModeUrl'] = null;
+                
+            }
         });
     }
 
