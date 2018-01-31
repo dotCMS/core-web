@@ -6,7 +6,8 @@ import {
     OnChanges,
     ViewChild,
     ElementRef,
-    OnInit
+    OnInit,
+    ViewEncapsulation
 } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
@@ -34,7 +35,6 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     @Input() multipleSelection = false;
     @Input() paginationPerPage: number;
     @Input() actions: DotDataTableAction[];
-    @Input() data: any;
 
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
@@ -45,7 +45,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     items: any[];
     filter;
     dateColumns: DataTableColumn[];
-    loading: boolean;
+    loading = true;
 
     constructor(
         dotMessageService: DotMessageService,
@@ -66,7 +66,6 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.DATE_FORMAT);
             this.loadData(0);
         }
-
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
             this.paginatorService.paginationPerPage = this.paginationPerPage;
         }
@@ -98,10 +97,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.paginatorService.sortField = sortField;
             this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-            this.paginatorService.getWithOffset(offset).subscribe(items => {
-                this.setItems(items);
-                this.loading = false;
-            });
+            this.paginatorService.getWithOffset(offset).subscribe(items => this.setItems(items));
         }
     }
 
@@ -112,10 +108,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     loadCurrentPage(): void {
         this.loading = true;
         if (this.columns) {
-            this.paginatorService.getCurrentPage().subscribe(items => {
-                this.setItems(items);
-                this.loading = false;
-            });
+            this.paginatorService.getCurrentPage().subscribe(items => this.setItems(items));
         }
     }
 
@@ -143,5 +136,6 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
     private setItems(items: any[]): void {
         this.items = this.dateColumns ? this.formatData(items) : items;
+        this.loading = false;
     }
 }
