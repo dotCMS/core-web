@@ -165,8 +165,6 @@ export class EditPageService {
         pageModeString[PageMode.PREVIEW] = 'PREVIEW_MODE';
         pageModeString[PageMode.LIVE] = 'LIVE_MODE';
 
-        console.log(pageMode);
-
         return pageModeString[pageMode];
     }
 }
