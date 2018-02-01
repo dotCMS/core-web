@@ -14,7 +14,7 @@
 
     <form [formGroup]="form" (ngSubmit)="submitBundle($event)" novalidate #formEl="ngForm">
         <div class="form__group">
-            <p-dropdown [style]="{'width':'100%'}" [options]="bundle$ | async" editable="true" formControlName="addBundle" [placeholder]="placeholder" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="bundle$ | async" editable="true" [autoWidth]="false" formControlName="addBundle" [placeholder]="placeholder" optionLabel="name"></p-dropdown>
             <field-validation-message message="{{dotMessageService.get('contenttypes.content.add_to_bundle.errormsg')}}" [field]="form.get('addBundle')"></field-validation-message>
         </div>
     </form>
