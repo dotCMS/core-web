@@ -81,7 +81,7 @@ export class DotEditPageToolbarComponent implements OnInit {
         txtArea.style.top = '0';
         txtArea.style.left = '0';
         txtArea.style.opacity = '0';
-        txtArea.value = this.page.pageUri;
+        txtArea.value = this.page.pageURI;
         document.body.appendChild(txtArea);
         txtArea.select();
 
