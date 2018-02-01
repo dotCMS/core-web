@@ -20,7 +20,12 @@ export class RoutingPrivateAuthService implements CanActivate {
             if (!isLogin) {
                 this.dotRouterService.goToLogin();
             } else if (state.url === '/') {
-                this.dotNavigationService.goToFirstPortlet();
+                if (this.loginService.auth.user['editModeUrl']) {
+                    this.dotRouterService.gotoPortlet('c/site-browser', true, {url: this.loginService.auth.user['editModeUrl']});
+                    this.loginService.auth.user['editModeUrl'] = null;
+                } else {
+                    this.dotNavigationService.goToFirstPortlet();
+                }
             }
             return isLogin;
         });
