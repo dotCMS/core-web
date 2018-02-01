@@ -7,9 +7,9 @@ import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 export enum PageMode {
-    EDIT = 'EDIT_MODE',
-    PREVIEW = 'PREVIEW_MODE',
-    LIVE = 'LIVE_MODE'
+    EDIT,
+    PREVIEW,
+    LIVE
 }
 
 @Component({

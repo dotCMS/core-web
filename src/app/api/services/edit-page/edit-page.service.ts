@@ -101,7 +101,7 @@ export class EditPageService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=${mode}`
+                url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=${this.getPageModeString(mode)}`
             })
             .pluck('bodyJsonObject')
             .map((dotRenderedPage: DotRenderedPage) => {
@@ -157,5 +157,16 @@ export class EditPageService {
                 };
             });
         }
+    }
+
+    private getPageModeString(pageMode: PageMode): string {
+        const pageModeString = {};
+        pageModeString[PageMode.EDIT] = 'EDIT_MODE';
+        pageModeString[PageMode.PREVIEW] = 'PREVIEW_MODE';
+        pageModeString[PageMode.LIVE] = 'LIVE_MODE';
+
+        console.log(pageMode);
+
+        return pageModeString[pageMode];
     }
 }
