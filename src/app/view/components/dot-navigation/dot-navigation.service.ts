@@ -40,7 +40,7 @@ export class DotNavigationService {
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
             if (auth.loginAsUser || auth.user) {
-                this.reloadNavigation();
+                this.reloadNavigation(auth.user && !!auth.user['editModeUrl']);
             }
         });
     }
@@ -88,22 +88,26 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(): void {
+    reloadNavigation(haveEditModeUrl?: boolean): void {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
-            this.dotMenuService
-                .isPortletInMenu(
-                    this.dotRouterService.currentPortlet.id ||
-                    this.dotRouterService.getPortletId(this.location.hash)
-                )
-                .subscribe((isPortletInMenu: boolean) => {
-                    if (!isPortletInMenu) {
-                        this.goToFirstPortlet().then(res => {
+            if (haveEditModeUrl) {
+                this.setMenu(menu);
+            } else {
+                this.dotMenuService
+                    .isPortletInMenu(
+                        this.dotRouterService.currentPortlet.id ||
+                            this.dotRouterService.getPortletId(this.location.hash)
+                    )
+                    .subscribe((isPortletInMenu: boolean) => {
+                        if (!isPortletInMenu) {
+                            this.goToFirstPortlet().then((res) => {
+                                this.setMenu(menu);
+                            });
+                        } else {
                             this.setMenu(menu);
-                        });
-                    } else {
-                        this.setMenu(menu);
-                    }
-                });
+                        }
+                    });
+            }
         });
     }
 
@@ -131,9 +135,7 @@ export class DotNavigationService {
     }
 
     private getFirstMenuLink(): Observable<string> {
-        return this.dotMenuService
-            .loadMenu()
-            .map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
+        return this.dotMenuService.loadMenu().map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
     }
 
     private getMenuLink(menuItemId: string): string {

@@ -30,7 +30,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     reloadCurrentPortlet(id: string): void {
-        this.portletReload$.next();
+        this.portletReload$.next(id);
     }
 
     goToMain(): void {
@@ -57,8 +57,8 @@ export class DotRouterService {
         return url === '/';
     }
 
-    gotoPortlet(link: string, replaceUrl: boolean): Promise<boolean> {
-        return this.router.navigate([link], { replaceUrl: replaceUrl });
+    gotoPortlet(link: string, replaceUrl: boolean, queryParams?: any): Promise<boolean> {
+        return this.router.navigate([link], { replaceUrl: replaceUrl, queryParams: queryParams || {} });
     }
 
     goToForgotPassword(): void {
