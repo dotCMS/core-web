@@ -62,7 +62,8 @@ export class DotRouterService {
     }
 
     gotoPortlet(link: string, replaceUrl?: boolean): Promise<boolean> {
-        return this.router.navigate([link], { replaceUrl: replaceUrl });
+
+        return this.router.navigateByUrl(link, { replaceUrl: replaceUrl });
     }
 
     goToForgotPassword(): void {
