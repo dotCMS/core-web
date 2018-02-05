@@ -16,7 +16,6 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { HotkeysService } from 'angular2-hotkeys';
 import { SiteSelectorFieldModule } from '../../../view/components/_common/site-selector-field/site-selector-field.module';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
@@ -378,7 +377,6 @@ describe('ContentTypesFormComponent', () => {
         expect(dialogTitle).toBeTruthy();
 
         const submitAction: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
-        console.log('submitAction', submitAction);
         expect(submitAction).toBeTruthy();
 
         expect(dialogTitle.nativeElement.innerText).toEqual('Create content type');

@@ -15,7 +15,6 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import * as _ from 'lodash';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 import { SelectItem } from 'primeng/primeng';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
@@ -74,7 +73,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         private fb: FormBuilder,
         private contentTypesInfoService: ContentTypesInfoService,
         public dotMessageService: DotMessageService,
-        private hotkeysService: HotkeysService,
         private workflowService: WorkflowService,
         private location: Location
     ) {
@@ -132,10 +130,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         if (changes.fields && !changes.fields.firstChange) {
             this.setDateVarFieldsState();
         }
-    }
-
-    ngOnDestroy() {
-        this.hotkeysService.remove(this.hotkeysService.get('esc'));
     }
 
     /**
@@ -238,15 +232,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
     private setButtonState() {
         this.isButtonDisabled = this.isEditMode() ? !this.form.valid || !this.isFormValueUpdated() : !this.form.valid;
-    }
-
-    private bindKeyboardEvents(): void {
-        this.hotkeysService.add(
-            new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
-                this.cancelForm();
-                return false;
-            })
-        );
     }
 
     private getDateVarFieldOption(field: Field): SelectItem {
