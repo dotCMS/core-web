@@ -117,7 +117,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         this.initWorkflowField();
         this.setTemplateInfo();
         this.bindActionButtonState();
-        this.bindKeyboardEvents();
     }
 
     ngAfterViewInit() {

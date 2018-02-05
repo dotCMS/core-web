@@ -28,7 +28,7 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -89,7 +89,6 @@ describe('ContentTypesFormComponent', () => {
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
                     { provide: DotMessageService, useValue: messageServiceMock },
-                    { provide: HotkeysService, useClass: HotkeysServiceMock },
                     { provide: SiteService, useValue: siteServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
