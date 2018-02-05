@@ -138,6 +138,7 @@ export const EDIT_PAGE_CSS = `
 
      .dotedit-contentlet__toolbar button {
         margin-right: 8px;
+        background-color: #fff; 
      }
 
      .dotedit-contentlet__toolbar button:last-child {
