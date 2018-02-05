@@ -2,7 +2,17 @@
 @import "variables";
 
 :host {
-    display: block
+    display: block;
+
+    ::ng-deep { 
+        .ui-dialog .ui-dialog-content {
+            overflow-y: scroll;
+            height: 500px;
+        }
+        .ui-multiselect, searchable-dropdown .ui-button {
+            width: 100%;
+        }
+    }
 }
 
 .content-type__form-header {
@@ -11,25 +21,7 @@
 }
 
 .content-type__form-title {
-    padding-left: $basic-padding * 3;
-
-    .fa {
-        left: 0;
-        position: absolute;
-        top: 10px;
-    }
-
-    .ui-inputtext {
-        font-size: $font-size-large;
-    }
-}
-
-.content-type__full-form {
-    margin: 0 $basic-padding * 3;
-
-    &--expanded {
-        margin-bottom: $basic-padding * 3;
-    }
+    font-size: $font-size-large;
 }
 
 .content-type__form-actions {

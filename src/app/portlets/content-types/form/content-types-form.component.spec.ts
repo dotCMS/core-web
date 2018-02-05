@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -20,6 +21,7 @@ import { SiteSelectorFieldModule } from '../../../view/components/_common/site-s
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 class HotkeysServiceMock {
     add() {}
@@ -33,6 +35,7 @@ describe('ContentTypesFormComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     let dotcmsConfig: DotcmsConfig;
+    let location: Location;
 
     beforeEach(
         async(() => {
@@ -50,7 +53,21 @@ describe('ContentTypesFormComponent', () => {
                 'contenttypes.form.label.description': 'Description',
                 'contenttypes.form.name': 'Name',
                 'contenttypes.action.save': 'Save',
-                'contenttypes.action.update': 'Update'
+                'contenttypes.action.update': 'Update',
+                'contenttypes.action.create': 'Create',
+                'contenttypes.action.edit': 'Edit',
+                'contenttypes.action.delete': 'Delete',
+                'contenttypes.form.name.error.required': 'Error is wrong',
+                'contenttypes.action.form.cancel': 'Cancel',
+                'contenttypes.content.contenttype': 'content type',
+                'contenttypes.content.fileasset': 'fileasset',
+                'contenttypes.content.content': 'Content',
+                'contenttypes.content.form': 'Form',
+                'contenttypes.content.persona': 'Persona',
+                'contenttypes.content.widget': 'Widget',
+                'contenttypes.content.htmlpage': 'Page',
+                'contenttypes.content.key_value': 'Key Value',
+                'contenttypes.content.vanity_url:': 'Vanity Url'
             });
 
             const siteServiceMock = new SiteServiceMock();
@@ -58,6 +75,7 @@ describe('ContentTypesFormComponent', () => {
             DOTTestBed.configureTestingModule({
                 declarations: [ContentTypesFormComponent],
                 imports: [
+                    RouterTestingModule.withRoutes([{component: ContentTypesFormComponent, path: 'test'}]),
                     BrowserAnimationsModule,
                     ButtonModule,
                     DropdownModule,
@@ -66,7 +84,8 @@ describe('ContentTypesFormComponent', () => {
                     OverlayPanelModule,
                     ReactiveFormsModule,
                     TabViewModule,
-                    SiteSelectorFieldModule
+                    SiteSelectorFieldModule,
+                    RouterTestingModule
                 ],
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
@@ -76,7 +95,8 @@ describe('ContentTypesFormComponent', () => {
                     DotcmsConfig,
                     ContentTypesInfoService,
                     SocketFactory,
-                    WorkflowService
+                    WorkflowService,
+                    Location
                 ]
             });
 
@@ -86,8 +106,13 @@ describe('ContentTypesFormComponent', () => {
             el = de.nativeElement;
 
             dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
+            location = fixture.debugElement.injector.get(Location);
         })
     );
+
+    it('should open dialog by default', () => {
+        expect(de.query(By.css('p-dialog'))).toBeDefined();
+    });
 
     it('should be invalid by default', () => {
         comp.data = {
@@ -113,33 +138,6 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
         expect(comp.name.nativeElement).toBe(document.activeElement);
-    });
-
-    it('should be collapsed by default in edit mode', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-
-        const form = de.query(By.css('.content-type__full-form'));
-
-        expect(comp.formState).toBe('collapsed', 'form state collapsed');
-        expect(form.nativeElement.style.height).toBe('0px', 'form height 0');
-        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
-    });
-
-    it('should be expanded by default in create mode', () => {
-        comp.data = {
-            baseType: 'CONTENT'
-        };
-        fixture.detectChanges();
-
-        const form = de.query(By.css('.content-type__full-form'));
-
-        expect(comp.formState).toBe('expanded', 'form state expanded');
-        expect(form.nativeElement.style.height).toBe('', 'form height not set to be auto');
-        expect(form.nativeElement.style.overflow).toBe('visible', 'form overflow visible');
     });
 
     it('should have submit button disabled when form is invalid', () => {
@@ -349,16 +347,6 @@ describe('ContentTypesFormComponent', () => {
         expect(submittButton.nativeElement.disabled).toBe(true);
     });
 
-    it('should not have cancel button on create mode', () => {
-        comp.data = {
-            baseType: 'CONTENT'
-        };
-        fixture.detectChanges();
-
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
-        expect(cancelButton).toBeFalsy();
-    });
-
     it('should have cancel button on edit mode', () => {
         comp.data = {
             baseType: 'CONTENT',
@@ -381,78 +369,55 @@ describe('ContentTypesFormComponent', () => {
         expect(editButton).toBeTruthy();
     });
 
-    it('should call toogleForm method on edit button click', () => {
+    it('should have Create content type title and Create action on create mode', () => {
+        comp.data = {
+            baseType: ''
+        };
+        fixture.detectChanges();
+        const dialogTitle: DebugElement = fixture.debugElement.query(By.css('p-header'));
+        expect(dialogTitle).toBeTruthy();
+
+        const submitAction: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        console.log('submitAction', submitAction);
+        expect(submitAction).toBeTruthy();
+
+        expect(dialogTitle.nativeElement.innerText).toEqual('Create content type');
+        expect(submitAction.nativeElement.innerText).toEqual('Create');
+    });
+
+    it('should have Edit content type title and Update action on edit mode', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
         };
         fixture.detectChanges();
-        spyOn(comp, 'toggleForm').and.callThrough();
+        const dialogTitle: DebugElement = fixture.debugElement.query(By.css('p-header'));
+        expect(dialogTitle).toBeTruthy();
 
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        editButton.nativeNode.click();
-        expect(comp.toggleForm).toHaveBeenCalledTimes(1);
+        const submitAction: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        expect(submitAction).toBeTruthy();
+
+        expect(dialogTitle.nativeElement.innerText).toEqual('Edit content type');
+        expect(submitAction.nativeElement.innerText).toEqual('Update');
     });
 
-    it('should have edit button disabled when form is expanded', () => {
+    it('should call cancelForm() on cancel button click and call location.back', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
         };
-        comp.toggleForm();
-        fixture.detectChanges();
+        spyOn(comp, 'cancelForm').and.callThrough();
+        spyOn(location, 'back');
 
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        expect(editButton.nativeElement.disabled).toBe(true);
-    });
-
-    it('should toggle formState property on edit button click', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-
-        editButton.nativeNode.click();
-        expect(comp.formState).toBe('expanded');
-        editButton.nativeNode.click();
-        expect(comp.formState).toBe('collapsed');
-    });
-
-    it('should call cancelForm() on cancel button click', () => {
-        spyOn(comp, 'cancelForm');
-
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        comp.formState = 'extended';
         fixture.detectChanges();
 
         const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
-        cancelButton.nativeNode.click();
+        expect(cancelButton).toBeDefined();
+
+        cancelButton.nativeElement.click();
 
         expect(comp.cancelForm).toHaveBeenCalledTimes(1);
-    });
-
-    it('should collapse the form on cancel button click', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        comp.formState = 'extended';
-        fixture.detectChanges();
-
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
-        cancelButton.nativeNode.click();
-        fixture.detectChanges();
-        const form = de.query(By.css('.content-type__full-form'));
-
-        expect(comp.formState).toBe('collapsed', 'form state collapsed');
-        expect(form.nativeElement.style.height).toBe('0px', 'form height 0px');
-        expect(form.nativeElement.style.overflow).toBe('hidden', 'form overflow hidden');
+        expect(location.back).toHaveBeenCalledTimes(1);
     });
 
     it('should reset the form value on cancel button click', () => {
@@ -527,23 +492,6 @@ describe('ContentTypesFormComponent', () => {
         form.nativeElement.dispatchEvent(new Event('submit'));
 
         expect(comp.submitContent).toHaveBeenCalledTimes(1);
-    });
-
-    // .focus() its not being triggered
-    xit('should toggle formState when the user focus on the name field', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-
-        expect(comp.formState).toBe('collapsed', 'collapsed by default');
-
-        const nameEl: DebugElement = fixture.debugElement.query(By.css('#content-type-form-name'));
-        nameEl.nativeElement.focus();
-        fixture.detectChanges();
-
-        expect(comp.formState).toBe('expanded', 'expanded on focus');
     });
 
     it('should have basic form controls for non-content base types', () => {
@@ -801,9 +749,5 @@ describe('ContentTypesFormComponent', () => {
             folder: null,
             system: null
         });
-    });
-
-    xit('should reset and collapse the form on ESC key', () => {
-        // TODO: waiting for Luis mock hotkeys.
     });
 });

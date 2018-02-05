@@ -28,6 +28,7 @@ import { Field } from '../fields';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
+import { Location } from '@angular/common';
 
 /**
   * Form component to create or edit content types
@@ -41,25 +42,6 @@ import { Observable } from 'rxjs/Observable';
   * @implements {OnDestroy}
   */
 @Component({
-    animations: [
-        trigger('enterAnimation', [
-            state(
-                'expanded',
-                style({
-                    height: '*',
-                    overflow: 'visible'
-                })
-            ),
-            state(
-                'collapsed',
-                style({
-                    height: '0px',
-                    overflow: 'hidden'
-                })
-            ),
-            transition('expanded <=> collapsed', animate('250ms ease-in-out'))
-        ])
-    ],
     providers: [SiteSelectorComponent],
     selector: 'dot-content-types-form',
     styleUrls: ['./content-types-form.component.scss'],
@@ -67,22 +49,24 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ContentTypesFormComponent extends BaseComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     @ViewChild('name') name: ElementRef;
+    @ViewChild('formEl') formEl: HTMLFormElement;
     @Input() data: any;
     @Input() fields: Field[];
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
-    formState = 'collapsed';
     isButtonDisabled = true;
     placeholder: string;
     submitAttempt = false;
     templateInfo = {
         icon: '',
+        header: '',
         placeholder: '',
         action: ''
     };
     workflowOptions: Observable<SelectItem[]>;
+    show = true;
 
     private originalValue: any;
 
@@ -92,7 +76,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         private contentTypesInfoService: ContentTypesInfoService,
         public dotMessageService: DotMessageService,
         private hotkeysService: HotkeysService,
-        private workflowService: WorkflowService
+        private workflowService: WorkflowService,
+        private location: Location
     ) {
         super(
             [
@@ -111,10 +96,12 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
                 'contenttypes.form.name',
                 'contenttypes.action.save',
                 'contenttypes.action.update',
+                'contenttypes.action.create',
                 'contenttypes.action.edit',
                 'contenttypes.action.delete',
                 'contenttypes.form.name.error.required',
                 'contenttypes.action.form.cancel',
+                'contenttypes.content.contenttype',
                 'contenttypes.content.fileasset',
                 'contenttypes.content.content',
                 'contenttypes.content.form',
@@ -134,10 +121,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         this.setTemplateInfo();
         this.bindActionButtonState();
         this.bindKeyboardEvents();
-
-        if (!this.isEditMode()) {
-            this.toggleForm();
-        }
     }
 
     ngAfterViewInit() {
@@ -162,12 +145,10 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
      * @memberof ContentTypesFormComponent
      */
     cancelForm(): void {
-        this.toggleForm();
-        this.name.nativeElement.blur();
-
         if (this.isEditMode() && this.isFormValueUpdated()) {
             this.form.patchValue(this.originalValue);
         }
+        this.location.back();
     }
 
     /**
@@ -176,7 +157,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
      * @memberof ContentTypesFormComponent
      */
     editForm(): void {
-        this.toggleForm();
+        this.show = true;
         this.name.nativeElement.focus();
     }
 
@@ -196,7 +177,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
      * @memberof ContentTypesFormComponent
      */
     resetForm(): void {
-        this.formState = 'collapsed';
         this.submitAttempt = false;
         this.originalValue = this.form.value;
         this.setButtonState();
@@ -213,12 +193,15 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
             this.templateInfo = {
                 icon: this.contentTypesInfoService.getIcon(type),
+                header: this.isEditMode()
+                    ? this.i18nMessages['contenttypes.action.edit']
+                    : this.i18nMessages['contenttypes.action.create'],
                 placeholder: `${this.i18nMessages[`contenttypes.content.${type}`]} ${this.i18nMessages[
                     'contenttypes.form.name'
                 ]} *`,
                 action: this.isEditMode()
                     ? this.i18nMessages['contenttypes.action.update']
-                    : this.i18nMessages['contenttypes.action.save']
+                    : this.i18nMessages['contenttypes.action.create']
             };
         });
     }
@@ -234,17 +217,18 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
 
         if (this.form.valid) {
+            this.templateInfo.placeholder = this.form.value.name;
+            this.show = false;
             this.onSubmit.emit(this.form.value);
         }
     }
 
     /**
-     * Toggle the variable that expand or collapse the form
-     *
+     * It submits the form from submit button
      * @memberof ContentTypesFormComponent
      */
-    toggleForm(): void {
-        this.formState = this.formState === 'collapsed' ? 'expanded' : 'collapsed';
+    submitForm(): void {
+        this.formEl.ngSubmit.emit();
     }
 
     private bindActionButtonState(): void {
@@ -260,9 +244,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     private bindKeyboardEvents(): void {
         this.hotkeysService.add(
             new Hotkey(['esc'], (event: KeyboardEvent, combo: string): boolean => {
-                if (this.formState === 'expanded' && this.isEditMode()) {
-                    this.cancelForm();
-                }
+                this.cancelForm();
                 return false;
             })
         );
