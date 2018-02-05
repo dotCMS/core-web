@@ -464,21 +464,6 @@ describe('ContentTypesFormComponent', () => {
         });
     });
 
-    it('should remove focus from name on cancel button click', () => {
-        spyOn(comp.name.nativeElement, 'blur');
-
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
-        cancelButton.nativeNode.click();
-
-        expect(comp.name.nativeElement.blur).toHaveBeenCalledTimes(1);
-    });
-
     it('should call submitContent() on submit event', () => {
         spyOn(comp, 'submitContent');
         comp.data = {
