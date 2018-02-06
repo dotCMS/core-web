@@ -28,7 +28,7 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-fdescribe('ContentTypesFormComponent', () => {
+describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
