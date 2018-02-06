@@ -28,7 +28,7 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -100,7 +100,7 @@ describe('ContentTypesFormComponent', () => {
 
             fixture = DOTTestBed.createComponent(ContentTypesFormComponent);
             comp = fixture.componentInstance;
-            de = fixture.debugElement.query(By.css('form'));
+            de = fixture.debugElement;
             el = de.nativeElement;
 
             dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
@@ -108,8 +108,17 @@ describe('ContentTypesFormComponent', () => {
         })
     );
 
-    it('should open dialog by default', () => {
-        expect(de.query(By.css('p-dialog'))).toBeDefined();
+    it('should has dialog opened by default', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        const dialog = de.query(By.css('p-dialog'));
+        expect(dialog).not.toBeNull();
+        expect(dialog.componentInstance.visible).toBeTruthy();
     });
 
     it('should be invalid by default', () => {
@@ -731,5 +740,25 @@ describe('ContentTypesFormComponent', () => {
             folder: null,
             system: null
         });
+    });
+
+    it('should open dialog on edit button click', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        fixture.detectChanges();
+
+        comp.show = false;
+        spyOn(comp, 'editForm').and.callThrough();
+
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        editButton.nativeNode.click();
+        expect(comp.editForm).toHaveBeenCalledTimes(1);
+
+        const dialog = de.query(By.css('p-dialog'));
+        expect(dialog).not.toBeNull();
+        expect(comp.show).toBeTruthy();
+        expect(dialog.componentInstance.visible).toBeTruthy();
     });
 });
