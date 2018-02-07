@@ -72,7 +72,7 @@ describe('DotEditPageToolbarComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.page = {
-            canLock: false,
+            canLock: true,
             identifier: '123',
             languageId: 1,
             liveInode: '456',
@@ -134,9 +134,34 @@ describe('DotEditPageToolbarComponent', () => {
         expect(primaryAction).toBeFalsy();
     });
 
-    it('should have lock page component', () => {
+    it('should have lock page component and no warn class', () => {
+        fixture.detectChanges();
         const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
         expect(lockSwitch !== null).toEqual(true);
+        expect(lockSwitch.classes.warn).toBe(false);
+    });
+
+it('should warn class in the locker', () => {
+        component.page.lockedByAnotherUser = true;
+        fixture.detectChanges();
+
+        const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
+        expect(lockSwitch.classes.warn).toBe(true);
+    });
+
+    it('should have locker enabled', () => {
+        fixture.detectChanges();
+        const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
+
+        expect(lockSwitch.componentInstance.disabled).toBe(false);
+    });
+
+    it('should have locker disabled', () => {
+        component.page.canLock = false;
+        fixture.detectChanges();
+        const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
+
+        expect(lockSwitch.componentInstance.disabled).toBe(true);
     });
 
     it('should NOT have an action split button', () => {

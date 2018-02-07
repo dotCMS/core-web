@@ -10,7 +10,7 @@
     </div>
 
     <div class="ui-toolbar-group-center">
-        <p-inputSwitch class="edit-page-toolbar__locker" [(ngModel)]="page.locked" (onChange)="lockPageHandler($event)"></p-inputSwitch>
+        <p-inputSwitch class="edit-page-toolbar__locker" [class.warn]="page.lockedByAnotherUser" [disabled]="!page.canLock" [(ngModel)]="page.locked" (onChange)="lockPageHandler($event)"></p-inputSwitch>
         <p-selectButton flat class="edit-page-toolbar__state-selector" [(ngModel)]="stateSelected" (onChange)="stateSelectorHandler($event.value)" [options]="states"></p-selectButton>
     </div>
 

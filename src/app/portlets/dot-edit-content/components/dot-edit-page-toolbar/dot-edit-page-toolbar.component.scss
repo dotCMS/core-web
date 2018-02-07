@@ -75,26 +75,50 @@
     }
 }
 
-.edit-page-toolbar__locker ::ng-deep {
-    align-self: center;
-    margin-right: $basic-padding * 2;
+.edit-page-toolbar__locker {
+    ::ng-deep {
+        align-self: center;
+        margin-right: $basic-padding * 2;
 
-    .ui-inputswitch-handle {
-        position: relative;
+        .ui-inputswitch-handle {
+            position: relative;
 
-        &:after {
-            content: '\F023';
-            display: inline-block;
-            font-size: inherit;
-            font: normal normal normal 14px / 1 FontAwesome;
-            left: 5px;
-            position: absolute;
-            text-rendering: auto;
-            top: 3px;
+            &:after {
+                content: "\F023";
+                display: inline-block;
+                font-size: inherit;
+                font: normal normal normal 14px / 1 FontAwesome;
+                left: 5px;
+                position: absolute;
+                text-rendering: auto;
+                top: 3px;
+            }
+        }
+
+        &.ui-inputswitch-checked .ui-inputswitch-handle {
+            color: $white;
+        }
+
+        .ui-state-disabled {
+            .ui-inputswitch-handle {
+                &:after {
+                    color: rgba($black, 0.2);
+                }
+            }
         }
     }
 
-    &.ui-inputswitch-checked .ui-inputswitch-handle {
-        color: $white;
+    &.warn ::ng-deep {
+        .ui-inputswitch-handle {
+            &:after {
+                color: $orange
+            }
+        }
+
+        &.ui-inputswitch-checked .ui-inputswitch-handle {
+            &:after {
+                color: $white
+            }
+        }
     }
 }

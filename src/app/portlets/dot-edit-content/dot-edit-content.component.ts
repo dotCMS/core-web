@@ -65,6 +65,10 @@ export class DotEditContentComponent implements OnInit {
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'editpage.content.contentlet.remove.confirmation_message.accept',
+                'editpage.content.steal.lock.confirmation_message.header',
+                'editpage.content.steal.lock.confirmation_message.message',
+                'editpage.content.steal.lock.confirmation_message.reject',
+                'editpage.content.steal.lock.confirmation_message.accept',
                 'editpage.content.contentlet.add.content',
                 'dot.common.message.saving',
                 'dot.common.message.saved'
@@ -138,20 +142,23 @@ export class DotEditContentComponent implements OnInit {
      * @param {*} state
      * @memberof DotEditContentComponent
      */
+
     statePageHandler(state: DotEditPageState): void {
-        if (this.isLockModified(state.locked)) {
-            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
+        if (state.locked && this.page.lockedByAnotherUser) {
+            this.dotConfirmationService.confirm({
+                accept: () => {
+                    this.setPageState(state);
+                },
+                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.header'),
+                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message'),
+                footerLabel: {
+                    acceptLabel: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.reject'),
+                    rejectLabel: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.accept')
+                }
+            });
+        } else {
+            this.setPageState(state);
         }
-
-        this.editPageService.setPageState(this.page, state).subscribe((dotRenderedPageState: DotRenderedPageState) => {
-            if (dotRenderedPageState.dotRenderedPage) {
-                this.setPage(dotRenderedPageState.dotRenderedPage);
-            }
-
-            if (this.isLockModified(state.locked)) {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-            }
-        });
     }
 
     /**
@@ -177,6 +184,7 @@ export class DotEditContentComponent implements OnInit {
      */
     setPage(renderedPage: DotRenderedPage): void {
         this.page = renderedPage;
+
         this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
 
         if (this.page.locked) {
@@ -280,5 +288,21 @@ export class DotEditContentComponent implements OnInit {
     private setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
         this.isModelUpdated = false;
+    }
+
+    private setPageState(state: DotEditPageState): void {
+        if (this.isLockModified(state.locked)) {
+            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
+        }
+
+        this.editPageService.setPageState(this.page, state).subscribe((dotRenderedPageState: DotRenderedPageState) => {
+            if (dotRenderedPageState.dotRenderedPage) {
+                this.setPage(dotRenderedPageState.dotRenderedPage);
+            }
+
+            if (this.isLockModified(state.locked)) {
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+            }
+        });
     }
 }

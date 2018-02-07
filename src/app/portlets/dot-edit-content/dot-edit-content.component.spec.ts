@@ -46,6 +46,7 @@ const fakePageRendered: DotRenderedPage = {
     languageId: 1,
     liveInode: '456',
     locked: false,
+    lockedByAnotherUser: false,
     pageURI: 'A url',
     render: '<html></html>',
     shortyLive: '',
@@ -69,7 +70,11 @@ describe('DotEditContentComponent', () => {
             'editpage.toolbar.primary.action': 'Save',
             'editpage.toolbar.secondary.action': 'Cancel',
             'dot.common.message.saving': 'Saving...',
-            'dot.common.message.saved': 'Saved'
+            'dot.common.message.saved': 'Saved',
+            'editpage.content.steal.lock.confirmation_message.header': 'Are you sure?',
+            'editpage.content.steal.lock.confirmation_message.message': 'This page is locked by bla bla',
+            'editpage.content.steal.lock.confirmation_message.reject': 'Lock',
+            'editpage.content.steal.lock.confirmation_message.accept': 'Cancel'
         });
 
         DOTTestBed.configureTestingModule({
@@ -214,11 +219,15 @@ describe('DotEditContentComponent', () => {
         });
     });
 
+
     it('should set the page state (lock)', () => {
         spyOn(component, 'statePageHandler').and.callThrough();
         spyOn(dotGlobalMessageService, 'display').and.callThrough();
 
         fixture.detectChanges();
+        // component.page.lockedByAnotherUser = false;
+
+        // console.log(component.page.lockedByAnotherUser);
 
         component.toolbar.changeState.emit({
             locked: true,
@@ -312,5 +321,33 @@ describe('DotEditContentComponent', () => {
         expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
+    });
+
+    it('should show confirmation dialog to setPageState', () => {
+        spyOn(dotConfirmationService, 'confirm');
+        spyOn(component, 'statePageHandler').and.callThrough();
+
+        fixture.detectChanges();
+
+        component.page.lockedByAnotherUser = true;
+
+        fixture.detectChanges();
+
+        component.statePageHandler({
+            locked: true
+        });
+
+        expect(dotConfirmationService.confirm).toHaveBeenCalled();
+
+        // TODO: can't assert the param because the function is annonymous
+        // expect(dotConfirmationService.confirm).toHaveBeenCalledWith({
+        //     accept: () => {},
+        //     header: 'Are you sure?',
+        //     message: 'This page is locked by bla bla',
+        //     footerLabel: {
+        //         acceptLabel: 'Lock',
+        //         rejectLabel: 'Cancel'
+        //     }
+        // });
     });
 });

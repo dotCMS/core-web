@@ -1,4 +1,4 @@
-import { CoreWebService } from 'dotcms-js/dotcms-js';
+import { CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
@@ -15,7 +15,7 @@ import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/mod
 
 @Injectable()
 export class EditPageService {
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(private coreWebService: CoreWebService, private loginService: LoginService) {}
 
     /**
      * Get the page HTML in edit mode
@@ -106,9 +106,20 @@ export class EditPageService {
             })
             .pluck('bodyJsonObject')
             .map((dotRenderedPage: DotRenderedPage) => {
+                let locked = !!dotRenderedPage.lockedBy;
+
+                const lockedByAnotherUser = locked
+                    ? dotRenderedPage.lockedBy !== this.loginService.auth.user.userId
+                    : false;
+
+                if (lockedByAnotherUser && dotRenderedPage.canLock) {
+                    locked = false;
+                }
+
                 return {
                     ...dotRenderedPage,
-                    locked: !!dotRenderedPage.lockedBy
+                    locked,
+                    lockedByAnotherUser
                 };
             });
     }
