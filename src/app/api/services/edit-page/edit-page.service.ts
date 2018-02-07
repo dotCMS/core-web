@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { PageMode } from '../../../portlets/dot-edit-content/components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 
 /**
  * Provide util methods to get a edit page html
@@ -175,7 +175,7 @@ export class EditPageService {
         const pageModeString = {};
         pageModeString[PageMode.EDIT] = 'EDIT_MODE';
         pageModeString[PageMode.PREVIEW] = 'PREVIEW_MODE';
-        pageModeString[PageMode.LIVE] = 'LIVE_MODE';
+        pageModeString[PageMode.LIVE] = 'LIVE';
 
         return pageModeString[pageMode];
     }

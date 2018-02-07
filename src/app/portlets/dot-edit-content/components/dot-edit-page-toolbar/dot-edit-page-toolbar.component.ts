@@ -1,16 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { SelectItem, MenuItem } from 'primeng/primeng';
 import { Workflow } from '../../../../shared/models/workflow/workflow.model';
 import { DotRenderedPage } from '../../../dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-
-export enum PageMode {
-    EDIT,
-    PREVIEW,
-    LIVE
-}
+import { PageMode } from '../../shared/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -18,15 +13,18 @@ export enum PageMode {
     styleUrls: ['./dot-edit-page-toolbar.component.scss']
 })
 export class DotEditPageToolbarComponent implements OnInit {
+    @ViewChild('locker') locker: InputSwitch;
+    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+
     @Input() canSave: boolean;
     @Input() pageWorkflows: Workflow[];
     @Input() page: DotRenderedPage;
+    @Input() mode: PageMode;
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() save = new EventEmitter<MouseEvent>();
 
     states: SelectItem[] = [];
-    stateSelected: PageMode;
     workflowsActions: MenuItem[] = [];
 
     constructor(
@@ -41,13 +39,18 @@ export class DotEditPageToolbarComponent implements OnInit {
                 'editpage.toolbar.edit.page',
                 'editpage.toolbar.preview.page',
                 'editpage.toolbar.live.page',
+                'editpage.toolbar.page.locked.by.user',
                 'editpage.toolbar.primary.workflow.actions',
                 'dot.common.message.pageurl.copied.clipboard',
                 'dot.common.message.pageurl.copied.clipboard.error'
             ])
             .subscribe((res) => {
                 this.states = [
-                    { label: res['editpage.toolbar.edit.page'], value: PageMode.EDIT },
+                    {
+                        label: res['editpage.toolbar.edit.page'],
+                        value: PageMode.EDIT,
+                        styleClass: !this.page.canLock ? 'edit-page-toolbar__state-selector-item--disabled' : ''
+                    },
                     { label: res['editpage.toolbar.preview.page'], value: PageMode.PREVIEW },
                     { label: res['editpage.toolbar.live.page'], value: PageMode.LIVE }
                 ];
@@ -60,8 +63,6 @@ export class DotEditPageToolbarComponent implements OnInit {
                 };
             });
         }
-
-        this.stateSelected = this.page.locked ? PageMode.EDIT : PageMode.PREVIEW;
     }
 
     /**
@@ -105,6 +106,23 @@ export class DotEditPageToolbarComponent implements OnInit {
     }
 
     /**
+     * Handle the click to the locker switch
+     *
+     * @param {any} $event
+     * @memberof DotEditPageToolbarComponent
+     */
+    lockerHandler($event): void {
+        const blinkClass = 'edit-page-toolbar__cant-lock-message--blink';
+
+        if (this.locker.disabled) {
+            this.lockedPageMessage.nativeElement.classList.add(blinkClass);
+            setTimeout(() => {
+                this.lockedPageMessage.nativeElement.classList.remove(blinkClass);
+            }, 500);
+        }
+    }
+
+    /**
      * Handler locker change event
      *
      * @param {any} $event
@@ -115,12 +133,12 @@ export class DotEditPageToolbarComponent implements OnInit {
             locked: this.page.locked
         };
 
-        if (!this.page.locked && this.stateSelected === PageMode.EDIT) {
-            this.stateSelected = PageMode.PREVIEW;
-            state.mode = this.stateSelected;
-        } else if (this.page.locked && this.stateSelected === PageMode.PREVIEW) {
-            this.stateSelected = PageMode.EDIT;
-            state.mode = this.stateSelected;
+        if (!this.page.locked && this.mode === PageMode.EDIT) {
+            this.mode = PageMode.PREVIEW;
+            state.mode = this.mode;
+        } else if (this.page.locked && this.mode === PageMode.PREVIEW) {
+            this.mode = PageMode.EDIT;
+            state.mode = this.mode;
         }
 
         this.changeState.emit(state);

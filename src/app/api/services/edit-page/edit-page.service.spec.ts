@@ -5,12 +5,12 @@ import { DOTTestBed } from './../../../test/dot-test-bed';
 import { EditPageService } from './edit-page.service';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { edit } from 'brace';
-import { PageMode } from '../../../portlets/dot-edit-content/components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { TestBed } from '@angular/core/testing';
 import { LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
+import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 
 const mockDotRenderPage: DotRenderedPage = {
     canLock: true,
@@ -91,16 +91,12 @@ describe('EditPageService', () => {
 
     it('should do a get a rendered page in live mode', () => {
         let result: DotRenderedPage;
-        editPageService.getLive('about-us').subscribe((renderedPage: DotRenderedPage) => (result = renderedPage));
+        editPageService.getLive('about-us').subscribe((renderedPage: DotRenderedPage) => result = renderedPage);
 
-        lastConnection[0].mockRespond(
-            new Response(
-                new ResponseOptions({
-                    body: mockDotRenderPage
-                })
-            )
-        );
-        expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=LIVE_MODE');
+        lastConnection[0].mockRespond(new Response(new ResponseOptions({
+            body: mockDotRenderPage
+        })));
+        expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=LIVE');
         expect(result).toEqual(mockDotRenderPage);
     });
 

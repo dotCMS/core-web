@@ -26,9 +26,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
-import { PageMode } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 import { combineAll } from 'rxjs/operator/combineAll';
+import { PageMode } from './shared/page-mode.enum';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -57,13 +57,14 @@ const fakePageRendered: DotRenderedPage = {
 
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
-    let fixture: ComponentFixture<DotEditContentComponent>;
     let de: DebugElement;
     let dotConfirmationService: DotConfirmationService;
-    let editPageService: EditPageService;
-    let dotGlobalMessageService: DotGlobalMessageService;
-    let workflowService: WorkflowService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
+    let dotGlobalMessageService: DotGlobalMessageService;
+    let editPageService: EditPageService;
+    let fixture: ComponentFixture<DotEditContentComponent>;
+    let route: ActivatedRoute;
+    let workflowService: WorkflowService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -125,13 +126,15 @@ describe('DotEditContentComponent', () => {
         });
 
         fixture = DOTTestBed.createComponent(DotEditContentComponent);
+
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
-        editPageService = fixture.debugElement.injector.get(EditPageService);
-        dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
-        workflowService = fixture.debugElement.injector.get(WorkflowService);
         dotEditContentHtmlService = fixture.debugElement.injector.get(DotEditContentHtmlService);
+        dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
+        editPageService = fixture.debugElement.injector.get(EditPageService);
+        route = fixture.debugElement.injector.get(ActivatedRoute);
+        workflowService = fixture.debugElement.injector.get(WorkflowService);
     });
 
     it('should have a toolbar', () => {
@@ -157,6 +160,29 @@ describe('DotEditContentComponent', () => {
         fixture.detectChanges();
 
         expect(spyLoadingIndicator).toHaveBeenCalled();
+    });
+
+    it('should set the page mode in preview', () => {
+        fixture.detectChanges();
+        expect(component.pageMode).toEqual(PageMode.PREVIEW);
+
+        const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
+        expect(toolbar.componentInstance.mode).toEqual(PageMode.PREVIEW);
+    });
+
+    it('should set the page mode in edit', () => {
+        route.data = Observable.of({
+            renderedPage: {
+                ...fakePageRendered,
+                locked: true,
+                canLock: true
+            }
+        });
+        fixture.detectChanges();
+        expect(component.pageMode).toEqual(PageMode.EDIT);
+
+        const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
+        expect(toolbar.componentInstance.mode).toEqual(PageMode.EDIT);
     });
 
     it('should hide dotLoadingIndicatorService when the component loads', () => {

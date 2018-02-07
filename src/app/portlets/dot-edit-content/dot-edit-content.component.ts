@@ -20,6 +20,7 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { PageMode } from './shared/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-content',
@@ -39,6 +40,7 @@ export class DotEditContentComponent implements OnInit {
     dialogTitle: string;
     isModelUpdated = false;
     page: DotRenderedPage;
+    pageMode: PageMode;
     pageWorkFlows: Observable<Workflow[]>;
 
     private originalValue: any;
@@ -184,10 +186,10 @@ export class DotEditContentComponent implements OnInit {
      */
     setPage(renderedPage: DotRenderedPage): void {
         this.page = renderedPage;
-
+        this.pageMode = this.page.locked && this.page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
         this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
 
-        if (this.page.locked) {
+        if (this.pageMode === PageMode.EDIT) {
             this.dotEditContentHtmlService.initEditMode(renderedPage.render, this.iframe);
         } else {
             this.dotEditContentHtmlService.renderPage(renderedPage.render, this.iframe);
