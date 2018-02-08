@@ -267,7 +267,7 @@ describe('DotEditPageToolbarComponent', () => {
 
         clickStateButton('edit');
 
-        expect(component.page.locked).toBe(true, 'lock page');
+        expect(component.lockerModel).toBe(true, 'lock page');
         expect(pageStateResult).toEqual({ mode: PageMode.EDIT, locked: true }, 'page state output emitted');
     });
 
@@ -277,11 +277,11 @@ describe('DotEditPageToolbarComponent', () => {
 
         // Set the page locked and in edit mode
         clickLocker();
-        expect(component.page.locked).toBe(true, 'locked page');
+        expect(component.lockerModel).toBe(true, 'locked page');
         expect(component.mode).toEqual(PageMode.EDIT, 'edit mode');
 
         clickLocker();
-        expect(component.page.locked).toBe(false, 'unlocked page');
+        expect(component.lockerModel).toBe(false, 'unlocked page');
         expect(component.mode).toEqual(PageMode.PREVIEW, 'preview mode');
     });
 
@@ -290,7 +290,7 @@ describe('DotEditPageToolbarComponent', () => {
         fixture.detectChanges();
 
         clickLocker();
-        expect(component.page.locked).toBe(true, 'locked page');
+        expect(component.lockerModel).toBe(true, 'locked page');
         expect(component.mode).toEqual(PageMode.EDIT, 'edit mode');
     });
 
@@ -372,7 +372,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('edit');
             expect(component.mode).toEqual(PageMode.EDIT, 'edit state selected');
-            expect(component.page.locked).toBe(true, 'page locked after click in edit');
+            expect(component.lockerModel).toBe(true, 'page locked after click in edit');
             expect(pageStateResult).toEqual(
                 {
                     mode: PageMode.EDIT,
@@ -389,7 +389,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('live');
             expect(component.mode).toEqual(PageMode.LIVE, 'live state selected');
-            expect(component.page.locked).toBe(true, 'page locked after click in preview');
+            expect(component.lockerModel).toBe(true, 'page locked after click in preview');
             expect(pageStateResult).toEqual(
                 {
                     mode: PageMode.LIVE
@@ -405,7 +405,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('preview');
             expect(component.mode).toEqual(PageMode.PREVIEW, 'edit state selected');
-            expect(component.page.locked).toBe(true, 'page locked after click in preview');
+            expect(component.lockerModel).toBe(true, 'page locked after click in preview');
             expect(pageStateResult).toEqual(
                 {
                     mode: PageMode.PREVIEW

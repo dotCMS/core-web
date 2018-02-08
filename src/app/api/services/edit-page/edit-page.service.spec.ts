@@ -148,7 +148,10 @@ describe('EditPageService', () => {
         };
 
         let result: DotRenderedPage;
-        editPageService.getPreview('about-us').subscribe((renderedPage: DotRenderedPage) => result = renderedPage);
+        editPageService.getPreview('about-us').subscribe((renderedPage: DotRenderedPage) => {
+            result = renderedPage;
+            console.log(result);
+        });
 
         lastConnection[0].mockRespond(new Response(new ResponseOptions({
             body: mockedData
@@ -156,7 +159,7 @@ describe('EditPageService', () => {
         expect(result).toEqual({
             ...mockedData,
             lockedByAnotherUser: true,
-            locked: false
+            locked: true
         });
     });
 

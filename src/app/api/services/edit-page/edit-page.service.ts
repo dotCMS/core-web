@@ -106,15 +106,13 @@ export class EditPageService {
             })
             .pluck('bodyJsonObject')
             .map((dotRenderedPage: DotRenderedPage) => {
-                let locked = !!dotRenderedPage.lockedBy;
+                const locked = !!dotRenderedPage.lockedBy;
+
+                console.log(locked);
 
                 const lockedByAnotherUser = locked
                     ? dotRenderedPage.lockedBy !== this.loginService.auth.user.userId
                     : false;
-
-                if (lockedByAnotherUser && dotRenderedPage.canLock) {
-                    locked = false;
-                }
 
                 return {
                     ...dotRenderedPage,

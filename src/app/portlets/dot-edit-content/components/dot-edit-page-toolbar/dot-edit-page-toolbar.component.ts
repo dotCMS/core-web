@@ -26,6 +26,7 @@ export class DotEditPageToolbarComponent implements OnInit {
 
     states: SelectItem[] = [];
     workflowsActions: MenuItem[] = [];
+    lockerModel: boolean;
 
     constructor(
         public dotMessageService: DotMessageService,
@@ -63,6 +64,8 @@ export class DotEditPageToolbarComponent implements OnInit {
                 };
             });
         }
+
+        this.lockerModel = this.page.lockedByAnotherUser && this.page.canLock ? false : this.page.locked;
     }
 
     /**
@@ -130,13 +133,13 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     lockPageHandler(_event): void {
         const state: DotEditPageState = {
-            locked: this.page.locked
+            locked: this.lockerModel
         };
 
-        if (!this.page.locked && this.mode === PageMode.EDIT) {
+        if (!this.lockerModel && this.mode === PageMode.EDIT) {
             this.mode = PageMode.PREVIEW;
             state.mode = this.mode;
-        } else if (this.page.locked && this.mode === PageMode.PREVIEW) {
+        } else if (this.lockerModel && this.mode === PageMode.PREVIEW) {
             this.mode = PageMode.EDIT;
             state.mode = this.mode;
         }
@@ -155,9 +158,9 @@ export class DotEditPageToolbarComponent implements OnInit {
             mode: pageState
         };
 
-        if (!this.page.locked && pageState === PageMode.EDIT) {
-            this.page.locked = pageState === PageMode.EDIT;
-            state.locked = this.page.locked;
+        if (!this.lockerModel && pageState === PageMode.EDIT) {
+            this.lockerModel = pageState === PageMode.EDIT;
+            state.locked = this.lockerModel;
         }
 
         this.changeState.emit(state);

@@ -251,9 +251,6 @@ describe('DotEditContentComponent', () => {
         spyOn(dotGlobalMessageService, 'display').and.callThrough();
 
         fixture.detectChanges();
-        // component.page.lockedByAnotherUser = false;
-
-        // console.log(component.page.lockedByAnotherUser);
 
         component.toolbar.changeState.emit({
             locked: true,
