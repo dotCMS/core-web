@@ -2,7 +2,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DotPageView } from '../../shared/models/dot-page-view.model';
-import { DotEditLayoutGridComponent } from '../dot-edit-layout-grid/dot-edit-layout-grid.component';
+import { DotEditLayoutGridComponent } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.component';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';

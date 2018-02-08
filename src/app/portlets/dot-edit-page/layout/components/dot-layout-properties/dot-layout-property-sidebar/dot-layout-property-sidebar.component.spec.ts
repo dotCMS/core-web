@@ -1,6 +1,6 @@
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
+import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DotLayoutSidebarComponent } from './dot-layout-property-sidebar.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DotLayoutPropertiesItemModule } from '../dot-layout-properties-item/dot-layout-properties-item.module';

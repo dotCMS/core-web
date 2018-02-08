@@ -1,8 +1,8 @@
 
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { IFrameModule } from '../../../../../view/components/_common/iframe/iframe.module';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { IFrameModule } from '../../../../../../view/components/_common/iframe/iframe.module';
+import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Component, Input } from '@angular/core';

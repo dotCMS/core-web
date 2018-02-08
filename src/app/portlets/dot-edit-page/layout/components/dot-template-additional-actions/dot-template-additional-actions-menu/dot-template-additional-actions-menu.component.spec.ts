@@ -1,8 +1,8 @@
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { Component, Input } from '@angular/core';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { MenuItem } from 'primeng/components/common/menuitem';
 import { DotTemplateAdditionalActionsMenuComponent } from './dot-template-additional-actions-menu.component';

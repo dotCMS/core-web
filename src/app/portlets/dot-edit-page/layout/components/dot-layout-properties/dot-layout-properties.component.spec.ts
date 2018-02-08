@@ -1,6 +1,6 @@
-import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { OverlayPanelModule, ButtonModule } from 'primeng/primeng';
 import { DotLayoutSidebarModule } from './dot-layout-property-sidebar/dot-layout-property-sidebar.module';

@@ -1,8 +1,8 @@
 import { ComponentFixture} from '@angular/core/testing';
-import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { Component, DebugElement } from '@angular/core';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { DotSidebarPropertiesComponent } from './dot-sidebar-properties.component';
 import { OverlayPanelModule } from 'primeng/primeng';

@@ -6,7 +6,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
 import { DotEditLayoutComponent } from './dot-edit-layout.component';
-import { DotEditLayoutGridModule } from '../dot-edit-layout-grid/dot-edit-layout-grid.module';
+import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.module';
 import { FormatDateService } from '../../../../api/services/format-date-service';
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
@@ -20,7 +20,7 @@ import { DotActionButtonModule } from '../../../../view/components/_common/dot-a
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
-import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
+import { DotSidebarPropertiesModule } from '../components/dot-sidebar-properties/dot-sidebar-properties.module';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 
 @Component({

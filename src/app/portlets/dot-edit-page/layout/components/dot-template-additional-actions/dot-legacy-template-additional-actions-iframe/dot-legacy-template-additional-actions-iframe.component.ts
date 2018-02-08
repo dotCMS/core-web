@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({

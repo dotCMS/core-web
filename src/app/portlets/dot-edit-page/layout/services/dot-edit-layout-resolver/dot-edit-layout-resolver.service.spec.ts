@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { PageViewService } from './../../api/services/page-view/page-view.service';
+import { PageViewService } from '../../../../../api/services/page-view/page-view.service';
 import { TestBed, async } from '@angular/core/testing';
-import { PageViewResolver } from './dot-edit-page-resolver.service';
+import { EditLayoutResolver } from './dot-edit-layout-resolver.service';
 
 class PageViewServiceMock {
     get(url) {}
@@ -16,14 +16,14 @@ activatedRouteSnapshotMock.queryParams = {};
 
 describe('PageViewResolver', () => {
     let router: ActivatedRouteSnapshot;
-    let pageViewResolver: PageViewResolver;
+    let pageViewResolver: EditLayoutResolver;
     let pageViewService: PageViewService;
 
     beforeEach(
         async(() => {
             TestBed.configureTestingModule({
                 providers: [
-                    PageViewResolver,
+                    EditLayoutResolver,
                     { provide: PageViewService, useClass: PageViewServiceMock },
                     {
                         provide: ActivatedRouteSnapshot,
@@ -35,7 +35,7 @@ describe('PageViewResolver', () => {
 
             router = TestBed.get(ActivatedRouteSnapshot);
             pageViewService = TestBed.get(PageViewService);
-            pageViewResolver = TestBed.get(PageViewResolver);
+            pageViewResolver = TestBed.get(EditLayoutResolver);
         })
     );
 

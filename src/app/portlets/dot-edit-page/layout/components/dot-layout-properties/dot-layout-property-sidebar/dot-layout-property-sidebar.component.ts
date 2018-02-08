@@ -1,4 +1,4 @@
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 import { DotLayoutPropertiesItemComponent } from '../dot-layout-properties-item/dot-layout-properties-item.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, forwardRef, ViewChild, OnInit } from '@angular/core';
@@ -24,7 +24,7 @@ export class DotLayoutSidebarComponent implements ControlValueAccessor, OnInit {
     ngOnInit() {
         this.dotMessageService.getMessages([
             'editpage.layout.properties.sidebar.left',
-            'editpage.layout.properties.sidebar.right',
+            'editpage.layout.properties.sidebar.right'
         ]).subscribe();
     }
 
