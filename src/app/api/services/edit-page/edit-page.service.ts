@@ -108,8 +108,6 @@ export class EditPageService {
             .map((dotRenderedPage: DotRenderedPage) => {
                 const locked = !!dotRenderedPage.lockedBy;
 
-                console.log(locked);
-
                 const lockedByAnotherUser = locked
                     ? dotRenderedPage.lockedBy !== this.loginService.auth.user.userId
                     : false;

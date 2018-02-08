@@ -150,7 +150,6 @@ describe('EditPageService', () => {
         let result: DotRenderedPage;
         editPageService.getPreview('about-us').subscribe((renderedPage: DotRenderedPage) => {
             result = renderedPage;
-            console.log(result);
         });
 
         lastConnection[0].mockRespond(new Response(new ResponseOptions({
