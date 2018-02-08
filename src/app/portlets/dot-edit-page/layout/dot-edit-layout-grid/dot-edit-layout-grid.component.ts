@@ -131,7 +131,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     onRemoveContainer(index: number): void {
-        if (this.grid[index].containers.length > 0) {
+        if (this.grid[index].containers.length) {
             this.dotConfirmationService.confirm({
                 accept: () => {
                     this.removeContainer(index);

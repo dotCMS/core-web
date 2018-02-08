@@ -17,7 +17,7 @@ import { DotCurrentUserService } from '../dot-current-user/dot-current-user.serv
 export class PushPublishService {
     private pushEnvironementsUrl = 'environment/loadenvironments/roleId';
     private currentUsersUrl = 'v1/users/current/';
-    private _pickedEnvironments: string[];
+    private _lastEnvironmentPushed: string[];
     /*
         TODO: I had to do this because this line concat'api/' into the URL
         https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
@@ -59,7 +59,7 @@ export class PushPublishService {
      * @memberof PushPublishService
      */
     pushPublishContent(assetIdentifier: string, pushPublishData: PushPublishData): Observable<AjaxActionResponseView> {
-        this._pickedEnvironments = pushPublishData.environment;
+        this._lastEnvironmentPushed = pushPublishData.environment;
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),
             headers: {
@@ -85,7 +85,7 @@ export class PushPublishService {
         return result;
     }
 
-    get pickedEnvironments(): string[] {
-        return this._pickedEnvironments;
+    get lastEnvironmentPushed(): string[] {
+        return this._lastEnvironmentPushed;
     }
 }

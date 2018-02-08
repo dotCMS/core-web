@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
 class PushPublishServiceMock {
-    _pickedEnvironments: string[];
+    _lastEnvironmentPushed: string[];
+
 
     pushPublishContent(contentTypeId: string, formValue: any): Observable<any> {
         return Observable.of([]);
@@ -30,8 +31,8 @@ class PushPublishServiceMock {
         ]);
     }
 
-    get pickedEnvironments(): string[] {
-        return this._pickedEnvironments;
+    get lastEnvironmentPushed(): string[] {
+        return this._lastEnvironmentPushed;
     }
 }
 
@@ -153,12 +154,15 @@ describe('PushPublishEnvSelectorComponent', () => {
             }
         ];
         spyOn(pushPublishServiceMock, 'getEnvironments').and.returnValue(Observable.of(environment));
+        spyOn(comp, 'propagateChange');
         comp.ngOnInit();
         expect(comp.selectedEnvironments).toEqual(environment);
+        expect(comp.propagateChange).toHaveBeenCalled();
     });
 
     it('should populate the environments previously selected by the user', () => {
-        spyOnProperty(pushPublishServiceMock, 'pickedEnvironments', 'get').and.returnValue(['22e332', 'joa08']);
+        spyOnProperty(pushPublishServiceMock, 'lastEnvironmentPushed', 'get').and.returnValue(['22e332', 'joa08']);
+        spyOn(comp, 'propagateChange');
         comp.ngOnInit();
         expect(comp.selectedEnvironments).toEqual([
             {
@@ -170,5 +174,6 @@ describe('PushPublishEnvSelectorComponent', () => {
                 name: 'my environment 2'
             }
         ]);
+        expect(comp.propagateChange).toHaveBeenCalled();
     });
 });

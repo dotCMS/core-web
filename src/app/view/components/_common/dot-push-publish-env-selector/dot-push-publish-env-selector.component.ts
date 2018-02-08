@@ -4,7 +4,6 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotEnvironment } from '../../../../shared/models/dot-environment/dot-environment';
 import { Observable } from 'rxjs/Observable';
-/**/
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-env-selector',
@@ -28,17 +27,13 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     constructor(private pushPublishService: PushPublishService, public dotMessageService: DotMessageService) {}
 
-    // writeValue(value: any): void {
-    //     this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
-    // }
-
     ngOnInit() {
         this.pushEnvironments$ = this.pushPublishService.getEnvironments();
-
+        debugger;
         this.pushPublishService.getEnvironments().subscribe(environments => {
-            if (this.pushPublishService.pickedEnvironments) {
+            if (this.pushPublishService.lastEnvironmentPushed) {
                 this.selectedEnvironments = environments.filter(env => {
-                    return this.pushPublishService.pickedEnvironments.includes(env.id);
+                    return this.pushPublishService.lastEnvironmentPushed.includes(env.id);
                 });
                 this.valueChange('', this.selectedEnvironments);
             } else if (environments.length === 1) {
