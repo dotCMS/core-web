@@ -5,7 +5,8 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor, NgModel } from '@angular/forms
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotEnvironment } from '../../../../shared/models/dot-environment/dot-environment';
 import { Observable } from 'rxjs/Observable';
-
+import * as _ from 'lodash';
+/**/
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-env-selector',
@@ -19,27 +20,35 @@ import { Observable } from 'rxjs/Observable';
         }
     ]
 })
-
 export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAccessor {
     @Input() assetIdentifier: string;
     pushEnvironments$: Observable<any>;
     selectedEnvironments: DotEnvironment[];
     selectedEnvironmentIds: string[] = [];
 
+    value: string[];
+
     constructor(private pushPublishService: PushPublishService, public dotMessageService: DotMessageService) {}
+
+    // writeValue(value: any): void {
+    //     this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
+    // }
 
     ngOnInit() {
         this.pushEnvironments$ = this.pushPublishService.getEnvironments();
 
         this.pushPublishService.getEnvironments().subscribe(environments => {
-            if (environments.length === 1) {
+            if (this.pushPublishService.pickedEnvironments) {
+                this.selectedEnvironments = environments.filter(env => {
+                    return this.pushPublishService.pickedEnvironments.includes(env.id);
+                });
+                this.valueChange('', this.selectedEnvironments);
+            } else if (environments.length === 1) {
                 this.selectedEnvironments = environments;
+                this.valueChange('', this.selectedEnvironments);
             }
         });
-
-        this.dotMessageService.getMessages([
-            'contenttypes.content.push_publish.select_environment'
-        ]).subscribe();
+        this.dotMessageService.getMessages(['contenttypes.content.push_publish.select_environment']).subscribe();
     }
 
     propagateChange = (_: any) => {};
@@ -87,7 +96,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      * @memberof PushPublishEnvSelectorComponent
      */
     removeEnvironmentItem(environmentItem: DotEnvironment): void {
-        this.selectedEnvironments = this.selectedEnvironments.filter(environment => environment.id !== environmentItem.id);
+        this.selectedEnvironments = this.selectedEnvironments.filter(
+            environment => environment.id !== environmentItem.id
+        );
         this.propagateEnvironmentId(this.selectedEnvironments);
     }
 
@@ -97,4 +108,3 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
         this.propagateTouched(this.selectedEnvironmentIds);
     }
 }
-
