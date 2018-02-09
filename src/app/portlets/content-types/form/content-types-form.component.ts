@@ -26,7 +26,7 @@ import { Field } from '../fields';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
-import { Location } from '@angular/common';
+import { DotRouterService } from '../../../api/services/dot-router-service';
 
 /**
   * Form component to create or edit content types
@@ -51,6 +51,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     @Input() data: any;
     @Input() fields: Field[];
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() closeDialog: EventEmitter<any> = new EventEmitter();
 
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
@@ -58,8 +59,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     placeholder: string;
     submitAttempt = false;
     templateInfo = {
-        icon: '',
-        header: '',
         placeholder: '',
         action: ''
     };
@@ -74,7 +73,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         private contentTypesInfoService: ContentTypesInfoService,
         public dotMessageService: DotMessageService,
         private workflowService: WorkflowService,
-        private location: Location
+        private dotRouterService: DotRouterService
     ) {
         super(
             [
@@ -115,8 +114,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     ngOnInit(): void {
         this.initFormGroup();
         this.initWorkflowField();
-        this.setTemplateInfo();
         this.bindActionButtonState();
+        this.setTemplateInfo();
     }
 
     ngAfterViewInit() {
@@ -131,6 +130,20 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         }
     }
 
+    setTemplateInfo(): void {
+        this.dotMessageService.messageMap$.subscribe(() => {
+            const type = this.data.baseType.toLowerCase();
+
+            this.templateInfo = {
+                placeholder: `${this.dotMessageService.get(`contenttypes.content.${type}`)}
+                              ${this.dotMessageService.get('contenttypes.form.name')} *`,
+                action: this.isEditMode()
+                    ? this.dotMessageService.get('contenttypes.action.update')
+                    : this.dotMessageService.get('contenttypes.action.create')
+            };
+        });
+    }
+
     /**
      * Cancel the editing of the the form and collapsed
      *
@@ -140,17 +153,8 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
         if (this.isEditMode() && this.isFormValueUpdated()) {
             this.form.patchValue(this.originalValue);
         }
-        this.location.back();
-    }
 
-    /**
-     * Set the form in edit mode, expand it and focus the first field
-     *
-     * @memberof ContentTypesFormComponent
-     */
-    editForm(): void {
-        this.show = true;
-        this.name.nativeElement.focus();
+        this.isEditMode() ? this.closeDialog.emit() : this.dotRouterService.gotoPortlet('/content-types-angular');
     }
 
     /**
@@ -175,30 +179,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
     }
 
     /**
-     * Set the icon, labels and placeholder in the template
-     *
-     * @memberof ContentTypesFormComponent
-     */
-    setTemplateInfo(): void {
-        this.dotMessageService.messageMap$.subscribe(() => {
-            const type = this.data.baseType.toLowerCase();
-
-            this.templateInfo = {
-                icon: this.contentTypesInfoService.getIcon(type),
-                header: this.isEditMode()
-                    ? this.i18nMessages['contenttypes.action.edit']
-                    : this.i18nMessages['contenttypes.action.create'],
-                placeholder: `${this.i18nMessages[`contenttypes.content.${type}`]} ${this.i18nMessages[
-                    'contenttypes.form.name'
-                ]} *`,
-                action: this.isEditMode()
-                    ? this.i18nMessages['contenttypes.action.update']
-                    : this.i18nMessages['contenttypes.action.create']
-            };
-        });
-    }
-
-    /**
      * Set the variable property base on the name and sbmit the form if it's valid
      *
      * @memberof ContentTypesFormComponent
@@ -210,7 +190,6 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
 
         if (this.form.valid) {
             this.templateInfo.placeholder = this.form.value.name;
-            this.show = false;
             this.onSubmit.emit(this.form.value);
         }
     }

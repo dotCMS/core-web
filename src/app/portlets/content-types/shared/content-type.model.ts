@@ -1,6 +1,7 @@
 import { Field } from '../fields/index';
 
 export interface ContentType {
+    baseType?: string;
     clazz: string;
     defaultType: boolean;
     description?: string;

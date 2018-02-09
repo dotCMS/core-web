@@ -3,7 +3,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Location } from '@angular/common';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -21,6 +20,9 @@ import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MdInputTextModule } from '../../../view/directives/md-inputtext/md-input-text.module';
+import { DotRouterService } from '../../../api/services/dot-router-service';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
 
 class HotkeysServiceMock {
     add() {}
@@ -28,13 +30,17 @@ class HotkeysServiceMock {
     remove() {}
 }
 
-describe('ContentTypesFormComponent', () => {
+class DotRouterServiceMock {
+    gotoPortlet() {}
+}
+
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let el: HTMLElement;
     let dotcmsConfig: DotcmsConfig;
-    let location: Location;
+    let dotRouterService: DotRouterService;
 
     beforeEach(
         async(() => {
@@ -84,17 +90,19 @@ describe('ContentTypesFormComponent', () => {
                     ReactiveFormsModule,
                     TabViewModule,
                     SiteSelectorFieldModule,
-                    RouterTestingModule
+                    RouterTestingModule,
+                    MdInputTextModule
                 ],
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: SiteService, useValue: siteServiceMock },
+                    { provide: DotRouterService, useClass: DotRouterServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
                     SocketFactory,
                     WorkflowService,
-                    Location
+                    DotMenuService
                 ]
             });
 
@@ -104,22 +112,9 @@ describe('ContentTypesFormComponent', () => {
             el = de.nativeElement;
 
             dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
-            location = fixture.debugElement.injector.get(Location);
+            dotRouterService = fixture.debugElement.injector.get(DotRouterService);
         })
     );
-
-    it('should has dialog opened by default', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123',
-            name: 'Hello World'
-        };
-        fixture.detectChanges();
-
-        const dialog = de.query(By.css('p-dialog'));
-        expect(dialog).not.toBeNull();
-        expect(dialog.componentInstance.visible).toBeTruthy();
-    });
 
     it('should be invalid by default', () => {
         comp.data = {
@@ -236,6 +231,27 @@ describe('ContentTypesFormComponent', () => {
         expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
     });
 
+    it('should have submit button disabled after the form its submitted correctly', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123',
+            name: 'Hello World'
+        };
+        fixture.detectChanges();
+
+        comp.form.get('name').setValue('a new name');
+        expect(comp.form.valid).toEqual(true, 'make sure form is valid after update it');
+
+        fixture.detectChanges();
+        // We trigger the reset as the parent (edit content type) does it.
+        comp.resetForm();
+
+        fixture.detectChanges();
+
+        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
+        expect(submittButton.nativeElement.disabled).toBe(true, 'button should be disabled after update');
+    });
+
     // tslint:disable-next-line:max-line-length
     it('should have the submit button disabled when the form value change and the gets back to the original content (community license)', () => {
         spyOn(dotcmsConfig, 'getConfig').and.returnValue(
@@ -264,28 +280,27 @@ describe('ContentTypesFormComponent', () => {
         expect(submittButton.nativeElement.disabled).toBe(true, 'revert the change button disabled');
     });
 
-    it('should have submit button disabled after then form its submitted correctly', () => {
+    it('should have Create action button on create mode', () => {
         comp.data = {
-            baseType: 'CONTENT',
-            id: '123',
-            name: 'Hello World'
+            baseType: ''
         };
         fixture.detectChanges();
 
-        comp.form.get('name').setValue('a new name');
-        expect(comp.form.valid).toEqual(true, 'make sure form is valid after update it');
+        const submitAction: DebugElement = de.query(By.css('#content-type-form-submit'));
+        expect(submitAction).toBeTruthy();
+        expect(submitAction.nativeElement.innerText).toEqual('Create');
+    });
 
+    it('should have Update action button on edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
         fixture.detectChanges();
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        editButton.nativeNode.click();
 
-        // We trigger the reset as the parent (edit content type) does it.
-        comp.resetForm();
-
-        fixture.detectChanges();
-
-        const submittButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
-        expect(submittButton.nativeElement.disabled).toBe(true, 'button should be disabled after update');
+        const submitAction: DebugElement = de.query(By.css('#content-type-form-submit'));
+        expect(submitAction).toBeTruthy();
+        expect(submitAction.nativeElement.innerText).toEqual('Update');
     });
 
     it('should have the submit button disabled when date fields updates', () => {
@@ -365,55 +380,12 @@ describe('ContentTypesFormComponent', () => {
         expect(cancelButton).not.toBeNull();
     });
 
-    it('should have edit button on edit mode', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        expect(editButton.nativeElement.disabled).toBe(false);
-        expect(editButton).toBeTruthy();
-    });
-
-    it('should have Create content type title and Create action on create mode', () => {
+    it('should call cancelForm() on cancel button click and redirect to content types data list if edit mode', () => {
         comp.data = {
             baseType: ''
         };
-        fixture.detectChanges();
-        const dialogTitle: DebugElement = fixture.debugElement.query(By.css('p-header'));
-        expect(dialogTitle).toBeTruthy();
-
-        const submitAction: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
-        expect(submitAction).toBeTruthy();
-
-        expect(dialogTitle.nativeElement.innerText).toEqual('Create content type');
-        expect(submitAction.nativeElement.innerText).toEqual('Create');
-    });
-
-    it('should have Edit content type title and Update action on edit mode', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-        const dialogTitle: DebugElement = fixture.debugElement.query(By.css('p-header'));
-        expect(dialogTitle).toBeTruthy();
-
-        const submitAction: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
-        expect(submitAction).toBeTruthy();
-
-        expect(dialogTitle.nativeElement.innerText).toEqual('Edit content type');
-        expect(submitAction.nativeElement.innerText).toEqual('Update');
-    });
-
-    it('should call cancelForm() on cancel button click and call location.back', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
         spyOn(comp, 'cancelForm').and.callThrough();
-        spyOn(location, 'back');
+        spyOn(dotRouterService, 'gotoPortlet');
 
         fixture.detectChanges();
 
@@ -423,7 +395,26 @@ describe('ContentTypesFormComponent', () => {
         cancelButton.nativeElement.click();
 
         expect(comp.cancelForm).toHaveBeenCalledTimes(1);
-        expect(location.back).toHaveBeenCalledTimes(1);
+        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
+    });
+
+    it('should call cancelForm() on cancel button click and close dialog if edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        spyOn(comp, 'cancelForm').and.callThrough();
+        spyOn(comp.closeDialog, 'emit');
+
+        fixture.detectChanges();
+
+        const cancelButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-cancel'));
+        expect(cancelButton).toBeDefined();
+
+        cancelButton.nativeElement.click();
+
+        expect(comp.closeDialog.emit).toHaveBeenCalled();
+        expect(comp.cancelForm).toHaveBeenCalledTimes(1);
     });
 
     it('should reset the form value on cancel button click', () => {
@@ -740,25 +731,5 @@ describe('ContentTypesFormComponent', () => {
             folder: null,
             system: null
         });
-    });
-
-    it('should open dialog on edit button click', () => {
-        comp.data = {
-            baseType: 'CONTENT',
-            id: '123'
-        };
-        fixture.detectChanges();
-
-        comp.show = false;
-        spyOn(comp, 'editForm').and.callThrough();
-
-        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
-        editButton.nativeNode.click();
-        expect(comp.editForm).toHaveBeenCalledTimes(1);
-
-        const dialog = de.query(By.css('p-dialog'));
-        expect(dialog).not.toBeNull();
-        expect(comp.show).toBeTruthy();
-        expect(dialog.componentInstance.visible).toBeTruthy();
     });
 });

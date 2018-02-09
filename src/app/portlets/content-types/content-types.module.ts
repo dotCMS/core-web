@@ -56,6 +56,7 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
 import { PushPublishContentTypesDialogModule } from '../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 import { DotAddToBundleModule } from '../../view/components/_common/dot-add-to-bundle/dot-add-to-bundle.module';
+import { MdInputTextModule } from '../../view/directives/md-inputtext/md-input-text.module';
 
 @NgModule({
     declarations: [
@@ -119,7 +120,8 @@ import { DotAddToBundleModule } from '../../view/components/_common/dot-add-to-b
         TabViewModule,
         DotTextareaContentModule,
         MultiSelectModule,
-        DotAddToBundleModule
+        DotAddToBundleModule,
+        MdInputTextModule
     ],
     providers: [
         ContentTypesInfoService,

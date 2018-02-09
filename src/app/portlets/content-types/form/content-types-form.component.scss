@@ -5,26 +5,8 @@
     display: block;
 
     ::ng-deep { 
-        .ui-dialog .ui-dialog-content {
-            overflow-y: scroll;
-            height: 500px;
-        }
         .ui-multiselect, searchable-dropdown .ui-button {
             width: 100%;
         }
     }
-}
-
-.content-type__form-header {
-    margin: $basic-padding * 3 0;
-    position: relative;
-}
-
-.content-type__form-title {
-    font-size: $font-size-large;
-}
-
-.content-type__form-actions {
-    display: flex;
-    justify-content: flex-end;
 }

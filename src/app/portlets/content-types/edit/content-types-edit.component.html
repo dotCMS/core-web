@@ -1,10 +1,49 @@
 <dot-content-type-layout [contentTypeId]="data?.id">
-    <dot-content-types-form
-        #form
-        [fields]="fields"
-        [data]="data"
-        (onSubmit)="handleFormSubmit($event)">
-    </dot-content-types-form>
+    <div class="content-type__edit-header container-fluid" id="content-type-edit-header">
+        <div class="content-type__form-header-left">
+            <div class="content-type__edit-title-icon">
+                <i class="fa" [ngClass]="templateInfo.icon"></i>
+            </div>
+            <div class="content-type__edit-title">
+                <h4>{{ data.name }} </h4>
+                <div class="content-type__edit-subtitle">
+                    <span class="content-type__edit-variable" *ngIf="isEditMode()">
+                        {{ dotMessageService.get('contenttypes.content.variable') }}: {{ data.variable }} 
+                        <span class="content-type__edit-dot-separator">•</span> {{ dotMessageService.get('contenttypes.form.identifier') }}: {{ data.id }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isEditMode()">
+            <div class="content-type__edit-actions">
+                <button type="button" pButton flat label="Edit" (click)="editForm()" icon="fa-edit" id="form-edit-button"></button>
+            </div>
+        </div>
+    </div>
+    <p-dialog
+        modal="modal"
+        width="500"
+        [dismissableMask]="true"
+        [(visible)]="show"
+        [responsive]="true"
+        [resizable]="false"
+        [draggable]="false"
+        [closable]="isEditMode()"
+        [height]="dialogHeight"
+        (onHide)="closeDialog()"> 
+
+        <p-header class="container-fluid">
+            {{templateInfo.header}}
+        </p-header>
+
+        <dot-content-types-form
+            #form
+            [fields]="fields"
+            [data]="data"
+            (onSubmit)="handleFormSubmit($event)"
+            (closeDialog)="closeDialog()">
+        </dot-content-types-form>
+    </p-dialog>
 
     <dot-content-type-fields-drop-zone
         *ngIf="data.id"

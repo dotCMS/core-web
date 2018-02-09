@@ -8,6 +8,9 @@ import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '../../../api/services/crud';
 import { Field } from '../fields/index';
 import { FieldService } from '../fields/service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { ContentTypesInfoService } from '../../../api/services/content-types-info';
+import { DotRouterService } from '../../../api/services/dot-router-service';
 
 /**
  * Portlet component for edit content types
@@ -18,20 +21,30 @@ import { FieldService } from '../fields/service';
  */
 @Component({
     selector: 'dot-content-types-edit',
-    templateUrl: './content-types-edit.component.html'
+    templateUrl: './content-types-edit.component.html',
+    styleUrls: ['./content-types-edit.component.scss']
 })
 export class ContentTypesEditComponent implements OnInit {
     @ViewChild('form') form: ContentTypesFormComponent;
 
     data: ContentType;
     fields: Field[];
+    show = true;
+    templateInfo = {
+        icon: '',
+        header: ''
+    };
+    dialogHeight = null;
 
     constructor(
         private crudService: CrudService,
         private fieldService: FieldService,
         private location: Location,
         private route: ActivatedRoute,
-        public router: Router
+        public router: Router,
+        public dotMessageService: DotMessageService,
+        private contentTypesInfoService: ContentTypesInfoService,
+        private dotRouterService: DotRouterService
     ) {}
 
     ngOnInit(): void {
@@ -41,6 +54,54 @@ export class ContentTypesEditComponent implements OnInit {
                 this.fields = contentType.fields;
             }
         });
+
+        this.dotMessageService.getMessages([
+            'contenttypes.action.form.cancel',
+            'contenttypes.action.edit',
+            'contenttypes.action.create',
+            'contenttypes.action.update',
+            'contenttypes.content.variable',
+            'contenttypes.content.edit.contenttype',
+            'contenttypes.content.create.contenttype',
+            'contenttypes.form.identifier'
+
+        ]).subscribe();
+
+        this.setTemplateInfo();
+        this.dialogHeight = window.innerHeight - 50;
+    }
+
+    /**
+     * Set the icon, labels and placeholder in the template
+     * @memberof ContentTypesEditComponent
+     */
+    setTemplateInfo(): void {
+        this.dotMessageService.messageMap$.subscribe(() => {
+            const type = this.data.baseType.toLowerCase();
+
+            this.templateInfo = {
+                icon: this.contentTypesInfoService.getIcon(type),
+                header: this.isEditMode()
+                    ? this.dotMessageService.get('contenttypes.content.edit.contenttype')
+                    : this.dotMessageService.get('contenttypes.content.create.contenttype')
+            };
+        });
+    }
+
+    /**
+     * Set the form in edit mode, expand it and focus the first field
+     * @memberof ContentTypesEditComponent
+     */
+    editForm(): void {
+        this.show = true;
+    }
+
+    /**
+     * Close the dialog if is edit mode
+     * @memberof ContentTypesEditComponent
+     */
+    closeDialog(): void {
+        this.isEditMode() ? this.show = false : this.dotRouterService.gotoPortlet('/content-types-angular');
     }
 
     /**
@@ -50,6 +111,7 @@ export class ContentTypesEditComponent implements OnInit {
      * @memberof ContentTypesEditComponent
      */
     handleFormSubmit(value: any): void {
+        this.show = false;
         this.isEditMode() ? this.updateContentType(value) : this.createContentType(value);
     }
 
@@ -57,7 +119,7 @@ export class ContentTypesEditComponent implements OnInit {
      * Check if the component is in edit mode
      *
      * @returns {boolean}
-     * @memberof ContentTypesFormComponent
+     * @memberof ContentTypesEditComponent
      */
     isEditMode(): boolean {
         return !!(this.data && this.data.id);

@@ -14,6 +14,12 @@ import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
 import { ContentType } from '../shared/content-type.model';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MockDotMessageService } from '../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { ContentTypesInfoService } from '../../../api/services/content-types-info';
+import { DotRouterService } from '../../../api/services/dot-router-service';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -56,6 +62,17 @@ describe('ContentTypesEditComponent', () => {
 
     beforeEach(
         async(() => {
+            const messageServiceMock = new MockDotMessageService({
+            'contenttypes.action.form.cancel': 'Cancel',
+            'contenttypes.action.edit': 'Edit',
+            'contenttypes.action.create': 'Create',
+            'contenttypes.action.update': 'Update',
+            'contenttypes.content.variable': 'Variable',
+            'contenttypes.content.edit.contenttype': 'Edit content type',
+            'contenttypes.content.create.contenttype': 'Create content type',
+            'contenttypes.form.identifier': 'Idenfifier'
+            });
+
             DOTTestBed.configureTestingModule({
                 declarations: [
                     ContentTypesEditComponent,
@@ -69,16 +86,21 @@ describe('ContentTypesEditComponent', () => {
                             component: ContentTypesEditComponent,
                             path: 'test'
                         }
-                    ])
+                    ]),
+                    BrowserAnimationsModule
                 ],
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     {
                         provide: ActivatedRoute,
                         useValue: { params: Observable.from([{ id: '1234' }]) }
                     },
                     CrudService,
                     FieldService,
+                    ContentTypesInfoService,
+                    DotRouterService,
+                    DotMenuService,
                     Location
                 ]
             });
@@ -93,6 +115,21 @@ describe('ContentTypesEditComponent', () => {
             location = fixture.debugElement.injector.get(Location);
         })
     );
+
+    it('should has dialog opened by default', () => {
+        route.data = Observable.of({
+            contentType: {
+                baseType: 'CONTENT',
+                id: '123',
+                name: 'Hello World'
+            }
+        });
+        fixture.detectChanges();
+
+        const dialog = de.query(By.css('p-dialog'));
+        expect(dialog).not.toBeNull();
+        expect(dialog.componentInstance.visible).toBeTruthy();
+    });
 
     it('should have Content Types Layout', () => {
         const contentTypeLayout = de.query(By.css('dot-content-type-layout'));
@@ -112,6 +149,7 @@ describe('ContentTypesEditComponent', () => {
     it('should have Content Types Fields Drop Zone', () => {
         route.data = Observable.of({
             contentType: {
+                baseType: 'CONTENT',
                 id: '123'
             }
         });
@@ -158,6 +196,7 @@ describe('ContentTypesEditComponent', () => {
 
     it('should udpate content type', () => {
         const fakeContentType: ContentType = {
+            baseType: 'CONTENT',
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
             defaultType: false,
             fixed: false,
@@ -199,6 +238,7 @@ describe('ContentTypesEditComponent', () => {
         ];
         route.data = Observable.of({
             contentType: {
+                baseType: 'CONTENT',
                 id: '1234567890',
                 clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
                 fields: currentFieldsInServer,
@@ -267,6 +307,7 @@ describe('ContentTypesEditComponent', () => {
 
         route.data = Observable.of({
             contentType: {
+                baseType: 'CONTENT',
                 id: '1234567890',
                 clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
                 fields: currentFieldsInServer,
@@ -301,5 +342,65 @@ describe('ContentTypesEditComponent', () => {
         expect(fieldService.deleteFields).toHaveBeenCalledWith('1234567890', fieldToRemove);
         // ...and the comp.data.fields has to be set to the fields return by the service
         expect(comp.fields).toEqual(fieldsReturnByServer);
+    });
+
+    it('should open dialog on edit button click', () => {
+        route.data = Observable.of({
+            contentType: {
+                baseType: 'CONTENT',
+                id: '1234567890'
+            }
+        });
+        fixture.detectChanges();
+
+        comp.show = false;
+        spyOn(comp, 'editForm').and.callThrough();
+
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        editButton.nativeNode.click();
+        expect(comp.editForm).toHaveBeenCalledTimes(1);
+
+        const dialog = de.query(By.css('p-dialog'));
+        expect(dialog).not.toBeNull();
+        expect(comp.show).toBeTruthy();
+        expect(dialog.componentInstance.visible).toBeTruthy();
+    });
+
+    it('should have edit button on edit mode', () => {
+        route.data = Observable.of({
+            contentType: {
+                baseType: 'CONTENT',
+                id: '1234567890'
+            }
+        });
+        fixture.detectChanges();
+        const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        expect(editButton.nativeElement.disabled).toBe(false);
+        expect(editButton).toBeTruthy();
+    });
+
+    it('should have Create content type title create mode', () => {
+        route.data = Observable.of({
+            contentType: {
+                baseType: ''
+            }
+        });
+        fixture.detectChanges();
+        const dialogTitle: DebugElement = de.query(By.css('p-header'));
+        expect(dialogTitle).toBeTruthy();
+        expect(dialogTitle.nativeElement.innerText).toEqual('Create content type');
+    });
+
+    it('should have Edit content type title on edit mode', () => {
+        route.data = Observable.of({
+            contentType: {
+                baseType: 'CONTENT',
+                id: '1234567890'
+            }
+        });
+        fixture.detectChanges();
+        const dialogTitle: DebugElement = de.query(By.css('p-header'));
+        expect(dialogTitle).toBeTruthy();
+        expect(dialogTitle.nativeElement.innerText).toEqual('Edit content type');
     });
 });
