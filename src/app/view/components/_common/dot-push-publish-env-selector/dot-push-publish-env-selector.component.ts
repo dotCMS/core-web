@@ -29,7 +29,6 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     ngOnInit() {
         this.pushEnvironments$ = this.pushPublishService.getEnvironments();
-        debugger;
         this.pushPublishService.getEnvironments().subscribe(environments => {
             if (this.pushPublishService.lastEnvironmentPushed) {
                 this.selectedEnvironments = environments.filter(env => {

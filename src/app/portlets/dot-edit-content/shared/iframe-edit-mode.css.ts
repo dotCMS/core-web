@@ -35,7 +35,7 @@ export const EDIT_PAGE_CSS = `
     .dotedit-contentlet__content {
         min-height: 100px;
         position: relative;
-         display: inline-block;
+        display: inline-block;
     }
 
     .loader,
