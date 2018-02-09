@@ -77,7 +77,6 @@ export const EDIT_PAGE_JS = `
         window.${MODEL_VAR_NAME}.next(getDotNgModel());
     });
     drake.on('drop', function(el, target, source, sibling) {
-        console.log('drop');
         if (target !== source) {
             window.contentletEvents.next({
                 name: 'relocate',
