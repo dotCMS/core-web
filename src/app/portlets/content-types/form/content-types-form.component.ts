@@ -184,6 +184,7 @@ export class ContentTypesFormComponent extends BaseComponent implements OnInit, 
      * @memberof ContentTypesFormComponent
      */
     submitContent($event): void {
+        console.log('submitContent');
         if (!this.submitAttempt) {
             this.submitAttempt = true;
         }

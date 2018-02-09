@@ -715,8 +715,8 @@ describe('ContentTypesFormComponent', () => {
 
         fixture.detectChanges();
 
-        const submitFormButton: DebugElement = fixture.debugElement.query(By.css('#content-type-form-submit'));
-        submitFormButton.nativeElement.click();
+        const form = fixture.debugElement.query(By.css('form'));
+        form.nativeElement.dispatchEvent(new Event('submit'));
 
         expect(comp.submitContent).toHaveBeenCalledTimes(1);
         expect(data).toEqual({

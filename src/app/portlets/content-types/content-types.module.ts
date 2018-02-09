@@ -56,18 +56,15 @@ import { SearchableDropDownModule } from '../../view/components/_common/searchab
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
 import { PushPublishContentTypesDialogModule } from '../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
 import { DotAddToBundleModule } from '../../view/components/_common/dot-add-to-bundle/dot-add-to-bundle.module';
-import { MdInputTextModule } from '../../view/directives/md-inputtext/md-input-text.module';
+import { DotDirectivesModule } from '../../shared/dot-directives.module';
 
 @NgModule({
     declarations: [
         CategoriesPropertyComponent,
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
-        ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
-        ContentTypeFieldsRowComponent,
-        ContentTypeFieldsRowListComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
@@ -121,7 +118,7 @@ import { MdInputTextModule } from '../../view/directives/md-inputtext/md-input-t
         DotTextareaContentModule,
         MultiSelectModule,
         DotAddToBundleModule,
-        MdInputTextModule
+        DotDirectivesModule
     ],
     providers: [
         ContentTypesInfoService,
