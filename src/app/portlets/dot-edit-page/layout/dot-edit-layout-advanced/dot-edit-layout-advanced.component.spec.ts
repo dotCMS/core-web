@@ -10,7 +10,11 @@ import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { IFrameModule } from '../../../../view/components/_common/iframe';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, ElementRef } from '@angular/core';
+import { IframeComponent } from '../../../../view/components/_common/iframe/iframe-component';
+import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
 class DotMenuServiceMock {
     getDotMenuId(id: string): Observable<string> {
@@ -18,36 +22,50 @@ class DotMenuServiceMock {
     }
 }
 
-describe('DotEditLayoutAdvancedComponent', () => {
+let dotGlobalMessageService: DotGlobalMessageService;
+
+const messageServiceMock = new MockDotMessageService({
+    'dot.common.message.saved': 'Salvado'
+});
+
+const basicModule = {
+    imports: [IFrameModule, RouterTestingModule],
+    declarations: [DotEditLayoutAdvancedComponent],
+    providers: [
+        DotGlobalMessageService,
+        {
+            provide: LoginService,
+            useClass: LoginServiceMock
+        },
+        {
+            provide: DotMenuService,
+            useClass: DotMenuServiceMock
+        },
+        {
+            provide: DotMessageService,
+            useValue: messageServiceMock
+        }
+    ]
+};
+
+describe('DotEditLayoutAdvancedComponent - Basic', () => {
     let component: DotEditLayoutAdvancedComponent;
     let fixture: ComponentFixture<DotEditLayoutAdvancedComponent>;
     let de: DebugElement;
 
     beforeEach(
         async(() => {
-            DOTTestBed.configureTestingModule({
-                imports: [IFrameModule, RouterTestingModule],
-                declarations: [DotEditLayoutAdvancedComponent],
-                providers: [
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    {
-                        provide: DotMenuService,
-                        useClass: DotMenuServiceMock
-                    }
-                ]
-            });
+            DOTTestBed.configureTestingModule(basicModule);
         })
     );
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotEditLayoutAdvancedComponent);
+        fixture = DOTTestBed.createComponent(DotEditLayoutAdvancedComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.templateInode = '456';
         fixture.detectChanges();
+        dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
     });
 
     it('should have dot-iframe component', () => {
@@ -57,10 +75,40 @@ describe('DotEditLayoutAdvancedComponent', () => {
 
     it('should set the dot-iframe url correctly', () => {
         let result: string;
-        component.url.subscribe(url => {
+        component.url.subscribe((url) => {
+            console.log(url);
             result = url;
         });
         // tslint:disable-next-line:max-line-length
-        expect(result).toEqual('c/portal/layout?p_l_id=123&p_p_id=templates&p_p_action=1&p_p_state=maximized&p_p_mode=view&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=456&r=0d618b02-f184-48fe-88f4-e98563ee6e9e&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D123%26p_p_id%3Dtemplates%26p_p_action%3D1%26p_p_state%3Dmaximized%26_templates_pageNumber%3D1%26_templates_struts_action%3D%252Fext%252Ftemplates%252Fview_templates');
+        expect(result).toEqual(
+            'c/portal/layout?ng=true&p_l_id=123&p_p_id=templates&p_p_action=1&p_p_state=maximized&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=456&r=0d618b02-f184-48fe-88f4-e98563ee6e9e'
+        );
+    });
+
+    it('should handle onload even from iframe', () => {
+        spyOn(component, 'onLoad');
+        const dotIframe = de.query(By.css('dot-iframe')).componentInstance;
+        dotIframe.load.emit('whaterer');
+        expect(component.onLoad).toHaveBeenCalled();
+    });
+
+    it('should handle custom events from the iframe', () => {
+
+        spyOn(dotGlobalMessageService, 'display');
+
+
+        const dotIframe: IframeComponent = de.query(By.css('dot-iframe')).componentInstance;
+        const iframe: any = dotIframe.iframeElement.nativeElement;
+
+        dotIframe.load.emit({target: iframe});
+
+        const customEvent = document.createEvent('CustomEvent');
+        customEvent.initCustomEvent('ng-event', false, false, {
+            name: 'advanced-template-saved',
+            data: {}
+        });
+        iframe.contentWindow.document.dispatchEvent(customEvent);
+
+        expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Salvado');
     });
 });
