@@ -1,4 +1,4 @@
-<dot-edit-layout-advanced *ngIf="isAdvancedTemplate | async else designer"></dot-edit-layout-advanced>
+<dot-edit-layout-advanced [templateInode]="(pageView | async)?.template.inode" *ngIf="isAdvancedTemplate | async else designer"></dot-edit-layout-advanced>
 
 <ng-template #designer>
     <dot-edit-layout-designer [pageView]="pageView | async"></dot-edit-layout-designer>
