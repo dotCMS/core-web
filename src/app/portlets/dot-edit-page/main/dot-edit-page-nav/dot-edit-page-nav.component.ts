@@ -16,7 +16,8 @@ export class DotEditPageNavComponent implements OnInit {
         this.dotMessageService
             .getMessages([
                 'editpage.toolbar.nav.content',
-                'editpage.toolbar.nav.layout'
+                'editpage.toolbar.nav.layout',
+                'editpage.toolbar.nav.code'
             ])
             .subscribe();
     }
