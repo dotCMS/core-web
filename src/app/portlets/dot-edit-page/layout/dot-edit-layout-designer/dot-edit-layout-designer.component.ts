@@ -68,10 +68,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         if (!this.isLayout()) {
             this.showTemplateLayoutDialog();
         }
-        // Emit event to redraw the grid when the sidebar change
-        this.form.get('layout.sidebar').valueChanges.subscribe(() => {
-            this.dotEventsService.notify('layout-sidebar-change');
-        });
     }
 
     /**
@@ -165,6 +161,11 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.templateContainersCacheService.set(this.pageView.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
+
+        // Emit event to redraw the grid when the sidebar change
+        this.form.get('layout.sidebar').valueChanges.subscribe(() => {
+            this.dotEventsService.notify('layout-sidebar-change');
+        });
     }
 
     private initForm(): void {
