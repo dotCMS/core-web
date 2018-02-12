@@ -40,7 +40,7 @@ export class DotNavigationService {
         */
         this.loginService.auth$.subscribe((auth: Auth) => {
             if (auth.loginAsUser || auth.user) {
-                this.reloadNavigation();
+                this.reloadNavigation(auth.user && !!auth.user['editModeUrl']);
             }
         });
     }
@@ -89,14 +89,16 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(): void {
+    reloadNavigation(haveEditModeUrl?: boolean): void {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
             this.dotMenuService
                 .isPortletInMenu(
                     this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
                 )
                 .subscribe((isPortletInMenu: boolean) => {
-                    if (!isPortletInMenu) {
+                    if (haveEditModeUrl) {
+                        this.setMenu(menu);
+                    } else if (!isPortletInMenu) {
                         if (this.dotRouterService.previousSavedURL) {
                             this.dotRouterService
                                 .gotoPortlet(this.dotRouterService.previousSavedURL, true)
