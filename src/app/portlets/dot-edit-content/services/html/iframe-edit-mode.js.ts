@@ -43,7 +43,7 @@ export const EDIT_PAGE_JS = `
     }
     
     function checkIfContentletIsUnique(el, target){    
-        return ! Array.from(target.querySelectorAll("div[data-dot-object='contentlet']"))
+        return !Array.from(target.querySelectorAll("div[data-dot-object='contentlet']"))
             .filter(node => { 
                 return (node.dataset.dotInode === el.dataset.dotInode || 
                         node.dataset.dotIdentifier === el.dataset.dotIdentifier) 
