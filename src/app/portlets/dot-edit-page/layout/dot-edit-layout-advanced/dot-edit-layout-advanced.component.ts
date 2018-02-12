@@ -18,7 +18,7 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
     ngOnInit() {
         this.url = this.dotMenuService.getDotMenuId('templates').map((id: string) => {
             // tslint:disable-next-line:max-line-length
-            return `c/portal/layout?p_l_id=${id}&p_p_id=templates&p_p_action=1&p_p_state=maximized&p_p_mode=view&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=${this.templateInode}&r=0d618b02-f184-48fe-88f4-e98563ee6e9e&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${id}%26p_p_id%3Dtemplates%26p_p_action%3D1%26p_p_state%3Dmaximized%26_templates_pageNumber%3D1%26_templates_struts_action%3D%252Fext%252Ftemplates%252Fview_templates&ng=true`;
+            return `c/portal/layout?p_l_id=${id}&p_p_id=templates&p_p_action=1&p_p_state=maximized&p_p_mode=view&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=${this.templateInode}&r=0d618b02-f184-48fe-88f4-e98563ee6e9e&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${id}%26p_p_id%3Dtemplates%26p_p_action%3D1%26p_p_state%3Dmaximized%26_templates_pageNumber%3D1%26_templates_struts_action%3D%252Fext%252Ftemplates%252Fview_templates`;
         });
     }
 }

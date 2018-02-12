@@ -47,7 +47,7 @@ const getTestingModule = (pageView?: DotPageView) => {
 let component: DotEditLayoutComponent;
 let fixture: ComponentFixture<DotEditLayoutComponent>;
 
-fdescribe('DotEditLayoutComponent with Layout Designer', () => {
+describe('DotEditLayoutComponent with Layout Designer', () => {
     beforeEach(
         async(() => {
             DOTTestBed.configureTestingModule(getTestingModule());
@@ -79,7 +79,7 @@ const advancedTemplateFakePageView: DotPageView = {
     }
 };
 
-fdescribe('DotEditLayoutComponent with Edit Advanced Layout', () => {
+describe('DotEditLayoutComponent with Edit Advanced Layout', () => {
     beforeEach(
         async(() => {
             DOTTestBed.configureTestingModule(getTestingModule(advancedTemplateFakePageView));
