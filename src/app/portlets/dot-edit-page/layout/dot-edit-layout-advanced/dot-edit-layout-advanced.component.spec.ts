@@ -76,7 +76,6 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
     it('should set the dot-iframe url correctly', () => {
         let result: string;
         component.url.subscribe((url) => {
-            console.log(url);
             result = url;
         });
         // tslint:disable-next-line:max-line-length
