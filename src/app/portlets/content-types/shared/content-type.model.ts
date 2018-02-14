@@ -1,4 +1,4 @@
-import { Field } from '../fields/index';
+import { ContentTypeField } from '../fields/index';
 
 export interface ContentType {
     baseType?: string;
@@ -7,7 +7,7 @@ export interface ContentType {
     description?: string;
     detailPage?: string;
     expireDateVar?: string;
-    fields?: Array<Field>;
+    fields?: Array<ContentTypeField>;
     fixed: boolean;
     folder: string;
     host: string;
