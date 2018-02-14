@@ -23,7 +23,7 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMessageService: DotMessageService
     ) {
-        dotMessageService.getMessages(['dot.common.message.saved']).subscribe();
+        dotMessageService.getMessages(['dot.common.message.saved', 'dot.common.message.saving']).subscribe();
     }
 
     ngOnInit() {
