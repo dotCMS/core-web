@@ -189,15 +189,6 @@ describe('ContentTypesEditComponent create mode', () => {
         expect(dialog === null).toBe(false);
     });
 
-    it('should have show form by default', () => {
-        const dialog = de.query(By.css('p-dialog'));
-        const contentTypeForm = de.query(By.css('dot-content-types-form'));
-
-        expect(comp.show).toBe(true);
-        expect(contentTypeForm === null).toBe(false);
-        expect(dialog === null).toBe(false);
-    });
-
     it('should NOT have dot-content-type-fields-drop-zone', () => {
         const contentTypeForm = de.query(By.css('dot-content-type-fields-drop-zone'));
         expect(contentTypeForm === null).toBe(true);
