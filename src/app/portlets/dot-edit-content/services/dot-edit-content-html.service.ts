@@ -77,15 +77,14 @@ export class DotEditContentHtmlService {
     renderPage(editPageHTML: string, iframeEl: ElementRef): Promise<any> {
         return new Promise((resolve, reject) => {
             this.iframe = iframeEl;
-            this.loadCodeIntoIframe(editPageHTML);
-
             const iframeElement = this.getEditPageIframe();
             iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModelChange;
             iframeElement.contentWindow.contentletEvents = this.contentletEvents;
-
             iframeElement.addEventListener('load', () => {
                 resolve(true);
             });
+            // Load content after bind 'load' event.
+            this.loadCodeIntoIframe(editPageHTML);
         });
     }
 
@@ -381,6 +380,7 @@ export class DotEditContentHtmlService {
     }
 
     private loadCodeIntoIframe(editPageHTML: string): void {
+        debugger;
         const doc = this.getEditPageDocument();
         doc.open();
         doc.write(editPageHTML);
@@ -388,6 +388,7 @@ export class DotEditContentHtmlService {
     }
 
     private setEditContentletStyles(): void {
+        debugger;
         const style = this.dotDOMHtmlUtilService.createStyleElement(EDIT_PAGE_CSS);
         const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
 
@@ -397,6 +398,7 @@ export class DotEditContentHtmlService {
     }
 
     private setEditMode(): void {
+        debugger;
         this.addContentToolBars();
 
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
