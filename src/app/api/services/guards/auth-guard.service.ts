@@ -15,13 +15,7 @@ export class AuthGuardService implements CanActivate {
         return this.loginService.isLogin$.map((isLogin) => {
             if (!isLogin) {
                 this.dotRouterService.goToLogin();
-            } else if (state.url === '/') {
-                if (this.loginService.auth.user['editModeUrl']) {
-                    this.dotRouterService.gotoPortlet(`c/site-browser?url=${this.loginService.auth.user['editModeUrl']}`, true);
-                    this.loginService.auth.user['editModeUrl'] = null;
-                } // else {
-                    // this.dotNavigationService.goToFirstPortlet();
-                // }
+                this.dotRouterService.previousSavedURL = state.url;
             }
             return isLogin;
         });

@@ -34,13 +34,12 @@ export class DotNavigationService {
         this.dotcmsEventsService.subscribeTo('UPDATE_PORTLET_LAYOUTS').subscribe(() => {
             this.reloadNavigation();
         });
-        /*
-            When the browser refresh the auth$ triggers for the "first time" and because of that
-            on page reload we are doing 2 requests to menu enpoint.
-        */
+
         this.loginService.auth$.subscribe((auth: Auth) => {
             if (auth.loginAsUser || auth.user) {
-                this.reloadNavigation(auth.user && !!auth.user['editModeUrl']);
+                const shouldGoToFirstPortlet = !(auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL);
+                this.reloadNavigation(shouldGoToFirstPortlet);
+                this.userCustomRedirect(auth.user['editModeUrl']);
             }
         });
     }
@@ -89,32 +88,18 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(haveEditModeUrl?: boolean): void {
+    reloadNavigation(shouldGoToFirstPorlet?: boolean): void {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
             this.dotMenuService
                 .isPortletInMenu(
                     this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
                 )
                 .subscribe((isPortletInMenu: boolean) => {
-                    if (haveEditModeUrl) {
-                        this.setMenu(menu);
-                    } else if (!isPortletInMenu) {
-                        if (this.dotRouterService.previousSavedURL) {
-                            this.dotRouterService
-                                .gotoPortlet(this.dotRouterService.previousSavedURL, true)
-                                .then((res: boolean) => {
-                                    if (res) {
-                                        this.dotRouterService.previousSavedURL = null;
-                                        this.setMenu(menu);
-                                    }
-                                });
-                        } else {
-                            this.goToFirstPortlet().then(() => this.setMenu(menu));
-                        }
-                    } else {
-                        this.setMenu(menu);
+                    if (!isPortletInMenu && shouldGoToFirstPorlet) {
+                        this.goToFirstPortlet();
                     }
                 });
+            this.setMenu(menu);
         });
     }
 
@@ -159,5 +144,15 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
+    }
+
+    private userCustomRedirect(editModeUrl?: string): void {
+        if (editModeUrl) {
+            this.dotRouterService.gotoPortlet(`edit-page/content?url=${editModeUrl}`, true);
+        } else if (this.dotRouterService.previousSavedURL) {
+            this.dotRouterService.gotoPortlet(this.dotRouterService.previousSavedURL, true).then((res: boolean) => {
+                this.dotRouterService.previousSavedURL = res ? null : this.dotRouterService.previousSavedURL;
+            });
+        }
     }
 }
