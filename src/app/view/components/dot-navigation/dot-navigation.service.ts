@@ -39,9 +39,15 @@ export class DotNavigationService {
         });
 
         this.loginService.auth$.filter((auth: Auth) => !!(auth.loginAsUser || auth.user)).subscribe((auth: Auth) => {
-            const shouldGoToFirstPortlet = !(auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL);
-            this.reloadNavigation(shouldGoToFirstPortlet);
-            this.userCustomRedirect(auth.user['editModeUrl']);
+            this.reloadNavigation().subscribe((isPortletInMenu: boolean) => {
+                const isUserRedirect = auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL;
+
+                if (isUserRedirect) {
+                    this.userCustomRedirect(auth.user['editModeUrl']);
+                } else if (!isPortletInMenu) {
+                    this.goToFirstPortlet();
+                }
+            });
         });
     }
 
@@ -67,7 +73,6 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     isActive(id: string): boolean {
-        console.log('isActive', this.dotRouterService.currentPortlet.id, id);
         return this.dotRouterService.currentPortlet.id === id;
     }
 
@@ -90,18 +95,13 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(shouldGoToFirstPorlet: boolean = true): void {
-        this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
-            this.dotMenuService
-                .isPortletInMenu(
-                    this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
-                )
-                .subscribe((isPortletInMenu: boolean) => {
-                    if (!isPortletInMenu && shouldGoToFirstPorlet) {
-                        this.goToFirstPortlet();
-                    }
-                });
+    reloadNavigation(): Observable<boolean> {
+        return this.dotMenuService.reloadMenu().mergeMap((menu: DotMenu[]) => {
             this.setMenu(menu);
+
+            return this.dotMenuService.isPortletInMenu(
+                this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
+            );
         });
     }
 

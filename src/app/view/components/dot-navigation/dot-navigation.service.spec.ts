@@ -36,6 +36,18 @@ const mockMenu: DotMenu[] = [
     }
 ];
 
+const baseMockUser = {
+    emailAddress: 'admin@dotcms.com',
+    firstName: 'Admin',
+    lastName: 'Admin',
+    loggedInDate: 123456789,
+    userId: '123'
+};
+const baseMockAuth: Auth = {
+    loginAsUser: null,
+    user: baseMockUser
+};
+
 describe('DotNavigationService', () => {
     let dotMenuService: DotMenuService;
     let dotNavigationService: DotNavigationService;
@@ -78,8 +90,10 @@ describe('DotNavigationService', () => {
     );
 
     it('should redirect to edit page', () => {
+        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
         spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(dotNavigationService, 'reloadNavigation');
+        spyOn(dotNavigationService, 'goToFirstPortlet');
 
         const mockUser = {
             emailAddress: 'admin@dotcms.com',
@@ -95,39 +109,30 @@ describe('DotNavigationService', () => {
         };
         loginService.triggerNewAuth(mockAuth);
 
-        expect(dotNavigationService.reloadNavigation).toHaveBeenCalledWith(false);
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('edit-page/content?url=/test/123', true);
+        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
     });
 
     it('should redirect to previous saved URL and clear the saved url', fakeAsync(() => {
+        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
+        spyOn(dotNavigationService, 'goToFirstPortlet');
         spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => {
             return new Promise(resolve => {
                 resolve(true);
             });
         });
-        spyOn(dotNavigationService, 'reloadNavigation');
         dotRouterService.previousSavedURL = 'hello/world';
 
-        const mockUser = {
-            emailAddress: 'admin@dotcms.com',
-            firstName: 'Admin',
-            lastName: 'Admin',
-            loggedInDate: 123456789,
-            userId: '123'
-        };
-        const mockAuth: Auth = {
-            loginAsUser: null,
-            user: mockUser
-        };
-        loginService.triggerNewAuth(mockAuth);
+        loginService.triggerNewAuth(baseMockAuth);
 
         tick();
-        expect(dotNavigationService.reloadNavigation).toHaveBeenCalledWith(false);
+        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/world', true);
         expect(dotRouterService.previousSavedURL === null).toBe(true);
     }));
 
-    // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here.
+    // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
     xit('should subscribe to UPDATE_PORTLET_LAYOUTS websocket event', () => {
         spyOn(dotcmsEventsService, 'subscribeTo');
         expect(dotcmsEventsService.subscribeTo).toHaveBeenCalledWith('UPDATE_PORTLET_LAYOUTS');
@@ -160,6 +165,7 @@ describe('DotNavigationService', () => {
     });
 
     it('should reload navigation and set menu', () => {
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
         spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
 
         let result: DotMenu[];
@@ -168,7 +174,7 @@ describe('DotNavigationService', () => {
             result = menu;
         });
 
-        dotNavigationService.reloadNavigation();
+        loginService.triggerNewAuth(baseMockAuth);
 
         expect(result).toEqual(mockMenu);
     });
@@ -178,7 +184,7 @@ describe('DotNavigationService', () => {
         spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
 
-        dotNavigationService.reloadNavigation();
+        loginService.triggerNewAuth(baseMockAuth);
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
     });
 
@@ -187,16 +193,16 @@ describe('DotNavigationService', () => {
         spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
 
-        dotNavigationService.reloadNavigation();
+        loginService.triggerNewAuth(baseMockAuth);
         expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
     });
 
     it('should reload navigation, set menu and NOT redirect to first portlet (user redirect)', () => {
         spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
 
-        dotNavigationService.reloadNavigation(false);
+        loginService.triggerNewAuth(baseMockAuth);
         expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
     });
 });
