@@ -68,13 +68,13 @@ export class IframePortletLegacyComponent implements OnInit {
      */
     reloadIframePortlet(portletId?: string): void {
         this.dotLoadingIndicatorService.show();
-             if (portletId) {
-                this.dotMenuService.getUrlById(portletId).subscribe((url: string) => {
-                    this.setUrl(url);
-                });
-            } else {
-                this.setUrl(this.url.getValue());
-            }
+        if (portletId) {
+            this.dotMenuService.getUrlById(portletId).subscribe((url: string) => {
+                this.setUrl(url);
+            });
+        } else {
+            this.setUrl(this.url.getValue());
+        }
     }
 
     private bindGlobalEvents(): void {

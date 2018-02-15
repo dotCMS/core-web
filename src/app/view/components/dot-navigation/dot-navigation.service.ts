@@ -1,14 +1,17 @@
-import { PlatformLocation } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { PlatformLocation } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
+
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+import { Auth } from 'dotcms-js/core/login.service';
+import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
+import { LoginService } from 'dotcms-js/dotcms-js';
+
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../api/services/dot-router-service';
-import { LoginService } from 'dotcms-js/dotcms-js';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
-import { Auth } from 'dotcms-js/core/login.service';
-import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class DotNavigationService {
@@ -35,12 +38,10 @@ export class DotNavigationService {
             this.reloadNavigation();
         });
 
-        this.loginService.auth$.subscribe((auth: Auth) => {
-            if (auth.loginAsUser || auth.user) {
-                const shouldGoToFirstPortlet = !(auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL);
-                this.reloadNavigation(shouldGoToFirstPortlet);
-                this.userCustomRedirect(auth.user['editModeUrl']);
-            }
+        this.loginService.auth$.filter((auth: Auth) => !!(auth.loginAsUser || auth.user)).subscribe((auth: Auth) => {
+            const shouldGoToFirstPortlet = !(auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL);
+            this.reloadNavigation(shouldGoToFirstPortlet);
+            this.userCustomRedirect(auth.user['editModeUrl']);
         });
     }
 
@@ -66,6 +67,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     isActive(id: string): boolean {
+        console.log('isActive', this.dotRouterService.currentPortlet.id, id);
         return this.dotRouterService.currentPortlet.id === id;
     }
 
@@ -88,7 +90,7 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(shouldGoToFirstPorlet?: boolean): void {
+    reloadNavigation(shouldGoToFirstPorlet: boolean = true): void {
         this.dotMenuService.reloadMenu().subscribe((menu: DotMenu[]) => {
             this.dotMenuService
                 .isPortletInMenu(
