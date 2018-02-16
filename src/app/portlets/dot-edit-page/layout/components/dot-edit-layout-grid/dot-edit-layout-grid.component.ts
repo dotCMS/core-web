@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, ViewChild } from '@angular/core';
+import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
 import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 import * as _ from 'lodash';
 import { DotConfirmationService } from '../../../../../api/services/dot-confirmation/dot-confirmation.service';
@@ -81,16 +81,14 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         this.dotMessageService.getMessages(this.i18nKeys).subscribe();
         this.dotEventsService.listen('dot-side-nav-toggle').subscribe((event: DotEvent) => {
             // setTimeout is need it because the side nav animation time.
-            setTimeout(() => {
-                this.ngGrid.triggerResize();
-            }, 200);
+            this.resizeGrid(200);
         });
         this.dotEventsService.listen('layout-sidebar-change').subscribe((event: DotEvent) => {
             // We need to "wait" until the template remove the sidebar div.
-            setTimeout(() => {
-                this.ngGrid.triggerResize();
-            }, 0);
+            this.resizeGrid();
         });
+        // needed it because the transition between content & layout.
+        this.resizeGrid();
     }
 
     /**
@@ -252,5 +250,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     private isHaveRows(): boolean {
         return !!(this.value && this.value.rows && this.value.rows.length);
+    }
+
+    private resizeGrid(timeOut?): void {
+        setTimeout(() => {
+            this.ngGrid.triggerResize();
+        }, timeOut ? timeOut : 0);
     }
 }
