@@ -1,19 +1,19 @@
-import { async, tick } from '@angular/core/testing';
+import { Auth, User } from 'dotcms-js/core/login.service';
+import { DOTTestBed } from '../../../test/dot-test-bed';
+import { DotMenu } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotNavigationService } from './dot-navigation.service';
 import { DotRouterService } from '../../../api/services/dot-router-service';
 import { DotcmsEventsService, LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
-import { RouterTestingModule } from '@angular/router/testing';
 import { LoginServiceMock } from '../../../test/login-service.mock';
-import { DotNavigationService } from './dot-navigation.service';
+import { Observable } from 'rxjs/Observable';
 import { ReflectiveInjector } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DOTTestBed } from '../../../test/dot-test-bed';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed } from '@angular/core/testing';
-import { Auth, User } from 'dotcms-js/core/login.service';
+import { async, tick } from '@angular/core/testing';
 import { fakeAsync } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 import { noUndefined } from '@angular/compiler/src/util';
-import { DotMenu } from '../../../shared/models/navigation';
 
 const mockMenu: DotMenu[] = [
     {
@@ -189,15 +189,6 @@ describe('DotNavigationService', () => {
     });
 
     it('should reload navigation, set menu and NOT redirect to first portlet (portlet is in menu)', () => {
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
-        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
-
-        loginService.triggerNewAuth(baseMockAuth);
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
-    });
-
-    it('should reload navigation, set menu and NOT redirect to first portlet (user redirect)', () => {
         spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
         spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
         spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
