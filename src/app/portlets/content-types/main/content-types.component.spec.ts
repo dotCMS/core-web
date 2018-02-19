@@ -116,7 +116,7 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should display a listing-data-table.component', () => {
-        const listingDataTable = fixture.debugElement.query(By.css('listing-data-table'));
+        const listingDataTable = fixture.debugElement.query(By.css('dot-listing-data-table'));
         fixture.detectChanges();
 
         expect('v1/contenttype').toEqual(listingDataTable.nativeElement.getAttribute('url'));

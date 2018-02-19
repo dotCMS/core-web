@@ -90,7 +90,7 @@ describe('CategoriesPropertyComponent', () => {
         beforeEach(
             async(() => {
                 const divForm: DebugElement = fixture.debugElement.query(By.css('div'));
-                this.searchableDropdown = divForm.query(By.css('searchable-dropdown'));
+                this.searchableDropdown = divForm.query(By.css('dot-searchable-dropdown'));
             })
         );
 

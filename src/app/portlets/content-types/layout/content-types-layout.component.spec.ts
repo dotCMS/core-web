@@ -142,7 +142,7 @@ describe('ContentTypesLayoutComponent', () => {
         it('should has a field types list', () => {
             const contentTypeFieldsSideBar = this.pTabPanel.query(By.css('.content-type__fields-sidebar'));
             const fieldTitle = this.pTabPanel.query(By.css('.content-type__fields-sidebar-title'));
-            const contentTypesFieldsList = this.pTabPanel.query(By.css('content-types-fields-list'));
+            const contentTypesFieldsList = this.pTabPanel.query(By.css('dot-content-types-fields-list'));
 
             expect(fieldTitle.nativeElement.textContent).toBe('Field Title');
             expect(contentTypesFieldsList).not.toBeNull();
@@ -151,7 +151,7 @@ describe('ContentTypesLayoutComponent', () => {
         it('should has a field row list', () => {
             const contentTypeFieldsSideBar = this.pTabPanel.query(By.css('.content-type__fields-sidebar'));
             const layoutTitle = this.pTabPanel.queryAll(By.css('.content-type__fields-sidebar-title'))[1];
-            const fieldRowList = this.pTabPanel.query(By.css('content-type-fields-row-list'));
+            const fieldRowList = this.pTabPanel.query(By.css('dot-content-type-fields-row-list'));
 
             expect(layoutTitle.nativeElement.textContent).toBe('Layout Title');
             expect(fieldRowList).not.toBeNull();
@@ -163,7 +163,7 @@ describe('ContentTypesLayoutComponent', () => {
             fixture.componentInstance.contentTypeId = '2';
             fixture.detectChanges();
 
-            this.pTabPanel = fixture.debugElement.query(By.css('p-tabView  .content-type__permissions'));
+            this.pTabPanel = fixture.debugElement.query(By.css('p-tabView .content-type__permissions'));
         });
 
         it('should has a permission panel', () => {

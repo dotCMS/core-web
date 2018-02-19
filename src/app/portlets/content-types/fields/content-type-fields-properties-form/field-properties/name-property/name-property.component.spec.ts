@@ -80,7 +80,7 @@ describe('NamePropertyComponent', () => {
         fixture.detectChanges();
 
         const divForm: DebugElement = fixture.debugElement.query(By.css('div'));
-        const fieldValidationmessage: DebugElement = fixture.debugElement.query(By.css('field-validation-message'));
+        const fieldValidationmessage: DebugElement = fixture.debugElement.query(By.css('dot-field-validation-message'));
 
         expect(fieldValidationmessage).not.toBeNull();
         expect(comp.group.controls['name']).toBe(fieldValidationmessage.componentInstance.field);

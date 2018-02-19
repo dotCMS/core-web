@@ -97,7 +97,7 @@ describe('ContentTypeFieldsRowComponent', () => {
                 expect('fields-bag').toEqual(col.attributes['dragula']);
                 expect('target').toEqual(col.attributes['data-drag-type']);
 
-                const draggableItems = col.queryAll(By.css('content-type-field-dragabble-item'));
+                const draggableItems = col.queryAll(By.css('dot-content-type-field-dragabble-item'));
                 expect(this.fieldRow.columns[index].fields.length).toEqual(draggableItems.length);
             });
         });
@@ -115,7 +115,7 @@ describe('ContentTypeFieldsRowComponent', () => {
                 fixture.detectChanges();
 
                 const column = de.query(By.css('.row-columns__item'));
-                const dragableItem = column.query(By.css('content-type-field-dragabble-item'));
+                const dragableItem = column.query(By.css('dot-content-type-field-dragabble-item'));
 
                 comp.editField.subscribe((eventField) => (editField = eventField));
                 dragableItem.componentInstance.edit.emit(field);
@@ -135,7 +135,7 @@ describe('ContentTypeFieldsRowComponent', () => {
                 fixture.detectChanges();
 
                 const column = de.query(By.css('.row-columns__item'));
-                const dragableItem = column.query(By.css('content-type-field-dragabble-item'));
+                const dragableItem = column.query(By.css('dot-content-type-field-dragabble-item'));
 
                 const dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
 

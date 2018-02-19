@@ -48,7 +48,7 @@ class TestContentTypesFormComponent {
     @Input() data: any;
     @Input() fields: ContentTypeField[];
     // tslint:disable-next-line:no-output-on-prefix
-    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() submit: EventEmitter<any> = new EventEmitter();
 
     resetForm = jasmine.createSpy('resetForm');
 
@@ -219,7 +219,7 @@ describe('ContentTypesEditComponent create mode', () => {
         spyOn(location, 'replaceState').and.returnValue(Observable.of([responseContentType]));
 
         const contentTypeForm: ContentTypesFormComponent = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.onSubmit.emit(mockContentType);
+        contentTypeForm.submit.emit(mockContentType);
 
         expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', mockContentType);
         expect(comp.data).toEqual(responseContentType, 'set data with response');
@@ -342,7 +342,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         clickEditButton();
 
         const contentTypeForm: ContentTypesFormComponent = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.onSubmit.emit(fakeContentType);
+        contentTypeForm.submit.emit(fakeContentType);
 
         expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', fakeContentType);
         expect(comp.data).toEqual(responseContentType, 'set data with response');

@@ -458,7 +458,7 @@ describe('ContentTypesFormComponent', () => {
         let data = null;
         spyOn(comp, 'submitForm').and.callThrough();
 
-        comp.onSubmit.subscribe((res) => (data = res));
+        comp.submit.subscribe((res) => (data = res));
         comp.submitForm();
 
         expect(comp.submitForm).toHaveBeenCalled();
@@ -474,7 +474,7 @@ describe('ContentTypesFormComponent', () => {
         let data = null;
         spyOn(comp, 'submitForm').and.callThrough();
 
-        comp.onSubmit.subscribe((res) => (data = res));
+        comp.submit.subscribe((res) => (data = res));
 
         comp.form.controls.name.setValue('A content type name');
 

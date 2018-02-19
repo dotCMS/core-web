@@ -259,7 +259,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             fixture.detectChanges();
 
             const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-            const fieldRows = fieldsContainer.queryAll(By.css('content-type-fields-row'));
+            const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
             fieldRows[0].componentInstance.editField.emit(field);
 
             expect(spy).toHaveBeenCalledWith(field);
@@ -273,7 +273,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             fixture.detectChanges();
 
             const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-            const fieldRows = fieldsContainer.queryAll(By.css('content-type-fields-row'));
+            const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
             expect(2).toEqual(fieldRows.length);
 
             expect(2).toEqual(fieldRows[0].componentInstance.fieldRow.columns.length);
@@ -483,7 +483,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             fixture.detectChanges();
 
             const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-            const fieldRows = fieldsContainer.queryAll(By.css('content-type-fields-row'));
+            const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
             fieldRows[0].componentInstance.removeField.emit(field);
 
             expect(spy).toHaveBeenCalledWith(field);

@@ -105,7 +105,7 @@ describe('LoginAsComponent', () => {
             const paginatorService: PaginatorService = fixture.debugElement.injector.get(PaginatorService);
             spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(users));
 
-            const searchableDropdown = de.query(By.css('searchable-dropdown'));
+            const searchableDropdown = de.query(By.css('dot-searchable-dropdown'));
             searchableDropdown.componentInstance.pageChange.emit({
                 filter: 'filter',
                 first: 1
@@ -135,7 +135,7 @@ describe('LoginAsComponent', () => {
             const paginatorService: PaginatorService = fixture.debugElement.injector.get(PaginatorService);
             spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(users));
 
-            const searchableDropdown = de.query(By.css('searchable-dropdown'));
+            const searchableDropdown = de.query(By.css('dot-searchable-dropdown'));
             searchableDropdown.componentInstance.filterChange.emit('new filter');
 
             tick();

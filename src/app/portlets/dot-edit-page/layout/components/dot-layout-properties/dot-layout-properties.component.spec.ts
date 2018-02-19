@@ -57,7 +57,7 @@ describe('DotLayoutPropertiesComponent', () => {
     });
 
     xit('should modify the group model', () => {
-        expect(comp.group).toBe('some');
-        expect(de).toBe('some');
+        expect(comp.group).toBeDefined();
+        expect(de).toBeDefined();
     });
 });

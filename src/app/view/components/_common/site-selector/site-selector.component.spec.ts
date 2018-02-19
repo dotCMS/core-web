@@ -134,7 +134,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown'))
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
                 .componentInstance;
 
             searchableDropdownComponent.pageChange.emit({
@@ -166,7 +166,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown'))
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
                 .componentInstance;
 
             searchableDropdownComponent.filterChange.emit(filter);
@@ -188,7 +188,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('searchable-dropdown'))
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
                 .componentInstance;
 
             searchableDropdownComponent.filterChange.emit('');

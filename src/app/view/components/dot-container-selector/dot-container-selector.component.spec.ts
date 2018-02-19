@@ -41,7 +41,7 @@ describe('ContainerSelectorComponent', () => {
             de = fixture.debugElement;
             el = de.nativeElement;
 
-            searchableDropdownComponent = de.query(By.css('searchable-dropdown')).componentInstance;
+            searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
 
             containers = [
                 {

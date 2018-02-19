@@ -83,7 +83,7 @@ describe('ListingDataTableComponent', () => {
     });
 
     it('renderer basic datatable component', () => {
-        const actionHeader = fixture.debugElement.query(By.css('action-header'));
+        const actionHeader = fixture.debugElement.query(By.css('dot-action-header'));
         const globalSearch = actionHeader.query(By.css('input'));
 
         comp.ngOnInit();
@@ -287,7 +287,7 @@ describe('ListingDataTableComponent', () => {
 
         fixture.detectChanges();
         const rows = el.querySelectorAll('tr');
-        const actionButton = de.query(By.css('action-menu-button'));
+        const actionButton = de.query(By.css('dot-action-menu-button'));
 
         const spy = spyOn(fakeActions[0].menuItem, 'command');
 
