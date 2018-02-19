@@ -12,7 +12,7 @@ import { FormGroup } from '@angular/forms';
 import { FieldPropertyService } from '../../../service';
 
 @Directive({
-    selector: '[dynamicFieldProperty]'
+    selector: '[dotDynamicFieldProperty]'
 })
 export class DynamicFieldPropertyDirective implements OnChanges {
     @Input() propertyName: string;

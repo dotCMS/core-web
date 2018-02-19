@@ -13,7 +13,7 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
 
 @Component({
-    selector: 'content-type-field-dragabble-item',
+    selector: 'dot-content-type-field-dragabble-item',
     template: ''
 })
 class TestContentTypeFieldDraggableItemComponent {

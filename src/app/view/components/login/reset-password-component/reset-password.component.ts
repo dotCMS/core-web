@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { ChangePasswordData } from './reset-password-container.component';
 
@@ -9,30 +9,28 @@ import { ChangePasswordData } from './reset-password-container.component';
     styleUrls: [],
     templateUrl: 'reset-password.component.html'
 })
-export class ResetPasswordComponent {
-    @Input() private token = '';
-    @Input() public message = '';
+export class ResetPasswordComponent implements OnInit {
+    @Input() token = '';
+    @Input() message = '';
+    @Output() changePassword = new EventEmitter<ChangePasswordData>();
 
-    @Output() private changePassword = new EventEmitter<ChangePasswordData>();
-
-    private language = '';
 
     // labels
-    public resetPasswordLabel = '';
-    public enterPasswordLabel = '';
-    public confirmPasswordLabel = '';
-    public changePasswordButton = '';
+    changePasswordButton = '';
+    confirmPassword = '';
+    confirmPasswordLabel = '';
+    confirmPasswordMandatoryFieldError = '';
+    enterPasswordLabel = '';
+    password = '';
+    passwordMandatoryFieldError = '';
+    resetPasswordLabel = '';
 
+
+    private language = '';
     // Message
     private resetPasswordSuccessMessage = '';
     private resetPasswordConfirmationDoNotMessage = '';
     private mandatoryFieldError = '';
-    public passwordMandatoryFieldError = '';
-    public confirmPasswordMandatoryFieldError = '';
-
-    public password = '';
-    public confirmPassword = '';
-
     private i18nMessages: Array<string> = [
         'error.form.mandatory',
         'reset-password',
@@ -69,7 +67,12 @@ export class ResetPasswordComponent {
         );
     }
 
-    public ok(): void {
+    cleanConfirmPassword(): void {
+        this.clean();
+        this.confirmPassword = '';
+    }
+
+    ok(): void {
         if (this.password === this.confirmPassword) {
             this.changePassword.emit({
                 password: this.password,
@@ -80,11 +83,6 @@ export class ResetPasswordComponent {
         }
     }
 
-    // tslint:disable-next-line:no-unused-variable
-    private cleanConfirmPassword(): void {
-        this.clean();
-        this.confirmPassword = '';
-    }
     private clean(): void {
         this.message = '';
     }

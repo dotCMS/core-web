@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./main-legacy.component.scss'],
     templateUrl: './main-legacy.component.html'
 })
-export class MainComponentLegacy implements OnInit, OnDestroy {
+export class MainComponentLegacyComponent implements OnInit, OnDestroy {
     isMenuCollapsed = false;
     isTablet = false;
     private messages: any = {};
@@ -21,7 +21,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     /**
      * Set isTablet when resizing the window size
      * @param {any} event
-     * @memberof MainComponentLegacy
+     * @memberof MainComponentLegacyComponentComponent
      */
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
@@ -54,7 +54,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
 
     /**
      * Set collapsed menu state base on the screen size
-     * @memberof MainComponentLegacy
+     * @memberof MainComponentLegacyComponent
      */
     setMenuState(): void {
         if (window.innerWidth < 1025) {
@@ -66,7 +66,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     /**
      * Toggle show/hide sidenav
      *
-     * @memberof MainComponentLegacy
+     * @memberof MainComponentLegacyComponent
      */
     toggleSidenav(): void {
         this.isMenuCollapsed = !this.isMenuCollapsed;

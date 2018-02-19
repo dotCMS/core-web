@@ -11,7 +11,7 @@ import { NgControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 @Component({
-    selector: 'searchable-dropdown',
+    selector: 'dot-searchable-dropdown',
     template: ''
 })
 class TestSearchableDropdownComponent {
@@ -28,7 +28,7 @@ class TestSearchableDropdownComponent {
 }
 
 @Component({
-    selector: 'field-validation-message',
+    selector: 'dot-field-validation-message',
     template: ''
 })
 class TestFieldValidationMessageComponent {

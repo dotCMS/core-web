@@ -5,9 +5,7 @@ import {
     Input,
     SimpleChanges,
     ViewChild,
-    ViewContainerRef,
     ComponentFactoryResolver,
-    ComponentRef,
     OnChanges,
     OnInit,
     ViewEncapsulation
@@ -19,7 +17,7 @@ import { ContentTypeField } from '../shared';
 import { FieldPropertyService } from '../service/';
 
 @Component({
-    selector: 'content-type-fields-properties-form',
+    selector: 'dot-content-type-fields-properties-form',
     styleUrls: ['./content-type-fields-properties-form.component.scss'],
     templateUrl: './content-type-fields-properties-form.component.html',
     encapsulation: ViewEncapsulation.None

@@ -32,7 +32,6 @@ describe('DotLayoutPropertiesComponent', () => {
     let comp: DotLayoutPropertiesComponent;
     let fixture: ComponentFixture<DotLayoutPropertiesComponent>;
     let de: DebugElement;
-    let hostComponentfixture: ComponentFixture<TestHostComponent>;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.layout.properties.header': 'Header',
@@ -57,5 +56,8 @@ describe('DotLayoutPropertiesComponent', () => {
         de = fixture.debugElement;
     });
 
-    xit('should modify the group model', () => {});
+    xit('should modify the group model', () => {
+        expect(comp.group).toBe('some');
+        expect(de).toBe('some');
+    });
 });

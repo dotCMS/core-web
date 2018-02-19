@@ -9,7 +9,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { ContentTypeField } from '../index';
 
 @Directive({
-    selector: '[dynamicFieldProperty]'
+    selector: '[dotDynamicFieldProperty]'
 })
 class TestDynamicFieldPropertyDirective {
     @Input() propertyName: string;
@@ -19,7 +19,7 @@ class TestDynamicFieldPropertyDirective {
 
 @Injectable()
 class TestFieldPropertiesService {
-    getProperties(fieldTypeClass: string): string[] {
+    getProperties(): string[] {
         return ['property1', 'property2', 'property3'];
     }
 
@@ -27,7 +27,7 @@ class TestFieldPropertiesService {
         return propertyName === 'property1' || propertyName === 'property2';
     }
 
-    getDefaultValue(propertyName: string, fieldTypeClass?: string): any {
+    getDefaultValue(propertyName: string): any {
         return propertyName === 'property1' ? '' : true;
     }
 

@@ -55,7 +55,7 @@ describe('DotTextareaContentComponent', () => {
     });
 
     it(
-        "should have option 'Plain' selected by default",
+        'should have option \'Plain\' selected by default',
         async(() => {
             fixture.detectChanges();
             /*
@@ -70,7 +70,7 @@ describe('DotTextareaContentComponent', () => {
         })
     );
 
-    it("should show 'Plain' field by default", () => {
+    it('should show \'Plain\' field by default', () => {
         fixture.detectChanges();
         const plainFieldTexarea = de.query(By.css('.textarea-content__plain-field'));
         expect(plainFieldTexarea).toBeTruthy('show plain field');

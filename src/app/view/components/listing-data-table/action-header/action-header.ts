@@ -7,7 +7,7 @@ import { ActionHeaderOptions, ButtonAction } from '../../../../shared/models/act
 
 @Component({
     encapsulation: ViewEncapsulation.None,
-    selector: 'action-header',
+    selector: 'dot-action-header',
     styleUrls: ['./action-header.scss'],
     templateUrl: 'action-header.html'
 })

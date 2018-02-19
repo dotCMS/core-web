@@ -150,6 +150,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         }
     }
 
+    // tslint:disable-next-line:no-shadowed-variable
     propagateChange = (_: any) => {};
 
     /**

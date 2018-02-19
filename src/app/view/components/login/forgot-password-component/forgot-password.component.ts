@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnInit } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 
 @Component({
@@ -6,7 +6,7 @@ import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
     selector: 'dot-forgot-password-component',
     templateUrl: 'forgot-password.component.html'
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
     @Input() message: string;
     @Output() cancel = new EventEmitter<any>();
     @Output() recoverPassword = new EventEmitter<string>();

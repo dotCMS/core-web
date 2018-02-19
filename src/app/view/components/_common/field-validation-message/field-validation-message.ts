@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Component({
-    selector: 'field-validation-message',
+    selector: 'dot-field-validation-message',
     styleUrls: ['./field-validation-message.scss'],
     templateUrl: './field-validation-message.html'
 })

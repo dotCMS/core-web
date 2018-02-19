@@ -15,7 +15,7 @@ import {
 import { BaseComponent } from '../../_base/base-component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { OverlayPanel } from 'primeng/primeng';
 
 /**
@@ -34,7 +34,7 @@ import { OverlayPanel } from 'primeng/primeng';
             useExisting: forwardRef(() => SearchableDropdownComponent)
         }
     ],
-    selector: 'searchable-dropdown',
+    selector: 'dot-searchable-dropdown',
     styleUrls: ['./searchable-dropdown.component.scss'],
     templateUrl: './searchable-dropdown.component.html'
 })

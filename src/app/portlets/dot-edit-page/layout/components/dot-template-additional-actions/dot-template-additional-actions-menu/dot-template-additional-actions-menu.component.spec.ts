@@ -8,6 +8,7 @@ import { MenuItem } from 'primeng/components/common/menuitem';
 import { DotTemplateAdditionalActionsMenuComponent } from './dot-template-additional-actions-menu.component';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'p-menu',
     template: ''
 })

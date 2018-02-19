@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
-    selector: 'custom-time',
+    selector: 'dot-custom-time',
     styleUrls: ['./custom-time.scss'],
     templateUrl: 'custom-time.html'
 })

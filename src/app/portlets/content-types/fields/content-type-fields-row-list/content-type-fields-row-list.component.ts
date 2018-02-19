@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-import { FieldService } from '../service';
 import { FieldRow } from '../shared';
 
 /**
@@ -10,7 +8,7 @@ import { FieldRow } from '../shared';
  * @class FieldTypesConFieldsRowListComponentainerComponent
  */
 @Component({
-    selector: 'content-type-fields-row-list',
+    selector: 'dot-content-type-fields-row-list',
     styleUrls: ['./content-type-fields-row-list.component.scss'],
     templateUrl: './content-type-fields-row-list.component.html'
 })

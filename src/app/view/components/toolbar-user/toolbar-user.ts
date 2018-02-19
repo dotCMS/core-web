@@ -6,7 +6,7 @@ import { LoginService, Auth, LoggerService } from 'dotcms-js/dotcms-js';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 
 @Component({
-    selector: 'toolbar-user',
+    selector: 'dot-toolbar-user',
     styleUrls: ['./toolbar-user.scss'],
     templateUrl: 'toolbar-user.html'
 })

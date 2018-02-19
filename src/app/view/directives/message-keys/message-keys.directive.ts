@@ -2,8 +2,7 @@ import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 
 @Directive({
-    host: {},
-    selector: '[messagekey]'
+    selector: '[dotMessagekey]'
 })
 export class MessageKeyDirective implements OnInit, OnDestroy {
     private key: string;

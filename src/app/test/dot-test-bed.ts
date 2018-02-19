@@ -26,6 +26,7 @@ import { FormatDateService } from '../api/services/format-date-service';
 import { DotConfirmationService } from '../api/services/dot-confirmation';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'p-confirmDialog',
     template: ''
 })

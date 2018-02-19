@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { GravatarService } from '../../../../api/services/gravatar-service';
 import * as md5 from 'md5';
 
 @Component({
-    selector: 'gravatar',
+    selector: 'dot-gravatar',
     styleUrls: ['./gravatar.component.scss'],
     templateUrl: './gravatar.component.html'
 })
-export class GravatarComponent {
+export class GravatarComponent implements OnChanges {
     @Input() email;
     @Input() size;
     public gravatarProfileStyles;

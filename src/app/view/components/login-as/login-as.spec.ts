@@ -13,7 +13,7 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { PaginatorService } from '../../../api/services/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { InputTextModule } from 'primeng/primeng';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotRouterService } from '../../../api/services/dot-router-service';

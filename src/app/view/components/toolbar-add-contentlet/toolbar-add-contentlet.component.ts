@@ -28,7 +28,7 @@ export class ToolbarAddContenletComponent extends BaseComponent implements OnIni
     types: StructureTypeView[];
 
     private NUMBER_BY_PAGE = 4;
-    private currentPage: number = -1;
+    private currentPage = -1;
 
     constructor(
         dotMessageService: DotMessageService,

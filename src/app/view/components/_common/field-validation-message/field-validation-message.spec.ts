@@ -23,15 +23,15 @@ describe('FieldValidationComponent', () => {
     });
 
     it('should hide the message by default', () => {
-        let fakeInput: any = {};
+        const fakeInput: any = {};
         component.field = fakeInput;
         fixture.detectChanges();
         de = fixture.debugElement.query(By.css('div'));
         expect(de).toBeNull();
     });
 
-    it("should hide the message when field it's valid", () => {
-        let fakeInput: any = {};
+    it('should hide the message when field it\'s valid', () => {
+        const fakeInput: any = {};
         fakeInput.valid = true;
         component.field = fakeInput;
         fixture.detectChanges();
@@ -39,8 +39,8 @@ describe('FieldValidationComponent', () => {
         expect(de).toBeNull();
     });
 
-    it("should show the message when field it's touched and invalid", () => {
-        let fakeInput: any = {};
+    it('should show the message when field it\'s touched and invalid', () => {
+        const fakeInput: any = {};
         fakeInput.touched = true;
         fakeInput.valid = false;
         component.field = fakeInput;

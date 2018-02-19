@@ -140,7 +140,7 @@ export const EDIT_PAGE_CSS = `
 
      .dotedit-contentlet__toolbar button {
         margin-right: 8px;
-        background-color: ${white}; 
+        background-color: ${white};
      }
 
      .dotedit-contentlet__toolbar button:last-child {

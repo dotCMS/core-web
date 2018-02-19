@@ -5,7 +5,7 @@ import { DotMessageService } from '../../../../../../api/services/dot-messages-s
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'default-value-property',
+    selector: 'dot-default-value-property',
     templateUrl: './default-value-property.component.html'
 })
 export class DefaultValuePropertyComponent extends BaseComponent {

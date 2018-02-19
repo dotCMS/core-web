@@ -22,7 +22,7 @@ export class DotActionButtonComponent implements OnInit, OnChanges {
     @Input() model: MenuItem[];
     @Input() selected: boolean;
 
-    @Output() onClick: EventEmitter<any> = new EventEmitter();
+    @Output() click: EventEmitter<any> = new EventEmitter();
 
     @HostBinding('class.action-button--no-label') isNotLabeled = true;
 
@@ -54,6 +54,6 @@ export class DotActionButtonComponent implements OnInit, OnChanges {
      * @memberof DotActionButtonComponent
      */
     buttonOnClick($event): void {
-        this.isHaveOptions() ? this.menu.toggle($event) : this.onClick.emit($event);
+        this.isHaveOptions() ? this.menu.toggle($event) : this.click.emit($event);
     }
 }

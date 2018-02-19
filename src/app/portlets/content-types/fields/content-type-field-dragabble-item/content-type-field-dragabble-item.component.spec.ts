@@ -94,7 +94,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
             expect(button.attributes['icon']).toEqual('fa-trash');
 
             let resp: ContentTypeField;
-            comp.remove.subscribe((field) => (resp = field));
+            comp.remove.subscribe((fieldItem) => (resp = fieldItem));
             button.nativeElement.click();
 
             tick();

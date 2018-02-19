@@ -82,7 +82,7 @@ describe('ActionButtonComponent', () => {
     it('should emit event on button click', () => {
         let res;
 
-        comp.onClick.subscribe((event) => {
+        comp.click.subscribe((event) => {
             res = event;
         });
 

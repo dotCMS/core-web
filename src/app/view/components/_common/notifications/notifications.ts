@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { BaseComponent } from '../_base/base-component';
 import { INotification } from '../../../../shared/models/notifications';
@@ -11,7 +11,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
     styleUrls: ['./notifications-item.scss'],
     templateUrl: 'notifications-item.html'
 })
-export class NotificationsItem extends BaseComponent {
+export class NotificationsItemComponent extends BaseComponent implements OnInit {
     @Input() data;
     @Output() clear = new EventEmitter<Object>();
 
@@ -63,7 +63,7 @@ export class NotificationsItem extends BaseComponent {
     styleUrls: ['./notifications-list.scss'],
     templateUrl: 'notifications-list.html'
 })
-export class NotificationsList {
+export class NotificationsListComponent {
     @Input() notifications: INotification;
     @Output() dismissNotification = new EventEmitter<Object>();
 

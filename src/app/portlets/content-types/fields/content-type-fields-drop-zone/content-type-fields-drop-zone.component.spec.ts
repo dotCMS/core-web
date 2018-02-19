@@ -21,25 +21,26 @@ import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
 
 @Component({
-    selector: 'content-type-fields-row',
+    selector: 'dot-content-type-fields-row',
     template: ''
 })
-class TestContentTypeFieldsRow {
+class TestContentTypeFieldsRowComponent {
     @Input() fieldRow: FieldRow;
     @Output() editField: EventEmitter<ContentTypeField> = new EventEmitter();
     @Output() removeField: EventEmitter<ContentTypeField> = new EventEmitter();
 }
 
 @Component({
-    selector: 'content-type-fields-properties-form ',
+    selector: 'dot-content-type-fields-properties-form ',
     template: ''
 })
-class TestContentTypeFieldsPropertiesForm {
+class TestContentTypeFieldsPropertiesFormComponent {
     @Output() saveField: EventEmitter<any> = new EventEmitter();
     @Input() formFieldData: ContentTypeField;
 }
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'p-overlayPanel',
     template: ''
 })
@@ -90,8 +91,8 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
             DOTTestBed.configureTestingModule({
                 declarations: [
                     ContentTypeFieldsDropZoneComponent,
-                    TestContentTypeFieldsRow,
-                    TestContentTypeFieldsPropertiesForm,
+                    TestContentTypeFieldsRowComponent,
+                    TestContentTypeFieldsPropertiesFormComponent,
                     TestPOverlayPanelComponent
                 ],
                 imports: [

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { CrudService } from './../../../api/services/crud/crud.service';
 import { ContentType } from './../shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

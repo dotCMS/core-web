@@ -3,7 +3,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
-    selector: 'base'
+    selector: 'dot-base'
 })
 export class BaseComponent implements OnDestroy {
     public messageMapSubscription;

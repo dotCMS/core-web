@@ -34,7 +34,7 @@ export class ContentTypesFormComponent implements OnInit {
 
     @Input() data: any;
     @Input() fields: ContentTypeField[];
-    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() submit: EventEmitter<any> = new EventEmitter();
 
     canSave = false;
     dateVarOptions: SelectItem[] = [];
@@ -123,7 +123,7 @@ export class ContentTypesFormComponent implements OnInit {
      */
     submitForm(): void {
         if (this.form.valid) {
-            this.onSubmit.emit(this.form.value);
+            this.submit.emit(this.form.value);
         }
     }
 

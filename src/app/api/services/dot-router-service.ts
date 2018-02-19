@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { PortletNav } from '../../shared/models/navigation';
-import { DotMenuService } from './dot-menu.service';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -12,8 +11,7 @@ export class DotRouterService {
 
     constructor(
         private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private dotMenuService: DotMenuService
+        private activatedRoute: ActivatedRoute
     ) {}
 
     get currentPortlet(): PortletNav {
@@ -30,7 +28,7 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     reloadCurrentPortlet(id: string): void {
-        this.portletReload$.next();
+        this.portletReload$.next(id);
     }
 
     goToEditPage(url: any): void {

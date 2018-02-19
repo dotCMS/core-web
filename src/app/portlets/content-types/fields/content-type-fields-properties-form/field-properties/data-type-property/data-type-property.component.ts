@@ -6,7 +6,7 @@ import { FieldProperty } from '../field-properties.model';
 import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-info';
 
 @Component({
-    selector: 'data-type-property',
+    selector: 'dot-data-type-property',
     templateUrl: './data-type-property.component.html'
 })
 export class DataTypePropertyComponent extends BaseComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { PushPublishService } from './push-publish.service';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';

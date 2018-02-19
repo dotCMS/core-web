@@ -5,7 +5,7 @@ import { FieldProperty } from '../field-properties.model';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
-    selector: 'regex-check-property',
+    selector: 'dot-regex-check-property',
     templateUrl: './regex-check-property.component.html',
     styleUrls: ['./regex-check-property.component.scss']
 })
@@ -73,8 +73,8 @@ export class RegexCheckPropertyComponent extends BaseComponent {
             },
             {
                 label: this.i18nMessages['contenttypes.field.properties.validation_regex.values.url_pattern'],
-                // tslint:disable-next-line:max-line-length
                 value:
+                    // tslint:disable-next-line:max-line-length
                     '^((http|ftp|https)://w{3}[d]*.|(http|ftp|https)://|w{3}[d]*.)([wd._-#()[],;:]+@[wd._-#()[],;:])?([a-z0-9]+.)*[a-z-0-9]+.([a-z]{2,3})?[a-z]{2,6}(:[0-9]+)?(/[/a-zA-Z0-9._-,%s]+)*(/|?[a-z0-9=%&.-,#]+)?$'
             },
             {

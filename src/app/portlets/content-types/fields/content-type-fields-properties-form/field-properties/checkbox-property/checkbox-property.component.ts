@@ -5,7 +5,7 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'checkbox-property',
+    selector: 'dot-checkbox-property',
     templateUrl: './checkbox-property.component.html'
 })
 export class CheckboxPropertyComponent extends BaseComponent {

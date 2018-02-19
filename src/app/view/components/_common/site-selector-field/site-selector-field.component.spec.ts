@@ -15,7 +15,7 @@ import { SiteSelectorFieldModule } from './site-selector-field.module';
     template: `
         <form [formGroup]="form">
             <dot-site-selector-field formControlName="site"></dot-site-selector-field>
-            {{form.value | json}}
+            {{ form.value | json }}
         </form>
     `
 })

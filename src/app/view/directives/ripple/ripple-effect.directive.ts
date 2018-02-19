@@ -1,23 +1,15 @@
-import { Directive, ElementRef, HostListener, Renderer } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding, Renderer2 } from '@angular/core';
 import { ColorUtil } from '../../../api/util/ColorUtil';
 
 /**
- * Directives to ripple effects.
+ * Directives to dotMdRipple effects.
  * How to use:
  * <code>
- *  <button ripple pButton
- *          id="login-component-login-submit-button"
- *          *ngIf="!isLoginInProgress" (click)="logInUser()"
- *          [label]="loginButton">
- * </button>
+ *  <button dotMdRipple pButton></button>
  * </code>
  */
 @Directive({
-    host: {
-        '[style.overflow]': '"hidden"',
-        '[style.position]': '"relative"'
-    },
-    selector: '[ripple]'
+    selector: '[dotMdRipple]'
 })
 export class DotRippleEffectDirective {
     private static readonly WHITE_COLOR = 'rgba(255, 255, 255, 0.4)';
@@ -26,9 +18,15 @@ export class DotRippleEffectDirective {
     private rippleSize: RippleSize;
     private hostNativeElement: HTMLElement;
 
-    constructor(private host: ElementRef, private renderer: Renderer, private colorUtil: ColorUtil) {
+    constructor(private host: ElementRef, private renderer2: Renderer2, private colorUtil: ColorUtil) {
         this.hostNativeElement = host.nativeElement;
     }
+
+    @HostBinding('style.overflow')
+    overflow = 'hidden';
+
+    @HostBinding('style.position')
+    position = 'relative';
 
     @HostListener('click', ['$event'])
     onClick(event: MouseEvent): void {
@@ -41,19 +39,20 @@ export class DotRippleEffectDirective {
     }
 
     private animateRipple(): void {
-        this.renderer.setElementClass(this.rippleElement, 'animate', false);
+        this.renderer2.addClass(this.rippleElement, 'animate');
+
         setTimeout(() => {
-            this.renderer.setElementClass(this.rippleElement, 'animate', true);
+            this.renderer2.addClass(this.rippleElement, 'animate');
         }, 1);
     }
 
     private createRippleElement(): void {
-        this.rippleElement = this.renderer.createElement(this.hostNativeElement, 'div');
+        this.rippleElement = this.renderer2.createElement('div');
         this.rippleSize = this.getRippleSize();
-        this.renderer.setElementClass(this.rippleElement, 'ripple-effect', true);
-        this.renderer.setElementStyle(this.rippleElement, 'width', `${this.rippleSize.width}px`);
-        this.renderer.setElementStyle(this.rippleElement, 'height', `${this.rippleSize.height}px`);
-        this.renderer.setElementStyle(this.rippleElement, 'background', this.getRippleColor());
+        this.renderer2.addClass(this.rippleElement, 'ripple-effect');
+        this.renderer2.setStyle(this.rippleElement, 'width', `${this.rippleSize.width}px`);
+        this.renderer2.setStyle(this.rippleElement, 'height', `${this.rippleSize.height}px`);
+        this.renderer2.setStyle(this.rippleElement, 'background', this.getRippleColor());
     }
 
     private getRippleColor(): string {
@@ -86,8 +85,8 @@ export class DotRippleEffectDirective {
 
     private setRipplePosition(event: MouseEvent): void {
         const ripplePosition: RipplePosition = this.getRipplePosition(event);
-        this.renderer.setElementStyle(this.rippleElement, 'top', `${ripplePosition.y}px`);
-        this.renderer.setElementStyle(this.rippleElement, 'left', `${ripplePosition.x}px`);
+        this.renderer2.setStyle(this.rippleElement, 'top', `${ripplePosition.y}px`);
+        this.renderer2.setStyle(this.rippleElement, 'left', `${ripplePosition.x}px`);
     }
 }
 

@@ -3,7 +3,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 @Component({
     encapsulation: ViewEncapsulation.None,
 
-    selector: 'not-licensed-component',
+    selector: 'dot-not-licensed-component',
     styleUrls: ['./not-licensed.component.scss'],
     templateUrl: 'not-licensed.component.html'
 })

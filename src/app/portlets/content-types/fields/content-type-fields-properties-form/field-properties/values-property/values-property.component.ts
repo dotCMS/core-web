@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { DotTextareaContentComponent } from '../../../../../../view/components/_common/dot-textarea-content/dot-textarea-content.component';
 
 @Component({
-    selector: 'values-property',
+    selector: 'dot-values-property',
     templateUrl: './values-property.component.html'
 })
 export class ValuesPropertyComponent extends BaseComponent {

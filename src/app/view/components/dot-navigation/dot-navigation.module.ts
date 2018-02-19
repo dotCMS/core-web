@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { DotNavigationComponent } from './dot-navigation.component';
-import { Accordion, AccordionGroup } from '../_common/accordion/accordion';
+import { AccordionComponent, AccordionGroupComponent } from '../_common/accordion/accordion';
 import { DotNavigationService } from './dot-navigation.service';
 
 @NgModule({
     imports: [CommonModule, RouterModule],
-    declarations: [DotNavigationComponent, AccordionGroup, Accordion],
+    declarations: [DotNavigationComponent, AccordionGroupComponent, AccordionComponent],
     providers: [DotNavigationService],
     exports: [DotNavigationComponent]
 })

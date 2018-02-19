@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { DotTextareaContentModule } from '../../../../../../view/components/_common/dot-textarea-content/dot-textarea-content.module';
 
 @Component({
-    selector: 'field-validation-message',
+    selector: 'dot-field-validation-message',
     template: ''
 })
 class TestFieldValidationMessageComponent {

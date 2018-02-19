@@ -9,7 +9,7 @@ import { DotDataTableAction } from '../../../../shared/models/data-table/dot-dat
  * @class ActionMenuButtonComponent
  */
 @Component({
-    selector: 'action-menu-button',
+    selector: 'dot-action-menu-button',
     styleUrls: ['./action-menu-button.component.scss'],
     templateUrl: 'action-menu-button.component.html'
 })

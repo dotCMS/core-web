@@ -12,7 +12,7 @@ import { DotConfirmationService } from '../../../../api/services/dot-confirmatio
  * @class FieldTypesContainerComponent
  */
 @Component({
-    selector: 'content-type-fields-row',
+    selector: 'dot-content-type-fields-row',
     styleUrls: ['./content-type-fields-row.component.scss'],
     templateUrl: './content-type-fields-row.component.html'
 })

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, ElementRef, HostListener } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -15,9 +15,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
         ])
     ],
     encapsulation: ViewEncapsulation.Emulated,
-    host: {
-        '(document:click)': 'handleClick($event)'
-    },
     selector: 'dot-dropdown-component',
     styleUrls: ['./dot-dropdown.component.scss'],
     templateUrl: 'dot-dropdown.component.html'
@@ -36,6 +33,21 @@ export class DotDropdownComponent {
 
     constructor(private elementRef: ElementRef) {}
 
+    @HostListener('document:click', ['$event']) handleClick($event) {
+        let clickedComponent = $event.target;
+        let inside = false;
+        do {
+            if (clickedComponent === this.elementRef.nativeElement) {
+                inside = true;
+            }
+            clickedComponent = clickedComponent.parentNode;
+        } while (clickedComponent);
+
+        if (!inside) {
+            this.show = false;
+        }
+    }
+
     public closeIt(): void {
         this.show = false;
     }
@@ -51,22 +63,5 @@ export class DotDropdownComponent {
         }
 
         this.toggle.emit(this.show);
-    }
-
-    // TODO: we need doing this globally for all the components that need to detect if the click was outside it.
-    // tslint:disable-next-line:no-unused-variable
-    private handleClick($event): void {
-        let clickedComponent = $event.target;
-        let inside = false;
-        do {
-            if (clickedComponent === this.elementRef.nativeElement) {
-                inside = true;
-            }
-            clickedComponent = clickedComponent.parentNode;
-        } while (clickedComponent);
-
-        if (!inside) {
-            this.show = false;
-        }
     }
 }

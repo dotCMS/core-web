@@ -5,7 +5,7 @@ import { DotMessageService } from '../../../../../../api/services/dot-messages-s
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 
 @Component({
-    selector: 'name-property',
+    selector: 'dot-name-property',
     templateUrl: './name-property.component.html'
 })
 export class NamePropertyComponent extends BaseComponent {

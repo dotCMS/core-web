@@ -16,7 +16,7 @@ import { Category } from '../../../shared';
  */
 @Component({
     providers: [PaginatorService],
-    selector: 'categories-property',
+    selector: 'dot-categories-property',
     templateUrl: './categories-property.component.html'
 })
 export class CategoriesPropertyComponent extends BaseComponent implements OnInit {

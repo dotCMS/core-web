@@ -45,7 +45,7 @@ export class ResetPasswordContainerComponent {
     public changePassword(changePasswordData: ChangePasswordData): void {
         this.cleanMessage();
         this.loginService.changePassword(changePasswordData.password, changePasswordData.token).subscribe(
-            (result) => {
+            () => {
                 // alert(this.resetPasswordSuccessMessage);
                 // TODO need to use internationalization
                 alert(this.changePasswordSuccessfully);

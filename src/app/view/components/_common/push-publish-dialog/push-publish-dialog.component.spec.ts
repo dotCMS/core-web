@@ -23,7 +23,7 @@ class PushPublishServiceMock {
 }
 
 @Component({
-    selector: 'test-host-component',
+    selector: 'dot-test-host-component',
     template: '<dot-push-publish-dialog [assetIdentifier]="pushPublishIdentifier"></dot-push-publish-dialog>'
 })
 class TestHostComponent {

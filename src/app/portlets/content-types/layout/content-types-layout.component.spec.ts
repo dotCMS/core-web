@@ -11,27 +11,27 @@ import { Observable } from 'rxjs/Observable';
 import { FieldDragDropService } from '../fields/service';
 
 @Component({
-    selector: 'content-types-fields-list',
+    selector: 'dot-content-types-fields-list',
     template: ''
 })
-class TestContentTypeFieldsList {}
+class TestContentTypeFieldsListComponent {}
 
 @Component({
-    selector: 'content-type-fields-row-list',
+    selector: 'dot-content-type-fields-row-list',
     template: ''
 })
-class TestContentTypeFieldsRowList {}
+class TestContentTypeFieldsRowListComponent {}
 
 @Component({
     selector: 'dot-iframe',
     template: ''
 })
-class TestDotIframe {
+class TestDotIframeComponent {
     @Input() src: string;
 }
 
 @Component({
-    selector: 'test-host-component',
+    selector: 'dot-test-host-component',
     template: '<dot-content-type-layout [contentTypeId]="contentTypeId"></dot-content-type-layout>'
 })
 class TestHostComponent {
@@ -76,9 +76,9 @@ describe('ContentTypesLayoutComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypesLayoutComponent,
-                TestContentTypeFieldsList,
-                TestContentTypeFieldsRowList,
-                TestDotIframe,
+                TestContentTypeFieldsListComponent,
+                TestContentTypeFieldsRowListComponent,
+                TestDotIframeComponent,
                 TestContentTypesRelationshipListingComponent,
                 TestHostComponent
             ],
@@ -202,9 +202,7 @@ describe('ContentTypesLayoutComponent', () => {
         it('should set the src attribute', () => {
             const iframe = this.pTabPanel.query(By.css('dot-iframe'));
 
-            expect(iframe.componentInstance.src).toBe(
-                '/html/content_types/push_history.jsp?contentTypeId=2&popup=true'
-            );
+            expect(iframe.componentInstance.src).toBe('/html/content_types/push_history.jsp?contentTypeId=2&popup=true');
         });
     });
 
@@ -237,6 +235,7 @@ describe('ContentTypesLayoutComponent', () => {
 
             // tslint:disable-next-line:max-line-length
             expect(iframe.componentInstance.src).toBe(
+                // tslint:disable-next-line:max-line-length
                 'c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2'
             );
         });

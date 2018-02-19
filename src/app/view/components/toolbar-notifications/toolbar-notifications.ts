@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, ViewChild, OnInit } from '@angular/core';
 
 import { BaseComponent } from '../_common/_base/base-component';
 import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
@@ -14,7 +14,7 @@ import { NotificationsService } from '../../../api/services/notifications-servic
     styleUrls: ['./toolbar-notifications.scss'],
     templateUrl: 'toolbar-notifications.html'
 })
-export class ToolbarNotifications extends BaseComponent {
+export class ToolbarNotificationsComponent extends BaseComponent implements OnInit {
     @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
     private elementRef;
     private isNotificationsMarkedAsRead = false;
@@ -24,12 +24,12 @@ export class ToolbarNotifications extends BaseComponent {
     private existsMoreToLoad = false;
 
     constructor(
-        private dotcmsEventsService: DotcmsEventsService,
-        private notificationService: NotificationsService,
-        myElement: ElementRef,
         dotMessageService: DotMessageService,
+        myElement: ElementRef,
+        private dotcmsEventsService: DotcmsEventsService,
+        private iframeOverlayService: IframeOverlayService,
         private loginService: LoginService,
-        private iframeOverlayService: IframeOverlayService
+        private notificationService: NotificationsService
     ) {
         super(['notifications_dismissall', 'notifications_title', 'notifications_load_more'], dotMessageService);
         this.elementRef = myElement;

@@ -5,7 +5,7 @@ import { DotMessageService } from '../../../../../../api/services/dot-messages-s
 import { FieldProperty } from '../field-properties.model';
 
 @Component({
-    selector: 'hint-property',
+    selector: 'dot-hint-property',
     templateUrl: './hint-property.component.html'
 })
 export class HintPropertyComponent extends BaseComponent {

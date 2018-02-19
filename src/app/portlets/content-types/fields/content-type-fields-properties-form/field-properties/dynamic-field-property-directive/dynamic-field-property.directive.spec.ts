@@ -9,7 +9,7 @@ import { ContentTypeField } from '../../../';
 import { By } from '@angular/platform-browser';
 
 @Component({
-    selector: 'test',
+    selector: 'dot-test',
     template: '<h1>Testing</h1>'
 })
 class TestComponent {

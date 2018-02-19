@@ -11,7 +11,7 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
 
 @Component({
     providers: [PaginatorService],
-    selector: 'listing-data-table',
+    selector: 'dot-listing-data-table',
     styleUrls: ['./listing-data-table.component.scss'],
     templateUrl: 'listing-data-table.component.html'
 })

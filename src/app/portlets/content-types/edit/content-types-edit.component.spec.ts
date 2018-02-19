@@ -47,6 +47,7 @@ class TestContentTypeLayoutComponent {
 class TestContentTypesFormComponent {
     @Input() data: any;
     @Input() fields: ContentTypeField[];
+    // tslint:disable-next-line:no-output-on-prefix
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
     resetForm = jasmine.createSpy('resetForm');
@@ -199,7 +200,7 @@ describe('ContentTypesEditComponent create mode', () => {
     });
 
     it('should create content type', () => {
-        const fakeContentType: ContentType = {
+        const mockContentType: ContentType = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
             defaultType: false,
             fixed: false,
@@ -210,7 +211,7 @@ describe('ContentTypesEditComponent create mode', () => {
             system: false
         };
 
-        const responseContentType = Object.assign({}, { id: '123' }, fakeContentType, {
+        const responseContentType = Object.assign({}, { id: '123' }, mockContentType, {
             fields: [{ hello: 'world' }]
         });
 
@@ -218,9 +219,9 @@ describe('ContentTypesEditComponent create mode', () => {
         spyOn(location, 'replaceState').and.returnValue(Observable.of([responseContentType]));
 
         const contentTypeForm: ContentTypesFormComponent = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.onSubmit.emit(fakeContentType);
+        contentTypeForm.onSubmit.emit(mockContentType);
 
-        expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', fakeContentType);
+        expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', mockContentType);
         expect(comp.data).toEqual(responseContentType, 'set data with response');
         expect(comp.fields).toEqual(responseContentType.fields, 'ser fields with response');
         expect(location.replaceState).toHaveBeenCalledWith('/content-types-angular/edit/123');

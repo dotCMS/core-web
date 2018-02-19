@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { pipe, Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { pluck, map } from 'rxjs/operators';
+// tslint:disable-next-line:import-blacklist
+import { pipe } from 'rxjs';
 
 import { DotPageView } from '../../shared/models/dot-page-view.model';
 

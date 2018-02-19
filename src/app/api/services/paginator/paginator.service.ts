@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod, URLSearchParams } from '@angular/http';
 
+export enum OrderDirection {
+    ASC = 1,
+    DESC = -1
+}
+
 /**
  * Provides util listing methods
  * @export
@@ -231,9 +236,4 @@ interface Links {
     next?: string;
     'x-page'?: string;
     prev?: string;
-}
-
-export enum OrderDirection {
-    ASC = 1,
-    DESC = -1
 }

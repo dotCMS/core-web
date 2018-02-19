@@ -12,7 +12,7 @@ import { validateDateDefaultValue } from './validators';
 import { ConnectionBackend, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { FieldType } from '../';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 class TestFieldService {
     loadFieldTypes(): Observable<FieldType[]> {
