@@ -17,11 +17,11 @@ export class FieldDragDropService {
     private _fieldRowDropFromTarget: Subject<any> = new Subject();
 
     constructor(private dragulaService: DragulaService) {
-        dragulaService.dropModel.subscribe(value => {
+        dragulaService.dropModel.subscribe((value) => {
             this.handleDrop(value[0], value[3].dataset.dragType);
         });
 
-        dragulaService.removeModel.subscribe(value => {
+        dragulaService.removeModel.subscribe((value) => {
             this.handleDrop(value[0], value[3].dataset.dragType);
         });
     }
@@ -86,7 +86,6 @@ export class FieldDragDropService {
             this.handleDropField(dragType, source);
         } else if (dragType === 'fields-row-bag') {
             this.handleDropFieldRow(dragType, source);
-
         }
     }
 
@@ -106,40 +105,22 @@ export class FieldDragDropService {
         }
     }
 
-    private shouldCopy(
-        el: HTMLElement,
-        source: HTMLElement,
-        handle: HTMLElement,
-        sibling: HTMLElement
-    ): boolean {
+    private shouldCopy(el: HTMLElement, source: HTMLElement, handle: HTMLElement, sibling: HTMLElement): boolean {
         return source.dataset.dragType === 'source';
     }
 
-    private shouldMoveRow(
-        el: HTMLElement,
-        source: HTMLElement,
-        handle: HTMLElement,
-        sibling: HTMLElement
-    ): boolean {
-        const isDragButton = handle.parentElement.classList.contains('row-header__drag') || handle.classList.contains('row-header__drag');
+    private shouldMoveRow(el: HTMLElement, source: HTMLElement, handle: HTMLElement, sibling: HTMLElement): boolean {
+        const isDragButton =
+            handle.parentElement.classList.contains('row-header__drag') ||
+            handle.classList.contains('row-header__drag');
         return source.dataset.dragType === 'source' || isDragButton;
     }
 
-    private shouldAccepts(
-        el: HTMLElement,
-        source: HTMLElement,
-        handle: HTMLElement,
-        sibling: HTMLElement
-    ): boolean {
+    private shouldAccepts(el: HTMLElement, source: HTMLElement, handle: HTMLElement, sibling: HTMLElement): boolean {
         return source.dataset.dragType !== 'source';
     }
 
-    private shouldMovesField(
-        el: HTMLElement,
-        source: HTMLElement,
-        handle: HTMLElement,
-        sibling: HTMLElement
-    ): boolean {
+    private shouldMovesField(el: HTMLElement, source: HTMLElement, handle: HTMLElement, sibling: HTMLElement): boolean {
         return el.dataset.dragType !== 'not_field';
     }
 }

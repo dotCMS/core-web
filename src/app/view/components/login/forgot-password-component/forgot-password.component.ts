@@ -54,7 +54,7 @@ export class ForgotPasswordComponent {
      */
     private loadLabels(): void {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
-            data => {
+            (data) => {
                 // Translate labels and messages
                 const dataI18n = data.i18nMessagesMap;
                 const entity = data.entity;
@@ -68,14 +68,13 @@ export class ForgotPasswordComponent {
                 this.forgotPasswordLabel = dataI18n['forgot-password'];
                 this.forgotPasswordButton = dataI18n['get-new-password'];
                 this.cancelButton = dataI18n.cancel;
-                this.forgotPasswordConfirmationMessage =
-                    dataI18n['an-email-with-instructions-will-be-sent'];
+                this.forgotPasswordConfirmationMessage = dataI18n['an-email-with-instructions-will-be-sent'];
                 this.emailMandatoryFieldError = dataI18n['error.form.mandatory'].replace(
                     '{0}',
                     this.userIdOrEmailLabel
                 );
             },
-            error => {
+            (error) => {
                 this.loggerService.error(error);
             }
         );

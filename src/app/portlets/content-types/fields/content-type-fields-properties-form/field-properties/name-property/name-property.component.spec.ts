@@ -1,4 +1,3 @@
-
 import { NamePropertyComponent } from './index';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input } from '@angular/core';
@@ -11,8 +10,8 @@ import { By } from '@angular/platform-browser';
 @Component({
     selector: 'field-validation-message',
     template: ''
-  })
- class TestFieldValidationMessageComponent {
+})
+class TestFieldValidationMessageComponent {
     @Input() field: NgControl;
     @Input() message: string;
 }
@@ -26,24 +25,20 @@ describe('NamePropertyComponent', () => {
         'Default-Value': 'Default-Value'
     });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [
-                NamePropertyComponent,
-                TestFieldValidationMessageComponent
-            ],
-            imports: [
-            ],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock },
-            ]
-        });
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                declarations: [NamePropertyComponent, TestFieldValidationMessageComponent],
+                imports: [],
+                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            });
 
-        fixture = DOTTestBed.createComponent(NamePropertyComponent);
-        comp = fixture.componentInstance;
-        de = fixture.debugElement;
-        el = de.nativeElement;
-    }));
+            fixture = DOTTestBed.createComponent(NamePropertyComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
+            el = de.nativeElement;
+        })
+    );
 
     it('should have a form', () => {
         const group = new FormGroup({});
@@ -71,7 +66,6 @@ describe('NamePropertyComponent', () => {
 
         expect(pInput).not.toBeNull();
     });
-
 
     it('should have a field-message', () => {
         comp.group = new FormGroup({

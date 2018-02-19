@@ -18,7 +18,7 @@ export class PublicAuthGuardService implements CanActivate {
      * @returns {Observable<boolean>}
      */
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.loginService.isLogin$.map(isLogin => {
+        return this.loginService.isLogin$.map((isLogin) => {
             if (isLogin) {
                 this.router.goToMain();
             }

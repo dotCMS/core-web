@@ -31,10 +31,7 @@ export class ToolbarNotifications extends BaseComponent {
         private loginService: LoginService,
         private iframeOverlayService: IframeOverlayService
     ) {
-        super(
-            ['notifications_dismissall', 'notifications_title', 'notifications_load_more'],
-            dotMessageService
-        );
+        super(['notifications_dismissall', 'notifications_title', 'notifications_load_more'], dotMessageService);
         this.elementRef = myElement;
     }
 
@@ -54,8 +51,8 @@ export class ToolbarNotifications extends BaseComponent {
 
     // tslint:disable-next-line:no-unused-variable
     private dismissAllNotifications(): void {
-        const items = this.notifications.map(item => item.id);
-        this.notificationService.dismissNotifications({ items: items }).subscribe(res => {
+        const items = this.notifications.map((item) => item.id);
+        this.notificationService.dismissNotifications({ items: items }).subscribe((res) => {
             // TODO: I think we should get here res and err
             if (res.errors.length) {
                 return;
@@ -66,7 +63,7 @@ export class ToolbarNotifications extends BaseComponent {
     }
 
     private getNotifications(): void {
-        this.notificationService.getLastNotifications().subscribe(res => {
+        this.notificationService.getLastNotifications().subscribe((res) => {
             this.notificationsUnreadCount = res.entity.totalUnreadNotifications;
             this.notifications = res.entity.notifications;
             this.existsMoreToLoad = res.entity.total > res.entity.notifications.length;
@@ -75,7 +72,7 @@ export class ToolbarNotifications extends BaseComponent {
 
     // tslint:disable-next-line:no-unused-variable
     private loadMore(): void {
-        this.notificationService.getAllNotifications().subscribe(res => {
+        this.notificationService.getAllNotifications().subscribe((res) => {
             this.notificationsUnreadCount = res.entity.count;
             this.notifications = res.entity.notifications;
             this.existsMoreToLoad = false;
@@ -83,7 +80,7 @@ export class ToolbarNotifications extends BaseComponent {
     }
 
     private markAllAsRead(): void {
-        this.notificationService.markAllAsRead().subscribe(res => {
+        this.notificationService.markAllAsRead().subscribe((res) => {
             this.isNotificationsMarkedAsRead = true;
             this.notificationsUnreadCount = 0;
         });
@@ -93,29 +90,27 @@ export class ToolbarNotifications extends BaseComponent {
     private onDismissNotification($event): void {
         const notificationId = $event.id;
 
-        this.notificationService
-            .dismissNotifications({ items: [notificationId] })
-            .subscribe(res => {
-                if (res.errors.length) {
-                    return;
-                }
+        this.notificationService.dismissNotifications({ items: [notificationId] }).subscribe((res) => {
+            if (res.errors.length) {
+                return;
+            }
 
-                this.notifications = this.notifications.filter(item => {
-                    return item.id !== notificationId;
-                });
-
-                if (this.notificationsUnreadCount) {
-                    this.notificationsUnreadCount--;
-                }
-
-                if (!this.notifications.length && !this.notificationsUnreadCount) {
-                    this.clearNotitications();
-                }
+            this.notifications = this.notifications.filter((item) => {
+                return item.id !== notificationId;
             });
+
+            if (this.notificationsUnreadCount) {
+                this.notificationsUnreadCount--;
+            }
+
+            if (!this.notifications.length && !this.notificationsUnreadCount) {
+                this.clearNotitications();
+            }
+        });
     }
 
     private subscribeToNotifications(): void {
-        this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe(res => {
+        this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe((res) => {
             this.notifications.unshift(res.data);
             this.notificationsUnreadCount++;
             this.isNotificationsMarkedAsRead = false;

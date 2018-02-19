@@ -55,26 +55,27 @@ export class ContentTypesEditComponent implements OnInit {
             }
         });
 
-        this.dotMessageService.getMessages([
-            'contenttypes.action.create',
-            'contenttypes.action.edit',
-            'contenttypes.action.form.cancel',
-            'contenttypes.action.update',
-            'contenttypes.content.content',
-            'contenttypes.content.create.contenttype',
-            'contenttypes.content.edit.contenttype',
-            'contenttypes.content.fileasset',
-            'contenttypes.content.form',
-            'contenttypes.content.htmlpage',
-            'contenttypes.content.key_value',
-            'contenttypes.content.persona',
-            'contenttypes.content.vanity_url',
-            'contenttypes.content.variable',
-            'contenttypes.content.variable',
-            'contenttypes.content.widget',
-            'contenttypes.form.identifier'
-
-        ]).subscribe();
+        this.dotMessageService
+            .getMessages([
+                'contenttypes.action.create',
+                'contenttypes.action.edit',
+                'contenttypes.action.form.cancel',
+                'contenttypes.action.update',
+                'contenttypes.content.content',
+                'contenttypes.content.create.contenttype',
+                'contenttypes.content.edit.contenttype',
+                'contenttypes.content.fileasset',
+                'contenttypes.content.form',
+                'contenttypes.content.htmlpage',
+                'contenttypes.content.key_value',
+                'contenttypes.content.persona',
+                'contenttypes.content.vanity_url',
+                'contenttypes.content.variable',
+                'contenttypes.content.variable',
+                'contenttypes.content.widget',
+                'contenttypes.form.identifier'
+            ])
+            .subscribe();
 
         this.setTemplateInfo();
 

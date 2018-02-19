@@ -12,4 +12,3 @@ import { FormsModule } from '@angular/forms';
     providers: []
 })
 export class DotLayoutSidebarModule {}
-

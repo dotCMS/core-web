@@ -22,7 +22,7 @@ import { IframeOverlayService } from '../service/iframe-overlay.service';
     styleUrls: ['./iframe.component.scss'],
     templateUrl: 'iframe.component.html'
 })
-export class IframeComponent implements OnInit  {
+export class IframeComponent implements OnInit {
     @ViewChild('iframeElement') iframeElement: ElementRef;
     @Input() src: string;
     @Input() isLoading = false;
@@ -47,7 +47,7 @@ export class IframeComponent implements OnInit  {
     ) {}
 
     ngOnInit(): void {
-        this.iframeOverlayService.overlay.subscribe(val => (this.showOverlay = val));
+        this.iframeOverlayService.overlay.subscribe((val) => (this.showOverlay = val));
         this.element.nativeElement.style.height = this.getIframeHeight(window.innerHeight);
 
         Observable.fromEvent(window, 'resize')
@@ -69,8 +69,8 @@ export class IframeComponent implements OnInit  {
 
             if (currentPath.indexOf('/c/portal_public/login') !== -1) {
                 this.loginService.logOutUser().subscribe(
-                    data => {},
-                    error => {
+                    (data) => {},
+                    (error) => {
                         this.loggerService.error(error);
                     }
                 );

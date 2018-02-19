@@ -37,8 +37,8 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
      */
     logout(): boolean {
         this.loginService.logOutUser().subscribe(
-            data => {},
-            error => {
+            (data) => {},
+            (error) => {
                 this.loggerService.error(error);
             }
         );
@@ -48,11 +48,11 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     logoutAs($event): void {
         $event.preventDefault();
         this.loginService.logoutAs().subscribe(
-            data => {
+            (data) => {
                 this.dropdown.closeIt();
                 this.iframeOverlayService.hide();
             },
-            error => {
+            (error) => {
                 this.loggerService.error(error);
             }
         );

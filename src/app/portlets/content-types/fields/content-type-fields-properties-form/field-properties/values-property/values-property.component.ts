@@ -7,7 +7,7 @@ import { DotTextareaContentComponent } from '../../../../../../view/components/_
 
 @Component({
     selector: 'values-property',
-    templateUrl: './values-property.component.html',
+    templateUrl: './values-property.component.html'
 })
 export class ValuesPropertyComponent extends BaseComponent {
     @ViewChild('value') value: DotTextareaContentComponent;
@@ -15,11 +15,6 @@ export class ValuesPropertyComponent extends BaseComponent {
     group: FormGroup;
 
     constructor(public dotMessageService: DotMessageService) {
-        super(
-            [
-                'contenttypes.field.properties.value.label',
-            ],
-            dotMessageService
-        );
+        super(['contenttypes.field.properties.value.label'], dotMessageService);
     }
 }

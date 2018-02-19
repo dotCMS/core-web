@@ -34,8 +34,8 @@ export class TestHotkeysMock {
      */
     get(combo: string[]): Hotkey | Hotkey[] {
         const hotKeyCombo: Hotkey[] = [];
-        this.hotkeys.forEach(hotkey => {
-            hotkey.combo.forEach(hotkeyCombo => {
+        this.hotkeys.forEach((hotkey) => {
+            hotkey.combo.forEach((hotkeyCombo) => {
                 if (combo.includes(hotkeyCombo)) {
                     hotKeyCombo.push(hotkey);
                 }
@@ -63,10 +63,10 @@ export class TestHotkeysMock {
      * @returns {(any|void)}
      * @memberof TestHotkeysMock
      */
-    callback(combo: string[]): any|void {
+    callback(combo: string[]): any | void {
         const hotkey: any = this.get(combo);
         if (hotkey) {
-          return hotkey.callback(null, combo);
+            return hotkey.callback(null, combo);
         }
     }
 }

@@ -40,8 +40,8 @@ export class DotAddToBundleComponent implements OnInit {
 
         this.bundle$ = this.addToBundleService.getBundles();
 
-        this.dotMessageService.getMessages(keys).subscribe(messages => {
-            this.addToBundleService.getBundles().subscribe(bundles => {
+        this.dotMessageService.getMessages(keys).subscribe((messages) => {
+            this.addToBundleService.getBundles().subscribe((bundles) => {
                 this.placeholder = bundles.length
                     ? messages['contenttypes.content.add_to_bundle.select']
                     : messages['contenttypes.content.add_to_bundle.type'];
@@ -93,7 +93,7 @@ export class DotAddToBundleComponent implements OnInit {
     }
 
     private setBundleData(): DotBundle {
-        if (typeof(this.form.value.addBundle) === 'string') {
+        if (typeof this.form.value.addBundle === 'string') {
             return {
                 id: this.form.value.addBundle,
                 name: this.form.value.addBundle

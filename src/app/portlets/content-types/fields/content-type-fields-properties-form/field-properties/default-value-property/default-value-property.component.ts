@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'default-value-property',
-    templateUrl: './default-value-property.component.html',
+    templateUrl: './default-value-property.component.html'
 })
 export class DefaultValuePropertyComponent extends BaseComponent {
     property: FieldProperty;

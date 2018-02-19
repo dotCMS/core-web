@@ -134,7 +134,7 @@ export class LoginComponent {
      */
     private renderPageData(): void {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
-            data => {
+            (data) => {
                 // Translate labels and messages
                 const dataI18n = data.i18nMessagesMap;
                 const entity = data.entity;
@@ -172,7 +172,7 @@ export class LoginComponent {
                 if (this.languages.length === 0) {
                     const currentLanguage = entity.currentLanguage;
 
-                    entity.languages.forEach(lang => {
+                    entity.languages.forEach((lang) => {
                         this.languages.push({
                             label: lang.displayName,
                             value: lang.language + '_' + lang.country
@@ -189,7 +189,7 @@ export class LoginComponent {
                     this.message = this.resetEmailMessage.replace('{0}', this.resetEmail);
                 }
             },
-            error => {
+            (error) => {
                 this.loggerService.debug(error);
             }
         );

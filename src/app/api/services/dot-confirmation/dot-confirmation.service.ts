@@ -16,13 +16,9 @@ export class DotConfirmationService {
     showRejectButton: boolean;
     labels: Subject<FooterLabels> = new Subject();
     public i18nMessages = {};
-    public i18nKeys: string[] = [
-        'contenttypes.action.yes',
-        'contenttypes.action.no'
-    ];
+    public i18nKeys: string[] = ['contenttypes.action.yes', 'contenttypes.action.no'];
 
-    constructor(public confirmationService: ConfirmationService) {
-    }
+    constructor(public confirmationService: ConfirmationService) {}
 
     /**
      * Confirm wrapper method of ConfirmService
@@ -53,13 +49,10 @@ export class DotConfirmationService {
             acceptLabel: confirmationParameter.footerLabel.acceptLabel || 'Yes'
         });
 
-        const confirmation  = Object.assign({}, confirmationParameter);
-        confirmation.accept = () => {
-
-        };
+        const confirmation = Object.assign({}, confirmationParameter);
+        confirmation.accept = () => {};
 
         this.showRejectButton = false;
         this.confirmationService.confirm(confirmation);
     }
 }
-

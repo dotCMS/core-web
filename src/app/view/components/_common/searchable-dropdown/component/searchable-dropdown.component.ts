@@ -135,10 +135,10 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
         let resultProps;
 
         if (Array.isArray(this.labelPropertyName)) {
-            resultProps = this.labelPropertyName.map(item => {
+            resultProps = this.labelPropertyName.map((item) => {
                 if (item.indexOf('.') > -1) {
                     let propertyName;
-                    item.split('.').forEach(nested => {
+                    item.split('.').forEach((nested) => {
                         propertyName = propertyName ? propertyName[nested] : container[nested];
                     });
 

@@ -30,10 +30,9 @@ class TestFieldService {
 
 describe('FieldPropertyService', () => {
     beforeEach(() => {
-
         this.injector = DOTTestBed.resolveAndCreate([
             FieldPropertyService,
-            { provide: FieldService, useClass: TestFieldService },
+            { provide: FieldService, useClass: TestFieldService }
         ]);
 
         this.fieldPropertiesService = this.injector.get(FieldPropertyService);
@@ -56,12 +55,24 @@ describe('FieldPropertyService', () => {
     });
 
     it('should return the right default value', () => {
-        expect('').toEqual(this.fieldPropertiesService.getDefaultValue('categories',
-                            'com.dotcms.contenttype.model.field.ImmutableRadioField'));
-        expect('TEXT').toEqual(this.fieldPropertiesService.getDefaultValue('dataType',
-                                                    'com.dotcms.contenttype.model.field.ImmutableRadioField'));
-        expect('').toEqual(this.fieldPropertiesService.getDefaultValue('defaultValue',
-                            'com.dotcms.contenttype.model.field.ImmutableRadioField'));
+        expect('').toEqual(
+            this.fieldPropertiesService.getDefaultValue(
+                'categories',
+                'com.dotcms.contenttype.model.field.ImmutableRadioField'
+            )
+        );
+        expect('TEXT').toEqual(
+            this.fieldPropertiesService.getDefaultValue(
+                'dataType',
+                'com.dotcms.contenttype.model.field.ImmutableRadioField'
+            )
+        );
+        expect('').toEqual(
+            this.fieldPropertiesService.getDefaultValue(
+                'defaultValue',
+                'com.dotcms.contenttype.model.field.ImmutableRadioField'
+            )
+        );
 
         expect(this.fieldPropertiesService.getDefaultValue('property')).toBeNull();
     });
@@ -97,7 +108,9 @@ describe('FieldPropertyService', () => {
     });
 
     it('should return the right proeprties for a Field Class', () => {
-        expect(['property1', 'property2', 'property3']).toEqual(this.fieldPropertiesService.getProperties('fieldClass'));
+        expect(['property1', 'property2', 'property3']).toEqual(
+            this.fieldPropertiesService.getProperties('fieldClass')
+        );
         expect(this.fieldPropertiesService.getProperties('fieldClass2')).toBeUndefined();
     });
 
@@ -111,5 +124,4 @@ describe('FieldPropertyService', () => {
         }).toEqual(this.fieldPropertiesService.getFieldType('fieldClass'));
         expect(this.fieldPropertiesService.getFieldType('fieldClass2')).toBeUndefined();
     });
-
 });

@@ -47,7 +47,7 @@ export class ResetPasswordComponent {
 
     ngOnInit(): void {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
-            data => {
+            (data) => {
                 const dataI18n = data.i18nMessagesMap;
 
                 this.resetPasswordLabel = dataI18n['reset-password'];
@@ -55,19 +55,15 @@ export class ResetPasswordComponent {
                 this.confirmPasswordLabel = dataI18n['re-enter-password'];
                 this.changePasswordButton = dataI18n['change-password'];
                 this.mandatoryFieldError = dataI18n['error.form.mandatory'];
-                this.passwordMandatoryFieldError = this.mandatoryFieldError.replace(
-                    '{0}',
-                    this.enterPasswordLabel
-                );
+                this.passwordMandatoryFieldError = this.mandatoryFieldError.replace('{0}', this.enterPasswordLabel);
                 this.confirmPasswordMandatoryFieldError = this.mandatoryFieldError.replace(
                     '{0}',
                     this.confirmPasswordLabel
                 );
-                this.resetPasswordConfirmationDoNotMessage =
-                    dataI18n['reset-password-confirmation-do-not-match'];
+                this.resetPasswordConfirmationDoNotMessage = dataI18n['reset-password-confirmation-do-not-match'];
                 this.resetPasswordSuccessMessage = dataI18n['reset-password-success'];
             },
-            error => {
+            (error) => {
                 this.loggerService.error(error);
             }
         );

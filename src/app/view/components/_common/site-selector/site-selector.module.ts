@@ -7,17 +7,8 @@ import { SearchableDropDownModule } from '../searchable-dropdown/searchable-drop
 import { SiteSelectorComponent } from './site-selector.component';
 
 @NgModule({
-    declarations: [
-        SiteSelectorComponent,
-    ],
-    exports: [
-        SiteSelectorComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        SearchableDropDownModule
-    ]
+    declarations: [SiteSelectorComponent],
+    exports: [SiteSelectorComponent],
+    imports: [CommonModule, FormsModule, SearchableDropDownModule]
 })
-
 export class SiteSelectorModule {}

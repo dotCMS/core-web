@@ -92,14 +92,12 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
     });
 
     it('should handle custom events from the iframe', () => {
-
         spyOn(dotGlobalMessageService, 'display');
-
 
         const dotIframe: IframeComponent = de.query(By.css('dot-iframe')).componentInstance;
         const iframe: any = dotIframe.iframeElement.nativeElement;
 
-        dotIframe.load.emit({target: iframe});
+        dotIframe.load.emit({ target: iframe });
 
         const customEvent = document.createEvent('CustomEvent');
         customEvent.initCustomEvent('ng-event', false, false, {

@@ -14,17 +14,13 @@ import { FieldDragDropService } from '../fields/service';
     selector: 'content-types-fields-list',
     template: ''
 })
-class TestContentTypeFieldsList {
-
-}
+class TestContentTypeFieldsList {}
 
 @Component({
     selector: 'content-type-fields-row-list',
     template: ''
 })
-class TestContentTypeFieldsRowList {
-
-}
+class TestContentTypeFieldsRowList {}
 
 @Component({
     selector: 'dot-iframe',
@@ -46,17 +42,13 @@ class TestHostComponent {
     selector: 'dot-content-types-relationship-listing',
     template: ''
 })
-class TestContentTypesRelationshipListingComponent {
-
-}
+class TestContentTypesRelationshipListingComponent {}
 
 @Injectable()
 export class MockDotMenuService {
-
     getDotMenuId(portletId: string): Observable<string> {
         return Observable.of('1234');
     }
-
 }
 
 class FieldDragDropServiceMock {
@@ -72,7 +64,6 @@ describe('ContentTypesLayoutComponent', () => {
     const mockDotMenuService: MockDotMenuService = new MockDotMenuService();
 
     beforeEach(() => {
-
         const messageServiceMock = new MockDotMessageService({
             'contenttypes.sidebar.components.title': 'Field Title',
             'contenttypes.tab.fields.header': 'Fields Header Tab',
@@ -91,9 +82,7 @@ describe('ContentTypesLayoutComponent', () => {
                 TestContentTypesRelationshipListingComponent,
                 TestHostComponent
             ],
-            imports: [
-                TabViewModule
-            ],
+            imports: [TabViewModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotMenuService, useClass: MockDotMenuService },
@@ -213,7 +202,9 @@ describe('ContentTypesLayoutComponent', () => {
         it('should set the src attribute', () => {
             const iframe = this.pTabPanel.query(By.css('dot-iframe'));
 
-            expect(iframe.componentInstance.src).toBe('/html/content_types/push_history.jsp?contentTypeId=2&popup=true');
+            expect(iframe.componentInstance.src).toBe(
+                '/html/content_types/push_history.jsp?contentTypeId=2&popup=true'
+            );
         });
     });
 
@@ -242,11 +233,12 @@ describe('ContentTypesLayoutComponent', () => {
         });
 
         it('should set the src attribute', () => {
-           const iframe = this.relationshipTab.query(By.css('dot-iframe'));
+            const iframe = this.relationshipTab.query(By.css('dot-iframe'));
 
             // tslint:disable-next-line:max-line-length
-            expect(iframe.componentInstance.src)
-                .toBe('c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2');
+            expect(iframe.componentInstance.src).toBe(
+                'c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2'
+            );
         });
     });
 });

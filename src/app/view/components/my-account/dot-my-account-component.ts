@@ -62,7 +62,7 @@ export class MyAccountComponent extends BaseComponent {
         this.passwordMatch = false;
         this.changePasswordOption = false;
         this.loginService.watchUser(this.loadUser.bind(this));
-        this.dotcmsConfig.getConfig().subscribe(res => {
+        this.dotcmsConfig.getConfig().subscribe((res) => {
             this.emailRegex = res.emailRegex;
         });
     }
@@ -99,7 +99,7 @@ export class MyAccountComponent extends BaseComponent {
     // tslint:disable-next-line:no-unused-variable
     private save(): void {
         this.accountService.updateUser(this.accountUser).subscribe(
-            response => {
+            (response) => {
                 // TODO: replace the alert with a Angular components
                 alert(this.i18nMessages['message.createaccount.success']);
                 this.close.emit();
@@ -113,7 +113,7 @@ export class MyAccountComponent extends BaseComponent {
                     });
                 }
             },
-            response => {
+            (response) => {
                 // TODO: We have to define how must be the user feedback in case of error
                 this.message = response.errorsMessages;
             }

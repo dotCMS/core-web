@@ -74,10 +74,7 @@ const getConfig = (route) => {
             TestContentTypesFormComponent,
             TestContentTypeLayoutComponent
         ],
-        imports: [
-            RouterTestingModule,
-            BrowserAnimationsModule
-        ],
+        imports: [RouterTestingModule, BrowserAnimationsModule],
         providers: [
             { provide: LoginService, useClass: LoginServiceMock },
             { provide: DotMessageService, useValue: messageServiceMock },
@@ -213,7 +210,7 @@ describe('ContentTypesEditComponent create mode', () => {
             system: false
         };
 
-        const responseContentType = Object.assign({}, {id: '123'}, fakeContentType, {
+        const responseContentType = Object.assign({}, { id: '123' }, fakeContentType, {
             fields: [{ hello: 'world' }]
         });
 
@@ -229,7 +226,6 @@ describe('ContentTypesEditComponent create mode', () => {
         expect(location.replaceState).toHaveBeenCalledWith('/content-types-angular/edit/123');
     });
 });
-
 
 const currentFieldsInServer = [
     {
