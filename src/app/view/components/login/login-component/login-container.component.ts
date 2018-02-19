@@ -53,7 +53,7 @@ export class LoginContainerComponent {
         this.loginService
             .loginUser(loginData.login, loginData.password, loginData.rememberMe, loginData.language)
             .subscribe(
-                (result: any) => {
+                () => {
                     this.message = '';
                     this.dotLoadingIndicatorService.hide();
                 },

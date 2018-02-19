@@ -12,7 +12,7 @@ export class ToolbarAddContenletService {
 
     constructor(private contentletService: DotContentletService, private dotcmsEventsService: DotcmsEventsService) {
         this.loadData();
-        dotcmsEventsService
+        this.dotcmsEventsService
             .subscribeToEvents(['SAVE_BASE_CONTENT_TYPE', 'UPDATE_BASE_CONTENT_TYPE', 'DELETE_BASE_CONTENT_TYPE'])
             .subscribe(() => {
                 this.reloadContentlets();

@@ -232,10 +232,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-        this.fieldRows.forEach((fieldRow, rowIndex) => {
+        this.fieldRows.forEach((fieldRow) => {
             fields.push(fieldRow.lineDivider);
 
-            fieldRow.columns.forEach((fieldColumn, colIndex) => {
+            fieldRow.columns.forEach((fieldColumn) => {
                 fields.push(fieldColumn.tabDivider);
                 fieldColumn.fields.forEach((field) => fields.push(field));
             });

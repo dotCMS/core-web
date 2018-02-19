@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { PortletNav } from '../../shared/models/navigation';
 import { Subject } from 'rxjs/Subject';
@@ -10,8 +10,7 @@ export class DotRouterService {
     private _previousSavedURL: string;
 
     constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute
+        private router: Router
     ) {}
 
     get currentPortlet(): PortletNav {

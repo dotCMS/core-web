@@ -16,7 +16,6 @@ import { DotCurrentUserService } from '../dot-current-user/dot-current-user.serv
 @Injectable()
 export class PushPublishService {
     private pushEnvironementsUrl = 'environment/loadenvironments/roleId';
-    private currentUsersUrl = 'v1/users/current/';
     private _lastEnvironmentPushed: string[];
     /*
         TODO: I had to do this because this line concat'api/' into the URL

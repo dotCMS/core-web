@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-import { Router } from '@angular/router';
 import { SelectItem, AutoComplete } from 'primeng/primeng';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -34,7 +33,7 @@ export class PatternLibraryComponent implements OnInit {
 
     @ViewChild(AutoComplete) private autoCompleteComponent: AutoComplete;
 
-    constructor(public loggerService: LoggerService, private router: Router, private fb: FormBuilder) {
+    constructor(public loggerService: LoggerService, private fb: FormBuilder) {
         this.cities = [];
         this.cities.push({ label: 'Select City', value: null });
         this.cities.push({ label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } });

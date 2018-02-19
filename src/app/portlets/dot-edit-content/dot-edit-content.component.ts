@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
@@ -13,14 +13,11 @@ import { DotGlobalMessageService } from '../../view/components/_common/dot-globa
 import { DotMenuService } from '../../api/services/dot-menu.service';
 import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
 import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
-import { DotContainer } from '../dot-edit-page/shared/models/dot-container.model';
 import { Workflow } from '../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
 import { WorkflowService } from '../../api/services/workflow/workflow.service';
-import { DotEditPageToolbarComponent, PageMode } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
+import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { DotPage } from '../dot-edit-page/shared/models/dot-page.model';
-import { stagger } from '@angular/animations/src/animation_metadata';
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
 
@@ -131,7 +128,7 @@ export class DotEditContentComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditContentComponent
      */
-    onLoad($event): void {
+    onLoad(_event): void {
         this.dotLoadingIndicatorService.hide();
     }
 

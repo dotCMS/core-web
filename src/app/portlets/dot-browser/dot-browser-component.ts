@@ -47,11 +47,11 @@ export class DotBrowserComponent implements OnInit {
         }
     }
 
-    clearUploads(e: any) {
+    clearUploads(_e: any) {
         this.uploadedFiles = [];
     }
 
-    displayUpload(file: File): void {
+    displayUpload(_file: File): void {
         this.uploadDialog = true;
     }
 

@@ -2,7 +2,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '../../../api/services/crud';

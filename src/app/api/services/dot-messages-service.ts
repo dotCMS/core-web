@@ -110,7 +110,7 @@ export class DotMessageService {
             'relativetime.yy'
         ];
         this.getMessages(relativeDateKeys).subscribe((res) => {
-            const relativeDateMessages = _.mapKeys(res, (value, key: string) => {
+            const relativeDateMessages = _.mapKeys(res, (_value, key: string) => {
                 return key.replace('relativetime.', '');
             });
             this.formatDateService.setLang(this.lang.split('_')[0], relativeDateMessages);

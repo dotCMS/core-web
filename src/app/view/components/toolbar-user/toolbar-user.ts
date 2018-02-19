@@ -12,9 +12,9 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 })
 export class ToolbarUserComponent extends BaseComponent implements OnInit {
     @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
+    auth: Auth;
 
     private showLoginAs = false;
-    private auth: Auth;
     private showMyAccount = false;
 
     constructor(
@@ -37,7 +37,7 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
      */
     logout(): boolean {
         this.loginService.logOutUser().subscribe(
-            (data) => {},
+            () => {},
             (error) => {
                 this.loggerService.error(error);
             }
@@ -48,7 +48,7 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     logoutAs($event): void {
         $event.preventDefault();
         this.loginService.logoutAs().subscribe(
-            (data) => {
+            () => {
                 this.dropdown.closeIt();
                 this.iframeOverlayService.hide();
             },

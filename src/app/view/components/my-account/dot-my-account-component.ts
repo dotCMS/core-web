@@ -17,6 +17,9 @@ export class MyAccountComponent extends BaseComponent {
     @Output() close = new EventEmitter<any>();
     @Input() visible: boolean;
 
+    emailRegex: string;
+    passwordMatch: boolean;
+
     private accountUser: AccountUser = {
         currentPassword: '',
         email: '',
@@ -26,17 +29,15 @@ export class MyAccountComponent extends BaseComponent {
     };
 
     private passwordConfirm: string;
-    private passwordMatch: boolean;
     private message = null;
     private changePasswordOption = false;
-    private emailRegex: string;
 
     constructor(
-        private loginService: LoginService,
-        private accountService: AccountService,
         dotMessageService: DotMessageService,
-        private stringFormat: StringFormat,
-        private dotcmsConfig: DotcmsConfig
+        private accountService: AccountService,
+        private dotcmsConfig: DotcmsConfig,
+        private loginService: LoginService,
+        private stringFormat: StringFormat
     ) {
         super(
             [
@@ -81,23 +82,11 @@ export class MyAccountComponent extends BaseComponent {
         this.changePasswordOption = !this.changePasswordOption;
     }
 
-    // tslint:disable-next-line:no-unused-variable
-    private getRequiredMessage(item): string {
+    getRequiredMessage(item): string {
         return this.stringFormat.formatMessage(this.i18nMessages['error.form.mandatory'], item);
     }
 
-    private loadUser(auth: Auth): void {
-        const user: User = auth.user;
-        this.accountUser.email = user.emailAddress;
-        this.accountUser.givenName = user.firstName;
-        this.accountUser.surname = user.lastName;
-        this.accountUser.userId = user.userId;
-        this.accountUser.newPassword = null;
-        this.passwordConfirm = null;
-    }
-
-    // tslint:disable-next-line:no-unused-variable
-    private save(): void {
+    save(): void {
         this.accountService.updateUser(this.accountUser).subscribe(
             (response) => {
                 // TODO: replace the alert with a Angular components
@@ -118,5 +107,15 @@ export class MyAccountComponent extends BaseComponent {
                 this.message = response.errorsMessages;
             }
         );
+    }
+
+    private loadUser(auth: Auth): void {
+        const user: User = auth.user;
+        this.accountUser.email = user.emailAddress;
+        this.accountUser.givenName = user.firstName;
+        this.accountUser.surname = user.lastName;
+        this.accountUser.userId = user.userId;
+        this.accountUser.newPassword = null;
+        this.passwordConfirm = null;
     }
 }

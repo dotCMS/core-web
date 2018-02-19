@@ -14,7 +14,7 @@ export class ContentletGuardService implements CanActivateChild {
         private dotNavigationService: DotNavigationService
     ) {}
 
-    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    canActivateChild(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
         return this.canAccessContentType(route.params.id);
     }
 

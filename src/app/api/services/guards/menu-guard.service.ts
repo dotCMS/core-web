@@ -17,13 +17,13 @@ export class MenuGuardService implements CanActivate {
         private dotNavigationService: DotNavigationService
     ) {}
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return !environment.production && state.url === '/pl'
             ? Observable.of(true)
             : this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));
     }
 
-    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    canActivateChild(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return !environment.production && state.url === '/pl'
             ? Observable.of(true)
             : this.canAccessPortlet(this.dotRouterService.getPortletId(state.url));

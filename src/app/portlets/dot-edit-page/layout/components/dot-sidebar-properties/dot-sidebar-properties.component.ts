@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { FormGroup } from '@angular/forms';
 

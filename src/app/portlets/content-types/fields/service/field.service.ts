@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ContentTypeField, FieldType, FieldRow } from '../shared';
+import { ContentTypeField, FieldType } from '../shared';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { FieldUtil } from '../util/field-util';

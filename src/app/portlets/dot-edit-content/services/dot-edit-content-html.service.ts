@@ -71,7 +71,7 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     renderPage(editPageHTML: string, iframeEl: ElementRef): Promise<any> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             this.iframe = iframeEl;
             const iframeElement = this.getEditPageIframe();
             iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModelChange;
@@ -220,7 +220,6 @@ export class DotEditContentHtmlService {
 
     private isContentExistInContainer(contentlet: DotPageContent, containerEL: HTMLElement): boolean {
         const contentsSelector = `div[data-dot-object="contentlet"]`;
-        const doc = this.getEditPageDocument();
         const currentContentlets: HTMLElement[] = <HTMLElement[]>Array.from(
             containerEL.querySelectorAll(contentsSelector).values()
         );
@@ -309,7 +308,7 @@ export class DotEditContentHtmlService {
     }
 
     private bindEventToAddContentSubMenu(button: Node): void {
-        button.addEventListener('click', ($event) => {
+        button.addEventListener('click', (_event) => {
             this.closeContainersToolBarMenu(button.parentElement);
             button.parentElement.classList.toggle('active');
         });

@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { DotDataTableAction } from '../../../../shared/models/data-table/dot-data-table-action';
 

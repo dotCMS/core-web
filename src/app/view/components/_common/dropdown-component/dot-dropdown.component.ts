@@ -48,12 +48,11 @@ export class DotDropdownComponent {
         }
     }
 
-    public closeIt(): void {
+    closeIt(): void {
         this.show = false;
     }
 
-    // tslint:disable-next-line:no-unused-variable
-    private onToggle(): void {
+    onToggle(): void {
         this.show = !this.show;
 
         if (this.show) {

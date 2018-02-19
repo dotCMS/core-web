@@ -1,9 +1,6 @@
-import { Component, OnInit, Input, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DotPageView } from '../../shared/models/dot-page-view.model';
-import { IframeComponent } from '../../../../view/components/_common/iframe/iframe-component';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
@@ -18,7 +15,6 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
 
     constructor(
         private dotMenuService: DotMenuService,
-        private sanitizer: DomSanitizer,
         private ngZone: NgZone,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMessageService: DotMessageService

@@ -23,7 +23,7 @@ import { Observable } from 'rxjs/Observable';
 export class MockDotMessageService {
     constructor(private messages: MessageConfig) {}
 
-    public getMessages(keys: string[]): Observable<any> {
+    public getMessages(_keys: string[]): Observable<any> {
         return Observable.of(this.messages);
     }
 

@@ -31,7 +31,7 @@ export class GravatarComponent implements OnChanges {
                 this.gravatarProfile = true;
                 this.avatarUrl = data.entry[0].photos[0].value + '?s=' + this.size;
             },
-            (error) => {
+            (_error) => {
                 this.gravatarProfile = false;
                 this.gravatarPlaceholder = this.getDotAvatar(this.email);
                 this.gravatarPlaceholderStyles = {

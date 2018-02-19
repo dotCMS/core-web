@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -10,7 +10,6 @@ import { DotContentletService } from '../../../../../api/services/dot-contentlet
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../../api/services/dot-router-service';
-import { IframeComponent } from '../iframe-component';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,

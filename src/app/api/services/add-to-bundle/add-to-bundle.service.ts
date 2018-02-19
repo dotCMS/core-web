@@ -1,4 +1,4 @@
-import { CoreWebService, ApiRoot, ResponseView } from 'dotcms-js/dotcms-js';
+import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';

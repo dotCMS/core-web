@@ -1,7 +1,6 @@
 import { Component, Input, ViewEncapsulation, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../view/components/_common/_base/base-component';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DragulaService } from 'ng2-dragula';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
 

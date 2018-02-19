@@ -11,7 +11,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * Put in lowercase the received string
  */
 export class LowercasePipe implements PipeTransform {
-    transform(value: string, args: Array<any>): string {
+    transform(value: string): string {
         return value === undefined || value === '' ? '' : value.toLowerCase();
     }
 }

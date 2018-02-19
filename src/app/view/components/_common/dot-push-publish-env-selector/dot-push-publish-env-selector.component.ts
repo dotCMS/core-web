@@ -78,7 +78,7 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      * @param {any} selectedEnvironments
      * @memberof PushPublishEnvSelectorComponent
      */
-    valueChange($event, selectedEnvironments): void {
+    valueChange(_event, selectedEnvironments): void {
         this.propagateEnvironmentId(selectedEnvironments);
     }
 

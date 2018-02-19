@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -66,7 +65,7 @@ export class DotAddToBundleComponent implements OnInit {
      * @param {any} $event
      * @memberof DotAddToBundleComponent
      */
-    submitBundle($event): void {
+    submitBundle(_event): void {
         if (this.form.valid) {
             this.addToBundleService.addToBundle(this.assetIdentifier, this.setBundleData()).subscribe((result: any) => {
                 if (!result.errors) {

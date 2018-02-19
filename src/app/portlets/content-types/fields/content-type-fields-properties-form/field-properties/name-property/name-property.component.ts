@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms/forms';
 import { FieldProperty } from '../field-properties.model';
 import { DotMessageService } from '../../../../../../api/services/dot-messages-service';

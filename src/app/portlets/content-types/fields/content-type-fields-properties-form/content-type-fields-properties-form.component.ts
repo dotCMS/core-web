@@ -5,7 +5,6 @@ import {
     Input,
     SimpleChanges,
     ViewChild,
-    ComponentFactoryResolver,
     OnChanges,
     OnInit,
     ViewEncapsulation
@@ -34,7 +33,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     constructor(
         private fb: FormBuilder,
-        private componentFactoryResolver: ComponentFactoryResolver,
         public dotMessageService: DotMessageService,
         private fieldPropertyService: FieldPropertyService
     ) {

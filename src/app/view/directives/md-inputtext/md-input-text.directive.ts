@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, Input, OnChanges, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 
 /**
  * Directives material design floating label textfield.
@@ -18,7 +18,7 @@ export class MaterialDesignTextfieldDirective implements OnChanges {
     private floatingLabel: HTMLElement;
 
     constructor(private host: ElementRef, private renderer2: Renderer2) {
-        this.hostNativeElement = host.nativeElement;
+        this.hostNativeElement = this.host.nativeElement;
         this.hostNativeElement.className = 'md-inputtext';
     }
 

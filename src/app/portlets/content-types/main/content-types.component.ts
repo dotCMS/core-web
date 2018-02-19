@@ -1,7 +1,6 @@
 import { ListingDataTableComponent } from './../../../view/components/listing-data-table/listing-data-table.component';
 import { DotConfirmationService } from './../../../api/services/dot-confirmation/dot-confirmation.service';
 import { CrudService } from './../../../api/services/crud';
-import { MenuItem } from 'primeng/primeng';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -113,6 +112,12 @@ export class ContentTypesPortletComponent implements OnInit {
         });
     }
 
+    editContentType($event): void {
+        this.router.navigate([`edit/${$event.data.id}`], {
+            relativeTo: this.route
+        });
+    }
+
     private createRowActions(rowActionsMap: any): DotDataTableAction[] {
         const listingActions: DotDataTableAction[] = [];
 
@@ -208,14 +213,8 @@ export class ContentTypesPortletComponent implements OnInit {
         ];
     }
 
-    private createContentType(type: string, $event?): void {
+    private createContentType(type: string, _event?): void {
         this.router.navigate(['create', type], { relativeTo: this.route });
-    }
-
-    private editContentType($event): void {
-        this.router.navigate([`edit/${$event.data.id}`], {
-            relativeTo: this.route
-        });
     }
 
     private removeConfirmation(item: any): void {
@@ -237,7 +236,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private removeContentType(item): void {
-        this.crudService.delete(`v1/contenttype/id`, item.id).subscribe((data) => {
+        this.crudService.delete(`v1/contenttype/id`, item.id).subscribe(() => {
             this.listing.loadCurrentPage();
         });
     }

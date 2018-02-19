@@ -116,7 +116,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      */
     setKeyboardEvent(key: string | string[], keyEvent): any {
         this.hotkeysService.add(
-            new Hotkey(key, (event: KeyboardEvent): boolean => {
+            new Hotkey(key, (_event: KeyboardEvent): boolean => {
                 keyEvent();
                 return false;
             })

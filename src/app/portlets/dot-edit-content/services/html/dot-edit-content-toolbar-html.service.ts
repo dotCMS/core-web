@@ -103,7 +103,6 @@ export class DotEditContentToolbarHtmlService {
                         try {
                             const contentlets = Array.from(doc.querySelectorAll('div[data-dot-object="contentlet"]'));
                             contentlets.forEach((contentlet: HTMLElement) => {
-                                const container: HTMLElement = contentlet.parentElement;
 
                                 const contentletToolbar = document.createElement('div');
                                 contentletToolbar.classList.add('dotedit-contentlet__toolbar');

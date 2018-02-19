@@ -6,8 +6,6 @@ import { pluck, map } from 'rxjs/operators';
 // tslint:disable-next-line:import-blacklist
 import { pipe } from 'rxjs';
 
-import { DotPageView } from '../../shared/models/dot-page-view.model';
-
 export const getDrawed = pluck('pageView', 'template', 'drawed');
 export const isAdvanced = map((isDrawed: boolean) => !isDrawed);
 export const getTemplateType = pipe(getDrawed, isAdvanced);

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
 import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 import { FieldProperty } from '../field-properties.model';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'dot-regex-check-property',

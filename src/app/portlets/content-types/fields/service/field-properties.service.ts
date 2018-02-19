@@ -1,7 +1,4 @@
-import { Injectable, ComponentFactory, Type } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { RequestMethod } from '@angular/http';
-import { CoreWebService } from 'dotcms-js/dotcms-js';
+import { Injectable, Type } from '@angular/core';
 import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
 import { ValidationErrors } from '@angular/forms';

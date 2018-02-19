@@ -1,5 +1,4 @@
-import { DotNavigationComponent } from './../dot-navigation/dot-navigation.component';
-import { Component, OnDestroy, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 import { Router } from '@angular/router';
 
@@ -10,11 +9,9 @@ import { Router } from '@angular/router';
     styleUrls: ['./main-legacy.component.scss'],
     templateUrl: './main-legacy.component.html'
 })
-export class MainComponentLegacyComponent implements OnInit, OnDestroy {
+export class MainComponentLegacyComponent implements OnInit {
     isMenuCollapsed = false;
     isTablet = false;
-    private messages: any = {};
-    private label = '';
 
     constructor(private dotEventsService: DotEventsService, private router: Router) {}
 
@@ -31,10 +28,10 @@ export class MainComponentLegacyComponent implements OnInit, OnDestroy {
     /**
      * Respond to document events and collapse the sidenav if is clicked outside
      * @param {*} event
-     * @memberof DotNavigationComponent
+     * @memberof MainComponentLegacyComponent
      */
     @HostListener('click', ['$event'])
-    onClickOutside(event: any) {
+    onClickOutside(_event: any) {
         if (this.isTablet && !this.isMenuCollapsed) {
             this.isMenuCollapsed = true;
         }
@@ -43,13 +40,8 @@ export class MainComponentLegacyComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
-        this.router.events.subscribe((event) => this.setMenuState());
+        this.router.events.subscribe((_event) => this.setMenuState());
         this.setMenuState();
-    }
-
-    ngOnDestroy(): void {
-        this.messages = null;
-        this.label = null;
     }
 
     /**

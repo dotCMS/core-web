@@ -11,7 +11,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * Put in uppercase le first character of the string
  */
 export class CapitalizePipe implements PipeTransform {
-    transform(value: string, args: Array<any>): string {
+    transform(value: string): string {
         if (value === undefined || value === '') {
             value = '';
         } else {

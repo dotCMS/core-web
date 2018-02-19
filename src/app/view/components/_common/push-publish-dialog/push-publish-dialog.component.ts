@@ -1,4 +1,3 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -81,7 +80,7 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
      * @param {any} $event
      * @memberof PushPublishContentTypesDialogComponent
      */
-    submitPushAction($event): void {
+    submitPushAction(_event): void {
         if (this.form.valid) {
             this.pushPublishService
                 .pushPublishContent(this.assetIdentifier, this.form.value)

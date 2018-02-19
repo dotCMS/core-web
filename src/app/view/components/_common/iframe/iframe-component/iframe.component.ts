@@ -5,12 +5,9 @@ import {
     OnInit,
     Input,
     ViewChild,
-    SimpleChanges,
     Output,
     EventEmitter
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
@@ -28,7 +25,6 @@ export class IframeComponent implements OnInit {
     @Input() isLoading = false;
     @Output() load: EventEmitter<any> = new EventEmitter();
 
-    iframeURL: SafeResourceUrl;
     showOverlay = false;
 
     private readonly DEFAULT_LOCATION = {
@@ -40,8 +36,6 @@ export class IframeComponent implements OnInit {
         private element: ElementRef,
         private loggerService: LoggerService,
         private loginService: LoginService,
-        private route: ActivatedRoute,
-        private sanitizer: DomSanitizer,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
         public iframeOverlayService: IframeOverlayService
     ) {}
@@ -69,7 +63,7 @@ export class IframeComponent implements OnInit {
 
             if (currentPath.indexOf('/c/portal_public/login') !== -1) {
                 this.loginService.logOutUser().subscribe(
-                    (data) => {},
+                    (_data) => {},
                     (error) => {
                         this.loggerService.error(error);
                     }

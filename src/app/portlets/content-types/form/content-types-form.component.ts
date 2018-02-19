@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 import { SelectItem } from 'primeng/primeng';
 
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
@@ -157,18 +156,6 @@ export class ContentTypesFormComponent implements OnInit {
         }
 
         return dateVarOptions;
-    }
-
-    private handleDateVarChange($event, field): void {
-        const expireDateVar = this.form.get('expireDateVar');
-        const publishDateVar = this.form.get('publishDateVar');
-
-        if (field === 'publishDateVar' && expireDateVar.value === $event.value) {
-            expireDateVar.patchValue('');
-        }
-        if (field === 'expireDateVar' && publishDateVar.value === $event.value) {
-            publishDateVar.patchValue('');
-        }
     }
 
     private initFormGroup(): void {

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
+import { StructureTypeView } from '../../../shared/models/contentlet';
 import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 
 @Component({

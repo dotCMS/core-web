@@ -161,7 +161,7 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
      * @param {*} item
      * @memberof SearchableDropdownComponent
      */
-    private handleClick(item: any): void {
+    handleClick(item: any): void {
         if (this.value !== item) {
             this.value = item;
             if (Array.isArray(this.labelPropertyName)) {

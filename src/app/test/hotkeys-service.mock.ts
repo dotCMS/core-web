@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { Hotkey } from 'angular2-hotkeys';
 
 /**
  * Mock of HotkeysService.
@@ -20,7 +20,7 @@ export class TestHotkeysMock {
      * @param hotkey
      * @param specificEvent
      */
-    add(hotkey: Hotkey | Hotkey[], specificEvent?: string | string[]): Observable<Hotkey[]> {
+    add(hotkey: Hotkey | Hotkey[], _specificEvent?: string | string[]): Observable<Hotkey[]> {
         this.hotkeys.push(hotkey);
         return Observable.of([]);
     }
@@ -52,7 +52,7 @@ export class TestHotkeysMock {
      * @returns {(Hotkey | Hotkey[])}
      * @memberof TestHotkeysMock
      */
-    remove(hotkey?: Hotkey | Hotkey[]): Hotkey | Hotkey[] {
+    remove(_hotkey?: Hotkey | Hotkey[]): Hotkey | Hotkey[] {
         return null;
     }
 
