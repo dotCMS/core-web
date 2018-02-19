@@ -29,6 +29,7 @@ export class MaterialDesignTextfieldDirective implements OnChanges {
     setLabel(): void {
         if (!this.floatingLabel) {
             this.floatingLabel = this.renderer2.createElement('label');
+            this.renderer2.appendChild(this.hostNativeElement, this.floatingLabel);
         }
         this.floatingLabel.innerHTML = this.label;
     }

@@ -48,6 +48,7 @@ export class DotRippleEffectDirective {
 
     private createRippleElement(): void {
         this.rippleElement = this.renderer2.createElement('div');
+        this.renderer2.appendChild(this.hostNativeElement, this.rippleElement);
         this.rippleSize = this.getRippleSize();
         this.renderer2.addClass(this.rippleElement, 'ripple-effect');
         this.renderer2.setStyle(this.rippleElement, 'width', `${this.rippleSize.width}px`);
