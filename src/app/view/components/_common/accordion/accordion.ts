@@ -2,7 +2,6 @@ import { Component, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } fro
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-
     selector: 'accordion',
     template: `
         <ng-content></ng-content>
@@ -111,5 +110,4 @@ export class AccordionGroup implements AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.accordion.removeGroup(this);
     }
-
 }

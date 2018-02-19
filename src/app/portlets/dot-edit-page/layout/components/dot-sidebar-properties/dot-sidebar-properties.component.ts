@@ -14,11 +14,13 @@ export class DotSidebarPropertiesComponent implements OnInit {
     constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
-            'editpage.layout.sidebar.width.small',
-            'editpage.layout.sidebar.width.medium',
-            'editpage.layout.sidebar.width.large',
-            'editpage.layout.sidebar.action.open'
-        ]).subscribe();
+        this.dotMessageService
+            .getMessages([
+                'editpage.layout.sidebar.width.small',
+                'editpage.layout.sidebar.width.medium',
+                'editpage.layout.sidebar.width.large',
+                'editpage.layout.sidebar.action.open'
+            ])
+            .subscribe();
     }
 }

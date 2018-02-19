@@ -242,7 +242,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     private updateContainerIndex(rowArray, index) {
         if (rowArray[0].row !== index + 1) {
-            return rowArray.map(container => {
+            return rowArray.map((container) => {
                 container.config.row = index + 1;
                 return container;
             });

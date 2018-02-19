@@ -72,14 +72,12 @@ describe('ContentTypeEditResolver', () => {
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
     });
 
-    it('should redirect to content-types if content type it\'s not found', () => {
+    it("should redirect to content-types if content type it's not found", () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
         spyOn(dotRouterService, 'gotoPortlet');
 
-        spyOn(crudService, 'getDataById').and.returnValue(
-            Observable.throw({})
-        );
+        spyOn(crudService, 'getDataById').and.returnValue(Observable.throw({}));
 
         contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe((fakeContentType: any) => {
             expect(fakeContentType).toEqual(null);
@@ -101,7 +99,7 @@ describe('ContentTypeEditResolver', () => {
     });
 
     it('should return a content type placeholder base on type', () => {
-        activatedRouteSnapshotMock.paramMap.get = param => {
+        activatedRouteSnapshotMock.paramMap.get = (param) => {
             return param === 'type' ? 'content' : false;
         };
         spyOn(dotRouterService, 'gotoPortlet');

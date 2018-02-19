@@ -6,7 +6,7 @@ import { FieldProperty } from '../field-properties.model';
 
 @Component({
     selector: 'hint-property',
-    templateUrl: './hint-property.component.html',
+    templateUrl: './hint-property.component.html'
 })
 export class HintPropertyComponent extends BaseComponent {
     property: FieldProperty;

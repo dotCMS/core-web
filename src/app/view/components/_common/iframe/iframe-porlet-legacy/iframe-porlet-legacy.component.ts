@@ -15,7 +15,7 @@ import { IframeComponent } from '../iframe-component';
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-iframe-porlet',
-    templateUrl: 'iframe-porlet-legacy.component.html',
+    templateUrl: 'iframe-porlet-legacy.component.html'
 })
 export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
@@ -105,7 +105,7 @@ export class IframePortletLegacyComponent implements OnInit {
             'MOVE_FILE_ASSET',
             'COPY_FILE_ASSET',
             'MOVE_PAGE_ASSET',
-            'COPY_PAGE_ASSET',
+            'COPY_PAGE_ASSET'
         ];
 
         this.dotcmsEventsService.subscribeToEvents(events).subscribe((eventTypeWrapper) => {
@@ -113,7 +113,7 @@ export class IframePortletLegacyComponent implements OnInit {
                 this.loggerService.debug(
                     'Capturing Site Browser event',
                     eventTypeWrapper.eventType,
-                    eventTypeWrapper.data,
+                    eventTypeWrapper.data
                 );
                 // TODO: When we finish the migration of the site browser this event will be handle.....
             }
@@ -140,7 +140,7 @@ export class IframePortletLegacyComponent implements OnInit {
             .withLatestFrom(this.route.parent.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
             .flatMap(
                 ([id, url]) =>
-                    url === 'add' ? this.contentletService.getUrlById(id) : this.dotMenuService.getUrlById(id),
+                    url === 'add' ? this.contentletService.getUrlById(id) : this.dotMenuService.getUrlById(id)
             )
             .subscribe((url: string) => {
                 this.setUrl(url);

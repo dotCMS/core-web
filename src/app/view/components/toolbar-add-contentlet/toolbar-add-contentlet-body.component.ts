@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
 import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
 import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 
-
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-toolbar-add-contentlet-body',

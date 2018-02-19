@@ -93,7 +93,7 @@ describe('ListingDataTableComponent', () => {
 
     it('renderer basic datatable component', () => {
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], this.items));
             });
         });
@@ -142,13 +142,13 @@ describe('ListingDataTableComponent', () => {
     });
 
     it('renderer with format date column', () => {
-        const itemsWithFormat = this.items.map(item => {
+        const itemsWithFormat = this.items.map((item) => {
             item.field3 = 1496178801000;
             return item;
         });
 
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], itemsWithFormat));
             });
         });
@@ -197,7 +197,7 @@ describe('ListingDataTableComponent', () => {
 
     it('should renderer table without checkbox', () => {
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], this.items));
             });
         });
@@ -240,7 +240,7 @@ describe('ListingDataTableComponent', () => {
             }
         ];
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], this.items));
             });
         });
@@ -273,7 +273,7 @@ describe('ListingDataTableComponent', () => {
             }
         ];
         spyOn(this.paginatorService, 'getWithOffset').and.callFake(() => {
-            return Observable.create(observer => {
+            return Observable.create((observer) => {
                 observer.next(Object.assign([], this.items));
             });
         });

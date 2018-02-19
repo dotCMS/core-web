@@ -16,20 +16,20 @@ import { ContentTypeField, FieldType } from '../';
     styleUrls: ['./content-types-fields-list.component.scss'],
     templateUrl: './content-types-fields-list.component.html'
 })
-export class ContentTypesFieldsListComponent implements  OnInit {
+export class ContentTypesFieldsListComponent implements OnInit {
     fieldTypes: ContentTypeField[];
 
-    constructor(public fieldService: FieldService) {
-
-    }
+    constructor(public fieldService: FieldService) {}
 
     ngOnInit(): void {
-        this.fieldService.loadFieldTypes()
-            .subscribe(fields => this.fieldTypes = fields.map(fieldType => {
-                return {
-                    clazz: fieldType.clazz,
-                    name: fieldType.label
-                };
-            }));
-   }
+        this.fieldService.loadFieldTypes().subscribe(
+            (fields) =>
+                (this.fieldTypes = fields.map((fieldType) => {
+                    return {
+                        clazz: fieldType.clazz,
+                        name: fieldType.label
+                    };
+                }))
+        );
+    }
 }

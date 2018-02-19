@@ -7,7 +7,7 @@ import { DATA_TYPE_PROPERTY_INFO } from '../../../service/data-type-property-inf
 
 @Component({
     selector: 'data-type-property',
-    templateUrl: './data-type-property.component.html',
+    templateUrl: './data-type-property.component.html'
 })
 export class DataTypePropertyComponent extends BaseComponent implements OnInit {
     property: FieldProperty;

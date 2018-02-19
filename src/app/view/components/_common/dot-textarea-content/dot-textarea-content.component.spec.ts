@@ -22,12 +22,7 @@ describe('DotTextareaContentComponent', () => {
         async(() => {
             DOTTestBed.configureTestingModule({
                 declarations: [DotTextareaContentComponent],
-                imports: [
-                    AceEditorModule,
-                    SelectButtonModule,
-                    InputTextareaModule,
-                    TinymceModule.withConfig({})
-                ]
+                imports: [AceEditorModule, SelectButtonModule, InputTextareaModule, TinymceModule.withConfig({})]
             });
 
             fixture = TestBed.createComponent(DotTextareaContentComponent);
@@ -44,11 +39,9 @@ describe('DotTextareaContentComponent', () => {
 
     it('should have options: plain, code and wysiwyg in the select mode buttons by default', () => {
         fixture.detectChanges();
-        const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
-        );
+        const selectFieldWrapper = de.query(By.css('.textarea-content__select-field .ui-selectbutton'));
 
-        selectFieldWrapper.children.forEach(option => {
+        selectFieldWrapper.children.forEach((option) => {
             const optionText = cleanOptionText(option.nativeElement.innerText);
             expect(['Plain', 'Code', 'WYSIWYG'].indexOf(optionText)).toBeGreaterThan(-1);
         });
@@ -62,7 +55,7 @@ describe('DotTextareaContentComponent', () => {
     });
 
     it(
-        'should have option \'Plain\' selected by default',
+        "should have option 'Plain' selected by default",
         async(() => {
             fixture.detectChanges();
             /*
@@ -70,16 +63,14 @@ describe('DotTextareaContentComponent', () => {
             */
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
-                const selectedOption = de.query(
-                    By.css('.textarea-content__select-field .ui-state-active')
-                );
+                const selectedOption = de.query(By.css('.textarea-content__select-field .ui-state-active'));
                 const defaultOptionText = cleanOptionText(selectedOption.nativeElement.innerText);
                 expect(defaultOptionText).toBe('Plain');
             });
         })
     );
 
-    it('should show \'Plain\' field by default', () => {
+    it("should show 'Plain' field by default", () => {
         fixture.detectChanges();
         const plainFieldTexarea = de.query(By.css('.textarea-content__plain-field'));
         expect(plainFieldTexarea).toBeTruthy('show plain field');
@@ -98,30 +89,20 @@ describe('DotTextareaContentComponent', () => {
     it('should show only options we passed in the select mode butons', () => {
         component.show = ['wysiwyg', 'plain'];
         fixture.detectChanges();
-        const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
-        );
-        selectFieldWrapper.children.forEach(option => {
+        const selectFieldWrapper = de.query(By.css('.textarea-content__select-field .ui-selectbutton'));
+        selectFieldWrapper.children.forEach((option) => {
             const optionText = cleanOptionText(option.nativeElement.innerText);
-            expect(['Plain', 'WYSIWYG'].indexOf(optionText)).toBeGreaterThan(
-                -1,
-                `${optionText} exist`
-            );
+            expect(['Plain', 'WYSIWYG'].indexOf(optionText)).toBeGreaterThan(-1, `${optionText} exist`);
         });
     });
 
     it('should show only the valid options we passed in the select mode butons', () => {
         component.show = ['code', 'plain', 'sadf', 'hello', 'world'];
         fixture.detectChanges();
-        const selectFieldWrapper = de.query(
-            By.css('.textarea-content__select-field .ui-selectbutton')
-        );
-        selectFieldWrapper.children.forEach(option => {
+        const selectFieldWrapper = de.query(By.css('.textarea-content__select-field .ui-selectbutton'));
+        selectFieldWrapper.children.forEach((option) => {
             const optionText = cleanOptionText(option.nativeElement.innerText);
-            expect(['Plain', 'Code'].indexOf(optionText)).toBeGreaterThan(
-                -1,
-                `${optionText} exist`
-            );
+            expect(['Plain', 'Code'].indexOf(optionText)).toBeGreaterThan(-1, `${optionText} exist`);
         });
     });
 

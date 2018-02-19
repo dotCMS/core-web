@@ -23,7 +23,7 @@ export class DotNavigationService {
         private router: Router
     ) {
         router.events
-            .filter(event => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
+            .filter((event) => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
             .take(1)
             .subscribe((event: NavigationEnd) => {
                 this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {

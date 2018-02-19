@@ -26,11 +26,7 @@ export class DotRippleEffectDirective {
     private rippleSize: RippleSize;
     private hostNativeElement: HTMLElement;
 
-    constructor(
-        private host: ElementRef,
-        private renderer: Renderer,
-        private colorUtil: ColorUtil
-    ) {
+    constructor(private host: ElementRef, private renderer: Renderer, private colorUtil: ColorUtil) {
         this.hostNativeElement = host.nativeElement;
     }
 
@@ -61,13 +57,10 @@ export class DotRippleEffectDirective {
     }
 
     private getRippleColor(): string {
-        const hostBackgroundColor = window.getComputedStyle(this.hostNativeElement, null)
-            .backgroundColor;
+        const hostBackgroundColor = window.getComputedStyle(this.hostNativeElement, null).backgroundColor;
         const isBright = this.colorUtil.isBrightness(hostBackgroundColor);
 
-        return isBright
-            ? DotRippleEffectDirective.WHITE_COLOR
-            : DotRippleEffectDirective.EFFECT_DEFAULT_COLOR;
+        return isBright ? DotRippleEffectDirective.WHITE_COLOR : DotRippleEffectDirective.EFFECT_DEFAULT_COLOR;
     }
 
     private getRipplePosition(event: MouseEvent): RipplePosition {
@@ -83,9 +76,7 @@ export class DotRippleEffectDirective {
 
     private getRippleSize(): RippleSize {
         const btnOffset = this.host.nativeElement.getBoundingClientRect();
-        const rippleSize =
-            Math.sqrt(btnOffset.width * btnOffset.width + btnOffset.height * btnOffset.height) * 2 +
-            2;
+        const rippleSize = Math.sqrt(btnOffset.width * btnOffset.width + btnOffset.height * btnOffset.height) * 2 + 2;
 
         return {
             height: rippleSize,

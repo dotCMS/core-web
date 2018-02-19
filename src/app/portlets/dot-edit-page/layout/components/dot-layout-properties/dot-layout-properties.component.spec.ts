@@ -11,7 +11,7 @@ import { DebugElement, Component } from '@angular/core';
 
 @Component({
     selector: 'dot-test-host-component',
-    template:   `<form [formGroup]="group">
+    template: `<form [formGroup]="group">
                     <dot-layout-properties></dot-layout-properties>
                 </form>`
 })
@@ -49,9 +49,7 @@ describe('DotLayoutPropertiesComponent', () => {
                 ButtonModule,
                 ReactiveFormsModule
             ],
-            providers: [
-                { provide: DotMessageService, useValue: messageServiceMock }
-            ]
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
         });
 
         fixture = DOTTestBed.createComponent(DotLayoutPropertiesComponent);
@@ -59,7 +57,5 @@ describe('DotLayoutPropertiesComponent', () => {
         de = fixture.debugElement;
     });
 
-    xit('should modify the group model', () => {
-
-    });
+    xit('should modify the group model', () => {});
 });

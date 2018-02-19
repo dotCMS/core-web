@@ -10,8 +10,7 @@ export class DotContentletService {
     private structureTypeView: StructureTypeView[];
     private types$: Observable<StructureTypeView[]>;
 
-    constructor(private coreWebService: CoreWebService) {
-    }
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Get the content types from the endpoint

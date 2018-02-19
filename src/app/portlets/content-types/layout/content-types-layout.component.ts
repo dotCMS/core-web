@@ -42,16 +42,19 @@ export class ContentTypesLayoutComponent extends BaseComponent implements OnChan
 
     ngOnChanges(changes): void {
         if (changes.contentTypeId.currentValue) {
-            this.dotMenuService.getDotMenuId('content-types-angular').subscribe(id => {
+            this.dotMenuService.getDotMenuId('content-types-angular').subscribe((id) => {
                 // tslint:disable-next-line:max-line-length
-                this.relationshipURL = `c/portal/layout?p_l_id=${id}&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=${changes
-                    .contentTypeId.currentValue}`;
+                this.relationshipURL = `c/portal/layout?p_l_id=${id}&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=${
+                    changes.contentTypeId.currentValue
+                }`;
             });
 
-            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${changes
-                .contentTypeId.currentValue}&popup=true`;
-            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${changes
-                .contentTypeId.currentValue}&popup=true`;
+            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${
+                changes.contentTypeId.currentValue
+            }&popup=true`;
+            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${
+                changes.contentTypeId.currentValue
+            }&popup=true`;
         }
     }
 }

@@ -37,7 +37,7 @@ export class DotMenuService {
         return this.getMenuItems()
             .pluck('id')
             .map((id: string) => menuId === id)
-            .filter(val => !!val)
+            .filter((val) => !!val)
             .defaultIfEmpty(false);
     }
 
@@ -80,7 +80,7 @@ export class DotMenuService {
     getDotMenuId(portletId: string): Observable<string> {
         return this.loadMenu()
             .flatMap((menus: DotMenu[]) => menus)
-            .find((menu: DotMenu) => menu.menuItems.some(menuItem => menuItem.id === portletId))
+            .find((menu: DotMenu) => menu.menuItems.some((menuItem) => menuItem.id === portletId))
             .map((menu: DotMenu) => menu.id);
     }
 

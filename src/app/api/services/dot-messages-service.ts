@@ -50,9 +50,7 @@ export class DotMessageService {
      */
     get(key: string, ...args: string[]): string {
         if (args.length) {
-            return this.messagesLoaded[key]
-                ? this.formatMessage(this.messagesLoaded[key], args)
-                : key;
+            return this.messagesLoaded[key] ? this.formatMessage(this.messagesLoaded[key], args) : key;
         } else {
             return this.messagesLoaded[key] || key;
         }

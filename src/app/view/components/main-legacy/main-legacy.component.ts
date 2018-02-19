@@ -1,5 +1,5 @@
 import { DotNavigationComponent } from './../dot-navigation/dot-navigation.component';
-import {Component, OnDestroy, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 import { Router } from '@angular/router';
 
@@ -24,7 +24,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
      * @memberof MainComponentLegacy
      */
     @HostListener('window:resize', ['$event'])
-        onResize(event: any) {
+    onResize(event: any) {
         this.isTablet = event.target.innerWidth < 1025;
     }
 
@@ -43,7 +43,7 @@ export class MainComponentLegacy implements OnInit, OnDestroy {
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
-        this.router.events.subscribe(event => this.setMenuState());
+        this.router.events.subscribe((event) => this.setMenuState());
         this.setMenuState();
     }
 

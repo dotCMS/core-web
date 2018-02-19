@@ -7,18 +7,9 @@ import { Accordion, AccordionGroup } from '../_common/accordion/accordion';
 import { DotNavigationService } from './dot-navigation.service';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule
-    ],
-    declarations: [
-        DotNavigationComponent,
-        AccordionGroup,
-        Accordion
-    ],
+    imports: [CommonModule, RouterModule],
+    declarations: [DotNavigationComponent, AccordionGroup, Accordion],
     providers: [DotNavigationService],
-    exports: [
-        DotNavigationComponent
-    ]
+    exports: [DotNavigationComponent]
 })
-export class MainNavigationModule { }
+export class MainNavigationModule {}

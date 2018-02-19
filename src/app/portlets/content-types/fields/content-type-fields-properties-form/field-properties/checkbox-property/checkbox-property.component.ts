@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'checkbox-property',
-    templateUrl: './checkbox-property.component.html',
+    templateUrl: './checkbox-property.component.html'
 })
 export class CheckboxPropertyComponent extends BaseComponent {
     property: FieldProperty;
@@ -17,7 +17,7 @@ export class CheckboxPropertyComponent extends BaseComponent {
         listed: 'contenttypes.field.properties.listed.label',
         required: 'contenttypes.field.properties.required.label',
         searchable: 'contenttypes.field.properties.user_searchable.label',
-        unique: 'contenttypes.field.properties.unique.label',
+        unique: 'contenttypes.field.properties.unique.label'
     };
 
     constructor(public dotMessageService: DotMessageService) {

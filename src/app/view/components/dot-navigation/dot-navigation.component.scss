@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 accordion {
     a {
@@ -32,7 +32,6 @@ accordion {
             font-size: $font-size-large;
         }
     }
-
 
     .accordion-group__title-text {
         margin-left: 6px; // with the space it's 10px

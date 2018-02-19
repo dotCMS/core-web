@@ -8,10 +8,7 @@ import { DotPageView } from '../../shared/models/dot-page-view.model';
 
 export const getDrawed = pluck('pageView', 'template', 'drawed');
 export const isAdvanced = map((isDrawed: boolean) => !isDrawed);
-export const getTemplateType = pipe(
-    getDrawed,
-    isAdvanced
-);
+export const getTemplateType = pipe(getDrawed, isAdvanced);
 
 @Component({
     selector: 'dot-edit-page-main',

@@ -8,5 +8,5 @@ export class IconButtonTooltipComponent {
     @Input() icon: string;
     @Input() tooltipText: string;
 
-    constructor() { }
+    constructor() {}
 }

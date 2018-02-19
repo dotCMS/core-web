@@ -25,7 +25,7 @@ export class ContentletGuardService implements CanActivateChild {
      * @returns {boolean}
      */
     canAccessContentType(url: string): Observable<boolean> {
-        return this.dotContentletService.isContentTypeInMenu(url).map(res => {
+        return this.dotContentletService.isContentTypeInMenu(url).map((res) => {
             if (!res) {
                 this.dotNavigationService.goToFirstPortlet();
             }

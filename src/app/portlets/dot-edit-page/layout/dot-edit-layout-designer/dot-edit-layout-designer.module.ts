@@ -33,11 +33,6 @@ import { PageViewService } from '../../../../api/services/page-view/page-view.se
         DotSidebarPropertiesModule
     ],
     exports: [DotEditLayoutDesignerComponent],
-    providers: [
-        DotEditLayoutService,
-        DotEditLayoutService,
-        PageViewService,
-        TemplateContainersCacheService
-    ]
+    providers: [DotEditLayoutService, DotEditLayoutService, PageViewService, TemplateContainersCacheService]
 })
 export class DotEditLayoutDesignerModule {}

@@ -101,7 +101,6 @@ describe('SiteSelectorFieldComponent', () => {
         });
     });
 
-
     it('should have undefined params by default', () => {
         const siteSelector = de.query(By.css('dot-site-selector'));
 

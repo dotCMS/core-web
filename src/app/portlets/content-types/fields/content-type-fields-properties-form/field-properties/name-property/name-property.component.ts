@@ -6,19 +6,15 @@ import { BaseComponent } from '../../../../../../view/components/_common/_base/b
 
 @Component({
     selector: 'name-property',
-    templateUrl: './name-property.component.html',
+    templateUrl: './name-property.component.html'
 })
-
 export class NamePropertyComponent extends BaseComponent {
     property: FieldProperty;
     group: FormGroup;
 
     constructor(public dotMessageService: DotMessageService) {
         super(
-            [
-                'contenttypes.field.properties.name.label',
-                'contenttypes.field.properties.name.error.required'
-            ],
+            ['contenttypes.field.properties.name.label', 'contenttypes.field.properties.name.error.required'],
             dotMessageService
         );
     }

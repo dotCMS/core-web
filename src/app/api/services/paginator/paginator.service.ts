@@ -10,7 +10,6 @@ import { RequestMethod, URLSearchParams } from '@angular/http';
  */
 @Injectable()
 export class PaginatorService {
-
     public static readonly LINK_HEADER_NAME = 'Link';
     public static readonly PAGINATION_PER_PAGE_HEADER_NAME = 'X-Pagination-Per-Page';
     public static readonly PAGINATION_CURRENT_PAGE_HEADER_NAME = 'X-Pagination-Current-Page';
@@ -30,8 +29,7 @@ export class PaginatorService {
     private _sortOrder: OrderDirection;
     private _extraParams: URLSearchParams = new URLSearchParams();
 
-    constructor(private coreWebService: CoreWebService) {
-    }
+    constructor(private coreWebService: CoreWebService) {}
 
     get url(): string {
         return this._url;
@@ -118,18 +116,29 @@ export class PaginatorService {
             params.appendAll(this.extraParams);
         }
 
-        return this.coreWebService.requestView({
-            method: RequestMethod.Get,
-            search: params,
-            url: url || this.url
-        }).map(response => {
-            this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
-            this.paginationPerPage = parseInt(response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME), 10);
-            this.currentPage = parseInt(response.header(PaginatorService.PAGINATION_CURRENT_PAGE_HEADER_NAME), 10);
-            this.maxLinksPage = parseInt(response.header(PaginatorService.PAGINATION_MAX_LINK_PAGES_HEADER_NAME), 10);
-            this.totalRecords = parseInt(response.header(PaginatorService.PAGINATION_TOTAL_ENTRIES_HEADER_NAME), 10);
-            return response.entity;
-        });
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                search: params,
+                url: url || this.url
+            })
+            .map((response) => {
+                this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
+                this.paginationPerPage = parseInt(
+                    response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME),
+                    10
+                );
+                this.currentPage = parseInt(response.header(PaginatorService.PAGINATION_CURRENT_PAGE_HEADER_NAME), 10);
+                this.maxLinksPage = parseInt(
+                    response.header(PaginatorService.PAGINATION_MAX_LINK_PAGES_HEADER_NAME),
+                    10
+                );
+                this.totalRecords = parseInt(
+                    response.header(PaginatorService.PAGINATION_TOTAL_ENTRIES_HEADER_NAME),
+                    10
+                );
+                return response.entity;
+            });
     }
 
     /**
@@ -157,8 +166,7 @@ export class PaginatorService {
      * @memberof PaginatorServic
      */
     public getPage(pageParam = 1): Observable<any[]> {
-        const urlPage = this.links['x-page'] ? this.links['x-page'].replace('pageValue', String(pageParam))
-                        : undefined;
+        const urlPage = this.links['x-page'] ? this.links['x-page'].replace('pageValue', String(pageParam)) : undefined;
         return this.get(urlPage);
     }
 
@@ -207,7 +215,7 @@ export class PaginatorService {
     private setLinks(linksString: string): void {
         const linkSplit = linksString.split(',');
 
-        linkSplit.forEach(linkRel => {
+        linkSplit.forEach((linkRel) => {
             const linkrealSplit = linkRel.split(';');
             const url = linkrealSplit[0].substring(1, linkrealSplit[0].length - 1);
             const relSplit = linkrealSplit[1].split('=');

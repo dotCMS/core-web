@@ -7,7 +7,6 @@ import * as md5 from 'md5';
     styleUrls: ['./gravatar.component.scss'],
     templateUrl: './gravatar.component.html'
 })
-
 export class GravatarComponent {
     @Input() email;
     @Input() size;
@@ -17,31 +16,29 @@ export class GravatarComponent {
     public gravatarPlaceholderStyles;
     public avatarUrl;
 
-    constructor(private gravatarService: GravatarService) {
-
-    }
+    constructor(private gravatarService: GravatarService) {}
 
     ngOnChanges(): void {
         const hash = md5(this.email);
         const profile$ = this.gravatarService.loadGravatarProfile(hash);
         profile$.subscribe(
-            data => {
+            (data) => {
                 this.gravatarProfileStyles = {
-                    'height': this.size + 'px',
-                    'width': this.size + 'px'
+                    height: this.size + 'px',
+                    width: this.size + 'px'
                 };
 
                 this.gravatarProfile = true;
                 this.avatarUrl = data.entry[0].photos[0].value + '?s=' + this.size;
             },
-            error => {
+            (error) => {
                 this.gravatarProfile = false;
                 this.gravatarPlaceholder = this.getDotAvatar(this.email);
                 this.gravatarPlaceholderStyles = {
-                    'font-size': this.size - ((this.size * 25) / 100) + 'px',
-                    'height': this.size + 'px',
+                    'font-size': this.size - this.size * 25 / 100 + 'px',
+                    height: this.size + 'px',
                     'line-height': this.size + 'px',
-                    'width': this.size + 'px'
+                    width: this.size + 'px'
                 };
             }
         );

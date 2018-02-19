@@ -11,7 +11,7 @@ export class BaseComponent implements OnDestroy {
 
     constructor(i18nKeys: string[], public dotMessageService: DotMessageService) {
         if (dotMessageService !== null) {
-            this.messageMapSubscription = this.dotMessageService.getMessages(i18nKeys).subscribe(res => {
+            this.messageMapSubscription = this.dotMessageService.getMessages(i18nKeys).subscribe((res) => {
                 this.i18nMessages = res;
                 this.onMessage();
             });
