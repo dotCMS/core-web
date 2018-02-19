@@ -11,19 +11,15 @@ export class ForgotPasswordComponent implements OnInit {
     @Output() cancel = new EventEmitter<any>();
     @Output() recoverPassword = new EventEmitter<string>();
 
-    public forgotPasswordLogin: string;
-    private language = '';
+    forgotPasswordLogin: string;
+    cancelButton = '';
+    forgotPasswordButton = '';
+    forgotPasswordLabel = '';
+    userIdOrEmailLabel = '';
+    emailMandatoryFieldError = '';
 
-    // labels
-    public cancelButton = '';
-    public forgotPasswordButton = '';
-    public forgotPasswordLabel = '';
-    public userIdOrEmailLabel = '';
-
-    // Messages
-    public emailMandatoryFieldError = '';
     private forgotPasswordConfirmationMessage = '';
-
+    private language = '';
     private i18nMessages: Array<string> = [
         'error.form.mandatory',
         'user-id',

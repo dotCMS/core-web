@@ -27,19 +27,19 @@ export class DotTextareaContentComponent implements OnInit, ControlValueAccessor
     @Input() value = '';
     @Input() width: string;
 
+    selectOptions: SelectItem[] = [];
+    selected: string;
+    styles: any;
+
     private DEFAULT_OPTIONS: SelectItem[] = [
         { label: 'Plain', value: 'plain' },
         { label: 'Code', value: 'code' },
         { label: 'WYSIWYG', value: 'wysiwyg' }
     ];
 
-    selectOptions: SelectItem[] = [];
-    selected: string;
-    styles: any;
+    constructor() {}
 
     propagateChange = (_: any) => {};
-
-    constructor() {}
 
     ngOnInit() {
         this.selectOptions = this.show

@@ -14,8 +14,8 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
     auth: Auth;
 
-    private showLoginAs = false;
-    private showMyAccount = false;
+    showLoginAs = false;
+    showMyAccount = false;
 
     constructor(
         dotMessageService: DotMessageService,
