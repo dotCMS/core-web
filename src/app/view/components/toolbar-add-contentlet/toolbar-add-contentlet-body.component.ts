@@ -20,7 +20,7 @@ export class ToolbarAddContenletBodyComponent {
 
     onClick(event: any, id: string): void {
         if (!event.ctrlKey && !event.metaKey) {
-            this.dotNavigationService.reloadCurrentPortlet(id);
+            this.dotNavigationService.reloadCurrentPortlet(`/add/${id}`);
         }
         this.select.emit();
     }
