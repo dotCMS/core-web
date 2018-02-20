@@ -38,9 +38,9 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     loading = true;
 
     constructor(
-        dotMessageService: DotMessageService,
+        public dotMessageService: DotMessageService,
         public loggerService: LoggerService,
-        private paginatorService: PaginatorService,
+        public paginatorService: PaginatorService,
         private formatDateService: FormatDateService
     ) {
         super(['global-search'], dotMessageService);

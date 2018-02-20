@@ -15,13 +15,14 @@ export class NotificationsItemComponent extends BaseComponent implements OnInit 
     @Input() data;
     @Output() clear = new EventEmitter<Object>();
 
+    showLinkAction = false;
+    showTitleLinked = false;
+
     private notificationIcons: Object = {
         ERROR: 'exclamation-triangle',
         INFO: 'info-circle',
         WARNING: 'ban'
     };
-    private showLinkAction = false;
-    private showTitleLinked = false;
 
     constructor(dotMessageService: DotMessageService) {
         super(['notifications_dismiss'], dotMessageService);

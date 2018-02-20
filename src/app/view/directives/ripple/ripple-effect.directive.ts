@@ -14,6 +14,13 @@ import { ColorUtil } from '../../../api/util/ColorUtil';
 export class DotRippleEffectDirective {
     private static readonly WHITE_COLOR = 'rgba(255, 255, 255, 0.4)';
     private static readonly EFFECT_DEFAULT_COLOR = 'rgba(0, 0, 0, 0.2)';
+
+    @HostBinding('style.overflow')
+    overflow = 'hidden';
+
+    @HostBinding('style.position')
+    position = 'relative';
+
     private rippleElement: HTMLElement;
     private rippleSize: RippleSize;
     private hostNativeElement: HTMLElement;
@@ -21,12 +28,6 @@ export class DotRippleEffectDirective {
     constructor(private host: ElementRef, private renderer2: Renderer2, private colorUtil: ColorUtil) {
         this.hostNativeElement = host.nativeElement;
     }
-
-    @HostBinding('style.overflow')
-    overflow = 'hidden';
-
-    @HostBinding('style.position')
-    position = 'relative';
 
     @HostListener('click', ['$event'])
     onClick(event: MouseEvent): void {

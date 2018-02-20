@@ -20,7 +20,7 @@ export class MyAccountComponent extends BaseComponent {
     emailRegex: string;
     passwordMatch: boolean;
 
-    private accountUser: AccountUser = {
+    accountUser: AccountUser = {
         currentPassword: '',
         email: '',
         givenName: '',
@@ -28,9 +28,9 @@ export class MyAccountComponent extends BaseComponent {
         userId: ''
     };
 
-    private passwordConfirm: string;
-    private message = null;
-    private changePasswordOption = false;
+    passwordConfirm: string;
+    message = null;
+    changePasswordOption = false;
 
     constructor(
         dotMessageService: DotMessageService,

@@ -17,9 +17,9 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
     @Output() cancel = new EventEmitter<boolean>();
     @Input() visible: boolean;
 
+    form: FormGroup;
+    needPassword = false;
     userCurrentPage: User[];
-    private needPassword = false;
-    private form: FormGroup;
 
     constructor(
         dotMessageService: DotMessageService,
