@@ -13,7 +13,6 @@ import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
-import { DotEvent } from '../../../../../shared/models/dot-event/dot-event';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -79,11 +78,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     ngOnInit() {
         this.dotMessageService.getMessages(this.i18nKeys).subscribe();
-        this.dotEventsService.listen('dot-side-nav-toggle').subscribe((event: DotEvent) => {
+        this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
             // setTimeout is need it because the side nav animation time.
             this.resizeGrid(200);
         });
-        this.dotEventsService.listen('layout-sidebar-change').subscribe((event: DotEvent) => {
+        this.dotEventsService.listen('layout-sidebar-change').subscribe(() => {
             // We need to "wait" until the template remove the sidebar div.
             this.resizeGrid();
         });
@@ -148,6 +147,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         }
     }
 
+    // tslint:disable-next-line:no-shadowed-variable
     propagateChange = (_: any) => {};
 
     /**
@@ -240,7 +240,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     private updateContainerIndex(rowArray, index) {
         if (rowArray[0].row !== index + 1) {
-            return rowArray.map(container => {
+            return rowArray.map((container) => {
                 container.config.row = index + 1;
                 return container;
             });
