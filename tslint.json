@@ -1,6 +1,7 @@
 {
     "extends": ["tslint-angular"],
     "rules": {
+        "cyclomatic-complexity": [true, 5],
         "directive-selector": [true, "attribute", "dot", "camelCase"],
         "component-selector": [true, "element", "dot", "kebab-case"],
         "max-classes-per-file": false,
