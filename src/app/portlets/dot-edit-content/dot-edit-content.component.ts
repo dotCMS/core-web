@@ -79,7 +79,7 @@ export class DotEditContentComponent implements OnInit {
 
         this.dotLoadingIndicatorService.show();
 
-        this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
+        this.route.parent.parent.data.pluck('content').subscribe((renderedPage: DotRenderedPage) => {
             this.setPage(renderedPage);
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {

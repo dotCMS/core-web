@@ -118,9 +118,13 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: ActivatedRoute,
                     useValue: {
-                        data: Observable.of({
-                            renderedPage: fakePageRendered
-                        })
+                        parent: {
+                            parent: {
+                                data: Observable.of({
+                                    content: fakePageRendered
+                                })
+                            }
+                        }
                     }
                 }
             ]

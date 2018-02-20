@@ -16,7 +16,7 @@ export class DotEditLayoutComponent implements OnInit {
     constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.isAdvancedTemplate = this.route.parent.parent.data.let(getTemplateType);
-        this.pageView = this.route.parent.parent.data.pluck('pageView');
+        this.isAdvancedTemplate = this.route.data.let(getTemplateType);
+        this.pageView = this.route.data.pluck('content');
     }
 }

@@ -12,7 +12,7 @@ const dotEditPage: Routes = [
         component: DotEditPageMainComponent,
         path: '',
         resolve: {
-            pageView: EditLayoutResolver
+            content: EditContentResolver
         },
         children: [
             {
@@ -22,13 +22,14 @@ const dotEditPage: Routes = [
             {
                 loadChildren: 'app/portlets/dot-edit-content/dot-edit-content.module#DotEditContentModule',
                 path: 'content',
-                resolve: {
-                    renderedPage: EditContentResolver
-                }
+
             },
             {
                 loadChildren: 'app/portlets/dot-edit-page/layout/dot-edit-layout.module#DotEditLayoutModule',
-                path: 'layout'
+                path: 'layout',
+                resolve: {
+                    content: EditLayoutResolver
+                },
             }
         ]
     },

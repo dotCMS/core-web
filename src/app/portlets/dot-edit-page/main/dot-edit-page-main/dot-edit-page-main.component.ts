@@ -6,7 +6,7 @@ import { pluck, map } from 'rxjs/operators';
 // tslint:disable-next-line:import-blacklist
 import { pipe } from 'rxjs';
 
-export const getDrawed = pluck('pageView', 'template', 'drawed');
+export const getDrawed = pluck('content', 'template', 'drawed');
 export const isAdvanced = map((isDrawed: boolean) => !isDrawed);
 export const getTemplateType = pipe(getDrawed, isAdvanced);
 
@@ -21,6 +21,7 @@ export class DotEditPageMainComponent implements OnInit {
     constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
+        this.route.data.subscribe(res => console.log(res));
         this.isAdvancedTemplate = this.route.data.let(getTemplateType);
     }
 }

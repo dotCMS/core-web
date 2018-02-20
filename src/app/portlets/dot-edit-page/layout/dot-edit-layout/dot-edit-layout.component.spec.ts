@@ -33,11 +33,7 @@ const getTestingModule = (pageView?: DotPageView) => {
             {
                 provide: ActivatedRoute,
                 useValue: {
-                    parent: {
-                        parent: {
-                            data: Observable.of({ pageView: pageView || fakePageView })
-                        }
-                    }
+                    data: Observable.of({ content: pageView || fakePageView })
                 }
             }
         ]
