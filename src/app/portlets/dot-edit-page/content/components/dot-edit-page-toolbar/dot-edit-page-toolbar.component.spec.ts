@@ -1,18 +1,18 @@
-import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { DotConfirmationService } from '../../../../../api/services/dot-confirmation/dot-confirmation.service';
 import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
 import { DotEditPageToolbarModule } from './dot-edit-page-toolbar.module';
 import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SplitButton } from 'primeng/primeng';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
-import { PageMode } from '../../shared/page-mode.enum';
-import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { PageMode } from '../../../../dot-edit-content/shared/page-mode.enum';
 
 describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;

@@ -3,11 +3,11 @@ import { ConnectionBackend, ResponseOptions } from '@angular/http';
 import { DotContainerContentletService } from './dot-container-contentlet.service';
 import { ReflectiveInjector } from '@angular/core';
 import { MockConnection } from '@angular/http/testing';
-import { DOTTestBed } from '../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { tick } from '@angular/core/testing';
 import { fakeAsync } from '@angular/core/testing';
-import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
-import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
+import { DotPageContainer } from '../../../dot-edit-page/shared/models/dot-page-container.model';
+import { DotPageContent } from '../../../dot-edit-page/shared/models/dot-page-content.model';
 
 describe('DotContainerContentletService', () => {
     let dotContainerContentletService: DotContainerContentletService;

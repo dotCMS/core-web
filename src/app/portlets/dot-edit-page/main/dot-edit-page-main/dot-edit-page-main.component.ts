@@ -21,7 +21,6 @@ export class DotEditPageMainComponent implements OnInit {
     constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.route.data.subscribe(res => console.log(res));
         this.isAdvancedTemplate = this.route.data.let(getTemplateType);
     }
 }

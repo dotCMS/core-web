@@ -8,10 +8,10 @@ import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolba
 import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
 import { MODEL_VAR_NAME } from './html/iframe-edit-mode.js';
 import { Subject } from 'rxjs/Subject';
-import { DotPageContainer } from '../../dot-edit-page/shared/models/dot-page-container.model';
-import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation/dot-confirmation.service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotPageContainer } from '../../shared/models/dot-page-container.model';
+import { DotPageContent } from '../../shared/models/dot-page-content.model';
+import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
 enum Action {
     EDIT,

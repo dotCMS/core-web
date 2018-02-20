@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
-import { DotRenderedPage } from '../../dot-edit-page/shared/models/dot-rendered-page.model';
+import { EditPageService } from '../../../../api/services/edit-page/edit-page.service';
+import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 
 /**
  * With the url return a string of the edit page html

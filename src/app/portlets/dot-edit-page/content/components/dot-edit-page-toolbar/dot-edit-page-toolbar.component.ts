@@ -1,12 +1,12 @@
-import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
-import { PageMode } from './../../shared/page-mode.enum';
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { SelectItem, MenuItem, InputSwitch } from 'primeng/primeng';
-import { Workflow } from '../../../../shared/models/workflow/workflow.model';
-import { DotRenderedPage } from '../../../dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { Workflow } from '../../../../../shared/models/workflow/workflow.model';
+import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
+import { PageMode } from '../../../../dot-edit-content/shared/page-mode.enum';
+import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotConfirmationService } from '../../../../../api/services/dot-confirmation';
 
 @Component({
     selector: 'dot-edit-page-toolbar',

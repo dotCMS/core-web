@@ -9,7 +9,7 @@ import {
 } from './layout/components/dot-template-additional-actions/dot-template-additional-actions.module';
 import { TemplateContainersCacheService } from './template-containers-cache.service';
 import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-main.module';
-import { EditContentResolver } from '../dot-edit-content/services/dot-edit-content-resolver.service';
+import { EditContentResolver } from './content/services/dot-edit-content-resolver.service';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { DotDirectivesModule } from '../../shared/dot-directives.module';
 

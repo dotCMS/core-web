@@ -4,23 +4,23 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
-import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { DotConfirmationService } from '../../../api/services/dot-confirmation';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
-import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotMessageService } from '../../api/services/dot-messages-service';
-import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMenuService } from '../../api/services/dot-menu.service';
-import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
-import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
-import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
+import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotPageContainer } from '../shared/models/dot-page-container.model';
+import { DotPageContent } from '../shared/models/dot-page-content.model';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowService } from '../../api/services/workflow/workflow.service';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
-import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { PageMode } from './shared/page-mode.enum';
+import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
+import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
+import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
+import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-content',

@@ -1,34 +1,33 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DialogModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
-import { DotConfirmationService } from '../../api/services/dot-confirmation/index';
+import { DotConfirmationService } from '../../../api/services/dot-confirmation/index';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
-import { DotMessageService } from '../../api/services/dot-messages-service';
-import { DOTTestBed } from '../../test/dot-test-bed';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DOTTestBed } from '../../../test/dot-test-bed';
 import { LoginService } from 'dotcms-js/dotcms-js';
-import { LoginServiceMock } from '../../test/login-service.mock';
-import { MockDotMessageService } from '../../test/dot-message-service.mock';
+import { LoginServiceMock } from '../../../test/login-service.mock';
+import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
-import { DotMenuService } from '../../api/services/dot-menu.service';
-import { WorkflowService } from '../../api/services/workflow/workflow.service';
-import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { DotLoadingIndicatorModule } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { PageViewService } from '../../api/services/page-view/page-view.service';
-import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 import { combineAll } from 'rxjs/operator/combineAll';
-import { PageMode } from './shared/page-mode.enum';
+import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
+import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
+import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {

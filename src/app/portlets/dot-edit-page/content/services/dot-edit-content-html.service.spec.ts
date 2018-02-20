@@ -4,14 +4,14 @@ import { DotEditContentToolbarHtmlService } from './html/dot-edit-content-toolba
 import { DotContainerContentletService } from './dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from './html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from './html/dot-dom-html-util.service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { MockDotMessageService } from '../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { LoggerService, StringUtils } from 'dotcms-js/dotcms-js';
 import { Config } from 'dotcms-js/core/config.service';
 import { Logger } from 'angular2-logger/core';
-import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation/dot-confirmation.service';
-import { DotPageContent } from '../../dot-edit-page/shared/models/dot-page-content.model';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DotConfirmationService } from '../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { DotPageContent } from '../../../dot-edit-page/shared/models/dot-page-content.model';
 import { Observable } from 'rxjs/Observable';
 
 describe('DotEditContentHtmlService', () => {
