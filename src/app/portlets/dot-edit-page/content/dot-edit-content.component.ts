@@ -4,7 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation';
+import { DotDialogService } from '../../../api/services/dot-dialog';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
@@ -46,7 +46,7 @@ export class DotEditContentComponent implements OnInit {
     private originalValue: any;
 
     constructor(
-        private dotConfirmationService: DotConfirmationService,
+        private dotDialogService: DotDialogService,
         private dotContainerContentletService: DotContainerContentletService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMenuService: DotMenuService,
@@ -246,7 +246,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        this.dotConfirmationService.confirm({
+        this.dotDialogService.confirm({
             accept: () => {
                 const pageContainer: DotPageContainer = {
                     identifier: $event.container.dotIdentifier,

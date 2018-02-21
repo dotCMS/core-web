@@ -10,7 +10,7 @@ import { IconButtonTooltipModule } from '../../../../view/components/_common/ico
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { ConfirmDialogModule } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
+import { DotDialogService } from '../../../../api/services/dot-dialog';
 
 @Component({
     selector: 'dot-content-type-field-dragabble-item',
@@ -45,7 +45,7 @@ describe('ContentTypeFieldsRowComponent', () => {
                 imports: [DragulaModule, IconButtonTooltipModule, ConfirmDialogModule],
                 providers: [
                     FieldDragDropService,
-                    DotConfirmationService,
+                    DotDialogService,
                     { provide: DotMessageService, useValue: messageServiceMock }
                 ]
             });
@@ -137,9 +137,9 @@ describe('ContentTypeFieldsRowComponent', () => {
                 const column = de.query(By.css('.row-columns__item'));
                 const dragableItem = column.query(By.css('dot-content-type-field-dragabble-item'));
 
-                const dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
+                const dotDialogService = fixture.debugElement.injector.get(DotDialogService);
 
-                spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+                spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                     conf.accept();
                 });
 

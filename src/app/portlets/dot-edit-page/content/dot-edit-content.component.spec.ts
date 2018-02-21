@@ -1,9 +1,9 @@
+import { DotDialogService } from './../../../api/services/dot-dialog/dot-dialog.service';
 import { ComponentFixture } from '@angular/core/testing';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DialogModule } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
-import { DotConfirmationService } from '../../../api/services/dot-confirmation/index';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
@@ -58,9 +58,9 @@ const fakePageRendered: DotRenderedPage = {
 describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
-    let dotConfirmationService: DotConfirmationService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotDialogService: DotDialogService;
     let editPageService: EditPageService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
@@ -94,7 +94,7 @@ describe('DotEditContentComponent', () => {
             ],
             providers: [
                 DotGlobalMessageService,
-                DotConfirmationService,
+                DotDialogService,
                 DotContainerContentletService,
                 DotDOMHtmlUtilService,
                 DotDragDropAPIHtmlService,
@@ -133,8 +133,9 @@ describe('DotEditContentComponent', () => {
 
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
         dotEditContentHtmlService = fixture.debugElement.injector.get(DotEditContentHtmlService);
+        dotDialogService = fixture.debugElement.injector.get(DotDialogService);
+        editPageService = fixture.debugElement.injector.get(EditPageService);
         dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
         editPageService = fixture.debugElement.injector.get(EditPageService);
         route = fixture.debugElement.injector.get(ActivatedRoute);
@@ -246,7 +247,7 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
         spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake((res) => {});
 
-        spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
 

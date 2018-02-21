@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 
-fdescribe('DotInterceptorService', () => {
+describe('DotInterceptorService', () => {
     let lastConnection: any;
     let service: DotInterceptor;
     let backend: MockBackend;

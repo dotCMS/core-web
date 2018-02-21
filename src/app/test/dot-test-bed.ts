@@ -24,7 +24,8 @@ import { DotEventsService } from '../api/services/dot-events/dot-events.service'
 import { DotGlobalMessageService } from '../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotMessageService } from '../api/services/dot-messages-service';
 import { FormatDateService } from '../api/services/format-date-service';
-import { DotConfirmationService } from '../api/services/dot-confirmation';
+import { DotDialogService } from '../api/services/dot-dialog';
+import { DotInterceptor } from '../api/services/dot-interceptor/dot-interceptor.service';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -45,9 +46,10 @@ export class DOTTestBed {
             Config,
             ConfirmationService,
             CoreWebService,
-            DotConfirmationService,
+            DotDialogService,
             DotEventsService,
             DotGlobalMessageService,
+            DotInterceptor,
             DotMessageService,
             DotcmsConfig,
             DotcmsEventsService,

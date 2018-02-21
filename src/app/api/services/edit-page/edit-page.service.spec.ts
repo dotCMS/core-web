@@ -11,6 +11,8 @@ import { TestBed } from '@angular/core/testing';
 import { LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DotRouterService } from 'dotcms-js/core/dot-router.service';
 
 const mockDotRenderPage: DotRenderedPage = {
     canEdit: true,
@@ -48,10 +50,13 @@ describe('EditPageService', () => {
     beforeEach(() => {
         lastConnection = [];
 
-        this.injector = DOTTestBed.resolveAndCreate([
-            EditPageService,
-            {provide: LoginService, useClass: LoginServiceMock}
-        ]);
+        this.injector = DOTTestBed.configureTestingModule({
+            providers: [EditPageService, DotRouterService, {
+                provide: LoginService,
+                useClass: LoginServiceMock
+            }],
+            imports: [RouterTestingModule]
+        });
 
         editPageService = this.injector.get(EditPageService);
         backend = this.injector.get(ConnectionBackend) as MockBackend;

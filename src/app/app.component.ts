@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NotLicensedService } from './api/services/not-licensed-service';
-import { DotConfirmationService } from './api/services/dot-confirmation';
+import { DotDialogService } from './api/services/dot-dialog';
 
 @Component({
     selector: 'dot-root',
@@ -8,7 +8,7 @@ import { DotConfirmationService } from './api/services/dot-confirmation';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    constructor(notLicensedService: NotLicensedService, public dotConfirmationService: DotConfirmationService) {
+    constructor(notLicensedService: NotLicensedService, public dotDialogService: DotDialogService) {
         document.ondragover = document.ondrop = (ev) => {
             notLicensedService.init();
             ev.preventDefault();

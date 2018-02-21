@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ResponseView, CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
 
-import { DotConfirmationService } from '../dot-confirmation';
+import { DotDialogService } from '../dot-dialog';
 import { DotRouterService } from '../dot-router-service';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class DotInterceptor {
     constructor(
         private coreWebService: CoreWebService,
         private dotRouterService: DotRouterService,
-        private dotConfirmationService: DotConfirmationService,
+        private dotDialogService: DotDialogService,
         private loginService: LoginService
     ) {}
 
@@ -62,7 +62,7 @@ export class DotInterceptor {
     }
 
     private handle403(): void {
-        this.dotConfirmationService.alert({
+        this.dotDialogService.alert({
             message: 'You don\'t access to this page',
             header: 'Can go there',
             footerLabel: {
@@ -72,7 +72,7 @@ export class DotInterceptor {
     }
 
     private handle500(): void {
-        this.dotConfirmationService.alert({
+        this.dotDialogService.alert({
             message: 'Please try again later',
             header: 'Unkown error',
             footerLabel: {

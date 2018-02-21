@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotConfirmationService } from './../../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { DotContainerSelectorModule } from './../../../../../view/components/dot-container-selector/dot-container-selector.module';
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
@@ -62,7 +62,7 @@ describe('DotEditLayoutGridComponent', () => {
             declarations: [DotEditLayoutGridComponent, TestHostComponent],
             imports: [NgGridModule, DotContainerSelectorModule, BrowserAnimationsModule],
             providers: [
-                DotConfirmationService,
+                DotDialogService,
                 DotEditLayoutService,
                 TemplateContainersCacheService,
                 PaginatorService,
@@ -118,8 +118,8 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should remove one Container from the Grid', () => {
         component.addBox();
-        const dotConfirmationService = hostComponentfixture.debugElement.injector.get(DotConfirmationService);
-        spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotDialogService);
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         component.onRemoveContainer(1);
@@ -165,8 +165,8 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should Propagate Change after a grid box is deleted', () => {
         component.addBox();
-        const dotConfirmationService = hostComponentfixture.debugElement.injector.get(DotConfirmationService);
-        spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotDialogService);
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         spyOn(component, 'propagateChange');

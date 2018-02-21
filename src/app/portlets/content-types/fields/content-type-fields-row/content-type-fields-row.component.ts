@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ContentTypeField, FieldRow } from '../shared';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
+import { DotDialogService } from '../../../../api/services/dot-dialog';
 
 /**
  * Display all the Field Types
@@ -23,7 +23,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
     @Output() removeField: EventEmitter<ContentTypeField> = new EventEmitter();
     @Output() removeRow: EventEmitter<FieldRow> = new EventEmitter();
 
-    constructor(dotMessageService: DotMessageService, private dotConfirmationService: DotConfirmationService) {
+    constructor(dotMessageService: DotMessageService, private dotDialogService: DotDialogService) {
         super(
             [
                 'contenttypes.dropzone.rows.empty.message',
@@ -44,7 +44,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
      * @param field field to remove
      */
     onRemoveField(field: ContentTypeField): void {
-        this.dotConfirmationService.confirm({
+        this.dotDialogService.confirm({
             accept: () => {
                 this.getField(field);
                 this.removeField.emit(field);
@@ -78,7 +78,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
      * Tigger the removeRow event whit the current FieldRow
      */
     onRemoveFieldRow(): void {
-        this.dotConfirmationService.confirm({
+        this.dotDialogService.confirm({
             accept: () => {
                 this.removeRow.emit(this.fieldRow);
             },

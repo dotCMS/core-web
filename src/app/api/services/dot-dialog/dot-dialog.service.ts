@@ -5,13 +5,13 @@ import { Subject } from 'rxjs/Subject';
 import { ConfirmationService } from 'primeng/primeng';
 
 /**
- * Provides a wrapper of ConfirmationService
+ * Handle global confirmation and alert dialog component
  * @export
- * @class DotConfirmationService
+ * @class DotDialogService
  */
 
 @Injectable()
-export class DotConfirmationService {
+export class DotDialogService {
     showRejectButton: boolean;
     labels: Subject<FooterLabels> = new Subject();
     public i18nMessages = {};
@@ -23,7 +23,7 @@ export class DotConfirmationService {
      * Confirm wrapper method of ConfirmService
      * Add both accept and reject labels into confirmation object
      * @param {DotConfirmation} confirmation
-     * @memberof DotConfirmationService
+     * @memberof DotDialogService
      */
     // TODO: Import DotMessageService - Add message keys
     // (Not working right now since inyecting DotMessageService produces errors)
@@ -41,7 +41,7 @@ export class DotConfirmationService {
      * Confirm wrapper method of ConfirmService
      * Add both accept and reject labels into confirmation object
      * @param {DotConfirmation} confirmation
-     * @memberof DotConfirmationService
+     * @memberof DotDialogService
      */
     alert(confirmationParameter: DotConfirmation): void {
         this.labels.next({

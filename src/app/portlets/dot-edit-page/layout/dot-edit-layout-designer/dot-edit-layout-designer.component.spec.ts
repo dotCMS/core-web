@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
-import { DotConfirmationService } from '../../../../api/services/dot-confirmation';
+import { DotDialogService } from '../../../../api/services/dot-dialog';
 import { DotEditLayoutDesignerComponent } from './dot-edit-layout-designer.component';
 import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.module';
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
@@ -66,7 +66,7 @@ const testConfigObject = {
         FieldValidationMessageModule
     ],
     providers: [
-        DotConfirmationService,
+        DotDialogService,
         LoginService,
         PageViewService,
         PaginatorService,
