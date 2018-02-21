@@ -58,7 +58,9 @@ export class DotEditContentComponent implements OnInit {
         private workflowsService: WorkflowService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
-    ) {}
+    ) {
+        console.log('constructor');
+    }
 
     ngOnInit() {
         this.dotMessageService
