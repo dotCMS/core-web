@@ -3,7 +3,7 @@ import { RequestOptionsArgs, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ResponseView, CoreWebService } from 'dotcms-js/dotcms-js';
+import { ResponseView, CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
 
 import { DotConfirmationService } from '../dot-confirmation';
 import { DotRouterService } from '../dot-router-service';
@@ -13,7 +13,8 @@ export class DotInterceptor {
     constructor(
         private coreWebService: CoreWebService,
         private dotRouterService: DotRouterService,
-        private dotConfirmationService: DotConfirmationService
+        private dotConfirmationService: DotConfirmationService,
+        private loginService: LoginService
     ) {}
 
     /**
@@ -44,7 +45,7 @@ export class DotInterceptor {
                 this.handle403();
             },
             500: () => {
-                this.handle401();
+                this.handle500();
             }
         };
 
@@ -52,7 +53,12 @@ export class DotInterceptor {
     }
 
     private handle401(): void {
-        this.dotRouterService.goToLogin();
+        console.log('401');
+        if (this.loginService.auth.user) {
+            this.handle403();
+        } else {
+            this.dotRouterService.goToLogin();
+        }
     }
 
     private handle403(): void {
