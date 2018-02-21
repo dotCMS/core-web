@@ -138,8 +138,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                     'editpage.confirm.message.delete'
                 )} <span>${this.dotMessageService.get('editpage.confirm.message.delete.warning')}</span>`,
                 footerLabel: {
-                    acceptLabel: this.dotMessageService.get('editpage.action.delete'),
-                    rejectLabel: this.dotMessageService.get('editpage.action.cancel')
+                    accept: this.dotMessageService.get('editpage.action.delete'),
+                    reject: this.dotMessageService.get('editpage.action.cancel')
                 }
             });
         } else {

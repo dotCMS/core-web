@@ -49,17 +49,13 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 this.getField(field);
                 this.removeField.emit(field);
             },
-            header: `${this.i18nMessages['contenttypes.action.delete']} ${
-                this.i18nMessages['contenttypes.content.field']
-            }`,
-            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${
-                this.i18nMessages['contenttypes.content.field']
-            }
+            header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.field']}`,
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.field']}
                         '${field.name}'?
                         <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
             footerLabel: {
-                acceptLabel: this.i18nMessages['contenttypes.action.delete'],
-                rejectLabel: this.i18nMessages['contenttypes.action.cancel']
+                accept: this.i18nMessages['contenttypes.action.delete'],
+                reject: this.i18nMessages['contenttypes.action.cancel']
             }
         });
     }
@@ -82,17 +78,13 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
             accept: () => {
                 this.removeRow.emit(this.fieldRow);
             },
-            header: `${this.i18nMessages['contenttypes.action.delete']} ${
-                this.i18nMessages['contenttypes.content.row']
-            }`,
-            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${
-                this.i18nMessages['contenttypes.content.row']
-            }
+            header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.row']}`,
+            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.row']}
                         ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
                         <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
             footerLabel: {
-                acceptLabel: this.i18nMessages['contenttypes.action.delete'],
-                rejectLabel: this.i18nMessages['contenttypes.action.cancel']
+                accept: this.i18nMessages['contenttypes.action.delete'],
+                reject: this.i18nMessages['contenttypes.action.cancel']
             }
         });
     }

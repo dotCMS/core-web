@@ -58,9 +58,7 @@ export class DotEditContentComponent implements OnInit {
         private workflowsService: WorkflowService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
-    ) {
-        console.log('constructor');
-    }
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -263,8 +261,8 @@ export class DotEditContentComponent implements OnInit {
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
-                acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
+                accept: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
+                reject: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
             }
         });
     }

@@ -213,7 +213,7 @@ export class DotEditContentHtmlService {
             header: this.dotMessageService.get('editpage.content.add.already.title'),
             message: this.dotMessageService.get('editpage.content.add.already.message'),
             footerLabel: {
-                acceptLabel: 'Ok'
+                accept: 'Ok'
             }
         });
     }

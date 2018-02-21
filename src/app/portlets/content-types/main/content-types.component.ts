@@ -229,8 +229,8 @@ export class ContentTypesPortletComponent implements OnInit {
                         ${this.dotMessageService.get('contenttypes.confirm.message.delete.content')}
                         <span>${this.dotMessageService.get('contenttypes.confirm.message.delete.warning')}</span>`,
             footerLabel: {
-                acceptLabel: this.dotMessageService.get('contenttypes.action.delete'),
-                rejectLabel: this.dotMessageService.get('contenttypes.action.cancel')
+                accept: this.dotMessageService.get('contenttypes.action.delete'),
+                reject: this.dotMessageService.get('contenttypes.action.cancel')
             }
         });
     }

@@ -53,7 +53,6 @@ export class DotInterceptor {
     }
 
     private handle401(): void {
-        console.log('401');
         if (this.loginService.auth.user) {
             this.handle403();
         } else {
@@ -62,11 +61,12 @@ export class DotInterceptor {
     }
 
     private handle403(): void {
+        this.dotRouterService.gotoPortlet('c/workflow');
         this.dotDialogService.alert({
             message: 'You don\'t access to this page',
-            header: 'Can go there',
+            header: 'Can\'t go there',
             footerLabel: {
-                acceptLabel: 'Ok'
+                accept: 'Ok'
             }
         });
     }
@@ -76,7 +76,7 @@ export class DotInterceptor {
             message: 'Please try again later',
             header: 'Unkown error',
             footerLabel: {
-                acceptLabel: 'Ok'
+                accept: 'Ok'
             }
         });
     }

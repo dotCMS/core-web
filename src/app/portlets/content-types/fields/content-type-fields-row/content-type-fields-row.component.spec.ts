@@ -42,7 +42,7 @@ describe('ContentTypeFieldsRowComponent', () => {
         async(() => {
             DOTTestBed.configureTestingModule({
                 declarations: [ContentTypeFieldsRowComponent, TestContentTypeFieldDraggableItemComponent],
-                imports: [DragulaModule, IconButtonTooltipModule, ConfirmDialogModule],
+                imports: [DragulaModule, IconButtonTooltipModule],
                 providers: [
                     FieldDragDropService,
                     DotDialogService,

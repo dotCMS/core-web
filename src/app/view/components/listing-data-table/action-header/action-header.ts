@@ -45,8 +45,8 @@ export class ActionHeaderComponent extends BaseComponent implements OnChanges {
                             header: model.deleteOptions.confirmHeader,
                             message: model.deleteOptions.confirmMessage,
                             footerLabel: {
-                                acceptLabel: this.i18nMessages['contenttypes.action.delete'],
-                                rejectLabel: this.i18nMessages['contenttypes.action.cancel']
+                                accept: this.i18nMessages['contenttypes.action.delete'],
+                                reject: this.i18nMessages['contenttypes.action.cancel']
                             }
                         });
                     };

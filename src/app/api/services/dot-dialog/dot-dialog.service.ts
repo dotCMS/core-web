@@ -1,6 +1,7 @@
+import { DotMessageService } from './../dot-messages-service';
 import { Injectable } from '@angular/core';
 import { FooterLabels } from './../../../shared/models/dot-confirmation/footer-labels.model';
-import { DotConfirmation } from './../../../shared/models/dot-confirmation/dot-confirmation.model';
+import { DotDialog } from './../../../shared/models/dot-confirmation/dot-confirmation.model';
 import { Subject } from 'rxjs/Subject';
 import { ConfirmationService } from 'primeng/primeng';
 
@@ -12,46 +13,53 @@ import { ConfirmationService } from 'primeng/primeng';
 
 @Injectable()
 export class DotDialogService {
-    showRejectButton: boolean;
-    labels: Subject<FooterLabels> = new Subject();
-    public i18nMessages = {};
-    public i18nKeys: string[] = ['contenttypes.action.yes', 'contenttypes.action.no'];
+    alertModel: DotDialog = null;
+    confirmModel: DotDialog = null;
 
-    constructor(public confirmationService: ConfirmationService) {}
-
-    /**
-     * Confirm wrapper method of ConfirmService
-     * Add both accept and reject labels into confirmation object
-     * @param {DotConfirmation} confirmation
-     * @memberof DotDialogService
-     */
-    // TODO: Import DotMessageService - Add message keys
-    // (Not working right now since inyecting DotMessageService produces errors)
-    confirm(confirmation: DotConfirmation): void {
-        this.showRejectButton = true;
-        this.labels.next({
-            acceptLabel: confirmation.footerLabel.acceptLabel || 'Yes',
-            rejectLabel: confirmation.footerLabel.rejectLabel || 'No'
-        });
-
-        this.confirmationService.confirm(confirmation);
+    constructor(public confirmationService: ConfirmationService, private dotMessageService: DotMessageService) {
+        this.dotMessageService.getMessages(['contenttypes.action.yes', 'contenttypes.action.no']).subscribe();
     }
 
     /**
      * Confirm wrapper method of ConfirmService
      * Add both accept and reject labels into confirmation object
-     * @param {DotConfirmation} confirmation
+     * @param {DotDialog} dialogModel
      * @memberof DotDialogService
      */
-    alert(confirmationParameter: DotConfirmation): void {
-        this.labels.next({
-            acceptLabel: confirmationParameter.footerLabel.acceptLabel || 'Yes'
-        });
+    // TODO: Import DotMessageService - Add message keys
+    // (Not working right now since inyecting DotMessageService produces errors)
+    confirm(dialogModel: DotDialog): void {
+        this.confirmModel = dialogModel;
+        setTimeout(() => {
+            this.confirmationService.confirm(dialogModel);
+        }, 0);
+    }
 
-        const confirmation = Object.assign({}, confirmationParameter);
-        confirmation.accept = () => {};
+    /**
+     * Confirm wrapper method of ConfirmService
+     * Add both accept and reject labels into confirmation object
+     * @param {DotDialog} confirmation
+     * @memberof DotDialogService
+     */
+    alert(dialogModel: DotDialog): void {
+        this.alertModel = dialogModel;
+    }
 
-        this.showRejectButton = false;
-        this.confirmationService.confirm(confirmation);
+    /**
+     * clear alert dialog object
+     *
+     * @memberof DotDialogService
+     */
+    clearAlert(): void {
+        this.alertModel = null;
+    }
+
+    /**
+     * clear confirm dialog object
+     *
+     * @memberof DotDialogService
+     */
+    clearConfirm(): void {
+        this.confirmModel = null;
     }
 }

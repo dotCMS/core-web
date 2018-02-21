@@ -1,37 +1,67 @@
+import { ConfirmationService } from 'primeng/primeng';
+import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotDialogService } from './dot-dialog.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
+import { LoginServiceMock } from '../../../test/login-service.mock';
+import { RouterTestingModule } from '@angular/router/testing';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('DotDialogService', () => {
     let mockData;
+    let service: DotDialogService;
+    let confirmationService: ConfirmationService;
+
     beforeEach(() => {
-        this.injector = DOTTestBed.resolveAndCreate([DotDialogService]);
+        const testbed = DOTTestBed.configureTestingModule({
+            providers: [
+                DotDialogService,
+                ConfirmationService,
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                }
+            ],
+            imports: [RouterTestingModule]
+        });
 
         mockData = {
             footerLabel: {
-                acceptLabel: 'Delete',
-                rejectLabel: 'Reject'
+                accept: 'Delete',
+                reject: 'Reject'
             }
         };
 
-        this.dotDialogService = this.injector.get(DotDialogService);
+        service = testbed.get(DotDialogService);
+        confirmationService = testbed.get(ConfirmationService);
     });
 
-    it('should emit data to labels property', () => {
-        this.dotDialogService.confirm(mockData);
-
-        this.dotDialogService.labels.subscribe((message) => {
-            expect(message).toEqual({
-                acceptLabel: 'Delete',
-                rejectLabel: 'Reject'
-            });
-        });
+    it('should set confirmation model', () => {
+        service.confirm(mockData);
+        expect(service.confirmModel).toEqual(mockData);
     });
 
-    it('should call confirmation service with data parameter', () => {
-        spyOn(this.dotDialogService.confirmationService, 'confirm');
+    it('should call confirmation service with data parameter', fakeAsync(() => {
+        spyOn(confirmationService, 'confirm');
 
-        this.dotDialogService.confirm(mockData);
+        service.confirm(mockData);
+        tick();
+        expect(confirmationService.confirm).toHaveBeenCalledWith(mockData);
+    }));
 
-        expect(this.dotDialogService.confirmationService.confirm).toHaveBeenCalledWith(mockData);
+    it('should clear confirmation model', () => {
+        service.confirm(mockData);
+        service.clearConfirm();
+        expect(service.confirmModel).toEqual(null);
+    });
+
+    it('should set alert model', () => {
+        service.alert(mockData);
+        expect(service.alertModel).toEqual(mockData);
+    });
+
+    it('should clear alert model', () => {
+        service.alert(mockData);
+        service.clearAlert();
+        expect(service.alertModel).toEqual(null);
     });
 });
