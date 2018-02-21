@@ -29,6 +29,13 @@ export class DotDialogService {
     // TODO: Import DotMessageService - Add message keys
     // (Not working right now since inyecting DotMessageService produces errors)
     confirm(dialogModel: DotDialog): void {
+        if (!dialogModel.footerLabel) {
+            dialogModel.footerLabel = {
+                accept: this.dotMessageService.get('contenttypes.action.yes'),
+                reject: this.dotMessageService.get('contenttypes.action.no'),
+            };
+        }
+
         this.confirmModel = dialogModel;
         setTimeout(() => {
             this.confirmationService.confirm(dialogModel);
@@ -42,6 +49,12 @@ export class DotDialogService {
      * @memberof DotDialogService
      */
     alert(dialogModel: DotDialog): void {
+        if (!dialogModel.footerLabel) {
+            dialogModel.footerLabel = {
+                accept: this.dotMessageService.get('contenttypes.action.yes')
+            };
+        }
+
         this.alertModel = dialogModel;
     }
 

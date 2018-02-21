@@ -2,7 +2,6 @@
     *ngIf="dotDialogService.confirmModel"
     [closable]="false"
     [responsive]="true"
-    modal="modal"
     width="400">
     <p-footer>
         <button type="button" pButton [label]="dotDialogService.confirmModel.footerLabel.reject" (click)="onClickConfirm('reject')"></button>

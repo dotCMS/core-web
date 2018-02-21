@@ -5,8 +5,8 @@ export interface DotDialog {
     message: string;
     key?: string;
     icon?: string;
-    header?: string;
-    footerLabel: FooterLabels;
+    header: string;
+    footerLabel?: FooterLabels;
     accept?: Function;
     reject?: Function;
     acceptVisible?: boolean;

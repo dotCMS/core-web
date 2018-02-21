@@ -15,7 +15,6 @@ import {
     StringUtils,
     UserModel
 } from 'dotcms-js/dotcms-js';
-import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 import { ConfirmationService } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NGFACES_MODULES } from '../modules';
@@ -26,13 +25,6 @@ import { DotMessageService } from '../api/services/dot-messages-service';
 import { FormatDateService } from '../api/services/format-date-service';
 import { DotDialogService } from '../api/services/dot-dialog';
 import { DotInterceptor } from '../api/services/dot-interceptor/dot-interceptor.service';
-
-@Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'p-confirmDialog',
-    template: ''
-})
-class FakeConfirmDialogComponent {}
 
 export class DOTTestBed {
     private static DEFAULT_CONFIG = {
@@ -76,13 +68,6 @@ export class DOTTestBed {
         }
 
         TestBed.configureTestingModule(config);
-
-        TestBed.overrideModule(ConfirmDialogModule, {
-            set: {
-                declarations: [FakeConfirmDialogComponent],
-                exports: [FakeConfirmDialogComponent]
-            }
-        });
         TestBed.compileComponents();
 
         return TestBed;

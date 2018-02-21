@@ -1,4 +1,4 @@
-import { DotDialogService } from './../../../api/services/dot-dialog/dot-dialog.service';
+import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.service';
 import { ComponentFixture } from '@angular/core/testing';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DialogModule } from 'primeng/primeng';
@@ -28,6 +28,7 @@ import { DotGlobalMessageService } from '../../../view/components/_common/dot-gl
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
 import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
+import { DotRouterService } from 'dotcms-js/core/dot-router.service';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -101,6 +102,7 @@ describe('DotEditContentComponent', () => {
                 DotEditContentHtmlService,
                 DotEditContentToolbarHtmlService,
                 DotMenuService,
+                DotRouterService,
                 EditPageService,
                 {
                     provide: LoginService,
