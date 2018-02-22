@@ -1,3 +1,4 @@
+import { DotMessageService } from './../dot-messages-service';
 import { Injectable } from '@angular/core';
 import { RequestOptionsArgs, Response } from '@angular/http';
 
@@ -12,10 +13,18 @@ import { DotRouterService } from '../dot-router-service';
 export class DotInterceptor {
     constructor(
         private coreWebService: CoreWebService,
-        private dotRouterService: DotRouterService,
         private dotDialogService: DotDialogService,
+        private dotMessageService: DotMessageService,
+        private dotRouterService: DotRouterService,
         private loginService: LoginService
-    ) {}
+    ) {
+        this.dotMessageService.getMessages([
+            'dot.common.http.error.403.header',
+            'dot.common.http.error.403.message',
+            'dot.common.http.error.500.header',
+            'dot.common.http.error.500.message'
+        ]).subscribe();
+    }
 
     /**
      * Do request, show errors in the ui and do redirects
@@ -61,23 +70,18 @@ export class DotInterceptor {
     }
 
     private handle403(): void {
-        this.dotRouterService.gotoPortlet('c/workflow');
+        this.dotRouterService.goToMain();
+
         this.dotDialogService.alert({
-            message: 'You don\'t access to this page',
-            header: 'Can\'t go there',
-            footerLabel: {
-                accept: 'Ok'
-            }
+            message: this.dotMessageService.get('dot.common.http.error.403.message'),
+            header: this.dotMessageService.get('dot.common.http.error.403.header')
         });
     }
 
     private handle500(): void {
         this.dotDialogService.alert({
-            message: 'Please try again later',
-            header: 'Unkown error',
-            footerLabel: {
-                accept: 'Ok'
-            }
+            message: this.dotMessageService.get('dot.common.http.error.500.message'),
+            header: this.dotMessageService.get('dot.common.http.error.500.header')
         });
     }
 }

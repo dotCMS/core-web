@@ -13,11 +13,6 @@ import { MockDotMessageService } from './test/dot-message-service.mock';
 import { DotDialogService } from './api/services/dot-dialog';
 
 describe('AppComponent', () => {
-    const messageServiceMock = new MockDotMessageService({
-        'contenttypes.action.yes': 'Yes',
-        'contenttypes.action.no': 'No'
-    });
-
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [AppComponent],

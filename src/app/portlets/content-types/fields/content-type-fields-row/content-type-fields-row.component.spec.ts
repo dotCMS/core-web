@@ -34,8 +34,8 @@ describe('ContentTypeFieldsRowComponent', () => {
         'message.structure.delete.structure': 'Are you sure you want to delete this',
         'message.structure.delete.content': 'and all the content associated with it?',
         'message.structure.delete.notice': '(This operation can not be undone)',
-        'contenttypes.action.yes': 'Yes',
-        'contenttypes.action.no': 'No'
+        'dot.common.dialog.accept': 'Yes',
+        'dot.common.dialog.reject': 'No'
     });
 
     beforeEach(

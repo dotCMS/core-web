@@ -63,14 +63,8 @@ export class DotEditContentComponent implements OnInit {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'editpage.content.contentlet.remove.confirmation_message.reject',
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.header',
-                'editpage.content.contentlet.remove.confirmation_message.accept',
-                'editpage.content.steal.lock.confirmation_message.header',
-                'editpage.content.steal.lock.confirmation_message.message',
-                'editpage.content.steal.lock.confirmation_message.reject',
-                'editpage.content.steal.lock.confirmation_message.accept',
                 'editpage.content.contentlet.add.content',
                 'dot.common.message.saving',
                 'dot.common.message.saved'
@@ -259,11 +253,7 @@ export class DotEditContentComponent implements OnInit {
                 this.dotEditContentHtmlService.removeContentlet(pageContainer, pageContent);
             },
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
-            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
-            footerLabel: {
-                accept: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                reject: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
-            }
+            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message')
         });
     }
 

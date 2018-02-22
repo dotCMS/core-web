@@ -17,7 +17,7 @@ export class DotDialogService {
     confirmModel: DotDialog = null;
 
     constructor(public confirmationService: ConfirmationService, private dotMessageService: DotMessageService) {
-        this.dotMessageService.getMessages(['contenttypes.action.yes', 'contenttypes.action.no']).subscribe();
+        this.dotMessageService.getMessages(['dot.common.dialog.accept', 'dot.common.dialog.reject']).subscribe();
     }
 
     /**
@@ -26,15 +26,12 @@ export class DotDialogService {
      * @param {DotDialog} dialogModel
      * @memberof DotDialogService
      */
-    // TODO: Import DotMessageService - Add message keys
-    // (Not working right now since inyecting DotMessageService produces errors)
     confirm(dialogModel: DotDialog): void {
-        if (!dialogModel.footerLabel) {
-            dialogModel.footerLabel = {
-                accept: this.dotMessageService.get('contenttypes.action.yes'),
-                reject: this.dotMessageService.get('contenttypes.action.no'),
-            };
-        }
+        dialogModel.footerLabel = {
+            accept: this.dotMessageService.get('dot.common.dialog.accept'),
+            reject: this.dotMessageService.get('dot.common.dialog.reject'),
+            ...dialogModel.footerLabel
+        };
 
         this.confirmModel = dialogModel;
         setTimeout(() => {
@@ -49,11 +46,10 @@ export class DotDialogService {
      * @memberof DotDialogService
      */
     alert(dialogModel: DotDialog): void {
-        if (!dialogModel.footerLabel) {
-            dialogModel.footerLabel = {
-                accept: this.dotMessageService.get('contenttypes.action.yes')
-            };
-        }
+        dialogModel.footerLabel = {
+            accept: this.dotMessageService.get('dot.common.dialog.accept'),
+            ...dialogModel.footerLabel
+        };
 
         this.alertModel = dialogModel;
     }
