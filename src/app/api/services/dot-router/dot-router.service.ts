@@ -3,14 +3,13 @@ import { Router } from '@angular/router';
 
 import { PortletNav } from '../../../shared/models/navigation';
 import { Subject } from 'rxjs/Subject';
-import { LoginService } from 'dotcms-js/dotcms-js';
 
 @Injectable()
 export class DotRouterService {
     portletReload$ = new Subject();
     private _previousSavedURL: string;
 
-    constructor(private router: Router, private loginService: LoginService) {}
+    constructor(private router: Router) {}
 
     get currentPortlet(): PortletNav {
         return {
@@ -33,6 +32,13 @@ export class DotRouterService {
         this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
     }
 
+    /**
+     * Go to first porlet unless userEditPageRedirect is passed or _previousSavedURL is set
+     *
+     * @param {string} [userEditPageRedirect]
+     * @returns {Promise<boolean>}
+     * @memberof DotRouterService
+     */
     goToMain(userEditPageRedirect?: string): Promise<boolean> {
         return userEditPageRedirect
             ? this.gotoPortlet(`edit-page/content?url=${userEditPageRedirect}`, true)
