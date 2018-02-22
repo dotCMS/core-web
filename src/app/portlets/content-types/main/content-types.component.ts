@@ -53,9 +53,7 @@ export class ContentTypesPortletComponent implements OnInit {
         'contenttypes.content.key_value',
         'contenttypes.content.vanity_url',
         'contenttypes.content.form',
-        'contenttypes.confirm.message.delete',
-        'contenttypes.confirm.message.delete.content',
-        'contenttypes.confirm.message.delete.warning',
+        'contenttypes.confirm.message.delete.type',
         'contenttypes.action.delete',
         'contenttypes.action.cancel',
         'contenttypes.content.push_publish',
@@ -223,11 +221,7 @@ export class ContentTypesPortletComponent implements OnInit {
                 this.removeContentType(item);
             },
             header: this.dotMessageService.get('message.structure.cantdelete'),
-            message: `${this.dotMessageService.get('contenttypes.confirm.message.delete')} ${this.dotMessageService.get(
-                'Content-Type'
-            )}
-                        ${this.dotMessageService.get('contenttypes.confirm.message.delete.content')}
-                        <span>${this.dotMessageService.get('contenttypes.confirm.message.delete.warning')}</span>`,
+            message: this.dotMessageService.get('contenttypes.confirm.message.delete.type', item.name),
             footerLabel: {
                 accept: this.dotMessageService.get('contenttypes.action.delete'),
                 reject: this.dotMessageService.get('contenttypes.action.cancel')

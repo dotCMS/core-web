@@ -28,9 +28,8 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
             [
                 'contenttypes.dropzone.rows.empty.message',
                 'contenttypes.action.delete',
-                'contenttypes.confirm.message.delete',
-                'contenttypes.confirm.message.delete.content',
-                'contenttypes.confirm.message.delete.warning',
+                'contenttypes.confirm.message.delete.field',
+                'contenttypes.confirm.message.delete.row',
                 'contenttypes.content.field',
                 'contenttypes.content.row',
                 'contenttypes.action.cancel'
@@ -50,9 +49,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 this.removeField.emit(field);
             },
             header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.field']}`,
-            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.field']}
-                        '${field.name}'?
-                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
+            message: this.dotMessageService.get('contenttypes.confirm.message.delete.field', field.name),
             footerLabel: {
                 accept: this.i18nMessages['contenttypes.action.delete'],
                 reject: this.i18nMessages['contenttypes.action.cancel']
@@ -79,9 +76,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 this.removeRow.emit(this.fieldRow);
             },
             header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.row']}`,
-            message: `${this.i18nMessages['contenttypes.confirm.message.delete']} ${this.i18nMessages['contenttypes.content.row']}
-                        ${this.i18nMessages['contenttypes.confirm.message.delete.content']}
-                        <span>${this.i18nMessages['contenttypes.confirm.message.delete.warning']}</span>`,
+            message: this.dotMessageService.get('contenttypes.confirm.message.delete.row'),
             footerLabel: {
                 accept: this.i18nMessages['contenttypes.action.delete'],
                 reject: this.i18nMessages['contenttypes.action.cancel']
