@@ -18,6 +18,19 @@ export class EditPageService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
+     * Get the page HTML viewed as specific Persona & Language
+     *
+     * @param {string} personaId
+     * @param {string} languageId
+     * @returns {Observable<DotRenderedPage>}
+     * @memberof EditPageService
+     */
+    getAs(url: string, personaId: string, languageId: string): Observable<DotRenderedPage> {
+        return this.get(url, PageMode.PREVIEW);
+    }
+
+
+    /**
      * Get the page HTML in edit mode
      *
      * @param {string} url

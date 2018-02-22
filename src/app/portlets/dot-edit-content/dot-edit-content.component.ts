@@ -20,6 +20,9 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.service';
+import { Device } from '../../shared/models/device/device.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -40,6 +43,7 @@ export class DotEditContentComponent implements OnInit {
     isModelUpdated = false;
     page: DotRenderedPage;
     pageWorkFlows: Observable<Workflow[]>;
+    device: Device;
 
     private originalValue: any;
 
@@ -54,6 +58,7 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         private workflowsService: WorkflowService,
+        private dotDevicesService: DotDevicesService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
@@ -99,7 +104,7 @@ export class DotEditContentComponent implements OnInit {
                 });
             });
 
-            this.dotEditContentHtmlService.pageModelChange.filter((model) => model.length).subscribe((model) => {
+            this.dotEditContentHtmlService.pageModelChange.filter(model => model.length).subscribe(model => {
                 if (this.originalValue) {
                     this.ngZone.run(() => {
                         this.isModelUpdated = !_.isEqual(model, this.originalValue);
@@ -154,6 +159,15 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
+    changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
+        // TODO: Make a new request ?? to this.editPageService.getAs('4', viewAsConfig.persona, viewAsConfig.language)
+        console.log(viewAsConfig);
+    }
+
+    changeDeviceHandler(deviceId: string): void {
+        this.device = this.dotDevicesService.getDimensions(deviceId);
+    }
+
     /**
      * Save the page's content
      *
@@ -195,7 +209,8 @@ export class DotEditContentComponent implements OnInit {
         this.dialogTitle = this.dotMessageService.get('editpage.content.contentlet.add.content');
 
         this.loadDialogEditor(
-            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset.dotAdd}`,
+            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset
+                .dotAdd}`,
             $event.contentletEvents
         );
     }
@@ -214,7 +229,9 @@ export class DotEditContentComponent implements OnInit {
 
         this.dotMenuService.getDotMenuId('content').subscribe((portletId: string) => {
             // tslint:disable-next-line:max-line-length
-            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event.dataset.dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
+            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event
+                .dataset
+                .dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';
@@ -264,8 +281,12 @@ export class DotEditContentComponent implements OnInit {
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
             message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
             footerLabel: {
-                acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
+                acceptLabel: this.dotMessageService.get(
+                    'editpage.content.contentlet.remove.confirmation_message.accept'
+                ),
+                rejectLabel: this.dotMessageService.get(
+                    'editpage.content.contentlet.remove.confirmation_message.reject'
+                )
             }
         });
     }

@@ -20,6 +20,9 @@ import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
 import { DefaultGuardService } from './api/services/guards/default-guard.service';
 import { StringFormat } from './api/util/stringFormat';
+import { DotDevicesService } from './api/services/dot-devices/dot-devices.service';
+import { DotLanguagesService } from './api/services/dot-languages/dot-languages.service';
+import { DotPersonasService } from './api/services/dot-personas/dot-personas.service';
 
 const PROVIDERS: any[] = [
     AccountService,
@@ -43,7 +46,10 @@ const PROVIDERS: any[] = [
     NotificationsService,
     PaginatorService,
     PublicAuthGuardService,
-    StringFormat
+    StringFormat,
+    DotDevicesService,
+    DotLanguagesService,
+    DotPersonasService
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

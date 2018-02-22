@@ -1,0 +1,12 @@
+@import 'variables';
+@import 'mixins';
+
+:host {
+    background-color: $gray-darker;
+    height: 35px;
+    padding: 6px 0 0 16px;
+}
+
+:host p-dropdown {
+    margin-right: 10px;
+}

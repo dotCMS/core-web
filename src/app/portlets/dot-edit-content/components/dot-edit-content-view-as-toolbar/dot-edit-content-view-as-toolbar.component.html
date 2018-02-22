@@ -1,0 +1,14 @@
+<p-dropdown class="tiny invert" [options]="languagesOptions"
+            [(ngModel)]="viewAsConfig.language"
+            (onChange)="changeConfiguration($event.value)">
+</p-dropdown>
+
+<p-dropdown class="tiny invert" [options]="devicesOptions"
+            [(ngModel)]="viewAsConfig.device"
+            (onChange)="changeDeviceConfiguration($event.value)">
+</p-dropdown>
+
+<p-dropdown class="tiny invert" [options]="personasOptions"
+            [(ngModel)]="viewAsConfig.user"
+            (onChange)="changeConfiguration($event.value)">
+</p-dropdown>
