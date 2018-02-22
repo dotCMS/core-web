@@ -11,7 +11,7 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
-import { DotRouterService } from '../../../api/services/dot-router-service';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 
 @Injectable()
 export class DotNavigationService {

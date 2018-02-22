@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotNavigationService } from './dot-navigation.service';
-import { DotRouterService } from '../../../api/services/dot-router-service';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { DotcmsEventsService, LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { Observable } from 'rxjs/Observable';

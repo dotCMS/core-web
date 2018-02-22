@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PortletNav } from '../../shared/models/navigation';
+import { PortletNav } from '../../../shared/models/navigation';
 import { Subject } from 'rxjs/Subject';
 import { LoginService } from 'dotcms-js/dotcms-js';
 
