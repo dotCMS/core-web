@@ -48,7 +48,7 @@ const baseMockAuth: Auth = {
     user: baseMockUser
 };
 
-describe('DotNavigationService', () => {
+fdescribe('DotNavigationService', () => {
     let dotMenuService: DotMenuService;
     let dotNavigationService: DotNavigationService;
     let dotRouterService: DotRouterService;
@@ -88,49 +88,6 @@ describe('DotNavigationService', () => {
             loginService = testbed.get(LoginService);
         })
     );
-
-    it('should redirect to edit page', () => {
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
-        spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(dotNavigationService, 'goToFirstPortlet');
-
-        const mockUser = {
-            emailAddress: 'admin@dotcms.com',
-            firstName: 'Admin',
-            lastName: 'Admin',
-            loggedInDate: 123456789,
-            userId: '123',
-            editModeUrl: '/test/123'
-        };
-        const mockAuth: Auth = {
-            loginAsUser: null,
-            user: mockUser
-        };
-        loginService.triggerNewAuth(mockAuth);
-
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('edit-page/content?url=/test/123', true);
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
-    });
-
-    it('should redirect to previous saved URL and clear the saved url', fakeAsync(() => {
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
-        spyOn(dotNavigationService, 'goToFirstPortlet');
-        spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => {
-            return new Promise(resolve => {
-                resolve(true);
-            });
-        });
-        dotRouterService.previousSavedURL = 'hello/world';
-
-        loginService.triggerNewAuth(baseMockAuth);
-
-        tick();
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/world', true);
-        expect(dotRouterService.previousSavedURL === null).toBe(true);
-    }));
 
     // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
     xit('should subscribe to UPDATE_PORTLET_LAYOUTS websocket event', () => {

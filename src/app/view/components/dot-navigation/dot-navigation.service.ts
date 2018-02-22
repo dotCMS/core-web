@@ -38,17 +38,12 @@ export class DotNavigationService {
             this.reloadNavigation();
         });
 
-        this.loginService.auth$.filter((auth: Auth) => !!(auth.loginAsUser || auth.user)).subscribe((auth: Auth) => {
-            this.reloadNavigation().subscribe((isPortletInMenu: boolean) => {
-                const isUserRedirect = auth.user['editModeUrl'] || this.dotRouterService.previousSavedURL;
-
-                if (isUserRedirect) {
-                    this.userCustomRedirect(auth.user['editModeUrl']);
-                } else if (!isPortletInMenu) {
-                    this.goToFirstPortlet();
-                }
+        this.loginService.auth$
+            .filter((auth: Auth) => !!(auth.loginAsUser || auth.user))
+            .mergeMap((auth: Auth) => this.reloadNavigation().filter((isPortletInMenu: boolean) => !isPortletInMenu))
+            .subscribe((goToFirstPortlet: boolean) => {
+                this.goToFirstPortlet();
             });
-        });
     }
 
     /**
@@ -96,13 +91,16 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     reloadNavigation(): Observable<boolean> {
-        return this.dotMenuService.reloadMenu().mergeMap((menu: DotMenu[]) => {
-            this.setMenu(menu);
-
-            return this.dotMenuService.isPortletInMenu(
-                this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
+        return this.dotMenuService
+            .reloadMenu()
+            .do((menu: DotMenu[]) => {
+                this.setMenu(menu);
+            })
+            .mergeMap((menu: DotMenu[]) =>
+                this.dotMenuService.isPortletInMenu(
+                    this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
+                )
             );
-        });
     }
 
     private extractFirtsMenuLink(menus: DotMenu[]): string {
@@ -116,13 +114,7 @@ export class DotNavigationService {
         return menu.map((menuGroup: DotMenu, menuIndex: number) => {
             menuGroup.menuItems.forEach((menuItem: DotMenuItem) => {
                 menuItem.menuLink = menuItem.angular ? menuItem.url : this.getMenuLink(menuItem.id);
-
-                if (
-                    this.isFirstMenuActive(currentUrl, menuIndex) ||
-                    this.isMenuItemCurrentUrl(currentUrl, menuItem.id)
-                ) {
-                    menuGroup.isOpen = true;
-                }
+                menuGroup.isOpen = this.isFirstMenuActive(currentUrl, menuIndex) || this.isMenuItemCurrentUrl(currentUrl, menuItem.id);
             });
             return menuGroup;
         });
@@ -146,15 +138,5 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
-    }
-
-    private userCustomRedirect(editModeUrl?: string): void {
-        if (editModeUrl) {
-            this.dotRouterService.gotoPortlet(`edit-page/content?url=${editModeUrl}`, true);
-        } else if (this.dotRouterService.previousSavedURL) {
-            this.dotRouterService.gotoPortlet(this.dotRouterService.previousSavedURL, true).then((res: boolean) => {
-                this.dotRouterService.previousSavedURL = res ? null : this.dotRouterService.previousSavedURL;
-            });
-        }
     }
 }
