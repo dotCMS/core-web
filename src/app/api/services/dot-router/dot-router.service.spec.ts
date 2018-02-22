@@ -36,19 +36,32 @@ describe('DotRouterService', () => {
         });
 
         it('should go to edit page', () => {
-            spyOn(router, 'navigateByUrl');
+            spyOn(service, 'goToEditPage');
             service.goToMain('/about/us');
 
-            expect(router.navigateByUrl).toHaveBeenCalledWith('edit-page/content?url=/about/us', { replaceUrl: true });
+            expect(service.goToEditPage).toHaveBeenCalledWith('/about/us');
         });
 
         it('should go to previousSavedURL', () => {
             service.previousSavedURL = 'test/fake';
 
-            spyOn(router, 'navigate');
+            spyOn(router, 'navigate').and.callFake(() => {
+                return new Promise((resolve, reject) => {
+                    resolve(true);
+                });
+            });
             service.goToMain();
 
             expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
         });
+    });
+
+    describe('goToEditPage()', () => {
+        it('should go to edit page', () => {
+            spyOn(router, 'navigate');
+            service.goToEditPage('abc/def');
+            expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], { queryParams: { url: 'abc/def' } });
+        });
+
     });
 });

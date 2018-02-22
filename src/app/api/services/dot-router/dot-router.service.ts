@@ -28,21 +28,19 @@ export class DotRouterService {
         this.portletReload$.next(id);
     }
 
-    goToEditPage(url: any): void {
-        this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
+    goToEditPage(url: string): Promise<boolean> {
+        return this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
     }
 
     /**
-     * Go to first porlet unless userEditPageRedirect is passed or _previousSavedURL is set
+     * Go to first porlet unless userEditPageRedirect is passed or previousSavedURL is set
      *
      * @param {string} [userEditPageRedirect]
      * @returns {Promise<boolean>}
      * @memberof DotRouterService
      */
     goToMain(userEditPageRedirect?: string): Promise<boolean> {
-        return userEditPageRedirect
-            ? this.gotoPortlet(`edit-page/content?url=${userEditPageRedirect}`, true)
-            : this.router.navigate([this._previousSavedURL || '/']);
+        return userEditPageRedirect ? this.goToEditPage(userEditPageRedirect) : this.redirectMain();
     }
 
     goToLogin(parameters?: any): void {
@@ -96,5 +94,17 @@ export class DotRouterService {
 
     isPublicPage(): boolean {
         return this.currentPortlet.url.startsWith('/public');
+    }
+
+
+    private redirectMain(): Promise<boolean> {
+        if (this._previousSavedURL) {
+            return this.router.navigate([this.previousSavedURL]).then((ok: boolean) => {
+                this.previousSavedURL = null;
+                return ok;
+            });
+        } else {
+            return this.router.navigate(['/']);
+        }
     }
 }

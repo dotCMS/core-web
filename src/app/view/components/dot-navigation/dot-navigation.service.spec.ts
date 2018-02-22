@@ -99,8 +99,8 @@ describe('DotNavigationService', () => {
         spyOn(dotMenuService, 'loadMenu').and.returnValue(Observable.of(mockMenu));
 
         spyOn(dotRouterService, 'gotoPortlet');
-        dotNavigationService.goToFirstPortlet(false);
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/url', false);
+        dotNavigationService.goToFirstPortlet();
+        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/url');
     });
 
     it('should return correct value in isActive', () => {
@@ -139,7 +139,7 @@ describe('DotNavigationService', () => {
     it('should reload navigation, set menu and redirect to first portlet', () => {
         spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
         spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
-        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
+        spyOn(dotNavigationService, 'goToFirstPortlet');
 
         loginService.triggerNewAuth(baseMockAuth);
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
@@ -148,7 +148,17 @@ describe('DotNavigationService', () => {
     it('should reload navigation, set menu and NOT redirect to first portlet (portlet is in menu)', () => {
         spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
         spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
-        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Observable.of(false));
+        spyOn(dotNavigationService, 'goToFirstPortlet');
+
+        loginService.triggerNewAuth(baseMockAuth);
+        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
+    });
+
+    it('should reload navigation, set menu and NOT redirect to first portlet (previousSavedURL in routerService)', () => {
+        dotRouterService.previousSavedURL = 'hello/url';
+        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
+        spyOn(dotNavigationService, 'goToFirstPortlet');
 
         loginService.triggerNewAuth(baseMockAuth);
         expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
