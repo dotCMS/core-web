@@ -4,10 +4,11 @@ import { RequestOptionsArgs, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ResponseView, CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
+import { ResponseView, CoreWebService, LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 
 import { DotDialogService } from '../dot-dialog';
-import { DotRouterService } from '../dot-router-service';
+import { DotRouterService } from '../dot-router/dot-router.service';
+
 
 @Injectable()
 export class DotInterceptor {
@@ -45,31 +46,33 @@ export class DotInterceptor {
         return Observable.of(null);
     }
 
-    private callErrorHandler(code: number): void {
-        const errors = {
-            401: () => {
-                this.handle401();
-            },
-            403: () => {
-                this.handle403();
-            },
-            500: () => {
-                this.handle500();
-            }
+    private callErrorHandler(code: HttpCode): void {
+        const errors = {};
+
+        errors[HttpCode.UNAUTHORIZED] = () => {
+            this.handleUnathorized();
+        };
+
+        errors[HttpCode.FORBIDDEN] = () => {
+            this.handleForbidden();
+        };
+
+        errors[HttpCode.SERVER_ERROR] = () => {
+            this.handleServerError();
         };
 
         errors[code]();
     }
 
-    private handle401(): void {
+    private handleUnathorized(): void {
         if (this.loginService.auth.user) {
-            this.handle403();
+            this.handleForbidden();
         } else {
             this.dotRouterService.goToLogin();
         }
     }
 
-    private handle403(): void {
+    private handleForbidden(): void {
         this.dotRouterService.goToMain();
 
         this.dotDialogService.alert({
@@ -78,7 +81,7 @@ export class DotInterceptor {
         });
     }
 
-    private handle500(): void {
+    private handleServerError(): void {
         this.dotDialogService.alert({
             message: this.dotMessageService.get('dot.common.http.error.500.message'),
             header: this.dotMessageService.get('dot.common.http.error.500.header')

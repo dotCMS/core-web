@@ -8,11 +8,10 @@ import { edit } from 'brace';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { TestBed } from '@angular/core/testing';
-import { LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from 'dotcms-js/core/dot-router.service';
+import { DotRouterService, LoginService } from 'dotcms-js/dotcms-js';
 
 const mockDotRenderPage: DotRenderedPage = {
     canEdit: true,

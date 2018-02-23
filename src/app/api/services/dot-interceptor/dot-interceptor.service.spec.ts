@@ -4,7 +4,7 @@ import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotInterceptor } from './dot-interceptor.service';
-import { DotRouterService } from '../dot-router-service';
+import { DotRouterService } from '../dot-router/dot-router.service';
 import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
