@@ -59,8 +59,8 @@ export class EditPageService {
      * @memberof PageViewService
      */
     lock(inode: string): Observable<any> {
-        return this.coreWebService
-            .requestView({
+        return this.dotInterceptor
+            .request({
                 method: RequestMethod.Put,
                 url: `content/lock/inode/${inode}`
             })
@@ -75,8 +75,8 @@ export class EditPageService {
      * @memberof PageViewService
      */
     unlock(inode: string): Observable<any> {
-        return this.coreWebService
-            .requestView({
+        return this.dotInterceptor
+            .request({
                 method: RequestMethod.Put,
                 url: `content/unlock/inode/${inode}`
             })

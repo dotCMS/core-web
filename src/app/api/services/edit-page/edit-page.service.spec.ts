@@ -1,17 +1,19 @@
+import { DotInterceptor } from './../dot-interceptor/dot-interceptor.service';
+import { LoginServiceMock } from './../../../test/login-service.mock';
+import { DotRouterService } from './../dot-router/dot-router.service';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, tick, TestBed } from '@angular/core/testing';
 import { DOTTestBed } from './../../../test/dot-test-bed';
 import { EditPageService } from './edit-page.service';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { edit } from 'brace';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService, LoginService } from 'dotcms-js/dotcms-js';
+import { LoginService } from 'dotcms-js/dotcms-js';
 
 const mockDotRenderPage: DotRenderedPage = {
     canEdit: true,
@@ -33,32 +35,29 @@ const mockDotRenderPage: DotRenderedPage = {
     workingInode: ''
 };
 
-class LoginServiceMock {
-    auth = {
-        user: {
-            userId: 'someone'
-        }
-    };
-}
-
-describe('EditPageService', () => {
+fdescribe('EditPageService', () => {
+    let dotInterceptorService: DotInterceptor;
     let editPageService: EditPageService;
     let backend: MockBackend;
     let lastConnection;
+    let injector;
 
     beforeEach(() => {
         lastConnection = [];
 
-        this.injector = DOTTestBed.configureTestingModule({
+        injector = DOTTestBed.configureTestingModule({
             providers: [EditPageService, DotRouterService, {
-                provide: LoginService,
+                provide: LoginService, DotInterceptor,
                 useClass: LoginServiceMock
             }],
             imports: [RouterTestingModule]
         });
 
-        editPageService = this.injector.get(EditPageService);
-        backend = this.injector.get(ConnectionBackend) as MockBackend;
+        editPageService = injector.get(EditPageService);
+        dotInterceptorService = injector.get(DotInterceptor);
+        spyOn(dotInterceptorService, 'request').and.callThrough();
+
+        backend = injector.get(ConnectionBackend) as MockBackend;
         backend.connections.subscribe((connection: any) => {
             lastConnection.push(connection);
         });
@@ -77,6 +76,7 @@ describe('EditPageService', () => {
         );
         expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=EDIT_MODE');
         expect(result).toEqual(mockDotRenderPage);
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should do a get a rendered page in preview mode', () => {
@@ -92,6 +92,7 @@ describe('EditPageService', () => {
         );
         expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=PREVIEW_MODE');
         expect(result).toEqual(mockDotRenderPage);
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should do a get a rendered page in live mode', () => {
@@ -103,6 +104,7 @@ describe('EditPageService', () => {
         })));
         expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=LIVE');
         expect(result).toEqual(mockDotRenderPage);
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should set object locked by another user and locked', () => {
@@ -182,6 +184,7 @@ describe('EditPageService', () => {
         );
         expect(lastConnection[0].request.url).toContain('/api/content/lock/inode/123');
         expect(result).toEqual({ message: 'locked' });
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should unlock a content asset', () => {
@@ -199,6 +202,7 @@ describe('EditPageService', () => {
         );
         expect(lastConnection[0].request.url).toContain('/api/content/unlock/inode/123');
         expect(result).toEqual({ message: 'locked' });
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should set a page state (lock and the get edit)', () => {
@@ -248,6 +252,7 @@ describe('EditPageService', () => {
         expect(editPageService.getLive).not.toHaveBeenCalled();
         expect(editPageService.getPreview).not.toHaveBeenCalled();
         expect(editPageService.unlock).not.toHaveBeenCalled();
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(2);
     });
 
     it('should set a page state (just lock)', () => {
@@ -285,6 +290,7 @@ describe('EditPageService', () => {
         expect(editPageService.getLive).not.toHaveBeenCalled();
         expect(editPageService.getPreview).not.toHaveBeenCalled();
         expect(editPageService.unlock).not.toHaveBeenCalled();
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 
     it('should set a page state (just get live)', () => {
@@ -319,5 +325,6 @@ describe('EditPageService', () => {
         expect(editPageService.lock).not.toHaveBeenCalled();
         expect(editPageService.getPreview).not.toHaveBeenCalled();
         expect(editPageService.getEdit).not.toHaveBeenCalled();
+        expect(dotInterceptorService.request).toHaveBeenCalledTimes(1);
     });
 });

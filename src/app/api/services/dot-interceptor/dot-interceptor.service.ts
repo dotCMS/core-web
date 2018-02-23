@@ -10,6 +10,12 @@ import { DotDialogService } from '../dot-dialog';
 import { DotRouterService } from '../dot-router/dot-router.service';
 
 
+/**
+ * Handle the UI and redirects when a HTTP errors happens
+ *
+ * @export
+ * @class DotInterceptor
+ */
 @Injectable()
 export class DotInterceptor {
     constructor(
@@ -28,7 +34,10 @@ export class DotInterceptor {
     }
 
     /**
-     * Do request, show errors in the ui and do redirects
+     * Do request and handle http errors in the UI
+     * 403: show dialog with error message and redirect to main component
+     * 401: redirect to login page
+     * 500: show dialog with error message
      *
      * @param {RequestOptionsArgs} options
      * @returns {Observable<ResponseView>}

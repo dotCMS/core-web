@@ -50,10 +50,13 @@ describe('DotDialogService', () => {
         confirmationService = testbed.get(ConfirmationService);
     });
 
-    it('should set confirmation model', () => {
+    it('should set confirmation model and call confirm method in primeng service', fakeAsync(() => {
+        spyOn(confirmationService, 'confirm');
         service.confirm(mockData);
+        tick();
         expect(service.confirmModel).toEqual(mockData);
-    });
+        expect(confirmationService.confirm).toHaveBeenCalledWith(mockData);
+    }));
 
     it('should set confirmation model with default labels', () => {
         service.confirm({
@@ -69,14 +72,6 @@ describe('DotDialogService', () => {
             }
         });
     });
-
-    it('should call confirmation service with data parameter', fakeAsync(() => {
-        spyOn(confirmationService, 'confirm');
-
-        service.confirm(mockData);
-        tick();
-        expect(confirmationService.confirm).toHaveBeenCalledWith(mockData);
-    }));
 
     it('should clear confirmation model', () => {
         service.confirm(mockData);
