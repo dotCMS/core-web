@@ -1,5 +1,7 @@
+import { Device } from '../device/device.model';
+
 export interface DotEditPageViewAs {
-    persona: string;
-    language: string;
-    device: string;
+    personaId: string;
+    languageId: string;
+    device?: Device;
 }

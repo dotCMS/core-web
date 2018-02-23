@@ -8,6 +8,7 @@ import { Persona } from '../../../../shared/models/persona/persona.model';
 import { Observable } from 'rxjs/Observable';
 import { Language } from '../../../../shared/models/language/language.model';
 import { Device } from '../../../../shared/models/device/device.model';
+import {DotViewAsService} from '../../../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
@@ -16,7 +17,7 @@ import { Device } from '../../../../shared/models/device/device.model';
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output() changeDevice = new EventEmitter<string>();
+    @Output() changeDevice = new EventEmitter<Device>();
 
     languagesOptions: SelectItem[];
     personasOptions: SelectItem[];
@@ -27,7 +28,8 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     constructor(
         private dotDevicesService: DotDevicesService,
         private dotLanguagesService: DotLanguagesService,
-        private dotPersonasService: DotPersonasService
+        private dotPersonasService: DotPersonasService,
+        private dotViewAsService: DotViewAsService
     ) {}
 
     ngOnInit() {
@@ -40,11 +42,10 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
             this.languagesOptions = response[1].map((language: Language) => this.getLanguageFieldOption(language));
             this.devicesOptions = response[2].map((device: Device) => this.getDeviceFieldOption(device));
 
-            this.viewAsConfig = {
-                language: this.languagesOptions[0].value,
-                user: this.personasOptions[0].value,
-                device: this.devicesOptions[0].value
-            };
+            this.setInitialConfiguration();
+            this.changeDevice.emit(this.viewAsConfig.device);
+
+            // TODO: Emit initial configuration, for first request.
         });
     }
 
@@ -52,7 +53,11 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * Track changes in language and persona.
      */
     changeConfiguration() {
-        this.changeViewAs.emit(this.viewAsConfig);
+        this.changeViewAs.emit(this.dotViewAsService.selected);
+        this.dotViewAsService.selected = this.viewAsConfig;
+        // this.dotViewAsService
+        // this.dotLanguagesService.selectedLanguage = this.viewAsConfig.languageId;
+        // this.dotPersonasService.selectedPersona = this.viewAsConfig.personaId;
     }
 
     /**
@@ -60,6 +65,15 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      */
     changeDeviceConfiguration() {
         this.changeDevice.emit(this.viewAsConfig.device);
+        this.dotDevicesService.selectedDevice = this.viewAsConfig.device;
+    }
+
+    private setInitialConfiguration() {
+        this.viewAsConfig = {
+            languageId: this.dotLanguagesService.selectedLanguage || this.languagesOptions[0].value,
+            personaId: this.dotPersonasService.selectedPersona || this.personasOptions[0].value,
+            device: this.dotDevicesService.selectedDevice || this.devicesOptions[0].value
+        };
     }
 
     private getPersonaFieldOption(persona: Persona): SelectItem {
@@ -79,7 +93,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     private getDeviceFieldOption(device: Device): SelectItem {
         return {
             label: device.label,
-            value: device.id
+            value: device
         };
     }
 }

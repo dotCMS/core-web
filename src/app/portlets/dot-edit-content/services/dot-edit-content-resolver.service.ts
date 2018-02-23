@@ -16,6 +16,7 @@ export class EditContentResolver implements Resolve<DotRenderedPage> {
     constructor(private editPageService: EditPageService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPage> {
+        // TODO: Add view as parameters.
         return this.editPageService.getEdit(route.queryParams.url);
     }
 }

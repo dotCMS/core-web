@@ -10,6 +10,9 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
  */
 @Injectable()
 export class DotPersonasService {
+
+    private _selectedPersona: string;
+
     constructor(private coreWebService: CoreWebService) {}
 
     /**
@@ -24,5 +27,12 @@ export class DotPersonasService {
             { id: '3', label: 'Global Investor' },
             { id: '4', label: 'First Time investor' }
         ]);
+    }
+
+    get selectedPersona(): string {
+        return this._selectedPersona;
+    }
+    set selectedPersona(personaId: string) {
+        this._selectedPersona = personaId;
     }
 }

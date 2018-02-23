@@ -164,8 +164,8 @@ export class DotEditContentComponent implements OnInit {
         console.log(viewAsConfig);
     }
 
-    changeDeviceHandler(deviceId: string): void {
-        this.device = this.dotDevicesService.getDimensions(deviceId);
+    changeDeviceHandler(device: Device): void {
+        this.device = device;
     }
 
     /**

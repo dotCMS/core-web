@@ -10,7 +10,9 @@ import { Device } from '../../../shared/models/device/device.model';
  */
 @Injectable()
 export class DotDevicesService {
-    constructor(private coreWebService: CoreWebService) {}
+    private _selectedDevice: Device;
+
+    constructor() {}
 
     /**
      * Return available devices.
@@ -19,18 +21,17 @@ export class DotDevicesService {
      */
     get(): Observable<Device[]> {
         return Observable.of([
-            { id: '0', label: 'iPhone', width: '375', height: '667' },
-            { id: '1', label: 'iPad Pro', width: '1024', height: '1366' },
-            { id: '2', label: 'iPad 3, 4, Air, Air2', width: '768', height: '1024' }
+            { id: '0', label: 'Desktop', width: 'auto', height: 'auto' },
+            { id: '1', label: 'iPhone', width: '375px', height: '667px' },
+            { id: '2', label: 'iPad Pro', width: '1024px', height: '1366px' },
+            { id: '3', label: 'iPad 3, 4, Air, Air2', width: '768px', height: '1024px' }
         ]);
     }
 
-    /**
-     * Get a device given the id.
-     * @param {string} id
-     * @returns {Device}
-     */
-    getDimensions(id: string): Device {
-        return { id: '0', label: 'iPhone', width: '375', height: '667' };
+    get selectedDevice(): Device {
+        return this._selectedDevice;
+    }
+    set selectedDevice(device: Device) {
+        this._selectedDevice = device;
     }
 }

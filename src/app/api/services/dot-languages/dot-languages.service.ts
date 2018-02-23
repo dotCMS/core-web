@@ -11,6 +11,9 @@ import { Language } from '../../../shared/models/language/language.model';
  */
 @Injectable()
 export class DotLanguagesService {
+
+    private _selectedLanguage: string;
+
     constructor(private coreWebService: CoreWebService) {}
 
     /**
@@ -24,5 +27,12 @@ export class DotLanguagesService {
             { id: 'es', label: 'Spanish' },
             { id: 'fr', label: 'French' }
         ]);
+    }
+
+    get selectedLanguage(): string {
+        return this._selectedLanguage;
+    }
+    set selectedLanguage(languageId: string) {
+        this._selectedLanguage = languageId;
     }
 }
