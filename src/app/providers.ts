@@ -7,10 +7,10 @@ import { ContentletGuardService } from './api/services/guards/contentlet-guard.s
 import { CrudService } from './api/services/crud/crud.service';
 import { DefaultGuardService } from './api/services/guards/default-guard.service';
 import { DotDialogService } from './api/services/dot-dialog';
-import { DotInterceptor } from './api/services/dot-interceptor/dot-interceptor.service';
+import { DotHttpErrorManagerService } from './api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotMenuService } from './api/services/dot-menu.service';
-import { DotRouterService } from './api/services/dot-router/dot-router.service';
 import { DotMessageService } from './api/services/dot-messages-service';
+import { DotRouterService } from './api/services/dot-router/dot-router.service';
 import { FormatDateService } from './api/services/format-date-service';
 import { GravatarService } from './api/services/gravatar-service';
 import { IframeOverlayService } from './view/components/_common/iframe/service/iframe-overlay.service';
@@ -32,7 +32,7 @@ const PROVIDERS: any[] = [
     CrudService,
     DefaultGuardService,
     DotDialogService,
-    DotInterceptor,
+    DotHttpErrorManagerService,
     DotMenuService,
     DotMessageService,
     DotRouterService,

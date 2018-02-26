@@ -4,10 +4,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { PageViewService } from '../../../../../api/services/page-view/page-view.service';
 import { TestBed, async } from '@angular/core/testing';
 import { EditLayoutResolver } from './dot-edit-layout-resolver.service';
-
-class PageViewServiceMock {
-    get(url) {}
-}
+import { PageViewServiceMock } from '../../../../../test/page-view.mock';
 
 const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
     'toString'

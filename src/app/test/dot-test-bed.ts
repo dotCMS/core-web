@@ -24,7 +24,6 @@ import { DotGlobalMessageService } from '../view/components/_common/dot-global-m
 import { DotMessageService } from '../api/services/dot-messages-service';
 import { FormatDateService } from '../api/services/format-date-service';
 import { DotDialogService } from '../api/services/dot-dialog';
-import { DotInterceptor } from '../api/services/dot-interceptor/dot-interceptor.service';
 
 export class DOTTestBed {
     private static DEFAULT_CONFIG = {
@@ -41,7 +40,6 @@ export class DOTTestBed {
             DotDialogService,
             DotEventsService,
             DotGlobalMessageService,
-            DotInterceptor,
             DotMessageService,
             DotcmsConfig,
             DotcmsEventsService,

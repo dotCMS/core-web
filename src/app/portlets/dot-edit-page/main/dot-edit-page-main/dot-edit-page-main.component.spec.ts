@@ -1,3 +1,4 @@
+import { PageViewService } from './../../../../api/services/page-view/page-view.service';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';
@@ -10,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditPageNavComponent } from '../dot-edit-page-nav/dot-edit-page-nav.component';
+import { PageViewServiceMock } from '../../../../test/page-view.mock';
 
 describe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
@@ -35,7 +37,8 @@ describe('DotEditPageMainComponent', () => {
                 ],
                 declarations: [DotEditPageMainComponent],
                 providers: [
-                    { provide: DotMessageService, useValue: messageServiceMock }
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: PageViewService, useClass: PageViewServiceMock },
                 ]
             });
         })

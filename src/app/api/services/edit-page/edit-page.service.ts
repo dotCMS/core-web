@@ -6,7 +6,6 @@ import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/d
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
-import { DotInterceptor } from '../dot-interceptor/dot-interceptor.service';
 
 /**
  * Provide util methods to get a edit page html
@@ -16,7 +15,7 @@ import { DotInterceptor } from '../dot-interceptor/dot-interceptor.service';
 
 @Injectable()
 export class EditPageService {
-    constructor(private coreWebService: CoreWebService, private loginService: LoginService, private dotInterceptor: DotInterceptor) {}
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Get the page HTML in edit mode
@@ -59,8 +58,8 @@ export class EditPageService {
      * @memberof PageViewService
      */
     lock(inode: string): Observable<any> {
-        return this.dotInterceptor
-            .request({
+        return this.coreWebService
+            .requestView({
                 method: RequestMethod.Put,
                 url: `content/lock/inode/${inode}`
             })
@@ -75,8 +74,8 @@ export class EditPageService {
      * @memberof PageViewService
      */
     unlock(inode: string): Observable<any> {
-        return this.dotInterceptor
-            .request({
+        return this.coreWebService
+            .requestView({
                 method: RequestMethod.Put,
                 url: `content/unlock/inode/${inode}`
             })
@@ -99,8 +98,8 @@ export class EditPageService {
     }
 
     private get(url: string, mode: PageMode): Observable<DotRenderedPage> {
-        return this.dotInterceptor
-            .request({
+        return this.coreWebService
+            .requestView({
                 method: RequestMethod.Get,
                 url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=${this.getPageModeString(mode)}`
             })

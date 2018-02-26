@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DotEditPageMainComponent } from './main/dot-edit-page-main/dot-edit-page-main.component';
-// tslint:disable-next-line:max-line-length
-import { DotLegacyTemplateAdditionalActionsComponent } from './layout/components/dot-template-additional-actions/dot-legacy-template-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
+import {
+    DotLegacyTemplateAdditionalActionsComponent
+} from './layout/components/dot-template-additional-actions/dot-legacy-template-additional-actions-iframe/dot-legacy-template-additional-actions-iframe.component';
 import { EditLayoutResolver } from './layout/services/dot-edit-layout-resolver/dot-edit-layout-resolver.service';
 import { EditContentResolver } from './content/services/dot-edit-content-resolver.service';
 
@@ -11,9 +12,6 @@ const dotEditPage: Routes = [
     {
         component: DotEditPageMainComponent,
         path: '',
-        resolve: {
-            content: EditContentResolver
-        },
         children: [
             {
                 path: '',
