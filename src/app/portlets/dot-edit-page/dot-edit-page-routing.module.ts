@@ -22,6 +22,9 @@ const dotEditPage: Routes = [
             {
                 loadChildren: 'app/portlets/dot-edit-page/content/dot-edit-content.module#DotEditContentModule',
                 path: 'content',
+                resolve: {
+                    content: EditContentResolver
+                },
 
             },
             {
