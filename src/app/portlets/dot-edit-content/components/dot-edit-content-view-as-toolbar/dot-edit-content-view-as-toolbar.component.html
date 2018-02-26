@@ -1,12 +1,12 @@
-<p-dropdown class="tiny invert" [options]="languagesOptions"
+<p-dropdown class="tiny invert view-ass-toolbar-languages" [options]="languagesOptions"
             [(ngModel)]="viewAsConfig.languageId"
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>
-<p-dropdown class="tiny invert" [options]="devicesOptions"
+<p-dropdown class="tiny invert view-ass-toolbar-devices" [options]="devicesOptions"
             [(ngModel)]="viewAsConfig.device"
             (onChange)="changeDeviceConfiguration($event.value)">
 </p-dropdown>
-<p-dropdown class="tiny invert" [options]="personasOptions"
+<p-dropdown class="tiny invert view-ass-toolbar-personas" [options]="personasOptions"
             [(ngModel)]="viewAsConfig.personaId"
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>

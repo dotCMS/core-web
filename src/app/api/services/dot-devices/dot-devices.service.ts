@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { Device } from '../../../shared/models/device/device.model';
 
@@ -10,8 +9,6 @@ import { Device } from '../../../shared/models/device/device.model';
  */
 @Injectable()
 export class DotDevicesService {
-    private _selectedDevice: Device;
-
     constructor() {}
 
     /**
@@ -26,12 +23,5 @@ export class DotDevicesService {
             { id: '2', label: 'iPad Pro', width: '1024px', height: '1366px' },
             { id: '3', label: 'iPad 3, 4, Air, Air2', width: '768px', height: '1024px' }
         ]);
-    }
-
-    get selectedDevice(): Device {
-        return this._selectedDevice;
-    }
-    set selectedDevice(device: Device) {
-        this._selectedDevice = device;
     }
 }

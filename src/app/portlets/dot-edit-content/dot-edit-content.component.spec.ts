@@ -29,6 +29,11 @@ import { DotGlobalMessageService } from '../../view/components/_common/dot-globa
 import { PageMode } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 import { combineAll } from 'rxjs/operator/combineAll';
+import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
+import {DotDevicesService} from '../../api/services/dot-devices/dot-devices.service';
+import {DotLanguagesService} from '../../api/services/dot-languages/dot-languages.service';
+import {DotPersonasService} from '../../api/services/dot-personas/dot-personas.service';
+import {DotViewAsService} from '../../api/services/dot-view-as/dot-view-as.service';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -54,7 +59,7 @@ const fakePageRendered: DotRenderedPage = {
     workingInode: ''
 };
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let de: DebugElement;
@@ -78,6 +83,7 @@ describe('DotEditContentComponent', () => {
                 DialogModule,
                 BrowserAnimationsModule,
                 DotEditPageToolbarModule,
+                DotEditContentViewAsToolbarModule,
                 DotLoadingIndicatorModule,
                 RouterTestingModule.withRoutes([
                     {
@@ -96,6 +102,10 @@ describe('DotEditContentComponent', () => {
                 DotEditContentToolbarHtmlService,
                 DotMenuService,
                 EditPageService,
+                DotDevicesService,
+                DotLanguagesService,
+                DotPersonasService,
+                DotViewAsService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -181,9 +191,9 @@ describe('DotEditContentComponent', () => {
         };
 
         spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
-        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake((res) => {});
+        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(res => {});
 
-        spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+        spyOn(dotConfirmationService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
 
@@ -313,4 +323,16 @@ describe('DotEditContentComponent', () => {
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
     });
+
+    it('should have a View As toolbar', () => {
+        const viewAsstoolbarElement: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        expect(viewAsstoolbarElement).not.toBeNull();
+    });
+
+    it('should change the content dimensions', () => {
+        component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
+        const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+        fixture.detectChanges();
+    });
+
 });

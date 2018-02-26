@@ -21,7 +21,6 @@ import { EditPageService } from '../../api/services/edit-page/edit-page.service'
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.service';
 import { Device } from '../../shared/models/device/device.model';
 
 @Component({
@@ -58,7 +57,6 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         private workflowsService: WorkflowService,
-        private dotDevicesService: DotDevicesService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
@@ -159,11 +157,23 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
+    /**
+     * Hanlde changes in the configuration of "View As" toolbar
+     *
+     * @param {DotEditPageViewAs} viewAsConfig
+     * @memberof DotEditContentComponent
+     */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
         // TODO: Make a new request ?? to this.editPageService.getAs('4', viewAsConfig.persona, viewAsConfig.language)
         console.log(viewAsConfig);
     }
 
+    /**
+     * Hanlde changes in the Device from the "View As" toolbar
+     *
+     * @param {Device} device
+     * @memberof DotEditContentComponent
+     */
     changeDeviceHandler(device: Device): void {
         this.device = device;
     }

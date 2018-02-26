@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Device } from '../../../shared/models/device/device.model';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 /**

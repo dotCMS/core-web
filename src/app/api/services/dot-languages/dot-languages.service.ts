@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { Language } from '../../../shared/models/language/language.model';
-
 
 /**
  * Provide util methods to get Languages available in the system.
@@ -11,10 +9,7 @@ import { Language } from '../../../shared/models/language/language.model';
  */
 @Injectable()
 export class DotLanguagesService {
-
-    private _selectedLanguage: string;
-
-    constructor(private coreWebService: CoreWebService) {}
+    constructor() {}
 
     /**
      * Return languages.
@@ -27,12 +22,5 @@ export class DotLanguagesService {
             { id: 'es', label: 'Spanish' },
             { id: 'fr', label: 'French' }
         ]);
-    }
-
-    get selectedLanguage(): string {
-        return this._selectedLanguage;
-    }
-    set selectedLanguage(languageId: string) {
-        this._selectedLanguage = languageId;
     }
 }

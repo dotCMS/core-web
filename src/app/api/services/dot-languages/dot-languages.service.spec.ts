@@ -1,19 +1,20 @@
-import { TestBed, inject } from '@angular/core/testing';
-
 import { DotLanguagesService } from './dot-languages.service';
+import { DOTTestBed } from '../../../test/dot-test-bed';
+import { Language } from '../../../shared/models/language/language.model';
 
 describe('DotLanguagesService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [DotLanguagesService]
+    beforeEach(() => {
+        this.injector = DOTTestBed.resolveAndCreate([DotLanguagesService]);
+        this.dotLanguagesService = this.injector.get(DotLanguagesService);
     });
-  });
 
-  it('should be created', inject([DotLanguagesService], (service: DotLanguagesService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should get Languages', () => {
+        this.dotLanguagesService.get().subscribe((languages: Language[]) => {
+            expect(languages).toEqual([
+                { id: 'en', label: 'English' },
+                { id: 'es', label: 'Spanish' },
+                { id: 'fr', label: 'French' }
+            ]);
+        });
+    });
 });
-
-
-
-

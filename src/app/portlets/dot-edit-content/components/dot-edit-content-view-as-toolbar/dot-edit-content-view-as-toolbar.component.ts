@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { SelectItem } from 'primeng/primeng';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotDevicesService } from '../../../../api/services/dot-devices/dot-devices.service';
@@ -8,7 +8,7 @@ import { Persona } from '../../../../shared/models/persona/persona.model';
 import { Observable } from 'rxjs/Observable';
 import { Language } from '../../../../shared/models/language/language.model';
 import { Device } from '../../../../shared/models/device/device.model';
-import {DotViewAsService} from '../../../../api/services/dot-view-as/dot-view-as.service';
+import { DotViewAsService } from '../../../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
@@ -41,11 +41,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
             this.personasOptions = response[0].map((persona: Persona) => this.getPersonaFieldOption(persona));
             this.languagesOptions = response[1].map((language: Language) => this.getLanguageFieldOption(language));
             this.devicesOptions = response[2].map((device: Device) => this.getDeviceFieldOption(device));
-
             this.setInitialConfiguration();
-            this.changeDevice.emit(this.viewAsConfig.device);
-
-            // TODO: Emit initial configuration, for first request.
         });
     }
 
@@ -53,27 +49,27 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * Track changes in language and persona.
      */
     changeConfiguration() {
-        this.changeViewAs.emit(this.dotViewAsService.selected);
         this.dotViewAsService.selected = this.viewAsConfig;
-        // this.dotViewAsService
-        // this.dotLanguagesService.selectedLanguage = this.viewAsConfig.languageId;
-        // this.dotPersonasService.selectedPersona = this.viewAsConfig.personaId;
+        this.changeViewAs.emit(this.dotViewAsService.selected);
     }
 
     /**
      * Track changes in the device.
      */
     changeDeviceConfiguration() {
+        this.dotViewAsService.selected = this.viewAsConfig;
         this.changeDevice.emit(this.viewAsConfig.device);
-        this.dotDevicesService.selectedDevice = this.viewAsConfig.device;
     }
 
+
+
     private setInitialConfiguration() {
-        this.viewAsConfig = {
-            languageId: this.dotLanguagesService.selectedLanguage || this.languagesOptions[0].value,
-            personaId: this.dotPersonasService.selectedPersona || this.personasOptions[0].value,
-            device: this.dotDevicesService.selectedDevice || this.devicesOptions[0].value
+        this.viewAsConfig = this.dotViewAsService.selected ||  {
+            languageId: this.languagesOptions[0].value,
+            personaId: this.personasOptions[0].value,
+            device: this.devicesOptions[0].value
         };
+        this.changeDevice.emit(this.viewAsConfig.device);
     }
 
     private getPersonaFieldOption(persona: Persona): SelectItem {
