@@ -28,13 +28,13 @@ import { DotGlobalMessageService } from '../../view/components/_common/dot-globa
 import { PageMode } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
-import {DotDevicesService} from '../../api/services/dot-devices/dot-devices.service';
-import {DotLanguagesService} from '../../api/services/dot-languages/dot-languages.service';
-import {DotPersonasService} from '../../api/services/dot-personas/dot-personas.service';
-import {DotViewAsService} from '../../api/services/dot-view-as/dot-view-as.service';
-import {Device} from '../../shared/models/device/device.model';
-import {Language} from '../../shared/models/language/language.model';
-import {Persona} from '../../shared/models/persona/persona.model';
+import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.service';
+import { DotLanguagesService } from '../../api/services/dot-languages/dot-languages.service';
+import { DotPersonasService } from '../../api/services/dot-personas/dot-personas.service';
+import { DotViewAsService } from '../../api/services/dot-view-as/dot-view-as.service';
+import { Device } from '../../shared/models/device/device.model';
+import { Language } from '../../shared/models/language/language.model';
+import { Persona } from '../../shared/models/persona/persona.model';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -356,7 +356,9 @@ describe('DotEditContentComponent', () => {
     });
 
     it('should have a View As toolbar', () => {
-        const viewAsstoolbarElement: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        const viewAsstoolbarElement: DebugElement = fixture.debugElement.query(
+            By.css('dot-edit-content-view-as-toolbar')
+        );
         expect(viewAsstoolbarElement).not.toBeNull();
     });
 
@@ -367,7 +369,6 @@ describe('DotEditContentComponent', () => {
         component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
         fixture.detectChanges();
 
-        expect(pageWrapper.styles).toEqual({width: '375px', height: '667px'});
+        expect(pageWrapper.styles).toEqual({ width: '375px', height: '667px' });
     });
-
 });
