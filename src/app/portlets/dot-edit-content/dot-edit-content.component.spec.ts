@@ -24,16 +24,17 @@ import { WorkflowService } from '../../api/services/workflow/workflow.service';
 import { Workflow } from '../../shared/models/workflow/workflow.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
 import { PageMode } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
-import { combineAll } from 'rxjs/operator/combineAll';
 import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
 import {DotDevicesService} from '../../api/services/dot-devices/dot-devices.service';
 import {DotLanguagesService} from '../../api/services/dot-languages/dot-languages.service';
 import {DotPersonasService} from '../../api/services/dot-personas/dot-personas.service';
 import {DotViewAsService} from '../../api/services/dot-view-as/dot-view-as.service';
+import {Device} from '../../shared/models/device/device.model';
+import {Language} from '../../shared/models/language/language.model';
+import {Persona} from '../../shared/models/persona/persona.model';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -42,6 +43,27 @@ class WorkflowServiceMock {
             { name: 'Workflow 2', id: 'two' },
             { name: 'Workflow 3', id: 'three' }
         ]);
+    }
+}
+
+class DotDevicesServiceMock {
+    get(): Observable<Device[]> {
+        return Observable.of([
+            { id: '0', label: 'Desktop', width: '100%', height: '100%' },
+            { id: '1', label: 'iPhone', width: '375px', height: '667px' }
+        ]);
+    }
+}
+
+class DotLanguagesServiceMock {
+    get(): Observable<Language[]> {
+        return Observable.of([{ id: 'en', label: 'English' }, { id: 'es', label: 'Spanish' }]);
+    }
+}
+
+class DotPersonasServiceMock {
+    get(): Observable<Persona[]> {
+        return Observable.of([{ id: '1', label: 'Admin' }, { id: '2', label: 'Wealthy Prospect' }]);
     }
 }
 
@@ -59,7 +81,7 @@ const fakePageRendered: DotRenderedPage = {
     workingInode: ''
 };
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let de: DebugElement;
@@ -102,9 +124,6 @@ fdescribe('DotEditContentComponent', () => {
                 DotEditContentToolbarHtmlService,
                 DotMenuService,
                 EditPageService,
-                DotDevicesService,
-                DotLanguagesService,
-                DotPersonasService,
                 DotViewAsService,
                 {
                     provide: LoginService,
@@ -117,6 +136,18 @@ fdescribe('DotEditContentComponent', () => {
                 {
                     provide: WorkflowService,
                     useClass: WorkflowServiceMock
+                },
+                {
+                    provide: DotDevicesService,
+                    useClass: DotDevicesServiceMock
+                },
+                {
+                    provide: DotPersonasService,
+                    useClass: DotPersonasServiceMock
+                },
+                {
+                    provide: DotLanguagesService,
+                    useClass: DotLanguagesServiceMock
                 },
                 {
                     provide: ActivatedRoute,
@@ -329,10 +360,14 @@ fdescribe('DotEditContentComponent', () => {
         expect(viewAsstoolbarElement).not.toBeNull();
     });
 
-    it('should change the content dimensions', () => {
-        component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
+    it('should change the page wrapper dimensions', () => {
         const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+
         fixture.detectChanges();
+        component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
+        fixture.detectChanges();
+
+        expect(pageWrapper.styles).toEqual({width: '375px', height: '667px'});
     });
 
 });

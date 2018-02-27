@@ -26,6 +26,7 @@ export class EditPageService {
      * @memberof EditPageService
      */
     getAs(url: string, personaId: string, languageId: string): Observable<DotRenderedPage> {
+        // TODO: Decide how this will be implemented to make the right call.
         return this.get(url, PageMode.EDIT);
     }
 

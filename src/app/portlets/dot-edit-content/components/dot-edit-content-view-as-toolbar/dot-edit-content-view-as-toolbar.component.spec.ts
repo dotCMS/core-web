@@ -18,7 +18,7 @@ import { By } from '@angular/platform-browser';
 class DotDevicesServiceMock {
     get(): Observable<Device[]> {
         return Observable.of([
-            { id: '0', label: 'Desktop', width: 'auto', height: 'auto' },
+            { id: '0', label: 'Desktop', width: '100%', height: '100%' },
             { id: '1', label: 'iPhone', width: '375px', height: '667px' }
         ]);
     }
@@ -54,7 +54,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     const pageViewAsInitialValue: DotEditPageViewAs = {
         personaId: '1',
         languageId: 'en',
-        device: { id: '0', label: 'Desktop', width: 'auto', height: 'auto' }
+        device: { id: '0', label: 'Desktop', width: '100%', height: '100%' }
     };
 
     beforeEach(() => {
