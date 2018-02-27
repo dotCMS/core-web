@@ -2,7 +2,7 @@ import { ConnectionBackend, RequestOptions, BaseRequestOptions, Http } from '@an
 import { Logger } from 'angular2-logger/core';
 import { MockBackend } from '@angular/http/testing';
 import { TestBed, TestModuleMetadata, ComponentFixture } from '@angular/core/testing';
-import { Type, Provider, Injector, ReflectiveInjector, Component, LOCALE_ID } from '@angular/core';
+import { Type, Provider, Injector, ReflectiveInjector, LOCALE_ID } from '@angular/core';
 import {
     ApiRoot,
     BrowserUtil,

@@ -21,7 +21,6 @@ import { Component, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../components/dot-sidebar-properties/dot-sidebar-properties.module';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
-import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { fakePageView } from '../../../../test/page-view.mock';
 
 @Component({
@@ -303,7 +302,6 @@ describe('DotEditLayoutDesignerComponent - Layout (anonymous = true)', () => {
 
     it('should not have name set', () => {
         fixture.detectChanges();
-        const form: DebugElement = fixture.debugElement.query(By.css('form'));
         expect(component.form.value.title).toBeNull();
     });
 
@@ -312,7 +310,6 @@ describe('DotEditLayoutDesignerComponent - Layout (anonymous = true)', () => {
         fakePageView.template.anonymous = false;
         fixture.detectChanges();
 
-        const form: DebugElement = fixture.debugElement.query(By.css('form'));
         expect(component.form.value.title).toEqual(fakePageView.template.title);
     });
 

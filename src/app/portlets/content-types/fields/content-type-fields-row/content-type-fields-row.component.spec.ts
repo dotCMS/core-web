@@ -8,7 +8,6 @@ import { ContentTypeField, FieldRow, FieldColumn } from '../';
 import { DragulaModule } from 'ng2-dragula';
 import { IconButtonTooltipModule } from '../../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { ConfirmDialogModule } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotDialogService } from '../../../../api/services/dot-dialog';
 
@@ -26,7 +25,6 @@ describe('ContentTypeFieldsRowComponent', () => {
     let comp: ContentTypeFieldsRowComponent;
     let fixture: ComponentFixture<ContentTypeFieldsRowComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
 
     const messageServiceMock = new MockDotMessageService({
         'contenttypes.dropzone.rows.empty.message': 'Add fields here',
@@ -53,7 +51,6 @@ describe('ContentTypeFieldsRowComponent', () => {
             fixture = DOTTestBed.createComponent(ContentTypeFieldsRowComponent);
             comp = fixture.componentInstance;
             de = fixture.debugElement;
-            el = de.nativeElement;
         })
     );
 

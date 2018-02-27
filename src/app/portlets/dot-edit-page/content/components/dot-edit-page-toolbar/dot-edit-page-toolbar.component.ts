@@ -1,3 +1,4 @@
+import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { SelectItem, MenuItem, InputSwitch } from 'primeng/primeng';
 import { Workflow } from '../../../../../shared/models/workflow/workflow.model';
@@ -6,7 +7,6 @@ import { PageMode } from '../../../../dot-edit-content/shared/page-mode.enum';
 import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotConfirmationService } from '../../../../../api/services/dot-confirmation';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -32,7 +32,7 @@ export class DotEditPageToolbarComponent implements OnInit {
     constructor(
         public dotMessageService: DotMessageService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        private dotConfirmationService: DotConfirmationService
+        private dotDialogService: DotDialogService
     ) {}
 
     ngOnInit() {
@@ -110,7 +110,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditPageToolbarComponent
      */
-    onLockerClick($event): void {
+    lockerHandler(_$event): void {
         const blinkClass = 'edit-page-toolbar__cant-lock-message--blink';
 
         if (this.locker.disabled) {
@@ -129,7 +129,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     lockPageHandler(_event): void {
         if (this.shouldConfirmToLock()) {
-            this.dotConfirmationService.confirm({
+            this.dotDialogService.confirm({
                 accept: () => {
                     this.setLockerState();
                 },
@@ -137,8 +137,7 @@ export class DotEditPageToolbarComponent implements OnInit {
                     this.lockerModel = false;
                 },
                 header: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.header'),
-                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message'),
-                footerLabel: {}
+                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message')
             });
         } else {
             this.setLockerState();
@@ -153,7 +152,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      */
     stateSelectorHandler(pageState: PageMode): void {
         if (this.shouldConfirmToLock()) {
-            this.dotConfirmationService.confirm({
+            this.dotDialogService.confirm({
                 accept: () => {
                     this.setSelectorState(pageState);
                 },

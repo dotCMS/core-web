@@ -28,10 +28,9 @@ import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
-import { combineAll } from 'rxjs/operator/combineAll';
 
 class WorkflowServiceMock {
-    getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
+    getPageWorkflows(): Observable<Workflow[]> {
         return Observable.of([
             { name: 'Workflow 1', id: 'one' },
             { name: 'Workflow 2', id: 'two' },
@@ -181,7 +180,7 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         route.data = Observable.of({
-            renderedPage: {
+            content: {
                 ...fakePageRendered,
                 locked: true,
                 canLock: true
@@ -243,7 +242,7 @@ describe('DotEditContentComponent', () => {
         };
 
         spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
-        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake((res) => {});
+        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
         spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();

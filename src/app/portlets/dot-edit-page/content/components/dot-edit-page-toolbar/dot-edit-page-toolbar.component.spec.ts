@@ -1,8 +1,8 @@
-import { DotConfirmationService } from '../../../../../api/services/dot-confirmation/dot-confirmation.service';
-import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
 import { DotEditPageToolbarModule } from './dot-edit-page-toolbar.module';
-import { DebugElement, Component } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
@@ -19,7 +19,7 @@ describe('DotEditPageToolbarComponent', () => {
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
     let dotGlobalMessageService: DotGlobalMessageService;
-    let dotConfirmationService: DotConfirmationService;
+    let dotDialogService: DotDialogService;
 
     function clickStateButton(state) {
         const states = {
@@ -95,7 +95,7 @@ describe('DotEditPageToolbarComponent', () => {
         };
 
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
-        dotConfirmationService = de.injector.get(DotConfirmationService);
+        dotDialogService = de.injector.get(DotDialogService);
     });
 
     it('should have a toolbar element', () => {
@@ -379,7 +379,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         it('should call confirmation service on lock attemp when page is locked by another user', () => {
-            spyOn(dotConfirmationService, 'confirm');
+            spyOn(dotDialogService, 'confirm');
             component.page.locked = false;
             component.page.lockedByAnotherUser = true;
             component.mode = PageMode.LIVE;
@@ -387,11 +387,11 @@ describe('DotEditPageToolbarComponent', () => {
             fixture.detectChanges();
 
             clickLocker();
-            expect(dotConfirmationService.confirm).toHaveBeenCalledTimes(1);
+            expect(dotDialogService.confirm).toHaveBeenCalledTimes(1);
         });
 
         it('should emit state on lock attemp when confirmation accept', () => {
-            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -411,7 +411,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         it('should not emit state on lock attemp when confirmation reject and set lockermodel to false', () => {
-            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.reject();
             });
 
@@ -440,18 +440,18 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         it('should call confirmation service on edit attemp when page is locked by another user', () => {
-            spyOn(dotConfirmationService, 'confirm');
+            spyOn(dotDialogService, 'confirm');
             component.page.lockedByAnotherUser = true;
             component.mode = PageMode.PREVIEW;
 
             fixture.detectChanges();
 
             clickStateButton('edit');
-            expect(dotConfirmationService.confirm).toHaveBeenCalledTimes(1);
+            expect(dotDialogService.confirm).toHaveBeenCalledTimes(1);
         });
 
         it('should emit state on edit attemp when confirmation accept', () => {
-            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -472,7 +472,7 @@ describe('DotEditPageToolbarComponent', () => {
         });
 
         it('should not emit state on edit attemp when confirmation accept', () => {
-            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.reject();
             });
 

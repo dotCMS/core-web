@@ -4,7 +4,6 @@ import { ContentType } from '../shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListingDataTableModule } from '../../../view/components/listing-data-table/listing-data-table.module';
 import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.service';
-import { MenuItem } from 'primeng/primeng';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -147,13 +146,6 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should remove the content type on click command function', () => {
         fixture.detectChanges();
-        const fakeActions: MenuItem[] = [
-            {
-                icon: 'fa-trash',
-                label: 'Remove',
-                command: () => {}
-            }
-        ];
 
         const mockContentType: ContentType = {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',

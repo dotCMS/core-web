@@ -8,7 +8,6 @@ import { EditPageService } from './edit-page.service';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -21,7 +20,7 @@ const mockDotRenderPage: DotRenderedPage = {
     lockMessage: '',
     locked: true,
     lockedBy: 'someone',
-    lockedByAnotherUser: false,
+    lockedByAnotherUser: true,
     lockedByName: 'Some One',
     lockedOn: new Date(1517330917295),
     pageURI: '',

@@ -1,5 +1,5 @@
 import { MockBackend } from '@angular/http/testing';
-import { ConnectionBackend, ResponseOptions } from '@angular/http';
+import { ConnectionBackend } from '@angular/http';
 import { DotContainerContentletService } from './dot-container-contentlet.service';
 import { ReflectiveInjector } from '@angular/core';
 import { MockConnection } from '@angular/http/testing';

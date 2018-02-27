@@ -9,7 +9,6 @@ import { NotLicensedService } from './api/services/not-licensed-service';
 import { DotMenuService } from './api/services/dot-menu.service';
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from './api/services/dot-router/dot-router.service';
-import { MockDotMessageService } from './test/dot-message-service.mock';
 import { DotDialogService } from './api/services/dot-dialog';
 
 describe('AppComponent', () => {
@@ -32,7 +31,6 @@ describe('AppComponent', () => {
         'should have router-outlet',
         async(() => {
             const fixture = TestBed.createComponent(AppComponent);
-            const app = fixture.debugElement.componentInstance;
             const de: DebugElement = fixture.debugElement.query(By.css('router-outlet'));
             expect(de).not.toBeNull();
         })

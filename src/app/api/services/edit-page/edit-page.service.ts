@@ -15,7 +15,7 @@ import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.en
 
 @Injectable()
 export class EditPageService {
-    constructor(private coreWebService: CoreWebService) {}
+    constructor(private coreWebService: CoreWebService, private loginService: LoginService) {}
 
     /**
      * Get the page HTML in edit mode

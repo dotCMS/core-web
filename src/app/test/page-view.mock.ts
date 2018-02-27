@@ -69,7 +69,7 @@ export const fakePageView: DotPageView = {
 };
 
 export class PageViewServiceMock {
-    get(url) {
+    get() {
         return Observable.of(fakePageView);
     }
 
