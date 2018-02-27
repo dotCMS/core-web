@@ -18,7 +18,7 @@ export class DotEditPageToolbarComponent implements OnInit {
     @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
 
     @Input() canSave: boolean;
-    @Input() pageWorkflows: Workflow[];
+    @Input() pageWorkflows: Workflow[] = [];
     @Input() page: DotRenderedPage;
     @Input() mode: PageMode;
 
@@ -59,13 +59,7 @@ export class DotEditPageToolbarComponent implements OnInit {
                 ];
             });
 
-        if (this.pageWorkflows) {
-            this.workflowsActions = this.pageWorkflows.map((workflow: Workflow) => {
-                return {
-                    label: workflow.name
-                };
-            });
-        }
+        this.workflowsActions = this.getWorkflowOptions();
 
         this.lockerModel = this.page.lockedByAnotherUser && this.page.canLock ? false : this.page.locked;
     }
@@ -177,6 +171,14 @@ export class DotEditPageToolbarComponent implements OnInit {
         if (this.shouldGoToEdit()) {
             return PageMode.EDIT;
         }
+    }
+
+    private getWorkflowOptions(): MenuItem[] {
+        return this.pageWorkflows.map((workflow: Workflow) => {
+            return {
+                label: workflow.name
+            };
+        });
     }
 
     private setLockerState() {

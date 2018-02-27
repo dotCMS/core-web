@@ -84,24 +84,7 @@ export class DotEditContentComponent implements OnInit {
 
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {
-                    switch (contentletEvent.name) {
-                        case 'edit':
-                            this.editContentlet(contentletEvent);
-                            break;
-                        case 'add':
-                            this.addContentlet(contentletEvent);
-                            break;
-                        case 'remove':
-                            this.removeContentlet(contentletEvent);
-                            break;
-                        case 'cancel':
-                        case 'save':
-                        case 'select':
-                            this.closeDialog();
-                            break;
-                        default:
-                            break;
-                    }
+                    this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
                 });
             });
 
@@ -220,6 +203,19 @@ export class DotEditContentComponent implements OnInit {
 
     private getPageMode(page: DotRenderedPage): PageMode {
         return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
+    }
+
+    private contentletEventsHandler(event: any): Function {
+        const eventsHandlerMap = {
+            'edit': this.editContentlet.bind(this),
+            'add': this.addContentlet.bind(this),
+            'remove': this.removeContentlet.bind(this),
+            'select': this.closeDialog.bind(this),
+            'cancel': () => {},
+            'save': () => {},
+        };
+
+        return eventsHandlerMap[event];
     }
 
     private isLockModified(lock: boolean) {

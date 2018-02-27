@@ -298,7 +298,7 @@ describe('DotEditContentComponent', () => {
     });
 
     it('should set the page state in edit mode', () => {
-        spyOn(workflowService, 'getPageWorkflows');
+        spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'initEditMode');
         const mockPageRendered: DotRenderedPage = {
             canEdit: true,
@@ -324,7 +324,7 @@ describe('DotEditContentComponent', () => {
     });
 
     it('should set the page state in preview mode', () => {
-        spyOn(workflowService, 'getPageWorkflows');
+        spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'renderPage');
         const mockPageRendered: DotRenderedPage = {
             canEdit: true,
