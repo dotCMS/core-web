@@ -1,4 +1,4 @@
-import { DotDialogService } from './../dot-dialog/dot-dialog.service';
+import { DotDialogService } from '../dot-dialog/dot-dialog.service';
 import { ResponseOptions, Response } from '@angular/http';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../test/dot-test-bed';

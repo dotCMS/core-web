@@ -1,8 +1,9 @@
-import { LoginServiceMock } from './../../../test/login-service.mock';
-import { DotRouterService } from './../dot-router/dot-router.service';
+import { LoginServiceMock } from '../../../test/login-service.mock';
+import { LoginService } from 'dotcms-js/dotcms-js';
+import { DotRouterService } from '../dot-router/dot-router.service';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
-import { DOTTestBed } from './../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../test/dot-test-bed';
 import { EditPageService } from './edit-page.service';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
@@ -10,7 +11,6 @@ import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/mod
 import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoginService } from 'dotcms-js/dotcms-js';
 
 const mockDotRenderPage: DotRenderedPage = {
     canEdit: true,

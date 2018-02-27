@@ -1,5 +1,5 @@
 import { ResponseView } from 'dotcms-js/dotcms-js';
-import { DotRouterService } from './../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';

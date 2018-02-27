@@ -1,4 +1,4 @@
-import { PageViewService } from './../../../../api/services/page-view/page-view.service';
+import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';

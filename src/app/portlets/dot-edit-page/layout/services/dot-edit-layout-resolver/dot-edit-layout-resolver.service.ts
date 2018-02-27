@@ -5,9 +5,9 @@ import { Observable } from 'rxjs/Observable';
 
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
-import { DotHttpErrorManagerService } from './../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPageView } from '../../../shared/models/dot-page-view.model';
-import { DotRouterService } from './../../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
 import { PageViewService } from '../../../../../api/services/page-view/page-view.service';
 
 @Injectable()

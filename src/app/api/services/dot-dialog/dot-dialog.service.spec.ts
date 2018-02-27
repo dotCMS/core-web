@@ -1,5 +1,5 @@
-import { MockDotMessageService } from './../../../test/dot-message-service.mock';
-import { DotDialog } from './../../../shared/models/dot-confirmation/dot-confirmation.model';
+import { MockDotMessageService } from '../../../test/dot-message-service.mock';
+import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotDialogService } from './dot-dialog.service';

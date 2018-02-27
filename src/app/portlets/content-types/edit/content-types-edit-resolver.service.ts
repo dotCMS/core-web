@@ -1,4 +1,4 @@
-import { DotHttpErrorManagerService } from './../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';

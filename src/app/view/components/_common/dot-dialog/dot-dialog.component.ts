@@ -1,4 +1,4 @@
-import { DotDialogService } from './../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotDialogService } from '../../../../api/services/dot-dialog/dot-dialog.service';
 import { Component, ViewChild } from '@angular/core';
 import { ConfirmDialog } from 'primeng/primeng';
 

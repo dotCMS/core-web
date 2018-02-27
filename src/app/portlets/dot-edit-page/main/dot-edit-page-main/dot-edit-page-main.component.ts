@@ -1,4 +1,4 @@
-import { PageViewService } from './../../../../api/services/page-view/page-view.service';
+import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';

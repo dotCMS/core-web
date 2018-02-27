@@ -1,5 +1,5 @@
 import { EditLayoutResolver } from './layout/services/dot-edit-layout-resolver/dot-edit-layout-resolver.service';
-import { PageViewService } from './../../api/services/page-view/page-view.service';
+import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotEditPageRoutingModule } from './dot-edit-page-routing.module';

@@ -1,6 +1,6 @@
 import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.service';
-import { IconButtonTooltipModule } from './../_common/icon-button-tooltip/icon-button-tooltip.module';
-import { ActionMenuButtonComponent } from './../_common/action-menu-button/action-menu-button.component';
+import { IconButtonTooltipModule } from '../_common/icon-button-tooltip/icon-button-tooltip.module';
+import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-menu-button.component';
 import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';

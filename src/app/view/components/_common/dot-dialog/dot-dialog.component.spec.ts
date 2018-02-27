@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotDialogService } from './../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotDialogService } from '../../../../api/services/dot-dialog/dot-dialog.service';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
-import { LoginServiceMock } from './../../../../test/login-service.mock';
+import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotDialogComponent } from './dot-dialog.component';

@@ -1,7 +1,7 @@
-import { DotMessageService } from './../dot-messages-service';
+import { DotMessageService } from '../dot-messages-service';
 import { Injectable } from '@angular/core';
-import { FooterLabels } from './../../../shared/models/dot-confirmation/footer-labels.model';
-import { DotDialog } from './../../../shared/models/dot-confirmation/dot-confirmation.model';
+import { FooterLabels } from '../../../shared/models/dot-confirmation/footer-labels.model';
+import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
 import { Subject } from 'rxjs/Subject';
 import { ConfirmationService } from 'primeng/primeng';
 

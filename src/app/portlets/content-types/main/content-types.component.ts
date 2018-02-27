@@ -1,6 +1,6 @@
-import { ListingDataTableComponent } from './../../../view/components/listing-data-table/listing-data-table.component';
+import { ListingDataTableComponent } from '../../../view/components/listing-data-table/listing-data-table.component';
 import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.service';
-import { CrudService } from './../../../api/services/crud';
+import { CrudService } from '../../../api/services/crud';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
