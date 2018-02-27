@@ -37,14 +37,7 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
         return this.crudService
             .getDataById('v1/contenttype', id)
             .take(1)
-            .map((contentType: ContentType) => {
-                if (contentType) {
-                    return contentType;
-                } else {
-                    this.dotRouterService.gotoPortlet('/content-types-angular');
-                    return null;
-                }
-            }).catch((err: ResponseView) => {
+            .catch((err: ResponseView) => {
                 this.dotHttpErrorManagerService.handle(err).subscribe((didRedirect: boolean) => {
                     if (!didRedirect) {
                         this.dotRouterService.gotoPortlet('/content-types-angular', true);

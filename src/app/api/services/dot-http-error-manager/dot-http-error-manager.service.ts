@@ -44,21 +44,12 @@ export class DotHttpErrorManagerService {
     private callErrorHandler(code: HttpCode): boolean {
         const errors = {};
 
+        errors[HttpCode.NOT_FOUND] = this.handleNotFound.bind(this);
         errors[HttpCode.UNAUTHORIZED] = this.handleUnathorized.bind(this);
         errors[HttpCode.FORBIDDEN] = this.handleForbidden.bind(this);
         errors[HttpCode.SERVER_ERROR] = this.handleServerError.bind(this);
 
         return errors[code]();
-    }
-
-    private handleUnathorized(): boolean {
-        if (this.loginService.auth.user) {
-            this.handleForbidden();
-        } else {
-            this.dotRouterService.goToLogin();
-            return true;
-        }
-        return false;
     }
 
     private handleForbidden(): boolean {
@@ -69,11 +60,29 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
+    private handleNotFound(): boolean {
+        this.dotDialogService.alert({
+            message: this.dotMessageService.get('dot.common.http.error.404.message'),
+            header: this.dotMessageService.get('dot.common.http.error.404.header')
+        });
+        return false;
+    }
+
     private handleServerError(): boolean {
         this.dotDialogService.alert({
             message: this.dotMessageService.get('dot.common.http.error.500.message'),
             header: this.dotMessageService.get('dot.common.http.error.500.header')
         });
+        return false;
+    }
+
+    private handleUnathorized(): boolean {
+        if (this.loginService.auth.user) {
+            this.handleForbidden();
+        } else {
+            this.dotRouterService.goToLogin();
+            return true;
+        }
         return false;
     }
 }
