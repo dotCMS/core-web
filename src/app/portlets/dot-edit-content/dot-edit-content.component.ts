@@ -146,21 +146,7 @@ export class DotEditContentComponent implements OnInit {
      */
 
     statePageHandler(state: DotEditPageState): void {
-        if (state.locked && this.page.lockedByAnotherUser) {
-            this.dotConfirmationService.confirm({
-                accept: () => {
-                    this.setPageState(state);
-                },
-                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.header'),
-                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message'),
-                footerLabel: {
-                    acceptLabel: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.reject'),
-                    rejectLabel: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.accept')
-                }
-            });
-        } else {
-            this.setPageState(state);
-        }
+        this.setPageState(state);
     }
 
     /**
@@ -186,7 +172,7 @@ export class DotEditContentComponent implements OnInit {
      */
     setPage(renderedPage: DotRenderedPage): void {
         this.page = renderedPage;
-        this.pageMode = this.page.locked && this.page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
+        this.pageMode = this.getPageMode(renderedPage);
         this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
 
         if (this.pageMode === PageMode.EDIT) {
@@ -230,6 +216,10 @@ export class DotEditContentComponent implements OnInit {
             this.dialogTitle = 'Edit Contentlet';
             this.loadDialogEditor(url, $event.contentletEvents);
         });
+    }
+
+    private getPageMode(page: DotRenderedPage): PageMode {
+        return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
     }
 
     private isLockModified(lock: boolean) {

@@ -1,4 +1,5 @@
 export interface DotRenderedPage {
+    canEdit: boolean;
     canLock: boolean;
     identifier: string;
     languageId: number;

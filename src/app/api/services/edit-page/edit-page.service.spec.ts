@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 
 const mockDotRenderPage: DotRenderedPage = {
+    canEdit: true,
     canLock: true,
     identifier: '',
     languageId: 1,

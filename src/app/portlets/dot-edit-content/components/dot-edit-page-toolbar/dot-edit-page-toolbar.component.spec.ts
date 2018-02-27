@@ -1,7 +1,8 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
 import { DotEditPageToolbarModule } from './dot-edit-page-toolbar.module';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -11,12 +12,14 @@ import { SplitButton } from 'primeng/primeng';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { PageMode } from '../../shared/page-mode.enum';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
 
 describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotConfirmationService: DotConfirmationService;
 
     function clickStateButton(state) {
         const states = {
@@ -47,9 +50,11 @@ describe('DotEditPageToolbarComponent', () => {
         'editpage.toolbar.page.locked.by.user': 'Page is locked'
     });
 
+    let testbed;
+
     beforeEach(
         async(() => {
-            TestBed.configureTestingModule({
+            testbed = DOTTestBed.configureTestingModule({
                 imports: [
                     DotEditPageToolbarModule,
                     RouterTestingModule.withRoutes([
@@ -63,17 +68,18 @@ describe('DotEditPageToolbarComponent', () => {
                 providers: [
                     { provide: DotMessageService, useValue: messageServiceMock },
                     DotGlobalMessageService,
-                    DotEventsService
+                    DotEventsService,
                 ]
-            }).compileComponents();
+            });
         })
     );
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotEditPageToolbarComponent);
+        fixture = testbed.createComponent(DotEditPageToolbarComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.page = {
+            canEdit: true,
             canLock: true,
             identifier: '123',
             languageId: 1,
@@ -88,6 +94,7 @@ describe('DotEditPageToolbarComponent', () => {
         };
 
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
+        dotConfirmationService = de.injector.get(DotConfirmationService);
     });
 
     it('should have a toolbar element', () => {
@@ -318,6 +325,8 @@ describe('DotEditPageToolbarComponent', () => {
         let pageStateResult;
 
         beforeEach(() => {
+            pageStateResult = undefined;
+
             component.changeState.subscribe((res) => {
                 pageStateResult = res;
             });
@@ -350,6 +359,56 @@ describe('DotEditPageToolbarComponent', () => {
                 },
                 'emit correct state'
             );
+        });
+
+        it('should call confirmation service on lock attemp when page is locked by another user', () => {
+            spyOn(dotConfirmationService, 'confirm');
+            component.page.locked = false;
+            component.page.lockedByAnotherUser = true;
+            component.mode = PageMode.LIVE;
+
+            fixture.detectChanges();
+
+            clickLocker();
+            expect(dotConfirmationService.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should emit state on confirmation accept', () => {
+            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+                conf.accept();
+            });
+
+            component.page.locked = false;
+            component.page.lockedByAnotherUser = true;
+            component.mode = PageMode.LIVE;
+
+            fixture.detectChanges();
+
+            clickLocker();
+
+            expect(pageStateResult).toEqual(
+                {
+                    locked: true
+                },
+                'emit correct state'
+            );
+        });
+
+        it('should not emit state on confirmation reject and set lockermodel to false', () => {
+            spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+                conf.reject();
+            });
+
+            component.page.locked = false;
+            component.page.lockedByAnotherUser = true;
+            component.mode = PageMode.LIVE;
+
+            fixture.detectChanges();
+
+            clickLocker();
+
+            expect(component.lockerModel).toBe(false);
+            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
         });
 
         it('should emit only page state', () => {

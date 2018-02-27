@@ -41,6 +41,7 @@ class WorkflowServiceMock {
 }
 
 const fakePageRendered: DotRenderedPage = {
+    canEdit: true,
     canLock: false,
     identifier: '123',
     languageId: 1,
@@ -300,6 +301,7 @@ describe('DotEditContentComponent', () => {
         spyOn(workflowService, 'getPageWorkflows');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         const mockPageRendered: DotRenderedPage = {
+            canEdit: true,
             locked: true,
             canLock: true,
             identifier: '123',
@@ -325,6 +327,7 @@ describe('DotEditContentComponent', () => {
         spyOn(workflowService, 'getPageWorkflows');
         spyOn(dotEditContentHtmlService, 'renderPage');
         const mockPageRendered: DotRenderedPage = {
+            canEdit: true,
             locked: false,
             canLock: true,
             identifier: '123',
@@ -344,33 +347,5 @@ describe('DotEditContentComponent', () => {
         expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
-    });
-
-    it('should show confirmation dialog to setPageState', () => {
-        spyOn(dotConfirmationService, 'confirm');
-        spyOn(component, 'statePageHandler').and.callThrough();
-
-        fixture.detectChanges();
-
-        component.page.lockedByAnotherUser = true;
-
-        fixture.detectChanges();
-
-        component.statePageHandler({
-            locked: true
-        });
-
-        expect(dotConfirmationService.confirm).toHaveBeenCalled();
-
-        // TODO: can't assert the param because the function is annonymous
-        // expect(dotConfirmationService.confirm).toHaveBeenCalledWith({
-        //     accept: () => {},
-        //     header: 'Are you sure?',
-        //     message: 'This page is locked by bla bla',
-        //     footerLabel: {
-        //         acceptLabel: 'Lock',
-        //         rejectLabel: 'Cancel'
-        //     }
-        // });
     });
 });

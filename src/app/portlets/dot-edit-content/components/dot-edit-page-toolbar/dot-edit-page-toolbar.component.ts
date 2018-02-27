@@ -1,3 +1,5 @@
+import { DotConfirmationService } from './../../../../api/services/dot-confirmation/dot-confirmation.service';
+import { PageMode } from './../../shared/page-mode.enum';
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { SelectItem, MenuItem, InputSwitch } from 'primeng/primeng';
@@ -5,7 +7,6 @@ import { Workflow } from '../../../../shared/models/workflow/workflow.model';
 import { DotRenderedPage } from '../../../dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { PageMode } from '../../shared/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -30,7 +31,8 @@ export class DotEditPageToolbarComponent implements OnInit {
 
     constructor(
         public dotMessageService: DotMessageService,
-        private dotGlobalMessageService: DotGlobalMessageService
+        private dotGlobalMessageService: DotGlobalMessageService,
+        private dotConfirmationService: DotConfirmationService
     ) {}
 
     ngOnInit() {
@@ -132,19 +134,21 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @memberof DotEditPageToolbarComponent
      */
     lockPageHandler(_event): void {
-        const state: DotEditPageState = {
-            locked: this.lockerModel
-        };
-
-        if (!this.lockerModel && this.mode === PageMode.EDIT) {
-            this.mode = PageMode.PREVIEW;
-            state.mode = this.mode;
-        } else if (this.lockerModel && this.mode === PageMode.PREVIEW) {
-            this.mode = PageMode.EDIT;
-            state.mode = this.mode;
+        if (this.shouldConfirmToLock()) {
+            this.dotConfirmationService.confirm({
+                accept: () => {
+                    this.setLockerState();
+                },
+                reject: () => {
+                    this.lockerModel = false;
+                },
+                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.header'),
+                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message'),
+                footerLabel: {}
+            });
+        } else {
+            this.setLockerState();
         }
-
-        this.changeState.emit(state);
     }
 
     /**
@@ -164,5 +168,39 @@ export class DotEditPageToolbarComponent implements OnInit {
         }
 
         this.changeState.emit(state);
+    }
+
+    private getAutoUpdatedMode(): PageMode {
+        if (this.shouldGoToPreview()) {
+            return PageMode.PREVIEW;
+        }
+        if (this.shouldGoToEdit()) {
+            return PageMode.EDIT;
+        }
+    }
+
+    private setLockerState() {
+        const state: DotEditPageState = {
+            locked: this.lockerModel
+        };
+
+        if (this.mode !== PageMode.LIVE) {
+            this.mode = this.getAutoUpdatedMode();
+            state.mode = this.mode;
+        }
+
+        this.changeState.emit(state);
+    }
+
+    private shouldConfirmToLock(): boolean {
+        return this.lockerModel && this.page.lockedByAnotherUser;
+    }
+
+    private shouldGoToEdit(): boolean {
+        return this.lockerModel && this.mode === PageMode.PREVIEW;
+    }
+
+    private shouldGoToPreview(): boolean {
+        return !this.lockerModel && this.mode === PageMode.EDIT;
     }
 }
