@@ -1,12 +1,11 @@
-import { CoreWebService } from 'dotcms-js/dotcms-js';
+import { CoreWebService, LoginService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { PageMode } from '../../../portlets/dot-edit-content/components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import {DotEditPageViewAs} from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 
 /**
  * Provide util methods to get a edit page html
@@ -16,21 +15,7 @@ import {DotEditPageViewAs} from '../../../shared/models/dot-edit-page-view-as/do
 
 @Injectable()
 export class EditPageService {
-    constructor(private coreWebService: CoreWebService) {}
-
-    /**
-     * Get the page HTML viewed as specific Persona & Language
-     *
-     * @param {string} personaId
-     * @param {string} languageId
-     * @returns {Observable<DotRenderedPage>}
-     * @memberof EditPageService
-     */
-    getAs(url: string, viewasConfig: DotEditPageViewAs): Observable<DotRenderedPage> {
-        // TODO: Decide how this will be implemented to make the right call.
-        return this.get(url, PageMode.EDIT);
-    }
-
+    constructor(private coreWebService: CoreWebService, private loginService: LoginService) {}
 
     /**
      * Get the page HTML in edit mode
@@ -121,9 +106,16 @@ export class EditPageService {
             })
             .pluck('bodyJsonObject')
             .map((dotRenderedPage: DotRenderedPage) => {
+                const locked = !!dotRenderedPage.lockedBy;
+
+                const lockedByAnotherUser = locked
+                    ? dotRenderedPage.lockedBy !== this.loginService.auth.user.userId
+                    : false;
+
                 return {
                     ...dotRenderedPage,
-                    locked: !!dotRenderedPage.lockedBy
+                    locked,
+                    lockedByAnotherUser
                 };
             });
     }
@@ -179,7 +171,7 @@ export class EditPageService {
         const pageModeString = {};
         pageModeString[PageMode.EDIT] = 'EDIT_MODE';
         pageModeString[PageMode.PREVIEW] = 'PREVIEW_MODE';
-        pageModeString[PageMode.LIVE] = 'LIVE_MODE';
+        pageModeString[PageMode.LIVE] = 'LIVE';
 
         return pageModeString[pageMode];
     }
