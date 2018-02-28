@@ -110,7 +110,7 @@ export class DotEditPageToolbarComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditPageToolbarComponent
      */
-    lockerHandler(_$event): void {
+    onLockerClick(_$event): void {
         const blinkClass = 'edit-page-toolbar__cant-lock-message--blink';
 
         if (this.locker.disabled) {
