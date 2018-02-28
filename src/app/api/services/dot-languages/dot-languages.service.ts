@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Language } from '../../../shared/models/language/language.model';
+import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
+import { RequestMethod } from '@angular/http';
+import { CoreWebService } from 'dotcms-js/dotcms-js';
 
 /**
  * Provide util methods to get Languages available in the system.
@@ -9,18 +11,27 @@ import { Language } from '../../../shared/models/language/language.model';
  */
 @Injectable()
 export class DotLanguagesService {
-    constructor() {}
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Return languages.
-     * @returns {Observable<Language[]>}
+     * @returns {Observable<DotLanguage[]>}
      * @memberof DotLanguagesService
      */
-    get(): Observable<Language[]> {
-        return Observable.of([
-            { id: 'en', label: 'English' },
-            { id: 'es', label: 'Spanish' },
-            { id: 'fr', label: 'French' }
-        ]);
+    get(): Observable<any> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: 'v1/languages'
+            })
+            .pluck('bodyJsonObject')
+            .map(response => // Doing this transformation, because of the end point response.
+                Object.keys(response).map(language => {
+                    return {
+                        id: language,
+                        label: response[language].name
+                    };
+                })
+            );
     }
 }

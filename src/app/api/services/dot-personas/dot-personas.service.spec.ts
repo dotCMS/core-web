@@ -1,6 +1,6 @@
 import { DotPersonasService } from './dot-personas.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { Persona } from '../../../shared/models/persona/persona.model';
+import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 
 describe('DotPersonasService', () => {
     beforeEach(() => {
@@ -9,7 +9,7 @@ describe('DotPersonasService', () => {
     });
 
     it('should get Languages', () => {
-        this.dotPersonasService.get().subscribe((personas: Persona[]) => {
+        this.dotPersonasService.get().subscribe((personas: DotPersona[]) => {
             expect(personas).toEqual([
                 { id: '1', label: 'Admin' },
                 { id: '2', label: 'Wealthy Prospect' },

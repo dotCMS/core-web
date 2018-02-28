@@ -32,9 +32,9 @@ import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.se
 import { DotLanguagesService } from '../../api/services/dot-languages/dot-languages.service';
 import { DotPersonasService } from '../../api/services/dot-personas/dot-personas.service';
 import { DotViewAsService } from '../../api/services/dot-view-as/dot-view-as.service';
-import { Device } from '../../shared/models/device/device.model';
-import { Language } from '../../shared/models/language/language.model';
-import { Persona } from '../../shared/models/persona/persona.model';
+import { DotDevicesServiceMock } from '../../test/dot-device-service.mock';
+import { DotPersonasServiceMock } from '../../test/dot-personas-service.mock';
+import { DotLanguagesServiceMock } from '../../test/dot-languages-service.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -43,27 +43,6 @@ class WorkflowServiceMock {
             { name: 'Workflow 2', id: 'two' },
             { name: 'Workflow 3', id: 'three' }
         ]);
-    }
-}
-
-class DotDevicesServiceMock {
-    get(): Observable<Device[]> {
-        return Observable.of([
-            { id: '0', label: 'Desktop', width: '100%', height: '100%' },
-            { id: '1', label: 'iPhone', width: '375px', height: '667px' }
-        ]);
-    }
-}
-
-class DotLanguagesServiceMock {
-    get(): Observable<Language[]> {
-        return Observable.of([{ id: 'en', label: 'English' }, { id: 'es', label: 'Spanish' }]);
-    }
-}
-
-class DotPersonasServiceMock {
-    get(): Observable<Persona[]> {
-        return Observable.of([{ id: '1', label: 'Admin' }, { id: '2', label: 'Wealthy Prospect' }]);
     }
 }
 
@@ -356,16 +335,20 @@ describe('DotEditContentComponent', () => {
     });
 
     it('should have a View As toolbar', () => {
-        const viewAsstoolbarElement: DebugElement = fixture.debugElement.query(
+        const viewAstoolbarElement: DebugElement = fixture.debugElement.query(
             By.css('dot-edit-content-view-as-toolbar')
         );
-        expect(viewAsstoolbarElement).not.toBeNull();
+        expect(viewAstoolbarElement).not.toBeNull();
     });
 
     it('should change the page wrapper dimensions', () => {
-        const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
 
+        // TODO: Change the test.
+        const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+        const pDropDownDevices: DebugElement = de.query(By.css('.view-as-toolbar-devices'));
         fixture.detectChanges();
+
+
         component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
         fixture.detectChanges();
 

@@ -21,7 +21,8 @@ import { EditPageService } from '../../api/services/edit-page/edit-page.service'
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { Device } from '../../shared/models/device/device.model';
+import { DotDevice } from '../../shared/models/dot-device/dot-device.model';
+import {stringDistance} from 'codelyzer/util/utils';
 
 @Component({
     selector: 'dot-edit-content',
@@ -42,7 +43,7 @@ export class DotEditContentComponent implements OnInit {
     isModelUpdated = false;
     page: DotRenderedPage;
     pageWorkFlows: Observable<Workflow[]>;
-    device: Device;
+    device: DotDevice;
 
     private originalValue: any;
 
@@ -164,8 +165,13 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        // TODO: Make a new request ?? to this.editPageService.getAs('4', viewAsConfig.persona, viewAsConfig.language)
+        // TODO: Make a new request ?? to this.editPageService.getAs('4', viewAsConfig.dot-persona, viewAsConfig.dot-language)
         console.log(viewAsConfig);
+        this.route.queryParams.subscribe(params => {
+            this.editPageService.getAs( params['url'], viewAsConfig).subscribe( (renderedPage: DotRenderedPage) => {
+                this.setPage(renderedPage);
+            });
+        });
     }
 
     /**
@@ -174,7 +180,7 @@ export class DotEditContentComponent implements OnInit {
      * @param {Device} device
      * @memberof DotEditContentComponent
      */
-    changeDeviceHandler(device: Device): void {
+    changeDeviceHandler(device: DotDevice): void {
         this.device = device;
     }
 

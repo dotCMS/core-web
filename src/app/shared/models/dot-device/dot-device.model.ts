@@ -1,4 +1,4 @@
-export interface Device {
+export interface DotDevice {
     id: string;
     label: string;
     width: string;

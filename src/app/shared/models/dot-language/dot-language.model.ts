@@ -1,4 +1,4 @@
-export interface Persona {
+export interface DotLanguage {
     id: string;
     label: string;
 }

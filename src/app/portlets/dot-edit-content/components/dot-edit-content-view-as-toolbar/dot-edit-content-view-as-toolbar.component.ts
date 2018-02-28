@@ -1,13 +1,13 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SelectItem } from 'primeng/primeng';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotDevicesService } from '../../../../api/services/dot-devices/dot-devices.service';
 import { DotLanguagesService } from '../../../../api/services/dot-languages/dot-languages.service';
 import { DotPersonasService } from '../../../../api/services/dot-personas/dot-personas.service';
-import { Persona } from '../../../../shared/models/persona/persona.model';
+import { DotPersona } from '../../../../shared/models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs/Observable';
-import { Language } from '../../../../shared/models/language/language.model';
-import { Device } from '../../../../shared/models/device/device.model';
+import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
+import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model';
 import { DotViewAsService } from '../../../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { DotViewAsService } from '../../../../api/services/dot-view-as/dot-view-
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output() changeDevice = new EventEmitter<Device>();
+    @Output() changeDevice = new EventEmitter<DotDevice>();
 
     languagesOptions: SelectItem[];
     personasOptions: SelectItem[];
@@ -33,20 +33,21 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.viewAsConfig = { languageId: '', personaId: '' };
         Observable.forkJoin(
             this.dotPersonasService.get(),
             this.dotLanguagesService.get(),
             this.dotDevicesService.get()
         ).subscribe(response => {
-            this.personasOptions = response[0].map((persona: Persona) => this.getPersonaFieldOption(persona));
-            this.languagesOptions = response[1].map((language: Language) => this.getLanguageFieldOption(language));
-            this.devicesOptions = response[2].map((device: Device) => this.getDeviceFieldOption(device));
+            this.personasOptions = response[0].map((persona: DotPersona) => this.getPersonaFieldOption(persona));
+            this.languagesOptions = response[1].map((language: DotLanguage) => this.getLanguageFieldOption(language));
+            this.devicesOptions = response[2].map((device: DotDevice) => this.getDeviceFieldOption(device));
             this.setInitialConfiguration();
         });
     }
 
     /**
-     * Track changes in language and persona.
+     * Track changes in dot-language and dot-persona.
      */
     changeConfiguration() {
         this.dotViewAsService.selected = this.viewAsConfig;
@@ -54,17 +55,15 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     }
 
     /**
-     * Track changes in the device.
+     * Track changes in the dot-device.
      */
     changeDeviceConfiguration() {
         this.dotViewAsService.selected = this.viewAsConfig;
         this.changeDevice.emit(this.viewAsConfig.device);
     }
 
-
-
     private setInitialConfiguration() {
-        this.viewAsConfig = this.dotViewAsService.selected ||  {
+        this.viewAsConfig = this.dotViewAsService.selected || {
             languageId: this.languagesOptions[0].value,
             personaId: this.personasOptions[0].value,
             device: this.devicesOptions[0].value
@@ -72,21 +71,21 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
         this.changeDevice.emit(this.viewAsConfig.device);
     }
 
-    private getPersonaFieldOption(persona: Persona): SelectItem {
+    private getPersonaFieldOption(persona: DotPersona): SelectItem {
         return {
-            label: persona.label,
-            value: persona.id
+            label: persona.name,
+            value: persona.inode
         };
     }
 
-    private getLanguageFieldOption(language: Language): SelectItem {
+    private getLanguageFieldOption(language: DotLanguage): SelectItem {
         return {
             label: language.label,
             value: language.id
         };
     }
 
-    private getDeviceFieldOption(device: Device): SelectItem {
+    private getDeviceFieldOption(device: DotDevice): SelectItem {
         return {
             label: device.label,
             value: device

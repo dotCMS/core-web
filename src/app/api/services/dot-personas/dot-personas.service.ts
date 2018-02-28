@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Persona } from '../../../shared/models/persona/persona.model';
+import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs/Observable';
+import { RequestMethod } from '@angular/http';
+import { CoreWebService } from 'dotcms-js/dotcms-js';
 
 /**
  * Provide util methods to get Personas.
@@ -9,19 +11,19 @@ import { Observable } from 'rxjs/Observable';
  */
 @Injectable()
 export class DotPersonasService {
-    constructor() {}
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Return Personas.
-     * @returns {Observable<Language[]>}
+     * @returns {Observable<DotLanguage[]>}
      * @memberof DotPersonasService
      */
-    get(): Observable<Persona[]> {
-        return Observable.of([
-            { id: '1', label: 'Admin' },
-            { id: '2', label: 'Wealthy Prospect' },
-            { id: '3', label: 'Global Investor' },
-            { id: '4', label: 'First Time investor' }
-        ]);
+    get(): Observable<DotPersona[]> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: 'content/query/structurename:persona'
+            })
+            .pluck('contentlets');
     }
 }

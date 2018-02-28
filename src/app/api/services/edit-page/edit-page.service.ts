@@ -6,6 +6,7 @@ import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/d
 import { PageMode } from '../../../portlets/dot-edit-content/components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import {DotEditPageViewAs} from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 /**
  * Provide util methods to get a edit page html
@@ -25,7 +26,7 @@ export class EditPageService {
      * @returns {Observable<DotRenderedPage>}
      * @memberof EditPageService
      */
-    getAs(url: string, personaId: string, languageId: string): Observable<DotRenderedPage> {
+    getAs(url: string, viewasConfig: DotEditPageViewAs): Observable<DotRenderedPage> {
         // TODO: Decide how this will be implemented to make the right call.
         return this.get(url, PageMode.EDIT);
     }

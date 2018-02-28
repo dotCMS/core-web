@@ -4,6 +4,8 @@
     background-color: $gray-darker;
     height: 35px;
     padding: 6px 0 0 16px;
+    display: flex;
+    align-items: center;
 
     p-dropdown {
         margin-right: 10px;

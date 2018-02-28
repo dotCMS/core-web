@@ -1,6 +1,6 @@
 import { DotDevicesService } from './dot-devices.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { Device } from '../../../shared/models/device/device.model';
+import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 
 describe('DotDevicesService', () => {
     beforeEach(() => {
@@ -9,7 +9,7 @@ describe('DotDevicesService', () => {
     });
 
     it('should get Devices', () => {
-        this.dotDevicesService.get().subscribe((devices: Device[]) => {
+        this.dotDevicesService.get().subscribe((devices: DotDevice[]) => {
             expect(devices).toEqual([
                 { id: '0', label: 'Desktop', width: '100%', height: '100%' },
                 { id: '1', label: 'iPhone', width: '375px', height: '667px' },
