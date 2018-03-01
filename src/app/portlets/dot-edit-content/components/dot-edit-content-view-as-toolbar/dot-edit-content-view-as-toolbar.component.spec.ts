@@ -26,7 +26,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         device: { id: '1', label: 'iPhone', width: '375px', height: '667px' }
     };
     const pageViewAsInitialValue: DotEditPageViewAs = {
-        personaId: '1',
+        personaId: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23',
         languageId: 'en',
         device: { id: '0', label: 'Desktop', width: '100%', height: '100%' }
     };

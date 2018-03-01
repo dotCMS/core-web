@@ -12,7 +12,7 @@ import { LoginService, CoreWebService } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
 import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
 
-const mockDotRenderPage: DotRenderedPage = {
+const   mockDotRenderPage: DotRenderedPage = {
     canEdit: true,
     canLock: true,
     identifier: '',

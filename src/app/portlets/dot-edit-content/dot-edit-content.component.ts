@@ -21,6 +21,8 @@ import { EditPageService } from '../../api/services/edit-page/edit-page.service'
 import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { PageMode } from './shared/page-mode.enum';
+import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotDevice } from '../../shared/models/dot-device/dot-device.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -42,6 +44,7 @@ export class DotEditContentComponent implements OnInit {
     page: DotRenderedPage;
     pageMode: PageMode;
     pageWorkFlows: Observable<Workflow[]>;
+    device: DotDevice;
 
     private originalValue: any;
 
@@ -81,7 +84,7 @@ export class DotEditContentComponent implements OnInit {
 
         this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
             this.setPage(renderedPage);
-
+            this.pageMode = this.getPageMode(renderedPage);
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {
                     this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
@@ -155,7 +158,7 @@ export class DotEditContentComponent implements OnInit {
      */
     setPage(renderedPage: DotRenderedPage): void {
         this.page = renderedPage;
-        this.pageMode = this.getPageMode(renderedPage);
+
         this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
 
         if (this.pageMode === PageMode.EDIT && !this.page.lockedByAnotherUser) {
@@ -165,6 +168,35 @@ export class DotEditContentComponent implements OnInit {
             this.pageMode = PageMode.PREVIEW;
         }
     }
+
+    /**
+     * Hanlde changes in the configuration of "View As" toolbar
+     *
+     * @param {DotEditPageViewAs} viewAsConfig
+     * @memberof DotEditContentComponent
+     */
+    changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
+        console.log(viewAsConfig);
+        console.log(this.pageMode);
+        this.route.queryParams.subscribe(params => {
+            // TODO: make the call based on the pageMode, right now just calling getEdit.
+            console.log(this.pageMode);
+             this.editPageService.getEdit( params['url'], viewAsConfig).subscribe( (renderedPage: DotRenderedPage) => {
+                this.setPage(renderedPage);
+            });
+        });
+    }
+
+    /**
+     * Hanlde changes in the Device from the "View As" toolbar
+     *
+     * @param {Device} device
+     * @memberof DotEditContentComponent
+     */
+    changeDeviceHandler(device: DotDevice): void {
+        this.device = device;
+    }
+
 
     private addContentlet($event: any): void {
         const container: DotPageContainer = {

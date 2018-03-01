@@ -74,7 +74,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     private getPersonaFieldOption(persona: DotPersona): SelectItem {
         return {
             label: persona.name,
-            value: persona.inode
+            value: persona.identifier
         };
     }
 

@@ -24,11 +24,17 @@ import { WorkflowService } from '../../api/services/workflow/workflow.service';
 import { Workflow } from '../../shared/models/workflow/workflow.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
-import { combineAll } from 'rxjs/operator/combineAll';
 import { PageMode } from './shared/page-mode.enum';
+import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
+import { DotViewAsService } from '../../api/services/dot-view-as/dot-view-as.service';
+import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.service';
+import { DotDevicesServiceMock } from '../../test/dot-device-service.mock';
+import { DotPersonasService } from '../../api/services/dot-personas/dot-personas.service';
+import { DotPersonasServiceMock } from '../../test/dot-personas-service.mock';
+import { DotLanguagesService } from '../../api/services/dot-languages/dot-languages.service';
+import { DotLanguagesServiceMock } from '../../test/dot-languages-service.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
@@ -86,6 +92,7 @@ describe('DotEditContentComponent', () => {
                 BrowserAnimationsModule,
                 DotEditPageToolbarModule,
                 DotLoadingIndicatorModule,
+                DotEditContentViewAsToolbarModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -103,6 +110,7 @@ describe('DotEditContentComponent', () => {
                 DotEditContentToolbarHtmlService,
                 DotMenuService,
                 EditPageService,
+                DotViewAsService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -114,6 +122,18 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: WorkflowService,
                     useClass: WorkflowServiceMock
+                },
+                {
+                    provide: DotDevicesService,
+                    useClass: DotDevicesServiceMock
+                },
+                {
+                    provide: DotPersonasService,
+                    useClass: DotPersonasServiceMock
+                },
+                {
+                    provide: DotLanguagesService,
+                    useClass: DotLanguagesServiceMock
                 },
                 {
                     provide: ActivatedRoute,
@@ -375,5 +395,26 @@ describe('DotEditContentComponent', () => {
         expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
+    });
+
+    it('should have a View As toolbar', () => {
+        const viewAstoolbarElement: DebugElement = fixture.debugElement.query(
+            By.css('dot-edit-content-view-as-toolbar')
+        );
+        expect(viewAstoolbarElement).not.toBeNull();
+    });
+
+    it('should change the page wrapper dimensions', () => {
+
+        // TODO: Change the test.
+        const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+        const pDropDownDevices: DebugElement = de.query(By.css('.view-as-toolbar-devices'));
+        fixture.detectChanges();
+
+
+        component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
+        fixture.detectChanges();
+
+        expect(pageWrapper.styles).toEqual({ width: '375px', height: '667px' });
     });
 });
