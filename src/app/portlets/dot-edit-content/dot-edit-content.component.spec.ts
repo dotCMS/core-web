@@ -62,7 +62,7 @@ const fakePageRendered: DotRenderedPage = {
     workingInode: ''
 };
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotConfirmationService: DotConfirmationService;
@@ -261,9 +261,9 @@ describe('DotEditContentComponent', () => {
         };
 
         spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
-        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake((res) => {});
+        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(res => {});
 
-        spyOn(dotConfirmationService, 'confirm').and.callFake((conf) => {
+        spyOn(dotConfirmationService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
 
@@ -293,7 +293,6 @@ describe('DotEditContentComponent', () => {
             locked: false
         });
     });
-
 
     it('should set the page state (lock)', () => {
         spyOn(component, 'statePageHandler').and.callThrough();
@@ -405,16 +404,24 @@ describe('DotEditContentComponent', () => {
     });
 
     it('should change the page wrapper dimensions', () => {
-
-        // TODO: Change the test.
         const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+        const viewAstoolbarInstance: DebugElement = fixture.debugElement.query(
+            By.css('dot-edit-content-view-as-toolbar')
+        );
         const pDropDownDevices: DebugElement = de.query(By.css('.view-as-toolbar-devices'));
         fixture.detectChanges();
-
-
-        component.changeDeviceHandler({ id: '1', label: 'iPhone', width: '375px', height: '667px' });
+        spyOn(component, 'changeDeviceHandler').and.callThrough();
+        spyOn(viewAstoolbarInstance.componentInstance, 'changeDeviceConfiguration').and.callFake(() => {
+            viewAstoolbarInstance.componentInstance.changeDevice.emit({
+                id: '1',
+                label: 'iPhone',
+                width: '375px',
+                height: '667px'
+            });
+        });
+        pDropDownDevices.triggerEventHandler('onChange', {});
         fixture.detectChanges();
-
         expect(pageWrapper.styles).toEqual({ width: '375px', height: '667px' });
+        expect(component.changeDeviceHandler).toHaveBeenCalled();
     });
 });

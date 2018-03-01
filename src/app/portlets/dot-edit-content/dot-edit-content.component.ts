@@ -84,7 +84,7 @@ export class DotEditContentComponent implements OnInit {
 
         this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
             this.setPage(renderedPage);
-            this.pageMode = this.getPageMode(renderedPage);
+
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {
                     this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
@@ -158,7 +158,7 @@ export class DotEditContentComponent implements OnInit {
      */
     setPage(renderedPage: DotRenderedPage): void {
         this.page = renderedPage;
-
+        this.pageMode = this.getPageMode(renderedPage);
         this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
 
         if (this.pageMode === PageMode.EDIT && !this.page.lockedByAnotherUser) {
