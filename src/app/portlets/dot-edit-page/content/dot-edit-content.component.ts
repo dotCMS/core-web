@@ -20,7 +20,7 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
-import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
+import { PageMode } from './shared/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-content',

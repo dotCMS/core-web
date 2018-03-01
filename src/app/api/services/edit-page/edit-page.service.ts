@@ -5,7 +5,7 @@ import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { PageMode } from '../../../portlets/dot-edit-content/shared/page-mode.enum';
+import { PageMode } from '../../../portlets/dot-edit-page/content/shared/page-mode.enum';
 
 /**
  * Provide util methods to get a edit page html
