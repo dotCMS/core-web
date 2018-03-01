@@ -26,8 +26,8 @@ export class EditLayoutResolver implements Resolve<any> {
      */
     resolve(route: ActivatedRouteSnapshot): Observable<DotPageView> {
         return this.pageViewService.get(route.queryParams.url).catch((err: ResponseView) => {
-            this.dotHttpErrorManagerService.handle(err).subscribe((didRedirect: boolean) => {
-                if (!didRedirect) {
+            this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+                if (!res.redirected) {
                     this.dotRouterService.gotoPortlet('/c/site-browser');
                 }
             });

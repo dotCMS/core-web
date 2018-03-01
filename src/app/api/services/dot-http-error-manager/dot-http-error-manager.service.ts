@@ -22,12 +22,14 @@ export class DotHttpErrorManagerService {
         private loginService: LoginService,
         private dotRouterService: DotRouterService
     ) {
-        this.dotMessageService.getMessages([
-            'dot.common.http.error.403.header',
-            'dot.common.http.error.403.message',
-            'dot.common.http.error.500.header',
-            'dot.common.http.error.500.message'
-        ]).subscribe();
+        this.dotMessageService
+            .getMessages([
+                'dot.common.http.error.403.header',
+                'dot.common.http.error.403.message',
+                'dot.common.http.error.500.header',
+                'dot.common.http.error.500.message'
+            ])
+            .subscribe();
     }
 
     /**
@@ -37,8 +39,16 @@ export class DotHttpErrorManagerService {
      * @returns {Observable<boolean>}
      * @memberof DotHttpErrorManagerService
      */
-    handle(err: ResponseView): Observable<boolean> {
-        return Observable.of(this.callErrorHandler(err.response.status));
+    handle(err: ResponseView): Observable<any> {
+        const result: any = {
+            redirected: this.callErrorHandler(err.response.status)
+        };
+
+        if (err['bodyJsonObject'].error) {
+            result.forbidden = this.contentletIsForbidden(err['bodyJsonObject'].error);
+        }
+
+        return Observable.of(result);
     }
 
     private callErrorHandler(code: HttpCode): boolean {
@@ -50,6 +60,13 @@ export class DotHttpErrorManagerService {
         errors[HttpCode.SERVER_ERROR] = this.handleServerError.bind(this);
 
         return errors[code]();
+    }
+
+    private contentletIsForbidden(error: string) {
+        return (
+            error.indexOf('does not have permissions READ') > -1 ||
+            error.indexOf('User cannot edit') > -1
+        );
     }
 
     private handleForbidden(): boolean {

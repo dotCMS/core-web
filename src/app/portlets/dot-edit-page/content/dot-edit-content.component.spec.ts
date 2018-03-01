@@ -24,10 +24,11 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { PageMode } from '../../dot-edit-content/shared/page-mode.enum';
+import { PageMode } from '../../dot-edit-page/content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 
 class WorkflowServiceMock {
     getPageWorkflows(): Observable<Workflow[]> {
@@ -47,6 +48,7 @@ const fakePageRendered: DotRenderedPage = {
     liveInode: '456',
     locked: false,
     lockedByAnotherUser: false,
+    mode: PageMode.PREVIEW,
     pageURI: 'A url',
     render: '<html></html>',
     shortyLive: '',
@@ -93,13 +95,14 @@ describe('DotEditContentComponent', () => {
                 ])
             ],
             providers: [
-                DotGlobalMessageService,
-                DotDialogService,
                 DotContainerContentletService,
                 DotDOMHtmlUtilService,
+                DotDialogService,
                 DotDragDropAPIHtmlService,
                 DotEditContentHtmlService,
                 DotEditContentToolbarHtmlService,
+                DotGlobalMessageService,
+                DotHttpErrorManagerService,
                 DotMenuService,
                 DotRouterService,
                 EditPageService,
@@ -168,7 +171,6 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.PREVIEW);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
         expect(toolbar.componentInstance.mode).toEqual(PageMode.PREVIEW);
@@ -183,14 +185,13 @@ describe('DotEditContentComponent', () => {
             content: {
                 ...fakePageRendered,
                 locked: true,
-                canLock: true
+                canLock: true,
+                mode: PageMode.EDIT
             }
         });
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.EDIT);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
-        expect(toolbar.componentInstance.mode).toEqual(PageMode.EDIT);
         expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
         expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledTimes(1);
     });
@@ -199,15 +200,13 @@ describe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         route.data = Observable.of({
-            renderedPage: {
+            content: {
                 ...fakePageRendered,
-                lockedByAnotherUser: true,
                 locked: true,
                 canLock: true
             }
         });
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.PREVIEW);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
         expect(toolbar.componentInstance.mode).toEqual(PageMode.PREVIEW);
@@ -300,14 +299,19 @@ describe('DotEditContentComponent', () => {
     it('should set the page mode', () => {
         fixture.detectChanges();
 
+        const dummyPage: DotRenderedPage = {
+            ...fakePageRendered,
+            lockedBy: 'Some User',
+            pageURI: '/whatever',
+        };
+
         spyOn(editPageService, 'setPageState').and.returnValue(
             Observable.of({
-                dotRenderedPage: {},
+                dotRenderedPage: dummyPage,
                 lockState: 'locked'
             })
         );
         spyOn(component, 'statePageHandler').and.callThrough();
-        spyOn(component, 'setPage').and.callThrough();
         spyOn(dotGlobalMessageService, 'display').and.callThrough();
 
         component.toolbar.changeState.emit({
@@ -319,8 +323,8 @@ describe('DotEditContentComponent', () => {
             locked: null,
             mode: PageMode.PREVIEW
         });
+        expect(component.page).toEqual(dummyPage);
         expect(dotGlobalMessageService.display).not.toHaveBeenCalled();
-        expect(component.setPage).toHaveBeenCalledTimes(1);
 
         // TODO: figure it out how to test this after the response of the lock method
         // expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Saved');
@@ -329,25 +333,16 @@ describe('DotEditContentComponent', () => {
     it('should set the page state in edit mode', () => {
         spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'initEditMode');
-        const mockPageRendered: DotRenderedPage = {
-            canEdit: true,
-            locked: true,
-            canLock: true,
-            identifier: '123',
-            languageId: 1,
-            liveInode: '456',
-            title: 'Hello World',
-            pageURI: 'url',
-            render: '<html></html>',
-            shortyLive: '000',
-            shortyWorking: '000',
-            workingInode: '000'
-        };
+        route.data = Observable.of({
+            content: {
+                ...fakePageRendered,
+                locked: true,
+                canLock: true,
+                mode: PageMode.EDIT
+            }
+        });
         fixture.detectChanges();
 
-        component.setPage(mockPageRendered);
-
-        expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith('<html></html>', component.iframe);
     });
@@ -355,25 +350,15 @@ describe('DotEditContentComponent', () => {
     it('should set the page state in preview mode', () => {
         spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'renderPage');
-        const mockPageRendered: DotRenderedPage = {
-            canEdit: true,
-            locked: false,
-            canLock: true,
-            identifier: '123',
-            languageId: 1,
-            liveInode: '456',
-            title: 'Hello World',
-            pageURI: 'url',
-            render: '<html></html>',
-            shortyLive: '000',
-            shortyWorking: '000',
-            workingInode: '000'
-        };
+        route.data = Observable.of({
+            content: {
+                ...fakePageRendered,
+                locked: false,
+                mode: PageMode.PREVIEW
+            }
+        });
         fixture.detectChanges();
 
-        component.setPage(mockPageRendered);
-
-        expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
     });

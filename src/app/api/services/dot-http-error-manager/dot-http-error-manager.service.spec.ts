@@ -11,7 +11,7 @@ import { ResponseView } from 'dotcms-js/core/util/response-view';
 
 
 const mockPageView = (status) => new ResponseView(new Response(new ResponseOptions({
-    body: null,
+    body: {},
     status: status,
     headers: null,
     url: '/test/test'
@@ -22,6 +22,7 @@ describe('DotHttpErrorManagerService', () => {
     let dotRouterService: DotRouterService;
     let dotDialogService: DotDialogService;
     let loginService: LoginService;
+    let result: any;
 
     const messageServiceMock = new MockDotMessageService({
         'dot.common.http.error.403.header': '403 Header',
@@ -63,14 +64,15 @@ describe('DotHttpErrorManagerService', () => {
     });
 
     it('should handle 401 error when user is login we use 403', () => {
-        let result: boolean;
         spyOn(dotDialogService, 'alert');
 
         service.handle(mockPageView(401)).subscribe(res => {
             result = res;
         });
 
-        expect(result).toBe(false);
+        expect(result).toEqual({
+            redirected: false,
+        });
         expect(dotDialogService.alert).toHaveBeenCalledWith({
             message: '403 Message',
             header: '403 Header'
@@ -78,7 +80,7 @@ describe('DotHttpErrorManagerService', () => {
     });
 
     it('should handle 401 error when user is logout and redirect to login', () => {
-        let result: boolean;
+
         loginService.auth.user = null;
         spyOn(dotRouterService, 'goToLogin');
         spyOn(dotDialogService, 'alert');
@@ -87,20 +89,23 @@ describe('DotHttpErrorManagerService', () => {
             result = res;
         });
 
-        expect(result).toBe(true);
+        expect(result).toEqual({
+            redirected: true,
+        });
         expect(dotDialogService.alert).not.toHaveBeenCalled();
         expect(dotRouterService.goToLogin).toHaveBeenCalledTimes(1);
     });
 
     it('should handle 403 error', () => {
-        let result: boolean;
         spyOn(dotDialogService, 'alert');
 
         service.handle(mockPageView(403)).subscribe(res => {
             result = res;
         });
 
-        expect(result).toBe(false);
+        expect(result).toEqual({
+            redirected: false,
+        });
         expect(dotDialogService.alert).toHaveBeenCalledWith({
             message: '403 Message',
             header: '403 Header'
@@ -108,14 +113,15 @@ describe('DotHttpErrorManagerService', () => {
     });
 
     it('should handle 500 error', () => {
-        let result: boolean;
         spyOn(dotDialogService, 'alert');
 
         service.handle(mockPageView(500)).subscribe(res => {
             result = res;
         });
 
-        expect(result).toBe(false);
+        expect(result).toEqual({
+            redirected: false,
+        });
         expect(dotDialogService.alert).toHaveBeenCalledWith({
             message: '500 Message',
             header: '500 Header'

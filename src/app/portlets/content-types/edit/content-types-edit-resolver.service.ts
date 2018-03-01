@@ -38,8 +38,8 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
             .getDataById('v1/contenttype', id)
             .take(1)
             .catch((err: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(err).subscribe((didRedirect: boolean) => {
-                    if (!didRedirect) {
+                this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+                    if (!res.redirected) {
                         this.dotRouterService.gotoPortlet('/content-types-angular', true);
                     }
                 });

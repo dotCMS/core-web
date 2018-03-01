@@ -92,48 +92,42 @@ export class EditPageService {
      */
     setPageState(page: DotRenderedPage, state: DotEditPageState): Observable<DotRenderedPageState> {
         const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.locked);
-        const pageMode: Observable<DotRenderedPage> = state.mode !== undefined ? this.getPageMode(state.mode)(page.pageURI) : null;
+        const pageMode: Observable<DotRenderedPage> = state.mode !== undefined ? this.getPageModeMethod(state.mode)(page.pageURI) : null;
 
         return this.getStateRequest(lockUnlock, pageMode);
     }
 
-    private get(url: string, mode: PageMode): Observable<DotRenderedPage> {
+    private get(url: string, pageMode: PageMode): Observable<DotRenderedPage> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=${this.getPageModeString(mode)}`
+                url: `v1/page/renderHTML/${url.replace(/^\//, '')}?mode=${this.getPageModeString(pageMode)}`
             })
             .pluck('bodyJsonObject')
-            .map((dotRenderedPage: DotRenderedPage) => {
-                const locked = !!dotRenderedPage.lockedBy;
-
-                const lockedByAnotherUser = locked ? dotRenderedPage.lockedBy !== this.loginService.auth.user.userId : false;
-
-                return {
-                    ...dotRenderedPage,
-                    locked,
-                    lockedByAnotherUser
-                };
-            });
+            .map((page: DotRenderedPage) => this.getPageWithExtraProperties(page));
     }
 
     private getLockMode(liveInode: string, lock: boolean): Observable<string> {
-        if (lock && lock === true) {
+        if (lock === true) {
             return this.lock(liveInode).pluck('message');
         } else if (lock === false) {
             return this.unlock(liveInode).pluck('message');
-        } else {
-            return null;
         }
+
+        return null;
     }
 
-    private getPageMode(mode: PageMode): (string) => Observable<DotRenderedPage> {
+    private getPageModeMethod(mode: PageMode): (string) => Observable<DotRenderedPage> {
         const map = {};
         map[PageMode.PREVIEW] = (url: string) => this.getPreview(url);
         map[PageMode.EDIT] = (url: string) => this.getEdit(url);
         map[PageMode.LIVE] = (url: string) => this.getLive(url);
 
         return map[mode];
+    }
+
+    private getPageMode(page: DotRenderedPage): PageMode {
+        return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
     }
 
     private getStateRequest(lockUnlock: Observable<string>, pageMode: Observable<DotRenderedPage>): Observable<DotRenderedPageState> {
@@ -168,5 +162,23 @@ export class EditPageService {
         pageModeString[PageMode.LIVE] = 'LIVE';
 
         return pageModeString[pageMode];
+    }
+
+    private getPageWithExtraProperties(page: DotRenderedPage): DotRenderedPage {
+        const locked = !!page.lockedBy;
+        const lockedByAnotherUser = locked ? page.lockedBy !== this.loginService.auth.user.userId : false;
+
+        page = {
+            ...page,
+            locked,
+            lockedByAnotherUser
+        };
+
+        const mode: PageMode = page.lockedByAnotherUser ? PageMode.PREVIEW : this.getPageMode(page);
+
+        return {
+            ...page,
+            mode
+        };
     }
 }

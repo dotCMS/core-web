@@ -24,8 +24,8 @@ export class EditContentResolver implements Resolve<DotRenderedPage> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPage> {
         return this.editPageService.getEdit(route.queryParams.url).catch((err: ResponseView) => {
-            this.dotHttpErrorManagerService.handle(err).subscribe((didRedirect: boolean) => {
-                if (!didRedirect) {
+            this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+                if (!res.redirected) {
                     this.dotRouterService.gotoPortlet('/c/site-browser');
                 }
             });
