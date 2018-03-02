@@ -95,7 +95,20 @@ export class EditPageService {
         const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.locked);
         const pageMode: Observable<DotRenderedPage> = state.mode !== undefined ? this.getPageModeMethod(state.mode)(page.pageURI) : null;
 
-        return this.getStateRequest(lockUnlock, pageMode);
+        /*
+            TODO: we need a refactor to add the mode to the interface: DotRenderedPageState, the idea is to keep the page object from
+            the server pristine and create a new object to hanlde the UI of the page.
+        */
+        return this.getStateRequest(lockUnlock, pageMode).map((dotRenderedPageState: DotRenderedPageState) => {
+            if (state.mode) {
+                dotRenderedPageState.dotRenderedPage.mode = state.mode;
+            }
+            if (state.locked) {
+                dotRenderedPageState.dotRenderedPage.locked = state.locked;
+            }
+
+            return dotRenderedPageState;
+        });
     }
 
     private get(url: string, pageMode: PageMode, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
