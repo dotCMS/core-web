@@ -1,5 +1,5 @@
 <p-dropdown class="tiny invert view-as-toolbar-languages" [options]="languagesOptions"
-            [(ngModel)]="viewAsConfig.languageId"
+            [(ngModel)]="viewAsConfig.language"
             [style]="{'width':'auto'}"
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>
@@ -9,7 +9,7 @@
             (onChange)="changeDeviceConfiguration($event.value)">
 </p-dropdown>
 <p-dropdown class="tiny invert view-as-toolbar-personas" [options]="personasOptions"
-            [(ngModel)]="viewAsConfig.personaId"
+            [(ngModel)]="viewAsConfig.persona"
             [style]="{'width':'auto'}"
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>

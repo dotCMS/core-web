@@ -22,12 +22,22 @@ describe('DotLanguagesService', () => {
             new Response(
                 new ResponseOptions({
                     body: {
-                        en: { name: 'English' }
+                        entity: [
+                            {
+                                id: 1,
+                                languageCode: 'en',
+                                countryCode: 'US',
+                                language: 'English',
+                                country: 'United States'
+                            }
+                        ]
                     }
                 })
             )
         );
 
-        expect(result).toEqual([{ id: 'en', label: 'English' }]);
+        expect(result).toEqual([
+            { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' }
+        ]);
     });
 });

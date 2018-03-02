@@ -103,8 +103,8 @@ export class EditPageService {
         let params = { mode: this.getPageModeString(mode) };
         if (viewAsConfig) {
             params = Object.assign(params, {
-                language_id: viewAsConfig.languageId,
-                'com.dotmarketing.persona.id': viewAsConfig.personaId
+                language_id: viewAsConfig.language.id,
+                'com.dotmarketing.persona.id': viewAsConfig.persona.identifier
             });
         }
         return this.coreWebService

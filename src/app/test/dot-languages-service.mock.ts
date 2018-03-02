@@ -3,6 +3,8 @@ import { DotLanguage } from '../shared/models/dot-language/dot-language.model';
 
 export class DotLanguagesServiceMock {
     get(): Observable<DotLanguage[]> {
-        return Observable.of([{ id: 'en', label: 'English' }, { id: 'es', label: 'Spanish' }]);
+        return Observable.of([
+            { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' }
+        ]);
     }
 }

@@ -1,3 +1,5 @@
+import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+
 export interface DotRenderedPage {
     canEdit: boolean;
     canLock: boolean;
@@ -15,5 +17,6 @@ export interface DotRenderedPage {
     shortyLive: string;
     shortyWorking: string;
     title: string;
+    viewAs: DotEditPageViewAs;
     workingInode: string;
 }

@@ -18,20 +18,12 @@ export class DotLanguagesService {
      * @returns {Observable<DotLanguage[]>}
      * @memberof DotLanguagesService
      */
-    get(): Observable<any> {
+    get(): Observable<DotLanguage[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'v1/languages'
+                url: 'v2/languages'
             })
-            .pluck('bodyJsonObject')
-            .map(response => // Doing this transformation, because of the end point response.
-                Object.keys(response).map(language => {
-                    return {
-                        id: language,
-                        label: response[language].name
-                    };
-                })
-            );
+            .pluck('entity');
     }
 }

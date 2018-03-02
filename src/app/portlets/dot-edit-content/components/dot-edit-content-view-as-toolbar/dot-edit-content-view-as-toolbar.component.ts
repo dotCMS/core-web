@@ -33,7 +33,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.viewAsConfig = { languageId: '', personaId: '' };
+        this.viewAsConfig = { language: null, persona: null };
         Observable.forkJoin(
             this.dotPersonasService.get(),
             this.dotLanguagesService.get(),
@@ -63,9 +63,10 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     }
 
     private setInitialConfiguration() {
+        debugger;
         this.viewAsConfig = this.dotViewAsService.selected || {
-            languageId: this.languagesOptions[0].value,
-            personaId: this.personasOptions[0].value,
+            language: this.languagesOptions[0].value,
+            persona: this.personasOptions[0].value,
             device: this.devicesOptions[0].value
         };
         this.changeDevice.emit(this.viewAsConfig.device);
@@ -74,14 +75,14 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     private getPersonaFieldOption(persona: DotPersona): SelectItem {
         return {
             label: persona.name,
-            value: persona.identifier
+            value: persona
         };
     }
 
     private getLanguageFieldOption(language: DotLanguage): SelectItem {
         return {
-            label: language.label,
-            value: language.id
+            label: language.language,
+            value: language
         };
     }
 

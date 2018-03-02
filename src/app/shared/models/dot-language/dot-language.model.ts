@@ -1,4 +1,7 @@
 export interface DotLanguage {
-    id: string;
-    label: string;
+    id: number;
+    languageCode: string;
+    countryCode: string;
+    language: string;
+    country: string;
 }

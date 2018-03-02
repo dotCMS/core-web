@@ -23,6 +23,7 @@ import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendere
 import { PageMode } from './shared/page-mode.enum';
 import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotDevice } from '../../shared/models/dot-device/dot-device.model';
+import {DotViewAsService} from '../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -59,6 +60,7 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         private workflowsService: WorkflowService,
+        private dotViewAsService: DotViewAsService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
@@ -83,8 +85,9 @@ export class DotEditContentComponent implements OnInit {
         this.dotLoadingIndicatorService.show();
 
         this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
+            debugger;
+            this.dotViewAsService.selected = renderedPage.viewAs;
             this.setPage(renderedPage);
-
             this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
                 this.ngZone.run(() => {
                     this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
