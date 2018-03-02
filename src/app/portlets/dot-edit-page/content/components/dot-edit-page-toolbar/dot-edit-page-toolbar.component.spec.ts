@@ -92,6 +92,7 @@ describe('DotEditPageToolbarComponent', () => {
             render: '',
             shortyLive: '',
             shortyWorking: '',
+            viewAs: null,
             workingInode: ''
         };
 

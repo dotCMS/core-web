@@ -21,13 +21,43 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     let dotViewAsService: DotViewAsService;
 
     const pageViewAsPreLoadedValue: DotEditPageViewAs = {
-        personaId: '2',
-        languageId: 'es',
+        persona: {
+            description: 'Investor',
+            folder: 'SYSTEM_FOLDER',
+            host: '48190c8c-42c4-46af-8d1a-0cd5db894797',
+            identifier: '1',
+            inode: 'f30e6dc9-e951-4f71-bb1c-a98b49238806',
+            keyTag: 'GlobalInvestor',
+            languageId: 1,
+            lastReview: '2016-02-19 11:21:03.788',
+            modDate: '2016-02-19 11:21:03.802',
+            modUser: 'dotcms.org.1',
+            name: 'Global Investor',
+            owner: 'dotcms.org.1',
+            sortOrder: 0,
+            stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045'
+        },
+        language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
         device: { id: '1', label: 'iPhone', width: '375px', height: '667px' }
     };
     const pageViewAsInitialValue: DotEditPageViewAs = {
-        personaId: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23',
-        languageId: 'en',
+        persona: {
+            description: 'Other',
+            folder: 'SYSTEM_FOLDER',
+            host: '48190c8c-42c4-46af-8d1a-0cd5db894797',
+            identifier: '2',
+            inode: 'f30e6dc9-e951-4f71-bb1c-a98b49238806',
+            keyTag: 'GlobalInvestor',
+            languageId: 1,
+            lastReview: '2016-02-19 11:21:03.788',
+            modDate: '2016-02-19 11:21:03.802',
+            modUser: 'dotcms.org.1',
+            name: 'Other',
+            owner: 'dotcms.org.1',
+            sortOrder: 0,
+            stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045'
+        },
+        language: { id: 2, languageCode: 'es', countryCode: 'ES', language: 'Espanol', country: 'Costa Rica' },
         device: { id: '0', label: 'Desktop', width: '100%', height: '100%' }
     };
 

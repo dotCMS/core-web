@@ -63,12 +63,12 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     }
 
     private setInitialConfiguration() {
-        debugger;
         this.viewAsConfig = this.dotViewAsService.selected || {
             language: this.languagesOptions[0].value,
-            persona: this.personasOptions[0].value,
-            device: this.devicesOptions[0].value
+            persona: this.personasOptions[0].value
         };
+        // Checking apart because RenderHHTML don't bring device.
+        this.viewAsConfig.device = this.viewAsConfig.device || this.devicesOptions[0].value;
         this.changeDevice.emit(this.viewAsConfig.device);
     }
 

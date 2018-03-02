@@ -29,7 +29,8 @@ const   mockDotRenderPage: DotRenderedPage = {
     shortyLive: '',
     shortyWorking: '',
     title: '',
-    workingInode: ''
+    workingInode: '',
+    viewAs: null
 };
 
 describe('EditPageService', () => {
