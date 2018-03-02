@@ -81,8 +81,11 @@ describe('ContentTypeEditResolver', () => {
         spyOn(dotRouterService, 'gotoPortlet');
 
         spyOn(crudService, 'getDataById').and.returnValue(Observable.throw({
+            bodyJsonObject: {
+                error: ''
+            },
             response: {
-                status: 403
+                status: 403,
             }
         }));
 
@@ -98,6 +101,9 @@ describe('ContentTypeEditResolver', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
         spyOn(dotRouterService, 'gotoPortlet');
         spyOn(crudService, 'getDataById').and.returnValue(Observable.throw({
+            bodyJsonObject: {
+                error: ''
+            },
             response: {
                 status: 403
             }

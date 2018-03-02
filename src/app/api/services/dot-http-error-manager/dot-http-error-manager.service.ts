@@ -62,7 +62,7 @@ export class DotHttpErrorManagerService {
         return errors[code]();
     }
 
-    private contentletIsForbidden(error: string) {
+    private contentletIsForbidden(error: string): boolean {
         return (
             error.indexOf('does not have permissions READ') > -1 ||
             error.indexOf('User cannot edit') > -1
