@@ -1,43 +1,45 @@
-import { async, ComponentFixture } from '@angular/core/testing';
-import { DotEditContentComponent } from './dot-edit-content.component';
-import { DialogModule } from 'primeng/primeng';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
-import { DotConfirmationService } from '../../api/services/dot-confirmation/index';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
-import { DotContainerContentletService } from './services/dot-container-contentlet.service';
-import { DotMessageService } from '../../api/services/dot-messages-service';
-import { DOTTestBed } from '../../test/dot-test-bed';
-import { LoginService } from 'dotcms-js/dotcms-js';
-import { LoginServiceMock } from '../../test/login-service.mock';
-import { MockDotMessageService } from '../../test/dot-message-service.mock';
-import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
-import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
-import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture } from '@angular/core/testing';
+import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
-import { DotLoadingIndicatorModule } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
-import { DotMenuService } from '../../api/services/dot-menu.service';
-import { WorkflowService } from '../../api/services/workflow/workflow.service';
-import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { DialogModule } from 'primeng/primeng';
+import { DotContainerContentletService } from './services/dot-container-contentlet.service';
+import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
+import { DotDialogService } from '../../../api/services/dot-dialog/index';
+import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
+import { DotEditContentComponent } from './dot-edit-content.component';
+import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
+import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
+import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
+import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotLoadingIndicatorModule } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
+import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginServiceMock } from '../../../test/login-service.mock';
+import { MockDotMessageService } from '../../../test/dot-message-service.mock';
+import { Observable } from 'rxjs/Observable';
+import { PageMode } from '../../dot-edit-page/content/shared/page-mode.enum';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
-import { PageMode } from './shared/page-mode.enum';
-import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
-import { DotViewAsService } from '../../api/services/dot-view-as/dot-view-as.service';
-import { DotDevicesService } from '../../api/services/dot-devices/dot-devices.service';
-import { DotDevicesServiceMock } from '../../test/dot-device-service.mock';
-import { DotPersonasService } from '../../api/services/dot-personas/dot-personas.service';
-import { DotPersonasServiceMock } from '../../test/dot-personas-service.mock';
-import { DotLanguagesService } from '../../api/services/dot-languages/dot-languages.service';
-import { DotLanguagesServiceMock } from '../../test/dot-languages-service.mock';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotEditContentViewAsToolbarModule } from '../../dot-edit-content/components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
+import { DotViewAsService } from '../../../api/services/dot-view-as/dot-view-as.service';
+import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
+import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
+import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
+import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
+import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
+import { DotLanguagesServiceMock } from '../../../test/dot-languages-service.mock';
 
 class WorkflowServiceMock {
-    getPageWorkflows(pageIdentifier: string): Observable<Workflow[]> {
+    getPageWorkflows(): Observable<Workflow[]> {
         return Observable.of([
             { name: 'Workflow 1', id: 'one' },
             { name: 'Workflow 2', id: 'two' },
@@ -54,20 +56,22 @@ const fakePageRendered: DotRenderedPage = {
     liveInode: '456',
     locked: false,
     lockedByAnotherUser: false,
+    mode: PageMode.PREVIEW,
     pageURI: 'A url',
     render: '<html></html>',
     shortyLive: '',
     shortyWorking: '',
     title: 'A title',
-    workingInode: ''
+    workingInode: '',
+    viewAs: null
 };
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
-    let dotConfirmationService: DotConfirmationService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotDialogService: DotDialogService;
     let editPageService: EditPageService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
@@ -101,14 +105,16 @@ fdescribe('DotEditContentComponent', () => {
                 ])
             ],
             providers: [
-                DotGlobalMessageService,
-                DotConfirmationService,
                 DotContainerContentletService,
                 DotDOMHtmlUtilService,
+                DotDialogService,
                 DotDragDropAPIHtmlService,
                 DotEditContentHtmlService,
                 DotEditContentToolbarHtmlService,
+                DotGlobalMessageService,
+                DotHttpErrorManagerService,
                 DotMenuService,
+                DotRouterService,
                 EditPageService,
                 DotViewAsService,
                 {
@@ -139,7 +145,7 @@ fdescribe('DotEditContentComponent', () => {
                     provide: ActivatedRoute,
                     useValue: {
                         data: Observable.of({
-                            renderedPage: fakePageRendered
+                            content: fakePageRendered
                         })
                     }
                 }
@@ -150,8 +156,9 @@ fdescribe('DotEditContentComponent', () => {
 
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        dotConfirmationService = fixture.debugElement.injector.get(DotConfirmationService);
         dotEditContentHtmlService = fixture.debugElement.injector.get(DotEditContentHtmlService);
+        dotDialogService = fixture.debugElement.injector.get(DotDialogService);
+        editPageService = fixture.debugElement.injector.get(EditPageService);
         dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
         editPageService = fixture.debugElement.injector.get(EditPageService);
         route = fixture.debugElement.injector.get(ActivatedRoute);
@@ -187,7 +194,6 @@ fdescribe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.PREVIEW);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
         expect(toolbar.componentInstance.mode).toEqual(PageMode.PREVIEW);
@@ -199,17 +205,16 @@ fdescribe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         route.data = Observable.of({
-            renderedPage: {
+            content: {
                 ...fakePageRendered,
                 locked: true,
-                canLock: true
+                canLock: true,
+                mode: PageMode.EDIT
             }
         });
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.EDIT);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
-        expect(toolbar.componentInstance.mode).toEqual(PageMode.EDIT);
         expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
         expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledTimes(1);
     });
@@ -218,15 +223,13 @@ fdescribe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'renderPage');
         spyOn(dotEditContentHtmlService, 'initEditMode');
         route.data = Observable.of({
-            renderedPage: {
+            content: {
                 ...fakePageRendered,
-                lockedByAnotherUser: true,
                 locked: true,
                 canLock: true
             }
         });
         fixture.detectChanges();
-        expect(component.pageMode).toEqual(PageMode.PREVIEW);
 
         const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
         expect(toolbar.componentInstance.mode).toEqual(PageMode.PREVIEW);
@@ -261,9 +264,9 @@ fdescribe('DotEditContentComponent', () => {
         };
 
         spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
-        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(res => {});
+        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
-        spyOn(dotConfirmationService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
 
@@ -318,14 +321,19 @@ fdescribe('DotEditContentComponent', () => {
     it('should set the page mode', () => {
         fixture.detectChanges();
 
+        const dummyPage: DotRenderedPage = {
+            ...fakePageRendered,
+            lockedBy: 'Some User',
+            pageURI: '/whatever'
+        };
+
         spyOn(editPageService, 'setPageState').and.returnValue(
             Observable.of({
-                dotRenderedPage: {},
+                dotRenderedPage: dummyPage,
                 lockState: 'locked'
             })
         );
         spyOn(component, 'statePageHandler').and.callThrough();
-        spyOn(component, 'setPage').and.callThrough();
         spyOn(dotGlobalMessageService, 'display').and.callThrough();
 
         component.toolbar.changeState.emit({
@@ -337,8 +345,8 @@ fdescribe('DotEditContentComponent', () => {
             locked: null,
             mode: PageMode.PREVIEW
         });
+        expect(component.page).toEqual(dummyPage);
         expect(dotGlobalMessageService.display).not.toHaveBeenCalled();
-        expect(component.setPage).toHaveBeenCalledTimes(1);
 
         // TODO: figure it out how to test this after the response of the lock method
         // expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Saved');
@@ -347,25 +355,16 @@ fdescribe('DotEditContentComponent', () => {
     it('should set the page state in edit mode', () => {
         spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'initEditMode');
-        const mockPageRendered: DotRenderedPage = {
-            canEdit: true,
-            locked: true,
-            canLock: true,
-            identifier: '123',
-            languageId: 1,
-            liveInode: '456',
-            title: 'Hello World',
-            pageURI: 'url',
-            render: '<html></html>',
-            shortyLive: '000',
-            shortyWorking: '000',
-            workingInode: '000'
-        };
+        route.data = Observable.of({
+            content: {
+                ...fakePageRendered,
+                locked: true,
+                canLock: true,
+                mode: PageMode.EDIT
+            }
+        });
         fixture.detectChanges();
 
-        component.setPage(mockPageRendered);
-
-        expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith('<html></html>', component.iframe);
     });
@@ -373,25 +372,15 @@ fdescribe('DotEditContentComponent', () => {
     it('should set the page state in preview mode', () => {
         spyOn(workflowService, 'getPageWorkflows').and.returnValue(Observable.of([]));
         spyOn(dotEditContentHtmlService, 'renderPage');
-        const mockPageRendered: DotRenderedPage = {
-            canEdit: true,
-            locked: false,
-            canLock: true,
-            identifier: '123',
-            languageId: 1,
-            liveInode: '456',
-            title: 'Hello World',
-            pageURI: 'url',
-            render: '<html></html>',
-            shortyLive: '000',
-            shortyWorking: '000',
-            workingInode: '000'
-        };
+        route.data = Observable.of({
+            content: {
+                ...fakePageRendered,
+                locked: false,
+                mode: PageMode.PREVIEW
+            }
+        });
         fixture.detectChanges();
 
-        component.setPage(mockPageRendered);
-
-        expect(component.page).toBe(mockPageRendered);
         expect(workflowService.getPageWorkflows).toHaveBeenCalledWith('123');
         expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
     });

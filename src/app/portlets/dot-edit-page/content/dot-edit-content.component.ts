@@ -1,29 +1,32 @@
+import { DotRouterService } from './../../../api/services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from './../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { ResponseView } from 'dotcms-js/core/util/response-view';
 import * as _ from 'lodash';
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
-import { DotConfirmationService } from '../../api/services/dot-confirmation';
+import { DotDialogService } from '../../../api/services/dot-dialog';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
-import { DotLoadingIndicatorService } from '../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotMessageService } from '../../api/services/dot-messages-service';
-import { DotRenderedPage } from '../dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotGlobalMessageService } from '../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMenuService } from '../../api/services/dot-menu.service';
-import { DotPageContainer } from '../dot-edit-page/shared/models/dot-page-container.model';
-import { DotPageContent } from '../dot-edit-page/shared/models/dot-page-content.model';
-import { Workflow } from '../../shared/models/workflow/workflow.model';
+import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
+import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotPageContainer } from '../shared/models/dot-page-container.model';
+import { DotPageContent } from '../shared/models/dot-page-content.model';
+import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowService } from '../../api/services/workflow/workflow.service';
+import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
-import { EditPageService } from '../../api/services/edit-page/edit-page.service';
-import { DotEditPageState } from '../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotRenderedPageState } from '../dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
+import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
+import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { PageMode } from './shared/page-mode.enum';
-import { DotEditPageViewAs } from '../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotDevice } from '../../shared/models/dot-device/dot-device.model';
-import {DotViewAsService} from '../../api/services/dot-view-as/dot-view-as.service';
+import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotViewAsService } from '../../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -43,18 +46,19 @@ export class DotEditContentComponent implements OnInit {
     dialogTitle: string;
     isModelUpdated = false;
     page: DotRenderedPage;
-    pageMode: PageMode;
     pageWorkFlows: Observable<Workflow[]>;
     device: DotDevice;
 
     private originalValue: any;
 
     constructor(
-        private dotConfirmationService: DotConfirmationService,
         private dotContainerContentletService: DotContainerContentletService,
+        private dotDialogService: DotDialogService,
         private dotGlobalMessageService: DotGlobalMessageService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotMenuService: DotMenuService,
         private dotMessageService: DotMessageService,
+        private dotRouterService: DotRouterService,
         private editPageService: EditPageService,
         private ngZone: NgZone,
         private route: ActivatedRoute,
@@ -68,43 +72,39 @@ export class DotEditContentComponent implements OnInit {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'editpage.content.contentlet.remove.confirmation_message.reject',
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.header',
-                'editpage.content.contentlet.remove.confirmation_message.accept',
-                'editpage.content.steal.lock.confirmation_message.header',
-                'editpage.content.steal.lock.confirmation_message.message',
-                'editpage.content.steal.lock.confirmation_message.reject',
-                'editpage.content.steal.lock.confirmation_message.accept',
                 'editpage.content.contentlet.add.content',
                 'dot.common.message.saving',
                 'dot.common.message.saved'
             ])
             .subscribe();
 
-        this.dotLoadingIndicatorService.show();
-
-        this.route.data.pluck('renderedPage').subscribe((renderedPage: DotRenderedPage) => {
-            debugger;
-            this.dotViewAsService.selected = renderedPage.viewAs;
-            this.setPage(renderedPage);
-            this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
-                this.ngZone.run(() => {
-                    this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
-                });
-            });
-
-            this.dotEditContentHtmlService.pageModelChange.filter((model) => model.length).subscribe((model) => {
-                if (this.originalValue) {
-                    this.ngZone.run(() => {
-                        this.isModelUpdated = !_.isEqual(model, this.originalValue);
-                    });
-                } else {
-                    this.setOriginalValue(model);
-                }
+        this.dotEditContentHtmlService.contentletEvents.subscribe((contentletEvent: any) => {
+            this.ngZone.run(() => {
+                this.contentletEventsHandler(contentletEvent.name)(contentletEvent);
             });
         });
 
+        this.dotEditContentHtmlService.pageModelChange.filter((model) => model.length).subscribe((model) => {
+            if (this.originalValue) {
+                this.ngZone.run(() => {
+                    this.isModelUpdated = !_.isEqual(model, this.originalValue);
+                });
+            } else {
+                this.setOriginalValue(model);
+            }
+        });
+
+        this.dotLoadingIndicatorService.show();
+
+        this.route.data.pluck('content').subscribe((page: DotRenderedPage) => {
+            this.dotViewAsService.selected = page.viewAs;
+            this.page = page;
+            this.renderPage(page);
+        });
+
+        this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
         this.setDialogSize();
     }
 
@@ -128,14 +128,29 @@ export class DotEditContentComponent implements OnInit {
     }
 
     /**
-     * Handle the changes of the state pf the page
+     * Handle the changes of the state gf the page
      *
      * @param {*} state
      * @memberof DotEditContentComponent
      */
 
     statePageHandler(state: DotEditPageState): void {
-        this.setPageState(state);
+        if (this.isLockModified(state.locked)) {
+            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
+        }
+
+        this.editPageService.setPageState(this.page, state).subscribe(
+            (dotRenderedPageState: DotRenderedPageState) => {
+                this.setPage(dotRenderedPageState.dotRenderedPage);
+
+                if (this.isLockModified(state.locked)) {
+                    this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                }
+            },
+            (err: ResponseView) => {
+                this.handleSetPageStateFailed(err);
+            }
+        );
     }
 
     /**
@@ -154,25 +169,6 @@ export class DotEditContentComponent implements OnInit {
     }
 
     /**
-     * Init the content page state
-     *
-     * @param {DotRenderedPage} renderedPage
-     * @memberof DotEditContentComponent
-     */
-    setPage(renderedPage: DotRenderedPage): void {
-        this.page = renderedPage;
-        this.pageMode = this.getPageMode(renderedPage);
-        this.pageWorkFlows = this.workflowsService.getPageWorkflows(this.page.identifier);
-
-        if (this.pageMode === PageMode.EDIT && !this.page.lockedByAnotherUser) {
-            this.dotEditContentHtmlService.initEditMode(renderedPage.render, this.iframe);
-        } else {
-            this.dotEditContentHtmlService.renderPage(renderedPage.render, this.iframe);
-            this.pageMode = PageMode.PREVIEW;
-        }
-    }
-
-    /**
      * Hanlde changes in the configuration of "View As" toolbar
      *
      * @param {DotEditPageViewAs} viewAsConfig
@@ -180,11 +176,11 @@ export class DotEditContentComponent implements OnInit {
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
         console.log(viewAsConfig);
-        console.log(this.pageMode);
+        //console.log(this.pageMode);
         this.route.queryParams.subscribe(params => {
             // TODO: make the call based on the pageMode, right now just calling getEdit.
-            console.log(this.pageMode);
-             this.editPageService.getEdit( params['url'], viewAsConfig).subscribe( (renderedPage: DotRenderedPage) => {
+           // console.log(this.pageMode);
+            this.editPageService.getEdit( params['url'], viewAsConfig).subscribe( (renderedPage: DotRenderedPage) => {
                 this.setPage(renderedPage);
             });
         });
@@ -199,7 +195,6 @@ export class DotEditContentComponent implements OnInit {
     changeDeviceHandler(device: DotDevice): void {
         this.device = device;
     }
-
 
     private addContentlet($event: any): void {
         const container: DotPageContainer = {
@@ -237,21 +232,32 @@ export class DotEditContentComponent implements OnInit {
         });
     }
 
-    private getPageMode(page: DotRenderedPage): PageMode {
-        return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
-    }
-
     private contentletEventsHandler(event: any): Function {
         const eventsHandlerMap = {
-            'edit': this.editContentlet.bind(this),
-            'add': this.addContentlet.bind(this),
-            'remove': this.removeContentlet.bind(this),
-            'select': this.closeDialog.bind(this),
-            'cancel': () => {},
-            'save': () => {},
+            edit: this.editContentlet.bind(this),
+            add: this.addContentlet.bind(this),
+            remove: this.removeContentlet.bind(this),
+            select: this.closeDialog.bind(this),
+            cancel: () => {},
+            save: () => {}
         };
 
         return eventsHandlerMap[event];
+    }
+
+    private handleSetPageStateFailed(err: ResponseView): void {
+        this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+            if (res.forbidden) {
+                this.dotRouterService.gotoPortlet('/c/site-browser');
+            } else {
+                this.route.queryParams
+                    .pluck('url')
+                    .concatMap((url: string) => this.editPageService.getEdit(url))
+                    .subscribe((page: DotRenderedPage) => {
+                        this.setPage(page);
+                    });
+            }
+        });
     }
 
     private isLockModified(lock: boolean) {
@@ -279,7 +285,7 @@ export class DotEditContentComponent implements OnInit {
     }
 
     private removeContentlet($event: any): void {
-        this.dotConfirmationService.confirm({
+        this.dotDialogService.confirm({
             accept: () => {
                 const pageContainer: DotPageContainer = {
                     identifier: $event.container.dotIdentifier,
@@ -294,12 +300,16 @@ export class DotEditContentComponent implements OnInit {
                 this.dotEditContentHtmlService.removeContentlet(pageContainer, pageContent);
             },
             header: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.header'),
-            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message'),
-            footerLabel: {
-                acceptLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.accept'),
-                rejectLabel: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.reject')
-            }
+            message: this.dotMessageService.get('editpage.content.contentlet.remove.confirmation_message.message')
         });
+    }
+
+    private renderPage(page: DotRenderedPage): void {
+        if (page.mode === PageMode.EDIT && !page.lockedByAnotherUser) {
+            this.dotEditContentHtmlService.initEditMode(page.render, this.iframe);
+        } else {
+            this.dotEditContentHtmlService.renderPage(page.render, this.iframe);
+        }
     }
 
     private setDialogSize(): void {
@@ -309,24 +319,13 @@ export class DotEditContentComponent implements OnInit {
         };
     }
 
+    private setPage(page: DotRenderedPage): void {
+        this.page = page;
+        this.renderPage(page);
+    }
+
     private setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
         this.isModelUpdated = false;
-    }
-
-    private setPageState(state: DotEditPageState): void {
-        if (this.isLockModified(state.locked)) {
-            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
-        }
-
-        this.editPageService.setPageState(this.page, state).subscribe((dotRenderedPageState: DotRenderedPageState) => {
-            if (dotRenderedPageState.dotRenderedPage) {
-                this.setPage(dotRenderedPageState.dotRenderedPage);
-            }
-
-            if (this.isLockModified(state.locked)) {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-            }
-        });
     }
 }

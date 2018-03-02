@@ -1,5 +1,5 @@
+import { PageMode } from './../../content/shared/page-mode.enum';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-
 export interface DotRenderedPage {
     canEdit: boolean;
     canLock: boolean;
@@ -12,6 +12,7 @@ export interface DotRenderedPage {
     lockedByAnotherUser?: boolean;
     lockedByName?: string;
     lockedOn?: Date;
+    mode: PageMode;
     pageURI: string;
     render: string;
     shortyLive: string;
