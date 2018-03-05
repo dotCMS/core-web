@@ -64,12 +64,18 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
 
     private setInitialConfiguration() {
         this.viewAsConfig = this.dotViewAsService.selected || {
-            language: this.languagesOptions[0].value,
-            persona: this.personasOptions[0].value
+            persona: this.personasOptions[0].value,
+            device: this.devicesOptions[0].value,
+            language: this.languagesOptions[0].value
         };
-        // Checking apart because RenderHHTML don't bring device.
-        this.viewAsConfig.device = this.viewAsConfig.device || this.devicesOptions[0].value;
+        this.setPersonaDeviceInitialValue();
         this.changeDevice.emit(this.viewAsConfig.device);
+    }
+
+    private setPersonaDeviceInitialValue() {
+        // Check apart because RenderHHTML service don't bring device & not always Persona
+        this.viewAsConfig.persona = this.viewAsConfig.persona || this.personasOptions[0].value;
+        this.viewAsConfig.device = this.viewAsConfig.device || this.devicesOptions[0].value;
     }
 
     private getPersonaFieldOption(persona: DotPersona): SelectItem {

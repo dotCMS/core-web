@@ -17,12 +17,9 @@ export class DotPersonasServiceMock {
                 modUser: 'dotcms.org.1',
                 name: 'Global Investor',
                 owner: 'dotcms.org.1',
-                photo:
-                    '/contentAsset/raw-data/1c56ba62-1f41-4b81-bd62-b6eacff3ad23/photo/b98222bde2f74867c98b577738829ae45ba03fba.jpg',
                 photoContentAsset: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23/photo',
                 sortOrder: 0,
                 stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045',
-                tags: 'yield,europe,research'
             }
         ]);
     }

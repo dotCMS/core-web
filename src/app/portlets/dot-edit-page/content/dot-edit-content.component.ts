@@ -176,29 +176,14 @@ export class DotEditContentComponent implements OnInit {
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
         console.log(viewAsConfig);
-        debugger;
         console.log('this.page.mode: ', this.page.mode);
-        let refreshPage;
-
-        switch (this.page.mode) {
-            case 0:
-                console.log('EDIT')
-                // refreshPage = this.editPageService.getEdit;
-                break;
-            case 1:
-                console.log('PREVIEW')
-                // refreshPage = this.editPageService.getPreview;
-                break;
-            case 2:
-                console.log('LIVE')
-                // refreshPage = this.editPageService.getLive;
-                break;
-        }
-
         this.route.queryParams.subscribe(params => {
-            // refreshPage(params['url'], viewAsConfig).subscribe((renderedPage: DotRenderedPage) => {
-            //     this.setPage(renderedPage);
-            // });
+            this.editPageService.getPageModeMethod(this.page.mode)(
+                params['url'],
+                viewAsConfig
+            ).subscribe((page: DotRenderedPage) => {
+                this.setPage(page);
+            });
         });
     }
 

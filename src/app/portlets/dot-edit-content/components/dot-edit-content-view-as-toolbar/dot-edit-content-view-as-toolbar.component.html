@@ -4,12 +4,11 @@
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>
 <p-dropdown class="tiny invert view-as-toolbar-devices" [options]="devicesOptions"
-            [(ngModel)]="viewAsConfig.device"
-            [style]="{'width':'auto'}"
+            [(ngModel)]="viewAsConfig.device"   [style]="{'width':'auto'}"
             (onChange)="changeDeviceConfiguration($event.value)">
 </p-dropdown>
 <p-dropdown class="tiny invert view-as-toolbar-personas" [options]="personasOptions"
-            [(ngModel)]="viewAsConfig.persona"
+            [(ngModel)]="viewAsConfig.persona" dataKey = "identifier"
             [style]="{'width':'auto'}"
             (onChange)="changeConfiguration($event.value)">
 </p-dropdown>

@@ -6,7 +6,7 @@ import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/d
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../portlets/dot-edit-page/content/shared/page-mode.enum';
-import {DotEditPageViewAs} from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 /**
  * Provide util methods to get a edit page html
@@ -93,7 +93,8 @@ export class EditPageService {
      */
     setPageState(page: DotRenderedPage, state: DotEditPageState): Observable<DotRenderedPageState> {
         const lockUnlock: Observable<string> = this.getLockMode(page.liveInode, state.locked);
-        const pageMode: Observable<DotRenderedPage> = state.mode !== undefined ? this.getPageModeMethod(state.mode)(page.pageURI) : null;
+        const pageMode: Observable<DotRenderedPage> =
+            state.mode !== undefined ? this.getPageModeMethod(state.mode)(page.pageURI) : null;
 
         /*
             TODO: we need a refactor to add the mode to the interface: DotRenderedPageState, the idea is to keep the page object from
@@ -109,6 +110,21 @@ export class EditPageService {
 
             return dotRenderedPageState;
         });
+    }
+
+    /**
+     * Set the mode of the request to refresh the page
+     *
+     * @param {PageMode} mode
+     * @returns {(string) => Observable<DotRenderedPage>}
+     */
+    getPageModeMethod(mode: PageMode): (string, DotEditPageViewAs?) => Observable<DotRenderedPage> {
+        const map = {};
+        map[PageMode.PREVIEW] = (url: string, viewAsConfig?: DotEditPageViewAs) => this.getPreview(url, viewAsConfig);
+        map[PageMode.EDIT] = (url: string, viewAsConfig?: DotEditPageViewAs) => this.getEdit(url, viewAsConfig);
+        map[PageMode.LIVE] = (url: string, viewAsConfig?: DotEditPageViewAs) => this.getLive(url, viewAsConfig);
+
+        return map[mode];
     }
 
     private get(url: string, pageMode: PageMode, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
@@ -139,20 +155,14 @@ export class EditPageService {
         return null;
     }
 
-    private getPageModeMethod(mode: PageMode): (string) => Observable<DotRenderedPage> {
-        const map = {};
-        map[PageMode.PREVIEW] = (url: string) => this.getPreview(url);
-        map[PageMode.EDIT] = (url: string) => this.getEdit(url);
-        map[PageMode.LIVE] = (url: string) => this.getLive(url);
-
-        return map[mode];
-    }
-
     private getPageMode(page: DotRenderedPage): PageMode {
         return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
     }
 
-    private getStateRequest(lockUnlock: Observable<string>, pageMode: Observable<DotRenderedPage>): Observable<DotRenderedPageState> {
+    private getStateRequest(
+        lockUnlock: Observable<string>,
+        pageMode: Observable<DotRenderedPage>
+    ): Observable<DotRenderedPageState> {
         if (lockUnlock && pageMode) {
             return lockUnlock.mergeMap((lockState: string) => {
                 return pageMode.map((dotRenderedPage: DotRenderedPage) => {
