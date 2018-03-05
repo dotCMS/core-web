@@ -182,9 +182,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
             // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value
         });
-
-        console.log('this.pageView', this.pageView);
-        console.log('this.form', this.form.value);
     }
 
     private showTemplateLayoutDialog(): void {
@@ -195,7 +192,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         if (this.pageView.layout.sidebar) {
             return  this.fb.group({
                 location: this.pageView.layout.sidebar.location,
-                containers: this.fb.array(this.pageView.layout.sidebar.containers),
+                containers: this.fb.array(this.pageView.layout.sidebar.containers || []),
                 width: this.pageView.layout.sidebar.width
             });
         } else {
