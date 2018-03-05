@@ -190,7 +190,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     private createSidebarForm() {
         if (this.pageView.layout.sidebar) {
-            return  this.fb.group({
+            return this.fb.group({
                 location: this.pageView.layout.sidebar.location,
                 containers: this.fb.array(this.pageView.layout.sidebar.containers || []),
                 width: this.pageView.layout.sidebar.width
