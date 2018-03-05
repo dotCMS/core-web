@@ -6,7 +6,8 @@ import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model'
 import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { PageMode } from '../../shared/page-mode.enum';
+import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { PageMode } from '../../../shared/models/page-mode.enum';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -19,7 +20,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     @Input() canSave: boolean;
     @Input() pageWorkflows: Workflow[] = [];
-    @Input() page: DotRenderedPage;
+    @Input() pageState: DotRenderedPageState;
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() save = new EventEmitter<MouseEvent>();
@@ -48,9 +49,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 'dot.common.message.pageurl.copied.clipboard.error',
                 'editpage.toolbar.page.cant.edit'
             ])
-            .subscribe((res) => {
+            .subscribe(() => {
                 this.workflowsActions = this.getWorkflowOptions();
-                this.setFieldsModels(this.page);
+                this.setFieldsModels(this.pageState);
             });
     }
 
@@ -77,7 +78,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         txtArea.style.top = '0';
         txtArea.style.left = '0';
         txtArea.style.opacity = '0';
-        txtArea.value = this.page.pageURI;
+        txtArea.value = this.pageState.page.pageURI;
         document.body.appendChild(txtArea);
         txtArea.select();
 
@@ -183,35 +184,29 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     private setLockerState() {
-        const state: DotEditPageState = {
-            locked: this.lockerModel
-        };
-
         if (this.mode !== PageMode.LIVE) {
             this.mode = this.getAutoUpdatedMode();
-            state.mode = this.mode;
         }
 
-        this.changeState.emit(state);
+        this.changeState.emit({
+            locked: this.lockerModel,
+            mode: this.mode
+        });
     }
 
-    private setSelectorState(pageState: PageMode) {
-        const state: DotEditPageState = {
-            mode: pageState
-        };
+    private setSelectorState(pageMode: PageMode) {
+        this.lockerModel = !this.lockerModel && pageMode === PageMode.EDIT;
 
-        if (!this.lockerModel && pageState === PageMode.EDIT) {
-            this.lockerModel = pageState === PageMode.EDIT;
-            state.locked = this.lockerModel;
-        }
-
-        this.changeState.emit(state);
+        this.changeState.emit({
+            mode: pageMode,
+            locked: this.lockerModel
+        });
     }
 
-    private setFieldsModels(page: DotRenderedPage): void {
-        this.lockerModel = page.mode === PageMode.EDIT;
-        this.mode = page.mode;
-        this.states = this.getStateModeOptions(page);
+    private setFieldsModels(pageState: DotRenderedPageState): void {
+        this.lockerModel = pageState.state.mode === PageMode.EDIT;
+        this.mode = pageState.state.mode;
+        this.states = this.getStateModeOptions(pageState.page);
     }
 
     private getStateModeOptions(page: DotRenderedPage): SelectItem[] {
@@ -227,7 +222,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     private shouldConfirmToLock(): boolean {
-        return (this.lockerModel || this.mode === PageMode.EDIT) && this.page.lockedByAnotherUser;
+        return (this.lockerModel || this.mode === PageMode.EDIT) && this.pageState.state.lockedByAnotherUser;
     }
 
     private shouldGoToEdit(): boolean {

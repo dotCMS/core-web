@@ -19,7 +19,7 @@ import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import { EditPageService } from '../../../api/services/edit-page/edit-page.service';
+import { DotRenderHTMLService } from '../../../api/services/dot-render-html/dot-render-html.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
@@ -63,7 +63,7 @@ describe('DotEditContentComponent', () => {
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotDialogService: DotDialogService;
-    let editPageService: EditPageService;
+    let editPageService: DotRenderHTMLService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
     let workflowService: WorkflowService;
@@ -105,7 +105,7 @@ describe('DotEditContentComponent', () => {
                 DotHttpErrorManagerService,
                 DotMenuService,
                 DotRouterService,
-                EditPageService,
+                DotRenderHTMLService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -135,9 +135,9 @@ describe('DotEditContentComponent', () => {
         de = fixture.debugElement;
         dotEditContentHtmlService = fixture.debugElement.injector.get(DotEditContentHtmlService);
         dotDialogService = fixture.debugElement.injector.get(DotDialogService);
-        editPageService = fixture.debugElement.injector.get(EditPageService);
+        editPageService = fixture.debugElement.injector.get(DotRenderHTMLService);
         dotGlobalMessageService = fixture.debugElement.injector.get(DotGlobalMessageService);
-        editPageService = fixture.debugElement.injector.get(EditPageService);
+        editPageService = fixture.debugElement.injector.get(DotRenderHTMLService);
         route = fixture.debugElement.injector.get(ActivatedRoute);
         workflowService = fixture.debugElement.injector.get(WorkflowService);
     });
@@ -149,8 +149,8 @@ describe('DotEditContentComponent', () => {
 
     it('should pass data to the toolbar', () => {
         fixture.detectChanges();
-        expect(component.toolbar.page.title).toEqual('A title', 'toolbar have title');
-        expect(component.toolbar.page.pageURI).toEqual('A url', 'toolbar have url');
+        expect(component.toolbar.pageState.title).toEqual('A title', 'toolbar have title');
+        expect(component.toolbar.pageState.pageURI).toEqual('A url', 'toolbar have url');
         expect(component.toolbar.pageWorkflows).toEqual(
             [{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }, { name: 'Workflow 3', id: 'three' }],
             'toolbar have workflows'
@@ -323,7 +323,7 @@ describe('DotEditContentComponent', () => {
             locked: null,
             mode: PageMode.PREVIEW
         });
-        expect(component.page).toEqual(dummyPage);
+        expect(component.pageState).toEqual(dummyPage);
         expect(dotGlobalMessageService.display).not.toHaveBeenCalled();
 
         // TODO: figure it out how to test this after the response of the lock method

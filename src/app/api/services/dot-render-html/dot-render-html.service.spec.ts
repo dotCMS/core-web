@@ -4,10 +4,10 @@ import { DotRouterService } from '../dot-router/dot-router.service';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { EditPageService } from './edit-page.service';
+import { DotRenderHTMLService } from './edit-page.service';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PageMode } from '../../../portlets/dot-edit-page/content/shared/page-mode.enum';
 
@@ -33,7 +33,7 @@ const mockDotRenderPage: DotRenderedPage = {
 };
 
 describe('EditPageService', () => {
-    let editPageService: EditPageService;
+    let editPageService: DotRenderHTMLService;
     let backend: MockBackend;
     let lastConnection;
     let injector;
@@ -42,14 +42,14 @@ describe('EditPageService', () => {
         lastConnection = [];
 
         injector = DOTTestBed.configureTestingModule({
-            providers: [EditPageService, DotRouterService, {
+            providers: [DotRenderHTMLService, DotRouterService, {
                 provide: LoginService,
                 useClass: LoginServiceMock
             }],
             imports: [RouterTestingModule]
         });
 
-        editPageService = injector.get(EditPageService);
+        editPageService = injector.get(DotRenderHTMLService);
 
         backend = injector.get(ConnectionBackend) as MockBackend;
         backend.connections.subscribe((connection: any) => {
@@ -144,7 +144,7 @@ describe('EditPageService', () => {
             mode: PageMode.EDIT
         };
 
-        let result: DotRenderedPageState;
+        let result: DotPageState;
         editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
             result = res;
         });
@@ -192,7 +192,7 @@ describe('EditPageService', () => {
             locked: true
         };
 
-        let result: DotRenderedPageState;
+        let result: DotPageState;
         editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
             result = res;
         });
@@ -229,7 +229,7 @@ describe('EditPageService', () => {
             mode: PageMode.LIVE
         };
 
-        let result: DotRenderedPageState;
+        let result: DotPageState;
         editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
             result = res;
         });
