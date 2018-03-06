@@ -15,7 +15,7 @@ export interface DotPersona {
     stInode: string;
     tags?: string;
     photo?: string;
-    photoContentAsset?:string;
+    photoContentAsset?: string;
 }
 
 

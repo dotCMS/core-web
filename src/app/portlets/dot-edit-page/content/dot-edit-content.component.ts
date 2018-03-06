@@ -175,8 +175,6 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        console.log(viewAsConfig);
-        console.log('this.page.mode: ', this.page.mode);
         this.route.queryParams.subscribe(params => {
             this.editPageService.getPageModeMethod(this.page.mode)(
                 params['url'],
