@@ -1,11 +1,8 @@
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { LoginService } from 'dotcms-js/dotcms-js';
-
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotContentletLockerService } from './dot-contentlet-locker.service';
-import { LoginServiceMock } from '../../../test/login-service.mock';
 
 describe('DotContentletLockerService', () => {
     let service: DotContentletLockerService;

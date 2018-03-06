@@ -1,6 +1,6 @@
 import { LoginService } from 'dotcms-js/dotcms-js';
-import { DotRenderedPageState, DotPageState } from './../../../shared/models/dot-rendered-page-state.model';
-import { DotRenderHTMLService } from './../../../../../api/services/dot-render-html/dot-render-html.service';
+import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderHTMLService } from '../../../../../api/services/dot-render-html/dot-render-html.service';
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';

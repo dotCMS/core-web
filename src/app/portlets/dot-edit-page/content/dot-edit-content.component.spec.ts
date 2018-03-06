@@ -1,38 +1,41 @@
-import { DotEditPageService } from './../../../api/services/dot-edit-page/dot-edit-page.service';
-import { DotRenderedPageState, DotPageState } from './../shared/models/dot-rendered-page-state.model';
-import { DotContentletLockerService } from './../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { Observable } from 'rxjs/Observable';
+
 import { DialogModule } from 'primeng/primeng';
+
+import { LoginService } from 'dotcms-js/dotcms-js';
+
+import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
+import { DotContentletLockerService } from '../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotDialogService } from '../../../api/services/dot-dialog/index';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
+import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotLoadingIndicatorModule } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotPageState } from '../shared/models/dot-rendered-page-state.model';
+import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRenderHTMLService } from '../../../api/services/dot-render-html/dot-render-html.service';
-import { LoginService } from 'dotcms-js/dotcms-js';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
-import { Observable } from 'rxjs/Observable';
-import { RouterTestingModule } from '@angular/router/testing';
+import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
-import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
-import { PageMode } from '../shared/models/page-mode.enum';
 import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
 
 class WorkflowServiceMock {
@@ -53,10 +56,8 @@ describe('DotEditContentComponent', () => {
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotPageStateService: DotPageStateService;
-    let dotRenderHTMLService: DotRenderHTMLService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
-    let workflowService: WorkflowService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -133,9 +134,7 @@ describe('DotEditContentComponent', () => {
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotPageStateService = de.injector.get(DotPageStateService);
-        dotRenderHTMLService = de.injector.get(DotRenderHTMLService);
         route = de.injector.get(ActivatedRoute);
-        workflowService = de.injector.get(WorkflowService);
     });
 
     it('should have a toolbar', () => {
@@ -188,7 +187,6 @@ describe('DotEditContentComponent', () => {
         it('should set page mode in preview', () => {
             fixture.detectChanges();
 
-            const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
             expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledTimes(1);
             expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
         });
@@ -208,7 +206,6 @@ describe('DotEditContentComponent', () => {
             });
             fixture.detectChanges();
 
-            const toolbar: DebugElement = de.query(By.css('.dot-edit__toolbar'));
             expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
             expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledTimes(1);
         });

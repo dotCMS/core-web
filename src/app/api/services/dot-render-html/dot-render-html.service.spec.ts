@@ -1,15 +1,14 @@
-import { LoginServiceMock } from '../../../test/login-service.mock';
-import { LoginService } from 'dotcms-js/dotcms-js';
-import { DotRouterService } from '../dot-router/dot-router.service';
-import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
-import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotEditPageState } from '../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+
+import { LoginService } from 'dotcms-js/dotcms-js';
+
+import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotRenderHTMLService } from './dot-render-html.service';
-import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotRouterService } from '../dot-router/dot-router.service';
+import { LoginServiceMock } from '../../../test/login-service.mock';
 import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
 
 describe('EditPageService', () => {

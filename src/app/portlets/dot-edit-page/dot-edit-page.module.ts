@@ -1,4 +1,4 @@
-import { DotContentletLockerService } from './../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotContentletLockerService } from '../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { EditLayoutResolver } from './layout/services/dot-edit-layout-resolver/dot-edit-layout-resolver.service';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { NgModule } from '@angular/core';

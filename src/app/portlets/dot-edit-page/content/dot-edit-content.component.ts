@@ -1,7 +1,7 @@
-import { DotEditPageService } from './../../../api/services/dot-edit-page/dot-edit-page.service';
+import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
-import { DotRouterService } from './../../../api/services/dot-router/dot-router.service';
-import { DotHttpErrorManagerService } from './../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/core/util/response-view';
 import * as _ from 'lodash';
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
@@ -10,7 +10,6 @@ import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
 import { DotDialogService } from '../../../api/services/dot-dialog';
-import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
@@ -47,7 +46,6 @@ export class DotEditContentComponent implements OnInit {
     private originalValue: any;
 
     constructor(
-        private dotContainerContentletService: DotContainerContentletService,
         private dotDialogService: DotDialogService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,

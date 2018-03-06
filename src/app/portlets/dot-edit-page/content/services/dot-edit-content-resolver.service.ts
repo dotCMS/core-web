@@ -1,4 +1,4 @@
-import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { Injectable } from '@angular/core';

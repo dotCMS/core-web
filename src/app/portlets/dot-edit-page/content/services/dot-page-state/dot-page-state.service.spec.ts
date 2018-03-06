@@ -1,15 +1,16 @@
-import { DotContentletLockerService } from './../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { DotRenderHTMLService } from './../../../../../api/services/dot-render-html/dot-render-html.service';
-import { state } from '@angular/animations';
-import { DotRenderedPageState } from './../../../shared/models/dot-rendered-page-state.model';
-import { DotPageStateService } from './dot-page-state.service';
-import { MockBackend } from '@angular/http/testing';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { LoginService } from 'dotcms-js/dotcms-js';
-import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
-import { mockDotRenderPage } from '../../../../../test/dot-rendered-page.mock';
+import { MockBackend } from '@angular/http/testing';
+
+import { LoginService } from 'dotcms-js/dotcms-js';
+
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotPageStateService } from './dot-page-state.service';
+import { DotRenderHTMLService } from '../../../../../api/services/dot-render-html/dot-render-html.service';
+import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { PageMode } from '../../../shared/models/page-mode.enum';
+import { mockDotRenderPage } from '../../../../../test/dot-rendered-page.mock';
 
 describe('DotPageStateService', () => {
     let service: DotPageStateService;
@@ -49,15 +50,6 @@ describe('DotPageStateService', () => {
                     locked: true
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
-                    const result: DotRenderedPageState = new DotRenderedPageState(
-                        mockDotRenderPage,
-                        {
-                            locked: true,
-                            mode: PageMode.LIVE
-                        },
-                        loginService.auth.user
-                    );
-
                     expect(updatedPageState.page).toEqual(mockDotRenderPage);
                     expect(updatedPageState.state).toEqual({
                         locked: true,
@@ -94,15 +86,6 @@ describe('DotPageStateService', () => {
                     locked: false
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
-                    const result: DotRenderedPageState = new DotRenderedPageState(
-                        mockDotRenderPage,
-                        {
-                            locked: false,
-                            mode: PageMode.PREVIEW
-                        },
-                        loginService.auth.user
-                    );
-
                     expect(updatedPageState.page).toEqual(mockDotRenderPage);
                     expect(updatedPageState.state).toEqual({
                         locked: false,
@@ -161,7 +144,6 @@ describe('DotPageStateService', () => {
             loginService.auth.user.userId = 'someone';
 
             service.get('/test/123').subscribe((updatedPageState: DotRenderedPageState) => {
-                const { lockedBy, lockMessage, lockedByName, lockedOn, ...noLockedByPage } = mockDotRenderPage;
                 expect(updatedPageState.page).toEqual(mockDotRenderPage);
                 expect(updatedPageState.state).toEqual({
                     locked: true,
@@ -183,7 +165,6 @@ describe('DotPageStateService', () => {
         it('should get a locked page and set default state locked by another user', () => {
 
             service.get('/hola/mundo').subscribe((updatedPageState: DotRenderedPageState) => {
-                const { lockedBy, lockMessage, lockedByName, lockedOn, ...noLockedByPage } = mockDotRenderPage;
                 expect(updatedPageState.page).toEqual(mockDotRenderPage);
                 expect(updatedPageState.state).toEqual({
                     locked: true,
