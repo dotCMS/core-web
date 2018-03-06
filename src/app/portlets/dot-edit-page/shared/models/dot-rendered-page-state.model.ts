@@ -28,7 +28,7 @@ export class DotRenderedPageState {
     private getDefaultState(page: DotRenderedPage): DotPageState {
         const locked = !!page.lockedBy;
         const lockedByAnotherUser = locked ? page.lockedBy !== this.user.userId : false;
-        const mode: PageMode = page.lockedByAnotherUser ? PageMode.PREVIEW : this.getPageMode(page);
+        const mode: PageMode = lockedByAnotherUser ? PageMode.PREVIEW : this.getPageMode(page, locked);
 
         return {
             locked,
@@ -37,7 +37,7 @@ export class DotRenderedPageState {
         };
     }
 
-    private getPageMode(page: DotRenderedPage): PageMode {
-        return page.locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
+    private getPageMode(page: DotRenderedPage, locked: boolean): PageMode {
+        return locked && page.canLock ? PageMode.EDIT : PageMode.PREVIEW;
     }
 }

@@ -5,9 +5,7 @@ export interface DotRenderedPage {
     languageId: number;
     liveInode: string;
     lockMessage?: string;
-    locked: boolean;
     lockedBy?: string;
-    lockedByAnotherUser?: boolean;
     lockedByName?: string;
     lockedOn?: Date;
     pageURI: string;

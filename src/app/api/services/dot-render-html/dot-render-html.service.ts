@@ -10,7 +10,6 @@ import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mod
  * @export
  * @class DotRenderHTMLService
  */
-
 @Injectable()
 export class DotRenderHTMLService {
     constructor(private coreWebService: CoreWebService) {}

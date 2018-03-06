@@ -1,3 +1,4 @@
+import { DotEditPageService } from './../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from './../../../api/services/dot-router/dot-router.service';
 import { DotHttpErrorManagerService } from './../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
@@ -59,7 +60,8 @@ export class DotEditContentComponent implements OnInit {
         private workflowsService: WorkflowService,
         private dotPageStateService: DotPageStateService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
-        public dotLoadingIndicatorService: DotLoadingIndicatorService
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private dotEditPageService: DotEditPageService
     ) {}
 
     ngOnInit() {
@@ -146,8 +148,8 @@ export class DotEditContentComponent implements OnInit {
      */
     saveContent(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.dotContainerContentletService
-            .saveContentlet(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel())
+        this.dotEditPageService
+            .save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel())
             .subscribe(() => {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
                 this.setOriginalValue();

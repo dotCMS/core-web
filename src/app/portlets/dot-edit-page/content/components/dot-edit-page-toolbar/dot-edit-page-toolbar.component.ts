@@ -166,15 +166,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         }
     }
 
-    private getAutoUpdatedMode(): PageMode {
-        if (this.shouldGoToPreview()) {
-            return PageMode.PREVIEW;
-        }
-        if (this.shouldGoToEdit()) {
-            return PageMode.EDIT;
-        }
-    }
-
     private getWorkflowOptions(): MenuItem[] {
         return this.pageWorkflows.map((workflow: Workflow) => {
             return {
@@ -184,8 +175,8 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     private setLockerState() {
-        if (this.mode !== PageMode.LIVE) {
-            this.mode = this.getAutoUpdatedMode();
+        if (!this.lockerModel && this.mode === PageMode.EDIT) {
+            this.mode = PageMode.PREVIEW;
         }
 
         this.changeState.emit({
@@ -195,7 +186,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     private setSelectorState(pageMode: PageMode) {
-        this.lockerModel = !this.lockerModel && pageMode === PageMode.EDIT;
+        if (pageMode === PageMode.EDIT) {
+            this.lockerModel = true;
+        }
 
         this.changeState.emit({
             mode: pageMode,
@@ -223,13 +216,5 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     private shouldConfirmToLock(): boolean {
         return (this.lockerModel || this.mode === PageMode.EDIT) && this.pageState.state.lockedByAnotherUser;
-    }
-
-    private shouldGoToEdit(): boolean {
-        return this.lockerModel && this.mode === PageMode.PREVIEW;
-    }
-
-    private shouldGoToPreview(): boolean {
-        return !this.lockerModel && this.mode === PageMode.EDIT;
     }
 }
