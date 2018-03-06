@@ -413,4 +413,8 @@ describe('DotEditContentComponent', () => {
         expect(pageWrapper.styles).toEqual({ width: '375px', height: '667px' });
         expect(component.changeDeviceHandler).toHaveBeenCalled();
     });
+
+    xit('should change the language of the page on view as', () => {});
+
+    xit('should change the user of the page on view as', () => {});
 });

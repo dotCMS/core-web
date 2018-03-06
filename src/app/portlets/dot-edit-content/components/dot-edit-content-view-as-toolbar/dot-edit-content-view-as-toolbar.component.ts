@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
 import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model';
 import { DotViewAsService } from '../../../../api/services/dot-view-as/dot-view-as.service';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
@@ -29,7 +30,8 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
         private dotDevicesService: DotDevicesService,
         private dotLanguagesService: DotLanguagesService,
         private dotPersonasService: DotPersonasService,
-        private dotViewAsService: DotViewAsService
+        private dotViewAsService: DotViewAsService,
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -37,9 +39,14 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
         Observable.forkJoin(
             this.dotPersonasService.get(),
             this.dotLanguagesService.get(),
-            this.dotDevicesService.get()
+            this.dotDevicesService.get(),
+            this.dotMessageService.getMessages(['modes.persona.no.persona'])
         ).subscribe(response => {
             this.personasOptions = response[0].map((persona: DotPersona) => this.getPersonaFieldOption(persona));
+            this.personasOptions.unshift({
+                label: this.dotMessageService.get('modes.persona.no.persona'),
+                value: { identifier: 0 }
+            });
             this.languagesOptions = response[1].map((language: DotLanguage) => this.getLanguageFieldOption(language));
             this.devicesOptions = response[2].map((device: DotDevice) => this.getDeviceFieldOption(device));
             this.setInitialConfiguration();

@@ -33,7 +33,7 @@ const   mockDotRenderPage: DotRenderedPage = {
     viewAs: null
 };
 
-fdescribe('EditPageService', () => {
+describe('EditPageService', () => {
     let editPageService: EditPageService;
     let backend: MockBackend;
     let lastConnection;

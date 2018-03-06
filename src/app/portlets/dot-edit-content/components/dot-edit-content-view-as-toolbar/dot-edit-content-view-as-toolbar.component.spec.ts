@@ -13,8 +13,10 @@ import { By } from '@angular/platform-browser';
 import { DotDevicesServiceMock } from '../../../../test/dot-device-service.mock';
 import { DotLanguagesServiceMock } from '../../../../test/dot-languages-service.mock';
 import { DotPersonasServiceMock } from '../../../../test/dot-personas-service.mock';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
-describe('DotEditContentViewAsToolbarComponent', () => {
+fdescribe('DotEditContentViewAsToolbarComponent', () => {
     let component: DotEditContentViewAsToolbarComponent;
     let fixture: ComponentFixture<DotEditContentViewAsToolbarComponent>;
     let de: DebugElement;
@@ -64,6 +66,10 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     };
 
     beforeEach(() => {
+        const messageServiceMock = new MockDotMessageService({
+            'modes.persona.no.persona': 'Default Persona'
+        });
+
         DOTTestBed.configureTestingModule({
             declarations: [DotEditContentViewAsToolbarComponent],
             imports: [BrowserAnimationsModule],
@@ -80,6 +86,10 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                 {
                     provide: DotLanguagesService,
                     useClass: DotLanguagesServiceMock
+                },
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
                 }
             ]
         });
