@@ -31,7 +31,7 @@ export class ContentTypesInfoService {
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutablePersonaContentType',
             icon: 'fa-user',
-            label: 'dot-persona'
+            label: 'persona'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableFormContentType',

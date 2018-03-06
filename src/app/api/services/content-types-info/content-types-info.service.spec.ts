@@ -23,7 +23,7 @@ describe('ContentTypesInfoService', () => {
     });
 
     it('should return a ImmutablePersonaContentType for page', () => {
-        expect(this.iconsService.getClazz('dot-persona')).toBe(
+        expect(this.iconsService.getClazz('persona')).toBe(
             'com.dotcms.contenttype.model.type.ImmutablePersonaContentType'
         );
     });
