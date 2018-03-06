@@ -11,7 +11,7 @@ import { DotRouterService } from '../dot-router/dot-router.service';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
 
-describe('EditPageService', () => {
+describe('DotRenderHTMLService', () => {
     let editPageService: DotRenderHTMLService;
     let backend: MockBackend;
     let lastConnection;
@@ -35,6 +35,8 @@ describe('EditPageService', () => {
             lastConnection.push(connection);
         });
     });
+
+
 
     it('should get a rendered page in edit mode', () => {
         let result: DotRenderedPage;

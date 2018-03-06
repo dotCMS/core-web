@@ -87,14 +87,10 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         try {
             result = document.execCommand('copy');
             if (result) {
-                this.dotGlobalMessageService.display(
-                    this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard')
-                );
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard'));
             }
         } catch (err) {
-            this.dotGlobalMessageService.error(
-                this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error')
-            );
+            this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
         }
         document.body.removeChild(txtArea);
 
@@ -199,15 +195,16 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     private setFieldsModels(pageState: DotRenderedPageState): void {
         this.lockerModel = pageState.state.mode === PageMode.EDIT;
         this.mode = pageState.state.mode;
-        this.states = this.getStateModeOptions(pageState.page);
+        this.states = this.getStateModeOptions(pageState);
     }
 
-    private getStateModeOptions(page: DotRenderedPage): SelectItem[] {
+    private getStateModeOptions(pageState: DotRenderedPageState): SelectItem[] {
         return [
             {
                 label: this.dotMessageService.get('editpage.toolbar.edit.page'),
                 value: PageMode.EDIT,
-                styleClass: !page.canEdit ? 'edit-page-toolbar__state-selector-item--disabled' : ''
+                styleClass:
+                    !pageState.page.canEdit || pageState.state.lockedByAnotherUser ? 'edit-page-toolbar__state-selector-item--disabled' : ''
             },
             { label: this.dotMessageService.get('editpage.toolbar.preview.page'), value: PageMode.PREVIEW },
             { label: this.dotMessageService.get('editpage.toolbar.live.page'), value: PageMode.LIVE }

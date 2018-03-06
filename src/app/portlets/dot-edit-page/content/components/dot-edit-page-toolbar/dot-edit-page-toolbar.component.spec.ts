@@ -182,20 +182,25 @@ describe('DotEditPageToolbarComponent', () => {
         expect(lockSwitch.componentInstance.disabled).toBe(true);
     });
 
-    it('should have page is locked by message', () => {
+    it('should have page is locked by another user message and disabled edit button', () => {
         component.pageState.state.lockedByAnotherUser = true;
         fixture.detectChanges();
 
         const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__locked-by-message'));
         expect(lockedMessage.nativeElement.textContent).toContain('Page is locked');
+
+        const editStateModel = component.states.find(state => state.label === 'Edit');
+        expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
-    it('should have page is can\'t edit message', () => {
+    it('should have page can\'t edit message and disabled edit button', () => {
         component.pageState.page.canEdit = false;
         fixture.detectChanges();
 
         const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__cant-edit-message'));
         expect(lockedMessage.nativeElement.textContent).toContain('You dont have permissions');
+        const editStateModel = component.states.find(state => state.label === 'Edit');
+        expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
     it('should not have have any locked messages', () => {
@@ -214,15 +219,6 @@ describe('DotEditPageToolbarComponent', () => {
         const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
         lockSwitch.nativeElement.click();
         expect(component.onLockerClick).toHaveBeenCalledTimes(1);
-    });
-
-    it('should have edit button disabled', () => {
-        component.pageState.page.canEdit = false;
-        fixture.detectChanges();
-
-        const editStateModel = component.states.find(state => state.label === 'Edit');
-
-        expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
     it('should NOT have an action split button', () => {
