@@ -8,7 +8,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
     styleUrls: ['./dot-edit-page-nav.component.scss']
 })
 export class DotEditPageNavComponent implements OnInit {
-    @Input() advancedTemplate: boolean;
+    @Input() templateState;
 
     constructor(public route: ActivatedRoute, public dotMessageService: DotMessageService) {}
 

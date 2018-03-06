@@ -68,6 +68,9 @@ describe('DotEditPageMainComponent', () => {
 
     it('should bind correctly advancedTemplate param', () => {
         const nav: DotEditPageNavComponent = fixture.debugElement.query(By.css('dot-edit-page-nav')).componentInstance;
-        expect(nav.advancedTemplate).toBe(true);
+        expect(nav.templateState).toEqual({
+            editable: false,
+            advanced: true
+        });
     });
 });

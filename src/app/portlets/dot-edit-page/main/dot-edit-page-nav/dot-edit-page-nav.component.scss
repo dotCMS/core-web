@@ -33,6 +33,14 @@
         font-size: 1.25em;
         margin-bottom: 8px;
     }
+
+    &--disabled,
+    &--disabled:hover {
+        background-color: transparent;
+        cursor: not-allowed;
+        opacity: 0.2;
+        touch-action: none;
+    }
 }
 
 .edit-page-nav__item--active {
