@@ -45,7 +45,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
             this.personasOptions = response[0].map((persona: DotPersona) => this.getPersonaFieldOption(persona));
             this.personasOptions.unshift({
                 label: this.dotMessageService.get('modes.persona.no.persona'),
-                value: { identifier: 0 }
+                value: { identifier: '0' }
             });
             this.languagesOptions = response[1].map((language: DotLanguage) => this.getLanguageFieldOption(language));
             this.devicesOptions = response[2].map((device: DotDevice) => this.getDeviceFieldOption(device));

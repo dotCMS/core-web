@@ -16,7 +16,7 @@ import { DotPersonasServiceMock } from '../../../../test/dot-personas-service.mo
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
-fdescribe('DotEditContentViewAsToolbarComponent', () => {
+describe('DotEditContentViewAsToolbarComponent', () => {
     let component: DotEditContentViewAsToolbarComponent;
     let fixture: ComponentFixture<DotEditContentViewAsToolbarComponent>;
     let de: DebugElement;
@@ -44,23 +44,7 @@ fdescribe('DotEditContentViewAsToolbarComponent', () => {
         device: { id: '1', label: 'iPhone', width: '375px', height: '667px' }
     };
     const pageViewAsInitialValue: DotEditPageViewAs = {
-        persona: {
-            description: 'A non-US based investor interested in global financial news and services',
-            folder: 'SYSTEM_FOLDER',
-            host: '48190c8c-42c4-46af-8d1a-0cd5db894797',
-            identifier: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23',
-            inode: 'f30e6dc9-e951-4f71-bb1c-a98b49238806',
-            keyTag: 'GlobalInvestor',
-            languageId: 1,
-            lastReview: '2016-02-19 11:21:03.788',
-            modDate: '2016-02-19 11:21:03.802',
-            modUser: 'dotcms.org.1',
-            name: 'Global Investor',
-            owner: 'dotcms.org.1',
-            photoContentAsset: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23/photo',
-            sortOrder: 0,
-            stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045'
-        },
+        persona: { identifier: '0' },
         language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
         device: { id: '0', label: 'Desktop', width: '100%', height: '100%' }
     };
