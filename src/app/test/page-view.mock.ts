@@ -1,5 +1,25 @@
+import { DotLayout } from './../portlets/dot-edit-page/shared/models/dot-layout.model';
 import { Observable } from 'rxjs/Observable';
 import { DotPageView } from '../portlets/dot-edit-page/shared/models/dot-page-view.model';
+
+export const mockDotLayout: DotLayout = {
+    title: '',
+    header: false,
+    footer: false,
+    sidebar: {
+        location: 'left',
+        width: 'small',
+        containers: [
+            {
+                identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
+                uuid: 'LEGACY_RELATION_TYPE'
+            }
+        ]
+    },
+    body: {
+        rows: []
+    }
+};
 
 export const fakePageView: DotPageView = {
     containers: {
@@ -43,24 +63,7 @@ export const fakePageView: DotPageView = {
         versionType: '',
         title: 'Hello World'
     },
-    layout: {
-        title: '',
-        header: false,
-        footer: false,
-        sidebar: {
-            location: 'left',
-            width: 'small',
-            containers: [
-                {
-                    identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
-                    uuid: 'LEGACY_RELATION_TYPE'
-                }
-            ]
-        },
-        body: {
-            rows: []
-        }
-    },
+    layout: mockDotLayout,
     template: {
         anonymous: true,
         friendlyName: '',
@@ -71,7 +74,8 @@ export const fakePageView: DotPageView = {
         type: '',
         versionType: '',
         drawed: true
-    }
+    },
+    canEditTemplate: true
 };
 
 export class PageViewServiceMock {
@@ -79,7 +83,10 @@ export class PageViewServiceMock {
         return Observable.of(fakePageView);
     }
 
-    isTemplateAdvanced() {
-        return Observable.of(true);
+    getTemplateState() {
+        return Observable.of({
+            editable: false,
+            advanced: true
+        });
     }
 }

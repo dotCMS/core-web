@@ -11,7 +11,8 @@ describe('DotEditPageNavComponent', () => {
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
-        'editpage.toolbar.nav.layout': 'Layout'
+        'editpage.toolbar.nav.layout': 'Layout',
+        'editpage.toolbar.nav.code': 'Code'
     });
 
     beforeEach(
@@ -35,7 +36,22 @@ describe('DotEditPageNavComponent', () => {
         expect(menuList).not.toBeNull();
     });
 
-    it('should have menu items', () => {
+    it('should have just content item', () => {
+        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+        expect(menuListItems.length).toEqual(1);
+
+        const labels = ['Content'];
+        menuListItems.forEach((item, index) => {
+            expect(item.nativeElement.textContent).toContain(labels[index]);
+        });
+    });
+
+    it('should have basic menu items', () => {
+        component.templateState = {
+            editable: true,
+            advanced: false
+        };
+        fixture.detectChanges();
         const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
         expect(menuListItems.length).toEqual(2);
 
@@ -43,5 +59,32 @@ describe('DotEditPageNavComponent', () => {
         menuListItems.forEach((item, index) => {
             expect(item.nativeElement.textContent).toContain(labels[index]);
         });
+    });
+
+    it('should have code option', () => {
+        component.templateState = {
+            editable: true,
+            advanced: true
+        };
+        fixture.detectChanges();
+
+        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+        expect(menuListItems.length).toEqual(2);
+
+        const labels = ['Content', 'Code'];
+        menuListItems.forEach((item, index) => {
+            expect(item.nativeElement.textContent).toContain(labels[index]);
+        });
+    });
+
+    it('should have code option disabled', () => {
+        component.templateState = {
+            editable: false,
+            advanced: true
+        };
+        fixture.detectChanges();
+
+        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+        expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
     });
 });

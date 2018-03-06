@@ -50,13 +50,24 @@ export class PageViewService {
     }
 
     /**
-     * Get a flag for the type of template in a page
+     * Return type and editability of a page template
      *
      * @param {string} url
-     * @returns {Observable<boolean>}
+     * @returns {Observable<{
+     *         advanced: boolean,
+     *         editable: boolean
+     *     }>}
      * @memberof PageViewService
      */
-    isTemplateAdvanced(url: string): Observable<boolean> {
-        return this.get(url).let(getTemplateTypeFlag);
+    getTemplateState(url: string): Observable<{
+        advanced: boolean,
+        editable: boolean
+    }> {
+        return this.get(url).map((dotPageView: DotPageView) => {
+            return {
+                advanced: !dotPageView.template.drawed,
+                editable: dotPageView.canEditTemplate
+            };
+        });
     }
 }

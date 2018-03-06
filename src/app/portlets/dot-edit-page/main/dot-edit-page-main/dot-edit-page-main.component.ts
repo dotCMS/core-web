@@ -9,13 +9,16 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./dot-edit-page-main.component.scss']
 })
 export class DotEditPageMainComponent implements OnInit {
-    isAdvancedTemplate: Observable<boolean>;
+    templateState: Observable<{
+        advanced: boolean,
+        editable: boolean
+    }>;
 
     constructor(private route: ActivatedRoute, private pageViewService: PageViewService) {}
 
     ngOnInit() {
-        this.isAdvancedTemplate = this.route.queryParams
+        this.templateState = this.route.queryParams
             .pluck('url')
-            .mergeMap((url: string) => this.pageViewService.isTemplateAdvanced(url));
+            .mergeMap((url: string) => this.pageViewService.getTemplateState(url).do(res => console.log(res)));
     }
 }

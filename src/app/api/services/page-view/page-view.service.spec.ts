@@ -1,3 +1,4 @@
+import { mockDotLayout } from './../../../test/page-view.mock';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
 import { fakeAsync, tick } from '@angular/core/testing';
@@ -5,23 +6,24 @@ import { PageViewService } from './page-view.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 
 describe('PageViewService', () => {
+    let service: PageViewService;
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([PageViewService]);
 
-        this.pageViewService = this.injector.get(PageViewService);
+        service = this.injector.get(PageViewService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
     it('should do a get request with url param', () => {
         let result: any;
-        this.pageViewService.get('about-us').subscribe((items) => (result = items));
+        service.get('about-us').subscribe((items) => (result = items));
 
         expect(this.lastConnection.request.url).toContain('v1/page/json/about-us?live=false');
     });
 
     it('should remove the leading slash if present when calling pageViewService', () => {
-        this.pageViewService.get('/aboutUs/index');
+        service.get('/aboutUs/index');
         expect(this.lastConnection.request.url).toContain('v1/page/json/aboutUs/index');
     });
 
@@ -30,7 +32,7 @@ describe('PageViewService', () => {
         fakeAsync(() => {
             let result: any;
 
-            this.pageViewService.get('about-us').subscribe((items) => (result = items));
+            service.get('about-us').subscribe((items) => (result = items));
 
             const mockResponse = {
                 layout: {
@@ -62,12 +64,6 @@ describe('PageViewService', () => {
         'should post data and return an entity',
         fakeAsync(() => {
             let result;
-            const mockDotLayout = {
-                body: {
-                    containers: ['string1', 'string2'],
-                    rows: ['column']
-                }
-            };
 
             const mockResponse = {
                 entity: [
@@ -79,7 +75,7 @@ describe('PageViewService', () => {
                 ]
             };
 
-            this.pageViewService.save('test38923-82393842-23823', mockDotLayout).subscribe((res) => (result = res));
+            service.save('test38923-82393842-23823', mockDotLayout).subscribe((res) => (result = res));
             this.lastConnection.mockRespond(
                 new Response(
                     new ResponseOptions({
@@ -93,4 +89,70 @@ describe('PageViewService', () => {
             expect(result).toEqual(mockResponse.entity);
         })
     );
+
+    describe('should return type and editability of a template', () => {
+        it('should return false and false', () => {
+            service.getTemplateState('about/us').subscribe(res => {
+                expect(res).toEqual({
+                    advanced: false,
+                    editable: false
+                });
+            });
+            this.lastConnection.mockRespond(
+                new Response(
+                    new ResponseOptions({
+                        body: {
+                            template: {
+                                drawed: true
+                            },
+                            canEditTemplate: false
+                        }
+                    })
+                )
+            );
+        });
+
+        it('should return true and false', () => {
+            service.getTemplateState('about/us').subscribe(res => {
+                expect(res).toEqual({
+                    advanced: true,
+                    editable: false
+                });
+            });
+            this.lastConnection.mockRespond(
+                new Response(
+                    new ResponseOptions({
+                        body: {
+                            template: {
+                                drawed: false
+                            },
+                            canEditTemplate: false
+                        }
+                    })
+                )
+            );
+        });
+
+        it('should return false and true', () => {
+            service.getTemplateState('about/us').subscribe(res => {
+                expect(res).toEqual({
+                    advanced: false,
+                    editable: true
+                });
+            });
+            this.lastConnection.mockRespond(
+                new Response(
+                    new ResponseOptions({
+                        body: {
+                            template: {
+                                drawed: true
+                            },
+                            canEditTemplate: true
+                        }
+                    })
+                )
+            );
+        });
+    });
+
 });
