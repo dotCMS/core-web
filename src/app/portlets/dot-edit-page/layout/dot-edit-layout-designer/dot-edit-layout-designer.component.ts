@@ -1,3 +1,5 @@
+import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
+import { DotDialogService } from './../../../../api/services/dot-dialog/dot-dialog.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
@@ -22,7 +24,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
     @ViewChild('templateName') templateName: ElementRef;
 
-    @Input() pageView: DotPageView;
+    @Input() pageState: DotRenderedPageState;
 
     form: FormGroup;
     initialFormValue: any;
@@ -35,6 +37,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         private dotEditLayoutService: DotEditLayoutService,
         private dotEventsService: DotEventsService,
         private dotGlobalMessageService: DotGlobalMessageService,
+        private dotDialogService: DotDialogService,
         private fb: FormBuilder,
         private pageViewService: PageViewService,
         private route: ActivatedRoute,
@@ -62,8 +65,10 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
         this.setupLayout();
 
-        if (!this.isLayout()) {
+        if (!this.isLayout() && this.pageState.template.canEdit) {
             this.showTemplateLayoutDialog();
+        } else {
+            this.setEditLayoutMode();
         }
     }
 
@@ -85,7 +90,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
      * @memberof DotEditLayoutDesignerComponent
      */
     isLayout(): boolean {
-        return this.pageView.template.anonymous;
+        return !this.pageState.template || this.pageState.template.anonymous;
     }
 
     /**
@@ -125,7 +130,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     saveLayout(_event): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         const dotLayout: DotLayout = this.form.value;
-        this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
+        this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
             () => {
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
                 // this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
@@ -147,15 +152,14 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     setEditLayoutMode(): void {
         this.initialFormValue.title = null;
         this.form.get('title').setValue(null);
-        this.showTemplateLayoutSelectionDialog = false;
-        this.pageView.template.anonymous = true;
+        this.pageState.template.anonymous = true;
     }
 
-    private setupLayout(pageView?: DotPageView): void {
-        if (pageView) {
-            this.pageView = pageView;
+    private setupLayout(pageState?: DotRenderedPageState): void {
+        if (pageState) {
+            this.pageState = pageState;
         }
-        this.templateContainersCacheService.set(this.pageView.containers);
+        this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
 
@@ -167,11 +171,11 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     private initForm(): void {
         this.form = this.fb.group({
-            title: this.isLayout() ? null : this.pageView.template.title,
+            title: this.isLayout() ? null : this.pageState.template.title,
             layout: this.fb.group({
-                body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageView.layout.body) || {},
-                header: this.pageView.layout.header,
-                footer: this.pageView.layout.footer,
+                body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageState.layout.body) || {},
+                header: this.pageState.layout.header,
+                footer: this.pageState.layout.footer,
                 sidebar: this.createSidebarForm()
             })
         });
@@ -185,18 +189,39 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     }
 
     private showTemplateLayoutDialog(): void {
-        this.showTemplateLayoutSelectionDialog = true;
+        this.dotMessageService
+            .getMessages([
+                'editpage.layout.dialog.header',
+                'editpage.layout.dialog.info',
+                'editpage.layout.dialog.edit.page',
+                'editpage.layout.dialog.edit.template'
+            ])
+            .subscribe(() => {
+                this.dotDialogService.alert({
+                    header: this.dotMessageService.get('editpage.layout.dialog.header'),
+                    message: this.dotMessageService.get('editpage.layout.dialog.info', this.pageState.template.name),
+                    footerLabel: {
+                        accept: this.dotMessageService.get('editpage.layout.dialog.edit.page'),
+                        reject: this.dotMessageService.get('editpage.layout.dialog.edit.template')
+                    },
+                    accept: () => {
+                        this.setEditLayoutMode();
+                    }
+                });
+            });
+
+        // this.showTemplateLayoutSelectionDialog = true;
     }
 
     private createSidebarForm() {
-        if (this.pageView.layout.sidebar) {
+        if (this.pageState.layout.sidebar) {
             return this.fb.group({
-                location: this.pageView.layout.sidebar.location,
-                containers: this.fb.array(this.pageView.layout.sidebar.containers || []),
-                width: this.pageView.layout.sidebar.width
+                location: this.pageState.layout.sidebar.location,
+                containers: this.fb.array(this.pageState.layout.sidebar.containers || []),
+                width: this.pageState.layout.sidebar.width
             });
         } else {
-            return  this.fb.group({
+            return this.fb.group({
                 location: '',
                 containers: [],
                 width: 'small'

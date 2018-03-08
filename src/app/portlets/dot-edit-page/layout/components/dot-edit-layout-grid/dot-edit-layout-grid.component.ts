@@ -13,6 +13,7 @@ import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
+import { debug } from 'util';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -60,15 +61,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         limit_to_screen: true
     };
 
-    private i18nKeys = [
-        'editpage.confirm.header',
-        'editpage.confirm.message.delete',
-        'editpage.confirm.message.delete.warning',
-        'editpage.action.cancel',
-        'editpage.action.delete',
-        'editpage.action.save'
-    ];
-
     constructor(
         private dotDialogService: DotDialogService,
         private dotEditLayoutService: DotEditLayoutService,
@@ -77,11 +69,22 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     ) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(this.i18nKeys).subscribe();
+        this.dotMessageService
+            .getMessages([
+                'editpage.confirm.header',
+                'editpage.confirm.message.delete',
+                'editpage.confirm.message.delete.warning',
+                'editpage.action.cancel',
+                'editpage.action.delete',
+                'editpage.action.save'
+            ])
+            .subscribe();
+
         this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
             // setTimeout is need it because the side nav animation time.
             this.resizeGrid(200);
         });
+
         this.dotEventsService.listen('layout-sidebar-change').subscribe(() => {
             // We need to "wait" until the template remove the sidebar div.
             this.resizeGrid();
@@ -134,9 +137,9 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                     this.removeContainer(index);
                 },
                 header: this.dotMessageService.get('editpage.confirm.header'),
-                message: `${this.dotMessageService.get(
-                    'editpage.confirm.message.delete'
-                )} <span>${this.dotMessageService.get('editpage.confirm.message.delete.warning')}</span>`,
+                message: `${this.dotMessageService.get('editpage.confirm.message.delete')} <span>${this.dotMessageService.get(
+                    'editpage.confirm.message.delete.warning'
+                )}</span>`,
                 footerLabel: {
                     accept: this.dotMessageService.get('editpage.action.delete'),
                     reject: this.dotMessageService.get('editpage.action.cancel')
@@ -185,9 +188,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     private setGridValue(): void {
-        this.grid = this.isHaveRows()
-            ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
-            : [...DOT_LAYOUT_DEFAULT_GRID];
+        this.grid = this.isHaveRows() ? this.dotEditLayoutService.getDotLayoutGridBox(this.value) : [...DOT_LAYOUT_DEFAULT_GRID];
     }
 
     private removeContainer(index: number): void {

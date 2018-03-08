@@ -119,7 +119,7 @@ describe('DotDialogComponent', () => {
 
         const button = de.query(By.css('p-dialog button'));
         button.nativeElement.click();
-        expect(dialogService.clearAlert).toHaveBeenCalledTimes(1);
+        expect(dialogService.alertAccept).toHaveBeenCalledTimes(1);
     });
 
     it('should bind correctly to confirm dialog buttons', fakeAsync(() => {

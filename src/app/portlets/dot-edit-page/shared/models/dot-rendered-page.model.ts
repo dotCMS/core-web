@@ -8,4 +8,5 @@ export interface DotRenderedPage {
     page: DotPage;
     containers?: any;
     template?: DotTemplate;
+    canCreateTemplate: boolean;
 }

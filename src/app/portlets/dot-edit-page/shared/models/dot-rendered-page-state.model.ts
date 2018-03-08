@@ -12,12 +12,13 @@ export interface DotPageState {
 }
 
 export class DotRenderedPageState {
-    private _html: string;
+    private _canCreateTemplate: boolean;
     private _containers?: any;
+    private _html: string;
     private _layout: DotLayout;
     private _page: DotPage;
-    private _template?: DotTemplate;
     private _state: DotPageState;
+    private _template?: DotTemplate;
 
     constructor(dotRenderedPage: DotRenderedPage, state: DotPageState, private user: User) {
         this._page = dotRenderedPage.page;
@@ -26,30 +27,35 @@ export class DotRenderedPageState {
         this._layout = dotRenderedPage.layout;
         this._template = dotRenderedPage.template;
         this._state = state || this.getDefaultState(this._page);
+        this._canCreateTemplate = dotRenderedPage.canCreateTemplate;
     }
 
-    get html(): string {
-        return this._html;
-    }
-
-    get page(): DotPage {
-        return this._page;
+    get canCreateTemplate(): any {
+        return this._canCreateTemplate;
     }
 
     get containers(): any {
         return this._containers;
     }
 
+    get html(): string {
+        return this._html;
+    }
+
     get layout(): DotLayout {
         return this._layout;
     }
 
-    get template(): DotTemplate {
-        return this._template;
+    get page(): DotPage {
+        return this._page;
     }
 
     get state(): DotPageState {
         return this._state;
+    }
+
+    get template(): DotTemplate {
+        return this._template;
     }
 
     private getDefaultState(page: DotPage): DotPageState {
