@@ -10,7 +10,7 @@ import { DotRenderHTMLService } from '../../../../../api/services/dot-render-htm
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { LoginServiceMock, mockUser } from '../../../../../test/login-service.mock';
 import { PageMode } from '../../../shared/models/page-mode.enum';
-import { mockDotRenderPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 
 describe('DotPageStateService', () => {
     let service: DotPageStateService;
@@ -70,7 +70,7 @@ describe('DotPageStateService', () => {
             lastConnection[1].mockRespond(
                 new Response(
                     new ResponseOptions({
-                        body: mockDotRenderPage
+                        body: mockDotRenderedPage
                     })
                 )
             );
@@ -106,7 +106,7 @@ describe('DotPageStateService', () => {
             lastConnection[1].mockRespond(
                 new Response(
                     new ResponseOptions({
-                        body: mockDotRenderPage
+                        body: mockDotRenderedPage
                     })
                 )
             );
@@ -155,7 +155,7 @@ describe('DotPageStateService', () => {
             lastConnection[0].mockRespond(
                 new Response(
                     new ResponseOptions({
-                        body: mockDotRenderPage
+                        body: mockDotRenderedPage
                     })
                 )
             );
@@ -176,7 +176,7 @@ describe('DotPageStateService', () => {
             lastConnection[0].mockRespond(
                 new Response(
                     new ResponseOptions({
-                        body: mockDotRenderPage
+                        body: mockDotRenderedPage
                     })
                 )
             );

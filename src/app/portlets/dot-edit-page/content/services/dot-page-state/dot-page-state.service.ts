@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { PageMode } from '../../../shared/models/page-mode.enum';
-import { mockDotRenderPage } from '../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../../test/dot-rendered-page.mock';
 
 @Injectable()
 export class DotPageStateService {
@@ -44,9 +44,9 @@ export class DotPageStateService {
      */
     get(url: string): Observable<DotRenderedPageState> {
         const fakeDotRenderedPage: DotRenderedPage = {
-            ...mockDotRenderPage,
+            ...mockDotRenderedPage,
             page: {
-                ...mockDotRenderPage.page,
+                ...mockDotRenderedPage.page,
                 canEdit: false,
                 canLock: false,
                 lockedBy: 'dotcms.org.1'

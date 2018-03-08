@@ -90,7 +90,7 @@ export const mockDotTemplate: DotTemplate = {
     canEdit: true
 };
 
-export const mockDotRenderPage: DotRenderedPage = {
+export const mockDotRenderedPage: DotRenderedPage = {
     containers: mockDotContainers,
     html: '<html></html>',
     layout: mockDotLayout,

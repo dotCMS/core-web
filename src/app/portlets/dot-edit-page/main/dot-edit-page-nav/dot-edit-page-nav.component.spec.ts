@@ -6,7 +6,7 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { mockDotRenderPage } from './../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
 
 describe('DotEditPageNavComponent', () => {
@@ -33,7 +33,7 @@ describe('DotEditPageNavComponent', () => {
         beforeEach(() => {
             fixture = TestBed.createComponent(DotEditPageNavComponent);
             component = fixture.componentInstance;
-            component.pageState = new DotRenderedPageState(mockDotRenderPage, null, mockUser);
+            component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
             fixture.detectChanges();
         });
 
@@ -43,7 +43,7 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should have basic menu items', () => {
-            component.pageState = new DotRenderedPageState(mockDotRenderPage, null, mockUser);
+            component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
             fixture.detectChanges();
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             expect(menuListItems.length).toEqual(2);
@@ -67,9 +67,9 @@ describe('DotEditPageNavComponent', () => {
         it('should have menu items: Content and Code', () => {
             component.pageState = new DotRenderedPageState(
                 {
-                    ...mockDotRenderPage,
+                    ...mockDotRenderedPage,
                     template: {
-                        ...mockDotRenderPage.template,
+                        ...mockDotRenderedPage.template,
                         drawed: false
                     }
                 },
@@ -92,9 +92,9 @@ describe('DotEditPageNavComponent', () => {
         it('should have code option disabled because user can\'t edit the page thus the layout or template', () => {
             component.pageState = new DotRenderedPageState(
                 {
-                    ...mockDotRenderPage,
+                    ...mockDotRenderedPage,
                     page: {
-                        ...mockDotRenderPage.page,
+                        ...mockDotRenderedPage.page,
                         canEdit: false
                     }
                 },

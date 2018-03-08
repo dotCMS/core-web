@@ -36,7 +36,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
-import { mockDotRenderPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(): Observable<Workflow[]> {
@@ -117,7 +117,7 @@ describe('DotEditContentComponent', () => {
                     useValue: {
                         data: Observable.of({
                             content: {
-                                page: mockDotRenderPage,
+                                page: mockDotRenderedPage,
                                 state: mockDotPageState
                             }
                         })
@@ -195,7 +195,7 @@ describe('DotEditContentComponent', () => {
             route.data = Observable.of({
                 content: {
                     page: {
-                        ...mockDotRenderPage,
+                        ...mockDotRenderedPage,
                         canLock: true
                     },
                     state: {
@@ -214,7 +214,7 @@ describe('DotEditContentComponent', () => {
             route.data = Observable.of({
                 content: {
                     page: {
-                        ...mockDotRenderPage,
+                        ...mockDotRenderedPage,
                         canLock: true
                     },
                     state: {
@@ -246,7 +246,7 @@ describe('DotEditContentComponent', () => {
 
         it('should set edit mode', () => {
             spyStateSet({
-                page: mockDotRenderPage,
+                page: mockDotRenderedPage,
                 state: {
                     mode: PageMode.EDIT,
                     locked: true
@@ -276,7 +276,7 @@ describe('DotEditContentComponent', () => {
 
         it('should set preview mode', () => {
             spyStateSet({
-                page: mockDotRenderPage,
+                page: mockDotRenderedPage,
                 state: {
                     mode: PageMode.PREVIEW,
                     locked: true
