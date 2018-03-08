@@ -41,7 +41,7 @@ export const dotPageMock: DotPage = {
 
 export const mockDotLayout: DotLayout = {
     title: '',
-    header: false,
+    header: true,
     footer: false,
     sidebar: {
         location: 'left',
