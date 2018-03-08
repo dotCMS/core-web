@@ -43,18 +43,18 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     get(url: string): Observable<DotRenderedPageState> {
-        const fakeDotRenderedPage: DotRenderedPage = {
-            ...mockDotRenderedPage,
-            page: {
-                ...mockDotRenderedPage.page,
-                canEdit: false,
-                canLock: false,
-                lockedBy: 'dotcms.org.1'
-            },
-        };
+        // const fakeDotRenderedPage: DotRenderedPage = {
+        //     ...mockDotRenderedPage,
+        //     page: {
+        //         ...mockDotRenderedPage.page,
+        //         canEdit: false,
+        //         canLock: false,
+        //         lockedBy: 'dotcms.org.1'
+        //     },
+        // };
         return this.dotRenderHTMLService
             .getEdit(url)
-            .map((_page: DotRenderedPage) => new DotRenderedPageState(fakeDotRenderedPage, null, this.loginService.auth.user));
+            .map((page: DotRenderedPage) => new DotRenderedPageState(page, null, this.loginService.auth.user));
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {

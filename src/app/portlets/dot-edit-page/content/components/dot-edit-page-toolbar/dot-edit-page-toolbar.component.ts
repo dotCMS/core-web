@@ -203,7 +203,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 label: this.dotMessageService.get('editpage.toolbar.edit.page'),
                 value: PageMode.EDIT,
                 styleClass:
-                    !pageState.page.canEdit || pageState.state.lockedByAnotherUser ? 'edit-page-toolbar__state-selector-item--disabled' : ''
+                    !pageState.page.canEdit || !pageState.page.canLock ? 'edit-page-toolbar__state-selector-item--disabled' : ''
             },
             { label: this.dotMessageService.get('editpage.toolbar.preview.page'), value: PageMode.PREVIEW },
             { label: this.dotMessageService.get('editpage.toolbar.live.page'), value: PageMode.LIVE }

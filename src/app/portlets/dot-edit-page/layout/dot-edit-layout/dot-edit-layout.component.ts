@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { getTemplateTypeFlag } from '../../../../api/util/lib';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 
 @Component({
@@ -17,6 +16,9 @@ export class DotEditLayoutComponent implements OnInit {
 
     ngOnInit() {
         this.pageState = this.route.parent.parent.data.pluck('content');
-        this.isAdvancedTemplate = this.pageState.let(getTemplateTypeFlag);
+
+        this.isAdvancedTemplate = this.pageState.map(
+            (dotRenderedPageState: DotRenderedPageState) => dotRenderedPageState.template && !dotRenderedPageState.template.drawed
+        );
     }
 }
