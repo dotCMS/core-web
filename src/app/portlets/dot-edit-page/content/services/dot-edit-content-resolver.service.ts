@@ -23,7 +23,7 @@ export class DotEditContentResolver implements Resolve<DotRenderedPageState> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
-        return this.dotPageStateService.get(route.queryParams.url).catch((err: ResponseView) => {
+        return this.dotPageStateService.get(route.queryParams.url).do(res => console.log(res)).catch((err: ResponseView) => {
             this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
                 if (!res.redirected) {
                     this.dotRouterService.gotoPortlet('/c/site-browser');

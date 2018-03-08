@@ -1,3 +1,4 @@
+import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { DotRenderHTMLService } from '../../../../../api/services/dot-render-html/dot-render-html.service';
@@ -6,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { PageMode } from '../../../shared/models/page-mode.enum';
+import { mockDotRenderPage } from '../../../../../test/dot-rendered-page.mock';
 
 @Injectable()
 export class DotPageStateService {
@@ -23,7 +25,7 @@ export class DotPageStateService {
      * @returns {Observable<any>}
      * @memberof DotRenderHTMLService
      */
-    set(page: DotRenderedPage, state: DotPageState): Observable<DotRenderedPageState> {
+    set(page: DotPage, state: DotPageState): Observable<DotRenderedPageState> {
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
         const pageMode$: Observable<DotRenderedPage> =
             state.mode !== undefined ? this.getPageModeMethod(state.mode)(page.pageURI) : Observable.of(null);
@@ -41,9 +43,12 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     get(url: string): Observable<DotRenderedPageState> {
+        const fakeDotRenderedPage: DotRenderedPage = {
+            ...mockDotRenderPage
+        };
         return this.dotRenderHTMLService
             .getEdit(url)
-            .map((page: DotRenderedPage) => new DotRenderedPageState(page, null, this.loginService.auth.user));
+            .map((page: DotRenderedPage) => new DotRenderedPageState(fakeDotRenderedPage, null, this.loginService.auth.user));
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
