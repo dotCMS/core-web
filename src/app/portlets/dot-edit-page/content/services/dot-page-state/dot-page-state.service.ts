@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
@@ -44,7 +45,13 @@ export class DotPageStateService {
      */
     get(url: string): Observable<DotRenderedPageState> {
         const fakeDotRenderedPage: DotRenderedPage = {
-            ...mockDotRenderPage
+            ...mockDotRenderPage,
+            page: {
+                ...mockDotRenderPage.page,
+                canEdit: false,
+                canLock: false,
+                lockedBy: 'dotcms.org.1'
+            },
         };
         return this.dotRenderHTMLService
             .getEdit(url)

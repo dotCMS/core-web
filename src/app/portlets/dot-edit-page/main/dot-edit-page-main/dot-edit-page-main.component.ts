@@ -1,7 +1,10 @@
+import { DotMessageService } from './../../../../api/services/dot-messages-service';
+import { DotRenderedPage } from './../../shared/models/dot-rendered-page.model';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 
 @Component({
     selector: 'dot-edit-page-main',
@@ -9,16 +12,11 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./dot-edit-page-main.component.scss']
 })
 export class DotEditPageMainComponent implements OnInit {
-    templateState: Observable<{
-        advanced: boolean,
-        editable: boolean
-    }>;
+    pageState: Observable<DotRenderedPageState>;
 
-    constructor(private route: ActivatedRoute, private pageViewService: PageViewService) {}
+    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
-        this.templateState = this.route.queryParams
-            .pluck('url')
-            .mergeMap((url: string) => this.pageViewService.getTemplateState(url).do(res => console.log(res)));
+        this.pageState = this.route.data.pluck('content');
     }
 }
