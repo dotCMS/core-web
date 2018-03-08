@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DotPageView } from '../../shared/models/dot-page-view.model';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { getTemplateTypeFlag } from '../../../../api/util/lib';

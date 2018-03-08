@@ -1,6 +1,3 @@
-import { DotMessageService } from './../../../../api/services/dot-messages-service';
-import { DotRenderedPage } from './../../shared/models/dot-rendered-page.model';
-import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';

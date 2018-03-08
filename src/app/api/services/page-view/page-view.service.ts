@@ -7,7 +7,6 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 
 import { DotPageView } from '../../../portlets/dot-edit-page/shared/models/dot-page-view.model';
 import { DotLayout } from '../../../portlets/dot-edit-page/shared/models/dot-layout.model';
-import { getTemplateTypeFlag } from '../../util/lib';
 
 /**
  * Provide util methods to get and save a PageView object
@@ -47,27 +46,5 @@ export class PageViewService {
                 url: `v1/page/${pageIdentifier}/layout`
             })
             .pluck('entity');
-    }
-
-    /**
-     * Return type and editability of a page template
-     *
-     * @param {string} url
-     * @returns {Observable<{
-     *         advanced: boolean,
-     *         editable: boolean
-     *     }>}
-     * @memberof PageViewService
-     */
-    getTemplateState(url: string): Observable<{
-        advanced: boolean,
-        editable: boolean
-    }> {
-        return this.get(url).map((dotPageView: DotPageView) => {
-            return {
-                advanced: !dotPageView.template.drawed,
-                editable: dotPageView.canEditTemplate
-            };
-        });
     }
 }

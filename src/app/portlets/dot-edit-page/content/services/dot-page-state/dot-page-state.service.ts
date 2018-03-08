@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
@@ -55,7 +54,7 @@ export class DotPageStateService {
         };
         return this.dotRenderHTMLService
             .getEdit(url)
-            .map((page: DotRenderedPage) => new DotRenderedPageState(fakeDotRenderedPage, null, this.loginService.auth.user));
+            .map((_page: DotRenderedPage) => new DotRenderedPageState(fakeDotRenderedPage, null, this.loginService.auth.user));
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
