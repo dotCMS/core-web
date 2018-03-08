@@ -32,10 +32,7 @@ export class DotEditPageNavComponent implements OnInit {
     }
 
     private canGoToLayout(dotRenderedPage: DotRenderedPage): boolean {
-        if (dotRenderedPage.page.canEdit) {
-            return false;
-        }
-        return !dotRenderedPage.template;
+        return !dotRenderedPage.page.canEdit;
     }
 
     private getNavItems(dotRenderedPage: DotRenderedPage): DotEditPageNavItem[] {

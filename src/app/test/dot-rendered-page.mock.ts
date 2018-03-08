@@ -3,7 +3,7 @@ import { DotPage } from './../portlets/dot-edit-page/shared/models/dot-page.mode
 import { DotRenderedPage } from '../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotLayout } from '../portlets/dot-edit-page/shared/models/dot-layout.model';
 
-export const dotPageMock: DotPage = {
+export const mockDotPage: DotPage = {
     canEdit: true,
     canLock: true,
     identifier: '123',
@@ -94,6 +94,6 @@ export const mockDotRenderPage: DotRenderedPage = {
     containers: mockDotContainers,
     html: '<html></html>',
     layout: mockDotLayout,
-    page: dotPageMock,
+    page: mockDotPage,
     template: mockDotTemplate
 };

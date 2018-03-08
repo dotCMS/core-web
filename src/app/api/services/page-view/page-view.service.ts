@@ -18,21 +18,6 @@ export class PageViewService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Get a PageView object from url endpoint
-     * @param {string} url
-     * @returns {Observable<PageView>}
-     * @memberof PageViewService
-     */
-    get(url: string): Observable<DotPageView> {
-        return this.coreWebService
-            .requestView({
-                method: RequestMethod.Get,
-                url: `v1/page/json/${url.replace(/^\//, '')}?live=false`
-            })
-            .pluck('bodyJsonObject');
-    }
-
-    /**
      * Will do a POST request and save the PageView layout object
      * @param {PageView} pageView
      * @returns {Observable<any>}

@@ -1,9 +1,9 @@
-import { mockDotLayout } from './../../../test/page-view.mock';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { PageViewService } from './page-view.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
+import { mockDotLayout } from '../../../test/dot-rendered-page.mock';
 
 describe('PageViewService', () => {
     let service: PageViewService;
@@ -14,51 +14,6 @@ describe('PageViewService', () => {
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
-
-    it('should do a get request with url param', () => {
-        let result: any;
-        service.get('about-us').subscribe((items) => (result = items));
-
-        expect(this.lastConnection.request.url).toContain('v1/page/json/about-us?live=false');
-    });
-
-    it('should remove the leading slash if present when calling pageViewService', () => {
-        service.get('/aboutUs/index');
-        expect(this.lastConnection.request.url).toContain('v1/page/json/aboutUs/index');
-    });
-
-    it(
-        'should do a get request and return a pageView',
-        fakeAsync(() => {
-            let result: any;
-
-            service.get('about-us').subscribe((items) => (result = items));
-
-            const mockResponse = {
-                layout: {
-                    body: {
-                        containers: ['string1', 'string2'],
-                        rows: ['column']
-                    }
-                },
-                page: {
-                    identifier: 'test38923-82393842-23823'
-                }
-            };
-
-            this.lastConnection.mockRespond(
-                new Response(
-                    new ResponseOptions({
-                        body: mockResponse
-                    })
-                )
-            );
-
-            tick();
-
-            expect(result).toEqual(mockResponse);
-        })
-    );
 
     it(
         'should post data and return an entity',

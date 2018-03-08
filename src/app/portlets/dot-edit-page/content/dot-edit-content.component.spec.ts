@@ -36,7 +36,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
-import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
+import { mockDotRenderPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(): Observable<Workflow[]> {
@@ -144,7 +144,7 @@ describe('DotEditContentComponent', () => {
 
     it('should pass data to the toolbar', () => {
         fixture.detectChanges();
-        expect(component.toolbar.pageState.page).toEqual(mockDotRenderPage);
+        expect(component.toolbar.pageState.page).toEqual(mockDotPage);
         expect(component.toolbar.pageState.state).toEqual(mockDotPageState);
     });
 
@@ -265,7 +265,7 @@ describe('DotEditContentComponent', () => {
                 mode: PageMode.EDIT
             });
 
-            expect(component.pageState.page).toEqual(mockDotRenderPage);
+            expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.EDIT,
                 locked: true
@@ -295,7 +295,7 @@ describe('DotEditContentComponent', () => {
                 mode: PageMode.PREVIEW
             });
 
-            expect(component.pageState.page).toEqual(mockDotRenderPage);
+            expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.PREVIEW,
                 locked: true

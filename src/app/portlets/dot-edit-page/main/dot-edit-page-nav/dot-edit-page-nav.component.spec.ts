@@ -1,9 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { By } from '@angular/platform-browser';
+import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
+import { RouterTestingModule } from '@angular/router/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { mockDotRenderPage } from './../../../../test/dot-rendered-page.mock';
+import { mockUser } from './../../../../test/login-service.mock';
 
 describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
@@ -25,66 +29,90 @@ describe('DotEditPageNavComponent', () => {
         })
     );
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(DotEditPageNavComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    describe('basic setup', () => {
+        beforeEach(() => {
+            fixture = TestBed.createComponent(DotEditPageNavComponent);
+            component = fixture.componentInstance;
+            component.pageState = new DotRenderedPageState(mockDotRenderPage, null, mockUser);
+            fixture.detectChanges();
+        });
 
-    it('should have menu list', () => {
-        const menuList = fixture.debugElement.query(By.css('.edit-page-nav'));
-        expect(menuList).not.toBeNull();
-    });
+        it('should have menu list', () => {
+            const menuList = fixture.debugElement.query(By.css('.edit-page-nav'));
+            expect(menuList).not.toBeNull();
+        });
 
-    it('should have just content item', () => {
-        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-        expect(menuListItems.length).toEqual(1);
+        it('should have basic menu items', () => {
+            component.pageState = new DotRenderedPageState(mockDotRenderPage, null, mockUser);
+            fixture.detectChanges();
+            const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+            expect(menuListItems.length).toEqual(2);
 
-        const labels = ['Content'];
-        menuListItems.forEach((item, index) => {
-            expect(item.nativeElement.textContent).toContain(labels[index]);
+            const labels = ['Content', 'Layout'];
+            const icons = ['fa fa-file-text', 'fa fa-th-large'];
+            menuListItems.forEach((item, index) => {
+                const iconClass = item.query(By.css('i')).nativeElement.classList.value;
+                expect(iconClass).toEqual(icons[index]);
+                expect(item.nativeElement.textContent).toContain(labels[index]);
+            });
         });
     });
 
-    it('should have basic menu items', () => {
-        component.templateState = {
-            editable: true,
-            advanced: false
-        };
-        fixture.detectChanges();
-        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-        expect(menuListItems.length).toEqual(2);
-
-        const labels = ['Content', 'Layout'];
-        menuListItems.forEach((item, index) => {
-            expect(item.nativeElement.textContent).toContain(labels[index]);
+    describe('advanced template', () => {
+        beforeEach(() => {
+            fixture = TestBed.createComponent(DotEditPageNavComponent);
+            component = fixture.componentInstance;
         });
-    });
 
-    it('should have code option', () => {
-        component.templateState = {
-            editable: true,
-            advanced: true
-        };
-        fixture.detectChanges();
+        it('should have menu items: Content and Code', () => {
+            component.pageState = new DotRenderedPageState(
+                {
+                    ...mockDotRenderPage,
+                    template: {
+                        ...mockDotRenderPage.template,
+                        drawed: false
+                    }
+                },
+                null,
+                mockUser
+            );
+            fixture.detectChanges();
+            const menuListItems: DebugElement[] = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+            expect(menuListItems.length).toEqual(2);
 
-        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-        expect(menuListItems.length).toEqual(2);
-
-        const labels = ['Content', 'Code'];
-        menuListItems.forEach((item, index) => {
-            expect(item.nativeElement.textContent).toContain(labels[index]);
+            const labels = ['Content', 'Code'];
+            const icons = ['fa fa-file-text', 'fa fa-code'];
+            menuListItems.forEach((item: DebugElement, index: number) => {
+                const iconClass = item.query(By.css('i')).nativeElement.classList.value;
+                expect(iconClass).toEqual(icons[index]);
+                expect(item.nativeElement.textContent).toContain(labels[index]);
+            });
         });
-    });
 
-    it('should have code option disabled', () => {
-        component.templateState = {
-            editable: false,
-            advanced: true
-        };
-        fixture.detectChanges();
+        it('should have code option disabled because user can\'t edit the page thus the layout or template', () => {
+            component.pageState = new DotRenderedPageState(
+                {
+                    ...mockDotRenderPage,
+                    page: {
+                        ...mockDotRenderPage.page,
+                        canEdit: false
+                    }
+                },
+                null,
+                mockUser
+            );
+            fixture.detectChanges();
 
-        const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-        expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
+            const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+            expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
+
+            const labels = ['Content', 'Layout'];
+            const icons = ['fa fa-file-text', 'fa fa-th-large'];
+            menuListItems.forEach((item, index) => {
+                const iconClass = item.query(By.css('i')).nativeElement.classList.value;
+                expect(iconClass).toEqual(icons[index]);
+                expect(item.nativeElement.textContent).toContain(labels[index]);
+            });
+        });
     });
 });

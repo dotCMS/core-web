@@ -128,10 +128,10 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.pageViewService.save(this.pageView.page.identifier, dotLayout).subscribe(
             () => {
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
-                this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
-                    this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-                    this.setupLayout(pageView);
-                });
+                // this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
+                //     this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                //     this.setupLayout(pageView);
+                // });
             },
             (err: ResponseView) => {
                 this.dotGlobalMessageService.error(err.response.statusText);
