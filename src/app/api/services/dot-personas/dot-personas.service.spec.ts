@@ -2,22 +2,11 @@ import { DotPersonasService } from './dot-personas.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 
 describe('DotPersonasService', () => {
-    const persona = {
-        folder: 'test',
-        host: 'test',
-        identifier: 'test',
-        inode: 'test',
-        keyTag: 'test',
-        languageId: 1,
-        lastReview: 'test',
-        modDate: 'test',
-        modUser: 'test',
-        name: 'test',
-        owner: 'test',
-        sortOrder: 1,
-        stInode: 'test'
+    const persona: DotPersona = {
+        identifier: 'test'
     };
 
     beforeEach(() => {

@@ -1,14 +1,10 @@
-<p-dropdown class="tiny invert view-as-toolbar-languages" [options]="languagesOptions"
-            [(ngModel)]="viewAsConfig.language"
-            [style]="{'width':'auto'}"
-            (onChange)="changeConfiguration($event.value)">
-</p-dropdown>
-<p-dropdown class="tiny invert view-as-toolbar-devices" [options]="devicesOptions"
-            [(ngModel)]="viewAsConfig.device"   [style]="{'width':'auto'}"
-            (onChange)="changeDeviceConfiguration($event.value)">
-</p-dropdown>
-<p-dropdown class="tiny invert view-as-toolbar-personas" [options]="personasOptions"
-            [(ngModel)]="viewAsConfig.persona" dataKey = "identifier"
-            [style]="{'width':'auto'}"
-            (onChange)="changeConfiguration($event.value)">
-</p-dropdown>
+
+
+<dot-language-selector (selectedLanguage)="changeLanguageHandler($event)"  [value]="value.language" ></dot-language-selector>
+
+
+<dot-device-selector (selectedDevice)="changeDeviceHandler($event)" [value]="value.device"></dot-device-selector>
+
+
+
+<dot-persona-selector (selectedPersona)="changePersonaHandler($event)"  [value]="value.persona"></dot-persona-selector>

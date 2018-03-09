@@ -24,7 +24,6 @@ import { StringFormat } from './api/util/stringFormat';
 import { DotDevicesService } from './api/services/dot-devices/dot-devices.service';
 import { DotLanguagesService } from './api/services/dot-languages/dot-languages.service';
 import { DotPersonasService } from './api/services/dot-personas/dot-personas.service';
-import { DotViewAsService } from './api/services/dot-view-as/dot-view-as.service';
 
 const PROVIDERS: any[] = [
     AccountService,
@@ -49,11 +48,7 @@ const PROVIDERS: any[] = [
     NotificationsService,
     PaginatorService,
     PublicAuthGuardService,
-    StringFormat,
-    DotDevicesService,
-    DotLanguagesService,
-    DotPersonasService,
-    DotViewAsService
+    StringFormat
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

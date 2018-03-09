@@ -30,7 +30,6 @@ import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditContentViewAsToolbarModule } from '../../dot-edit-content/components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
-import { DotViewAsService } from '../../../api/services/dot-view-as/dot-view-as.service';
 import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
 import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
 import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
@@ -116,7 +115,6 @@ describe('DotEditContentComponent', () => {
                 DotMenuService,
                 DotRouterService,
                 EditPageService,
-                DotViewAsService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock

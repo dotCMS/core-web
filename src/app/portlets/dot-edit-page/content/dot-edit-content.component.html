@@ -9,7 +9,8 @@
 </dot-edit-page-toolbar>
 <dot-edit-content-view-as-toolbar
     (changeViewAs)="changeViewAsHandler($event)"
-    (changeDevice)="changeDeviceHandler($event)">
+    (changeDevice)="changeDeviceHandler($event)"
+    [(value)]="page.viewAs">
 </dot-edit-content-view-as-toolbar>
 <div class="dot-edit__page-wrapper" [ngStyle]="{'width': device?.width, 'height': device?.height}">
     <dot-loading-indicator fullscreen="true"></dot-loading-indicator>

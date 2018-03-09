@@ -12,6 +12,7 @@ import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-m
 import { EditContentResolver } from './content/services/dot-edit-content-resolver.service';
 import { EditPageService } from '../../api/services/edit-page/edit-page.service';
 import { DotDirectivesModule } from '../../shared/dot-directives.module';
+import { DotPersonaSelectorModule } from '../../view/components/dot-persona-selector/dot-persona-selector.module';
 
 @NgModule({
     imports: [

@@ -11,7 +11,7 @@ import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/mod
 import { RouterTestingModule } from '@angular/router/testing';
 import { PageMode } from '../../../portlets/dot-edit-page/content/shared/page-mode.enum';
 
-const   mockDotRenderPage: DotRenderedPage = {
+const mockDotRenderPage: DotRenderedPage = {
     canEdit: true,
     canLock: true,
     identifier: '',
@@ -43,10 +43,14 @@ describe('EditPageService', () => {
         lastConnection = [];
 
         injector = DOTTestBed.configureTestingModule({
-            providers: [EditPageService, DotRouterService, {
-                provide: LoginService,
-                useClass: LoginServiceMock
-            }],
+            providers: [
+                EditPageService,
+                DotRouterService,
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                }
+            ],
             imports: [RouterTestingModule]
         });
 
@@ -90,11 +94,15 @@ describe('EditPageService', () => {
 
     it('should do a get a rendered page in live mode', () => {
         let result: DotRenderedPage;
-        editPageService.getLive('about-us').subscribe((renderedPage: DotRenderedPage) => result = renderedPage);
+        editPageService.getLive('about-us').subscribe((renderedPage: DotRenderedPage) => (result = renderedPage));
 
-        lastConnection[0].mockRespond(new Response(new ResponseOptions({
-            body: mockDotRenderPage
-        })));
+        lastConnection[0].mockRespond(
+            new Response(
+                new ResponseOptions({
+                    body: mockDotRenderPage
+                })
+            )
+        );
         expect(lastConnection[0].request.url).toContain('/api/v1/page/renderHTML/about-us?mode=LIVE');
         expect(result).toEqual(mockDotRenderPage);
     });
@@ -146,7 +154,7 @@ describe('EditPageService', () => {
         };
 
         let result: DotRenderedPageState;
-        editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
+        editPageService.setPageState(mockDotRenderPage, state).subscribe(res => {
             result = res;
         });
 
@@ -194,7 +202,7 @@ describe('EditPageService', () => {
         };
 
         let result: DotRenderedPageState;
-        editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
+        editPageService.setPageState(mockDotRenderPage, state).subscribe(res => {
             result = res;
         });
 
@@ -231,7 +239,7 @@ describe('EditPageService', () => {
         };
 
         let result: DotRenderedPageState;
-        editPageService.setPageState(mockDotRenderPage, state).subscribe((res) => {
+        editPageService.setPageState(mockDotRenderPage, state).subscribe(res => {
             result = res;
         });
 
@@ -242,9 +250,12 @@ describe('EditPageService', () => {
                 })
             )
         );
-        expect(result).toEqual({
-            dotRenderedPage: mockDotRenderPage
-        }, 'here');
+        expect(result).toEqual(
+            {
+                dotRenderedPage: mockDotRenderPage
+            },
+            'here'
+        );
         expect(editPageService.getLive).toHaveBeenCalledTimes(1);
         expect(editPageService.unlock).not.toHaveBeenCalled();
         expect(editPageService.lock).not.toHaveBeenCalled();
@@ -265,9 +276,13 @@ describe('EditPageService', () => {
                 delete mockedData[remove];
             }
 
-            lastConnection[0].mockRespond(new Response(new ResponseOptions({
-                body: mockedData
-            })));
+            lastConnection[0].mockRespond(
+                new Response(
+                    new ResponseOptions({
+                        body: mockedData
+                    })
+                )
+            );
 
             return mockedData;
         };
@@ -280,10 +295,13 @@ describe('EditPageService', () => {
 
         describe('mode', () => {
             it('should set page mode in preview because is locked by another user', () => {
-                const mockedData = mockResponse({
-                    lockedBy: 'another-user',
-                    canLock: true
-                }, false);
+                const mockedData = mockResponse(
+                    {
+                        lockedBy: 'another-user',
+                        canLock: true
+                    },
+                    false
+                );
 
                 expect(result).toEqual({
                     ...mockedData,
@@ -293,11 +311,14 @@ describe('EditPageService', () => {
                 });
             });
 
-            it('should set page mode in preview because is locked and user can\'t lock', () => {
-                const mockedData = mockResponse({
-                    lockedBy: '123',
-                    canLock: false
-                }, false);
+            it("should set page mode in preview because is locked and user can't lock", () => {
+                const mockedData = mockResponse(
+                    {
+                        lockedBy: '123',
+                        canLock: false
+                    },
+                    false
+                );
 
                 expect(result).toEqual({
                     ...mockedData,
@@ -308,11 +329,14 @@ describe('EditPageService', () => {
             });
 
             it('should set page mode in edit because is locked and user can lock and page is locked', () => {
-                const mockedData = mockResponse({
-                    lockedBy: '123',
-                    locked: true,
-                    canLock: true
-                }, false);
+                const mockedData = mockResponse(
+                    {
+                        lockedBy: '123',
+                        locked: true,
+                        canLock: true
+                    },
+                    false
+                );
 
                 expect(result).toEqual({
                     ...mockedData,
@@ -325,10 +349,13 @@ describe('EditPageService', () => {
 
         describe('locked and locked by another user', () => {
             it('should set object locked by another user and locked', () => {
-                const mockedData = mockResponse({
-                    lockedBy: 'another-user',
-                    canLock: false
-                }, false);
+                const mockedData = mockResponse(
+                    {
+                        lockedBy: 'another-user',
+                        canLock: false
+                    },
+                    false
+                );
                 expect(result).toEqual({
                     ...mockedData,
                     lockedByAnotherUser: true,
@@ -337,9 +364,12 @@ describe('EditPageService', () => {
             });
 
             it('should set object NOT locked by another user and unlocked', () => {
-                const mockedData = mockResponse({
-                    canLock: true
-                }, 'lockedBy');
+                const mockedData = mockResponse(
+                    {
+                        canLock: true
+                    },
+                    'lockedBy'
+                );
 
                 expect(result).toEqual({
                     ...mockedData,
@@ -349,10 +379,13 @@ describe('EditPageService', () => {
             });
 
             it('should set page locked by another user and unlocked', () => {
-                const mockedData = mockResponse({
-                    lockedBy: 'another-user',
-                    canLock: true
-                }, false);
+                const mockedData = mockResponse(
+                    {
+                        lockedBy: 'another-user',
+                        canLock: true
+                    },
+                    false
+                );
                 expect(result).toEqual({
                     ...mockedData,
                     lockedByAnotherUser: true,

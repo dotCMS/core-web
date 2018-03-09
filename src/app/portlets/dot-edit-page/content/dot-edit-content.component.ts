@@ -26,7 +26,6 @@ import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.m
 import { PageMode } from './shared/page-mode.enum';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotViewAsService } from '../../../api/services/dot-view-as/dot-view-as.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -48,6 +47,7 @@ export class DotEditContentComponent implements OnInit {
     page: DotRenderedPage;
     pageWorkFlows: Observable<Workflow[]>;
     device: DotDevice;
+    viewAsConfig: DotEditPageViewAs;
 
     private originalValue: any;
 
@@ -64,7 +64,6 @@ export class DotEditContentComponent implements OnInit {
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
         private workflowsService: WorkflowService,
-        private dotViewAsService: DotViewAsService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
@@ -99,7 +98,6 @@ export class DotEditContentComponent implements OnInit {
         this.dotLoadingIndicatorService.show();
 
         this.route.data.pluck('content').subscribe((page: DotRenderedPage) => {
-            this.dotViewAsService.selected = page.viewAs;
             this.page = page;
             this.renderPage(page);
         });
@@ -175,14 +173,12 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        this.route.queryParams.subscribe(params => {
-            this.editPageService.getPageModeMethod(this.page.mode)(
-                params['url'],
-                viewAsConfig
-            ).subscribe((page: DotRenderedPage) => {
+        this.route.queryParams
+            .pluck('url')
+            .concatMap((url: string) => this.editPageService.getPageModeMethod(this.page.mode)(url, viewAsConfig))
+            .subscribe((page: DotRenderedPage) => {
                 this.setPage(page);
             });
-        });
     }
 
     /**

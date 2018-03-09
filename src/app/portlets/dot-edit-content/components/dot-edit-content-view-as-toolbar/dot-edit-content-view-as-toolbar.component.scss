@@ -3,12 +3,12 @@
 :host {
     background-color: $gray-darker;
     height: 35px;
-    padding: 0 0 0 16px;
+    padding: 0 0 0 $basic-padding * 2;
     display: flex;
     align-items: center;
 
     p-dropdown {
-        margin-right: 10px;
+        margin-right: $basic-padding;
     }
 
     ::ng-deep {

@@ -17,6 +17,3 @@ export interface DotPersona {
     photo?: string;
     photoContentAsset?: string;
 }
-
-
-
