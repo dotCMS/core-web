@@ -31,16 +31,16 @@ export class WorkflowService {
     /**
      * Returns the wokflow or workflow actions for a page asset
      *
-     * @param {string} pageIdentifier
+     * @param {string} inode
      * @returns {Observable<Workflow[]>}
      * @memberof WorkflowService
      */
-    getPageWorkflows(_pageIdentifier: string): Observable<Workflow[]> {
+    getPageWorkflows(inode: string): Observable<Workflow[]> {
         return this.coreWebService
-        .requestView({
-            method: RequestMethod.Get,
-            url: `v1/workflow/contentlet/${_pageIdentifier}/actions`
-        })
-        .pluck('entity');
+            .requestView({
+                method: RequestMethod.Get,
+                url: `v1/workflow/contentlet/${inode}/actions`
+            })
+            .pluck('entity');
     }
 }

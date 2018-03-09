@@ -7,12 +7,12 @@ export interface Workflow {
     name: string;
     nextAssign: string;
     nextStep: string;
-    nextStepCurrentStep: string;
+    nextStepCurrentStep: boolean;
     order: number;
     owner?: string;
     requiresCheckout: boolean;
     roleHierarchyForAssign: boolean;
     schemeId: string;
-    shown: string[];
+    showOn: string[];
     stepId?: string;
 }
