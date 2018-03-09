@@ -4,6 +4,7 @@ const animation = '100ms ease-in';
 const mdShadow1 = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
 const mdShadow3 = '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)';
 const white = '#fff';
+const graylight = '#c5c5c5';
 
 export const EDIT_PAGE_CSS = `
     [data-dot-object="container"] {
@@ -231,5 +232,10 @@ export const EDIT_PAGE_CSS = `
      .dotedit-container__menu-item a, .dotedit-container__menu-item a:visited {
         color: inherit;
         text-decoration: none;
+     }
+
+     .dotedit-contentlet__disabled {
+         pointer-events: none;
+         background-color: ${graylight} !important;
      }
 `;
