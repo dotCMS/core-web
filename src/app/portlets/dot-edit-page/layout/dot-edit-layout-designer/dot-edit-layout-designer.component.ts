@@ -150,7 +150,10 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     setEditLayoutMode(): void {
         this.initialFormValue.title = null;
         this.form.get('title').setValue(null);
-        this.pageState.template.anonymous = true;
+
+        if (this.pageState.template) {
+            this.pageState.template.anonymous = true;
+        }
     }
 
     private setupLayout(pageState?: DotRenderedPageState): void {
