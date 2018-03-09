@@ -30,6 +30,7 @@ export class DotEditContentResolver implements Resolve<DotRenderedPageState> {
         return this.dotPageStateService
             .get(route.queryParams.url)
             .map((dotRenderedPageState: DotRenderedPageState) => {
+                // TODO: find a way to trow something to make the catch happen
                 const currentSection = route.children[0].url[0].path;
                 const isLayout = currentSection === 'layout';
                 const userCantEditLayout = isLayout && !dotRenderedPageState.page.canEdit;
