@@ -108,7 +108,7 @@ describe('DotDialogComponent', () => {
     });
 
     it('should bind ok button in dialog', () => {
-        spyOn(dialogService, 'clearAlert');
+        spyOn(dialogService, 'alertAccept');
 
         dialogService.alert({
             header: '',

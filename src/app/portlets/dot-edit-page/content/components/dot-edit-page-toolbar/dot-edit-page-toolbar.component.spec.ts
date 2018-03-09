@@ -97,7 +97,8 @@ describe('DotEditPageToolbarComponent', () => {
                 workingInode: ''
             },
             html: '',
-            layout: mockDotLayout
+            layout: mockDotLayout,
+            canCreateTemplate: true
         }, {
             locked: false,
             mode: PageMode.PREVIEW,

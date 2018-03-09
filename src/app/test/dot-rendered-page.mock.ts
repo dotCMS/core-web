@@ -95,5 +95,6 @@ export const mockDotRenderedPage: DotRenderedPage = {
     html: '<html></html>',
     layout: mockDotLayout,
     page: mockDotPage,
-    template: mockDotTemplate
+    template: mockDotTemplate,
+    canCreateTemplate: true
 };

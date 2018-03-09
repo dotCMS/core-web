@@ -13,7 +13,6 @@ import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
-import { debug } from 'util';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers

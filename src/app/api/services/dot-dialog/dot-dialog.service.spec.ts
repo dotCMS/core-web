@@ -100,7 +100,7 @@ describe('DotDialogService', () => {
 
     it('should clear alert model', () => {
         service.alert(mockData);
-        service.alertAccept();
+        service.alertAccept(new MouseEvent('click'));
         expect(service.alertModel).toEqual(null);
     });
 });
