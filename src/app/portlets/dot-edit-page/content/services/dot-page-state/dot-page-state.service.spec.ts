@@ -128,11 +128,12 @@ describe('DotPageStateService', () => {
                     lockedByAnotherUser: false
                 });
             });
-
             lastConnection[0].mockRespond(
                 new Response(
                     new ResponseOptions({
-                        body: noLockedByPage
+                        body: {
+                            page: noLockedByPage
+                        }
                     })
                 )
             );
