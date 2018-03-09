@@ -143,10 +143,10 @@ export class DotEditContentToolbarHtmlService {
             'dot-inode': inode
         };
 
-        const canEditClass = canEdit ? 'dotedit-contentlet__disabled' : '';
+        const editButtonClass = canEdit ? 'dotedit-contentlet__edit' : 'dotedit-contentlet__edit dotedit-contentlet__disabled';
 
         return `${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, `dotedit-contentlet__edit ${canEditClass}`, dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, dataset)}
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}`;
     }
 }
