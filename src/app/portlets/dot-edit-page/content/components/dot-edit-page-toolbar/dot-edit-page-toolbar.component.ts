@@ -1,7 +1,6 @@
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef, SimpleChanges, OnChanges } from '@angular/core';
 import { SelectItem, InputSwitch, MenuItem } from 'primeng/primeng';
-import { Workflow } from '../../../../../shared/models/workflow/workflow.model';
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -19,14 +18,12 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
 
     @Input() canSave: boolean;
-    @Input() pageWorkflows: Workflow[] = [];
     @Input() pageState: DotRenderedPageState;
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() save = new EventEmitter<MouseEvent>();
 
     states: SelectItem[] = [];
-    workflowsActions: MenuItem[] = [];
     lockerModel: boolean;
     mode: PageMode;
 
@@ -50,7 +47,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 'editpage.toolbar.page.cant.edit'
             ])
             .subscribe(() => {
-                this.workflowsActions = this.getWorkflowOptions();
                 this.setFieldsModels(this.pageState);
             });
     }
@@ -160,14 +156,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         } else {
             this.setSelectorState(pageState);
         }
-    }
-
-    private getWorkflowOptions(): MenuItem[] {
-        return this.pageWorkflows.map((workflow: Workflow) => {
-            return {
-                label: workflow.name
-            };
-        });
     }
 
     private setLockerState() {

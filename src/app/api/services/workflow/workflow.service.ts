@@ -36,10 +36,11 @@ export class WorkflowService {
      * @memberof WorkflowService
      */
     getPageWorkflows(_pageIdentifier: string): Observable<Workflow[]> {
-        return Observable.of([
-            { name: 'Workflow 1', id: 'one' },
-            { name: 'Workflow 2', id: 'two' },
-            { name: 'Workflow 3', id: 'three' }
-        ]);
+        return this.coreWebService
+        .requestView({
+            method: RequestMethod.Get,
+            url: `v1/workflow/contentlet/${_pageIdentifier}/actions`
+        })
+        .pluck('entity');
     }
 }
