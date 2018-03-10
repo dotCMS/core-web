@@ -6,10 +6,10 @@ import { Observable } from 'rxjs/Observable';
 
 import { ResponseView, HttpCode } from 'dotcms-js/dotcms-js';
 
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
-import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
-import { DotPageStateService } from './dot-page-state/dot-page-state.service';
-import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
+import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
+import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 
 /**
  * With the url return a string of the edit page html
@@ -19,7 +19,7 @@ import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-er
  * @implements {Resolve<DotRenderedPageState>}
  */
 @Injectable()
-export class DotEditContentResolver implements Resolve<DotRenderedPageState> {
+export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
     constructor(
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotPageStateService: DotPageStateService,
@@ -34,14 +34,15 @@ export class DotEditContentResolver implements Resolve<DotRenderedPageState> {
                 const currentSection = route.children[0].url[0].path;
                 const isLayout = currentSection === 'layout';
                 const userCantEditLayout = isLayout && !dotRenderedPageState.page.canEdit;
-
                 if (userCantEditLayout) {
                     this.handleUserEditingOptions();
                 }
 
                 return dotRenderedPageState;
             })
-            .catch((err: ResponseView) => this.errorHandler(err));
+            .catch((err: ResponseView) => {
+                return this.errorHandler(err);
+            });
     }
 
     private handleUserEditingOptions(): void {
@@ -57,6 +58,7 @@ export class DotEditContentResolver implements Resolve<DotRenderedPageState> {
 
     private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
         this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+
             if (!res.redirected) {
                 this.dotRouterService.gotoPortlet('/c/site-browser');
             }
