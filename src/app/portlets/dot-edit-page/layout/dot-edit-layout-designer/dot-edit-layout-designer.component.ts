@@ -20,7 +20,6 @@ import { DotGlobalMessageService } from '../../../../view/components/_common/dot
     styleUrls: ['./dot-edit-layout-designer.component.scss']
 })
 export class DotEditLayoutDesignerComponent implements OnInit {
-    @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
     @ViewChild('templateName') templateName: ElementRef;
 
     @Input() pageState: DotRenderedPageState;
@@ -68,16 +67,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         } else {
             this.setEditLayoutMode();
         }
-    }
-
-    /**
-     * Add a grid box to the ng grid layout component
-     *
-     * @returns {() => void}
-     * @memberof DotEditLayoutDesignerComponent
-     */
-    addGridBox(): void {
-        this.editLayoutGrid.addBox();
     }
 
     /**
@@ -130,6 +119,8 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
             () => {
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+
                 // TODO: This extra request will change once the this.pageViewService.save return a DotPageView object.
                 // this.pageViewService.get(this.route.snapshot.queryParams.url).subscribe((pageView: DotPageView) => {
                 //     this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
