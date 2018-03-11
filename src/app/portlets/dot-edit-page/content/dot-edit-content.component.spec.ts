@@ -44,7 +44,7 @@ class WorkflowServiceMock {
     }
 }
 
-const mockDotPageState: DotPageState = {
+export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
     locked: false
 };
