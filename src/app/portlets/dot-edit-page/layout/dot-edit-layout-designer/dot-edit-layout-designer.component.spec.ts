@@ -1,8 +1,5 @@
-import { DotTemplateAdditionalActionsMenuModule } from './../components/dot-template-additional-actions/dot-template-additional-actions-menu/dot-template-additional-actions-menu.module';
-import { ActivatedRoute } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { DotDialogService } from '../../../../api/services/dot-dialog';
@@ -11,7 +8,6 @@ import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { Observable } from 'rxjs/Observable';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { PaginatorService } from '../../../../api/services/paginator';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,8 +17,6 @@ import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
-import { fakePageView } from '../../../../test/page-view.mock';
-import * as _ from 'lodash';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
@@ -76,7 +70,6 @@ const testConfigObject = {
     imports: [
         DotEditLayoutGridModule,
         RouterTestingModule,
-        BrowserAnimationsModule,
         DotActionButtonModule,
         FormsModule,
         FieldValidationMessageModule

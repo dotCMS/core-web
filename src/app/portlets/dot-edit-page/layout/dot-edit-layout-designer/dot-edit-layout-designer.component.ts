@@ -3,7 +3,6 @@ import { DotDialogService } from './../../../../api/services/dot-dialog/dot-dial
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { DotEditLayoutGridComponent } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.component';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';

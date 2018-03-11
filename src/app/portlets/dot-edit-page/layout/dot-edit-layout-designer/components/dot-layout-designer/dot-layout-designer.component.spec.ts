@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { DotLayoutDesignerComponent } from './dot-layout-designer.component';
-import { FormGroup, FormBuilder, FormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DotSidebarPropertiesModule } from '../../../components/dot-sidebar-properties/dot-sidebar-properties.module';
 import { LoginServiceMock } from '../../../../../../test/login-service.mock';
