@@ -201,8 +201,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
                     }
                 });
             });
-
-        // this.showTemplateLayoutSelectionDialog = true;
     }
 
     private createSidebarForm() {

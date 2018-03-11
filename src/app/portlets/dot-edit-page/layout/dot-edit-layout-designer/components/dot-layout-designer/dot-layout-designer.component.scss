@@ -19,7 +19,7 @@
 
 .dot-layout-designer__footer,
 .dot-layout-designer__header,
-[class^='dot-edit-layout__sidebar'] {
+[class^='dot-layout-designer__sidebar'] {
     align-items: center;
     background: $gray-lighter;
     color: $gray;
@@ -29,7 +29,7 @@
     justify-content: center;
 }
 
-[class^='dot-edit-layout__sidebar'] {
+[class^='dot-layout-designer__sidebar'] {
     position: relative;
 }
 

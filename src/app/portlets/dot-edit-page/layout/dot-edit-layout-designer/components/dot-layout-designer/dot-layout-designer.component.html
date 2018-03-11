@@ -1,7 +1,7 @@
 <div class="dot-layout-designer" [formGroup]="group">
-    <div class="dot-layout-designer__header" *ngIf="group.get('header')">HEADER</div>
+    <div class="dot-layout-designer__header" *ngIf="group.get('header').value">HEADER</div>
     <div class="dot-layout-designer__main">
-        <div class="dot-layout-designer__sidebar--left" [ngClass]="'dot-edit-layout__sidebar--' + group.get('sidebar.width')"
+        <div class="dot-layout-designer__sidebar--left" [ngClass]="'dot-layout-designer__sidebar--' + group.get('sidebar.width').value"
             *ngIf="group.get('sidebar.location').value === 'left'">
             SIDEBAR
             <dot-sidebar-properties [group]="group.get('sidebar')" class="dot-layout-designer__sidebar-properties"></dot-sidebar-properties>
@@ -12,7 +12,7 @@
                 <dot-edit-layout-grid #editLayoutGrid formControlName="body"></dot-edit-layout-grid>
             </div>
         </div>
-        <div class="dot-layout-designer__sidebar--right" [ngClass]="'dot-edit-layout__sidebar--' + group.get('sidebar.width') "
+        <div class="dot-layout-designer__sidebar--right" [ngClass]="'dot-layout-designer__sidebar--' + group.get('sidebar.width').value"
             *ngIf="group.get('sidebar.location').value === 'right'">
             SIDEBAR
             <dot-sidebar-properties [group]="group.get('sidebar')" class="dot-layout-designer__sidebar-properties"></dot-sidebar-properties>
