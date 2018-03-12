@@ -41,13 +41,13 @@ describe('WorkflowService', () => {
         expect(this.lastConnection.request.url).toContain('v1/workflow/schemes');
     });
 
-    it('should get workflows for a page', () => {
-        this.workflowService.getPageWorkflows('123').subscribe((workflows: Workflow[]) => {
-            expect(workflows).toEqual([
-                { name: 'Workflow 1', id: 'one' },
-                { name: 'Workflow 2', id: 'two' },
-                { name: 'Workflow 3', id: 'three' }
-            ]);
-        });
-    });
+    // it('should get workflows for a page', () => {
+    //     this.workflowService.getPageWorkflows('123').subscribe((workflows: Workflow[]) => {
+    //         expect(workflows).toEqual([
+    //             { name: 'Workflow 1', id: 'one' },
+    //             { name: 'Workflow 2', id: 'two' },
+    //             { name: 'Workflow 3', id: 'three' }
+    //         ]);
+    //     });
+    // });
 });

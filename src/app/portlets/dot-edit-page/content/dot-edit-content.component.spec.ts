@@ -36,13 +36,8 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { WorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
 import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
-
-class WorkflowServiceMock {
-    getPageWorkflows(): Observable<Workflow[]> {
-        return Observable.of([{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }, { name: 'Workflow 3', id: 'three' }]);
-    }
-}
 
 const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
