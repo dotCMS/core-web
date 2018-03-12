@@ -22,6 +22,10 @@ import { TemplateContainersCacheService } from '../../template-containers-cache.
 import { DotSidebarPropertiesModule } from '../components/dot-sidebar-properties/dot-sidebar-properties.module';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { fakePageView } from '../../../../test/page-view.mock';
+import * as _ from 'lodash';
+import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import { mockUser } from '../../../../test/login-service.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -85,7 +89,7 @@ describe('DotEditLayoutDesignerComponent - Layout (anonymous = true)', () => {
 
         fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
-        component.pageView = fakePageView;
+        component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
     });
 
     it('should have dot-edit-layout-grid', () => {
@@ -101,6 +105,23 @@ describe('DotEditLayoutDesignerComponent - Layout (anonymous = true)', () => {
 
         expect(aditionalOptions).toBeDefined();
         expect(aditionalOptions.componentInstance.templateId).toEqual(fakePageView.template.inode);
+    });
+
+    it('should have a null sidebar containers', () => {
+        component.pageState = _.cloneDeep(fakePageView);
+        component.pageState.layout.sidebar.containers = null;
+
+        fixture.detectChanges();
+        expect(component.form.value.layout.sidebar.containers).toEqual([]);
+    });
+
+    it('should have a sidebar containers', () => {
+        fixture.detectChanges();
+
+        expect(component.form.value.layout.sidebar.containers).toEqual([{
+            identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
+            uuid: 'LEGACY_RELATION_TYPE'
+        }]);
     });
 
     it('should have dot-layout-properties', () => {
@@ -241,7 +262,7 @@ describe('DotEditLayoutDesignerComponent - Layout (anonymous = true)', () => {
     });
 
     it('should NOT have sidebar in the template', () => {
-        component.pageView.layout.sidebar = null;
+        component.pageState.layout.sidebar = null;
         fixture.detectChanges();
 
         const sidebarLeft: DebugElement = fixture.debugElement.query(

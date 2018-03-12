@@ -1,23 +1,14 @@
-import { PageMode } from './../../content/shared/page-mode.enum';
+import { DotLayout } from './dot-layout.model';
+import { DotPage } from './dot-page.model';
+import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+
 export interface DotRenderedPage {
-    canEdit: boolean;
-    canLock: boolean;
-    identifier: string;
-    languageId: number;
-    liveInode: string;
-    lockMessage?: string;
-    locked: boolean;
-    lockedBy?: string;
-    lockedByAnotherUser?: boolean;
-    lockedByName?: string;
-    lockedOn?: Date;
-    mode: PageMode;
-    pageURI: string;
-    render: string;
-    shortyLive: string;
-    shortyWorking: string;
-    title: string;
+    html: string;
+    layout: DotLayout;
+    page: DotPage;
+    containers?: any;
+    template?: DotTemplate;
+    canCreateTemplate: boolean;
     viewAs: DotEditPageViewAs;
-    workingInode: string;
 }

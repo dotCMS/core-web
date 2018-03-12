@@ -1,4 +1,5 @@
-import { EditLayoutResolver } from './layout/services/dot-edit-layout-resolver/dot-edit-layout-resolver.service';
+import { DotEditLayoutGuardService } from './shared/services/dot-edit-layout-guard/dot-edit-layout-guard.service';
+import { DotContentletLockerService } from '../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,10 +10,10 @@ import {
 } from './layout/components/dot-template-additional-actions/dot-template-additional-actions.module';
 import { TemplateContainersCacheService } from './template-containers-cache.service';
 import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-main.module';
-import { EditContentResolver } from './content/services/dot-edit-content-resolver.service';
-import { EditPageService } from '../../api/services/edit-page/edit-page.service';
+import { DotEditContentResolver } from './content/services/dot-edit-content-resolver.service';
+import { DotRenderHTMLService } from '../../api/services/dot-render-html/dot-render-html.service';
 import { DotDirectivesModule } from '../../shared/dot-directives.module';
-import { DotPersonaSelectorModule } from '../../view/components/dot-persona-selector/dot-persona-selector.module';
+import { DotPageStateService } from './content/services/dot-page-state/dot-page-state.service';
 
 @NgModule({
     imports: [
@@ -24,6 +25,14 @@ import { DotPersonaSelectorModule } from '../../view/components/dot-persona-sele
         DotDirectivesModule
     ],
     declarations: [],
-    providers: [EditContentResolver, EditLayoutResolver, EditPageService, PageViewService, TemplateContainersCacheService]
+    providers: [
+        DotContentletLockerService,
+        DotEditContentResolver,
+        DotEditLayoutGuardService,
+        DotPageStateService,
+        DotRenderHTMLService,
+        PageViewService,
+        TemplateContainersCacheService
+    ]
 })
 export class DotEditPageModule {}
