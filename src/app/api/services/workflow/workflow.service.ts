@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
-import { DotWorkflowActions } from '../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
+import { DotWorkflowAction } from '../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 
 /**
  * Provide util methods to get Workflows.
@@ -19,7 +19,7 @@ export class WorkflowService {
      * @returns {Observable<SelectItem[]>}
      * @memberof WorkflowService
      */
-    get(): Observable<DotWorkflowActions[]> {
+    get(): Observable<DotWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -35,7 +35,7 @@ export class WorkflowService {
      * @returns {Observable<Workflow[]>}
      * @memberof WorkflowService
      */
-    getPageWorkflows(inode: string): Observable<DotWorkflowActions[]> {
+    getPageWorkflows(inode: string): Observable<DotWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,

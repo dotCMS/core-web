@@ -5,7 +5,7 @@ import { SplitButton } from 'primeng/primeng';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { WorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { DotWorkflowActions } from '../../../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
+import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
 import { CommonModule } from '@angular/common';

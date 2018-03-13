@@ -16,7 +16,7 @@ import { DotGlobalMessageService } from '../../../view/components/_common/dot-gl
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
-import { DotWorkflowActions } from '../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
+import { DotWorkflowAction } from '../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { Observable } from 'rxjs/Observable';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
@@ -41,7 +41,7 @@ export class DotEditContentComponent implements OnInit {
     dialogTitle: string;
     isModelUpdated = false;
     pageState: DotRenderedPageState;
-    pageWorkFlows: Observable<DotWorkflowActions[]>;
+    pageWorkFlows: Observable<DotWorkflowAction[]>;
 
     private originalValue: any;
 

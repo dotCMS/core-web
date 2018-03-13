@@ -18,7 +18,7 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { mockUser } from '../../../../../test/login-service.mock';
 import { WorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { DotWorkflowActions } from '../../../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
+import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
 import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 

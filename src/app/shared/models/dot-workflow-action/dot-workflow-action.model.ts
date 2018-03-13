@@ -1,4 +1,4 @@
-export interface DotWorkflowActions {
+export interface DotWorkflowAction {
     assignable: boolean;
     commentable: boolean;
     condition?: string;
