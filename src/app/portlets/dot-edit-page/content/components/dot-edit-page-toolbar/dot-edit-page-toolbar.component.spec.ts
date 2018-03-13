@@ -236,23 +236,6 @@ describe('DotEditPageToolbarComponent', () => {
         expect(primaryAction === null).toBe(false);
     });
 
-    // it('should have an action split button', () => {
-    //     component.pageWorkflows = [{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }];
-    //     fixture.detectChanges();
-    //     const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__actions'));
-    //     expect(primaryAction).toBeTruthy();
-    //     expect(primaryAction.name).toEqual('p-splitButton', 'is a splitbutton');
-    // });
-
-    // it('should set action split buttons params', () => {
-    //     component.pageWorkflows = [{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }];
-    //     fixture.detectChanges();
-    //     const actionsButton: SplitButton = de.query(By.css('.edit-page-toolbar__actions')).componentInstance;
-
-    //     expect(actionsButton.label).toEqual('Acciones', 'actions label is set');
-    //     expect(actionsButton.model).toEqual([{ label: 'Workflow 1' }, { label: 'Workflow 2' }]);
-    // });
-
     it('should emit save event on primary action button click', () => {
         component.pageState.state.mode = PageMode.EDIT;
         component.pageState.state.locked = true;
