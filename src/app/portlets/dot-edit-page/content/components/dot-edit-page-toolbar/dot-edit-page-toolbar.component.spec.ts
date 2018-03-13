@@ -20,6 +20,7 @@ import { WorkflowServiceMock } from '../../../../../test/dot-workflow-service.mo
 import { Observable } from 'rxjs/Observable';
 import { DotWorkflowActions } from '../../../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
 import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
+import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 
 describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
@@ -92,23 +93,26 @@ describe('DotEditPageToolbarComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.pageState = new DotRenderedPageState({
-            canEdit: true,
-            canLock: true,
-            identifier: '123',
-            languageId: 1,
-            liveInode: '456',
-            title: '',
-            pageURI: '',
-            render: '',
-            shortyLive: '',
-            shortyWorking: '',
-            workingInode: ''
+            page: {
+                ...mockDotPage,
+                canEdit: true,
+                canLock: true,
+                identifier: '123',
+                languageId: 1,
+                liveInode: '456',
+                title: '',
+                pageURI: '',
+                shortyLive: '',
+                shortyWorking: '',
+                workingInode: ''
+            },
+            html: '',
+            layout: mockDotLayout,
+            canCreateTemplate: true
         }, {
             locked: false,
             mode: PageMode.PREVIEW,
         }, mockUser);
-
-
 
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotDialogService = de.injector.get(DotDialogService);
@@ -194,6 +198,7 @@ describe('DotEditPageToolbarComponent', () => {
 
     it('should have page is locked by another user message and disabled edit button', () => {
         component.pageState.state.lockedByAnotherUser = true;
+        component.pageState.page.canLock = false;
         fixture.detectChanges();
 
         const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__locked-by-message'));

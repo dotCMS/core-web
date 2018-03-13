@@ -44,7 +44,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 'editpage.toolbar.primary.workflow.actions',
                 'dot.common.message.pageurl.copied.clipboard',
                 'dot.common.message.pageurl.copied.clipboard.error',
-                'editpage.toolbar.page.cant.edit'
+                'editpage.toolbar.page.cant.edit',
+                'editpage.content.steal.lock.confirmation.message.header',
+                'editpage.content.steal.lock.confirmation.message'
             ])
             .subscribe(() => {
                 this.setFieldsModels(this.pageState);
@@ -125,8 +127,8 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 reject: () => {
                     this.lockerModel = false;
                 },
-                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.header'),
-                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation_message.message')
+                header: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message.header'),
+                message: this.dotMessageService.get('editpage.content.steal.lock.confirmation.message')
             });
         } else {
             this.setLockerState();
@@ -192,7 +194,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 label: this.dotMessageService.get('editpage.toolbar.edit.page'),
                 value: PageMode.EDIT,
                 styleClass:
-                    !pageState.page.canEdit || pageState.state.lockedByAnotherUser ? 'edit-page-toolbar__state-selector-item--disabled' : ''
+                    !pageState.page.canEdit || !pageState.page.canLock ? 'edit-page-toolbar__state-selector-item--disabled' : ''
             },
             { label: this.dotMessageService.get('editpage.toolbar.preview.page'), value: PageMode.PREVIEW },
             { label: this.dotMessageService.get('editpage.toolbar.live.page'), value: PageMode.LIVE }

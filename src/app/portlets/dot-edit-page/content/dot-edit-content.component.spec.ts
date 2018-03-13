@@ -18,7 +18,7 @@ import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service
 import { DotDialogService } from '../../../api/services/dot-dialog/index';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotEditContentComponent } from './dot-edit-content.component';
-import { DotEditContentHtmlService } from './services/dot-edit-content-html.service';
+import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
 import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
@@ -37,9 +37,9 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotWorkflowActions } from '../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { WorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
-import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
 
-const mockDotPageState: DotPageState = {
+export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
     locked: false
 };
@@ -110,12 +110,16 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: ActivatedRoute,
                     useValue: {
-                        data: Observable.of({
-                            content: {
-                                page: mockDotRenderPage,
-                                state: mockDotPageState
+                        parent: {
+                            parent: {
+                                data: Observable.of({
+                                    content: {
+                                        ...mockDotRenderedPage,
+                                        state: mockDotPageState
+                                    }
+                                })
                             }
-                        })
+                        }
                     }
                 }
             ]
@@ -139,7 +143,7 @@ describe('DotEditContentComponent', () => {
 
     it('should pass data to the toolbar', () => {
         fixture.detectChanges();
-        expect(component.toolbar.pageState.page).toEqual(mockDotRenderPage);
+        expect(component.toolbar.pageState.page).toEqual(mockDotPage);
         expect(component.toolbar.pageState.state).toEqual(mockDotPageState);
     });
 
@@ -187,15 +191,16 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should set page mode in edit', () => {
-            route.data = Observable.of({
+            route.parent.parent.data = Observable.of({
                 content: {
+                    ...mockDotRenderedPage,
                     page: {
-                        ...mockDotRenderPage,
+                        ...mockDotRenderedPage.page,
                         canLock: true
                     },
                     state: {
                         locked: true,
-                        mode: PageMode.EDIT
+                        mode: PageMode.EDIT,
                     }
                 }
             });
@@ -206,10 +211,10 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should set page mode in preview when the page is locked by another user', () => {
-            route.data = Observable.of({
+            route.parent.parent.data = Observable.of({
                 content: {
                     page: {
-                        ...mockDotRenderPage,
+                        ...mockDotRenderedPage,
                         canLock: true
                     },
                     state: {
@@ -241,7 +246,7 @@ describe('DotEditContentComponent', () => {
 
         it('should set edit mode', () => {
             spyStateSet({
-                page: mockDotRenderPage,
+                ...mockDotRenderedPage,
                 state: {
                     mode: PageMode.EDIT,
                     locked: true
@@ -260,7 +265,7 @@ describe('DotEditContentComponent', () => {
                 mode: PageMode.EDIT
             });
 
-            expect(component.pageState.page).toEqual(mockDotRenderPage);
+            expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.EDIT,
                 locked: true
@@ -271,7 +276,7 @@ describe('DotEditContentComponent', () => {
 
         it('should set preview mode', () => {
             spyStateSet({
-                page: mockDotRenderPage,
+                ...mockDotRenderedPage,
                 state: {
                     mode: PageMode.PREVIEW,
                     locked: true
@@ -290,7 +295,7 @@ describe('DotEditContentComponent', () => {
                 mode: PageMode.PREVIEW
             });
 
-            expect(component.pageState.page).toEqual(mockDotRenderPage);
+            expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.PREVIEW,
                 locked: true

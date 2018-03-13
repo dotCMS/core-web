@@ -1,5 +1,5 @@
+import { DotEditLayoutGuardService } from './shared/services/dot-edit-layout-guard/dot-edit-layout-guard.service';
 import { DotContentletLockerService } from '../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { EditLayoutResolver } from './layout/services/dot-edit-layout-resolver/dot-edit-layout-resolver.service';
 import { PageViewService } from '../../api/services/page-view/page-view.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,10 +10,10 @@ import {
 } from './layout/components/dot-template-additional-actions/dot-template-additional-actions.module';
 import { TemplateContainersCacheService } from './template-containers-cache.service';
 import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-main.module';
-import { DotEditContentResolver } from './content/services/dot-edit-content-resolver.service';
 import { DotRenderHTMLService } from '../../api/services/dot-render-html/dot-render-html.service';
 import { DotDirectivesModule } from '../../shared/dot-directives.module';
 import { DotPageStateService } from './content/services/dot-page-state/dot-page-state.service';
+import { DotEditPageResolver } from './shared/services/dot-edit-page-resolver/dot-edit-page-resolver.service';
 
 @NgModule({
     imports: [
@@ -27,10 +27,10 @@ import { DotPageStateService } from './content/services/dot-page-state/dot-page-
     declarations: [],
     providers: [
         DotContentletLockerService,
-        DotEditContentResolver,
+        DotEditPageResolver,
+        DotEditLayoutGuardService,
         DotPageStateService,
         DotRenderHTMLService,
-        EditLayoutResolver,
         PageViewService,
         TemplateContainersCacheService
     ]
