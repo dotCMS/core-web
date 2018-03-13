@@ -9,7 +9,7 @@ import { SelectItem } from 'primeng/primeng';
 
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
-import { WorkflowActions } from '../../../shared/models/workflow-actions/workflow-actions.model';
+import { DotWorkflowActions } from '../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 
 // TODO: move this to models
@@ -200,12 +200,12 @@ export class ContentTypesFormComponent implements OnInit {
     private fillWorkflowFieldOptions(): void {
         this.workflowOptions = this.workflowService
             .get()
-            .flatMap((workflows: WorkflowActions[]) => workflows)
-            .map((workflow: WorkflowActions) => this.getWorkflowFieldOption(workflow))
+            .flatMap((workflows: DotWorkflowActions[]) => workflows)
+            .map((workflow: DotWorkflowActions) => this.getWorkflowFieldOption(workflow))
             .toArray();
     }
 
-    private getWorkflowFieldOption(workflow: WorkflowActions): SelectItem {
+    private getWorkflowFieldOption(workflow: DotWorkflowActions): SelectItem {
         return {
             label: workflow.name,
             value: workflow.id

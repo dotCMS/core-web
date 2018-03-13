@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Observable';
-import { WorkflowActions } from '../shared/models/workflow-actions/workflow-actions.model';
+import { DotWorkflowActions } from '../shared/models/dot-workflow-actions/dot-workflow-actions.model';
 
 export class WorkflowServiceMock {
-    getPageWorkflows(): Observable<WorkflowActions[]> {
+    getPageWorkflows(): Observable<DotWorkflowActions[]> {
         return Observable.of([
             {
                 assignable: true,

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { WorkflowActions } from '../../../../../shared/models/workflow-actions/workflow-actions.model';
+import { DotWorkflowActions } from '../../../../../shared/models/dot-workflow-actions/dot-workflow-actions.model';
 import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -19,11 +19,11 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
     ngOnInit() {
         this.workflowsActions = this.workflowsService
             .getPageWorkflows(this.inode)
-            .map((workflows: WorkflowActions[]) => this.getWorkflowOptions(workflows));
+            .map((workflows: DotWorkflowActions[]) => this.getWorkflowOptions(workflows));
     }
 
-    private getWorkflowOptions(workflows: WorkflowActions[]): MenuItem[] {
-        return workflows.map((workflow: WorkflowActions) => {
+    private getWorkflowOptions(workflows: DotWorkflowActions[]): MenuItem[] {
+        return workflows.map((workflow: DotWorkflowActions) => {
             return {
                 label: workflow.name
             };
