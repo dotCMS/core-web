@@ -237,7 +237,7 @@ describe('DotEditPageToolbarComponent', () => {
     });
 
     it('should have an action split button', () => {
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__actions'));
+        const primaryAction: DebugElement = de.query(By.css('dot-edit-page-workflows-actions'));
         expect(primaryAction === null).toBe(false);
     });
 
