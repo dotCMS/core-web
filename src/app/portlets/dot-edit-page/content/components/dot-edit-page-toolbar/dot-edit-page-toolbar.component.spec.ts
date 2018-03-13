@@ -18,7 +18,7 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { mockUser } from '../../../../../test/login-service.mock';
 import { WorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { Workflow } from '../../../../../shared/models/workflow/workflow.model';
+import { WorkflowActions } from '../../../../../shared/models/workflow-actions/workflow-actions.model';
 import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
 
 describe('DotEditPageToolbarComponent', () => {

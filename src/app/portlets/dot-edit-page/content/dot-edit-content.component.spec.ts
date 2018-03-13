@@ -34,7 +34,7 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '../shared/models/page-mode.enum';
-import { Workflow } from '../../../shared/models/workflow/workflow.model';
+import { WorkflowActions } from '../../../shared/models/workflow-actions/workflow-actions.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { WorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
 import { mockDotRenderPage } from '../../../test/dot-rendered-page.mock';

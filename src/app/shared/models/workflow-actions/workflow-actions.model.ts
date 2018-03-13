@@ -1,4 +1,4 @@
-export interface Workflow {
+export interface WorkflowActions {
     assignable: boolean;
     commentable: boolean;
     condition?: string;
