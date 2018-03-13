@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
-    templateUrl: './dot-edit-page-workflows-actions.component.html'
+    templateUrl: './dot-edit-page-workflows-actions.component.html',
+    styleUrls: ['./dot-edit-page-workflows-actions.component.scss']
 })
 export class DotEditPageWorkflowsActionsComponent implements OnInit {
     @Input() inode: string;
