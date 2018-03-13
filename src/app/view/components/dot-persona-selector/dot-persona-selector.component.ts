@@ -23,12 +23,7 @@ export class DotPersonaSelectorComponent implements OnInit {
             this.dotPersonasService.get(),
             this.dotMessageService.getMessages(['modes.persona.no.persona'])
         ).subscribe(response => {
-            this.personasOptions = [
-                { name: response[1]['modes.persona.no.persona'], identifier: '0' },
-                ...response[0]
-            ];
-            this.value = this.value || this.personasOptions[0];
-            this.changePersona(this.value);
+            this.personasOptions = [{ name: response[1]['modes.persona.no.persona'], identifier: '0' }, ...response[0]];
         });
     }
 
