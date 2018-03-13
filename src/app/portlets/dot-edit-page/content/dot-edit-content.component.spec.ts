@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Observable } from 'rxjs/Observable';
@@ -37,17 +37,23 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
-import {DotEditContentViewAsToolbarModule} from '../../dot-edit-content/components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
-import {DotDevicesService} from '../../../api/services/dot-devices/dot-devices.service';
-import {DotDevicesServiceMock} from '../../../test/dot-device-service.mock';
-import {DotPersonasService} from '../../../api/services/dot-personas/dot-personas.service';
-import {DotPersonasServiceMock} from '../../../test/dot-personas-service.mock';
-import {DotLanguagesService} from '../../../api/services/dot-languages/dot-languages.service';
-import {DotLanguagesServiceMock} from '../../../test/dot-languages-service.mock';
+import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
+import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
+import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
+import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
+import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
+import { DotLanguagesServiceMock } from '../../../test/dot-languages-service.mock';
+import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { mockDotDevice } from '../../../test/dot-device.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(): Observable<Workflow[]> {
-        return Observable.of([{ name: 'Workflow 1', id: 'one' }, { name: 'Workflow 2', id: 'two' }, { name: 'Workflow 3', id: 'three' }]);
+        return Observable.of([
+            { name: 'Workflow 1', id: 'one' },
+            { name: 'Workflow 2', id: 'two' },
+            { name: 'Workflow 3', id: 'three' }
+        ]);
     }
 }
 
@@ -56,7 +62,17 @@ export const mockDotPageState: DotPageState = {
     locked: false
 };
 
-describe('DotEditContentComponent', () => {
+@Component({
+    selector: 'dot-edit-content-view-as-toolbar',
+    template: ''
+})
+class MockDotEditContentViewAsToolbarComponent {
+    @Input() value: DotEditPageViewAs;
+    @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
+    @Output() changeDevice = new EventEmitter<DotDevice>();
+}
+
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
@@ -79,7 +95,7 @@ describe('DotEditContentComponent', () => {
         });
 
         DOTTestBed.configureTestingModule({
-            declarations: [DotEditContentComponent],
+            declarations: [DotEditContentComponent, MockDotEditContentViewAsToolbarComponent],
             imports: [
                 DialogModule,
                 BrowserAnimationsModule,
@@ -107,7 +123,6 @@ describe('DotEditContentComponent', () => {
                 DotRenderHTMLService,
                 DotRouterService,
                 DotEditPageService,
-                DotEditContentViewAsToolbarModule,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -209,31 +224,25 @@ describe('DotEditContentComponent', () => {
         expect(viewAstoolbarElement).not.toBeNull();
     });
 
-    it('should change the page wrapper dimensions', () => {
+    it('should change the page wrapper dimensions on Device change', () => {
         const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
-        const viewAstoolbarInstance: DebugElement = fixture.debugElement.query(
-            By.css('dot-edit-content-view-as-toolbar')
-        );
-        const pDropDownDevices: DebugElement = de.query(By.css('.view-as-toolbar-devices'));
-        fixture.detectChanges();
+        const viewAstoolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
         spyOn(component, 'changeDeviceHandler').and.callThrough();
-        spyOn(viewAstoolbarInstance.componentInstance, 'changeDeviceConfiguration').and.callFake(() => {
-            viewAstoolbarInstance.componentInstance.changeDevice.emit({
-                id: '1',
-                label: 'iPhone',
-                width: '375px',
-                height: '667px'
-            });
-        });
-        pDropDownDevices.triggerEventHandler('onChange', {});
+        viewAstoolbar.componentInstance.changeDevice.emit(mockDotDevice);
+
         fixture.detectChanges();
-        expect(pageWrapper.styles).toEqual({ width: '375px', height: '667px' });
-        expect(component.changeDeviceHandler).toHaveBeenCalled();
+
+        expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
+        expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth, height: mockDotDevice.cssHeight });
     });
 
-    xit('should change the language of the page on view as', () => {});
+    xit('should change the Language of the page when viewAs configuration changes', () => {
 
-    xit('should change the user of the page on view as', () => {});
+    });
+
+    xit('should change the User of the page when viewAs configuration changes', () => {});
+
+    xit('should send the ViewAs intial configuration to the toolbar', () => {});
 
     describe('set default page state', () => {
         beforeEach(() => {
@@ -258,7 +267,7 @@ describe('DotEditContentComponent', () => {
                     },
                     state: {
                         locked: true,
-                        mode: PageMode.EDIT,
+                        mode: PageMode.EDIT
                     }
                 }
             });
@@ -291,7 +300,7 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('set page state when toolbar emit new state', () => {
-        const spyStateSet = (val) => {
+        const spyStateSet = val => {
             spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(val));
         };
 
@@ -384,7 +393,7 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
             spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
-            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake(conf => {
                 conf.accept();
             });
 

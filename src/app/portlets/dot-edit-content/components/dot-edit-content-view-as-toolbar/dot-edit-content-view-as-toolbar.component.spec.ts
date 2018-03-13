@@ -5,55 +5,65 @@ import { DotDevicesService } from '../../../../api/services/dot-devices/dot-devi
 import { DotLanguagesService } from '../../../../api/services/dot-languages/dot-languages.service';
 import { DotPersonasService } from '../../../../api/services/dot-personas/dot-personas.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { By } from '@angular/platform-browser';
 import { DotDevicesServiceMock } from '../../../../test/dot-device-service.mock';
 import { DotLanguagesServiceMock } from '../../../../test/dot-languages-service.mock';
 import { DotPersonasServiceMock } from '../../../../test/dot-personas-service.mock';
-import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { mockDotPersona } from '../../../../test/dot-persona.mock';
+import { mockDotLanguage } from '../../../../test/dot-language.mock';
+import { mockDotDevice } from '../../../../test/dot-device.mock';
+import { DotPersona } from '../../../../shared/models/dot-persona/dot-persona.model';
+import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model';
+import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
+
+@Component({
+    selector: 'dot-persona-selector',
+    template: ''
+})
+class MockDotPersonaSelectorComponent {
+    @Input() value: DotPersona;
+    @Output() selectedPersona = new EventEmitter<DotPersona>();
+}
+
+@Component({
+    selector: 'dot-device-selector',
+    template: ''
+})
+class MockDotDeviceSelectorComponent {
+    @Input() value: DotDevice;
+    @Output() selectedDevice = new EventEmitter<DotDevice>();
+}
+
+@Component({
+    selector: 'dot-language-selector',
+    template: ''
+})
+class MockDotLanguageSelectorComponent {
+    @Input() value: DotLanguage;
+    @Output() selectedLanguage = new EventEmitter<DotLanguage>();
+}
 
 describe('DotEditContentViewAsToolbarComponent', () => {
     let component: DotEditContentViewAsToolbarComponent;
     let fixture: ComponentFixture<DotEditContentViewAsToolbarComponent>;
     let de: DebugElement;
-
-    const pageViewAsPreLoadedValue: DotEditPageViewAs = {
-        persona: {
-            description: 'A non-US based investor interested in global financial news and services',
-            folder: 'SYSTEM_FOLDER',
-            host: '48190c8c-42c4-46af-8d1a-0cd5db894797',
-            identifier: 'testID',
-            inode: 'f30e6dc9-e951-4f71-bb1c-a98b49238806',
-            keyTag: 'Manager',
-            languageId: 1,
-            lastReview: '2016-02-19 11:21:03.788',
-            modDate: '2016-02-19 11:21:03.802',
-            modUser: 'dotcms.org.1',
-            name: 'Manager',
-            owner: 'dotcms.org.1',
-            photoContentAsset: '1c56ba62-1f41-4b81-bd62-b6eacff3ad23/photo',
-            sortOrder: 0,
-            stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045'
-        },
-        language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
-        device: { name: 'iPhone', cssWidth: '375px', cssHeight: '667px' }
-    };
-    const pageViewAsInitialValue: DotEditPageViewAs = {
-        persona: { identifier: '0' },
-        language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
-        device: { name: 'Desktop', cssWidth: '100%', cssHeight: '100%' }
+    const defaultViewAs: DotEditPageViewAs = {
+        language: mockDotLanguage,
+        persona: mockDotPersona,
+        device: mockDotDevice
     };
 
     beforeEach(() => {
-        const messageServiceMock = new MockDotMessageService({
-            'modes.persona.no.persona': 'Default Persona'
-        });
-
         DOTTestBed.configureTestingModule({
-            declarations: [DotEditContentViewAsToolbarComponent],
+            declarations: [
+                DotEditContentViewAsToolbarComponent,
+                MockDotPersonaSelectorComponent,
+                MockDotDeviceSelectorComponent,
+                MockDotLanguageSelectorComponent
+            ],
             imports: [BrowserAnimationsModule],
             providers: [
                 {
@@ -67,10 +77,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                 {
                     provide: DotLanguagesService,
                     useClass: DotLanguagesServiceMock
-                },
-                {
-                    provide: DotMessageService,
-                    useValue: messageServiceMock
                 }
             ]
         });
@@ -80,51 +86,66 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         de = fixture.debugElement;
     });
 
-    it('should set the initial values for the dropdowns & emit the Device', () => {
-        spyOn(component.changeDevice, 'emit');
-        fixture.detectChanges();
-        expect(component.viewAsConfig).toEqual(pageViewAsInitialValue);
-        expect(component.changeDevice.emit).toHaveBeenCalledWith(pageViewAsInitialValue.device);
+    it('should have Persona selector', () => {
+        const toolbarElement: DebugElement = de.query(By.css('dot-persona-selector'));
+        expect(toolbarElement).not.toBeNull();
     });
 
-    // TODO: Fix this one.
-    xit('should load dropdowns with DotViewAsService values', () => {
-
-        fixture.detectChanges();
-
-        expect(component.viewAsConfig).toEqual(pageViewAsPreLoadedValue);
-    });
-
-    it('should emit changes in Language ', () => {
-        const pDropDown: DebugElement = de.query(By.css('.view-as-toolbar-languages'));
-        component.ngOnInit();
+    it('should emit changes in Personas', () => {
+        component.value = defaultViewAs;
+        const personaSelector: DebugElement = de.query(By.css('dot-persona-selector'));
+        spyOn(component, 'changePersonaHandler').and.callThrough();
         spyOn(component.changeViewAs, 'emit');
-        pDropDown.triggerEventHandler('onChange', {});
+        personaSelector.componentInstance.selectedPersona.emit(mockDotPersona);
         fixture.detectChanges();
 
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith(pageViewAsInitialValue);
-
+        expect(component.changePersonaHandler).toHaveBeenCalledWith(mockDotPersona);
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith(defaultViewAs);
     });
 
-    it('should emit changes in Personas ', () => {
-        const pDropDown: DebugElement = de.query(By.css('.view-as-toolbar-personas'));
-        component.ngOnInit();
-        spyOn(component.changeViewAs, 'emit');
-        pDropDown.triggerEventHandler('onChange', {});
-        fixture.detectChanges();
-
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith(pageViewAsInitialValue);
-
+    it('should have Device selector', () => {
+        const toolbarElement: DebugElement = de.query(By.css('dot-device-selector'));
+        expect(toolbarElement).not.toBeNull();
     });
 
-    it('should emit changes in Device ', () => {
-        const pDropDown: DebugElement = de.query(By.css('.view-as-toolbar-devices'));
-        component.ngOnInit();
+    it('should emit changes in Device', () => {
+        component.value = defaultViewAs;
+        const deviceSelector: DebugElement = de.query(By.css('dot-device-selector'));
+        spyOn(component, 'changeDeviceHandler').and.callThrough();
         spyOn(component.changeDevice, 'emit');
-        pDropDown.triggerEventHandler('onChange', {});
+        deviceSelector.componentInstance.selectedDevice.emit(mockDotDevice);
         fixture.detectChanges();
 
-        expect(component.changeDevice.emit).toHaveBeenCalledWith(pageViewAsInitialValue.device);
+        expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
+        expect(component.changeDevice.emit).toHaveBeenCalledWith(mockDotDevice);
+    });
 
+    it('should have Language selector', () => {
+        const toolbarElement: DebugElement = de.query(By.css('dot-language-selector'));
+        expect(toolbarElement).not.toBeNull();
+    });
+
+    it('should emit changes in Language', () => {
+        component.value = defaultViewAs;
+        const languageSelector: DebugElement = de.query(By.css('dot-language-selector'));
+        spyOn(component, 'changeLanguageHandler').and.callThrough();
+        spyOn(component.changeViewAs, 'emit');
+        languageSelector.componentInstance.selectedLanguage.emit(mockDotLanguage);
+        fixture.detectChanges();
+
+        expect(component.changeLanguageHandler).toHaveBeenCalledWith(mockDotLanguage);
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith(defaultViewAs);
+    });
+
+    it('should propagate the values to the selector components on init', () => {
+        component.value = defaultViewAs;
+        const languageSelector: DebugElement = de.query(By.css('dot-language-selector'));
+        const deviceSelector: DebugElement = de.query(By.css('dot-device-selector'));
+        const personaSelector: DebugElement = de.query(By.css('dot-persona-selector'));
+        fixture.detectChanges();
+
+        expect(languageSelector.componentInstance.value).toEqual(defaultViewAs.language);
+        expect(deviceSelector.componentInstance.value).toEqual(defaultViewAs.device);
+        expect(personaSelector.componentInstance.value).toEqual(defaultViewAs.persona);
     });
 });

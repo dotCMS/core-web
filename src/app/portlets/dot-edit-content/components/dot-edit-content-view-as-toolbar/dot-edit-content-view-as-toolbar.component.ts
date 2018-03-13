@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotPersona } from '../../../../shared/models/dot-persona/dot-persona.model';
 import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
@@ -9,16 +9,12 @@ import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model
     templateUrl: './dot-edit-content-view-as-toolbar.component.html',
     styleUrls: ['./dot-edit-content-view-as-toolbar.component.scss']
 })
-export class DotEditContentViewAsToolbarComponent implements OnInit {
+export class DotEditContentViewAsToolbarComponent {
     @Input() value: DotEditPageViewAs;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
     @Output() changeDevice = new EventEmitter<DotDevice>();
 
-    viewAsConfig: DotEditPageViewAs;
-
     constructor() {}
-
-    ngOnInit() {}
 
     /**
      * Track changes in Persona.
