@@ -2,13 +2,9 @@ import { DotPersonasService } from './dot-personas.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
+import { mockDotPersona } from '../../../test/dot-persona.mock';
 
 describe('DotPersonasService', () => {
-    const persona: DotPersona = {
-        identifier: 'test'
-    };
-
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotPersonasService]);
         this.dotPersonasService = this.injector.get(DotPersonasService);
@@ -27,11 +23,11 @@ describe('DotPersonasService', () => {
             new Response(
                 new ResponseOptions({
                     body: {
-                        contentlets: [persona]
+                        contentlets: [mockDotPersona]
                     }
                 })
             )
         );
-        expect(result).toEqual(Array.of(persona));
+        expect(result).toEqual(Array.of(mockDotPersona));
     });
 });

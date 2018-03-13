@@ -10,17 +10,16 @@ import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock'
 import { By } from '@angular/platform-browser';
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 
-fdescribe('DotPersonaSelectorComponent', () => {
+describe('DotPersonaSelectorComponent', () => {
     let component: DotPersonaSelectorComponent;
     let fixture: ComponentFixture<DotPersonaSelectorComponent>;
     let de: DebugElement;
     const defaultPersona: DotPersona = { name: 'Default Persona', identifier: '0' };
+    const messageServiceMock = new MockDotMessageService({
+        'modes.persona.no.persona': 'Default Persona'
+    });
 
     beforeEach(() => {
-        const messageServiceMock = new MockDotMessageService({
-            'modes.persona.no.persona': 'Default Persona'
-        });
-
         DOTTestBed.configureTestingModule({
             declarations: [DotPersonaSelectorComponent],
             imports: [BrowserAnimationsModule],
@@ -53,7 +52,7 @@ fdescribe('DotPersonaSelectorComponent', () => {
         expect(component.selectedPersona.emit).toHaveBeenCalledWith(defaultPersona);
     });
 
-    it('should set Default persona on first position', () => {
+    it('should add Default persona as first position', () => {
         fixture.detectChanges();
         expect(component.personasOptions[0]).toEqual(defaultPersona);
     });

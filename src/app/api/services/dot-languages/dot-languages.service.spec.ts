@@ -2,6 +2,7 @@ import { DotLanguagesService } from './dot-languages.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { mockDotLanguage } from '../../../test/dot-language.mock';
 
 describe('DotLanguagesService', () => {
     beforeEach(() => {
@@ -22,22 +23,12 @@ describe('DotLanguagesService', () => {
             new Response(
                 new ResponseOptions({
                     body: {
-                        entity: [
-                            {
-                                id: 1,
-                                languageCode: 'en',
-                                countryCode: 'US',
-                                language: 'English',
-                                country: 'United States'
-                            }
-                        ]
+                        entity: [mockDotLanguage]
                     }
                 })
             )
         );
 
-        expect(result).toEqual([
-            { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' }
-        ]);
+        expect(result).toEqual([mockDotLanguage]);
     });
 });

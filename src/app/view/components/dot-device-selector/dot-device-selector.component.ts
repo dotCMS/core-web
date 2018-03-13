@@ -18,7 +18,6 @@ export class DotDeviceSelectorComponent implements OnInit {
     constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-
         Observable.forkJoin(
             this.dotDevicesService.get(),
             this.dotMessageService.getMessages(['editpage.viewas.default.device'])

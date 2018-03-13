@@ -3,8 +3,9 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { ConnectionBackend, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { mockDotDevice } from '../../../test/dot-device.mock';
 
-fdescribe('DotDevicesService', () => {
+describe('DotDevicesService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotDevicesService]);
         this.dotDevicesService = this.injector.get(DotDevicesService);
@@ -23,14 +24,14 @@ fdescribe('DotDevicesService', () => {
             new Response(
                 new ResponseOptions({
                     body: {
-                        contentlets: [{ cssHeight: '100', cssWidth: '200', name: 'iphone' }]
+                        contentlets: [mockDotDevice]
                     }
                 })
             )
         );
 
         this.dotDevicesService.get().subscribe((devices: DotDevice[]) => {
-            expect(devices).toEqual([{ cssHeight: '100', cssWidth: '200', name: 'iphone' }]);
+            expect(devices).toEqual([mockDotDevice]);
         });
     });
 });

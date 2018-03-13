@@ -1,25 +1,50 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture } from '@angular/core/testing';
 import { DotLanguageSelectorComponent } from './dot-language-selector.component';
+import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
+import { DotLanguagesServiceMock } from '../../../test/dot-languages-service.mock';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DOTTestBed } from '../../../test/dot-test-bed';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { mockDotLanguage } from '../../../test/dot-language.mock';
+import { Observable } from 'rxjs/Observable';
 
 describe('DotLanguageSelectorComponent', () => {
-  let component: DotLanguageSelectorComponent;
-  let fixture: ComponentFixture<DotLanguageSelectorComponent>;
+    let component: DotLanguageSelectorComponent;
+    let fixture: ComponentFixture<DotLanguageSelectorComponent>;
+    let de: DebugElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DotLanguageSelectorComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DotLanguageSelectorComponent],
+            imports: [BrowserAnimationsModule],
+            providers: [
+                {
+                    provide: DotLanguagesService,
+                    useClass: DotLanguagesServiceMock
+                }
+            ]
+        });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DotLanguageSelectorComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = DOTTestBed.createComponent(DotLanguageSelectorComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should load languages in the dropdown', () => {
+        fixture.detectChanges();
+        expect(component.languagesOptions).toEqual(Observable.of([mockDotLanguage]));
+    });
+
+    it('should emit the selected language', () => {
+        const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
+
+        spyOn(component.selectedLanguage, 'emit');
+        spyOn(component, 'changeLanguage').and.callThrough();
+
+        pDropDown.triggerEventHandler('onChange', { value: mockDotLanguage });
+
+        expect(component.changeLanguage).toHaveBeenCalledWith(mockDotLanguage);
+        expect(component.selectedLanguage.emit).toHaveBeenCalledWith(mockDotLanguage);
+    });
 });
