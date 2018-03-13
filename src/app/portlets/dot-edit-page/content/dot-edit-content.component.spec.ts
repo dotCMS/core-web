@@ -27,11 +27,11 @@ import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error
 import { DotLoadingIndicatorModule } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotPageState } from '../shared/models/dot-rendered-page-state.model';
+import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRenderHTMLService } from '../../../api/services/dot-render-html/dot-render-html.service';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import { LoginServiceMock } from '../../../test/login-service.mock';
+import { LoginServiceMock, mockUser } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
@@ -46,6 +46,7 @@ import { DotLanguagesServiceMock } from '../../../test/dot-languages-service.moc
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
+import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
 
 class WorkflowServiceMock {
     getPageWorkflows(): Observable<Workflow[]> {
@@ -72,7 +73,7 @@ class MockDotEditContentViewAsToolbarComponent {
     @Output() changeDevice = new EventEmitter<DotDevice>();
 }
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
@@ -226,23 +227,37 @@ fdescribe('DotEditContentComponent', () => {
 
     it('should change the page wrapper dimensions on Device change', () => {
         const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
-        const viewAstoolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
         spyOn(component, 'changeDeviceHandler').and.callThrough();
-        viewAstoolbar.componentInstance.changeDevice.emit(mockDotDevice);
-
+        viewAsToolbar.componentInstance.changeDevice.emit(mockDotDevice);
         fixture.detectChanges();
 
         expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
         expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth, height: mockDotDevice.cssHeight });
     });
 
-    xit('should change the Language of the page when viewAs configuration changes', () => {
+    it('should change the Language/Persona of the page when viewAs configuration changes', () => {
+        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
+        spyOn(component, 'changeViewAsHandler').and.callThrough();
+        spyOn(dotPageStateService, 'set');
+        viewAsToolbar.componentInstance.changeViewAs.emit(mockDotEditPageViewAs);
 
+        expect(component.changeViewAsHandler).toHaveBeenCalledWith(mockDotEditPageViewAs);
+        expect(dotPageStateService.set).toHaveBeenCalledWith(
+            component.pageState.page,
+            component.pageState.state,
+            mockDotEditPageViewAs
+        );
     });
 
-    xit('should change the User of the page when viewAs configuration changes', () => {});
+    it('should send the ViewAs initial configuration to the toolbar', () => {
+        component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
+        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        fixture.detectChanges();
 
-    xit('should send the ViewAs intial configuration to the toolbar', () => {});
+        expect(viewAsToolbar.componentInstance.value).toEqual(mockDotEditPageViewAs);
+    });
 
     describe('set default page state', () => {
         beforeEach(() => {

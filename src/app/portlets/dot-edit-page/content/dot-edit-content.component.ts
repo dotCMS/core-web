@@ -23,9 +23,7 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import {DotPage} from '../shared/models/dot-page.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -166,9 +164,7 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        this.route.queryParams
-            .pluck('url')
-            .concatMap((url: string) => this.dotPageStateService.set(this.pageState.page, this.pageState.state, viewAsConfig))
+        this.dotPageStateService.set(this.pageState.page, this.pageState.state, viewAsConfig)
             .subscribe((pageState: DotRenderedPageState) => {
                     this.setPageState(pageState);
                 },
