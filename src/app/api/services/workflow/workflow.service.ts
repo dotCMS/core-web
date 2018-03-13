@@ -32,10 +32,10 @@ export class WorkflowService {
      * Returns the wokflow or workflow actions for a page asset
      *
      * @param {string} inode
-     * @returns {Observable<Workflow[]>}
+     * @returns {Observable<DotWorkflowAction[]>}
      * @memberof WorkflowService
      */
-    getPageWorkflows(inode: string): Observable<DotWorkflowAction[]> {
+    getContentWorkflowActions(inode: string): Observable<DotWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,

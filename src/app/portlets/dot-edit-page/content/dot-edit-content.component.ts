@@ -93,7 +93,7 @@ export class DotEditContentComponent implements OnInit {
 
         this.route.parent.parent.data.pluck('content').subscribe((pageState: DotRenderedPageState) => {
             this.setPageState(pageState);
-            this.pageWorkFlows = this.workflowsService.getPageWorkflows(pageState.page.identifier);
+            this.pageWorkFlows = this.workflowsService.getContentWorkflowActions(pageState.page.identifier);
         });
 
         this.setDialogSize();

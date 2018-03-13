@@ -44,7 +44,7 @@ describe('WorkflowService', () => {
     it('should get workflows page actions', () => {
         let result;
         const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
-        this.workflowService.getPageWorkflows(inode).subscribe((res) => {
+        this.workflowService.getContentWorkflowActions(inode).subscribe((res) => {
             result = res;
         });
 

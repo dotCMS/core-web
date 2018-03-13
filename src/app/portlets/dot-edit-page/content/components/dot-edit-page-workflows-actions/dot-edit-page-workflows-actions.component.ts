@@ -18,7 +18,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
 
     ngOnInit() {
         this.workflowsActions = this.workflowsService
-            .getPageWorkflows(this.inode)
+            .getContentWorkflowActions(this.inode)
             .map((workflows: DotWorkflowAction[]) => this.getWorkflowOptions(workflows));
     }
 
