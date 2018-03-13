@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
-import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
+import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -14,7 +14,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
 
     workflowsActions: Observable<MenuItem[]>;
 
-    constructor(private workflowsService: WorkflowService) {}
+    constructor(private workflowsService: DotWorkflowService) {}
 
     ngOnInit() {
         this.workflowsActions = this.workflowsService

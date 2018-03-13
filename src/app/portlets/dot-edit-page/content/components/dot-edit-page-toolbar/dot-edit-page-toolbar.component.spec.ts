@@ -16,10 +16,10 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { mockUser } from '../../../../../test/login-service.mock';
-import { WorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
+import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { Observable } from 'rxjs/Observable';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
-import { WorkflowService } from '../../../../../api/services/workflow/workflow.service';
+import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
 import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 
 describe('DotEditPageToolbarComponent', () => {
@@ -80,8 +80,8 @@ describe('DotEditPageToolbarComponent', () => {
                     DotGlobalMessageService,
                     DotEventsService,
                     {
-                        provide: WorkflowService,
-                        useClass: WorkflowServiceMock
+                        provide: DotWorkflowService,
+                        useClass: DotWorkflowServiceMock
                     },
                 ]
             });

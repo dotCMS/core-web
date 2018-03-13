@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { DotWorkflowAction } from '../shared/models/dot-workflow-action/dot-workflow-action.model';
 
-export class WorkflowServiceMock {
+export class DotWorkflowServiceMock {
     getContentWorkflowActions(): Observable<DotWorkflowAction[]> {
         return Observable.of([
             {

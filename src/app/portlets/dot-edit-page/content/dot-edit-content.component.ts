@@ -18,7 +18,7 @@ import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
 import { DotWorkflowAction } from '../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { Observable } from 'rxjs/Observable';
-import { WorkflowService } from '../../../api/services/workflow/workflow.service';
+import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../shared/models/page-mode.enum';
@@ -55,7 +55,7 @@ export class DotEditContentComponent implements OnInit {
         private ngZone: NgZone,
         private route: ActivatedRoute,
         private sanitizer: DomSanitizer,
-        private workflowsService: WorkflowService,
+        private workflowsService: DotWorkflowService,
         private dotPageStateService: DotPageStateService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
