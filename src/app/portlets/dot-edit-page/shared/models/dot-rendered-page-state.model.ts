@@ -10,7 +10,6 @@ export interface DotPageState {
     locked: boolean;
     lockedByAnotherUser?: boolean;
     mode: PageMode;
-    viewAs?: DotEditPageViewAs;
 }
 
 export class DotRenderedPageState {
@@ -21,6 +20,7 @@ export class DotRenderedPageState {
     private _page: DotPage;
     private _state: DotPageState;
     private _template?: DotTemplate;
+    private _viewAs?: DotEditPageViewAs;
 
     constructor(dotRenderedPage: DotRenderedPage, state: DotPageState, private user: User) {
         this._page = dotRenderedPage.page;
@@ -29,7 +29,7 @@ export class DotRenderedPageState {
         this._layout = dotRenderedPage.layout;
         this._template = dotRenderedPage.template;
         this._state = state || this.getDefaultState(this._page);
-        this._state.viewAs = dotRenderedPage.viewAs;
+        this._viewAs = dotRenderedPage.viewAs;
         this._canCreateTemplate = dotRenderedPage.canCreateTemplate;
     }
 
@@ -59,6 +59,10 @@ export class DotRenderedPageState {
 
     get template(): DotTemplate {
         return this._template;
+    }
+
+    get viewAs(): DotEditPageViewAs {
+        return this._viewAs;
     }
 
     private getDefaultState(page: DotPage): DotPageState {

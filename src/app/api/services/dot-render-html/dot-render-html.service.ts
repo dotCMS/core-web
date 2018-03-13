@@ -57,7 +57,7 @@ export class DotRenderHTMLService {
             params = {
                 ...params,
                 language_id: viewAsConfig.language.id,
-                'com.dotmarketing.persona.id': viewAsConfig.persona.identifier
+                ...viewAsConfig.persona ? {'com.dotmarketing.persona.id': viewAsConfig.persona.identifier} : {}
             };
         }
         return this.coreWebService

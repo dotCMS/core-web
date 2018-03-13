@@ -1,6 +1,7 @@
 <p-dropdown class="tiny invert"
     [options]="personasOptions"
     dataKey="identifier"
+    optionLabel="name"
     [style]="{'width':'auto'}"
     [(ngModel)]="value"
     (onChange)="changePersona($event.value)">

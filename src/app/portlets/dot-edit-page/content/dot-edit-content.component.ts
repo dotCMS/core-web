@@ -166,11 +166,6 @@ export class DotEditContentComponent implements OnInit {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        // const viewAsPage: DotPage = {
-        //     ...this.pageState.page,
-        //     viewAs: viewAsConfig
-        // };
-
         this.route.queryParams
             .pluck('url')
             .concatMap((url: string) => this.dotPageStateService.set(this.pageState.page, this.pageState.state, viewAsConfig))
@@ -181,25 +176,6 @@ export class DotEditContentComponent implements OnInit {
                     this.handleSetPageStateFailed(err);
                 }
             );
-
-
-        // this.dotPageStateService.set(viewAsPage, this.pageState.state).subscribe(
-        //     (pageState: DotRenderedPageState) => {
-        //         this.setPageState(pageState);
-        //     },
-        //     (err: ResponseView) => {
-        //         this.handleSetPageStateFailed(err);
-        //     }
-        // );
-
-
-
-        // this.route.queryParams
-        //     .pluck('url')
-        //     .concatMap((url: string) => this.editPageService.getPageModeMethod(this.page.mode)(url, viewAsConfig))
-        //     .subscribe((page: DotRenderedPage) => {
-        //         this.setPage(page);
-        //     });
     }
 
     /**

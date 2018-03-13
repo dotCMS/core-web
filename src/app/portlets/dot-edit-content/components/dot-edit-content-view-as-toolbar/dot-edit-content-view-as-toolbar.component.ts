@@ -35,6 +35,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     changePersonaHandler(persona: DotPersona): void {
         this.value.persona = persona;
         this.changeViewAs.emit(this.value);
+        console.log(this.value);
     }
 
     /**
@@ -46,6 +47,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     changeLanguageHandler(language: DotLanguage): void {
         this.value.language = language;
         this.changeViewAs.emit(this.value);
+        console.log(this.value);
     }
 
     /**
@@ -57,5 +59,6 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     changeDeviceHandler(device: DotDevice): void {
         this.value.device = device;
         this.changeDevice.emit(this.value.device);
+        console.log(this.value);
     }
 }
