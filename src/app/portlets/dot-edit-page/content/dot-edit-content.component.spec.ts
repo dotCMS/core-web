@@ -37,12 +37,6 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
-import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
-import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
-import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
-import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
-import { DotLanguagesServiceMock } from '../../../test/dot-languages-service.mock';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
@@ -73,7 +67,7 @@ class MockDotEditContentViewAsToolbarComponent {
     @Output() changeDevice = new EventEmitter<DotDevice>();
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
@@ -135,18 +129,6 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: WorkflowService,
                     useClass: WorkflowServiceMock
-                },
-                {
-                    provide: DotDevicesService,
-                    useClass: DotDevicesServiceMock
-                },
-                {
-                    provide: DotPersonasService,
-                    useClass: DotPersonasServiceMock
-                },
-                {
-                    provide: DotLanguagesService,
-                    useClass: DotLanguagesServiceMock
                 },
                 {
                     provide: ActivatedRoute,
