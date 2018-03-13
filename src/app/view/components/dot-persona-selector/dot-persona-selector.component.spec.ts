@@ -8,12 +8,13 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
 import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
 import { By } from '@angular/platform-browser';
+import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 
-describe('DotPersonaSelectorComponent', () => {
+fdescribe('DotPersonaSelectorComponent', () => {
     let component: DotPersonaSelectorComponent;
     let fixture: ComponentFixture<DotPersonaSelectorComponent>;
     let de: DebugElement;
-    const defaultPersona = { label: 'Default Persona', value: { identifier: '0' } };
+    const defaultPersona: DotPersona = { name: 'Default Persona', identifier: '0' };
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({

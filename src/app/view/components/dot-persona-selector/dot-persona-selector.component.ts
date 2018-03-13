@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SelectItem } from 'primeng/primeng';
 import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs/Observable';

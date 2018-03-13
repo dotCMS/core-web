@@ -39,12 +39,12 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045'
         },
         language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
-        device: { id: '1', label: 'iPhone', width: '375px', height: '667px' }
+        device: { name: 'iPhone', cssWidth: '375px', cssHeight: '667px' }
     };
     const pageViewAsInitialValue: DotEditPageViewAs = {
         persona: { identifier: '0' },
         language: { id: 1, languageCode: 'en', countryCode: 'US', language: 'English', country: 'United States' },
-        device: { id: '0', label: 'Desktop', width: '100%', height: '100%' }
+        device: { name: 'Desktop', cssWidth: '100%', cssHeight: '100%' }
     };
 
     beforeEach(() => {
