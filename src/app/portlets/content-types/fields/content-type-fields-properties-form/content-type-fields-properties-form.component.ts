@@ -166,11 +166,15 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private handleDisabledIndexed(disable: boolean): void {
-        disable ? this.form.get('indexed').disable() : this.form.get('indexed').enable();
+        if (this.form.get('indexed')) {
+            disable ? this.form.get('indexed').disable() : this.form.get('indexed').enable();
+        }
     }
 
     private handleDisabledRequired(disable: boolean): void {
-        disable ? this.form.get('required').disable() : this.form.get('required').enable();
+        if (this.form.get('required')) {
+            disable ? this.form.get('required').disable() : this.form.get('required').enable();
+        }
     }
 
     private updateFormFieldData() {
