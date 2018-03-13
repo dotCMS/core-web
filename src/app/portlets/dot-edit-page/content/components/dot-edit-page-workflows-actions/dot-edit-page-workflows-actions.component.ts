@@ -12,7 +12,6 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
     @Input() inode: string;
     @Input() label: string;
 
-    pageWorkflows: Workflow[];
     workflowsActions: Observable<MenuItem[]>;
 
     constructor(private workflowsService: WorkflowService) {}
