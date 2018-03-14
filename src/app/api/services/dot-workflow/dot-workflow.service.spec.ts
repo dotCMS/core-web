@@ -7,14 +7,14 @@ import { DotWorkflowAction } from '../../../shared/models/dot-workflow-action/do
 describe('DotWorkflowService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotWorkflowService]);
-        this.DotWorkflowService = this.injector.get(DotWorkflowService);
+        this.dotWorkflowService = this.injector.get(DotWorkflowService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
     it('should get workflows', () => {
         let result;
-        this.DotWorkflowService.get().subscribe((res) => {
+        this.dotWorkflowService.get().subscribe((res) => {
             result = res;
         });
 
@@ -44,7 +44,7 @@ describe('DotWorkflowService', () => {
     it('should get workflows page actions', () => {
         let result;
         const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
-        this.DotWorkflowService.getContentWorkflowActions(inode).subscribe((res) => {
+        this.dotWorkflowService.getContentWorkflowActions(inode).subscribe((res) => {
             result = res;
         });
 
