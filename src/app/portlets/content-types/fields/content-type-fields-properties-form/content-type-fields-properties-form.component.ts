@@ -114,8 +114,8 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
             formFields['clazz'] = this.formFieldData.clazz;
         }
-        this.form = this.fb.group(formFields);
 
+        this.form = this.fb.group(formFields);
         this.setAutoCheckValues();
     }
 
