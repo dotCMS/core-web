@@ -199,4 +199,19 @@ describe('ContentTypeFieldsPropertiesFormComponent', () => {
             expect(comp.form.get('required').disabled).toBe(true);
         });
     });
+
+    describe('checkboxes interactions with undefined fields', () => {
+        beforeEach(() => {
+            spyOn(mockFieldPropertyService, 'getProperties').and.returnValue(['searchable', 'unique', 'listed']);
+            spyOn(mockFieldPropertyService, 'existsComponent').and.returnValue(true);
+            startHostComponent();
+        });
+
+        it('should set unique and no break when indexed and required doesn\'t exist', () => {
+            comp.form.get('unique').setValue(true);
+
+            expect(comp.form.get('indexed')).toBe(null);
+            expect(comp.form.get('required')).toBe(null);
+        });
+    });
 });
