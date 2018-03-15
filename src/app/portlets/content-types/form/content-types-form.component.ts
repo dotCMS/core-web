@@ -46,7 +46,7 @@ export class ContentTypesFormComponent implements OnInit {
     constructor(
         private dotcmsConfig: DotcmsConfig,
         private fb: FormBuilder,
-        private DotWorkflowService: DotWorkflowService,
+        private dotWorkflowService: DotWorkflowService,
         public dotMessageService: DotMessageService
     ) {
         dotMessageService
@@ -166,9 +166,7 @@ export class ContentTypesFormComponent implements OnInit {
             host: this.data.host || '',
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
-            workflow: [
-                { value: this.data.workflows ? this.data.workflows.map((workflow) => workflow.id) : [], disabled: true }
-            ],
+            workflow: [{ value: this.data.workflows ? this.data.workflows.map((workflow) => workflow.id) : [], disabled: true }],
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -198,8 +196,13 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private fillWorkflowFieldOptions(): void {
-        this.workflowOptions = this.DotWorkflowService
+        this.workflowOptions = this.dotWorkflowService
             .get()
+            .do((workflows: DotWorkflow[]) => {
+                if (!this.isEditMode()) {
+                    this.setDefaultWorkflow(workflows);
+                }
+            })
             .flatMap((workflows: DotWorkflow[]) => workflows)
             .map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow))
             .toArray();
@@ -229,7 +232,7 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private setBaseTypeContentSpecificFields(): void {
-        this.form.addControl('detailPage', new FormControl((this.data && this.data.detailPage) || ''));
+        this.form.addControl('detailPage', new FormControl(this.data.detailPage || ''));
         this.form.addControl('urlMapPattern', new FormControl((this.data && this.data.urlMapPattern) || ''));
     }
 
@@ -262,6 +265,17 @@ export class ContentTypesFormComponent implements OnInit {
         }
 
         this.setSaveState();
+    }
+
+    private setDefaultWorkflow(workflows: DotWorkflow[]): void {
+        /*
+            TODO: need to update the endpoint to get a property that tell us which is the "System Workflow"
+        */
+        const defaultValue = workflows
+            .filter((workflow: DotWorkflow) => workflow.id === 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2')
+            .map((workflow: DotWorkflow) => workflow.id);
+
+        this.form.get('workflow').setValue(defaultValue);
     }
 
     private updateWorkflowFormControl(license): void {
