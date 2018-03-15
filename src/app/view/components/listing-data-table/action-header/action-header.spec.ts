@@ -10,7 +10,7 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('ActionHeaderComponent', () => {
+fdescribe('ActionHeaderComponent', () => {
     let comp: ActionHeaderComponent;
     let fixture: ComponentFixture<ActionHeaderComponent>;
     let de: DebugElement;
@@ -116,5 +116,25 @@ describe('ActionHeaderComponent', () => {
 
         expect(primarySpy).toHaveBeenCalled();
         expect(secondarySpy).toHaveBeenCalled();
+    });
+
+    it('should not break when when no primary action is passed', () => {
+        const options = {
+            primary: {
+                model: [
+                    {
+                        command: () => {},
+                        icon: 'Test',
+                        label: 'Test'
+                    }
+                ]
+            }
+        };
+        comp.options = options;
+        fixture.detectChanges();
+
+        expect(() => {
+            comp.handlePrimaryAction();
+        }).not.toThrowError();
     });
 });
