@@ -3,6 +3,8 @@ import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
+import {DotPersona} from '../../../shared/models/dot-persona/dot-persona.model';
+import {concat} from 'rxjs/observable/concat';
 
 @Component({
     selector: 'dot-device-selector',
@@ -13,25 +15,27 @@ export class DotDeviceSelectorComponent implements OnInit {
     @Input() value: DotDevice;
     @Output() selected = new EventEmitter<DotDevice>();
 
-    devicesOptions: DotDevice[];
+    devicesOptions: Observable<DotDevice[]>;
 
     constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        Observable.forkJoin(
-            this.dotDevicesService.get(),
-            this.dotMessageService.getMessages(['editpage.viewas.default.device'])
-        ).subscribe(([devices, messages]) => {
-            this.devicesOptions = [
-                {
-                    name: messages['editpage.viewas.default.device'],
-                    cssHeight: '100%',
-                    cssWidth: '100%',
-                    inode: '0'
-                },
-                ...devices.map((device: DotDevice) => this.addPixelDimension(device))
-            ];
-        });
+        this.devicesOptions = this.dotMessageService.getMessages(['editpage.viewas.default.device'])
+            .mergeMap((messages: string[]) =>
+                this.dotDevicesService.get()
+                    .flatMap((devices: DotDevice[]) => devices)
+                    .map((device: DotDevice) => this.addPixelDimension(device))
+                    .toArray()
+                    .map((devices: DotDevice[]) => [
+                        {
+                            name: messages['editpage.viewas.default.device'],
+                            cssHeight: '',
+                            cssWidth: '',
+                            inode: '0'
+                        },
+                        ...devices
+                    ])
+            );
     }
 
     /**

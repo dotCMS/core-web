@@ -1,5 +1,5 @@
 <p-dropdown class="tiny invert"
-    [options]="personasOptions"
+    [options]="personasOptions | async"
     dataKey="identifier"
     optionLabel="name"
     [style]="{'width':'auto'}"

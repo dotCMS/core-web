@@ -7,14 +7,14 @@
     display: flex;
     align-items: center;
 
-    p-dropdown {
-        margin-right: $basic-padding;
-    }
-
     ::ng-deep {
         .ui-dropdown,
         .ui-dropdown-ui-state-focus {
             box-shadow: none;
+        }
+
+        p-dropdown {
+            margin-right: $basic-padding;
         }
     }
 }

@@ -54,6 +54,8 @@ describe('DotPersonaSelectorComponent', () => {
 
     it('should add Default persona as first position', () => {
         fixture.detectChanges();
-        expect(component.personasOptions[0]).toEqual(defaultPersona);
+        component.personasOptions.subscribe((personas: DotPersona[]) => {
+            expect(personas[0]).toEqual(defaultPersona);
+        });
     });
 });

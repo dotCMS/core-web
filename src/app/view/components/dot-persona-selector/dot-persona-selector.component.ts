@@ -13,18 +13,19 @@ export class DotPersonaSelectorComponent implements OnInit {
     @Input() value: DotPersona;
     @Output() selected = new EventEmitter<DotPersona>();
 
-    personasOptions: DotPersona[];
+    personasOptions: Observable<DotPersona[]>;
 
     constructor(private dotPersonasService: DotPersonasService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        Observable.forkJoin(
-            this.dotPersonasService.get(),
-            this.dotMessageService.getMessages(['modes.persona.no.persona'])
-        ).subscribe(([personas, messages]) => {
-            // TODO: Endpoint show provide the default persona.
-            this.personasOptions = [{ name: messages['modes.persona.no.persona'], identifier: '0' }, ...personas];
-        });
+        this.personasOptions = this.dotMessageService.getMessages(['modes.persona.no.persona'])
+            .mergeMap((messages: string[]) =>
+                this.dotPersonasService.get()
+                    .map((personas: DotPersona[]) => [
+                        { name: messages['modes.persona.no.persona'], identifier: '0' },
+                        ...personas
+                    ])
+            );
     }
 
     /**

@@ -18,8 +18,8 @@ describe('DotDeviceSelectorComponent', () => {
     let de: DebugElement;
     const defaultDevice: DotDevice = {
         name: 'Desktop',
-        cssHeight: '100%',
-        cssWidth: '100%',
+        cssHeight: '',
+        cssWidth: '',
         inode: '0'
     };
     const messageServiceMock = new MockDotMessageService({
@@ -62,6 +62,8 @@ describe('DotDeviceSelectorComponent', () => {
 
     it('should add Default Device as first position', () => {
         fixture.detectChanges();
-        expect(component.devicesOptions[0]).toEqual(defaultDevice);
+        component.devicesOptions.subscribe((devices: DotDevice[]) => {
+            expect(devices[0]).toEqual(defaultDevice);
+        });
     });
 });
