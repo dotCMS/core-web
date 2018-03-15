@@ -4,13 +4,9 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { Observable } from 'rxjs/Observable';
-
 import { DialogModule } from 'primeng/primeng';
-
 import { LoginService } from 'dotcms-js/dotcms-js';
-
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotContentletLockerService } from '../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
