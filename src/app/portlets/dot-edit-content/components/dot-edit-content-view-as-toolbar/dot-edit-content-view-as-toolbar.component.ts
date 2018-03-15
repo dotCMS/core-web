@@ -16,7 +16,7 @@ export class DotEditContentViewAsToolbarComponent {
     constructor() {}
 
     /**
-     * Track changes in Persona.
+     * Handle the changes in Persona Selector.
      *
      * @param {DotPersona} persona
      * @memberof DotEditContentViewAsToolbarComponent
@@ -27,7 +27,7 @@ export class DotEditContentViewAsToolbarComponent {
     }
 
     /**
-     * Track changes in Language.
+     * Handle changes in Language Selector.
      *
      * @param {DotLanguage} language
      * @memberof DotEditContentViewAsToolbarComponent
@@ -38,7 +38,7 @@ export class DotEditContentViewAsToolbarComponent {
     }
 
     /**
-     * Track changes in Device.
+     * Handle changes in Device Selector.
      *
      * @param {DotDevice} device
      * @memberof DotEditContentViewAsToolbarComponent

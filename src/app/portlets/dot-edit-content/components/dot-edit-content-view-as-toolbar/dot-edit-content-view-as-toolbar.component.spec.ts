@@ -16,7 +16,6 @@ import { DotPersona } from '../../../../shared/models/dot-persona/dot-persona.mo
 import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model';
 import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
 import { mockDotEditPageViewAs } from '../../../../test/dot-edit-page-view-as.mock';
-import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { mockDotPersona } from '../../../../test/dot-persona.mock';
 
 @Component({
@@ -50,6 +49,9 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     let component: DotEditContentViewAsToolbarComponent;
     let fixture: ComponentFixture<DotEditContentViewAsToolbarComponent>;
     let de: DebugElement;
+    let languageSelector: DebugElement;
+    let deviceSelector: DebugElement;
+    let personaSelector: DebugElement;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -80,47 +82,47 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.value = { language: mockDotLanguage };
+        languageSelector = de.query(By.css('dot-language-selector'));
+        deviceSelector = de.query(By.css('dot-device-selector'));
+        personaSelector = de.query(By.css('dot-persona-selector'));
     });
 
     it('should have Persona selector', () => {
-        const toolbarElement: DebugElement = de.query(By.css('dot-persona-selector'));
-        expect(toolbarElement).not.toBeNull();
+        expect(personaSelector).not.toBeNull();
     });
 
     it('should emit changes in Personas', () => {
-        const personaSelector: DebugElement = de.query(By.css('dot-persona-selector'));
         spyOn(component, 'changePersonaHandler').and.callThrough();
         spyOn(component.changeViewAs, 'emit');
         personaSelector.componentInstance.selected.emit(mockDotPersona);
         fixture.detectChanges();
 
         expect(component.changePersonaHandler).toHaveBeenCalledWith(mockDotPersona);
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith({language: mockDotLanguage, persona: mockDotPersona});
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith({
+            language: mockDotLanguage,
+            persona: mockDotPersona
+        });
     });
 
     it('should have Device selector', () => {
-        const toolbarElement: DebugElement = de.query(By.css('dot-device-selector'));
-        expect(toolbarElement).not.toBeNull();
+        expect(deviceSelector).not.toBeNull();
     });
 
     it('should emit changes in Device', () => {
-        const deviceSelector: DebugElement = de.query(By.css('dot-device-selector'));
         spyOn(component, 'changeDeviceHandler').and.callThrough();
         spyOn(component.changeViewAs, 'emit');
         deviceSelector.componentInstance.selected.emit(mockDotDevice);
         fixture.detectChanges();
 
         expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith({language: mockDotLanguage, device: mockDotDevice});
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith({ language: mockDotLanguage, device: mockDotDevice });
     });
 
     it('should have Language selector', () => {
-        const toolbarElement: DebugElement = de.query(By.css('dot-language-selector'));
-        expect(toolbarElement).not.toBeNull();
+        expect(languageSelector).not.toBeNull();
     });
 
     it('should emit changes in Language', () => {
-        const languageSelector: DebugElement = de.query(By.css('dot-language-selector'));
         const testlanguage: DotLanguage = {
             id: 2,
             languageCode: 'es',
@@ -139,9 +141,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
 
     it('should propagate the values to the selector components on init', () => {
         component.value = mockDotEditPageViewAs;
-        const languageSelector: DebugElement = de.query(By.css('dot-language-selector'));
-        const deviceSelector: DebugElement = de.query(By.css('dot-device-selector'));
-        const personaSelector: DebugElement = de.query(By.css('dot-persona-selector'));
         fixture.detectChanges();
 
         expect(languageSelector.componentInstance.value).toEqual(mockDotEditPageViewAs.language);
