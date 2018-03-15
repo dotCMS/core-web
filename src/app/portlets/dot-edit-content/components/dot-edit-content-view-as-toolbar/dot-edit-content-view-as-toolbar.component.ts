@@ -12,7 +12,6 @@ import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model
 export class DotEditContentViewAsToolbarComponent {
     @Input() value: DotEditPageViewAs;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output() changeDevice = new EventEmitter<DotDevice>();
 
     constructor() {}
 
@@ -46,6 +45,6 @@ export class DotEditContentViewAsToolbarComponent {
      */
     changeDeviceHandler(device: DotDevice): void {
         this.value.device = device;
-        this.changeDevice.emit(this.value.device);
+        this.changeViewAs.emit(this.value);
     }
 }

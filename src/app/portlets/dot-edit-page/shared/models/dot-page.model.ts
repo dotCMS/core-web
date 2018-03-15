@@ -1,5 +1,4 @@
 import { ContentType } from '../../../content-types/shared/content-type.model';
-import {DotEditPageViewAs} from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 // TODO: we need to see why the endpoints are returning different "Pages" objects.
 export interface DotPage {

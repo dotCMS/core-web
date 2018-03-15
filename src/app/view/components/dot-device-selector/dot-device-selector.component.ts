@@ -11,7 +11,7 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 })
 export class DotDeviceSelectorComponent implements OnInit {
     @Input() value: DotDevice;
-    @Output() selectedDevice = new EventEmitter<DotDevice>();
+    @Output() selected = new EventEmitter<DotDevice>();
 
     devicesOptions: DotDevice[];
 
@@ -21,18 +21,16 @@ export class DotDeviceSelectorComponent implements OnInit {
         Observable.forkJoin(
             this.dotDevicesService.get(),
             this.dotMessageService.getMessages(['editpage.viewas.default.device'])
-        ).subscribe(response => {
+        ).subscribe(([devices, messages]) => {
             this.devicesOptions = [
-                { name: response[1]['editpage.viewas.default.device'], cssHeight: '100%', cssWidth: '100%' },
-                ...response[0].map((device: DotDevice) => {
-                    device.cssHeight += 'px';
-                    device.cssWidth += 'px';
-                    return device;
-                })
+                {
+                    name: messages['editpage.viewas.default.device'],
+                    cssHeight: '100%',
+                    cssWidth: '100%',
+                    inode: '0'
+                },
+                ...devices.map((device: DotDevice) => this.addPixelDimension(device))
             ];
-            if (!this.value) {
-                this.changeDevice(this.devicesOptions[0]);
-            }
         });
     }
 
@@ -40,7 +38,13 @@ export class DotDeviceSelectorComponent implements OnInit {
      * Track changes in the dropwdow
      * @param {DotDevice} device
      */
-    changeDevice(device: DotDevice) {
-        this.selectedDevice.emit(device);
+    change(device: DotDevice) {
+        this.selected.emit(device);
+    }
+
+    private addPixelDimension(device: DotDevice): DotDevice {
+        device.cssHeight += 'px';
+        device.cssWidth += 'px';
+        return device;
     }
 }

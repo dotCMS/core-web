@@ -38,7 +38,6 @@ import { Workflow } from '../../../shared/models/workflow/workflow.model';
 import { WorkflowService } from '../../../api/services/workflow/workflow.service';
 import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
 
@@ -64,10 +63,8 @@ export const mockDotPageState: DotPageState = {
 class MockDotEditContentViewAsToolbarComponent {
     @Input() value: DotEditPageViewAs;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output() changeDevice = new EventEmitter<DotDevice>();
 }
-
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
@@ -200,45 +197,42 @@ fdescribe('DotEditContentComponent', () => {
         expect(spyLoadingIndicator).toHaveBeenCalled();
     });
 
-    it('should have a View As toolbar', () => {
-        const viewAstoolbarElement: DebugElement = fixture.debugElement.query(
-            By.css('dot-edit-content-view-as-toolbar')
-        );
-        expect(viewAstoolbarElement).not.toBeNull();
-    });
+    describe('set new View As configuration', () => {
+        let viewAsToolbar: DebugElement;
 
-    it('should change the page wrapper dimensions on Device change', () => {
-        const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
-        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
-        spyOn(component, 'changeDeviceHandler').and.callThrough();
-        viewAsToolbar.componentInstance.changeDevice.emit(mockDotDevice);
-        fixture.detectChanges();
+        beforeEach(() => {
+            viewAsToolbar = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+            component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
+        });
 
-        expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
-        expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth, height: mockDotDevice.cssHeight });
-    });
+        it('should have a View As toolbar', () => {
+            expect(viewAsToolbar).not.toBeNull();
+        });
 
-    it('should change the Language/Persona of the page when viewAs configuration changes', () => {
-        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
-        component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
-        spyOn(component, 'changeViewAsHandler').and.callThrough();
-        spyOn(dotPageStateService, 'set');
-        viewAsToolbar.componentInstance.changeViewAs.emit(mockDotEditPageViewAs);
+        it('should set set the page wrapper dimensions based on device', () => {
+            const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
+            component.pageState.viewAs.device = mockDotDevice;
+            fixture.detectChanges();
+            expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth, height: mockDotDevice.cssHeight });
+        });
 
-        expect(component.changeViewAsHandler).toHaveBeenCalledWith(mockDotEditPageViewAs);
-        expect(dotPageStateService.set).toHaveBeenCalledWith(
-            component.pageState.page,
-            component.pageState.state,
-            mockDotEditPageViewAs
-        );
-    });
+        it('should change the Language/Persona of the page when viewAs configuration changes and set the dev', () => {
+            spyOn(component, 'changeViewAsHandler').and.callThrough();
+            spyOn(dotPageStateService, 'set');
+            viewAsToolbar.componentInstance.changeViewAs.emit(mockDotEditPageViewAs);
 
-    it('should send the ViewAs initial configuration to the toolbar', () => {
-        component.pageState = new DotRenderedPageState(mockDotRenderedPage, null, mockUser);
-        const viewAsToolbar: DebugElement = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
-        fixture.detectChanges();
+            expect(component.changeViewAsHandler).toHaveBeenCalledWith(mockDotEditPageViewAs);
+            expect(dotPageStateService.set).toHaveBeenCalledWith(
+                component.pageState.page,
+                component.pageState.state,
+                mockDotEditPageViewAs
+            );
+        });
 
-        expect(viewAsToolbar.componentInstance.value).toEqual(mockDotEditPageViewAs);
+        it('should send the ViewAs initial configuration to the toolbar', () => {
+            fixture.detectChanges();
+            expect(viewAsToolbar.componentInstance.value).toEqual(mockDotRenderedPage.viewAs);
+        });
     });
 
     describe('set default page state', () => {

@@ -12,7 +12,7 @@ describe('DotPersonasService', () => {
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
-    it('should get Languages', () => {
+    it('should get Personas', () => {
         let result;
 
         this.dotPersonasService.get().subscribe(res => {

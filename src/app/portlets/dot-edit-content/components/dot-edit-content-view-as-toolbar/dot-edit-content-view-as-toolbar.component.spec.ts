@@ -10,13 +10,14 @@ import { By } from '@angular/platform-browser';
 import { DotDevicesServiceMock } from '../../../../test/dot-device-service.mock';
 import { DotLanguagesServiceMock } from '../../../../test/dot-languages-service.mock';
 import { DotPersonasServiceMock } from '../../../../test/dot-personas-service.mock';
-import { mockDotPersona } from '../../../../test/dot-persona.mock';
 import { mockDotLanguage } from '../../../../test/dot-language.mock';
 import { mockDotDevice } from '../../../../test/dot-device.mock';
 import { DotPersona } from '../../../../shared/models/dot-persona/dot-persona.model';
 import { DotDevice } from '../../../../shared/models/dot-device/dot-device.model';
 import { DotLanguage } from '../../../../shared/models/dot-language/dot-language.model';
 import { mockDotEditPageViewAs } from '../../../../test/dot-edit-page-view-as.mock';
+import { DotEditPageViewAs } from '../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { mockDotPersona } from '../../../../test/dot-persona.mock';
 
 @Component({
     selector: 'dot-persona-selector',
@@ -24,7 +25,7 @@ import { mockDotEditPageViewAs } from '../../../../test/dot-edit-page-view-as.mo
 })
 class MockDotPersonaSelectorComponent {
     @Input() value: DotPersona;
-    @Output() selectedPersona = new EventEmitter<DotPersona>();
+    @Output() selected = new EventEmitter<DotPersona>();
 }
 
 @Component({
@@ -33,7 +34,7 @@ class MockDotPersonaSelectorComponent {
 })
 class MockDotDeviceSelectorComponent {
     @Input() value: DotDevice;
-    @Output() selectedDevice = new EventEmitter<DotDevice>();
+    @Output() selected = new EventEmitter<DotDevice>();
 }
 
 @Component({
@@ -42,7 +43,7 @@ class MockDotDeviceSelectorComponent {
 })
 class MockDotLanguageSelectorComponent {
     @Input() value: DotLanguage;
-    @Output() selectedLanguage = new EventEmitter<DotLanguage>();
+    @Output() selected = new EventEmitter<DotLanguage>();
 }
 
 describe('DotEditContentViewAsToolbarComponent', () => {
@@ -78,6 +79,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         fixture = DOTTestBed.createComponent(DotEditContentViewAsToolbarComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
+        component.value = { language: mockDotLanguage };
     });
 
     it('should have Persona selector', () => {
@@ -86,15 +88,14 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     });
 
     it('should emit changes in Personas', () => {
-        component.value = mockDotEditPageViewAs;
         const personaSelector: DebugElement = de.query(By.css('dot-persona-selector'));
         spyOn(component, 'changePersonaHandler').and.callThrough();
         spyOn(component.changeViewAs, 'emit');
-        personaSelector.componentInstance.selectedPersona.emit(mockDotPersona);
+        personaSelector.componentInstance.selected.emit(mockDotPersona);
         fixture.detectChanges();
 
         expect(component.changePersonaHandler).toHaveBeenCalledWith(mockDotPersona);
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith(mockDotEditPageViewAs);
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith({language: mockDotLanguage, persona: mockDotPersona});
     });
 
     it('should have Device selector', () => {
@@ -103,15 +104,14 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     });
 
     it('should emit changes in Device', () => {
-        component.value = mockDotEditPageViewAs;
         const deviceSelector: DebugElement = de.query(By.css('dot-device-selector'));
         spyOn(component, 'changeDeviceHandler').and.callThrough();
-        spyOn(component.changeDevice, 'emit');
-        deviceSelector.componentInstance.selectedDevice.emit(mockDotDevice);
+        spyOn(component.changeViewAs, 'emit');
+        deviceSelector.componentInstance.selected.emit(mockDotDevice);
         fixture.detectChanges();
 
         expect(component.changeDeviceHandler).toHaveBeenCalledWith(mockDotDevice);
-        expect(component.changeDevice.emit).toHaveBeenCalledWith(mockDotDevice);
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith({language: mockDotLanguage, device: mockDotDevice});
     });
 
     it('should have Language selector', () => {
@@ -120,15 +120,21 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     });
 
     it('should emit changes in Language', () => {
-        component.value = mockDotEditPageViewAs;
         const languageSelector: DebugElement = de.query(By.css('dot-language-selector'));
+        const testlanguage: DotLanguage = {
+            id: 2,
+            languageCode: 'es',
+            countryCode: 'es',
+            language: 'test',
+            country: 'test'
+        };
         spyOn(component, 'changeLanguageHandler').and.callThrough();
         spyOn(component.changeViewAs, 'emit');
-        languageSelector.componentInstance.selectedLanguage.emit(mockDotLanguage);
+        languageSelector.componentInstance.selected.emit(testlanguage);
         fixture.detectChanges();
 
-        expect(component.changeLanguageHandler).toHaveBeenCalledWith(mockDotLanguage);
-        expect(component.changeViewAs.emit).toHaveBeenCalledWith(mockDotEditPageViewAs);
+        expect(component.changeLanguageHandler).toHaveBeenCalledWith(testlanguage);
+        expect(component.changeViewAs.emit).toHaveBeenCalledWith({ language: testlanguage });
     });
 
     it('should propagate the values to the selector components on init', () => {

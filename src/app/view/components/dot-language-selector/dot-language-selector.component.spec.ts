@@ -39,12 +39,12 @@ describe('DotLanguageSelectorComponent', () => {
     it('should emit the selected language', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
 
-        spyOn(component.selectedLanguage, 'emit');
-        spyOn(component, 'changeLanguage').and.callThrough();
+        spyOn(component.selected, 'emit');
+        spyOn(component, 'change').and.callThrough();
 
         pDropDown.triggerEventHandler('onChange', { value: mockDotLanguage });
 
-        expect(component.changeLanguage).toHaveBeenCalledWith(mockDotLanguage);
-        expect(component.selectedLanguage.emit).toHaveBeenCalledWith(mockDotLanguage);
+        expect(component.change).toHaveBeenCalledWith(mockDotLanguage);
+        expect(component.selected.emit).toHaveBeenCalledWith(mockDotLanguage);
     });
 });

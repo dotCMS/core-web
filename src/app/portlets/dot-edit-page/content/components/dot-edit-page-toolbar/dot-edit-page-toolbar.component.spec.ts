@@ -95,7 +95,6 @@ describe('DotEditPageToolbarComponent', () => {
                 shortyLive: '',
                 shortyWorking: '',
                 workingInode: '',
-                viewAs: null,
             },
             html: '',
             layout: mockDotLayout,

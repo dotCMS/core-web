@@ -11,7 +11,7 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 })
 export class DotPersonaSelectorComponent implements OnInit {
     @Input() value: DotPersona;
-    @Output() selectedPersona = new EventEmitter<DotPersona>();
+    @Output() selected = new EventEmitter<DotPersona>();
 
     personasOptions: DotPersona[];
 
@@ -21,8 +21,9 @@ export class DotPersonaSelectorComponent implements OnInit {
         Observable.forkJoin(
             this.dotPersonasService.get(),
             this.dotMessageService.getMessages(['modes.persona.no.persona'])
-        ).subscribe(response => {
-            this.personasOptions = [{ name: response[1]['modes.persona.no.persona'], identifier: '0' }, ...response[0]];
+        ).subscribe(([personas, messages]) => {
+            // TODO: Endpoint show provide the default persona.
+            this.personasOptions = [{ name: messages['modes.persona.no.persona'], identifier: '0' }, ...personas];
         });
     }
 
@@ -30,7 +31,7 @@ export class DotPersonaSelectorComponent implements OnInit {
      * Track changes in the dropwdow
      * @param {DotPersona} persona
      */
-    changePersona(persona: DotPersona) {
-        this.selectedPersona.emit(persona);
+    change(persona: DotPersona) {
+        this.selected.emit(persona);
     }
 }

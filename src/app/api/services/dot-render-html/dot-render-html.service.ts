@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
-import {DotEditPageViewAs} from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 /**
  * Provide util methods to get a edit page html
@@ -56,8 +56,7 @@ export class DotRenderHTMLService {
         if (viewAsConfig) {
             params = {
                 ...params,
-                language_id: viewAsConfig.language.id,
-                ...viewAsConfig.persona ? {'com.dotmarketing.persona.id': viewAsConfig.persona.identifier} : {}
+                ...this.setOptionalViewAsParams(viewAsConfig)
             };
         }
         return this.coreWebService
@@ -67,6 +66,14 @@ export class DotRenderHTMLService {
                 params: params
             })
             .pluck('bodyJsonObject');
+    }
+
+    private setOptionalViewAsParams(viewAsConfig: DotEditPageViewAs) {
+        return {
+            language_id: viewAsConfig.language.id,
+            ...viewAsConfig.persona ? { 'com.dotmarketing.persona.id': viewAsConfig.persona.identifier } : {},
+            ...viewAsConfig.device ? { 'device_inode': viewAsConfig.device.inode } : {}
+        };
     }
 
     private getPageModeString(pageMode: PageMode): string {

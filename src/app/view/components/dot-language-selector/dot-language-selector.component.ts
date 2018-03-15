@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
-import { SelectItem } from 'primeng/primeng';
 import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-language-selector',
@@ -11,7 +10,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class DotLanguageSelectorComponent implements OnInit {
     @Input() value: DotLanguage;
-    @Output() selectedLanguage = new EventEmitter<DotLanguage>();
+    @Output() selected = new EventEmitter<DotLanguage>();
 
     languagesOptions: Observable<DotLanguage[]>;
 
@@ -22,10 +21,10 @@ export class DotLanguageSelectorComponent implements OnInit {
     }
 
     /**
-     * Track changes in the dropwdow
+     * Track changes in the dropdown
      * @param {DotLanguage} language
      */
-    changeLanguage(language: DotLanguage) {
-        this.selectedLanguage.emit(language);
+    change(language: DotLanguage) {
+        this.selected.emit(language);
     }
 }
