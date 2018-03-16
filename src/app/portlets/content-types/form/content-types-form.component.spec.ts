@@ -28,6 +28,7 @@ describe('ContentTypesFormComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     let dotcmsConfig: DotcmsConfig;
+    let dotWorkflowService: DotWorkflowService;
 
     beforeEach(
         async(() => {
@@ -96,6 +97,27 @@ describe('ContentTypesFormComponent', () => {
             el = de.nativeElement;
 
             dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
+
+            dotWorkflowService = fixture.debugElement.injector.get(DotWorkflowService);
+            spyOn(dotWorkflowService, 'get').and.returnValue(
+                Observable.of([
+                    {
+                        id: '123',
+                        name: 'Workflow 1',
+                        system: false
+                    },
+                    {
+                        id: '456',
+                        name: 'Workflow 2',
+                        system: false
+                    },
+                    {
+                        id: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
+                        name: 'System Workflow',
+                        system: true
+                    }
+                ])
+            );
         })
     );
 
@@ -417,6 +439,11 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should send data with valid form', () => {
+        spyOn(dotcmsConfig, 'getConfig').and.returnValue(
+            Observable.of({
+                license: { isCommunity: true }
+            })
+        );
         comp.data = {
             baseType: 'CONTENT'
         };
@@ -444,33 +471,12 @@ describe('ContentTypesFormComponent', () => {
             defaultType: null,
             fixed: null,
             folder: null,
-            system: null
+            system: null,
+            workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']
         });
     });
 
     describe('workflow field', () => {
-        let dotWorkflowService: DotWorkflowService;
-
-        beforeEach(() => {
-            dotWorkflowService = fixture.debugElement.injector.get(DotWorkflowService);
-            spyOn(dotWorkflowService, 'get').and.returnValue(
-                Observable.of([
-                    {
-                        id: '123',
-                        name: 'Workflow 1'
-                    },
-                    {
-                        id: '456',
-                        name: 'Workflow 2'
-                    },
-                    {
-                        id: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
-                        name: 'System Workflow'
-                    }
-                ])
-            );
-        });
-
         describe('create', () => {
             beforeEach(() => {
                 comp.data = {

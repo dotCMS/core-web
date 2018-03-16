@@ -122,7 +122,10 @@ export class ContentTypesFormComponent implements OnInit {
      */
     submitForm(): void {
         if (this.form.valid) {
-            this.submit.emit(this.form.value);
+            this.submit.emit({
+                ...this.form.value,
+                workflow: this.form.getRawValue().workflow
+            });
         }
     }
 
@@ -272,16 +275,18 @@ export class ContentTypesFormComponent implements OnInit {
             TODO: need to update the endpoint to get a property that tell us which is the "System Workflow"
         */
         const defaultValue = workflows
-            .filter((workflow: DotWorkflow) => workflow.id === 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2')
+            .filter((workflow: DotWorkflow) => workflow.system)
             .map((workflow: DotWorkflow) => workflow.id);
 
         this.form.get('workflow').setValue(defaultValue);
     }
 
     private updateWorkflowFormControl(license): void {
+        this.fillWorkflowFieldOptions();
+
         if (!license.isCommunity) {
             const workflowControl = this.form.get('workflow');
-            this.fillWorkflowFieldOptions();
+
             workflowControl.enable();
 
             if (this.originalValue) {
