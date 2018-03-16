@@ -2,24 +2,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { Observable } from 'rxjs/Observable';
 
+import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule, MultiSelect } from 'primeng/primeng';
+
+import { DotcmsConfig, LoginService } from 'dotcms-js/dotcms-js';
+import { SiteService } from 'dotcms-js/dotcms-js';
+
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotcmsConfig, LoginService } from 'dotcms-js/dotcms-js';
-import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule, MultiSelect } from 'primeng/primeng';
 import { FieldValidationMessageModule } from '../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { SiteSelectorFieldModule } from '../../../view/components/_common/site-selector-field/site-selector-field.module';
-import { SiteService } from 'dotcms-js/dotcms-js';
 import { SiteServiceMock } from '../../../test/site-service.mock';
 import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MdInputTextModule } from '../../../view/directives/md-inputtext/md-input-text.module';
 
 describe('ContentTypesFormComponent', () => {
@@ -398,28 +400,53 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('expireDateVar').disabled).toBe(true);
     });
 
-    it('should render enabled dates fields when date fields are passed', () => {
-        comp.data = {
-            baseType: 'CONTENT'
-        };
-        comp.fields = [
-            {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
-                id: '123',
-                indexed: true,
-                name: 'Date 1'
-            },
-            {
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
-                id: '456',
-                indexed: true,
-                name: 'Date 2'
-            }
-        ];
-        fixture.detectChanges();
+    describe('fields dates enabled', () => {
+        beforeEach(() => {
+            comp.data = {
+                baseType: 'CONTENT'
+            };
+            comp.fields = [
+                {
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                    id: '123',
+                    indexed: true,
+                    name: 'Date 1'
+                },
+                {
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                    id: '456',
+                    indexed: true,
+                    name: 'Date 2'
+                }
+            ];
+            fixture.detectChanges();
+        });
 
-        expect(comp.form.get('publishDateVar').disabled).toBe(false);
-        expect(comp.form.get('expireDateVar').disabled).toBe(false);
+        it('should render enabled dates fields when date fields are passed', () => {
+            expect(comp.form.get('publishDateVar').disabled).toBe(false);
+            expect(comp.form.get('expireDateVar').disabled).toBe(false);
+        });
+
+        it('should patch publishDateVar', () => {
+            const field: AbstractControl = comp.form.get('publishDateVar');
+            field.setValue('123');
+
+            const expireDateVarField = de.query(By.css('#content-type-form-expire-date-field'));
+            expireDateVarField.triggerEventHandler('onChange',  {value: '123'});
+
+            expect(field.value).toBe('');
+        });
+
+        it('should patch expireDateVar', () => {
+            const field: AbstractControl = comp.form.get('expireDateVar');
+
+            field.setValue('123');
+
+            const expireDateVarField = de.query(By.css('#content-type-form-publish-date-field'));
+            expireDateVarField.triggerEventHandler('onChange',  {value: '123'});
+
+            expect(field.value).toBe('');
+        });
     });
 
     it('should not submit form with invalid form', () => {

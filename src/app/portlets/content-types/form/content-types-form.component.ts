@@ -83,6 +83,21 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     /**
+     * Update expireDateVar and publishDateVar fields base on selection
+     *
+     * @param {any} $event
+     * @param {any} field
+     * @memberof ContentTypesFormComponent
+     */
+    handleDateVarChange($event, field): void {
+        if (field === 'publishDateVar') {
+            this.updateExpireDateVar($event.value);
+        } else {
+            this.updatePublishDateVar($event.value);
+        }
+    }
+
+    /**
      * Check if the form is in edit mode
      *
      * @returns {boolean}
@@ -284,6 +299,22 @@ export class ContentTypesFormComponent implements OnInit {
                 this.originalValue.workflow = workflowControl.value;
             }
             this.setSaveState();
+        }
+    }
+
+    private updateExpireDateVar(value: string): void {
+        const expireDateVar = this.form.get('expireDateVar');
+
+        if (expireDateVar.value === value) {
+            expireDateVar.patchValue('');
+        }
+    }
+
+    private updatePublishDateVar(value: string): void {
+        const publishDateVar = this.form.get('publishDateVar');
+
+        if (publishDateVar.value === value) {
+            publishDateVar.patchValue('');
         }
     }
 }
