@@ -277,9 +277,6 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private setDefaultWorkflow(workflows: DotWorkflow[]): void {
-        /*
-            TODO: need to update the endpoint to get a property that tell us which is the "System Workflow"
-        */
         const defaultValue = workflows
             .filter((workflow: DotWorkflow) => workflow.system)
             .map((workflow: DotWorkflow) => workflow.id);
