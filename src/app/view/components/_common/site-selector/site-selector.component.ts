@@ -50,6 +50,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
     currentSite: Observable<Site>;
     totalRecords: number;
     sitesCurrentPage: Site[];
+    sites: any[];
 
     constructor(private siteService: SiteService, public paginationService: PaginatorService) {}
 
@@ -85,16 +86,16 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
      */
     handleSitesRefresh(): void {
         this.paginationService.getCurrentPage().subscribe((items) => {
-            const sites: any[] = items.splice(0);
+            this.sites = items.splice(0);
             this.getSitesList();
 
             // if current site not being listed on updated sites list (socket message) then switch to default site
-            if (!sites.find((site) => site.identifier === this.siteService.currentSite.identifier)) {
-                const defaultSite = sites.filter((site) => site.default === true);
+            if (!this.isCurrentSiteOnListOfAvailableSites(this.sites, this.siteService.currentSite)) {
+                const defaultSite = this.getDefaultSite(this.sites);
                 this.siteChange({
-                    hostname: defaultSite[0].hostname,
-                    type: defaultSite[0].type,
-                    identifier: defaultSite[0].identifier
+                    hostname: defaultSite.hostname,
+                    type: undefined,
+                    identifier: defaultSite.identifier
                 });
             }
 
@@ -167,5 +168,15 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
                 this.siteChange(site);
             });
         }
+    }
+
+    private isCurrentSiteOnListOfAvailableSites(sites: any[], currentSite: Site): boolean {
+        return sites.find((site) => {
+            return (site.identifier === currentSite.identifier && !site.archived);
+        });
+    }
+
+    private getDefaultSite(sites: any[]): Site {
+        return sites.filter((site) => site.default === true)[0];
     }
 }
