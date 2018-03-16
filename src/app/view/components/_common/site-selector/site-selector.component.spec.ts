@@ -109,13 +109,72 @@ describe('SiteSelectorComponent', () => {
             };
 
             const siteService = de.injector.get(SiteService);
-            const spy = spyOn(siteService, 'refreshSites$').and.returnValue(Observable.of([site1, site2]));
+            spyOn(siteService, 'refreshSites$').and.returnValue(Observable.of([site1, site2]));
+            spyOn(comp, 'handleSitesRefresh').and.callThrough();
 
             fixture.detectChanges();
 
-            expect(spy.calls.any()).toEqual(false);
+            expect(comp.handleSitesRefresh).toHaveBeenCalledTimes(1);
         })
     );
+
+    it('should change to default site, when the updated list of sites does not has the current site (archived site)', () => {
+        const sites = [
+            {
+                identifier: '1',
+                hostname: 'Site 1',
+                default: false
+            },
+            {
+                identifier: '2',
+                hostname: 'Site 2',
+                default: true
+            },
+            {
+                identifier: '3',
+                hostname: 'Site 3',
+                default: false
+            }
+        ];
+
+        const siteService: SiteService = de.injector.get(SiteService);
+        const paginatorService: PaginatorService = de.injector.get(PaginatorService);
+
+        spyOn(paginatorService, 'getCurrentPage').and.returnValue(Observable.of(sites));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(sites));
+        spyOnProperty(siteService, 'currentSite', 'get').and.returnValue({
+            identifier: '4',
+            hostname: 'Site 4',
+            default: false
+        });
+        spyOn(comp, 'siteChange').and.callThrough();
+
+        comp.handleSitesRefresh();
+
+        expect(paginatorService.getCurrentPage).toHaveBeenCalledTimes(1);
+        expect(comp.sites).toEqual([
+            {
+                identifier: '1',
+                hostname: 'Site 1',
+                default: false
+            },
+            {
+                identifier: '2',
+                hostname: 'Site 2',
+                default: true
+            },
+            {
+                identifier: '3',
+                hostname: 'Site 3',
+                default: false
+            }
+        ]);
+        expect(comp.siteChange).toHaveBeenCalledWith({
+            identifier: '2',
+            hostname: 'Site 2',
+            type: undefined
+        });
+    });
 
     it(
         'should change Page',
@@ -132,8 +191,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
-                .componentInstance;
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
 
             searchableDropdownComponent.pageChange.emit({
                 filter: filter,
@@ -163,8 +221,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
-                .componentInstance;
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
 
             searchableDropdownComponent.filterChange.emit(filter);
             comp.handleFilterChange(filter);
@@ -185,8 +242,7 @@ describe('SiteSelectorComponent', () => {
 
             fixture.detectChanges();
 
-            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown'))
-                .componentInstance;
+            const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
 
             searchableDropdownComponent.filterChange.emit('');
 
