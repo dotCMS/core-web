@@ -1,4 +1,14 @@
-import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    Input,
+    SimpleChanges,
+    ViewChild,
+    OnChanges,
+    OnInit,
+    ViewEncapsulation
+} from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
@@ -21,7 +31,11 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     fieldProperties: string[] = [];
     checkboxFields: string[] = ['indexed', 'listed', 'required', 'searchable', 'unique'];
 
-    constructor(private fb: FormBuilder, public dotMessageService: DotMessageService, private fieldPropertyService: FieldPropertyService) {
+    constructor(
+        private fb: FormBuilder,
+        public dotMessageService: DotMessageService,
+        private fieldPropertyService: FieldPropertyService
+    ) {
         super(
             [
                 'contenttypes.field.properties.name.label',
@@ -83,14 +97,14 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         if (this.form.valid) {
             this.saveField.emit(this.form.value);
         } else {
-            this.fieldProperties.forEach((property) => this.form.get(property).markAsTouched());
+            this.fieldProperties.forEach(property => this.form.get(property).markAsTouched());
         }
     }
 
     public destroy(): void {
         this.fieldProperties = [];
         const propertiesContainer = this.propertiesContainer.nativeElement;
-        propertiesContainer.childNodes.forEach((child) => {
+        propertiesContainer.childNodes.forEach(child => {
             if (child.tagName) {
                 propertiesContainer.removeChild(child);
             }
@@ -101,12 +115,13 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         const formFields = {};
 
         if (properties) {
-            properties.filter((property) => this.fieldPropertyService.existsComponent(property)).forEach((property) => {
+            properties.filter(property => this.fieldPropertyService.existsComponent(property)).forEach(property => {
                 formFields[property] = [
                     {
                         value:
-                            this.formFieldData[property] || this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
-                        disabled: this.formFieldData.id && this.fieldPropertyService.isDisabledInEditMode(property)
+                            this.formFieldData[property] ||
+                            this.fieldPropertyService.getDefaultValue(property, this.formFieldData.clazz),
+                        disabled: this.formFieldData.id && this.isPropertyDisabled(property)
                     },
                     this.fieldPropertyService.getValidations(property)
                 ];
@@ -119,15 +134,25 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         this.setAutoCheckValues();
     }
 
+    private isPropertyDisabled(property: string): boolean {
+        return (
+            this.fieldPropertyService.isDisabledInEditMode(property) ||
+            this.fieldPropertyService.isDisabledInFixed(this.formFieldData.fixed, property)
+        );
+    }
+
     private sortProperties(properties: string[]): void {
         this.fieldProperties = properties
-            .filter((property) => this.fieldPropertyService.existsComponent(property))
-            .sort((property1, proeprty2) => this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2));
+            .filter(property => this.fieldPropertyService.existsComponent(property))
+            .sort(
+                (property1, proeprty2) =>
+                    this.fieldPropertyService.getOrder(property1) - this.fieldPropertyService.getOrder(proeprty2)
+            );
     }
 
     private setAutoCheckValues(): void {
         [this.form.get('searchable'), this.form.get('listed'), this.form.get('unique')]
-            .filter((checkbox) => !!checkbox)
+            .filter(checkbox => !!checkbox)
             .forEach(checkbox => {
                 this.handleCheckValues(checkbox);
             });
@@ -141,8 +166,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             this.handleDisabledIndexed(true);
         }
 
-        checkbox.valueChanges.subscribe((res) => {
-            checkbox === this.form.get('unique') ? this.handleUniqueValuesChecked(res) : this.setIndexedValueChecked(res);
+        checkbox.valueChanges.subscribe(res => {
+            checkbox === this.form.get('unique')
+                ? this.handleUniqueValuesChecked(res)
+                : this.setIndexedValueChecked(res);
         });
     }
 
