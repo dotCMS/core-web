@@ -44,4 +44,20 @@ export class DotWorkflowService {
             })
             .pluck('entity');
     }
+
+    /**
+     * Updates the workflow actions for a page asset
+     *
+     * @param {string} inode
+     * @returns {Observable<any[]>}
+     * @memberof DotWorkflowService
+     */
+    updateWorkflowActions(inode: string, actionId: string): Observable<any[]> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: `v1/workflow/fire/actions/${actionId}?inode=${inode}`
+            })
+            .pluck('entity');
+    }
 }

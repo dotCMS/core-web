@@ -13,20 +13,24 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
     @Input() inode: string;
     @Input() label: string;
 
-    workflowsActions: Observable<MenuItem[]>;
+    workflowsMenuActions: Observable<MenuItem[]>;
 
     constructor(private workflowsService: DotWorkflowService) {}
 
     ngOnInit() {
-        this.workflowsActions = this.workflowsService
-            .getContentWorkflowActions(this.inode)
-            .map((workflows: DotWorkflowAction[]) => this.getWorkflowOptions(workflows));
+        this.workflowsMenuActions = this.workflowsService.getContentWorkflowActions(this.inode).map((workflows: DotWorkflowAction[]) => {
+            return this.getWorkflowOptions(workflows);
+        });
     }
 
     private getWorkflowOptions(workflows: DotWorkflowAction[]): MenuItem[] {
         return workflows.map((workflow: DotWorkflowAction) => {
             return {
-                label: workflow.name
+                label: workflow.name,
+                command: () => {
+                    const request: Observable<any[]> = this.workflowsService.updateWorkflowActions(this.inode, workflow.id);
+                    request.subscribe();
+                }
             };
         });
     }
