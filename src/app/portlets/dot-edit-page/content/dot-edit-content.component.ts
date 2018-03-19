@@ -60,7 +60,7 @@ export class DotEditContentComponent implements OnInit {
         private dotPageStateService: DotPageStateService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
-        private dotEditPageService: DotEditPageService,
+        private dotEditPageService: DotEditPageService
     ) {}
 
     ngOnInit() {
