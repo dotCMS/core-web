@@ -55,6 +55,34 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     it('should set action split buttons params', () => {
         fixture.detectChanges();
         const actionsButton: SplitButton = de.query(By.css('.edit-page-toolbar__actions')).componentInstance;
-        expect(actionsButton.model).toEqual([{ label: 'Assign Workflow' }, { label: 'Save' }, { label: 'Save / Publish' }]);
+
+        expect(actionsButton.model[0].label).toEqual('Assign Workflow');
+        expect(actionsButton.model[1].label).toEqual('Save');
+        expect(actionsButton.model[2].label).toEqual('Save / Publish');
+    });
+
+    it('should trigger the methods in the action buttons', () => {
+        const dotWorkflowService: DotWorkflowService = de.injector.get(DotWorkflowService);
+        let workflowsActions: DotWorkflowAction[];
+        dotWorkflowService.getContentWorkflowActions(component.inode).subscribe(event => workflowsActions = event);
+        spyOn(dotWorkflowService, 'updateWorkflowActions');
+
+        fixture.detectChanges();
+
+        const splitButtons = de.query(By.all()).nativeElement.querySelectorAll('.ui-menuitem-link');
+        const firstButton = splitButtons[0];
+        const secondButton = splitButtons[1];
+        const thirdButton = splitButtons[2];
+
+        firstButton.click();
+        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[0].id);
+
+        secondButton.click();
+        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[1].id);
+
+        thirdButton.click();
+        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[2].id);
+
+        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledTimes(3);
     });
 });
