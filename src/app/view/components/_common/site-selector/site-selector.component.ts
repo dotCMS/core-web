@@ -171,12 +171,10 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
     }
 
     private isCurrentSiteOnListOfAvailableSites(sites: any[], currentSite: Site): boolean {
-        return sites.find((site) => {
-            return (site.identifier === currentSite.identifier && !site.archived);
-        });
+        return sites.find((site) => (site.identifier === currentSite.identifier && !site.archived));
     }
 
     private getDefaultSite(sites: any[]): Site {
-        return sites.filter((site) => site.default === true)[0];
+        return sites.filter((site) => site.default)[0];
     }
 }
