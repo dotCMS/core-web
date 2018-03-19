@@ -6,4 +6,16 @@ export class DotDevicesServiceMock {
     get(): Observable<DotDevice[]> {
         return Observable.of([mockDotDevice]);
     }
+
+    /**
+     * Add 'px' string to the dimension values in device.
+     * @param {DotDevice} device
+     * @returns {DotDevice}
+     * @memberof DotDevicesService
+     */
+    addPixelDimension(device: DotDevice): DotDevice {
+        device.cssHeight += 'px';
+        device.cssWidth += 'px';
+        return device;
+    }
 }

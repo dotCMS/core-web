@@ -24,7 +24,7 @@ export class DotDeviceSelectorComponent implements OnInit {
             .mergeMap((messages: string[]) =>
                 this.dotDevicesService.get()
                     .flatMap((devices: DotDevice[]) => devices)
-                    .map((device: DotDevice) => this.addPixelDimension(device))
+                    .map((device: DotDevice) => this.dotDevicesService.addPixelDimension(device))
                     .toArray()
                     .map((devices: DotDevice[]) => [
                         {
@@ -44,11 +44,5 @@ export class DotDeviceSelectorComponent implements OnInit {
      */
     change(device: DotDevice) {
         this.selected.emit(device);
-    }
-
-    private addPixelDimension(device: DotDevice): DotDevice {
-        device.cssHeight += 'px';
-        device.cssWidth += 'px';
-        return device;
     }
 }

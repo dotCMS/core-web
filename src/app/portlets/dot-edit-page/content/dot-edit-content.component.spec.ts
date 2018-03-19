@@ -36,6 +36,8 @@ import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-pag
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
+import {DotDevicesService} from '../../../api/services/dot-devices/dot-devices.service';
+import {DotDevicesServiceMock} from '../../../test/dot-device-service.mock';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -112,6 +114,10 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: DotWorkflowService,
                     useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: DotDevicesService,
+                    useClass: DotDevicesServiceMock
                 },
                 {
                     provide: ActivatedRoute,
