@@ -36,8 +36,6 @@ import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-pag
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
-import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -114,10 +112,6 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: DotWorkflowService,
                     useClass: DotWorkflowServiceMock
-                },
-                {
-                    provide: DotDevicesService,
-                    useClass: DotDevicesServiceMock
                 },
                 {
                     provide: ActivatedRoute,
@@ -201,11 +195,11 @@ describe('DotEditContentComponent', () => {
             expect(viewAsToolbar).not.toBeNull();
         });
 
-        it('should set set the page wrapper dimensions based on device', () => {
+        it('should set the page wrapper dimensions based on device', () => {
             const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
             component.pageState.viewAs.device = mockDotDevice;
             fixture.detectChanges();
-            expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth, height: mockDotDevice.cssHeight });
+            expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth + 'px', height: mockDotDevice.cssHeight + 'px'});
             expect(pageWrapper.nativeElement.classList.contains('dot-edit__page-wrapper--deviced')).toBe(true);
         });
 

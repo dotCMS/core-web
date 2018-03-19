@@ -34,11 +34,4 @@ describe('DotDevicesService', () => {
             expect(devices).toEqual([mockDotDevice]);
         });
     });
-
-    it('should add pixel acronym to device dimensions', () => {
-        const device = this.dotDevicesService.addPixelDimension(mockDotDevice);
-
-        expect(device.cssWidth).toEqual('200px');
-        expect(device.cssHeight).toEqual('100px');
-    });
 });

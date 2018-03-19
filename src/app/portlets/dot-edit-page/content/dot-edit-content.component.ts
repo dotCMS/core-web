@@ -23,8 +23,6 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -63,7 +61,6 @@ export class DotEditContentComponent implements OnInit {
         public dotEditContentHtmlService: DotEditContentHtmlService,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotEditPageService: DotEditPageService,
-        private dotDevicesService: DotDevicesService
     ) {}
 
     ngOnInit() {
@@ -298,18 +295,11 @@ export class DotEditContentComponent implements OnInit {
 
     private setPageState(pageState: DotRenderedPageState): void {
         this.pageState = pageState;
-        this.setDeviceDimensions();
         this.renderPage(pageState);
     }
 
     private setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
         this.isModelUpdated = false;
-    }
-
-    private setDeviceDimensions(): void {
-        if (this.pageState.viewAs && this.pageState.viewAs.device) {
-            this.pageState.viewAs.device = this.dotDevicesService.addPixelDimension(this.pageState.viewAs.device);
-        }
     }
 }

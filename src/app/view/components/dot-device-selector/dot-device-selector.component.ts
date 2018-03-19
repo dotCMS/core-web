@@ -23,9 +23,6 @@ export class DotDeviceSelectorComponent implements OnInit {
         this.devicesOptions = this.dotMessageService.getMessages(['editpage.viewas.default.device'])
             .mergeMap((messages: string[]) =>
                 this.dotDevicesService.get()
-                    .flatMap((devices: DotDevice[]) => devices)
-                    .map((device: DotDevice) => this.dotDevicesService.addPixelDimension(device))
-                    .toArray()
                     .map((devices: DotDevice[]) => [
                         {
                             name: messages['editpage.viewas.default.device'],
