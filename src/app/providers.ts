@@ -1,3 +1,4 @@
+import { DotIframeService } from './view/components/_common/iframe/service/dot-iframe/dot-iframe.service';
 import { AccountService } from './api/services/account-service';
 import { AuthGuardService } from './api/services/guards/auth-guard.service';
 import { ColorUtil } from './api/util/ColorUtil';
@@ -36,6 +37,7 @@ const PROVIDERS: any[] = [
     DefaultGuardService,
     DotDialogService,
     DotHttpErrorManagerService,
+    DotIframeService,
     DotMenuService,
     DotMessageService,
     DotRouterService,

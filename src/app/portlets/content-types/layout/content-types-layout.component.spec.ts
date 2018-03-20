@@ -150,12 +150,12 @@ describe('ContentTypesLayoutComponent', () => {
         });
     });
 
-    describe('Permission tab', () => {
+    fdescribe('Permission tab', () => {
         beforeEach(() => {
             fixture.componentInstance.contentTypeId = '2';
             fixture.detectChanges();
 
-            this.pTabPanel = fixture.debugElement.query(By.css('p-tabView .content-type__permissions'));
+            this.pTabPanel = fixture.debugElement.query(By.css('.content-type__permissions'));
         });
 
         it('should has a permission panel', () => {
@@ -168,7 +168,7 @@ describe('ContentTypesLayoutComponent', () => {
             expect(iframe).not.toBeNull();
         });
 
-        it('should set the src attribute', () => {
+        fit('should set the src attribute', () => {
             const iframe = this.pTabPanel.query(By.css('dot-iframe'));
             expect(iframe.componentInstance.src).toBe('/html/content_types/permissions.jsp?contentTypeId=2&popup=true');
         });
