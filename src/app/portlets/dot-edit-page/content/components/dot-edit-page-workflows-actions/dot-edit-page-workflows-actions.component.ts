@@ -28,7 +28,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
             return {
                 label: workflow.name,
                 command: () => {
-                    const request: Observable<any[]> = this.workflowsService.updateWorkflowActions(this.inode, workflow.id);
+                    const request: Observable<any[]> = this.workflowsService.fireWorkflowAction(this.inode, workflow.id);
                     request.subscribe();
                 }
             };

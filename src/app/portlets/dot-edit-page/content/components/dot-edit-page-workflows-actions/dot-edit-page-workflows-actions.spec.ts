@@ -65,7 +65,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         const dotWorkflowService: DotWorkflowService = de.injector.get(DotWorkflowService);
         let workflowsActions: DotWorkflowAction[];
         dotWorkflowService.getContentWorkflowActions(component.inode).subscribe(event => workflowsActions = event);
-        spyOn(dotWorkflowService, 'updateWorkflowActions');
+        spyOn(dotWorkflowService, 'fireWorkflowAction');
 
         fixture.detectChanges();
 
@@ -75,14 +75,14 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         const thirdButton = splitButtons[2];
 
         firstButton.click();
-        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[0].id);
+        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[0].id);
 
         secondButton.click();
-        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[1].id);
+        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[1].id);
 
         thirdButton.click();
-        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledWith(component.inode, workflowsActions[2].id);
+        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[2].id);
 
-        expect(dotWorkflowService.updateWorkflowActions).toHaveBeenCalledTimes(3);
+        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(3);
     });
 });

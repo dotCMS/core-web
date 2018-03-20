@@ -52,7 +52,7 @@ export class DotWorkflowService {
      * @returns {Observable<any[]>}
      * @memberof DotWorkflowService
      */
-    updateWorkflowActions(inode: string, actionId: string): Observable<any[]> {
+    fireWorkflowAction(inode: string, actionId: string): Observable<any[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,

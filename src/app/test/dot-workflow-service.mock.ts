@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { DotWorkflowAction } from '../shared/models/dot-workflow-action/dot-workflow-action.model';
 
 export class DotWorkflowServiceMock {
-    getContentWorkflowActions(iNode: string): Observable<DotWorkflowAction[]> {
+    getContentWorkflowActions(inode: string): Observable<DotWorkflowAction[]> {
         return Observable.of([
             {
                 assignable: true,
@@ -61,7 +61,7 @@ export class DotWorkflowServiceMock {
         ]);
     }
 
-    updateWorkflowActions(): Observable<any[]> {
+    fireWorkflowAction(): Observable<any[]> {
         return Observable.of([]);
     }
 }
