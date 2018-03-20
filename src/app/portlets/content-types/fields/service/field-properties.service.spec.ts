@@ -35,7 +35,7 @@ describe('FieldPropertyService', () => {
         this.fieldPropertiesService = this.injector.get(FieldPropertyService);
     });
 
-    it('should return ttrue if the property has a component linked', () => {
+    it('should return true if the property has a component linked', () => {
         expect(true).toEqual(this.fieldPropertiesService.existsComponent('categories'));
         expect(true).toEqual(this.fieldPropertiesService.existsComponent('dataType'));
         expect(true).toEqual(this.fieldPropertiesService.existsComponent('defaultValue'));
@@ -102,6 +102,12 @@ describe('FieldPropertyService', () => {
         expect(this.fieldPropertiesService.isDisabledInEditMode('defaultValue')).toBeUndefined();
 
         expect(this.fieldPropertiesService.isDisabledInEditMode('property')).toBeNull();
+    });
+
+    fit('should return if the property is editable when field is fixed', () => {
+        expect(true).toEqual(this.fieldPropertiesService.isDisabledInFixed(true, 'name'));
+        expect(false).toEqual(this.fieldPropertiesService.isDisabledInFixed(false, 'name'));
+        expect(this.fieldPropertiesService.isDisabledInFixed(true, 'dataType')).toBeUndefined();
     });
 
     it('should return the right proeprties for a Field Class', () => {
