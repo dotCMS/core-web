@@ -1,10 +1,10 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DotIframeService {
-    _actions: Subject<any> = new Subject();
+    private _actions: Subject<any> = new Subject();
 
     constructor() {}
 

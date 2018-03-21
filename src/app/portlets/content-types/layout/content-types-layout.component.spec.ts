@@ -55,7 +55,7 @@ class FieldDragDropServiceMock {
     setBagOptions() {}
 }
 
-fdescribe('ContentTypesLayoutComponent', () => {
+describe('ContentTypesLayoutComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
 

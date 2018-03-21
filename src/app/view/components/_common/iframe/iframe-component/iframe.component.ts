@@ -42,7 +42,9 @@ export class IframeComponent implements OnInit {
         this.element.nativeElement.style.height = this.getIframeHeight(window.innerHeight);
 
         this.dotIframeService.reloaded().subscribe(() => {
-            this.getIframeLocation().reload();
+            if (this.getIframeWindow()) {
+                this.getIframeLocation().reload();
+            }
         });
 
         Observable.fromEvent(window, 'resize')
@@ -59,7 +61,7 @@ export class IframeComponent implements OnInit {
      * @memberof IframeComponent
      */
     checkSessionExpired(): void {
-        if (!!this.getIframeWindow && this.getIframeLocation().pathname.indexOf('/c/portal_public/login') !== -1) {
+        if (!!this.getIframeWindow() && this.getIframeLocation().pathname.indexOf('/c/portal_public/login') !== -1) {
             this.loginService.logOutUser().subscribe(
                 (_data) => {},
                 (error) => {
@@ -88,7 +90,7 @@ export class IframeComponent implements OnInit {
     }
 
     private getIframeLocation(): any {
-        return this.getIframeWindow().location;
+        return this.iframeElement.nativeElement.contentWindow.location;
     }
 
     private getIframeHeight(height: number): string {
