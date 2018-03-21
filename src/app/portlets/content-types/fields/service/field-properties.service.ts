@@ -88,8 +88,8 @@ export class FieldPropertyService {
      * @param {string} propertyName
      * @returns {boolean}
      */
-    isDisabledInFixed(fixed: boolean, propertyName: string): boolean {
-        return fixed ? (PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].disabledInFixed : false) : false;
+    isDisabledInFixed(propertyName: string): boolean {
+        return PROPERTY_INFO[propertyName] ? PROPERTY_INFO[propertyName].disabledInFixed : false;
     }
 
     /**

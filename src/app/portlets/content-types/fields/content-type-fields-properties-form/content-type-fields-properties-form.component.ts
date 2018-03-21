@@ -137,7 +137,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     private isPropertyDisabled(property: string): boolean {
         return (
             this.fieldPropertyService.isDisabledInEditMode(property) ||
-            this.fieldPropertyService.isDisabledInFixed(this.formFieldData.fixed, property)
+            this.formFieldData.fixed && this.fieldPropertyService.isDisabledInFixed(property)
         );
     }
 
