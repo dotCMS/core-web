@@ -35,7 +35,7 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     }
 
     /**
-     * Call the logout method service
+     * Call the logout service and clear the user session
      *
      * @returns {boolean}
      * @memberof ToolbarUserComponent
@@ -51,7 +51,7 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     }
 
     /**
-     * Call the
+     * Call the logout as service and clear the user login as
      *
      * @param {any} $event
      * @memberof ToolbarUserComponent
