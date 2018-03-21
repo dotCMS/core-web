@@ -2,7 +2,6 @@ import { mockUser, LoginServiceMock } from './../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
 import { LoginAsComponent } from './login-as';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../test/dot-test-bed';
