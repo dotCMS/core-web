@@ -1,17 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { async, ComponentFixture } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { Observable } from 'rxjs/Observable';
 import { SplitButton } from 'primeng/primeng';
+import { SplitButtonModule } from 'primeng/components/splitbutton/splitbutton';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
-import { Observable } from 'rxjs/Observable';
+import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
+import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
-import { CommonModule } from '@angular/common';
-import { SplitButtonModule } from 'primeng/components/splitbutton/splitbutton';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { mockResponseView } from '../../../../../test/response-view.mock';
 
 describe('DotEditPageWorkflowsActionsComponent', () => {
     let component: DotEditPageWorkflowsActionsComponent;
@@ -28,7 +33,10 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                     {
                         provide: DotWorkflowService,
                         useClass: DotWorkflowServiceMock
-                    }
+                    },
+                    { provide: LoginService, useClass: LoginServiceMock },
+                    DotHttpErrorManagerService,
+                    DotRouterService
                 ]
             });
         })
@@ -64,7 +72,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     it('should trigger the methods in the action buttons', () => {
         const dotWorkflowService: DotWorkflowService = de.injector.get(DotWorkflowService);
         let workflowsActions: DotWorkflowAction[];
-        dotWorkflowService.getContentWorkflowActions(component.inode).subscribe(event => workflowsActions = event);
+        dotWorkflowService.getContentWorkflowActions(component.inode).subscribe((event) => (workflowsActions = event));
         spyOn(dotWorkflowService, 'fireWorkflowAction');
 
         fixture.detectChanges();
@@ -85,4 +93,5 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(3);
     });
+
 });

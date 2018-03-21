@@ -49,10 +49,10 @@ export class DotWorkflowService {
      * Updates the workflow actions for a page asset
      *
      * @param {string} inode
-     * @returns {Observable<any[]>}
+     * @returns {Observable<any>} // contentlet
      * @memberof DotWorkflowService
      */
-    fireWorkflowAction(inode: string, actionId: string): Observable<any[]> {
+    fireWorkflowAction(inode: string, actionId: string): Observable<any> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
