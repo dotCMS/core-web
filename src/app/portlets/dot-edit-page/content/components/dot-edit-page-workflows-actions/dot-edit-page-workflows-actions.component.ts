@@ -33,6 +33,8 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
                     this.workflowsMenuActions = this.workflowsService
                         .fireWorkflowAction(this.inode, workflow.id)
                         .pluck('inode')
+                        // TODO: A better implementation needs to be done to
+                        // handle workflow actions errors, which are edge cases
                         .catch((error) => Observable.of(null))
                         .mergeMap((inode: string) => {
                             this.inode = inode || this.inode;

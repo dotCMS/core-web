@@ -63,7 +63,6 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     it('should set action split buttons params', () => {
         fixture.detectChanges();
         const actionsButton: SplitButton = de.query(By.css('.edit-page-toolbar__actions')).componentInstance;
-
         expect(actionsButton.model[0].label).toEqual('Assign Workflow');
         expect(actionsButton.model[1].label).toEqual('Save');
         expect(actionsButton.model[2].label).toEqual('Save / Publish');
@@ -73,7 +72,8 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         const dotWorkflowService: DotWorkflowService = de.injector.get(DotWorkflowService);
         let workflowsActions: DotWorkflowAction[];
         dotWorkflowService.getContentWorkflowActions(component.inode).subscribe((event) => (workflowsActions = event));
-        spyOn(dotWorkflowService, 'fireWorkflowAction');
+        spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
+        spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
 
         fixture.detectChanges();
 
@@ -92,6 +92,11 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[2].id);
 
         expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(3);
+
+        fixture.detectChanges();
+
+        expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(2);
+
     });
 
 });
