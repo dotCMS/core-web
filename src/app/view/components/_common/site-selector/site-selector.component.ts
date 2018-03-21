@@ -91,12 +91,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
 
             // if current site not being listed on updated sites list (socket message) then switch to default site
             if (!this.isCurrentSiteOnListOfAvailableSites(this.sites, this.siteService.currentSite)) {
-                const defaultSite = this.getDefaultSite(this.sites);
-                this.siteChange({
-                    hostname: defaultSite.hostname,
-                    type: undefined,
-                    identifier: defaultSite.identifier
-                });
+                this.siteChange(this.getDefaultSite(this.sites));
             }
 
             // items.splice(0) is used to return a new object and trigger the change detection in angular
