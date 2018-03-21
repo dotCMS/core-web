@@ -35,7 +35,10 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
     }
 
     /**
-     * Call the logout service
+     * Call the logout method service
+     *
+     * @returns {boolean}
+     * @memberof ToolbarUserComponent
      */
     logout(): boolean {
         this.loginService.logOutUser().subscribe(
@@ -47,6 +50,12 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
         return false;
     }
 
+    /**
+     * Call the
+     *
+     * @param {any} $event
+     * @memberof ToolbarUserComponent
+     */
     logoutAs($event): void {
         $event.preventDefault();
 
@@ -62,12 +71,24 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
         );
     }
 
+    /**
+     * Toggle show/hide login as dialog
+     *
+     * @returns {boolean}
+     * @memberof ToolbarUserComponent
+     */
     tooggleLoginAs(): boolean {
         this.dropdown.closeIt();
         this.showLoginAs = !this.showLoginAs;
         return false;
     }
 
+    /**
+     * Toggle show/hide my acccont menu
+     *
+     * @returns {boolean}
+     * @memberof ToolbarUserComponent
+     */
     toggleMyAccount(): boolean {
         this.showMyAccount = !this.showMyAccount;
         return false;

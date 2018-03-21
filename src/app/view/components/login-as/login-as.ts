@@ -48,13 +48,6 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
         return false;
     }
 
-    /**
-     * Calls the back-end service that will change the appropriate request and session
-     * attributes in order to impersonate the specified user. If an error occurs, a
-     * message will be displayed to the user indicating so.
-     *
-     * @param options - The parameters required by the back-end service.
-     */
     doLoginAs(): void {
         const password: string = this.form.value.password;
         const user: User = this.form.value.loginAsUser;

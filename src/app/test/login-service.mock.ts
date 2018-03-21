@@ -36,6 +36,10 @@ export class LoginServiceMock {
         return this._auth;
     }
 
+    loginAs(): Observable<any> {
+        return Observable.of({});
+    }
+
     loginUser(): Observable<User> {
         return Observable.of(mockUserWithRedirect);
     }
