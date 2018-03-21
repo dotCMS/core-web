@@ -101,9 +101,13 @@ describe('DotWorkflowService', () => {
     it('should fire workflows page action', () => {
         const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
         const actionId = '44d4d4cd-c812-49db-adb1-1030be73e69a';
-        spyOn(this.dotWorkflowService, 'fireWorkflowAction');
-        this.dotWorkflowService.fireWorkflowAction(inode, actionId);
+        spyOn(this.dotWorkflowService, 'fireWorkflowAction').and.callThrough();
+        const test = this.dotWorkflowService.fireWorkflowAction(inode, actionId).subscribe((res) => {
+            const result = res;
+        });
         expect(this.dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(1);
+        expect(this.lastConnection.request.url).toContain(`v1/workflow/fire/actions/${actionId}?inode=${inode}`);
+        expect(2).toBe(this.lastConnection.request.method); // 2 is PUT method
     });
 
 });
