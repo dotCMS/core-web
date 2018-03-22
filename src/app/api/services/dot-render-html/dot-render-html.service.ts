@@ -69,7 +69,7 @@ export class DotRenderHTMLService {
         );
     }
 
-    public get(options: PageOptions): Observable<DotRenderedPage> {
+    public get(options: DotRenderPageOptions): Observable<DotRenderedPage> {
         let params = { mode: this.getPageModeString(options.mode) };
         if (options.viewAs) {
             params = {
@@ -104,7 +104,7 @@ export class DotRenderHTMLService {
     }
 }
 
-class PageOptions {
+export interface DotRenderPageOptions {
     url: string;
     mode: PageMode;
     viewAs?: DotEditPageViewAs;

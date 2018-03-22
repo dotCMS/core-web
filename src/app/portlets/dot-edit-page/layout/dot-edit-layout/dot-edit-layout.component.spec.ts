@@ -90,7 +90,7 @@ const advancedTemplateMockDotRenderedPage: DotRenderedPage = {
     }
 };
 
-fdescribe('DotEditLayoutComponent with Edit Advanced Layout', () => {
+describe('DotEditLayoutComponent with Edit Advanced Layout', () => {
     beforeEach(
         async(() => {
             DOTTestBed.configureTestingModule(getTestingModule(advancedTemplateMockDotRenderedPage));
@@ -107,7 +107,7 @@ fdescribe('DotEditLayoutComponent with Edit Advanced Layout', () => {
         expect(layoutDesigner).toBeTruthy();
     });
 
-    fit('should pass pageState to the dot-edit-layout-advanced', () => {
+    it('should pass pageState to the dot-edit-layout-advanced', () => {
         const layoutEditorAdvanced: DebugElement = fixture.debugElement.query(By.css('dot-edit-layout-advanced'));
         expect(layoutEditorAdvanced.componentInstance.pageState).toEqual({
             ...advancedTemplateMockDotRenderedPage,

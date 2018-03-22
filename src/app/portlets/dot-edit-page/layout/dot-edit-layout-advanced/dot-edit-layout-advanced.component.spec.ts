@@ -27,6 +27,7 @@ class DotMenuServiceMock {
 }
 
 let dotGlobalMessageService: DotGlobalMessageService;
+let dotPageStateService: DotPageStateService;
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.message.saved': 'Salvado'
@@ -75,6 +76,7 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
 
         fixture.detectChanges();
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
+        dotPageStateService = de.injector.get(DotPageStateService);
     });
 
     it('should have dot-iframe component', () => {
@@ -102,7 +104,7 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
 
     it('should handle custom events from the iframe', () => {
         spyOn(dotGlobalMessageService, 'display');
-
+        spyOn(dotPageStateService, 'get');
         const dotIframe: IframeComponent = de.query(By.css('dot-iframe')).componentInstance;
         const iframe: any = dotIframe.iframeElement.nativeElement;
 
@@ -116,5 +118,6 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
         iframe.contentWindow.document.dispatchEvent(customEvent);
 
         expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Salvado');
+        expect(dotPageStateService.get).toHaveBeenCalledWith(mockDotRenderedPage.page.pageURI);
     });
 });
