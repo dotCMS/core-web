@@ -49,7 +49,7 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
                     this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
 
                     this.dotPageStateService.get(this.pageState.page.pageURI).subscribe(
-                        (pageState: DotRenderedPageState) => this.pageState.set(pageState)
+                        (pageState: DotRenderedPageState) => this.pageState.dotRenderedPageState = pageState
                     );
                 } else {
                     this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));

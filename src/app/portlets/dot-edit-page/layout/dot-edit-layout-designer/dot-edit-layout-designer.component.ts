@@ -146,7 +146,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     private setupLayout(pageState?: DotRenderedPageState): void {
         if (pageState) {
-            this.pageState.set(pageState);
+            this.pageState.dotRenderedPageState = pageState;
         }
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();

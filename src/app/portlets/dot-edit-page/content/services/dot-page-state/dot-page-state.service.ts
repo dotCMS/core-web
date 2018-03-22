@@ -27,8 +27,13 @@ export class DotPageStateService {
      */
     set(page: DotPage, state: DotPageState, viewAs?: DotEditPageViewAs): Observable<DotRenderedPageState> {
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
+        const pageOpts = {
+            url: page.pageURI,
+            mode: state.mode,
+            viewAs: viewAs
+        };
         const pageMode$: Observable<DotRenderedPage> =
-            state.mode !== undefined ? this.dotRenderHTMLService.get(page.pageURI, state.mode, viewAs) : Observable.of(null);
+            state.mode !== undefined ? this.dotRenderHTMLService.get(pageOpts) : Observable.of(null);
 
         return lockUnlock$.mergeMap(() =>
             pageMode$.map((updatedPage: DotRenderedPage) => new DotRenderedPageState(this.loginService.auth.user, updatedPage, state))

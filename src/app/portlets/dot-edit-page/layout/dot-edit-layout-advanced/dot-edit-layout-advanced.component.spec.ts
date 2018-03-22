@@ -8,13 +8,17 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditLayoutAdvancedComponent } from './dot-edit-layout-advanced.component';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { IFrameModule } from '../../../../view/components/_common/iframe';
-import { LoginServiceMock } from '../../../../test/login-service.mock';
+import { LoginServiceMock, mockUser } from '../../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IframeComponent } from '../../../../view/components/_common/iframe/iframe-component';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
+import { DotPageStateServiceMock } from '../../../../test/dot-page-state.service.mock';
+import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 
 class DotMenuServiceMock {
     getDotMenuId(): Observable<string> {
@@ -44,6 +48,10 @@ const basicModule = {
         {
             provide: DotMessageService,
             useValue: messageServiceMock
+        },
+        {
+            provide: DotPageStateService,
+            useClass: DotPageStateServiceMock
         }
     ]
 };
@@ -63,7 +71,8 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
         fixture = DOTTestBed.createComponent(DotEditLayoutAdvancedComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        //component.templateInode = '456';
+        component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+
         fixture.detectChanges();
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
     });
@@ -80,7 +89,7 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
         });
         expect(result).toEqual(
             // tslint:disable-next-line:max-line-length
-            'c/portal/layout?ng=true&p_l_id=123&p_p_id=templates&p_p_action=1&p_p_state=maximized&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=456&r=0d618b02-f184-48fe-88f4-e98563ee6e9e'
+            'c/portal/layout?ng=true&p_l_id=123&p_p_id=templates&p_p_action=1&p_p_state=maximized&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=123&r=0d618b02-f184-48fe-88f4-e98563ee6e9e'
         );
     });
 
