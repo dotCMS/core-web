@@ -137,7 +137,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
             .filter(checkbox => !!checkbox)
             .forEach(checkbox => {
                 this.handleCheckValues(checkbox);
-        });
+            });
     }
 
     private handleCheckValues(checkbox: AbstractControl): void {
