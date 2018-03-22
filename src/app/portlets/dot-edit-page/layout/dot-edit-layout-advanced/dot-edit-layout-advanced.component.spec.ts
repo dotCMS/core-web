@@ -63,7 +63,7 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
         fixture = DOTTestBed.createComponent(DotEditLayoutAdvancedComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        component.templateInode = '456';
+        //component.templateInode = '456';
         fixture.detectChanges();
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
     });

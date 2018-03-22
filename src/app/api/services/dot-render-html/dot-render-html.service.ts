@@ -51,7 +51,7 @@ export class DotRenderHTMLService {
         return this.get(url, PageMode.LIVE, viewAsConfig);
     }
 
-    private get(url: string, pageMode: PageMode, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
+    public get(url: string, pageMode: PageMode, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
         let params = { mode: this.getPageModeString(pageMode) };
         if (viewAsConfig) {
             params = {

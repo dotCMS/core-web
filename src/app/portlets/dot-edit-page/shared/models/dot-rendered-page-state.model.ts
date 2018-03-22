@@ -22,7 +22,7 @@ export class DotRenderedPageState {
     private _template?: DotTemplate;
     private _viewAs?: DotEditPageViewAs;
 
-    constructor(dotRenderedPage: DotRenderedPage, state: DotPageState, private user: User) {
+    constructor(private user: User, dotRenderedPage: DotRenderedPage, state?: DotPageState) {
         this._page = dotRenderedPage.page;
         this._html = dotRenderedPage.html;
         this._containers = dotRenderedPage.containers;
@@ -63,6 +63,17 @@ export class DotRenderedPageState {
 
     get viewAs(): DotEditPageViewAs {
         return this._viewAs;
+    }
+
+    set(dotRenderedPageState: DotRenderedPageState): void {
+        this._canCreateTemplate = dotRenderedPageState.canCreateTemplate;
+        this._containers = dotRenderedPageState.containers;
+        this._html = dotRenderedPageState.html;
+        this._layout = dotRenderedPageState.layout;
+        this._page = dotRenderedPageState.page;
+        this._state = dotRenderedPageState.state;
+        this._template = dotRenderedPageState.template;
+        this._viewAs = dotRenderedPageState.viewAs;
     }
 
     private getDefaultState(page: DotPage): DotPageState {
