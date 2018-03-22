@@ -133,8 +133,10 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
     }
 
     private setAutoCheckValues(): void {
-        [this.form.get('searchable'), this.form.get('listed'), this.form.get('unique')].filter(checkbox => !!checkbox).forEach(checkbox => {
-            this.handleCheckValues(checkbox);
+        [this.form.get('searchable'), this.form.get('listed'), this.form.get('unique')]
+            .filter(checkbox => !!checkbox)
+            .forEach(checkbox => {
+                this.handleCheckValues(checkbox);
         });
     }
 
