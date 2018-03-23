@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { SplitButton } from 'primeng/primeng';
 import { SplitButtonModule } from 'primeng/components/splitbutton/splitbutton';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
+import { DotWorkflowServiceMock, mockWorkflows } from '../../../../../test/dot-workflow-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
@@ -23,6 +23,8 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let fixture: ComponentFixture<DotEditPageWorkflowsActionsComponent>;
     let de: DebugElement;
     let testbed;
+    let actionButton: DebugElement;
+    let dotWorkflowService: DotWorkflowService;
 
     beforeEach(
         async(() => {
@@ -44,59 +46,80 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
     beforeEach(() => {
         fixture = testbed.createComponent(DotEditPageWorkflowsActionsComponent);
+        de = fixture.debugElement;
+
         component = fixture.componentInstance;
         component.label = 'ACTIONS';
         component.inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
-        de = fixture.debugElement;
-    });
 
-    it('should have a workflow actions element', () => {
-        expect(de.query(By.css('.edit-page-toolbar__actions'))).toBeTruthy();
-    });
-
-    it('should have a workflow actions with label "ACTIONS"', () => {
-        const btnLabel: HTMLElement = de.query(By.css('.edit-page-toolbar__actions')).nativeElement;
-        fixture.detectChanges();
-        expect(btnLabel.textContent).toContain('ACTIONS');
-    });
-
-    it('should set action split buttons params', () => {
-        fixture.detectChanges();
-        const actionsButton: SplitButton = de.query(By.css('.edit-page-toolbar__actions')).componentInstance;
-        expect(actionsButton.model[0].label).toEqual('Assign Workflow');
-        expect(actionsButton.model[1].label).toEqual('Save');
-        expect(actionsButton.model[2].label).toEqual('Save / Publish');
-    });
-
-    it('should trigger the methods in the action buttons', () => {
-        const dotWorkflowService: DotWorkflowService = de.injector.get(DotWorkflowService);
-        let workflowsActions: DotWorkflowAction[];
-        dotWorkflowService.getContentWorkflowActions(component.inode).subscribe((event) => (workflowsActions = event));
+        dotWorkflowService = de.injector.get(DotWorkflowService);
         spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
-        spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
-
-        fixture.detectChanges();
-
-        const splitButtons = de.query(By.all()).nativeElement.querySelectorAll('.ui-menuitem-link');
-        const firstButton = splitButtons[0];
-        const secondButton = splitButtons[1];
-        const thirdButton = splitButtons[2];
-
-        firstButton.click();
-        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[0].id);
-
-        secondButton.click();
-        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[1].id);
-
-        thirdButton.click();
-        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, workflowsActions[2].id);
-
-        expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(3);
-
-        fixture.detectChanges();
-
-        expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(2);
-
     });
 
+    describe('button enabled', () => {
+        beforeEach(() => {
+            spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
+
+            fixture.detectChanges();
+            actionButton = de.query(By.css('.edit-page-toolbar__actions'));
+        });
+
+        it('should have a workflow actions element', () => {
+            expect(actionButton).toBeTruthy();
+        });
+
+        it('should have a workflow actions with label "ACTIONS"', () => {
+            expect(actionButton.nativeElement.textContent).toContain('ACTIONS');
+        });
+
+        it('should set action split buttons params', () => {
+            const actionsButton: SplitButton = actionButton.componentInstance;
+            expect(actionsButton.model[0].label).toEqual('Assign Workflow');
+            expect(actionsButton.model[1].label).toEqual('Save');
+            expect(actionsButton.model[2].label).toEqual('Save / Publish');
+        });
+
+        describe('fire actions', () => {
+            let splitButtons: DebugElement[];
+            let firstButton;
+            let secondButton;
+            let thirdButton;
+
+            beforeEach(() => {
+                splitButtons = de.queryAll(By.css('.ui-menuitem-link'));
+                firstButton = splitButtons[0].nativeElement;
+                secondButton = splitButtons[1].nativeElement;
+                thirdButton = splitButtons[2].nativeElement;
+            });
+
+            it('should fire actions on click in the menu items', () => {
+                firstButton.click();
+                expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, mockWorkflows[0].id);
+
+                secondButton.click();
+                expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, mockWorkflows[1].id);
+
+                thirdButton.click();
+                expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.inode, mockWorkflows[2].id);
+            });
+
+            it('should refresh the action list after fire action', () => {
+                firstButton.click();
+                expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(1);
+            });
+        });
+    });
+
+    describe('button disabled', () => {
+        beforeEach(() => {
+            spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(Observable.of([]));
+
+            fixture.detectChanges();
+            actionButton = de.query(By.css('.edit-page-toolbar__actions'));
+        });
+
+        it('should be disabled', () => {
+            expect(actionButton.componentInstance.disabled).toBe(true);
+        });
+    });
 });
