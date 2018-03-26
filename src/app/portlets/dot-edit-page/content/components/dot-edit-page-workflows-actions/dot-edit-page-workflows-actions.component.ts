@@ -14,14 +14,34 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
     @Input() inode: string;
     @Input() label: string;
 
+    actionsAvailable: boolean;
     workflowsMenuActions: Observable<MenuItem[]>;
 
     constructor(private workflowsService: DotWorkflowService, private httpErrorManagerService: DotHttpErrorManagerService) {}
 
     ngOnInit() {
-        this.workflowsMenuActions = this.workflowsService.getContentWorkflowActions(this.inode).map((workflows: DotWorkflowAction[]) => {
-            return this.getWorkflowOptions(workflows);
-        });
+        this.workflowsMenuActions = this.getWorkflowActions(this.inode);
+    }
+
+    private getWorkflowActions(inode: string): Observable<MenuItem[]> {
+        return this.workflowsService
+            .getContentWorkflowActions(inode)
+            .do((workflows: DotWorkflowAction[]) => {
+                this.actionsAvailable = !!workflows.length;
+            })
+            .map((newWorkflows: DotWorkflowAction[]) => {
+                if (newWorkflows.length === 0) {
+                    throw {
+                        bodyJsonObject: {
+                            error: ''
+                        },
+                        response: {
+                            status: 404
+                        }
+                    };
+                }
+                return this.getWorkflowOptions(newWorkflows);
+            });
     }
 
     private getWorkflowOptions(workflows: DotWorkflowAction[]): MenuItem[] {
@@ -38,19 +58,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit {
                         .catch((error) => Observable.of(null))
                         .mergeMap((inode: string) => {
                             this.inode = inode || this.inode;
-                            return this.workflowsService.getContentWorkflowActions(this.inode).map((newWorkflows: DotWorkflowAction[]) => {
-                                if (newWorkflows.length === 0) {
-                                    throw {
-                                        bodyJsonObject: {
-                                            error: ''
-                                        },
-                                        response: {
-                                            status: 404
-                                        }
-                                    };
-                                }
-                                return this.getWorkflowOptions(newWorkflows);
-                            });
+                            return this.getWorkflowActions(this.inode);
                         })
                         .catch((error) => {
                             this.httpErrorManagerService.handle(error);

@@ -3,5 +3,5 @@
     class="edit-page-toolbar__actions"
     [label]="label"
     [model]="workflowsMenuActions | async"
-    [disabled]="!(workflowsMenuActions | async)?.length">
+    [disabled]="!actionsAvailable">
 </p-splitButton>
