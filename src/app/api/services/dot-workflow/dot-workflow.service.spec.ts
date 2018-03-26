@@ -3,7 +3,7 @@ import { DotWorkflowService } from './dot-workflow.service';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 
-describe('DotWorkflowService', () => {
+fdescribe('DotWorkflowService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotWorkflowService]);
         this.dotWorkflowService = this.injector.get(DotWorkflowService);
@@ -102,11 +102,9 @@ describe('DotWorkflowService', () => {
         const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
         const actionId = '44d4d4cd-c812-49db-adb1-1030be73e69a';
         spyOn(this.dotWorkflowService, 'fireWorkflowAction').and.callThrough();
-        const test = this.dotWorkflowService.fireWorkflowAction(inode, actionId).subscribe((res) => {
-            const result = res;
-        });
+        this.dotWorkflowService.fireWorkflowAction(inode, actionId).subscribe();
         expect(this.dotWorkflowService.fireWorkflowAction).toHaveBeenCalledTimes(1);
-        expect(this.lastConnection.request.url).toContain(`v1/workflow/fire/actions/${actionId}?inode=${inode}`);
+        expect(this.lastConnection.request.url).toContain(`v1/workflow/actions/${actionId}/fire?inode=${inode}`);
         expect(2).toBe(this.lastConnection.request.method); // 2 is PUT method
     });
 
