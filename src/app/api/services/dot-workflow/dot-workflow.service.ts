@@ -56,7 +56,7 @@ export class DotWorkflowService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
-                url: `v1/workflow/fire/actions/${actionId}?inode=${inode}`
+                url: `v1/workflow/actions/${actionId}/fire?inode=${inode}`
             })
             .pluck('entity');
     }
