@@ -23,7 +23,8 @@
         [height]="dialogSize.height"
         [modal]="true"
         [visible]="!!dialogTitle"
-        [width]="dialogSize.width">
+        [width]="dialogSize.width"
+        [draggable]="false">
         <iframe class="dot-edit__contentlet-iframe" *ngIf="contentletActionsUrl" #contentletActionsIframe [src]="contentletActionsUrl" frameborder="0"></iframe>
     </p-dialog>
 </div>

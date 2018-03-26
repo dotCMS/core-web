@@ -247,6 +247,7 @@ export class DotEditContentComponent implements OnInit {
             element it's available in the DOM
         */
         setTimeout(() => {
+            window.focus();
             const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
             /*
