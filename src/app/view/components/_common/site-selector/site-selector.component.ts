@@ -65,7 +65,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
 
         this.getSitesList();
 
-        this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
+        this.siteService.refreshSites$.subscribe(() => this.handleSitesRefresh());
 
         if (this.id) {
             this.selectCurrentSite(this.id);
@@ -88,11 +88,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         this.paginationService.getCurrentPage().subscribe((items) => {
             this.sites = items.splice(0);
             this.getSitesList();
-
-            // if current site not being listed on updated sites list (socket message) then switch to default site
-            if (!this.isCurrentSiteOnListOfAvailableSites(this.sites, this.siteService.currentSite)) {
-                this.siteChange(this.getDefaultSite(this.sites));
-            }
 
             // items.splice(0) is used to return a new object and trigger the change detection in angular
             this.sitesCurrentPage = items.splice(0);
@@ -165,11 +160,4 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         }
     }
 
-    private isCurrentSiteOnListOfAvailableSites(sites: any[], currentSite: Site): boolean {
-        return sites.find((site) => (site.identifier === currentSite.identifier && !site.archived));
-    }
-
-    private getDefaultSite(sites: any[]): Site {
-        return sites.filter((site) => site.default)[0];
-    }
 }
