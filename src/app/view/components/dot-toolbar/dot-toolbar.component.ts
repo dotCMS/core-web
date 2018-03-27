@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { SiteService, Site } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
-import { PaginatorService } from '../../../api/services/paginator';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -16,7 +15,6 @@ export class ToolbarComponent implements OnInit {
     constructor(
         public iframeOverlayService: IframeOverlayService,
         private siteService: SiteService,
-        public paginationService: PaginatorService
     ) {}
 
     ngOnInit(): void {
@@ -31,11 +29,8 @@ export class ToolbarComponent implements OnInit {
     handleSitesRefresh(site: any): void {
         // if current site is equal to the site updated (socket message) then switch to default site
         if (site.hostname === this.siteService.currentSite.hostname && site.archived) {
-            // this.siteChange(this.getDefaultSite(this.sites));
             this.siteService.getDefaultSite().subscribe((defaultSite: Site) => {
-                console.log('---defaultSite', defaultSite);
                 this.siteChange(defaultSite);
-                // this.currentSite = Observable.of(data);
             });
         }
     }
