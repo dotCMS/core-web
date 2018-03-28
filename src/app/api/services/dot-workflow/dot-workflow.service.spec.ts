@@ -3,7 +3,7 @@ import { DotWorkflowService } from './dot-workflow.service';
 import { MockBackend } from '@angular/http/testing';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 
-fdescribe('DotWorkflowService', () => {
+describe('DotWorkflowService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotWorkflowService]);
         this.dotWorkflowService = this.injector.get(DotWorkflowService);

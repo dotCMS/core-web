@@ -18,7 +18,7 @@ import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
 import { mockResponseView } from '../../../../../test/response-view.mock';
 
-fdescribe('DotEditPageWorkflowsActionsComponent', () => {
+describe('DotEditPageWorkflowsActionsComponent', () => {
     let component: DotEditPageWorkflowsActionsComponent;
     let fixture: ComponentFixture<DotEditPageWorkflowsActionsComponent>;
     let de: DebugElement;
