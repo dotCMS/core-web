@@ -301,7 +301,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it('when user can\'t edit the tempplate, set layout mode and editTemplate Input is not true', () => {
+            it('when user can\'t edit the template and set layout mode', () => {
                 component.pageState = new DotRenderedPageState(
                     mockUser,
                     {
@@ -333,6 +333,24 @@ describe('DotEditLayoutDesignerComponent', () => {
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
+            });
+
+            it('when editTemplate Input  id different than true', () => {
+                component.pageState = new DotRenderedPageState(
+                    mockUser,
+                    {
+                        ...mockDotRenderedPage,
+                        template: {
+                            ...mockDotRenderedPage.template,
+                            canEdit: false
+                        }
+                    },
+                    null
+                );
+                fixture.detectChanges();
+                expect(dotDialogService.alert).not.toHaveBeenCalled();
+                expect(component.setEditLayoutMode).toHaveBeenCalled();
+                expect(component.editTemplate).toEqual(undefined);
             });
         });
     });
