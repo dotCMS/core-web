@@ -64,7 +64,7 @@ describe('DotEditPageNavComponent', () => {
             component = fixture.componentInstance;
         });
 
-        it('should have menu items: Content and Code', () => {
+        it('should have menu items: Content only', () => {
             component.pageState = new DotRenderedPageState(
                 mockUser,
                 {
@@ -78,7 +78,7 @@ describe('DotEditPageNavComponent', () => {
             );
             fixture.detectChanges();
             const menuListItems: DebugElement[] = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-            expect(menuListItems.length).toEqual(2);
+            expect(menuListItems.length).toEqual(1);
 
             const labels = ['Content', 'Code'];
             const icons = ['fa fa-file-text', 'fa fa-code'];

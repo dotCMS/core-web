@@ -22,7 +22,7 @@ import { LoginService } from 'dotcms-js/core/login.service';
 })
 export class DotEditLayoutDesignerComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
-
+    @Input() editTemplate: boolean
     @Input() pageState: DotRenderedPageState;
 
     form: FormGroup;
@@ -63,8 +63,8 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             .subscribe();
 
         this.setupLayout();
-
-        if (!this.isLayout() && this.pageState.template.canEdit) {
+        console.log(!this.isLayout(), this.pageState.template && this.pageState.template.canEdit, this.editTemplate);
+        if (!this.isLayout() && this.pageState.template.canEdit && this.editTemplate) {
             this.showTemplateLayoutDialog();
         } else {
             this.setEditLayoutMode();

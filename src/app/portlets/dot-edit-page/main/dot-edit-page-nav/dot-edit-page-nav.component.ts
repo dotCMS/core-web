@@ -45,7 +45,9 @@ export class DotEditPageNavComponent implements OnInit {
             }
         ];
 
-        result.push(this.getTemplateNavItem(dotRenderedPage));
+        if (dotRenderedPage.template.drawed) {
+            result.push(this.getTemplateNavItem(dotRenderedPage));
+        }
 
         return result;
     }

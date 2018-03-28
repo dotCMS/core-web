@@ -199,6 +199,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                     },
                     null
                 );
+                component.editTemplate = true;
                 fixture.detectChanges();
             });
 
@@ -238,6 +239,7 @@ describe('DotEditLayoutDesignerComponent', () => {
     describe('edit template', () => {
         beforeEach(() => {
             component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+            component.editTemplate = true;
             fixture.detectChanges();
         });
 
@@ -261,6 +263,76 @@ describe('DotEditLayoutDesignerComponent', () => {
                         width: mockDotRenderedPage.layout.sidebar.width
                     }
                 }
+            });
+        });
+    });
+
+    describe('edit layout/template dialog', () => {
+        let dotDialogService: DotDialogService;
+
+        beforeEach(() => {
+            dotDialogService = fixture.debugElement.injector.get(DotDialogService);
+            spyOn(dotDialogService, 'alert').and.callThrough();
+            spyOn(component, 'setEditLayoutMode');
+        });
+
+        describe('should show', () => {
+            beforeEach(() => {
+                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                component.editTemplate = true;
+                fixture.detectChanges();
+            });
+
+            it('user have can edit page or template', () => {
+                expect(dotDialogService.alert).toHaveBeenCalled();
+            });
+
+            describe('set edit mode', () => {
+                it('should set edit layout mode on dialog accept click', () => {
+                    dotDialogService.alertModel.accept();
+                    expect(component.setEditLayoutMode).toHaveBeenCalledTimes(1);
+                });
+
+                it('should keep edit template mode on dialog reject click', () => {
+                    dotDialogService.alertReject(null);
+                    expect(component.setEditLayoutMode).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('not show', () => {
+            it('when user can\'t edit the tempplate, set layout mode and editTemplate Input is not true', () => {
+                component.pageState = new DotRenderedPageState(
+                    mockUser,
+                    {
+                        ...mockDotRenderedPage,
+                        template: {
+                            ...mockDotRenderedPage.template,
+                            canEdit: false
+                        }
+                    },
+                    null
+                );
+                fixture.detectChanges();
+                expect(dotDialogService.alert).not.toHaveBeenCalled();
+                expect(component.setEditLayoutMode).toHaveBeenCalled();
+            });
+
+            it('when page have a layout and set layout mode', () => {
+                component.pageState = new DotRenderedPageState(
+                    mockUser,
+                    {
+                        ...mockDotRenderedPage,
+                        template: {
+                            ...mockDotRenderedPage.template,
+                            anonymous: true
+                        }
+                    },
+                    null
+                );
+                fixture.detectChanges();
+                expect(dotDialogService.alert).not.toHaveBeenCalled();
+                expect(component.setEditLayoutMode).toHaveBeenCalled();
             });
         });
     });
@@ -310,7 +382,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         it('should have disabled if the form is not valid', () => {
             // This will make the template title required, it's like clicking the "Save as template" checkbox
-            component.saveAsTemplateHandleChange(true);
+           // component.saveAsTemplateHandleChange(true);
             fixture.detectChanges();
 
             expect(saveButton.nativeElement.disabled).toBe(true);
@@ -326,73 +398,5 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
     });
 
-    describe('edit layout/template dialog', () => {
-        let dotDialogService: DotDialogService;
 
-        beforeEach(() => {
-            dotDialogService = fixture.debugElement.injector.get(DotDialogService);
-            spyOn(dotDialogService, 'alert').and.callThrough();
-            spyOn(component, 'setEditLayoutMode');
-        });
-
-        describe('should show', () => {
-            beforeEach(() => {
-                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-                fixture.detectChanges();
-            });
-
-            it('user have can edit page or template', () => {
-                expect(dotDialogService.alert).toHaveBeenCalled();
-            });
-
-            describe('set edit mode', () => {
-                it('should set edit layout mode on dialog accept click', () => {
-                    dotDialogService.alertModel.accept();
-
-                    expect(component.setEditLayoutMode).toHaveBeenCalledTimes(1);
-                });
-
-                it('should keep edit template mode on dialog reject click', () => {
-                    dotDialogService.alertReject(null);
-                    expect(component.setEditLayoutMode).not.toHaveBeenCalled();
-                });
-            });
-        });
-
-        describe('not show', () => {
-            it('when user can\'t edit the tempplate and set layout mode', () => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: {
-                            ...mockDotRenderedPage.template,
-                            canEdit: false
-                        }
-                    },
-                    null
-                );
-                fixture.detectChanges();
-                expect(dotDialogService.alert).not.toHaveBeenCalled();
-                expect(component.setEditLayoutMode).toHaveBeenCalled();
-            });
-
-            it('when page have a layout and set layout mode', () => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: {
-                            ...mockDotRenderedPage.template,
-                            anonymous: true
-                        }
-                    },
-                    null
-                );
-                fixture.detectChanges();
-                expect(dotDialogService.alert).not.toHaveBeenCalled();
-                expect(component.setEditLayoutMode).toHaveBeenCalled();
-            });
-        });
-    });
 });
