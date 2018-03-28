@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
@@ -10,16 +10,18 @@ import { Observable } from 'rxjs/Observable';
     templateUrl: './dot-edit-page-workflows-actions.component.html',
     styleUrls: ['./dot-edit-page-workflows-actions.component.scss']
 })
-export class DotEditPageWorkflowsActionsComponent implements OnInit {
-    @Input() inode: string;
+export class DotEditPageWorkflowsActionsComponent implements OnChanges {
+    @Input() pageState: any;
     @Input() label: string;
 
+    inode: string;
     actionsAvailable: boolean;
     workflowsMenuActions: Observable<MenuItem[]>;
 
     constructor(private workflowsService: DotWorkflowService, private httpErrorManagerService: DotHttpErrorManagerService) {}
 
-    ngOnInit() {
+    ngOnChanges() {
+        this.inode = this.pageState.workingInode;
         this.workflowsMenuActions = this.getWorkflowActions(this.inode);
     }
 

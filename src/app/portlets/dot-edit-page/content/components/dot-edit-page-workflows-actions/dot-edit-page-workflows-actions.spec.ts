@@ -50,7 +50,9 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         component = fixture.componentInstance;
         component.label = 'ACTIONS';
-        component.inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
+        component.pageState = {
+            workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123'
+        };
 
         dotWorkflowService = de.injector.get(DotWorkflowService);
         spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
@@ -59,6 +61,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     describe('button enabled', () => {
         beforeEach(() => {
             spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
+            component.ngOnChanges();
 
             fixture.detectChanges();
             actionButton = de.query(By.css('.edit-page-toolbar__actions'));
@@ -77,6 +80,14 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
             expect(actionsButton.model[0].label).toEqual('Assign Workflow');
             expect(actionsButton.model[1].label).toEqual('Save');
             expect(actionsButton.model[2].label).toEqual('Save / Publish');
+        });
+
+        it('should get workflow actions when pageState changes"', () => {
+            component.pageState = {
+                workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123b'
+            };
+            component.ngOnChanges();
+            expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(2);
         });
 
         describe('fire actions', () => {
@@ -114,6 +125,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         beforeEach(() => {
             // spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(Observable.of([]));
             spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
+            component.ngOnChanges();
 
             fixture.detectChanges();
             actionButton = de.query(By.css('.edit-page-toolbar__actions'));
