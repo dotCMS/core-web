@@ -63,7 +63,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             .subscribe();
 
         this.setupLayout();
-        console.log(!this.isLayout(), this.pageState.template && this.pageState.template.canEdit, this.editTemplate);
         if (!this.isLayout() && this.pageState.template.canEdit && this.editTemplate) {
             this.showTemplateLayoutDialog();
         } else {
