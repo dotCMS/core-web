@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Output, EventEmitter, Input, OnInit } from '@angular/core';
-import { SiteService, Site } from 'dotcms-js/dotcms-js';
+import { SiteService, Site, DotcmsEventsService } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 
 @Component({
@@ -15,24 +15,17 @@ export class ToolbarComponent implements OnInit {
     constructor(
         public iframeOverlayService: IframeOverlayService,
         private siteService: SiteService,
+        private dotcmsEventsService: DotcmsEventsService
     ) {}
 
     ngOnInit(): void {
-        this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh(_site));
-    }
-
-    /**
-     * Manage the sites refresh when a event happen
-     * @param {Site} site
-     * @memberof SiteSelectorComponent
-     */
-    handleSitesRefresh(site: any): void {
-        // if current site is equal to the site updated (socket message) then switch to default site
-        if (site.hostname === this.siteService.currentSite.hostname && site.archived) {
-            this.siteService.getDefaultSite().subscribe((defaultSite: Site) => {
-                this.siteChange(defaultSite);
-            });
-        }
+        this.dotcmsEventsService.subscribeTo('ARCHIVE_SITE').subscribe((site) => {
+            if (site.data.hostname === this.siteService.currentSite.hostname && site.data.archived) {
+                this.siteService.getDefaultSite().subscribe((defaultSite: Site) => {
+                    this.siteChange(defaultSite);
+                });
+            }
+        });
     }
 
     siteChange(site: Site): void {
