@@ -402,14 +402,14 @@ describe('DotEditLayoutDesignerComponent', () => {
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
             });
 
-            it('when editTemplate Input  id different than true', () => {
+            it('when editTemplate is false by default', () => {
                 component.pageState = new DotRenderedPageState(
                     mockUser,
                     {
                         ...mockDotRenderedPage,
                         template: {
                             ...mockDotRenderedPage.template,
-                            canEdit: false
+                            canEdit: true
                         }
                     },
                     null
@@ -417,7 +417,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
-                expect(component.editTemplate).toEqual(undefined);
+                expect(component.editTemplate).toEqual(false);
             });
         });
     });

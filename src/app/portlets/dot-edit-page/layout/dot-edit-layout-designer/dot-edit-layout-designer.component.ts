@@ -22,7 +22,7 @@ import { LoginService } from 'dotcms-js/core/login.service';
 })
 export class DotEditLayoutDesignerComponent implements OnInit {
     @ViewChild('templateName') templateName: ElementRef;
-    @Input() editTemplate: boolean;
+    @Input() editTemplate = false;
     @Input() pageState: DotRenderedPageState;
 
     form: FormGroup;
