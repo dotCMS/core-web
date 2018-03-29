@@ -11,6 +11,7 @@ export class DotLoadingIndicatorService {
     }
 
     hide(): void {
+        debugger;
         this.display = false;
     }
 }

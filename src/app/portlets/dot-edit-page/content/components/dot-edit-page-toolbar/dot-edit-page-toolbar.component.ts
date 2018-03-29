@@ -33,6 +33,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     ) {}
 
     ngOnInit() {
+        console.log('ngOninit toolbar');
         this.dotMessageService
             .getMessages([
                 'editpage.toolbar.primary.action',
@@ -53,8 +54,10 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.page && !changes.page.firstChange) {
-            this.setFieldsModels(changes.page.currentValue);
+        console.log('changes DotEditPageToolbarComponent');
+
+        if (changes.pageState && !changes.pageState.firstChange) {
+            this.setFieldsModels(changes.pageState.currentValue);
         }
     }
 

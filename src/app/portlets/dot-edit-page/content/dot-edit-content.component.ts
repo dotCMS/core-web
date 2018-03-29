@@ -4,7 +4,7 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/core/util/response-view';
 import * as _ from 'lodash';
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
@@ -64,6 +64,7 @@ export class DotEditContentComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('ngOnInit DotEditContentComponent');
         this.dotMessageService
             .getMessages([
                 'editpage.content.contentlet.remove.confirmation_message.message',
@@ -80,7 +81,7 @@ export class DotEditContentComponent implements OnInit {
             });
         });
 
-        this.dotEditContentHtmlService.pageModelChange.filter(model => model.length).subscribe(model => {
+        this.dotEditContentHtmlService.pageModelChange.filter((model) => model.length).subscribe((model) => {
             if (this.originalValue) {
                 this.ngZone.run(() => {
                     this.isModelUpdated = !_.isEqual(model, this.originalValue);
@@ -113,8 +114,34 @@ export class DotEditContentComponent implements OnInit {
      * @param {any} $event
      * @memberof DotEditContentComponent
      */
-    onLoad(_event): void {
-        this.dotLoadingIndicatorService.hide();
+    onLoad(event): void {
+        const pathname = this.getPathStrippedName(this.iframe.nativeElement.contentWindow.location.pathname);
+        const bodyHTML = this.iframe.nativeElement.contentWindow.document.body.innerHTML;
+
+        if (pathname.includes('dotAdmin')) {
+            console.log('1. dotLoadingIndicatorService hide');
+            this.dotLoadingIndicatorService.hide();
+        } else if (bodyHTML.length) {
+            this.dotRouterService.goToEditPage(pathname);
+        }
+
+        console.log('bodyHTML.length', bodyHTML.length);
+
+        // this.iframe.nativeElement.contentWindow.addEventListener('click', (e) => {
+        //     if (e.target.pathname) {
+        //         e.preventDefault();
+        //         const linkPathname = this.getPathStrippedName(e.target.pathname);
+        //         console.log('1. dotLoadingIndicatorService show');
+        //         this.dotRouterService.goToEditPage(linkPathname);
+        //         this.dotLoadingIndicatorService.show();
+        //     }
+        // });
+
+        this.iframe.nativeElement.contentWindow.addEventListener('beforeunload', (e) => {
+            console.log('2. dotLoadingIndicatorService show');
+            this.originalValue = null;
+            this.dotLoadingIndicatorService.show();
+        });
     }
 
     /**
@@ -145,12 +172,10 @@ export class DotEditContentComponent implements OnInit {
      */
     saveContent(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.dotEditPageService
-            .save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel())
-            .subscribe(() => {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-                this.setOriginalValue();
-            });
+        this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel()).subscribe(() => {
+            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+            this.setOriginalValue();
+        });
     }
 
     /**
@@ -171,6 +196,15 @@ export class DotEditContentComponent implements OnInit {
         );
     }
 
+
+    // TODO: we need to update the renderHTML endpoint to return index when a folder is passed
+    private getPathStrippedName(pathname: string): string {
+        pathname = pathname.includes('index') ? pathname : `${pathname}/index`;
+        pathname.replace('//', '/');
+
+        return pathname;
+    }
+
     private addContentlet($event: any): void {
         const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
@@ -180,8 +214,7 @@ export class DotEditContentComponent implements OnInit {
         this.dialogTitle = this.dotMessageService.get('editpage.content.contentlet.add.content');
 
         this.loadDialogEditor(
-            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset
-                .dotAdd}`,
+            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset.dotAdd}`,
             $event.contentletEvents
         );
     }
@@ -200,9 +233,9 @@ export class DotEditContentComponent implements OnInit {
 
         this.dotMenuService.getDotMenuId('content').subscribe((portletId: string) => {
             // tslint:disable-next-line:max-line-length
-            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event
-                .dataset
-                .dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
+            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${
+                $event.dataset.dotInode
+            }&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';
@@ -280,8 +313,10 @@ export class DotEditContentComponent implements OnInit {
 
     private renderPage(pageState: DotRenderedPageState): void {
         if (pageState.state.mode === PageMode.EDIT && !pageState.state.lockedByAnotherUser) {
+            console.log('EDIT MODE');
             this.dotEditContentHtmlService.initEditMode(pageState.html, this.iframe);
         } else {
+            console.log('PREVIEW MODE');
             this.dotEditContentHtmlService.renderPage(pageState.html, this.iframe);
         }
     }

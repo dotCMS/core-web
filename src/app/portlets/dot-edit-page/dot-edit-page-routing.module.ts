@@ -14,6 +14,7 @@ const dotEditPage: Routes = [
         resolve: {
             content: DotEditPageResolver
         },
+        runGuardsAndResolvers: 'always',
         children: [
             {
                 path: '',

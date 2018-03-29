@@ -27,6 +27,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
+        console.log('resolving bitches!!! 💅🏽', route.queryParams.url);
         return this.dotPageStateService
             .get(route.queryParams.url)
             .map((dotRenderedPageState: DotRenderedPageState) => {
