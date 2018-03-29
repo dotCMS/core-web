@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { MenuItem } from 'primeng/primeng';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
 import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
-import { Observable } from 'rxjs/Observable';
+import { DotPage } from '../../../shared/models/dot-page.model';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./dot-edit-page-workflows-actions.component.scss']
 })
 export class DotEditPageWorkflowsActionsComponent implements OnChanges {
-    @Input() pageState: any;
+    @Input() page: DotPage;
     @Input() label: string;
 
     inode: string;
@@ -20,9 +21,11 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
 
     constructor(private workflowsService: DotWorkflowService, private httpErrorManagerService: DotHttpErrorManagerService) {}
 
-    ngOnChanges() {
-        this.inode = this.pageState.workingInode;
-        this.workflowsMenuActions = this.getWorkflowActions(this.inode);
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.page) {
+            this.inode = this.page.workingInode;
+            this.workflowsMenuActions = this.getWorkflowActions(this.inode);
+        }
     }
 
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
@@ -57,7 +60,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                         .pluck('inode')
                         // TODO: A better implementation needs to be done to
                         // handle workflow actions errors, which are edge cases
-                        .catch((error) => Observable.of(null))
+                        .catch(() => Observable.of(null))
                         .mergeMap((inode: string) => {
                             this.inode = inode || this.inode;
                             return this.getWorkflowActions(this.inode);

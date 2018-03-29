@@ -59,7 +59,7 @@ export const mockWorkflows = [
 ];
 
 export class DotWorkflowServiceMock {
-    getContentWorkflowActions(inode: string): Observable<DotWorkflowAction[]> {
+    getContentWorkflowActions(): Observable<DotWorkflowAction[]> {
         return Observable.of(mockWorkflows);
     }
 
