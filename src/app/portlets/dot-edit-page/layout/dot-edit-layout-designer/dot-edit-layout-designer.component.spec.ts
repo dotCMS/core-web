@@ -267,6 +267,67 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
     });
 
+    describe('containers model', () => {
+        beforeEach(() => {
+            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+        });
+
+        it('should have a sidebar containers', () => {
+            fixture.detectChanges();
+
+            expect(component.form.get('layout.sidebar.containers').value).toEqual([
+                {
+                    identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
+                    uuid: 'LEGACY_RELATION_TYPE'
+                }
+            ]);
+        });
+
+        it('should have a null sidebar containers', () => {
+            component.pageState.layout.sidebar.containers = [];
+            fixture.detectChanges();
+            expect(component.form.value.layout.sidebar.containers).toEqual([]);
+        });
+    });
+
+    describe('save button', () => {
+        let saveButton: DebugElement;
+
+        beforeEach(() => {
+            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+            fixture.detectChanges();
+            saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-save'));
+        });
+
+        it('should have disabled by default', () => {
+            expect(saveButton.nativeElement.disabled).toBe(true);
+        });
+
+        it('should have enabled if the model is updated', () => {
+            component.form.get('layout.header').setValue(true);
+            fixture.detectChanges();
+
+            expect(saveButton.nativeElement.disabled).toBe(false);
+        });
+
+        it('should have disabled if the form is not valid', () => {
+            // This will make the template title required, it's like clicking the "Save as template" checkbox
+            // component.saveAsTemplateHandleChange(true);
+            fixture.detectChanges();
+
+            expect(saveButton.nativeElement.disabled).toBe(true);
+        });
+
+        it('should have enabled when model is updated and form is valid', () => {
+            component.saveAsTemplateHandleChange(true);
+            component.form.get('title').setValue('Hello World');
+
+            fixture.detectChanges();
+
+            expect(saveButton.nativeElement.disabled).toBe(false);
+        });
+    });
+
     describe('edit layout/template dialog', () => {
         let dotDialogService: DotDialogService;
 
@@ -278,7 +339,13 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         describe('should show', () => {
             beforeEach(() => {
-                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                component.pageState = new DotRenderedPageState(mockUser, {
+                    ...mockDotRenderedPage,
+                    template: {
+                        ...mockDotRenderedPage.template,
+                        anonymous: false
+                    }
+                });
                 component.editTemplate = true;
                 fixture.detectChanges();
             });
@@ -354,67 +421,4 @@ describe('DotEditLayoutDesignerComponent', () => {
             });
         });
     });
-
-    describe('containers model', () => {
-        beforeEach(() => {
-            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-        });
-
-        it('should have a sidebar containers', () => {
-            fixture.detectChanges();
-
-            expect(component.form.get('layout.sidebar.containers').value).toEqual([
-                {
-                    identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
-                    uuid: 'LEGACY_RELATION_TYPE'
-                }
-            ]);
-        });
-
-        it('should have a null sidebar containers', () => {
-            component.pageState.layout.sidebar.containers = [];
-            fixture.detectChanges();
-            expect(component.form.value.layout.sidebar.containers).toEqual([]);
-        });
-    });
-
-    describe('save button', () => {
-        let saveButton: DebugElement;
-
-        beforeEach(() => {
-            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-            fixture.detectChanges();
-            saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-save'));
-        });
-
-        it('should have sdisabled by default', () => {
-            expect(saveButton.nativeElement.disabled).toBe(true);
-        });
-
-        it('should have enabled if the model is updated', () => {
-            component.form.get('layout.header').setValue(true);
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-
-        it('should have disabled if the form is not valid', () => {
-            // This will make the template title required, it's like clicking the "Save as template" checkbox
-           // component.saveAsTemplateHandleChange(true);
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(true);
-        });
-
-        it('should have enabled when model is updated and form is valid', () => {
-            component.saveAsTemplateHandleChange(true);
-            component.form.get('title').setValue('Hello World');
-
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-    });
-
-
 });
