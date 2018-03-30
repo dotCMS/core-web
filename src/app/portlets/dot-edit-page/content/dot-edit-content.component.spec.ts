@@ -1,3 +1,4 @@
+import { SiteServiceMock } from './../../../test/site-service.mock';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -6,7 +7,7 @@ import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/c
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { DialogModule } from 'primeng/primeng';
-import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginService, SiteService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotContentletLockerService } from '../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
@@ -49,7 +50,7 @@ class MockDotEditContentViewAsToolbarComponent {
     @Input() value: DotEditPageViewAs;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
 }
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
@@ -110,6 +111,10 @@ describe('DotEditContentComponent', () => {
                 {
                     provide: DotWorkflowService,
                     useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: SiteService,
+                    useClass: SiteServiceMock
                 },
                 {
                     provide: ActivatedRoute,
@@ -214,7 +219,7 @@ describe('DotEditContentComponent', () => {
             );
         });
 
-        it('should send the ViewAs initial configuration to the toolbar', () => {
+        it('should send the View As initial configuration to the toolbar', () => {
             fixture.detectChanges();
             expect(viewAsToolbar.componentInstance.value).toEqual(mockDotRenderedPage.viewAs);
         });
@@ -387,5 +392,9 @@ describe('DotEditContentComponent', () => {
                 }
             );
         });
+    });
+
+    describe('handle switch site', () => {
+
     });
 });

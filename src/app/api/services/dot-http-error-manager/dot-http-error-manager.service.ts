@@ -26,6 +26,8 @@ export class DotHttpErrorManagerService {
             .getMessages([
                 'dot.common.http.error.403.header',
                 'dot.common.http.error.403.message',
+                'dot.common.http.error.404.header',
+                'dot.common.http.error.404.message',
                 'dot.common.http.error.500.header',
                 'dot.common.http.error.500.message'
             ])
