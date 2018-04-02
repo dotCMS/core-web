@@ -50,7 +50,7 @@ class MockDotEditContentViewAsToolbarComponent {
     @Input() value: DotEditPageViewAs;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
 }
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
