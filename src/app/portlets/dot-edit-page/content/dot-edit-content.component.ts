@@ -15,7 +15,7 @@ import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
@@ -217,7 +217,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
-        this.dotHttpErrorManagerService.handle(err).subscribe((res: any) => {
+        this.dotHttpErrorManagerService.handle(err).subscribe((res: DotHttpErrorHandled) => {
             if (!res.redirected) {
                 this.dotRouterService.gotoPortlet('/c/site-browser');
             }

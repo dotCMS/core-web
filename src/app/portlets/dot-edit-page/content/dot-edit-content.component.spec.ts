@@ -36,6 +36,8 @@ import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-pag
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
+import { mockResponseView } from '../../../test/response-view.mock';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -56,7 +58,9 @@ describe('DotEditContentComponent', () => {
     let dotDialogService: DotDialogService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotPageStateService: DotPageStateService;
+    let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     const siteServiceMock = new SiteServiceMock();
     let route: ActivatedRoute;
@@ -147,7 +151,9 @@ describe('DotEditContentComponent', () => {
         dotDialogService = de.injector.get(DotDialogService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
+        dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
         dotPageStateService = de.injector.get(DotPageStateService);
+        dotRouterService = de.injector.get(DotRouterService);
         route = de.injector.get(ActivatedRoute);
     });
 
@@ -404,17 +410,32 @@ describe('DotEditContentComponent', () => {
         const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
 
         beforeEach(() => {
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockRenderedPageState));
             component.pageState = null;
+
         });
 
         it('should rerender pagestate after switch site', () => {
             expect(component.pageState).toBe(null);
+
+            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockRenderedPageState));
             fixture.detectChanges();
 
             siteServiceMock.setFakeCurrentSite(mockSites[1]);
             expect(dotPageStateService.get).toHaveBeenCalledWith('an/url/fake');
             expect(component.pageState).toBe(mockRenderedPageState);
+        });
+
+        it('should handle error', () => {
+            const fake500Response = mockResponseView(500);
+            spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake500Response));
+            spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
+            spyOn(dotRouterService, 'gotoPortlet');
+            fixture.detectChanges();
+
+            siteServiceMock.setFakeCurrentSite(mockSites[1]);
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake500Response);
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
+
         });
     });
 });

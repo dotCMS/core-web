@@ -8,6 +8,11 @@ import { ResponseView, LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 
 import { DotDialogService } from '../dot-dialog';
 
+export interface DotHttpErrorHandled {
+    redirected: boolean;
+    forbidden?: boolean;
+}
+
 /**
  * Handle the UI for http errors messages
  *
@@ -41,8 +46,8 @@ export class DotHttpErrorManagerService {
      * @returns {Observable<boolean>}
      * @memberof DotHttpErrorManagerService
      */
-    handle(err: ResponseView): Observable<any> {
-        const result: any = {
+    handle(err: ResponseView): Observable<DotHttpErrorHandled> {
+        const result: DotHttpErrorHandled = {
             redirected: this.callErrorHandler(err.response.status)
         };
 
