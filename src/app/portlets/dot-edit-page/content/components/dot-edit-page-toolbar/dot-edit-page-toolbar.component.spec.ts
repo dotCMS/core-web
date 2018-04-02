@@ -225,7 +225,7 @@ describe('DotEditPageToolbarComponent', () => {
         expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
-    it("should have page can't edit message and disabled edit button", () => {
+    it('should have page can\'t edit message and disabled edit button', () => {
         component.pageState.page.canEdit = false;
         fixture.detectChanges();
 
@@ -432,7 +432,7 @@ describe('DotEditPageToolbarComponent', () => {
             clickLocker();
 
             expect(component.lockerModel).toBe(false);
-            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
+            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
         });
 
         it('should call confirmation service on edit attemp when page is locked by another user', () => {
@@ -479,7 +479,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('edit');
 
-            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
+            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
             expect(component.lockerModel).toBe(false);
         });
 
@@ -510,7 +510,7 @@ describe('DotEditPageToolbarComponent', () => {
             expect(component.lockerModel).toBe(true, 'page locked after click in preview');
         });
 
-        it("should edit tab don't be called twice", () => {
+        it('should edit tab don\'t be called twice', () => {
             spyOn(_, 'debounce').and.callFake(function(cb) {
                 return function() {
                     cb();
