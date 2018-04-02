@@ -5,6 +5,7 @@ import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-act
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
 import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPage } from '../../../shared/models/dot-page.model';
+import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -18,7 +19,11 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     actionsAvailable: boolean;
     workflowsMenuActions: Observable<MenuItem[]>;
 
-    constructor(private workflowsService: DotWorkflowService, private httpErrorManagerService: DotHttpErrorManagerService) {}
+    constructor(
+        private workflowsService: DotWorkflowService,
+        private httpErrorManagerService: DotHttpErrorManagerService,
+        private dotGlobalMessageService: DotGlobalMessageService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.page) {
@@ -56,6 +61,9 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                     this.workflowsMenuActions = this.workflowsService
                         .fireWorkflowAction(this.page.workingInode, workflow.id)
                         .pluck('inode')
+                        .do(() => {
+                            this.dotGlobalMessageService.display(`The action "${workflow.name}" was executed correctly`);
+                        })
                         // TODO: A better implementation needs to be done to
                         // handle workflow actions errors, which are edge cases
                         .catch(() => Observable.of(null))
