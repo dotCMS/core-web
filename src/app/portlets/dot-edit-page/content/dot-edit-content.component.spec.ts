@@ -1,4 +1,4 @@
-import { SiteServiceMock } from './../../../test/site-service.mock';
+import { SiteServiceMock, mockSites } from './../../../test/site-service.mock';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -58,6 +58,7 @@ fdescribe('DotEditContentComponent', () => {
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotPageStateService: DotPageStateService;
     let fixture: ComponentFixture<DotEditContentComponent>;
+    const siteServiceMock = new SiteServiceMock();
     let route: ActivatedRoute;
 
     beforeEach(() => {
@@ -114,7 +115,7 @@ fdescribe('DotEditContentComponent', () => {
                 },
                 {
                     provide: SiteService,
-                    useClass: SiteServiceMock
+                    useValue: siteServiceMock
                 },
                 {
                     provide: ActivatedRoute,
@@ -127,6 +128,11 @@ fdescribe('DotEditContentComponent', () => {
                                         state: mockDotPageState
                                     }
                                 })
+                            }
+                        },
+                        snapshot: {
+                            queryParams: {
+                                url: 'an/url/fake'
                             }
                         }
                     }
@@ -202,7 +208,7 @@ fdescribe('DotEditContentComponent', () => {
             const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
             component.pageState.viewAs.device = mockDotDevice;
             fixture.detectChanges();
-            expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth + 'px', height: mockDotDevice.cssHeight + 'px'});
+            expect(pageWrapper.styles).toEqual({ width: mockDotDevice.cssWidth + 'px', height: mockDotDevice.cssHeight + 'px' });
             expect(pageWrapper.nativeElement.classList.contains('dot-edit__page-wrapper--deviced')).toBe(true);
         });
 
@@ -263,7 +269,7 @@ fdescribe('DotEditContentComponent', () => {
                 content: {
                     page: {
                         ...mockDotRenderedPage,
-                        canLock: true,
+                        canLock: true
                     },
                     state: {
                         locked: true,
@@ -282,7 +288,7 @@ fdescribe('DotEditContentComponent', () => {
     });
 
     describe('set page state when toolbar emit new state', () => {
-        const spyStateSet = val => {
+        const spyStateSet = (val) => {
             spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(val));
         };
 
@@ -375,7 +381,7 @@ fdescribe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
             spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
-            spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -395,6 +401,20 @@ fdescribe('DotEditContentComponent', () => {
     });
 
     describe('handle switch site', () => {
+        const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
 
+        beforeEach(() => {
+            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockRenderedPageState));
+            component.pageState = null;
+        });
+
+        it('should rerender pagestate after switch site', () => {
+            expect(component.pageState).toBe(null);
+            fixture.detectChanges();
+
+            siteServiceMock.setFakeCurrentSite(mockSites[1]);
+            expect(dotPageStateService.get).toHaveBeenCalledWith('an/url/fake');
+            expect(component.pageState).toBe(mockRenderedPageState);
+        });
     });
 });
