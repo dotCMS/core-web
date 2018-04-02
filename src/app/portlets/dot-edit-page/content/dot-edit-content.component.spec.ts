@@ -388,4 +388,11 @@ describe('DotEditContentComponent', () => {
             );
         });
     });
+
+    describe('dialog configuration', () => {
+        it('should not be draggable', () => {
+            const dialog = fixture.debugElement.query(By.css('p-dialog'));
+            expect(false).toEqual(dialog.nativeElement.draggable);
+        });
+    });
 });

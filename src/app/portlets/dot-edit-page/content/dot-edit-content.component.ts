@@ -115,6 +115,17 @@ export class DotEditContentComponent implements OnInit {
      */
     onLoad(_event): void {
         this.dotLoadingIndicatorService.hide();
+        this.bindKeyDownEvent();
+
+    }
+
+    bindKeyDownEvent(): void {
+        this.iframe.nativeElement.contentWindow.document.addEventListener('keydown', function (event, document) {
+            if (event.keyCode === 27) {
+                const test: HTMLElement = window.top.document.querySelectorAll('.ui-widget-overlay')[0] as HTMLElement;
+                test.click();
+            }
+        });
     }
 
     /**
@@ -133,6 +144,7 @@ export class DotEditContentComponent implements OnInit {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
             },
             (err: ResponseView) => {
+                this.handleSetPageStateFailed(err);
                 this.handleSetPageStateFailed(err);
             }
         );
@@ -247,7 +259,7 @@ export class DotEditContentComponent implements OnInit {
             element it's available in the DOM
         */
         setTimeout(() => {
-            window.focus();
+            //window.focus();
             const editContentletIframeEl = this.contentletActionsIframe.nativeElement;
 
             /*
