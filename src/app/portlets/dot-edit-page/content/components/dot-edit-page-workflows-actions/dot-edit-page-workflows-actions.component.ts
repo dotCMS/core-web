@@ -15,7 +15,6 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
     @Input() page: DotPage;
     @Input() label: string;
 
-    inode: string;
     actionsAvailable: boolean;
     workflowsMenuActions: Observable<MenuItem[]>;
 
@@ -23,8 +22,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.page) {
-            this.inode = this.page.workingInode;
-            this.workflowsMenuActions = this.getWorkflowActions(this.inode);
+            this.workflowsMenuActions = this.getWorkflowActions(this.page.workingInode);
         }
     }
 
@@ -56,14 +54,14 @@ export class DotEditPageWorkflowsActionsComponent implements OnChanges {
                 command: () => {
                     const currentMenuActions = this.workflowsMenuActions;
                     this.workflowsMenuActions = this.workflowsService
-                        .fireWorkflowAction(this.inode, workflow.id)
+                        .fireWorkflowAction(this.page.workingInode, workflow.id)
                         .pluck('inode')
                         // TODO: A better implementation needs to be done to
                         // handle workflow actions errors, which are edge cases
                         .catch(() => Observable.of(null))
                         .mergeMap((inode: string) => {
-                            this.inode = inode || this.inode;
-                            return this.getWorkflowActions(this.inode);
+                            const newInode = inode || this.page.workingInode;
+                            return this.getWorkflowActions(newInode);
                         })
                         .catch((error) => {
                             this.httpErrorManagerService.handle(error);
