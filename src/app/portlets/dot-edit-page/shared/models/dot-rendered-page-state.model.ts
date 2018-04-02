@@ -12,11 +12,6 @@ export interface DotPageState {
     mode: PageMode;
 }
 
-interface LockedState {
-    locked?: boolean;
-    lockedByAnotherUser?: boolean;
-}
-
 export class DotRenderedPageState {
     private _state: DotPageState;
 

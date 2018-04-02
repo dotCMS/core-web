@@ -26,7 +26,7 @@
 
     <div class="ui-toolbar-group-center">
         <p-inputSwitch #locker class="edit-page-toolbar__locker" [class.warn]="pageState.page.canLock && pageState.state.lockedByAnotherUser" [disabled]="!pageState.page.canLock" [(ngModel)]="lockerModel" (onChange)="lockPageHandler($event)" (click)="onLockerClick($event)"></p-inputSwitch>
-        <p-selectButton flat class="edit-page-toolbar__state-selector" [(ngModel)]="mode" (onChange)="stateSelectorHandler($event)" [options]="states"></p-selectButton>
+        <p-selectButton flat class="edit-page-toolbar__state-selector" [(ngModel)]="mode" (onChange)="stateSelectorHandler($event.value)" [options]="states"></p-selectButton>
     </div>
 
     <div class="ui-toolbar-group-right">

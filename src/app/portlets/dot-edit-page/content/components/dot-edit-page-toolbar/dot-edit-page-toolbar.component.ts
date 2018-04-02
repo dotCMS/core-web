@@ -133,9 +133,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
      * @param {any} $event
      * @memberof DotEditPageToolbarComponent
      */
-    stateSelectorHandler(event): void {
-        const pageState: PageMode = event.value;
-
+    stateSelectorHandler(pageState: PageMode): void {
         if (this.shouldConfirmToLock()) {
             this.showLockConfirmDialog(() => {
                 this.setSelectorState(pageState);
@@ -145,7 +143,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         }
     }
 
-    showLockConfirmDialog(acceptCallback: Function): void {
+    private showLockConfirmDialog(acceptCallback: Function): void {
         this.dotDialogService.confirm({
             accept: acceptCallback,
             reject: () => {
