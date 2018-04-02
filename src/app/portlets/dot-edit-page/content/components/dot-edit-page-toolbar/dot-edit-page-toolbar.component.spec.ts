@@ -7,6 +7,7 @@ import { DotEditPageToolbarModule } from './dot-edit-page-toolbar.module';
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
 import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import * as _ from 'lodash';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,9 +45,7 @@ describe('DotEditPageToolbarComponent', () => {
             live: 2
         };
 
-        const stateSelectorButtons: DebugElement[] = de.queryAll(
-            By.css('.edit-page-toolbar__state-selector .ui-button')
-        );
+        const stateSelectorButtons: DebugElement[] = de.queryAll(By.css('.edit-page-toolbar__state-selector .ui-button'));
         const button = stateSelectorButtons[states[state]].nativeElement;
         button.click();
     }
@@ -72,9 +71,7 @@ describe('DotEditPageToolbarComponent', () => {
     beforeEach(
         async(() => {
             testbed = DOTTestBed.configureTestingModule({
-                declarations: [
-                    MockWorkflowActionsComponent
-                ],
+                declarations: [MockWorkflowActionsComponent],
                 imports: [
                     DotEditPageToolbarModule,
                     DotEditPageWorkflowsActionsModule,
@@ -97,7 +94,7 @@ describe('DotEditPageToolbarComponent', () => {
                     {
                         provide: LoginService,
                         useClass: LoginServiceMock
-                    },
+                    }
                 ]
             });
         })
@@ -121,7 +118,7 @@ describe('DotEditPageToolbarComponent', () => {
                     pageURI: '',
                     shortyLive: '',
                     shortyWorking: '',
-                    workingInode: '',
+                    workingInode: ''
                 },
                 html: '',
                 layout: mockDotLayout,
@@ -130,7 +127,7 @@ describe('DotEditPageToolbarComponent', () => {
             },
             {
                 locked: false,
-                mode: PageMode.PREVIEW,
+                mode: PageMode.PREVIEW
             }
         );
 
@@ -224,17 +221,17 @@ describe('DotEditPageToolbarComponent', () => {
         const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__locked-by-message'));
         expect(lockedMessage.nativeElement.textContent).toContain('Page is locked');
 
-        const editStateModel = component.states.find(state => state.label === 'Edit');
+        const editStateModel = component.states.find((state) => state.label === 'Edit');
         expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
-    it('should have page can\'t edit message and disabled edit button', () => {
+    it("should have page can't edit message and disabled edit button", () => {
         component.pageState.page.canEdit = false;
         fixture.detectChanges();
 
         const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__cant-edit-message'));
         expect(lockedMessage.nativeElement.textContent).toContain('You dont have permissions');
-        const editStateModel = component.states.find(state => state.label === 'Edit');
+        const editStateModel = component.states.find((state) => state.label === 'Edit');
         expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
@@ -435,7 +432,7 @@ describe('DotEditPageToolbarComponent', () => {
             clickLocker();
 
             expect(component.lockerModel).toBe(false);
-            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
+            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
         });
 
         it('should call confirmation service on edit attemp when page is locked by another user', () => {
@@ -482,7 +479,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('edit');
 
-            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
+            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
             expect(component.lockerModel).toBe(false);
         });
 
@@ -511,6 +508,34 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('preview');
             expect(component.lockerModel).toBe(true, 'page locked after click in preview');
+        });
+
+        it("should edit tab don't be called twice", () => {
+            spyOn(_, 'debounce').and.callFake(function(cb) {
+                return function() {
+                    cb();
+                };
+            });
+            spyOn(component.changeState, 'emit');
+
+            component.pageState.state.mode = PageMode.PREVIEW;
+            component.pageState.state.locked = false;
+
+            fixture.detectChanges();
+
+            clickStateButton('live');
+            fixture.detectChanges();
+
+            clickStateButton('edit');
+            fixture.detectChanges();
+
+            clickStateButton('edit');
+            fixture.detectChanges();
+
+            clickStateButton('edit');
+            fixture.detectChanges();
+
+            expect(component.changeState.emit).toHaveBeenCalledTimes(1);
         });
     });
 });
