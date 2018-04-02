@@ -1,7 +1,6 @@
 <p-confirmDialog #cd 
     *ngIf="dotDialogService.confirmModel"
     [closable]="false"
-    [draggable]="true"
     [responsive]="true"
     width="400">
     <p-footer>
@@ -13,7 +12,7 @@
 <p-dialog
     *ngIf="dotDialogService.alertModel"
     [closable]="false"
-    [draggable]="true"
+    [draggable]="false"
     [header]="dotDialogService.alertModel.header"
     [responsive]="true"
     [visible]="true"
