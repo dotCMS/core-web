@@ -14,6 +14,7 @@ import { DotRouterService } from '../../../../../api/services/dot-router/dot-rou
 import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
 import { DotPage } from '../../../shared/models/dot-page.model';
+import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -32,6 +33,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let actionButton: DebugElement;
     let dotWorkflowService: DotWorkflowService;
     let workflowActionComponent: DebugElement;
+    let dotGlobalMessageService: DotGlobalMessageService;
 
     beforeEach(
         async(() => {
@@ -61,6 +63,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         actionButton = de.query(By.css('.edit-page-toolbar__actions'));
         workflowActionComponent = de.query(By.css('dot-edit-page-workflows-actions'));
+        dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
 
         dotWorkflowService = workflowActionComponent.injector.get(DotWorkflowService);
         spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
@@ -125,6 +128,15 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
                 thirdButton.click();
                 expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(component.page.workingInode, mockWorkflows[2].id);
+            });
+
+            it('should show success message after fired action in the menu items', () => {
+                spyOn(dotGlobalMessageService, 'display');
+                firstButton.click();
+                fixture.detectChanges();
+                expect(dotGlobalMessageService.display).toHaveBeenCalledWith(
+                    `The action "${mockWorkflows[0].name}" was executed correctly`
+                );
             });
 
             it('should refresh the action list after fire action', () => {
