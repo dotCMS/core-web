@@ -25,6 +25,6 @@
         [visible]="!!dialogTitle"
         [width]="dialogSize.width"
         [draggable]="false">
-        <iframe class="dot-edit__contentlet-iframe" *ngIf="contentletActionsUrl" #contentletActionsIframe [src]="contentletActionsUrl" frameborder="0"></iframe>
+        <iframe class="dot-edit__contentlet-iframe" *ngIf="contentletActionsUrl" [src]="contentletActionsUrl" frameborder="0" (load)="onContentletActionLoaded($event)"></iframe>
     </p-dialog>
 </div>
