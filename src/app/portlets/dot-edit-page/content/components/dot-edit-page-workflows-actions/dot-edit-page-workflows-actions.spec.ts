@@ -8,8 +8,10 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotWorkflowServiceMock, mockWorkflows } from '../../../../../test/dot-workflow-service.mock';
 import { mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
+import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
 import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
@@ -34,6 +36,9 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let dotWorkflowService: DotWorkflowService;
     let workflowActionComponent: DebugElement;
     let dotGlobalMessageService: DotGlobalMessageService;
+    const messageServiceMock = new MockDotMessageService({
+        'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
+    });
 
     beforeEach(
         async(() => {
@@ -45,6 +50,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                         provide: DotWorkflowService,
                         useClass: DotWorkflowServiceMock
                     },
+                    { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: LoginService, useClass: LoginServiceMock },
                     DotHttpErrorManagerService,
                     DotRouterService
