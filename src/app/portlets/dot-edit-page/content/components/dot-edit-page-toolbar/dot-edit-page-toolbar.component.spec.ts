@@ -31,7 +31,7 @@ class MockWorkflowActionsComponent {
     @Input() label = 'Acciones';
 }
 
-describe('DotEditPageToolbarComponent', () => {
+fdescribe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;

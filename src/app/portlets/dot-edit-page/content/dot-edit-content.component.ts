@@ -152,7 +152,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             },
             (err: ResponseView) => {
                 this.handleSetPageStateFailed(err);
-                this.handleSetPageStateFailed(err);
             }
         );
     }
@@ -189,7 +188,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Bind events on content loaded in the dialog.
+     * Bind events on "contentlet Actions" iFrame loaded in the dialog.
      *
      * @param $event
      * @memberof DotEditContentComponent
@@ -241,7 +240,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';
-            debugger;
             this.loadDialogEditor(url);
         });
     }
