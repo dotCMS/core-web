@@ -31,7 +31,7 @@ class MockWorkflowActionsComponent {
     @Input() label = 'Acciones';
 }
 
-fdescribe('DotEditPageToolbarComponent', () => {
+describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<DotEditPageToolbarComponent>;
     let de: DebugElement;
@@ -47,7 +47,7 @@ fdescribe('DotEditPageToolbarComponent', () => {
     function clickStateButton(state) {
         const stateSelectorButtons: DebugElement[] = de.queryAll(
             By.css('.edit-page-toolbar__state-selector .ui-button')
-        );
+        )
         const button = stateSelectorButtons[states[state]].nativeElement;
         button.click();
     }
