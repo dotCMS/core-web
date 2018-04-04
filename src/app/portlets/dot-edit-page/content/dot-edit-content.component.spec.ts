@@ -473,5 +473,64 @@ describe('DotEditContentComponent', () => {
             expect(dialog.nativeElement.attributes.dismissableMask.value).toEqual('true');
             expect(dialog.nativeElement.attributes.modal.value).toEqual('true');
         });
+
+        describe('Contentlet action iframe', () => {
+            let keypressFunction = null;
+            let event;
+
+            beforeEach(() => {
+                event = {
+                    target: {
+                        contentDocument: {
+                            body: {
+                                innerHTML: ''
+                            }
+                        },
+                        contentWindow: {
+                            focus: () => {
+                                return true;
+                            },
+                            addEventListener: (type, listener) => {
+                                keypressFunction = listener;
+                            }
+                        }
+                    }
+                };
+                spyOn(event.target.contentWindow, 'focus');
+                spyOn(event.target.contentWindow, 'addEventListener').and.callThrough();
+            });
+
+            it('should not bind listeners to empty body', () => {
+                component.onContentletActionLoaded(event);
+
+                expect(event.target.contentWindow.focus).not.toHaveBeenCalled();
+                expect(event.target.contentWindow.addEventListener).not.toHaveBeenCalled();
+            });
+
+            describe('load iFrame content', () => {
+                beforeEach(() => {
+                    component.dialogTitle = 'test';
+                    event.target.contentDocument.body.innerHTML = '<html>';
+                    component.onContentletActionLoaded(event);
+                });
+
+                it('should bind listener and set the events to loaded iFrame', () => {
+                    expect(event.target.contentWindow.focus).toHaveBeenCalled();
+                    expect(event.target.contentWindow.addEventListener).toHaveBeenCalled();
+                    expect(event.target.contentWindow.ngEditContentletEvents).toBeDefined();
+                });
+
+                it('should capture Escape key and clear dialogTitle', () => {
+                    keypressFunction({ key: 'Escape' });
+                    expect(component.dialogTitle).toEqual(null);
+                });
+
+                it('should capture other key and do not clear dialogTitle', () => {
+                    component.onContentletActionLoaded(event);
+                    keypressFunction({ key: 'other' });
+                    expect(component.dialogTitle).toEqual('test');
+                });
+            });
+        });
     });
 });
