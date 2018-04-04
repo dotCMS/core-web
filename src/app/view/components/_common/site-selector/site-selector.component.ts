@@ -71,11 +71,9 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
         this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
 
-        if (this.id) {
-            this.selectCurrentSite(this.id);
-        } else if (!this.currentSite) {
-            this.setCurrentSiteAsDefault();
-        }
+        // if (!this.currentSite) {
+        //     this.setCurrentSiteAsDefault();
+        // }
 
         this.getSitesList();
     }
@@ -132,6 +130,10 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.getWithOffset(offset).subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
+
+            if (!this.currentSite) {
+                this.setCurrentSiteAsDefault();
+            }
         });
     }
 
@@ -154,12 +156,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private setCurrentSiteAsDefault() {
-        if (this.siteService.currentSite) {
-            this.currentSite = Observable.of(this.siteService.currentSite);
-        } else {
-            this.siteService.switchSite$.take(1).subscribe((site: Site) => {
-                this.currentSite = Observable.of(site);
-            });
-        }
+        console.log('A: setCurrentSiteAsDefault', this.siteService.currentSite);
+        this.currentSite = Observable.of(this.siteService.currentSite);
     }
 }
