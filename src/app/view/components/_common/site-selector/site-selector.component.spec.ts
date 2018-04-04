@@ -6,7 +6,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { SiteServiceMock } from '../../../../test/site-service.mock';
+import { SiteServiceMock, mockSites } from '../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component/searchable-dropdown.component';
@@ -14,7 +14,7 @@ import { PaginatorService } from '../../../../api/services/paginator';
 import { IframeOverlayService } from '../iframe/service/iframe-overlay.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-fdescribe('SiteSelectorComponent', () => {
+describe('SiteSelectorComponent', () => {
     let comp: SiteSelectorComponent;
     let fixture: ComponentFixture<SiteSelectorComponent>;
     let de: DebugElement;
@@ -169,5 +169,32 @@ fdescribe('SiteSelectorComponent', () => {
         searchableDropdownComponent.filterChange.emit('');
 
         expect(paginatorService.filter).toEqual('');
+    });
+
+    it('should emit change event', () => {
+        paginatorService.filter = 'filter';
+        paginatorService.totalRecords = 2;
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+
+        fixture.detectChanges();
+        const searchableDropdownComponent: DebugElement = de.query(By.css('dot-searchable-dropdown'));
+        let result: any;
+        comp.change.subscribe(res => result = res);
+        searchableDropdownComponent.triggerEventHandler('change',  {fake: 'site'});
+
+        expect(result).toEqual({fake: 'site'});
+    });
+
+    it('should set current site correctly', () => {
+        paginatorService.filter = 'filter';
+        paginatorService.totalRecords = 2;
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+
+        fixture.detectChanges();
+
+        let result: any;
+        comp.currentSite.subscribe(res => result = res);
+
+        expect(result).toEqual(mockSites[0]);
     });
 });

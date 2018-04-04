@@ -52,7 +52,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
     currentSite: Observable<Site>;
-    sites: any[];
     sitesCurrentPage: Site[];
     totalRecords: number;
 
@@ -70,10 +69,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.addExtraParams('system', this.system);
 
         this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
-
-        // if (!this.currentSite) {
-        //     this.setCurrentSiteAsDefault();
-        // }
 
         this.getSitesList();
     }
@@ -156,7 +151,6 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private setCurrentSiteAsDefault() {
-        console.log('A: setCurrentSiteAsDefault', this.siteService.currentSite);
         this.currentSite = Observable.of(this.siteService.currentSite);
     }
 }
