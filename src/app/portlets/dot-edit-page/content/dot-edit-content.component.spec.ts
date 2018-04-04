@@ -469,9 +469,9 @@ describe('DotEditContentComponent', () => {
     describe('dialog configuration', () => {
         it('should not be draggable, have dismissableMask and be a modal', () => {
             const dialog = fixture.debugElement.query(By.css('p-dialog'));
-            expect(false).toEqual(dialog.nativeElement.draggable);
-            expect('true').toEqual(dialog.nativeElement.attributes.dismissableMask.value);
-            expect('true').toEqual(dialog.nativeElement.attributes.modal.value);
+            expect(dialog.nativeElement.draggable).toEqual(false);
+            expect(dialog.nativeElement.attributes.dismissableMask.value).toEqual('true');
+            expect(dialog.nativeElement.attributes.modal.value).toEqual('true');
         });
     });
 });
