@@ -487,16 +487,13 @@ describe('DotEditContentComponent', () => {
                             }
                         },
                         contentWindow: {
-                            focus: () => {
-                                return true;
-                            },
+                            focus: jasmine.createSpy('focus'),
                             addEventListener: (type, listener) => {
                                 keypressFunction = listener;
                             }
                         }
                     }
                 };
-                spyOn(event.target.contentWindow, 'focus');
                 spyOn(event.target.contentWindow, 'addEventListener').and.callThrough();
             });
 
