@@ -56,7 +56,7 @@ describe('DotEditPageToolbarComponent', () => {
     function clickStateButton(state) {
         const stateSelectorButtons: DebugElement[] = de.queryAll(
             By.css('.edit-page-toolbar__state-selector .ui-button')
-        )
+        );
         const button = stateSelectorButtons[states[state]].nativeElement;
         button.click();
     }
