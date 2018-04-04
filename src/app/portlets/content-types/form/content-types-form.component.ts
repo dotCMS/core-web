@@ -41,6 +41,8 @@ export class ContentTypesFormComponent implements OnInit {
     nameFieldLabel: string;
     workflowOptions: Observable<SelectItem[]>;
 
+    private workflowsModel: DotWorkflow[];
+
     private originalValue: any;
 
     constructor(
@@ -105,6 +107,10 @@ export class ContentTypesFormComponent implements OnInit {
      */
     isEditMode(): boolean {
         return !!(this.data && this.data.id);
+    }
+
+    isWorkflowArchive(id: string): boolean {
+        return this.workflowsModel.filter((workflow: DotWorkflow) => workflow.id === id)[0].archived;
     }
 
     /**
@@ -208,6 +214,13 @@ export class ContentTypesFormComponent implements OnInit {
         this.workflowOptions = this.dotWorkflowService
             .get()
             .do((workflows: DotWorkflow[]) => {
+                this.workflowsModel = workflows.map((workflow: DotWorkflow, index: number) => {
+                    if (index === 1) {
+                        workflow.archived = true;
+                    }
+                    return workflow;
+                });
+
                 if (!this.isEditMode()) {
                     this.setDefaultWorkflow(workflows);
                 }
