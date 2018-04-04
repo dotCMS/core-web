@@ -31,6 +31,7 @@ class MockWorkflowActionsComponent {
     @Input() label = 'Acciones';
 }
 
+
 @Component({
     selector: 'dot-test-host-component',
     template: `<dot-edit-page-toolbar [canSave]="canSave" [pageState]="pageState"></dot-edit-page-toolbar>`
@@ -594,8 +595,8 @@ describe('DotEditPageToolbarComponent', () => {
             });
             spyOn(component.changeState, 'emit');
 
-            component.pageState.state.mode = PageMode.PREVIEW;
-            component.pageState.state.locked = false;
+            fixture.componentInstance.pageState.state.mode = PageMode.PREVIEW;
+            fixture.componentInstance.pageState.state.locked = false;
 
             fixture.detectChanges();
 
@@ -612,6 +613,21 @@ describe('DotEditPageToolbarComponent', () => {
             fixture.detectChanges();
 
             expect(component.changeState.emit).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not show locker confirm dialog when change from preview to live mode and the page is locked by another user', () => {
+
+            spyOn(dotDialogService, 'confirm');
+
+            fixture.componentInstance.pageState.state.mode = PageMode.PREVIEW;
+            fixture.componentInstance.pageState.state.locked = true;
+            fixture.componentInstance.pageState.page.lockedBy = 'someone';
+            fixture.componentInstance.pageState.state.lockedByAnotherUser = true;
+            fixture.componentInstance.pageState.page.canLock = true;
+            fixture.detectChanges();
+
+            clickStateButton('live');
+            expect(dotDialogService.confirm).not.toHaveBeenCalled();
         });
     });
 });
