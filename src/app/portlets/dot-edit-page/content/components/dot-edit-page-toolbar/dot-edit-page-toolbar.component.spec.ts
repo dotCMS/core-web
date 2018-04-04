@@ -313,7 +313,7 @@ describe('DotEditPageToolbarComponent', () => {
         fixture.detectChanges();
 
         expect(mtest.componentInstance.label).toEqual(messageServiceMock.get('editpage.toolbar.primary.workflow.actions'));
-        expect(mtest.componentInstance.inode).toEqual(component.pageState.page.workingInode);
+        expect(mtest.componentInstance.page.workingInode).toEqual(component.pageState.page.workingInode);
     });
 
     it('should emit save event on primary action button click', () => {
@@ -594,9 +594,6 @@ describe('DotEditPageToolbarComponent', () => {
                 };
             });
             spyOn(component.changeState, 'emit');
-
-            fixture.componentInstance.pageState.state.mode = PageMode.PREVIEW;
-            fixture.componentInstance.pageState.state.locked = false;
 
             fixture.detectChanges();
 
