@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import {
     Component,
     ViewEncapsulation,
@@ -8,7 +9,8 @@ import {
     Input,
     OnInit,
     SimpleChanges,
-    OnChanges
+    OnChanges,
+    OnDestroy
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
@@ -37,20 +39,24 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./site-selector.component.scss'],
     templateUrl: 'site-selector.component.html'
 })
-export class SiteSelectorComponent implements OnInit, OnChanges {
+export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @Input() archive: boolean;
     @Input() id: string;
     @Input() live: boolean;
     @Input() system: boolean;
+
     @Output() change: EventEmitter<Site> = new EventEmitter();
     @Output() hide: EventEmitter<any> = new EventEmitter();
     @Output() show: EventEmitter<any> = new EventEmitter();
+
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
     currentSite: Observable<Site>;
-    totalRecords: number;
-    sitesCurrentPage: Site[];
     sites: any[];
+    sitesCurrentPage: Site[];
+    totalRecords: number;
+
+    private refreshSitesSub: Subscription;
 
     constructor(private siteService: SiteService, public paginationService: PaginatorService) {}
 
@@ -63,21 +69,25 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         this.paginationService.addExtraParams('live', this.live);
         this.paginationService.addExtraParams('system', this.system);
 
-        this.getSitesList();
-
-        this.siteService.refreshSites$.subscribe(() => this.handleSitesRefresh());
+        this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
 
         if (this.id) {
             this.selectCurrentSite(this.id);
         } else if (!this.currentSite) {
             this.setCurrentSiteAsDefault();
         }
+
+        this.getSitesList();
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes && changes.id && changes.id.currentValue) {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.id && changes.id.currentValue) {
             this.selectCurrentSite(changes.id.currentValue);
         }
+    }
+
+    ngOnDestroy(): void {
+        this.refreshSitesSub.unsubscribe();
     }
 
     /**
@@ -86,11 +96,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
      */
     handleSitesRefresh(): void {
         this.paginationService.getCurrentPage().subscribe((items) => {
-            this.sites = items.splice(0);
-            this.getSitesList();
-
-            // items.splice(0) is used to return a new object and trigger the change detection in angular
-            this.sitesCurrentPage = items.splice(0);
+            this.sitesCurrentPage = [...items];
             this.totalRecords = this.paginationService.totalRecords;
             this.currentSite = Observable.of(this.siteService.currentSite);
         });
@@ -124,8 +130,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
-            // items.splice(0) is used to return a new object and trigger the change detection in angular
-            this.sitesCurrentPage = items.splice(0);
+            this.sitesCurrentPage = [...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
     }
@@ -151,13 +156,10 @@ export class SiteSelectorComponent implements OnInit, OnChanges {
     private setCurrentSiteAsDefault() {
         if (this.siteService.currentSite) {
             this.currentSite = Observable.of(this.siteService.currentSite);
-            this.siteChange(this.siteService.currentSite);
         } else {
-            this.siteService.switchSite$.first().subscribe((site: Site) => {
+            this.siteService.switchSite$.take(1).subscribe((site: Site) => {
                 this.currentSite = Observable.of(site);
-                this.siteChange(site);
             });
         }
     }
-
 }
