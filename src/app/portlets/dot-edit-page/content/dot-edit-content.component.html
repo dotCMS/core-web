@@ -16,12 +16,10 @@
 
     <p-dialog class="dot-edit__page-dialog"
         (onHide)="onHideDialog($event)"
-        [closable]="true"
-        [closeOnEscape]="true"
-        [dismissableMask]="true"
+        dismissableMask="true"
         [header]="dialogTitle"
         [height]="dialogSize.height"
-        [modal]="true"
+        modal="true"
         [visible]="!!dialogTitle"
         [width]="dialogSize.width"
         [draggable]="false">

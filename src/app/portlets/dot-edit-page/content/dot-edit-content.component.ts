@@ -198,7 +198,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         if (editContentletIframeEl.contentDocument.body.innerHTML !== '') {
             editContentletIframeEl.contentWindow.focus();
             editContentletIframeEl.contentWindow.addEventListener('keydown', event => {
-                if (event.keyCode === 27) {
+                if (event.key === 'Escape') {
                     this.ngZone.run(() => {
                         this.dialogTitle = null;
                     });

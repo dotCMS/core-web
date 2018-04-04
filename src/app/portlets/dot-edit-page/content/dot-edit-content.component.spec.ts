@@ -294,7 +294,7 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('set page state when toolbar emit new state', () => {
-        const spyStateSet = (val) => {
+        const spyStateSet = val => {
             spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(val));
         };
 
@@ -416,7 +416,7 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
             spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
-            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
+            spyOn(dotDialogService, 'confirm').and.callFake(conf => {
                 conf.accept();
             });
 
@@ -440,7 +440,6 @@ describe('DotEditContentComponent', () => {
 
         beforeEach(() => {
             component.pageState = null;
-
         });
 
         it('should rerender pagestate after switch site', () => {
@@ -464,14 +463,15 @@ describe('DotEditContentComponent', () => {
             siteServiceMock.setFakeCurrentSite(mockSites[1]);
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake500Response);
             expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
-
         });
     });
 
     describe('dialog configuration', () => {
-        it('should not be draggable', () => {
+        it('should not be draggable, have dismissableMask and be a modal', () => {
             const dialog = fixture.debugElement.query(By.css('p-dialog'));
             expect(false).toEqual(dialog.nativeElement.draggable);
+            expect('true').toEqual(dialog.nativeElement.attributes.dismissableMask.value);
+            expect('true').toEqual(dialog.nativeElement.attributes.modal.value);
         });
     });
 });
