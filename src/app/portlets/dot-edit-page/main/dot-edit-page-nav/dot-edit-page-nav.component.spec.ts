@@ -5,26 +5,54 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TooltipModule } from 'primeng/primeng';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
+import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-describe('DotEditPageNavComponent', () => {
+@Injectable()
+class MockDotDotcmsConfigService {
+    getConfig(): Observable<ConfigParams> {
+        return Observable.of({
+            license: {
+                levelName: 'PRIME EDITION'
+            },
+            disabledWebsockets: '',
+            websocketReconnectTime: 0,
+            websocketEndpoints: '',
+            websocketsSystemEventsEndpoint: '',
+            websocketBaseURL: '',
+            websocketProtocol: '',
+            menu: [],
+            paginatorRows: 0,
+            paginatorLinks: 0,
+            emailRegex: ''
+        });
+    }
+}
+fdescribe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
         'editpage.toolbar.nav.layout': 'Layout',
-        'editpage.toolbar.nav.code': 'Code'
+        'editpage.toolbar.nav.code': 'Code',
+        'editpage.toolbar.nav.licenceTooltip': 'Enterprise only'
     });
 
     beforeEach(
         async(() => {
             TestBed.configureTestingModule({
-                imports: [RouterTestingModule],
+                imports: [RouterTestingModule, TooltipModule],
                 declarations: [DotEditPageNavComponent],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+                providers: [
+                    { provide: DotMessageService, useValue: messageServiceMock },
+                    { provide: DotcmsConfig, useClass: MockDotDotcmsConfigService }
+                ]
             }).compileComponents();
         })
     );
@@ -85,7 +113,7 @@ describe('DotEditPageNavComponent', () => {
             expect(menuListItems[0].nativeElement.textContent).toContain('Content');
         });
 
-        it('should have code option disabled because user can\'t edit the page thus the layout or template', () => {
+        it('should have code option disabled because user can not edit the page thus the layout or template', () => {
             component.pageState = new DotRenderedPageState(
                 mockUser,
                 {
@@ -110,5 +138,26 @@ describe('DotEditPageNavComponent', () => {
                 expect(item.nativeElement.textContent).toContain(labels[index]);
             });
         });
+
+        describe('licence', () => {
+            beforeEach(() => {
+                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                component.enterpriseLicence = false;
+                fixture.detectChanges();
+            });
+
+            it('should have layout option disabled because user does not has a proper licence', () => {
+                const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+                expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
+            });
+
+            it('should the layout option have the proper attribute & message key for tooltip', () => {
+                const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+                const layoutTooltipTextAttr = menuListItems[1].nativeElement.attributes['ng-reflect-text'].value;
+                expect(layoutTooltipTextAttr).toBe(messageServiceMock.get('editpage.toolbar.nav.licenceTooltip'));
+            });
+
+        });
+
     });
 });

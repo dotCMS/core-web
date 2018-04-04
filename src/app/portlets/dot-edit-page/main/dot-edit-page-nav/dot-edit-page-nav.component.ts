@@ -5,8 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
+import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 
 interface DotEditPageNavItem {
+    needsLicence: boolean;
     disabled: boolean;
     icon: string;
     label: string;
@@ -20,15 +22,27 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
-
+    enterpriseLicence: boolean;
     model: Observable<DotEditPageNavItem[]>;
 
-    constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService) {}
+    constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotcmsConfig: DotcmsConfig) {}
 
     ngOnInit(): void {
         this.model = this.dotMessageService
-            .getMessages(['editpage.toolbar.nav.content', 'editpage.toolbar.nav.layout', 'editpage.toolbar.nav.code'])
+            .getMessages([
+                'editpage.toolbar.nav.content',
+                'editpage.toolbar.nav.layout',
+                'editpage.toolbar.nav.code',
+                'editpage.toolbar.nav.licenceTooltip'
+            ])
             .mergeMap(() => Observable.of(this.getNavItems(this.pageState)));
+
+        this.dotcmsConfig
+            .getConfig()
+            .take(1)
+            .subscribe((res: any) => {
+                this.enterpriseLicence = res.license.levelName === 'PRIME EDITION' || false; // Todo: change this for level >=200
+            });
     }
 
     private canGoToLayout(dotRenderedPage: DotRenderedPage): boolean {
@@ -38,6 +52,7 @@ export class DotEditPageNavComponent implements OnInit {
     private getNavItems(dotRenderedPage: DotRenderedPage): DotEditPageNavItem[] {
         const result = [
             {
+                needsLicence: false,
                 disabled: false,
                 icon: 'fa fa-file-text',
                 label: this.dotMessageService.get('editpage.toolbar.nav.content'),
@@ -56,6 +71,9 @@ export class DotEditPageNavComponent implements OnInit {
 
     private getTemplateNavItem(dotRenderedPage: DotRenderedPage): DotEditPageNavItem {
         return {
+            // needsLicence: true,
+            needsLicence: this.enterpriseLicence,
+            // disabled: true,
             disabled: this.canGoToLayout(dotRenderedPage),
             icon: this.getTemplateItemIcon(dotRenderedPage.template),
             label: this.getTemplateItemLabel(dotRenderedPage.template),
