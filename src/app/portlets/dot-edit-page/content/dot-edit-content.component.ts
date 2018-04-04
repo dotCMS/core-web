@@ -330,7 +330,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private switchSiteSubscription(): Subscription {
         return this.siteService.switchSite$.subscribe(() => {
-            console.log('A: switchSite$');
             this.dotPageStateService
                 .get(this.route.snapshot.queryParams.url)
                 .catch((err: ResponseView) => {
