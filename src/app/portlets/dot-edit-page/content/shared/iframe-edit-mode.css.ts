@@ -9,11 +9,7 @@ export const EDIT_PAGE_CSS = `
     [data-dot-object="container"] {
         border: solid 1px #53c2f9;
         min-height: 120px;
-    }
-
-    .row {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom:40px;
     }
 
     [data-dot-object="container"].no {
