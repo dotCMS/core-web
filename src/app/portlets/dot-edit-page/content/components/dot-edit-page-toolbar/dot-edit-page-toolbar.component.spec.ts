@@ -41,7 +41,7 @@ class TestHostComponent {
     @Input() pageState: DotRenderedPageState;
 }
 
-describe('DotEditPageToolbarComponent', () => {
+fdescribe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -272,6 +272,40 @@ describe('DotEditPageToolbarComponent', () => {
 
         const editStateModel = component.states.find((state) => state.label === 'Edit');
         expect(editStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
+        expect(component.lockerModel).toBeFalsy();
+    });
+
+
+    it('should have page is locked by another user message and not disabled edit button', () => {
+        fixture.componentInstance.pageState.state.lockedByAnotherUser = true;
+        fixture.componentInstance.pageState.page.canLock = true;
+        fixture.componentInstance.pageState.state.locked = true;
+        fixture.componentInstance.pageState.page.lockedBy = 'someone';
+
+        fixture.detectChanges();
+
+        const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__locked-by-message'));
+        expect(lockedMessage.nativeElement.textContent).toContain('Page is locked');
+
+        const editStateModel = component.states.find((state) => state.label === 'Edit');
+        expect(editStateModel.styleClass).toEqual('');
+        expect(component.lockerModel).toBeFalsy();
+    });
+
+    it('should have not show any meesage and not disabled edit button neither when page is locked by current user', () => {
+        fixture.componentInstance.pageState.state.lockedByAnotherUser = false;
+        fixture.componentInstance.pageState.page.canLock = true;
+        fixture.componentInstance.pageState.state.locked = true;
+        fixture.componentInstance.pageState.page.lockedBy = 'someone';
+
+        fixture.detectChanges();
+
+        const lockedMessage: DebugElement = de.query(By.css('.edit-page-toolbar__locked-by-message'));
+        expect(lockedMessage).toBeNull();
+
+        const editStateModel = component.states.find((state) => state.label === 'Edit');
+        expect(editStateModel.styleClass).toEqual('');
+        expect(component.lockerModel).toBeTruthy();
     });
 
     it('should have page can\'t edit message and disabled edit button', () => {
