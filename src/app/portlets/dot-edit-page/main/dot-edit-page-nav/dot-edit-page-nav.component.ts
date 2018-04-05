@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
-import { DotcmsConfig } from 'dotcms-js/dotcms-js';
+import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
 
 interface DotEditPageNavItem {
     needslicense: boolean;
@@ -22,7 +22,6 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
-    enterpriselicense: boolean;
     model: Observable<DotEditPageNavItem[]>;
 
     constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotcmsConfig: DotcmsConfig) {}
@@ -35,13 +34,12 @@ export class DotEditPageNavComponent implements OnInit {
                 'editpage.toolbar.nav.code',
                 'editpage.toolbar.nav.licenseTooltip'
             ])
-            .mergeMap(() => Observable.of(this.getNavItems(this.pageState)));
-
-        this.dotcmsConfig
-            .getConfig()
-            .take(1)
-            .subscribe((res: any) => {
-                this.enterpriselicense = res.license.level >= 200 || false;
+            .flatMap(() => {
+                return this.dotcmsConfig.getConfig().take(1);
+            })
+            .mergeMap((config: ConfigParams) => {
+                const enterpriselicense = config.license['level'] >= 200 || false;
+                return Observable.of(this.getNavItems(this.pageState, enterpriselicense));
             });
     }
 
@@ -49,7 +47,7 @@ export class DotEditPageNavComponent implements OnInit {
         return !dotRenderedPage.page.canEdit;
     }
 
-    private getNavItems(dotRenderedPage: DotRenderedPage): DotEditPageNavItem[] {
+    private getNavItems(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem[] {
         const result = [
             {
                 needslicense: false,
@@ -63,15 +61,15 @@ export class DotEditPageNavComponent implements OnInit {
         // Right now we only allowing users to edit layout, so no templates or advanced template can be edit from here.
         // https://github.com/dotCMS/core-web/pull/589
         if (dotRenderedPage.template && dotRenderedPage.template.drawed) {
-            result.push(this.getTemplateNavItem(dotRenderedPage));
+            result.push(this.getTemplateNavItem(dotRenderedPage, enterpriselicense));
         }
 
         return result;
     }
 
-    private getTemplateNavItem(dotRenderedPage: DotRenderedPage): DotEditPageNavItem {
+    private getTemplateNavItem(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem {
         return {
-            needslicense: !this.enterpriselicense,
+            needslicense: !enterpriselicense,
             disabled: this.canGoToLayout(dotRenderedPage),
             icon: this.getTemplateItemIcon(dotRenderedPage.template),
             label: this.getTemplateItemLabel(dotRenderedPage.template),

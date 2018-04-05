@@ -142,7 +142,6 @@ describe('DotEditPageNavComponent', () => {
         describe('license', () => {
             beforeEach(() => {
                 component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-                component.enterpriselicense = false;
                 fixture.detectChanges();
             });
 
@@ -153,8 +152,8 @@ describe('DotEditPageNavComponent', () => {
 
             it('should the layout option have the proper attribute & message key for tooltip', () => {
                 const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-                const layoutTooltipTextAttr = menuListItems[1].nativeElement.attributes['ng-reflect-text'].value;
-                expect(layoutTooltipTextAttr).toBe(messageServiceMock.get('editpage.toolbar.nav.licenseTooltip'));
+                const layoutTooltipHTML = menuListItems[1].nativeElement.outerHTML;
+                expect(layoutTooltipHTML).toContain(messageServiceMock.get('editpage.toolbar.nav.licenseTooltip'));
             });
 
         });
