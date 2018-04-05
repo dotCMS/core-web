@@ -41,7 +41,7 @@ class TestHostComponent {
     @Input() pageState: DotRenderedPageState;
 }
 
-fdescribe('DotEditPageToolbarComponent', () => {
+describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
