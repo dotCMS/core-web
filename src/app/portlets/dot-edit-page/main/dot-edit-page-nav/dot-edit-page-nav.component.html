@@ -1,10 +1,10 @@
 <ul class="edit-page-nav">
     <li *ngFor="let item of model | async" >
-        <a *ngIf="!item.needsLicence" class="edit-page-nav__item" [class.edit-page-nav__item--disabled]="item.disabled" routerLinkActive="{{ !item.disabled ? 'edit-page-nav__item--active' : '' }}" [routerLink]="!item.disabled ? item.link : null" [queryParams]="route.queryParams | async">
+        <a *ngIf="!item.needslicense" class="edit-page-nav__item" [class.edit-page-nav__item--disabled]="item.disabled" routerLinkActive="{{ !item.disabled ? 'edit-page-nav__item--active' : '' }}" [routerLink]="!item.disabled ? item.link : null" [queryParams]="route.queryParams | async">
             <i class="{{ item.icon }}"></i>
             <span class="edit-page-nav__item-text">{{ item.label }}</span>
         </a>
-        <span *ngIf="item.needsLicence" pTooltip="{{ dotMessageService.get('editpage.toolbar.nav.licenceTooltip') }}" tooltipPosition="left" class="edit-page-nav__item edit-page-nav__item--disabled">
+        <span *ngIf="item.needslicense" pTooltip="{{ dotMessageService.get('editpage.toolbar.nav.licenseTooltip') }}" tooltipPosition="left" class="edit-page-nav__item edit-page-nav__item--disabled">
             <i class="{{ item.icon }}"></i>
             <span class="edit-page-nav__item-text">{{ item.label }}</span>
         </span>

@@ -8,7 +8,7 @@ import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 
 interface DotEditPageNavItem {
-    needsLicence: boolean;
+    needslicense: boolean;
     disabled: boolean;
     icon: string;
     label: string;
@@ -22,7 +22,7 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
-    enterpriseLicence: boolean;
+    enterpriselicense: boolean;
     model: Observable<DotEditPageNavItem[]>;
 
     constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotcmsConfig: DotcmsConfig) {}
@@ -33,7 +33,7 @@ export class DotEditPageNavComponent implements OnInit {
                 'editpage.toolbar.nav.content',
                 'editpage.toolbar.nav.layout',
                 'editpage.toolbar.nav.code',
-                'editpage.toolbar.nav.licenceTooltip'
+                'editpage.toolbar.nav.licenseTooltip'
             ])
             .mergeMap(() => Observable.of(this.getNavItems(this.pageState)));
 
@@ -41,7 +41,7 @@ export class DotEditPageNavComponent implements OnInit {
             .getConfig()
             .take(1)
             .subscribe((res: any) => {
-                this.enterpriseLicence = res.license.levelName === 'PRIME EDITION' || false; // Todo: change this for level >=200
+                this.enterpriselicense = res.license.level >= 200 || false;
             });
     }
 
@@ -52,7 +52,7 @@ export class DotEditPageNavComponent implements OnInit {
     private getNavItems(dotRenderedPage: DotRenderedPage): DotEditPageNavItem[] {
         const result = [
             {
-                needsLicence: false,
+                needslicense: false,
                 disabled: false,
                 icon: 'fa fa-file-text',
                 label: this.dotMessageService.get('editpage.toolbar.nav.content'),
@@ -71,9 +71,7 @@ export class DotEditPageNavComponent implements OnInit {
 
     private getTemplateNavItem(dotRenderedPage: DotRenderedPage): DotEditPageNavItem {
         return {
-            // needsLicence: true,
-            needsLicence: this.enterpriseLicence,
-            // disabled: true,
+            needslicense: !this.enterpriselicense,
             disabled: this.canGoToLayout(dotRenderedPage),
             icon: this.getTemplateItemIcon(dotRenderedPage.template),
             label: this.getTemplateItemLabel(dotRenderedPage.template),

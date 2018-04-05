@@ -18,7 +18,7 @@ class MockDotDotcmsConfigService {
     getConfig(): Observable<ConfigParams> {
         return Observable.of({
             license: {
-                levelName: 'PRIME EDITION'
+                level: 100
             },
             disabledWebsockets: '',
             websocketReconnectTime: 0,
@@ -33,7 +33,7 @@ class MockDotDotcmsConfigService {
         });
     }
 }
-fdescribe('DotEditPageNavComponent', () => {
+describe('DotEditPageNavComponent', () => {
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
 
@@ -41,7 +41,7 @@ fdescribe('DotEditPageNavComponent', () => {
         'editpage.toolbar.nav.content': 'Content',
         'editpage.toolbar.nav.layout': 'Layout',
         'editpage.toolbar.nav.code': 'Code',
-        'editpage.toolbar.nav.licenceTooltip': 'Enterprise only'
+        'editpage.toolbar.nav.licenseTooltip': 'Enterprise only'
     });
 
     beforeEach(
@@ -139,14 +139,14 @@ fdescribe('DotEditPageNavComponent', () => {
             });
         });
 
-        describe('licence', () => {
+        describe('license', () => {
             beforeEach(() => {
                 component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-                component.enterpriseLicence = false;
+                component.enterpriselicense = false;
                 fixture.detectChanges();
             });
 
-            it('should have layout option disabled because user does not has a proper licence', () => {
+            it('should have layout option disabled because user does not has a proper license', () => {
                 const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
                 expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
             });
@@ -154,7 +154,7 @@ fdescribe('DotEditPageNavComponent', () => {
             it('should the layout option have the proper attribute & message key for tooltip', () => {
                 const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
                 const layoutTooltipTextAttr = menuListItems[1].nativeElement.attributes['ng-reflect-text'].value;
-                expect(layoutTooltipTextAttr).toBe(messageServiceMock.get('editpage.toolbar.nav.licenceTooltip'));
+                expect(layoutTooltipTextAttr).toBe(messageServiceMock.get('editpage.toolbar.nav.licenseTooltip'));
             });
 
         });
