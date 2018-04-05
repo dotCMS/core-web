@@ -1,3 +1,5 @@
+{{form.value | json}}
+
 
 <form [formGroup]="form" class="content-type__form" id="content-type-form" novalidate>
     <div class="form__group">
@@ -17,13 +19,7 @@
     </div>
     <div class="form__group">
         <label for="content-type-form-workflow" class="form__label">{{ dotMessageService.get('contenttypes.form.label.workflow') }}</label>
-
-        <p-multiSelect [options]="workflowOptions | async" id="content-type-form-workflow" name="workflow" formControlName="workflow" tabindex="4" defaultLabel="Select Workflow" maxSelectedLabels="1" class="workflows-field">
-            <ng-template let-item pTemplate="item">
-                <span [class.workflow-archive__label]="isWorkflowArchive(item.value)">{{item.label}}</span>
-                <span *ngIf="isWorkflowArchive(item.value)" class="workflow-archive__message">(Archived)</span>
-            </ng-template>
-        </p-multiSelect>
+        <dot-workflows-selector-field id="content-type-form-workflow" formControlName="workflow" [setDefault]="!isEditMode()"></dot-workflows-selector-field>
     </div>
     <span id="field-workflow-hint" class="form__group-hint" *ngIf="form.get('workflow').disabled">{{ dotMessageService.get('contenttypes.form.hint.error.only.default.scheme.available.in.Community') }}</span>
     <div class="form__group">

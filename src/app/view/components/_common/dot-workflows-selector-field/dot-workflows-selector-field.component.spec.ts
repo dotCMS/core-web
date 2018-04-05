@@ -47,7 +47,7 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
     let dotWorkflowService: DotWorkflowService;
     let multiselect: MultiSelect;
 
-    describe('basic ui', () => {
+    describe('basic', () => {
         beforeEach(
             async(() => {
                 DOTTestBed.configureTestingModule({
@@ -69,44 +69,66 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 component = fixture.componentInstance;
                 de = fixture.debugElement;
                 dotWorkflowService = de.injector.get(DotWorkflowService);
-                spyOn(dotWorkflowService, 'get').and.callThrough();
-                fixture.detectChanges();
-
                 multiselect = de.query(By.css('p-multiSelect')).componentInstance;
+
+                spyOn(dotWorkflowService, 'get').and.callThrough();
+                spyOn(component, 'propagateChange');
             })
         );
 
-        it('should have have a multiselect', () => {
-            expect(multiselect).not.toBe(null);
+        describe('no params', () => {
+            beforeEach(() => {
+                fixture.detectChanges();
+            });
+
+            it('should have have a multiselect', () => {
+                expect(multiselect).not.toBe(null);
+            });
+
+            it('should have maxSelectedLabels set correctly', () => {
+                expect(multiselect.maxSelectedLabels).toBe(1);
+            });
+
+            it('should have default label', () => {
+                expect(multiselect.defaultLabel).toEqual('Pick it up');
+            });
+
+            it('should get workflow list from server', () => {
+                expect(dotWorkflowService.get).toHaveBeenCalledTimes(1);
+            });
+
+            it('should fill the workflows options', () => {
+                const itemsLabels = de
+                    .queryAll(By.css('.ui-multiselect-items .workflow__label'))
+                    .map((item) => item.nativeElement.innerText);
+                expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
+            });
+
+            it('should have archived item', () => {
+                const archivedItems = de.queryAll(By.css('.workflow-archive__label'));
+                expect(archivedItems.length).toBe(1);
+                expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
+            });
+
+            it('should have archived message', () => {
+                const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
+                expect(archivedMessage.length).toBe(1);
+                expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
+            });
+
+            it('should not set default value', () => {
+                expect(component.value).toEqual(undefined);
+                expect(component.propagateChange).not.toHaveBeenCalled();
+            });
         });
 
-        it('should have maxSelectedLabels set correctly', () => {
-            expect(multiselect.maxSelectedLabels).toBe(1);
-        });
-
-        it('should have default label', () => {
-            expect(multiselect.defaultLabel).toEqual('Pick it up');
-        });
-
-        it('should get workflow list from server', () => {
-            expect(dotWorkflowService.get).toHaveBeenCalledTimes(1);
-        });
-
-        it('should fill the workflows options', () => {
-            const itemsLabels = de.queryAll(By.css('.ui-multiselect-items .workflow__label')).map((item) => item.nativeElement.innerText);
-            expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
-        });
-
-        it('should have archived item', () => {
-            const archivedItems = de.queryAll(By.css('.workflow-archive__label'));
-            expect(archivedItems.length).toBe(1);
-            expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
-        });
-
-        it('should have archived message', () => {
-            const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
-            expect(archivedMessage.length).toBe(1);
-            expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
+        describe('with params', () => {
+            it('should set default workflow as value', () => {
+                component.setDefault = true;
+                fixture.detectChanges();
+                expect(component.value).toEqual(['85c1515c-c4f3-463c-bac2-860b8fcacc34']);
+                expect(component.propagateChange).toHaveBeenCalledWith(['85c1515c-c4f3-463c-bac2-860b8fcacc34']);
+            });
         });
     });
 

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [CommonModule, MultiSelectModule, FormsModule],
-    declarations: [DotWorkflowsSelectorFieldComponent]
+    declarations: [DotWorkflowsSelectorFieldComponent],
+    exports: [DotWorkflowsSelectorFieldComponent]
 })
 export class DotWorkflowsSelectorFieldModule {}

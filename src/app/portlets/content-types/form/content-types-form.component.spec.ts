@@ -23,6 +23,8 @@ import { SiteSelectorFieldModule } from '../../../view/components/_common/site-s
 import { SiteServiceMock } from '../../../test/site-service.mock';
 import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
 import { MdInputTextModule } from '../../../view/directives/md-inputtext/md-input-text.module';
+import { DotWorkflowsSelectorFieldModule } from '../../../view/components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
+import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
 
 describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
@@ -81,15 +83,16 @@ describe('ContentTypesFormComponent', () => {
                     TabViewModule,
                     SiteSelectorFieldModule,
                     RouterTestingModule,
-                    MdInputTextModule
+                    MdInputTextModule,
+                    DotWorkflowsSelectorFieldModule
                 ],
                 providers: [
                     { provide: LoginService, useClass: LoginServiceMock },
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: SiteService, useValue: siteServiceMock },
+                    { provide: DotWorkflowService, useClass: DotWorkflowServiceMock },
                     DotcmsConfig,
                     ContentTypesInfoService,
-                    DotWorkflowService
                 ]
             });
 
@@ -101,25 +104,6 @@ describe('ContentTypesFormComponent', () => {
             dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
 
             dotWorkflowService = fixture.debugElement.injector.get(DotWorkflowService);
-            spyOn(dotWorkflowService, 'get').and.returnValue(
-                Observable.of([
-                    {
-                        id: '123',
-                        name: 'Workflow 1',
-                        system: false
-                    },
-                    {
-                        id: '456',
-                        name: 'Workflow 2',
-                        system: false
-                    },
-                    {
-                        id: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
-                        name: 'System Workflow',
-                        system: true
-                    }
-                ])
-            );
         })
     );
 

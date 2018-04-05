@@ -1,7 +1,7 @@
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
 import { Observable } from 'rxjs/Observable';
 import { DotWorkflow } from './../../../../shared/models/dot-workflow/dot-workflow.model';
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { SelectItem } from 'primeng/components/common/selectitem';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -10,13 +10,17 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
     selector: 'dot-workflows-selector-field',
     templateUrl: './dot-workflows-selector-field.component.html',
     styleUrls: ['./dot-workflows-selector-field.component.scss'],
-    providers: [{
-        multi: true,
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => DotWorkflowsSelectorFieldComponent)
-    }]
+    providers: [
+        {
+            multi: true,
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DotWorkflowsSelectorFieldComponent)
+        }
+    ]
 })
 export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor, OnInit {
+    @Input() setDefault;
+
     options: Observable<SelectItem[]>;
     value: string[];
     disabled = false;
@@ -42,7 +46,13 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
         this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).mergeMap(() => {
             return this.dotWorkflowService
                 .get()
-                .do((workflows: DotWorkflow[]) => (this.workflowsModel = workflows))
+                .do((workflows: DotWorkflow[]) => {
+                    this.workflowsModel = workflows;
+
+                    if (this.setDefault) {
+                        this.setDefaultValue(workflows);
+                    }
+                })
                 .flatMap((workflows: DotWorkflow[]) => workflows)
                 .map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow))
                 .toArray();
@@ -89,10 +99,19 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
         this.value = value;
     }
 
+    private getDefaultWorkflowValue(workflows: DotWorkflow[]): string[] {
+        return workflows.filter((workflow: DotWorkflow) => workflow.defaultScheme).map((workflow: DotWorkflow) => workflow.id);
+    }
+
     private getWorkflowFieldOption(workflow: DotWorkflow): SelectItem {
         return {
             label: workflow.name,
             value: workflow.id
         };
+    }
+
+    private setDefaultValue(workflows: DotWorkflow[]) {
+        this.value = this.getDefaultWorkflowValue(workflows);
+        this.propagateChange(this.value);
     }
 }

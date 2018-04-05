@@ -39,16 +39,12 @@ export class ContentTypesFormComponent implements OnInit {
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
     nameFieldLabel: string;
-    workflowOptions: Observable<SelectItem[]>;
-
-    private workflowsModel: DotWorkflow[];
 
     private originalValue: any;
 
     constructor(
         private dotcmsConfig: DotcmsConfig,
         private fb: FormBuilder,
-        private dotWorkflowService: DotWorkflowService,
         public dotMessageService: DotMessageService
     ) {
         dotMessageService
@@ -107,10 +103,6 @@ export class ContentTypesFormComponent implements OnInit {
      */
     isEditMode(): boolean {
         return !!(this.data && this.data.id);
-    }
-
-    isWorkflowArchive(id: string): boolean {
-        return this.workflowsModel.filter((workflow: DotWorkflow) => workflow.id === id)[0].archived;
     }
 
     /**
@@ -210,26 +202,6 @@ export class ContentTypesFormComponent implements OnInit {
             });
     }
 
-    private fillWorkflowFieldOptions(): void {
-        this.workflowOptions = this.dotWorkflowService
-            .get()
-            .do((workflows: DotWorkflow[]) => {
-                this.workflowsModel = workflows.map((workflow: DotWorkflow, index: number) => {
-                    if (index === 1) {
-                        workflow.archived = true;
-                    }
-                    return workflow;
-                });
-
-                if (!this.isEditMode()) {
-                    this.setDefaultWorkflow(workflows);
-                }
-            })
-            .flatMap((workflows: DotWorkflow[]) => workflows)
-            .map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow))
-            .toArray();
-    }
-
     private getWorkflowFieldOption(workflow: DotWorkflow): SelectItem {
         return {
             label: workflow.name,
@@ -298,8 +270,6 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private updateWorkflowFormControl(license): void {
-        this.fillWorkflowFieldOptions();
-
         if (!license.isCommunity) {
             const workflowControl = this.form.get('workflow');
 
