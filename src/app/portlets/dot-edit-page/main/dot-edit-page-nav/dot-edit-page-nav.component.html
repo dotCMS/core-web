@@ -1,6 +1,6 @@
 <ul class="edit-page-nav">
     <li *ngFor="let item of model | async">
-        <div *ngIf="!item.needslicense;then basic else enterprise"></div>
+        <div *ngIf="!item.needsEntepriseLicense;then basic else enterprise"></div>
         <ng-template #basic>
             <a class="edit-page-nav__item" [class.edit-page-nav__item--disabled]="item.disabled" routerLinkActive="{{ !item.disabled ? 'edit-page-nav__item--active' : '' }}"
                 [routerLink]="!item.disabled ? item.link : null" [queryParams]="route.queryParams | async">

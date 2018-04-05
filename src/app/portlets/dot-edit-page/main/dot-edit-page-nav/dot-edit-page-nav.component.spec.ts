@@ -34,8 +34,10 @@ class MockDotDotcmsConfigService {
     }
 }
 describe('DotEditPageNavComponent', () => {
+    let dotCmsConfig: DotcmsConfig;
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
+    let de: DebugElement;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -89,6 +91,8 @@ describe('DotEditPageNavComponent', () => {
     describe('advanced template', () => {
         beforeEach(() => {
             fixture = TestBed.createComponent(DotEditPageNavComponent);
+            de = fixture.debugElement;
+            dotCmsConfig = de.injector.get(DotcmsConfig);
             component = fixture.componentInstance;
         });
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
@@ -139,7 +143,7 @@ describe('DotEditPageNavComponent', () => {
             });
         });
 
-        describe('license', () => {
+        describe('license Community', () => {
             beforeEach(() => {
                 component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
                 fixture.detectChanges();
@@ -155,8 +159,25 @@ describe('DotEditPageNavComponent', () => {
                 const layoutTooltipHTML = menuListItems[1].nativeElement.outerHTML;
                 expect(layoutTooltipHTML).toContain(messageServiceMock.get('editpage.toolbar.nav.licenseTooltip'));
             });
-
         });
 
+        describe('license Enterprise', () => {
+            beforeEach(() => {
+                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                spyOn(dotCmsConfig, 'getConfig').and.returnValue(
+                    Observable.of({
+                        license: {
+                            level: 300
+                        }
+                    })
+                );
+                fixture.detectChanges();
+            });
+
+            it('should have layout option enabled because user has an enterprise license', () => {
+                const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+                expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item');
+            });
+        });
     });
 });

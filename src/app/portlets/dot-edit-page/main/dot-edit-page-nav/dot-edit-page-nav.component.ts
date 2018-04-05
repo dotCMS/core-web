@@ -8,7 +8,7 @@ import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
 
 interface DotEditPageNavItem {
-    needslicense: boolean;
+    needsEntepriseLicense: boolean;
     disabled: boolean;
     icon: string;
     label: string;
@@ -34,11 +34,11 @@ export class DotEditPageNavComponent implements OnInit {
                 'editpage.toolbar.nav.code',
                 'editpage.toolbar.nav.licenseTooltip'
             ])
-            .flatMap(() => {
+            .mergeMap(() => {
                 return this.dotcmsConfig.getConfig().take(1);
             })
             .mergeMap((config: ConfigParams) => {
-                const enterpriselicense = config.license['level'] >= 200 || false;
+                const enterpriselicense = config.license['level'] >= 200;
                 return Observable.of(this.getNavItems(this.pageState, enterpriselicense));
             });
     }
@@ -50,7 +50,7 @@ export class DotEditPageNavComponent implements OnInit {
     private getNavItems(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem[] {
         const result = [
             {
-                needslicense: false,
+                needsEntepriseLicense: false,
                 disabled: false,
                 icon: 'fa fa-file-text',
                 label: this.dotMessageService.get('editpage.toolbar.nav.content'),
@@ -69,7 +69,7 @@ export class DotEditPageNavComponent implements OnInit {
 
     private getTemplateNavItem(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem {
         return {
-            needslicense: !enterpriselicense,
+            needsEntepriseLicense: !enterpriselicense,
             disabled: this.canGoToLayout(dotRenderedPage),
             icon: this.getTemplateItemIcon(dotRenderedPage.template),
             label: this.getTemplateItemLabel(dotRenderedPage.template),
