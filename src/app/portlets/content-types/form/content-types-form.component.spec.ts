@@ -519,7 +519,6 @@ describe('ContentTypesFormComponent', () => {
         comp.form.controls.name.setValue('A content type name');
 
         fixture.detectChanges();
-
         comp.submitForm();
 
         expect(comp.submitForm).toHaveBeenCalledTimes(1);
@@ -534,7 +533,7 @@ describe('ContentTypesFormComponent', () => {
             fixed: null,
             folder: null,
             system: null,
-            workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']
+            workflow: ['85c1515c-c4f3-463c-bac2-860b8fcacc34']
         });
     });
 
@@ -577,32 +576,6 @@ describe('ContentTypesFormComponent', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeFalsy();
                     expect(comp.form.get('workflow').disabled).toBeFalsy();
-                });
-
-                it('should call the WorkFlow endpoint if the license community its false', () => {
-                    expect(dotWorkflowService.get).toHaveBeenCalled();
-                });
-
-                it('should pass the workflows selectiems', () => {
-                    const workflowInput: MultiSelect = de.query(By.css('#content-type-form-workflow')).componentInstance;
-                    expect(workflowInput.options).toEqual([
-                        {
-                            value: '123',
-                            label: 'Workflow 1'
-                        },
-                        {
-                            value: '456',
-                            label: 'Workflow 2'
-                        },
-                        {
-                            value: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
-                            label: 'System Workflow'
-                        }
-                    ]);
-                });
-
-                it('should set system worflow selected as default when create content', () => {
-                    expect(comp.form.get('workflow').value).toEqual(['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']);
                 });
             });
         });

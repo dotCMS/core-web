@@ -45,6 +45,7 @@ export class ContentTypesFormComponent implements OnInit {
     constructor(
         private dotcmsConfig: DotcmsConfig,
         private fb: FormBuilder,
+        private dotWorkflowService: DotWorkflowService,
         public dotMessageService: DotMessageService
     ) {
         dotMessageService
@@ -78,6 +79,12 @@ export class ContentTypesFormComponent implements OnInit {
         this.bindActionButtonState();
         this.setNameFieldLabel();
         this.name.nativeElement.focus();
+
+        if (!this.isEditMode()) {
+            this.dotWorkflowService.getDefault().take(1).subscribe((workflow: DotWorkflow) => {
+                this.form.get('workflow').setValue([workflow.id]);
+            });
+        }
     }
 
     /**

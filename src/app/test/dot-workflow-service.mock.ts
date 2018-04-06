@@ -103,6 +103,10 @@ export class DotWorkflowServiceMock {
         return Observable.of(mockWorkflows);
     }
 
+    getDefault(): Observable<DotWorkflow> {
+        return Observable.of(mockWorkflows[0]);
+    }
+
     getContentWorkflowActions(_inode: string): Observable<DotWorkflowAction[]> {
         return Observable.of(mockWorkflowsActions);
     }

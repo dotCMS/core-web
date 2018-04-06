@@ -115,20 +115,6 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 expect(archivedMessage.length).toBe(1);
                 expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
             });
-
-            it('should not set default value', () => {
-                expect(component.value).toEqual(undefined);
-                expect(component.propagateChange).not.toHaveBeenCalled();
-            });
-        });
-
-        describe('with params', () => {
-            it('should set default workflow as value', () => {
-                component.setDefault = true;
-                fixture.detectChanges();
-                expect(component.value).toEqual(['85c1515c-c4f3-463c-bac2-860b8fcacc34']);
-                expect(component.propagateChange).toHaveBeenCalledWith(['85c1515c-c4f3-463c-bac2-860b8fcacc34']);
-            });
         });
     });
 

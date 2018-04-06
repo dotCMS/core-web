@@ -1,5 +1,3 @@
-{{setDefault}}
-
 <p-multiSelect [options]="options | async" [defaultLabel]="dotMessageService.get('dot.common.select.workflows')" [maxSelectedLabels]="1" (onChange)="handleChange($event)" [(ngModel)]="value" [disabled]="disabled">
     <ng-template let-item pTemplate="item">
         <span class="workflow__label" [class.workflow-archive__label]="isWorkflowArchive(item.value)">{{item.label}}</span>
