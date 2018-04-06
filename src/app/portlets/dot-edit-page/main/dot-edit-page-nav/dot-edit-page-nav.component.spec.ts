@@ -2,6 +2,7 @@ import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,32 +10,18 @@ import { TooltipModule } from 'primeng/primeng';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
-import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-class MockDotDotcmsConfigService {
-    getConfig(): Observable<ConfigParams> {
-        return Observable.of({
-            license: {
-                level: 100
-            },
-            disabledWebsockets: '',
-            websocketReconnectTime: 0,
-            websocketEndpoints: '',
-            websocketsSystemEventsEndpoint: '',
-            websocketBaseURL: '',
-            websocketProtocol: '',
-            menu: [],
-            paginatorRows: 0,
-            paginatorLinks: 0,
-            emailRegex: ''
-        });
+class MockDotLicenseService {
+    isEnterpriseLicense(): Observable<boolean> {
+        return Observable.of(false);
     }
 }
+
 describe('DotEditPageNavComponent', () => {
-    let dotCmsConfig: DotcmsConfig;
+    let dotLicenseService: DotLicenseService;
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
     let de: DebugElement;
@@ -53,7 +40,7 @@ describe('DotEditPageNavComponent', () => {
                 declarations: [DotEditPageNavComponent],
                 providers: [
                     { provide: DotMessageService, useValue: messageServiceMock },
-                    { provide: DotcmsConfig, useClass: MockDotDotcmsConfigService }
+                    { provide: DotLicenseService, useClass: MockDotLicenseService }
                 ]
             }).compileComponents();
         })
@@ -92,7 +79,7 @@ describe('DotEditPageNavComponent', () => {
         beforeEach(() => {
             fixture = TestBed.createComponent(DotEditPageNavComponent);
             de = fixture.debugElement;
-            dotCmsConfig = de.injector.get(DotcmsConfig);
+            dotLicenseService = de.injector.get(DotLicenseService);
             component = fixture.componentInstance;
         });
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
@@ -164,13 +151,7 @@ describe('DotEditPageNavComponent', () => {
         describe('license Enterprise', () => {
             beforeEach(() => {
                 component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-                spyOn(dotCmsConfig, 'getConfig').and.returnValue(
-                    Observable.of({
-                        license: {
-                            level: 300
-                        }
-                    })
-                );
+                spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
                 fixture.detectChanges();
             });
 
