@@ -70,6 +70,4 @@ export class DotWorkflowService {
             })
             .pluck('entity');
     }
-
-    private;
 }
