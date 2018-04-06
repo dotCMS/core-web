@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
-import { DotcmsConfig, ConfigParams } from 'dotcms-js/dotcms-js';
+import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
 
 interface DotEditPageNavItem {
     needsEntepriseLicense: boolean;
@@ -24,7 +24,7 @@ export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
 
-    constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotcmsConfig: DotcmsConfig) {}
+    constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotLicenseService: DotLicenseService) {}
 
     ngOnInit(): void {
         this.model = this.dotMessageService
@@ -35,11 +35,10 @@ export class DotEditPageNavComponent implements OnInit {
                 'editpage.toolbar.nav.licenseTooltip'
             ])
             .mergeMap(() => {
-                return this.dotcmsConfig.getConfig().take(1);
+                return this.dotLicenseService.isEnterpriseLicense();
             })
-            .mergeMap((config: ConfigParams) => {
-                const enterpriselicense = config.license['level'] >= 200;
-                return Observable.of(this.getNavItems(this.pageState, enterpriselicense));
+            .mergeMap((isEnterpriseLicense: boolean) => {
+                return Observable.of(this.getNavItems(this.pageState, isEnterpriseLicense));
             });
     }
 
