@@ -32,7 +32,7 @@ export class DotEditPageNavComponent implements OnInit {
                 'editpage.toolbar.nav.content',
                 'editpage.toolbar.nav.layout',
                 'editpage.toolbar.nav.code',
-                'editpage.toolbar.nav.licenseTooltip'
+                'editpage.toolbar.nav.license.enterprise.only'
             ])
             .mergeMap(() => {
                 return this.dotLicenseService.isEnterpriseLicense();

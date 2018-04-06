@@ -30,7 +30,7 @@ describe('DotEditPageNavComponent', () => {
         'editpage.toolbar.nav.content': 'Content',
         'editpage.toolbar.nav.layout': 'Layout',
         'editpage.toolbar.nav.code': 'Code',
-        'editpage.toolbar.nav.licenseTooltip': 'Enterprise only'
+        'editpage.toolbar.nav.license.enterprise.only': 'Enterprise only'
     });
 
     beforeEach(
@@ -144,7 +144,7 @@ describe('DotEditPageNavComponent', () => {
             it('should the layout option have the proper attribute & message key for tooltip', () => {
                 const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
                 const layoutTooltipHTML = menuListItems[1].nativeElement.outerHTML;
-                expect(layoutTooltipHTML).toContain(messageServiceMock.get('editpage.toolbar.nav.licenseTooltip'));
+                expect(layoutTooltipHTML).toContain(messageServiceMock.get('editpage.toolbar.nav.license.enterprise.only'));
             });
         });
 
