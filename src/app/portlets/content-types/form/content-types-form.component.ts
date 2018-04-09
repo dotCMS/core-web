@@ -81,7 +81,7 @@ export class ContentTypesFormComponent implements OnInit {
         this.name.nativeElement.focus();
 
         if (!this.isEditMode()) {
-            this.dotWorkflowService.getDefault().take(1).subscribe((workflow: DotWorkflow) => {
+            this.dotWorkflowService.getDefault().subscribe((workflow: DotWorkflow) => {
                 this.form.get('workflow').setValue([workflow.id]);
             });
         }

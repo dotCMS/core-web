@@ -36,7 +36,9 @@ export class DotWorkflowService {
      * @memberof DotWorkflowService
      */
     getDefault(): Observable<DotWorkflow> {
-        return this.get().switchMap((workflows: DotWorkflow[]) => workflows.filter((workflow: DotWorkflow) => workflow.defaultScheme));
+        return this.get()
+            .switchMap((workflows: DotWorkflow[]) => workflows.filter((workflow: DotWorkflow) => workflow.defaultScheme))
+            .take(1);
     }
 
     /**

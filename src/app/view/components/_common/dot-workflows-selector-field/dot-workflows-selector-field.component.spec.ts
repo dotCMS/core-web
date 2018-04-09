@@ -104,13 +104,11 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
             });
 
-            it('should have archived item', () => {
+            it('should have archived item and message', () => {
                 const archivedItems = de.queryAll(By.css('.workflow__archive-label'));
                 expect(archivedItems.length).toBe(1);
                 expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
-            });
 
-            it('should have archived message', () => {
                 const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
                 expect(archivedMessage.length).toBe(1);
                 expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
