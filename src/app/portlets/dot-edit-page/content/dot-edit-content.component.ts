@@ -28,6 +28,7 @@ import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendere
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { PageMode } from '../shared/models/page-mode.enum';
+import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 
 @Component({
     selector: 'dot-edit-content',
@@ -103,6 +104,19 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.swithSiteSub = this.switchSiteSubscription();
 
         this.setDialogSize();
+
+        Observable.fromEvent(window.document, 'ng-event')
+            .pluck('detail')
+            .filter((eventDetail: any) => eventDetail.name === 'load-edit-mode-page')
+            .pluck('data')
+            .subscribe((pageRendered: DotRenderedPage) => {
+                console.log('pageRendered 3', pageRendered);
+                this.dotRouterService.goToPage(new DotRenderedPageState(
+                    this.pageState.user,
+                    pageRendered,
+                    this.pageState.state.mode
+                ));
+            });
     }
 
     ngOnDestroy(): void {
