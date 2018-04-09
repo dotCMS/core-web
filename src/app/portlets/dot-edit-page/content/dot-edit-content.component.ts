@@ -110,7 +110,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .filter((eventDetail: any) => eventDetail.name === 'load-edit-mode-page')
             .pluck('data')
             .subscribe((pageRendered: DotRenderedPage) => {
-                console.log('pageRendered 3', pageRendered);
                 this.dotRouterService.goToPage(new DotRenderedPageState(
                     this.pageState.user,
                     pageRendered,

@@ -14,10 +14,16 @@ import { async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { DotRenderedPageState } from '../../models/dot-rendered-page-state.model';
 import { mockResponseView } from '../../../../../test/response-view.mock';
+import { Router } from '@angular/router';
+import { PageMode } from '../../models/page-mode.enum';
 
 const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
 
 route.queryParams = {};
+
+class MockRouter {
+    getNavigatedData() {}
+}
 
 describe('DotEditPageResolver', () => {
     let resolver: DotEditPageResolver;
@@ -25,6 +31,7 @@ describe('DotEditPageResolver', () => {
     let dotRenderHTMLService: DotRenderHTMLService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
+    let router: Router;
 
     beforeEach(
         async(() => {
@@ -42,7 +49,11 @@ describe('DotEditPageResolver', () => {
                     {
                         provide: LoginService,
                         useClass: LoginServiceMock
-                    }
+                    },
+                    {
+                        provide: Router,
+                        useClass: MockRouter
+                    },
                 ],
                 imports: [RouterTestingModule]
             });
@@ -52,6 +63,7 @@ describe('DotEditPageResolver', () => {
             dotRenderHTMLService = testbed.get(DotRenderHTMLService);
             dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
             dotRouterService = testbed.get(DotRouterService);
+            router = testbed.get(Router);
         })
     );
 
@@ -148,6 +160,24 @@ describe('DotEditPageResolver', () => {
             resolver.resolve(route).subscribe();
             expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
 
+        });
+    });
+
+    describe('with dotRenderedPageState', () => {
+        beforeEach(() => {
+            spyOn(router, 'getNavigatedData').and.returnValue({
+                dotRenderedPageState: new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.EDIT)
+            });
+        });
+
+        it('should return a DotRenderedPageState valid object', () => {
+            spyOn(dotPageStateService, 'get');
+
+            resolver.resolve(route).subscribe((res) => {
+                expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
+            });
+
+            expect(dotPageStateService.get).not.toHaveBeenCalled();
         });
     });
 });

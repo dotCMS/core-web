@@ -4,6 +4,10 @@ import { async } from 'q';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { Router } from '@angular/router';
+import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
+import { mockDotPage, mockDotLayout } from '../../../test/dot-rendered-page.mock';
+import { mockUser } from '../../../test/login-service.mock';
 
 describe('DotRouterService', () => {
     let service: DotRouterService;
@@ -60,6 +64,31 @@ describe('DotRouterService', () => {
             spyOn(router, 'navigate');
             service.goToEditPage('abc/def');
             expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], { queryParams: { url: 'abc/def' } });
+        });
+    });
+
+    describe('goToEditPage()', () => {
+        it('should go to edit page', () => {
+            spyOn(router, 'navigateByData');
+
+            const dotRenderedPageState = new DotRenderedPageState(
+                mockUser,
+                {
+                    page: mockDotPage,
+                    html: '',
+                    layout: mockDotLayout,
+                    canCreateTemplate: true,
+                    viewAs: null
+                },
+                PageMode.PREVIEW
+            );
+
+            service.goToPage(dotRenderedPageState);
+            expect(router.navigateByData).toHaveBeenCalledWith({
+                url: ['/edit-page/content'],
+                data: dotRenderedPageState,
+                extras: { queryParams: { url: mockDotPage.pageURI } }
+            });
         });
 
     });
