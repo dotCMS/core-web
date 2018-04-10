@@ -69,7 +69,7 @@ describe('ContentTypesPortletComponent', () => {
             'contenttypes.fieldname.entries': 'Entries',
             'contenttypes.fieldname.structure.name': 'Content Type Name',
             'contenttypes.content.variable': 'Variable Name',
-            'mod_date': 'Last Edit Date',
+            mod_date: 'Last Edit Date',
             'contenttypes.action.delete': 'Delete',
             'contenttypes.content.push_publish': 'Push Publish',
             'contenttypes.content.add_to_bundle': 'Add to bundle'
@@ -176,11 +176,7 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should have remove, push publish and Add to bundle actions to the list item', () => {
         fixture.detectChanges();
-        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual([
-            'Delete',
-            'Push Publish',
-            'Add to bundle'
-        ]);
+        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual(['Delete', 'Push Publish', 'Add to bundle']);
     });
 
     it('should have ONLY remove action because is community license', () => {

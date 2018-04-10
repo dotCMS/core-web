@@ -15,6 +15,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditPageNavComponent } from '../dot-edit-page-nav/dot-edit-page-nav.component';
 import { PageViewServiceMock } from '../../../../test/page-view.mock';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
 
 describe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
@@ -44,6 +45,7 @@ describe('DotEditPageMainComponent', () => {
                 providers: [
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: PageViewService, useClass: PageViewServiceMock },
+                    DotLicenseService
                 ]
             });
         })
