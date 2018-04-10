@@ -529,5 +529,28 @@ describe('DotEditContentComponent', () => {
                 });
             });
         });
+
+        describe('listen load-edit-mode-page event', () => {
+            it('should called DotRouterService.goToPage method', () => {
+
+                route.parent.parent.data = Observable.of({
+                    content: new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.EDIT)
+                });
+
+                spyOn(dotRouterService, 'goToPage');
+
+                fixture.detectChanges();
+
+                const customEvent = document.createEvent('CustomEvent');
+                customEvent.initCustomEvent('ng-event', false, false, {
+                    name: 'load-edit-mode-page',
+                    data:  mockDotRenderedPage
+                });
+                document.dispatchEvent(customEvent);
+
+                expect(dotRouterService.goToPage).toHaveBeenCalledWith(
+                    new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.EDIT));
+            });
+        });
     });
 });

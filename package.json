@@ -34,6 +34,7 @@
         "angular2-hotkeys": "^2.0.3",
         "angular2-logger": "^0.5.1",
         "angular2-tinymce": "^2.1.2",
+        "angular2-navigate-with-data": "^1.1.11",
         "core-js": "^2.5.3",
         "dotcms-rules-engine": "^0.0.6",
         "lodash": "^4.17.4",

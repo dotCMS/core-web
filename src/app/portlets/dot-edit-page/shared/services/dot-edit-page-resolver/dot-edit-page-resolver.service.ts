@@ -10,6 +10,7 @@ import { DotRouterService } from '../../../../../api/services/dot-router/dot-rou
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { Router } from '@angular/router';
 
 /**
  * With the url return a string of the edit page html
@@ -23,26 +24,33 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
     constructor(
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotPageStateService: DotPageStateService,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        private router: Router
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
-        return this.dotPageStateService
-            .get(route.queryParams.url)
-            .map((dotRenderedPageState: DotRenderedPageState) => {
-                // TODO: find a way to trow something to make the catch happen
-                const currentSection = route.children[0].url[0].path;
-                const isLayout = currentSection === 'layout';
-                const userCantEditLayout = isLayout && !dotRenderedPageState.page.canEdit;
-                if (userCantEditLayout) {
-                    this.handleUserEditingOptions();
-                }
+        const data = this.router.getNavigatedData();
 
-                return dotRenderedPageState;
-            })
-            .catch((err: ResponseView) => {
-                return this.errorHandler(err);
-            });
+        if (data && data.dotRenderedPageState) {
+            return Observable.of(data.dotRenderedPageState);
+        } else {
+            return this.dotPageStateService
+                .get(route.queryParams.url)
+                .map((dotRenderedPageState: DotRenderedPageState) => {
+                    // TODO: find a way to trow something to make the catch happen
+                    const currentSection = route.children[0].url[0].path;
+                    const isLayout = currentSection === 'layout';
+                    const userCantEditLayout = isLayout && !dotRenderedPageState.page.canEdit;
+                    if (userCantEditLayout) {
+                        this.handleUserEditingOptions();
+                    }
+
+                    return dotRenderedPageState;
+                })
+                .catch((err: ResponseView) => {
+                    return this.errorHandler(err);
+                });
+        }
     }
 
     private handleUserEditingOptions(): void {

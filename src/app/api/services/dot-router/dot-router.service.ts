@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { PortletNav } from '../../../shared/models/navigation';
 import { Subject } from 'rxjs/Subject';
+import 'angular2-navigate-with-data';
+import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 
 @Injectable()
 export class DotRouterService {
@@ -30,6 +32,14 @@ export class DotRouterService {
 
     goToEditPage(url: string): Promise<boolean> {
         return this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
+    }
+
+    goToPage(dotRenderedPageState: DotRenderedPageState): Promise<boolean> {
+        return this.router.navigateByData({
+            url: ['/edit-page/content'],
+            data: dotRenderedPageState,
+            extras: { queryParams: { url: dotRenderedPageState.page.pageURI } }
+        });
     }
 
     /**
