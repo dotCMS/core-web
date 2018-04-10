@@ -21,6 +21,7 @@ import { mockUser } from '../../../../../test/login-service.mock';
 import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
 import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
+import { DotPage } from '../../../shared/models/dot-page.model';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -126,9 +127,7 @@ describe('DotEditPageToolbarComponent', () => {
                     ...mockDotPage,
                     canEdit: true,
                     canLock: true,
-                    identifier: '123',
                     languageId: 1,
-                    liveInode: '456',
                     title: '',
                     pageURI: '',
                     shortyLive: '',
@@ -347,6 +346,33 @@ describe('DotEditPageToolbarComponent', () => {
 
         const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
         expect(primaryAction.nativeElement.disabled).toBeFalsy('the save button have to be enable');
+    });
+
+    it('should have live button enabled', () => {
+        fixture.detectChanges();
+
+        const liveStateModel = component.states.find((state) => state.label === 'Live');
+        expect(liveStateModel.styleClass).toEqual('');
+    });
+
+    it('should have live button disabled', () => {
+        const {liveInode, ...unpublishedPage} = mockDotPage;
+        fixture.componentInstance.pageState = new DotRenderedPageState(
+            mockUser,
+            {
+                page: unpublishedPage,
+                html: '',
+                layout: mockDotLayout,
+                canCreateTemplate: true,
+                viewAs: null
+            },
+            PageMode.PREVIEW
+        );
+
+        fixture.detectChanges();
+
+        const liveStateModel = component.states.find((state) => state.label === 'Live');
+        expect(liveStateModel.styleClass).toEqual('edit-page-toolbar__state-selector-item--disabled');
     });
 
     it('should turn on the locker and emit page state and lock state when user click on edit mode', () => {
