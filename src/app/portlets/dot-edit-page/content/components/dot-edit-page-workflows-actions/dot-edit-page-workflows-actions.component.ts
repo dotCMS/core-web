@@ -72,8 +72,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
                                 this.dotMessageService.get('editpage.actions.fire.confirmation', workflow.name)
                             );
                         })
-                        // TODO: A better implementation needs to be done to
-                        // handle workflow actions errors, which are edge cases
+                        // TODO: A better implementation needs to be done to handle workflow actions errors, which are edge cases
                         .catch(() => Observable.of(null))
                         .mergeMap((inode: string) => {
                             const newInode = inode || this.page.workingInode;
