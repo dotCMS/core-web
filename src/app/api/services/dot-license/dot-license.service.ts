@@ -10,10 +10,10 @@ import { Observable } from 'rxjs/Observable';
  */
 @Injectable()
 export class DotLicenseService {
-    private configUrl: string;
+    private licenseURL: string;
 
     constructor(private coreWebService: CoreWebService) {
-        this.configUrl = 'v1/appconfiguration';
+        this.licenseURL = 'v1/appconfiguration';
     }
 
     /**
@@ -23,12 +23,17 @@ export class DotLicenseService {
      * @memberof DotLicenseService
      */
     isEnterpriseLicense(): Observable<boolean> {
+        return this.getLicense()
+            .map((license) => license['level'] >= 200);
+    }
+
+    private getLicense(): Observable<any> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: this.configUrl
+                url: this.licenseURL
             })
-            .pluck('entity', 'config', 'license')
-            .map((license) => license['level'] >= 200);
+            .pluck('entity', 'config', 'license');
     }
+
 }
