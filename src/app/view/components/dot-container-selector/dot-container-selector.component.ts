@@ -33,7 +33,6 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
-        console.log('isContainerSelected', this.isContainerSelected(container));
         if (this.multiple || !this.isContainerSelected(container)) {
             this.selectedContainersList.push({
                 container: container,
