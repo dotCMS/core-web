@@ -44,16 +44,16 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
                 this.actionsAvailable = !!workflows.length;
             })
             .map((newWorkflows: DotWorkflowAction[]) => {
-                if (newWorkflows.length === 0) {
-                    throw {
-                        bodyJsonObject: {
-                            error: ''
-                        },
-                        response: {
-                            status: 404
-                        }
-                    };
-                }
+                // if (newWorkflows.length === 0) {
+                //     throw {
+                //         bodyJsonObject: {
+                //             error: ''
+                //         },
+                //         response: {
+                //             status: 404
+                //         }
+                //     };
+                // }
                 return this.getWorkflowOptions(newWorkflows);
             });
     }
