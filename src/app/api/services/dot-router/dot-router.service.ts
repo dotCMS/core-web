@@ -34,14 +34,6 @@ export class DotRouterService {
         return this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
     }
 
-    goToPage(dotRenderedPageState: DotRenderedPageState): Promise<boolean> {
-        return this.router.navigateByData({
-            url: ['/edit-page/content'],
-            data: dotRenderedPageState,
-            extras: { queryParams: { url: dotRenderedPageState.page.pageURI } }
-        });
-    }
-
     /**
      * Go to first porlet unless userEditPageRedirect is passed or previousSavedURL is set
      *

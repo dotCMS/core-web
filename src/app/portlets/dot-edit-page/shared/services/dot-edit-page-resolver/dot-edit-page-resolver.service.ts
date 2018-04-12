@@ -11,6 +11,7 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { Router } from '@angular/router';
+import { DotEditPageDataService } from './dot-edit-page-data.service';
 
 /**
  * With the url return a string of the edit page html
@@ -25,14 +26,13 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
-        private router: Router
+        private dotEditPageDataService: DotEditPageDataService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
-        const data = this.router.getNavigatedData();
-
-        if (data && data.dotRenderedPageState) {
-            return Observable.of(data.dotRenderedPageState);
+        const data = this.dotEditPageDataService.getAndClean();
+        if (data) {
+            return Observable.of(data);
         } else {
             return this.dotPageStateService
                 .get(route.queryParams.url)

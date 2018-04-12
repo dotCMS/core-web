@@ -66,30 +66,4 @@ describe('DotRouterService', () => {
             expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], { queryParams: { url: 'abc/def' } });
         });
     });
-
-    describe('goToEditPage()', () => {
-        it('should go to edit page', () => {
-            spyOn(router, 'navigateByData');
-
-            const dotRenderedPageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    page: mockDotPage,
-                    html: '',
-                    layout: mockDotLayout,
-                    canCreateTemplate: true,
-                    viewAs: null
-                },
-                PageMode.PREVIEW
-            );
-
-            service.goToPage(dotRenderedPageState);
-            expect(router.navigateByData).toHaveBeenCalledWith({
-                url: ['/edit-page/content'],
-                data: dotRenderedPageState,
-                extras: { queryParams: { url: mockDotPage.pageURI } }
-            });
-        });
-
-    });
 });

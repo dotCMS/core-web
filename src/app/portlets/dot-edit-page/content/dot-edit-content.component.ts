@@ -29,6 +29,7 @@ import { DotPageStateService } from './services/dot-page-state/dot-page-state.se
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
+import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -47,7 +48,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     dialogTitle: string;
     isModelUpdated = false;
     pageState: DotRenderedPageState;
-    swithSiteSub: Subscription;
+
+    private swithSiteSub: Subscription;
+    private loadEditModePageSub: Subscription;
 
     private originalValue: any;
 
@@ -65,7 +68,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private sanitizer: DomSanitizer,
         private siteService: SiteService,
         public dotEditContentHtmlService: DotEditContentHtmlService,
-        public dotLoadingIndicatorService: DotLoadingIndicatorService
+        public dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private dotEditPageDataService: DotEditPageDataService
     ) {}
 
     ngOnInit() {
@@ -102,24 +106,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         });
 
         this.swithSiteSub = this.switchSiteSubscription();
+        this.loadEditModePageSub = this.loadEditPageEventSubcription();
 
         this.setDialogSize();
-
-        Observable.fromEvent(window.document, 'ng-event')
-            .pluck('detail')
-            .filter((eventDetail: any) => eventDetail.name === 'load-edit-mode-page')
-            .pluck('data')
-            .subscribe((pageRendered: DotRenderedPage) => {
-                this.dotRouterService.goToPage(new DotRenderedPageState(
-                    this.pageState.user,
-                    pageRendered,
-                    this.pageState.state.mode
-                ));
-            });
     }
 
     ngOnDestroy(): void {
         this.swithSiteSub.unsubscribe();
+        this.loadEditModePageSub .unsubscribe();
     }
 
     /**
@@ -359,5 +353,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     this.originalValue = null;
                 });
         });
+    }
+
+    private loadEditPageEventSubcription(): Subscription {
+        return Observable.fromEvent(window.document, 'ng-event')
+            .pluck('detail')
+            .filter((eventDetail: any) => eventDetail.name === 'load-edit-mode-page')
+            .pluck('data')
+            .subscribe((pageRendered: DotRenderedPage) => {
+                const dotRenderedPageState = new DotRenderedPageState(this.pageState.user, pageRendered);
+                this.dotEditPageDataService.set(dotRenderedPageState);
+                this.dotRouterService.goToEditPage(pageRendered.page.pageURI);
+            });
     }
 }
