@@ -218,7 +218,7 @@ describe('DotEditLayoutGridComponent', () => {
         expect(component.value).toEqual(fakeValue);
     });
 
-    it('should set multiple to true on dot-container-selector', () => {
+    it('should be multiple true on dot-container-selector', () => {
         const containerSelector = de.query(By.css('dot-container-selector'));
         expect(containerSelector.attributes['ng-reflect-multiple']).toBeTruthy();
     });
