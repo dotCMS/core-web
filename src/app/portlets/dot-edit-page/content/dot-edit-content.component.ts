@@ -36,7 +36,6 @@ import { PageMode } from '../shared/models/page-mode.enum';
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
-    @ViewChild('toolbar') toolbar: DotEditPageToolbarComponent;
 
     contentletActionsUrl: SafeResourceUrl;
     dialogSize = {
@@ -106,7 +105,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.swithSiteSub.unsubscribe();
+        if (this.swithSiteSub) {
+            this.swithSiteSub.unsubscribe();
+        }
     }
 
     /**
@@ -205,6 +206,23 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
             editContentletIframeEl.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
         }
+    }
+
+    /**
+     * Reload the edit page
+     *
+     * @memberof DotEditContentComponent
+     */
+    reload(): void {
+        this.dotPageStateService
+            .get(this.route.snapshot.queryParams.url)
+            .catch((err: ResponseView) => {
+                return this.errorHandler(err);
+            })
+            .subscribe((pageState: DotRenderedPageState) => {
+                this.setPageState(pageState);
+                this.originalValue = null;
+            });
     }
 
     private addContentlet($event: any): void {
@@ -311,18 +329,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
     }
 
-    private reloadPage(): void {
-        this.dotPageStateService
-            .get(this.route.snapshot.queryParams.url)
-            .catch((err: ResponseView) => {
-                return this.errorHandler(err);
-            })
-            .subscribe((pageState: DotRenderedPageState) => {
-                this.setPageState(pageState);
-                this.originalValue = null;
-            });
-    }
-
     private setDialogSize(): void {
         this.dialogSize = {
             width: window.innerWidth - 200,
@@ -346,7 +352,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private switchSiteSubscription(): Subscription {
         return this.siteService.switchSite$.subscribe(() => {
-            this.reloadPage();
+            this.reload();
         });
     }
 }
