@@ -273,7 +273,7 @@ export class ContentTypesFormComponent implements OnInit {
         this.form.get('workflow').setValue(defaultValue);
     }
 
-    private updateWorkflowFormControl(isEnterpriseLicense): void {
+    private updateWorkflowFormControl(isEnterpriseLicense: boolean): void {
         if (isEnterpriseLicense) {
             const workflowControl = this.form.get('workflow');
 
