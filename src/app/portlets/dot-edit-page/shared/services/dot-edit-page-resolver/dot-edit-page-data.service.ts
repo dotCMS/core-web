@@ -6,7 +6,6 @@ import { DotRenderedPageState } from '../../models/dot-rendered-page-state.model
  */
 @Injectable()
 export class DotEditPageDataService {
-    public id;
     private dotRenderedPageState: DotRenderedPageState;
 
     /**
