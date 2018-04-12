@@ -118,15 +118,16 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     saveLayout(_event): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         const dotLayout: DotLayout = this.form.value;
-        this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
-            (updatedPage: DotRenderedPage) => {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-                this.setupLayout(new DotRenderedPageState(this.loginService.auth.user, updatedPage));
-            },
-            (err: ResponseView) => {
-                this.dotGlobalMessageService.error(err.response.statusText);
-            }
-        );
+        console.log('***dotLayout', dotLayout);
+        // this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
+        //     (updatedPage: DotRenderedPage) => {
+        //         this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+        //         this.setupLayout(new DotRenderedPageState(this.loginService.auth.user, updatedPage));
+        //     },
+        //     (err: ResponseView) => {
+        //         this.dotGlobalMessageService.error(err.response.statusText);
+        //     }
+        // );
     }
 
     /**

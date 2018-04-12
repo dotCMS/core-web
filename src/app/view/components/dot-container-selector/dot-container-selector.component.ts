@@ -21,6 +21,7 @@ export class DotContainerSelectorComponent implements OnInit {
     constructor(public paginationService: PaginatorService, public dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
+        console.log('---selectedContainersList', this.selectedContainersList);
         this.paginationService.url = 'v1/containers';
         this.dotMessageService.getMessages(['editpage.container.add.label']).subscribe();
     }
@@ -32,6 +33,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
+        debugger;
         if (!this.isContainerSelected(container)) {
             this.selectedContainersList.push({
                 container: container,

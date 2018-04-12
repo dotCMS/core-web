@@ -30,7 +30,13 @@
 }
 
 [class^='dot-layout-designer__sidebar'] {
+    align-items: normal;
     position: relative;
+
+    dot-container-selector {
+        width: 100%;
+    }
+
 }
 
 .dot-layout-designer__sidebar-properties {

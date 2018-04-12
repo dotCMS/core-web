@@ -37,9 +37,21 @@
 .container-selector__list-item {
     @include naked-list;
     border-top: 1px solid $gray-lighter;
+    color: $black;
+    font-size: $font-size-medium;
     padding: $basic-padding / 2 0;
 
     &:first-child {
         border-top: none;
+    }
+}
+
+[class^='dot-layout-designer__sidebar'] {
+    .container-selector {
+        height: 100%;
+
+        .container-selector__list {
+            height: 100%;
+        }
     }
 }
