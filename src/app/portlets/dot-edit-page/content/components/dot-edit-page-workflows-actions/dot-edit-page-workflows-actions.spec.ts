@@ -35,7 +35,8 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let testbed;
     let actionButton: DebugElement;
     let dotWorkflowService: DotWorkflowService;
-    let workflowActionComponent: DebugElement;
+    let workflowActionDebugEl: DebugElement;
+    let workflowActionComponent: DotEditPageWorkflowsActionsComponent;
     let dotGlobalMessageService: DotGlobalMessageService;
     const messageServiceMock = new MockDotMessageService({
         'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
@@ -69,10 +70,11 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         component.page = { ...mockDotPage, ...{ workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123' } };
 
         actionButton = de.query(By.css('.edit-page-toolbar__actions'));
-        workflowActionComponent = de.query(By.css('dot-edit-page-workflows-actions'));
+        workflowActionDebugEl = de.query(By.css('dot-edit-page-workflows-actions'));
+        workflowActionComponent = workflowActionDebugEl.componentInstance;
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
 
-        dotWorkflowService = workflowActionComponent.injector.get(DotWorkflowService);
+        dotWorkflowService = workflowActionDebugEl.injector.get(DotWorkflowService);
         spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
     });
 
@@ -160,6 +162,13 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 it('should refresh the action list after fire action', () => {
                     firstButton.click();
                     expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(1);
+                });
+
+                it('should emit event after action was fired', () => {
+                    spyOn(workflowActionComponent.fired, 'emit');
+                    firstButton.click();
+                    fixture.detectChanges();
+                    expect(workflowActionDebugEl.componentInstance.fired.emit).toHaveBeenCalledTimes(1);
                 });
             });
         });

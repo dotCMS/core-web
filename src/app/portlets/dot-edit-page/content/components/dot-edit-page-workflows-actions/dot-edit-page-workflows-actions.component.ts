@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MenuItem } from 'primeng/primeng';
 import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
@@ -16,6 +16,8 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
     @Input() page: DotPage;
     @Input() label: string;
+
+    @Output() fired: EventEmitter<any> = new EventEmitter();
 
     actionsAvailable: boolean;
     workflowsMenuActions: Observable<MenuItem[]>;
@@ -76,6 +78,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
                         .catch(() => Observable.of(null))
                         .mergeMap((inode: string) => {
                             const newInode = inode || this.page.workingInode;
+                            this.fired.emit();
                             return this.getWorkflowActions(newInode);
                         })
                         .catch((error) => {
