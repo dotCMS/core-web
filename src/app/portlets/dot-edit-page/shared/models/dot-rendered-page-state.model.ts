@@ -18,13 +18,12 @@ export class DotRenderedPageState {
     constructor(private _user: User, private dotRenderedPage: DotRenderedPage, mode?: PageMode) {
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
-        console.log('mode', mode);
+
         this._state = {
             locked: locked,
             lockedByAnotherUser: lockedByAnotherUser,
             mode: mode || this.getDefaultMode(lockedByAnotherUser, dotRenderedPage.page, locked)
         };
-        console.log('this._state', this._state);
     }
 
     get canCreateTemplate(): any {

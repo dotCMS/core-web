@@ -9,11 +9,9 @@ export class DotEditPageDataService {
 
     constructor() {
         this.id = count++;
-        console.log('id', this.id);
     }
 
     set (dotRenderedPageState: DotRenderedPageState) {
-        console.log('set', this.id, dotRenderedPageState)
         this.dotRenderedPageState = dotRenderedPageState;
     }
 
