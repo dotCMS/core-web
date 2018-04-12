@@ -1,21 +1,30 @@
 import { Injectable } from '@angular/core';
 import { DotRenderedPageState } from '../../models/dot-rendered-page-state.model';
 
-let count = 0;
+/**
+ * Allow send data to DotEditPageResolver
+ */
 @Injectable()
 export class DotEditPageDataService {
     public id;
     private dotRenderedPageState: DotRenderedPageState;
 
-    constructor() {
-        this.id = count++;
-    }
-
-    set (dotRenderedPageState: DotRenderedPageState) {
+    /**
+     * Out dotRenderedPageState into cache to be used by DotEditPageResolver
+     *
+     * @param dotRenderedPageState
+     */
+    set(dotRenderedPageState: DotRenderedPageState) {
         this.dotRenderedPageState = dotRenderedPageState;
     }
 
-    getAndClean (): DotRenderedPageState {
+    /**
+     * Return the object in cache and clean
+     * 
+     * @returns {DotRenderedPageState}
+     * @memberof DotEditPageDataService
+     */
+    getAndClean(): DotRenderedPageState {
         const data =  this.dotRenderedPageState;
         this.dotRenderedPageState = null;
         return data;

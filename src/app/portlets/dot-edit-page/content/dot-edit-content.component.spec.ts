@@ -547,7 +547,6 @@ describe('DotEditContentComponent', () => {
         describe('listen load-edit-mode-page event', () => {
 
             beforeEach(() => {
-                console.log('AAAAA');
                 route.parent.parent.data = Observable.of({
                     content: new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.EDIT)
                 });
