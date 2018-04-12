@@ -4,10 +4,6 @@ import { async } from 'q';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { Router } from '@angular/router';
-import { DotRenderedPageState } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
-import { mockDotPage, mockDotLayout } from '../../../test/dot-rendered-page.mock';
-import { mockUser } from '../../../test/login-service.mock';
 
 describe('DotRouterService', () => {
     let service: DotRouterService;
