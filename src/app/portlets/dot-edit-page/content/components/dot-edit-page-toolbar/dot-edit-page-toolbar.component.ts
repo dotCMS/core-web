@@ -22,6 +22,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() save = new EventEmitter<MouseEvent>();
+    @Output() actionFired = new EventEmitter<any>();
 
     states: SelectItem[] = [];
     lockerModel: boolean;
@@ -95,6 +96,15 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         document.body.removeChild(txtArea);
 
         return result;
+    }
+
+    /**
+     * Habdle action fired from dot-edit-page-workflows-actions
+     *
+     * @memberof DotEditPageToolbarComponent
+     */
+    handleActionFired(): void {
+        this.actionFired.emit();
     }
 
     /**
