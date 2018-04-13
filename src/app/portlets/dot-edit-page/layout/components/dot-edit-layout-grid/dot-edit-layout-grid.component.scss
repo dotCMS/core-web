@@ -5,3 +5,9 @@
     display: block;
     width: 100%;
 }
+
+.container-selector__header-remove {
+    margin: $basic-padding $basic-padding * 2;
+    position: absolute;
+    right: 0;
+}

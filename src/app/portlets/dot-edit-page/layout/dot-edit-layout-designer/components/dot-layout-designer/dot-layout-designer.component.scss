@@ -39,6 +39,11 @@
 
 }
 
+.dot-layout-designer__sidebar--left,
+.dot-layout-designer__sidebar--right {
+    border: 1px solid $gray-light;
+}
+
 .dot-layout-designer__sidebar-properties {
     position: absolute;
     top: $basic-padding;

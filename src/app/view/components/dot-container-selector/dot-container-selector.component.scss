@@ -3,7 +3,6 @@
 
 .container-selector {
     height: 206px;
-    border: 1px solid $gray-light;
     background-color: $white;
 
     .ui-button[iconButton] {
@@ -18,12 +17,19 @@
     }
 }
 
+.dot-layout-designer__grid-guides .container-selector {
+    border: 1px solid $gray-light;
+}
+
 .container-selector__header {
     height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: $basic-padding $basic-padding * 2;
+}
+
+.dot-layout-designer__grid-guides .container-selector__header {
     background-color: $gray-lightest-x;
 }
 
@@ -46,12 +52,10 @@
     }
 }
 
-[class^='dot-layout-designer__sidebar'] {
-    .container-selector {
-        height: 100%;
+[class^='dot-layout-designer__sidebar'] .container-selector {
+    height: 100%;
 
-        .container-selector__list {
-            height: 100%;
-        }
+    .container-selector__list {
+        height: 100%;
     }
 }
