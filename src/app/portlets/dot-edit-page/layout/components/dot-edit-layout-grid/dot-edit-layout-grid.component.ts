@@ -110,8 +110,10 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     getModel(): DotLayoutBody {
-        console.log('***grid', this.grid)
-        return this.dotEditLayoutService.getDotLayoutBody(this.grid);
+        console.log('***grid', this.grid);
+        const test = this.dotEditLayoutService.getDotLayoutBody(this.grid);
+        console.log('--getDotLayoutBody', test);
+        return test;
     }
 
     /**
@@ -171,6 +173,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     updateContainers(): void {
+        debugger;
         this.propagateChange(this.getModel());
     }
 
