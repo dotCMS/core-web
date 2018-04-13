@@ -38,7 +38,7 @@ export class DotPageStateService {
             pageMode$.map(
                 (updatedPage: DotRenderedPage) =>
                     new DotRenderedPageState(
-                        this.loginService.auth.loginAsUser || this.loginService.auth.loginAsUser,
+                        this.loginService.auth.loginAsUser || this.loginService.auth.user,
                         updatedPage,
                         state.mode
                     )
@@ -58,7 +58,7 @@ export class DotPageStateService {
             .getEdit(url)
             .map(
                 (page: DotRenderedPage) =>
-                    new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.loginAsUser, page)
+                    new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
             );
     }
 
