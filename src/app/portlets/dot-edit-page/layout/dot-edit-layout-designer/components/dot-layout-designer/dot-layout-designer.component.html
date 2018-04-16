@@ -15,8 +15,9 @@
         <div class="dot-layout-designer__sidebar--right" [ngClass]="'dot-layout-designer__sidebar--' + group.get('sidebar.width').value"
             *ngIf="group.get('sidebar.location').value === 'right'">
             <dot-sidebar-properties [group]="group.get('sidebar')" class="dot-layout-designer__sidebar-properties"></dot-sidebar-properties>
-            <dot-container-selector [selectedContainersList]="group.get('sidebar').get('containers').value">
-            </dot-container-selector>
+            <dot-edit-layout-sidebar formControlName="sidebar"></dot-edit-layout-sidebar>
+            <!-- <dot-container-selector [selectedContainersList]="group.get('sidebar').get('containers').value">
+            </dot-container-selector> -->
         </div>
     </div>
     <div class="dot-layout-designer__footer" *ngIf="group.get('footer').value">FOOTER</div>

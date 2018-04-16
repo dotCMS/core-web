@@ -204,7 +204,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         if (this.pageState.layout.sidebar) {
             return this.fb.group({
                 location: this.pageState.layout.sidebar.location,
-                containers: this.fb.array(this.pageState.layout.sidebar.containers || []),
+                containers: this.pageState.layout.sidebar.containers || [],
                 width: this.pageState.layout.sidebar.width
             });
         } else {

@@ -8,6 +8,7 @@ import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotPageContainer } from '../models/dot-page-container.model';
 import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
+import { DotLayoutSideBar } from '../models/dot-layout-sidebar.model';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -73,6 +74,24 @@ export class DotEditLayoutService {
      */
     cleanupDotLayoutBody(grid: DotLayoutBody): DotLayoutBody {
         return this.getDotLayoutBody(this.getDotLayoutGridBox(grid));
+    }
+
+    /**
+     * Take an array of DotLayoutGridBox and return a DotLayoutBody.
+     *
+     * @param {DotLayoutGridBox[]} grid
+     * @returns {DotLayoutBody}
+     */
+    getDotLayoutSidebar(containers: DotContainerColumnBox[]): DotLayoutSideBar {
+        return <DotLayoutSideBar>{
+
+        };
+//     location?: string;
+//     containers?: DotPageContainer[];
+//     width?: string;
+//     widthPercent?: number;
+//     preview?: boolean;
+// };
     }
 
     private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {

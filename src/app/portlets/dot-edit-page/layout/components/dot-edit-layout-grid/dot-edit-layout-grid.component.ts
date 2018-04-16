@@ -98,6 +98,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     addBox(): void {
+        console.log('*** addBox grid', this.grid);
         const conf: NgGridItemConfig = this.setConfigOfNewContainer();
         this.grid.push({ config: conf, containers: [] });
         this.propagateChange(this.getModel());
@@ -110,7 +111,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     getModel(): DotLayoutBody {
-        console.log('***grid', this.grid);
+        console.log('*** getModel grid', this.grid);
         const test = this.dotEditLayoutService.getDotLayoutBody(this.grid);
         console.log('--getDotLayoutBody', test);
         return test;
@@ -191,6 +192,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     private setGridValue(): void {
+        console.log('*** setGridValue grid', this.grid);
         this.grid = this.isHaveRows() ? this.dotEditLayoutService.getDotLayoutGridBox(this.value) : [...DOT_LAYOUT_DEFAULT_GRID];
     }
 

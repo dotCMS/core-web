@@ -7,6 +7,7 @@ import { ButtonModule, CheckboxModule, InputTextModule, DialogModule } from 'pri
 import { DotActionButtonModule } from '../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { DotEditLayoutDesignerComponent } from '../dot-edit-layout-designer/dot-edit-layout-designer.component';
 import { DotEditLayoutGridModule } from '../components/dot-edit-layout-grid/dot-edit-layout-grid.module';
+import { DotEditLayoutSidebarModule } from '../components/dot-edit-layout-sidebar/dot-edit-layout-sidebar.module';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 import { DotLayoutPropertiesModule } from '../components/dot-layout-properties/dot-layout-properties.module';
 import { DotSidebarPropertiesModule } from '../components/dot-sidebar-properties/dot-sidebar-properties.module';
@@ -24,6 +25,7 @@ import { DotContainerSelectorModule } from '../../../../view/components/dot-cont
         CommonModule,
         DotActionButtonModule,
         DotEditLayoutGridModule,
+        DotEditLayoutSidebarModule,
         DotTemplateAdditionalActionsModule,
         FormsModule,
         ReactiveFormsModule,
