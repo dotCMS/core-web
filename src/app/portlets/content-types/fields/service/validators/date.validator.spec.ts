@@ -1,7 +1,7 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { validateDateDefaultValue } from './date.validator';
 
-fdescribe('validateDateDefaultValue', () => {
+describe('validateDateDefaultValue', () => {
     const invalidResponse = {
         validateDate: {
             valid: false
