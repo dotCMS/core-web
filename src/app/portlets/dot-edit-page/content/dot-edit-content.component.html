@@ -8,10 +8,11 @@
 </dot-edit-page-toolbar>
 <dot-edit-content-view-as-toolbar
     (changeViewAs)="changeViewAsHandler($event)"
-    [value]="pageState.viewAs">
+    [pageState]="pageState">
 </dot-edit-content-view-as-toolbar>
 <div class="dot-edit__page-wrapper" [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device" [ngStyle]="{'width': pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '', 'height': pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : ''}">
     <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
+    <dot-whats-changed [pageId]="pageState.page.identifier"></dot-whats-changed>
     <iframe #iframe width="100%" height="100%" frameborder="0" class="dot-edit__iframe" (load)="onLoad($event)"></iframe>
 
     <p-dialog class="dot-edit__page-dialog"
