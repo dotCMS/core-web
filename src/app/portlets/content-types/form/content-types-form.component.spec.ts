@@ -537,7 +537,6 @@ describe('ContentTypesFormComponent', () => {
         });
         it('should submit form correctly on Enter', () => {
             const form = fixture.debugElement.query(By.css('form'));
-            debugger;
             form.nativeElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
             expect(comp.submitForm).toHaveBeenCalledTimes(1);
             expect(data).toEqual({
