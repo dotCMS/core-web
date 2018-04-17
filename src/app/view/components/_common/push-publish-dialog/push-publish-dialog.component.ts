@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
