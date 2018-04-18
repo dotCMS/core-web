@@ -51,8 +51,16 @@ export const mockDotPageState: DotPageState = {
     template: ''
 })
 class MockDotEditContentViewAsToolbarComponent {
-    @Input() value: DotEditPageViewAs;
+    @Input() pageState: DotRenderedPageState;
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
+}
+
+@Component({
+    selector: 'dot-whats-changed',
+    template: ''
+})
+class MockDotWhatsChangedComponent {
+    @Input() pageId: string;
 }
 
 describe('DotEditContentComponent', () => {
@@ -84,7 +92,7 @@ describe('DotEditContentComponent', () => {
         });
 
         DOTTestBed.configureTestingModule({
-            declarations: [DotEditContentComponent, MockDotEditContentViewAsToolbarComponent],
+                declarations: [DotEditContentComponent, MockDotEditContentViewAsToolbarComponent, MockDotWhatsChangedComponent],
             imports: [
                 DialogModule,
                 BrowserAnimationsModule,
@@ -105,12 +113,12 @@ describe('DotEditContentComponent', () => {
                 DotDragDropAPIHtmlService,
                 DotEditContentHtmlService,
                 DotEditContentToolbarHtmlService,
+                DotEditPageService,
                 DotGlobalMessageService,
                 DotHttpErrorManagerService,
                 DotMenuService,
                 DotPageStateService,
                 DotRenderHTMLService,
-                DotEditPageService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -211,6 +219,26 @@ describe('DotEditContentComponent', () => {
         spyOn(component, 'reload');
         toolbarElement.triggerEventHandler('actionFired', '');
         expect(component.reload).toHaveBeenCalledTimes(1);
+    });
+
+    describe('what\'s change', () => {
+        let viewAsToolbar: DebugElement;
+
+        beforeEach(() => {
+            viewAsToolbar = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+        });
+
+        it('should not show by default', () => {
+            fixture.detectChanges();
+            expect(de.query(By.css('dot-whats-changed'))).toBe(null);
+        });
+
+        it('should not show by default', () => {
+            fixture.detectChanges();
+            viewAsToolbar.triggerEventHandler('whatschange', true);
+            fixture.detectChanges();
+            expect(de.query(By.css('dot-whats-changed'))).toBeTruthy();
+        });
     });
 
     describe('reload', () => {

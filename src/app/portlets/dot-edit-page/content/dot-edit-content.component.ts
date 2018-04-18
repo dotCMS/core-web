@@ -47,6 +47,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     dialogTitle: string;
     isModelUpdated = false;
     pageState: DotRenderedPageState;
+    showWhatsChanged = false;
 
     private swithSiteSub: Subscription;
     private loadEditModePageSub: Subscription;

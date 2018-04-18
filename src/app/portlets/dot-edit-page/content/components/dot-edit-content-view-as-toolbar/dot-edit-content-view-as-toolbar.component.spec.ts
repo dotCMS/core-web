@@ -64,7 +64,7 @@ class MockDotLanguageSelectorComponent {
     @Output() selected = new EventEmitter<DotLanguage>();
 }
 
-fdescribe('DotEditContentViewAsToolbarComponent', () => {
+describe('DotEditContentViewAsToolbarComponent', () => {
     let componentHost: DotTestHostComponent;
     let fixtureHost: ComponentFixture<DotTestHostComponent>;
 
@@ -199,10 +199,33 @@ fdescribe('DotEditContentViewAsToolbarComponent', () => {
         expect(whatsChanged).toBe(null);
     });
 
-    it('should not have what\'s change checkbox', () => {
+    it('should have what\'s change checkbox', () => {
         componentHost.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)), PageMode.PREVIEW);
         fixtureHost.detectChanges();
         const whatsChanged: DebugElement = de.query(By.css('p-checkbox'));
         expect(whatsChanged).toBeTruthy();
+    });
+
+    describe('what\'s change event', () => {
+        let whatsChanged: DebugElement;
+        beforeEach(() => {
+            spyOn(component.whatschange, 'emit');
+            componentHost.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)), PageMode.PREVIEW);
+            fixtureHost.detectChanges();
+
+            whatsChanged = de.query(By.css('p-checkbox'));
+        });
+
+        it('should emit what\'s change in true', () => {
+            whatsChanged.triggerEventHandler('onChange', true);
+            expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
+            expect(component.whatschange.emit).toHaveBeenCalledWith(true);
+        });
+
+        it('should emit what\'s change in false', () => {
+            whatsChanged.triggerEventHandler('onChange', false);
+            expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
+            expect(component.whatschange.emit).toHaveBeenCalledWith(false);
+        });
     });
 });

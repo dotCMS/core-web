@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
     @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
+    @Output() whatschange = new EventEmitter<boolean>();
 
     isPreview: boolean;
     whatsChangedMessage: Observable<string>;
@@ -25,7 +26,9 @@ export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
     constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
-        this.whatsChangedMessage = this.dotMessageService.getMessages(['common.whats.changed']).map((messages: string[]) => messages[0]);
+        this.whatsChangedMessage = this.dotMessageService
+            .getMessages(['common.whats.changed'])
+            .map((messages: string[]) => messages[0] || 'What\'s change');
     }
 
     ngOnChanges(changes: SimpleChanges): void {
