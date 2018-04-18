@@ -10,7 +10,8 @@
             [totalRecords]="paginationService.totalRecords"
             [labelPropertyName]="['name', 'parentPermissionable.hostname']"
             placeholder="{{ dotMessageService.get('editpage.container.add.label') }}"
-            persistentPlaceholder="true">
+            persistentPlaceholder="true"
+            [multiple]="multiple">
         </dot-searchable-dropdown>
     </div>
     <ul class="container-selector__list">

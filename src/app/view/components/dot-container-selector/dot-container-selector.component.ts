@@ -12,6 +12,7 @@ import { DotContainerColumnBox } from '../../../portlets/dot-edit-page/shared/mo
 })
 export class DotContainerSelectorComponent implements OnInit {
     @Input() selectedContainersList: DotContainerColumnBox[] = [];
+    @Input() multiple: boolean;
     @Output() change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
 
     totalRecords: number;
@@ -31,7 +32,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     containerChange(container: DotContainer): void {
-        if (!this.isContainerSelected(container)) {
+        if (this.multiple || !this.isContainerSelected(container)) {
             this.selectedContainersList.push({
                 container: container,
                 uuid: new Date().getTime().toString()

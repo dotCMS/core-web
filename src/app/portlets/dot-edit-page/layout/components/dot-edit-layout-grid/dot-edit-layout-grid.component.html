@@ -1,8 +1,6 @@
 <div [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
-    <div *ngFor="let gridBox of grid; let i = index">
-        <dot-container-selector (change)="updateContainers($event)" (remove)="onRemoveContainer(i)" [(ngGridItem)]="gridBox.config"
-            [selectedContainersList]="gridBox.containers">
-            <button class="container-selector__header-remove" type="button" pButton icon="fa-close" (click)="onRemoveContainer(i)"></button>
-        </dot-container-selector>
-    </div>
+    <dot-container-selector *ngFor="let gridBox of grid; let i = index" (change)="updateContainers($event)" (remove)="onRemoveContainer(i)"
+        [(ngGridItem)]="gridBox.config" [selectedContainersList]="gridBox.containers" [multiple]="true">
+        <button class="container-selector__header-remove" type="button" pButton icon="fa-close" (click)="onRemoveContainer(i)"></button>
+    </dot-container-selector>
 </div>
