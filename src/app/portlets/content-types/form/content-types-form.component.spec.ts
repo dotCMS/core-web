@@ -35,7 +35,7 @@ class MockDotLicenseService {
     }
 }
 
-fdescribe('ContentTypesFormComponent', () => {
+describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -501,7 +501,7 @@ fdescribe('ContentTypesFormComponent', () => {
         expect(data).toBeNull();
     });
 
-    it('should not submit form without changes and in Edit mode', () => {
+    it('should not submit a valid form without changes and in Edit mode', () => {
         comp.data = {
             baseType: 'CONTENT',
             id: '123'
