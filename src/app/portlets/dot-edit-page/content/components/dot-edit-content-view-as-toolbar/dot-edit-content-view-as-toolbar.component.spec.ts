@@ -19,12 +19,11 @@ import { mockDotEditPageViewAs } from '../../../../../test/dot-edit-page-view-as
 import { mockDotPersona } from '../../../../../test/dot-persona.mock';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mock';
-import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../../test/dot-rendered-page.mock';
 import { DotDeviceSelectorComponent } from '../../../../../view/components/dot-device-selector/dot-device-selector.component';
 import { DotPersonaSelectorComponent } from '../../../../../view/components/dot-persona-selector/dot-persona-selector.component';
 import { DotLanguageSelectorComponent } from '../../../../../view/components/dot-language-selector/dot-language-selector.component';
 import { PageMode } from '../../../shared/models/page-mode.enum';
-import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
 
 @Component({
@@ -185,8 +184,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     });
 
     it('should not have what\'s change checkbox', () => {
-        const { lockedBy, lockMessage, lockedByName, lockedOn, ...noLockedByPage } = JSON.parse(JSON.stringify(mockDotPage));
-
         componentHost.pageState = new DotRenderedPageState(mockUser, {
             ...mockDotRenderedPage,
             page: {

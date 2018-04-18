@@ -556,7 +556,7 @@ describe('DotEditContentComponent', () => {
                         },
                         contentWindow: {
                             focus: jasmine.createSpy('focus'),
-                            addEventListener: (type, listener) => {
+                            addEventListener: (_type, listener) => {
                                 keypressFunction = listener;
                             }
                         }
