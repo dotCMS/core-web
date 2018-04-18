@@ -77,21 +77,18 @@ export class DotEditLayoutService {
     }
 
     /**
-     * Take an array of DotLayoutGridBox and return a DotLayoutBody.
+     * Take an array of DotPageContainer and return a DotContainerColumnBox.
      *
-     * @param {DotLayoutGridBox[]} grid
-     * @returns {DotLayoutBody}
+     * @param {DotPageContainer[]} containers
+     * @returns {DotContainerColumnBox[]}
      */
-    getDotLayoutSidebar(containers: DotContainerColumnBox[]): DotLayoutSideBar {
-        return <DotLayoutSideBar>{
-
-        };
-//     location?: string;
-//     containers?: DotPageContainer[];
-//     width?: string;
-//     widthPercent?: number;
-//     preview?: boolean;
-// };
+    getDotLayoutSidebar(containers: DotPageContainer[]): DotContainerColumnBox[] {
+        return containers.map((dotPageContainer: DotPageContainer) => {
+            return {
+                container: this.templateContainersCacheService.get(dotPageContainer.identifier),
+                uuid: dotPageContainer.uuid ? dotPageContainer.uuid : new Date().getTime().toString()
+            };
+        });
     }
 
     private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {

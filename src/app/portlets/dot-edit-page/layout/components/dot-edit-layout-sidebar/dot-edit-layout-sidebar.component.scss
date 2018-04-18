@@ -1,0 +1,19 @@
+@import 'variables';
+
+:host {
+    background-color: white;
+    width: 100%;
+}
+
+h6 {
+    background-color: $gray-lightest-x;
+    font-size: $font-size-large;
+    font-weight: normal;
+    margin: 0;
+    padding: 15px;
+    text-align: right;
+
+    &.dot-edit-layout-sidebar--right {
+        text-align: left;
+    }
+}

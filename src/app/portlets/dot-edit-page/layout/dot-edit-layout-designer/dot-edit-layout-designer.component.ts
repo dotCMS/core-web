@@ -14,6 +14,7 @@ import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.serv
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/core/login.service';
+import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -118,16 +119,15 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     saveLayout(_event): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         const dotLayout: DotLayout = this.form.value;
-        console.log('***dotLayout', dotLayout);
-        // this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
-        //     (updatedPage: DotRenderedPage) => {
-        //         this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-        //         this.setupLayout(new DotRenderedPageState(this.loginService.auth.user, updatedPage));
-        //     },
-        //     (err: ResponseView) => {
-        //         this.dotGlobalMessageService.error(err.response.statusText);
-        //     }
-        // );
+        this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
+            (updatedPage: DotRenderedPage) => {
+                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                this.setupLayout(new DotRenderedPageState(this.loginService.auth.user, updatedPage));
+            },
+            (err: ResponseView) => {
+                this.dotGlobalMessageService.error(err.response.statusText);
+            }
+        );
     }
 
     /**
@@ -200,19 +200,19 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             });
     }
 
-    private createSidebarForm() {
+    private createSidebarForm(): DotLayoutSideBar {
         if (this.pageState.layout.sidebar) {
-            return this.fb.group({
+            return {
                 location: this.pageState.layout.sidebar.location,
                 containers: this.pageState.layout.sidebar.containers || [],
                 width: this.pageState.layout.sidebar.width
-            });
+            };
         } else {
-            return this.fb.group({
+            return {
                 location: '',
                 containers: [],
                 width: 'small'
-            });
+            };
         }
     }
 

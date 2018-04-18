@@ -1,18 +1,6 @@
-import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
-import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
-import * as _ from 'lodash';
-import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { DotLayoutGridBox } from '../../../shared/models/dot-layout-grid-box.model';
-import {
-    DOT_LAYOUT_GRID_MAX_COLUMNS,
-    DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE,
-    DOT_LAYOUT_DEFAULT_GRID
-} from '../../../shared/models/dot-layout.const';
-import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
 import { DotLayoutSideBar } from '../../../shared/models/dot-layout-sidebar.model';
 import { DotContainerColumnBox } from '../../../shared/models/dot-container-column-box.model';
 
@@ -34,39 +22,28 @@ import { DotContainerColumnBox } from '../../../shared/models/dot-container-colu
     ]
 })
 export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccessor {
-
+    containers: DotContainerColumnBox[];
     value: DotLayoutSideBar;
 
+    constructor(private dotEditLayoutService: DotEditLayoutService) {}
 
-    constructor(
-        private dotDialogService: DotDialogService,
-        private dotEditLayoutService: DotEditLayoutService,
-        public dotMessageService: DotMessageService,
-        private dotEventsService: DotEventsService
-    ) {}
-
-    ngOnInit() {
-
-    }
+    ngOnInit() {}
 
     /**
      * Return ng-grid model.
      *
-     * @returns {DotLayoutBody}
-     * @memberof DotEditLayoutGridComponent
+     * @param {DotContainerColumnBox[]} containers
+     * @returns {DotLayoutSideBar}
+     * @memberof DotEditLayoutSidebarComponent
      */
     getModel(containers: DotContainerColumnBox[]): DotLayoutSideBar {
-        console.log('***containers', containers);
-        debugger;
-        const test = this.dotEditLayoutService.getDotLayoutSidebar(containers);
-        console.log('--getDotLayoutBody', test);
-
-        let copy = JSON.parse(JSON.stringify(this.value));
-        copy.containers.push(
-            {'uuid' : '1523902270595',
-            'identifier' : 'd71d56b4-0a8b-4bb2-be15-ffa5a23366ea'
+        const copy = JSON.parse(JSON.stringify(this.value));
+        copy.containers = containers.map((item) => {
+            return {
+                identifier: item.container.identifier,
+                uuid: item.uuid
+            };
         });
-
 
         return copy;
     }
@@ -78,7 +55,7 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
      * Set the function to be called when the control receives a change event.
      *
      * @param {*} fn
-     * @memberof DotEditLayoutGridComponent
+     * @memberof DotEditLayoutSidebarComponent
      */
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
@@ -89,25 +66,27 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
     /**
      * Update the model when a container is added to a box
      *
-     * @memberof DotEditLayoutGridComponent
+     * @param {DotContainerColumnBox[]} containers
+     * @memberof DotEditLayoutSidebarComponent
      */
     updateContainers(containers: DotContainerColumnBox[]): void {
-        debugger;
         this.propagateChange(this.getModel(containers));
     }
 
     /**
      * Write a new value to the element
      *
-     * @param {DotLayoutBody} value
-     * @memberof DotEditLayoutGridComponent
+     * @param {DotLayoutSideBar} value
+     * @memberof DotEditLayoutSidebarComponent
      */
     writeValue(value: DotLayoutSideBar): void {
-        debugger;
         if (value) {
             this.value = value || null;
-            // this.setGridValue();
+            this.setContainersValue();
         }
     }
 
+    private setContainersValue(): void {
+        this.containers = this.dotEditLayoutService.getDotLayoutSidebar(this.value.containers);
+    }
 }
