@@ -35,7 +35,7 @@ class MockDotLicenseService {
     }
 }
 
-describe('ContentTypesFormComponent', () => {
+fdescribe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
@@ -499,6 +499,29 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.submitForm).toHaveBeenCalled();
         expect(data).toBeNull();
+    });
+
+    it('should not submit form without changes and in Edit mode', () => {
+        comp.data = {
+            baseType: 'CONTENT',
+            id: '123'
+        };
+        comp.fields = [
+            {
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
+                id: '123',
+                indexed: true,
+                name: 'publishDateVar'
+            }
+        ];
+        fixture.detectChanges();
+        spyOn(comp, 'submitForm').and.callThrough();
+        spyOn(comp.submit, 'emit');
+
+        comp.submitForm();
+
+        expect(comp.submitForm).toHaveBeenCalled();
+        expect(comp.submit.emit).not.toHaveBeenCalled();
     });
 
     describe('send data with valid form', () => {
