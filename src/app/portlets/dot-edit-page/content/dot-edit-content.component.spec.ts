@@ -307,7 +307,7 @@ describe('DotEditContentComponent', () => {
 
         it('should send the View As initial configuration to the toolbar', () => {
             fixture.detectChanges();
-            expect(viewAsToolbar.componentInstance.value).toEqual(mockDotRenderedPage.viewAs);
+            expect(viewAsToolbar.componentInstance.pageState.viewAs).toEqual(mockDotRenderedPage.viewAs);
         });
     });
 
