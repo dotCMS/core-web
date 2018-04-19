@@ -8,7 +8,6 @@ import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotPageContainer } from '../models/dot-page-container.model';
 import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
-import { DotLayoutSideBar } from '../models/dot-layout-sidebar.model';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
