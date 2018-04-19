@@ -112,18 +112,18 @@ describe('ContainerSelectorComponent', () => {
         })
     );
 
-    it('should emit an event of close when click on the X icon top-right', () => {
-        const removeBlockElem: DebugElement = de.query(By.css('.container-selector__header-remove'));
-        let removeAction;
+    // it('should emit an event of close when click on the X icon top-right', () => {
+    //     const removeBlockElem: DebugElement = de.query(By.css('.container-selector__header-remove'));
+    //     let removeAction;
 
-        comp.remove.subscribe((res) => {
-            removeAction = res;
-        });
+    //     comp.remove.subscribe((res) => {
+    //         removeAction = res;
+    //     });
 
-        removeBlockElem.nativeElement.click();
+    //     removeBlockElem.nativeElement.click();
 
-        expect(removeAction).toBeDefined();
-    });
+    //     expect(removeAction).toBeDefined();
+    // });
 
     it('should add containers to containers list and emit a change event', () => {
         comp.currentContainers = containers;
