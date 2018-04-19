@@ -16,7 +16,7 @@ import { LoginServiceMock } from '../../../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotEditLayoutSidebarModule } from '../../../components/dot-edit-layout-sidebar/dot-edit-layout-sidebar.module';
 
-fdescribe('DotLayoutDesignerComponent', () => {
+describe('DotLayoutDesignerComponent', () => {
     let component: DotLayoutDesignerComponent;
     let fixture: ComponentFixture<DotLayoutDesignerComponent>;
 

@@ -1,4 +1,2 @@
-<div>
-    <h6 [ngClass]="'dot-edit-layout-sidebar--' + value.location">Sidebar</h6>
-    <dot-container-selector (change)="updateContainers($event)" [selectedContainersList]="containers"></dot-container-selector>
-</div>
+<h6 [ngClass]="'dot-edit-layout-sidebar--' + value.location">{{ dotMessageService.get('editpage.layout.designer.sidebar') }}</h6>
+<dot-container-selector (change)="updateContainers($event)" [selectedContainersList]="containers"></dot-container-selector>

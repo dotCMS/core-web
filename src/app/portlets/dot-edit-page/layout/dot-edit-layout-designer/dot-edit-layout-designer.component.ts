@@ -200,20 +200,13 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             });
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     private createSidebarForm(): DotLayoutSideBar {
-        if (this.pageState.layout.sidebar) {
-            return {
-                location: this.pageState.layout.sidebar.location,
-                containers: this.pageState.layout.sidebar.containers || [],
-                width: this.pageState.layout.sidebar.width
-            };
-        } else {
-            return {
-                location: '',
-                containers: [],
-                width: 'small'
-            };
-        }
+        return {
+            location: this.pageState.layout.sidebar.location || '',
+            containers: this.pageState.layout.sidebar.containers || [],
+            width: this.pageState.layout.sidebar.width || 'small'
+        };
     }
 
     private shouldShowDialog(): boolean {

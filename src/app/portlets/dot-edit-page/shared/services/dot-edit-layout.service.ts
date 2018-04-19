@@ -85,7 +85,7 @@ export class DotEditLayoutService {
         return containers.map((dotPageContainer: DotPageContainer) => {
             return {
                 container: this.templateContainersCacheService.get(dotPageContainer.identifier),
-                uuid: dotPageContainer.uuid ? dotPageContainer.uuid : new Date().getTime().toString()
+                uuid: dotPageContainer.uuid ? dotPageContainer.uuid : ''
             };
         });
     }

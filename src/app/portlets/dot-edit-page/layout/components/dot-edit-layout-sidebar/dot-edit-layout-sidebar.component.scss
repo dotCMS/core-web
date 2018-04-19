@@ -3,6 +3,21 @@
 :host {
     background-color: white;
     width: 100%;
+
+    ::ng-deep {
+        .container-selector {
+            height: auto;
+        }
+
+        .container-selector__list {
+            height: 100%;
+        }
+
+        dot-searchable-dropdown button,
+        dot-searchable-dropdown button:hover {
+            box-shadow: none;
+        }
+    }
 }
 
 h6 {
@@ -10,7 +25,7 @@ h6 {
     font-size: $font-size-large;
     font-weight: normal;
     margin: 0;
-    padding: 15px;
+    padding: $basic-padding * 2 - 4;
     text-align: right;
 
     &.dot-edit-layout-sidebar--right {

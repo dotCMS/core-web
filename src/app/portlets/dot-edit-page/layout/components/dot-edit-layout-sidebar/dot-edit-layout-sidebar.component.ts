@@ -3,9 +3,10 @@ import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.s
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotLayoutSideBar } from '../../../shared/models/dot-layout-sidebar.model';
 import { DotContainerColumnBox } from '../../../shared/models/dot-container-column-box.model';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 
 /**
- * Component in charge of update the model that will be used be the NgGrid to display containers
+ * Component in charge of update the model that will be used in the sidebar display containers
  *
  * @implements {OnInit}
  */
@@ -25,12 +26,18 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
     containers: DotContainerColumnBox[];
     value: DotLayoutSideBar;
 
-    constructor(private dotEditLayoutService: DotEditLayoutService) {}
+    constructor(private dotEditLayoutService: DotEditLayoutService, public dotMessageService: DotMessageService) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.dotMessageService
+            .getMessages([
+                'editpage.layout.designer.sidebar'
+            ])
+            .subscribe();
+    }
 
     /**
-     * Return ng-grid model.
+     * Returns DotContainerColumnBox model.
      *
      * @param {DotContainerColumnBox[]} containers
      * @returns {DotLayoutSideBar}
@@ -48,7 +55,6 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
         return copy;
     }
 
-    // tslint:disable-next-line:no-shadowed-variable
     propagateChange = (_: any) => {};
 
     /**
