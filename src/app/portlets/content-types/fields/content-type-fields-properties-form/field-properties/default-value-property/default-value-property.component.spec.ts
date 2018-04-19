@@ -80,10 +80,17 @@ describe('DefaultValuePropertyComponent', () => {
 
         expect(comp.errorLabel).toEqual('default error');
     });
-    it('set error label to specific valid class mapped', () => {
+    it('set error label to specific valid date field', () => {
         comp.property.field.clazz = 'com.dotcms.contenttype.model.field.ImmutableDateField';
         fixture.detectChanges();
 
         expect(comp.errorLabel).toEqual('date error');
+    });
+
+    it('set error label to specific valid date time field', () => {
+        comp.property.field.clazz = 'com.dotcms.contenttype.model.field.ImmutableDateTimeField';
+        fixture.detectChanges();
+
+        expect(comp.errorLabel).toEqual('date-time error');
     });
 });
