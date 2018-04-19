@@ -8,6 +8,7 @@ import { DotEventsService } from '../../../../../api/services/dot-events/dot-eve
 @Component({
     selector: 'dot-sidebar-properties',
     templateUrl: './dot-sidebar-properties.component.html',
+    styleUrls: ['./dot-sidebar-properties.component.scss'],
     providers: [
         {
             multi: true,
@@ -33,7 +34,11 @@ export class DotSidebarPropertiesComponent implements OnInit, ControlValueAccess
                 'editpage.layout.sidebar.action.open'
             ])
             .subscribe();
-    }
+        this.value = {
+            containers: [],
+            location: '',
+            width: ''
+        };    }
 
     /**
      * Hides overlay panel and emits a notification to repainted the Grid
@@ -63,7 +68,6 @@ export class DotSidebarPropertiesComponent implements OnInit, ControlValueAccess
      */
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
-        this.dotEventsService.notify('layout-sidebar-change');
     }
 
     registerOnTouched(): void {}

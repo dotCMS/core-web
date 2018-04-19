@@ -44,11 +44,6 @@
     border: 1px solid $gray-light;
 }
 
-.dot-layout-designer__sidebar-properties {
-    position: absolute;
-    top: $basic-padding;
-}
-
 .dot-layout-designer__sidebar {
     &--small {
         width: 200px;
@@ -70,12 +65,6 @@
         margin-left: $basic-padding * 2;
     }
 
-    &--left,
-    &--right {
-        .dot-layout-designer__sidebar-properties {
-            right: $basic-padding;
-        }
-    }
 }
 
 .dot-layout-designer__footer,

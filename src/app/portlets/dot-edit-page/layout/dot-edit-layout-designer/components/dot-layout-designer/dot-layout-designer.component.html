@@ -3,7 +3,6 @@
     <div class="dot-layout-designer__main">
         <div class="dot-layout-designer__sidebar--left" [ngClass]="'dot-layout-designer__sidebar--' + group.get('sidebar').value['width']"
             *ngIf="group.get('sidebar').value['location'] === 'left'">
-            <dot-sidebar-properties formControlName="sidebar" class="dot-layout-designer__sidebar-properties"></dot-sidebar-properties>
             <dot-edit-layout-sidebar formControlName="sidebar"></dot-edit-layout-sidebar>
         </div>
         <div class="dot-layout-designer__body">
@@ -14,7 +13,6 @@
         </div>
         <div class="dot-layout-designer__sidebar--right" [ngClass]="'dot-layout-designer__sidebar--' + group.get('sidebar').value['width']"
             *ngIf="group.get('sidebar').value['location'] === 'right'">
-            <dot-sidebar-properties formControlName="sidebar" class="dot-layout-designer__sidebar-properties"></dot-sidebar-properties>
             <dot-edit-layout-sidebar formControlName="sidebar"></dot-edit-layout-sidebar>
         </div>
     </div>

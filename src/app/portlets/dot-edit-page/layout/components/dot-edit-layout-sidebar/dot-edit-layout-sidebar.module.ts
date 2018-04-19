@@ -5,10 +5,20 @@ import { NgGridModule } from 'angular2-grid';
 import { DotActionButtonModule } from '../../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { DotContainerSelectorModule } from '../../../../../view/components/dot-container-selector/dot-container-selector.module';
 import { ButtonModule } from 'primeng/primeng';
+import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [DotEditLayoutSidebarComponent],
-    imports: [CommonModule, NgGridModule, DotActionButtonModule, DotContainerSelectorModule, ButtonModule],
+    imports: [
+        CommonModule,
+        NgGridModule,
+        DotActionButtonModule,
+        FormsModule,
+        DotContainerSelectorModule,
+        ButtonModule,
+        DotSidebarPropertiesModule
+    ],
     exports: [DotEditLayoutSidebarComponent],
     providers: []
 })
