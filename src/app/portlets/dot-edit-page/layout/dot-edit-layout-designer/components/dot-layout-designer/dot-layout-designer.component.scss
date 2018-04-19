@@ -37,7 +37,6 @@
     dot-container-selector {
         width: 100%;
     }
-
 }
 
 .dot-layout-designer__sidebar--left,
@@ -51,7 +50,6 @@
 }
 
 .dot-layout-designer__sidebar {
-
     &--small {
         width: 200px;
     }
@@ -66,21 +64,19 @@
 
     &--left {
         margin-right: $basic-padding * 2;
-    
-        .dot-layout-designer__sidebar-properties {
-            left: $basic-padding;
-        }
     }
-    
+
     &--right {
         margin-left: $basic-padding * 2;
-    
+    }
+
+    &--left,
+    &--right {
         .dot-layout-designer__sidebar-properties {
             right: $basic-padding;
         }
     }
 }
-
 
 .dot-layout-designer__footer,
 .dot-layout-designer__header {

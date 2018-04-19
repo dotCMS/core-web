@@ -26,9 +26,5 @@ h6 {
     font-weight: normal;
     margin: 0;
     padding: $basic-padding * 2 - 4;
-    text-align: right;
-
-    &.dot-edit-layout-sidebar--right {
-        text-align: left;
-    }
+    text-align: left;
 }
