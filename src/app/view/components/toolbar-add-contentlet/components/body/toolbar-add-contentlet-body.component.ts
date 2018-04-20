@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { StructureTypeView } from '../../../shared/models/contentlet';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { StructureTypeView } from '../../../../../shared/models/contentlet';
+import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,

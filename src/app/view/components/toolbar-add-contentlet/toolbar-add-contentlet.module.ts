@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToolbarAddContenletComponent } from './toolbar-add-contentlet.component';
-import { ToolbarAddContenletBodyComponent } from './toolbar-add-contentlet-body.component';
+import { ToolbarAddContenletBodyComponent } from './components/body/toolbar-add-contentlet-body.component';
 import { ToolbarAddContenletService } from './toolbar-add-contentlet.service';
 import { DotDropdownModule } from '../_common/dropdown-component/dot-dropdown.module';
 import { ButtonModule } from 'primeng/primeng';
