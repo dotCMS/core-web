@@ -44,15 +44,14 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
      * @memberof DotEditLayoutSidebarComponent
      */
     getModel(containers: DotContainerColumnBox[]): DotLayoutSideBar {
-        const copy = JSON.parse(JSON.stringify(this.value));
-        copy.containers = containers.map((item) => {
+        this.value.containers = containers.map((item) => {
             return {
                 identifier: item.container.identifier,
                 uuid: item.uuid
             };
         });
 
-        return copy;
+        return this.value;
     }
 
     propagateChange = (_: any) => {};
