@@ -15,12 +15,19 @@ import { DotSidebarPropertiesModule } from '../../../components/dot-sidebar-prop
 import { LoginServiceMock } from '../../../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotEditLayoutSidebarModule } from '../../../components/dot-edit-layout-sidebar/dot-edit-layout-sidebar.module';
+import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
+import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 
 describe('DotLayoutDesignerComponent', () => {
     let component: DotLayoutDesignerComponent;
     let fixture: ComponentFixture<DotLayoutDesignerComponent>;
 
     beforeEach(async(() => {
+        const messageServiceMock = new MockDotMessageService({
+            'editpage.layout.designer.header': 'HEADER',
+            'editpage.layout.designer.footer': 'FOOTER'
+        });
+
         DOTTestBed.configureTestingModule({
             imports: [
                 DotSidebarPropertiesModule,
@@ -36,7 +43,8 @@ describe('DotLayoutDesignerComponent', () => {
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
-                }
+                },
+                { provide: DotMessageService, useValue: messageServiceMock }
             ]
         });
     }));
@@ -133,6 +141,16 @@ describe('DotLayoutDesignerComponent', () => {
             it('should show footer in the template', () => {
                 const footerElem: DebugElement = fixture.debugElement.query(By.css('.dot-layout-designer__footer'));
                 expect(footerElem).toBeTruthy();
+            });
+
+            it('should have the right label for the Header', () => {
+                const headerSelector = fixture.debugElement.query(By.css('.dot-layout-designer__header'));
+                expect(headerSelector.nativeElement.outerText).toBe('HEADER');
+            });
+
+            it('should have the right label for the Footer', () => {
+                const headerSelector = fixture.debugElement.query(By.css('.dot-layout-designer__footer'));
+                expect(headerSelector.nativeElement.outerText).toBe('FOOTER');
             });
 
             describe('sidebar size and position', () => {
