@@ -5,7 +5,6 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewEncapsulation } fro
 import { DotContainerColumnBox } from '../../../portlets/dot-edit-page/shared/models/dot-container-column-box.model';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-container-selector',
     templateUrl: './dot-container-selector.component.html',
     styleUrls: ['./dot-container-selector.component.scss']

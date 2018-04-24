@@ -4,6 +4,24 @@
 :host {
     display: block;
     width: 100%;
+
+    ::ng-deep {
+        dot-searchable-dropdown button,
+        dot-searchable-dropdown button:hover {
+            box-shadow: none;
+        }
+
+        dot-container-selector .container-selector__list {
+            height: 140px;
+            margin-top: $basic-padding * 2;
+        }
+    }
+}
+
+.container-selector {
+    background: linear-gradient(to bottom, $gray-lightest-x 0, $gray-lightest-x 48px, $white 48px, $white 100%);
+    border: 1px solid $gray-light;
+    height: 206px;
 }
 
 .container-selector__header-remove {
