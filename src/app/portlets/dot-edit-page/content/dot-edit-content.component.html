@@ -11,10 +11,20 @@
     (changeViewAs)="changeViewAsHandler($event)"
     [pageState]="pageState">
 </dot-edit-content-view-as-toolbar>
-<div class="dot-edit__page-wrapper" [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device" [ngStyle]="{'width': pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '', 'height': pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : ''}">
+<div class="dot-edit__page-device-wrapper" *ngIf="pageState.viewAs.device">
+        <span class="dot-edit__page-device-name">
+            {{pageState.viewAs.device.name}}
+        </span>
+        <span class="dot-edit__page-device-dimensions">
+            {{ pageState.viewAs.device.cssWidth }} X {{ pageState.viewAs.device.cssHeight }}
+        </span>
+</div>
+<div class="dot-edit__page-wrapper" [class.dot-edit__page-wrapper--deviced]="pageState.viewAs.device" >
     <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
     <dot-whats-changed [pageId]="pageState.page.identifier" *ngIf="showWhatsChanged"></dot-whats-changed>
-    <iframe #iframe width="100%" height="100%" frameborder="0" class="dot-edit__iframe" (load)="onLoad($event)"></iframe>
+    <div [ngClass]="{'dot-edit__device-wrapper':pageState.viewAs.device}">
+        <iframe #iframe width="100%" height="100%" frameborder="0" class="dot-edit__iframe" (load)="onLoad($event)" [ngStyle]="{'width': pageState.viewAs.device ? pageState.viewAs.device.cssWidth + 'px' : '', 'height': pageState.viewAs.device ? pageState.viewAs.device.cssHeight + 'px' : ''}"></iframe>
+    </div>
 
     <p-dialog class="dot-edit__page-dialog"
         (onHide)="onHideDialog($event)"
