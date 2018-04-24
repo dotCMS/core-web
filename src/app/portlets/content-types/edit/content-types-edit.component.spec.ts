@@ -110,23 +110,21 @@ let dotRouterService: DotRouterService;
 let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
 describe('ContentTypesEditComponent create mode', () => {
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule(configCreateMode);
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule(configCreateMode);
 
-            fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
+        fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
 
-            crudService = fixture.debugElement.injector.get(CrudService);
-            location = fixture.debugElement.injector.get(Location);
-            dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-            dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
+        crudService = fixture.debugElement.injector.get(CrudService);
+        location = fixture.debugElement.injector.get(Location);
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
+        dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
 
-            fixture.detectChanges();
-        })
-    );
+        fixture.detectChanges();
+    }));
 
     it('should has dialog opened by default', () => {
         const dialog = de.query(By.css('p-dialog'));
@@ -249,7 +247,6 @@ describe('ContentTypesEditComponent create mode', () => {
             expect(form.submitForm).toHaveBeenCalledTimes(1);
         });
     });
-
 });
 
 const currentFieldsInServer = [
@@ -286,21 +283,20 @@ const configEditMode = getConfig({
 });
 
 describe('ContentTypesEditComponent edit mode', () => {
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule(configEditMode);
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule(configEditMode);
 
-            fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
+        fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
 
-            crudService = fixture.debugElement.injector.get(CrudService);
-            location = fixture.debugElement.injector.get(Location);
-            dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-            fixture.detectChanges();
-        })
-    );
+        crudService = fixture.debugElement.injector.get(CrudService);
+        location = fixture.debugElement.injector.get(Location);
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
+        dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
+        fixture.detectChanges();
+    }));
 
     const clickEditButton = () => {
         const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
@@ -356,22 +352,6 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(dotRouterService.gotoPortlet).not.toHaveBeenCalled();
     });
 
-    it('should udpate content type', () => {
-        const responseContentType = Object.assign({}, fakeContentType, {
-            fields: [{ hello: 'world' }]
-        });
-
-        spyOn(crudService, 'putData').and.returnValue(Observable.of(responseContentType));
-
-        clickEditButton();
-
-        const contentTypeForm: ContentTypesFormComponent = de.query(By.css('dot-content-types-form')).componentInstance;
-        contentTypeForm.submit.emit(fakeContentType);
-
-        expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', fakeContentType);
-        expect(comp.data).toEqual(responseContentType, 'set data with response');
-    });
-
     it('should save fields on dropzone event', () => {
         const newFieldsAdded: ContentTypeField[] = [
             {
@@ -424,5 +404,38 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(fieldService.deleteFields).toHaveBeenCalledWith('1234567890', fieldToRemove);
         // ...and the comp.data.fields has to be set to the fields return by the service
         expect(comp.fields).toEqual(fieldsReturnByServer);
+    });
+
+    describe('update', () => {
+        let contentTypeForm: DebugElement;
+
+        beforeEach(() => {
+            clickEditButton();
+            contentTypeForm = de.query(By.css('dot-content-types-form'));
+        });
+
+        it('should udpate content type', () => {
+            const responseContentType = Object.assign({}, fakeContentType, {
+                fields: [{ hello: 'world' }]
+            });
+
+            spyOn(crudService, 'putData').and.returnValue(Observable.of(responseContentType));
+
+            contentTypeForm.triggerEventHandler('submit', fakeContentType);
+
+            expect(crudService.putData).toHaveBeenCalledWith('v1/contenttype/id/1234567890', fakeContentType);
+            expect(comp.data).toEqual(responseContentType, 'set data with response');
+        });
+
+        it('should handle error', () => {
+            spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
+            spyOn(dotRouterService, 'gotoPortlet');
+            spyOn(crudService, 'putData').and.returnValue(Observable.throw(mockResponseView(403)));
+
+            contentTypeForm.triggerEventHandler('submit', fakeContentType);
+
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+        });
     });
 });

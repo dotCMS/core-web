@@ -169,10 +169,14 @@ export class ContentTypesEditComponent implements OnInit {
                 this.location.replaceState(`/content-types-angular/edit/${this.data.id}`);
                 this.show = false;
             }, (err: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(err).subscribe((handled: DotHttpErrorHandled) => {
-                    this.dotRouterService.gotoPortlet('/content-types-angular');
-                });
+                this.handleHttpError(err);
             });
+    }
+
+    private handleHttpError(err: ResponseView) {
+        this.dotHttpErrorManagerService.handle(err).subscribe((handled: DotHttpErrorHandled) => {
+            this.dotRouterService.gotoPortlet('/content-types-angular');
+        });
     }
 
     private updateContentType(value: any): void {
@@ -181,6 +185,8 @@ export class ContentTypesEditComponent implements OnInit {
         this.crudService.putData(`v1/contenttype/id/${this.data.id}`, data).subscribe((contentType: ContentType) => {
             this.data = contentType;
             this.show = false;
+        }, (err: ResponseView) => {
+            this.handleHttpError(err);
         });
     }
 }
