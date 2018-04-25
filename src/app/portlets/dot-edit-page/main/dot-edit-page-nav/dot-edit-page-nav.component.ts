@@ -1,7 +1,7 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
@@ -12,19 +12,23 @@ interface DotEditPageNavItem {
     disabled: boolean;
     icon: string;
     label: string;
-    link: string[];
+    link: string;
 }
 
 @Component({
     selector: 'dot-edit-page-nav',
     templateUrl: './dot-edit-page-nav.component.html',
-    styleUrls: ['./dot-edit-page-nav.component.scss']
+    styleUrls: ['./dot-edit-page-nav.component.scss'],
 })
 export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
 
-    constructor(public route: ActivatedRoute, private dotMessageService: DotMessageService, private dotLicenseService: DotLicenseService) {}
+    constructor(
+        private dotLicenseService: DotLicenseService,
+        public dotMessageService: DotMessageService,
+        public route: ActivatedRoute
+    ) {}
 
     ngOnInit(): void {
         this.model = this.dotMessageService
@@ -53,7 +57,7 @@ export class DotEditPageNavComponent implements OnInit {
                 disabled: false,
                 icon: 'fa fa-file-text',
                 label: this.dotMessageService.get('editpage.toolbar.nav.content'),
-                link: ['./content']
+                link: 'content'
             }
         ];
 
@@ -72,7 +76,7 @@ export class DotEditPageNavComponent implements OnInit {
             disabled: this.canGoToLayout(dotRenderedPage),
             icon: this.getTemplateItemIcon(dotRenderedPage.template),
             label: this.getTemplateItemLabel(dotRenderedPage.template),
-            link: ['./layout']
+            link: 'layout'
         };
     }
 
