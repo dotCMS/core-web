@@ -21,7 +21,7 @@ class MockDotLicenseService {
     }
 }
 
-fdescribe('DotEditPageNavComponent', () => {
+describe('DotEditPageNavComponent', () => {
     let dotLicenseService: DotLicenseService;
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<DotEditPageNavComponent>;
