@@ -36,6 +36,7 @@ describe('DotEditLayoutSidebarComponent', () => {
     let component: DotEditLayoutSidebarComponent;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
+    let dotEditLayoutService: DotEditLayoutService;
 
     beforeEach(() => {
         fakeValue = {
@@ -51,11 +52,7 @@ describe('DotEditLayoutSidebarComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotEditLayoutSidebarComponent, TestHostComponent],
             imports: [DotContainerSelectorModule, BrowserAnimationsModule, DotSidebarPropertiesModule],
-            providers: [
-                DotEditLayoutService,
-                TemplateContainersCacheService,
-                { provide: DotMessageService, useValue: messageServiceMock }
-            ]
+            providers: [DotEditLayoutService, TemplateContainersCacheService, { provide: DotMessageService, useValue: messageServiceMock }]
         });
 
         hostComponentfixture = DOTTestBed.createComponent(TestHostComponent);
@@ -67,6 +64,31 @@ describe('DotEditLayoutSidebarComponent', () => {
     it('should have the right header for the Sidebar Header', () => {
         const headerSelector = de.query(By.css('h6'));
         expect(headerSelector.nativeElement.outerText).toBe('Sidebar');
+    });
+
+    fit('should call the write value and transform the containers data', () => {
+        const mockResponse = mockDotContainers;
+
+        hostComponentfixture.componentInstance.form = new FormGroup({
+            sidebar: new FormControl({
+                containers: [
+                    { identifier: '5363c6c6-5ba0-4946-b7af-cf875188ac2e', uuid: '' },
+                    { identifier: '56bd55ea-b04b-480d-9e37-5d6f9217dcc3', uuid: '' }
+                ],
+                location: 'left',
+                width: 'small'
+            })
+        });
+
+        dotEditLayoutService = hostComponentfixture.debugElement
+            .query(By.css('dot-edit-layout-sidebar'))
+            .injector.get(DotEditLayoutService);
+
+        spyOn(dotEditLayoutService, 'getDotLayoutSidebar').and.returnValue(mockResponse);
+
+        hostComponentfixture.detectChanges();
+        expect(dotEditLayoutService.getDotLayoutSidebar).toHaveBeenCalled();
+        expect(component.containers).toBe(mockResponse);
     });
 
     it('should transform containers raw data into proper data to be saved in the BE', () => {
@@ -89,5 +111,4 @@ describe('DotEditLayoutSidebarComponent', () => {
         component.updateContainers(mockDotContainers);
         expect(component.propagateChange).toHaveBeenCalledWith(transformedValue);
     });
-
 });

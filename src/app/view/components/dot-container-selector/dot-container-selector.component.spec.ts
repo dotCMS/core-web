@@ -117,9 +117,9 @@ describe('ContainerSelectorComponent', () => {
 
         searchableDropdownComponent.change.emit(containers[0]);
 
-        expect(comp.selectedContainersList[0].container).toEqual(containers[0]);
-        expect(comp.selectedContainersList[0].uuid).not.toBeNull();
-        expect(comp.selectedContainersList.length).toEqual(1);
+        expect(comp.data[0].container).toEqual(containers[0]);
+        expect(comp.data[0].uuid).not.toBeNull();
+        expect(comp.data.length).toEqual(1);
     });
 
     it('should remove containers after click on trash icon', () => {
@@ -133,7 +133,7 @@ describe('ContainerSelectorComponent', () => {
         fixture.detectChanges();
 
         bodySelectorListItems[0].children[0].click();
-        expect(comp.selectedContainersList.length).toEqual(0);
+        expect(comp.data.length).toEqual(0);
     });
 
     it('should not add duplicated containers to the list when multiple false', () => {
@@ -142,12 +142,12 @@ describe('ContainerSelectorComponent', () => {
         searchableDropdownComponent.change.emit(containers[0]);
         fixture.detectChanges();
 
-        expect(comp.selectedContainersList.length).toEqual(1);
+        expect(comp.data.length).toEqual(1);
 
         searchableDropdownComponent.change.emit(containers[0]);
         fixture.detectChanges();
 
-        expect(comp.selectedContainersList.length).toEqual(1);
+        expect(comp.data.length).toEqual(1);
     });
 
     it('should add duplicated containers to the list when multiple true', () => {
@@ -158,6 +158,6 @@ describe('ContainerSelectorComponent', () => {
         searchableDropdownComponent.change.emit(containers[0]);
         fixture.detectChanges();
 
-        expect(comp.selectedContainersList.length).toEqual(2);
+        expect(comp.data.length).toEqual(2);
     });
 });
