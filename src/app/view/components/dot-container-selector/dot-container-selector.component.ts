@@ -10,7 +10,7 @@ import { DotContainerColumnBox } from '../../../portlets/dot-edit-page/shared/mo
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
-    @Input() selectedContainersList: DotContainerColumnBox[] = [];
+    @Input() data: DotContainerColumnBox[] = [];
     @Input() multiple: boolean;
     @Output() change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
 
@@ -32,10 +32,10 @@ export class DotContainerSelectorComponent implements OnInit {
      */
     containerChange(container: DotContainer): void {
         if (this.multiple || !this.isContainerSelected(container)) {
-            this.selectedContainersList.push({
+            this.data.push({
                 container: container
             });
-            this.change.emit(this.selectedContainersList);
+            this.change.emit(this.data);
         }
     }
 
@@ -64,8 +64,8 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     removeContainerItem(i: number): void {
-        this.selectedContainersList.splice(i, 1);
-        this.change.emit(this.selectedContainersList);
+        this.data.splice(i, 1);
+        this.change.emit(this.data);
     }
 
     /**
@@ -76,7 +76,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     isContainerSelected(dotContainer: DotContainer): boolean {
-        return this.selectedContainersList.some(
+        return this.data.some(
             (containerItem) => containerItem.container.identifier === dotContainer.identifier
         );
     }

@@ -2,24 +2,36 @@
 
 :host {
     background-color: white;
+    position: relative;
     width: 100%;
 
     ::ng-deep {
-        .container-selector {
+        dot-container-selector {
             height: auto;
+            margin-left: $basic-padding * 2;
+            margin-right: $basic-padding * 2;
+
+            dot-searchable-dropdown button {
+                margin: $basic-padding 0;
+            }
+            .container-selector__list {
+                height: 100%;
+            }
         }
 
-        .container-selector__list {
-            height: 100%;
+        .dot-layout-designer__sidebar-properties {
+            position: absolute;
         }
     }
 }
 
 h6 {
+    align-items: center;
     background-color: $gray-lightest-x;
+    display: flex;
     font-size: $font-size-large;
     font-weight: normal;
+    height: 48px;
     margin: 0;
-    padding: $basic-padding * 2 - 4;
-    text-align: left;
+    padding-left: $basic-padding * 2;
 }

@@ -31,8 +31,6 @@
 
 [class^='dot-layout-designer__sidebar'] {
     align-items: normal;
-    background-color: transparent;
-    position: relative;
 
     dot-container-selector {
         width: 100%;
@@ -64,7 +62,6 @@
     &--right {
         margin-left: $basic-padding * 2;
     }
-
 }
 
 .dot-layout-designer__footer,
