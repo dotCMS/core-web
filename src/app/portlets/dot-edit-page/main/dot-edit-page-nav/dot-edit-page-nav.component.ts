@@ -18,17 +18,13 @@ interface DotEditPageNavItem {
 @Component({
     selector: 'dot-edit-page-nav',
     templateUrl: './dot-edit-page-nav.component.html',
-    styleUrls: ['./dot-edit-page-nav.component.scss'],
+    styleUrls: ['./dot-edit-page-nav.component.scss']
 })
 export class DotEditPageNavComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
 
-    constructor(
-        private dotLicenseService: DotLicenseService,
-        public dotMessageService: DotMessageService,
-        public route: ActivatedRoute
-    ) {}
+    constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
 
     ngOnInit(): void {
         this.model = this.dotMessageService
