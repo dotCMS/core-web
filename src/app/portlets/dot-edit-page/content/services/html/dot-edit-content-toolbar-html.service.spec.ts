@@ -41,7 +41,7 @@ describe('DotEditContentToolbarHtmlService', () => {
                 dummyContainer = testDoc.createElement('div');
                 const htmlElement: HTMLHtmlElement = testDoc.getElementsByTagName('html')[0];
                 dummyContainer.innerHTML = `
-                    <div data-dot-object="container">
+                    <div data-dot-object="container" data-dot-can-add="CONTENT,WIDGET,FORM">
                         <div data-dot-object="contentlet">
                             <div class="large-column"></div>
                         </div>
@@ -74,7 +74,7 @@ describe('DotEditContentToolbarHtmlService', () => {
             beforeEach(() => {
                 const htmlElement: HTMLHtmlElement = testDoc.getElementsByTagName('html')[0];
                 dummyContainer.innerHTML = `
-                    <div data-dot-object="container" data-dot-can-add="false">
+                    <div data-dot-object="container" data-dot-can-add="">
                         <div data-dot-object="contentlet">
                             <div class="large-column"></div>
                         </div>

@@ -79,8 +79,8 @@ export class DotEditContentToolbarHtmlService {
                     'editpage.content.contentlet.menu.remove'
                 ])
                 .subscribe(
-                    (messages: string[]) => {
-                        if (!messages.length) {
+                    (messages: any) => {
+                        if (!Object.keys(messages).length) {
                             reject();
                         }
 
