@@ -1,7 +1,7 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
