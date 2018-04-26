@@ -4,7 +4,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
-fdescribe('DotEditContentToolbarHtmlService', () => {
+describe('DotEditContentToolbarHtmlService', () => {
     let dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService;
     let testDoc: Document;
     let dummyContainer: HTMLDivElement;
