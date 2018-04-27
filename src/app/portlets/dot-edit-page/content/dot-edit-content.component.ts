@@ -268,7 +268,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'dot.common.message.saving',
                 'dot.common.message.saved'
             ])
-            .takeUntil(this.destroy$)
+            .take(1)
             .subscribe();
     }
 
