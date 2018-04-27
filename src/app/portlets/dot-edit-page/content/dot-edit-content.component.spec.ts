@@ -221,7 +221,7 @@ describe('DotEditContentComponent', () => {
         expect(component.reload).toHaveBeenCalledTimes(1);
     });
 
-    describe('what\'s change', () => {
+    describe("what's change", () => {
         let viewAsToolbar: DebugElement;
 
         beforeEach(() => {
@@ -679,6 +679,47 @@ describe('DotEditContentComponent', () => {
 
                 expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('Deactivate route scenarios', () => {
+            let dotEditPageService: DotEditPageService;
+            beforeEach(() => {
+                dotEditPageService = de.injector.get(DotEditPageService);
+                spyOn(component, 'canDeactivate').and.callThrough();
+                spyOn(component, 'pageServiceSave').and.callFake(val => {
+                    return Observable.of('test');
+                });
+                fixture.detectChanges();
+            });
+
+            it('should return true if there is not changes in the model', () => {
+                component.canDeactivate().subscribe(value => {
+                    expect(value).toBeTruthy();
+                    expect(component.pageServiceSave).toHaveBeenCalledTimes(0);
+                });
+            });
+
+            it('should return Observable of true AND save the changes if the user decide to save the latest changes', () => {
+                component.isModelUpdated = true;
+                spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+                    conf.accept();
+                });
+                component.canDeactivate().subscribe(value => {
+                    expect(value).toBeTruthy();
+                    expect(component.pageServiceSave).toHaveBeenCalledTimes(1);
+                });
+            });
+
+            it('should return Observable of true if the user decide NOT to save the latest changes', () => {
+                component.isModelUpdated = true;
+                spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+                    conf.reject();
+                });
+                component.canDeactivate().subscribe(value => {
+                    expect(value).toBeTruthy();
+                    expect(component.pageServiceSave).toHaveBeenCalledTimes(0);
+                });
             });
         });
     });

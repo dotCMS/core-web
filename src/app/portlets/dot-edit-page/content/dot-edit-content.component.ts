@@ -28,6 +28,7 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
+import { Observer } from 'rxjs/Observer';
 
 @Component({
     selector: 'dot-edit-content',
@@ -89,7 +90,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
         });
 
-        this.dotEditContentHtmlService.pageModelChange.filter((model) => model.length).subscribe((model) => {
+        this.dotEditContentHtmlService.pageModelChange.filter(model => model.length).subscribe(model => {
             if (this.originalValue) {
                 this.ngZone.run(() => {
                     this.isModelUpdated = !_.isEqual(model, this.originalValue);
@@ -116,6 +117,29 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         if (this.swithSiteSub) {
             this.swithSiteSub.unsubscribe();
+        }
+    }
+
+    canDeactivate(): Observable<boolean> {
+        if (this.isModelUpdated) {
+            return Observable.create((observer: Observer<boolean>) => {
+                this.dotDialogService.confirm({
+                    accept: () => {
+                        this.pageServiceSave().subscribe(() => {
+                            observer.next(true);
+                            observer.complete();
+                        });
+                    },
+                    reject: () => {
+                        observer.next(true);
+                        observer.complete();
+                    },
+                    header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
+                    message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
+                });
+            });
+        } else {
+            return Observable.of(true);
         }
     }
 
@@ -166,16 +190,26 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Save the page's content
+     * Save the page's content and update original value.
      *
      * @memberof DotEditContentComponent
      */
     saveContent(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel()).subscribe(() => {
+        this.pageServiceSave().subscribe(() => {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
             this.setOriginalValue();
         });
+    }
+
+    /**
+     *  Save page's content.
+     *
+     * @returns {Observable<string>}
+     * @memberof DotEditContentComponent
+     */
+    pageServiceSave(): Observable<string> {
+        return this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel());
     }
 
     /**
@@ -206,7 +240,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         const editContentletIframeEl = $event.target;
         if (editContentletIframeEl.contentDocument.body.innerHTML !== '') {
             editContentletIframeEl.contentWindow.focus();
-            editContentletIframeEl.contentWindow.addEventListener('keydown', (event) => {
+            editContentletIframeEl.contentWindow.addEventListener('keydown', event => {
                 if (event.key === 'Escape') {
                     this.ngZone.run(() => {
                         this.dialogTitle = null;
@@ -259,7 +293,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         this.dotMenuService.getDotMenuId('content').subscribe((portletId: string) => {
             // tslint:disable-next-line:max-line-length
-            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event.dataset.dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
+            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event
+                .dataset
+                .dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';
