@@ -127,5 +127,6 @@ describe('LoginAsComponent', () => {
         const button = de.query(By.css('#dot-login-as-button-change'));
         button.nativeElement.click();
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledWith(true);
     });
 });

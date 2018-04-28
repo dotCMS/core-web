@@ -12,6 +12,7 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
 
 @Injectable()
 export class DotNavigationService {
@@ -23,6 +24,7 @@ export class DotNavigationService {
         private dotcmsEventsService: DotcmsEventsService,
         private loginService: LoginService,
         private location: PlatformLocation,
+        private dotIframeService: DotIframeService,
         private router: Router
     ) {
         this.router.events
@@ -53,13 +55,18 @@ export class DotNavigationService {
      *
      * @memberof DotNavigationService
      */
-    goToFirstPortlet(): Promise<boolean> {
+    goToFirstPortlet(forceReload?: boolean): Promise<boolean> {
         return this.getFirstMenuLink()
             .map((link: string) => {
                 return this.dotRouterService.gotoPortlet(link);
             })
             .toPromise()
-            .then((isRouted: Promise<boolean>) => isRouted);
+            .then((isRouted: Promise<boolean>) => {
+                if (!isRouted && forceReload) {
+                    this.reloadPage();
+                }
+                return isRouted;
+            });
     }
 
     /**
@@ -140,5 +147,13 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
+    }
+
+    private reloadPage(): void {
+        if (this.router.url.indexOf('c/') > -1) {
+            this.dotIframeService.reload();
+        } else {
+            this.dotRouterService.goToURL(`${this.router.url}?reload=true`);
+        }
     }
 }

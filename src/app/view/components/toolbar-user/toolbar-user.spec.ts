@@ -77,5 +77,6 @@ describe('ToolbarUserComponent', () => {
         logoutAsLink.nativeElement.click();
 
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledWith(true);
     });
 });
