@@ -51,13 +51,16 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
     doLoginAs(): void {
         const password: string = this.form.value.password;
         const user: User = this.form.value.loginAsUser;
-
         this.loginService.loginAs({ user: user, password: password }).subscribe(
             (data) => {
                 if (data) {
                     this.close();
                     this.iframeOverlayService.hide();
-                    this.dotNavigationService.goToFirstPortlet(true);
+                    this.dotNavigationService.goToFirstPortlet().then((value) => {
+                        if (!value) {
+                            this.dotNavigationService.reloadPage();
+                        }
+                    });
                 }
             },
             (response) => {

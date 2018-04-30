@@ -55,18 +55,13 @@ export class DotNavigationService {
      *
      * @memberof DotNavigationService
      */
-    goToFirstPortlet(forceReload?: boolean): Promise<boolean> {
+    goToFirstPortlet(): Promise<boolean> {
         return this.getFirstMenuLink()
             .map((link: string) => {
                 return this.dotRouterService.gotoPortlet(link);
             })
             .toPromise()
-            .then((isRouted: Promise<boolean>) => {
-                if (!isRouted && forceReload) {
-                    this.reloadPage();
-                }
-                return isRouted;
-            });
+            .then((isRouted: Promise<boolean>) => isRouted);
     }
 
     /**
@@ -112,6 +107,18 @@ export class DotNavigationService {
             );
     }
 
+    /**
+     * Reloads the current porlet
+     * if it's an Iframe portlet
+     *
+     * @memberof DotNavigationService
+     */
+    reloadPage(): void {
+        if (this.router.url.indexOf('c/') > -1) {
+            this.dotIframeService.reload();
+        }
+    }
+
     private extractFirtsMenuLink(menus: DotMenu[]): string {
         const firstMenuItem: DotMenuItem = menus[0].menuItems[0];
         return firstMenuItem.angular ? firstMenuItem.url : this.getMenuLink(firstMenuItem.id);
@@ -147,13 +154,5 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this.items$.next(this.formatMenuItems(menu));
-    }
-
-    private reloadPage(): void {
-        if (this.router.url.indexOf('c/') > -1) {
-            this.dotIframeService.reload();
-        } else {
-            this.dotRouterService.goToURL(`${this.router.url}?reload=true`);
-        }
     }
 }

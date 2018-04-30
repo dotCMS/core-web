@@ -63,7 +63,11 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
             () => {
                 this.dropdown.closeIt();
                 this.iframeOverlayService.hide();
-                this.dotNavigationService.goToFirstPortlet(true);
+                this.dotNavigationService.goToFirstPortlet().then((value) => {
+                    if (!value) {
+                        this.dotNavigationService.reloadPage();
+                    }
+                });
             },
             (error) => {
                 this.loggerService.error(error);
