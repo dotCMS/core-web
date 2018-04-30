@@ -18,13 +18,13 @@ import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workf
 import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
 import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-changed.module';
-import { DotEditLayoutDeactivateGuardService } from '../shared/services/dot-edit-layout-deactivate-guard/dot-edit-layout-deactivate-guard.service';
+import {DotSaveOnDeactivateServiceService} from '../../../shared/dot-save-on-deactivate-service/dot-save-on-deactivate-service.service';
 
 const routes: Routes = [
     {
         component: DotEditContentComponent,
         path: '',
-        canDeactivate: [DotEditLayoutDeactivateGuardService]
+        canDeactivate: [DotSaveOnDeactivateServiceService]
     }
 ];
 

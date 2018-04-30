@@ -29,13 +29,15 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { Observer } from 'rxjs/Observer';
+import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
+import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
 
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
     styleUrls: ['./dot-edit-content.component.scss']
 })
-export class DotEditContentComponent implements OnInit, OnDestroy {
+export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactivate {
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
@@ -80,7 +82,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'editpage.content.contentlet.add.content',
                 'dot.common.message.saving',
-                'dot.common.message.saved'
+                'dot.common.message.saved',
+                'editpage.content.save.changes.confirmation.header',
+                'editpage.content.save.changes.confirmation.message'
             ])
             .subscribe();
 
@@ -120,28 +124,43 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
     }
 
-    canDeactivate(): Observable<boolean> {
-        if (this.isModelUpdated) {
-            return Observable.create((observer: Observer<boolean>) => {
-                this.dotDialogService.confirm({
-                    accept: () => {
-                        this.pageServiceSave().subscribe(() => {
-                            observer.next(true);
-                            observer.complete();
-                        });
-                    },
-                    reject: () => {
-                        observer.next(true);
-                        observer.complete();
-                    },
-                    header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
-                    message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
-                });
-            });
-        } else {
-            return Observable.of(true);
-        }
+    modelChanged(): boolean {
+        return this.isModelUpdated;
     }
+
+    onDeactivateSave(): Observable<any> {
+        return this.pageServiceSave();
+    }
+
+    saveWarningMessages(): DotDialog {
+        return {
+            header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
+            message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
+        };
+    }
+
+    // canDeactivate(): Observable<boolean> {
+    //     if (this.isModelUpdated) {
+    //         return Observable.create((observer: Observer<boolean>) => {
+    //             this.dotDialogService.confirm({
+    //                 accept: () => {
+    //                     this.pageServiceSave().subscribe(() => {
+    //                         observer.next(true);
+    //                         observer.complete();
+    //                     });
+    //                 },
+    //                 reject: () => {
+    //                     observer.next(true);
+    //                     observer.complete();
+    //                 },
+    //                 header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
+    //                 message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
+    //             });
+    //         });
+    //     } else {
+    //         return Observable.of(true);
+    //     }
+    // }
 
     /**
      * Callback when dialog hide
@@ -203,16 +222,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     *  Save page's content.
-     *
-     * @returns {Observable<string>}
-     * @memberof DotEditContentComponent
-     */
-    pageServiceSave(): Observable<string> {
-        return this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel());
-    }
-
-    /**
      * Hanlde changes in the configuration of "View As" toolbar
      *
      * @param {DotEditPageViewAs} viewAsConfig
@@ -267,6 +276,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
+    private pageServiceSave(): Observable<string> {
+        return this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel());
+    }
+
     private addContentlet($event: any): void {
         const container: DotPageContainer = {
             identifier: $event.dataset.dotIdentifier,
@@ -293,7 +306,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         this.dotMenuService.getDotMenuId('content').subscribe((portletId: string) => {
             // tslint:disable-next-line:max-line-length
-            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event.dataset.dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
+            const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event
+                .dataset
+                .dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
 
             // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
             this.dialogTitle = 'Edit Contentlet';

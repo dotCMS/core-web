@@ -7,6 +7,6 @@ export class DotEditLayoutDeactivateGuardService implements CanDeactivate<DotEdi
     constructor() {}
 
     canDeactivate(component: DotEditContentComponent, route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return component.canDeactivate();
+        return true; //component.canDeactivate();
     }
 }
