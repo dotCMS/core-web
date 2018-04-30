@@ -2,7 +2,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
@@ -29,13 +28,15 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { Subject } from 'rxjs/Subject';
+import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
+import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
 
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
     styleUrls: ['./dot-edit-content.component.scss']
 })
-export class DotEditContentComponent implements OnInit, OnDestroy {
+export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactivate {
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
@@ -84,6 +85,21 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+    }
+
+    modelChanged(): boolean {
+        return this.isModelUpdated;
+    }
+
+    onDeactivateSave(): Observable<any> {
+        return this.pageServiceSave();
+    }
+
+    saveWarningMessages(): DotDialog {
+        return {
+            header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
+            message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
+        };
     }
 
     /**
@@ -142,8 +158,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     saveContent(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.dotEditPageService
-            .save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel())
+        this.pageServiceSave()
             .takeUntil(this.destroy$)
             .subscribe(() => {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
@@ -182,7 +197,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         const editContentletIframeEl = $event.target;
         if (editContentletIframeEl.contentDocument.body.innerHTML !== '') {
             editContentletIframeEl.contentWindow.focus();
-            editContentletIframeEl.contentWindow.addEventListener('keydown', (event) => {
+            editContentletIframeEl.contentWindow.addEventListener('keydown', event => {
                 if (event.key === 'Escape') {
                     this.ngZone.run(() => {
                         this.dialogTitle = null;
@@ -208,6 +223,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((pageState: DotRenderedPageState) => {
                 this.setPageState(pageState);
             });
+    }
+
+    private pageServiceSave(): Observable<string> {
+        return this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel());
     }
 
     private addContentlet($event: any): void {
@@ -239,7 +258,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .takeUntil(this.destroy$)
             .subscribe((portletId: string) => {
                 // tslint:disable-next-line:max-line-length
-                const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event.dataset.dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
+                const url = `/c/portal/layout?p_l_id=${portletId}&p_p_id=content&p_p_action=1&p_p_state=maximized&p_p_mode=view&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet&_content_cmd=edit&inode=${$event
+                    .dataset
+                    .dotInode}&referer=%2Fc%2Fportal%2Flayout%3Fp_l_id%3D${portletId}%26p_p_id%3Dcontent%26p_p_action%3D1%26p_p_state%3Dmaximized%26_content_struts_action%3D%2Fext%2Fcontentlet%2Fview_contentlets`;
 
                 // TODO: this will get the title of the contentlet but will need and update to the endpoint to do it
                 this.dialogTitle = 'Edit Contentlet';
@@ -401,9 +422,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModelChange
-            .filter((model) => model.length)
+            .filter(model => model.length)
             .takeUntil(this.destroy$)
-            .subscribe((model) => {
+            .subscribe(model => {
                 if (this.originalValue) {
                     this.ngZone.run(() => {
                         this.isModelUpdated = !_.isEqual(model, this.originalValue);
