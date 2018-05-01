@@ -713,5 +713,12 @@ describe('DotEditContentComponent', () => {
         it('should return header and message labels', () => {
             expect(component.getSaveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
         });
+
+        it('should handle the error on save', () => {
+            spyOn(dotHttpErrorManagerService, 'handle');
+            component.onDeactivateSaveError(mockResponseView(500));
+
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+        });
     });
 });

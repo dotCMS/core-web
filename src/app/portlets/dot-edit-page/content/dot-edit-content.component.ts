@@ -95,6 +95,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
         return this.pageServiceSave();
     }
 
+    onDeactivateSaveError(err: ResponseView): void {
+        this.dotHttpErrorManagerService.handle(err);
+    }
+
     getSaveWarningMessages(): DotDialog {
         return {
             header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),

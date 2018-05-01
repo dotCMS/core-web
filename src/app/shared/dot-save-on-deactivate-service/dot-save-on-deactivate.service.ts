@@ -14,8 +14,12 @@ export class DotSaveOnDeactivateService implements CanDeactivate<OnSaveDeactivat
             return Observable.create((observer: Observer<boolean>) => {
                 this.dotDialogService.confirm({
                     accept: () => {
-                        component.onDeactivateSave().subscribe(val => {
+                        component.onDeactivateSave().subscribe(response => {
                             observer.next(true);
+                            observer.complete();
+                        }, response => {
+                            component.onDeactivateSaveError(response);
+                            observer.next(false);
                             observer.complete();
                         });
                     },

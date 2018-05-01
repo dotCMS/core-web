@@ -1,12 +1,13 @@
 import { DotSaveOnDeactivateService } from './dot-save-on-deactivate.service';
 import { DotDialogService } from '../../api/services/dot-dialog/dot-dialog.service';
 import { DOTTestBed } from '../../test/dot-test-bed';
-import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginService, ResponseView } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../test/login-service.mock';
 import { OnSaveDeactivate } from './save-on-deactivate';
 import { Observable } from 'rxjs/Observable';
 import { DotDialog } from '../models/dot-confirmation/dot-confirmation.model';
 import { Component } from '@angular/core';
+import {mockResponseView} from '../../test/response-view.mock';
 
 @Component({
     selector: 'dot-test',
@@ -19,6 +20,10 @@ class MockComponent implements OnSaveDeactivate {
 
     onDeactivateSave(): Observable<any> {
         return Observable.of('Saved');
+    }
+
+    onDeactivateSaveError(response: ResponseView): void {
+        throw new Error('Method not implemented.');
     }
 
     getSaveWarningMessages(): DotDialog {
@@ -75,6 +80,21 @@ describe('DotSaveOnDeactivateService', () => {
         dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeTruthy();
             expect(mockComponent.onDeactivateSave).toHaveBeenCalledTimes(0);
+        });
+    });
+
+    it('should handle error if the save fails and stay in the current route', () => {
+        const fake500Response = mockResponseView(500);
+        spyOn(mockComponent, 'onDeactivateSave').and.returnValue(Observable.throw(fake500Response));
+        spyOn(mockComponent, 'onDeactivateSaveError');
+        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+            conf.accept();
+        });
+
+        dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
+            expect(val).toBeFalsy();
+            expect(mockComponent.onDeactivateSave).toHaveBeenCalledTimes(1);
+            expect(mockComponent.onDeactivateSaveError).toHaveBeenCalledTimes(1);
         });
     });
 });
