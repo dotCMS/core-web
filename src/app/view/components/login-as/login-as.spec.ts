@@ -1,6 +1,6 @@
 import { mockUser, LoginServiceMock } from './../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Injectable } from '@angular/core';
 import { LoginAsComponent } from './login-as';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
@@ -20,7 +20,6 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 @Injectable()
 class MockDotNavigationService {
     goToFirstPortlet() {}
-    reloadIframePage() {}
 }
 
 describe('LoginAsComponent', () => {
@@ -115,39 +114,15 @@ describe('LoginAsComponent', () => {
         expect(paginatorService.filter).toEqual('new filter');
     });
 
-    it(
-        'should call redirect to the first porlet when login as happen and same porlet is being loaded',
-        fakeAsync(() => {
-            comp.visible = true;
-            comp.ngOnInit();
-            fixture.detectChanges();
-            comp.form.get('loginAsUser').setValue(mockUser);
-            spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
-            spyOn(dotNavigationService, 'reloadIframePage');
-            fixture.detectChanges();
-            const button = de.query(By.css('#dot-login-as-button-change'));
-            button.nativeElement.click();
-            tick();
-            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(1);
-        })
-    );
-
-    it(
-        'should not call redirect to the first porlet when login as happen and different porlet is being loaded',
-        fakeAsync(() => {
-            comp.visible = true;
-            comp.ngOnInit();
-            fixture.detectChanges();
-            comp.form.get('loginAsUser').setValue(mockUser);
-            spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(true));
-            spyOn(dotNavigationService, 'reloadIframePage');
-            fixture.detectChanges();
-            const button = de.query(By.css('#dot-login-as-button-change'));
-            button.nativeElement.click();
-            tick();
-            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(0);
-        })
-    );
+    it('should call redirect to the first porlet when login as happen', () => {
+        comp.visible = true;
+        comp.ngOnInit();
+        fixture.detectChanges();
+        comp.form.get('loginAsUser').setValue(mockUser);
+        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
+        fixture.detectChanges();
+        const button = de.query(By.css('#dot-login-as-button-change'));
+        button.nativeElement.click();
+        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+    });
 });

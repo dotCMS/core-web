@@ -56,11 +56,7 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
                 if (data) {
                     this.close();
                     this.iframeOverlayService.hide();
-                    this.dotNavigationService.goToFirstPortlet().then((isRouted) => {
-                        if (!isRouted) {
-                            this.dotNavigationService.reloadIframePage();
-                        }
-                    });
+                    this.dotNavigationService.goToFirstPortlet();
                 }
             },
             (response) => {

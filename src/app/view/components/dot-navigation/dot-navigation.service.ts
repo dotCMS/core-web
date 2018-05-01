@@ -42,9 +42,9 @@ export class DotNavigationService {
 
         this.loginService.auth$
             .filter((auth: Auth) => !!(auth.loginAsUser || auth.user))
-            .mergeMap(() =>
-                this.reloadNavigation().filter((isPortletInMenu: boolean) => !isPortletInMenu && !this.dotRouterService.previousSavedURL)
-            )
+            .mergeMap(() => {
+                return this.reloadNavigation().filter(() => !this.dotRouterService.previousSavedURL);
+            })
             .subscribe(() => {
                 this.goToFirstPortlet();
             });
@@ -61,7 +61,12 @@ export class DotNavigationService {
                 return this.dotRouterService.gotoPortlet(link);
             })
             .toPromise()
-            .then((isRouted: Promise<boolean>) => isRouted);
+            .then((isRouted: Promise<boolean>) => {
+                if (!isRouted) {
+                    this.reloadIframePage();
+                }
+                return isRouted;
+            });
     }
 
     /**
@@ -94,26 +99,13 @@ export class DotNavigationService {
      * @returns {Observable<DotMenu[]>}
      * @memberof DotNavigationService
      */
-    reloadNavigation(): Observable<boolean> {
-        return this.dotMenuService
-            .reloadMenu()
-            .do((menu: DotMenu[]) => {
-                this.setMenu(menu);
-            })
-            .mergeMap(() =>
-                this.dotMenuService.isPortletInMenu(
-                    this.dotRouterService.currentPortlet.id || this.dotRouterService.getPortletId(this.location.hash)
-                )
-            );
+    reloadNavigation(): Observable<DotMenu[]> {
+        return this.dotMenuService.reloadMenu().do((menu: DotMenu[]) => {
+            this.setMenu(menu);
+        });
     }
 
-    /**
-     * Reloads the current porlet
-     * if it's an Iframe portlet
-     *
-     * @memberof DotNavigationService
-     */
-    reloadIframePage(): void {
+    private reloadIframePage(): void {
         if (this.router.url.indexOf('c/') > -1) {
             this.dotIframeService.reload();
         }

@@ -10,7 +10,7 @@ import { MyAccountComponent } from './../my-account/dot-my-account-component';
 import { LoginAsComponent } from './../login-as/login-as';
 import { GravatarComponent } from './../_common/gravatar/gravatar.component';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Injectable } from '@angular/core';
 import { async } from '@angular/core/testing';
 
@@ -24,7 +24,6 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 @Injectable()
 class MockDotNavigationService {
     goToFirstPortlet() {}
-    reloadIframePage() {}
 }
 describe('ToolbarUserComponent', () => {
     let comp: ToolbarUserComponent;
@@ -66,45 +65,18 @@ describe('ToolbarUserComponent', () => {
         dotNavigationService = de.injector.get(DotNavigationService);
     }));
 
-    it(
-        'should call redirect to the first porlet when logout as happen and same porlet is being loaded',
-        fakeAsync(() => {
-            comp.auth = mockAuth;
-            fixture.detectChanges();
+    it('should call redirect to the first porlet when logout as happen', () => {
+        comp.auth = mockAuth;
+        fixture.detectChanges();
 
-            dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
-            dotDropdownComponent.onToggle();
-            spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
-            spyOn(dotNavigationService, 'reloadIframePage');
-            fixture.detectChanges();
+        dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
+        dotDropdownComponent.onToggle();
+        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
+        fixture.detectChanges();
 
-            const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
-            logoutAsLink.nativeElement.click();
+        const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
+        logoutAsLink.nativeElement.click();
 
-            tick();
-            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(1);
-        })
-    );
-
-    it(
-        'should not call redirect to the first porlet when logout as happen and different porlet is being loaded',
-        fakeAsync(() => {
-            comp.auth = mockAuth;
-            fixture.detectChanges();
-
-            dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
-            dotDropdownComponent.onToggle();
-            spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(true));
-            spyOn(dotNavigationService, 'reloadIframePage');
-            fixture.detectChanges();
-
-            const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
-            logoutAsLink.nativeElement.click();
-
-            tick();
-            expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(0);
-        })
-    );
+        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+    });
 });
