@@ -697,12 +697,12 @@ describe('DotEditContentComponent', () => {
             expect(component.modelChanged()).toBeTruthy();
         });
 
-        xit('should call the save endpoint', () => {
+        it('should call the save endpoint', () => {
             dotEditPageService = de.injector.get(DotEditPageService);
+
             spyOn(dotEditPageService, 'save').and.callFake( response => Observable.of('test'));
-
+            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake( response => {});
             component.onDeactivateSave();
-
             expect(dotEditPageService.save).toHaveBeenCalledTimes(1);
         });
 
