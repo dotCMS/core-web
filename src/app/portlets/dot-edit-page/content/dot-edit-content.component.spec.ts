@@ -689,23 +689,22 @@ describe('DotEditContentComponent', () => {
         let dotEditPageService: DotEditPageService;
 
         beforeEach(() => {
+            dotEditPageService = de.injector.get(DotEditPageService);
             fixture.detectChanges();
         });
 
         it('should return true in the isModelUpdated', () => {
             component.isModelUpdated = true;
-            expect(component.isModelChanged()).toBeTruthy();
+            expect(component.shouldSaveBefore()).toBeTruthy();
         });
 
         it('should return false in the isModelUpdated', () => {
-            expect(component.isModelChanged()).toBeFalsy();
+            expect(component.shouldSaveBefore()).toBeFalsy();
         });
 
         it('should call the save endpoint', () => {
-            dotEditPageService = de.injector.get(DotEditPageService);
-
-            spyOn(dotEditPageService, 'save').and.callFake( response => Observable.of('test'));
-            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake( response => {});
+            spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
+            spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
             component.onDeactivateSave();
             expect(dotEditPageService.save).toHaveBeenCalledTimes(1);
         });
@@ -714,11 +713,14 @@ describe('DotEditContentComponent', () => {
             expect(component.getSaveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
         });
 
-        it('should handle the error on save', () => {
+        it('should handle the error on save and return false', () => {
             spyOn(dotHttpErrorManagerService, 'handle');
-            component.onDeactivateSaveError(mockResponseView(500));
-
-            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake( response => {});
+            spyOn(dotEditPageService, 'save').and.returnValue(Observable.throw('error'));
+            component.onDeactivateSave().subscribe( value => {
+                expect(value).toBeFalsy();
+                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+            });
         });
     });
 });

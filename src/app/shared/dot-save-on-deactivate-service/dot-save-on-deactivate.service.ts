@@ -10,16 +10,12 @@ export class DotSaveOnDeactivateService implements CanDeactivate<OnSaveDeactivat
     constructor(private dotDialogService: DotDialogService) {}
 
     canDeactivate(component: OnSaveDeactivate, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        if (component.isModelChanged()) {
+        if (component.shouldSaveBefore()) {
             return Observable.create((observer: Observer<boolean>) => {
                 this.dotDialogService.confirm({
                     accept: () => {
-                        component.onDeactivateSave().subscribe(response => {
-                            observer.next(true);
-                            observer.complete();
-                        }, response => {
-                            component.onDeactivateSaveError(response);
-                            observer.next(false);
+                        component.onDeactivateSave().subscribe( res => {
+                            observer.next(res);
                             observer.complete();
                         });
                     },

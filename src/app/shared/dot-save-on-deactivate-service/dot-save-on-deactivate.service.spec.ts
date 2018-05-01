@@ -4,26 +4,21 @@ import { DOTTestBed } from '../../test/dot-test-bed';
 import { LoginService, ResponseView } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../test/login-service.mock';
 import { OnSaveDeactivate } from './save-on-deactivate';
-import { Observable } from 'rxjs/Observable';
 import { DotDialog } from '../models/dot-confirmation/dot-confirmation.model';
 import { Component } from '@angular/core';
-import {mockResponseView} from '../../test/response-view.mock';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-test',
     template: '<h1>Test</h1>'
 })
 class MockComponent implements OnSaveDeactivate {
-    isModelChanged(): boolean {
+    shouldSaveBefore(): boolean {
         return true;
     }
 
-    onDeactivateSave(): Observable<any> {
-        return Observable.of('Saved');
-    }
-
-    onDeactivateSaveError(response: ResponseView): void {
-        throw new Error('Method not implemented.');
+    onDeactivateSave(): Observable<boolean> {
+        return Observable.of(true);
     }
 
     getSaveWarningMessages(): DotDialog {
@@ -54,14 +49,14 @@ describe('DotSaveOnDeactivateService', () => {
     });
 
     it('should return true if there is not changes in the model', () => {
-        spyOn(mockComponent, 'isModelChanged').and.returnValue(false);
+        spyOn(mockComponent, 'shouldSaveBefore').and.returnValue(false);
 
         dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeTruthy();
         });
     });
 
-    it('should return Observable of true AND call onDeactivateSave', () => {
+    it('should return true AND call onDeactivateSave', () => {
         spyOn(mockComponent, 'onDeactivateSave').and.callThrough();
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.accept();
@@ -72,7 +67,7 @@ describe('DotSaveOnDeactivateService', () => {
         });
     });
 
-    it('should return Observable of true if the user decide NOT to save the latest changes', () => {
+    it('should return true if the user decide NOT to save the latest changes', () => {
         spyOn(mockComponent, 'onDeactivateSave').and.callThrough();
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.reject();
@@ -83,10 +78,8 @@ describe('DotSaveOnDeactivateService', () => {
         });
     });
 
-    it('should handle error if the save fails and stay in the current route', () => {
-        const fake500Response = mockResponseView(500);
-        spyOn(mockComponent, 'onDeactivateSave').and.returnValue(Observable.throw(fake500Response));
-        spyOn(mockComponent, 'onDeactivateSaveError');
+    it('should return false if the save fails and stay in the current route', () => {
+        spyOn(mockComponent, 'onDeactivateSave').and.returnValue(Observable.of(false));
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
@@ -94,7 +87,6 @@ describe('DotSaveOnDeactivateService', () => {
         dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeFalsy();
             expect(mockComponent.onDeactivateSave).toHaveBeenCalledTimes(1);
-            expect(mockComponent.onDeactivateSaveError).toHaveBeenCalledTimes(1);
         });
     });
 });
