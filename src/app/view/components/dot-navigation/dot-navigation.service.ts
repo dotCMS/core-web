@@ -113,7 +113,7 @@ export class DotNavigationService {
      *
      * @memberof DotNavigationService
      */
-    reloadPage(): void {
+    reloadIframePage(): void {
         if (this.router.url.indexOf('c/') > -1) {
             this.dotIframeService.reload();
         }

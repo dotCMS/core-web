@@ -20,7 +20,7 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 @Injectable()
 class MockDotNavigationService {
     goToFirstPortlet() {}
-    reloadPage() {}
+    reloadIframePage() {}
 }
 
 describe('LoginAsComponent', () => {
@@ -123,13 +123,13 @@ describe('LoginAsComponent', () => {
             fixture.detectChanges();
             comp.form.get('loginAsUser').setValue(mockUser);
             spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
-            spyOn(dotNavigationService, 'reloadPage');
+            spyOn(dotNavigationService, 'reloadIframePage');
             fixture.detectChanges();
             const button = de.query(By.css('#dot-login-as-button-change'));
             button.nativeElement.click();
             tick();
             expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadPage).toHaveBeenCalledTimes(1);
+            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(1);
         })
     );
 
@@ -141,13 +141,13 @@ describe('LoginAsComponent', () => {
             fixture.detectChanges();
             comp.form.get('loginAsUser').setValue(mockUser);
             spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(true));
-            spyOn(dotNavigationService, 'reloadPage');
+            spyOn(dotNavigationService, 'reloadIframePage');
             fixture.detectChanges();
             const button = de.query(By.css('#dot-login-as-button-change'));
             button.nativeElement.click();
             tick();
             expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadPage).toHaveBeenCalledTimes(0);
+            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(0);
         })
     );
 });

@@ -24,7 +24,7 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 @Injectable()
 class MockDotNavigationService {
     goToFirstPortlet() {}
-    reloadPage() {}
+    reloadIframePage() {}
 }
 describe('ToolbarUserComponent', () => {
     let comp: ToolbarUserComponent;
@@ -75,7 +75,7 @@ describe('ToolbarUserComponent', () => {
             dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
             dotDropdownComponent.onToggle();
             spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
-            spyOn(dotNavigationService, 'reloadPage');
+            spyOn(dotNavigationService, 'reloadIframePage');
             fixture.detectChanges();
 
             const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
@@ -83,7 +83,7 @@ describe('ToolbarUserComponent', () => {
 
             tick();
             expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadPage).toHaveBeenCalledTimes(1);
+            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(1);
         })
     );
 
@@ -96,7 +96,7 @@ describe('ToolbarUserComponent', () => {
             dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
             dotDropdownComponent.onToggle();
             spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(true));
-            spyOn(dotNavigationService, 'reloadPage');
+            spyOn(dotNavigationService, 'reloadIframePage');
             fixture.detectChanges();
 
             const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
@@ -104,7 +104,7 @@ describe('ToolbarUserComponent', () => {
 
             tick();
             expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
-            expect(dotNavigationService.reloadPage).toHaveBeenCalledTimes(0);
+            expect(dotNavigationService.reloadIframePage).toHaveBeenCalledTimes(0);
         })
     );
 });
