@@ -23,12 +23,12 @@ import { PaginatorService } from './api/services/paginator';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
 import { DotLicenseService } from './api/services/dot-license/dot-license.service';
 import { StringFormat } from './api/util/stringFormat';
-import { DotSaveOnDeactivateServiceService } from './shared/dot-save-on-deactivate-service/dot-save-on-deactivate-service.service';
+import { DotSaveOnDeactivateService } from './shared/dot-save-on-deactivate-service/dot-save-on-deactivate.service';
 
 const PROVIDERS: any[] = [
     AccountService,
     AuthGuardService,
-    DotSaveOnDeactivateServiceService,
+    DotSaveOnDeactivateService,
     ColorUtil,
     ConfirmationService,
     ContentTypesInfoService,

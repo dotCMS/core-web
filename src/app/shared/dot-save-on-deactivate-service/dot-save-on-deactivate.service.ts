@@ -6,11 +6,11 @@ import { Observer } from 'rxjs/Observer';
 import { DotDialogService } from '../../api/services/dot-dialog/dot-dialog.service';
 
 @Injectable()
-export class DotSaveOnDeactivateServiceService implements CanDeactivate<OnSaveDeactivate> {
+export class DotSaveOnDeactivateService implements CanDeactivate<OnSaveDeactivate> {
     constructor(private dotDialogService: DotDialogService) {}
 
     canDeactivate(component: OnSaveDeactivate, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        if (component.modelChanged()) {
+        if (component.isModelChanged()) {
             return Observable.create((observer: Observer<boolean>) => {
                 this.dotDialogService.confirm({
                     accept: () => {
@@ -23,8 +23,8 @@ export class DotSaveOnDeactivateServiceService implements CanDeactivate<OnSaveDe
                         observer.next(true);
                         observer.complete();
                     },
-                    header: component.saveWarningMessages().header,
-                    message: component.saveWarningMessages().message
+                    header: component.getSaveWarningMessages().header,
+                    message: component.getSaveWarningMessages().message
                 });
             });
         } else {

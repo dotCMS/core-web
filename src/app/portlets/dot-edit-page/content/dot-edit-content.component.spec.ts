@@ -692,9 +692,13 @@ describe('DotEditContentComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should return the current state of the isModelUpdated', () => {
+        it('should return true in the isModelUpdated', () => {
             component.isModelUpdated = true;
-            expect(component.modelChanged()).toBeTruthy();
+            expect(component.isModelChanged()).toBeTruthy();
+        });
+
+        it('should return false in the isModelUpdated', () => {
+            expect(component.isModelChanged()).toBeFalsy();
         });
 
         it('should call the save endpoint', () => {
@@ -707,7 +711,7 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should return header and message labels', () => {
-            expect(component.saveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
+            expect(component.getSaveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
         });
     });
 });

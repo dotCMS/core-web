@@ -1,4 +1,4 @@
-import { DotSaveOnDeactivateServiceService } from './dot-save-on-deactivate-service.service';
+import { DotSaveOnDeactivateService } from './dot-save-on-deactivate.service';
 import { DotDialogService } from '../../api/services/dot-dialog/dot-dialog.service';
 import { DOTTestBed } from '../../test/dot-test-bed';
 import { LoginService } from 'dotcms-js/dotcms-js';
@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
     template: '<h1>Test</h1>'
 })
 class MockComponent implements OnSaveDeactivate {
-    modelChanged(): boolean {
+    isModelChanged(): boolean {
         return true;
     }
 
@@ -21,20 +21,20 @@ class MockComponent implements OnSaveDeactivate {
         return Observable.of('Saved');
     }
 
-    saveWarningMessages(): DotDialog {
+    getSaveWarningMessages(): DotDialog {
         return { header: 'Header', message: 'message' };
     }
 }
 
-describe('DotSaveOnDeactivateServiceService', () => {
-    let dotSaveOnDeactivateServiceService: DotSaveOnDeactivateServiceService;
+describe('DotSaveOnDeactivateService', () => {
+    let dotSaveOnDeactivateService: DotSaveOnDeactivateService;
     let mockComponent: MockComponent;
     let dotDialogService: DotDialogService;
     beforeEach(() => {
         const testbed = DOTTestBed.configureTestingModule({
             declarations: [MockComponent],
             providers: [
-                DotSaveOnDeactivateServiceService,
+                DotSaveOnDeactivateService,
                 DotDialogService,
                 {
                     provide: LoginService,
@@ -43,15 +43,15 @@ describe('DotSaveOnDeactivateServiceService', () => {
             ],
             imports: []
         });
-        dotSaveOnDeactivateServiceService = testbed.get(DotSaveOnDeactivateServiceService);
+        dotSaveOnDeactivateService = testbed.get(DotSaveOnDeactivateService);
         dotDialogService = testbed.get(DotDialogService);
         mockComponent = new MockComponent();
     });
 
     it('should return true if there is not changes in the model', () => {
-        spyOn(mockComponent, 'modelChanged').and.returnValue(false);
+        spyOn(mockComponent, 'isModelChanged').and.returnValue(false);
 
-        dotSaveOnDeactivateServiceService.canDeactivate(mockComponent, null, null).subscribe(val => {
+        dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeTruthy();
         });
     });
@@ -61,7 +61,7 @@ describe('DotSaveOnDeactivateServiceService', () => {
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.accept();
         });
-        dotSaveOnDeactivateServiceService.canDeactivate(mockComponent, null, null).subscribe(val => {
+        dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeTruthy();
             expect(mockComponent.onDeactivateSave).toHaveBeenCalled();
         });
@@ -72,7 +72,7 @@ describe('DotSaveOnDeactivateServiceService', () => {
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.reject();
         });
-        dotSaveOnDeactivateServiceService.canDeactivate(mockComponent, null, null).subscribe(val => {
+        dotSaveOnDeactivateService.canDeactivate(mockComponent, null, null).subscribe(val => {
             expect(val).toBeTruthy();
             expect(mockComponent.onDeactivateSave).toHaveBeenCalledTimes(0);
         });

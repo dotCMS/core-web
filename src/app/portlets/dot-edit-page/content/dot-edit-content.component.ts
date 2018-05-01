@@ -87,7 +87,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
         this.destroy$.complete();
     }
 
-    modelChanged(): boolean {
+    isModelChanged(): boolean {
         return this.isModelUpdated;
     }
 
@@ -95,7 +95,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
         return this.pageServiceSave();
     }
 
-    saveWarningMessages(): DotDialog {
+    getSaveWarningMessages(): DotDialog {
         return {
             header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
             message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
