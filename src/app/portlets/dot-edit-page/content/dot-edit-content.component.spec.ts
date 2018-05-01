@@ -88,7 +88,9 @@ describe('DotEditContentComponent', () => {
             'editpage.content.steal.lock.confirmation_message.header': 'Are you sure?',
             'editpage.content.steal.lock.confirmation_message.message': 'This page is locked by bla bla',
             'editpage.content.steal.lock.confirmation_message.reject': 'Lock',
-            'editpage.content.steal.lock.confirmation_message.accept': 'Cancel'
+            'editpage.content.steal.lock.confirmation_message.accept': 'Cancel',
+            'editpage.content.save.changes.confirmation.header': 'Save header',
+            'editpage.content.save.changes.confirmation.message': 'Save message'
         });
 
         DOTTestBed.configureTestingModule({
@@ -221,7 +223,7 @@ describe('DotEditContentComponent', () => {
         expect(component.reload).toHaveBeenCalledTimes(1);
     });
 
-    describe('what\'s change', () => {
+    describe("what's change", () => {
         let viewAsToolbar: DebugElement;
 
         beforeEach(() => {
@@ -681,46 +683,31 @@ describe('DotEditContentComponent', () => {
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
             });
         });
+    });
 
-        describe('Deactivate route scenarios', () => {
-            let dotEditPageService: DotEditPageService;
-            beforeEach(() => {
-                dotEditPageService = de.injector.get(DotEditPageService);
-                spyOn(component, 'canDeactivate').and.callThrough();
-                spyOn(component, 'pageServiceSave').and.callFake(val => {
-                    return Observable.of('test');
-                });
-                fixture.detectChanges();
-            });
+    describe('implementation of OnSaveDeactivate', () => {
+        let dotEditPageService: DotEditPageService;
 
-            it('should return true if there is not changes in the model', () => {
-                component.canDeactivate().subscribe(value => {
-                    expect(value).toBeTruthy();
-                    expect(component.pageServiceSave).toHaveBeenCalledTimes(0);
-                });
-            });
+        beforeEach(() => {
+            fixture.detectChanges();
+        });
 
-            it('should return Observable of true AND save the changes if the user decide to save the latest changes', () => {
-                component.isModelUpdated = true;
-                spyOn(dotDialogService, 'confirm').and.callFake(conf => {
-                    conf.accept();
-                });
-                component.canDeactivate().subscribe(value => {
-                    expect(value).toBeTruthy();
-                    expect(component.pageServiceSave).toHaveBeenCalledTimes(1);
-                });
-            });
+        it('should return the current state of the isModelUpdated', () => {
+            component.isModelUpdated = true;
+            expect(component.modelChanged()).toBeTruthy();
+        });
 
-            it('should return Observable of true if the user decide NOT to save the latest changes', () => {
-                component.isModelUpdated = true;
-                spyOn(dotDialogService, 'confirm').and.callFake(conf => {
-                    conf.reject();
-                });
-                component.canDeactivate().subscribe(value => {
-                    expect(value).toBeTruthy();
-                    expect(component.pageServiceSave).toHaveBeenCalledTimes(0);
-                });
-            });
+        xit('should call the save endpoint', () => {
+            dotEditPageService = de.injector.get(DotEditPageService);
+            spyOn(dotEditPageService, 'save').and.callFake( response => Observable.of('test'));
+
+            component.onDeactivateSave();
+
+            expect(dotEditPageService.save).toHaveBeenCalledTimes(1);
+        });
+
+        it('should return header and message labels', () => {
+            expect(component.saveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
         });
     });
 });

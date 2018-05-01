@@ -287,7 +287,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'editpage.content.contentlet.add.content',
                 'dot.common.message.saving',
-                'dot.common.message.saved'
+                'dot.common.message.saved',
+                'editpage.content.save.changes.confirmation.header',
+                'editpage.content.save.changes.confirmation.message'
             ])
             .take(1)
             .subscribe();
