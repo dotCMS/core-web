@@ -3,7 +3,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
 interface DotAddMenuItem {
-    id: string;
+    add: string;
     message: string;
 }
 
@@ -43,7 +43,7 @@ export class DotEditContentToolbarHtmlService {
                                         item = item.toLowerCase();
 
                                         return {
-                                            id: item,
+                                            add: item,
                                             message: messages[`editpage.content.container.menu.${item}`]
                                         };
                                     });
@@ -141,32 +141,28 @@ export class DotEditContentToolbarHtmlService {
         if (vtls.length > 0) {
             const items = Array.from(vtls);
 
-            const dataset = {
-                'dot-url': vtls[0].dataset.dotUrl,
-                'dot-inode': vtls[0].dataset.dotInode
-            };
-            // return this.dotDOMHtmlUtilService.getButtomHTML('Code', 'dotedit-contentlet__code', dataset);
-
             const result = `
-                <div class="dotedit-container__toolbar">
-                    <button type="button" role="button" class="dotedit-container__add"></button>
-                    <div class="dotedit-container__menu">
-                        <ul>
-                            ${items
-                                .map((item: any) => {
-                                    return `
-                                        <li class="dotedit-container__menu-item">
-                                            <a
-                                                data-dot-inode="${item.dataset.dotInode}"
-                                                role="button">
-                                                ${item.dataset.dotUrl.split('/').slice(-1)[0] }
-                                            </a>
-                                        </li>
-                                    `;
-                                })
-                                .join('')}
-                        </ul>
-                    </div>
+                <div class="dotedit-menu">
+                    <button
+                        type="button"
+                        class="dotedit-menu__button dotedit-contentlet__code"
+                        ></button>
+                    <ul class="dotedit-menu__list">
+                        ${items
+                            .map((item: any) => {
+                                return `
+                                    <li class="dotedit-menu__item">
+                                        <a
+                                            data-dot-action="code"
+                                            data-dot-inode="${item.dataset.dotInode}"
+                                            role="button">
+                                            ${item.dataset.dotUrl.split('/').slice(-1)[0] }
+                                        </a>
+                                    </li>
+                                `;
+                            })
+                            .join('')}
+                    </ul>
                 </div>
             `;
 
@@ -179,39 +175,39 @@ export class DotEditContentToolbarHtmlService {
         const isContainerDisabled = !items.length;
 
         let result = `
+        <div class="dotedit-menu">
             <button
                 type="button"
-                role="button"
-                class="dotedit-container__add"
+                class="dotedit-menu__button dotedit-container__add"
                 aria-label="${this.dotMessageService.get('editpage.content.container.action.add')}"
-                data-dot-identifier="${container.dataset.dotIdentifier}"
                 ${isContainerDisabled ? 'disabled' : ''}>
-                ${this.dotMessageService.get('editpage.content.container.action.add')}
             </button>
         `;
 
         if (!isContainerDisabled) {
-            result += `<div class="dotedit-container__menu">
-                    <ul>
-                        ${items
-                            .map((item: DotAddMenuItem) => {
-                                return `
-                                    <li class="dotedit-container__menu-item">
-                                        <a
-                                            data-dot-add="${item.id}"
-                                            data-dot-identifier="${container.dataset.dotIdentifier}"
-                                            data-dot-uuid="${container.dataset.dotUuid}"
-                                            role="button">
-                                            ${item.message}
-                                        </a>
-                                    </li>
-                                `;
-                            })
-                            .join('')}
-                    </ul>
-                </div>
+            result += `
+                <ul class="dotedit-menu__list" >
+                    ${items
+                        .map((item: DotAddMenuItem) => {
+                            return `
+                                <li class="dotedit-menu__item">
+                                    <a
+                                        data-dot-action="add"
+                                        data-dot-add="${item.add}"
+                                        data-dot-identifier="${container.dataset.dotIdentifier}"
+                                        data-dot-uuid="${container.dataset.dotUuid}"
+                                        role="button">
+                                        ${item.message}
+                                    </a>
+                                </li>
+                            `;
+                        })
+                        .join('')}
+                </ul>
             `;
         }
+
+        result += `<div>`;
 
         return result;
     }
