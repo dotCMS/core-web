@@ -28,6 +28,7 @@ describe('LoginAsComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     let paginatorService: PaginatorService;
+    let loginService: LoginService;
     let dotNavigationService: DotNavigationService;
 
     const users: User[] = [
@@ -81,6 +82,7 @@ describe('LoginAsComponent', () => {
         el = de.nativeElement;
 
         paginatorService = de.injector.get(PaginatorService);
+        loginService = de.injector.get(LoginService);
         spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(users));
         dotNavigationService = de.injector.get(DotNavigationService);
     }));
@@ -114,15 +116,15 @@ describe('LoginAsComponent', () => {
         expect(paginatorService.filter).toEqual('new filter');
     });
 
-    it('should call redirect to the first porlet when login as happen', () => {
+    it('should call "loginAs" in "LoginService" when login as happens', () => {
+        spyOn(loginService, 'loginAs');
         comp.visible = true;
         comp.ngOnInit();
         fixture.detectChanges();
         comp.form.get('loginAsUser').setValue(mockUser);
-        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
         fixture.detectChanges();
         const button = de.query(By.css('#dot-login-as-button-change'));
         button.nativeElement.click();
-        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(loginService.loginAs).toHaveBeenCalledTimes(1);
     });
 });

@@ -31,6 +31,7 @@ describe('ToolbarUserComponent', () => {
     let de: DebugElement;
     let el: HTMLElement;
     let dotDropdownComponent: DotDropdownComponent;
+    let loginService: LoginService;
     let dotNavigationService: DotNavigationService;
 
     beforeEach(async(() => {
@@ -63,20 +64,18 @@ describe('ToolbarUserComponent', () => {
         el = de.nativeElement;
 
         dotNavigationService = de.injector.get(DotNavigationService);
+        loginService = de.injector.get(LoginService);
     }));
 
-    it('should call redirect to the first porlet when logout as happen', () => {
+    it('should call "logoutAs" in "LoginService" when logout as happen', () => {
+        spyOn(loginService, 'logoutAs');
         comp.auth = mockAuth;
         fixture.detectChanges();
-
         dotDropdownComponent = de.query(By.css('dot-dropdown-component')).componentInstance;
         dotDropdownComponent.onToggle();
-        spyOn(dotNavigationService, 'goToFirstPortlet').and.returnValue(Promise.resolve(null));
         fixture.detectChanges();
-
         const logoutAsLink = de.query(By.css('#dot-toolbar-user-link-logout-as'));
         logoutAsLink.nativeElement.click();
-
-        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(loginService.logoutAs).toHaveBeenCalledTimes(1);
     });
 });
