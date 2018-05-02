@@ -207,6 +207,7 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
+
         this.dotEditContentToolbarHtmlService
             .addContainerToolbar(doc)
             .then(() => {
@@ -254,6 +255,7 @@ export class DotEditContentHtmlService {
 
     private bindContenletsEvents(): void {
         this.bindEditContentletEvents();
+        // this.bindEditCodeEvents();
         this.bindRemoveContentletEvents();
     }
 
@@ -272,6 +274,7 @@ export class DotEditContentHtmlService {
 
     private bindContainersEvents(): void {
         const addButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-container__add:not([disabled])'));
+
         addButtons.forEach((button: Node) => {
             const parent = button.parentElement;
             const menuItems = Array.from(parent.querySelectorAll('.dotedit-container__menu-item a'));
@@ -317,6 +320,15 @@ export class DotEditContentHtmlService {
         );
         editButtons.forEach((button: HTMLElement) => {
             this.bindButtonsEvent(button, 'edit');
+        });
+    }
+
+    private bindEditCodeEvents(): void {
+        const editButtons = Array.from(
+            this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__code:not(.dotedit-contentlet__disabled)')
+        );
+        editButtons.forEach((button: HTMLElement) => {
+            this.bindButtonsEvent(button, 'code');
         });
     }
 

@@ -94,7 +94,10 @@ export class DotEditContentToolbarHtmlService {
                                     (this.editLabel = messages['editpage.content.contentlet.menu.edit']),
                                     (this.removeLabel = messages['editpage.content.contentlet.menu.remove']);
 
-                                contentletToolbar.innerHTML = this.getContentButton(
+                                const vtls = contentlet.querySelectorAll('div[data-dot-object="vtl-file"]');
+                                contentletToolbar.innerHTML += this.getEditVtlButtons(vtls);
+
+                                contentletToolbar.innerHTML += this.getContentButton(
                                     contentlet.dataset.dotIdentifier,
                                     contentlet.dataset.dotInode,
                                     contentlet.dataset.dotCanEdit === 'true'
@@ -126,11 +129,50 @@ export class DotEditContentToolbarHtmlService {
             'dot-inode': inode
         };
 
-        const editButtonClass = canEdit ? 'dotedit-contentlet__edit' : 'dotedit-contentlet__edit dotedit-contentlet__disabled';
+        let editButtonClass = 'dotedit-contentlet__edit';
+        editButtonClass += !canEdit ? 'dotedit-contentlet__disabled' : '';
 
         return `${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, dataset)}
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}`;
+    }
+
+    private getEditVtlButtons(vtls: NodeListOf<any>): string {
+        if (vtls.length > 0) {
+            const items = Array.from(vtls);
+
+            const dataset = {
+                'dot-url': vtls[0].dataset.dotUrl,
+                'dot-inode': vtls[0].dataset.dotInode
+            };
+            // return this.dotDOMHtmlUtilService.getButtomHTML('Code', 'dotedit-contentlet__code', dataset);
+
+            const result = `
+                <div class="dotedit-container__toolbar">
+                    <button type="button" role="button" class="dotedit-container__add"></button>
+                    <div class="dotedit-container__menu">
+                        <ul>
+                            ${items
+                                .map((item: any) => {
+                                    return `
+                                        <li class="dotedit-container__menu-item">
+                                            <a
+                                                data-dot-inode="${item.dataset.dotInode}"
+                                                role="button">
+                                                ${item.dataset.dotUrl.split('/').slice(-1)[0] }
+                                            </a>
+                                        </li>
+                                    `;
+                                })
+                                .join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+
+            return result;
+        }
     }
 
     private getContainerToolbarHtml(items: DotAddMenuItem[], container: HTMLElement): string {
@@ -151,8 +193,8 @@ export class DotEditContentToolbarHtmlService {
         if (!isContainerDisabled) {
             result += `<div class="dotedit-container__menu">
                     <ul>
-                        ${
-                            items.map((item: DotAddMenuItem) => {
+                        ${items
+                            .map((item: DotAddMenuItem) => {
                                 return `
                                     <li class="dotedit-container__menu-item">
                                         <a
@@ -164,8 +206,8 @@ export class DotEditContentToolbarHtmlService {
                                         </a>
                                     </li>
                                 `;
-                            }).join('')
-                        }
+                            })
+                            .join('')}
                     </ul>
                 </div>
             `;
