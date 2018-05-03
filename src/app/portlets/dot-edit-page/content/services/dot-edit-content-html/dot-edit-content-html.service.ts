@@ -255,7 +255,6 @@ export class DotEditContentHtmlService {
 
     private bindContenletsEvents(): void {
         this.bindEditContentletEvents();
-        // this.bindEditCodeEvents();
         this.bindRemoveContentletEvents();
     }
 
