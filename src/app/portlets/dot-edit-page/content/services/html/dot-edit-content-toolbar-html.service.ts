@@ -134,7 +134,7 @@ export class DotEditContentToolbarHtmlService {
         };
 
         let editButtonClass = 'dotedit-contentlet__edit';
-        editButtonClass += !canEdit ? 'dotedit-contentlet__disabled' : '';
+        editButtonClass += !canEdit ? ' dotedit-contentlet__disabled' : '';
 
         return `${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, dataset)}
