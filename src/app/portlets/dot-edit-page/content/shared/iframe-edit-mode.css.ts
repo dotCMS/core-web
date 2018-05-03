@@ -260,4 +260,9 @@ export const EDIT_PAGE_CSS = `
         color: inherit;
         text-decoration: none;
     }
+
+    .dotedit-menu__item--disabled a {
+        color: ${grayLight},
+        pointer-events: none;
+    }
 `;
