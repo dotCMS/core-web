@@ -219,8 +219,8 @@ export class DotEditContentToolbarHtmlService {
                 ${items
                     .map((item: DotEditPopupMenuItem) => {
                         return `
-                            <li class="dotedit-menu__item${item.disabled ? ' dotedit-menu__item--disabled' : ''}">
-                                <a ${this.getDotEditPopupMenuItemDataSet(item.dataset)} role="button">${item.label}</a>
+                            <li class="dotedit-menu__item ${item.disabled ? 'dotedit-menu__item--disabled' : ''}">
+                                <a href="#" ${this.getDotEditPopupMenuItemDataSet(item.dataset)} role="button">${item.label}</a>
                             </li>
                         `;
                     })
