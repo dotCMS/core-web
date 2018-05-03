@@ -9,6 +9,7 @@ import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.s
 import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 import { SiteServiceMock, mockSites } from '../../../test/site-service.mock';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
 
 @Injectable()
 class MockDotNavigationService {}
@@ -96,9 +97,15 @@ describe('ToolbarComponent', () => {
         siteService = fixture.debugElement.injector.get(SiteService);
     }));
 
+    it('should trigger "siteChange" method when actioned', () => {
+        const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
+        spyOn(comp, 'siteChange').and.callThrough();
+        siteSelector.triggerEventHandler('change', { value: siteMock });
+        expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
+    });
+
     it('should call to "goToSiteBrowser" in "DotRouterService" when the "siteChange" method is actioned', () => {
         spyOn(dotRouterService, 'goToSiteBrowser');
-
         comp.siteChange(siteMock);
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
     });
