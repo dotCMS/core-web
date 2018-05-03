@@ -396,14 +396,12 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'initEditMode');
         });
 
-        fit('should set edit mode', () => {
+        it('should set edit mode', () => {
             const customMockDotRenderedPage = {
                 ...mockDotRenderedPage,
                 page: {
                     ...mockDotRenderedPage.page,
-                    lockedBy: null,
-                    lockedByName: null,
-                    lockedOn: null,
+                    lockedBy: mockUser.userId ,
                     canLock: true
                 }
             };
@@ -420,7 +418,11 @@ describe('DotEditContentComponent', () => {
                 locked: true,
                 mode: PageMode.EDIT
             });
-
+            expect(component.pageState.state).toEqual({
+                mode: PageMode.EDIT,
+                locked: true,
+                lockedByAnotherUser: false
+            });
             expect(component.pageState.page).toEqual(customMockDotRenderedPage.page);
             expect(dotGlobalMessageService.display).toHaveBeenCalledTimes(2);
             expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith('<html></html>', component.iframe);
