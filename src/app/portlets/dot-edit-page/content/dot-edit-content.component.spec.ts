@@ -396,15 +396,19 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'initEditMode');
         });
 
-        it('should set edit mode', () => {
-            spyStateSet({
+        fit('should set edit mode', () => {
+            const customMockDotRenderedPage = {
                 ...mockDotRenderedPage,
-                state: {
-                    mode: PageMode.EDIT,
-                    locked: true
+                page: {
+                    ...mockDotRenderedPage.page,
+                    lockedBy: null,
+                    lockedByName: null,
+                    lockedOn: null,
+                    canLock: true
                 }
-            });
+            };
 
+            spyStateSet(new DotRenderedPageState(mockUser, customMockDotRenderedPage));
             fixture.detectChanges();
 
             toolbarComponent.changeState.emit({
@@ -417,29 +421,19 @@ describe('DotEditContentComponent', () => {
                 mode: PageMode.EDIT
             });
 
-            expect(component.pageState.page).toEqual(mockDotPage);
-            expect(component.pageState.state).toEqual({
-                mode: PageMode.EDIT,
-                locked: true
-            });
+            expect(component.pageState.page).toEqual(customMockDotRenderedPage.page);
             expect(dotGlobalMessageService.display).toHaveBeenCalledTimes(2);
             expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith('<html></html>', component.iframe);
         });
 
         it('should set preview mode', () => {
-            spyStateSet({
-                ...mockDotRenderedPage,
-                state: {
-                    mode: PageMode.PREVIEW,
-                    locked: true
-                }
-            });
+            spyStateSet(new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.PREVIEW));
 
             fixture.detectChanges();
 
             toolbarComponent.changeState.emit({
                 locked: true,
-                mode: PageMode.PREVIEW
+                mode: PageMode.PREVIEW,
             });
 
             expect(component.statePageHandler).toHaveBeenCalledWith({
@@ -450,7 +444,8 @@ describe('DotEditContentComponent', () => {
             expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.PREVIEW,
-                locked: true
+                locked: true,
+                lockedByAnotherUser: true
             });
             expect(dotGlobalMessageService.display).toHaveBeenCalledTimes(2);
             expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
@@ -458,14 +453,7 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should set live mode', () => {
-            spyStateSet({
-                ...mockDotRenderedPage,
-                state: {
-                    mode: PageMode.LIVE,
-                    locked: true
-                }
-            });
-
+            spyStateSet(new DotRenderedPageState(mockUser, mockDotRenderedPage, PageMode.LIVE));
             fixture.detectChanges();
 
             toolbarComponent.changeState.emit({
@@ -479,7 +467,8 @@ describe('DotEditContentComponent', () => {
             expect(component.pageState.page).toEqual(mockDotPage);
             expect(component.pageState.state).toEqual({
                 mode: PageMode.LIVE,
-                locked: true
+                locked: true,
+                lockedByAnotherUser: true
             });
             expect(dotGlobalMessageService.display).not.toHaveBeenCalled();
             expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
