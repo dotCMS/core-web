@@ -323,15 +323,6 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private bindEditCodeEvents(): void {
-        const editButtons = Array.from(
-            this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__code:not(.dotedit-contentlet__disabled)')
-        );
-        editButtons.forEach((button: HTMLElement) => {
-            this.bindButtonsEvent(button, 'code');
-        });
-    }
-
     private bindRemoveContentletEvents(): void {
         const editButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove'));
         editButtons.forEach((button: HTMLElement) => {
