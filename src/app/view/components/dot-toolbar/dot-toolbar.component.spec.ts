@@ -97,16 +97,12 @@ describe('ToolbarComponent', () => {
         siteService = fixture.debugElement.injector.get(SiteService);
     }));
 
-    it('should trigger "siteChange" method when actioned', () => {
+    it('should trigger "siteChange" call "goToSiteBrowser" in "DotRouterService" when the "siteChange" method is actioned', () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         spyOn(comp, 'siteChange').and.callThrough();
-        siteSelector.triggerEventHandler('change', { value: siteMock });
-        expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
-    });
-
-    it('should call to "goToSiteBrowser" in "DotRouterService" when the "siteChange" method is actioned', () => {
         spyOn(dotRouterService, 'goToSiteBrowser');
-        comp.siteChange(siteMock);
+        siteSelector.triggerEventHandler('change', { value: siteMock });
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
+        expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 });
