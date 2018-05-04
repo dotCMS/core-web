@@ -43,7 +43,7 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
      * @returns {DotLayoutSideBar}
      * @memberof DotEditLayoutSidebarComponent
      */
-    getModel(containers?: DotContainerColumnBox[]): DotLayoutSideBar {
+    getModel(containers: DotContainerColumnBox[]): DotLayoutSideBar {
         if (containers) {
             this.value.containers = containers.map((item) => {
                 return {
@@ -71,13 +71,13 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
     registerOnTouched(): void {}
 
     /**
-     * Update the model when a container is added to a box
+     * Update model and propagate changes
      *
      * @param {DotContainerColumnBox[]} containers
      * @memberof DotEditLayoutSidebarComponent
      */
-    updateContainers(containers?: DotContainerColumnBox[]): void {
-        this.propagateChange(this.getModel(containers));
+    updateAndPropagate(containers?: DotContainerColumnBox[]): void {
+        this.propagateChange(containers ? this.getModel(containers) : this.value);
     }
 
     /**
