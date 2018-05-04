@@ -435,7 +435,7 @@ describe('DotEditContentComponent', () => {
 
             toolbarComponent.changeState.emit({
                 locked: true,
-                mode: PageMode.PREVIEW,
+                mode: PageMode.PREVIEW
             });
 
             expect(component.statePageHandler).toHaveBeenCalledWith({

@@ -22,7 +22,7 @@ export class DotRenderedPageState {
         this._state = {
             locked: locked,
             lockedByAnotherUser: lockedByAnotherUser,
-            mode: mode ||  this.getDefaultMode(lockedByAnotherUser, dotRenderedPage.page, locked)
+            mode: mode || this.getDefaultMode(lockedByAnotherUser, dotRenderedPage.page, locked)
         };
     }
 
