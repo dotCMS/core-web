@@ -91,7 +91,8 @@ describe('DotEditLayoutSidebarComponent', () => {
         expect(component.containers).toBe(mockResponse);
     });
 
-    it('should transform containers raw data into proper data to be saved in the BE', () => {
+    it('should transform containers raw data from component "dot-container-selector" into proper data to be saved in the BE', () => {
+        const containerSelector: DebugElement = hostComponentfixture.debugElement.query(By.css('dot-container-selector'));
         const transformedValue = {
             containers: [
                 {
@@ -106,9 +107,21 @@ describe('DotEditLayoutSidebarComponent', () => {
             location: 'left',
             width: 'small'
         };
-
+        spyOn(component, 'updateContainers').and.callThrough();
         spyOn(component, 'propagateChange');
+        containerSelector.triggerEventHandler('change', 'mockDotContainers');
         component.updateContainers(mockDotContainers);
+        expect(component.updateContainers).toHaveBeenCalled();
         expect(component.propagateChange).toHaveBeenCalledWith(transformedValue);
+    });
+
+    it('should propagate call from component "dot-sidebar-properties" into parent container', () => {
+        const sidebarProperties: DebugElement = hostComponentfixture.debugElement.query(By.css('dot-sidebar-properties'));
+        spyOn(component, 'updateContainers').and.callThrough();
+        spyOn(component, 'propagateChange');
+        sidebarProperties.triggerEventHandler('change', '');
+        component.updateContainers();
+        expect(component.updateContainers).toHaveBeenCalled();
+        expect(component.propagateChange).toHaveBeenCalled();
     });
 });
