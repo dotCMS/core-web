@@ -43,13 +43,15 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
      * @returns {DotLayoutSideBar}
      * @memberof DotEditLayoutSidebarComponent
      */
-    getModel(containers: DotContainerColumnBox[]): DotLayoutSideBar {
-        this.value.containers = containers.map((item) => {
-            return {
-                identifier: item.container.identifier,
-                uuid: item.uuid
-            };
-        });
+    getModel(containers?: DotContainerColumnBox[]): DotLayoutSideBar {
+        if (containers) {
+            this.value.containers = containers.map((item) => {
+                return {
+                    identifier: item.container.identifier,
+                    uuid: item.uuid
+                };
+            });
+        }
 
         return this.value;
     }
@@ -74,7 +76,7 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
      * @param {DotContainerColumnBox[]} containers
      * @memberof DotEditLayoutSidebarComponent
      */
-    updateContainers(containers: DotContainerColumnBox[]): void {
+    updateContainers(containers?: DotContainerColumnBox[]): void {
         this.propagateChange(this.getModel(containers));
     }
 

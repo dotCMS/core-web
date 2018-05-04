@@ -65,9 +65,11 @@ describe('DotSidebarPropertiesComponent', () => {
     });
 
     it('should send a layout-sidebar-change notification when a sidebar size property is clicked', () => {
+        spyOn(component.change, 'emit');
         spyOn(dotEventsService, 'notify');
         const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
         radioButtons.children[0].nativeElement.click();
         expect(dotEventsService.notify).toHaveBeenCalledWith('layout-sidebar-change');
+        expect(component.change.emit).toHaveBeenCalled();
     });
 });
