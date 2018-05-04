@@ -75,13 +75,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
 
         this.getMessages();
         this.setInitalData();
+        this.setDialogSize();
         this.subscribeSwitchSite();
         this.subscribeIframeCustomEvents();
         this.subscribeIframeActions();
         this.subscribePageModelChange();
-        setTimeout(() => {
-            this.setDialogSize();
-        },0);
     }
 
     ngOnDestroy(): void {
