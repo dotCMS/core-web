@@ -64,7 +64,7 @@ describe('DotSidebarPropertiesComponent', () => {
         expect(component.overlay.hide).toHaveBeenCalledTimes(1);
     });
 
-    it('should send a layout-sidebar-change notification when a sidebar size property is clicked', () => {
+    it('should send a layout-sidebar-change notification when a sidebar size property is updated', () => {
         spyOn(component.change, 'emit');
         spyOn(dotEventsService, 'notify');
         const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
