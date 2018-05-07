@@ -606,7 +606,7 @@ fdescribe('DotEditContentComponent', () => {
                 });
             });
 
-            fdescribe('actions', () => {
+            describe('actions', () => {
                 it('should open edit content dialog', () => {
                     fixture.detectChanges();
                     spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
