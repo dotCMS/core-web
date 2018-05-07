@@ -544,11 +544,12 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('dialog configuration', () => {
-        it('should not be draggable, have dismissableMask and be a modal', () => {
-            const dialog = fixture.debugElement.query(By.css('p-dialog'));
-            expect(dialog.nativeElement.draggable).toEqual(false);
-            expect(dialog.nativeElement.attributes.dismissableMask.value).toEqual('true');
-            expect(dialog.nativeElement.attributes.modal.value).toEqual('true');
+        it('should not be draggable, have dismissableMask, be a modal and hidden by default', () => {
+            const dialog = fixture.debugElement.query(By.css('p-dialog')).nativeElement;
+            expect(dialog.visible).toEqual(true);
+            expect(dialog.draggable).toEqual(false);
+            expect(dialog.attributes.dismissableMask.value).toEqual('true');
+            expect(dialog.attributes.modal.value).toEqual('true');
         });
 
         describe('page iframe', () => {
@@ -607,10 +608,15 @@ describe('DotEditContentComponent', () => {
             });
 
             describe('actions', () => {
-                it('should open edit content dialog', () => {
-                    fixture.detectChanges();
+                beforeEach(() => {
+                    spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
                     spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
                     spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
+                    fixture.detectChanges();
+                })
+
+                it('should open edit content dialog', () => {
+                    expect(component.showDialog).toBe(undefined);
 
                     dotEditContentHtmlService.iframeActions.next({
                         container: {
@@ -639,14 +645,12 @@ describe('DotEditContentComponent', () => {
                         '&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet'
                     ].join('');
 
+                    expect(component.showDialog).toBe(true);
                     expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
                 });
 
                 it('should open add contentlet dialog', () => {
-                    fixture.detectChanges();
-                    spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
-                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
-
+                    expect(component.showDialog).toBe(undefined);
                     dotEditContentHtmlService.iframeActions.next({
                         name: 'add',
                         dataset: {
@@ -656,6 +660,7 @@ describe('DotEditContentComponent', () => {
                         }
                     });
 
+                    expect(component.showDialog).toBe(true);
                     expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
                         identifier: '123',
                         uuid: '456'
@@ -666,10 +671,7 @@ describe('DotEditContentComponent', () => {
                 });
 
                 it('should open edit vtl dialog', () => {
-                    fixture.detectChanges();
-                    spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
-                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
-
+                    expect(component.showDialog).toBe(undefined);
                     dotEditContentHtmlService.iframeActions.next({
                         name: 'code',
                         dataset: {
@@ -688,6 +690,7 @@ describe('DotEditContentComponent', () => {
                         `&_site_browser_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`
                     ].join('');
 
+                    expect(component.showDialog).toBe(true);
                     expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
                 });
             });
