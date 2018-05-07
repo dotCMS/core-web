@@ -116,12 +116,6 @@ const getConfig = (route) => {
     };
 };
 
-const configCreateMode = getConfig({
-    contentType: {
-        baseType: 'CONTENT'
-    }
-});
-
 let comp: ContentTypesEditComponent;
 let fixture: ComponentFixture<ContentTypesEditComponent>;
 let de: DebugElement;
@@ -131,8 +125,14 @@ let location: Location;
 let dotRouterService: DotRouterService;
 let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
-describe('ContentTypesEditComponent create mode', () => {
+fdescribe('ContentTypesEditComponent create mode', () => {
     beforeEach(async(() => {
+        const configCreateMode = getConfig({
+            contentType: {
+                baseType: 'CONTENT'
+            }
+        });
+
         DOTTestBed.configureTestingModule(configCreateMode);
 
         fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
@@ -178,7 +178,7 @@ describe('ContentTypesEditComponent create mode', () => {
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
     });
 
-    it('should close dialog and redirect on esc key', () => {
+    fit('should close dialog and redirect on esc key', () => {
         spyOn(comp, 'cancelForm').and.callThrough();
 
         testHotKeysMock.callback(['esc']);
