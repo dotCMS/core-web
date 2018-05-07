@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output, Sanitizer } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { DialogModule } from 'primeng/primeng';
@@ -63,21 +63,22 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
+    const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
     let dotDialogService: DotDialogService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
+    let dotEditPageDataService: DotEditPageDataService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
+    let dotMenuService: DotMenuService;
     let dotPageStateService: DotPageStateService;
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<DotEditContentComponent>;
-    let toolbarElement: DebugElement;
-    let toolbarComponent: DotEditPageToolbarComponent;
-    const siteServiceMock = new SiteServiceMock();
     let route: ActivatedRoute;
-    let dotEditPageDataService: DotEditPageDataService;
+    let toolbarComponent: DotEditPageToolbarComponent;
+    let toolbarElement: DebugElement;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -172,6 +173,7 @@ describe('DotEditContentComponent', () => {
         dotPageStateService = de.injector.get(DotPageStateService);
         dotRouterService = de.injector.get(DotRouterService);
         dotEditPageDataService = de.injector.get(DotEditPageDataService);
+        dotMenuService = de.injector.get(DotMenuService);
         toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
         toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
@@ -274,7 +276,7 @@ describe('DotEditContentComponent', () => {
         });
     });
 
-    describe('set new View As configuration', () => {
+    describe('set new view as configuration', () => {
         let viewAsToolbar: DebugElement;
 
         beforeEach(() => {
@@ -385,7 +387,7 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('set page state when toolbar emit new state', () => {
-        const spyStateSet = val => {
+        const spyStateSet = (val) => {
             spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(val));
         };
 
@@ -401,7 +403,7 @@ describe('DotEditContentComponent', () => {
                 ...mockDotRenderedPage,
                 page: {
                     ...mockDotRenderedPage.page,
-                    lockedBy: mockUser.userId ,
+                    lockedBy: mockUser.userId,
                     canLock: true
                 }
             };
@@ -478,7 +480,7 @@ describe('DotEditContentComponent', () => {
         });
     });
 
-    describe('edit contentlets', () => {
+    describe('contentlets', () => {
         it('should display confirmation dialog and remove contentlet when user accepts', () => {
             fixture.detectChanges();
 
@@ -498,7 +500,7 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'contentletEvents').and.returnValue(Observable.of(mockResEvent));
             spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
-            spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+            spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
                 conf.accept();
             });
 
@@ -549,7 +551,7 @@ describe('DotEditContentComponent', () => {
             expect(dialog.nativeElement.attributes.modal.value).toEqual('true');
         });
 
-        describe('Contentlet action iframe', () => {
+        describe('page iframe', () => {
             let keypressFunction = null;
             let event;
 
@@ -579,7 +581,7 @@ describe('DotEditContentComponent', () => {
                 expect(event.target.contentWindow.addEventListener).not.toHaveBeenCalled();
             });
 
-            describe('load iFrame content', () => {
+            describe('load iframe content', () => {
                 beforeEach(() => {
                     component.showDialog = true;
                     event.target.contentDocument.body.innerHTML = '<html>';
@@ -601,6 +603,92 @@ describe('DotEditContentComponent', () => {
                     component.onContentletActionLoaded(event);
                     keypressFunction({ key: 'other' });
                     expect(component.showDialog).toEqual(true);
+                });
+            });
+
+            fdescribe('actions', () => {
+                it('should open edit content dialog', () => {
+                    fixture.detectChanges();
+                    spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
+                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
+
+                    dotEditContentHtmlService.iframeActions.next({
+                        container: {
+                            dotIdentifier: '123',
+                            dotUuid: '456'
+                        },
+                        name: 'edit',
+                        dataset: {
+                            dotInode: '789'
+                        }
+                    });
+
+                    expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
+                        identifier: '123',
+                        uuid: '456'
+                    });
+
+                    const url = [
+                        '/c/portal/layout',
+                        '?p_l_id=portletId',
+                        '&p_p_id=content',
+                        '&p_p_action=1',
+                        '&p_p_state=maximized',
+                        '&_content_inode=789',
+                        '&_content_cmd=edit',
+                        '&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet'
+                    ].join('');
+
+                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
+                });
+
+                it('should open add contentlet dialog', () => {
+                    fixture.detectChanges();
+                    spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
+                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
+
+                    dotEditContentHtmlService.iframeActions.next({
+                        name: 'add',
+                        dataset: {
+                            dotAdd: 'content,widget',
+                            dotIdentifier: '123',
+                            dotUuid: '456'
+                        }
+                    });
+
+                    expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
+                        identifier: '123',
+                        uuid: '456'
+                    });
+
+                    const url = '/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,widget';
+                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
+                });
+
+                it('should open edit vtl dialog', () => {
+                    fixture.detectChanges();
+                    spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
+                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
+
+                    dotEditContentHtmlService.iframeActions.next({
+                        name: 'code',
+                        dataset: {
+                            dotInode: '789'
+                        }
+                    });
+
+                    const url = [
+                        `/c/portal/layout`,
+                        `?p_l_id=portletId`,
+                        `&p_p_id=site-browser`,
+                        `&p_p_action=1`,
+                        `&p_p_state=maximized`,
+                        `&_site_browser_inode=789`,
+                        `&_site_browser_cmd=edit`,
+                        `&_site_browser_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`
+                    ].join('');
+
+                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
                 });
             });
         });
@@ -701,14 +789,14 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should return header and message labels', () => {
-            expect(component.getSaveWarningMessages()).toEqual({header: 'Save header', message: 'Save message'});
+            expect(component.getSaveWarningMessages()).toEqual({ header: 'Save header', message: 'Save message' });
         });
 
         it('should handle the error on save and return false', () => {
             spyOn(dotHttpErrorManagerService, 'handle');
-            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake( response => {});
+            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake((response) => {});
             spyOn(dotEditPageService, 'save').and.returnValue(Observable.throw('error'));
-            component.onDeactivateSave().subscribe( value => {
+            component.onDeactivateSave().subscribe((value) => {
                 expect(value).toBeFalsy();
                 expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
             });
