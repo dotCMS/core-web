@@ -63,7 +63,7 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
