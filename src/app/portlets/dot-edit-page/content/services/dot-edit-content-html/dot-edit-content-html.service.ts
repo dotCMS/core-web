@@ -156,6 +156,16 @@ export class DotEditContentHtmlService {
         }
     }
 
+    addIframeCssClass(cssClassName: string): void {
+        const doc = this.getEditPageDocument();
+        doc.querySelector(`body`).classList.add(cssClassName);
+    }
+
+    removeIframeCssClass(cssClassName: string): void {
+        const doc = this.getEditPageDocument();
+        doc.querySelector(`body`).classList.remove(cssClassName);
+    }
+
     /**
      * Set the container id where a contentlet will be added
      *

@@ -13,6 +13,12 @@ export const EDIT_PAGE_CSS = `
         margin-bottom:40px;
     }
 
+    .preview-mode-not-saved [data-dot-object="container"] {
+        border: none;
+        min-height: inherit;
+        margin-bottom: inherit;
+    }
+
     [data-dot-object="container"].no {
         border-color: red;
         box-shadow: 0 0 20px red;
@@ -35,6 +41,11 @@ export const EDIT_PAGE_CSS = `
 
     [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
         background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/r5n5GQOpCitXbsjHgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCQPycYlScX0wAAAABJRU5ErkJggg==");
+    }
+
+    .preview-mode-not-saved [data-dot-object="contentlet"],
+    .preview-mode-not-saved [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
+        background: none;
     }
 
     .dotedit-contentlet__content {
@@ -109,6 +120,10 @@ export const EDIT_PAGE_CSS = `
         font-size: 0;
     }
 
+    .preview-mode-not-saved .dotedit-container__toolbar {
+        display: none;
+    }
+
     .dotedit-container__toolbar button,
     .dotedit-contentlet__toolbar button {
         width: 32px;
@@ -142,6 +157,10 @@ export const EDIT_PAGE_CSS = `
         right: 0;
         top: -16px;
         transition: opacity ${animation};
+    }
+
+    .preview-mode-not-saved .dotedit-contentlet__toolbar {
+        display: none;
     }
 
     [data-dot-object="contentlet"]:hover .dotedit-contentlet__toolbar {

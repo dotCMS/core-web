@@ -40,6 +40,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
+    currentState: DotPageState;
     dialogSize = {
         height: null,
         width: null
@@ -147,28 +148,36 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
      * @param {DotPageState} newState
      * @memberof DotEditContentComponent
      */
+    // tslint:disable-next-line:cyclomatic-complexity
     statePageHandler(newState: DotPageState): void {
+        this.currentState = newState;
         const showGlobalMessage = newState.locked !== undefined;
 
-        if (showGlobalMessage) {
+        if (showGlobalMessage && !this.isModelUpdated) {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saving'));
         }
 
-        this.dotPageStateService
-            .set(this.pageState.page, newState)
-            .takeUntil(this.destroy$)
-            .subscribe(
-                (pageState: DotRenderedPageState) => {
-                    this.setPageState(pageState);
+        if (!this.isModelUpdated || newState.mode === 2) {
+            this.dotPageStateService
+                .set(this.pageState.page, newState)
+                .takeUntil(this.destroy$)
+                .subscribe(
+                    (pageState: DotRenderedPageState) => {
+                        this.setPageState(pageState);
 
-                    if (showGlobalMessage) {
-                        this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                        if (showGlobalMessage) {
+                            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                        }
+                    },
+                    (err: ResponseView) => {
+                        this.handleSetPageStateFailed(err);
                     }
-                },
-                (err: ResponseView) => {
-                    this.handleSetPageStateFailed(err);
-                }
-            );
+                );
+            } else if (this.isModelUpdated && newState.mode === 1) {
+                this.dotEditContentHtmlService.addIframeCssClass('preview-mode-not-saved');
+            } else if (this.isModelUpdated && newState.mode === 0) {
+                this.dotEditContentHtmlService.removeIframeCssClass('preview-mode-not-saved');
+            }
     }
 
     /**
