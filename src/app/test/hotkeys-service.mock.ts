@@ -66,6 +66,7 @@ export class TestHotkeysMock {
     callback(combo: string[]): any | void {
         const hotkey: any = this.get(combo);
         if (hotkey) {
+            console.log(hotkey);
             return hotkey.callback(null, combo);
         }
     }

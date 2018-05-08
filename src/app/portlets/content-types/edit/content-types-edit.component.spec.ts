@@ -71,8 +71,6 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.content': 'Content'
 });
 
-const testHotKeysMock: TestHotkeysMock = new TestHotkeysMock();
-
 const getConfig = (route) => {
     return {
         declarations: [
@@ -124,9 +122,11 @@ let crudService: CrudService;
 let location: Location;
 let dotRouterService: DotRouterService;
 let dotHttpErrorManagerService: DotHttpErrorManagerService;
+let testHotKeysMock: TestHotkeysMock;
 
-fdescribe('ContentTypesEditComponent create mode', () => {
+describe('ContentTypesEditComponent create mode', () => {
     beforeEach(async(() => {
+        testHotKeysMock = new TestHotkeysMock();
         const configCreateMode = getConfig({
             contentType: {
                 baseType: 'CONTENT'
@@ -140,10 +140,10 @@ fdescribe('ContentTypesEditComponent create mode', () => {
         de = fixture.debugElement;
         el = de.nativeElement;
 
-        crudService = fixture.debugElement.injector.get(CrudService);
-        location = fixture.debugElement.injector.get(Location);
-        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-        dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
+        crudService = de.injector.get(CrudService);
+        location = de.injector.get(Location);
+        dotRouterService = de.injector.get(DotRouterService);
+        dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
 
         fixture.detectChanges();
     }));
@@ -178,7 +178,7 @@ fdescribe('ContentTypesEditComponent create mode', () => {
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
     });
 
-    fit('should close dialog and redirect on esc key', () => {
+    it('should close dialog and redirect on esc key', () => {
         spyOn(comp, 'cancelForm').and.callThrough();
 
         testHotKeysMock.callback(['esc']);
