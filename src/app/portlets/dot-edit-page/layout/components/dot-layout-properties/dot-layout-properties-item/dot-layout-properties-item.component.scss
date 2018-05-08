@@ -37,7 +37,7 @@
     opacity: 0.7;
 
     &:before {
-        content:'';
+        content: '';
         width: 2px;
         background: $gray-darker;
         height: 100%;
@@ -45,7 +45,7 @@
         margin-left: 4px;
     }
 
-    &.property-item__icon--selected{
+    &.property-item__icon--selected {
         border: solid 2px $blue;
         background-color: $blue-lighter;
         opacity: 1;
@@ -55,27 +55,6 @@
         }
     }
 }
-
-
-
-
-
-    /*.property-item__icon {
-        width: 24px;
-        height: 24px;
-
-        & > g {
-            stroke: $gray-light;
-            fill: none;
-        }
-    }
-
-    .property-item__icon--selected {
-        & > g {
-            stroke: $white;
-            fill: $brand-primary;
-        }
-    }*/
 
 .property-item__label {
     padding-left: $basic-padding;
