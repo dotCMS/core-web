@@ -17,7 +17,7 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 export class LoginAsComponent extends BaseComponent implements OnInit {
     @Output() cancel = new EventEmitter<boolean>();
     @Input() visible: boolean;
-    @ViewChild('password') el: ElementRef;
+    @ViewChild('password') passwordElem: ElementRef;
 
     form: FormGroup;
     needPassword = false;
@@ -77,7 +77,7 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
                     this.errorMessage = response.errorsMessages;
                 } else {
                     this.errorMessage = this.i18nMessages['loginas.error.wrong-credentials'];
-                    this.el.nativeElement.focus();
+                    this.passwordElem.nativeElement.focus();
                 }
             }
         );
