@@ -1,0 +1,7 @@
+<p-dropdown [options]="themes" optionLabel="name" [(ngModel)]="selectedTheme">
+    <ng-template let-item pTemplate="selectedItem">
+        B
+        <span style="vertical-align:middle">{{item | json}}</span>
+    </ng-template>
+
+</p-dropdown>
