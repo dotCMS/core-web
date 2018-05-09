@@ -543,14 +543,6 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('dialog configuration', () => {
-        xit('should not be draggable, have dismissableMask, be a modal and hidden by default', () => {
-            const dialog = fixture.debugElement.query(By.css('p-dialog')).nativeElement;
-            expect(dialog.visible).toEqual(true);
-            expect(dialog.draggable).toEqual(false);
-            expect(dialog.attributes.dismissableMask.value).toEqual('true');
-            expect(dialog.attributes.modal.value).toEqual('true');
-        });
-
         describe('page iframe', () => {
             let keypressFunction = null;
             let event;
@@ -612,7 +604,7 @@ describe('DotEditContentComponent', () => {
                     spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
                     spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
                     fixture.detectChanges();
-                })
+                });
 
                 it('should open edit content dialog', () => {
                     expect(component.showDialog).toBe(undefined);

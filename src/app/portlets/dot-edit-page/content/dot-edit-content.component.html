@@ -28,15 +28,4 @@
     </div>
 </div>
 
-<dot-edit-contentlet></dot-edit-contentlet>
-
-<p-dialog class="dot-edit__page-dialog"
-    (onHide)="closeDialog($event)"
-    [draggable]="false"
-    [height]="dialogSize.height"
-    [visible]="showDialog"
-    [width]="dialogSize.width"
-    dismissableMask="true"
-    modal="true">
-    <iframe class="dot-edit__contentlet-iframe" *ngIf="contentletActionsUrl" [src]="contentletActionsUrl" frameborder="0" (load)="onContentletActionLoaded($event)"></iframe>
-</p-dialog>
+<!-- <dot-edit-contentlet></dot-edit-contentlet> -->

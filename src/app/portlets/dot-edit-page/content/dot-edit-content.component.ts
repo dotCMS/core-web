@@ -73,7 +73,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         this.getMessages();
         this.setInitalData();
-        this.setDialogSize();
         this.subscribeSwitchSite();
         this.subscribeIframeCustomEvents();
         this.subscribeIframeActions();
@@ -109,16 +108,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
             message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
         };
-    }
-
-    /**
-     * Callback when dialog hide
-     *
-     * @memberof DotEditContentComponent
-     */
-    closeDialog(): void {
-        this.showDialog = false;
-        this.contentletActionsUrl = null;
     }
 
     /**
@@ -318,8 +307,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             code: this.editCode.bind(this),
             add: this.addContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
-            cancel: this.closeDialog.bind(this),
-            close: this.closeDialog.bind(this),
+            // cancel: this.closeDialog.bind(this),
+            // close: this.closeDialog.bind(this),
             save: () => {}
         };
 
@@ -347,7 +336,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private loadDialogEditor(url: string): void {
         this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        this.setDialogSize();
         this.showDialog = true;
     }
 
@@ -395,13 +383,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         } else {
             this.dotEditContentHtmlService.renderPage(pageState.html, this.iframe);
         }
-    }
-
-    private setDialogSize(): void {
-        this.dialogSize = {
-            width: window.innerWidth - 200,
-            height: window.innerHeight - 100
-        };
     }
 
     private subscribeIframeActions(): void {
