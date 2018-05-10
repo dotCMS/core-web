@@ -36,7 +36,7 @@ import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmat
     templateUrl: './dot-edit-content.component.html',
     styleUrls: ['./dot-edit-content.component.scss']
 })
-export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactivate {
+export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
@@ -45,7 +45,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
         width: null
     };
     showDialog: boolean;
-    isModelUpdated = false;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
 
@@ -85,15 +84,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
-    }
-
-    /**
-     * Indicate is there are changes in the model of the component
-     * @returns {boolean}
-     * @memberof DotEditContentComponent
-     */
-    shouldSaveBefore(): boolean {
-        return this.isModelUpdated;
     }
 
     /**
@@ -171,18 +161,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
             );
     }
 
-    /**
-     * Save the page's content
-     *
-     * @memberof DotEditContentComponent
-     */
-    saveContent(): void {
-        this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.pageServiceSave().subscribe(() => {
-            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-            this.setOriginalValue();
-        });
-    }
+
 
     /**
      * Hanlde changes in the configuration of "View As" toolbar
@@ -239,6 +218,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
             .subscribe((pageState: DotRenderedPageState) => {
                 this.setPageState(pageState);
             });
+    }
+
+    private saveContent(): void {
+        this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
+        this.pageServiceSave().subscribe(() => {
+            this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+            this.setOriginalValue();
+        });
     }
 
     private pageServiceSave(): Observable<string> {
@@ -414,7 +401,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
 
     private resetOriginalValue(): void {
         this.originalValue = null;
-        this.isModelUpdated = false;
     }
 
     private setDialogSize(): void {
@@ -449,7 +435,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
 
     private setOriginalValue(model?: any): void {
         this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
-        this.isModelUpdated = false;
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {
@@ -463,8 +448,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
             .subscribe(model => {
                 if (this.originalValue) {
                     this.ngZone.run(() => {
-                        this.isModelUpdated = !_.isEqual(model, this.originalValue);
-                        if (this.isModelUpdated) {
+                        if (!_.isEqual(model, this.originalValue)) {
                             this.saveContent();
                         }
                     });

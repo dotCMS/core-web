@@ -724,7 +724,6 @@ describe('DotEditContentComponent', () => {
 
                 expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
-                expect(component.isModelUpdated).toBe(false);
                 expect(component.pageState.page).toEqual({
                     ...mockDotRenderedPage.page,
                     pageURI: 'an/url/fake'
@@ -774,15 +773,6 @@ describe('DotEditContentComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should return true in the isModelUpdated', () => {
-            component.isModelUpdated = true;
-            expect(component.shouldSaveBefore()).toBeTruthy();
-        });
-
-        it('should return false in the isModelUpdated', () => {
-            expect(component.shouldSaveBefore()).toBeFalsy();
-        });
-
         it('should call the save endpoint', () => {
             spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
             spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
@@ -823,12 +813,18 @@ describe('DotEditContentComponent', () => {
                 }
             ];
 
-            spyOn(component, 'saveContent');
+            let dotEditPageService: DotEditPageService;
+            dotEditPageService = de.injector.get(DotEditPageService);
+
+            spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
+            spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
             fixture.detectChanges();
+
             dotEditContentHtmlService.pageModelChange.next(model);
             fixture.detectChanges();
+
             dotEditContentHtmlService.pageModelChange.next(newModel);
-            expect(component.saveContent).toHaveBeenCalled();
+            expect(dotEditPageService.save).toHaveBeenCalled();
         });
     });
 });

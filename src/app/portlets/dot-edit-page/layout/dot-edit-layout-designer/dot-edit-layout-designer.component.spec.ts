@@ -21,6 +21,7 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { async } from '@angular/core/testing';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -401,6 +402,11 @@ describe('DotEditLayoutDesignerComponent', () => {
 
     describe('Auto save', () => {
         it('should call the save endpoint after a Form value change happens', () => {
+            let pageViewService: PageViewService;
+            let loginService: LoginService;
+            pageViewService = fixture.debugElement.injector.get(PageViewService);
+            loginService = fixture.debugElement.injector.get(LoginService);
+
             component.pageState = new DotRenderedPageState(
                 mockUser,
                 {
@@ -410,13 +416,17 @@ describe('DotEditLayoutDesignerComponent', () => {
                 },
                 null
             );
+            loginService.setAuth({
+                user: mockUser,
+                loginAsUser: mockUser
+            });
             fixture.detectChanges();
 
-            spyOn(component, 'saveLayout');
+            spyOn(pageViewService, 'save').and.returnValue(Observable.of({...mockDotRenderedPage}));
             const newFormValue = mockDotRenderedPage;
             component.form.get('title').setValue('Changed form');
             fixture.detectChanges();
-            expect(component.saveLayout).toHaveBeenCalled();
+            expect(pageViewService.save).toHaveBeenCalled();
         });
     });
 });
