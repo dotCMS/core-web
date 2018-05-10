@@ -30,6 +30,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { Subject } from 'rxjs/Subject';
 import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
 import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
+import { DotAddContentLet } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.component';
 
 @Component({
     selector: 'dot-edit-content',
@@ -40,14 +41,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
-    dialogSize = {
-        height: null,
-        width: null
-    };
-    showDialog: boolean;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
-    addContentUrl: string;
+    addContentData: DotAddContentLet;
     editInode: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -229,11 +225,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             uuid: $event.dataset.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-        this.addContentUrl = [
-            `/html/ng-contentlet-selector.jsp?ng=true`,
-            `&container_id=${$event.dataset.dotIdentifier}`,
-            `&add=${$event.dataset.dotAdd}`
-        ].join('');
+        this.addContentData = {
+            container: $event.dataset.dotIdentifier,
+            add: $event.dataset.dotAdd
+        };
     }
 
     private editContentlet($event: any): void {

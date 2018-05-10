@@ -1,6 +1,6 @@
 <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
 
-<dot-iframe-dialog [url]="addContentUrl" (close)="addContentUrl = null"></dot-iframe-dialog>
+<dot-add-contentlet [data]="addContentData" (close)="addContentData = null"></dot-add-contentlet>
 <dot-edit-contentlet [inode]="editInode" (close)="editInode = null"></dot-edit-contentlet>
 
 <dot-edit-page-toolbar

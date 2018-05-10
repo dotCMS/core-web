@@ -42,7 +42,9 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentletModule } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.module';
-import { DotIframeDialogModule } from '../../../view/components/dot-iframe-dialog/dot-iframe-dialog.module';
+import { DotAddContentletModule } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.module';
+import { DotAddContentletComponent } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.component';
+import { DotEditContentletComponent } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.component';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -66,7 +68,7 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -103,7 +105,7 @@ fdescribe('DotEditContentComponent', () => {
                 DotEditPageToolbarModule,
                 DotLoadingIndicatorModule,
                 DotEditContentletModule,
-                DotIframeDialogModule,
+                DotAddContentletModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -228,7 +230,7 @@ fdescribe('DotEditContentComponent', () => {
         expect(component.reload).toHaveBeenCalledTimes(1);
     });
 
-    describe('what\'s change', () => {
+    describe("what's change", () => {
         let viewAsToolbar: DebugElement;
 
         beforeEach(() => {
@@ -546,6 +548,85 @@ fdescribe('DotEditContentComponent', () => {
         });
     });
 
+    describe('actions', () => {
+        let dotAddContentlet: DotAddContentletComponent;
+        let dotEditContentletComponent: DotEditContentletComponent;
+
+        beforeEach(() => {
+            spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
+            spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
+            spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
+            fixture.detectChanges();
+            dotAddContentlet = de.query(By.css('dot-add-contentlet')).componentInstance;
+            dotEditContentletComponent = de.query(By.css('dot-edit-contentlet')).componentInstance;
+        });
+
+        describe('edit', () => {
+            beforeEach(() => {
+                dotEditContentHtmlService.iframeActions.next({
+                    name: 'edit',
+                    container: {
+                        dotIdentifier: '123',
+                        dotUuid: '456'
+                    },
+                    dataset: {
+                        dotInode: '789'
+                    }
+                });
+
+                fixture.detectChanges();
+            });
+
+            it('should have dot-edit-contentlet', () => {
+                expect(dotEditContentletComponent).toBeTruthy();
+                expect(dotEditContentletComponent.inode).toEqual('789');
+            });
+
+            it('should set contentlet to edit', () => {
+                expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
+                    identifier: '123',
+                    uuid: '456'
+                });
+                expect(component.editInode).toEqual('789');
+            });
+        });
+
+        describe('add', () => {
+            beforeEach(() => {
+                dotEditContentHtmlService.iframeActions.next({
+                    name: 'add',
+                    dataset: {
+                        dotAdd: 'content,widget',
+                        dotIdentifier: '123',
+                        dotUuid: '456'
+                    }
+                });
+
+                fixture.detectChanges();
+            });
+
+            it('should have dot-add-contentlet', () => {
+                expect(dotAddContentlet).toBeTruthy();
+                expect(dotAddContentlet.data).toEqual({
+                    container: '123',
+                    add: 'content,widget'
+                });
+            });
+
+            it('should add a contentlet', () => {
+                expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
+                    identifier: '123',
+                    uuid: '456'
+                });
+
+                expect(component.addContentData).toEqual({
+                    container: '123',
+                    add: 'content,widget'
+                });
+            });
+        });
+    });
+
     describe('dialog configuration', () => {
         describe('page iframe', () => {
             let keypressFunction = null;
@@ -579,7 +660,6 @@ fdescribe('DotEditContentComponent', () => {
 
             describe('load iframe content', () => {
                 beforeEach(() => {
-                    component.showDialog = true;
                     event.target.contentDocument.body.innerHTML = '<html>';
                     component.onContentletActionLoaded(event);
                 });
@@ -590,64 +670,13 @@ fdescribe('DotEditContentComponent', () => {
                     expect(event.target.contentWindow.ngEditContentletEvents).toBeDefined();
                 });
 
-                it('should capture Escape key and set to false showDialog', () => {
+                xit('should capture Escape key and set to false showDialog', () => {
                     keypressFunction({ key: 'Escape' });
-                    expect(component.showDialog).toEqual(false);
                 });
 
-                it('should capture other key and do not change the state of showDialog', () => {
+                xit('should capture other key and do not change the state of showDialog', () => {
                     component.onContentletActionLoaded(event);
                     keypressFunction({ key: 'other' });
-                    expect(component.showDialog).toEqual(true);
-                });
-            });
-
-            fdescribe('actions', () => {
-                beforeEach(() => {
-                    spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
-                    spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
-                    spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
-                    fixture.detectChanges();
-                });
-
-                it('should edit contentlet', () => {
-                    expect(component.showDialog).toBe(undefined);
-
-                    dotEditContentHtmlService.iframeActions.next({
-                        container: {
-                            dotIdentifier: '123',
-                            dotUuid: '456'
-                        },
-                        name: 'edit',
-                        dataset: {
-                            dotInode: '789'
-                        }
-                    });
-
-                    expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
-                        identifier: '123',
-                        uuid: '456'
-                    });
-                    expect(component.editInode).toBe('789');
-                });
-
-                it('should add a contentlet', () => {
-                    expect(component.showDialog).toBe(undefined);
-                    dotEditContentHtmlService.iframeActions.next({
-                        name: 'add',
-                        dataset: {
-                            dotAdd: 'content,widget',
-                            dotIdentifier: '123',
-                            dotUuid: '456'
-                        }
-                    });
-
-                    expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
-                        identifier: '123',
-                        uuid: '456'
-                    });
-
-                    expect(component.addContentUrl).toEqual('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,widget');
                 });
             });
         });

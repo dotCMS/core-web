@@ -21,8 +21,8 @@ import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-
 import { DotSaveOnDeactivateService } from '../../../shared/dot-save-on-deactivate-service/dot-save-on-deactivate.service';
 import { DotEditContentletComponent } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.component';
 import { DotIframeDialogComponent } from '../../../view/components/dot-iframe-dialog/dot-iframe-dialog.component';
-import { DotIframeDialogModule } from '../../../view/components/dot-iframe-dialog/dot-iframe-dialog.module';
 import { DotEditContentletModule } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.module';
+import { DotAddContentletModule } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.module';
 
 const routes: Routes = [
     {
@@ -42,7 +42,7 @@ const routes: Routes = [
         DotDirectivesModule,
         DotEditContentViewAsToolbarModule,
         DotWhatsChangedModule,
-        DotIframeDialogModule,
+        DotAddContentletModule,
         DotEditContentletModule
     ],
     exports: [DotEditContentComponent],
