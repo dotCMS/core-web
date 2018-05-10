@@ -9,7 +9,7 @@ import { ResponseView, HttpCode } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
-import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap } from 'rxjs/operators';
 
