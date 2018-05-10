@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'dot-iframe-dialog',
@@ -9,24 +9,18 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 export class DotIframeDialogComponent implements OnInit, OnChanges {
     @Input() url: string;
     @Output() close: EventEmitter<boolean> = new EventEmitter();
+
     dialogSize: any;
-    safeUrl: SafeResourceUrl;
     show: boolean;
 
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor() {}
 
     ngOnInit() {
         this.setDialogSize();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.url.currentValue) {
-            this.show = true;
-            this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
-        } else {
-            this.show = false;
-            this.safeUrl = null;
-        }
+        this.show = !!changes.url.currentValue;
     }
 
     /**
@@ -35,8 +29,8 @@ export class DotIframeDialogComponent implements OnInit, OnChanges {
      * @memberof DotIframeDialogComponent
      */
     closeDialog(): void {
+        this.url = null;
         this.show = false;
-        this.safeUrl = null;
         this.close.emit();
     }
 

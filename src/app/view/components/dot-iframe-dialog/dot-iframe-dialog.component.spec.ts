@@ -6,6 +6,11 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DialogModule, Dialog } from 'primeng/primeng';
 import { DotIframeDialogComponent } from './dot-iframe-dialog.component';
+import { IFrameModule } from '../_common/iframe';
+import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginServiceMock } from '../../../test/login-service.mock';
+import { RouterTestingModule } from '@angular/router/testing';
+import { IframeComponent } from '../_common/iframe/iframe-component';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -15,7 +20,7 @@ class TestHostComponent {
     url: string;
 }
 
-fdescribe('DotIframeDialogComponent', () => {
+describe('DotIframeDialogComponent', () => {
     let component: DotIframeDialogComponent;
     let de: DebugElement;
     let dialog: DebugElement;
@@ -24,11 +29,18 @@ fdescribe('DotIframeDialogComponent', () => {
     let hostDe: DebugElement;
     let hostFixture: ComponentFixture<TestHostComponent>;
     let sanitizer: DomSanitizer;
-    let iframe: DebugElement;
+    let dotIframe: DebugElement;
+    let dotIframeComponent: IframeComponent;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            imports: [DialogModule, BrowserAnimationsModule],
+            imports: [DialogModule, BrowserAnimationsModule, IFrameModule, RouterTestingModule],
+            providers: [
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                }
+            ],
             declarations: [DotIframeDialogComponent, TestHostComponent]
         }).compileComponents();
     }));
@@ -46,15 +58,19 @@ fdescribe('DotIframeDialogComponent', () => {
         beforeEach(() => {
             hostFixture.detectChanges();
             dialog = de.query(By.css('p-dialog'));
-            iframe = de.query(By.css('iframe'));
+            dotIframe = de.query(By.css('dot-iframe'));
         });
 
-        it('should have dialog hidden', () => {
-            expect(dialog === null).toBe(true);
+        describe('dialog', () => {
+            it('should not have', () => {
+                expect(dialog === null).toBe(true);
+            });
         });
 
-        it('should have iframe hidden', () => {
-            expect(iframe === null).toBe(true);
+        describe('iframe', () => {
+            it('should not have', () => {
+                expect(dotIframe === null).toBe(true);
+            });
         });
     });
 
@@ -62,56 +78,61 @@ fdescribe('DotIframeDialogComponent', () => {
         beforeEach(() => {
             hostComponent.url = 'hello/world';
             hostFixture.detectChanges();
-            dialog = de.query(By.css('p-dialog'));
-            iframe = de.query(By.css('iframe'));
-            dialogComponent = dialog.componentInstance;
         });
 
-        it('should have dialog hidden by default', () => {
-            expect(dialog).toBeTruthy();
+        describe('dialog', () => {
+            beforeEach(() => {
+                dialog = de.query(By.css('p-dialog'));
+                dialogComponent = dialog.componentInstance;
+            });
+
+            it('should have', () => {
+                expect(dialog).toBeTruthy();
+            });
+
+            it('should have the right attrs', () => {
+                expect(dialogComponent.visible).toEqual(true, 'visible');
+                expect(dialogComponent.draggable).toEqual(false, 'draggable');
+                expect(dialogComponent.dismissableMask).toEqual(true, 'dismissableMask');
+                expect(dialogComponent.modal).toEqual(true, 'modal');
+            });
         });
 
-        it('should have the right attrs in dialog', () => {
-            expect(dialogComponent.visible).toEqual(true, 'visible');
-            expect(dialogComponent.draggable).toEqual(false, 'draggable');
-            expect(dialogComponent.dismissableMask).toEqual(true, 'dismissableMask');
-            expect(dialogComponent.modal).toEqual(true, 'modal');
-        });
+        describe('dot-iframe', () => {
+            beforeEach(() => {
+                dotIframe = de.query(By.css('dot-iframe'));
+                dotIframeComponent = dotIframe.componentInstance;
+            });
 
-        it('should have iframe hidden', () => {
-            expect(iframe).toBeTruthy();
+            it('should have', () => {
+                expect(dotIframe).toBeTruthy();
+            });
+
+            it('should have the right attrs', () => {
+                expect(dotIframeComponent.src).toBe('hello/world');
+            });
         });
     });
 
-    xdescribe('show/hide', () => {
-
+    describe('show/hide', () => {
         beforeEach(() => {
-            hostComponent.url = 'hello/hello';
+            hostComponent.url = 'hello/world';
             hostFixture.detectChanges();
-            // dialog = de.query(By.css('p-dialog')).componentInstance;
-            iframe = de.query(By.css('iframe'));
+            dialog = de.query(By.css('p-dialog'));
+            dotIframe = de.query(By.css('dot-iframe'));
         });
 
-        it('should show dialog', () => {
-            // expect(dialog.visible).toEqual(true);
-        });
+        it('should update', () => {
+            expect(dialog).toBeTruthy();
+            expect(dotIframe).toBeTruthy();
 
-        it('should set sanitized url', () => {
-            expect(component.safeUrl).toEqual(sanitizer.bypassSecurityTrustResourceUrl('hello/hello'));
-        });
-
-        it('should show the iframe', () => {
-            expect(iframe).toBeTruthy();
-        });
-
-        it('should hide the dialog', () => {
             hostComponent.url = null;
             hostFixture.detectChanges();
-            iframe = de.query(By.css('iframe'));
-            // dialog = de.query(By.css('p-dialog')).componentInstance;
+            dialog = de.query(By.css('p-dialog'));
+            dotIframe = de.query(By.css('dot-iframe'));
 
-            expect(iframe === null).toBe(true);
-            // expect(dialog.visible).toEqual(false);
+            expect(dialog === null).toBe(true);
+            expect(dotIframe === null).toBe(true);
         });
     });
 });
