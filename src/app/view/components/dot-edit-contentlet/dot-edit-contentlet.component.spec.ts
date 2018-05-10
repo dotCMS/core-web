@@ -73,7 +73,7 @@ describe('DotEditContentletComponent', () => {
         });
     });
 
-    fdescribe('with inode', () => {
+    describe('with inode', () => {
         beforeEach(() => {
             hostComponent.inode = '123';
             hostFixture.detectChanges();
@@ -107,6 +107,14 @@ describe('DotEditContentletComponent', () => {
                 dotIframeDialog.triggerEventHandler('close', {});
                 expect(component.close.emit).toHaveBeenCalledTimes(1);
             });
+        });
+
+        it('should hide', () => {
+            hostComponent.inode = null;
+            hostFixture.detectChanges();
+            dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
+
+            expect(dotIframeDialog === null).toBe(true);
         });
     });
 });

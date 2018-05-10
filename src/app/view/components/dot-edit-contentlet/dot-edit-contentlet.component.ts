@@ -16,9 +16,7 @@ export class DotEditContentletComponent implements OnChanges {
     constructor(private dotMenuService: DotMenuService) {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.inode.currentValue) {
-            this.url = this.getUrl(changes.inode.currentValue);
-        }
+        this.url = changes.inode.currentValue ? this.getUrl(changes.inode.currentValue) : Observable.of(null);
     }
 
     /**

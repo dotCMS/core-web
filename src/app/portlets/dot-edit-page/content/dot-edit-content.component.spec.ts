@@ -41,6 +41,8 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
+import { DotEditContentletModule } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.module';
+import { DotIframeDialogModule } from '../../../view/components/dot-iframe-dialog/dot-iframe-dialog.module';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -100,6 +102,8 @@ describe('DotEditContentComponent', () => {
                 BrowserAnimationsModule,
                 DotEditPageToolbarModule,
                 DotLoadingIndicatorModule,
+                DotEditContentletModule,
+                DotIframeDialogModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
