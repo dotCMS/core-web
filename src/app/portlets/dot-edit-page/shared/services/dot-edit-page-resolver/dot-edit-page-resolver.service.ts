@@ -11,7 +11,7 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
-import { take, switchMap, tap, catchError } from 'rxjs/operators';
+import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
 
 /**
  * With the url return a string of the edit page html
@@ -49,7 +49,9 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                         }
                     }),
                     catchError((err: ResponseView) => {
-                        return this.errorHandler(err);
+                        return this.errorHandler(err).pipe(
+                            map(() => null)
+                        );
                     })
                 );
         }
@@ -79,15 +81,13 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         }
     }
 
-    private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
+    private errorHandler(err: ResponseView): Observable<any> {
         return this.dotHttpErrorManagerService.handle(err).pipe(
-                switchMap((res: DotHttpErrorHandled) => {
+                tap((res: DotHttpErrorHandled) => {
 
                 if (!res.redirected) {
                     this.dotRouterService.gotoPortlet('/c/site-browser');
                 }
-
-                return Observable.of(null);
             }
         ));
     }
