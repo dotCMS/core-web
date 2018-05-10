@@ -128,22 +128,6 @@ describe('DotEditLayoutDesignerComponent', () => {
             expect(checkboxSave).toBe(null);
         });
 
-        it('should show cancel button', () => {
-            fixture.detectChanges();
-            const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
-
-            expect(cancelButton).toBeTruthy();
-            expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
-        });
-
-        it('should show save button', () => {
-            fixture.detectChanges();
-            const saveButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-save'));
-
-            expect(saveButton).toBeTruthy();
-            expect(saveButton.nativeElement.textContent).toEqual('Save');
-        });
-
         it('should show dot-layout-properties and bind attr correctly', () => {
             fixture.detectChanges();
             const layoutProperties: DebugElement = fixture.debugElement.query(By.css('dot-layout-properties'));
@@ -289,44 +273,6 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
     });
 
-    describe('save button', () => {
-        let saveButton: DebugElement;
-
-        beforeEach(() => {
-            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
-            fixture.detectChanges();
-            saveButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-save'));
-        });
-
-        it('should have disabled by default', () => {
-            expect(saveButton.nativeElement.disabled).toBe(true);
-        });
-
-        it('should have enabled if the model is updated', () => {
-            component.form.get('layout.header').setValue(true);
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-
-        it('should have disabled if the form is not valid', () => {
-            // This will make the template title required, it's like clicking the "Save as template" checkbox
-            // component.saveAsTemplateHandleChange(true);
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(true);
-        });
-
-        it('should have enabled when model is updated and form is valid', () => {
-            component.saveAsTemplateHandleChange(true);
-            component.form.get('title').setValue('Hello World');
-
-            fixture.detectChanges();
-
-            expect(saveButton.nativeElement.disabled).toBe(false);
-        });
-    });
-
     describe('edit layout/template dialog', () => {
         let dotDialogService: DotDialogService;
 
@@ -450,6 +396,27 @@ describe('DotEditLayoutDesignerComponent', () => {
                     }
                 }
             });
+        });
+    });
+
+    describe('Auto save', () => {
+        it('should call the save endpoint after a Form value change happens', () => {
+            component.pageState = new DotRenderedPageState(
+                mockUser,
+                {
+                    ...mockDotRenderedPage,
+                    template: null,
+                    canCreateTemplate: false
+                },
+                null
+            );
+            fixture.detectChanges();
+
+            spyOn(component, 'saveLayout');
+            const newFormValue = mockDotRenderedPage;
+            component.form.get('title').setValue('Changed form');
+            fixture.detectChanges();
+            expect(component.saveLayout).toHaveBeenCalled();
         });
     });
 });

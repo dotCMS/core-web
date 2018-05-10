@@ -464,6 +464,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy, OnSaveDeactiv
                 if (this.originalValue) {
                     this.ngZone.run(() => {
                         this.isModelUpdated = !_.isEqual(model, this.originalValue);
+                        if (this.isModelUpdated) {
+                            this.saveContent();
+                        }
                     });
                 } else {
                     this.setOriginalValue(model);

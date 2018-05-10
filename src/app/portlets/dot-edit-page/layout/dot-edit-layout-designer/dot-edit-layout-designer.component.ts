@@ -116,7 +116,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
      *
      * @memberof DotEditLayoutDesignerComponent
      */
-    saveLayout(_event): void {
+    saveLayout(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
@@ -173,6 +173,9 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
+            if (this.isModelUpdated) {
+                this.saveLayout();
+            }
             // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value
         });
     }
