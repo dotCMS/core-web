@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -8,6 +8,7 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 })
 export class DotIframeDialogComponent implements OnInit, OnChanges {
     @Input() url: string;
+    @Output() close: EventEmitter<boolean> = new EventEmitter();
     dialogSize: any;
     safeUrl: SafeResourceUrl;
     show: boolean;
@@ -35,7 +36,8 @@ export class DotIframeDialogComponent implements OnInit, OnChanges {
      */
     closeDialog(): void {
         this.show = false;
-        this.url = null;
+        this.safeUrl = null;
+        this.close.emit();
     }
 
     private setDialogSize(): void {

@@ -10,14 +10,14 @@ import { DotIframeDialogComponent } from '../dot-iframe-dialog/dot-iframe-dialog
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-dot-edit-contentlet [inode]="inode"></dot-dot-edit-contentlet>'
+    template: '<dot-edit-contentlet [inode]="inode"></dot-edit-contentlet>'
 })
 class TestHostComponent {
     inode: string;
 }
 
 
-fdescribe('DotEditContentletComponent', () => {
+describe('DotEditContentletComponent', () => {
     let component: DotEditContentletComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;

@@ -47,6 +47,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     showDialog: boolean;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
+    addContentUrl: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -225,9 +226,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             uuid: $event.dataset.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-        this.loadDialogEditor(
-            `/html/ng-contentlet-selector.jsp?ng=true&container_id=${$event.dataset.dotIdentifier}&add=${$event.dataset.dotAdd}`
-        );
+        this.addContentUrl = [
+            `/html/ng-contentlet-selector.jsp?ng=true`,
+            `&container_id=${$event.dataset.dotIdentifier}`,
+            `&add=${$event.dataset.dotAdd}`
+        ].join('');
     }
 
     private editContentlet($event: any): void {

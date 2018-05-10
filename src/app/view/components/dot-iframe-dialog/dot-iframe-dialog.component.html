@@ -1,4 +1,5 @@
 <p-dialog class="dialog"
+    *ngIf="show"
     (onHide)="closeDialog($event)"
     [draggable]="false"
     [height]="dialogSize.height"
@@ -6,5 +7,5 @@
     [width]="dialogSize.width"
     [dismissableMask]="true"
     [modal]="true">
-    <iframe class="dialog__iframe" *ngIf="safeUrl" [src]="safeUrl" frameborder="0"></iframe>
+    <iframe class="dialog__iframe" [src]="safeUrl" frameborder="0"></iframe>
 </p-dialog>
