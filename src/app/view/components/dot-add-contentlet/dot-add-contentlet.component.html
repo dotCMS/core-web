@@ -1,1 +1,1 @@
-<dot-iframe-dialog *ngIf="url" [url]="url" (close)="onClose()"></dot-iframe-dialog>
+<dot-iframe-dialog *ngIf="url" [url]="url" (close)="onClose()" (load)="load.emit($event)"></dot-iframe-dialog>

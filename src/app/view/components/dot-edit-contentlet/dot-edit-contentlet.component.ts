@@ -10,6 +10,7 @@ import { DotMenuService } from '../../../api/services/dot-menu.service';
 export class DotEditContentletComponent implements OnChanges {
     @Input() inode: string;
     @Output() close: EventEmitter<boolean> = new EventEmitter();
+    @Output() load: EventEmitter<boolean> = new EventEmitter();
 
     url: Observable<string>;
 

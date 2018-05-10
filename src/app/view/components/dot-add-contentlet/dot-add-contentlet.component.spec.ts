@@ -84,6 +84,22 @@ describe('DotAddContentletComponent', () => {
             dotIframeDialogComponent = dotIframeDialog.componentInstance;
         });
 
+        describe('events', () => {
+            it('should emit close', () => {
+                spyOn(component.close, 'emit');
+
+                dotIframeDialog.triggerEventHandler('close', {});
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
+            });
+
+            it('should emit load', () => {
+                spyOn(component.load, 'emit');
+
+                dotIframeDialog.triggerEventHandler('load', { hello: 'world' });
+                expect(component.load.emit).toHaveBeenCalledWith({ hello: 'world' });
+            });
+        });
+
         describe('dot-iframe-dialog', () => {
             it('should have', () => {
                 expect(dotIframeDialog).toBeTruthy();
@@ -91,13 +107,6 @@ describe('DotAddContentletComponent', () => {
 
             it('should have set url to', () => {
                 expect(dotIframeDialogComponent.url).toBe('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
-            });
-
-            it('should emit close', () => {
-                spyOn(component.close, 'emit');
-
-                dotIframeDialog.triggerEventHandler('close', {});
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
             });
         });
 

@@ -14,6 +14,7 @@ export interface DotAddContentLet {
 export class DotAddContentletComponent implements OnChanges {
     @Input() data: DotAddContentLet;
     @Output() close: EventEmitter<boolean> = new EventEmitter();
+    @Output() load: EventEmitter<boolean> = new EventEmitter();
     url: string;
 
     constructor() {}

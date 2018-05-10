@@ -81,6 +81,22 @@ describe('DotEditContentletComponent', () => {
             dotIframeDialogComponent = dotIframeDialog.componentInstance;
         });
 
+        describe('events', () => {
+            it('should emit close', () => {
+                spyOn(component.close, 'emit');
+
+                dotIframeDialog.triggerEventHandler('close', {});
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
+            });
+
+            it('should emit load', () => {
+                spyOn(component.load, 'emit');
+
+                dotIframeDialog.triggerEventHandler('load', { hello: 'world' });
+                expect(component.load.emit).toHaveBeenCalledWith({ hello: 'world' });
+            });
+        });
+
         describe('dot-iframe-dialog', () => {
             it('should have dot-iframe-dialog', () => {
                 expect(dotIframeDialog).toBeTruthy();
@@ -99,13 +115,6 @@ describe('DotEditContentletComponent', () => {
                         `&_content_cmd=edit&inode=123`
                     ].join('')
                 );
-            });
-
-            it('should emit close', () => {
-                spyOn(component.close, 'emit');
-
-                dotIframeDialog.triggerEventHandler('close', {});
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
             });
         });
 

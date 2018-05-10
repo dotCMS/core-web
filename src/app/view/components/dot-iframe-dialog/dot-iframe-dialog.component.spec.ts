@@ -102,8 +102,8 @@ describe('DotIframeDialogComponent', () => {
                 it('should emit load', () => {
                     spyOn(component.load, 'emit');
 
-                    dotIframe.triggerEventHandler('load', {});
-                    expect(component.load.emit).toHaveBeenCalledTimes(1);
+                    dotIframe.triggerEventHandler('load', { hello: 'world' });
+                    expect(component.load.emit).toHaveBeenCalledWith({ hello: 'world' });
                 });
 
                 it('should emit close', () => {
