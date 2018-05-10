@@ -117,17 +117,4 @@ describe('DotHttpErrorManagerService', () => {
             header: '500 Header'
         });
     });
-
-    it('should return a forbidden error', () => {
-        const fakeForbiddenError = service.fakeForbiddenError;
-        expect(fakeForbiddenError.status).toEqual(HttpCode.FORBIDDEN);
-        expect(fakeForbiddenError.entity).not.toBeDefined();
-    });
-
-    it('should return a license error', () => {
-        const fakeLicenseError = service.fakeLicenseError;
-        expect(fakeLicenseError.status).toEqual(HttpCode.FORBIDDEN);
-        expect(fakeLicenseError.entity).not.toBeDefined();
-        expect(fakeLicenseError.response.headers.get('error-key')).toBe('dotcms.api.error.license.required');
-    });
 });
