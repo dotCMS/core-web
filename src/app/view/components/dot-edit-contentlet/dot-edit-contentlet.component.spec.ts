@@ -73,7 +73,7 @@ describe('DotEditContentletComponent', () => {
         });
     });
 
-    describe('with inode', () => {
+    fdescribe('with inode', () => {
         beforeEach(() => {
             hostComponent.inode = '123';
             hostFixture.detectChanges();
@@ -99,6 +99,13 @@ describe('DotEditContentletComponent', () => {
                         `&_content_cmd=edit&inode=123`
                     ].join('')
                 );
+            });
+
+            it('should emit close', () => {
+                spyOn(component.close, 'emit');
+
+                dotIframeDialog.triggerEventHandler('close', {});
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
             });
         });
     });

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
 
@@ -9,6 +9,7 @@ import { DotMenuService } from '../../../api/services/dot-menu.service';
 })
 export class DotEditContentletComponent implements OnChanges {
     @Input() inode: string;
+    @Output() close: EventEmitter<boolean> = new EventEmitter();
 
     url: Observable<string>;
 
@@ -18,6 +19,15 @@ export class DotEditContentletComponent implements OnChanges {
         if (changes.inode.currentValue) {
             this.url = this.getUrl(changes.inode.currentValue);
         }
+    }
+
+    /**
+     * Handle close dialog event
+     *
+     * @memberof DotEditContentletComponent
+     */
+    onClose(): void {
+        this.close.emit();
     }
 
     private getUrl(inode: string): Observable<string> {
