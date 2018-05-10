@@ -9,9 +9,9 @@ import { ResponseView, HttpCode } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
-import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, tap, catchError } from 'rxjs/operators';
 
 /**
  * With the url return a string of the edit page html
@@ -37,32 +37,35 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
             return this.dotPageStateService
                 .get(route.queryParams.url)
                 .pipe(
-                    take(1)
-                ).do((dotRenderedPageState: DotRenderedPageState) => {
-                    const currentSection = route.children[0].url[0].path;
-                    const isLayout = currentSection === 'layout';
+                    take(1),
+                    switchMap((dotRenderedPageState: DotRenderedPageState) => {
+                        const currentSection = route.children[0].url[0].path;
+                        const isLayout = currentSection === 'layout';
 
-                    if (isLayout) {
-                        this.checkUserCanGoToLayout(dotRenderedPageState);
-                    }
-                })
-                .catch((err: ResponseView) => {
-                    return this.errorHandler(err);
-                });
+                        if (isLayout) {
+                            return this.checkUserCanGoToLayout(dotRenderedPageState);
+                        } else {
+                            return Observable.of(dotRenderedPageState);
+                        }
+                    }),
+                    catchError((err: ResponseView) => {
+                        return this.errorHandler(err);
+                    })
+                );
         }
     }
 
-    private checkUserCanGoToLayout (dotRenderedPageState: DotRenderedPageState): void {
+    private checkUserCanGoToLayout (dotRenderedPageState: DotRenderedPageState): Observable<DotRenderedPageState> {
         if (!dotRenderedPageState.page.canEdit) {
-            throw new ResponseView(new Response({
+            return Observable.throw(new ResponseView(new Response({
                 body: {},
                 status: HttpCode.FORBIDDEN,
                 headers: null,
                 url: '',
                 merge: null
-            }));
+            })));
         } else if (!dotRenderedPageState.layout) {
-            throw new ResponseView(new Response({
+            return Observable.throw(new ResponseView(new Response({
                 body: {},
                 status: HttpCode.FORBIDDEN,
                 headers: new Headers({
@@ -70,7 +73,9 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                 }),
                 url: '',
                 merge: null
-            }));
+            })));
+        } else {
+            return Observable.of(dotRenderedPageState);
         }
     }
 

@@ -82,7 +82,7 @@ export class DotHttpErrorManagerService {
 
     private callErrorHandler(response: Response): boolean {
         const code = response.status;
-        return response.status === HttpCode.FORBIDDEN ?
+        return code === HttpCode.FORBIDDEN ?
             this.isLicenseError(response) ? this.handleLicense() : this.handleForbidden() :
             this.errorHandlers[code]();
     }

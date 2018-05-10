@@ -7,7 +7,7 @@ import { ContentType } from '../shared/content-type.model';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { LoginService, ResponseView } from 'dotcms-js/dotcms-js';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, catchError } from 'rxjs/operators';
 
 /**
  * With the url return a content type by id or a default content type
@@ -38,19 +38,19 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
         return this.crudService
             .getDataById('v1/contenttype', id)
             .pipe(
-                take(1)
-            )
-            .catch((err: ResponseView) => {
-                return this.dotHttpErrorManagerService.handle(err).pipe(
-                    switchMap((res: DotHttpErrorHandled) => {
-                        if (!res.redirected) {
-                            this.dotRouterService.gotoPortlet('/content-types-angular', true);
-                        }
+                take(1),
+                catchError((err: ResponseView) => {
+                    return this.dotHttpErrorManagerService.handle(err).pipe(
+                        switchMap((res: DotHttpErrorHandled) => {
+                            if (!res.redirected) {
+                                this.dotRouterService.gotoPortlet('/content-types-angular', true);
+                            }
 
-                        return Observable.of(null);;
-                    }
-                ));
-            });
+                            return Observable.of(null);;
+                        }
+                    ));
+                })
+            );
     }
 
     private getDefaultContentType(type: string): Observable<ContentType> {

@@ -82,6 +82,21 @@ describe('DotEditPageResolver', () => {
             });
         });
 
+        it('should return a DotRenderedPageState valid object when layout is null', () => {
+            const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(
+                mockUser,
+                {
+                    ...mockDotRenderedPage,
+                    layout: null
+                }
+            );
+            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockDotRenderedPageState));
+
+            resolver.resolve(route).subscribe((res) => {
+                expect(res).toEqual(mockDotRenderedPageState);
+            });
+        });
+
         it('should return handle 403', () => {
             const fake403Response = mockResponseView(403);
 
@@ -156,7 +171,7 @@ describe('DotEditPageResolver', () => {
         });
 
 
-        it('should trigger 403 error when try to go to layout because user canEdit page', () => {
+        it('should trigger 403 error when try to go to layout because layout is null', () => {
             spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(
                 mockUser,
                 {
