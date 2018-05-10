@@ -28,6 +28,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     form: FormGroup;
     initialFormValue: any;
+    isModelUpdated = false;
 
     saveAsTemplate: boolean;
     showTemplateLayoutSelectionDialog = false;
@@ -169,10 +170,9 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         });
 
         this.initialFormValue = _.cloneDeep(this.form.value);
+        this.isModelUpdated = false;
         this.form.valueChanges.subscribe(() => {
-            if (!_.isEqual(this.form.value, this.initialFormValue)) {
-                this.saveLayout();
-            }
+            this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
             // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value
         });
     }
