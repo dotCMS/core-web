@@ -44,12 +44,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         height: null,
         width: null
     };
+    firstLoad = true;
     showDialog: boolean;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private originalValue: any;
 
     constructor(
         private dotDialogService: DotDialogService,
@@ -224,7 +224,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         this.pageServiceSave().subscribe(() => {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-            this.setOriginalValue();
         });
     }
 
@@ -399,10 +398,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
     }
 
-    private resetOriginalValue(): void {
-        this.originalValue = null;
-    }
-
     private setDialogSize(): void {
         this.dialogSize = {
             width: window.innerWidth - 200,
@@ -428,13 +423,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private setPageState(pageState: DotRenderedPageState): void {
-        this.resetOriginalValue();
         this.pageState = pageState;
         this.renderPage(pageState);
-    }
-
-    private setOriginalValue(model?: any): void {
-        this.originalValue = model || this.dotEditContentHtmlService.getContentModel();
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {
@@ -445,15 +435,13 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.pageModelChange
             .filter(model => model.length)
             .takeUntil(this.destroy$)
-            .subscribe(model => {
-                if (this.originalValue) {
+            .subscribe((model) => {
+                if (!this.firstLoad) {
                     this.ngZone.run(() => {
-                        if (!_.isEqual(model, this.originalValue)) {
-                            this.saveContent();
-                        }
+                        this.saveContent();
                     });
                 } else {
-                    this.setOriginalValue(model);
+                    this.firstLoad = false;
                 }
             });
     }
