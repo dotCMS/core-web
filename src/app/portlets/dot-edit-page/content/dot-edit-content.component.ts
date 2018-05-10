@@ -48,6 +48,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
     addContentUrl: string;
+    editInode: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -240,42 +241,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         };
 
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
-
-        this.dotMenuService
-            .getDotMenuId('content')
-            .take(1)
-            .subscribe((portletId: string) => {
-                const url = [
-                    `/c/portal/layout`,
-                    `?p_l_id=${portletId}`,
-                    `&p_p_id=content`,
-                    `&p_p_action=1`,
-                    `&p_p_state=maximized`,
-                    `&_content_inode=${$event.dataset.dotInode}`,
-                    `&_content_cmd=edit`,
-                    `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`
-                ].join('');
-                this.loadDialogEditor(url);
-            });
-    }
-
-    private editCode($event: any) {
-        this.dotMenuService
-            .getDotMenuId('site-browser')
-            .take(1)
-            .subscribe((portletId: string) => {
-                const url = [
-                    `/c/portal/layout`,
-                    `?p_l_id=${portletId}`,
-                    `&p_p_id=site-browser`,
-                    `&p_p_action=1`,
-                    `&p_p_state=maximized`,
-                    `&_site_browser_inode=${$event.dataset.dotInode}`,
-                    `&_site_browser_cmd=edit`,
-                    `&_site_browser_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`
-                ].join('');
-                this.loadDialogEditor(url);
-            });
+        this.editInode = $event.dataset.dotInode;
     }
 
     private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
@@ -307,7 +273,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private iframeActionsHandler(event: any): Function {
         const eventsHandlerMap = {
             edit: this.editContentlet.bind(this),
-            code: this.editCode.bind(this),
+            code: this.editContentlet.bind(this),
             add: this.addContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
             // cancel: this.closeDialog.bind(this),
