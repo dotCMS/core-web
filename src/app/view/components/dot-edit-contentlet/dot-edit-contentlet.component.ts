@@ -31,12 +31,10 @@ export class DotEditContentletComponent implements OnChanges {
                     `&p_p_id=content`,
                     `&p_p_action=1`,
                     `&p_p_state=maximized`,
-                    `&angularCurrentPortlet=content`,
                     `&p_p_mode=view`,
                     `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
                     `&_content_cmd=edit&inode=${inode}`
                 ].join('');
             });
-        // return `some/thing/${inode}`;
     }
 }
