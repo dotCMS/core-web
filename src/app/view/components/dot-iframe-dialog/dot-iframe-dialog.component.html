@@ -7,5 +7,5 @@
     [width]="dialogSize.width"
     [dismissableMask]="true"
     [modal]="true">
-    <dot-iframe class="dialog__iframe" [src]="url"></dot-iframe>
+    <dot-iframe class="dialog__iframe" [src]="url" (load)="load.emit()"></dot-iframe>
 </p-dialog>

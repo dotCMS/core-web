@@ -9,6 +9,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 export class DotIframeDialogComponent implements OnInit, OnChanges {
     @Input() url: string;
     @Output() close: EventEmitter<boolean> = new EventEmitter();
+    @Output() load: EventEmitter<boolean> = new EventEmitter();
 
     dialogSize: any;
     show: boolean;

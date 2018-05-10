@@ -84,6 +84,7 @@ describe('DotIframeDialogComponent', () => {
             beforeEach(() => {
                 dialog = de.query(By.css('p-dialog'));
                 dialogComponent = dialog.componentInstance;
+                dotIframe = de.query(By.css('dot-iframe'));
             });
 
             it('should have', () => {
@@ -97,11 +98,20 @@ describe('DotIframeDialogComponent', () => {
                 expect(dialogComponent.modal).toEqual(true, 'modal');
             });
 
-            it('should emit close', () => {
-                spyOn(component.close, 'emit');
+            describe('events', () => {
+                it('should emit load', () => {
+                    spyOn(component.load, 'emit');
 
-                dialog.triggerEventHandler('onHide', {});
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
+                    dotIframe.triggerEventHandler('load', {});
+                    expect(component.load.emit).toHaveBeenCalledTimes(1);
+                });
+
+                it('should emit close', () => {
+                    spyOn(component.close, 'emit');
+
+                    dialog.triggerEventHandler('onHide', {});
+                    expect(component.close.emit).toHaveBeenCalledTimes(1);
+                });
             });
         });
 
