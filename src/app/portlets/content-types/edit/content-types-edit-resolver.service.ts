@@ -38,16 +38,16 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
             .getDataById('v1/contenttype', id)
             .take(1)
             .catch((err: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(err).subscribe((res: DotHttpErrorHandled) => {
+                return this.dotHttpErrorManagerService.handle(err).do((res: DotHttpErrorHandled) => {
                     if (!res.redirected) {
                         this.dotRouterService.gotoPortlet('/content-types-angular', true);
                     }
                 });
-                return Observable.of(null);
             });
     }
 
     private getDefaultContentType(type: string): Observable<ContentType> {
+        console.log('getDefaultContentType');
         return Observable.of({
             owner: this.loginService.auth.user.userId,
             baseType: type.toUpperCase(),

@@ -20,7 +20,7 @@ import { DotEditPageDataService } from './dot-edit-page-data.service';
  * @implements {Resolve<DotRenderedPageState>}
  */
 @Injectable()
-export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
+export class DotEditPageResolver implements Resolve<DotRenderedPageState | DotHttpErrorHandled> {
     constructor(
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotPageStateService: DotPageStateService,
@@ -28,23 +28,21 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         private dotEditPageDataService: DotEditPageDataService
     ) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
+    resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState | DotHttpErrorHandled> {
         const data = this.dotEditPageDataService.getAndClean();
         if (data) {
             return Observable.of(data);
         } else {
             return this.dotPageStateService
                 .get(route.queryParams.url)
-                .map((dotRenderedPageState: DotRenderedPageState) => {
-                    // TODO: find a way to trow something to make the catch happen
+                .take(1)
+                .do((dotRenderedPageState: DotRenderedPageState) => {
                     const currentSection = route.children[0].url[0].path;
                     const isLayout = currentSection === 'layout';
-                    const userCantEditLayout = isLayout && !dotRenderedPageState.page.canEdit;
-                    if (userCantEditLayout) {
-                        this.handleUserEditingOptions();
-                    }
 
-                    return dotRenderedPageState;
+                    if (isLayout) {
+                        this.checkUserCanGoToLayout(dotRenderedPageState);
+                    }
                 })
                 .catch((err: ResponseView) => {
                     return this.errorHandler(err);
@@ -52,24 +50,20 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         }
     }
 
-    private handleUserEditingOptions(): void {
-        const response: Response = new Response({
-            body: {},
-            status: HttpCode.UNAUTHORIZED,
-            headers: null,
-            url: '',
-            merge: null
-        });
-        this.errorHandler(new ResponseView(response));
+    private checkUserCanGoToLayout (dotRenderedPageState: DotRenderedPageState): void {
+        if (!dotRenderedPageState.page.canEdit) {
+            throw this.dotHttpErrorManagerService.fakeForbiddenError;
+        } else if (!dotRenderedPageState.layout) {
+            throw this.dotHttpErrorManagerService.fakeLicenseError;
+        }
     }
 
-    private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
-        this.dotHttpErrorManagerService.handle(err).subscribe((res: DotHttpErrorHandled) => {
+    private errorHandler(err: ResponseView): Observable<DotHttpErrorHandled> {
+        return this.dotHttpErrorManagerService.handle(err).do((res: DotHttpErrorHandled) => {
 
             if (!res.redirected) {
                 this.dotRouterService.gotoPortlet('/c/site-browser');
             }
         });
-        return Observable.of(null);
     }
 }

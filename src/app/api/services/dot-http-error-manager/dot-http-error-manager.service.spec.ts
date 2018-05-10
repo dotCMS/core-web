@@ -1,5 +1,5 @@
 import { DotDialogService } from '../dot-dialog/dot-dialog.service';
-import { LoginService } from 'dotcms-js/dotcms-js';
+import { LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -116,5 +116,18 @@ describe('DotHttpErrorManagerService', () => {
             message: '500 Message',
             header: '500 Header'
         });
+    });
+
+    it('should return a forbidden error', () => {
+        const fakeForbiddenError = service.fakeForbiddenError;
+        expect(fakeForbiddenError.status).toEqual(HttpCode.FORBIDDEN);
+        expect(fakeForbiddenError.entity).not.toBeDefined();
+    });
+
+    it('should return a license error', () => {
+        const fakeLicenseError = service.fakeLicenseError;
+        expect(fakeLicenseError.status).toEqual(HttpCode.FORBIDDEN);
+        expect(fakeLicenseError.entity).not.toBeDefined();
+        expect(fakeLicenseError.response.headers.get('error-key')).toBe('dotcms.api.error.license.required');
     });
 });

@@ -154,6 +154,27 @@ describe('DotEditPageResolver', () => {
             expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
 
         });
+
+
+        it('should trigger 403 error when try to go to layout because user canEdit page', () => {
+            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(
+                mockUser,
+                {
+                    ...mockDotRenderedPage,
+                    layout: null
+                }
+            )));
+
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+                redirected: false
+            }));
+
+            spyOn(dotRouterService, 'gotoPortlet');
+
+            resolver.resolve(route).subscribe();
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
+
+        });
     });
 
     describe('with dotRenderedPageState', () => {
