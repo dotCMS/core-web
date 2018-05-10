@@ -187,7 +187,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             editContentletIframeEl.contentWindow.addEventListener('keydown', event => {
                 if (event.key === 'Escape') {
                     this.ngZone.run(() => {
-                        this.showDialog = false;
+                        console.log('Escape');
+                        this.addContentlet = null;
+                        this.editInode = null;
                     });
                 }
             });
@@ -301,11 +303,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         });
                 }
             });
-    }
-
-    private loadDialogEditor(url: string): void {
-        this.contentletActionsUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        this.showDialog = true;
     }
 
     private subscribeIframeCustomEvents(): void {

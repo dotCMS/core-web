@@ -66,7 +66,7 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -602,7 +602,7 @@ describe('DotEditContentComponent', () => {
                 });
             });
 
-            describe('actions', () => {
+            fdescribe('actions', () => {
                 beforeEach(() => {
                     spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
                     spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
@@ -610,7 +610,7 @@ describe('DotEditContentComponent', () => {
                     fixture.detectChanges();
                 });
 
-                it('should open edit content dialog', () => {
+                it('should edit contentlet', () => {
                     expect(component.showDialog).toBe(undefined);
 
                     dotEditContentHtmlService.iframeActions.next({
@@ -628,23 +628,10 @@ describe('DotEditContentComponent', () => {
                         identifier: '123',
                         uuid: '456'
                     });
-
-                    const url = [
-                        '/c/portal/layout',
-                        '?p_l_id=portletId',
-                        '&p_p_id=content',
-                        '&p_p_action=1',
-                        '&p_p_state=maximized',
-                        '&_content_inode=789',
-                        '&_content_cmd=edit',
-                        '&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet'
-                    ].join('');
-
-                    expect(component.showDialog).toBe(true);
-                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
+                    expect(component.editInode).toBe('789');
                 });
 
-                it('should open add contentlet dialog', () => {
+                it('should add a contentlet', () => {
                     expect(component.showDialog).toBe(undefined);
                     dotEditContentHtmlService.iframeActions.next({
                         name: 'add',
@@ -655,38 +642,12 @@ describe('DotEditContentComponent', () => {
                         }
                     });
 
-                    expect(component.showDialog).toBe(true);
                     expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
                         identifier: '123',
                         uuid: '456'
                     });
 
-                    const url = '/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,widget';
-                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
-                });
-
-                it('should open edit vtl dialog', () => {
-                    expect(component.showDialog).toBe(undefined);
-                    dotEditContentHtmlService.iframeActions.next({
-                        name: 'code',
-                        dataset: {
-                            dotInode: '789'
-                        }
-                    });
-
-                    const url = [
-                        `/c/portal/layout`,
-                        `?p_l_id=portletId`,
-                        `&p_p_id=site-browser`,
-                        `&p_p_action=1`,
-                        `&p_p_state=maximized`,
-                        `&_site_browser_inode=789`,
-                        `&_site_browser_cmd=edit`,
-                        `&_site_browser_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`
-                    ].join('');
-
-                    expect(component.showDialog).toBe(true);
-                    expect(component.contentletActionsUrl).toEqual(component.sanitizer.bypassSecurityTrustResourceUrl(url));
+                    expect(component.addContentUrl).toEqual('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,widget');
                 });
             });
         });
