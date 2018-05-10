@@ -96,6 +96,13 @@ describe('DotIframeDialogComponent', () => {
                 expect(dialogComponent.dismissableMask).toEqual(true, 'dismissableMask');
                 expect(dialogComponent.modal).toEqual(true, 'modal');
             });
+
+            it('should emit close', () => {
+                spyOn(component.close, 'emit');
+
+                dialog.triggerEventHandler('onHide', {});
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
+            });
         });
 
         describe('dot-iframe', () => {

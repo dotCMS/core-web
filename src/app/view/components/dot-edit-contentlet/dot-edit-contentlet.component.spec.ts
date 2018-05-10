@@ -23,7 +23,7 @@ class TestHostComponent {
     inode: string;
 }
 
-fdescribe('DotEditContentletComponent', () => {
+describe('DotEditContentletComponent', () => {
     let component: DotEditContentletComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;
@@ -73,7 +73,7 @@ fdescribe('DotEditContentletComponent', () => {
         });
     });
 
-    fdescribe('with inode', () => {
+    describe('with inode', () => {
         beforeEach(() => {
             hostComponent.inode = '123';
             hostFixture.detectChanges();
