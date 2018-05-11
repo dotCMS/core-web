@@ -3,7 +3,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
 
-import { DotAddContentletComponent, DotAddContentLet } from './dot-add-contentlet.component';
+import { DotAddContentletComponent } from './dot-add-contentlet.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotIframeDialogModule } from '../dot-iframe-dialog/dot-iframe-dialog.module';
 import { DotIframeDialogComponent } from '../dot-iframe-dialog/dot-iframe-dialog.component';
@@ -12,15 +12,14 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotMenuService } from '../../../api/services/dot-menu.service';
-import { IfObservable } from 'rxjs/observable/IfObservable';
 import { Observable } from 'rxjs/Observable';
+import { DotAddContentLet, DotAddContentletService } from './services/dot-add-contentlet.service';
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-add-contentlet [data]="data"></dot-add-contentlet>'
+    template: '<dot-add-contentlet></dot-add-contentlet>'
 })
 class TestHostComponent {
-    data: DotAddContentLet;
 }
 
 describe('DotAddContentletComponent', () => {
@@ -33,10 +32,13 @@ describe('DotAddContentletComponent', () => {
     let dotIframeDialog: DebugElement;
     let dotIframeDialogComponent: DotIframeDialogComponent;
 
+    let dotAddContentletService: DotAddContentletService;
+
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotAddContentletComponent, TestHostComponent],
             providers: [
+                DotAddContentletService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -60,6 +62,8 @@ describe('DotAddContentletComponent', () => {
         hostComponent = hostFixture.componentInstance;
         de = hostDe.query(By.css('dot-add-contentlet'));
         component = de.componentInstance;
+        dotAddContentletService = hostDe.injector.get(DotAddContentletService);
+        spyOn(dotAddContentletService, 'clear');
     });
 
     describe('default', () => {
@@ -68,50 +72,58 @@ describe('DotAddContentletComponent', () => {
             dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
         });
 
-        it('should not have dot-iframe-dialog', () => {
-            expect(dotIframeDialog === null).toBe(true);
+        it('should have', () => {
+            expect(dotIframeDialog).toBeTruthy();
         });
     });
 
     describe('with inode', () => {
         beforeEach(() => {
-            hostComponent.data = {
-                container: '123',
-                add: 'content,form'
-            };
             hostFixture.detectChanges();
+
             dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
             dotIframeDialogComponent = dotIframeDialog.componentInstance;
+
+            dotAddContentletService.add({
+                container: '123',
+                type: 'content',
+                load: jasmine.createSpy(),
+                keyDown: jasmine.createSpy()
+            });
+
+            spyOn(component, 'onClose').and.callThrough();
+            spyOn(component, 'onLoad').and.callThrough();
+            spyOn(component, 'onKeyDown').and.callThrough();
         });
 
         describe('events', () => {
-            it('should emit close', () => {
-                spyOn(component.close, 'emit');
-
+            it('should call clear', () => {
                 dotIframeDialog.triggerEventHandler('close', {});
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
+                expect(component.onClose).toHaveBeenCalledTimes(1);
+                expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
             });
 
-            it('should emit load', () => {
-                spyOn(component.load, 'emit');
-
+            it('should call load', () => {
                 dotIframeDialog.triggerEventHandler('load', { hello: 'world' });
-                expect(component.load.emit).toHaveBeenCalledWith({ hello: 'world' });
+                expect(component.onLoad).toHaveBeenCalledTimes(1);
+                expect(dotAddContentletService.load).toHaveBeenCalledWith({ hello: 'world' });
+            });
+
+            it('should call keyDown', () => {
+                dotIframeDialog.triggerEventHandler('keydown', { hello: 'world' });
+                expect(component.onKeyDown).toHaveBeenCalledTimes(1);
+                expect(dotAddContentletService.keyDown).toHaveBeenCalledWith({ hello: 'world' });
             });
         });
 
         describe('dot-iframe-dialog', () => {
-            it('should have', () => {
-                expect(dotIframeDialog).toBeTruthy();
-            });
-
             it('should have set url to', () => {
                 expect(dotIframeDialogComponent.url).toBe('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
             });
         });
 
         it('should hide', () => {
-            hostComponent.data = null;
+            // hostComponent.data = null;
             hostFixture.detectChanges();
             dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
 

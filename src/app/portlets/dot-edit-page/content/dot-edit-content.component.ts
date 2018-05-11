@@ -30,7 +30,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { Subject } from 'rxjs/Subject';
 import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
 import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
-import { DotAddContentLet } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.component';
+import { DotAddContentletService, DotAddContentLet } from '../../../view/components/dot-add-contentlet/services/dot-add-contentlet.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -43,12 +43,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     contentletActionsUrl: SafeResourceUrl;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
-    addContentData: DotAddContentLet;
     editInode: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
+        private dotAddContentletService: DotAddContentletService,
         private dotDialogService: DotDialogService,
         private dotEditPageDataService: DotEditPageDataService,
         private dotEditPageService: DotEditPageService,
@@ -171,29 +171,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Bind events on "contentlet Actions" iFrame loaded in the dialog.
-     *
-     * @param $event
-     * @memberof DotEditContentComponent
-     */
-    onContentletActionLoaded($event: any): void {
-        const editContentletIframeEl = $event.target;
-        if (editContentletIframeEl.contentDocument.body.innerHTML !== '') {
-            editContentletIframeEl.contentWindow.focus();
-            editContentletIframeEl.contentWindow.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    this.ngZone.run(() => {
-                        console.log('Escape');
-                        this.addContentlet = null;
-                        this.editInode = null;
-                    });
-                }
-            });
-            editContentletIframeEl.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
-        }
-    }
-
-    /**
      * Reload the edit page
      *
      * @memberof DotEditContentComponent
@@ -225,10 +202,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             uuid: $event.dataset.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-        this.addContentData = {
+
+        this.dotAddContentletService.add({
             container: $event.dataset.dotIdentifier,
-            add: $event.dataset.dotAdd
-        };
+            type: $event.dataset.dotAdd,
+            load: (event) => {
+                event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+            }
+        });
     }
 
     private editContentlet($event: any): void {
@@ -282,9 +263,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private closeAddEditComponent(): void {
-        if (this.addContentData) {
-            this.addContentData = null;
-        }
+        this.dotAddContentletService.clear();
 
         if (this.editInode) {
             this.editInode = null;

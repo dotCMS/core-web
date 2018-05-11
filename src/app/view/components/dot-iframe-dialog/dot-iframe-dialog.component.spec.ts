@@ -52,6 +52,7 @@ describe('DotIframeDialogComponent', () => {
         de = hostDe.query(By.css('dot-iframe-dialog'));
         component = de.componentInstance;
         sanitizer = de.injector.get(DomSanitizer);
+        spyOn(component, 'closeDialog').and.callThrough();
     });
 
     describe('default', () => {
@@ -62,8 +63,8 @@ describe('DotIframeDialogComponent', () => {
         });
 
         describe('dialog', () => {
-            it('should not have', () => {
-                expect(dialog === null).toBe(true);
+            it('should have', () => {
+                expect(dialog).toBeTruthy();
             });
         });
 
@@ -75,18 +76,49 @@ describe('DotIframeDialogComponent', () => {
     });
 
     describe('show', () => {
+        const fakeEvent = () => {
+            return {
+                target: {
+                    contentWindow: {
+                        focus: jasmine.createSpy()
+                    }
+                }
+            };
+        };
+
         beforeEach(() => {
             hostComponent.url = 'hello/world';
             hostFixture.detectChanges();
+            dialog = de.query(By.css('p-dialog'));
+            dialogComponent = dialog.componentInstance;
+            dotIframe = de.query(By.css('dot-iframe'));
+        });
+
+        describe('events', () => {
+            it('should emit load', () => {
+                spyOn(component.load, 'emit');
+
+                const mockEvent = fakeEvent();
+                dotIframe.triggerEventHandler('load', mockEvent);
+                expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
+            });
+
+            it('should emit close', () => {
+                spyOn(component.close, 'emit');
+
+                dialog.triggerEventHandler('onHide', {});
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
+            });
+
+            it('should emit keydown', () => {
+                spyOn(component.keydown, 'emit');
+
+                dotIframe.triggerEventHandler('keydown', { hello: 'world' });
+                expect(component.keydown.emit).toHaveBeenCalledWith({ hello: 'world' });
+            });
         });
 
         describe('dialog', () => {
-            beforeEach(() => {
-                dialog = de.query(By.css('p-dialog'));
-                dialogComponent = dialog.componentInstance;
-                dotIframe = de.query(By.css('dot-iframe'));
-            });
-
             it('should have', () => {
                 expect(dialog).toBeTruthy();
             });
@@ -98,20 +130,17 @@ describe('DotIframeDialogComponent', () => {
                 expect(dialogComponent.modal).toEqual(true, 'modal');
             });
 
-            describe('events', () => {
-                it('should emit load', () => {
-                    spyOn(component.load, 'emit');
+            it('should focus in the iframe window', () => {
+                const mockEvent = fakeEvent();
+                dotIframe.triggerEventHandler('load', { ...mockEvent });
+                expect(mockEvent.target.contentWindow.focus).toHaveBeenCalledTimes(1);
+            });
 
-                    dotIframe.triggerEventHandler('load', { hello: 'world' });
-                    expect(component.load.emit).toHaveBeenCalledWith({ hello: 'world' });
+            it('should close dialog on esc key', () => {
+                dotIframe.triggerEventHandler('keydown', {
+                    key: 'Escape'
                 });
-
-                it('should emit close', () => {
-                    spyOn(component.close, 'emit');
-
-                    dialog.triggerEventHandler('onHide', {});
-                    expect(component.close.emit).toHaveBeenCalledTimes(1);
-                });
+                expect(component.closeDialog).toHaveBeenCalledTimes(1);
             });
         });
 
@@ -148,7 +177,7 @@ describe('DotIframeDialogComponent', () => {
             dialog = de.query(By.css('p-dialog'));
             dotIframe = de.query(By.css('dot-iframe'));
 
-            expect(dialog === null).toBe(true);
+            expect(dialog).toBeTruthy();
             expect(dotIframe === null).toBe(true);
         });
     });

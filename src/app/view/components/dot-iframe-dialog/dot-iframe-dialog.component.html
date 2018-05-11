@@ -1,5 +1,4 @@
 <p-dialog class="dialog"
-    *ngIf="show"
     (onHide)="closeDialog($event)"
     [draggable]="false"
     [height]="dialogSize.height"
@@ -7,5 +6,5 @@
     [width]="dialogSize.width"
     [dismissableMask]="true"
     [modal]="true">
-    <dot-iframe class="dialog__iframe" [src]="url" (load)="load.emit($event)"></dot-iframe>
+    <dot-iframe *ngIf="show" class="dialog__iframe" [src]="url" (load)="onLoad($event)" (keydown)="onKeyDown($event)"></dot-iframe>
 </p-dialog>

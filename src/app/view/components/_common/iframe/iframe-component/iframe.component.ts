@@ -6,7 +6,8 @@ import {
     Input,
     ViewChild,
     Output,
-    EventEmitter
+    EventEmitter,
+    NgZone
 } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
@@ -25,16 +26,18 @@ export class IframeComponent implements OnInit {
     @Input() src: string;
     @Input() isLoading = false;
     @Output() load: EventEmitter<any> = new EventEmitter();
+    @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     showOverlay = false;
 
     constructor(
+        private dotIframeService: DotIframeService,
         private element: ElementRef,
         private loggerService: LoggerService,
         private loginService: LoginService,
-        private dotIframeService: DotIframeService,
+        private ngZone: NgZone,
         public dotLoadingIndicatorService: DotLoadingIndicatorService,
-        public iframeOverlayService: IframeOverlayService
+        public iframeOverlayService: IframeOverlayService,
     ) {}
 
     ngOnInit(): void {
@@ -80,12 +83,23 @@ export class IframeComponent implements OnInit {
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
 
+        if (!!this.getIframeWindow()) {
+            this.getIframeWindow().removeEventListener('keydown', this.emitKeyDown.bind(this));
+        }
+
         if (this.isIframeHaveContent()) {
+            this.getIframeWindow().addEventListener('keydown', this.emitKeyDown.bind(this));
             this.load.emit($event);
         }
     }
 
-    private getIframeWindow() {
+    private emitKeyDown($event: KeyboardEvent): void {
+        this.ngZone.run(() => {
+            this.keydown.emit($event);
+        });
+    }
+
+    private getIframeWindow(): Window {
         return this.iframeElement && this.iframeElement.nativeElement.contentWindow;
     }
 

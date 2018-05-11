@@ -45,6 +45,7 @@ import { DotEditContentletModule } from '../../../view/components/dot-edit-conte
 import { DotAddContentletModule } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.module';
 import { DotAddContentletComponent } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.component';
 import { DotEditContentletComponent } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.component';
+import { DotAddContentletService } from '../../../view/components/dot-add-contentlet/services/dot-add-contentlet.service';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -84,6 +85,7 @@ describe('DotEditContentComponent', () => {
     let route: ActivatedRoute;
     let toolbarComponent: DotEditPageToolbarComponent;
     let toolbarElement: DebugElement;
+    let dotAddContentletService: DotAddContentletService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -171,14 +173,15 @@ describe('DotEditContentComponent', () => {
 
         component = fixture.componentInstance;
         de = fixture.debugElement;
+        dotAddContentletService = de.injector.get(DotAddContentletService);
         dotDialogService = de.injector.get(DotDialogService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
+        dotEditPageDataService = de.injector.get(DotEditPageDataService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
+        dotMenuService = de.injector.get(DotMenuService);
         dotPageStateService = de.injector.get(DotPageStateService);
         dotRouterService = de.injector.get(DotRouterService);
-        dotEditPageDataService = de.injector.get(DotEditPageDataService);
-        dotMenuService = de.injector.get(DotMenuService);
         toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
         toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
@@ -230,7 +233,7 @@ describe('DotEditContentComponent', () => {
         expect(component.reload).toHaveBeenCalledTimes(1);
     });
 
-    describe("what's change", () => {
+    describe('what\'s change', () => {
         let viewAsToolbar: DebugElement;
 
         beforeEach(() => {
@@ -548,9 +551,7 @@ describe('DotEditContentComponent', () => {
         });
     });
 
-    describe('actions', () => {
-        let dotAddContentlet: DebugElement;
-        let dotAddContentletComponent: DotAddContentletComponent;
+    fdescribe('actions', () => {
         let dotEditContentlet: DebugElement;
         let dotEditContentletComponent: DotEditContentletComponent;
 
@@ -560,24 +561,9 @@ describe('DotEditContentComponent', () => {
             fixture.detectChanges();
         });
 
-        describe('bind contentlet events', () => {
-            it('should bind contentlet events', () => {
-                spyOn(component, 'setContentletsEvents').and.callThrough();
-                const fakeEvent = {
-                    target: {
-                        contentWindow: {
-                            ngEditContentletEvents: null
-                        }
-                    }
-                };
-                component.setContentletsEvents(fakeEvent);
-                expect(fakeEvent.target.contentWindow.ngEditContentletEvents === null).toBe(false);
-            });
-        });
-
-        describe('add', () => {
+        fdescribe('add', () => {
             beforeEach(() => {
-                spyOn(component, 'setContentletsEvents');
+                spyOn(dotAddContentletService, 'add').and.callThrough();
 
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'add',
@@ -589,40 +575,39 @@ describe('DotEditContentComponent', () => {
                 });
 
                 fixture.detectChanges();
-
-                dotAddContentlet = de.query(By.css('dot-add-contentlet'));
-                dotAddContentletComponent = dotAddContentlet.componentInstance;
             });
 
-            it('should have dot-add-contentlet', () => {
-                expect(dotAddContentletComponent).toBeTruthy();
-                expect(dotAddContentletComponent.data).toEqual({
-                    container: '123',
-                    add: 'content,widget'
-                });
-            });
-
-            it('should add a contentlet', () => {
+            it('should set container to add', () => {
                 expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
                     identifier: '123',
                     uuid: '456'
                 });
+            });
 
-                expect(component.addContentData).toEqual({
+            it('should call add service', () => {
+                expect(dotAddContentletService.add).toHaveBeenCalledWith({
                     container: '123',
-                    add: 'content,widget'
+                    type: 'content,widget',
+                    load: jasmine.any(Function)
                 });
             });
 
-            it('should set contentlet events on load', () => {
-                dotAddContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
-                expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
+            it('should bind contentlet events', () => {
+                const fakeEvent = {
+                    target: {
+                        contentWindow: {
+                            ngEditContentletEvents: undefined
+                        }
+                    }
+                };
+                dotAddContentletService.load(fakeEvent);
+                expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
             });
         });
 
         describe('edit', () => {
             beforeEach(() => {
-                spyOn(component, 'setContentletsEvents');
+                // spyOn(component, 'setContentletsEvents');
 
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'edit',
@@ -654,10 +639,10 @@ describe('DotEditContentComponent', () => {
                 expect(component.editInode).toEqual('789');
             });
 
-            it('should set contentlet events on load', () => {
-                dotEditContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
-                expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
-            });
+            // it('should set contentlet events on load', () => {
+            //     dotEditContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
+            //     expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
+            // });
         });
     });
 
@@ -683,35 +668,6 @@ describe('DotEditContentComponent', () => {
                     }
                 };
                 spyOn(event.target.contentWindow, 'addEventListener').and.callThrough();
-            });
-
-            it('should not bind listeners to empty body', () => {
-                component.onContentletActionLoaded(event);
-
-                expect(event.target.contentWindow.focus).not.toHaveBeenCalled();
-                expect(event.target.contentWindow.addEventListener).not.toHaveBeenCalled();
-            });
-
-            describe('load iframe content', () => {
-                beforeEach(() => {
-                    event.target.contentDocument.body.innerHTML = '<html>';
-                    component.onContentletActionLoaded(event);
-                });
-
-                it('should bind listener and set the events to loaded iFrame', () => {
-                    expect(event.target.contentWindow.focus).toHaveBeenCalled();
-                    expect(event.target.contentWindow.addEventListener).toHaveBeenCalled();
-                    expect(event.target.contentWindow.ngEditContentletEvents).toBeDefined();
-                });
-
-                xit('should capture Escape key and set to false showDialog', () => {
-                    keypressFunction({ key: 'Escape' });
-                });
-
-                xit('should capture other key and do not change the state of showDialog', () => {
-                    component.onContentletActionLoaded(event);
-                    keypressFunction({ key: 'other' });
-                });
             });
         });
 

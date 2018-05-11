@@ -8,8 +8,9 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class DotIframeDialogComponent implements OnInit, OnChanges {
     @Input() url: string;
-    @Output() close: EventEmitter<boolean> = new EventEmitter();
-    @Output() load: EventEmitter<boolean> = new EventEmitter();
+    @Output() close: EventEmitter<any> = new EventEmitter();
+    @Output() load: EventEmitter<any> = new EventEmitter();
+    @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     dialogSize: any;
     show: boolean;
@@ -33,6 +34,31 @@ export class DotIframeDialogComponent implements OnInit, OnChanges {
         this.url = null;
         this.show = false;
         this.close.emit();
+    }
+
+    /**
+     * Handle keydown event from the iframe window
+     *
+     * @param {any} $event
+     * @memberof DotIframeDialogComponent
+     */
+    onKeyDown($event: KeyboardEvent): void {
+        this.keydown.emit($event);
+
+        if ($event.key === 'Escape') {
+            this.closeDialog();
+        }
+    }
+
+    /**
+     * Handle load event from the iframe window
+     *
+     * @param {*} $event
+     * @memberof DotIframeDialogComponent
+     */
+    onLoad($event: any): void {
+        $event.target.contentWindow.focus();
+        this.load.emit($event);
     }
 
     private setDialogSize(): void {
