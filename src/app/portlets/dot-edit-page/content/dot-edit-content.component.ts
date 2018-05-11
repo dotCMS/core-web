@@ -44,7 +44,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         height: null,
         width: null
     };
-    firstLoad = true;
     showDialog: boolean;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
@@ -433,16 +432,13 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModelChange
+            .skip(1)
             .filter(model => model.length)
             .takeUntil(this.destroy$)
             .subscribe((model) => {
-                if (!this.firstLoad) {
-                    this.ngZone.run(() => {
-                        this.saveContent();
-                    });
-                } else {
-                    this.firstLoad = false;
-                }
+                this.ngZone.run(() => {
+                    this.saveContent();
+                });
             });
     }
 

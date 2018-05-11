@@ -824,7 +824,7 @@ describe('DotEditContentComponent', () => {
             fixture.detectChanges();
 
             dotEditContentHtmlService.pageModelChange.next(newModel);
-            expect(dotEditPageService.save).toHaveBeenCalled();
+            expect(dotEditPageService.save).toHaveBeenCalledTimes(1);
         });
     });
 });
