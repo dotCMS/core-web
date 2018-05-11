@@ -89,7 +89,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onDeactivateSave(): Observable<boolean> {
         return this.pageServiceSave()
-            .map(() =>  true)
+            .map(() => true)
             .catch((error: ResponseView) => {
                 this.dotHttpErrorManagerService.handle(error);
                 return Observable.of(false);
@@ -180,7 +180,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         const editContentletIframeEl = $event.target;
         if (editContentletIframeEl.contentDocument.body.innerHTML !== '') {
             editContentletIframeEl.contentWindow.focus();
-            editContentletIframeEl.contentWindow.addEventListener('keydown', event => {
+            editContentletIframeEl.contentWindow.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
                     this.ngZone.run(() => {
                         console.log('Escape');
@@ -273,12 +273,22 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             code: this.editContentlet.bind(this),
             add: this.addContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
-            // cancel: this.closeDialog.bind(this),
-            // close: this.closeDialog.bind(this),
+            cancel: this.closeAddEditComponent.bind(this),
+            close: this.closeAddEditComponent.bind(this),
             save: () => {}
         };
 
         return eventsHandlerMap[event];
+    }
+
+    private closeAddEditComponent(): void {
+        if (this.addContentData) {
+            this.addContentData = null;
+        }
+
+        if (this.editInode) {
+            this.editInode = null;
+        }
     }
 
     private handleSetPageStateFailed(err: ResponseView): void {

@@ -549,50 +549,36 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('actions', () => {
-        let dotAddContentlet: DotAddContentletComponent;
+        let dotAddContentlet: DebugElement;
+        let dotAddContentletComponent: DotAddContentletComponent;
+        let dotEditContentlet: DebugElement;
         let dotEditContentletComponent: DotEditContentletComponent;
 
         beforeEach(() => {
             spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
             spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
-            spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('portletId'));
             fixture.detectChanges();
-            dotAddContentlet = de.query(By.css('dot-add-contentlet')).componentInstance;
-            dotEditContentletComponent = de.query(By.css('dot-edit-contentlet')).componentInstance;
         });
 
-        describe('edit', () => {
-            beforeEach(() => {
-                dotEditContentHtmlService.iframeActions.next({
-                    name: 'edit',
-                    container: {
-                        dotIdentifier: '123',
-                        dotUuid: '456'
-                    },
-                    dataset: {
-                        dotInode: '789'
+        describe('bind contentlet events', () => {
+            it('should bind contentlet events', () => {
+                spyOn(component, 'setContentletsEvents').and.callThrough();
+                const fakeEvent = {
+                    target: {
+                        contentWindow: {
+                            ngEditContentletEvents: null
+                        }
                     }
-                });
-
-                fixture.detectChanges();
-            });
-
-            it('should have dot-edit-contentlet', () => {
-                expect(dotEditContentletComponent).toBeTruthy();
-                expect(dotEditContentletComponent.inode).toEqual('789');
-            });
-
-            it('should set contentlet to edit', () => {
-                expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
-                    identifier: '123',
-                    uuid: '456'
-                });
-                expect(component.editInode).toEqual('789');
+                };
+                component.setContentletsEvents(fakeEvent);
+                expect(fakeEvent.target.contentWindow.ngEditContentletEvents === null).toBe(false);
             });
         });
 
         describe('add', () => {
             beforeEach(() => {
+                spyOn(component, 'setContentletsEvents');
+
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'add',
                     dataset: {
@@ -603,11 +589,14 @@ describe('DotEditContentComponent', () => {
                 });
 
                 fixture.detectChanges();
+
+                dotAddContentlet = de.query(By.css('dot-add-contentlet'));
+                dotAddContentletComponent = dotAddContentlet.componentInstance;
             });
 
             it('should have dot-add-contentlet', () => {
-                expect(dotAddContentlet).toBeTruthy();
-                expect(dotAddContentlet.data).toEqual({
+                expect(dotAddContentletComponent).toBeTruthy();
+                expect(dotAddContentletComponent.data).toEqual({
                     container: '123',
                     add: 'content,widget'
                 });
@@ -623,6 +612,51 @@ describe('DotEditContentComponent', () => {
                     container: '123',
                     add: 'content,widget'
                 });
+            });
+
+            it('should set contentlet events on load', () => {
+                dotAddContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
+                expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
+            });
+        });
+
+        describe('edit', () => {
+            beforeEach(() => {
+                spyOn(component, 'setContentletsEvents');
+
+                dotEditContentHtmlService.iframeActions.next({
+                    name: 'edit',
+                    container: {
+                        dotIdentifier: '123',
+                        dotUuid: '456'
+                    },
+                    dataset: {
+                        dotInode: '789'
+                    }
+                });
+
+                fixture.detectChanges();
+
+                dotEditContentlet = de.query(By.css('dot-edit-contentlet'));
+                dotEditContentletComponent = dotEditContentlet.componentInstance;
+            });
+
+            it('should have dot-edit-contentlet', () => {
+                expect(dotEditContentletComponent).toBeTruthy();
+                expect(dotEditContentletComponent.inode).toEqual('789');
+            });
+
+            it('should set contentlet to edit', () => {
+                expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
+                    identifier: '123',
+                    uuid: '456'
+                });
+                expect(component.editInode).toEqual('789');
+            });
+
+            it('should set contentlet events on load', () => {
+                dotEditContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
+                expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
             });
         });
     });

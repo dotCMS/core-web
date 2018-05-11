@@ -1,7 +1,7 @@
 <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
 
-<dot-add-contentlet [data]="addContentData" (close)="addContentData = null"></dot-add-contentlet>
-<dot-edit-contentlet [inode]="editInode" (close)="editInode = null"></dot-edit-contentlet>
+<dot-add-contentlet [data]="addContentData" (close)="addContentData = null" (load)="setContentletsEvents($event)"></dot-add-contentlet>
+<dot-edit-contentlet [inode]="editInode" (close)="editInode = null" (load)="setContentletsEvents($event)"></dot-edit-contentlet>
 
 <dot-edit-page-toolbar
     (changeState)="statePageHandler($event)"
