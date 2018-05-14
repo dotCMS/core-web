@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { DebugElement, Component } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture } from '@angular/core/testing';
 
@@ -10,7 +10,7 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs/Observable';
 
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotAddContentLet, DotContentletEditorService } from '../services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 import { DotAddContentletComponent } from './dot-add-contentlet.component';
 import { DotIframeDialogComponent } from '../../dot-iframe-dialog/dot-iframe-dialog.component';
 import { DotIframeDialogModule } from '../../dot-iframe-dialog/dot-iframe-dialog.module';

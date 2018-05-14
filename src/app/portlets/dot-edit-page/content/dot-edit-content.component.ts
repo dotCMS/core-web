@@ -4,7 +4,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs/Observable';
 
-import * as _ from 'lodash';
 import { SiteService, ResponseView } from 'dotcms-js/dotcms-js';
 
 import { DotDialogService } from '../../../api/services/dot-dialog';
@@ -17,7 +16,6 @@ import {
     DotHttpErrorHandled
 } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
@@ -28,8 +26,6 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { Subject } from 'rxjs/Subject';
-import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
-import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 
 @Component({
@@ -53,7 +49,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private dotEditPageService: DotEditPageService,
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
-        private dotMenuService: DotMenuService,
         private dotMessageService: DotMessageService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
@@ -342,9 +337,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModelChange
             .skip(1)
-            .filter(model => model.length)
+            .filter((model: any) => model.length)
             .takeUntil(this.destroy$)
-            .subscribe((model) => {
+            .subscribe(() => {
                 this.ngZone.run(() => {
                     this.saveContent();
                 });

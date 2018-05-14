@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By, DomSanitizer } from '@angular/platform-browser';
-import { DebugElement, Input, Component, OnInit } from '@angular/core';
+import { DebugElement, Component } from '@angular/core';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../test/dot-test-bed';

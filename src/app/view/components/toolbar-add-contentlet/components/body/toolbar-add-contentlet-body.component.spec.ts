@@ -3,7 +3,6 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { ToolbarAddContenletBodyComponent } from './toolbar-add-contentlet-body.component';
-import { ActivatedRouteSnapshot } from '@angular/router';
 import { StructureType } from '../../../../../shared/models/contentlet';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';

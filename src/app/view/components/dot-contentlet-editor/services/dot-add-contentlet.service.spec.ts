@@ -1,5 +1,5 @@
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotContentletEditorService, DotAddContentLet, DotEditContentlet } from './dot-add-contentlet.service';
+import { DotContentletEditorService } from './dot-add-contentlet.service';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 

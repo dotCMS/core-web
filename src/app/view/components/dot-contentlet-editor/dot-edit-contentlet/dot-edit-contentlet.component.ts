@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 

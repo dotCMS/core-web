@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { Component, DebugElement, EventEmitter, Input, Output, Sanitizer } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { DialogModule } from 'primeng/primeng';
@@ -14,7 +14,6 @@ import { DotContentletLockerService } from '../../../api/services/dot-contentlet
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
 import { DotDialogService } from '../../../api/services/dot-dialog/index';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
-import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
 import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
@@ -42,6 +41,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
+import { DotEditContentComponent } from './dot-edit-content.component';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -738,36 +738,6 @@ describe('DotEditContentComponent', () => {
 
                 expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
-            });
-        });
-    });
-
-    describe('implementation of OnSaveDeactivate', () => {
-        let dotEditPageService: DotEditPageService;
-
-        beforeEach(() => {
-            dotEditPageService = de.injector.get(DotEditPageService);
-            fixture.detectChanges();
-        });
-
-        it('should call the save endpoint', () => {
-            spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
-            spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
-            component.onDeactivateSave();
-            expect(dotEditPageService.save).toHaveBeenCalledTimes(1);
-        });
-
-        it('should return header and message labels', () => {
-            expect(component.getSaveWarningMessages()).toEqual({ header: 'Save header', message: 'Save message' });
-        });
-
-        it('should handle the error on save and return false', () => {
-            spyOn(dotHttpErrorManagerService, 'handle');
-            spyOn(dotEditContentHtmlService, 'getContentModel').and.callFake((response) => {});
-            spyOn(dotEditPageService, 'save').and.returnValue(Observable.throw('error'));
-            component.onDeactivateSave().subscribe((value) => {
-                expect(value).toBeFalsy();
-                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
             });
         });
     });

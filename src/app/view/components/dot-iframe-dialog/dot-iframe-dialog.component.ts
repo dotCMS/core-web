@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'dot-iframe-dialog',
