@@ -19,11 +19,6 @@ import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit
 import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
 import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-changed.module';
 import { DotSaveOnDeactivateService } from '../../../shared/dot-save-on-deactivate-service/dot-save-on-deactivate.service';
-import { DotEditContentletComponent } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.component';
-import { DotIframeDialogComponent } from '../../../view/components/dot-iframe-dialog/dot-iframe-dialog.component';
-import { DotEditContentletModule } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.module';
-import { DotAddContentletModule } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.module';
-
 const routes: Routes = [
     {
         component: DotEditContentComponent,
@@ -41,9 +36,7 @@ const routes: Routes = [
         DotLoadingIndicatorModule,
         DotDirectivesModule,
         DotEditContentViewAsToolbarModule,
-        DotWhatsChangedModule,
-        DotAddContentletModule,
-        DotEditContentletModule
+        DotWhatsChangedModule
     ],
     exports: [DotEditContentComponent],
     providers: [

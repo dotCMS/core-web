@@ -30,17 +30,21 @@ import {
 } from 'primeng/primeng';
 import { DotTextareaContentModule } from './view/components/_common/dot-textarea-content/dot-textarea-content.module';
 import { DotGlobalMessageModule } from './view/components/_common/dot-global-message/dot-global-message.module';
+import { DotEditContentletModule } from './view/components/dot-contentlet-editor/dot-edit-contentlet/dot-edit-contentlet.module';
+import { DotAddContentletModule } from './view/components/dot-contentlet-editor/dot-add-contentlet/dot-add-contentlet.module';
 
 export const CUSTOM_MODULES = [
     DotActionButtonModule,
+    DotAddContentletModule,
+    DotEditContentletModule,
+    DotGlobalMessageModule,
     DotTextareaContentModule,
     FieldValidationMessageModule,
     IFrameModule,
     ListingDataTableModule,
     SearchableDropDownModule,
     SiteSelectorModule,
-    ToolbarAddContenletModule,
-    DotGlobalMessageModule
+    ToolbarAddContenletModule
 ];
 
 export const NGFACES_MODULES = [

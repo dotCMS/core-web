@@ -1,33 +1,26 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
-
-import { DotAddContentletComponent } from './dot-add-contentlet.component';
-import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotIframeDialogModule } from '../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotIframeDialogComponent } from '../dot-iframe-dialog/dot-iframe-dialog.component';
-import { LoginService } from 'dotcms-js/dotcms-js';
-import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
-import { Observable } from 'rxjs/Observable';
-import { DotAddContentLet, DotAddContentletService } from './services/dot-add-contentlet.service';
+import { async, ComponentFixture } from '@angular/core/testing';
 
-@Component({
-    selector: 'dot-test-host-component',
-    template: '<dot-add-contentlet></dot-add-contentlet>'
-})
-class TestHostComponent {
-}
+import { LoginService } from 'dotcms-js/dotcms-js';
+
+import { Observable } from 'rxjs/Observable';
+
+import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DotAddContentLet, DotAddContentletService } from '../services/dot-add-contentlet.service';
+import { DotAddContentletComponent } from './dot-add-contentlet.component';
+import { DotIframeDialogComponent } from '../../dot-iframe-dialog/dot-iframe-dialog.component';
+import { DotIframeDialogModule } from '../../dot-iframe-dialog/dot-iframe-dialog.module';
+import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { LoginServiceMock } from '../../../../test/login-service.mock';
 
 describe('DotAddContentletComponent', () => {
     let component: DotAddContentletComponent;
     let de: DebugElement;
-    let hostComponent: TestHostComponent;
-    let hostDe: DebugElement;
-    let hostFixture: ComponentFixture<TestHostComponent>;
+    let fixture: ComponentFixture<DotAddContentletComponent>;
 
     let dotIframeDialog: DebugElement;
     let dotIframeDialogComponent: DotIframeDialogComponent;
@@ -36,7 +29,7 @@ describe('DotAddContentletComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [DotAddContentletComponent, TestHostComponent],
+            declarations: [DotAddContentletComponent],
             providers: [
                 DotAddContentletService,
                 {
@@ -57,43 +50,40 @@ describe('DotAddContentletComponent', () => {
     }));
 
     beforeEach(() => {
-        hostFixture = DOTTestBed.createComponent(TestHostComponent);
-        hostDe = hostFixture.debugElement;
-        hostComponent = hostFixture.componentInstance;
-        de = hostDe.query(By.css('dot-add-contentlet'));
+        fixture = DOTTestBed.createComponent(DotAddContentletComponent);
+        de = fixture.debugElement;
         component = de.componentInstance;
-        dotAddContentletService = hostDe.injector.get(DotAddContentletService);
+        dotAddContentletService = de.injector.get(DotAddContentletService);
         spyOn(dotAddContentletService, 'clear');
+        fixture.detectChanges();
+
+        dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
+        dotIframeDialogComponent = dotIframeDialog.componentInstance;
     });
 
-    describe('default', () => {
-        beforeEach(() => {
-            hostFixture.detectChanges();
-            dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
-        });
-
-        it('should have', () => {
-            expect(dotIframeDialog).toBeTruthy();
-        });
+    it('should have dot-iframe-dialog', () => {
+        expect(dotIframeDialog).toBeTruthy();
     });
 
-    describe('with inode', () => {
+    describe('with data', () => {
         beforeEach(() => {
-            hostFixture.detectChanges();
-
-            dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
-            dotIframeDialogComponent = dotIframeDialog.componentInstance;
-
             dotAddContentletService.add({
                 container: '123',
-                type: 'content',
-                load: jasmine.createSpy(),
-                keyDown: jasmine.createSpy()
+                type: 'content,form',
+                events: {
+                    load: jasmine.createSpy(),
+                    keyDown: jasmine.createSpy()
+                }
             });
 
             spyOn(component, 'onClose').and.callThrough();
             spyOn(component, 'onLoad').and.callThrough();
             spyOn(component, 'onKeyDown').and.callThrough();
+            fixture.detectChanges();
+        });
+
+        it('should have dot-iframe-dialog url set', () => {
+            expect(dotIframeDialogComponent.url).toEqual('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
         });
 
         describe('events', () => {
@@ -114,20 +104,6 @@ describe('DotAddContentletComponent', () => {
                 expect(component.onKeyDown).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.keyDown).toHaveBeenCalledWith({ hello: 'world' });
             });
-        });
-
-        describe('dot-iframe-dialog', () => {
-            it('should have set url to', () => {
-                expect(dotIframeDialogComponent.url).toBe('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
-            });
-        });
-
-        it('should hide', () => {
-            // hostComponent.data = null;
-            hostFixture.detectChanges();
-            dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
-
-            expect(dotIframeDialog === null).toBe(true);
         });
     });
 });

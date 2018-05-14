@@ -30,7 +30,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { Subject } from 'rxjs/Subject';
 import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
 import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
-import { DotAddContentletService, DotAddContentLet } from '../../../view/components/dot-add-contentlet/services/dot-add-contentlet.service';
+import { DotAddContentletService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -43,7 +43,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     contentletActionsUrl: SafeResourceUrl;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
-    editInode: string;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -206,8 +205,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotAddContentletService.add({
             container: $event.dataset.dotIdentifier,
             type: $event.dataset.dotAdd,
-            load: (event) => {
-                event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+            events: {
+                load: (event) => {
+                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+                }
             }
         });
     }
@@ -219,7 +220,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         };
 
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
-        this.editInode = $event.dataset.dotInode;
+        this.dotAddContentletService.edit({
+            inode: $event.dataset.dotInode,
+            events: {
+                load: (event) => {
+                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+                }
+            }
+        });
     }
 
     private errorHandler(err: ResponseView): Observable<DotRenderedPageState> {
@@ -264,10 +272,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private closeAddEditComponent(): void {
         this.dotAddContentletService.clear();
-
-        if (this.editInode) {
-            this.editInode = null;
-        }
     }
 
     private handleSetPageStateFailed(err: ResponseView): void {

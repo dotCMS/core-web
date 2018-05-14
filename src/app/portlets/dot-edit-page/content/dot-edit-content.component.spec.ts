@@ -69,7 +69,7 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -551,17 +551,14 @@ describe('DotEditContentComponent', () => {
         });
     });
 
-    fdescribe('actions', () => {
-        let dotEditContentlet: DebugElement;
-        let dotEditContentletComponent: DotEditContentletComponent;
-
+    describe('actions', () => {
         beforeEach(() => {
             spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet');
             spyOn(dotEditContentHtmlService, 'setContainterToEditContentlet');
             fixture.detectChanges();
         });
 
-        fdescribe('add', () => {
+        describe('add', () => {
             beforeEach(() => {
                 spyOn(dotAddContentletService, 'add').and.callThrough();
 
@@ -588,7 +585,9 @@ describe('DotEditContentComponent', () => {
                 expect(dotAddContentletService.add).toHaveBeenCalledWith({
                     container: '123',
                     type: 'content,widget',
-                    load: jasmine.any(Function)
+                    events: {
+                        load: jasmine.any(Function)
+                    }
                 });
             });
 
@@ -607,7 +606,7 @@ describe('DotEditContentComponent', () => {
 
         describe('edit', () => {
             beforeEach(() => {
-                // spyOn(component, 'setContentletsEvents');
+                spyOn(dotAddContentletService, 'edit').and.callThrough();
 
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'edit',
@@ -616,33 +615,40 @@ describe('DotEditContentComponent', () => {
                         dotUuid: '456'
                     },
                     dataset: {
-                        dotInode: '789'
+                        dotInode: '999'
                     }
                 });
 
                 fixture.detectChanges();
-
-                dotEditContentlet = de.query(By.css('dot-edit-contentlet'));
-                dotEditContentletComponent = dotEditContentlet.componentInstance;
             });
 
-            it('should have dot-edit-contentlet', () => {
-                expect(dotEditContentletComponent).toBeTruthy();
-                expect(dotEditContentletComponent.inode).toEqual('789');
-            });
-
-            it('should set contentlet to edit', () => {
+            it('should set container to edit', () => {
                 expect(dotEditContentHtmlService.setContainterToEditContentlet).toHaveBeenCalledWith({
                     identifier: '123',
                     uuid: '456'
                 });
-                expect(component.editInode).toEqual('789');
             });
 
-            // it('should set contentlet events on load', () => {
-            //     dotEditContentlet.triggerEventHandler('load', { target: { contentWindow: {} } });
-            //     expect(component.setContentletsEvents).toHaveBeenCalledWith({ target: { contentWindow: {} } });
-            // });
+            it('should call edit service', () => {
+                expect(dotAddContentletService.edit).toHaveBeenCalledWith({
+                    inode: '999',
+                    events: {
+                        load: jasmine.any(Function)
+                    }
+                });
+            });
+
+            it('should bind contentlet events', () => {
+                const fakeEvent = {
+                    target: {
+                        contentWindow: {
+                            ngEditContentletEvents: undefined
+                        }
+                    }
+                };
+                dotAddContentletService.load(fakeEvent);
+                expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
+            });
         });
     });
 
