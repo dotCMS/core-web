@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, SimpleChanges } from '@
 
 import { Observable } from 'rxjs/Observable';
 
-import { DotAddContentletService } from '../services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 
 @Component({
     selector: 'dot-add-contentlet',
@@ -13,10 +13,10 @@ export class DotAddContentletComponent implements OnInit {
     @Output() load: EventEmitter<any> = new EventEmitter();
     url: Observable<string>;
 
-    constructor(private dotAddContentletService: DotAddContentletService) {}
+    constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotAddContentletService.add$;
+        this.url = this.dotContentletEditorService.add$;
     }
 
     /**
@@ -25,7 +25,7 @@ export class DotAddContentletComponent implements OnInit {
      * @memberof DotAddContentletComponent
      */
     onClose(): void {
-        this.dotAddContentletService.clear();
+        this.dotContentletEditorService.clear();
     }
 
     /**
@@ -35,8 +35,8 @@ export class DotAddContentletComponent implements OnInit {
      * @memberof DotAddContentletComponent
      */
     onKeyDown($event): void {
-        if (this.dotAddContentletService.keyDown) {
-            this.dotAddContentletService.keyDown($event);
+        if (this.dotContentletEditorService.keyDown) {
+            this.dotContentletEditorService.keyDown($event);
         }
     }
 
@@ -47,8 +47,8 @@ export class DotAddContentletComponent implements OnInit {
      * @memberof DotAddContentletComponent
      */
     onLoad($event): void {
-        if (this.dotAddContentletService.load) {
-            this.dotAddContentletService.load($event);
+        if (this.dotContentletEditorService.load) {
+            this.dotContentletEditorService.load($event);
         }
     }
 }

@@ -22,7 +22,7 @@ export interface DotAddContentLet {
 }
 
 @Injectable()
-export class DotAddContentletService {
+export class DotContentletEditorService {
     private data: Subject<DotAddContentLet | DotEditContentlet> = new Subject();
     private _load: ($event: any) => void;
     private _keyDown: ($event: any) => void;

@@ -40,12 +40,8 @@ import { mockResponseView } from '../../../test/response-view.mock';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
+import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
-import { DotEditContentletModule } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.module';
-import { DotAddContentletModule } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.module';
-import { DotAddContentletComponent } from '../../../view/components/dot-add-contentlet/dot-add-contentlet.component';
-import { DotEditContentletComponent } from '../../../view/components/dot-edit-contentlet/dot-edit-contentlet.component';
-import { DotAddContentletService } from '../../../view/components/dot-add-contentlet/services/dot-add-contentlet.service';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -69,7 +65,7 @@ class MockDotWhatsChangedComponent {
     @Input() pageId: string;
 }
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -85,7 +81,7 @@ fdescribe('DotEditContentComponent', () => {
     let route: ActivatedRoute;
     let toolbarComponent: DotEditPageToolbarComponent;
     let toolbarElement: DebugElement;
-    let dotAddContentletService: DotAddContentletService;
+    let dotAddContentletService: DotContentletEditorService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -106,8 +102,6 @@ fdescribe('DotEditContentComponent', () => {
                 BrowserAnimationsModule,
                 DotEditPageToolbarModule,
                 DotLoadingIndicatorModule,
-                DotEditContentletModule,
-                DotAddContentletModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -116,6 +110,7 @@ fdescribe('DotEditContentComponent', () => {
                 ])
             ],
             providers: [
+                DotContentletEditorService,
                 DotContainerContentletService,
                 DotContentletLockerService,
                 DotDOMHtmlUtilService,
@@ -173,7 +168,7 @@ fdescribe('DotEditContentComponent', () => {
 
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        dotAddContentletService = de.injector.get(DotAddContentletService);
+        dotAddContentletService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotDialogService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotEditPageDataService = de.injector.get(DotEditPageDataService);

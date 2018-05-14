@@ -86,7 +86,7 @@ describe('ToolbarAddContenletBodyComponent', () => {
 
         const link: DebugElement = de.query(By.css('.toolbar-add-contentlet-body__list-item a'));
 
-        link.nativeElement.click();
+        link.triggerEventHandler('click', {});
 
         expect(dotRouterService.reloadCurrentPortlet).toHaveBeenCalledTimes(1);
         expect(component.select.emit).toHaveBeenCalledTimes(1);

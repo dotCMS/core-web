@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { LoginService } from 'dotcms-js/dotcms-js';
 
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotAddContentletService } from '../services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 import { DotEditContentletComponent } from './dot-edit-contentlet.component';
 import { DotIframeDialogComponent } from '../../dot-iframe-dialog/dot-iframe-dialog.component';
 import { DotIframeDialogModule } from '../../dot-iframe-dialog/dot-iframe-dialog.module';
@@ -24,13 +24,13 @@ describe('DotEditContentletComponent', () => {
     let dotIframeDialog: DebugElement;
     let dotIframeDialogComponent: DotIframeDialogComponent;
 
-    let dotAddContentletService: DotAddContentletService;
+    let dotAddContentletService: DotContentletEditorService;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotEditContentletComponent],
             providers: [
-                DotAddContentletService,
+                DotContentletEditorService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -52,7 +52,7 @@ describe('DotEditContentletComponent', () => {
         fixture = DOTTestBed.createComponent(DotEditContentletComponent);
         de = fixture.debugElement;
         component = de.componentInstance;
-        dotAddContentletService = de.injector.get(DotAddContentletService);
+        dotAddContentletService = de.injector.get(DotContentletEditorService);
         spyOn(dotAddContentletService, 'clear');
         fixture.detectChanges();
 

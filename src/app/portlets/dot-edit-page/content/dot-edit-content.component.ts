@@ -30,7 +30,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { Subject } from 'rxjs/Subject';
 import { OnSaveDeactivate } from '../../../shared/dot-save-on-deactivate-service/save-on-deactivate';
 import { DotDialog } from '../../../shared/models/dot-confirmation/dot-confirmation.model';
-import { DotAddContentletService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 
 @Component({
     selector: 'dot-edit-content',
@@ -47,7 +47,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        private dotAddContentletService: DotAddContentletService,
+        private dotContentletEditorService: DotContentletEditorService,
         private dotDialogService: DotDialogService,
         private dotEditPageDataService: DotEditPageDataService,
         private dotEditPageService: DotEditPageService,
@@ -202,7 +202,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
 
-        this.dotAddContentletService.add({
+        this.dotContentletEditorService.add({
             container: $event.dataset.dotIdentifier,
             type: $event.dataset.dotAdd,
             events: {
@@ -220,7 +220,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         };
 
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
-        this.dotAddContentletService.edit({
+        this.dotContentletEditorService.edit({
             inode: $event.dataset.dotInode,
             events: {
                 load: (event) => {
@@ -271,7 +271,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private closeAddEditComponent(): void {
-        this.dotAddContentletService.clear();
+        this.dotContentletEditorService.clear();
     }
 
     private handleSetPageStateFailed(err: ResponseView): void {

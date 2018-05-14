@@ -1,21 +1,21 @@
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotAddContentletService, DotAddContentLet, DotEditContentlet } from './dot-add-contentlet.service';
+import { DotContentletEditorService, DotAddContentLet, DotEditContentlet } from './dot-add-contentlet.service';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('DotAddContentletService', () => {
     const load = () => {};
     const keyDown = () => {};
-    let service: DotAddContentletService;
+    let service: DotContentletEditorService;
     let dotMenuService: DotMenuService;
     let injector;
 
     beforeEach(() => {
         injector = DOTTestBed.configureTestingModule({
-            providers: [DotAddContentletService, DotMenuService]
+            providers: [DotContentletEditorService, DotMenuService]
         });
 
-        service = injector.get(DotAddContentletService);
+        service = injector.get(DotContentletEditorService);
         dotMenuService = injector.get(DotMenuService);
         spyOn(dotMenuService, 'getDotMenuId').and.returnValue(Observable.of('456'));
     });
