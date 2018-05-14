@@ -82,32 +82,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Handler of what to do if the user decide to save changes when leaving the route
-     * @returns {Observable<string>}
-     * @memberof DotEditContentComponent
-     */
-    onDeactivateSave(): Observable<boolean> {
-        return this.pageServiceSave()
-            .map(() => true)
-            .catch((error: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(error);
-                return Observable.of(false);
-            });
-    }
-
-    /**
-     * Get messages of save warning dialog.
-     * @returns {DotDialog}
-     * @memberof DotEditContentComponent
-     */
-    getSaveWarningMessages(): DotDialog {
-        return {
-            header: this.dotMessageService.get('editpage.content.save.changes.confirmation.header'),
-            message: this.dotMessageService.get('editpage.content.save.changes.confirmation.message')
-        };
-    }
-
-    /**
      * Handle the iframe page load
      * @param {any} $event
      * @memberof DotEditContentComponent
