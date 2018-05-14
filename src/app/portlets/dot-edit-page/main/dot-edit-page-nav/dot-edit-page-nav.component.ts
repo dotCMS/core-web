@@ -1,6 +1,6 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
@@ -20,14 +20,19 @@ interface DotEditPageNavItem {
     templateUrl: './dot-edit-page-nav.component.html',
     styleUrls: ['./dot-edit-page-nav.component.scss']
 })
-export class DotEditPageNavComponent implements OnInit {
+export class DotEditPageNavComponent implements OnChanges {
     @Input() pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
+    isEnterpriseLicense: boolean;
 
     constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
 
-    ngOnInit(): void {
-        this.model = this.dotMessageService
+    ngOnChanges(): void {
+        this.model = !this.model ? this.loadData() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+    }
+
+    private loadData(): Observable<DotEditPageNavItem[]> {
+        return this.dotMessageService
             .getMessages([
                 'editpage.toolbar.nav.content',
                 'editpage.toolbar.nav.layout',
@@ -38,6 +43,7 @@ export class DotEditPageNavComponent implements OnInit {
                 return this.dotLicenseService.isEnterpriseLicense();
             })
             .mergeMap((isEnterpriseLicense: boolean) => {
+                this.isEnterpriseLicense = isEnterpriseLicense;
                 return Observable.of(this.getNavItems(this.pageState, isEnterpriseLicense));
             });
     }
