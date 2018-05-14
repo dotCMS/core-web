@@ -87,7 +87,6 @@ export class IframePortletLegacyComponent implements OnInit {
     }
 
     private editContentlet($event: CustomEvent): void {
-        console.log($event.detail.data.inode);
         this.dotContentletEditorService.edit({
             inode: $event.detail.data.inode
         });
