@@ -13,63 +13,65 @@ import { SocketFactory, SiteService, LoginService } from 'dotcms-js/dotcms-js';
 import { IframeComponent } from '../iframe-component';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
+import { DotContentletEditorService } from '../../../dot-contentlet-editor/services/dot-add-contentlet.service';
 
 describe('IframePortletLegacyComponent', () => {
     let comp: IframePortletLegacyComponent;
     let fixture: ComponentFixture<IframePortletLegacyComponent>;
     let de: DebugElement;
     let el: HTMLElement;
-    let dotIframe: IframeComponent;
+    let dotIframe: DebugElement;
     let dotLoadingIndicatorService: DotLoadingIndicatorService;
     let dotMenuService: DotMenuService;
     let dotRouterService: DotRouterService;
+    let dotContentletEditorService: DotContentletEditorService;
     let route: ActivatedRoute;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [],
-                imports: [IFrameModule, RouterTestingModule],
-                providers: [
-                    DotContentletService,
-                    DotMenuService,
-                    LoginService,
-                    SiteService,
-                    SocketFactory,
-                    {
-                        provide: ActivatedRoute,
-                        useValue: {
-                            parent: {
-                                url: Observable.of([
-                                    {
-                                        path: 'an-url'
-                                    }
-                                ])
-                            }
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [],
+            imports: [IFrameModule, RouterTestingModule],
+            providers: [
+                DotContentletEditorService,
+                DotContentletService,
+                DotMenuService,
+                LoginService,
+                SiteService,
+                SocketFactory,
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        parent: {
+                            url: Observable.of([
+                                {
+                                    path: 'an-url'
+                                }
+                            ])
                         }
                     }
-                ]
-            });
+                }
+            ]
+        });
 
-            fixture = DOTTestBed.createComponent(IframePortletLegacyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
-            dotIframe = de.query(By.css('dot-iframe')).componentInstance;
-            dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
-            dotMenuService = de.injector.get(DotMenuService);
-            dotRouterService = de.injector.get(DotRouterService);
-            route = de.injector.get(ActivatedRoute);
-        })
-    );
+        fixture = DOTTestBed.createComponent(IframePortletLegacyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
+        dotIframe = de.query(By.css('dot-iframe'));
+        dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
+        dotMenuService = de.injector.get(DotMenuService);
+        dotRouterService = de.injector.get(DotRouterService);
+        dotContentletEditorService = de.injector.get(DotContentletEditorService);
+        route = de.injector.get(ActivatedRoute);
+    }));
 
     it('should have dot-iframe component', () => {
         expect(fixture.debugElement.query(By.css('dot-iframe'))).toBeDefined();
     });
 
     it('should set query param url to the dot-iframe src', () => {
-        route.params = Observable.of({ id: 'portlet-id' });
         route.queryParams = Observable.of({ url: 'hello/world' });
+        route.params = Observable.of({ id: 'portlet-id' });
 
         let src: string;
         comp.url.subscribe((url) => {
@@ -99,31 +101,39 @@ describe('IframePortletLegacyComponent', () => {
         expect(src).toEqual('fake-url');
     });
 
-    it('should show loading indicator and go to edit page when event is emited by iframe', fakeAsync(() => {
-        route.queryParams = Observable.of({ url: 'hello/world' });
-        fixture.detectChanges();
-        tick(); // There is a timeout to show the iframe in the dot-iframe component
-        fixture.detectChanges();
+    describe('custom events from iframe', () => {
+        it('should show loading indicator and go to edit page when event is emited by iframe', () => {
+            spyOn(dotLoadingIndicatorService, 'show');
+            spyOn(dotRouterService, 'goToEditPage');
 
-        spyOn(dotLoadingIndicatorService, 'show');
-        spyOn(dotRouterService, 'goToEditPage');
+            dotIframe.triggerEventHandler('custom', {
+                detail: {
+                    name: 'edit-page',
+                    data: {
+                        url: 'some/url'
+                    }
+                }
+            });
 
-        const iframe = de.query(By.css('dot-iframe')).query(By.css('iframe')).nativeElement;
-
-        dotIframe.load.emit({
-            target: iframe
+            expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
+            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('some/url');
         });
 
-        const customEvent = document.createEvent('CustomEvent');
-        customEvent.initCustomEvent('ng-event', false, false,  {
-            name: 'edit-page',
-            data: {
-                url: 'some/url'
-            }
-        });
-        iframe.contentDocument.dispatchEvent(customEvent);
+        it('should edit a contentlet', () => {
+            spyOn(dotContentletEditorService, 'edit');
 
-        expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
-        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('some/url');
-    }));
+            dotIframe.triggerEventHandler('custom', {
+                detail: {
+                    name: 'edit-contentlet',
+                    data: {
+                        inode: '123'
+                    }
+                }
+            });
+
+            expect(dotContentletEditorService.edit).toHaveBeenCalledWith({
+                inode: '123'
+            });
+        });
+    });
 });

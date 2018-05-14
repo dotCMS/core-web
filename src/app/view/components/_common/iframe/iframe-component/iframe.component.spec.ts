@@ -72,23 +72,48 @@ describe('IframeComponent', () => {
         expect(comp.iframeElement.nativeElement.contentWindow.location.reload).toHaveBeenCalledTimes(1);
     });
 
-    it('should bind keydown on load', () => {
-        comp.iframeElement.nativeElement = {
-            contentWindow: {
-                document: {
-                    body: {
-                        innerHTML: '<html></html>'
-                    }
-                },
-                addEventListener: jasmine.createSpy('reload'),
-                removeEventListener: jasmine.createSpy('reload')
-            }
-        };
+    describe('bind iframe events', () => {
+        beforeEach(() => {
+            comp.iframeElement.nativeElement = {
+                contentWindow: {
+                    document: {
+                        body: {
+                            innerHTML: '<html></html>'
+                        },
+                        addEventListener: jasmine.createSpy('docAddEventListener'),
+                        removeEventListener: jasmine.createSpy('docRemoveEventListener')
+                    },
+                    addEventListener: jasmine.createSpy('addEventListener'),
+                    removeEventListener: jasmine.createSpy('removeEventListener')
+                }
+            };
+        });
 
-        iframeEl.triggerEventHandler('load', {});
+        it('should remove listener on load', () => {
+            iframeEl.triggerEventHandler('load', {});
 
-        expect(comp.iframeElement.nativeElement.contentWindow.removeEventListener).toHaveBeenCalledTimes(1);
-        expect(comp.iframeElement.nativeElement.contentWindow.addEventListener).toHaveBeenCalledTimes(1);
+            expect(comp.iframeElement.nativeElement.contentWindow.removeEventListener).toHaveBeenCalledWith(
+                'keydown',
+                jasmine.any(Function)
+            );
+            expect(comp.iframeElement.nativeElement.contentWindow.document.removeEventListener).toHaveBeenCalledWith(
+                'ng-event',
+                jasmine.any(Function)
+            );
+        });
+
+        it('should add listeners load', () => {
+            iframeEl.triggerEventHandler('load', {});
+
+            expect(comp.iframeElement.nativeElement.contentWindow.addEventListener).toHaveBeenCalledWith(
+                'keydown',
+                jasmine.any(Function)
+            );
+            expect(comp.iframeElement.nativeElement.contentWindow.document.addEventListener).toHaveBeenCalledWith(
+                'ng-event',
+                jasmine.any(Function)
+            );
+        });
     });
 
     xit('should trigger keydown', () => {});

@@ -10,6 +10,7 @@ import { DotContentletService } from '../../../../../api/services/dot-contentlet
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
+import { DotContentletEditorService } from '../../../dot-contentlet-editor/services/dot-add-contentlet.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -20,17 +21,26 @@ export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
     isLoading = false;
 
+    private readonly customEventsHandlers;
+
     constructor(
         private contentletService: DotContentletService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotMenuService: DotMenuService,
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
-        private ngZone: NgZone,
+        private dotContentletEditorService: DotContentletEditorService,
         private route: ActivatedRoute,
         public loggerService: LoggerService,
         public siteService: SiteService
-    ) {}
+    ) {
+        if (!this.customEventsHandlers) {
+            this.customEventsHandlers = {
+                'edit-page': this.goToEditPage.bind(this),
+                'edit-contentlet': this.editContentlet.bind(this)
+            };
+        }
+    }
 
     ngOnInit(): void {
         this.dotRouterService.portletReload$.subscribe((portletId: string) => {
@@ -47,21 +57,13 @@ export class IframePortletLegacyComponent implements OnInit {
     }
 
     /**
-     * Handle the iframe load
+     * Handle the custom events emmited by the iframe
      *
      * @param {any} $event
      * @memberof IframePortletLegacyComponent
      */
-    onLoad($event): void {
-        Observable.fromEvent($event.target.contentWindow.document, 'ng-event').subscribe((event: any) => {
-            if (event.detail.name === 'edit-page') {
-                this.dotLoadingIndicatorService.show();
-
-                this.ngZone.run(() => {
-                    this.dotRouterService.goToEditPage(event.detail.data.url);
-                });
-            }
-        });
+    onCustomEvent($event: CustomEvent): void {
+        this.customEventsHandlers[$event.detail.name]($event);
     }
 
     /**
@@ -77,6 +79,18 @@ export class IframePortletLegacyComponent implements OnInit {
         } else {
             this.setUrl(this.url.getValue());
         }
+    }
+
+    private goToEditPage($event: CustomEvent): void {
+        this.dotLoadingIndicatorService.show();
+        this.dotRouterService.goToEditPage($event.detail.data.url);
+    }
+
+    private editContentlet($event: CustomEvent): void {
+        console.log($event.detail.data.inode);
+        this.dotContentletEditorService.edit({
+            inode: $event.detail.data.inode
+        });
     }
 
     private bindGlobalEvents(): void {

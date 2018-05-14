@@ -27,6 +27,7 @@ export class IframeComponent implements OnInit {
     @Input() isLoading = false;
     @Output() load: EventEmitter<any> = new EventEmitter();
     @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
 
     showOverlay = false;
 
@@ -83,12 +84,12 @@ export class IframeComponent implements OnInit {
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
 
-        if (!!this.getIframeWindow()) {
-            this.getIframeWindow().removeEventListener('keydown', this.emitKeyDown.bind(this));
-        }
-
         if (this.isIframeHaveContent()) {
+            this.getIframeWindow().removeEventListener('keydown', this.emitKeyDown.bind(this));
+            this.getIframeWindow().document.removeEventListener('ng-event', this.emitCustonEvent.bind(this));
+
             this.getIframeWindow().addEventListener('keydown', this.emitKeyDown.bind(this));
+            this.getIframeWindow().document.addEventListener('ng-event', this.emitCustonEvent.bind(this));
             this.load.emit($event);
         }
     }
@@ -96,6 +97,12 @@ export class IframeComponent implements OnInit {
     private emitKeyDown($event: KeyboardEvent): void {
         this.ngZone.run(() => {
             this.keydown.emit($event);
+        });
+    }
+
+    private emitCustonEvent($event: CustomEvent): void {
+        this.ngZone.run(() => {
+            this.custom.emit($event);
         });
     }
 
