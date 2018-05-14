@@ -8,9 +8,10 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'primeng/primeng';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
-import { Injectable } from '@angular/core';
+import { Injectable, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,11 +22,20 @@ class MockDotLicenseService {
     }
 }
 
+@Component({
+    selector: 'dot-test-host-component',
+    template: `<dot-edit-page-nav [pageState]="pageState"></dot-edit-page-nav>`
+})
+class TestHostComponent {
+    @Input() pageState: DotRenderedPageState;
+}
+
 describe('DotEditPageNavComponent', () => {
     let dotLicenseService: DotLicenseService;
     let component: DotEditPageNavComponent;
-    let fixture: ComponentFixture<DotEditPageNavComponent>;
+    let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
+    let testbed;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -36,9 +46,9 @@ describe('DotEditPageNavComponent', () => {
 
     beforeEach(
         async(() => {
-            TestBed.configureTestingModule({
+            testbed = DOTTestBed.configureTestingModule({
                 imports: [RouterTestingModule, TooltipModule],
-                declarations: [DotEditPageNavComponent],
+                declarations: [DotEditPageNavComponent, TestHostComponent],
                 providers: [
                     { provide: DotMessageService, useValue: messageServiceMock },
                     { provide: DotLicenseService, useClass: MockDotLicenseService },
@@ -57,15 +67,16 @@ describe('DotEditPageNavComponent', () => {
                         }
                     }
                 ]
-            }).compileComponents();
+            });
         })
     );
 
     describe('basic setup', () => {
         beforeEach(() => {
-            fixture = TestBed.createComponent(DotEditPageNavComponent);
-            component = fixture.componentInstance;
-            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+            fixture = testbed.createComponent(TestHostComponent);
+            de = fixture.debugElement;
+            component = de.query(By.css('dot-edit-page-nav')).componentInstance;
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
             fixture.detectChanges();
         });
 
@@ -93,19 +104,38 @@ describe('DotEditPageNavComponent', () => {
             const activeItem = fixture.debugElement.query(By.css('.edit-page-nav__item--active'));
             expect(activeItem.nativeElement.innerText).toContain('Content');
         });
+
+        it('should update menu items when new PageState', () => {
+            const {layout, ...noLayoutPage} = mockDotRenderedPage;
+            fixture.componentInstance.pageState = new DotRenderedPageState(
+                mockUser,
+                noLayoutPage,
+                null
+            );
+            fixture.detectChanges();
+
+            const menuListItemsLength: number = fixture.debugElement.queryAll(By.css('.edit-page-nav__item')).length;
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+
+            fixture.detectChanges();
+            const menuListItemsUpdatedLength: number = fixture.debugElement.queryAll(By.css('.edit-page-nav__item')).length;
+
+            expect(menuListItemsLength).toEqual(1);
+            expect(menuListItemsUpdatedLength).toEqual(2);
+        });
     });
 
     describe('advanced template', () => {
         beforeEach(() => {
-            fixture = TestBed.createComponent(DotEditPageNavComponent);
+            fixture = testbed.createComponent(TestHostComponent);
             de = fixture.debugElement;
             dotLicenseService = de.injector.get(DotLicenseService);
-            component = fixture.componentInstance;
+            component = de.query(By.css('dot-edit-page-nav')).componentInstance;
         });
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
         it('should have menu items: Content only', () => {
             const {layout, ...noLayoutPage} = mockDotRenderedPage;
-            component.pageState = new DotRenderedPageState(
+            fixture.componentInstance.pageState = new DotRenderedPageState(
                 mockUser,
                 noLayoutPage,
                 null
@@ -120,7 +150,7 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should have code option disabled because user can not edit the page thus the layout or template', () => {
-            component.pageState = new DotRenderedPageState(
+            fixture.componentInstance.pageState = new DotRenderedPageState(
                 mockUser,
                 {
                     ...mockDotRenderedPage,
@@ -147,7 +177,7 @@ describe('DotEditPageNavComponent', () => {
 
         describe('license Community', () => {
             beforeEach(() => {
-                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
                 fixture.detectChanges();
             });
 
@@ -165,7 +195,7 @@ describe('DotEditPageNavComponent', () => {
 
         describe('license Enterprise', () => {
             beforeEach(() => {
-                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
                 spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
                 fixture.detectChanges();
             });

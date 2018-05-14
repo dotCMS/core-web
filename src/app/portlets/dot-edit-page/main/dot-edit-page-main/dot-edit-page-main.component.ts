@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
@@ -8,14 +8,23 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
     templateUrl: './dot-edit-page-main.component.html',
     styleUrls: ['./dot-edit-page-main.component.scss']
 })
-export class DotEditPageMainComponent {
+export class DotEditPageMainComponent implements OnInit {
     pageState: Observable<DotRenderedPageState>;
 
     constructor(private route: ActivatedRoute, private router: Router) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd && val.url.indexOf('/edit-page/content') > -1) {
-                this.pageState = this.route.data.pluck('content');
+                this.loadData();
             }
         });
     }
+
+    ngOnInit(): void {
+        this.loadData();
+    }
+
+    private loadData(): void {
+        this.pageState = this.route.data.pluck('content');
+    }
+
 }
