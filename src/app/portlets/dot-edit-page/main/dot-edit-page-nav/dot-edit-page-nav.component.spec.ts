@@ -104,12 +104,21 @@ describe('DotEditPageNavComponent', () => {
         });
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
         it('should have menu items: Content only', () => {
-            const {layout, ...noLayoutPage} = mockDotRenderedPage;
+            const customMockDotRenderedPage = {
+                ...mockDotRenderedPage,
+                template: {
+                    ...mockDotRenderedPage.template,
+                    drawed: false
+                },
+                layout: null
+            };
+
             component.pageState = new DotRenderedPageState(
                 mockUser,
-                noLayoutPage,
+                customMockDotRenderedPage,
                 null
             );
+            console.log('component.pageState', component.pageState);
             fixture.detectChanges();
             const menuListItems: DebugElement[] = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             const iconClass = menuListItems[0].query(By.css('i')).nativeElement.classList.value;
@@ -145,9 +154,10 @@ describe('DotEditPageNavComponent', () => {
             });
         });
 
-        describe('license Community', () => {
+       describe('license Community', () => {
             beforeEach(() => {
-                component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+                const customMockDotRenderedPage = {...mockDotRenderedPage, layout: null};
+                component.pageState = new DotRenderedPageState(mockUser, customMockDotRenderedPage);
                 fixture.detectChanges();
             });
 

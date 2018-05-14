@@ -59,7 +59,7 @@ export class DotEditPageNavComponent implements OnInit {
 
         // Right now we only allowing users to edit layout, so no templates or advanced template can be edit from here.
         // https://github.com/dotCMS/core-web/pull/589
-        if (dotRenderedPage.layout) {
+        if (dotRenderedPage.template.drawed) {
             result.push(this.getTemplateNavItem(dotRenderedPage, enterpriselicense));
         }
 
