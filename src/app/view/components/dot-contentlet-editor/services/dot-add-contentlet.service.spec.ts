@@ -60,6 +60,18 @@ describe('DotAddContentletService', () => {
         });
     });
 
+    it('should set url to create a contentlet', () => {
+        service.createUrl$.subscribe((url: string) => {
+            expect(url).toEqual('hello.world.com');
+        });
+
+        service.create({
+            data: {
+                url: 'hello.world.com'
+            }
+        });
+    });
+
     it('should clear url and undbind', () => {
         service.addUrl$.subscribe((url: string) => {
             expect(url).toEqual('');

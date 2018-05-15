@@ -21,13 +21,20 @@ export class DotIframeEventsHandler {
         if (!this.handlers) {
             this.handlers = {
                 'edit-page': this.goToEditPage.bind(this),
-                'edit-contentlet': this.editContentlet.bind(this)
+                'edit-contentlet': this.editContentlet.bind(this),
+                'create-contentlet': this.createContentlet.bind(this)
             };
         }
     }
 
     handle(event: CustomEvent) {
         this.handlers[event.detail.name](event);
+    }
+
+    private createContentlet($event: CustomEvent): void {
+        this.dotContentletEditorService.create({
+            data: $event.detail.data
+        });
     }
 
     private goToEditPage($event: CustomEvent): void {

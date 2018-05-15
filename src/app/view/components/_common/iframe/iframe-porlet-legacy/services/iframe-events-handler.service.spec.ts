@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
 import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-add-contentlet.service';
 
-describe('DotAddContentletService', () => {
+describe('DotIframeEventsHandler', () => {
     let service: DotIframeEventsHandler;
     let dotLoadingIndicatorService: DotLoadingIndicatorService;
     let dotRouterService: DotRouterService;
@@ -42,6 +42,26 @@ describe('DotAddContentletService', () => {
 
         expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
         expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('some/url');
+    });
+
+    it('should create a contentlet', () => {
+        spyOn(dotContentletEditorService, 'create');
+        service.handle(
+            new CustomEvent('ng-event', {
+                detail: {
+                    name: 'create-contentlet',
+                    data: {
+                        url: 'hello.world.com'
+                    }
+                }
+            })
+        );
+
+        expect(dotContentletEditorService.create).toHaveBeenCalledWith({
+            data: {
+                url: 'hello.world.com'
+            }
+        });
     });
 
     it('should edit a contentlet', () => {

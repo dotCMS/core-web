@@ -3,22 +3,16 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { mergeMap, map, filter } from 'rxjs/operators';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { of } from 'rxjs/observable/of';
 
 interface DotAddEditEvents {
     load?: ($event: any) => void;
     keyDown?: ($event: any) => void;
 }
 
-export interface DotEditContentlet {
+export interface DotEditorAction {
     data: {
-        [key: string]: string
-    };
-    events?: DotAddEditEvents;
-}
-
-export interface DotAddContentLet {
-    data: {
-        [key: string]: string
+        [key: string]: string;
     };
     events?: DotAddEditEvents;
 }
@@ -31,23 +25,30 @@ export interface DotAddContentLet {
  */
 @Injectable()
 export class DotContentletEditorService {
-    private data: Subject<DotAddContentLet | DotEditContentlet> = new Subject();
+    private data: Subject<DotEditorAction> = new Subject();
     private _load: ($event: any) => void;
     private _keyDown: ($event: KeyboardEvent) => void;
 
     constructor(private dotMenuService: DotMenuService) {}
 
     get addUrl$(): Observable<string> {
-        return this.data.asObservable().pipe(
-            filter((action: DotAddContentLet) => action === null || !!action.data.container),
-            map((action: DotAddContentLet) => action === null ? '' : this.geAddtUrl(action.data))
+        return this.data.pipe(
+            filter((action: DotEditorAction) => this.isAddUrl(action)),
+            map((action: DotEditorAction) => this.geAddtUrl(action))
         );
     }
 
     get editUrl$(): Observable<string> {
         return this.data.pipe(
-            filter((action: DotEditContentlet) => action === null || !!action.data.inode),
-            mergeMap((action: DotEditContentlet) => action === null ? Observable.of('') : this.getEditUrl(action.data))
+            filter((action: DotEditorAction) => this.isEditUrl(action)),
+            mergeMap((action: DotEditorAction) => this.getEditUrl(action))
+        );
+    }
+
+    get createUrl$(): Observable<string> {
+        return this.data.pipe(
+            filter((action: DotEditorAction) => this.isCreateUrl(action)),
+            map((action: DotEditorAction) => this.getCreateUrl(action))
         );
     }
 
@@ -59,24 +60,33 @@ export class DotContentletEditorService {
         return this._keyDown;
     }
 
+    /**
+     * Set url to create a contentlet
+     *
+     * @param {DotEditorAction} action
+     * @memberof DotContentletEditorService
+     */
+    create(action: DotEditorAction): void {
+        this.setData(action);
+    }
 
     /**
      * Set data to add a contentlet
      *
-     * @param {DotAddContentLet} action
+     * @param {DotEditorAction} action
      * @memberof DotAddContentletServicex
      */
-    add(action: DotAddContentLet) {
+    add(action: DotEditorAction): void {
         this.setData(action);
     }
 
     /**
      * Set data to edit a contentlet
      *
-     * @param {DotAddContentLet} action
-     * @memberof DotAddContentletServicex
+     * @param {DotEditorAction} action
+     * @memberof DotContentletEditorService
      */
-    edit(action: DotEditContentlet) {
+    edit(action: DotEditorAction): void {
         this.setData(action);
     }
 
@@ -115,10 +125,6 @@ export class DotContentletEditorService {
         }
     }
 
-    private geAddtUrl(data: {[key: string]: string}): string {
-        return `/html/ng-contentlet-selector.jsp?ng=true&container_id=${data.container}&add=${data.baseTypes}`;
-    }
-
     private bindEvents(events: DotAddEditEvents): void {
         if (events.load) {
             this._load = events.load;
@@ -128,24 +134,48 @@ export class DotContentletEditorService {
         }
     }
 
-    private getEditUrl(data: {[key: string]: string}): Observable<string> {
-        return this.dotMenuService.getDotMenuId('content').pipe(
-            map((portletId: string) => {
-                return [
-                    `/c/portal/layout`,
-                    `?p_l_id=${portletId}`,
-                    `&p_p_id=content`,
-                    `&p_p_action=1`,
-                    `&p_p_state=maximized`,
-                    `&p_p_mode=view`,
-                    `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
-                    `&_content_cmd=edit&inode=${data.inode}`
-                ].join('');
-            })
-        );
+    private geAddtUrl(action: DotEditorAction): string {
+        return action === null
+            ? ''
+            : `/html/ng-contentlet-selector.jsp?ng=true&container_id=${action.data.container}&add=${action.data.baseTypes}`;
     }
 
-    private setData(action: DotAddContentLet | DotEditContentlet): void {
+    private getCreateUrl(action: DotEditorAction): string {
+        return action === null ? '' : action.data.url;
+    }
+
+    private getEditUrl(action: DotEditorAction): Observable<string> {
+        return action === null
+            ? of('')
+            : this.dotMenuService.getDotMenuId('content').pipe(
+                  map((portletId: string) => {
+                      return [
+                          `/c/portal/layout`,
+                          `?p_l_id=${portletId}`,
+                          `&p_p_id=content`,
+                          `&p_p_action=1`,
+                          `&p_p_state=maximized`,
+                          `&p_p_mode=view`,
+                          `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
+                          `&_content_cmd=edit&inode=${action.data.inode}`
+                      ].join('');
+                  })
+              );
+    }
+
+    private isAddUrl(action: DotEditorAction): boolean {
+        return action === null || !!action.data.container;
+    }
+
+    private isCreateUrl(action: DotEditorAction): boolean {
+        return action === null || !!action.data.url;
+    }
+
+    private isEditUrl(action: DotEditorAction): boolean {
+        return action === null || !!action.data.inode;
+    }
+
+    private setData(action: DotEditorAction): void {
         if (action.events) {
             this.bindEvents(action.events);
         }

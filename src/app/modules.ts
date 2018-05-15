@@ -32,10 +32,12 @@ import { DotTextareaContentModule } from './view/components/_common/dot-textarea
 import { DotGlobalMessageModule } from './view/components/_common/dot-global-message/dot-global-message.module';
 import { DotEditContentletModule } from './view/components/dot-contentlet-editor/dot-edit-contentlet/dot-edit-contentlet.module';
 import { DotAddContentletModule } from './view/components/dot-contentlet-editor/dot-add-contentlet/dot-add-contentlet.module';
+import { DotCreateContentletModule } from './view/components/dot-contentlet-editor/dot-create-contentlet/dot-create-contentlet.module';
 
 export const CUSTOM_MODULES = [
     DotActionButtonModule,
     DotAddContentletModule,
+    DotCreateContentletModule,
     DotEditContentletModule,
     DotGlobalMessageModule,
     DotTextareaContentModule,
