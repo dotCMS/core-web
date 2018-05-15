@@ -89,7 +89,7 @@ describe('IframeComponent', () => {
             };
         });
 
-        it('should remove listener on load', () => {
+        it('should remove and add listener on load', () => {
             iframeEl.triggerEventHandler('load', {});
 
             expect(comp.iframeElement.nativeElement.contentWindow.removeEventListener).toHaveBeenCalledWith(
@@ -100,10 +100,6 @@ describe('IframeComponent', () => {
                 'ng-event',
                 jasmine.any(Function)
             );
-        });
-
-        it('should add listeners load', () => {
-            iframeEl.triggerEventHandler('load', {});
 
             expect(comp.iframeElement.nativeElement.contentWindow.addEventListener).toHaveBeenCalledWith(
                 'keydown',

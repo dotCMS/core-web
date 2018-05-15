@@ -28,6 +28,14 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { Subject } from 'rxjs/Subject';
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
 
+/**
+ * Edit content page component, render the html of a page and bind all events to make it ediable.
+ *
+ * @export
+ * @class DotEditContentComponent
+ * @implements {OnInit}
+ * @implements {OnDestroy}
+ */
 @Component({
     selector: 'dot-edit-content',
     templateUrl: './dot-edit-content.component.html',
@@ -172,8 +180,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
 
         this.dotContentletEditorService.add({
-            container: $event.dataset.dotIdentifier,
-            type: $event.dataset.dotAdd,
+            data: {
+                container: $event.dataset.dotIdentifier,
+                baseTypes: $event.dataset.dotAdd,
+            },
             events: {
                 load: (event) => {
                     event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
@@ -190,7 +200,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
         this.dotContentletEditorService.edit({
-            inode: $event.dataset.dotInode,
+            data: {
+                inode: $event.dataset.dotInode,
+            },
             events: {
                 load: (event) => {
                     event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
@@ -231,16 +243,13 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             code: this.editContentlet.bind(this),
             add: this.addContentlet.bind(this),
             remove: this.removeContentlet.bind(this),
-            cancel: this.closeAddEditComponent.bind(this),
-            close: this.closeAddEditComponent.bind(this),
+            select: () => {
+                this.dotContentletEditorService.clear();
+            },
             save: () => {}
         };
 
         return eventsHandlerMap[event];
-    }
-
-    private closeAddEditComponent(): void {
-        this.dotContentletEditorService.clear();
     }
 
     private handleSetPageStateFailed(err: ResponseView): void {

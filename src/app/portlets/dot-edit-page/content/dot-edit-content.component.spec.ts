@@ -81,7 +81,7 @@ describe('DotEditContentComponent', () => {
     let route: ActivatedRoute;
     let toolbarComponent: DotEditPageToolbarComponent;
     let toolbarElement: DebugElement;
-    let dotAddContentletService: DotContentletEditorService;
+    let dotContentletEditorService: DotContentletEditorService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -168,7 +168,7 @@ describe('DotEditContentComponent', () => {
 
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        dotAddContentletService = de.injector.get(DotContentletEditorService);
+        dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotDialogService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotEditPageDataService = de.injector.get(DotEditPageDataService);
@@ -555,7 +555,7 @@ describe('DotEditContentComponent', () => {
 
         describe('add', () => {
             beforeEach(() => {
-                spyOn(dotAddContentletService, 'add').and.callThrough();
+                spyOn(dotContentletEditorService, 'add').and.callThrough();
 
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'add',
@@ -577,9 +577,11 @@ describe('DotEditContentComponent', () => {
             });
 
             it('should call add service', () => {
-                expect(dotAddContentletService.add).toHaveBeenCalledWith({
-                    container: '123',
-                    type: 'content,widget',
+                expect(dotContentletEditorService.add).toHaveBeenCalledWith({
+                    data: {
+                        container: '123',
+                        baseTypes: 'content,widget'
+                    },
                     events: {
                         load: jasmine.any(Function)
                     }
@@ -594,14 +596,14 @@ describe('DotEditContentComponent', () => {
                         }
                     }
                 };
-                dotAddContentletService.load(fakeEvent);
+                dotContentletEditorService.load(fakeEvent);
                 expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
             });
         });
 
         describe('edit', () => {
             beforeEach(() => {
-                spyOn(dotAddContentletService, 'edit').and.callThrough();
+                spyOn(dotContentletEditorService, 'edit').and.callThrough();
 
                 dotEditContentHtmlService.iframeActions.next({
                     name: 'edit',
@@ -625,8 +627,10 @@ describe('DotEditContentComponent', () => {
             });
 
             it('should call edit service', () => {
-                expect(dotAddContentletService.edit).toHaveBeenCalledWith({
-                    inode: '999',
+                expect(dotContentletEditorService.edit).toHaveBeenCalledWith({
+                    data: {
+                        inode: '999'
+                    },
                     events: {
                         load: jasmine.any(Function)
                     }
@@ -641,8 +645,20 @@ describe('DotEditContentComponent', () => {
                         }
                     }
                 };
-                dotAddContentletService.load(fakeEvent);
+                dotContentletEditorService.load(fakeEvent);
                 expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
+            });
+        });
+
+        describe('select', () => {
+            it('should close dialog on select contentlet', () => {
+                spyOn(dotContentletEditorService, 'clear').and.callThrough();
+
+                dotEditContentHtmlService.iframeActions.next({
+                    name: 'select'
+                });
+
+                expect(dotContentletEditorService.clear).toHaveBeenCalledTimes(1);
             });
         });
     });

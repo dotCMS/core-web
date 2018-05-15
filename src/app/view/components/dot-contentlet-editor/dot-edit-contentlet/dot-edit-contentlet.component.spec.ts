@@ -54,6 +54,8 @@ describe('DotEditContentletComponent', () => {
         component = de.componentInstance;
         dotAddContentletService = de.injector.get(DotContentletEditorService);
         spyOn(dotAddContentletService, 'clear');
+        spyOn(dotAddContentletService, 'load');
+        spyOn(dotAddContentletService, 'keyDown');
         fixture.detectChanges();
 
         dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
@@ -67,7 +69,9 @@ describe('DotEditContentletComponent', () => {
     describe('with data', () => {
         beforeEach(() => {
             dotAddContentletService.edit({
-                inode: '123',
+                data: {
+                    inode: '123',
+                },
                 events: {
                     load: jasmine.createSpy(),
                     keyDown: jasmine.createSpy()
@@ -98,19 +102,16 @@ describe('DotEditContentletComponent', () => {
         describe('events', () => {
             it('should call clear', () => {
                 dotIframeDialog.triggerEventHandler('close', {});
-                expect(component.onClose).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
             });
 
             it('should call load', () => {
                 dotIframeDialog.triggerEventHandler('load', { hello: 'world' });
-                expect(component.onLoad).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.load).toHaveBeenCalledWith({ hello: 'world' });
             });
 
             it('should call keyDown', () => {
                 dotIframeDialog.triggerEventHandler('keydown', { hello: 'world' });
-                expect(component.onKeyDown).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.keyDown).toHaveBeenCalledWith({ hello: 'world' });
             });
 
@@ -120,7 +121,6 @@ describe('DotEditContentletComponent', () => {
                         name: 'close'
                     }
                 });
-                expect(component.onClose).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
             });
         });

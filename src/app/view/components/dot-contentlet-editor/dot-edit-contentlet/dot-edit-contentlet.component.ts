@@ -2,6 +2,13 @@ import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 
+/**
+ * Allow user to edit a contentlet to DotCMS instance
+ *
+ * @export
+ * @class DotEditContentletComponent
+ * @implements {OnInit}
+ */
 @Component({
     selector: 'dot-edit-contentlet',
     templateUrl: './dot-edit-contentlet.component.html',
@@ -16,7 +23,7 @@ export class DotEditContentletComponent implements OnInit {
     constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotContentletEditorService.edit$;
+        this.url = this.dotContentletEditorService.editUrl$;
     }
 
     /**

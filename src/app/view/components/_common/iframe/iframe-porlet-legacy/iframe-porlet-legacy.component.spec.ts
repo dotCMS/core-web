@@ -13,7 +13,7 @@ import { SocketFactory, SiteService, LoginService } from 'dotcms-js/dotcms-js';
 import { IframeComponent } from '../iframe-component';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
-import { DotContentletEditorService } from '../../../dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
 
 describe('IframePortletLegacyComponent', () => {
     let comp: IframePortletLegacyComponent;
@@ -24,7 +24,7 @@ describe('IframePortletLegacyComponent', () => {
     let dotLoadingIndicatorService: DotLoadingIndicatorService;
     let dotMenuService: DotMenuService;
     let dotRouterService: DotRouterService;
-    let dotContentletEditorService: DotContentletEditorService;
+    let dotIframeEventsHandler: DotIframeEventsHandler;
     let route: ActivatedRoute;
 
     beforeEach(async(() => {
@@ -32,8 +32,8 @@ describe('IframePortletLegacyComponent', () => {
             declarations: [],
             imports: [IFrameModule, RouterTestingModule],
             providers: [
-                DotContentletEditorService,
                 DotContentletService,
+                DotIframeEventsHandler,
                 DotMenuService,
                 LoginService,
                 SiteService,
@@ -61,7 +61,7 @@ describe('IframePortletLegacyComponent', () => {
         dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
         dotMenuService = de.injector.get(DotMenuService);
         dotRouterService = de.injector.get(DotRouterService);
-        dotContentletEditorService = de.injector.get(DotContentletEditorService);
+        dotIframeEventsHandler = de.injector.get(DotIframeEventsHandler);
         route = de.injector.get(ActivatedRoute);
     }));
 
@@ -101,39 +101,19 @@ describe('IframePortletLegacyComponent', () => {
         expect(src).toEqual('fake-url');
     });
 
-    describe('custom events from iframe', () => {
-        it('should show loading indicator and go to edit page when event is emited by iframe', () => {
-            spyOn(dotLoadingIndicatorService, 'show');
-            spyOn(dotRouterService, 'goToEditPage');
+    it('should handle custom events', () => {
+        spyOn(dotIframeEventsHandler, 'handle');
 
-            dotIframe.triggerEventHandler('custom', {
-                detail: {
-                    name: 'edit-page',
-                    data: {
-                        url: 'some/url'
-                    }
-                }
-            });
-
-            expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
-            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('some/url');
+        dotIframe.triggerEventHandler('custom', {
+            this: {
+                is: 'a custom event'
+            }
         });
 
-        it('should edit a contentlet', () => {
-            spyOn(dotContentletEditorService, 'edit');
-
-            dotIframe.triggerEventHandler('custom', {
-                detail: {
-                    name: 'edit-contentlet',
-                    data: {
-                        inode: '123'
-                    }
-                }
-            });
-
-            expect(dotContentletEditorService.edit).toHaveBeenCalledWith({
-                inode: '123'
-            });
+        expect(dotIframeEventsHandler.handle).toHaveBeenCalledWith({
+            this: {
+                is: 'a custom event'
+            }
         });
     });
 });

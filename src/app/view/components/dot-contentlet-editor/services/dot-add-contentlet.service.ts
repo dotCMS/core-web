@@ -10,64 +10,74 @@ interface DotAddEditEvents {
 }
 
 export interface DotEditContentlet {
-    inode: string;
+    data: {
+        [key: string]: string
+    };
     events?: DotAddEditEvents;
 }
 
 export interface DotAddContentLet {
-    type: string;
-    container: string;
+    data: {
+        [key: string]: string
+    };
     events?: DotAddEditEvents;
 }
 
+/**
+ * Handle the url and events for add and edit contentlet components
+ *
+ * @export
+ * @class DotContentletEditorService
+ */
 @Injectable()
 export class DotContentletEditorService {
     private data: Subject<DotAddContentLet | DotEditContentlet> = new Subject();
     private _load: ($event: any) => void;
-    private _keyDown: ($event: any) => void;
+    private _keyDown: ($event: KeyboardEvent) => void;
 
     constructor(private dotMenuService: DotMenuService) {}
 
-    get add$(): Observable<string> {
+    get addUrl$(): Observable<string> {
         return this.data.asObservable().pipe(
-            filter((data: DotAddContentLet) => data === null || !!data.container),
-            map((data: DotAddContentLet) => data === null ? '' : this.geAddtUrl(data))
+            filter((action: DotAddContentLet) => action === null || !!action.data.container),
+            map((action: DotAddContentLet) => action === null ? '' : this.geAddtUrl(action.data))
         );
     }
 
-    get edit$(): Observable<string> {
+    get editUrl$(): Observable<string> {
         return this.data.pipe(
-            filter((data: DotEditContentlet) => data === null || !!data.inode),
-            mergeMap((data: DotEditContentlet) => data === null ? Observable.of('') : this.getEditUrl(data))
+            filter((action: DotEditContentlet) => action === null || !!action.data.inode),
+            mergeMap((action: DotEditContentlet) => action === null ? Observable.of('') : this.getEditUrl(action.data))
         );
     }
 
-    get load(): ($event: any) => void {
+    get loadHandler(): ($event: any) => void {
         return this._load;
     }
 
-    get keyDown(): ($event: any) => void {
+    get keyDownHandler(): ($event: any) => void {
         return this._keyDown;
     }
+
 
     /**
      * Set data to add a contentlet
      *
-     * @param {DotAddContentLet} data
+     * @param {DotAddContentLet} action
      * @memberof DotAddContentletServicex
      */
-    add(data: DotAddContentLet) {
-        this.setData(data);
+    add(action: DotAddContentLet) {
+        this.setData(action);
     }
 
     /**
      * Set data to edit a contentlet
      *
-     * @param {DotAddContentLet} data
+     * @param {DotAddContentLet} action
      * @memberof DotAddContentletServicex
      */
-    edit(data: DotEditContentlet) {
-        this.setData(data);
+    edit(action: DotEditContentlet) {
+        this.setData(action);
     }
 
     /**
@@ -81,8 +91,32 @@ export class DotContentletEditorService {
         this._keyDown = null;
     }
 
-    private geAddtUrl(data: DotAddContentLet): string {
-        return `/html/ng-contentlet-selector.jsp?ng=true&container_id=${data.container}&add=${data.type}`;
+    /**
+     * Call keydown handler
+     *
+     * @param {KeyboardEvent} $event
+     * @memberof DotContentletEditorService
+     */
+    keyDown($event: KeyboardEvent): void {
+        if (this._keyDown) {
+            this._keyDown($event);
+        }
+    }
+
+    /**
+     * Call load handler
+     *
+     * @param {*} $event
+     * @memberof DotContentletEditorService
+     */
+    load($event: any): void {
+        if (this._load) {
+            this._load($event);
+        }
+    }
+
+    private geAddtUrl(data: {[key: string]: string}): string {
+        return `/html/ng-contentlet-selector.jsp?ng=true&container_id=${data.container}&add=${data.baseTypes}`;
     }
 
     private bindEvents(events: DotAddEditEvents): void {
@@ -94,7 +128,7 @@ export class DotContentletEditorService {
         }
     }
 
-    private getEditUrl(data: DotEditContentlet): Observable<string> {
+    private getEditUrl(data: {[key: string]: string}): Observable<string> {
         return this.dotMenuService.getDotMenuId('content').pipe(
             map((portletId: string) => {
                 return [
@@ -111,12 +145,13 @@ export class DotContentletEditorService {
         );
     }
 
-    private setData(data: DotAddContentLet | DotEditContentlet): void {
-        if (data.events) {
-            this.bindEvents(data.events);
+    private setData(action: DotAddContentLet | DotEditContentlet): void {
+        if (action.events) {
+            this.bindEvents(action.events);
         }
 
-        const { events, ...noEventsData } = data;
-        this.data.next(noEventsData);
+        this.data.next({
+            data: action.data
+        });
     }
 }

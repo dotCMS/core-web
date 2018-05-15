@@ -10,7 +10,7 @@ import { DotContentletService } from '../../../../../api/services/dot-contentlet
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
-import { DotContentletEditorService } from '../../../dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -21,25 +21,18 @@ export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
     isLoading = false;
 
-    private readonly customEventsHandlers;
 
     constructor(
         private contentletService: DotContentletService,
-        private dotContentletEditorService: DotContentletEditorService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotMenuService: DotMenuService,
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
         private route: ActivatedRoute,
+        private dotIframeEventsHandler: DotIframeEventsHandler,
         public loggerService: LoggerService,
         public siteService: SiteService
     ) {
-        if (!this.customEventsHandlers) {
-            this.customEventsHandlers = {
-                'edit-page': this.goToEditPage.bind(this),
-                'edit-contentlet': this.editContentlet.bind(this)
-            };
-        }
     }
 
     ngOnInit(): void {
@@ -63,7 +56,7 @@ export class IframePortletLegacyComponent implements OnInit {
      * @memberof IframePortletLegacyComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        this.customEventsHandlers[$event.detail.name]($event);
+        this.dotIframeEventsHandler.handle($event);
     }
 
     /**
@@ -79,17 +72,6 @@ export class IframePortletLegacyComponent implements OnInit {
         } else {
             this.setUrl(this.url.getValue());
         }
-    }
-
-    private goToEditPage($event: CustomEvent): void {
-        this.dotLoadingIndicatorService.show();
-        this.dotRouterService.goToEditPage($event.detail.data.url);
-    }
-
-    private editContentlet($event: CustomEvent): void {
-        this.dotContentletEditorService.edit({
-            inode: $event.detail.data.inode
-        });
     }
 
     private bindGlobalEvents(): void {

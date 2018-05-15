@@ -21,13 +21,15 @@ describe('DotAddContentletService', () => {
     });
 
     it('should set data to add', () => {
-        service.add$.subscribe((url: string) => {
+        service.addUrl$.subscribe((url: string) => {
             expect(url).toEqual(`/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content`);
         });
 
         service.add({
-            type: 'content',
-            container: '123',
+            data: {
+                baseTypes: 'content',
+                container: '123'
+            },
             events: {
                 load: load,
                 keyDown: keyDown
@@ -36,7 +38,7 @@ describe('DotAddContentletService', () => {
     });
 
     it('should set data to edit', () => {
-        service.edit$.subscribe((url: string) => {
+        service.editUrl$.subscribe((url: string) => {
             expect(url).toEqual(
                 [
                     `/c/portal/layout`,
@@ -52,22 +54,24 @@ describe('DotAddContentletService', () => {
         });
 
         service.edit({
-            inode: '999'
+            data: {
+                inode: '999'
+            }
         });
     });
 
     it('should clear url and undbind', () => {
-        service.add$.subscribe((url: string) => {
+        service.addUrl$.subscribe((url: string) => {
             expect(url).toEqual('');
         });
 
-        service.edit$.subscribe((url: string) => {
+        service.editUrl$.subscribe((url: string) => {
             expect(url).toEqual('');
         });
 
         service.clear();
 
-        expect(service.load).toEqual(null);
-        expect(service.keyDown).toEqual(null);
+        expect(service.loadHandler).toEqual(null);
+        expect(service.keyDownHandler).toEqual(null);
     });
 });

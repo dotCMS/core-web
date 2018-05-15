@@ -4,6 +4,13 @@ import { Observable } from 'rxjs/Observable';
 
 import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
 
+/**
+ * Allow user to add a contentlet to DotCMS instance
+ *
+ * @export
+ * @class DotAddContentletComponent
+ * @implements {OnInit}
+ */
 @Component({
     selector: 'dot-add-contentlet',
     templateUrl: './dot-add-contentlet.component.html',
@@ -16,7 +23,7 @@ export class DotAddContentletComponent implements OnInit {
     constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotContentletEditorService.add$;
+        this.url = this.dotContentletEditorService.addUrl$;
     }
 
     /**
@@ -46,10 +53,8 @@ export class DotAddContentletComponent implements OnInit {
      * @param {any} $event
      * @memberof DotAddContentletComponent
      */
-    onKeyDown($event): void {
-        if (this.dotContentletEditorService.keyDown) {
-            this.dotContentletEditorService.keyDown($event);
-        }
+    onKeyDown($event: KeyboardEvent): void {
+        this.dotContentletEditorService.keyDown($event);
     }
 
     /**
@@ -59,8 +64,6 @@ export class DotAddContentletComponent implements OnInit {
      * @memberof DotAddContentletComponent
      */
     onLoad($event): void {
-        if (this.dotContentletEditorService.load) {
-            this.dotContentletEditorService.load($event);
-        }
+        this.dotContentletEditorService.load($event);
     }
 }

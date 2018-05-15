@@ -382,18 +382,12 @@ export class DotEditContentHtmlService {
             select: (contentletEvent: any) => {
                 this.renderAddedContentlet(contentletEvent.data);
                 this.iframeActions.next({
-                    name: 'close'
+                    name: 'select'
                 });
             },
             // When a user drang and drop a contentlet in the iframe
             relocate: (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
-            },
-            // When user cancel the edition of a contentlet.
-            cancel: (_contentletEvent: any) => {
-                this.iframeActions.next({
-                    name: 'close'
-                });
             }
         };
 
