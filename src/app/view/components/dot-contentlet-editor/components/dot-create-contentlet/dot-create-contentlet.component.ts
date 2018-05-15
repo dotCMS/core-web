@@ -2,34 +2,34 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 
 /**
  * Allow user to add a contentlet to DotCMS instance
  *
  * @export
- * @class DotAddContentletComponent
+ * @class DotCreateContentletComponent
  * @implements {OnInit}
  */
 @Component({
-    selector: 'dot-add-contentlet',
-    templateUrl: './dot-add-contentlet.component.html',
-    styleUrls: ['./dot-add-contentlet.component.scss']
+    selector: 'dot-create-contentlet',
+    templateUrl: './dot-create-contentlet.component.html',
+    styleUrls: ['./dot-create-contentlet.component.scss']
 })
-export class DotAddContentletComponent implements OnInit {
+export class DotCreateContentletComponent implements OnInit {
     @Output() load: EventEmitter<any> = new EventEmitter();
     url: Observable<string>;
 
     constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotContentletEditorService.addUrl$;
+        this.url = this.dotContentletEditorService.createUrl$;
     }
 
     /**
      * Handle close dialog event
      *
-     * @memberof DotAddContentletComponent
+     * @memberof DotCreateContentletComponent
      */
     onClose(): void {
         this.dotContentletEditorService.clear();
@@ -39,7 +39,7 @@ export class DotAddContentletComponent implements OnInit {
      * Handle the custome events from the DotDialogIframe component
      *
      * @param {any} $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotCreateContentletComponent
      */
     onCustomEvent($event) {
         if ($event.detail.name === 'close') {
@@ -51,7 +51,7 @@ export class DotAddContentletComponent implements OnInit {
      * Call the keyDown method from the service if exist
      *
      * @param {any} $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotCreateContentletComponent
      */
     onKeyDown($event: KeyboardEvent): void {
         this.dotContentletEditorService.keyDown($event);
@@ -61,7 +61,7 @@ export class DotAddContentletComponent implements OnInit {
      * Call the load method from the service if exist
      *
      * @param {any} $event
-     * @memberof DotAddContentletComponent
+     * @memberof DotCreateContentletComponent
      */
     onLoad($event): void {
         this.dotContentletEditorService.load($event);

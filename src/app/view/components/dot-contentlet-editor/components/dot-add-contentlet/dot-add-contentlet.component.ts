@@ -1,29 +1,29 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
-import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
+
+import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 
 /**
- * Allow user to edit a contentlet to DotCMS instance
+ * Allow user to add a contentlet to DotCMS instance
  *
  * @export
- * @class DotEditContentletComponent
+ * @class DotAddContentletComponent
  * @implements {OnInit}
  */
 @Component({
-    selector: 'dot-edit-contentlet',
-    templateUrl: './dot-edit-contentlet.component.html',
-    styleUrls: ['./dot-edit-contentlet.component.scss']
+    selector: 'dot-add-contentlet',
+    templateUrl: './dot-add-contentlet.component.html',
+    styleUrls: ['./dot-add-contentlet.component.scss']
 })
-export class DotEditContentletComponent implements OnInit {
-    @Input() inode: string;
-    @Output() load: EventEmitter<boolean> = new EventEmitter();
-
+export class DotAddContentletComponent implements OnInit {
+    @Output() load: EventEmitter<any> = new EventEmitter();
     url: Observable<string>;
 
     constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotContentletEditorService.editUrl$;
+        this.url = this.dotContentletEditorService.addUrl$;
     }
 
     /**
@@ -53,10 +53,8 @@ export class DotEditContentletComponent implements OnInit {
      * @param {any} $event
      * @memberof DotAddContentletComponent
      */
-    onKeyDown($event): void {
-        if (this.dotContentletEditorService.keyDown) {
-            this.dotContentletEditorService.keyDown($event);
-        }
+    onKeyDown($event: KeyboardEvent): void {
+        this.dotContentletEditorService.keyDown($event);
     }
 
     /**
@@ -66,8 +64,6 @@ export class DotEditContentletComponent implements OnInit {
      * @memberof DotAddContentletComponent
      */
     onLoad($event): void {
-        if (this.dotContentletEditorService.load) {
-            this.dotContentletEditorService.load($event);
-        }
+        this.dotContentletEditorService.load($event);
     }
 }

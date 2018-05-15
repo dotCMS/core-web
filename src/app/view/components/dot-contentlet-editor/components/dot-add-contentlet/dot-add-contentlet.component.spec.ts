@@ -4,22 +4,22 @@ import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture } from '@angular/core/testing';
 
-import { Observable } from 'rxjs/Observable';
-
 import { LoginService } from 'dotcms-js/dotcms-js';
 
-import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
-import { DotEditContentletComponent } from './dot-edit-contentlet.component';
-import { DotIframeDialogComponent } from '../../dot-iframe-dialog/dot-iframe-dialog.component';
-import { DotIframeDialogModule } from '../../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { LoginServiceMock } from '../../../../test/login-service.mock';
+import { Observable } from 'rxjs/Observable';
 
-describe('DotEditContentletComponent', () => {
-    let component: DotEditContentletComponent;
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
+import { DotAddContentletComponent } from './dot-add-contentlet.component';
+import { DotIframeDialogComponent } from '../../../dot-iframe-dialog/dot-iframe-dialog.component';
+import { DotIframeDialogModule } from '../../../dot-iframe-dialog/dot-iframe-dialog.module';
+import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { LoginServiceMock } from '../../../../../test/login-service.mock';
+
+describe('DotAddContentletComponent', () => {
+    let component: DotAddContentletComponent;
     let de: DebugElement;
-    let fixture: ComponentFixture<DotEditContentletComponent>;
+    let fixture: ComponentFixture<DotAddContentletComponent>;
 
     let dotIframeDialog: DebugElement;
     let dotIframeDialogComponent: DotIframeDialogComponent;
@@ -28,7 +28,7 @@ describe('DotEditContentletComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [DotEditContentletComponent],
+            declarations: [DotAddContentletComponent],
             providers: [
                 DotContentletEditorService,
                 {
@@ -49,7 +49,7 @@ describe('DotEditContentletComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = DOTTestBed.createComponent(DotEditContentletComponent);
+        fixture = DOTTestBed.createComponent(DotAddContentletComponent);
         de = fixture.debugElement;
         component = de.componentInstance;
         dotAddContentletService = de.injector.get(DotContentletEditorService);
@@ -68,9 +68,10 @@ describe('DotEditContentletComponent', () => {
 
     describe('with data', () => {
         beforeEach(() => {
-            dotAddContentletService.edit({
+            dotAddContentletService.add({
                 data: {
-                    inode: '123',
+                    container: '123',
+                    baseTypes: 'content,form'
                 },
                 events: {
                     load: jasmine.createSpy(),
@@ -85,18 +86,7 @@ describe('DotEditContentletComponent', () => {
         });
 
         it('should have dot-iframe-dialog url set', () => {
-            expect(dotIframeDialogComponent.url).toEqual(
-                [
-                    `/c/portal/layout`,
-                    `?p_l_id=999`,
-                    `&p_p_id=content`,
-                    `&p_p_action=1`,
-                    `&p_p_state=maximized`,
-                    `&p_p_mode=view`,
-                    `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
-                    `&_content_cmd=edit&inode=123`
-                ].join('')
-            );
+            expect(dotIframeDialogComponent.url).toEqual('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
         });
 
         describe('events', () => {

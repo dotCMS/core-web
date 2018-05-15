@@ -4,7 +4,7 @@ import { DotLoadingIndicatorService } from '../../dot-loading-indicator/dot-load
 import { DotRouterService } from '../../../../../../api/services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
-import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 describe('DotIframeEventsHandler', () => {
     let service: DotIframeEventsHandler;

@@ -8,13 +8,13 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 
 import { Observable } from 'rxjs/Observable';
 
-import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotContentletEditorService } from '../services/dot-add-contentlet.service';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 import { DotCreateContentletComponent } from './dot-create-contentlet.component';
-import { DotIframeDialogComponent } from '../../dot-iframe-dialog/dot-iframe-dialog.component';
-import { DotIframeDialogModule } from '../../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { LoginServiceMock } from '../../../../test/login-service.mock';
+import { DotIframeDialogComponent } from '../../../dot-iframe-dialog/dot-iframe-dialog.component';
+import { DotIframeDialogModule } from '../../../dot-iframe-dialog/dot-iframe-dialog.module';
+import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { LoginServiceMock } from '../../../../../test/login-service.mock';
 
 describe('DotCreateContentletComponent', () => {
     let component: DotCreateContentletComponent;

@@ -39,7 +39,7 @@ import { mockResponseView } from '../../../test/response-view.mock';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
-import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DotLoadingIndicatorService } from '../../dot-loading-indicator/dot-loading-indicator.service';
 import { DotRouterService } from '../../../../../../api/services/dot-router/dot-router.service';
-import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 /**
  * Handle events triggered by the iframe in the IframePortletLegacyComponent

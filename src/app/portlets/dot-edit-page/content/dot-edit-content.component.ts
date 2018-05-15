@@ -26,7 +26,7 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { Subject } from 'rxjs/Subject';
-import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-add-contentlet.service';
+import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.

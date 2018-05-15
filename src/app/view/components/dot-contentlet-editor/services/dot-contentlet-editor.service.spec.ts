@@ -1,9 +1,9 @@
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotContentletEditorService } from './dot-add-contentlet.service';
+import { DotContentletEditorService } from './dot-contentlet-editor.service';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { Observable } from 'rxjs/Observable';
 
-describe('DotAddContentletService', () => {
+describe('DotContentletEditorService', () => {
     const load = () => {};
     const keyDown = () => {};
     let service: DotContentletEditorService;
