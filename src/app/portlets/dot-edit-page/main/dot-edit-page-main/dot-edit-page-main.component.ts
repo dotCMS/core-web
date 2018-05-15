@@ -17,19 +17,23 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
-        this.loadData();
-        this.routeEventsSub = this.router.events
-            .pipe(filter((anyEvent: any) => event instanceof NavigationEnd && event.url.indexOf('/edit-page/content') > -1))
-            .subscribe((navigationEvent: NavigationEnd) => {
-                this.loadData();
-            });
+        this.listenRouteChanges();
     }
 
     ngOnDestroy(): void {
         this.routeEventsSub.unsubscribe();
     }
 
-    private loadData(): void {
+    private listenRouteChanges(): void {
+        this.getResolverContent();
+        this.routeEventsSub = this.router.events
+            .pipe(filter((anyEvent: any) => event instanceof NavigationEnd && event.url.indexOf('/edit-page/content') > -1))
+            .subscribe((navigationEvent: NavigationEnd) => {
+                this.getResolverContent();
+            });
+    }
+
+    private getResolverContent(): void {
         this.pageState = this.route.data.pluck('content');
     }
 }

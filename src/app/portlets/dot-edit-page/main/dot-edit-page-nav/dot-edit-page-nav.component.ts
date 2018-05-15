@@ -31,11 +31,11 @@ export class DotEditPageNavComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.pageState.currentValue !== changes.pageState.previousValue) {
-            this.model = !this.model ? this.loadData() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+            this.model = !this.model ? this.loadNavItems() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
         }
     }
 
-    private loadData(): Observable<DotEditPageNavItem[]> {
+    private loadNavItems(): Observable<DotEditPageNavItem[]> {
         return this.dotMessageService
             .getMessages([
                 'editpage.toolbar.nav.content',
