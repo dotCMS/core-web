@@ -25,11 +25,11 @@ export class IframePortletLegacyComponent implements OnInit {
 
     constructor(
         private contentletService: DotContentletService,
+        private dotContentletEditorService: DotContentletEditorService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private dotMenuService: DotMenuService,
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
-        private dotContentletEditorService: DotContentletEditorService,
         private route: ActivatedRoute,
         public loggerService: LoggerService,
         public siteService: SiteService

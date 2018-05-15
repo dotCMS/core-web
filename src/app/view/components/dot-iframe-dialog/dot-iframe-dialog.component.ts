@@ -1,24 +1,20 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'dot-iframe-dialog',
     templateUrl: './dot-iframe-dialog.component.html',
     styleUrls: ['./dot-iframe-dialog.component.scss']
 })
-export class DotIframeDialogComponent implements OnInit, OnChanges {
+export class DotIframeDialogComponent implements OnChanges {
     @Input() url: string;
     @Output() close: EventEmitter<any> = new EventEmitter();
     @Output() load: EventEmitter<any> = new EventEmitter();
     @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
 
-    dialogSize: any;
     show: boolean;
 
     constructor() {}
-
-    ngOnInit() {
-        this.setDialogSize();
-    }
 
     ngOnChanges(changes: SimpleChanges) {
         this.show = !!changes.url.currentValue;
@@ -33,6 +29,16 @@ export class DotIframeDialogComponent implements OnInit, OnChanges {
         this.url = null;
         this.show = false;
         this.close.emit();
+    }
+
+    /**
+     * Handle custom event from the iframe window
+     *
+     * @param {CustomEvent} $event
+     * @memberof DotIframeDialogComponent
+     */
+    onCustomEvents($event: CustomEvent): void {
+        this.custom.emit($event);
     }
 
     /**
@@ -58,12 +64,5 @@ export class DotIframeDialogComponent implements OnInit, OnChanges {
     onLoad($event: any): void {
         $event.target.contentWindow.focus();
         this.load.emit($event);
-    }
-
-    private setDialogSize(): void {
-        this.dialogSize = {
-            width: window.innerWidth - 200,
-            height: window.innerHeight - 100
-        };
     }
 }

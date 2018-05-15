@@ -29,6 +29,18 @@ export class DotEditContentletComponent implements OnInit {
     }
 
     /**
+     * Handle the custome events from the DotDialogIframe component
+     *
+     * @param {any} $event
+     * @memberof DotAddContentletComponent
+     */
+    onCustomEvent($event) {
+        if ($event.detail.name === 'close') {
+            this.onClose();
+        }
+    }
+
+    /**
      * Call the keyDown method from the service if exist
      *
      * @param {any} $event

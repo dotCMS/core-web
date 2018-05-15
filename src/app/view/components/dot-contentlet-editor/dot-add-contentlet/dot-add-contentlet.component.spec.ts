@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-variable */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -103,6 +102,16 @@ describe('DotAddContentletComponent', () => {
                 dotIframeDialog.triggerEventHandler('keydown', { hello: 'world' });
                 expect(component.onKeyDown).toHaveBeenCalledTimes(1);
                 expect(dotAddContentletService.keyDown).toHaveBeenCalledWith({ hello: 'world' });
+            });
+
+            it('should close the dialog', () => {
+                dotIframeDialog.triggerEventHandler('custom', {
+                    detail: {
+                        name: 'close'
+                    }
+                });
+                expect(component.onClose).toHaveBeenCalledTimes(1);
+                expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
             });
         });
     });

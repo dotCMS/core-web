@@ -116,6 +116,13 @@ describe('DotIframeDialogComponent', () => {
                 dotIframe.triggerEventHandler('keydown', { hello: 'world' });
                 expect(component.keydown.emit).toHaveBeenCalledWith({ hello: 'world' });
             });
+
+            it('should emit custom', () => {
+                spyOn(component.custom, 'emit');
+
+                dotIframe.triggerEventHandler('custom', { hello: 'world' });
+                expect(component.custom.emit).toHaveBeenCalledWith({ hello: 'world' });
+            });
         });
 
         describe('dialog', () => {
