@@ -8,6 +8,7 @@ import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
 import { map } from 'rxjs/operators/map';
 import { mergeMap } from 'rxjs/operators/mergeMap';
+import * as _ from 'lodash';
 
 interface DotEditPageNavItem {
     needsEntepriseLicense: boolean;
@@ -31,13 +32,18 @@ export class DotEditPageNavComponent implements OnChanges {
     constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.pageState.currentValue !== changes.pageState.previousValue) {
+        if (this.layoutChanged(changes)) {
             this.model = !this.model ? this.loadNavItems() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
         }
     }
 
-    private loadNavItems(): Observable<DotEditPageNavItem[]> {
+    private layoutChanged(changes: SimpleChanges): boolean {
+        return changes.pageState.currentValue && changes.pageState.previousValue
+            ? !_.isEqual(changes.pageState.currentValue.layout, changes.pageState.previousValue.layout)
+            : true;
+    }
 
+    private loadNavItems(): Observable<DotEditPageNavItem[]> {
         return this.dotMessageService
             .getMessages([
                 'editpage.toolbar.nav.content',
@@ -55,7 +61,6 @@ export class DotEditPageNavComponent implements OnChanges {
                     return this.getNavItems(this.pageState, isEnterpriseLicense);
                 })
             );
-
     }
 
     private canGoToLayout(dotRenderedPage: DotRenderedPage): boolean {
@@ -97,8 +102,6 @@ export class DotEditPageNavComponent implements OnChanges {
     }
 
     private getTemplateItemLabel(template: DotTemplate): string {
-        return this.dotMessageService.get(
-            !template ? 'editpage.toolbar.nav.layout' : 'editpage.toolbar.nav.layout'
-        );
+        return this.dotMessageService.get(!template ? 'editpage.toolbar.nav.layout' : 'editpage.toolbar.nav.layout');
     }
 }
