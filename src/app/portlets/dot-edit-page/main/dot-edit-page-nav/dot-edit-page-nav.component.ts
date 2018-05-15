@@ -1,11 +1,13 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
+import { map } from 'rxjs/operators/map';
+import { mergeMap } from 'rxjs/operators/mergeMap';
 
 interface DotEditPageNavItem {
     needsEntepriseLicense: boolean;
@@ -27,8 +29,10 @@ export class DotEditPageNavComponent implements OnChanges {
 
     constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
 
-    ngOnChanges(): void {
-        this.model = !this.model ? this.loadData() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.pageState.currentValue !== changes.pageState.previousValue) {
+            this.model = !this.model ? this.loadData() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+        }
     }
 
     private loadData(): Observable<DotEditPageNavItem[]> {
@@ -39,13 +43,16 @@ export class DotEditPageNavComponent implements OnChanges {
                 'editpage.toolbar.nav.code',
                 'editpage.toolbar.nav.license.enterprise.only'
             ])
-            .mergeMap(() => {
-                return this.dotLicenseService.isEnterpriseLicense();
-            })
-            .mergeMap((isEnterpriseLicense: boolean) => {
-                this.isEnterpriseLicense = isEnterpriseLicense;
-                return Observable.of(this.getNavItems(this.pageState, isEnterpriseLicense));
-            });
+            .pipe(
+                mergeMap(() => {
+                    return this.dotLicenseService.isEnterpriseLicense();
+                }),
+                map((isEnterpriseLicense: boolean) => {
+                    this.isEnterpriseLicense = isEnterpriseLicense;
+                    return this.getNavItems(this.pageState, isEnterpriseLicense);
+                })
+            );
+
     }
 
     private canGoToLayout(dotRenderedPage: DotRenderedPage): boolean {
