@@ -13,18 +13,17 @@ export class DotPersonaSelectorComponent implements OnInit {
     @Input() value: DotPersona;
     @Output() selected = new EventEmitter<DotPersona>();
 
-    personasOptions: Observable<DotPersona[]>;
+    options: Observable<DotPersona[]>;
 
     constructor(private dotPersonasService: DotPersonasService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.personasOptions = this.dotMessageService.getMessages(['modes.persona.no.persona'])
+        this.options = this.dotMessageService
+            .getMessages(['modes.persona.no.persona'])
             .mergeMap((messages: string[]) =>
-                this.dotPersonasService.get()
-                    .map((personas: DotPersona[]) => [
-                        { name: messages['modes.persona.no.persona'], identifier: '0' },
-                        ...personas
-                    ])
+                this.dotPersonasService
+                    .get()
+                    .map((personas: DotPersona[]) => [{ name: messages['modes.persona.no.persona'], identifier: '0' }, ...personas])
             );
     }
 

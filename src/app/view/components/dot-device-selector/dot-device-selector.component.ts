@@ -3,6 +3,9 @@ import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { empty } from 'rxjs/observable/empty';
+import { map, defaultIfEmpty } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Component({
     selector: 'dot-device-selector',
@@ -13,24 +16,23 @@ export class DotDeviceSelectorComponent implements OnInit {
     @Input() value: DotDevice;
     @Output() selected = new EventEmitter<DotDevice>();
 
-    devicesOptions: Observable<DotDevice[]>;
+    options: Observable<DotDevice[]>;
 
     constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.devicesOptions = this.dotMessageService.getMessages(['editpage.viewas.default.device'])
-            .mergeMap((messages: string[]) =>
-                this.dotDevicesService.get()
-                    .map((devices: DotDevice[]) => [
-                        {
-                            name: messages['editpage.viewas.default.device'],
-                            cssHeight: '',
-                            cssWidth: '',
-                            inode: '0'
-                        },
-                        ...devices
-                    ])
-            );
+
+        this.options = this.dotMessageService.getMessages(['editpage.viewas.default.device']).mergeMap((messages: string[]) =>
+            this.dotDevicesService.get().map((devices: DotDevice[]) => [
+                {
+                    name: messages['editpage.viewas.default.device'],
+                    cssHeight: '',
+                    cssWidth: '',
+                    inode: '0'
+                },
+                ...devices
+            ])
+        );
     }
 
     /**
