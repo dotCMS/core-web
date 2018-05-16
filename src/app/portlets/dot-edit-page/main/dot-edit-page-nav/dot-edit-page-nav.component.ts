@@ -38,9 +38,9 @@ export class DotEditPageNavComponent implements OnChanges {
     }
 
     private layoutChanged(changes: SimpleChanges): boolean {
-        return changes.pageState.currentValue && changes.pageState.previousValue
-            ? !_.isEqual(changes.pageState.currentValue.layout, changes.pageState.previousValue.layout)
-            : true;
+        return changes.pageState.firstChange
+            ? true
+            : !_.isEqual(changes.pageState.currentValue.layout, changes.pageState.previousValue.layout);
     }
 
     private loadNavItems(): Observable<DotEditPageNavItem[]> {
