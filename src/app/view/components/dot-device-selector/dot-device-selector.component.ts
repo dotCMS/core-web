@@ -3,9 +3,6 @@ import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { empty } from 'rxjs/observable/empty';
-import { map, defaultIfEmpty } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 @Component({
     selector: 'dot-device-selector',
