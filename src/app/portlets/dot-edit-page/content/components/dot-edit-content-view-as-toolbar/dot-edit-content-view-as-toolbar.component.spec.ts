@@ -148,7 +148,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             languageSelector = de.query(By.css('dot-language-selector')).componentInstance;
             deviceSelector = de.query(By.css('dot-device-selector')).componentInstance;
             personaSelector = de.query(By.css('dot-persona-selector')).componentInstance;
-
         });
 
         it('should have persona selector', () => {
@@ -210,6 +209,10 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             expect(deviceSelector.value).toEqual(mockDotEditPageViewAs.device);
             expect(personaSelector.value).toEqual(mockDotEditPageViewAs.persona);
         });
+    });
+
+    describe('what\'s change event', () => {
+        let whatsChanged: DebugElement;
 
         it('should not have what\'s change checkbox', () => {
             componentHost.pageState = new DotRenderedPageState(mockUser, {
@@ -220,38 +223,38 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                 }
             });
             fixtureHost.detectChanges();
-            const whatsChanged: DebugElement = de.query(By.css('p-checkbox'));
+            whatsChanged = de.query(By.css('p-checkbox'));
             expect(whatsChanged).toBe(null);
         });
 
-        it('should have what\'s change checkbox', () => {
-            componentHost.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)), PageMode.PREVIEW);
-            fixtureHost.detectChanges();
-            const whatsChanged: DebugElement = de.query(By.css('p-checkbox'));
-            expect(whatsChanged).toBeTruthy();
-        });
-    });
+        describe('events', () => {
+            beforeEach(() => {
+                spyOn(component.whatschange, 'emit');
+                componentHost.pageState = new DotRenderedPageState(
+                    mockUser,
+                    JSON.parse(JSON.stringify(mockDotRenderedPage)),
+                    PageMode.PREVIEW
+                );
+                fixtureHost.detectChanges();
 
-    describe('what\'s change event', () => {
-        let whatsChanged: DebugElement;
-        beforeEach(() => {
-            spyOn(component.whatschange, 'emit');
-            componentHost.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)), PageMode.PREVIEW);
-            fixtureHost.detectChanges();
+                whatsChanged = de.query(By.css('p-checkbox'));
+            });
 
-            whatsChanged = de.query(By.css('p-checkbox'));
-        });
+            it('should have what\'s change checkbox', () => {
+                expect(whatsChanged).toBeTruthy();
+            });
 
-        it('should emit what\'s change in true', () => {
-            whatsChanged.triggerEventHandler('onChange', true);
-            expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
-            expect(component.whatschange.emit).toHaveBeenCalledWith(true);
-        });
+            it('should emit what\'s change in true', () => {
+                whatsChanged.triggerEventHandler('onChange', true);
+                expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
+                expect(component.whatschange.emit).toHaveBeenCalledWith(true);
+            });
 
-        it('should emit what\'s change in false', () => {
-            whatsChanged.triggerEventHandler('onChange', false);
-            expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
-            expect(component.whatschange.emit).toHaveBeenCalledWith(false);
+            it('should emit what\'s change in false', () => {
+                whatsChanged.triggerEventHandler('onChange', false);
+                expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
+                expect(component.whatschange.emit).toHaveBeenCalledWith(false);
+            });
         });
     });
 });
