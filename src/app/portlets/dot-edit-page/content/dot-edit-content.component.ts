@@ -345,13 +345,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private subscribePageModelChange(): void {
         this.dotEditContentHtmlService.pageModelChange
-            .skip(1)
             .filter((model: any) => model.length)
             .takeUntil(this.destroy$)
             .subscribe(() => {
-                this.ngZone.run(() => {
-                    this.saveContent();
-                });
+                this.saveContent();
             });
     }
 
