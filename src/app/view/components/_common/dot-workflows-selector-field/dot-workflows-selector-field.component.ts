@@ -5,6 +5,8 @@ import { Component, OnInit, forwardRef } from '@angular/core';
 import { SelectItem } from 'primeng/components/common/selectitem';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { tap } from 'rxjs/operators/tap';
+import { flatMap, map, toArray } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-workflows-selector-field',
@@ -42,14 +44,15 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
 
     ngOnInit() {
         this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).mergeMap(() => {
-            return this.dotWorkflowService
-                .get()
-                .do((workflows: DotWorkflow[]) => {
+            return this.dotWorkflowService.get().pipe(
+                tap((workflows: DotWorkflow[]) => {
+                    this.value = [workflows.filter((workflow) => workflow.system)[0]['id']];
                     this.workflowsModel = workflows;
-                })
-                .flatMap((workflows: DotWorkflow[]) => workflows)
-                .map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow))
-                .toArray();
+                }),
+                flatMap((workflows: DotWorkflow[]) => workflows),
+                map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
+                toArray()
+            );
         });
     }
 
