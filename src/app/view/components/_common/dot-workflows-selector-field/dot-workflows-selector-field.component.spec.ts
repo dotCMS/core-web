@@ -104,6 +104,11 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
             });
 
+            it('should set the default workflow (system = true) option in the dropdown', () => {
+                const defaultSelectOption = [mockWorkflows.filter((workflow) => workflow.system)[0]['id']];
+                expect(component.value).toEqual(defaultSelectOption);
+            });
+
             it('should have archived item and message', () => {
                 const archivedItems = de.queryAll(By.css('.workflow__archive-label'));
                 expect(archivedItems.length).toBe(1);
@@ -146,11 +151,6 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 innerMultiselect = deHost.query(By.css('dot-workflows-selector-field')).query(By.css('p-multiSelect'));
             })
         );
-
-        it('should get value', () => {
-            fixtureHost.detectChanges();
-            expect(component.value).toEqual(['567', '890']);
-        });
 
         it('should propagate value', () => {
             fixtureHost.detectChanges();
