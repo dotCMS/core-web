@@ -45,7 +45,6 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
         this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).mergeMap(() => {
             return this.dotWorkflowService.get().pipe(
                 tap((workflows: DotWorkflow[]) => {
-                    this.value = [workflows.filter((workflow) => workflow.system)[0]['id']];
                     this.workflowsModel = workflows;
                 }),
                 flatMap((workflows: DotWorkflow[]) => workflows),
