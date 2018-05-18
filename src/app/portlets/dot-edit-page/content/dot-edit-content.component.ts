@@ -151,15 +151,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    private saveContent(): void {
+    private saveContent(model: DotPageContainer[]): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
-        this.pageServiceSave().subscribe(() => {
+
+        this.dotEditPageService.save(this.pageState.page.identifier, model).take(1).subscribe(() => {
             this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
         });
-    }
-
-    private pageServiceSave(): Observable<string> {
-        return this.dotEditPageService.save(this.pageState.page.identifier, this.dotEditContentHtmlService.getContentModel()).take(1);
     }
 
     private addContentlet($event: any): void {
@@ -176,7 +173,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             },
             events: {
                 load: (event) => {
-                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
                 }
             }
         });
@@ -195,7 +192,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             },
             events: {
                 load: (event) => {
-                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents;
+                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
                 }
             }
         });
@@ -308,7 +305,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private subscribeIframeActions(): void {
-        this.dotEditContentHtmlService.iframeActions.takeUntil(this.destroy$).subscribe((contentletEvent: any) => {
+        this.dotEditContentHtmlService.iframeActions$.takeUntil(this.destroy$).subscribe((contentletEvent: any) => {
             this.ngZone.run(() => {
                 this.iframeActionsHandler(contentletEvent.name)(contentletEvent);
             });
@@ -334,12 +331,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private subscribePageModelChange(): void {
-        this.dotEditContentHtmlService.pageModelChange
+        this.dotEditContentHtmlService.pageModel$
             .filter((model: any) => model.length)
             .takeUntil(this.destroy$)
-            .subscribe(() => {
+            .subscribe((model: DotPageContainer[]) => {
                 this.ngZone.run(() => {
-                    this.saveContent();
+                    this.saveContent(model);
                 });
             });
     }
