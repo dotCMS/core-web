@@ -92,6 +92,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onLoad(_event): void {
         this.dotLoadingIndicatorService.hide();
+        this.changeContainersHeight();
     }
 
     /**
@@ -115,7 +116,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Hanlde changes in the configuration of "View As" toolbar
+     * Handle changes in the configuration of "View As" toolbar
      *
      * @param {DotEditPageViewAs} viewAsConfig
      * @memberof DotEditContentComponent
@@ -148,6 +149,16 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((pageState: DotRenderedPageState) => {
                 this.setPageState(pageState);
             });
+    }
+
+    private pageHasLayout() {
+        return this.pageState && this.pageState.layout;
+    }
+
+    private changeContainersHeight() {
+        if (this.pageHasLayout() && this.pageState.state.mode === 0) {
+            setTimeout(() => this.dotEditContentHtmlService.setContaintersSameHeight(this.pageState.layout), 400);
+        }
     }
 
     private saveContent(model: DotPageContainer[]): void {
@@ -337,6 +348,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((model: DotPageContainer[]) => {
                 this.ngZone.run(() => {
                     this.saveContent(model);
+                    this.changeContainersHeight();
                 });
             });
     }
