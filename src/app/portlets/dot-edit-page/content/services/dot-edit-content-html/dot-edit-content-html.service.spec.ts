@@ -27,7 +27,9 @@ describe('DotEditContentHtmlService', () => {
         <body>
             <div data-dot-object="container" data-dot-identifier="123" data-dot-uuid="456" data-dot-can-add="CONTENT">
                 <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="456">
-                    <div class="large-column"></div>
+                    <div class="large-column">
+                        <div data-dot-object="edit-content"></div>
+                    </div>
                 </div>
             </div>
 
@@ -165,6 +167,33 @@ describe('DotEditContentHtmlService', () => {
         expect(this.dotEditContentHtmlService.renderEditedContentlet).toHaveBeenCalledWith({
             identifier: '444',
             inode: '555'
+        });
+    });
+
+    it('should handle edit-content from iframe click', () => {
+        const editEl = fakeIframeEl.contentWindow.document.querySelector('[data-dot-object="edit-content"]');
+
+
+        this.dotEditContentHtmlService.iframeActions$.subscribe(res => {
+            expect(JSON.parse(JSON.stringify(res))).toEqual({
+                name: 'edit',
+                dataset: {
+                    dotObject: 'edit-content'
+                },
+                container: {
+                    dotCanAdd: 'CONTENT',
+                    dotIdentifier: '123',
+                    dotObject: 'container',
+                    dotUuid: '456'
+                }
+            });
+        });
+
+        editEl.click();
+
+        expect(this.dotEditContentHtmlService.currentContentlet).toEqual({
+            identifier: '456',
+            inode: '456'
         });
     });
 
