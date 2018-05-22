@@ -12,6 +12,7 @@ import { DotPageContainer } from '../../../shared/models/dot-page-container.mode
 import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { take } from 'rxjs/operators/take';
 
 export enum DotContentletAction {
     EDIT,
@@ -112,7 +113,9 @@ export class DotEditContentHtmlService {
      */
     renderEditedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
-        const currentContentlets = doc.querySelectorAll(`div[data-dot-identifier="${contentlet.identifier}"]`);
+        const currentContentlets = doc.querySelectorAll(
+            `div[data-dot-object="contentlet"][data-dot-identifier="${contentlet.identifier}"]`
+        );
 
         currentContentlets.forEach((currentContentlet) => {
             contentlet.type = currentContentlet.dataset.dotType;
@@ -129,13 +132,9 @@ export class DotEditContentHtmlService {
 
             this.dotContainerContentletService
                 .getContentletToContainer(container, contentlet)
-                .take(1)
+                .pipe(take(1))
                 .subscribe((contentletHtml: string) => {
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
-
-                    if (this.currentContentlet) {
-                        this.currentContentlet = null;
-                    }
                 });
         });
     }
@@ -408,7 +407,6 @@ export class DotEditContentHtmlService {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
                 } else {
-                    console.log(this.currentContentlet, contentletEvent.data);
                     this.renderEditedContentlet(this.currentContentlet || contentletEvent.data);
                 }
             },
