@@ -382,10 +382,16 @@ export class DotEditContentHtmlService {
             dotEditContentletEl.dataset.dotCanEdit === 'true'
         );
 
-        dotEditContentletEl.innerHTML = `<div class="dotedit-contentlet__toolbar">
+        dotEditContentletEl.innerHTML = `
+            <div class="dotedit-contentlet__toolbar">
                 ${contenToolbarButtons}
             </div>
-            <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>`;
+            <div class="dotedit-contentlet__content">
+                <div class="loader__overlay">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        `;
 
         this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__edit'), 'edit');
         this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__remove'), 'remove');

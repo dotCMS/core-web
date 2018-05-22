@@ -127,7 +127,7 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
-    it('should edit contentlet', () => {
+    it('should render edit contentlet', () => {
         this.dotEditContentHtmlService.setContainterToEditContentlet({
             identifier: '123',
             uuid: '456'
@@ -147,7 +147,28 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
-    it('should relocate contentlet', () => {
+    it('should render edit internal contentlet', () => {
+        spyOn(this.dotEditContentHtmlService, 'renderEditedContentlet');
+
+        this.dotEditContentHtmlService.currentContentlet = {
+            identifier: '444',
+            inode: '555'
+        };
+
+        this.dotEditContentHtmlService.contentletEvents$.next({
+            name: 'save',
+            data: {
+                identifier: '456'
+            }
+        });
+
+        expect(this.dotEditContentHtmlService.renderEditedContentlet).toHaveBeenCalledWith({
+            identifier: '444',
+            inode: '555'
+        });
+    });
+
+    it('should render relocated contentlet', () => {
         spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet');
 
         this.dotEditContentHtmlService.contentletEvents$.next({
