@@ -22,6 +22,7 @@ export enum DotContentletAction {
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<any> = new Subject();
     currentContainer: DotPageContainer;
+    currentContentlet: DotPageContent;
     iframe: ElementRef;
     iframeActions$: Subject<any> = new Subject();
     pageModel$: Subject<DotPageContainer[]> = new Subject();
@@ -122,6 +123,10 @@ export class DotEditContentHtmlService {
 
             this.dotContainerContentletService.getContentletToContainer(container, contentlet).subscribe((contentletHtml: string) => {
                 this.renderHTMLToContentlet(contentletEl, contentletHtml);
+
+                if (this.currentContentlet) {
+                    this.currentContentlet = null;
+                }
             });
         });
     }
@@ -262,6 +267,14 @@ export class DotEditContentHtmlService {
             const target = <HTMLElement>$event.target;
             const container = <HTMLElement>target.closest('div[data-dot-object="container"]');
 
+
+            if (target.dataset.dotDataParentContentletId) {
+                this.currentContentlet = {
+                    identifier: target.dataset.dotDataParentContentletId,
+                    inode: target.dataset.dotDataParentContentletInone
+                };
+            }
+
             this.iframeActions$.next({
                 name: type,
                 dataset: target.dataset,
@@ -313,10 +326,26 @@ export class DotEditContentHtmlService {
         });
     }
 
+    private getInnerEditButtons(): HTMLElement[] {
+        let innerEditButtons = Array.from(this.getEditPageDocument().querySelectorAll('[data-dot-object="edit-content"]'));
+
+        innerEditButtons = innerEditButtons.map((button: HTMLElement) => {
+            const parentContentlet = <HTMLElement>button.closest('div[data-dot-object="contentlet"]');
+            button.dataset.dotDataParentContentletId = parentContentlet.dataset.dotIdentifier;
+            button.dataset.dotDataParentContentletInone = parentContentlet.dataset.dotInode;
+            return button;
+        });
+
+        return <HTMLElement[]>innerEditButtons;
+    }
+
     private bindEditContentletEvents(): void {
-        const editButtons = Array.from(
+        let editButtons = Array.from(
             this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit:not(.dotedit-contentlet__disabled)')
         );
+
+        editButtons = editButtons.concat(this.getInnerEditButtons());
+
         editButtons.forEach((button: HTMLElement) => {
             this.bindButtonsEvent(button, 'edit');
         });
@@ -373,8 +402,8 @@ export class DotEditContentHtmlService {
             save: (contentletEvent: any) => {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
-                } else if (this.currentAction === DotContentletAction.EDIT) {
-                    this.renderEditedContentlet(contentletEvent.data);
+                } else {
+                    this.renderEditedContentlet(this.currentContentlet || contentletEvent.data);
                 }
             },
             // When a user select a content from the search jsp
