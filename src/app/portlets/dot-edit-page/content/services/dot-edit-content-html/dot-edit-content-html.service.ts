@@ -95,12 +95,11 @@ export class DotEditContentHtmlService {
      */
     removeContentlet(container: DotPageContainer, content: DotPageContent): void {
         const doc = this.getEditPageDocument();
-        // tslint:disable-next-line:max-line-length
-        const contenletEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${
-                container.uuid
-            }"] div[data-dot-inode="${content.inode}"]`
-        );
+        const selector = [
+            `div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${container.uuid}"] `,
+            `div[data-dot-object="contentlet"][data-dot-inode="${content.inode}"]`,
+        ].join('');
+        const contenletEl = doc.querySelector(selector);
         contenletEl.remove();
         this.pageModel$.next(this.getContentModel());
     }
@@ -356,8 +355,8 @@ export class DotEditContentHtmlService {
     }
 
     private bindRemoveContentletEvents(): void {
-        const editButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove'));
-        editButtons.forEach((button: HTMLElement) => {
+        const removeButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove'));
+        removeButtons.forEach((button: HTMLElement) => {
             this.bindButtonsEvent(button, 'remove');
         });
     }
