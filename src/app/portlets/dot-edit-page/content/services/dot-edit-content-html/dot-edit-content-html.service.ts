@@ -12,6 +12,9 @@ import { DotPageContainer } from '../../../shared/models/dot-page-container.mode
 import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotLayout } from '../../../shared/models/dot-layout.model';
+import { DotLayoutColumn } from '../../../shared/models/dot-layout-column.model';
+import { DotLayoutRow } from '../../../shared/models/dot-layout-row.model';
 
 export enum DotContentletAction {
     EDIT,
@@ -176,6 +179,50 @@ export class DotEditContentHtmlService {
     setContainterToEditContentlet(pageContainer: DotPageContainer): void {
         this.currentContainer = pageContainer;
         this.currentAction = DotContentletAction.EDIT;
+    }
+
+    /**
+     * Set the same height to containers in the same row
+     *
+     * @param {DotLayout} pageLayout
+     * @memberof DotEditContentHtmlService
+     */
+    setContaintersSameHeight(pageLayout: DotLayout): void {
+        const doc = this.getEditPageDocument();
+        const rowsMaxHeight: number[] = [];
+        let rowHeight: number;
+
+        const containersLayoutIds = pageLayout.body.rows.map((row: DotLayoutRow) => {
+            return row.columns.map((column: DotLayoutColumn) => {
+                return {
+                    identifier: column.containers[0].identifier,
+                    uuid: column.containers[0].uuid
+                };
+            });
+        });
+
+        const containerDomElements = containersLayoutIds.map((containerRow: Array<DotPageContainer>, index: number) => {
+            rowHeight = 0;
+            return containerRow.map((container: DotPageContainer) => {
+                const querySelector = [
+                    `div[data-dot-object="container"]`,
+                    `[data-dot-identifier="${container.identifier}"]`,
+                    `[data-dot-uuid="${container.uuid}"]`
+                ].join('');
+                const containerElement = doc.querySelector(querySelector);
+                containerElement.style.height = 'auto';
+                if (containerElement.offsetHeight > rowHeight) {
+                    rowsMaxHeight[index] = rowHeight = containerElement.offsetHeight;
+                }
+                return containerElement;
+            });
+        });
+
+        containerDomElements.map((containerRow: Array<HTMLElement>, index: number) => {
+            containerRow.map((container: HTMLElement) => {
+                container.style.height = `${rowsMaxHeight[index]}px`;
+            });
+        });
     }
 
     /**

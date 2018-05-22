@@ -91,6 +91,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onLoad(_event): void {
         this.dotLoadingIndicatorService.hide();
+        this.changeContainersHeight();
     }
 
     /**
@@ -123,10 +124,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             );
     }
 
-
-
     /**
-     * Hanlde changes in the configuration of "View As" toolbar
+     * Handle changes in the configuration of "View As" toolbar
      *
      * @param {DotEditPageViewAs} viewAsConfig
      * @memberof DotEditContentComponent
@@ -161,6 +160,16 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
+    private pageHasLayout() {
+        return this.pageState && this.pageState.layout;
+    }
+
+    private changeContainersHeight() {
+        if ( this.pageHasLayout() && this.pageState.state.mode === 0) {
+            setTimeout(() => this.dotEditContentHtmlService.setContaintersSameHeight(this.pageState.layout), 500);
+        }
+    }
+
     private saveContent(): void {
         this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
         this.pageServiceSave().subscribe(() => {
@@ -182,7 +191,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotContentletEditorService.add({
             data: {
                 container: $event.dataset.dotIdentifier,
-                baseTypes: $event.dataset.dotAdd,
+                baseTypes: $event.dataset.dotAdd
             },
             events: {
                 load: (event) => {
@@ -201,7 +210,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
         this.dotContentletEditorService.edit({
             data: {
-                inode: $event.dataset.dotInode,
+                inode: $event.dataset.dotInode
             },
             events: {
                 load: (event) => {
@@ -351,6 +360,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.ngZone.run(() => {
                     this.saveContent();
+                    this.changeContainersHeight();
                 });
             });
     }
