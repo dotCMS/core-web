@@ -17,11 +17,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     @ViewChild('locker') locker: InputSwitch;
     @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
 
-    @Input() canSave: boolean;
     @Input() pageState: DotRenderedPageState;
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
-    @Output() save = new EventEmitter<MouseEvent>();
     @Output() actionFired = new EventEmitter<any>();
 
     states: SelectItem[] = [];
@@ -39,7 +37,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'editpage.toolbar.primary.action',
                 'editpage.toolbar.edit.page',
                 'editpage.toolbar.preview.page',
                 'editpage.toolbar.live.page',

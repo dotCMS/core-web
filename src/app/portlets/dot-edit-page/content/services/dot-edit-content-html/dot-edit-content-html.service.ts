@@ -13,21 +13,20 @@ import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 
-enum Action {
+export enum DotContentletAction {
     EDIT,
     ADD
 }
+
 @Injectable()
 export class DotEditContentHtmlService {
-    contentletEvents: Subject<any> = new Subject();
-    iframeActions: Subject<any> = new Subject();
-    iframe: ElementRef;
-
-    pageModelChange: Subject<any> = new Subject();
-
+    contentletEvents$: Subject<any> = new Subject();
     currentContainer: DotPageContainer;
+    iframe: ElementRef;
+    iframeActions$: Subject<any> = new Subject();
+    pageModel$: Subject<DotPageContainer[]> = new Subject();
 
-    private currentAction: Action;
+    private currentAction: DotContentletAction;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -38,7 +37,7 @@ export class DotEditContentHtmlService {
         private dotDialogService: DotDialogService,
         private dotMessageService: DotMessageService
     ) {
-        this.contentletEvents.subscribe((contentletEvent: any) => {
+        this.contentletEvents$.subscribe((contentletEvent: any) => {
             this.handlerContentletEvents(contentletEvent.name)(contentletEvent);
         });
 
@@ -57,9 +56,9 @@ export class DotEditContentHtmlService {
         return new Promise((resolve, _reject) => {
             this.iframe = iframeEl;
             const iframeElement = this.getEditPageIframe();
-            iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModelChange;
-            iframeElement.contentWindow.contentletEvents = this.contentletEvents;
             iframeElement.addEventListener('load', () => {
+                iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModel$;
+                iframeElement.contentWindow.contentletEvents = this.contentletEvents$;
                 resolve(true);
             });
             // Load content after bind 'load' event.
@@ -95,7 +94,7 @@ export class DotEditContentHtmlService {
             }"] div[data-dot-inode="${content.inode}"]`
         );
         contenletEl.remove();
-        this.pageModelChange.next(this.getContentModel());
+        this.pageModel$.next(this.getContentModel());
     }
 
     /**
@@ -151,7 +150,7 @@ export class DotEditContentHtmlService {
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
-                    this.currentContainer = null;
+                    this.currentAction = DotContentletAction.EDIT;
                 });
         }
     }
@@ -164,7 +163,7 @@ export class DotEditContentHtmlService {
      */
     setContainterToAppendContentlet(pageContainer: DotPageContainer): void {
         this.currentContainer = pageContainer;
-        this.currentAction = Action.ADD;
+        this.currentAction = DotContentletAction.ADD;
     }
 
     /**
@@ -175,7 +174,7 @@ export class DotEditContentHtmlService {
      */
     setContainterToEditContentlet(pageContainer: DotPageContainer): void {
         this.currentContainer = pageContainer;
-        this.currentAction = Action.EDIT;
+        this.currentAction = DotContentletAction.EDIT;
     }
 
     /**
@@ -184,7 +183,7 @@ export class DotEditContentHtmlService {
      * @returns {*}
      * @memberof DotEditContentHtmlService
      */
-    getContentModel(): any {
+    getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow.getDotNgModel();
     }
 
@@ -263,7 +262,7 @@ export class DotEditContentHtmlService {
             const target = <HTMLElement>$event.target;
             const container = <HTMLElement>target.closest('div[data-dot-object="container"]');
 
-            this.iframeActions.next({
+            this.iframeActions$.next({
                 name: type,
                 dataset: target.dataset,
                 container: container ? container.dataset : null
@@ -372,31 +371,22 @@ export class DotEditContentHtmlService {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentletEvent: any) => {
-                if (this.currentAction === Action.ADD) {
+                if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
-                } else if (this.currentAction === Action.EDIT) {
+                } else if (this.currentAction === DotContentletAction.EDIT) {
                     this.renderEditedContentlet(contentletEvent.data);
                 }
-                this.iframeActions.next({
-                    name: 'close'
-                });
             },
             // When a user select a content from the search jsp
             select: (contentletEvent: any) => {
                 this.renderAddedContentlet(contentletEvent.data);
-                this.iframeActions.next({
-                    name: 'close'
+                this.iframeActions$.next({
+                    name: 'select'
                 });
             },
             // When a user drang and drop a contentlet in the iframe
             relocate: (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
-            },
-            // When user cancel the edition of a contentlet.
-            cancel: (_contentletEvent: any) => {
-                this.iframeActions.next({
-                    name: 'close'
-                });
             }
         };
 
@@ -435,7 +425,7 @@ export class DotEditContentHtmlService {
         this.appendNewContentlets(contentletContentEl, contentletHtml);
 
         // Update the model with the recently added contentlet
-        this.pageModelChange.next(this.getContentModel());
+        this.pageModel$.next(this.getContentModel());
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {

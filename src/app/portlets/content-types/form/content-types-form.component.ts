@@ -79,7 +79,7 @@ export class ContentTypesFormComponent implements OnInit {
         this.name.nativeElement.focus();
 
         if (!this.isEditMode()) {
-            this.dotWorkflowService.getDefault().subscribe((workflow: DotWorkflow) => {
+            this.dotWorkflowService.getSystem().subscribe((workflow: DotWorkflow) => {
                 this.form.get('workflow').setValue([workflow.id]);
             });
         }
@@ -199,7 +199,7 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private initWorkflowField(): void {
-        this.dotLicenseService.isEnterpriseLicense()
+        this.dotLicenseService.isEnterprise()
             .subscribe((isEnterpriseLicense: boolean) => {
                 this.updateWorkflowFormControl(isEnterpriseLicense);
             });

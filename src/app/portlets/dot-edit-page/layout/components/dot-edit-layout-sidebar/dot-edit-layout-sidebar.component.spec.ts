@@ -1,12 +1,11 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContainerSelectorModule } from '../../../../../view/components/dot-container-selector/dot-container-selector.module';
 import { DotEditLayoutSidebarComponent } from './dot-edit-layout-sidebar.component';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
-import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
 import { DotLayoutSideBar } from '../../../shared/models/dot-layout-sidebar.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -91,7 +90,8 @@ describe('DotEditLayoutSidebarComponent', () => {
         expect(component.containers).toBe(mockResponse);
     });
 
-    it('should transform containers raw data into proper data to be saved in the BE', () => {
+    it('should transform containers raw data from component "dot-container-selector" into proper data to be saved in the BE', () => {
+        const containerSelector: DebugElement = hostComponentfixture.debugElement.query(By.css('dot-container-selector'));
         const transformedValue = {
             containers: [
                 {
@@ -106,9 +106,21 @@ describe('DotEditLayoutSidebarComponent', () => {
             location: 'left',
             width: 'small'
         };
-
+        spyOn(component, 'updateAndPropagate').and.callThrough();
         spyOn(component, 'propagateChange');
-        component.updateContainers(mockDotContainers);
+        containerSelector.triggerEventHandler('change', 'mockDotContainers');
+        component.updateAndPropagate(mockDotContainers);
+        expect(component.updateAndPropagate).toHaveBeenCalled();
         expect(component.propagateChange).toHaveBeenCalledWith(transformedValue);
+    });
+
+    it('should propagate call from component "dot-sidebar-properties" into parent container', () => {
+        const sidebarProperties: DebugElement = hostComponentfixture.debugElement.query(By.css('dot-sidebar-properties'));
+        spyOn(component, 'updateAndPropagate').and.callThrough();
+        spyOn(component, 'propagateChange');
+        sidebarProperties.triggerEventHandler('change', '');
+        component.updateAndPropagate();
+        expect(component.updateAndPropagate).toHaveBeenCalled();
+        expect(component.propagateChange).toHaveBeenCalled();
     });
 });

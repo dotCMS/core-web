@@ -30,7 +30,7 @@ import { DotLicenseService } from '../../../api/services/dot-license/dot-license
 
 @Injectable()
 class MockDotLicenseService {
-    isEnterpriseLicense(): Observable<boolean> {
+    isEnterprise(): Observable<boolean> {
         return Observable.of(false);
     }
 }
@@ -213,7 +213,7 @@ describe('ContentTypesFormComponent', () => {
 
     // tslint:disable-next-line:max-line-length
     it('should set canSave property false when the form value is updated and then gets back to the original content (no community license)', () => {
-        spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(false));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
 
         comp.data = {
             baseType: 'CONTENT',
@@ -234,7 +234,7 @@ describe('ContentTypesFormComponent', () => {
 
     // tslint:disable-next-line:max-line-length
     it('should set canSave property false when the form value is updated and then gets back to the original content (community license)', () => {
-        spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
 
         comp.data = {
             baseType: 'CONTENT',
@@ -353,7 +353,7 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should set value to the form', () => {
-        spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
 
         const fakeData = {
             baseType: 'CONTENT',
@@ -528,7 +528,7 @@ describe('ContentTypesFormComponent', () => {
         let data;
 
         beforeEach(() => {
-            spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
             comp.data = {
                 baseType: 'CONTENT'
             };
@@ -555,7 +555,7 @@ describe('ContentTypesFormComponent', () => {
                 fixed: null,
                 folder: null,
                 system: null,
-                workflow: ['85c1515c-c4f3-463c-bac2-860b8fcacc34']
+                workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']
             });
         });
         it('should submit form correctly on Enter', () => {
@@ -573,7 +573,7 @@ describe('ContentTypesFormComponent', () => {
                 fixed: null,
                 folder: null,
                 system: null,
-                workflow: ['85c1515c-c4f3-463c-bac2-860b8fcacc34']
+                workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']
             });
         });
     });
@@ -588,7 +588,7 @@ describe('ContentTypesFormComponent', () => {
 
             describe('community license true', () => {
                 beforeEach(() => {
-                    spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(false));
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
                     fixture.detectChanges();
                 });
 
@@ -601,7 +601,7 @@ describe('ContentTypesFormComponent', () => {
 
             describe('community license true', () => {
                 beforeEach(() => {
-                    spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(true));
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
                     fixture.detectChanges();
                 });
 
@@ -629,7 +629,7 @@ describe('ContentTypesFormComponent', () => {
                         }
                     ]
                 };
-                spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(false));
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
                 fixture.detectChanges();
                 expect(comp.form.get('workflow').value).toEqual(['123', '456']);
             });
@@ -639,7 +639,7 @@ describe('ContentTypesFormComponent', () => {
                     baseType: 'CONTENT',
                     id: '123'
                 };
-                spyOn(dotLicenseService, 'isEnterpriseLicense').and.returnValue(Observable.of(false));
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
                 fixture.detectChanges();
                 expect(comp.form.get('workflow').value).toEqual([]);
             });

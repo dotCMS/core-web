@@ -33,10 +33,9 @@ class MockWorkflowActionsComponent {
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `<dot-edit-page-toolbar [canSave]="canSave" [pageState]="pageState"></dot-edit-page-toolbar>`
+    template: `<dot-edit-page-toolbar [pageState]="pageState"></dot-edit-page-toolbar>`
 })
 class TestHostComponent {
-    @Input() canSave: boolean;
     @Input() pageState: DotRenderedPageState;
 }
 
@@ -66,7 +65,6 @@ describe('DotEditPageToolbarComponent', () => {
     }
 
     const messageServiceMock = new MockDotMessageService({
-        'editpage.toolbar.primary.action': 'Hello',
         'editpage.toolbar.edit.page': 'Edit',
         'editpage.toolbar.preview.page': 'Preview',
         'editpage.toolbar.live.page': 'Live',
@@ -162,18 +160,6 @@ describe('DotEditPageToolbarComponent', () => {
         expect(pageUrlEl.textContent).toEqual('/test/test');
     });
 
-    it('should have a save button in edit mode', () => {
-        fixture.componentInstance.pageState.state.locked = true;
-        fixture.componentInstance.pageState.state.mode = PageMode.EDIT;
-
-        fixture.detectChanges();
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-        expect(primaryAction).toBeTruthy();
-
-        const primaryActionEl: HTMLElement = primaryAction.nativeElement;
-        expect(primaryActionEl.textContent).toEqual('Hello');
-    });
-
     it('should have lockerModel in true when the page state is LIVE and the page is locked', () => {
         fixture.componentInstance.pageState.state.locked = true;
         fixture.componentInstance.pageState.state.mode = PageMode.LIVE;
@@ -208,22 +194,6 @@ describe('DotEditPageToolbarComponent', () => {
         fixture.detectChanges();
 
         expect(component.lockerModel).toBeFalsy();
-    });
-
-    it('should hide the save button in preview mode', () => {
-        fixture.detectChanges();
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-
-        expect(primaryAction).toBeFalsy();
-    });
-
-    it('should hide the save button in live mode', () => {
-        fixture.componentInstance.pageState.state.mode = PageMode.LIVE;
-
-        fixture.detectChanges();
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-
-        expect(primaryAction).toBeFalsy();
     });
 
     it('should have lock page component and no warn class', () => {
@@ -299,46 +269,6 @@ describe('DotEditPageToolbarComponent', () => {
 
         expect(actions.componentInstance.label).toEqual(messageServiceMock.get('editpage.toolbar.primary.workflow.actions'));
         expect(actions.componentInstance.page.workingInode).toEqual(component.pageState.page.workingInode);
-    });
-
-    it('should emit save event on primary action button click', () => {
-        fixture.componentInstance.pageState.state.mode = PageMode.EDIT;
-        fixture.componentInstance.pageState.state.locked = true;
-        fixture.componentInstance.canSave = true;
-
-        fixture.detectChanges();
-
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-
-        let result;
-        component.save.subscribe((event) => {
-            result = event;
-        });
-        primaryAction.nativeElement.click();
-
-        expect(result).toBeDefined();
-    });
-
-    it('should disabled save button', () => {
-        fixture.componentInstance.pageState.state.mode = PageMode.EDIT;
-        fixture.componentInstance.pageState.state.locked = true;
-        fixture.componentInstance.canSave = false;
-
-        fixture.detectChanges();
-
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-        expect(primaryAction.nativeElement.disabled).toBeTruthy('the save button have to be disabled');
-    });
-
-    it('should enabled save button', () => {
-        fixture.componentInstance.pageState.state.mode = PageMode.EDIT;
-        fixture.componentInstance.pageState.state.locked = true;
-        fixture.componentInstance.canSave = true;
-
-        fixture.detectChanges();
-
-        const primaryAction: DebugElement = de.query(By.css('.edit-page-toolbar__save'));
-        expect(primaryAction.nativeElement.disabled).toBeFalsy('the save button have to be enable');
     });
 
     it('should have live button enabled', () => {
