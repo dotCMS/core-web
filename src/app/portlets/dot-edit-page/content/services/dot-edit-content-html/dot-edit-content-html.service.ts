@@ -210,34 +210,29 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const rowsMaxHeight: number[] = [];
 
-        const containersLayoutIds = pageLayout.body.rows.map((row: DotLayoutRow) => {
-            return row.columns.map((column: DotLayoutColumn) => {
-                return {
-                    identifier: column.containers[0].identifier,
-                    uuid: column.containers[0].uuid
-                };
-            });
-        });
+        const containersLayoutIds = this.getContainersLayoutIds(pageLayout);
 
-        const containerDomElements = containersLayoutIds.map((containerRow: Array<DotPageContainer>, index: number) => {
-            rowsMaxHeight[index] = 0;
-            return containerRow.map((container: DotPageContainer) => {
-                const querySelector = [
-                    `div[data-dot-object="container"]`,
-                    `[data-dot-identifier="${container.identifier}"]`,
-                    `[data-dot-uuid="${container.uuid}"]`
-                ].join('');
-                const containerElement = doc.querySelector(querySelector);
-                containerElement.style.height = 'auto';
-                rowsMaxHeight[index] =
-                    containerElement.offsetHeight > rowsMaxHeight[index] ? containerElement.offsetHeight : rowsMaxHeight[index];
-                return containerElement;
+        const containerDomElements = containersLayoutIds
+            .map((containerRow: Array<DotPageContainer>, index: number) => {
+                rowsMaxHeight[index] = 0;
+                return containerRow.map((container: DotPageContainer) => {
+                    const querySelector = [
+                        `div[data-dot-object="container"]`,
+                        `[data-dot-identifier="${container.identifier}"]`,
+                        `[data-dot-uuid="${container.uuid}"]`
+                    ].join('');
+                    const containerElement = doc.querySelector(querySelector);
+                    containerElement.style.height = 'auto';
+                    rowsMaxHeight[index] =
+                        containerElement.offsetHeight > rowsMaxHeight[index] ? containerElement.offsetHeight : rowsMaxHeight[index];
+                    return containerElement;
+                });
+            })
+            .map((containerRow: Array<HTMLElement>, index: number) => {
+                containerRow.map((container: HTMLElement) => {
+                    container.style.height = `${rowsMaxHeight[index]}px`;
+                });
             });
-        }).map((containerRow: Array<HTMLElement>, index: number) => {
-            containerRow.map((container: HTMLElement) => {
-                container.style.height = `${rowsMaxHeight[index]}px`;
-            });
-        });
     }
 
     /**
@@ -248,6 +243,17 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow.getDotNgModel();
+    }
+
+    private getContainersLayoutIds(pageLayout: DotLayout): Array<Array<DotPageContainer>> {
+        return pageLayout.body.rows.map((row: DotLayoutRow) => {
+            return row.columns.map((column: DotLayoutColumn) => {
+                return {
+                    identifier: column.containers[0].identifier,
+                    uuid: column.containers[0].uuid
+                };
+            });
+        });
     }
 
     private showContentAlreadyAddedError(): void {
