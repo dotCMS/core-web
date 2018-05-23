@@ -7,6 +7,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
+import { DotEditPageInfoComponent } from '../../../components/dot-edit-page-info/dot-edit-page-info.component';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -15,7 +16,7 @@ import { PageMode } from '../../../shared/models/page-mode.enum';
 })
 export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     @ViewChild('locker') locker: InputSwitch;
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @ViewChild('pageInfo') pageInfo: DotEditPageInfoComponent;
 
     @Input() pageState: DotRenderedPageState;
 
@@ -40,11 +41,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
                 'editpage.toolbar.edit.page',
                 'editpage.toolbar.preview.page',
                 'editpage.toolbar.live.page',
-                'editpage.toolbar.page.locked.by.user',
                 'editpage.toolbar.primary.workflow.actions',
-                'dot.common.message.pageurl.copied.clipboard',
-                'dot.common.message.pageurl.copied.clipboard.error',
-                'editpage.toolbar.page.cant.edit',
                 'editpage.content.steal.lock.confirmation.message.header',
                 'editpage.content.steal.lock.confirmation.message'
             ])
@@ -57,42 +54,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         if (changes.pageState && !changes.pageState.firstChange) {
             this.setFieldsModels(changes.pageState.currentValue);
         }
-    }
-
-    /**
-     * Copy url to clipboard
-     *
-     * @returns {boolean}
-     * @memberof DotEditPageToolbarComponent
-     */
-    copyUrlToClipboard(): boolean {
-        /*
-            Aparently this is the only crossbrowser solution so far. If we do this in another place we might have
-            to include an npm module.
-        */
-        const txtArea = document.createElement('textarea');
-
-        txtArea.style.position = 'fixed';
-        txtArea.style.top = '0';
-        txtArea.style.left = '0';
-        txtArea.style.opacity = '0';
-        txtArea.value = this.pageState.page.pageURI;
-        document.body.appendChild(txtArea);
-        txtArea.select();
-
-        let result;
-
-        try {
-            result = document.execCommand('copy');
-            if (result) {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard'));
-            }
-        } catch (err) {
-            this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
-        }
-        document.body.removeChild(txtArea);
-
-        return result;
     }
 
     /**
@@ -111,13 +72,8 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
      * @memberof DotEditPageToolbarComponent
      */
     onLockerClick(_$event): void {
-        const blinkClass = 'edit-page-toolbar__locked-by-message--blink';
-
         if (this.locker.disabled) {
-            this.lockedPageMessage.nativeElement.classList.add(blinkClass);
-            setTimeout(() => {
-                this.lockedPageMessage.nativeElement.classList.remove(blinkClass);
-            }, 500);
+            this.pageInfo.blinkLockMessage();
         }
     }
 
