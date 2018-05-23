@@ -228,14 +228,6 @@ describe('DotEditContentComponent', () => {
         expect(component.reload).toHaveBeenCalledTimes(1);
     });
 
-    it('should set listener to change containers height', () => {
-        spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
-        fixture.detectChanges();
-        component.pageState.state.mode = 0;
-        component.onLoad(Event);
-        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalled();
-    });
-
     describe('what\'s change', () => {
         let viewAsToolbar: DebugElement;
 
@@ -799,4 +791,13 @@ describe('DotEditContentComponent', () => {
             expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalled();
         });
     });
+
+    it('should set listener to change containers height', () => {
+        spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
+        fixture.detectChanges();
+        component.pageState.state.mode = 0;
+        component.onLoad(Event);
+        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalled();
+    });
+
 });
