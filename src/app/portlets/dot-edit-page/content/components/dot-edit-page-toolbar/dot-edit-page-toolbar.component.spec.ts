@@ -46,6 +46,7 @@ describe('DotEditPageToolbarComponent', () => {
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotDialogService: DotDialogService;
     let actions: DebugElement;
+    let cancel: DebugElement;
 
     const states = {
         edit: 0,
@@ -65,6 +66,7 @@ describe('DotEditPageToolbarComponent', () => {
     }
 
     const messageServiceMock = new MockDotMessageService({
+        'dot.common.cancel': 'Cancel',
         'editpage.toolbar.edit.page': 'Edit',
         'editpage.toolbar.preview.page': 'Preview',
         'editpage.toolbar.live.page': 'Live',
@@ -134,6 +136,7 @@ describe('DotEditPageToolbarComponent', () => {
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotDialogService = de.injector.get(DotDialogService);
         actions = de.query(By.css('dot-edit-page-workflows-actions'));
+        cancel = de.query(By.css('.edit-page-toolbar__cancel'));
     });
 
     it('should have a toolbar element', () => {
@@ -224,6 +227,15 @@ describe('DotEditPageToolbarComponent', () => {
         const lockSwitch: DebugElement = de.query(By.css('.edit-page-toolbar__locker'));
         lockSwitch.nativeElement.click();
         expect(component.pageInfo.blinkLockMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it('should have cancel button and emit event', () => {
+        spyOn(component.cancel, 'emit');
+        expect(cancel === null).toBe(false);
+
+        cancel.triggerEventHandler('click', {});
+
+        expect(component.cancel.emit).toHaveBeenCalledTimes(1);
     });
 
     it('should have an action split button', () => {

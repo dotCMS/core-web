@@ -22,6 +22,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() actionFired = new EventEmitter<any>();
+    @Output() cancel = new EventEmitter<any>();
 
     states: SelectItem[] = [];
     lockerModel: boolean;
@@ -38,12 +39,13 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'editpage.toolbar.edit.page',
-                'editpage.toolbar.preview.page',
-                'editpage.toolbar.live.page',
-                'editpage.toolbar.primary.workflow.actions',
+                'dot.common.cancel',
+                'editpage.content.steal.lock.confirmation.message',
                 'editpage.content.steal.lock.confirmation.message.header',
-                'editpage.content.steal.lock.confirmation.message'
+                'editpage.toolbar.edit.page',
+                'editpage.toolbar.live.page',
+                'editpage.toolbar.preview.page',
+                'editpage.toolbar.primary.workflow.actions'
             ])
             .subscribe(() => {
                 this.setFieldsModels(this.pageState);

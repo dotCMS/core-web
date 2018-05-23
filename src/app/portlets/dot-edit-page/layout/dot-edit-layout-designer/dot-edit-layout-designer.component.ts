@@ -49,17 +49,17 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     ngOnInit(): void {
         this.dotMessageService
             .getMessages([
-                'editpage.layout.toolbar.action.save',
-                'editpage.layout.toolbar.action.cancel',
-                'editpage.layout.toolbar.template.name',
-                'editpage.layout.toolbar.save.template',
+                'common.validation.name.error.required',
+                'dot.common.message.saved',
+                'dot.common.message.saving',
+                'dot.common.cancel',
                 'editpage.layout.dialog.edit.page',
                 'editpage.layout.dialog.edit.template',
-                'editpage.layout.dialog.info',
                 'editpage.layout.dialog.header',
-                'dot.common.message.saving',
-                'dot.common.message.saved',
-                'common.validation.name.error.required'
+                'editpage.layout.dialog.info',
+                'editpage.layout.toolbar.action.save',
+                'editpage.layout.toolbar.save.template',
+                'editpage.layout.toolbar.template.name'
             ])
             .subscribe();
 

@@ -49,14 +49,14 @@ class MockDotLayoutDesignerComponent {
 }
 
 const messageServiceMock = new MockDotMessageService({
-    'editpage.layout.toolbar.action.save': 'Save',
-    'editpage.layout.toolbar.action.cancel': 'Cancel',
-    'editpage.layout.toolbar.template.name': 'Name of the template',
-    'editpage.layout.toolbar.save.template': 'Save as template',
+    'dot.common.cancel': 'Cancel',
     'editpage.layout.dialog.edit.page': 'Edit Page',
     'editpage.layout.dialog.edit.template': 'Edit Template',
+    'editpage.layout.dialog.header': 'Edit some',
     'editpage.layout.dialog.info': 'This is the message',
-    'editpage.layout.dialog.header': 'Edit some'
+    'editpage.layout.toolbar.action.save': 'Save',
+    'editpage.layout.toolbar.save.template': 'Save as template',
+    'editpage.layout.toolbar.template.name': 'Name of the template'
 });
 
 let component: DotEditLayoutDesignerComponent;
