@@ -122,7 +122,7 @@ fdescribe('DotEditPageInfoComponent', () => {
                 expect(lockedMessage.nativeElement.textContent.trim()).toEqual('Page is locked by...');
             });
 
-            fit('should blink', fakeAsync(() => {
+            it('should blink', fakeAsync(() => {
                 spyOn(lockedMessage.nativeElement.classList, 'add');
                 spyOn(lockedMessage.nativeElement.classList, 'remove');
                 component.blinkLockMessage();

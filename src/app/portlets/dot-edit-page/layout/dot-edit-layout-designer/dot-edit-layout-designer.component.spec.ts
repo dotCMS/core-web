@@ -21,6 +21,8 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { async } from '@angular/core/testing';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -59,6 +61,7 @@ const messageServiceMock = new MockDotMessageService({
 
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
+let dotRouterService: DotRouterService;
 
 const testConfigObject = {
     declarations: [
@@ -67,8 +70,16 @@ const testConfigObject = {
         MockDotLayoutDesignerComponent,
         MockDotLayoutPropertiesComponent
     ],
-    imports: [DotEditLayoutGridModule, RouterTestingModule, DotActionButtonModule, FormsModule, FieldValidationMessageModule],
+    imports: [
+        DotActionButtonModule,
+        DotEditLayoutGridModule,
+        DotEditPageInfoModule,
+        FieldValidationMessageModule,
+        FormsModule,
+        RouterTestingModule
+    ],
     providers: [
+        DotRouterService,
         DotDialogService,
         LoginService,
         PageViewService,
@@ -89,6 +100,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
     }));
 
     describe('edit layout', () => {
@@ -121,11 +133,17 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should show cancel button', () => {
-            fixture.detectChanges();
             const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
 
             expect(cancelButton).toBeTruthy();
             expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
+        });
+
+        it('should redirect to edit page on cancel button click', () => {
+            spyOn(dotRouterService, 'goToEditPage');
+            const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
+            cancelButton.triggerEventHandler('click', {});
+            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('an/url/test');
         });
 
         it('should show save button', () => {
