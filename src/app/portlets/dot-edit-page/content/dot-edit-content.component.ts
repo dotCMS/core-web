@@ -157,7 +157,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private changeContainersHeight() {
         if (this.pageHasLayout() && this.pageState.state.mode === 0) {
-            setTimeout(() => this.dotEditContentHtmlService.setContaintersSameHeight(this.pageState.layout), 400);
+            this.dotEditContentHtmlService.setContaintersChangeHeightListener(this.pageState.layout);
         }
     }
 
@@ -348,7 +348,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((model: DotPageContainer[]) => {
                 this.ngZone.run(() => {
                     this.saveContent(model);
-                    this.changeContainersHeight();
+                    this.dotEditContentHtmlService.setContaintersSameHeight(this.pageState.layout);
                 });
             });
     }

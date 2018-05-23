@@ -11,6 +11,7 @@ export const EDIT_PAGE_CSS = `
         border: solid 1px #53c2f9;
         min-height: 120px;
         margin-bottom:40px;
+        padding: 0 16px 16px;
     }
 
     [data-dot-object="container"].no {
@@ -25,7 +26,7 @@ export const EDIT_PAGE_CSS = `
     }
 
     [data-dot-object="contentlet"] {
-        margin: 40px 16px 16px;
+        margin-top: 40px;
         position: relative;
         padding-top: 25px;
         min-height: 60px;
