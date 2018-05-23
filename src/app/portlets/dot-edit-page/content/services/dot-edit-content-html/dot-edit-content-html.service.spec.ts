@@ -31,6 +31,7 @@ describe('DotEditContentHtmlService', () => {
                     <div class="large-column">
                         <h3>This is a title</h3>
                         <p>this is a paragraph</p>
+                        <div data-dot-object="edit-content"></div>
                     </div>
                 </div>
             </div>
@@ -181,7 +182,7 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
-    it('should edit contentlet', () => {
+    it('should render edit contentlet', () => {
         this.dotEditContentHtmlService.setContainterToEditContentlet({
             identifier: '123',
             uuid: '456'
@@ -201,7 +202,55 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
-    it('should relocate contentlet', () => {
+    it('should render edit internal contentlet', () => {
+        spyOn(this.dotEditContentHtmlService, 'renderEditedContentlet');
+
+        this.dotEditContentHtmlService.currentContentlet = {
+            identifier: '444',
+            inode: '555'
+        };
+
+        this.dotEditContentHtmlService.contentletEvents$.next({
+            name: 'save',
+            data: {
+                identifier: '456'
+            }
+        });
+
+        expect(this.dotEditContentHtmlService.renderEditedContentlet).toHaveBeenCalledWith({
+            identifier: '444',
+            inode: '555'
+        });
+    });
+
+    it('should handle edit-content from iframe click', () => {
+        const editEl = fakeIframeEl.contentWindow.document.querySelector('[data-dot-object="edit-content"]');
+
+
+        this.dotEditContentHtmlService.iframeActions$.subscribe(res => {
+            expect(JSON.parse(JSON.stringify(res))).toEqual({
+                name: 'edit',
+                dataset: {
+                    dotObject: 'edit-content'
+                },
+                container: {
+                    dotCanAdd: 'CONTENT',
+                    dotIdentifier: '123',
+                    dotObject: 'container',
+                    dotUuid: '456'
+                }
+            });
+        });
+
+        editEl.click();
+
+        expect(this.dotEditContentHtmlService.currentContentlet).toEqual({
+            identifier: '456',
+            inode: '456'
+        });
+    });
+
+    it('should render relocated contentlet', () => {
         spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet');
 
         this.dotEditContentHtmlService.contentletEvents$.next({
