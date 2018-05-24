@@ -250,6 +250,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return eventsHandlerMap[event];
     }
 
+    // TODO: this whole method need testing.
     private handleSetPageStateFailed(err: ResponseView): void {
         this.dotHttpErrorManagerService
             .handle(err)

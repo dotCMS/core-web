@@ -91,7 +91,7 @@ const testConfigObject = {
     ]
 };
 
-describe('DotEditLayoutDesignerComponent', () => {
+fdescribe('DotEditLayoutDesignerComponent', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
@@ -117,9 +117,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should show page title', () => {
-            const pageTitle: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__page-title'));
-            expect(pageTitle.nativeElement.textContent).toEqual('A title');
+        it('should show dot-edit-page-info', () => {
+            const dotEditPageInfo: DebugElement = fixture.debugElement.query(By.css('dot-edit-page-info'));
+            expect(dotEditPageInfo.componentInstance.pageState).toBe(component.pageState);
+            expect(dotEditPageInfo).toBeTruthy();
         });
 
         it('should not show template name input', () => {
