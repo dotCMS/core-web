@@ -33,9 +33,7 @@ export class DotEditContentHtmlService {
     pageModel$: Subject<DotPageContainer[]> = new Subject();
 
     private currentAction: DotContentletAction;
-    private debounceStateSelector = _.debounce((pageLayout: DotLayout) => this.setContaintersSameHeight(pageLayout), 500, {
-        leading: true
-    });
+    private rowsMaxHeight: number[] = [];
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
@@ -206,8 +204,11 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const target = doc.querySelector('body');
         const config = { attributes: true, childList: true, characterData: true };
+        const debounceContainersHeightChange = _.debounce((layout: DotLayout) => this.setContaintersSameHeight(layout), 500, {
+            leading: true
+        });
         const observer = new MutationObserver((mutations) => {
-            this.debounceStateSelector(pageLayout);
+            debounceContainersHeightChange(pageLayout);
         });
         observer.observe(target, config);
     }
@@ -219,32 +220,14 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     setContaintersSameHeight(pageLayout: DotLayout): void {
-        const doc = this.getEditPageDocument();
-        const rowsMaxHeight: number[] = [];
-
         const containersLayoutIds = this.getContainersLayoutIds(pageLayout);
+        const containerDomElements = this.getContainerDomElements(containersLayoutIds);
 
-        const containerDomElements = containersLayoutIds
-            .map((containerRow: Array<DotPageContainer>, index: number) => {
-                rowsMaxHeight[index] = 0;
-                return containerRow.map((container: DotPageContainer) => {
-                    const querySelector = [
-                        `div[data-dot-object="container"]`,
-                        `[data-dot-identifier="${container.identifier}"]`,
-                        `[data-dot-uuid="${container.uuid}"]`
-                    ].join('');
-                    const containerElement = doc.querySelector(querySelector);
-                    containerElement.style.height = 'auto';
-                    rowsMaxHeight[index] =
-                        containerElement.offsetHeight > rowsMaxHeight[index] ? containerElement.offsetHeight : rowsMaxHeight[index];
-                    return containerElement;
-                });
-            })
-            .map((containerRow: Array<HTMLElement>, index: number) => {
-                containerRow.map((container: HTMLElement) => {
-                    container.style.height = `${rowsMaxHeight[index]}px`;
-                });
+        containerDomElements.forEach((containerRow: Array<HTMLElement>, index: number) => {
+            containerRow.forEach((container: HTMLElement) => {
+                container.style.height = `${this.rowsMaxHeight[index]}px`;
             });
+        });
     }
 
     /**
@@ -264,6 +247,26 @@ export class DotEditContentHtmlService {
                     identifier: column.containers[0].identifier,
                     uuid: column.containers[0].uuid
                 };
+            });
+        });
+    }
+
+    private getContainerDomElements(containersLayoutIds: Array<Array<DotPageContainer>>): Array<Array<HTMLElement>> {
+        const doc = this.getEditPageDocument();
+
+        return containersLayoutIds.map((containerRow: Array<DotPageContainer>, index: number) => {
+            this.rowsMaxHeight[index] = 0;
+            return containerRow.map((container: DotPageContainer) => {
+                const querySelector = [
+                    `div[data-dot-object="container"]`,
+                    `[data-dot-identifier="${container.identifier}"]`,
+                    `[data-dot-uuid="${container.uuid}"]`
+                ].join('');
+                const containerElement = doc.querySelector(querySelector);
+                containerElement.style.height = 'auto';
+                this.rowsMaxHeight[index] =
+                    containerElement.offsetHeight > this.rowsMaxHeight[index] ? containerElement.offsetHeight : this.rowsMaxHeight[index];
+                return containerElement;
             });
         });
     }

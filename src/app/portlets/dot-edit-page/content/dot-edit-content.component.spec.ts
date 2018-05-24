@@ -795,9 +795,10 @@ describe('DotEditContentComponent', () => {
     it('should set listener to change containers height', () => {
         spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
         fixture.detectChanges();
-        component.pageState.state.mode = 0;
+        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).not.toHaveBeenCalled();
+        component.pageState.state.mode = PageMode.EDIT;
         component.onLoad(Event);
-        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalled();
+        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalledWith(component.pageState.layout);
     });
 
 });

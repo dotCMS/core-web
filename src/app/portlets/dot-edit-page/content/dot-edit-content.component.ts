@@ -92,7 +92,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onLoad(_event): void {
         this.dotLoadingIndicatorService.hide();
-        this.changeContainersHeight();
+        if (this.shouldSetContainersHeight()) {
+            this.dotEditContentHtmlService.setContaintersChangeHeightListener(this.pageState.layout);
+        }
     }
 
     /**
@@ -151,14 +153,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    private pageHasLayout() {
-        return this.pageState && this.pageState.layout;
-    }
-
-    private changeContainersHeight() {
-        if (this.pageHasLayout() && this.pageState.state.mode === 0) {
-            this.dotEditContentHtmlService.setContaintersChangeHeightListener(this.pageState.layout);
-        }
+    private shouldSetContainersHeight() {
+        return this.pageState && this.pageState.layout &&  this.pageState.state.mode === PageMode.EDIT;
     }
 
     private saveContent(model: DotPageContainer[]): void {
