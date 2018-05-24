@@ -14,7 +14,7 @@
 
     <ng-template [ngIf]="!pageState.page.canEdit">
         <span class="page-info__message-separator">•</span>
-        <span class="page-info__cant-edit-message">
+        <span #lockedPageMessage class="page-info__cant-edit-message">
             {{ dotMessageService.get('editpage.toolbar.page.cant.edit') }}
         </span>
     </ng-template>
