@@ -91,7 +91,7 @@ const testConfigObject = {
     ]
 };
 
-fdescribe('DotEditLayoutDesignerComponent', () => {
+describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             ...testConfigObject,
