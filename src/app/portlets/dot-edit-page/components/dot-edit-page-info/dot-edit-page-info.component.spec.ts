@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -12,6 +11,7 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { mockUser } from '../../../../test/login-service.mock';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import { DotClipboardUtil } from '../../../../api/util/clipboard/ClipboardUtil';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.message.pageurl.copied.clipboard': 'Copied to clipboard',
@@ -25,11 +25,13 @@ describe('DotEditPageInfoComponent', () => {
     let fixture: ComponentFixture<DotEditPageInfoComponent>;
     let de: DebugElement;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotClipboardUtil: DotClipboardUtil;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotEditPageInfoComponent],
             providers: [
+                DotClipboardUtil,
                 DotGlobalMessageService,
                 {
                     provide: DotMessageService,
@@ -44,6 +46,7 @@ describe('DotEditPageInfoComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
+        dotClipboardUtil = de.injector.get(DotClipboardUtil);
     });
 
     describe('default', () => {
@@ -81,19 +84,38 @@ describe('DotEditPageInfoComponent', () => {
             expect(lockedByMessage === null && cantEditMessage === null).toBe(true);
         });
 
-        it('should copy to clipboard url', () => {
+        it('should copy to clipboard url', fakeAsync(() => {
             spyOn(dotGlobalMessageService, 'display');
-            spyOn(component, 'copyUrlToClipboard').and.callThrough();
-            spyOn(document, 'execCommand').and.returnValue(true);
+            spyOn(dotClipboardUtil, 'copy').and.callFake(() => {
+                return new Promise((resolve) => {
+                    resolve(true);
+                });
+            });
 
             const copyUrlButton: DebugElement = de.query(By.css('.page-info__copy-url'));
 
             copyUrlButton.nativeElement.click();
 
-            expect(component.copyUrlToClipboard).toHaveBeenCalledTimes(1);
-            expect(document.execCommand).toHaveBeenCalledWith('copy');
+            tick();
+            expect(dotClipboardUtil.copy).toHaveBeenCalledWith('an/url/test');
             expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Copied to clipboard');
-        });
+        }));
+
+        it('should habdle error of copy to clipboard', fakeAsync(() => {
+            spyOn(dotGlobalMessageService, 'error');
+            spyOn(dotClipboardUtil, 'copy').and.callFake(() => {
+                return new Promise((resolve, reject) => {
+                    reject(true);
+                });
+            });
+
+            const copyUrlButton: DebugElement = de.query(By.css('.page-info__copy-url'));
+
+            copyUrlButton.nativeElement.click();
+
+            tick();
+            expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Can not copy to cliploard');
+        }));
     });
 
     describe('locked messages', () => {

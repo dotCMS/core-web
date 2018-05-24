@@ -2,7 +2,15 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotClipboardUtil } from '../../../../api/util/clipboard/ClipboardUtil';
 
+/**
+ * Basic page information for edit mode
+ *
+ * @export
+ * @class DotEditPageInfoComponent
+ * @implements {OnInit}
+ */
 @Component({
     selector: 'dot-edit-page-info',
     templateUrl: './dot-edit-page-info.component.html',
@@ -12,7 +20,11 @@ export class DotEditPageInfoComponent implements OnInit {
     @Input() pageState: DotRenderedPageState;
     @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
 
-    constructor(private dotGlobalMessageService: DotGlobalMessageService, public dotMessageService: DotMessageService) {}
+    constructor(
+        private dotClipboardUtil: DotClipboardUtil,
+        private dotGlobalMessageService: DotGlobalMessageService,
+        public dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -45,33 +57,14 @@ export class DotEditPageInfoComponent implements OnInit {
      * @returns {boolean}
      * @memberof DotEditPageToolbarComponent
      */
-    copyUrlToClipboard(): boolean {
-        /*
-            Aparently this is the only crossbrowser solution so far. If we do this in another place we might have
-            to include an npm module.
-        */
-        const txtArea = document.createElement('textarea');
-
-        txtArea.style.position = 'fixed';
-        txtArea.style.top = '0';
-        txtArea.style.left = '0';
-        txtArea.style.opacity = '0';
-        txtArea.value = this.pageState.page.pageURI;
-        document.body.appendChild(txtArea);
-        txtArea.select();
-
-        let result;
-
-        try {
-            result = document.execCommand('copy');
-            if (result) {
+    copyUrlToClipboard(): void {
+        this.dotClipboardUtil
+            .copy(this.pageState.page.pageURI)
+            .then(() => {
                 this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard'));
-            }
-        } catch (err) {
-            this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
-        }
-        document.body.removeChild(txtArea);
-
-        return result;
+            })
+            .catch(() => {
+                this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
+            });
     }
 }
