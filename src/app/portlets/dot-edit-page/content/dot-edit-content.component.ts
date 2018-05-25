@@ -78,6 +78,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.subscribeIframeCustomEvents();
         this.subscribeIframeActions();
         this.subscribePageModelChange();
+
     }
 
     ngOnDestroy(): void {
@@ -153,6 +154,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
+    /**
+     * Handle cancel button click in the toolbar
+     *
+     * @memberof DotEditContentComponent
+     */
+    onCancelToolbar() {
+        this.dotRouterService.goToSiteBrowser();
+    }
+
     private shouldSetContainersHeight() {
         return this.pageState && this.pageState.layout &&  this.pageState.state.mode === PageMode.EDIT;
     }
@@ -176,6 +186,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
 
         this.dotContentletEditorService.add({
+            header: this.dotMessageService.get('dot.common.content.search'),
             data: {
                 container: $event.dataset.dotIdentifier,
                 baseTypes: $event.dataset.dotAdd
@@ -213,7 +224,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: DotHttpErrorHandled) => {
                 if (!res.redirected) {
-                    this.dotRouterService.gotoPortlet('/c/site-browser');
+                    this.dotRouterService.goToSiteBrowser();
                 }
             });
         return Observable.empty();
@@ -226,6 +237,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'dot.common.message.saving',
                 'dot.common.message.saved',
+                'dot.common.content.search',
                 'editpage.content.save.changes.confirmation.header',
                 'editpage.content.save.changes.confirmation.message'
             ])
@@ -248,13 +260,14 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return eventsHandlerMap[event];
     }
 
+    // TODO: this whole method need testing.
     private handleSetPageStateFailed(err: ResponseView): void {
         this.dotHttpErrorManagerService
             .handle(err)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
                 if (res.forbidden) {
-                    this.dotRouterService.gotoPortlet('/c/site-browser');
+                    this.dotRouterService.goToSiteBrowser();
                 } else {
                     this.route.queryParams
                         .pluck('url')

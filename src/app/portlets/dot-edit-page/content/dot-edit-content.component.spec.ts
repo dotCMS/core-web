@@ -92,7 +92,8 @@ describe('DotEditContentComponent', () => {
             'editpage.content.steal.lock.confirmation_message.reject': 'Lock',
             'editpage.content.steal.lock.confirmation_message.accept': 'Cancel',
             'editpage.content.save.changes.confirmation.header': 'Save header',
-            'editpage.content.save.changes.confirmation.message': 'Save message'
+            'editpage.content.save.changes.confirmation.message': 'Save message',
+            'dot.common.content.search': 'Content Search'
         });
 
         DOTTestBed.configureTestingModule({
@@ -192,6 +193,13 @@ describe('DotEditContentComponent', () => {
         expect(toolbarComponent.pageState.state).toEqual(mockDotPageState);
     });
 
+    it('should redirect to site browser on toolbar cancel', () => {
+        spyOn(dotRouterService, 'goToSiteBrowser');
+        toolbarElement.triggerEventHandler('cancel', {});
+
+        expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
+    });
+
     it('should have loading indicator', () => {
         const loadingIndicator: DebugElement = de.query(By.css('dot-loading-indicator'));
         expect(loadingIndicator).not.toBeNull();
@@ -270,12 +278,12 @@ describe('DotEditContentComponent', () => {
             const fake500Response = mockResponseView(500);
             spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake500Response));
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-            spyOn(dotRouterService, 'gotoPortlet');
+            spyOn(dotRouterService, 'goToSiteBrowser');
 
             component.reload();
 
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake500Response);
-            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
+            expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -576,6 +584,7 @@ describe('DotEditContentComponent', () => {
 
             it('should call add service', () => {
                 expect(dotContentletEditorService.add).toHaveBeenCalledWith({
+                    header: 'Content Search',
                     data: {
                         container: '123',
                         baseTypes: 'content,widget'

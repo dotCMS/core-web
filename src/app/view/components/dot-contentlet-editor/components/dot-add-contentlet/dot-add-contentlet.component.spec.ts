@@ -69,6 +69,7 @@ describe('DotAddContentletComponent', () => {
     describe('with data', () => {
         beforeEach(() => {
             dotAddContentletService.add({
+                header: 'Add dome content',
                 data: {
                     container: '123',
                     baseTypes: 'content,form'
@@ -82,6 +83,7 @@ describe('DotAddContentletComponent', () => {
             spyOn(component, 'onClose').and.callThrough();
             spyOn(component, 'onLoad').and.callThrough();
             spyOn(component, 'onKeyDown').and.callThrough();
+            spyOn(component.close, 'emit');
             fixture.detectChanges();
         });
 
@@ -89,10 +91,15 @@ describe('DotAddContentletComponent', () => {
             expect(dotIframeDialogComponent.url).toEqual('/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form');
         });
 
+        it('should have dot-iframe-dialog header set', () => {
+            expect(dotIframeDialogComponent.header).toEqual('Add dome content');
+        });
+
         describe('events', () => {
-            it('should call clear', () => {
+            it('should call clear and emit close', () => {
                 dotIframeDialog.triggerEventHandler('close', {});
                 expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
+                expect(component.close.emit).toHaveBeenCalledTimes(1);
             });
 
             it('should call load', () => {
