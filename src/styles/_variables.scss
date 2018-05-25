@@ -1,5 +1,10 @@
+:root {
+    --background-color: #3A3847;
+    --secondary-color: #c336e5;
+}
+
 // COLORS
-$black: #161616;
+$black: #0A0725;
 $blue-ligth: #77cee6;
 $blue-lighter: #DAECF6;
 $blue: #0e80cb;
@@ -32,7 +37,7 @@ $field-disabled-opacity: 0.7;
 $font-size-xx-large: 24px;
 $font-size-x-large: 18px;
 $font-size-large: 16px;
-$font-size-medium: 13px;
+$font-size-medium: 14px;
 $font-size-small: 12px;
 
 $body-text: Roboto, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
@@ -45,8 +50,8 @@ $basic-speed: 100ms;
 // LAYOUT
 $basic-padding: 8px;
 $toolbar-height: 60px;
-$toolbar-background: $brand-primary;
-$toolbar-color: $white;
+$toolbar-background: $white;
+$toolbar-color: $black;
 
 // GRIDS
 $gutter-width: $basic-padding * 4;
