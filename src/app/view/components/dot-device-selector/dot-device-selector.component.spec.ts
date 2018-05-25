@@ -11,11 +11,13 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { By } from '@angular/platform-browser';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { StringPixels } from '../../../api/util/stringPixels';
 
 describe('DotDeviceSelectorComponent', () => {
     let component: DotDeviceSelectorComponent;
     let fixture: ComponentFixture<DotDeviceSelectorComponent>;
     let de: DebugElement;
+    const stringPixels = new StringPixels;
     const defaultDevice: DotDevice = {
         name: 'Desktop',
         cssHeight: '',
@@ -38,7 +40,8 @@ describe('DotDeviceSelectorComponent', () => {
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
-                }
+                },
+                StringPixels
             ]
         });
 
@@ -62,8 +65,12 @@ describe('DotDeviceSelectorComponent', () => {
 
     it('should add Default Device as first position', () => {
         fixture.detectChanges();
-        component.options.subscribe((devices: DotDevice[]) => {
-            expect(devices[0]).toEqual(defaultDevice);
-        });
+        expect(component.options[0]).toEqual(defaultDevice);
+    });
+
+    it('should set max text width to dropdpown', () => {
+        fixture.detectChanges();
+        const textSize = stringPixels.getTextWidth(component.options[1].name) + component.arrowDropdownlComponentSize;
+        expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

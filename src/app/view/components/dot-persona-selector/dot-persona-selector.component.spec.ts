@@ -9,6 +9,7 @@ import { DotPersonasService } from '../../../api/services/dot-personas/dot-perso
 import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
 import { By } from '@angular/platform-browser';
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
+import { StringPixels } from '../../../api/util/stringPixels';
 
 describe('DotPersonaSelectorComponent', () => {
     let component: DotPersonaSelectorComponent;
@@ -18,6 +19,7 @@ describe('DotPersonaSelectorComponent', () => {
     const messageServiceMock = new MockDotMessageService({
         'modes.persona.no.persona': 'Default Persona'
     });
+    const stringPixels = new StringPixels;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -31,7 +33,8 @@ describe('DotPersonaSelectorComponent', () => {
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
-                }
+                },
+                StringPixels
             ]
         });
 
@@ -54,8 +57,12 @@ describe('DotPersonaSelectorComponent', () => {
 
     it('should add Default persona as first position', () => {
         fixture.detectChanges();
-        component.options.subscribe((personas: DotPersona[]) => {
-            expect(personas[0]).toEqual(defaultPersona);
-        });
+        expect(component.options[0]).toEqual(defaultPersona);
+    });
+
+    it('should set max text width to dropdpown', () => {
+        fixture.detectChanges();
+        const textSize = stringPixels.getTextWidth(component.options[1].name) + component.arrowDropdownlComponentSize;
+        expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

@@ -8,11 +8,13 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { mockDotLanguage } from '../../../test/dot-language.mock';
 import { Observable } from 'rxjs/Observable';
+import { StringPixels } from '../../../api/util/stringPixels';
 
 describe('DotLanguageSelectorComponent', () => {
     let component: DotLanguageSelectorComponent;
     let fixture: ComponentFixture<DotLanguageSelectorComponent>;
     let de: DebugElement;
+    const stringPixels = new StringPixels;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -22,7 +24,8 @@ describe('DotLanguageSelectorComponent', () => {
                 {
                     provide: DotLanguagesService,
                     useClass: DotLanguagesServiceMock
-                }
+                },
+                StringPixels
             ]
         });
 
@@ -33,7 +36,7 @@ describe('DotLanguageSelectorComponent', () => {
 
     it('should load languages in the dropdown', () => {
         fixture.detectChanges();
-        expect(component.languagesOptions).toEqual(Observable.of([mockDotLanguage]));
+        expect(component.languagesOptions).toEqual([mockDotLanguage]);
     });
 
     it('should emit the selected language', () => {
@@ -46,5 +49,11 @@ describe('DotLanguageSelectorComponent', () => {
 
         expect(component.change).toHaveBeenCalledWith(mockDotLanguage);
         expect(component.selected.emit).toHaveBeenCalledWith(mockDotLanguage);
+    });
+
+    it('should set max text width to dropdpown', () => {
+        fixture.detectChanges();
+        const textSize = stringPixels.getTextWidth(component.languagesOptions[0].language) + component.arrowDropdownlComponentSize;
+        expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

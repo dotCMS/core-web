@@ -1,0 +1,8 @@
+::ng-deep {
+    .ui-dropdown {
+        max-width: 140px;
+    }
+    .ui-dropdown-label {
+        text-overflow: ellipsis;
+    }
+}
