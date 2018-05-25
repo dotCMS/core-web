@@ -8,7 +8,8 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { mockDotLanguage } from '../../../test/dot-language.mock';
 import { Observable } from 'rxjs/Observable';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
+import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
 
 describe('DotLanguageSelectorComponent', () => {
     let component: DotLanguageSelectorComponent;
@@ -24,8 +25,7 @@ describe('DotLanguageSelectorComponent', () => {
                 {
                     provide: DotLanguagesService,
                     useClass: DotLanguagesServiceMock
-                },
-                StringPixels
+                }
             ]
         });
 
@@ -53,7 +53,8 @@ describe('DotLanguageSelectorComponent', () => {
 
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
-        const textSize = stringPixels.getTextWidth(component.languagesOptions[0].language) + component.arrowDropdownlComponentSize;
+        const optionValues = component.languagesOptions.map((languageOption: DotLanguage) => languageOption.language);
+        const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
         expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

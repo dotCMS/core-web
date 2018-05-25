@@ -11,7 +11,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { By } from '@angular/platform-browser';
 import { mockDotDevice } from '../../../test/dot-device.mock';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
 
 describe('DotDeviceSelectorComponent', () => {
     let component: DotDeviceSelectorComponent;
@@ -40,8 +40,7 @@ describe('DotDeviceSelectorComponent', () => {
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
-                },
-                StringPixels
+                }
             ]
         });
 
@@ -70,7 +69,8 @@ describe('DotDeviceSelectorComponent', () => {
 
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
-        const textSize = stringPixels.getTextWidth(component.options[1].name) + component.arrowDropdownlComponentSize;
+        const optionValues = component.options.map((deviceOption: DotDevice) => deviceOption.name);
+        const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
         expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

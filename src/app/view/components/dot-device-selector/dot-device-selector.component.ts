@@ -5,7 +5,7 @@ import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { map } from 'rxjs/operators/map';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
 import { tap, take } from 'rxjs/operators';
 
 @Component({
@@ -18,13 +18,12 @@ export class DotDeviceSelectorComponent implements OnInit {
     @Output() selected = new EventEmitter<DotDevice>();
 
     options: DotDevice[];
-    arrowDropdownlComponentSize = 32;
-    dropdownWidth: string;
+    readonly arrowDropdownComponentSize = 32;
+    dropdownWidth: number;
 
     constructor(
         private dotDevicesService: DotDevicesService,
-        private dotMessageService: DotMessageService,
-        private stringPixels: StringPixels
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -63,8 +62,7 @@ export class DotDeviceSelectorComponent implements OnInit {
     }
 
     private setDropdownWidth(devices: DotDevice[]): void {
-        const maxTextOption = _.maxBy(devices, (deviceOption: DotDevice) => deviceOption.name.length).name;
-        const dropdownSize = this.stringPixels.getTextWidth(maxTextOption) + this.arrowDropdownlComponentSize;
-        this.dropdownWidth = `${dropdownSize}px`;
+        const optionValues = devices.map((deviceOption: DotDevice) => deviceOption.name);
+        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }

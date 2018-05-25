@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
 import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
 import { Observable } from 'rxjs/Observable';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
 import { tap, take } from 'rxjs/operators';
 
 @Component({
@@ -16,10 +16,10 @@ export class DotLanguageSelectorComponent implements OnInit {
     @Output() selected = new EventEmitter<DotLanguage>();
 
     languagesOptions: DotLanguage[];
-    arrowDropdownlComponentSize = 32;
-    dropdownWidth: string;
+    readonly arrowDropdownComponentSize = 32;
+    dropdownWidth: number;
 
-    constructor(private dotLanguagesService: DotLanguagesService, private stringPixels: StringPixels) {}
+    constructor(private dotLanguagesService: DotLanguagesService) {}
 
     ngOnInit() {
         this.dotLanguagesService
@@ -40,8 +40,7 @@ export class DotLanguageSelectorComponent implements OnInit {
     }
 
     private setDropdownWidth(languagesOptions: DotLanguage[]): void {
-        const maxTextOption = _.maxBy(languagesOptions, (languageOption: DotLanguage) => languageOption.language.length).language;
-        const dropdownSize = this.stringPixels.getTextWidth(maxTextOption) + this.arrowDropdownlComponentSize;
-        this.dropdownWidth = `${dropdownSize}px`;
+        const optionValues = languagesOptions.map((languageOption: DotLanguage) => languageOption.language);
+        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }

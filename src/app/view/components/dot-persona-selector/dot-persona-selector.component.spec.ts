@@ -9,7 +9,7 @@ import { DotPersonasService } from '../../../api/services/dot-personas/dot-perso
 import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
 import { By } from '@angular/platform-browser';
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
 
 describe('DotPersonaSelectorComponent', () => {
     let component: DotPersonaSelectorComponent;
@@ -33,8 +33,7 @@ describe('DotPersonaSelectorComponent', () => {
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
-                },
-                StringPixels
+                }
             ]
         });
 
@@ -62,7 +61,8 @@ describe('DotPersonaSelectorComponent', () => {
 
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
-        const textSize = stringPixels.getTextWidth(component.options[1].name) + component.arrowDropdownlComponentSize;
+        const optionValues = component.options.map((persona: DotPersona) => persona.name);
+        const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
         expect(component.dropdownWidth).toEqual(`${textSize}px`);
     });
 });

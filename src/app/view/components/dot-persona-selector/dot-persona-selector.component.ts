@@ -5,7 +5,7 @@ import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { mergeMap, map, tap } from 'rxjs/operators';
-import { StringPixels } from '../../../api/util/stringPixels';
+import { StringPixels } from '../../../api/util/string-pixels-util';
 
 @Component({
     selector: 'dot-persona-selector',
@@ -17,13 +17,12 @@ export class DotPersonaSelectorComponent implements OnInit {
     @Output() selected = new EventEmitter<DotPersona>();
 
     options: DotPersona[];
-    arrowDropdownlComponentSize = 32;
-    dropdownWidth: string;
+    readonly arrowDropdownComponentSize = 32;
+    dropdownWidth: number;
 
     constructor(
         private dotPersonasService: DotPersonasService,
-        private dotMessageService: DotMessageService,
-        private stringPixels: StringPixels
+        private dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -55,8 +54,7 @@ export class DotPersonaSelectorComponent implements OnInit {
     }
 
     private setDropdownWidth(personas: DotPersona[]): void {
-        const maxTextOption = _.maxBy(personas, (personaOption: DotPersona) => personaOption.name.length).name;
-        const dropdownSize = this.stringPixels.getTextWidth(maxTextOption) + this.arrowDropdownlComponentSize;
-        this.dropdownWidth = `${dropdownSize}px`;
+        const optionValues = personas.map((persona: DotPersona) => persona.name);
+        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }
