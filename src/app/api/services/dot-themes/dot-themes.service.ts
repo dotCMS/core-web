@@ -8,12 +8,13 @@ import { RequestMethod } from '@angular/http';
 export class DotThemesService {
     constructor(private coreWebService: CoreWebService) {}
 
-    get(): Observable<DotTheme[]> {
+    get(inode?: string): Observable<DotTheme[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'v1/themes'
+                url: 'v1/themes',
+                params: [{ inode: inode ? inode : '' }]
             })
-            .pluck('bodyJsonObject');
+            .pluck('entity');
     }
 }

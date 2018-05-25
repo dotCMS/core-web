@@ -1,7 +1,96 @@
-<p-dropdown [options]="themes" optionLabel="name" [(ngModel)]="selectedTheme">
-    <ng-template let-item pTemplate="selectedItem">
-        B
-        <span style="vertical-align:middle">{{item | json}}</span>
-    </ng-template>
+<p-dialog [(visible)]="visible" [draggable]="false" [modal]="true">
+    <p-header>
+        Header content here
+    </p-header>
 
-</p-dropdown>
+    <dot-site-selector #siteSelector class="" (change)="siteChange($event)"
+                       [archive]="false">
+    </dot-site-selector>
+
+    <!--<div class="form__group">-->
+        <!--aa-->
+        <!--<i class="fa fa-question form__hint-icon"></i>-->
+        <!--<span dotMdInputtext label="placeholder">-->
+            <!--<input pInputText type="text" id="" name="" formControlName="urlMapPattern"  class="mousetrap" />-->
+        <!--</span>-->
+    <!--</div>-->
+
+    <div class="form__group">
+        <i class="fa fa-search searchable-dropdown__search-icon"></i>
+        <input #searchInput pInputText placeholder="placeholder" type="text" class="searchable-dropdown__search-field"/>
+    </div>
+
+    <div class="dot-themes-container">
+        <p-dataGrid [value]="themes" [paginator]="true" [rows]="8" >
+            <ng-template let-theme pTemplate="item">
+                <div class="dot-theme-item ui-g-3">
+                    <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>
+                    </svg>
+                    <span class="dot-theme-item__name">{{theme.name}}</span>
+                </div>
+            </ng-template>
+        </p-dataGrid>
+    </div>
+
+
+
+    <!--<div class="dot-themes-container">-->
+        <!--<div class="dot-theme-item">-->
+            <!--<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+                <!--<path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>-->
+            <!--</svg>-->
+            <!--<span class="dot-theme-item__name">HOAlfdld dlfdfldf </span>-->
+        <!--</div>-->
+
+        <!--<div class="dot-theme-item">-->
+            <!--<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+                <!--<path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>-->
+            <!--</svg>-->
+            <!--<span class="dot-theme-item__name">HOAlfdld dlfdfldfHOAlfdld dlfdfldfHOAlfdld dlfdfldfHOAlfdld dlfdfldfHOAlfdld dlfdfldf</span>-->
+        <!--</div>-->
+
+        <!--<div class="dot-theme-item">-->
+            <!--<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+                <!--<path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>-->
+            <!--</svg>-->
+
+            <!--<span class="dot-theme-item__name"></span>-->
+        <!--</div>-->
+
+        <!--<div class="dot-theme-item">-->
+            <!--<img class="dot-theme-item__image">-->
+            <!--<span class="dot-theme-item__name"></span>-->
+        <!--</div>-->
+
+        <!--<div class="dot-theme-item">-->
+            <!--<img class="dot-theme-item__image">-->
+            <!--<span class="dot-theme-item__name"></span>-->
+        <!--</div>-->
+
+        <!--<div class="dot-theme-item">-->
+            <!--<img class="dot-theme-item__image">-->
+            <!--<span class="dot-theme-item__name"></span>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+    <p-footer>
+
+        <button type="button" pButton label="DUMMY" class=" cancel" (click)="toogleDialog()"></button>
+        <button type="button" pButton class="" label="DUMMY2"></button>
+    </p-footer>
+</p-dialog>
+
+
+
+
+<button pButton type="button" icon="fa-palette-svg" (click)="toogleDialog()">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0H32V32H0V0Z"/>
+        <path d="M8 0C3.58222 0 0 3.58222 0 8C0 12.4178 3.58222 16 8 16C8.73778 16 9.33333 15.4044 9.33333 14.6667C9.33333 14.32 9.2 14.0089 8.98667 13.7689C8.78222 13.5378 8.64889 13.2267 8.64889 12.8889C8.64889 12.1511 9.24444 11.5556 9.98222 11.5556H11.5556C14.0089 11.5556 16 9.56444 16 7.11111C16 3.18222 12.4178 0 8 0ZM3.11111 8C2.37333 8 1.77778 7.40444 1.77778 6.66667C1.77778 5.92889 2.37333 5.33333 3.11111 5.33333C3.84889 5.33333 4.44444 5.92889 4.44444 6.66667C4.44444 7.40444 3.84889 8 3.11111 8ZM5.77778 4.44444C5.04 4.44444 4.44444 3.84889 4.44444 3.11111C4.44444 2.37333 5.04 1.77778 5.77778 1.77778C6.51556 1.77778 7.11111 2.37333 7.11111 3.11111C7.11111 3.84889 6.51556 4.44444 5.77778 4.44444ZM10.2222 4.44444C9.48444 4.44444 8.88889 3.84889 8.88889 3.11111C8.88889 2.37333 9.48444 1.77778 10.2222 1.77778C10.96 1.77778 11.5556 2.37333 11.5556 3.11111C11.5556 3.84889 10.96 4.44444 10.2222 4.44444ZM12.8889 8C12.1511 8 11.5556 7.40444 11.5556 6.66667C11.5556 5.92889 12.1511 5.33333 12.8889 5.33333C13.6267 5.33333 14.2222 5.92889 14.2222 6.66667C14.2222 7.40444 13.6267 8 12.8889 8Z" transform="translate(8 8)"/>
+    </svg>
+</button>
+
+
+
