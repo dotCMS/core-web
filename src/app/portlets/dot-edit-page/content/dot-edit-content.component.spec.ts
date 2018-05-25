@@ -193,6 +193,13 @@ describe('DotEditContentComponent', () => {
         expect(toolbarComponent.pageState.state).toEqual(mockDotPageState);
     });
 
+    it('should redirect to site browser on toolbar cancel', () => {
+        spyOn(dotRouterService, 'goToSiteBrowser');
+        toolbarElement.triggerEventHandler('cancel', {});
+
+        expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
+    });
+
     it('should have loading indicator', () => {
         const loadingIndicator: DebugElement = de.query(By.css('dot-loading-indicator'));
         expect(loadingIndicator).not.toBeNull();
@@ -234,18 +241,36 @@ describe('DotEditContentComponent', () => {
 
         beforeEach(() => {
             viewAsToolbar = fixture.debugElement.query(By.css('dot-edit-content-view-as-toolbar'));
+            component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage, null);
         });
 
         it('should not show by default', () => {
             fixture.detectChanges();
             expect(de.query(By.css('dot-whats-changed'))).toBe(null);
+            expect(component.showWhatsChanged).toBe(false);
         });
 
-        it('should not show by default', () => {
-            fixture.detectChanges();
-            viewAsToolbar.triggerEventHandler('whatschange', true);
-            fixture.detectChanges();
-            expect(de.query(By.css('dot-whats-changed'))).toBeTruthy();
+        describe('show', () => {
+            beforeEach(() => {
+                fixture.detectChanges();
+                viewAsToolbar.triggerEventHandler('whatschange', true);
+                fixture.detectChanges();
+            });
+
+            it('should show', () => {
+                expect(de.query(By.css('dot-whats-changed'))).toBeTruthy();
+                expect(component.showWhatsChanged).toBe(true);
+            });
+
+            it('should hide edit iframe', () => {
+                const editIframe: DebugElement = de.query(By.css('.dot-edit__iframe'));
+                expect(editIframe.styles).toEqual({
+                    width: '',
+                    height: '',
+                    visibility: 'hidden',
+                    position: 'absolute'
+                });
+            });
         });
     });
 
@@ -271,12 +296,12 @@ describe('DotEditContentComponent', () => {
             const fake500Response = mockResponseView(500);
             spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake500Response));
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-            spyOn(dotRouterService, 'gotoPortlet');
+            spyOn(dotRouterService, 'goToSiteBrowser');
 
             component.reload();
 
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake500Response);
-            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/site-browser');
+            expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -311,7 +336,12 @@ describe('DotEditContentComponent', () => {
             const editIframe: DebugElement = de.query(By.css('.dot-edit__iframe'));
             component.pageState.viewAs.device = mockDotDevice;
             fixture.detectChanges();
-            expect(editIframe.styles).toEqual({ width: mockDotDevice.cssWidth + 'px', height: mockDotDevice.cssHeight + 'px' });
+            expect(editIframe.styles).toEqual({
+                width: mockDotDevice.cssWidth + 'px',
+                height: mockDotDevice.cssHeight + 'px',
+                visibility: '',
+                position: ''
+            });
             expect(pageWrapper.nativeElement.classList.contains('dot-edit__page-wrapper--deviced')).toBe(true);
         });
 
@@ -781,6 +811,8 @@ describe('DotEditContentComponent', () => {
 
             spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
             spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
+            spyOn(dotEditContentHtmlService, 'setContaintersSameHeight');
+
             fixture.detectChanges();
 
             dotEditContentHtmlService.pageModel$.next(model);
@@ -788,6 +820,17 @@ describe('DotEditContentComponent', () => {
 
             dotEditContentHtmlService.pageModel$.next(newModel);
             expect(dotEditPageService.save).toHaveBeenCalledTimes(2);
+            expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalled();
         });
     });
+
+    it('should set listener to change containers height', () => {
+        spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
+        fixture.detectChanges();
+        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).not.toHaveBeenCalled();
+        component.pageState.state.mode = PageMode.EDIT;
+        component.onLoad(Event);
+        expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalledWith(component.pageState.layout);
+    });
+
 });
