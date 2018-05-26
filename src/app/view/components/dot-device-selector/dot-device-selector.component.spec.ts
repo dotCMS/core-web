@@ -69,8 +69,8 @@ describe('DotDeviceSelectorComponent', () => {
 
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
-        const optionValues = component.options.map((deviceOption: DotDevice) => deviceOption.name);
+        const optionValues = ['iphone'];
         const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
-        expect(component.dropdownWidth).toEqual(`${textSize}px`);
+        expect(component.dropdownWidth).toEqual(textSize);
     });
 });

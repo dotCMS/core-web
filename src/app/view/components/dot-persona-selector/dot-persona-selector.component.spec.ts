@@ -63,6 +63,6 @@ describe('DotPersonaSelectorComponent', () => {
         fixture.detectChanges();
         const optionValues = component.options.map((persona: DotPersona) => persona.name);
         const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
-        expect(component.dropdownWidth).toEqual(`${textSize}px`);
+        expect(component.dropdownWidth).toEqual(textSize);
     });
 });

@@ -55,6 +55,6 @@ describe('DotLanguageSelectorComponent', () => {
         fixture.detectChanges();
         const optionValues = component.languagesOptions.map((languageOption: DotLanguage) => languageOption.language);
         const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
-        expect(component.dropdownWidth).toEqual(`${textSize}px`);
+        expect(component.dropdownWidth).toEqual(textSize);
     });
 });
