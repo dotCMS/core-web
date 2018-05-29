@@ -14,18 +14,21 @@ export class DotLanguageSelectorComponent implements OnInit {
     @Input() value: DotLanguage;
     @Output() selected = new EventEmitter<DotLanguage>();
 
-    languagesOptions: Observable<DotLanguage[]>;
+    languagesOptions: DotLanguage[];
     dropdownWidth: string;
 
     constructor(private dotLanguagesService: DotLanguagesService) {}
 
     ngOnInit() {
-        this.languagesOptions = this.dotLanguagesService.get().pipe(
-            take(1),
-            tap((languages: DotLanguage[]) => {
-                this.dropdownWidth = StringPixels.getDropdownWidth(languages.map((languageOption: DotLanguage) => languageOption.language));
-            })
-        );
+        this.dotLanguagesService
+            .get()
+            .pipe(take(1))
+            .subscribe((languages: DotLanguage[]) => {
+                this.languagesOptions = languages;
+                this.dropdownWidth = StringPixels.getDropdownWidth(
+                    this.languagesOptions.map((languageOption: DotLanguage) => languageOption.language)
+                );
+            });
     }
 
     /**
