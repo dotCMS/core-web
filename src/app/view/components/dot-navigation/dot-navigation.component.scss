@@ -28,7 +28,13 @@
             }
 
             .accordion-group__title-text {
-                margin-left: 10px;
+                margin-left: $basic-padding;
+                flex-grow: 1;
+            }
+
+            .accordion-group__title-arrow {
+                opacity: 0.5;
+                margin-right: $basic-padding * 2;
             }
 
             .main-nav__submenu {
@@ -41,7 +47,7 @@
             }
 
             .main-nav__submenu--active {
-                background-color: var(--secondary-color);
+                background-color: var(--color-main);
             }
         }
     }

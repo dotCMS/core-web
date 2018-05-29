@@ -2,13 +2,16 @@
     <div class="ui-toolbar-group-left">
         <div class="toolbar__button-wrapper">
             <div class="toolbar__button" [class.toolbar__button--hide]="collapsed">
-                <button pButton icon="fa-close" class="inverted" (click)="handleMainButtonClick($event)"></button>
+                <button pButton icon="fa-arrow-left" class="inverted" (click)="handleMainButtonClick($event)"></button>
             </div>
             <div class="toolbar__button" [class.toolbar__button--hide]="!collapsed">
                 <button pButton icon="fa-bars" class="inverted" (click)="handleMainButtonClick($event)"></button>
             </div>
         </div>
-        <div class="toolbar__logo"></div>
+        <div class="toolbar__logo-wrapper" [class.toolbar__logo-wrapper--collapsed]="collapsed">
+            <span class="toolbar__logo"></span>
+            <span class="toolbar__logo-bg"></span>
+        </div>
     </div>
     <div class="ui-toolbar-group-right">
         <dot-global-message></dot-global-message>
@@ -20,6 +23,7 @@
             [archive]="false"
             class="toolbar__site-selector">
         </dot-site-selector>
+        <span class="toolbar__sep"></span>
         <dot-toolbar-notifications></dot-toolbar-notifications>
         <dot-toolbar-user></dot-toolbar-user>
     </div>
