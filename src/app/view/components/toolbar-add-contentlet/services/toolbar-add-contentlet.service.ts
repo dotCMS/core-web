@@ -11,7 +11,7 @@ export class ToolbarAddContenletService {
     recent$: Subject<StructureTypeView[]> = new Subject();
 
     constructor(private contentletService: DotContentletService, private dotcmsEventsService: DotcmsEventsService) {
-        this.loadData();
+        setTimeout(() => this.loadData());
         this.dotcmsEventsService
             .subscribeToEvents(['SAVE_BASE_CONTENT_TYPE', 'UPDATE_BASE_CONTENT_TYPE', 'DELETE_BASE_CONTENT_TYPE'])
             .subscribe(() => {
