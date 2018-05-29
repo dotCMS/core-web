@@ -3,8 +3,11 @@
 $them-item-dimension: 240px;
 
 ::ng-deep {
-    dot-searchable-dropdown .ui-button {
-        font-size: $font-size-large;
+
+    dot-site-selector {
+        dot-searchable-dropdown .ui-button, .site-selector__title {
+            font-size: $font-size-large;
+        }
     }
 
     .ui-datagrid-content {

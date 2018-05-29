@@ -1,6 +1,6 @@
 <p-dialog [(visible)]="visible" [draggable]="false" [modal]="true">
     <p-header>
-        Header content here
+        {{ dotMessageService.get('editpage.layout.theme.header') }}
     </p-header>
 
     <dot-site-selector #siteSelector class="" (change)="siteChange($event)"
@@ -22,8 +22,8 @@
 
     <div class="dot-themes-container">
         <p-dataGrid [value]="themes" [paginator]="true" [rows]="8" >
-            <ng-template let-theme pTemplate="item">
-                <div class="dot-theme-item ui-g-3">
+            <ng-template let-theme pTemplate="item" >
+                <div class="dot-theme-item ui-g-3" (click)="selectTheme(theme)" [ngClass]="{'active': selectedTheme?.host.inode === theme.host.inode}">
                     <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>
                     </svg>
@@ -77,8 +77,8 @@
 
     <p-footer>
 
-        <button type="button" pButton label="DUMMY" class=" cancel" (click)="toogleDialog()"></button>
-        <button type="button" pButton class="" label="DUMMY2"></button>
+        <button type="button" pButton label="{{ dotMessageService.get('dot.common.cancel') }}" class=" cancel" (click)="toogleDialog()"></button>
+        <button type="button" pButton class="" label="{{ dotMessageService.get('dot.common.apply') }}"></button>
     </p-footer>
 </p-dialog>
 

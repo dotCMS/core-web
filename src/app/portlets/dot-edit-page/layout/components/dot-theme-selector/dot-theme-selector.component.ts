@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DotThemesService } from '../../../../../api/services/dot-themes/dot-themes.service';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site } from 'dotcms-js/core/treeable/shared/site.model';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 
 @Component({
     selector: 'dot-theme-selector',
@@ -9,19 +10,23 @@ import { Site } from 'dotcms-js/core/treeable/shared/site.model';
     styleUrls: ['./dot-theme-selector.component.scss']
 })
 export class DotThemeSelectorComponent implements OnInit {
-    themes: DotTheme[];
+    themes: DotTheme[]
+    @Output() selected = new EventEmitter<DotTheme>();
     selectedTheme: DotTheme;
     visible: boolean;
 
-    constructor(private dotThemesService: DotThemesService) {}
+    constructor(private dotThemesService: DotThemesService, public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
+        this.dotMessageService
+            .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
+            .subscribe();
         this.themes = [
             {
                 name: 'test',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '12',
                     identifier: '456'
                 }
             },
@@ -37,7 +42,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test1',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '43red',
                     identifier: '456'
                 }
             },
@@ -45,7 +50,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test2',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: 'dvdfsd',
                     identifier: '456'
                 }
             },
@@ -53,7 +58,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test3',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '32423',
                     identifier: '456'
                 }
             },
@@ -61,7 +66,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test4',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: 'rew2',
                     identifier: '456'
                 }
             },
@@ -69,7 +74,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test5',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '3423',
                     identifier: '456'
                 }
             },
@@ -77,7 +82,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test6',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '3432',
                     identifier: '456'
                 }
             },
@@ -85,7 +90,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test636',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '43r2',
                     identifier: '456'
                 }
             },
@@ -93,7 +98,7 @@ export class DotThemeSelectorComponent implements OnInit {
                 name: 'test69',
                 host: {
                     hostName: 'test',
-                    inode: '123',
+                    inode: '3432regr',
                     identifier: '456'
                 }
             }
@@ -106,10 +111,19 @@ export class DotThemeSelectorComponent implements OnInit {
 
     siteChange(site: Site) {
         console.log(site);
-        debugger;
         this.dotThemesService.get(site.inode).subscribe((response: DotTheme[]) => {
             this.themes = response;
         });
+    }
+
+    selectTheme(theme: DotTheme) {
+        debugger;
+        this.selectedTheme = theme;
+    }
+
+    applyTheme() {
+        this.selected.emit(this.selectedTheme);
+        this.toogleDialog();
     }
 
     toogleDialog() {
