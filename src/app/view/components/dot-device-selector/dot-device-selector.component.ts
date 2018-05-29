@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
@@ -17,28 +16,21 @@ export class DotDeviceSelectorComponent implements OnInit {
     @Input() value: DotDevice;
     @Output() selected = new EventEmitter<DotDevice>();
 
-    options: DotDevice[];
-    readonly arrowDropdownComponentSize = 32;
-    dropdownWidth: number;
+    options: Observable<DotDevice[]>;
+    dropdownWidth: string;
 
-    constructor(
-        private dotDevicesService: DotDevicesService,
-        private dotMessageService: DotMessageService
-    ) {}
+    constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['editpage.viewas.default.device']).subscribe(() => {
-            this.dotDevicesService
-                .get()
-                .pipe(
-                    take(1),
-                    tap((devices: DotDevice[]) => this.setDropdownWidth(devices)),
-                    map((devices: DotDevice[]) => this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices))
-                )
-                .subscribe((devices: DotDevice[]) => {
-                    this.options = devices;
-                });
-        });
+        this.options = this.dotMessageService.getMessages(['editpage.viewas.default.device']).mergeMap(() =>
+            this.dotDevicesService.get().pipe(
+                take(1),
+                tap((devices: DotDevice[]) => {
+                    this.dropdownWidth = StringPixels.getDropdownWidth(devices.map((deviceOption: DotDevice) => deviceOption.name));
+                }),
+                map((devices: DotDevice[]) => this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices))
+            )
+        );
     }
 
     /**
@@ -59,10 +51,5 @@ export class DotDeviceSelectorComponent implements OnInit {
             },
             ...devices
         ];
-    }
-
-    private setDropdownWidth(devices: DotDevice[]): void {
-        const optionValues = devices.map((deviceOption: DotDevice) => deviceOption.name);
-        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }

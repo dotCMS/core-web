@@ -4,7 +4,7 @@ import { DotPersonasService } from '../../../api/services/dot-personas/dot-perso
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { mergeMap, map, tap, take } from 'rxjs/operators';
 import { StringPixels } from '../../../api/util/string-pixels-util';
 
 @Component({
@@ -16,29 +16,23 @@ export class DotPersonaSelectorComponent implements OnInit {
     @Input() value: DotPersona;
     @Output() selected = new EventEmitter<DotPersona>();
 
-    options: DotPersona[];
-    readonly arrowDropdownComponentSize = 32;
-    dropdownWidth: number;
+    options: Observable<DotPersona[]>;
+    dropdownWidth: string;
 
-    constructor(
-        private dotPersonasService: DotPersonasService,
-        private dotMessageService: DotMessageService
-    ) {}
+    constructor(private dotPersonasService: DotPersonasService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['modes.persona.no.persona']).subscribe(() => {
-            this.dotPersonasService
-                .get()
-                .pipe(
+        this.options = this.dotMessageService.getMessages(['modes.persona.no.persona']).pipe(
+            mergeMap((messages: string[]) =>
+                this.dotPersonasService.get().pipe(
+                    take(1),
                     tap((personas: DotPersona[]) => {
-                        this.setDropdownWidth(personas);
+                        this.dropdownWidth = StringPixels.getDropdownWidth(personas.map((persona: DotPersona) => persona.name));
                     }),
                     map((personas: DotPersona[]) => this.setOptions(this.dotMessageService.get('modes.persona.no.persona'), personas))
                 )
-                .subscribe((personas: DotPersona[]) => {
-                    this.options = personas;
-                });
-        });
+            )
+        );
     }
 
     /**
@@ -51,10 +45,5 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     private setOptions(message: string, personas: DotPersona[]): DotPersona[] {
         return [{ name: message, identifier: '0' }, ...personas];
-    }
-
-    private setDropdownWidth(personas: DotPersona[]): void {
-        const optionValues = personas.map((persona: DotPersona) => persona.name);
-        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }

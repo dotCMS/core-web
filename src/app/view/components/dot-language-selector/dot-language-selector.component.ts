@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
 import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
@@ -15,20 +14,18 @@ export class DotLanguageSelectorComponent implements OnInit {
     @Input() value: DotLanguage;
     @Output() selected = new EventEmitter<DotLanguage>();
 
-    languagesOptions: DotLanguage[];
-    readonly arrowDropdownComponentSize = 32;
-    dropdownWidth: number;
+    languagesOptions: Observable<DotLanguage[]>;
+    dropdownWidth: string;
 
     constructor(private dotLanguagesService: DotLanguagesService) {}
 
     ngOnInit() {
-        this.dotLanguagesService
-            .get()
-            .pipe(take(1))
-            .subscribe((languages: DotLanguage[]) => {
-                this.languagesOptions = languages;
-                this.setDropdownWidth(languages);
-            });
+        this.languagesOptions = this.dotLanguagesService.get().pipe(
+            take(1),
+            tap((languages: DotLanguage[]) => {
+                this.dropdownWidth = StringPixels.getDropdownWidth(languages.map((languageOption: DotLanguage) => languageOption.language));
+            })
+        );
     }
 
     /**
@@ -37,10 +34,5 @@ export class DotLanguageSelectorComponent implements OnInit {
      */
     change(language: DotLanguage): void {
         this.selected.emit(language);
-    }
-
-    private setDropdownWidth(languagesOptions: DotLanguage[]): void {
-        const optionValues = languagesOptions.map((languageOption: DotLanguage) => languageOption.language);
-        this.dropdownWidth = StringPixels.getWidth(optionValues) + this.arrowDropdownComponentSize;
     }
 }
