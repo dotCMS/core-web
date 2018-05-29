@@ -54,7 +54,7 @@ describe('DotLanguageSelectorComponent', () => {
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
         const optionValues = component.languagesOptions.map((languageOption: DotLanguage) => languageOption.language);
-        const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
+        const textSize = StringPixels.getDropdownWidth(optionValues);
         expect(component.dropdownWidth).toEqual(textSize);
     });
 });

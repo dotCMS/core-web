@@ -10,15 +10,15 @@ describe('StringPixelsUtil', () => {
         });
     });
 
-    it('should return max width --> 108', () => {
+    it('should return max width --> 140px', () => {
         const textValues = ['demo text', 'demo longer test', 'the longest text of all times'];
-        const textWidth = StringPixels.getWidth(textValues);
-        expect(textWidth).toBe(108);
+        const textWidth = StringPixels.getDropdownWidth(textValues);
+        expect(textWidth).toBe('140px');
     });
 
-    it('should return max widht --> 35 (taking 7 as the size of each character)', () => {
+    it('should return max widht --> 67 (taking 7 as the size of each character)', () => {
         const textValues = ['text', 'demo', 'hello'];
-        const textWidth = StringPixels.getWidth(textValues);
-        expect(textWidth).toBe(35);
+        const textWidth = StringPixels.getDropdownWidth(textValues);
+        expect(textWidth).toBe('67px');
     });
 });

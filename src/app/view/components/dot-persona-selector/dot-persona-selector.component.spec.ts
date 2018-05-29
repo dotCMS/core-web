@@ -62,7 +62,7 @@ describe('DotPersonaSelectorComponent', () => {
     it('should set max text width to dropdpown', () => {
         fixture.detectChanges();
         const optionValues = component.options.map((persona: DotPersona) => persona.name);
-        const textSize = StringPixels.getWidth(optionValues) + component.arrowDropdownComponentSize;
+        const textSize = StringPixels.getDropdownWidth(optionValues);
         expect(component.dropdownWidth).toEqual(textSize);
     });
 });
