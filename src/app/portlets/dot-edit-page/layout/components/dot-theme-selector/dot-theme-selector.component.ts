@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { DotThemesService } from '../../../../../api/services/dot-themes/dot-themes.service';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site } from 'dotcms-js/core/treeable/shared/site.model';
@@ -10,9 +10,10 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
     styleUrls: ['./dot-theme-selector.component.scss']
 })
 export class DotThemeSelectorComponent implements OnInit {
-    themes: DotTheme[]
+    themes: DotTheme[];
+    @Input() value: string;
     @Output() selected = new EventEmitter<DotTheme>();
-    selectedTheme: DotTheme;
+    current: DotTheme;
     visible: boolean;
 
     constructor(private dotThemesService: DotThemesService, public dotMessageService: DotMessageService) {}
@@ -21,6 +22,7 @@ export class DotThemeSelectorComponent implements OnInit {
         this.dotMessageService
             .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
             .subscribe();
+
         this.themes = [
             {
                 name: 'test',
@@ -104,6 +106,16 @@ export class DotThemeSelectorComponent implements OnInit {
             }
         ];
 
+        // TODO: with the ID bring the theme
+        this.current = {
+            name: 'test1',
+            host: {
+                hostName: 'test',
+                inode: '43red',
+                identifier: '456'
+            }
+        };
+
         // this.dotThemesService.get().subscribe((response: DotTheme[]) => {
         //     this.themes = response;
         // });
@@ -117,12 +129,11 @@ export class DotThemeSelectorComponent implements OnInit {
     }
 
     selectTheme(theme: DotTheme) {
-        debugger;
-        this.selectedTheme = theme;
+        this.current = theme;
     }
 
-    applyTheme() {
-        this.selected.emit(this.selectedTheme);
+    apply() {
+        this.selected.emit(this.current);
         this.toogleDialog();
     }
 

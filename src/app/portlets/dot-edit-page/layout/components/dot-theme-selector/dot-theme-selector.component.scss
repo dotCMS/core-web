@@ -20,20 +20,16 @@ $them-item-dimension: 240px;
     }
 }
 
+.dot-theme-search-box{
+    display: inline-block;
+    width: 200px;
+    margin-left:  $basic-padding * 2;
+    position: relative;
 
-
-button[icon='fa-palette-svg'] {
-    svg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        path:nth-child(2) {
-            fill: $black;
-        }
+    input{
+        font-size: $font-size-large;
     }
 }
-
-
 
 .dot-theme-item {
     margin: $basic-padding * 2 $basic-padding * 2 0 0;

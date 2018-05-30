@@ -13,7 +13,7 @@ export class DotThemesService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'v1/themes',
-                params: [{ inode: inode ? inode : '' }]
+                params: { inode: inode ? inode : '' }
             })
             .pluck('entity');
     }

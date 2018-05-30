@@ -14,13 +14,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
 import { DotActionButtonModule } from '../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { FormsModule, FormGroup } from '@angular/forms';
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { async } from '@angular/core/testing';
+import { DotTheme } from '../../shared/models/dot-theme.model';
+import { mockDotThemes } from '../../../../test/dot-themes.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -46,6 +48,15 @@ class MockDotLayoutDesignerComponent {
     @Input() group: FormGroup;
 }
 
+@Component({
+    selector: 'dot-theme-selector',
+    template: ''
+})
+class MockDotThemeSelectorComponent {
+    @Input() value: DotTheme;
+    @Output() selected = new EventEmitter<DotTheme>();
+}
+
 const messageServiceMock = new MockDotMessageService({
     'editpage.layout.toolbar.action.save': 'Save',
     'editpage.layout.toolbar.action.cancel': 'Cancel',
@@ -65,7 +76,8 @@ const testConfigObject = {
         DotEditLayoutDesignerComponent,
         MockAdditionalOptionsComponent,
         MockDotLayoutDesignerComponent,
-        MockDotLayoutPropertiesComponent
+        MockDotLayoutPropertiesComponent,
+        MockDotThemeSelectorComponent
     ],
     imports: [DotEditLayoutGridModule, RouterTestingModule, DotActionButtonModule, FormsModule, FieldValidationMessageModule],
     providers: [
@@ -179,6 +191,27 @@ describe('DotEditLayoutDesignerComponent', () => {
                 }
             });
         });
+
+
+        describe('themes', () => {
+            let themeSelector: MockDotThemeSelectorComponent;
+            beforeEach(() => {
+                themeSelector = fixture.debugElement.query(By.css('dot-theme-selector')).componentInstance;
+            });
+
+            it('should have theme selector component', () => {
+                expect(themeSelector).not.toBe(null);
+            });
+
+            it('should get the emitted value from themes and trigger a save', () => {
+                spyOn(component, 'changeThemeHandler').and.callThrough();
+                themeSelector.selected.emit(mockDotThemes[0]);
+
+                expect(component.changeThemeHandler).toHaveBeenCalledWith(mockDotThemes[0]);
+                // TODO: expect of the call to the save method.
+            });
+        });
+
 
         describe('can save as template', () => {
             beforeEach(() => {

@@ -15,6 +15,7 @@ import { DotGlobalMessageService } from '../../../../view/components/_common/dot
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
+import {DotTheme} from '../../shared/models/dot-theme.model';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -142,6 +143,11 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         if (this.pageState.template) {
             this.pageState.template.anonymous = true;
         }
+    }
+
+    changeThemeHandler(theme: DotTheme): void {
+        // TODO: Update the layout.
+        this.saveLayout();
     }
 
     private setupLayout(pageState?: DotRenderedPageState): void {
