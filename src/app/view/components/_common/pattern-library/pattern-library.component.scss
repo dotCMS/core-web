@@ -1,5 +1,5 @@
-@import "mixins";
-@import "variables";
+@import 'mixins';
+@import 'variables';
 
 :host {
     display: block;
@@ -10,4 +10,11 @@
     display: grid;
     grid-gap: $basic-padding * 2;
     width: 500px;
+}
+
+hr {
+    margin: $basic-padding * 3 0;
+    border: 0;
+    height: 1px;
+    background: $gray-lighter;
 }

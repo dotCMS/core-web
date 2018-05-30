@@ -2,17 +2,15 @@
     height: $button-height;
     margin-right: 0;
     outline: none;
-    transition: background-color $field-animation-speed ease-in,
-                box-shadow $field-animation-speed ease-in,
-                color $field-animation-speed ease-in;
+    transition: all $field-animation-speed ease-in;
 
     .ui-button-text {
         font-size: $button-text-size;
     }
 }
 
-#button-raised {
-    @each $label, $props in $button-raised {
+#button-main {
+    @each $label, $props in $button-main {
         @include button-properties($label, $props);
     }
 
@@ -22,23 +20,19 @@
     }
 }
 
-#button-raised-disabled {
-    @include button-state(map-get($button-raised, disabled));
+#button-main-disabled {
+    @include button-state(map-get($button-main, disabled));
     @extend #button-disabled;
 }
 
-#button-flat {
-    @each $label, $props in $button-flat {
+#button-sec {
+    @each $label, $props in $button-sec {
         @include button-properties($label, $props);
-    }
-
-    &.ui-button-text-only .ui-button-text {
-        padding: 0 $basic-padding !important;
     }
 }
 
-#button-flat-disabled {
-    @include button-state(map-get($button-flat, disabled));
+#button-sec-disabled {
+    @include button-state(map-get($button-sec, disabled));
     @extend #button-disabled;
 }
 
@@ -48,17 +42,17 @@
 
 .ui-button {
     @extend #button-basic;
-    @extend #button-raised;
+    @extend #button-main;
 
     &[disabled] {
-        @extend #button-raised-disabled;
+        @extend #button-main-disabled;
     }
 
-    &[flat] {
-        @extend #button-flat;
+    &[secondary] {
+        @extend #button-sec;
 
         &[disabled] {
-            @extend #button-flat-disabled;
+            @extend #button-sec-disabled;
         }
     }
 
@@ -101,6 +95,8 @@
 }
 
 .ui-button-text {
+    transition: all $field-animation-speed ease-in;
+
     .ui-button-text-only & {
         padding: 0 $button-padding;
     }

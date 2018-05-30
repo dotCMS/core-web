@@ -16,7 +16,7 @@
         text-align: right;
 
         .ui-button {
-            @extend #button-flat;
+            @extend #button-sec;
 
             &.cancel {
                 .ui-button-text {

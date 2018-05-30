@@ -4,15 +4,15 @@
 
 .ui-selectbutton {
     @extend #button-basic;
-    @extend #button-raised;
+    @extend #button-main;
     @include button-base($selectbutton-normal-bgcolor, $selectbutton-normal-border, $selectbutton-normal-shadow);
 
-    [flat] & {
+    [secondary] & {
         box-shadow: none;
         background-color: rgba($brand-primary, 0.1);
 
         .ui-button {
-            @extend #button-flat;
+            @extend #button-sec;
             background-color: transparent;
         }
     }

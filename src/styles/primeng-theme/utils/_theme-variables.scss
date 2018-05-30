@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 
 // COMMON
 $field-animation-speed: $basic-speed;
@@ -32,7 +32,7 @@ $field-disabled-border-color: $gray-lighter;
 
 // BUTTONS
 $button-border: 0;
-$button-padding: $field-padding * 2;
+$button-padding: $field-padding * 3;
 $button-height: $field-height;
 $button-disabled-color: $body-font-color;
 $button-radius: $field-border-radius;
@@ -40,69 +40,59 @@ $button-inverted-color: $white;
 $button-hover-background-opacity: 0.12;
 $button-text-size: 13px;
 
-$button-raised: (
+$button-main: (
     normal: (
-        background: $white,
-        color: $field-normal-color,
+        background: var(--color-main),
+        color: $white,
         border: $button-border,
-        shadow: $md-shadow-1
     ),
     hover: (
-        background: $white,
-        color: $field-hover-color,
+        background: var(--color-main_mod),
+        color: $white,
         border: $button-border,
-        shadow: $md-shadow-2
     ),
     focus: (
-        background: $white,
-        color: $field-hover-color,
+        background: var(--color-main_mod),
+        color: $white,
         border: $button-border,
-        shadow: $md-shadow-2
     ),
     active: (
-        background: $white,
-        color: $field-normal-color,
+        background: var(--color-main_mod),
+        color: $white,
         border: $button-border,
-        shadow: $md-shadow-1
     ),
     disabled: (
         background: $field-disabled-bgcolor,
         color: $field-disabled-color,
         border: $button-border,
-        shadow: none
     )
 );
 
-$button-flat: (
+$button-sec: (
     normal: (
-        background: transparent,
-        color: $brand-primary,
-        border: $button-border,
-        shadow: none
+        background: $white,
+        color: var(--color-sec),
+        border: solid 1px var(--color-sec),
     ),
     hover: (
-        background: rgba($brand-primary, $button-hover-background-opacity),
-        color: $brand-primary,
-        border: $button-border,
-        shadow: none
+        background: $white,
+        color: var(--color-main),
+        border: solid 1px var(--color-main),
     ),
     focus: (
         background: rgba($brand-primary, $button-hover-background-opacity),
         color: $brand-primary,
         border: $button-border,
-        shadow: none
     ),
     active: (
         background: rgba($brand-primary, 0.26),
         color: $brand-primary,
         border: $button-border,
-        shadow: none
     ),
     disabled: (
         background: $field-disabled-bgcolor,
         color: $field-disabled-color,
         border: $button-border,
-        shadow: none
     )
 );
 
