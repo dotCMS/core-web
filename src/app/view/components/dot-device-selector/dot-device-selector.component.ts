@@ -22,22 +22,25 @@ export class DotDeviceSelectorComponent implements OnInit {
     constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['editpage.viewas.default.device']).subscribe(() => {
-            this.dotDevicesService
-                .get()
-                .pipe(
-                    take(1),
-                    tap((devices: DotDevice[]) => {
-                        this.dropdownWidth = StringPixels.getDropdownWidth(
-                            devices.map((deviceOption: DotDevice) => deviceOption.name)
-                        );
-                    }),
-                    map((devices: DotDevice[]) => this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices))
-                )
-                .subscribe((devices: DotDevice[]) => {
-                    this.options = devices;
-                });
-        });
+        this.dotMessageService
+            .getMessages(['editpage.viewas.default.device'])
+            .pipe(take(1))
+            .subscribe(() => {
+                this.dotDevicesService
+                    .get()
+                    .pipe(
+                        take(1),
+                        tap((devices: DotDevice[]) => {
+                            this.dropdownWidth = StringPixels.getDropdownWidth(devices.map((deviceOption: DotDevice) => deviceOption.name));
+                        }),
+                        map((devices: DotDevice[]) =>
+                            this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices)
+                        )
+                    )
+                    .subscribe((devices: DotDevice[]) => {
+                        this.options = devices;
+                    });
+            });
     }
 
     /**

@@ -4,7 +4,7 @@ import { DotPersonasService } from '../../../api/services/dot-personas/dot-perso
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { map, tap, take } from 'rxjs/operators';
 import { StringPixels } from '../../../api/util/string-pixels-util';
 
 @Component({
@@ -19,27 +19,25 @@ export class DotPersonaSelectorComponent implements OnInit {
     options: DotPersona[];
     dropdownWidth: string;
 
-    constructor(
-        private dotPersonasService: DotPersonasService,
-        private dotMessageService: DotMessageService
-    ) {}
+    constructor(private dotPersonasService: DotPersonasService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['modes.persona.no.persona']).subscribe(() => {
-            this.dotPersonasService
-                .get()
-                .pipe(
-                    tap((personas: DotPersona[]) => {
-                        this.dropdownWidth = StringPixels.getDropdownWidth(
-                            personas.map((persona: DotPersona) => persona.name)
-                        );
-                    }),
-                    map((personas: DotPersona[]) => this.setOptions(this.dotMessageService.get('modes.persona.no.persona'), personas))
-                )
-                .subscribe((personas: DotPersona[]) => {
-                    this.options = personas;
-                });
-        });
+        this.dotMessageService
+            .getMessages(['modes.persona.no.persona'])
+            .pipe(take(1))
+            .subscribe(() => {
+                this.dotPersonasService
+                    .get()
+                    .pipe(
+                        tap((personas: DotPersona[]) => {
+                            this.dropdownWidth = StringPixels.getDropdownWidth(personas.map((persona: DotPersona) => persona.name));
+                        }),
+                        map((personas: DotPersona[]) => this.setOptions(this.dotMessageService.get('modes.persona.no.persona'), personas))
+                    )
+                    .subscribe((personas: DotPersona[]) => {
+                        this.options = personas;
+                    });
+            });
     }
 
     /**
