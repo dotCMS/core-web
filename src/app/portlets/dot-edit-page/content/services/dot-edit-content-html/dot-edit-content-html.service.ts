@@ -4,7 +4,7 @@ import { Injectable, ElementRef } from '@angular/core';
 import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
-import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
+import { GOOGLE_FONTS, CATCH_JS_ERROR } from '../html/iframe-edit-mode.js';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
@@ -507,6 +507,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         doc.open();
         doc.write(editPageHTML);
+        doc.body.appendChild(this.dotDOMHtmlUtilService.createInlineScriptElement(CATCH_JS_ERROR));
         doc.close();
     }
 

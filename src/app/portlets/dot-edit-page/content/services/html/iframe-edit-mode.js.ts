@@ -1,8 +1,28 @@
+export const API_ROOT_PATH = '/html/js/dragula-3.7.2';
+
 export const GOOGLE_FONTS = 'https://fonts.googleapis.com/css?family=Roboto:400,700';
 export const MODEL_VAR_NAME = 'dotNgModel';
 
+export const CATCH_JS_ERROR = `
+console.log('Bind the error catcher first');
+window.addEventListener('error', function(event) {
+    console.log('********** HANDLER **********');
+    console.error(event);
+    console.log('*****************************');
+    return false;
+});
+`;
+
 export const EDIT_PAGE_JS = `
+
+// badFunctionFromInjectedJS();
+
+// throw new Error('fake error');
+
 (function () {
+
+    console.log('I happened');
+
     var forbiddenTarget;
 
     function getContainers() {
@@ -12,6 +32,8 @@ export const EDIT_PAGE_JS = `
         for (var i = 0; i < containersNodeList.length; i++) {
             containers.push(containersNodeList[i]);
         };
+
+        console.log(containers);
 
         return containers;
     }
@@ -95,4 +117,9 @@ export const EDIT_PAGE_JS = `
 })();
 `;
 
-export const EDIT_PAGE_JS_DOJO_REQUIRE = `require(['/html/js/dragula-3.7.2/dragula.min.js'], function(dragula) { ${EDIT_PAGE_JS} });  `;
+export const EDIT_PAGE_JS_DOJO_REQUIRE = `
+    // console.log(dojo);
+    require(['${API_ROOT_PATH}/dragula.min.js'], function(dragula) {
+        ${EDIT_PAGE_JS}
+    });
+`;

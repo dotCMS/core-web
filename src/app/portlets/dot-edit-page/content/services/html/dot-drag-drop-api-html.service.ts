@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE } from './iframe-edit-mode.js';
+import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE, API_ROOT_PATH } from './iframe-edit-mode.js';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
-const API_ROOT_PATH = '/html/js/dragula-3.7.2';
 
 /**
  * Util class for init the dragula API.
