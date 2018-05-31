@@ -145,8 +145,14 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         }
     }
 
+    /**
+     * Handle the changes in the Dot Theme component.
+     * @param {DotTheme} theme
+     *
+     * @memberof DotEditLayoutDesignerComponent
+     */
     changeThemeHandler(theme: DotTheme): void {
-        // TODO: Update the layout.
+        // TODO: Update the layout with the new theme id.
         this.saveLayout();
     }
 
