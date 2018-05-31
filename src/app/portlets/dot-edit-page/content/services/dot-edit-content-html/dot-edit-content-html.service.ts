@@ -241,14 +241,14 @@ export class DotEditContentHtmlService {
     }
 
     private getContainersLayoutIds(pageLayout: DotLayout): Array<Array<DotPageContainer>> {
-        return pageLayout.body.rows.map((row: DotLayoutRow) => {
+        return pageLayout ? pageLayout.body.rows.map((row: DotLayoutRow) => {
             return row.columns.map((column: DotLayoutColumn) => {
                 return {
                     identifier: column.containers[0].identifier,
                     uuid: column.containers[0].uuid
                 };
             });
-        });
+        }) : [];
     }
 
     private getContainerDomElements(containersLayoutIds: Array<Array<DotPageContainer>>): Array<Array<HTMLElement>> {
