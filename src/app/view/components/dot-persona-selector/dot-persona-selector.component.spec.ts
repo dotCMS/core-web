@@ -19,7 +19,6 @@ describe('DotPersonaSelectorComponent', () => {
     const messageServiceMock = new MockDotMessageService({
         'modes.persona.no.persona': 'Default Persona'
     });
-    const stringPixels = new StringPixels;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({

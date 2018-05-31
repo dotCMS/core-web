@@ -17,7 +17,6 @@ describe('DotDeviceSelectorComponent', () => {
     let component: DotDeviceSelectorComponent;
     let fixture: ComponentFixture<DotDeviceSelectorComponent>;
     let de: DebugElement;
-    const stringPixels = new StringPixels;
     const defaultDevice: DotDevice = {
         name: 'Desktop',
         cssHeight: '',

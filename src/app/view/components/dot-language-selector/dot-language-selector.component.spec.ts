@@ -15,7 +15,6 @@ describe('DotLanguageSelectorComponent', () => {
     let component: DotLanguageSelectorComponent;
     let fixture: ComponentFixture<DotLanguageSelectorComponent>;
     let de: DebugElement;
-    const stringPixels = new StringPixels;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
