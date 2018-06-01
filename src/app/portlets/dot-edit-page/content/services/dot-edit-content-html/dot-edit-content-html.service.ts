@@ -262,14 +262,19 @@ export class DotEditContentHtmlService {
         });
     }
 
+    private getCurrentContentlet(target: HTMLElement): DotPageContent {
+        const contentlet = <HTMLElement>target.closest('div[data-dot-object="contentlet"]');
+        return {
+            identifier: contentlet.dataset.dotIdentifier,
+            inode: contentlet.dataset.dotInode,
+            type: contentlet.dataset.dotType,
+            baseType: contentlet.dataset.dotBasetype,
+        };
+    }
+
     private setGlobalClickHandlers(): void {
         this.docClickHandlers['edit-content'] = (target: HTMLElement) => {
-            const parentContentlet = <HTMLElement>target.closest('div[data-dot-object="contentlet"]');
-            this.currentContentlet = {
-                identifier: parentContentlet.dataset.dotIdentifier,
-                inode: parentContentlet.dataset.dotInode
-            };
-
+            this.currentContentlet = this.getCurrentContentlet(target);
             this.buttonClickHandler(target, 'edit');
         };
 
@@ -278,6 +283,9 @@ export class DotEditContentHtmlService {
         };
 
         this.docClickHandlers['popup-menu-item'] = (target: HTMLElement) => {
+            const parentContentlet = <HTMLElement>target.closest('div[data-dot-object="contentlet"]');
+            this.currentContentlet = this.getCurrentContentlet(target);
+
             this.buttonClickHandler(target, target.dataset.dotAction);
         };
     }
