@@ -222,6 +222,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                     lockedBy: '123'
                 }
             });
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(false));
             fixtureHost.detectChanges();
             whatsChanged = de.query(By.css('p-checkbox'));
             expect(whatsChanged).toBe(null);
@@ -235,6 +236,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                     JSON.parse(JSON.stringify(mockDotRenderedPage)),
                     PageMode.PREVIEW
                 );
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(true));
                 fixtureHost.detectChanges();
 
                 whatsChanged = de.query(By.css('p-checkbox'));

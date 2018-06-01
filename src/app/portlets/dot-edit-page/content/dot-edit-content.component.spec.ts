@@ -811,7 +811,6 @@ describe('DotEditContentComponent', () => {
 
             spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
             spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
-            spyOn(dotEditContentHtmlService, 'setContaintersSameHeight');
 
             fixture.detectChanges();
 
@@ -820,7 +819,6 @@ describe('DotEditContentComponent', () => {
 
             dotEditContentHtmlService.pageModel$.next(newModel);
             expect(dotEditPageService.save).toHaveBeenCalledTimes(2);
-            expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalled();
         });
     });
 
