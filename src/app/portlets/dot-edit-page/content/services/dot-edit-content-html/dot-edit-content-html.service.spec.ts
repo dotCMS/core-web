@@ -27,7 +27,7 @@ describe('DotEditContentHtmlService', () => {
         </head>
         <body>
             <div data-dot-object="container" data-dot-identifier="123" data-dot-uuid="456" data-dot-can-add="CONTENT">
-                <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="456">
+                <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="456" data-dot-type="NewsWidgets" data-dot-basetype="CONTENT">
                     <div class="large-column">
                         <h3>This is a title</h3>
                         <p>this is a paragraph</p>
@@ -37,7 +37,7 @@ describe('DotEditContentHtmlService', () => {
             </div>
 
             <div data-dot-object="container" data-dot-identifier="321" data-dot-uuid="654" data-dot-can-add="CONTENT">
-                <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="456">
+                <div data-dot-object="contentlet" data-dot-identifier="456" data-dot-inode="456" data-dot-type="NewsWidgets" data-dot-basetype="CONTENT">
                     <div class="large-column">
                         <h3>This is a title</h3>
                         <p>this is a paragraph</p>
@@ -246,7 +246,9 @@ describe('DotEditContentHtmlService', () => {
 
         expect(this.dotEditContentHtmlService.currentContentlet).toEqual({
             identifier: '456',
-            inode: '456'
+            inode: '456',
+            type: 'NewsWidgets',
+            baseType: 'CONTENT'
         });
     });
 
