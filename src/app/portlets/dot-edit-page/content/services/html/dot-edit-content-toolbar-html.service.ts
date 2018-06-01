@@ -92,9 +92,9 @@ export class DotEditContentToolbarHtmlService {
                                 const contentletToolbar = document.createElement('div');
                                 contentletToolbar.classList.add('dotedit-contentlet__toolbar');
 
-                                (this.dragLabel = messages['editpage.content.contentlet.menu.drag']),
-                                    (this.editLabel = messages['editpage.content.contentlet.menu.edit']),
-                                    (this.removeLabel = messages['editpage.content.contentlet.menu.remove']);
+                                this.dragLabel = messages['editpage.content.contentlet.menu.drag'];
+                                this.editLabel = messages['editpage.content.contentlet.menu.edit'];
+                                this.removeLabel = messages['editpage.content.contentlet.menu.remove'];
 
                                 const vtls = Array.from(contentlet.querySelectorAll('div[data-dot-object="vtl-file"]'));
 
@@ -137,12 +137,14 @@ export class DotEditContentToolbarHtmlService {
         let editButtonClass = 'dotedit-contentlet__edit';
         editButtonClass += !canEdit ? ' dotedit-contentlet__disabled' : '';
 
-        return `${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
+        return `
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}`;
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}
+        `;
     }
 
-    private getEditVtlButtons(vtls: any[]): string {
+    getEditVtlButtons(vtls: any[]): string {
         return this.getDotEditPopupMenuHtml({
             button: {
                 label: this.dotMessageService.get('editpage.content.container.action.edit.vtl'),
@@ -205,6 +207,7 @@ export class DotEditContentToolbarHtmlService {
     private getDotEditPopupMenuButton(button: DotEditPopupButton, disabled = false): string {
         return `
             <button
+                data-dot-object="popup-button"
                 type="button"
                 class="dotedit-menu__button ${button.class ? button.class : ''}"
                 aria-label="${button.label}"
@@ -220,7 +223,12 @@ export class DotEditContentToolbarHtmlService {
                     .map((item: DotEditPopupMenuItem) => {
                         return `
                             <li class="dotedit-menu__item ${item.disabled ? 'dotedit-menu__item--disabled' : ''}">
-                                <a href="#" ${this.getDotEditPopupMenuItemDataSet(item.dataset)} role="button">${item.label}</a>
+                                <a
+                                    href="#"
+                                    data-dot-object="popup-menu-item"
+                                    ${this.getDotEditPopupMenuItemDataSet(item.dataset)} role="button">
+                                    ${item.label}
+                                </a>
                             </li>
                         `;
                     })
