@@ -130,6 +130,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             expect(de.query(By.css('dot-language-selector'))).not.toBeNull();
             expect(de.query(By.css('dot-device-selector'))).toBeFalsy();
             expect(de.query(By.css('dot-persona-selector'))).toBeFalsy();
+            expect(de.query(By.css('p-checkbox'))).toBeFalsy();
         });
     });
 
@@ -198,6 +199,11 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             expect(component.changeViewAs.emit).toHaveBeenCalledWith({ language: testlanguage });
         });
 
+        it('should have What is Changed selector', () => {
+            const whatsChangedElem = de.query(By.css('p-checkbox'));
+            expect(whatsChangedElem).toBeTruthy();
+        });
+
         it('should propagate the values to the selector components on init', () => {
             componentHost.pageState = new DotRenderedPageState(mockUser, {
                 ...mockDotRenderedPage,
@@ -240,10 +246,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                 fixtureHost.detectChanges();
 
                 whatsChanged = de.query(By.css('p-checkbox'));
-            });
-
-            it('should have what\'s change checkbox', () => {
-                expect(whatsChanged).toBeTruthy();
             });
 
             it('should emit what\'s change in true', () => {
