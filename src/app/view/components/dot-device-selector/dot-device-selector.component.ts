@@ -3,7 +3,7 @@ import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { map } from 'rxjs/operators/map';
+import { map, mergeMap, filter, flatMap, toArray } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-device-selector',
@@ -21,14 +21,19 @@ export class DotDeviceSelectorComponent implements OnInit {
     ngOnInit() {
         this.options = this.dotMessageService
             .getMessages(['editpage.viewas.default.device'])
-            .mergeMap(() =>
-                this.dotDevicesService
-                    .get()
-                    .pipe(
-                        map((devices: DotDevice[]) =>
-                            this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices)
+            .pipe(
+                mergeMap(() =>
+                    this.dotDevicesService
+                        .get()
+                        .pipe(
+                            flatMap((devices: DotDevice[]) => devices),
+                            filter((device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0),
+                            toArray(),
+                            map((devices: DotDevice[]) =>
+                                this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices)
+                            )
                         )
-                    )
+                )
             );
     }
 
