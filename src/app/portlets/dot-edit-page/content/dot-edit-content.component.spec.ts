@@ -788,7 +788,7 @@ describe('DotEditContentComponent', () => {
         });
     });
 
-    fdescribe('Auto save', () => {
+    describe('Auto save', () => {
         it('should call the save endpoint after a model change happens', () => {
             const model: DotPageContainer[] = [
                 {

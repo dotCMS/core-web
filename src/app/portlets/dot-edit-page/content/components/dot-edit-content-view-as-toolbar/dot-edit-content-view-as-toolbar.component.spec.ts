@@ -227,7 +227,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             expect(whatsChanged).toBe(null);
         });
 
-        fdescribe('events', () => {
+        describe('events', () => {
             beforeEach(() => {
                 spyOn(component.whatschange, 'emit');
                 componentHost.pageState = new DotRenderedPageState(
