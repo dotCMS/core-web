@@ -15,7 +15,7 @@ import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page
 import { Observable } from 'rxjs/Observable';
 import { mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 
-describe('DotEditContentHtmlService', () => {
+fdescribe('DotEditContentHtmlService', () => {
     let fakeDocument: Document;
 
     const fakeHTML = `
@@ -279,7 +279,9 @@ describe('DotEditContentHtmlService', () => {
             expect(JSON.parse(JSON.stringify(res))).toEqual({
                 name: 'edit',
                 dataset: {
-                    dotObject: 'edit-content'
+                    dotObject: 'edit-content',
+                    dotIdentifier: '456',
+                    dotInode: '456'
                 },
                 container: {
                     dotCanAdd: 'CONTENT',
