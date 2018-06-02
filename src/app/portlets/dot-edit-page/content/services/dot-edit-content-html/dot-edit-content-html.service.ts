@@ -7,8 +7,6 @@ import { take } from 'rxjs/operators/take';
 
 import * as _ from 'lodash';
 
-import { LoggerService } from 'dotcms-js/dotcms-js';
-
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
@@ -49,7 +47,6 @@ export class DotEditContentHtmlService {
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
-        private loggerService: LoggerService,
         private dotDialogService: DotDialogService,
         private dotMessageService: DotMessageService
     ) {
@@ -351,22 +348,8 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
-
-        this.dotEditContentToolbarHtmlService
-            .addContainerToolbar(doc)
-            .then(() => {})
-            .catch((error) => {
-                this.loggerService.debug(error);
-            });
-
-        this.dotEditContentToolbarHtmlService
-            .addContentletMarkup(doc)
-            .then(() => {
-                // this.bindContenletsEvents();
-            })
-            .catch((error) => {
-                this.loggerService.debug(error);
-            });
+        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
+        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
     }
 
     private appendNewContentlets(contentletContentEl: any, html: string): void {
@@ -396,11 +379,6 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private bindContenletsEvents(): void {
-        this.bindEditContentletEvents();
-        this.bindRemoveContentletEvents();
-    }
-
     private bindButtonsEvent(button: HTMLElement, type: string): void {
         button.addEventListener('click', ($event: MouseEvent) => {
             this.buttonClickHandler(<HTMLElement>$event.target, type);
@@ -424,24 +402,6 @@ export class DotEditContentHtmlService {
             if (activeElement !== toolbar) {
                 toolbar.classList.remove('active');
             }
-        });
-    }
-
-    private bindEditContentletEvents(): void {
-        const editButtons = Array.from(
-            this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit:not(.dotedit-contentlet__disabled)')
-        );
-
-        editButtons.forEach((button: HTMLElement) => {
-            this.bindButtonsEvent(button, 'edit');
-        });
-    }
-
-    private bindRemoveContentletEvents(): void {
-        const removeButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove'));
-
-        removeButtons.forEach((button: HTMLElement) => {
-            this.bindButtonsEvent(button, 'remove');
         });
     }
 

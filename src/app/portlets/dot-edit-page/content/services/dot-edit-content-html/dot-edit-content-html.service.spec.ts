@@ -1,4 +1,4 @@
-import { fakeAsync, tick, async } from '@angular/core/testing';
+import { async } from '@angular/core/testing';
 import { DotEditContentHtmlService, DotContentletAction } from './dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
@@ -211,20 +211,6 @@ describe('DotEditContentHtmlService', () => {
 
         expect(firstContainer.height).toEqual(secondContainer.height);
     });
-
-    it(
-        'should bind contentlets events when the html is done',
-        fakeAsync(() => {
-            spyOn(this.dotEditContentHtmlService, 'bindContenletsEvents');
-
-            this.dotEditContentToolbarHtmlService.addContainerToolbar(fakeIframeEl.contentDocument).then(() => {
-                this.dotEditContentHtmlService.bindContenletsEvents();
-            });
-
-            tick();
-            expect(this.dotEditContentHtmlService.bindContenletsEvents).toHaveBeenCalledTimes(1);
-        })
-    );
 
     it('should add contentlet', () => {
         spyOn(this.dotEditContentHtmlService, 'renderAddedContentlet');
