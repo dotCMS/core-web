@@ -139,8 +139,14 @@ export class DotEditContentToolbarHtmlService {
 
         return `
             ${this.dotDOMHtmlUtilService.getButtomHTML(this.dragLabel, 'dotedit-contentlet__drag', dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, dataset)}
-            ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', dataset)}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.editLabel, editButtonClass, {
+                ...dataset,
+                'dot-object': 'edit-content'
+            })}
+            ${this.dotDOMHtmlUtilService.getButtomHTML(this.removeLabel, 'dotedit-contentlet__remove', {
+                ...dataset,
+                'dot-object': 'remove-content'
+            })}
         `;
     }
 

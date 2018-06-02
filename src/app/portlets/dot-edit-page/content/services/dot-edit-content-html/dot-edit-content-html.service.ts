@@ -261,7 +261,6 @@ export class DotEditContentHtmlService {
 
         this.docClickSubscription = Observable.fromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
             const target = <HTMLElement>$event.target;
-
             const method = this.docClickHandlers[target.dataset.dotObject];
             if (method) {
                 method(target);
@@ -287,6 +286,10 @@ export class DotEditContentHtmlService {
         this.docClickHandlers['edit-content'] = (target: HTMLElement) => {
             this.currentContentlet = this.getCurrentContentlet(target);
             this.buttonClickHandler(target, 'edit');
+        };
+
+        this.docClickHandlers['remove-content'] = (target: HTMLElement) => {
+            this.buttonClickHandler(target, 'remove');
         };
 
         this.docClickHandlers['popup-button'] = (target: HTMLElement) => {
@@ -359,7 +362,7 @@ export class DotEditContentHtmlService {
         this.dotEditContentToolbarHtmlService
             .addContentletMarkup(doc)
             .then(() => {
-                this.bindContenletsEvents();
+                // this.bindContenletsEvents();
             })
             .catch((error) => {
                 this.loggerService.debug(error);

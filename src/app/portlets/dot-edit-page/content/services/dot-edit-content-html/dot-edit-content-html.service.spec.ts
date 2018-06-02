@@ -130,6 +130,32 @@ describe('DotEditContentHtmlService', () => {
             button.click();
         });
 
+        it('should emit iframe action to edit content', () => {
+            this.dotEditContentHtmlService.iframeActions$.subscribe((res) => {
+                expect(res).toEqual({
+                    name: 'edit',
+                    container: container.dataset,
+                    dataset: button.dataset
+                });
+            });
+            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('.dotedit-contentlet__edit');
+            const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
+            button.click();
+        });
+
+        it('should emit iframe action to remove content', () => {
+            this.dotEditContentHtmlService.iframeActions$.subscribe((res) => {
+                expect(res).toEqual({
+                    name: 'remove',
+                    container: container.dataset,
+                    dataset: button.dataset
+                });
+            });
+            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('.dotedit-contentlet__remove');
+            const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
+            button.click();
+        });
+
         it('should emit iframe action to edit vtl', () => {
             this.dotEditContentHtmlService.iframeActions$.subscribe((res) => {
                 expect(res).toEqual({
