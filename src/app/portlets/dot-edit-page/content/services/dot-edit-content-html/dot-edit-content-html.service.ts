@@ -212,7 +212,7 @@ export class DotEditContentHtmlService {
         const debounceContainersHeightChange = _.debounce((layout: DotLayout) => this.setContaintersSameHeight(layout), 500, {
             leading: true
         });
-        const observer = new MutationObserver((mutations) => {
+        const observer = new MutationObserver(() => {
             debounceContainersHeightChange(pageLayout);
         });
         observer.observe(target, config);
@@ -283,9 +283,7 @@ export class DotEditContentHtmlService {
         };
 
         this.docClickHandlers['popup-menu-item'] = (target: HTMLElement) => {
-            const parentContentlet = <HTMLElement>target.closest('div[data-dot-object="contentlet"]');
             this.currentContentlet = this.getCurrentContentlet(target);
-
             this.buttonClickHandler(target, target.dataset.dotAction);
         };
     }
@@ -343,9 +341,7 @@ export class DotEditContentHtmlService {
 
         this.dotEditContentToolbarHtmlService
             .addContainerToolbar(doc)
-            .then(() => {
-                // this.bindContainersEvents();
-            })
+            .then(() => {})
             .catch((error) => {
                 this.loggerService.debug(error);
             });
@@ -360,7 +356,7 @@ export class DotEditContentHtmlService {
             });
     }
 
-    private appendNewContentlets(contentletEl: any, html: string): void {
+    private appendNewContentlets(contentletContentEl: any, html: string): void {
         const doc = this.getEditPageDocument();
 
         // Add innerHTML to a plain so we can get the HTML nodes later
@@ -379,10 +375,10 @@ export class DotEditContentHtmlService {
                     script.text = node.textContent;
                 }
 
-                contentletEl.appendChild(script);
+                contentletContentEl.appendChild(script);
             } else {
                 node.removeAttribute('data-dot-object');
-                contentletEl.appendChild(node);
+                contentletContentEl.appendChild(node);
             }
         });
     }
@@ -405,28 +401,6 @@ export class DotEditContentHtmlService {
             name: type,
             dataset: target.dataset,
             container: container ? container.dataset : null
-        });
-    }
-
-    private bindContainersEvents(): void {
-        const addButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-menu__button:not([disabled])'));
-
-        addButtons.forEach((button: HTMLElement) => {
-            const menuList = button.nextElementSibling;
-            const menuItems = Array.from(menuList.querySelectorAll('.dotedit-menu__item a'));
-
-            this.bindEventToSubMenu(button);
-
-            menuItems.forEach((menuItem: HTMLElement) => {
-                this.bindButtonsEvent(menuItem, menuItem.dataset.dotAction);
-            });
-        });
-    }
-
-    private bindEventToSubMenu(button: HTMLElement): void {
-        button.addEventListener('click', (_event) => {
-            this.closeContainersToolBarMenu(button.nextElementSibling);
-            button.nextElementSibling.classList.toggle('active');
         });
     }
 
