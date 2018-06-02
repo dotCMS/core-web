@@ -294,7 +294,6 @@ export class DotEditContentHtmlService {
         };
 
         this.docClickHandlers['popup-menu-item'] = (target: HTMLElement) => {
-            this.currentContentlet = this.getCurrentContentlet(target);
             this.buttonClickHandler(target, target.dataset.dotAction);
         };
     }
