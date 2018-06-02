@@ -1,22 +1,28 @@
-import * as _ from 'lodash';
-import { LoggerService } from 'dotcms-js/dotcms-js';
 import { Injectable, ElementRef } from '@angular/core';
-import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
-import { DotContainerContentletService } from '../dot-container-contentlet.service';
-import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
-import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
-import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
-import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
+
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { DotPageContainer } from '../../../shared/models/dot-page-container.model';
-import { DotPageContent } from '../../../shared/models/dot-page-content.model';
+import { Subscription } from 'rxjs/Subscription';
+import { take } from 'rxjs/operators/take';
+
+import * as _ from 'lodash';
+
+import { LoggerService } from 'dotcms-js/dotcms-js';
+
+import { DotContainerContentletService } from '../dot-container-contentlet.service';
+import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
+import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotLayout } from '../../../shared/models/dot-layout.model';
 import { DotLayoutColumn } from '../../../shared/models/dot-layout-column.model';
 import { DotLayoutRow } from '../../../shared/models/dot-layout-row.model';
-import { take } from 'rxjs/operators/take';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotPageContainer } from '../../../shared/models/dot-page-container.model';
+import { DotPageContent } from '../../../shared/models/dot-page-content.model';
+import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
+import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
+import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 
 export enum DotContentletAction {
     EDIT,
@@ -34,6 +40,7 @@ export class DotEditContentHtmlService {
 
     private currentAction: DotContentletAction;
     private rowsMaxHeight: number[] = [];
+    private docClickSubscription: Subscription;
 
     private readonly docClickHandlers;
 
@@ -248,7 +255,11 @@ export class DotEditContentHtmlService {
     private bindGlobalEvents(): void {
         const doc = this.getEditPageDocument();
 
-        doc.addEventListener('click', ($event: MouseEvent) => {
+        if (this.docClickSubscription) {
+            this.docClickSubscription.unsubscribe();
+        }
+
+        this.docClickSubscription = Observable.fromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
             const target = <HTMLElement>$event.target;
 
             const method = this.docClickHandlers[target.dataset.dotObject];
