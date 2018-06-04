@@ -220,20 +220,6 @@ describe('DotEditContentViewAsToolbarComponent', () => {
     describe('what\'s change event', () => {
         let whatsChanged: DebugElement;
 
-        it('should not have what\'s change checkbox', () => {
-            componentHost.pageState = new DotRenderedPageState(mockUser, {
-                ...mockDotRenderedPage,
-                page: {
-                    ...mockDotRenderedPage.page,
-                    lockedBy: '123'
-                }
-            });
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(false));
-            fixtureHost.detectChanges();
-            whatsChanged = de.query(By.css('p-checkbox'));
-            expect(whatsChanged).toBe(null);
-        });
-
         describe('events', () => {
             beforeEach(() => {
                 spyOn(component.whatschange, 'emit');
