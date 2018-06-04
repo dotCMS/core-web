@@ -15,7 +15,7 @@ import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page
 import { Observable } from 'rxjs/Observable';
 import { mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 
-fdescribe('DotEditContentHtmlService', () => {
+describe('DotEditContentHtmlService', () => {
     let fakeDocument: Document;
 
     const fakeHTML = `
