@@ -38,7 +38,7 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
-        path: 'contentlets',
+        path: 'contentlets/:inode',
         loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
     },
     {

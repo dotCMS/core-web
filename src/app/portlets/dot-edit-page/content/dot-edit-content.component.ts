@@ -192,7 +192,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             uuid: $event.dataset.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-
+        debugger;
         this.dotContentletEditorService.add({
             header: this.dotMessageService.get('dot.common.content.search'),
             data: {
@@ -212,7 +212,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             identifier: $event.container.dotIdentifier,
             uuid: $event.container.dotUuid
         };
-
+debugger;
         this.dotEditContentHtmlService.setContainterToEditContentlet(container);
         this.dotContentletEditorService.edit({
             data: {

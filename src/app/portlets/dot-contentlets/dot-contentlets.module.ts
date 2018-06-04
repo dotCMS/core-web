@@ -1,27 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { DotContainerContentletService } from '../../../app/portlets/dot-edit-page/content/services/dot-container-contentlet.service';
+import { DotDragDropAPIHtmlService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-drag-drop-api-html.service';
+import { DotDOMHtmlUtilService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
+// tslint:disable-next-line:max-line-length
+import { DotEditContentToolbarHtmlService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-edit-content-toolbar-html.service';
+// tslint:disable-next-line:max-line-length
+import { DotEditContentHtmlService } from '../../../app/portlets/dot-edit-page/content/services/dot-edit-content-html/dot-edit-content-html.service';
 
 import { DotContentletsComponent } from './dot-contentlets-component';
-
-import { AutoCompleteModule, DialogModule, FileUploadModule } from 'primeng/primeng';
-import {
-    DotBreadcrumbHostselectorModule,
-    DotBreadcrumbModule,
-    DotFileModule,
-    DotFolderModule,
-    DotHttpModule,
-    DotNotificationModule,
-    DotSettingsStorageModule,
-    DotSiteBrowserModule,
-    DotSiteDatagridModule,
-    DotSiteDatatableModule,
-    DotSiteSelectorModule,
-    DotSiteTreeTableModule,
-    DotTreeableDetailModule
-} from 'dotcms-js/dotcms-js';
 import { Routes, RouterModule } from '@angular/router';
-import { DotDirectivesModule } from '../../shared/dot-directives.module';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
     {
@@ -33,29 +22,16 @@ const routes: Routes = [
 @NgModule({
     declarations: [DotContentletsComponent],
     imports: [
-        AutoCompleteModule,
         CommonModule,
-        DotBreadcrumbModule,
-        DotFileModule,
-        DotFolderModule,
-        DotHttpModule,
-        DotNotificationModule,
-        DotSettingsStorageModule,
-        DotSiteBrowserModule,
-        DotSiteDatatableModule,
-        DotSiteDatagridModule,
-        DotSiteSelectorModule,
-        DotSiteTreeTableModule,
-        DotTreeableDetailModule,
-        DotBreadcrumbHostselectorModule,
-        FormsModule,
-        DialogModule,
-        FileUploadModule,
-        ReactiveFormsModule,
         RouterModule.forChild(routes),
-        DotDirectivesModule
     ],
     exports: [],
-    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
+    providers: [
+        DotContainerContentletService,
+        DotEditContentHtmlService,
+        DotDragDropAPIHtmlService,
+        DotDOMHtmlUtilService,
+        DotEditContentToolbarHtmlService
+    ]
 })
 export class DotContentletsModule {}
