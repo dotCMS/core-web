@@ -144,8 +144,7 @@ describe('DotEditContentHtmlService', () => {
 
             const firstContainer = this.dotEditContentHtmlService.getEditPageDocument().querySelector(querySelector1);
             const secondContainer = this.dotEditContentHtmlService.getEditPageDocument().querySelector(querySelector2);
-
-            expect(firstContainer.height).toEqual(secondContainer.height);
+            expect(firstContainer.offsetHeight).toEqual(secondContainer.offsetHeight);
         })
     );
 
