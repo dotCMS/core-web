@@ -4,7 +4,8 @@
         <input #templateName pInputText type="text" class="dot-edit-layout__toolbar-template-name" placeholder="{{ dotMessageService.get('editpage.layout.toolbar.template.name') }} *" *ngIf="saveAsTemplate" formControlName="title">
         <div class="dot-edit-layout__toolbar-actions">
             <p-checkbox class="dot-edit-layout__toolbar-save-template" label="{{ dotMessageService.get('editpage.layout.toolbar.save.template') }}" *ngIf="editTemplate && isLayout() && pageState.canCreateTemplate" binary="true" (onChange)="saveAsTemplateHandleChange($event);"></p-checkbox>
-            <dot-theme-selector value="43red" (selected)="changeThemeHandler($event)" ></dot-theme-selector>
+            aaa {{ form.get('template') | json }}
+            <dot-theme-selector [value]="form.get('template')" (selected)="changeThemeHandler($event)" ></dot-theme-selector>
             <dot-layout-properties [group]="form.get('layout')"></dot-layout-properties>
             <button pButton flat type="button" label="{{ dotMessageService.get('editpage.layout.toolbar.action.cancel') }}" class="dot-edit-layout__toolbar-action-cancel"></button>
             <button pButton flat type="submit" [disabled]="!isModelUpdated || !form.valid"  label="{{ dotMessageService.get('editpage.layout.toolbar.action.save') }}" class="dot-edit-layout__toolbar-action-save"></button>

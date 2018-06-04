@@ -3,6 +3,8 @@ import { DotTheme } from '../portlets/dot-edit-page/shared/models/dot-theme.mode
 export const mockDotThemes: DotTheme[] = [
     {
         name: 'Test Theme 1',
+        title: 'Theme tittle',
+        inode: '1234g',
         host: {
             hostName: 'Test',
             inode: '1',
@@ -11,6 +13,8 @@ export const mockDotThemes: DotTheme[] = [
     },
     {
         name: 'Test Theme 2',
+        title: 'Theme tittle',
+        inode: '13r3fd234g',
         host: {
             hostName: 'Test',
             inode: '2',
@@ -19,6 +23,8 @@ export const mockDotThemes: DotTheme[] = [
     },
     {
         name: 'Test Theme 3',
+        title: 'Theme tittle',
+        inode: '123dedw4g',
         host: {
             hostName: 'Test',
             inode: '3',
@@ -26,6 +32,5 @@ export const mockDotThemes: DotTheme[] = [
         }
     }
 ];
-
 
 

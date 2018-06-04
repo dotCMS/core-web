@@ -11,7 +11,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 })
 export class DotThemeSelectorComponent implements OnInit {
     themes: DotTheme[];
-    @Input() value: string;
+    @Input() value: any;
     @Output() selected = new EventEmitter<DotTheme>();
     current: DotTheme;
     visible: boolean;
@@ -26,6 +26,8 @@ export class DotThemeSelectorComponent implements OnInit {
         this.themes = [
             {
                 name: 'test',
+                title: 'test 01',
+                inode: '1234',
                 host: {
                     hostName: 'test',
                     inode: '12',
@@ -34,6 +36,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test',
+                title: 'test 01',
+                inode: '12345',
                 host: {
                     hostName: 'test',
                     inode: '123',
@@ -42,6 +46,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test1',
+                title: 'test 01',
+                inode: '1234g',
                 host: {
                     hostName: 'test',
                     inode: '43red',
@@ -50,6 +56,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test2',
+                title: 'test 01',
+                inode: '1s234g',
                 host: {
                     hostName: 'test',
                     inode: 'dvdfsd',
@@ -58,6 +66,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test3',
+                title: 'test 08',
+                inode: '1234dg',
                 host: {
                     hostName: 'test',
                     inode: '32423',
@@ -66,6 +76,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test4',
+                title: 'test 06',
+                inode: '1234a3g',
                 host: {
                     hostName: 'test',
                     inode: 'rew2',
@@ -74,6 +86,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test5',
+                title: 'test 04',
+                inode: '123224g',
                 host: {
                     hostName: 'test',
                     inode: '3423',
@@ -82,6 +96,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test6',
+                title: 'test 03',
+                inode: '123wd4g',
                 host: {
                     hostName: 'test',
                     inode: '3432',
@@ -90,6 +106,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test636',
+                title: 'test 02',
+                inode: '1fd234g',
                 host: {
                     hostName: 'test',
                     inode: '43r2',
@@ -98,6 +116,8 @@ export class DotThemeSelectorComponent implements OnInit {
             },
             {
                 name: 'test69',
+                title: 'test 01',
+                inode: '123fed4g',
                 host: {
                     hostName: 'test',
                     inode: '3432regr',
@@ -106,19 +126,10 @@ export class DotThemeSelectorComponent implements OnInit {
             }
         ];
 
-        // TODO: with the ID bring the theme
-        this.current = {
-            name: 'test1',
-            host: {
-                hostName: 'test',
-                inode: '43red',
-                identifier: '456'
-            }
-        };
-
-        // this.dotThemesService.get().subscribe((response: DotTheme[]) => {
-        //     this.themes = response;
-        // });
+        debugger;
+        this.dotThemesService.get(this.value).subscribe((response: DotTheme[]) => {
+            this.current = response[0];
+        });
     }
 
     siteChange(site: Site) {
