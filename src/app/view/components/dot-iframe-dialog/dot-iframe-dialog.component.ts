@@ -8,10 +8,15 @@ import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output } from
 export class DotIframeDialogComponent implements OnChanges {
     @Input() url: string;
     @Input() header = '';
+
+    @Output() beforeClose: EventEmitter<{
+        originalEvent: MouseEvent | KeyboardEvent,
+        close: () => void
+    }> = new EventEmitter();
     @Output() close: EventEmitter<any> = new EventEmitter();
+    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
     @Output() load: EventEmitter<any> = new EventEmitter();
     @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
-    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
 
     show: boolean;
 
@@ -26,14 +31,26 @@ export class DotIframeDialogComponent implements OnChanges {
     }
 
     /**
-     * Callback when dialog hide
+     * Handle attemp to close the dialog
      *
+     * @param {MouseEvent} $event
      * @memberof DotIframeDialogComponent
      */
-    closeDialog(): void {
-        this.url = null;
-        this.show = false;
-        this.close.emit();
+    onClose($event: MouseEvent | KeyboardEvent): void {
+        if ($event.preventDefault) {
+            $event.preventDefault();
+        }
+
+        if (this.beforeClose.observers.length) {
+            this.beforeClose.emit({
+                originalEvent: $event,
+                close: () => {
+                    this.closeDialog();
+                }
+            });
+        } else {
+            this.closeDialog();
+        }
     }
 
     /**
@@ -59,7 +76,7 @@ export class DotIframeDialogComponent implements OnChanges {
         this.keydown.emit($event);
 
         if ($event.key === 'Escape') {
-            this.closeDialog();
+            this.onClose($event);
         }
     }
 
@@ -72,5 +89,12 @@ export class DotIframeDialogComponent implements OnChanges {
     onLoad($event: any): void {
         $event.target.contentWindow.focus();
         this.load.emit($event);
+    }
+
+    private closeDialog(): void {
+        this.url = null;
+        this.show = false;
+        this.header = '';
+        this.close.emit();
     }
 }

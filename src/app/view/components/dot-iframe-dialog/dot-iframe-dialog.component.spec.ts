@@ -12,6 +12,29 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IframeComponent } from '../_common/iframe/iframe-component';
 
+let component: DotIframeDialogComponent;
+let de: DebugElement;
+let dialog: DebugElement;
+let dialogComponent: Dialog;
+let hostDe: DebugElement;
+let sanitizer: DomSanitizer;
+let dotIframe: DebugElement;
+let dotIframeComponent: IframeComponent;
+let closeButton: DebugElement;
+
+const getTestConfig = (hostComponent) => {
+    return {
+        imports: [DialogModule, BrowserAnimationsModule, IFrameModule, RouterTestingModule],
+        providers: [
+            {
+                provide: LoginService,
+                useClass: LoginServiceMock
+            }
+        ],
+        declarations: [DotIframeDialogComponent, hostComponent]
+    };
+};
+
 @Component({
     selector: 'dot-test-host-component',
     template: '<dot-iframe-dialog [url]="url" [header]="header"></dot-iframe-dialog>'
@@ -22,28 +45,11 @@ class TestHostComponent {
 }
 
 describe('DotIframeDialogComponent', () => {
-    let component: DotIframeDialogComponent;
-    let de: DebugElement;
-    let dialog: DebugElement;
-    let dialogComponent: Dialog;
     let hostComponent: TestHostComponent;
-    let hostDe: DebugElement;
     let hostFixture: ComponentFixture<TestHostComponent>;
-    let sanitizer: DomSanitizer;
-    let dotIframe: DebugElement;
-    let dotIframeComponent: IframeComponent;
 
     beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [DialogModule, BrowserAnimationsModule, IFrameModule, RouterTestingModule],
-            providers: [
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                }
-            ],
-            declarations: [DotIframeDialogComponent, TestHostComponent]
-        }).compileComponents();
+        DOTTestBed.configureTestingModule(getTestConfig(TestHostComponent)).compileComponents();
     }));
 
     beforeEach(() => {
@@ -53,7 +59,6 @@ describe('DotIframeDialogComponent', () => {
         de = hostDe.query(By.css('dot-iframe-dialog'));
         component = de.componentInstance;
         sanitizer = de.injector.get(DomSanitizer);
-        spyOn(component, 'closeDialog').and.callThrough();
     });
 
     describe('default', () => {
@@ -94,6 +99,7 @@ describe('DotIframeDialogComponent', () => {
             dialog = de.query(By.css('p-dialog'));
             dialogComponent = dialog.componentInstance;
             dotIframe = de.query(By.css('dot-iframe'));
+            closeButton = de.query(By.css('.ui-dialog-titlebar-icon.ui-dialog-titlebar-close.dialog__close'));
         });
 
         describe('events', () => {
@@ -105,11 +111,17 @@ describe('DotIframeDialogComponent', () => {
                 expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
             });
 
-            it('should emit close', () => {
+            it('should hide dialog and emit close', () => {
                 spyOn(component.close, 'emit');
+                spyOn(component.beforeClose, 'emit');
 
-                dialog.triggerEventHandler('onHide', {});
+                closeButton.triggerEventHandler('click', { preventDefault: () => {} });
+
+                expect(component.url).toBe(null);
+                expect(component.show).toBe(false);
+                expect(component.header).toBe('');
                 expect(component.close.emit).toHaveBeenCalledTimes(1);
+                expect(component.beforeClose.emit).not.toHaveBeenCalled();
             });
 
             it('should emit keydown', () => {
@@ -143,9 +155,14 @@ describe('DotIframeDialogComponent', () => {
             it('should have the right attrs', () => {
                 expect(dialogComponent.visible).toEqual(true, 'visible');
                 expect(dialogComponent.draggable).toEqual(false, 'draggable');
-                expect(dialogComponent.dismissableMask).toEqual(true, 'dismissableMask');
+                expect(dialogComponent.dismissableMask).toEqual(false, 'dismissableMask');
+                expect(dialogComponent.closable).toEqual(false, 'closable');
                 expect(dialogComponent.modal).toEqual(true, 'modal');
                 expect(dialogComponent.header).toBe('This is a header');
+            });
+
+            it('it should have custom close button', () => {
+                expect(closeButton === null).toBe(false);
             });
 
             it('should focus in the iframe window', () => {
@@ -154,11 +171,12 @@ describe('DotIframeDialogComponent', () => {
                 expect(mockEvent.target.contentWindow.focus).toHaveBeenCalledTimes(1);
             });
 
-            it('should close dialog on esc key', () => {
+            it('should call onClose on esc key', () => {
+                spyOn(component, 'onClose');
                 dotIframe.triggerEventHandler('keydown', {
                     key: 'Escape'
                 });
-                expect(component.closeDialog).toHaveBeenCalledTimes(1);
+                expect(component.onClose).toHaveBeenCalledTimes(1);
             });
         });
 
@@ -199,4 +217,60 @@ describe('DotIframeDialogComponent', () => {
             expect(dotIframe === null).toBe(true);
         });
     });
+});
+
+
+@Component({
+    selector: 'dot-test-host-2-component',
+    template: '<dot-iframe-dialog [url]="url" [header]="header" (beforeClose)="onBeforeClose($event)"></dot-iframe-dialog>'
+})
+class TestHost2Component {
+    url: string;
+    header: string;
+
+    onBeforeClose($event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) {}
+}
+
+describe('DotIframeDialogComponent with onBeforeClose event', () => {
+    let hostFixture: ComponentFixture<TestHost2Component>;
+
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule(getTestConfig(TestHost2Component)).compileComponents();
+    }));
+
+    beforeEach(() => {
+        hostFixture = DOTTestBed.createComponent(TestHost2Component);
+        hostDe = hostFixture.debugElement;
+        de = hostDe.query(By.css('dot-iframe-dialog'));
+        component = de.componentInstance;
+        closeButton = de.query(By.css('.ui-dialog-titlebar-icon.ui-dialog-titlebar-close.dialog__close'));
+    });
+
+    it('should emit beforeClose', () => {
+        spyOn(component.beforeClose, 'emit');
+        spyOn(component.close, 'emit');
+        closeButton.triggerEventHandler('click', { preventDefault: () => {} });
+
+        expect(component.beforeClose.emit).toHaveBeenCalledWith({
+            originalEvent: { preventDefault: jasmine.any(Function) },
+            close: jasmine.any(Function)
+        });
+        expect(component.close.emit).not.toHaveBeenCalled();
+    });
+
+    it('should close when callback is called', () => {
+        spyOn(component.close, 'emit');
+
+        component.beforeClose.subscribe(($event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) => {
+            $event.close();
+
+            expect(component.url).toBe(null);
+            expect(component.show).toBe(false);
+            expect(component.header).toBe('');
+            expect(component.close.emit).toHaveBeenCalledTimes(1);
+        });
+
+        closeButton.triggerEventHandler('click', { preventDefault: () => {} });
+    });
+
 });

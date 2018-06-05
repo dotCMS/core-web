@@ -28,6 +28,18 @@ export class DotEditContentletComponent implements OnInit {
     }
 
     /**
+     * Habdle the before close dialog event
+     *
+     * @param {*} $event
+     * @memberof DotEditContentletComponent
+     */
+    onBeforeClose($event: { originalEvent: MouseEvent; close: () => void }): void {
+        if (window.confirm('Do you really want to leave?')) {
+            $event.close();
+        }
+    }
+
+    /**
      * Handle close dialog event
      *
      * @memberof DotAddContentletComponent
