@@ -1,6 +1,8 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
+import { DotDialogService } from '../../../../../api/services/dot-dialog';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 
 /**
  * Allow user to edit a contentlet to DotCMS instance
@@ -21,10 +23,22 @@ export class DotEditContentletComponent implements OnInit {
 
     url: Observable<string>;
 
-    constructor(private dotContentletEditorService: DotContentletEditorService) {}
+    private isContentletModified = false;
+
+    constructor(
+        private dotContentletEditorService: DotContentletEditorService,
+        private dotDialogService: DotDialogService,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.url = this.dotContentletEditorService.editUrl$;
+
+        this.dotMessageService.getMessages([
+            'editcontentlet.lose.dialog.header',
+            'editcontentlet.lose.dialog.message',
+            'editcontentlet.lose.dialog.accept'
+        ]).subscribe();
     }
 
     /**
@@ -33,20 +47,23 @@ export class DotEditContentletComponent implements OnInit {
      * @param {*} $event
      * @memberof DotEditContentletComponent
      */
-    onBeforeClose($event: { originalEvent: MouseEvent; close: () => void }): void {
-        if (window.confirm('Do you really want to leave?')) {
-            $event.close();
+    onBeforeClose($event?: { originalEvent: MouseEvent | KeyboardEvent; close: () => void }): void {
+        if (this.isContentletModified) {
+            this.dotDialogService.confirm({
+                accept: () => {
+                    $event.close();
+                    this.onClose();
+                },
+                reject: () => {},
+                header: this.dotMessageService.get('editcontentlet.lose.dialog.header'),
+                message: this.dotMessageService.get('editcontentlet.lose.dialog.message'),
+                footerLabel: {
+                    accept: this.dotMessageService.get('editcontentlet.lose.dialog.accept')
+                }
+            });
+        } else {
+            this.onClose();
         }
-    }
-
-    /**
-     * Handle close dialog event
-     *
-     * @memberof DotAddContentletComponent
-     */
-    onClose(): void {
-        this.dotContentletEditorService.clear();
-        this.close.emit();
     }
 
     /**
@@ -57,7 +74,11 @@ export class DotEditContentletComponent implements OnInit {
      */
     onCustomEvent($event) {
         if ($event.detail.name === 'close') {
-            this.onClose();
+            this.onBeforeClose();
+        }
+
+        if ($event.detail.name === 'edit-contentlet-data-updated') {
+            this.isContentletModified = $event.detail.payload;
         }
     }
 
@@ -83,5 +104,11 @@ export class DotEditContentletComponent implements OnInit {
         if (this.dotContentletEditorService.load) {
             this.dotContentletEditorService.load($event);
         }
+    }
+
+    private onClose(): void {
+        this.dotContentletEditorService.clear();
+        this.close.emit();
+        this.isContentletModified = false;
     }
 }
