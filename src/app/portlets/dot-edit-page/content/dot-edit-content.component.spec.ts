@@ -589,7 +589,7 @@ describe('DotEditContentComponent', () => {
                 dotEditContentHtmlService.iframeActions$.next({
                     name: 'add',
                     dataset: {
-                        dotAdd: 'content,widget',
+                        dotAdd: 'content',
                         dotIdentifier: '123',
                         dotUuid: '456'
                     }
@@ -598,36 +598,56 @@ describe('DotEditContentComponent', () => {
                 fixture.detectChanges();
             });
 
-            it('should set container to add', () => {
-                expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
-                    identifier: '123',
-                    uuid: '456'
-                });
-            });
 
-            it('should call add service', () => {
-                expect(dotContentletEditorService.add).toHaveBeenCalledWith({
-                    header: 'Content Search',
-                    data: {
-                        container: '123',
-                        baseTypes: 'content,widget'
-                    },
-                    events: {
-                        load: jasmine.any(Function)
-                    }
-                });
-            });
-
-            it('should bind contentlet events', () => {
-                const fakeEvent = {
-                    target: {
-                        contentWindow: {
-                            ngEditContentletEvents: undefined
+            describe('content or widget', () => {
+                beforeEach(() => {
+                    dotEditContentHtmlService.iframeActions$.next({
+                        name: 'add',
+                        dataset: {
+                            dotAdd: 'content',
+                            dotIdentifier: '123',
+                            dotUuid: '456'
                         }
-                    }
-                };
-                dotContentletEditorService.load(fakeEvent);
-                expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
+                    });
+
+                    fixture.detectChanges();
+                });
+
+                it('should set container to add', () => {
+                    expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
+                        identifier: '123',
+                        uuid: '456'
+                    });
+                });
+
+                fit('should call add service', () => {
+                    expect(dotContentletEditorService.add).toHaveBeenCalledWith({
+                        header: 'Content Search',
+                        data: {
+                            container: '123',
+                            baseTypes: 'content'
+                        },
+                        events: {
+                            load: jasmine.any(Function)
+                        }
+                    });
+                });
+
+                it('should bind contentlet events', () => {
+                    const fakeEvent = {
+                        target: {
+                            contentWindow: {
+                                ngEditContentletEvents: undefined
+                            }
+                        }
+                    };
+                    dotContentletEditorService.load(fakeEvent);
+                    expect(fakeEvent.target.contentWindow.ngEditContentletEvents).toBeDefined();
+                });
+            });
+
+            describe('form', () => {
+
             });
         });
 

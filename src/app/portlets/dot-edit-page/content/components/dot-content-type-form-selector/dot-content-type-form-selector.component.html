@@ -1,0 +1,13 @@
+<p-dataTable [value]="items | async">
+    <p-column [header]="nameColumnLabel"
+              field="name">
+    </p-column>
+
+    <p-column>
+        <ng-template let-item="rowData" pTemplate="body">
+            <a href="#" (click)="select.emit(item)" dotMessagekey>dot.common.select</a>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+
+<button pButton (click)="loadNextPage()"></button>

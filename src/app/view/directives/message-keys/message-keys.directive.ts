@@ -11,6 +11,7 @@ export class MessageKeyDirective implements OnInit, OnDestroy {
     constructor(private el: ElementRef, private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
+        console.log('ngOnInit');
         this.key = this.el.nativeElement.innerText;
 
         this.messageMapSubscription = this.dotMessageService.getMessages([this.key]).subscribe((res) => {
