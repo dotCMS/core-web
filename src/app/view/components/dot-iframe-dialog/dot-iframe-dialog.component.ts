@@ -23,7 +23,9 @@ export class DotIframeDialogComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        this.show = !!changes.url.currentValue;
+        if (changes.url) {
+            this.show = !!changes.url.currentValue;
+        }
 
         if (changes.header) {
             this.header = changes.header.currentValue;
@@ -33,7 +35,7 @@ export class DotIframeDialogComponent implements OnChanges {
     /**
      * Handle attemp to close the dialog
      *
-     * @param {MouseEvent} $event
+     * @param {(MouseEvent | KeyboardEvent)} $event
      * @memberof DotIframeDialogComponent
      */
     onClose($event: MouseEvent | KeyboardEvent): void {
@@ -60,9 +62,6 @@ export class DotIframeDialogComponent implements OnChanges {
      * @memberof DotIframeDialogComponent
      */
     onCustomEvents($event: CustomEvent): void {
-        if ($event.detail.name === 'edit-contentlet-loaded') {
-            this.header = $event.detail.data.contentType;
-        }
         this.custom.emit($event);
     }
 

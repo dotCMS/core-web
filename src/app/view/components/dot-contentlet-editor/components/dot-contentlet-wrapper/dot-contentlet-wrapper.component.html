@@ -1,7 +1,9 @@
 <dot-iframe-dialog
-    (close)="onClose()"
+    (beforeClose)="onBeforeClose($event)"
+    (close)="onClose($event)"
     (custom)="onCustomEvent($event)"
     (keydown)="onKeyDown($event)"
     (load)="onLoad($event)"
-    [url]="url | async">
+    [header]="header"
+    [url]="url">
 </dot-iframe-dialog>

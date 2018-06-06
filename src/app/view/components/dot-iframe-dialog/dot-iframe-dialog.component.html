@@ -11,5 +11,12 @@
     <a href="#" (click)="onClose($event)" role="button" class="ui-dialog-titlebar-icon ui-dialog-titlebar-close dialog__close">
         <span class="fa fa-fw fa-close"></span>
     </a>
-    <dot-iframe *ngIf="show" class="dialog__iframe" [src]="url" (load)="onLoad($event)" (keydown)="onKeyDown($event)" (custom)="onCustomEvents($event)"></dot-iframe>
+    <dot-iframe
+        class="dialog__iframe"
+        [src]="url"
+        *ngIf="show"
+        (load)="onLoad($event)"
+        (keydown)="onKeyDown($event)"
+        (custom)="onCustomEvents($event)">
+    </dot-iframe>
 </p-dialog>
