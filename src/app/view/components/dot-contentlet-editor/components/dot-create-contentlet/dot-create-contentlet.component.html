@@ -1,7 +1,1 @@
-<dot-iframe-dialog
-    (close)="onClose()"
-    (custom)="onCustomEvent($event)"
-    (keydown)="onKeyDown($event)"
-    (load)="onLoad($event)"
-    [url]="url | async">
-</dot-iframe-dialog>
+<dot-contentlet-wrapper [url]="url$ | async" (close)="close.emit($event)"></dot-contentlet-wrapper>

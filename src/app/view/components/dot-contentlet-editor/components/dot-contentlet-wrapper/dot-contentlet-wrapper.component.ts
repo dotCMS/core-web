@@ -9,10 +9,9 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
     styleUrls: ['./dot-contentlet-wrapper.component.scss']
 })
 export class DotContentletWrapperComponent implements OnInit {
+    @Input() header = '';
     @Input() url: string;
     @Output() close: EventEmitter<any> = new EventEmitter();
-
-    header = '';
 
     private isContentletModified = false;
     private readonly customEventsHandler;
