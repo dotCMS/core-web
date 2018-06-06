@@ -10,6 +10,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
     templateUrl: './dot-form-selector.component.html'
 })
 export class DotFormSelectorComponent implements OnInit {
+    @Input() show = false;
     @Output() select = new EventEmitter<ContentType>();
 
     items: Observable<ContentType[]>;

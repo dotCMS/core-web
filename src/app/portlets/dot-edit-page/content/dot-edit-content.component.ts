@@ -48,6 +48,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     contentletActionsUrl: SafeResourceUrl;
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
+    editForm = false;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -158,6 +159,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
+    onFormSelected(item) {
+        console.log(item);
+    }
+
     /**
      * Handle cancel button click in the toolbar
      *
@@ -187,24 +192,28 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private addContentlet($event: any): void {
-        const container: DotPageContainer = {
-            identifier: $event.dataset.dotIdentifier,
-            uuid: $event.dataset.dotUuid
-        };
-        this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
+        if ($event.dataset.dotAdd === 'form') {
+            this.editForm = true;
+        } else {
+            const container: DotPageContainer = {
+                identifier: $event.dataset.dotIdentifier,
+                uuid: $event.dataset.dotUuid
+            };
+            this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
 
-        this.dotContentletEditorService.add({
-            header: this.dotMessageService.get('dot.common.content.search'),
-            data: {
-                container: $event.dataset.dotIdentifier,
-                baseTypes: $event.dataset.dotAdd
-            },
-            events: {
-                load: (event) => {
-                    event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+            this.dotContentletEditorService.add({
+                header: this.dotMessageService.get('dot.common.content.search'),
+                data: {
+                    container: $event.dataset.dotIdentifier,
+                    baseTypes: $event.dataset.dotAdd
+                },
+                events: {
+                    load: (event) => {
+                        event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private editContentlet($event: any): void {

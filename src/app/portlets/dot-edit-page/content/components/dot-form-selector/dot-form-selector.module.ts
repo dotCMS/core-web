@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
-import { DataTableModule } from 'primeng/primeng';
-import { MessageKeyDirective } from '../../../../../view/directives/message-keys/message-keys.directive';
+import { DataTableModule, ButtonModule } from 'primeng/primeng';
+import { DotDialogModule } from '../../../../../view/components/dot-dialog/dot-dialog.module';
 
 @NgModule({
-    imports: [CommonModule, DataTableModule],
-    declarations: [DotFormSelectorComponent, MessageKeyDirective],
+    imports: [CommonModule, DataTableModule, DotDialogModule, ButtonModule],
+    declarations: [DotFormSelectorComponent],
     exports: [DotFormSelectorComponent]
 })
 export class DotFormSelectorModule {}
