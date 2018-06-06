@@ -38,10 +38,6 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
-        path: 'contentlets/:inode',
-        loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
-    },
-    {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
@@ -66,6 +62,14 @@ const PORTLETS_ANGULAR = [
     {
         path: 'edit-page',
         loadChildren: 'app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
+    },
+    {
+        path: 'contentlets/:inode',
+        loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
+    },
+    {
+        path: 'task/:id',
+        loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule'
     },
     {
         canActivate: [MenuGuardService],
