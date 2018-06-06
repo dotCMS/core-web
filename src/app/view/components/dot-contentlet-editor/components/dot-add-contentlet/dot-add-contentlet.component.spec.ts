@@ -66,7 +66,7 @@ describe('DotAddContentletComponent', () => {
 
         it('should set url', () => {
             dotContentletEditorService.add({
-                header: 'Add dome content',
+                header: 'Add some content',
                 data: {
                     container: '123',
                     baseTypes: 'content,form'
@@ -82,6 +82,8 @@ describe('DotAddContentletComponent', () => {
             expect(dotAddContentletWrapperComponent.url).toEqual(
                 '/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form'
             );
+
+            expect(dotAddContentletWrapperComponent.header).toEqual('Add some content');
         });
     });
 });
