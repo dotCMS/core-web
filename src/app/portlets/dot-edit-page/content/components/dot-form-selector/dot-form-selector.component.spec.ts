@@ -12,6 +12,8 @@ import { MockDotMessageService } from '../../../../../test/dot-message-service.m
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MessageKeyDirective } from '../../../../../view/directives/message-keys/message-keys.directive';
 import * as _ from 'lodash';
+import { DotDialogModule } from '../../../../../view/components/dot-dialog/dot-dialog.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const mockContentType = {
     clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
@@ -26,9 +28,7 @@ const mockContentType = {
 
 @Injectable()
 class PaginatorServiceMock {
-
     url = '';
-
     getCurrentPage = jasmine.createSpy('getCurrentPage');
 }
 
@@ -37,7 +37,7 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.select': 'Select'
 });
 
-describe('DotFormSelectorComponent', () => {
+fdescribe('DotFormSelectorComponent', () => {
     let component: DotFormSelectorComponent;
     let fixture: ComponentFixture<DotFormSelectorComponent>;
     let de: DebugElement;
@@ -54,7 +54,8 @@ describe('DotFormSelectorComponent', () => {
                     provide: DotMessageService,
                     useValue: messageServiceMock
                 },
-            ]
+            ],
+            imports: [DotDialogModule, BrowserAnimationsModule]
         });
     }));
 

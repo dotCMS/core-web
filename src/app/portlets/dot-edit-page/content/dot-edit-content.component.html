@@ -1,4 +1,4 @@
-<dot-form-selector [show]="editForm" (select)="onFormSelected($event)"></dot-form-selector>
+<dot-form-selector [show]="editForm" (select)="onFormSelected($event)" (close)="editForm = false"></dot-form-selector>
 
 <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
 <dot-edit-page-toolbar

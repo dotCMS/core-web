@@ -1,4 +1,4 @@
-<dot-dialog [show]="show">
+<dot-dialog [show]="show" (close)="close.emit($event)">
     <p-dataTable [value]="items | async">
         <p-column [header]="nameColumnLabel" field="name"></p-column>
 

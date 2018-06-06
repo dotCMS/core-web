@@ -12,6 +12,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 export class DotFormSelectorComponent implements OnInit {
     @Input() show = false;
     @Output() select = new EventEmitter<ContentType>();
+    @Output() close = new EventEmitter<any>();
 
     items: Observable<ContentType[]>;
     nameColumnLabel: string;
