@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { DebugElement, Input, Component, Injectable } from '@angular/core';
-import { DotContentTypeFormSelectorComponent } from './dot-content-type-form-selector.component';
+import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { ListingDataTableComponent } from '../../../../../view/components/listing-data-table/listing-data-table.component';
@@ -37,14 +37,14 @@ const messageServiceMock = new MockDotMessageService({
     'dot.common.select': 'Select'
 });
 
-describe('DotContentTypeFormSelectorComponent', () => {
-    let component: DotContentTypeFormSelectorComponent;
-    let fixture: ComponentFixture<DotContentTypeFormSelectorComponent>;
+describe('DotFormSelectorComponent', () => {
+    let component: DotFormSelectorComponent;
+    let fixture: ComponentFixture<DotFormSelectorComponent>;
     let de: DebugElement;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [DotContentTypeFormSelectorComponent, MessageKeyDirective],
+            declarations: [DotFormSelectorComponent, MessageKeyDirective],
             providers: [
                 {
                     provide: PaginatorService,
@@ -59,7 +59,7 @@ describe('DotContentTypeFormSelectorComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(DotContentTypeFormSelectorComponent);
+        fixture = TestBed.createComponent(DotFormSelectorComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
     });

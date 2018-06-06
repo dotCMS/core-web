@@ -6,10 +6,10 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 
 @Component({
     providers: [PaginatorService],
-    selector: 'dot-content-type-form-selector',
-    templateUrl: './dot-content-type-form-selector.component.html'
+    selector: 'dot-form-selector',
+    templateUrl: './dot-form-selector.component.html'
 })
-export class DotContentTypeFormSelectorComponent implements OnInit {
+export class DotFormSelectorComponent implements OnInit {
     @Output() select = new EventEmitter<ContentType>();
 
     items: Observable<ContentType[]>;

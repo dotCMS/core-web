@@ -620,7 +620,6 @@ describe('DotEditContentComponent', () => {
                     });
                 });
 
-                fit('should call add service', () => {
                     expect(dotContentletEditorService.add).toHaveBeenCalledWith({
                         header: 'Content Search',
                         data: {
@@ -896,4 +895,4 @@ describe('DotEditContentComponent', () => {
         expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalledWith(component.pageState.layout);
     });
 
-});
+})
