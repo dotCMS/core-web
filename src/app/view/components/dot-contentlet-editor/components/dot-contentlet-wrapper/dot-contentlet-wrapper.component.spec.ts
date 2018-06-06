@@ -25,7 +25,7 @@ const messageServiceMock = new MockDotMessageService({
     'editcontentlet.lose.dialog.accept': 'Accept'
 });
 
-describe('DotContentletWrapperComponent', () => {
+fdescribe('DotContentletWrapperComponent', () => {
     let component: DotContentletWrapperComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotContentletWrapperComponent>;
@@ -83,19 +83,8 @@ describe('DotContentletWrapperComponent', () => {
 
     describe('with data', () => {
         beforeEach(() => {
-            dotAddContentletService.edit({
-                data: {
-                    inode: '123'
-                },
-                events: {
-                    load: jasmine.createSpy(),
-                    keyDown: jasmine.createSpy()
-                }
-            });
             dotDialogService = de.injector.get(DotDialogService);
 
-            spyOn(component, 'onLoad').and.callThrough();
-            spyOn(component, 'onKeyDown').and.callThrough();
             spyOn(component.close, 'emit');
             fixture.detectChanges();
         });
@@ -124,7 +113,11 @@ describe('DotContentletWrapperComponent', () => {
 
             describe('beforeClose', () => {
                 it('should close without confirmation dialog', () => {
-                    dotIframeDialog.triggerEventHandler('beforeClose', {});
+                    dotIframeDialog.triggerEventHandler('beforeClose', {
+                        close: () => {
+                            dotIframeDialog.triggerEventHandler('close', {});
+                        }
+                    });
                     expect(dotAddContentletService.clear).toHaveBeenCalledTimes(1);
                     expect(component.close.emit).toHaveBeenCalledTimes(1);
                 });
@@ -142,7 +135,9 @@ describe('DotContentletWrapperComponent', () => {
                     });
 
                     dotIframeDialog.triggerEventHandler('beforeClose', {
-                        close: () => {}
+                        close: () => {
+                            dotIframeDialog.triggerEventHandler('close', {});
+                        }
                     });
 
                     expect(dotDialogService.confirm).toHaveBeenCalledWith({
