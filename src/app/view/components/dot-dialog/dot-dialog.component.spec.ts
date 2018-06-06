@@ -21,7 +21,7 @@ class TestHostComponent {
     cancel: Action;
 }
 
-describe('DotDialogComponent', () => {
+describe('DotAlertConfirmComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let dialog: DebugElement;

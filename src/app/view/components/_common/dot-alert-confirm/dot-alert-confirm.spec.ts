@@ -4,21 +4,21 @@ import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotDialogComponent } from './dot-dialog.component';
+import { DotAlertConfirmComponent } from './dot-alert-confirm';
 import { async, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { tick } from '@angular/core/testing';
 
-describe('DotDialogComponent', () => {
-    let component: DotDialogComponent;
+describe('DotAlertConfirmComponent', () => {
+    let component: DotAlertConfirmComponent;
     let dialogService: DotDialogService;
-    let fixture: ComponentFixture<DotDialogComponent>;
+    let fixture: ComponentFixture<DotAlertConfirmComponent>;
     let de: DebugElement;
 
     beforeEach(
         async(() => {
             DOTTestBed.configureTestingModule({
-                declarations: [DotDialogComponent],
+                declarations: [DotAlertConfirmComponent],
                 providers: [
                     {
                         provide: LoginService,
@@ -29,7 +29,7 @@ describe('DotDialogComponent', () => {
                 imports: [BrowserAnimationsModule]
             });
 
-            fixture = DOTTestBed.createComponent(DotDialogComponent);
+            fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
             component = fixture.componentInstance;
             de = fixture.debugElement;
             dialogService = de.injector.get(DotDialogService);

@@ -3,11 +3,11 @@ import { Component, ViewChild } from '@angular/core';
 import { ConfirmDialog } from 'primeng/primeng';
 
 @Component({
-    selector: 'dot-dialog',
-    templateUrl: './dot-dialog.component.html',
-    styleUrls: ['./dot-dialog.component.scss']
+    selector: 'dot-alert-confirm',
+    templateUrl: './dot-alert-confirm.html',
+    styleUrls: ['./dot-alert-confirm.scss']
 })
-export class DotDialogComponent {
+export class DotAlertConfirmComponent {
     @ViewChild('cd') cd: ConfirmDialog;
 
     constructor(public dotDialogService: DotDialogService) {}
@@ -16,7 +16,7 @@ export class DotDialogComponent {
      * Handle confirmation dialog action button click
      *
      * @param {string} action
-     * @memberof DotDialogComponent
+     * @memberof DotAlertConfirmComponent
      */
     onClickConfirm(action: string): void {
         action === 'accept' ? this.cd.accept() : this.cd.reject();

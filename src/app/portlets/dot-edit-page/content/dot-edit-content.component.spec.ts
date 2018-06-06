@@ -598,7 +598,6 @@ describe('DotEditContentComponent', () => {
                 fixture.detectChanges();
             });
 
-
             describe('content or widget', () => {
                 beforeEach(() => {
                     dotEditContentHtmlService.iframeActions$.next({
@@ -618,7 +617,6 @@ describe('DotEditContentComponent', () => {
                         identifier: '123',
                         uuid: '456'
                     });
-                });
 
                     expect(dotContentletEditorService.add).toHaveBeenCalledWith({
                         header: 'Content Search',
@@ -895,4 +893,4 @@ describe('DotEditContentComponent', () => {
         expect(dotEditContentHtmlService.setContaintersChangeHeightListener).toHaveBeenCalledWith(component.pageState.layout);
     });
 
-})
+});
