@@ -11,6 +11,7 @@ import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DotCreateContentletComponent', () => {
     let component: DotCreateContentletComponent;
@@ -31,7 +32,7 @@ describe('DotCreateContentletComponent', () => {
                     useClass: LoginServiceMock
                 }
             ],
-            imports: [DotIframeDialogModule, BrowserAnimationsModule]
+            imports: [DotIframeDialogModule, BrowserAnimationsModule, RouterTestingModule]
         }).compileComponents();
     }));
 
@@ -63,20 +64,16 @@ describe('DotCreateContentletComponent', () => {
             expect(dotCreateContentletWrapperComponent.url).toEqual(null);
         });
 
-        xit('should set url', () => {
-            dotContentletEditorService.edit({
+        it('should set url', () => {
+            dotContentletEditorService.create({
                 data: {
-                    inode: '123'
-                },
-                events: {
-                    load: jasmine.createSpy(),
-                    keyDown: jasmine.createSpy()
+                    url: 'hello.world.com'
                 }
             });
 
             fixture.detectChanges();
 
-            expect(dotCreateContentletWrapperComponent.url).toEqual('');
+            expect(dotCreateContentletWrapperComponent.url).toEqual('hello.world.com');
         });
     });
 });

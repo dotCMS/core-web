@@ -11,6 +11,8 @@ import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Observable } from 'rxjs/Observable';
 
 describe('DotEditContentletComponent', () => {
     let component: DotEditContentletComponent;
@@ -25,13 +27,20 @@ describe('DotEditContentletComponent', () => {
             declarations: [DotEditContentletComponent, DotContentletWrapperComponent],
             providers: [
                 DotContentletEditorService,
-                DotMenuService,
+                {
+                    provide: DotMenuService,
+                    useValue: {
+                        getDotMenuId() {
+                            return Observable.of('999');
+                        }
+                    }
+                },
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
                 }
             ],
-            imports: [DotIframeDialogModule, BrowserAnimationsModule]
+            imports: [DotIframeDialogModule, BrowserAnimationsModule, RouterTestingModule]
         }).compileComponents();
     }));
 
@@ -63,20 +72,27 @@ describe('DotEditContentletComponent', () => {
             expect(dotEditContentletWrapperComponent.url).toEqual(null);
         });
 
-        xit('should set url', () => {
+        it('should set url', () => {
             dotContentletEditorService.edit({
+                header: 'This is a header for edit',
                 data: {
-                    inode: '123'
-                },
-                events: {
-                    load: jasmine.createSpy(),
-                    keyDown: jasmine.createSpy()
+                    inode: '999'
                 }
             });
 
             fixture.detectChanges();
 
-            expect(dotEditContentletWrapperComponent.url).toEqual('');
+            expect(dotEditContentletWrapperComponent.url).toEqual([
+                '/c/portal/layout',
+                '?p_l_id=999',
+                '&p_p_id=content',
+                '&p_p_action=1',
+                '&p_p_state=maximized',
+                '&p_p_mode=view',
+                '&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet',
+                '&_content_cmd=edit',
+                '&inode=999',
+            ].join(''));
         });
     });
 });

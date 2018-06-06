@@ -11,6 +11,7 @@ import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DotAddContentletComponent', () => {
     let component: DotAddContentletComponent;
@@ -31,7 +32,7 @@ describe('DotAddContentletComponent', () => {
                     useClass: LoginServiceMock
                 }
             ],
-            imports: [DotIframeDialogModule, BrowserAnimationsModule]
+            imports: [DotIframeDialogModule, BrowserAnimationsModule, RouterTestingModule]
         }).compileComponents();
     }));
 
@@ -63,10 +64,12 @@ describe('DotAddContentletComponent', () => {
             expect(dotAddContentletWrapperComponent.url).toEqual(null);
         });
 
-        xit('should set url', () => {
-            dotContentletEditorService.edit({
+        it('should set url', () => {
+            dotContentletEditorService.add({
+                header: 'Add dome content',
                 data: {
-                    inode: '123'
+                    container: '123',
+                    baseTypes: 'content,form'
                 },
                 events: {
                     load: jasmine.createSpy(),
@@ -76,7 +79,9 @@ describe('DotAddContentletComponent', () => {
 
             fixture.detectChanges();
 
-            expect(dotAddContentletWrapperComponent.url).toEqual('');
+            expect(dotAddContentletWrapperComponent.url).toEqual(
+                '/html/ng-contentlet-selector.jsp?ng=true&container_id=123&add=content,form'
+            );
         });
     });
 });

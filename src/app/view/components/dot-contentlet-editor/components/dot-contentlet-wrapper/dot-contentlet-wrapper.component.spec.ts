@@ -25,7 +25,7 @@ const messageServiceMock = new MockDotMessageService({
     'editcontentlet.lose.dialog.accept': 'Accept'
 });
 
-fdescribe('DotContentletWrapperComponent', () => {
+describe('DotContentletWrapperComponent', () => {
     let component: DotContentletWrapperComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotContentletWrapperComponent>;
