@@ -78,7 +78,7 @@ describe('DotContentletWrapperComponent', () => {
         expect(dotIframeDialog).toBe(null);
     });
 
-    fdescribe('with data', () => {
+    describe('with data', () => {
         beforeEach(() => {
             component.url = 'hello.world.com';
             fixture.detectChanges();

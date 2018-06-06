@@ -109,17 +109,36 @@ describe('DotIframeDialogComponent', () => {
                 expect(component.load.emit).toHaveBeenCalledWith(mockEvent);
             });
 
-            it('should hide dialog and emit close', () => {
-                spyOn(component.close, 'emit');
-                spyOn(component.beforeClose, 'emit');
+            describe('hide dialog', () => {
+                beforeEach(() => {
+                    spyOn(component.close, 'emit');
+                    spyOn(component.beforeClose, 'emit');
 
-                closeButton.triggerEventHandler('click', { preventDefault: () => {} });
+                    component.url = 'hello.world.com';
+                    component.show = true;
+                    component.header = 'Header';
+                });
 
-                expect(component.url).toBe(null);
-                expect(component.show).toBe(false);
-                expect(component.header).toBe('');
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
-                expect(component.beforeClose.emit).not.toHaveBeenCalled();
+                it('should hide and emit close when click close button', () => {
+                    closeButton.triggerEventHandler('click', { preventDefault: () => {} });
+
+                    expect(component.url).toBe(null);
+                    expect(component.show).toBe(false);
+                    expect(component.header).toBe('');
+                    expect(component.close.emit).toHaveBeenCalledTimes(1);
+                    expect(component.beforeClose.emit).not.toHaveBeenCalled();
+                });
+
+                it('should close ', () => {
+                    document.dispatchEvent(new KeyboardEvent('keydown', {
+                        key: 'Escape'
+                    }));
+                    expect(component.url).toBe(null);
+                    expect(component.show).toBe(false);
+                    expect(component.header).toBe('');
+                    expect(component.close.emit).toHaveBeenCalledTimes(1);
+                    expect(component.beforeClose.emit).not.toHaveBeenCalled();
+                });
             });
 
             it('should emit keydown', () => {
@@ -217,7 +236,6 @@ describe('DotIframeDialogComponent', () => {
     });
 });
 
-
 @Component({
     selector: 'dot-test-host-2-component',
     template: '<dot-iframe-dialog [url]="url" [header]="header" (beforeClose)="onBeforeClose($event)"></dot-iframe-dialog>'
@@ -226,7 +244,7 @@ class TestHost2Component {
     url: string;
     header: string;
 
-    onBeforeClose(_$event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) {}
+    onBeforeClose(_$event: { originalEvent: MouseEvent | KeyboardEvent; close: () => {} }) {}
 }
 
 describe('DotIframeDialogComponent with onBeforeClose event', () => {
@@ -259,7 +277,7 @@ describe('DotIframeDialogComponent with onBeforeClose event', () => {
     it('should close when callback is called', () => {
         spyOn(component.close, 'emit');
 
-        component.beforeClose.subscribe(($event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) => {
+        component.beforeClose.subscribe(($event: { originalEvent: MouseEvent | KeyboardEvent; close: () => {} }) => {
             $event.close();
 
             expect(component.url).toBe(null);
@@ -270,5 +288,4 @@ describe('DotIframeDialogComponent with onBeforeClose event', () => {
 
         closeButton.triggerEventHandler('click', { preventDefault: () => {} });
     });
-
 });
