@@ -33,7 +33,7 @@ import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workf
 import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
 import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { mockDotDevice } from '../../../test/dot-device.mock';
+import { mockDotDevices } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
 import { mockResponseView } from '../../../test/response-view.mock';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
@@ -324,7 +324,7 @@ describe('DotEditContentComponent', () => {
         });
 
         it('should set configuration skin for the content', () => {
-            component.pageState.viewAs.device = mockDotDevice;
+            component.pageState.viewAs.device = mockDotDevices[0];
             fixture.detectChanges();
             const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
 
@@ -334,11 +334,11 @@ describe('DotEditContentComponent', () => {
         it('should set the page wrapper dimensions based on device', () => {
             const pageWrapper: DebugElement = de.query(By.css('.dot-edit__page-wrapper'));
             const editIframe: DebugElement = de.query(By.css('.dot-edit__iframe'));
-            component.pageState.viewAs.device = mockDotDevice;
+            component.pageState.viewAs.device = mockDotDevices[0];
             fixture.detectChanges();
             expect(editIframe.styles).toEqual({
-                width: mockDotDevice.cssWidth + 'px',
-                height: mockDotDevice.cssHeight + 'px',
+                width: mockDotDevices[0].cssWidth + 'px',
+                height: mockDotDevices[0].cssHeight + 'px',
                 visibility: '',
                 position: ''
             });
@@ -790,6 +790,20 @@ describe('DotEditContentComponent', () => {
 
     describe('Auto save', () => {
         it('should call the save endpoint after a model change happens', () => {
+            route.parent.parent.data = Observable.of({
+                content: {
+                    ...mockDotRenderedPage,
+                    page: {
+                        ...mockDotRenderedPage.page,
+                        canLock: true
+                    },
+                    state: {
+                        locked: true,
+                        mode: PageMode.EDIT
+                    }
+                }
+            });
+
             const model: DotPageContainer[] = [
                 {
                     identifier: '1',
@@ -814,13 +828,42 @@ describe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'setContaintersSameHeight');
 
             fixture.detectChanges();
-
             dotEditContentHtmlService.pageModel$.next(model);
-            fixture.detectChanges();
-
             dotEditContentHtmlService.pageModel$.next(newModel);
             expect(dotEditPageService.save).toHaveBeenCalledTimes(2);
-            expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalled();
+            expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalledTimes(2);
+        });
+
+        it('should not execute setContaintersSameHeight() when layout is null', () => {
+
+            route.parent.parent.data = Observable.of({
+                content: {
+                    ...mockDotRenderedPage,
+                    layout: null,
+                    page: {
+                        ...mockDotRenderedPage.page,
+                        canLock: true
+                    },
+                    state: {
+                        locked: true,
+                        mode: PageMode.EDIT
+                    }
+                }
+            });
+
+            const model: DotPageContainer[] = [
+                {
+                    identifier: '1',
+                    uuid: '2',
+                    contentletsId: ['3', '4']
+                }
+            ];
+
+            spyOn(dotEditContentHtmlService, 'setContaintersSameHeight');
+
+            fixture.detectChanges();
+            dotEditContentHtmlService.pageModel$.next(model);
+            expect(dotEditContentHtmlService.setContaintersSameHeight).not.toHaveBeenCalled();
         });
     });
 

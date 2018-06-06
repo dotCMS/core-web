@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
 import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import { Observable } from 'rxjs/Observable';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { map } from 'rxjs/operators/map';
 import { StringPixels } from '../../../api/util/string-pixels-util';
-import { tap, take } from 'rxjs/operators';
+import { map, take, tap, flatMap, filter, toArray } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-device-selector',
@@ -33,6 +31,9 @@ export class DotDeviceSelectorComponent implements OnInit {
                         tap((devices: DotDevice[]) => {
                             this.dropdownWidth = StringPixels.getDropdownWidth(devices.map((deviceOption: DotDevice) => deviceOption.name));
                         }),
+                        flatMap((devices: DotDevice[]) => devices),
+                        filter((device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0),
+                        toArray(),
                         map((devices: DotDevice[]) =>
                             this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices)
                         )
