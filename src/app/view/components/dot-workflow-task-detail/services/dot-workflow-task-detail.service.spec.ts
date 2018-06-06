@@ -41,9 +41,7 @@ describe('DotWorkflowTaskDetailService', () => {
 
         service.view({
             header: 'This is a header for view',
-            data: {
-                id: '999'
-            }
+            id: '999'
         });
     });
 

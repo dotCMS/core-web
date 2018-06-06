@@ -5,11 +5,9 @@ import { mergeMap, map, filter } from 'rxjs/operators';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { of } from 'rxjs/observable/of';
 
-export interface DotEditorAction {
+export interface DotTaskAction {
     header?: string;
-    data: {
-        [key: string]: string;
-    };
+    id: string;
 }
 
 /**
@@ -20,15 +18,14 @@ export interface DotEditorAction {
  */
 @Injectable()
 export class DotWorkflowTaskDetailService {
-    private data: Subject<DotEditorAction> = new Subject();
+    private data: Subject<DotTaskAction> = new Subject();
     private _header: Subject<string> = new Subject();
 
     constructor(private dotMenuService: DotMenuService) {}
 
     get viewUrl$(): Observable<string> {
         return this.data.pipe(
-            filter((action: DotEditorAction) => this.isViewUrl(action)),
-            mergeMap((action: DotEditorAction) => this.getViewUrl(action))
+            mergeMap((action: DotTaskAction) => this.getViewUrl(action))
         );
     }
 
@@ -39,10 +36,10 @@ export class DotWorkflowTaskDetailService {
     /**
      * Set data to edit a workflow task
      *
-     * @param {DotEditorAction} action
+     * @param {DotTaskAction} action
      * @memberof DotContentletEditorService
      */
-    view(action: DotEditorAction): void {
+    view(action: DotTaskAction): void {
         this.setData(action);
     }
 
@@ -55,7 +52,7 @@ export class DotWorkflowTaskDetailService {
         this.data.next(null);
     }
 
-    private getViewUrl(action: DotEditorAction): Observable<string> {
+    private getViewUrl(action: DotTaskAction): Observable<string> {
         return action === null
             ? of('')
             : this.dotMenuService.getDotMenuId('content').pipe(
@@ -69,23 +66,19 @@ export class DotWorkflowTaskDetailService {
                           `&p_p_mode=view`,
                           `&_workflow_struts_action=/ext/workflows/edit_workflow_task`,
                           `&_workflow_cmd=view`,
-                          `&_workflow_taskId=${action.data.id}`
+                          `&_workflow_taskId=${action.id}`
                       ].join('');
                   })
               );
     }
 
-    private isViewUrl(action: DotEditorAction): boolean {
-        return action === null || !!action.data.id;
-    }
-
-    private setData(action: DotEditorAction): void {
+    private setData(action: DotTaskAction): void {
         if (action.header) {
             this._header.next(action.header);
         }
 
         this.data.next({
-            data: action.data
+            id: action.id
         });
     }
 }

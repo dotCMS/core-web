@@ -3,10 +3,6 @@ import { Injectable, DebugElement } from '@angular/core';
 import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotWorkflowTaskComponent } from './dot-workflow-task.component';
-import { DotContainerContentletService } from '../../../app/portlets/dot-edit-page/content/services/dot-container-contentlet.service';
-import { DotDragDropAPIHtmlService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-drag-drop-api-html.service';
-import { DotDOMHtmlUtilService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
-import { DotEditContentToolbarHtmlService } from '../dot-edit-page/content/services/html/dot-edit-content-toolbar-html.service';
 import { DotWorkflowTaskDetailService } from '../../view/components/dot-workflow-task-detail/services/dot-workflow-task-detail.service';
 import { ComponentFixture } from '@angular/core/testing';
 
@@ -21,7 +17,6 @@ class MockDotWorkflowTaskDetailService {
 }
 
 describe('DotWorkflowTaskComponent', () => {
-
     let fixture: ComponentFixture<DotWorkflowTaskComponent>;
     let de: DebugElement;
 
@@ -32,10 +27,6 @@ describe('DotWorkflowTaskComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotWorkflowTaskComponent],
             providers: [
-                DotContainerContentletService,
-                DotDragDropAPIHtmlService,
-                DotDOMHtmlUtilService,
-                DotEditContentToolbarHtmlService,
                 DotWorkflowTaskDetailService,
                 {
                     provide: ActivatedRoute,
@@ -68,9 +59,7 @@ describe('DotWorkflowTaskComponent', () => {
         fixture.detectChanges();
 
         const params = {
-            data: {
-                id: '74cabf7a-0e9d-48b6-ab1c-8f76d0ad31e0'
-            }
+            id: '74cabf7a-0e9d-48b6-ab1c-8f76d0ad31e0'
         };
 
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalled();

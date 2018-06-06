@@ -9,19 +9,16 @@ import { ActivatedRoute } from '@angular/router';
     template: ''
 })
 export class DotWorkflowTaskComponent implements OnInit {
-
     constructor(
         private dotWorkflowTaskDetailService: DotWorkflowTaskDetailService,
         private dotNavigationService: DotNavigationService,
-        private route: ActivatedRoute,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
         this.dotNavigationService.goToFirstPortlet();
         this.dotWorkflowTaskDetailService.view({
-            data: {
-                id: this.route.snapshot.params.id
-            }
+            id: this.route.snapshot.params.id
         });
     }
 }

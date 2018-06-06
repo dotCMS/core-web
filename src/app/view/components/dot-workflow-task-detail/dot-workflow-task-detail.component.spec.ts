@@ -66,9 +66,7 @@ describe('DotWorkflowTaskDetailComponent', () => {
     describe('with data', () => {
         beforeEach(() => {
             dotWorkflowTaskDetailService.view({
-                data: {
-                    id: '123',
-                }
+                id: '123'
             });
 
             spyOn(component, 'onClose').and.callThrough();

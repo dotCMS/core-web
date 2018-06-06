@@ -15,12 +15,12 @@ import { DotWorkflowTaskDetailService } from './services/dot-workflow-task-detai
 })
 export class DotWorkflowTaskDetailComponent implements OnInit {
     @Output() close: EventEmitter<any> = new EventEmitter();
-    url: Observable<string>;
+    url$: Observable<string>;
 
     constructor(private dotWorkflowTaskDetailService: DotWorkflowTaskDetailService) {}
 
     ngOnInit() {
-        this.url = this.dotWorkflowTaskDetailService.viewUrl$;
+        this.url$ = this.dotWorkflowTaskDetailService.viewUrl$;
     }
 
     /**

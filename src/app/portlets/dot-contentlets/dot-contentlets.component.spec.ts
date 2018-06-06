@@ -3,9 +3,6 @@ import { Injectable, DebugElement } from '@angular/core';
 import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotContentletsComponent } from './dot-contentlets.component';
-import { DotContainerContentletService } from '../../../app/portlets/dot-edit-page/content/services/dot-container-contentlet.service';
-import { DotDragDropAPIHtmlService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-drag-drop-api-html.service';
-import { DotDOMHtmlUtilService } from '../../../app/portlets/dot-edit-page/content/services/html/dot-dom-html-util.service';
 import { DotEditContentToolbarHtmlService } from '../dot-edit-page/content/services/html/dot-edit-content-toolbar-html.service';
 import { DotContentletEditorService } from '../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { ComponentFixture } from '@angular/core/testing';
@@ -32,10 +29,6 @@ describe('DotContentletsComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotContentletsComponent],
             providers: [
-                DotContainerContentletService,
-                DotDragDropAPIHtmlService,
-                DotDOMHtmlUtilService,
-                DotEditContentToolbarHtmlService,
                 DotContentletEditorService,
                 {
                     provide: ActivatedRoute,
