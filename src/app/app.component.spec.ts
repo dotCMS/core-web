@@ -8,7 +8,7 @@ import { DOTTestBed } from './test/dot-test-bed';
 import { NotLicensedService } from './api/services/not-licensed-service';
 import { DotMenuService } from './api/services/dot-menu.service';
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
-import { DotDialogService } from './api/services/dot-dialog';
+import { DotAlertConfirmService } from './api/services/dot-alert-confirm';
 
 describe('AppComponent', () => {
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe('AppComponent', () => {
                 NotLicensedService,
                 DotMenuService,
                 SocketFactory,
-                DotDialogService
+                DotAlertConfirmService
             ]
         });
     });

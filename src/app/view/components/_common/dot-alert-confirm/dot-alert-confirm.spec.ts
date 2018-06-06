@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotDialogService } from '../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
@@ -11,7 +11,7 @@ import { tick } from '@angular/core/testing';
 
 describe('DotAlertConfirmComponent', () => {
     let component: DotAlertConfirmComponent;
-    let dialogService: DotDialogService;
+    let dialogService: DotAlertConfirmService;
     let fixture: ComponentFixture<DotAlertConfirmComponent>;
     let de: DebugElement;
 
@@ -24,7 +24,7 @@ describe('DotAlertConfirmComponent', () => {
                         provide: LoginService,
                         useClass: LoginServiceMock
                     },
-                    DotDialogService
+                    DotAlertConfirmService
                 ],
                 imports: [BrowserAnimationsModule]
             });
@@ -32,7 +32,7 @@ describe('DotAlertConfirmComponent', () => {
             fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
             component = fixture.componentInstance;
             de = fixture.debugElement;
-            dialogService = de.injector.get(DotDialogService);
+            dialogService = de.injector.get(DotAlertConfirmService);
             fixture.detectChanges();
         })
     );

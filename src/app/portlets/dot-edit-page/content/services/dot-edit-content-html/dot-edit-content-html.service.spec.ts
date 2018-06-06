@@ -10,7 +10,7 @@ import { LoggerService, StringUtils } from 'dotcms-js/dotcms-js';
 import { Config } from 'dotcms-js/core/config.service';
 import { Logger } from 'angular2-logger/core';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
 import { Observable } from 'rxjs/Observable';
 import { mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
@@ -91,7 +91,7 @@ describe('DotEditContentHtmlService', () => {
             Config,
             Logger,
             StringUtils,
-            DotDialogService,
+            DotAlertConfirmService,
             { provide: DotMessageService, useValue: messageServiceMock }
         ]);
         this.dotEditContentHtmlService = <DotEditContentHtmlService>this.injector.get(DotEditContentHtmlService);
@@ -378,7 +378,7 @@ describe('DotEditContentHtmlService', () => {
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(Observable.of('<i>testing</i>'));
 
-        const dotDialogService = this.injector.get(DotDialogService);
+        const dotDialogService = this.injector.get(DotAlertConfirmService);
         spyOn(dotDialogService, 'alert');
 
         const contentlet: DotPageContent = {

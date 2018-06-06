@@ -4,21 +4,21 @@ import { async, ComponentFixture, tick, fakeAsync } from '@angular/core/testing'
 
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DialogModule, Dialog } from 'primeng/primeng';
-import { DotDialogComponent, Action } from './dot-dialog.component';
 import { By } from '@angular/platform-browser';
+import { DotDialogComponent, DotDialogAction } from './dot-dialog.component';
 
 @Component({
     selector: 'dot-test-host-component',
     template: `<dot-dialog [header]="header" [show]="show" [ok]="ok" [cancel]="cancel">
                     <b>Dialog content</b>
-                </dot-dialog>`
+                </dot-alert-confirm>`
 })
 class TestHostComponent {
     header: string;
     show: boolean;
 
-    ok: Action;
-    cancel: Action;
+    ok: DotDialogAction;
+    cancel: DotDialogAction;
 }
 
 describe('DotAlertConfirmComponent', () => {

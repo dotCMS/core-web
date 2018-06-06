@@ -7,8 +7,8 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 export class DotDialogComponent {
     @Input() header = '';
     @Input() show: boolean;
-    @Input() ok: Action;
-    @Input() cancel: Action;
+    @Input() ok: DotDialogAction;
+    @Input() cancel: DotDialogAction;
 
     @Output() close: EventEmitter<any> = new EventEmitter();
 
@@ -25,7 +25,7 @@ export class DotDialogComponent {
     }
 }
 
-export interface Action {
+export interface DotDialogAction {
     label: string;
     action: () => void;
 }

@@ -12,7 +12,7 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotContentletLockerService } from '../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
-import { DotDialogService } from '../../../api/services/dot-dialog/index';
+import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/index';
 import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-html.service';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
@@ -69,7 +69,7 @@ describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
-    let dotDialogService: DotDialogService;
+    let dotDialogService: DotAlertConfirmService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotEditPageDataService: DotEditPageDataService;
     let dotGlobalMessageService: DotGlobalMessageService;
@@ -115,7 +115,7 @@ describe('DotEditContentComponent', () => {
                 DotContainerContentletService,
                 DotContentletLockerService,
                 DotDOMHtmlUtilService,
-                DotDialogService,
+                DotAlertConfirmService,
                 DotDragDropAPIHtmlService,
                 DotEditContentHtmlService,
                 DotEditContentToolbarHtmlService,
@@ -170,7 +170,7 @@ describe('DotEditContentComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
-        dotDialogService = de.injector.get(DotDialogService);
+        dotDialogService = de.injector.get(DotAlertConfirmService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotEditPageDataService = de.injector.get(DotEditPageDataService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);

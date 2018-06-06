@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotLayout } from '../../../shared/models/dot-layout.model';
@@ -47,7 +47,7 @@ export class DotEditContentHtmlService {
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
-        private dotDialogService: DotDialogService,
+        private dotDialogService: DotAlertConfirmService,
         private dotMessageService: DotMessageService
     ) {
         this.contentletEvents$.subscribe((contentletEvent: any) => {

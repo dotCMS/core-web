@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { SiteService, ResponseView } from 'dotcms-js/dotcms-js';
 
-import { DotDialogService } from '../../../api/services/dot-dialog';
+import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
@@ -53,7 +53,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
-        private dotDialogService: DotDialogService,
+        private dotDialogService: DotAlertConfirmService,
         private dotEditPageDataService: DotEditPageDataService,
         private dotEditPageService: DotEditPageService,
         private dotGlobalMessageService: DotGlobalMessageService,
