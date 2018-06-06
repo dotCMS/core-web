@@ -17,4 +17,15 @@ export class DotThemesService {
             })
             .pluck('entity');
     }
+
+    getByIdentifier(identifier?: string): Observable<DotTheme[]> {
+        const params = identifier ? { hostId: identifier } : {};
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: 'v1/themes',
+                params: params
+            })
+            .pluck('entity');
+    }
 }

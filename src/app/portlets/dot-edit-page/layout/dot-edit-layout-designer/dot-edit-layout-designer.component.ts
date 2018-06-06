@@ -146,14 +146,13 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     }
 
     /**
-     * Handle the changes in the Dot Theme component.
+     * Handle the changes in the Theme Selector component.
      * @param {DotTheme} theme
      *
      * @memberof DotEditLayoutDesignerComponent
      */
     changeThemeHandler(theme: DotTheme): void {
-        // TODO: Update the layout with the new theme id.
-        this.saveLayout();
+        this.form.get('themeId').setValue(theme.inode);
     }
 
     private setupLayout(pageState?: DotRenderedPageState): void {
@@ -173,6 +172,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     private initForm(): void {
         this.form = this.fb.group({
             title: this.isLayout() ? null : this.pageState.template.title,
+            themeId: this.pageState.template.theme,
             layout: this.fb.group({
                 body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageState.layout.body) || {},
                 header: this.pageState.layout.header,

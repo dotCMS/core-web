@@ -3,6 +3,7 @@ import { DotThemesService } from '../../../../../api/services/dot-themes/dot-the
 import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site } from 'dotcms-js/core/treeable/shared/site.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 
 @Component({
     selector: 'dot-theme-selector',
@@ -14,129 +15,46 @@ export class DotThemeSelectorComponent implements OnInit {
     @Input() value: any;
     @Output() selected = new EventEmitter<DotTheme>();
     current: DotTheme;
+    initialValue: DotTheme;
     visible: boolean;
 
-    constructor(private dotThemesService: DotThemesService, public dotMessageService: DotMessageService) {}
+    constructor(
+        private dotThemesService: DotThemesService,
+        public dotMessageService: DotMessageService,
+        public paginationService: PaginatorService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
             .subscribe();
+        this.setCurrentTheme();
+        this.loadHostThemes();
 
-        this.themes = [
-            {
-                name: 'test',
-                title: 'test 01',
-                inode: '1234',
-                host: {
-                    hostName: 'test',
-                    inode: '12',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test',
-                title: 'test 01',
-                inode: '12345',
-                host: {
-                    hostName: 'test',
-                    inode: '123',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test1',
-                title: 'test 01',
-                inode: '1234g',
-                host: {
-                    hostName: 'test',
-                    inode: '43red',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test2',
-                title: 'test 01',
-                inode: '1s234g',
-                host: {
-                    hostName: 'test',
-                    inode: 'dvdfsd',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test3',
-                title: 'test 08',
-                inode: '1234dg',
-                host: {
-                    hostName: 'test',
-                    inode: '32423',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test4',
-                title: 'test 06',
-                inode: '1234a3g',
-                host: {
-                    hostName: 'test',
-                    inode: 'rew2',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test5',
-                title: 'test 04',
-                inode: '123224g',
-                host: {
-                    hostName: 'test',
-                    inode: '3423',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test6',
-                title: 'test 03',
-                inode: '123wd4g',
-                host: {
-                    hostName: 'test',
-                    inode: '3432',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test636',
-                title: 'test 02',
-                inode: '1fd234g',
-                host: {
-                    hostName: 'test',
-                    inode: '43r2',
-                    identifier: '456'
-                }
-            },
-            {
-                name: 'test69',
-                title: 'test 01',
-                inode: '123fed4g',
-                host: {
-                    hostName: 'test',
-                    inode: '3432regr',
-                    identifier: '456'
-                }
-            }
-        ];
+        this.paginationService.url = 'v1/themes';
 
-        debugger;
-        this.dotThemesService.get(this.value).subscribe((response: DotTheme[]) => {
-            this.current = response[0];
-        });
+
+
+
+
+
+
+    //         getByIdentifier(identifier?: string): Observable<DotTheme[]> {
+    //         const params = identifier ? { hostId: identifier } : {};
+    //     return this.coreWebService
+    //         .requestView({
+    //             method: RequestMethod.Get,
+    //             url: 'v1/themes',
+    //             params: params
+    //         })
+    //         .pluck('entity');
+    // }
+
+
     }
 
     siteChange(site: Site) {
-        console.log(site);
-        this.dotThemesService.get(site.inode).subscribe((response: DotTheme[]) => {
-            this.themes = response;
-        });
+        this.loadHostThemes(site.identifier);
     }
 
     selectTheme(theme: DotTheme) {
@@ -145,10 +63,31 @@ export class DotThemeSelectorComponent implements OnInit {
 
     apply() {
         this.selected.emit(this.current);
+        this.initialValue = this.current;
         this.toogleDialog();
     }
 
     toogleDialog() {
         this.visible = !this.visible;
+        if (this.visible) {
+            this.setCurrentTheme();
+        }
+    }
+
+    private setCurrentTheme() {
+        if (this.initialValue) {
+            this.current = this.initialValue;
+        } else {
+            this.dotThemesService.get(this.value).subscribe((response: DotTheme[]) => {
+                this.initialValue = response[0];
+                this.current = response[0];
+            });
+        }
+    }
+
+    private loadHostThemes(identifier?: string) {
+        this.dotThemesService.getByIdentifier(identifier).subscribe((response: DotTheme[]) => {
+            this.themes = response;
+        });
     }
 }
