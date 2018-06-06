@@ -1,4 +1,5 @@
 <dot-iframe-dialog
+    *ngIf="!!url"
     (beforeClose)="onBeforeClose($event)"
     (close)="onClose($event)"
     (custom)="onCustomEvent($event)"

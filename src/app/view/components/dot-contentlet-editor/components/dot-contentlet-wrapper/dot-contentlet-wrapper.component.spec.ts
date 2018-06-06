@@ -12,7 +12,6 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 import { DotContentletWrapperComponent } from './dot-contentlet-wrapper.component';
 import { DotDialogService } from '../../../../../api/services/dot-dialog';
-import { DotIframeDialogComponent } from '../../../dot-iframe-dialog/dot-iframe-dialog.component';
 import { DotIframeDialogModule } from '../../../dot-iframe-dialog/dot-iframe-dialog.module';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -29,10 +28,7 @@ describe('DotContentletWrapperComponent', () => {
     let component: DotContentletWrapperComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotContentletWrapperComponent>;
-
     let dotIframeDialog: DebugElement;
-    let dotIframeDialogComponent: DotIframeDialogComponent;
-
     let dotAddContentletService: DotContentletEditorService;
     let dotDialogService: DotDialogService;
 
@@ -67,26 +63,30 @@ describe('DotContentletWrapperComponent', () => {
         de = fixture.debugElement;
         component = de.componentInstance;
         dotAddContentletService = de.injector.get(DotContentletEditorService);
+        dotDialogService = de.injector.get(DotDialogService);
+
         spyOn(dotAddContentletService, 'clear');
         spyOn(dotAddContentletService, 'load');
         spyOn(dotAddContentletService, 'keyDown');
+        spyOn(component.close, 'emit');
+    });
 
+    it('should hide dot-iframe-dialog', () => {
         fixture.detectChanges();
-
         dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
-        dotIframeDialogComponent = dotIframeDialog.componentInstance;
+
+        expect(dotIframeDialog).toBe(null);
     });
 
-    it('should have dot-iframe-dialog', () => {
-        expect(dotIframeDialog).toBeTruthy();
-    });
-
-    describe('with data', () => {
+    fdescribe('with data', () => {
         beforeEach(() => {
-            dotDialogService = de.injector.get(DotDialogService);
-
-            spyOn(component.close, 'emit');
+            component.url = 'hello.world.com';
             fixture.detectChanges();
+            dotIframeDialog = de.query(By.css('dot-iframe-dialog'));
+        });
+
+        it('should have dot-iframe-dialog', () => {
+            expect(dotIframeDialog).toBeDefined();
         });
 
         describe('events', () => {

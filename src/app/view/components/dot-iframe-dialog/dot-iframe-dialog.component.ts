@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output, HostListener } from '@angular/core';
 
 @Component({
     selector: 'dot-iframe-dialog',
@@ -71,6 +71,7 @@ export class DotIframeDialogComponent implements OnChanges {
      * @param {any} $event
      * @memberof DotIframeDialogComponent
      */
+    @HostListener('document:keydown', ['$event'])
     onKeyDown($event: KeyboardEvent): void {
         this.keydown.emit($event);
 
