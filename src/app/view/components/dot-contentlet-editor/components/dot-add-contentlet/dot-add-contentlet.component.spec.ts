@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
-import { DebugElement, ComponentFactoryResolver } from '@angular/core';
+import { DebugElement } from '@angular/core';
 
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';

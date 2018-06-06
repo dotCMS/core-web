@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By, DomSanitizer } from '@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 import { DebugElement, Component } from '@angular/core';
 import { async, ComponentFixture } from '@angular/core/testing';
 
@@ -17,7 +17,6 @@ let de: DebugElement;
 let dialog: DebugElement;
 let dialogComponent: Dialog;
 let hostDe: DebugElement;
-let sanitizer: DomSanitizer;
 let dotIframe: DebugElement;
 let dotIframeComponent: IframeComponent;
 let closeButton: DebugElement;
@@ -58,7 +57,6 @@ describe('DotIframeDialogComponent', () => {
         hostComponent = hostFixture.componentInstance;
         de = hostDe.query(By.css('dot-iframe-dialog'));
         component = de.componentInstance;
-        sanitizer = de.injector.get(DomSanitizer);
     });
 
     describe('default', () => {
@@ -228,7 +226,7 @@ class TestHost2Component {
     url: string;
     header: string;
 
-    onBeforeClose($event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) {}
+    onBeforeClose(_$event: {originalEvent: MouseEvent | KeyboardEvent, close: () => {}}) {}
 }
 
 describe('DotIframeDialogComponent with onBeforeClose event', () => {

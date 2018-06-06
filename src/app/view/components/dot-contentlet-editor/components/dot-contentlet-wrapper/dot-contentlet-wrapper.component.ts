@@ -23,13 +23,13 @@ export class DotContentletWrapperComponent implements OnInit {
     ) {
         if (!this.customEventsHandler) {
             this.customEventsHandler = {
-                'close': (e) => {
+                'close': (_e: CustomEvent) => {
                     this.onClose();
                 },
-                'edit-contentlet-data-updated': (e) => {
+                'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
-                'edit-contentlet-loaded': (e) => {
+                'edit-contentlet-loaded': (e: CustomEvent) => {
                     this.header = e.detail.data.contentType;
                 }
             };
