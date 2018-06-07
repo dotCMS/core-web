@@ -1,0 +1,10 @@
+:host {
+    dot-dialog ::ng-deep .dialog .ui-dialog {
+        width: 800px;
+
+        .ui-dialog-content {
+            height: 569px !important;
+            overflow: auto;
+        }
+    }
+}

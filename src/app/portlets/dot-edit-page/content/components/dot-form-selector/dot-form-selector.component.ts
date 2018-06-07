@@ -7,7 +7,8 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 @Component({
     providers: [PaginatorService],
     selector: 'dot-form-selector',
-    templateUrl: './dot-form-selector.component.html'
+    templateUrl: './dot-form-selector.component.html',
+    styleUrls: ['./dot-form-selector.component.scss']
 })
 export class DotFormSelectorComponent implements OnInit {
     @Input() show = false;
@@ -26,9 +27,5 @@ export class DotFormSelectorComponent implements OnInit {
     ngOnInit() {
         this.paginatorService.url = 'v1/contenttype?type=FORM';
         this.items = this.paginatorService.getCurrentPage();
-    }
-
-    loadNextPage(): void  {
-        this.items = this.paginatorService.getNextPage();
     }
 }

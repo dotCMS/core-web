@@ -2,7 +2,8 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'dot-dialog',
-    templateUrl: './dot-dialog.component.html'
+    templateUrl: './dot-dialog.component.html',
+    styleUrls: ['./dot-dialog.component.scss']
 })
 export class DotDialogComponent {
     @Input() header = '';

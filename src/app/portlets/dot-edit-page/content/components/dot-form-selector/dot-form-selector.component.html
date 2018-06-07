@@ -1,13 +1,10 @@
-<dot-dialog [show]="show" (close)="close.emit($event)">
+<dot-dialog [show]="show" (close)="close.emit($event)" header="Add form">
     <p-dataTable [value]="items | async">
         <p-column [header]="nameColumnLabel" field="name"></p-column>
-
-        <p-column>
+        <p-column [style]="{'text-align': 'right'}">
             <ng-template let-item="rowData" pTemplate="body">
-                <button pButton (click)="select.emit(item)" label="dot.common.select"></button>
+                <button pButton flat (click)="select.emit(item)" label="Select"></button>
             </ng-template>
         </p-column>
     </p-dataTable>
-
-    <button pButton (click)="loadNextPage()"></button>
 </dot-dialog>

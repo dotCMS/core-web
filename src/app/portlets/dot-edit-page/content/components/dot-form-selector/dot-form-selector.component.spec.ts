@@ -82,11 +82,6 @@ fdescribe('DotFormSelectorComponent', () => {
                 expect(pTableComponent).toBeTruthy();
             });
         });
-
-        it('should have a next button', () => {
-            const nextButton = de.query(By.css('button'));
-            expect(nextButton).toBeTruthy();
-        });
     });
 
     describe('data', () => {
@@ -110,18 +105,6 @@ fdescribe('DotFormSelectorComponent', () => {
             it('should load current page', () => {
                 expect(paginatorService.getCurrentPage).toHaveBeenCalled();
                 expect(pTableComponent.componentInstance.value).toEqual([mockContentType]);
-            });
-
-            it('should load next page', () => {
-                const mockContentTypeCopy = _.cloneDeep(mockContentType);
-                const nextPageObservable = Observable.of([mockContentTypeCopy]);
-                spyOn(paginatorService, 'getNextPage').and.returnValue(nextPageObservable);
-
-                const nextButton = de.query(By.css('button'));
-                nextButton.triggerEventHandler('click', null);
-
-                expect(paginatorService.getNextPage).toHaveBeenCalled();
-                expect(pTableComponent.componentInstance.value).toEqual([mockContentTypeCopy]);
             });
         });
 

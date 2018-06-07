@@ -1,4 +1,5 @@
-<p-dialog class="dialog"
+<p-dialog
+    class="dialog"
     [header]="header"
     (onHide)="closeDialog($event)"
     [draggable]="false"
@@ -6,7 +7,7 @@
     [dismissableMask]="true"
     [responsive]="true"
     [modal]="true">
-    
+
     <ng-content></ng-content>
 
     <p-footer *ngIf="ok || cancel">
