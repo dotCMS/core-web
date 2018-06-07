@@ -38,7 +38,7 @@ const messageServiceMock = new MockDotMessageService({
     'modes.Add-Form': 'Add Form'
 });
 
-fdescribe('DotFormSelectorComponent', () => {
+describe('DotFormSelectorComponent', () => {
     let component: DotFormSelectorComponent;
     let fixture: ComponentFixture<DotFormSelectorComponent>;
     let de: DebugElement;

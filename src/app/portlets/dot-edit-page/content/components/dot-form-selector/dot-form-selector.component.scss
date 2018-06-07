@@ -1,10 +1,18 @@
-:host {
-    dot-dialog ::ng-deep .dialog .ui-dialog {
-        width: 800px;
+@import "mixins";
+@import "variables";
 
-        .ui-dialog-content {
-            height: 569px !important;
-            overflow: auto;
+:host {
+    dot-dialog ::ng-deep {
+        th {
+            text-align: left;
+        }
+
+        .dialog .ui-dialog {
+            width: 800px;
+
+            .ui-dialog-content {
+                height: 625px !important;
+            }
         }
     }
 }
