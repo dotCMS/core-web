@@ -159,8 +159,16 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             });
     }
 
-    onFormSelected(item) {
+    /**
+     * Handle form selected
+     *
+     * @param {*} item
+     * @memberof DotEditContentComponent
+     */
+    onFormSelected(item: any): void {
         console.log(item);
+        // item could not be any this need testing
+        // this.dotEditContentHtmlService.renderAddedContentlet(item);
     }
 
     /**
@@ -192,15 +200,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private addContentlet($event: any): void {
+        const container: DotPageContainer = {
+            identifier: $event.dataset.dotIdentifier,
+            uuid: $event.dataset.dotUuid
+        };
+        this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
+
         if ($event.dataset.dotAdd === 'form') {
             this.editForm = true;
         } else {
-            const container: DotPageContainer = {
-                identifier: $event.dataset.dotIdentifier,
-                uuid: $event.dataset.dotUuid
-            };
-            this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
-
             this.dotContentletEditorService.add({
                 header: this.dotMessageService.get('dot.common.content.search'),
                 data: {
