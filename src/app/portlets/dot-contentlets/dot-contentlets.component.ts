@@ -17,11 +17,13 @@ export class DotContentletsComponent implements AfterViewInit {
     ) {}
 
     ngAfterViewInit(): void {
-        this.dotContentletEditorService.edit({
-            data: {
-                inode: this.route.snapshot.params.inode
-            }
-        });
+        setTimeout(() => {
+            this.dotContentletEditorService.edit({
+                data: {
+                    inode: this.route.snapshot.params.inode
+                }
+            });
+        }, 0);
     }
 
     onCloseEditor($event): void {
