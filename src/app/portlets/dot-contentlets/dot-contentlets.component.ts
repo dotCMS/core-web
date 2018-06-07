@@ -26,7 +26,7 @@ export class DotContentletsComponent implements AfterViewInit {
         }, 0);
     }
 
-    onCloseEditor($event): void {
+    onCloseEditor(): void {
         this.dotNavigationService.goToFirstPortlet();
     }
 }

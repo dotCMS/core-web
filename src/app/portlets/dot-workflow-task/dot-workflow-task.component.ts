@@ -23,7 +23,7 @@ export class DotWorkflowTaskComponent implements AfterViewInit {
         }, 0);
     }
 
-    onCloseWorkflowTaskEditor($event): void {
+    onCloseWorkflowTaskEditor(): void {
         this.dotNavigationService.goToFirstPortlet();
     }
 }
