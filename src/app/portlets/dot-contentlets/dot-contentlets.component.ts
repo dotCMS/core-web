@@ -9,11 +9,10 @@ import { ActivatedRoute } from '@angular/router';
     template: '<dot-edit-contentlet (close)="onCloseEditor($event)"></dot-edit-contentlet>'
 })
 export class DotContentletsComponent implements AfterViewInit {
-
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
         private dotNavigationService: DotNavigationService,
-        private route: ActivatedRoute,
+        private route: ActivatedRoute
     ) {}
 
     ngAfterViewInit(): void {
@@ -26,6 +25,11 @@ export class DotContentletsComponent implements AfterViewInit {
         }, 0);
     }
 
+    /**
+     * Handle close event from the iframe
+     *
+     * @memberof DotContentletsComponent
+     */
     onCloseEditor(): void {
         this.dotNavigationService.goToFirstPortlet();
     }

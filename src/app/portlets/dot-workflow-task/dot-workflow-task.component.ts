@@ -23,6 +23,11 @@ export class DotWorkflowTaskComponent implements AfterViewInit {
         }, 0);
     }
 
+    /**
+     * Handle close event from the iframe
+     *
+     * @memberof DotWorkflowTaskComponent
+     */
     onCloseWorkflowTaskEditor(): void {
         this.dotNavigationService.goToFirstPortlet();
     }
