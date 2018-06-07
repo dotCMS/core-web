@@ -15,7 +15,8 @@ import { DotGlobalMessageService } from '../../../../view/components/_common/dot
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
-import {DotTheme} from '../../shared/models/dot-theme.model';
+import { DotTheme } from '../../shared/models/dot-theme.model';
+import { DotThemesService } from '../../../../api/services/dot-themes/dot-themes.service';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -30,6 +31,8 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     form: FormGroup;
     initialFormValue: any;
     isModelUpdated = false;
+    themeDialogVisibility = false;
+    currentTheme: DotTheme;
 
     saveAsTemplate: boolean;
     showTemplateLayoutSelectionDialog = false;
@@ -44,7 +47,8 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService,
         public router: Router,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private dotThemesService: DotThemesService
     ) {}
 
     ngOnInit(): void {
@@ -152,6 +156,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
      * @memberof DotEditLayoutDesignerComponent
      */
     changeThemeHandler(theme: DotTheme): void {
+        this.currentTheme = theme;
         this.form.get('themeId').setValue(theme.inode);
     }
 
@@ -162,6 +167,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
+        this.dotThemesService.get(this.form.get('themeId').value);
 
         // Emit event to redraw the grid when the sidebar change
         this.form.get('layout.sidebar').valueChanges.subscribe(() => {
@@ -183,6 +189,17 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
         this.initialFormValue = _.cloneDeep(this.form.value);
         this.isModelUpdated = false;
+        // TODO put the value comming from the service here.
+        this.currentTheme = {
+            name: 'placehodler name',
+            title: 'test',
+            inode: '123',
+            host: {
+                hostName: '123',
+                inode: '123',
+                identifier: '123'
+            }
+        };
         this.form.valueChanges.subscribe(() => {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
             // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value

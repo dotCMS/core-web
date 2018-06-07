@@ -64,6 +64,10 @@ export class PaginatorService {
         }
     }
 
+    removeExtraParams(name: string): void {
+        this.extraParams.delete(name);
+    }
+
     get extraParams(): URLSearchParams {
         return this._extraParams;
     }

@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="visible" [draggable]="false" [modal]="true" [dismissableMask]="true">
+<p-dialog [draggable]="false" [modal]="true" [dismissableMask]="true">
     <p-header>
         {{ dotMessageService.get('editpage.layout.theme.header') }}
     </p-header>
@@ -8,9 +8,14 @@
         <i class="fa fa-search searchable-dropdown__search-icon"></i>
         <input #searchInput pInputText placeholder="{{ dotMessageService.get('editpage.layout.theme.search') }}" type="text" class="searchable-dropdown__search-field"/>
     </div>
-
     <div class="dot-themes-container">
-        <p-dataGrid [value]="themes" [paginator]="true" [rows]="8" >
+        <p-dataGrid
+            [value]="themes"
+            [paginator]="true"
+            [rows]="pageSize"
+            [totalRecords]="paginationService?.totalRecords"
+            [lazy]="true"
+            (onLazyLoad)="paginate($event)">
             <ng-template let-theme pTemplate="item" >
                 <div class="dot-theme-item ui-g-3" (click)="selectTheme(theme)" [ngClass]="{'active': theme.inode === current?.inode}">
                     <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
