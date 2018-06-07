@@ -34,10 +34,11 @@ class PaginatorServiceMock {
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.form.name': 'Name',
-    'dot.common.select': 'Select'
+    'Select': 'Select',
+    'modes.Add-Form': 'Add Form'
 });
 
-describe('DotFormSelectorComponent', () => {
+fdescribe('DotFormSelectorComponent', () => {
     let component: DotFormSelectorComponent;
     let fixture: ComponentFixture<DotFormSelectorComponent>;
     let de: DebugElement;
@@ -67,11 +68,7 @@ describe('DotFormSelectorComponent', () => {
         paginatorService = fixture.debugElement.injector.get(PaginatorService);
     });
 
-    it('should have dot-dialog', () => {
-        expect(de.query(By.css('p-dialog')) !== null).toBe(true);
-    });
-
-    describe('hide dialog', () => {
+    describe('hidden dialog', () => {
         beforeEach(() => {
             fixture.detectChanges();
         });
@@ -79,6 +76,7 @@ describe('DotFormSelectorComponent', () => {
         it('should have dot-dialog hidden', () => {
             const dialog: DebugElement = de.query(By.css('dot-dialog'));
             expect(dialog.componentInstance.show).toBe(false);
+            expect(dialog.componentInstance.header).toBe('Add Form');
         });
     });
 

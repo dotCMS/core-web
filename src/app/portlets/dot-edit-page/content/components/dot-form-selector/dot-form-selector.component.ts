@@ -16,15 +16,17 @@ export class DotFormSelectorComponent implements OnInit {
     @Output() close = new EventEmitter<any>();
 
     items: Observable<ContentType[]>;
-    nameColumnLabel: string;
+    messages: {
+        [key: string]: string;
+    } = {};
 
-    constructor(private paginatorService: PaginatorService, private dotMessageService: DotMessageService) {
-        this.dotMessageService
-            .getMessages(['contenttypes.form.name', 'dot.common.select'])
-            .subscribe(messages => this.nameColumnLabel = messages['contenttypes.form.name']);
-    }
+    constructor(private paginatorService: PaginatorService, private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
+        this.dotMessageService.getMessages(['contenttypes.form.name', 'Select', 'modes.Add-Form']).subscribe((messages) => {
+            this.messages = messages;
+        });
+
         this.paginatorService.url = 'v1/contenttype?type=FORM';
         this.items = this.paginatorService.getCurrentPage();
     }
