@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { DotContentletEditorService } from '../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
 import { ActivatedRoute } from '@angular/router';
@@ -6,9 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     providers: [],
     selector: 'dot-contentlets',
-    template: ''
+    template: '<dot-edit-contentlet (close)="onCloseEditor($event)"></dot-edit-contentlet>'
 })
-export class DotContentletsComponent implements OnInit {
+export class DotContentletsComponent implements AfterViewInit {
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
@@ -16,12 +16,15 @@ export class DotContentletsComponent implements OnInit {
         private route: ActivatedRoute,
     ) {}
 
-    ngOnInit(): void {
-        this.dotNavigationService.goToFirstPortlet();
+    ngAfterViewInit(): void {
         this.dotContentletEditorService.edit({
             data: {
                 inode: this.route.snapshot.params.inode
             }
         });
+    }
+
+    onCloseEditor($event): void {
+        this.dotNavigationService.goToFirstPortlet();
     }
 }
