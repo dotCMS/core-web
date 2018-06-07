@@ -1,5 +1,6 @@
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotDialogComponent } from './view/components/_common/dot-dialog/dot-dialog.component';
+import { DotPageSelectorComponent } from './view/components/_common/dot-page-selector/dot-page-selector.component';
 import { GlobalSearchComponent } from './view/components/global-search/global-search';
 import { LogOutContainerComponent } from './view/components/login/login-component/log-out-container';
 import { LoginAsComponent } from './view/components/login-as/login-as';
@@ -12,7 +13,11 @@ import { ToolbarComponent } from './view/components/dot-toolbar/dot-toolbar.comp
 import { ToolbarNotificationsComponent } from './view/components/toolbar-notifications/toolbar-notifications';
 import { ToolbarUserComponent } from './view/components/toolbar-user/toolbar-user';
 
+// CUSTOM PIPES
+import { CapitalizePipe, SafePipe } from './view/pipes/index';
+
 export const COMPONENTS = [
+    DotPageSelectorComponent,
     CustomTimeComponent,
     DotDialogComponent,
     GlobalSearchComponent,
@@ -28,8 +33,5 @@ export const COMPONENTS = [
     ToolbarNotificationsComponent,
     ToolbarUserComponent
 ];
-
-// CUSTOM PIPES
-import { CapitalizePipe, SafePipe } from './view/pipes/index';
 
 export const PIPES = [CapitalizePipe, SafePipe];
