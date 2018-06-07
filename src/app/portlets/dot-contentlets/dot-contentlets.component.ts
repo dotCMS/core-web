@@ -17,11 +17,19 @@ export class DotContentletsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.dotNavigationService.goToFirstPortlet();
-        this.dotContentletEditorService.edit({
-            data: {
-                inode: this.route.snapshot.params.inode
-            }
-        });
+        // Fix "Error: ExpressionChangedAfterItHasBeenCheckedError" & modal not loading from New Tab
+        // Todo: Change timeOut for a proper impletation
+
+        setTimeout(() => {
+            this.dotContentletEditorService.edit({
+                data: {
+                    inode: this.route.snapshot.params.inode
+                }
+            });
+        }, 500);
+
+        setTimeout(() => {
+            this.dotNavigationService.goToFirstPortlet();
+        }, 1000);
     }
 }

@@ -16,9 +16,17 @@ export class DotWorkflowTaskComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.dotNavigationService.goToFirstPortlet();
-        this.dotWorkflowTaskDetailService.view({
-            id: this.route.snapshot.params.id
-        });
+        // Fix "Error: ExpressionChangedAfterItHasBeenCheckedError" & modal not loading from New Tab
+        // Todo: Change timeOut for a proper impletation
+
+        setTimeout(() => {
+            this.dotWorkflowTaskDetailService.view({
+                id: this.route.snapshot.params.id
+            });
+        }, 500);
+
+        setTimeout(() => {
+            this.dotNavigationService.goToFirstPortlet();
+        }, 1000);
     }
 }
