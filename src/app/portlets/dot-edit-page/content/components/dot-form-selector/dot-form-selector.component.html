@@ -1,9 +1,9 @@
 <dot-dialog [show]="show" (close)="close.emit($event)" header="Add form">
-    <p-dataTable [value]="items | async">
+    <p-dataTable [value]="items | async" *ngIf="show">
         <p-column [header]="nameColumnLabel" field="name"></p-column>
         <p-column [style]="{'text-align': 'right'}">
             <ng-template let-item="rowData" pTemplate="body">
-                <button pButton flat (click)="select.emit(item)" label="Select"></button>
+                <button class="form-selector__button" pButton flat (click)="select.emit(item)" label="Select"></button>
             </ng-template>
         </p-column>
     </p-dataTable>
