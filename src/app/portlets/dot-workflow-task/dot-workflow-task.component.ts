@@ -18,6 +18,7 @@ export class DotWorkflowTaskComponent implements AfterViewInit {
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.dotWorkflowTaskDetailService.view({
+                header: 'Task Detail',
                 id: this.route.snapshot.params.id
             });
         }, 0);

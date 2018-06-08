@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     providers: [],
     selector: 'dot-contentlets',
-    template: '<dot-edit-contentlet (close)="onCloseEditor($event)"></dot-edit-contentlet>'
+    template: '<dot-edit-contentlet (close)="onCloseEditor()"></dot-edit-contentlet>'
 })
 export class DotContentletsComponent implements AfterViewInit {
     constructor(
