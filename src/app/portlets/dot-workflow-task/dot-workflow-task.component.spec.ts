@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotWorkflowTaskComponent } from './dot-workflow-task.component';
 import { DotWorkflowTaskDetailService } from '../../view/components/dot-workflow-task-detail/services/dot-workflow-task-detail.service';
 import { DotWorkflowTaskDetailModule } from '../../view/components/dot-workflow-task-detail/dot-workflow-task-detail.module';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, async } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
@@ -60,7 +60,7 @@ describe('DotWorkflowTaskComponent', () => {
         fixture.detectChanges();
     });
 
-    it('should call workflow task modal', () => {
+    it('should call workflow task modal', async(() => {
         const params = {
             id: '74cabf7a-0e9d-48b6-ab1c-8f76d0ad31e0'
         };
@@ -68,7 +68,7 @@ describe('DotWorkflowTaskComponent', () => {
         setTimeout(() => {
             expect(dotWorkflowTaskDetailService.view).toHaveBeenCalledWith(params);
         }, 0);
-    });
+    }));
 
     it('should call first portlet when modal closed', () => {
         const edit = de.query(By.css('dot-workflow-task-detail'));
