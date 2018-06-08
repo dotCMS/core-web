@@ -78,7 +78,14 @@ export class DotEditPageNavComponent implements OnChanges {
                 label: this.dotMessageService.get('editpage.toolbar.nav.content'),
                 link: 'content'
             },
-            this.getTemplateNavItem(dotRenderedPage, enterpriselicense)
+            this.getTemplateNavItem(dotRenderedPage, enterpriselicense),
+            {
+                needsEntepriseLicense: false,
+                disabled: false,
+                icon: 'fa fa-plus',
+                label: this.dotMessageService.get('editpage.toolbar.nav.properties'),
+                link: `properties/${dotRenderedPage.page.inode}`
+            }
         ];
 
         return result;

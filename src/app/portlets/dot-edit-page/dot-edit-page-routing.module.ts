@@ -26,6 +26,10 @@ const dotEditPage: Routes = [
             {
                 loadChildren: 'app/portlets/dot-edit-page/layout/dot-edit-layout.module#DotEditLayoutModule',
                 path: 'layout'
+            },
+            {
+                loadChildren: 'app/portlets/dot-edit-page/properties/dot-edit-properties.module#DotEditPropertiesModule',
+                path: 'properties/:inode'
             }
         ]
     },
