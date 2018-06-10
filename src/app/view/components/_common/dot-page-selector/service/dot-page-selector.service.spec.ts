@@ -1,9 +1,10 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { inject } from '@angular/core/testing';
 import { DotPageSelectorService } from './dot-page-selector.service';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
 
 describe('Service: DotPageSelector', () => {
     beforeEach(() => {
-        TestBed.configureTestingModule({
+        DOTTestBed.configureTestingModule({
             providers: [DotPageSelectorService]
         });
     });
