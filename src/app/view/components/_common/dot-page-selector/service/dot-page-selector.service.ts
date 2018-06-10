@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
+import { of } from 'rxjs/observable/of';
 
 export interface DotPageAsset {
     template: string;
@@ -42,6 +43,16 @@ export class DotPageSelectorService {
         // return this.coreWebService.requestView({
         //     url: ''
         // }).map(() => mock);
+    }
+
+    /**
+     * Get a page by id
+     *
+     * @param {string} identifier
+     * @memberof DotPageSelectorService
+     */
+    getPage(identifier: string): Observable<DotPageAsset> {
+        return of(mock[3]);
     }
 }
 

@@ -1,4 +1,5 @@
 <p-autoComplete
+    [ngModel]="val"
     (completeMethod)="search($event.query)"
     (onSelect)="onSelect($event)"
     [minLength]="3"
