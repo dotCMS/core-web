@@ -8,12 +8,11 @@ import { IframePortletLegacyComponent } from './iframe-porlet-legacy';
 import { IframeOverlayService } from './service/iframe-overlay.service';
 import { PIPES } from '../../../../components';
 import { DotIframeEventsHandler } from './iframe-porlet-legacy/services/iframe-events-handler.service';
-import { DotPageSelectorModule } from '../dot-page-selector/dot-page-selector.module';
 
 @NgModule({
     declarations: [IframeComponent, IframePortletLegacyComponent, ...PIPES],
     exports: [DotLoadingIndicatorModule, IframeComponent, IframePortletLegacyComponent],
-    imports: [CommonModule, FormsModule, SearchableDropDownModule, DotLoadingIndicatorModule, DotPageSelectorModule],
+    imports: [CommonModule, FormsModule, SearchableDropDownModule, DotLoadingIndicatorModule],
     providers: [IframeOverlayService, DotIframeEventsHandler]
 })
 export class IFrameModule {}

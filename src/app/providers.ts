@@ -12,7 +12,6 @@ import { DotIframeService } from './view/components/_common/iframe/service/dot-i
 import { DotLicenseService } from './api/services/dot-license/dot-license.service';
 import { DotMenuService } from './api/services/dot-menu.service';
 import { DotMessageService } from './api/services/dot-messages-service';
-import { DotPageSelectorModule } from './view/components/_common/dot-page-selector/dot-page-selector.module';
 import { DotRouterService } from './api/services/dot-router/dot-router.service';
 import { DotSaveOnDeactivateService } from './shared/dot-save-on-deactivate-service/dot-save-on-deactivate.service';
 import { FormatDateService } from './api/services/format-date-service';
@@ -42,7 +41,6 @@ const PROVIDERS: any[] = [
     DotLicenseService,
     DotMenuService,
     DotMessageService,
-    DotPageSelectorModule,
     DotRouterService,
     DotSaveOnDeactivateService,
     FormatDateService,

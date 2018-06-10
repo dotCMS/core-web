@@ -32,7 +32,7 @@
     <span class="form__group-hint" *ngIf="!dateVarOptions.length" id="field-dates-hint">{{ dotMessageService.get('contenttypes.form.message.no.date.fields.defined') }}</span>
     <div class="form__group" *ngIf="form.get('detailPage')">
         <span dotMdInputtext label="{{ dotMessageService.get('contenttypes.form.field.detail.page') }}">
-            <input pInputText type="text" id="content-type-form-detail-page" name="detailPage" formControlName="detailPage" tabindex="7" class="mousetrap" />
+            <dot-page-selector formControlName="detailPage" tabindex="7"></dot-page-selector>
         </span>
     </div>
     <div class="form__group" *ngIf="form.get('urlMapPattern')">
