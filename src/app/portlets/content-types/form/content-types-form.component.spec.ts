@@ -27,6 +27,8 @@ import { MdInputTextModule } from '../../../view/directives/md-inputtext/md-inpu
 import { DotWorkflowsSelectorFieldModule } from '../../../view/components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
 import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
 import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
+import { DotPageSelectorModule } from '../../../view/components/_common/dot-page-selector/dot-page-selector.module';
+import { DotDirectivesModule } from '../../../shared/dot-directives.module';
 
 @Injectable()
 class MockDotLicenseService {
@@ -93,7 +95,8 @@ describe('ContentTypesFormComponent', () => {
                     TabViewModule,
                     SiteSelectorFieldModule,
                     RouterTestingModule,
-                    MdInputTextModule,
+                    DotDirectivesModule,
+                    DotPageSelectorModule,
                     DotWorkflowsSelectorFieldModule
                 ],
                 providers: [

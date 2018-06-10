@@ -26,6 +26,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     @Output() selected = new EventEmitter<DotPageAsset>();
     @Input() style: any;
     @Input() label: string;
+    @Input() floatingLabel = false;
 
     results: any[];
     val: DotPageAsset;
@@ -35,6 +36,16 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     propagateChange = (_: any) => {};
 
     /**
+     * Handle clear of the autocomplete
+     *
+     * @memberof DotPageSelectorComponent
+     */
+    onClear(): void {
+        this.propagateChange(null);
+        this.results = [];
+    }
+
+    /**
      * Handle option selected
      *
      * @param {*} $event
@@ -42,7 +53,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      */
     onSelect(item: DotPageAsset): void {
         this.selected.emit(item);
-        this.propagateChange(item);
+        this.propagateChange(item.identifier);
     }
 
     /**
@@ -52,13 +63,9 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @memberof DotPageSelectorComponent
      */
     search(query: string): void {
-        if (query) {
-            this.dotPageSelectorService.getPagesInFolder(query).subscribe((pages: DotPageAsset[]) => {
-                this.results = pages;
-            });
-        } else {
-            this.results = [];
-        }
+        this.dotPageSelectorService.getPagesInFolder(query).subscribe((pages: DotPageAsset[]) => {
+            this.results = pages;
+        });
     }
 
     /**
@@ -68,9 +75,11 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
      * @memberof DotPageSelectorComponent
      */
     writeValue(idenfier: string): void {
-        this.dotPageSelectorService.getPage(idenfier).pipe(take(1)).subscribe((page: DotPageAsset) => {
-            this.val = page;
-        });
+        if (idenfier) {
+            this.dotPageSelectorService.getPage(idenfier).pipe(take(1)).subscribe((page: DotPageAsset) => {
+                this.val = page;
+            });
+        }
     }
 
     /**
@@ -83,7 +92,5 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
         this.propagateChange = fn;
     }
 
-    registerOnTouched(fn: any): void {
-
-    }
+    registerOnTouched(_fn: any): void {}
 }

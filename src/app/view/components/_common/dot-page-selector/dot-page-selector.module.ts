@@ -4,9 +4,10 @@ import { DotPageSelectorComponent } from './dot-page-selector.component';
 import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { FormsModule } from '@angular/forms';
+import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
 
 @NgModule({
-    imports: [CommonModule, AutoCompleteModule, FormsModule],
+    imports: [CommonModule, AutoCompleteModule, FormsModule, DotDirectivesModule],
     declarations: [DotPageSelectorComponent],
     providers: [DotPageSelectorService],
     exports: [DotPageSelectorComponent]

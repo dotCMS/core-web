@@ -7,13 +7,17 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AutoComplete } from 'primeng/primeng';
+import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
 
 @Component({
     selector: 'dot-fake-form',
     template: `
         <form [formGroup]="form">
-            <dot-page-selector formControlName="page" [style]="{'width': '100%'}" label="Hello World"></dot-page-selector>
-            {{ form.value | json }}
+            <dot-page-selector
+                formControlName="page"
+                [style]="{'width': '100%'}"
+                label="Hello World">
+            </dot-page-selector>
         </form>
     `
 })
@@ -26,25 +30,30 @@ class FakeFormComponent {
             this fake test component
         */
         this.form = this.fb.group({
-            page: [{ value: 'c12fe7e6-d338-49d5-973b-2d974d57015b', disabled: false }]
+            page: [{ value: 'f9fc55e7-557a-4047-a8be-15e5ca69fa62', disabled: false }]
         });
     }
 }
 
+const config = (host) => {
+    return {
+        declarations: [host, DotPageSelectorComponent],
+        imports: [DotDirectivesModule],
+        providers: [DotPageSelectorService]
+    };
+};
+let hostDe: DebugElement;
+let component: DotPageSelectorComponent;
+let de: DebugElement;
+let autocomplete: DebugElement;
+let autocompleteComp: AutoComplete;
+let dotPageSelectorService: DotPageSelectorService;
+
 describe('DotPageSelectorComponent', () => {
     let hostFixture: ComponentFixture<FakeFormComponent>;
-    let hostDe: DebugElement;
-    let component: DotPageSelectorComponent;
-    let de: DebugElement;
-    let autocomplete: DebugElement;
-    let autocompleteComp: AutoComplete;
-    let dotPageSelectorService: DotPageSelectorService;
 
     beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            declarations: [FakeFormComponent, DotPageSelectorComponent],
-            providers: [DotPageSelectorService]
-        }).compileComponents();
+        DOTTestBed.configureTestingModule(config(FakeFormComponent)).compileComponents();
     }));
 
     beforeEach(() => {
@@ -68,6 +77,10 @@ describe('DotPageSelectorComponent', () => {
         expect(autocomplete).toBeTruthy();
     });
 
+    it('shold not set floating label directive', () => {
+        expect(de.query(By.css('[dotMdInputtext]')) === null).toBe(true);
+    });
+
     it('should search for pages', () => {
         autocomplete.triggerEventHandler('completeMethod', {
             query: 'hello'
@@ -82,16 +95,81 @@ describe('DotPageSelectorComponent', () => {
     });
 
     describe('ControlValueAccessor', () => {
-        it('should emit selected item and propagate changes', () => {
+        beforeEach(() => {
             spyOn(component, 'propagateChange').and.callThrough();
+        });
 
-            autocomplete.triggerEventHandler('onSelect', {a: 'page'});
-            expect(component.selected.emit).toHaveBeenCalledWith({a: 'page'});
-            expect(component.propagateChange).toHaveBeenCalledWith({a: 'page'});
+        it('should emit selected item and propagate changes', () => {
+
+            autocomplete.triggerEventHandler('onSelect', {identifier: '123'});
+            expect(component.selected.emit).toHaveBeenCalledWith({identifier: '123'});
+            expect(component.propagateChange).toHaveBeenCalledWith('123');
         });
 
         it('should write value', () => {
-            expect(component.writeValue).toHaveBeenCalledWith('c12fe7e6-d338-49d5-973b-2d974d57015b');
+            expect(component.writeValue).toHaveBeenCalledWith('f9fc55e7-557a-4047-a8be-15e5ca69fa62');
+            expect(component.val.identifier).toEqual('f9fc55e7-557a-4047-a8be-15e5ca69fa62');
         });
+
+        it('should clear model and suggections', () => {
+            autocomplete.triggerEventHandler('onClear', {});
+            expect(component.propagateChange).toHaveBeenCalledWith(null);
+            expect(component.results).toEqual([]);
+        });
+    });
+});
+
+@Component({
+    selector: 'dot-fake-form',
+    template: `
+        <form [formGroup]="form">
+            <dot-page-selector
+                formControlName="page"
+                [style]="{'width': '100%'}"
+                label="Hello World"
+                [floatingLabel]="true">
+            </dot-page-selector>
+        </form>
+    `
+})
+class FakeForm2Component {
+    form: FormGroup;
+
+    constructor(private fb: FormBuilder) {
+        /*
+            This should go in the ngOnInit but I don't want to detectChanges everytime for
+            this fake test component
+        */
+        this.form = this.fb.group({
+            page: [{ value: 'f9fc55e7-557a-4047-a8be-15e5ca69fa62', disabled: false }]
+        });
+    }
+}
+
+describe('DotPageSelectorComponent with floating label', () => {
+    let hostFixture: ComponentFixture<FakeForm2Component>;
+
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule(config(FakeForm2Component)).compileComponents();
+    }));
+
+    beforeEach(() => {
+        hostFixture = DOTTestBed.createComponent(FakeForm2Component);
+        hostDe = hostFixture.debugElement;
+        de = hostDe.query(By.css('dot-page-selector'));
+
+        hostFixture.detectChanges();
+        autocomplete = de.query(By.css('p-autoComplete'));
+        autocompleteComp = autocomplete.componentInstance;
+    });
+
+    it('should set floating label directive', () => {
+        const span: DebugElement = de.query(By.css('[dotMdInputtext]'));
+        expect(span.componentInstance.label).toBe('Hello World');
+        expect(span).toBeTruthy();
+    });
+
+    it('should not have placeholder', () => {
+        expect(autocompleteComp.placeholder).toBeUndefined();
     });
 });
