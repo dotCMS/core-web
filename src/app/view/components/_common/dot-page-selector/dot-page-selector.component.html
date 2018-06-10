@@ -1,1 +1,7 @@
-<p-autoComplete (completeMethod)="search($event)" [suggestions]="results" field="url" [minLength]="3" (onSelect)="selected($event)"></p-autoComplete>
+<p-autoComplete
+    (completeMethod)="search($event.query)"
+    (onSelect)="onSelect($event)"
+    [minLength]="3"
+    [suggestions]="results"
+    field="url">
+</p-autoComplete>
