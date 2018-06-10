@@ -6,12 +6,13 @@ import { DotPageSelectorComponent } from './dot-page-selector.component';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { AutoComplete } from 'primeng/primeng';
 
 @Component({
     selector: 'dot-fake-form',
     template: `
         <form [formGroup]="form">
-            <dot-page-selector formControlName="page"></dot-page-selector>
+            <dot-page-selector formControlName="page" [style]="{'width': '100%'}" label="Hello World"></dot-page-selector>
             {{ form.value | json }}
         </form>
     `
@@ -36,6 +37,7 @@ describe('DotPageSelectorComponent', () => {
     let component: DotPageSelectorComponent;
     let de: DebugElement;
     let autocomplete: DebugElement;
+    let autocompleteComp: AutoComplete;
     let dotPageSelectorService: DotPageSelectorService;
 
     beforeEach(async(() => {
@@ -58,6 +60,7 @@ describe('DotPageSelectorComponent', () => {
 
         hostFixture.detectChanges();
         autocomplete = de.query(By.css('p-autoComplete'));
+        autocompleteComp = autocomplete.componentInstance;
 
     });
 
@@ -73,15 +76,22 @@ describe('DotPageSelectorComponent', () => {
         expect(dotPageSelectorService.getPagesInFolder).toHaveBeenCalledWith('hello');
     });
 
-    it('should emit selected item and propagate changes', () => {
-        spyOn(component, 'propagateChange').and.callThrough();
-
-        autocomplete.triggerEventHandler('onSelect', {a: 'page'});
-        expect(component.selected.emit).toHaveBeenCalledWith({a: 'page'});
-        expect(component.propagateChange).toHaveBeenCalledWith({a: 'page'});
+    it('should pass attritubes', () => {
+        expect(autocompleteComp.style).toEqual({'width': '100%'});
+        expect(autocompleteComp.placeholder).toEqual('Hello World');
     });
 
-    it('should write value', () => {
-        expect(component.writeValue).toHaveBeenCalledWith('c12fe7e6-d338-49d5-973b-2d974d57015b');
+    describe('ControlValueAccessor', () => {
+        it('should emit selected item and propagate changes', () => {
+            spyOn(component, 'propagateChange').and.callThrough();
+
+            autocomplete.triggerEventHandler('onSelect', {a: 'page'});
+            expect(component.selected.emit).toHaveBeenCalledWith({a: 'page'});
+            expect(component.propagateChange).toHaveBeenCalledWith({a: 'page'});
+        });
+
+        it('should write value', () => {
+            expect(component.writeValue).toHaveBeenCalledWith('c12fe7e6-d338-49d5-973b-2d974d57015b');
+        });
     });
 });

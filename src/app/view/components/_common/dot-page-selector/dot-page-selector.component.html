@@ -1,8 +1,11 @@
 <p-autoComplete
-    [ngModel]="val"
     (completeMethod)="search($event.query)"
     (onSelect)="onSelect($event)"
+    [inputStyle]="{'width': '100%', 'padding': '0'}"
     [minLength]="3"
+    [ngModel]="val"
+    [placeholder]="label"
+    [style]="style"
     [suggestions]="results"
     field="url">
 </p-autoComplete>

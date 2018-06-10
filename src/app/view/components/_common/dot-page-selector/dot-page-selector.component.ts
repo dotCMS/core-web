@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Output, EventEmitter, forwardRef, Input } from '@angular/core';
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { take } from 'rxjs/operators';
@@ -24,6 +24,9 @@ import { take } from 'rxjs/operators';
 })
 export class DotPageSelectorComponent implements ControlValueAccessor {
     @Output() selected = new EventEmitter<DotPageAsset>();
+    @Input() style: any;
+    @Input() label: string;
+
     results: any[];
     val: DotPageAsset;
 
