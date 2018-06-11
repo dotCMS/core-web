@@ -14,6 +14,7 @@ import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
     template: `
         <form [formGroup]="form">
             <dot-page-selector
+                [floatingLabel]="floatingLabel"
                 formControlName="page"
                 [style]="{'width': '100%'}"
                 label="Hello World">
@@ -23,6 +24,7 @@ import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
 })
 class FakeFormComponent {
     form: FormGroup;
+    floatingLabel = false;
 
     constructor(private fb: FormBuilder) {
         /*
@@ -89,7 +91,7 @@ describe('DotPageSelectorComponent', () => {
         expect(dotPageSelectorService.getPagesInFolder).toHaveBeenCalledWith('hello');
     });
 
-    it('should pass attritubes', () => {
+    it('should pass attrs to autocomplete component', () => {
         expect(autocompleteComp.style).toEqual({'width': '100%'});
         expect(autocompleteComp.placeholder).toEqual('Hello World');
     });
@@ -117,59 +119,23 @@ describe('DotPageSelectorComponent', () => {
             expect(component.results).toEqual([]);
         });
     });
-});
 
-@Component({
-    selector: 'dot-fake-form',
-    template: `
-        <form [formGroup]="form">
-            <dot-page-selector
-                formControlName="page"
-                [style]="{'width': '100%'}"
-                label="Hello World"
-                [floatingLabel]="true">
-            </dot-page-selector>
-        </form>
-    `
-})
-class FakeForm2Component {
-    form: FormGroup;
-
-    constructor(private fb: FormBuilder) {
-        /*
-            This should go in the ngOnInit but I don't want to detectChanges everytime for
-            this fake test component
-        */
-        this.form = this.fb.group({
-            page: [{ value: 'f9fc55e7-557a-4047-a8be-15e5ca69fa62', disabled: false }]
+    describe('floating label', () => {
+        beforeEach(() => {
+            component.floatingLabel = true;
+            hostFixture.detectChanges();
+            autocomplete = de.query(By.css('p-autoComplete'));
+            autocompleteComp = autocomplete.componentInstance;
         });
-    }
-}
 
-describe('DotPageSelectorComponent with floating label', () => {
-    let hostFixture: ComponentFixture<FakeForm2Component>;
+        it('should set floating label directive', () => {
+            const span: DebugElement = de.query(By.css('[dotMdInputtext]'));
+            expect(span.componentInstance.label).toBe('Hello World');
+            expect(span).toBeTruthy();
+        });
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule(config(FakeForm2Component)).compileComponents();
-    }));
-
-    beforeEach(() => {
-        hostFixture = DOTTestBed.createComponent(FakeForm2Component);
-        hostDe = hostFixture.debugElement;
-        de = hostDe.query(By.css('dot-page-selector'));
-
-        hostFixture.detectChanges();
-        autocomplete = de.query(By.css('p-autoComplete'));
-        autocompleteComp = autocomplete.componentInstance;
-    });
-
-    it('should set floating label directive', () => {
-        const span: DebugElement = de.query(By.css('[dotMdInputtext]'));
-        expect(span.componentInstance.label).toBe('Hello World');
-        expect(span).toBeTruthy();
-    });
-
-    it('should not have placeholder', () => {
-        expect(autocompleteComp.placeholder).toBeUndefined();
+        it('should not have placeholder', () => {
+            expect(autocompleteComp.placeholder).toBeUndefined();
+        });
     });
 });

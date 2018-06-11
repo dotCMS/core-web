@@ -48,7 +48,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     /**
      * Handle option selected
      *
-     * @param {*} $event
+     * @param {DotPageAsset} item
      * @memberof DotPageSelectorComponent
      */
     onSelect(item: DotPageAsset): void {

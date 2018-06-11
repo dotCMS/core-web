@@ -514,7 +514,7 @@ describe('ContentTypesFormComponent', () => {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                 id: '123',
                 indexed: true,
-                name: 'publishDateVar'
+                name: 'publishDateVar',
             }
         ];
         fixture.detectChanges();
@@ -525,6 +525,19 @@ describe('ContentTypesFormComponent', () => {
 
         expect(comp.submitForm).toHaveBeenCalled();
         expect(comp.submit.emit).not.toHaveBeenCalled();
+    });
+
+    it('should have dot-page-selector component and right attrs', () => {
+        comp.data = {
+            baseType: 'CONTENT'
+        };
+        fixture.detectChanges();
+
+        const pageSelector: DebugElement = de.query(By.css('dot-page-selector'));
+        expect(pageSelector !== null).toBe(true);
+        expect(pageSelector.componentInstance.label).toEqual('Detail Page');
+        expect(pageSelector.componentInstance.floatingLabel).toBe(true);
+        expect(pageSelector.componentInstance.style).toEqual({width: '100%'});
     });
 
     describe('send data with valid form', () => {
