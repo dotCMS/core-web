@@ -1,6 +1,6 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, HostListener, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,8 @@ interface DotEditPageNavItem {
     disabled: boolean;
     icon: string;
     label: string;
-    link: string;
+    link?: string;
+    action?: object;
     tooltip?: string;
 }
 
@@ -26,10 +27,22 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnChanges {
     @Input() pageState: DotRenderedPageState;
+    @Output() buttonClicked: EventEmitter<{inode: string, label: string}> = new EventEmitter();
     model: Observable<DotEditPageNavItem[]>;
     isEnterpriseLicense: boolean;
 
     constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
+
+    // @HostListener('click', ['$event', 'id', 'label'])
+    emitClick($event: MouseEvent, inode: string, label: string): void {
+        $event.stopPropagation();
+        debugger;
+        console.log(this);
+        if (inode) {
+            console.log('si');
+            this.buttonClicked.emit({ inode, label });
+        }
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.layoutChanged(changes)) {
@@ -84,7 +97,7 @@ export class DotEditPageNavComponent implements OnChanges {
                 disabled: false,
                 icon: 'fa fa-plus',
                 label: this.dotMessageService.get('editpage.toolbar.nav.properties'),
-                link: `properties/${dotRenderedPage.page.inode}`
+                action: (event, inode, label) => { this.emitClick( event, inode, label ); }
             }
         ];
 

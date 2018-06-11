@@ -16,4 +16,8 @@ export class DotEditPageMainComponent implements OnInit {
     ngOnInit() {
         this.pageState = this.route.data.pluck('content');
     }
+
+    openProperties(buttonClicked: object) {
+        console.log('0', buttonClicked);
+    }
 }
