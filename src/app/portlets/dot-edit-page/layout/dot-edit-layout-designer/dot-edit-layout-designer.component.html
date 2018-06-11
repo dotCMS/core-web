@@ -5,9 +5,7 @@
         <div class="dot-edit-layout__toolbar-actions">
             <p-checkbox class="dot-edit-layout__toolbar-save-template" label="{{ dotMessageService.get('editpage.layout.toolbar.save.template') }}" *ngIf="editTemplate && isLayout() && pageState.canCreateTemplate" binary="true" (onChange)="saveAsTemplateHandleChange($event);"></p-checkbox>
             <button pButton type="button" icon="fa-paint-brush" (click)="themeDialogVisibility = !themeDialogVisibility"></button> <span class="dot-theme-selector__name" > {{currentTheme.name}} </span>
-            <dot-theme-selector *ngIf="themeDialogVisibility" [value]="form.get('themeId').value" (selected)="changeThemeHandler($event)" ></dot-theme-selector>
-
-
+            <dot-theme-selector *ngIf="themeDialogVisibility" [value]="currentTheme" (selected)="changeThemeHandler($event)" (close)="closeThemeDialog()" ></dot-theme-selector>
             <dot-layout-properties [group]="form.get('layout')"></dot-layout-properties>
             <button pButton flat type="button" label="{{ dotMessageService.get('editpage.layout.toolbar.action.cancel') }}" class="dot-edit-layout__toolbar-action-cancel"></button>
             <button pButton flat type="submit" [disabled]="!isModelUpdated || !form.valid"  label="{{ dotMessageService.get('editpage.layout.toolbar.action.save') }}" class="dot-edit-layout__toolbar-action-save"></button>

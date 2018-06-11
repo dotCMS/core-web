@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
-import { DotThemesService } from '../../../../../api/services/dot-themes/dot-themes.service';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site } from 'dotcms-js/core/treeable/shared/site.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -20,32 +19,27 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./dot-theme-selector.component.scss']
 })
 export class DotThemeSelectorComponent implements OnInit {
-    pageSize = 8;
     themes: DotTheme[];
-    @Input() value: any;
+    @Input() value: DotTheme;
     @Output() selected = new EventEmitter<DotTheme>();
+    @Output() close = new EventEmitter<boolean>();
     @ViewChild('searchInput') searchInput: ElementRef;
 
     current: DotTheme;
-    initialValue: DotTheme;
-    visible: boolean;
+    visible = true;
 
-    constructor(
-        private dotThemesService: DotThemesService,
-        public dotMessageService: DotMessageService,
-        public paginatorService: PaginatorService
-    ) {}
+    constructor(public dotMessageService: DotMessageService, public paginatorService: PaginatorService) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
             .subscribe();
-        this.setCurrentTheme();
-        this.paginatorService.addExtraParams('per_page', this.pageSize);
+        this.paginatorService.url = 'v1/themes';
+        this.paginatorService.paginationPerPage = 2;
+        this.current = this.value;
         Observable.fromEvent(this.searchInput.nativeElement, 'keyup')
             .debounceTime(500)
             .subscribe((keyboardEvent: Event) => {
-                alert(keyboardEvent.target['value']);
                 this.filterThemes(keyboardEvent.target['value']);
             });
     }
@@ -57,6 +51,7 @@ export class DotThemeSelectorComponent implements OnInit {
      * @memberof DotThemeSelectorComponent
      */
     paginate(event: LazyLoadEvent) {
+        console.log('lazyload');
         this.paginatorService.getWithOffset(event.first).subscribe((items: DotTheme[]) => (this.themes = items));
     }
 
@@ -67,6 +62,7 @@ export class DotThemeSelectorComponent implements OnInit {
      * @memberof DotThemeSelectorComponent
      */
     siteChange(site: Site) {
+        // this,
         this.getPagination(site.identifier).subscribe((response: DotTheme[]) => {
             this.themes = response;
         });
@@ -90,34 +86,11 @@ export class DotThemeSelectorComponent implements OnInit {
      */
     apply() {
         this.selected.emit(this.current);
-        this.initialValue = this.current;
-        this.toogleDialog();
+        this.hideDialog();
     }
 
-    /**
-     * Toogle the visibility the modal and set the initial state when visible.
-     *
-     * @memberof DotThemeSelectorComponent
-     */
-    toogleDialog() {
-        this.visible = !this.visible;
-        if (this.visible) {
-            this.setInitialState();
-        }
-    }
-
-    private getPagination(hostId?: string, searchCriteria?: string): Observable<DotTheme[]> {
-        this.paginatorService.url = 'v1/themes';
-        this.paginatorService.removeExtraParams('searchParam');
-
-        if (hostId) {
-            this.paginatorService.removeExtraParams('hostId');
-            this.paginatorService.addExtraParams('hostId', hostId);
-        }
-        if (searchCriteria) {
-            this.paginatorService.addExtraParams('searchParam', searchCriteria);
-        }
-        return this.paginatorService.getCurrentPage();
+    hideDialog() {
+        this.close.emit(false);
     }
 
     private filterThemes(searchCriteria?: string) {
@@ -126,23 +99,15 @@ export class DotThemeSelectorComponent implements OnInit {
         });
     }
 
-    private setCurrentTheme() {
-        if (this.initialValue) {
-            this.current = this.initialValue;
-        } else {
-            this.dotThemesService.get(this.value).subscribe((response: DotTheme[]) => {
-                this.initialValue = response[0];
-                this.current = response[0];
-            });
+    private getPagination(hostId?: string, searchCriteria?: string): Observable<DotTheme[]> {
+        if (hostId) {
+            this.paginatorService.setExtraParams('hostId', hostId);
         }
-    }
-
-    private setInitialState() {
-        this.setCurrentTheme();
-        this.paginatorService.removeExtraParams('hostId');
-        this.getPagination().subscribe((response: DotTheme[]) => {
-            this.themes = response;
-        });
-        this.searchInput.nativeElement.value = null;
+        if (searchCriteria) {
+            this.paginatorService.setExtraParams('searchParam', searchCriteria);
+        } else {
+            this.paginatorService.setExtraParams('searchParam', '');
+        }
+        return this.paginatorService.get();
     }
 }

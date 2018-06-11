@@ -158,6 +158,11 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     changeThemeHandler(theme: DotTheme): void {
         this.currentTheme = theme;
         this.form.get('themeId').setValue(theme.inode);
+        this.closeThemeDialog();
+    }
+
+    closeThemeDialog() {
+        this.themeDialogVisibility = false;
     }
 
     private setupLayout(pageState?: DotRenderedPageState): void {
@@ -193,7 +198,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.currentTheme = {
             name: 'placehodler name',
             title: 'test',
-            inode: '123',
+            inode: this.pageState.template.theme,
             host: {
                 hostName: '123',
                 inode: '123',

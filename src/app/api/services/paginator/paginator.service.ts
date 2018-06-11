@@ -58,14 +58,10 @@ export class PaginatorService {
         }
     }
 
-    addExtraParams(name: string, value: any): void {
+    setExtraParams(name: string, value?: any): void {
         if (value !== null && value !== undefined) {
-            this.extraParams.append(name, value.toString());
+            this.extraParams.set(name, value.toString());
         }
-    }
-
-    removeExtraParams(name: string): void {
-        this.extraParams.delete(name);
     }
 
     get extraParams(): URLSearchParams {
@@ -104,7 +100,6 @@ export class PaginatorService {
      */
     public get(url?: string): Observable<any[]> {
         const params: URLSearchParams = new URLSearchParams();
-
         if (this.filter) {
             params.set('filter', `${this.filter}`);
         }
