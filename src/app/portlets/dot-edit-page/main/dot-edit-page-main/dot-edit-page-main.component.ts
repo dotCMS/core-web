@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 @Component({
     selector: 'dot-edit-page-main',
@@ -11,13 +12,17 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 export class DotEditPageMainComponent implements OnInit {
     pageState: Observable<DotRenderedPageState>;
 
-    constructor(private route: ActivatedRoute) {}
+    constructor(private route: ActivatedRoute, private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
         this.pageState = this.route.data.pluck('content');
     }
 
-    openProperties(buttonClicked: object) {
-        console.log('0', buttonClicked);
+    openProperties(buttonClicked: { inode: string; label: string }) {
+        this.dotContentletEditorService.edit({
+            data: {
+                inode: buttonClicked.inode
+            }
+        });
     }
 }
