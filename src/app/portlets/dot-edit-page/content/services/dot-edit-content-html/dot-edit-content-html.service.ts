@@ -21,6 +21,7 @@ import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
+import { ContentType } from '../../../../content-types/shared/content-type.model';
 
 export enum DotContentletAction {
     EDIT,
@@ -176,6 +177,30 @@ export class DotEditContentHtmlService {
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                    this.currentAction = DotContentletAction.EDIT;
+                });
+        }
+    }
+
+    renderAddedForm(form: ContentType): void  {
+        const doc = this.getEditPageDocument();
+        const containerEl = doc.querySelector(
+            // tslint:disable-next-line:max-line-length
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
+                this.currentContainer.uuid
+            }"]`
+        );
+
+        if (this.isFormExistInContainer(form, containerEl)) {
+            this.showContentAlreadyAddedError();
+        } else {
+            this.dotContainerContentletService
+                .getFormToContainer(this.currentContainer, form)
+                .subscribe((contentRendered: any) => {
+                    const contentletEl: HTMLElement = this.createNewContentlet(contentRendered.content);
+                    containerEl.insertAdjacentElement('beforeend', contentletEl);
+                    console.log('contentRendered', contentRendered);
+                    this.renderHTMLToContentlet(contentletEl, contentRendered.render);
                     this.currentAction = DotContentletAction.EDIT;
                 });
         }
@@ -350,6 +375,16 @@ export class DotEditContentHtmlService {
         return currentContentlets.some((contentElement) => contentElement.dataset.dotIdentifier === contentlet.identifier);
     }
 
+    private isFormExistInContainer(form: ContentType, containerEL: HTMLElement): boolean {
+        console.log('FORM ID', form.id);
+        const contentsSelector = `div[data-dot-object="contentlet"]`;
+        const currentContentlets: HTMLElement[] = <HTMLElement[]>Array.from(containerEL.querySelectorAll(contentsSelector).values());
+        return currentContentlets.some((contentElement) => {
+            console.log('contentElement.dataset', contentElement.dataset);
+            return contentElement.dataset.dotContentTypeId === form.id;
+        });
+    }
+
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
         this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
@@ -365,6 +400,7 @@ export class DotEditContentHtmlService {
 
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
+            console.log('node', node);
             if (node.tagName === 'SCRIPT') {
                 const script = doc.createElement('script');
                 script.type = 'text/javascript';
@@ -466,7 +502,6 @@ export class DotEditContentHtmlService {
             },
             // When a user select a content from the search jsp
             select: (contentletEvent: any) => {
-                console.log(contentletEvent.data);
                 this.renderAddedContentlet(contentletEvent.data);
                 this.iframeActions$.next({
                     name: 'select'
@@ -521,7 +556,8 @@ export class DotEditContentHtmlService {
     private renderHTMLToContentlet(contentletEl: HTMLElement, contentletHtml: string): void {
         const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
         contentletContentEl.innerHTML = ''; // Removing the loading indicator
-        this.appendNewContentlets(contentletContentEl, contentletHtml);
+
+        this.appendNewContentlets(contentletEl, contentletHtml);
 
         this.addVtlEditMenu(contentletEl);
 
@@ -539,9 +575,7 @@ export class DotEditContentHtmlService {
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
             .subscribe((contentletHtml: string) => {
-                // Removing the loading indicator
-                contentletContentEl.innerHTML = '';
-                this.appendNewContentlets(contentletContentEl, contentletHtml);
+                this.appendNewContentlets(contenletEl, contentletHtml);
             });
     }
 }

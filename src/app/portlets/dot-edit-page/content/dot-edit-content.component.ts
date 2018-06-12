@@ -28,6 +28,7 @@ import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+import { ContentType } from '../../content-types/shared/content-type.model';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -165,10 +166,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @param {*} item
      * @memberof DotEditContentComponent
      */
-    onFormSelected(item: any): void {
-        console.log(item);
-        // item could not be any this need testing
-        // this.dotEditContentHtmlService.renderAddedContentlet(item);
+    onFormSelected(item: ContentType): void {
+        this.dotEditContentHtmlService.renderAddedForm(item);
+        this.editForm = false;
     }
 
     /**
