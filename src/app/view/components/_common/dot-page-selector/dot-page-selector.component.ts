@@ -59,7 +59,7 @@ export class DotPageSelectorComponent implements ControlValueAccessor {
     /**
      * Get pages results and set it to the autotomplete
      *
-     * @param {*} $event
+     * @param {string} query
      * @memberof DotPageSelectorComponent
      */
     search(query: string): void {
