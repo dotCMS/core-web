@@ -28,6 +28,12 @@ export enum DotContentletAction {
     ADD
 }
 
+interface RenderAddedItemParams {
+    item: DotPageContent | ContentType;
+    checkExistFunc: (item: DotPageContent | ContentType, containerEL: HTMLElement) => boolean;
+    getContent: (container: DotPageContainer, form: DotPageContent |  ContentType) => Observable<string>;
+}
+
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<any> = new Subject();
@@ -161,50 +167,19 @@ export class DotEditContentHtmlService {
      * @memberof DotEditContentHtmlService
      */
     renderAddedContentlet(contentlet: DotPageContent): void {
-        const doc = this.getEditPageDocument();
-        const containerEl = doc.querySelector(
-            // tslint:disable-next-line:max-line-length
-            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
-                this.currentContainer.uuid
-            }"]`
-        );
-
-        if (this.isContentExistInContainer(contentlet, containerEl)) {
-            this.showContentAlreadyAddedError();
-        } else {
-            this.dotContainerContentletService
-                .getContentletToContainer(this.currentContainer, contentlet)
-                .subscribe((contentletHtml: string) => {
-                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentletHtml);
-                    containerEl.insertAdjacentElement('beforeend', contentletEl);
-
-                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
-                    this.currentAction = DotContentletAction.EDIT;
-                });
-        }
+        this.renderAddedItem({
+            item: contentlet,
+            checkExistFunc: this.isContentExistInContainer.bind(this),
+            getContent: this.dotContainerContentletService.getContentletToContainer.bind(this.dotContainerContentletService)
+        });
     }
 
     renderAddedForm(form: ContentType): void  {
-        const doc = this.getEditPageDocument();
-        const containerEl = doc.querySelector(
-            // tslint:disable-next-line:max-line-length
-            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
-                this.currentContainer.uuid
-            }"]`
-        );
-
-        if (this.isFormExistInContainer(form, containerEl)) {
-            this.showContentAlreadyAddedError();
-        } else {
-            this.dotContainerContentletService
-                .getFormToContainer(this.currentContainer, form)
-                .subscribe((contentRendered: any) => {
-                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentRendered.render);
-                    containerEl.insertAdjacentElement('beforeend', contentletEl);
-                    this.renderHTMLToContentlet(contentletEl, contentRendered.render);
-                    this.currentAction = DotContentletAction.EDIT;
-                });
-        }
+        this.renderAddedItem({
+            item: form,
+            checkExistFunc: this.isFormExistInContainer.bind(this),
+            getContent: this.dotContainerContentletService.getFormToContainer.bind(this.dotContainerContentletService)
+        });
     }
 
     /**
@@ -262,6 +237,28 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow.getDotNgModel();
+    }
+
+    private renderAddedItem(params: RenderAddedItemParams): void {
+        const doc = this.getEditPageDocument();
+        const containerEl = doc.querySelector(
+            // tslint:disable-next-line:max-line-length
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
+                this.currentContainer.uuid
+            }"]`
+        );
+
+        if (params.checkExistFunc(params.item, containerEl)) {
+            this.showContentAlreadyAddedError();
+        } else {
+            params.getContent(this.currentContainer, params.item).subscribe((contentletHtml: string) => {
+                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentletHtml);
+                    containerEl.insertAdjacentElement('beforeend', contentletEl);
+
+                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                    this.currentAction = DotContentletAction.EDIT;
+                });
+        }
     }
 
     private bindGlobalEvents(): void {

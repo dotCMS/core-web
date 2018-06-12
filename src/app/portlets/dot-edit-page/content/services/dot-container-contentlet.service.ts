@@ -34,6 +34,6 @@ export class DotContainerContentletService {
                 method: RequestMethod.Get,
                 url: `v1/containers/${container.identifier}/uuid/${container.uuid}/form/${form.id}`
             })
-            .pluck('entity');
+            .pluck('entity', 'render');
     }
 }
