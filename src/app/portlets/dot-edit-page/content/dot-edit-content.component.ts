@@ -349,8 +349,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             this.setPageState(pageState);
         });
 
-        this.dotEditPageDataService.elNuevoSubjectQueLeHaceNextElMetodoDeReload.subscribe((pageState: DotRenderedPageState) => {
-            this.setPageState(pageState);
+        this.dotPageStateService.reload$.subscribe((pageState: DotRenderedPageState) => {
+            if (this.pageState.page.inode !== pageState.page.inode) {
+                this.setPageState(pageState);
+            }
         });
     }
 

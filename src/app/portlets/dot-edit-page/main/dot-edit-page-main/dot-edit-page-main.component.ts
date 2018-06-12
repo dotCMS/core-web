@@ -47,11 +47,8 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     }
 
     private subscribeIframeCloseAction(): void {
-        this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe((closedEvent: boolean) => {
-            console.log('---event close', closedEvent);
-
-            // EL URL SE LO PODEMOS PASAR DESDE EL route.params
-            this.dotPageStateService.reload('');
+        this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dotPageStateService.reload(this.route.snapshot.queryParams.url);
         });
     }
 }
