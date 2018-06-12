@@ -33,7 +33,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Handle the call of contentlet dialog
+     * Handle call of contentlet dialog
      *
      * @param {inode: string; label: string} buttonClicked
      * @memberof DotEditPageMainComponent
@@ -48,7 +48,9 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
 
     private subscribeIframeCloseAction(): void {
         this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dotPageStateService.reload(this.route.snapshot.queryParams.url);
+            this.dotPageStateService.reload(this.route.snapshot.queryParams.url).subscribe((page: DotRenderedPageState) => {
+                this.pageState = Observable.of(page);
+            });
         });
     }
 }

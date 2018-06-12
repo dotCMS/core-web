@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotEditPageViewAs } from '../../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { Subject } from 'rxjs/Subject';
+import { tap, take } from 'rxjs/operators';
 
 @Injectable()
 export class DotPageStateService {
@@ -40,11 +41,7 @@ export class DotPageStateService {
         return lockUnlock$.mergeMap(() =>
             pageMode$.map(
                 (updatedPage: DotRenderedPage) =>
-                    new DotRenderedPageState(
-                        this.loginService.auth.loginAsUser || this.loginService.auth.user,
-                        updatedPage,
-                        state.mode
-                    )
+                    new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, updatedPage, state.mode)
             )
         );
     }
@@ -56,10 +53,14 @@ export class DotPageStateService {
      * @returns {Observable<DotRenderedPageState>}
      * @memberof DotPageStateService
      */
-    reload(url: string): void {
-        this.get(url).subscribe((page: DotRenderedPage) => {
-            this.reload$.next(page);
-        });
+    reload(url: string): Observable<DotRenderedPageState> {
+        return this.get(url).pipe(
+            take(1),
+            tap((page: DotRenderedPageState) => {
+                this.reload$.next(page);
+                return page;
+            })
+        );
     }
 
     /**
@@ -73,8 +74,7 @@ export class DotPageStateService {
         return this.dotRenderHTMLService
             .getEdit(url)
             .map(
-                (page: DotRenderedPage) =>
-                    new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
+                (page: DotRenderedPage) => new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
             );
     }
 
