@@ -19,13 +19,14 @@ export class DotWorkflowTaskComponent implements AfterViewInit {
     ) {}
 
     ngAfterViewInit(): void {
+        console.log(this.route.snapshot.params);
         this.dotMessageService
             .getMessages(['workflow.task.dialog.header'])
             .pipe(take(1))
             .subscribe(() => {
                 this.dotWorkflowTaskDetailService.view({
                     header: this.dotMessageService.get('workflow.task.dialog.header'),
-                    id: this.route.snapshot.params.id
+                    id: this.route.snapshot.params.asset
                 });
             });
     }

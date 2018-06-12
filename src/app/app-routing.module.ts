@@ -67,10 +67,10 @@ const PORTLETS_ANGULAR = [
         path: 'contentlets/:inode',
         loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
     },
-    {
-        path: 'task/:id',
-        loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule'
-    },
+    // {
+    //     path: 'task/:id',
+    //     loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule'
+    // },
     {
         canActivate: [MenuGuardService],
         path: '',
@@ -84,7 +84,11 @@ const PORTLETS_IFRAME = [
         children: [
             {
                 component: IframePortletLegacyComponent,
-                path: ':id'
+                path: ':id',
+            },
+            {
+                loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
+                path: ':id/:asset'
             },
             {
                 path: '',
