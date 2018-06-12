@@ -136,7 +136,7 @@ export class DotEditContentHtmlService {
             contentlet.type = currentContentlet.dataset.dotType;
 
             const containerEl = currentContentlet.parentNode;
-            const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
+            const contentletEl: HTMLElement = this.createNewContentlet(currentContentlet);
 
             containerEl.replaceChild(contentletEl, currentContentlet);
 
@@ -172,11 +172,12 @@ export class DotEditContentHtmlService {
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
         } else {
-            const contentletEl: HTMLElement = this.createNewContentlet(contentlet);
-            containerEl.insertAdjacentElement('beforeend', contentletEl);
             this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
+                    const contentletEl: HTMLElement = this.createNewContentlet(contentletHtml);
+                    containerEl.insertAdjacentElement('beforeend', contentletEl);
+
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
                     this.currentAction = DotContentletAction.EDIT;
                 });
@@ -198,9 +199,8 @@ export class DotEditContentHtmlService {
             this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .subscribe((contentRendered: any) => {
-                    const contentletEl: HTMLElement = this.createNewContentlet(contentRendered.content);
+                    const contentletEl: HTMLElement = this.createNewContentlet(contentRendered.render);
                     containerEl.insertAdjacentElement('beforeend', contentletEl);
-                    console.log('contentRendered', contentRendered);
                     this.renderHTMLToContentlet(contentletEl, contentRendered.render);
                     this.currentAction = DotContentletAction.EDIT;
                 });
@@ -366,11 +366,9 @@ export class DotEditContentHtmlService {
     }
 
     private isFormExistInContainer(form: ContentType, containerEL: HTMLElement): boolean {
-        console.log('FORM ID', form.id);
         const contentsSelector = `div[data-dot-object="contentlet"]`;
         const currentContentlets: HTMLElement[] = <HTMLElement[]>Array.from(containerEL.querySelectorAll(contentsSelector).values());
         return currentContentlets.some((contentElement) => {
-            console.log('contentElement.dataset', contentElement.dataset);
             return contentElement.dataset.dotContentTypeId === form.id;
         });
     }
@@ -390,7 +388,6 @@ export class DotEditContentHtmlService {
 
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
-            console.log('node', node);
             if (node.tagName === 'SCRIPT') {
                 const script = doc.createElement('script');
                 script.type = 'text/javascript';
@@ -431,24 +428,29 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createNewContentlet(contentlet: DotPageContent): HTMLElement {
+    private createNewContentlet(contentlet: HTMLElement | string): HTMLElement {
         const doc = this.getEditPageDocument();
+        let contentletElement: HTMLElement;
+
+        if (typeof contentlet === 'string') {
+            const div = doc.createElement('div');
+            div.innerHTML = contentlet;
+            contentletElement = div.children[0];
+        } else {
+            contentletElement = contentlet;
+        }
+
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
-        dotEditContentletEl.dataset.dotObject = 'contentlet';
-        dotEditContentletEl.dataset.dotIdentifier = contentlet.identifier;
-        dotEditContentletEl.dataset.dotInode = contentlet.inode;
-        dotEditContentletEl.dataset.dotType = contentlet.type;
-        dotEditContentletEl.dataset.dotBasetype = contentlet.baseType;
-        dotEditContentletEl.dataset.dotCanEdit = 'true';
+        Object.assign(dotEditContentletEl.dataset, contentletElement.dataset);
 
         /*
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.
         */
         const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(
-            contentlet.identifier,
-            contentlet.inode,
-            dotEditContentletEl.dataset.dotCanEdit === 'true'
+            contentletElement.dataset.identifier,
+            contentletElement.dataset.inode,
+            contentletElement.dataset.dotCanEdit === 'true'
         );
 
         dotEditContentletEl.innerHTML = `
