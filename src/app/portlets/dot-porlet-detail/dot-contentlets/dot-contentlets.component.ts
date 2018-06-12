@@ -1,8 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { DotContentletEditorService } from '../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotNavigationService } from '../../view/components/dot-navigation/dot-navigation.service';
+import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { ActivatedRoute } from '@angular/router';
-import { DotRouterService } from '../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 
 @Component({
     providers: [],
@@ -20,7 +19,7 @@ export class DotContentletsComponent implements AfterViewInit {
         setTimeout(() => {
             this.dotContentletEditorService.edit({
                 data: {
-                    inode: this.route.snapshot.params.inode
+                    inode: this.route.snapshot.params.asset
                 }
             });
         }, 0);

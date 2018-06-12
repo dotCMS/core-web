@@ -20,7 +20,6 @@ describe('DotContentletEditorComponent', () => {
     let fixture: ComponentFixture<DotContentletEditorComponent>;
     let de: DebugElement;
     let add: DebugElement;
-    let edit: DebugElement;
     let create: DebugElement;
 
     beforeEach(async(() => {
@@ -46,7 +45,6 @@ describe('DotContentletEditorComponent', () => {
         de = fixture.debugElement;
         fixture.detectChanges();
         add = de.query(By.css('dot-add-contentlet'));
-        edit = de.query(By.css('dot-edit-contentlet'));
         create = de.query(By.css('dot-create-contentlet'));
         spyOn(component.close, 'emit');
     });
@@ -55,19 +53,14 @@ describe('DotContentletEditorComponent', () => {
         expect(add).toBeTruthy();
     });
 
-    it('should have edit contentlet', () => {
-        expect(edit).toBeTruthy();
-    });
-
     it('should have create contentlet', () => {
         expect(create).toBeTruthy();
     });
 
     it('should emit close', () => {
         add.triggerEventHandler('close', {});
-        edit.triggerEventHandler('close', {});
         create.triggerEventHandler('close', {});
 
-        expect(component.close.emit).toHaveBeenCalledTimes(3);
+        expect(component.close.emit).toHaveBeenCalledTimes(2);
     });
 });

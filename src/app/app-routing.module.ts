@@ -77,19 +77,25 @@ const PORTLETS_IFRAME = [
             {
                 component: IframePortletLegacyComponent,
                 path: ':id',
+                children: [
+                    {
+                        loadChildren: 'app/portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
+                        path: ':asset'
+                    },
+                ]
             },
             {
                 path: '',
                 children: []
             },
-            {
-                loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
-                path: 'workflow/:id'
-            },
-            {
-                path: 'content/:inode',
-                loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
-            },
+            // {
+            //     loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
+            //     path: 'workflow/:id'
+            // },
+            // {
+            //     path: 'content/:inode',
+            //     loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
+            // },
         ]
     },
     {
