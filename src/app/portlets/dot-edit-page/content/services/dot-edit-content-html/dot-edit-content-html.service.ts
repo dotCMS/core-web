@@ -175,7 +175,7 @@ export class DotEditContentHtmlService {
             this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
-                    const contentletEl: HTMLElement = this.createNewContentlet(contentletHtml);
+                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentletHtml);
                     containerEl.insertAdjacentElement('beforeend', contentletEl);
 
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
@@ -199,7 +199,7 @@ export class DotEditContentHtmlService {
             this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .subscribe((contentRendered: any) => {
-                    const contentletEl: HTMLElement = this.createNewContentlet(contentRendered.render);
+                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentRendered.render);
                     containerEl.insertAdjacentElement('beforeend', contentletEl);
                     this.renderHTMLToContentlet(contentletEl, contentRendered.render);
                     this.currentAction = DotContentletAction.EDIT;
@@ -428,17 +428,17 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createNewContentlet(contentlet: HTMLElement | string): HTMLElement {
+    private createNewContentletFromString(contentletHTML: string): HTMLElement {
         const doc = this.getEditPageDocument();
-        let contentletElement: HTMLElement;
 
-        if (typeof contentlet === 'string') {
-            const div = doc.createElement('div');
-            div.innerHTML = contentlet;
-            contentletElement = div.children[0];
-        } else {
-            contentletElement = contentlet;
-        }
+        const div = doc.createElement('div');
+        div.innerHTML = contentletHTML;
+
+        return this.createNewContentlet(div.children[0]);
+    }
+
+    private createNewContentlet(contentletElement: HTMLElement): HTMLElement {
+        const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
         Object.assign(dotEditContentletEl.dataset, contentletElement.dataset);
