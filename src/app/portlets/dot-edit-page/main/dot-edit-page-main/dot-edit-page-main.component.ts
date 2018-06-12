@@ -5,6 +5,7 @@ import { DotContentletEditorService } from '../../../../view/components/dot-cont
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
+import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 
 @Component({
     selector: 'dot-edit-page-main',
@@ -15,7 +16,11 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     pageState: Observable<DotRenderedPageState>;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private route: ActivatedRoute, private dotContentletEditorService: DotContentletEditorService) {}
+    constructor(
+        private route: ActivatedRoute,
+        private dotContentletEditorService: DotContentletEditorService,
+        private dotPageStateService: DotPageStateService
+    ) {}
 
     ngOnInit() {
         this.pageState = this.route.data.pluck('content');
@@ -44,6 +49,9 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     private subscribeIframeCloseAction(): void {
         this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe((closedEvent: boolean) => {
             console.log('---event close', closedEvent);
+
+            // EL URL SE LO PODEMOS PASAR DESDE EL route.params
+            this.dotPageStateService.reload('');
         });
     }
 }

@@ -46,6 +46,12 @@ export class DotPageStateService {
         );
     }
 
+    reload(url: string): void {
+        this.get(url).subscribe((page: DotRenderedPage) => {
+            // AQUI EL SUBJECT.next(page)
+        });
+    }
+
     /**
      * Get page state
      *
