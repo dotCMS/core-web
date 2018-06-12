@@ -1,0 +1,6 @@
+<button type="button" pButton [icon]="icon" (click)="toggle()"></button>
+<ul class="dot-menu-list" *ngIf="visible">
+    <li class="dot-menu-item" *ngFor="let item of items">
+        <a class="dot-menu-item__link"><span>{{ item.label }}</span></a>
+    </li>
+</ul>
