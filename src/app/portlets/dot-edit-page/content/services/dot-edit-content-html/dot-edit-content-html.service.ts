@@ -40,6 +40,7 @@ export class DotEditContentHtmlService {
     private currentAction: DotContentletAction;
     private rowsMaxHeight: number[] = [];
     private docClickSubscription: Subscription;
+    private updateContentletInode = false;
 
     private readonly docClickHandlers;
 
@@ -215,17 +216,6 @@ export class DotEditContentHtmlService {
     setContainterToAppendContentlet(pageContainer: DotPageContainer): void {
         this.currentContainer = pageContainer;
         this.currentAction = DotContentletAction.ADD;
-    }
-
-    /**
-     * Set the container id where a contentlet will be update
-     *
-     * @param {string} identifier
-     * @memberof DotEditContentHtmlService
-     */
-    setContainterToEditContentlet(pageContainer: DotPageContainer): void {
-        this.currentContainer = pageContainer;
-        this.currentAction = DotContentletAction.EDIT;
     }
 
     /**
@@ -419,13 +409,9 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private bindButtonsEvent(button: HTMLElement, type: string): void {
-        button.addEventListener('click', ($event: MouseEvent) => {
-            this.buttonClickHandler(<HTMLElement>$event.target, type);
-        });
-    }
-
     private buttonClickHandler(target: HTMLElement, type: string) {
+        this.updateContentletInode = this.shouldUpdateContentletInode(target);
+
         const container = <HTMLElement>target.closest('div[data-dot-object="container"]');
 
         this.iframeActions$.next({
@@ -476,9 +462,6 @@ export class DotEditContentHtmlService {
             </div>
         `;
 
-        this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__edit'), 'edit');
-        this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__remove'), 'remove');
-
         return dotEditContentletEl;
     }
 
@@ -497,7 +480,10 @@ export class DotEditContentHtmlService {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
                 } else {
-                    this.renderEditedContentlet(this.currentContentlet || contentletEvent.data);
+                    if (this.updateContentletInode) {
+                        this.currentContentlet.inode = contentletEvent.data.inode;
+                    }
+                    this.renderEditedContentlet(this.currentContentlet);
                 }
             },
             // When a user select a content from the search jsp
@@ -514,6 +500,10 @@ export class DotEditContentHtmlService {
         };
 
         return contentletEventsMap[event];
+    }
+
+    private shouldUpdateContentletInode(target: HTMLElement) {
+        return target.dataset.dotObject === 'edit-content' && target.tagName === 'BUTTON';
     }
 
     private loadCodeIntoIframe(editPageHTML: string): void {
