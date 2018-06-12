@@ -64,14 +64,6 @@ const PORTLETS_ANGULAR = [
         loadChildren: 'app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
     },
     {
-        path: 'contentlets/:inode',
-        loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
-    },
-    // {
-    //     path: 'task/:id',
-    //     loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule'
-    // },
-    {
         canActivate: [MenuGuardService],
         path: '',
         children: []
@@ -87,13 +79,17 @@ const PORTLETS_IFRAME = [
                 path: ':id',
             },
             {
-                loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
-                path: ':id/:asset'
-            },
-            {
                 path: '',
                 children: []
-            }
+            },
+            {
+                loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
+                path: 'workflow/:id'
+            },
+            {
+                path: 'content/:inode',
+                loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
+            },
         ]
     },
     {
