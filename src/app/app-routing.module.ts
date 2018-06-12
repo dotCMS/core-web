@@ -87,15 +87,7 @@ const PORTLETS_IFRAME = [
             {
                 path: '',
                 children: []
-            },
-            // {
-            //     loadChildren: 'app/portlets/dot-workflow-task/dot-workflow-task.module#DotWorkflowTaskModule',
-            //     path: 'workflow/:id'
-            // },
-            // {
-            //     path: 'content/:inode',
-            //     loadChildren: 'app/portlets/dot-contentlets/dot-contentlets.module#DotContentletsModule'
-            // },
+            }
         ]
     },
     {
