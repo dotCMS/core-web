@@ -386,8 +386,10 @@ export class DotEditContentHtmlService {
         const div = doc.createElement('div');
         div.innerHTML = html;
 
+        const contentDivWrapper = div.children[0];
+
         // TODO: need to come up with a more efficient way to do this
-        Array.from(div.children).forEach((node: any) => {
+        Array.from(contentDivWrapper.children).forEach((node: any) => {
             if (node.tagName === 'SCRIPT') {
                 const script = doc.createElement('script');
                 script.type = 'text/javascript';
@@ -400,7 +402,6 @@ export class DotEditContentHtmlService {
 
                 contentletContentEl.appendChild(script);
             } else {
-                node.removeAttribute('data-dot-object');
                 contentletContentEl.appendChild(node);
             }
         });
