@@ -2,9 +2,7 @@ import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.se
 import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { filter } from 'rxjs/operators/filter';
-import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -19,9 +17,7 @@ export class MainComponentLegacyComponent implements OnInit {
 
     constructor(
         private dotEventsService: DotEventsService,
-        private dotRouterService: DotRouterService,
         private router: Router,
-        private dotIframeService: DotIframeService,
         public dotDialotService: DotDialogService
     ) {}
 
@@ -54,17 +50,6 @@ export class MainComponentLegacyComponent implements OnInit {
         document.body.style.backgroundImage = '';
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((_event) => this.setMenuState());
         this.setMenuState();
-    }
-
-    /**
-     * Reload content search iframe when contentlet editor close
-     *
-     * @memberof MainComponentLegacyComponent
-     */
-    onCloseContentletEditor(): void {
-        if (this.dotRouterService.currentPortlet.id === 'content') {
-            this.dotIframeService.run('doSearch');
-        }
     }
 
     /**
