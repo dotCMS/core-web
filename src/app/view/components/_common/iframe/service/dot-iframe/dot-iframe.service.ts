@@ -72,7 +72,8 @@ export class DotIframeService {
             'content': 'doSearch',
             'site-browser': 'reloadContent',
             'vanity-urls': 'doSearch',
-            'sites': 'refreshHostTable'
+            'sites': 'refreshHostTable',
+            'calendar': 'initializeCalendar'
         };
 
         return mapOfFunctions[portlet];
