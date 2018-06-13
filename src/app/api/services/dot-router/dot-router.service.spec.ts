@@ -23,43 +23,43 @@ describe('DotRouterService', () => {
 
             service = testbed.get(DotRouterService);
             router = testbed.get(Router);
+            spyOn(router, 'navigate');
         })
+
     );
 
-    describe('goToMain()', () => {
-        it('should go to /', () => {
-            spyOn(router, 'navigate');
-            service.goToMain();
-
-            expect(router.navigate).toHaveBeenCalledWith(['/']);
-        });
-
-        it('should go to edit page', () => {
-            spyOn(service, 'goToEditPage');
-            service.goToMain('/about/us');
-
-            expect(service.goToEditPage).toHaveBeenCalledWith('/about/us');
-        });
-
-        it('should go to previousSavedURL', () => {
-            service.previousSavedURL = 'test/fake';
-
-            spyOn(router, 'navigate').and.callFake(() => {
-                return new Promise((resolve) => {
-                    resolve(true);
-                });
-            });
-            service.goToMain();
-
-            expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
-        });
+    it('should go to main', () => {
+        service.goToMain();
+        expect(router.navigate).toHaveBeenCalledWith(['/']);
     });
 
-    describe('goToEditPage()', () => {
-        it('should go to edit page', () => {
-            spyOn(router, 'navigate');
-            service.goToEditPage('abc/def');
-            expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], { queryParams: { url: 'abc/def' } });
+    it('should go to edit page', () => {
+        spyOn(service, 'goToEditPage');
+        service.goToMain('/about/us');
+
+        expect(service.goToEditPage).toHaveBeenCalledWith('/about/us');
+    });
+
+    it('should go to previousSavedURL', () => {
+        service.previousSavedURL = 'test/fake';
+
+        spyOn(router, 'navigate').and.callFake(() => {
+            return new Promise((resolve) => {
+                resolve(true);
+            });
         });
+        service.goToMain();
+
+        expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
+    });
+
+    it('should go to edit page', () => {
+        service.goToEditPage('abc/def');
+        expect(router.navigate).toHaveBeenCalledWith(['/edit-page/content'], { queryParams: { url: 'abc/def' } });
+    });
+
+    it('should go to edit contentlet', () => {
+        service.goToEditContentlet('123');
+        expect(router.navigate).toHaveBeenCalledWith(['/c/content/123']);
     });
 });

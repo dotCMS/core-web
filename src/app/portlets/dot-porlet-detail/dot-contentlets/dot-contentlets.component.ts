@@ -31,6 +31,6 @@ export class DotContentletsComponent implements AfterViewInit {
      * @memberof DotContentletsComponent
      */
     onCloseEditor(): void {
-        this.dotRouterService.gotoPortlet('/c/content');
+        this.dotRouterService.gotoPortlet(`/c/${this.dotRouterService.currentPortlet.id}`);
     }
 }

@@ -1,3 +1,6 @@
+<!-- TODO: Move this to iframe-portlet-legacy -->
+<dot-create-contentlet (close)="onCloseContentletEditor($event)"></dot-create-contentlet>
+
 <dot-dialog></dot-dialog>
 <div class="layout" [class.collapsed]="isMenuCollapsed">
     <dot-toolbar class="layout__toolbar" [collapsed]="isMenuCollapsed" (mainButtonClick)="toggleSidenav($event)"></dot-toolbar>

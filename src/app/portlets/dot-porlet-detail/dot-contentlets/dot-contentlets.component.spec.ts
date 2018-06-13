@@ -61,6 +61,9 @@ describe('DotContentletsComponent', () => {
         de = fixture.debugElement;
         dotRouterService = de.injector.get(DotRouterService);
         spyOn(dotRouterService, 'gotoPortlet');
+        spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
+            id: 'current-portlet'
+        });
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         fixture.detectChanges();
     });
@@ -76,9 +79,9 @@ describe('DotContentletsComponent', () => {
         }, 0);
     }));
 
-    it('should call first portlet when modal closed', () => {
+    it('should current portlet when modal closed', () => {
         const edit = de.query(By.css('dot-edit-contentlet'));
         edit.triggerEventHandler('close', {});
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/content');
+        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/current-portlet');
     });
 });

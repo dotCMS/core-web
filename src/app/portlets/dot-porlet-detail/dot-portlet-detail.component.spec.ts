@@ -42,28 +42,20 @@ describe('DotPortletDetailComponent', () => {
         router = de.injector.get(ActivatedRoute);
     });
 
-    describe('hidden', () => {
-        beforeEach(() => {
-            spyOnProperty(router, 'parent', 'get').and.returnValue({
-                parent: {
-                    snapshot: {
-                        params: {
-                            id: ''
-                        }
+    it('should not have dot-workflow-task', () => {
+        spyOnProperty(router, 'parent', 'get').and.returnValue({
+            parent: {
+                snapshot: {
+                    params: {
+                        id: ''
                     }
                 }
-            });
-
-            fixture.detectChanges();
+            }
         });
 
-        it('should not have dot-workflow-task', () => {
-            expect(de.query(By.css('dot-workflow-task')) === null).toBe(true);
-        });
-
-        it('should not have dot-contentlets', () => {
-            expect(de.query(By.css('dot-contentlets')) === null).toBe(true);
-        });
+        fixture.detectChanges();
+        expect(de.query(By.css('dot-workflow-task')) === null).toBe(true);
+        expect(de.query(By.css('dot-contentlets')) === null).toBe(false);
     });
 
     it('should have dot-workflow-task', () => {
