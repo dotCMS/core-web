@@ -56,6 +56,7 @@ export class DotEditPageNavComponent implements OnChanges {
         return this.dotMessageService
             .getMessages([
                 'editpage.toolbar.nav.content',
+                'editpage.toolbar.nav.properties',
                 'editpage.toolbar.nav.layout',
                 'editpage.toolbar.nav.code',
                 'editpage.toolbar.nav.license.enterprise.only',

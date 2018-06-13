@@ -40,6 +40,7 @@ describe('DotEditPageNavComponent', () => {
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
         'editpage.toolbar.nav.layout': 'Layout',
+        'editpage.toolbar.nav.properties': 'Properties',
         'editpage.toolbar.nav.code': 'Code',
         'editpage.toolbar.nav.license.enterprise.only': 'Enterprise only',
         'editpage.toolbar.nav.layout.advance.disabled': 'Can’t edit advanced template'
@@ -86,15 +87,28 @@ describe('DotEditPageNavComponent', () => {
             const activeItem = fixture.debugElement.query(By.css('.edit-page-nav__item--active'));
             expect(activeItem.nativeElement.innerText).toContain('Content');
         });
+
+        it('should emit event when clicked on Properties button', () => {
+            spyOn(component.buttonClicked, 'emit');
+
+            const propertiesMock = {
+                evt: new MouseEvent('click'),
+                inode: '123',
+                label: 'Properties'
+            };
+
+            component.emitClick(propertiesMock.evt, propertiesMock.inode, propertiesMock.label);
+            expect(component.buttonClicked.emit).toHaveBeenCalledWith({ inode: propertiesMock.inode, label: propertiesMock.label });
+        });
     });
 
     describe('model change', () => {
         it('should have basic menu items', () => {
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
-            expect(menuListItems.length).toEqual(2);
+            expect(menuListItems.length).toEqual(3);
 
-            const labels = ['Content', 'Layout'];
-            const icons = ['fa fa-file-text', 'fa fa-th-large'];
+            const labels = ['Content', 'Layout', 'Properties'];
+            const icons = ['fa fa-file-text', 'fa fa-th-large', 'fa fa-plus'];
             menuListItems.forEach((item, index) => {
                 const iconClass = item.query(By.css('i')).nativeElement.classList.value;
                 expect(iconClass).toEqual(icons[index]);
@@ -131,17 +145,13 @@ describe('DotEditPageNavComponent', () => {
         });
         // Disable advance template commit https://github.com/dotCMS/core-web/pull/589
         it('should have menu items: Content and Layout', () => {
-            fixture.componentInstance.pageState = new DotRenderedPageState(
-                mockUser,
-                mockDotRenderedPageAdvanceTemplate,
-                null
-            );
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPageAdvanceTemplate, null);
 
             fixture.detectChanges();
             const menuListItems: DebugElement[] = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             const iconClass = menuListItems[0].query(By.css('i')).nativeElement.classList.value;
 
-            expect(menuListItems.length).toEqual(2);
+            expect(menuListItems.length).toEqual(3);
             expect(iconClass).toEqual('fa fa-file-text');
             expect(menuListItems[0].nativeElement.textContent).toContain('Content');
             expect(menuListItems[1].nativeElement.textContent).toContain('Layout');
@@ -151,11 +161,7 @@ describe('DotEditPageNavComponent', () => {
             spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
 
             component.model = undefined;
-            fixture.componentInstance.pageState = new DotRenderedPageState(
-                mockUser,
-                mockDotRenderedPageAdvanceTemplate,
-                null
-            );
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPageAdvanceTemplate, null);
             fixture.detectChanges();
 
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
@@ -164,11 +170,7 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should have layout option disabled and enterprise only message when template is advance and license is comunity', () => {
-            fixture.componentInstance.pageState = new DotRenderedPageState(
-                mockUser,
-                mockDotRenderedPageAdvanceTemplate,
-                null
-            );
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPageAdvanceTemplate, null);
             fixture.detectChanges();
 
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
@@ -194,8 +196,8 @@ describe('DotEditPageNavComponent', () => {
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
 
-            const labels = ['Content', 'Layout'];
-            const icons = ['fa fa-file-text', 'fa fa-th-large'];
+            const labels = ['Content', 'Layout', 'Properties'];
+            const icons = ['fa fa-file-text', 'fa fa-th-large', 'fa fa-plus'];
             menuListItems.forEach((item, index) => {
                 const iconClass = item.query(By.css('i')).nativeElement.classList.value;
                 expect(iconClass).toEqual(icons[index]);
