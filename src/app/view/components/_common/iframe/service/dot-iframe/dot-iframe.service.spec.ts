@@ -46,5 +46,11 @@ describe('DotIframeService', () => {
 
             expect(this.service.run).toHaveBeenCalledWith('reloadContent');
         });
+
+        it('should reload data for sites', () => {
+            this.service.reloadData('sites');
+
+            expect(this.service.run).toHaveBeenCalledWith('refreshHostTable');
+        });
     });
 });
