@@ -23,7 +23,17 @@ describe('DotRouterService', () => {
 
             service = testbed.get(DotRouterService);
             router = testbed.get(Router);
-            spyOn(router, 'navigate');
+            spyOn(router, 'navigate').and.callFake(() => {
+                return new Promise((resolve) => {
+                    resolve(true);
+                });
+            });
+
+            spyOnProperty(router, 'routerState', 'get').and.returnValue({
+                snapshot: {
+                    url: '/c/hello-world'
+                }
+            });
         })
 
     );
@@ -42,12 +52,6 @@ describe('DotRouterService', () => {
 
     it('should go to previousSavedURL', () => {
         service.previousSavedURL = 'test/fake';
-
-        spyOn(router, 'navigate').and.callFake(() => {
-            return new Promise((resolve) => {
-                resolve(true);
-            });
-        });
         service.goToMain();
 
         expect(router.navigate).toHaveBeenCalledWith(['test/fake']);
@@ -60,6 +64,6 @@ describe('DotRouterService', () => {
 
     it('should go to edit contentlet', () => {
         service.goToEditContentlet('123');
-        expect(router.navigate).toHaveBeenCalledWith(['/c/content/123']);
+        expect(router.navigate).toHaveBeenCalledWith(['/c/hello-world/123']);
     });
 });

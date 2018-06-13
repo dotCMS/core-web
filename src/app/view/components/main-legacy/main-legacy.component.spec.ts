@@ -8,6 +8,8 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotContentletEditorModule } from '../dot-contentlet-editor/dot-contentlet-editor.module';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
 
 @Component({
     selector: 'dot-dialog',
@@ -38,12 +40,13 @@ describe('MainComponentLegacyComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            imports: [RouterTestingModule],
+            imports: [RouterTestingModule, DotContentletEditorModule],
             providers: [
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
-                }
+                },
+                DotMenuService
             ],
             declarations: [
                 MainComponentLegacyComponent,
@@ -60,6 +63,7 @@ describe('MainComponentLegacyComponent', () => {
         de = fixture.debugElement;
         dotRouterService = de.injector.get(DotRouterService);
         dotIframeService = de.injector.get(DotIframeService);
+        spyOn(dotIframeService, 'run');
         fixture.detectChanges();
     });
 
@@ -71,26 +75,24 @@ describe('MainComponentLegacyComponent', () => {
     });
 
     describe('Create Contentlet', () => {
-        describe('Events', () => {
-            it('should refresh the current portlet on close if portlet is content', () => {
-                spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
-                    id: 'content'
-                });
-                const contentletEditor: DebugElement = de.query(By.css('dot-contentlet-editor'));
-                contentletEditor.triggerEventHandler('close', {});
-
-                expect(dotIframeService.run).toHaveBeenCalledWith('doSearch');
+        it('should refresh the current portlet on close if portlet is content', () => {
+            spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
+                id: 'content'
             });
+            const createContentlet: DebugElement = de.query(By.css('dot-create-contentlet'));
+            createContentlet.triggerEventHandler('close', {});
 
-            it('should not refresh the current portlet on close', () => {
-                spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
-                    id: 'what'
-                });
-                const contentletEditor: DebugElement = de.query(By.css('dot-contentlet-editor'));
-                contentletEditor.triggerEventHandler('close', {});
+            expect(dotIframeService.run).toHaveBeenCalledWith('doSearch');
+        });
 
-                expect(dotIframeService.run).not.toHaveBeenCalled();
+        it('should not refresh the current portlet on close', () => {
+            spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
+                id: 'what'
             });
+            const createContentlet: DebugElement = de.query(By.css('dot-create-contentlet'));
+            createContentlet.triggerEventHandler('close', {});
+
+            expect(dotIframeService.run).not.toHaveBeenCalled();
         });
     });
 });
