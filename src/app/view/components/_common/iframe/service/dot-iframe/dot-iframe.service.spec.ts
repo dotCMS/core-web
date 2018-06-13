@@ -23,4 +23,28 @@ describe('DotIframeService', () => {
 
         this.service.run('functionName');
     });
+
+    describe('reload portlet data', () => {
+        beforeEach(() => {
+            spyOn(this.service, 'run');
+        });
+
+        it('should reload data for content', () => {
+            this.service.reloadData('content');
+
+            expect(this.service.run).toHaveBeenCalledWith('doSearch');
+        });
+
+        it('should reload data for vanity-urls', () => {
+            this.service.reloadData('vanity-urls');
+
+            expect(this.service.run).toHaveBeenCalledWith('doSearch');
+        });
+
+        it('should reload data for site-browser', () => {
+            this.service.reloadData('site-browser');
+
+            expect(this.service.run).toHaveBeenCalledWith('reloadContent');
+        });
+    });
 });

@@ -62,11 +62,7 @@ export class MainComponentLegacyComponent implements OnInit {
      * @memberof MainComponentLegacyComponent
      */
     onCloseContentletEditor(): void {
-        const functionToRun = this.getFunctionToRefreshIframe(this.dotRouterService.currentPortlet.id);
-
-        if (functionToRun) {
-            this.dotIframeService.run(functionToRun);
-        }
+        this.dotIframeService.reloadData(this.dotRouterService.currentPortlet.id);
     }
 
     /**
@@ -91,12 +87,5 @@ export class MainComponentLegacyComponent implements OnInit {
         this.dotEventsService.notify('dot-side-nav-toggle');
     }
 
-    private getFunctionToRefreshIframe(portlet: string): string {
-        const map = {
-            'content': 'doSearch',
-            'site-browser': 'reloadContent',
-        };
 
-        return map[portlet];
-    }
 }
