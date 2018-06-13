@@ -1,7 +1,6 @@
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
 import { DotDialogService } from './../../../../api/services/dot-dialog/dot-dialog.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
@@ -15,6 +14,7 @@ import { DotGlobalMessageService } from '../../../../view/components/_common/dot
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { DotTheme } from '../../shared/models/dot-theme.model';
 import { DotThemesService } from '../../../../api/services/dot-themes/dot-themes.service';
 
@@ -45,30 +45,31 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         private fb: FormBuilder,
         private pageViewService: PageViewService,
         private templateContainersCacheService: TemplateContainersCacheService,
-        public dotMessageService: DotMessageService,
-        public router: Router,
         private loginService: LoginService,
+        private dotRouterService: DotRouterService,
+        public dotMessageService: DotMessageService,
         private dotThemesService: DotThemesService
     ) {}
 
     ngOnInit(): void {
         this.dotMessageService
             .getMessages([
-                'editpage.layout.toolbar.action.save',
-                'editpage.layout.toolbar.action.cancel',
-                'editpage.layout.toolbar.template.name',
-                'editpage.layout.toolbar.save.template',
+                'common.validation.name.error.required',
+                'dot.common.message.saved',
+                'dot.common.message.saving',
+                'dot.common.cancel',
                 'editpage.layout.dialog.edit.page',
                 'editpage.layout.dialog.edit.template',
-                'editpage.layout.dialog.info',
                 'editpage.layout.dialog.header',
-                'dot.common.message.saving',
-                'dot.common.message.saved',
-                'common.validation.name.error.required'
+                'editpage.layout.dialog.info',
+                'editpage.layout.toolbar.action.save',
+                'editpage.layout.toolbar.save.template',
+                'editpage.layout.toolbar.template.name'
             ])
             .subscribe();
 
         this.setupLayout();
+
         if (this.shouldShowDialog()) {
             this.showTemplateLayoutDialog();
         } else {
@@ -85,6 +86,15 @@ export class DotEditLayoutDesignerComponent implements OnInit {
      */
     isLayout(): boolean {
         return !this.pageState.template || this.pageState.template.anonymous;
+    }
+
+    /**
+     * Go to edit page when user click cancel
+     *
+     * @memberof DotEditLayoutDesignerComponent
+     */
+    onCancel(): void {
+        this.dotRouterService.goToEditPage(this.pageState.page.pageURI);
     }
 
     /**

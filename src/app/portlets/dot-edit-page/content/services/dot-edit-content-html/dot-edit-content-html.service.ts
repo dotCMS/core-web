@@ -1,17 +1,26 @@
-import { LoggerService } from 'dotcms-js/dotcms-js';
 import { Injectable, ElementRef } from '@angular/core';
-import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
-import { DotContainerContentletService } from '../dot-container-contentlet.service';
-import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
-import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
-import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
-import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
+
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { take } from 'rxjs/operators/take';
+
+import * as _ from 'lodash';
+
+import { DotContainerContentletService } from '../dot-container-contentlet.service';
+import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
+import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
+import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
+import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
+import { DotLayout } from '../../../shared/models/dot-layout.model';
+import { DotLayoutColumn } from '../../../shared/models/dot-layout-column.model';
+import { DotLayoutRow } from '../../../shared/models/dot-layout-row.model';
+import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotPageContainer } from '../../../shared/models/dot-page-container.model';
 import { DotPageContent } from '../../../shared/models/dot-page-content.model';
-import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
+import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
+import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 
 export enum DotContentletAction {
     EDIT,
@@ -22,18 +31,22 @@ export enum DotContentletAction {
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<any> = new Subject();
     currentContainer: DotPageContainer;
+    currentContentlet: DotPageContent;
     iframe: ElementRef;
     iframeActions$: Subject<any> = new Subject();
     pageModel$: Subject<DotPageContainer[]> = new Subject();
 
     private currentAction: DotContentletAction;
+    private rowsMaxHeight: number[] = [];
+    private docClickSubscription: Subscription;
+
+    private readonly docClickHandlers;
 
     constructor(
         private dotContainerContentletService: DotContainerContentletService,
         private dotDragDropAPIHtmlService: DotDragDropAPIHtmlService,
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
-        private loggerService: LoggerService,
         private dotDialogService: DotDialogService,
         private dotMessageService: DotMessageService
     ) {
@@ -42,6 +55,11 @@ export class DotEditContentHtmlService {
         });
 
         this.dotMessageService.getMessages(['editpage.content.add.already.title', 'editpage.content.add.already.message']).subscribe();
+
+        if (!this.docClickHandlers) {
+            this.docClickHandlers = {};
+            this.setGlobalClickHandlers();
+        }
     }
 
     /**
@@ -56,9 +74,13 @@ export class DotEditContentHtmlService {
         return new Promise((resolve, _reject) => {
             this.iframe = iframeEl;
             const iframeElement = this.getEditPageIframe();
+
             iframeElement.addEventListener('load', () => {
                 iframeElement.contentWindow[MODEL_VAR_NAME] = this.pageModel$;
                 iframeElement.contentWindow.contentletEvents = this.contentletEvents$;
+
+                this.bindGlobalEvents();
+
                 resolve(true);
             });
             // Load content after bind 'load' event.
@@ -87,12 +109,11 @@ export class DotEditContentHtmlService {
      */
     removeContentlet(container: DotPageContainer, content: DotPageContent): void {
         const doc = this.getEditPageDocument();
-        // tslint:disable-next-line:max-line-length
-        const contenletEl = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${
-                container.uuid
-            }"] div[data-dot-inode="${content.inode}"]`
-        );
+        const selector = [
+            `div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${container.uuid}"] `,
+            `div[data-dot-object="contentlet"][data-dot-inode="${content.inode}"]`
+        ].join('');
+        const contenletEl = doc.querySelector(selector);
         contenletEl.remove();
         this.pageModel$.next(this.getContentModel());
     }
@@ -105,7 +126,9 @@ export class DotEditContentHtmlService {
      */
     renderEditedContentlet(contentlet: DotPageContent): void {
         const doc = this.getEditPageDocument();
-        const currentContentlets = doc.querySelectorAll(`div[data-dot-identifier="${contentlet.identifier}"]`);
+        const currentContentlets = doc.querySelectorAll(
+            `div[data-dot-object="contentlet"][data-dot-identifier="${contentlet.identifier}"]`
+        );
 
         currentContentlets.forEach((currentContentlet) => {
             contentlet.type = currentContentlet.dataset.dotType;
@@ -120,9 +143,12 @@ export class DotEditContentHtmlService {
                 uuid: containerEl.dataset.dotUuid
             };
 
-            this.dotContainerContentletService.getContentletToContainer(container, contentlet).subscribe((contentletHtml: string) => {
-                this.renderHTMLToContentlet(contentletEl, contentletHtml);
-            });
+            this.dotContainerContentletService
+                .getContentletToContainer(container, contentlet)
+                .pipe(take(1))
+                .subscribe((contentletHtml: string) => {
+                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                });
         });
     }
 
@@ -178,6 +204,42 @@ export class DotEditContentHtmlService {
     }
 
     /**
+     * Set listener for Iframe body changes to change container's height
+     *
+     * @param {DotLayout} pageLayout
+     * @memberof DotEditContentHtmlService
+     */
+    setContaintersChangeHeightListener(pageLayout: DotLayout): void {
+        const doc = this.getEditPageDocument();
+        const target = doc.querySelector('body');
+        const config = { attributes: true, childList: true, characterData: true };
+        const debounceContainersHeightChange = _.debounce((layout: DotLayout) => this.setContaintersSameHeight(layout), 500, {
+            leading: true
+        });
+        const observer = new MutationObserver(() => {
+            debounceContainersHeightChange(pageLayout);
+        });
+        observer.observe(target, config);
+    }
+
+    /**
+     * Set the same height to containers in the same row
+     *
+     * @param {DotLayout} pageLayout
+     * @memberof DotEditContentHtmlService
+     */
+    setContaintersSameHeight(pageLayout: DotLayout): void {
+        const containersLayoutIds = this.getContainersLayoutIds(pageLayout);
+        const containerDomElements = this.getContainerDomElements(containersLayoutIds);
+
+        containerDomElements.forEach((containerRow: Array<HTMLElement>, index: number) => {
+            containerRow.forEach((container: HTMLElement) => {
+                container.style.height = `${this.rowsMaxHeight[index]}px`;
+            });
+        });
+    }
+
+    /**
      * Return the page model
      *
      * @returns {*}
@@ -185,6 +247,90 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow.getDotNgModel();
+    }
+
+    private bindGlobalEvents(): void {
+        const doc = this.getEditPageDocument();
+
+        if (this.docClickSubscription) {
+            this.docClickSubscription.unsubscribe();
+        }
+
+        this.docClickSubscription = Observable.fromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
+            const target = <HTMLElement>$event.target;
+            const method = this.docClickHandlers[target.dataset.dotObject];
+            if (method) {
+                method(target);
+            }
+
+            if (!target.classList.contains('dotedit-menu__button')) {
+                this.closeContainersToolBarMenu();
+            }
+        });
+    }
+
+    private getCurrentContentlet(target: HTMLElement): DotPageContent {
+        const contentlet = <HTMLElement>target.closest('div[data-dot-object="contentlet"]');
+        return {
+            identifier: contentlet.dataset.dotIdentifier,
+            inode: contentlet.dataset.dotInode,
+            type: contentlet.dataset.dotType,
+            baseType: contentlet.dataset.dotBasetype,
+        };
+    }
+
+    private setGlobalClickHandlers(): void {
+        this.docClickHandlers['edit-content'] = (target: HTMLElement) => {
+            this.currentContentlet = this.getCurrentContentlet(target);
+            this.buttonClickHandler(target, 'edit');
+        };
+
+        this.docClickHandlers['remove-content'] = (target: HTMLElement) => {
+            this.buttonClickHandler(target, 'remove');
+        };
+
+        this.docClickHandlers['popup-button'] = (target: HTMLElement) => {
+            target.nextElementSibling.classList.toggle('active');
+        };
+
+        this.docClickHandlers['popup-menu-item'] = (target: HTMLElement) => {
+            if (target.dataset.dotAction === 'code') {
+                this.currentContentlet = this.getCurrentContentlet(target);
+            }
+
+            this.buttonClickHandler(target, target.dataset.dotAction);
+        };
+    }
+
+    private getContainersLayoutIds(pageLayout: DotLayout): Array<Array<DotPageContainer>> {
+        return pageLayout.body.rows.map((row: DotLayoutRow) => {
+            return row.columns.map((column: DotLayoutColumn) => {
+                return {
+                    identifier: column.containers[0].identifier,
+                    uuid: column.containers[0].uuid
+                };
+            });
+        });
+    }
+
+    private getContainerDomElements(containersLayoutIds: Array<Array<DotPageContainer>>): Array<Array<HTMLElement>> {
+        const doc = this.getEditPageDocument();
+
+        return containersLayoutIds.map((containerRow: Array<DotPageContainer>, index: number) => {
+            this.rowsMaxHeight[index] = 0;
+            return containerRow.map((container: DotPageContainer) => {
+                const querySelector = [
+                    `div[data-dot-object="container"]`,
+                    `[data-dot-identifier="${container.identifier}"]`,
+                    `[data-dot-uuid="${container.uuid}"]`
+                ].join('');
+                const containerElement = doc.querySelector(querySelector);
+                containerElement.style.height = 'auto';
+                this.rowsMaxHeight[index] =
+                    containerElement.offsetHeight > this.rowsMaxHeight[index] ? containerElement.offsetHeight : this.rowsMaxHeight[index];
+                return containerElement;
+            });
+        });
     }
 
     private showContentAlreadyAddedError(): void {
@@ -206,32 +352,17 @@ export class DotEditContentHtmlService {
 
     private addContentToolBars(): void {
         const doc = this.getEditPageDocument();
-
-        this.dotEditContentToolbarHtmlService
-            .addContainerToolbar(doc)
-            .then(() => {
-                this.bindContainersEvents();
-            })
-            .catch((error) => {
-                this.loggerService.debug(error);
-            });
-
-        this.dotEditContentToolbarHtmlService
-            .addContentletMarkup(doc)
-            .then(() => {
-                this.bindContenletsEvents();
-            })
-            .catch((error) => {
-                this.loggerService.debug(error);
-            });
+        this.dotEditContentToolbarHtmlService.addContainerToolbar(doc);
+        this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
     }
 
-    private appendNewContentlets(contentletContentEl: any, renderedContentet: string): void {
+    private appendNewContentlets(contentletContentEl: any, html: string): void {
         const doc = this.getEditPageDocument();
 
         // Add innerHTML to a plain so we can get the HTML nodes later
         const div = doc.createElement('div');
-        div.innerHTML = renderedContentet;
+        div.innerHTML = html;
+
         // TODO: need to come up with a more efficient way to do this
         Array.from(div.children).forEach((node: any) => {
             if (node.tagName === 'SCRIPT') {
@@ -252,54 +383,19 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private bindContenletsEvents(): void {
-        this.bindEditContentletEvents();
-        this.bindRemoveContentletEvents();
-    }
-
     private bindButtonsEvent(button: HTMLElement, type: string): void {
         button.addEventListener('click', ($event: MouseEvent) => {
-            const target = <HTMLElement>$event.target;
-            const container = <HTMLElement>target.closest('div[data-dot-object="container"]');
-
-            this.iframeActions$.next({
-                name: type,
-                dataset: target.dataset,
-                container: container ? container.dataset : null
-            });
+            this.buttonClickHandler(<HTMLElement>$event.target, type);
         });
     }
 
-    private bindContainersEvents(): void {
-        const addButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-menu__button:not([disabled])'));
+    private buttonClickHandler(target: HTMLElement, type: string) {
+        const container = <HTMLElement>target.closest('div[data-dot-object="container"]');
 
-        addButtons.forEach((button: HTMLElement) => {
-            const menuList = button.nextElementSibling;
-            const menuItems = Array.from(menuList.querySelectorAll('.dotedit-menu__item a'));
-
-            this.bindEventToSubMenu(button);
-
-            menuItems.forEach((menuItem: HTMLElement) => {
-                this.bindButtonsEvent(menuItem, menuItem.dataset.dotAction);
-            });
-        });
-    }
-
-    private bindEventToSubMenu(button: HTMLElement): void {
-        button.addEventListener('click', (_event) => {
-            this.closeContainersToolBarMenu(button.nextElementSibling);
-            button.nextElementSibling.classList.toggle('active');
-        });
-    }
-
-    private bindWindowEvents(): void {
-        const doc = this.getEditPageDocument();
-
-        doc.addEventListener('click', ($event: MouseEvent) => {
-            const target = <HTMLElement>$event.target;
-            if (!target.classList.contains('dotedit-menu__button')) {
-                this.closeContainersToolBarMenu();
-            }
+        this.iframeActions$.next({
+            name: type,
+            dataset: target.dataset,
+            container: container ? container.dataset : null
         });
     }
 
@@ -310,22 +406,6 @@ export class DotEditContentHtmlService {
             if (activeElement !== toolbar) {
                 toolbar.classList.remove('active');
             }
-        });
-    }
-
-    private bindEditContentletEvents(): void {
-        const editButtons = Array.from(
-            this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__edit:not(.dotedit-contentlet__disabled)')
-        );
-        editButtons.forEach((button: HTMLElement) => {
-            this.bindButtonsEvent(button, 'edit');
-        });
-    }
-
-    private bindRemoveContentletEvents(): void {
-        const editButtons = Array.from(this.getEditPageDocument().querySelectorAll('.dotedit-contentlet__remove'));
-        editButtons.forEach((button: HTMLElement) => {
-            this.bindButtonsEvent(button, 'remove');
         });
     }
 
@@ -349,13 +429,20 @@ export class DotEditContentHtmlService {
             dotEditContentletEl.dataset.dotCanEdit === 'true'
         );
 
-        dotEditContentletEl.innerHTML = `<div class="dotedit-contentlet__toolbar">
+        dotEditContentletEl.innerHTML = `
+            <div class="dotedit-contentlet__toolbar">
                 ${contenToolbarButtons}
             </div>
-            <div class="dotedit-contentlet__content"><div class="loader__overlay"><div class="loader"></div></div></div>`;
+            <div class="dotedit-contentlet__content">
+                <div class="loader__overlay">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        `;
 
         this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__edit'), 'edit');
         this.bindButtonsEvent(<HTMLElement>dotEditContentletEl.querySelector('.dotedit-contentlet__remove'), 'remove');
+
         return dotEditContentletEl;
     }
 
@@ -373,8 +460,8 @@ export class DotEditContentHtmlService {
             save: (contentletEvent: any) => {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
-                } else if (this.currentAction === DotContentletAction.EDIT) {
-                    this.renderEditedContentlet(contentletEvent.data);
+                } else {
+                    this.renderEditedContentlet(this.currentContentlet || contentletEvent.data);
                 }
             },
             // When a user select a content from the search jsp
@@ -414,15 +501,28 @@ export class DotEditContentHtmlService {
 
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
         this.setEditContentletStyles();
-        this.bindWindowEvents();
+    }
+
+    private addVtlEditMenu(contentletEl: HTMLElement): void {
+        const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
+        const contentletToolbarEl = contentletEl.querySelector('.dotedit-contentlet__toolbar');
+
+        const vtls = Array.from(contentletContentEl.querySelectorAll('div[data-dot-object="vtl-file"]'));
+
+        if (vtls.length) {
+            contentletToolbarEl.innerHTML = `
+                ${this.dotEditContentToolbarHtmlService.getEditVtlButtons(vtls)}
+                ${contentletToolbarEl.innerHTML}
+            `;
+        }
     }
 
     private renderHTMLToContentlet(contentletEl: HTMLElement, contentletHtml: string): void {
         const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
-
-        // Removing the loading indicator
-        contentletContentEl.innerHTML = '';
+        contentletContentEl.innerHTML = ''; // Removing the loading indicator
         this.appendNewContentlets(contentletContentEl, contentletHtml);
+
+        this.addVtlEditMenu(contentletEl);
 
         // Update the model with the recently added contentlet
         this.pageModel$.next(this.getContentModel());

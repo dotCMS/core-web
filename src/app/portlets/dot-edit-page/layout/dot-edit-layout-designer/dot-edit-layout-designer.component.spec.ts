@@ -21,6 +21,8 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { async } from '@angular/core/testing';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotTheme } from '../../shared/models/dot-theme.model';
 import { mockDotThemes } from '../../../../test/dot-themes.mock';
 
@@ -58,18 +60,19 @@ class MockDotThemeSelectorComponent {
 }
 
 const messageServiceMock = new MockDotMessageService({
-    'editpage.layout.toolbar.action.save': 'Save',
-    'editpage.layout.toolbar.action.cancel': 'Cancel',
-    'editpage.layout.toolbar.template.name': 'Name of the template',
-    'editpage.layout.toolbar.save.template': 'Save as template',
+    'dot.common.cancel': 'Cancel',
     'editpage.layout.dialog.edit.page': 'Edit Page',
     'editpage.layout.dialog.edit.template': 'Edit Template',
+    'editpage.layout.dialog.header': 'Edit some',
     'editpage.layout.dialog.info': 'This is the message',
-    'editpage.layout.dialog.header': 'Edit some'
+    'editpage.layout.toolbar.action.save': 'Save',
+    'editpage.layout.toolbar.save.template': 'Save as template',
+    'editpage.layout.toolbar.template.name': 'Name of the template'
 });
 
 let component: DotEditLayoutDesignerComponent;
 let fixture: ComponentFixture<DotEditLayoutDesignerComponent>;
+let dotRouterService: DotRouterService;
 
 const testConfigObject = {
     declarations: [
@@ -79,8 +82,16 @@ const testConfigObject = {
         MockDotLayoutPropertiesComponent,
         MockDotThemeSelectorComponent
     ],
-    imports: [DotEditLayoutGridModule, RouterTestingModule, DotActionButtonModule, FormsModule, FieldValidationMessageModule],
+    imports: [
+        DotActionButtonModule,
+        DotEditLayoutGridModule,
+        DotEditPageInfoModule,
+        FieldValidationMessageModule,
+        FormsModule,
+        RouterTestingModule
+    ],
     providers: [
+        DotRouterService,
         DotDialogService,
         LoginService,
         PageViewService,
@@ -101,6 +112,7 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
         component = fixture.componentInstance;
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
     }));
 
     describe('edit layout', () => {
@@ -117,9 +129,10 @@ describe('DotEditLayoutDesignerComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should show page title', () => {
-            const pageTitle: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__page-title'));
-            expect(pageTitle.nativeElement.textContent).toEqual('A title');
+        it('should show dot-edit-page-info', () => {
+            const dotEditPageInfo: DebugElement = fixture.debugElement.query(By.css('dot-edit-page-info'));
+            expect(dotEditPageInfo.componentInstance.pageState).toBe(component.pageState);
+            expect(dotEditPageInfo).toBeTruthy();
         });
 
         it('should not show template name input', () => {
@@ -133,11 +146,17 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should show cancel button', () => {
-            fixture.detectChanges();
             const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
 
             expect(cancelButton).toBeTruthy();
             expect(cancelButton.nativeElement.textContent).toEqual('Cancel');
+        });
+
+        it('should redirect to edit page on cancel button click', () => {
+            spyOn(dotRouterService, 'goToEditPage');
+            const cancelButton: DebugElement = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-cancel'));
+            cancelButton.triggerEventHandler('click', {});
+            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('an/url/test');
         });
 
         it('should show save button', () => {

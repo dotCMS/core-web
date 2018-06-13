@@ -1,8 +1,7 @@
-import { Component, ViewEncapsulation, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 
 import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
 
@@ -13,14 +12,13 @@ import { DotRouterService } from '../../../../../api/services/dot-router/dot-rou
 import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-iframe-porlet',
+    styleUrls: ['./iframe-porlet-legacy.component.scss'],
     templateUrl: 'iframe-porlet-legacy.component.html'
 })
 export class IframePortletLegacyComponent implements OnInit {
     url: BehaviorSubject<string> = new BehaviorSubject('');
     isLoading = false;
-
 
     constructor(
         private contentletService: DotContentletService,

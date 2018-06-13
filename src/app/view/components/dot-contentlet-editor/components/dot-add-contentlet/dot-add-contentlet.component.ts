@@ -17,53 +17,14 @@ import { DotContentletEditorService } from '../../services/dot-contentlet-editor
     styleUrls: ['./dot-add-contentlet.component.scss']
 })
 export class DotAddContentletComponent implements OnInit {
-    @Output() load: EventEmitter<any> = new EventEmitter();
-    url: Observable<string>;
+    @Output() close: EventEmitter<any> = new EventEmitter();
+    url$: Observable<string>;
+    header$: Observable<string>;
 
     constructor(private dotContentletEditorService: DotContentletEditorService) {}
 
     ngOnInit() {
-        this.url = this.dotContentletEditorService.addUrl$;
-    }
-
-    /**
-     * Handle close dialog event
-     *
-     * @memberof DotAddContentletComponent
-     */
-    onClose(): void {
-        this.dotContentletEditorService.clear();
-    }
-
-    /**
-     * Handle the custome events from the DotDialogIframe component
-     *
-     * @param {any} $event
-     * @memberof DotAddContentletComponent
-     */
-    onCustomEvent($event) {
-        if ($event.detail.name === 'close') {
-            this.onClose();
-        }
-    }
-
-    /**
-     * Call the keyDown method from the service if exist
-     *
-     * @param {any} $event
-     * @memberof DotAddContentletComponent
-     */
-    onKeyDown($event: KeyboardEvent): void {
-        this.dotContentletEditorService.keyDown($event);
-    }
-
-    /**
-     * Call the load method from the service if exist
-     *
-     * @param {any} $event
-     * @memberof DotAddContentletComponent
-     */
-    onLoad($event): void {
-        this.dotContentletEditorService.load($event);
+        this.url$ = this.dotContentletEditorService.addUrl$;
+        this.header$ = this.dotContentletEditorService.header$;
     }
 }

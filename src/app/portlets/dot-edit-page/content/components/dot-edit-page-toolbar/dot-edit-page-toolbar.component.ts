@@ -1,12 +1,12 @@
 import { DotDialogService } from '../../../../../api/services/dot-dialog/dot-dialog.service';
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { SelectItem, InputSwitch } from 'primeng/primeng';
 import * as _ from 'lodash';
 import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
+import { DotEditPageInfoComponent } from '../../../components/dot-edit-page-info/dot-edit-page-info.component';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -15,12 +15,13 @@ import { PageMode } from '../../../shared/models/page-mode.enum';
 })
 export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     @ViewChild('locker') locker: InputSwitch;
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @ViewChild('pageInfo') pageInfo: DotEditPageInfoComponent;
 
     @Input() pageState: DotRenderedPageState;
 
     @Output() changeState = new EventEmitter<DotEditPageState>();
     @Output() actionFired = new EventEmitter<any>();
+    @Output() cancel = new EventEmitter<any>();
 
     states: SelectItem[] = [];
     lockerModel: boolean;
@@ -28,25 +29,18 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     private debounceStateSelector = _.debounce((pageState: PageMode) => this.setSelectorState(pageState), 500, { leading: true });
 
-    constructor(
-        public dotMessageService: DotMessageService,
-        private dotGlobalMessageService: DotGlobalMessageService,
-        private dotDialogService: DotDialogService
-    ) {}
+    constructor(public dotMessageService: DotMessageService, private dotDialogService: DotDialogService) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'editpage.toolbar.edit.page',
-                'editpage.toolbar.preview.page',
-                'editpage.toolbar.live.page',
-                'editpage.toolbar.page.locked.by.user',
-                'editpage.toolbar.primary.workflow.actions',
-                'dot.common.message.pageurl.copied.clipboard',
-                'dot.common.message.pageurl.copied.clipboard.error',
-                'editpage.toolbar.page.cant.edit',
+                'dot.common.cancel',
+                'editpage.content.steal.lock.confirmation.message',
                 'editpage.content.steal.lock.confirmation.message.header',
-                'editpage.content.steal.lock.confirmation.message'
+                'editpage.toolbar.edit.page',
+                'editpage.toolbar.live.page',
+                'editpage.toolbar.preview.page',
+                'editpage.toolbar.primary.workflow.actions'
             ])
             .subscribe(() => {
                 this.setFieldsModels(this.pageState);
@@ -57,42 +51,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
         if (changes.pageState && !changes.pageState.firstChange) {
             this.setFieldsModels(changes.pageState.currentValue);
         }
-    }
-
-    /**
-     * Copy url to clipboard
-     *
-     * @returns {boolean}
-     * @memberof DotEditPageToolbarComponent
-     */
-    copyUrlToClipboard(): boolean {
-        /*
-            Aparently this is the only crossbrowser solution so far. If we do this in another place we might have
-            to include an npm module.
-        */
-        const txtArea = document.createElement('textarea');
-
-        txtArea.style.position = 'fixed';
-        txtArea.style.top = '0';
-        txtArea.style.left = '0';
-        txtArea.style.opacity = '0';
-        txtArea.value = this.pageState.page.pageURI;
-        document.body.appendChild(txtArea);
-        txtArea.select();
-
-        let result;
-
-        try {
-            result = document.execCommand('copy');
-            if (result) {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard'));
-            }
-        } catch (err) {
-            this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
-        }
-        document.body.removeChild(txtArea);
-
-        return result;
     }
 
     /**
@@ -111,13 +69,8 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
      * @memberof DotEditPageToolbarComponent
      */
     onLockerClick(_$event): void {
-        const blinkClass = 'edit-page-toolbar__locked-by-message--blink';
-
         if (this.locker.disabled) {
-            this.lockedPageMessage.nativeElement.classList.add(blinkClass);
-            setTimeout(() => {
-                this.lockedPageMessage.nativeElement.classList.remove(blinkClass);
-            }, 500);
+            this.pageInfo.blinkLockMessage();
         }
     }
 
@@ -163,9 +116,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     private getModeOption(mode: string, pageState: DotRenderedPageState): SelectItem {
         const modeMap = {
-            'edit': this.getEditOption.bind(this),
-            'preview': this.getPreviewOption.bind(this),
-            'live': this.getLiveOption.bind(this)
+            edit: this.getEditOption.bind(this),
+            preview: this.getPreviewOption.bind(this),
+            live: this.getLiveOption.bind(this)
         };
 
         return modeMap[mode](pageState);

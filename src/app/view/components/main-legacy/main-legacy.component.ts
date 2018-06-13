@@ -1,7 +1,10 @@
 import { DotDialogService } from '../../../api/services/dot-dialog/dot-dialog.service';
 import { Component, OnInit, ViewEncapsulation, HostListener } from '@angular/core';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { filter } from 'rxjs/operators/filter';
+import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -14,12 +17,19 @@ export class MainComponentLegacyComponent implements OnInit {
     isMenuCollapsed = false;
     isTablet = false;
 
-    constructor(private dotEventsService: DotEventsService, private router: Router,  public dotDialotService: DotDialogService) {}
+    constructor(
+        private dotEventsService: DotEventsService,
+        private dotRouterService: DotRouterService,
+        private router: Router,
+        private dotIframeService: DotIframeService,
+        public dotDialotService: DotDialogService
+    ) {}
 
     /**
      * Set isTablet when resizing the window size
-     * @param {any} event
-     * @memberof MainComponentLegacyComponentComponent
+     *
+     * @param {*} event
+     * @memberof MainComponentLegacyComponent
      */
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
@@ -28,7 +38,8 @@ export class MainComponentLegacyComponent implements OnInit {
 
     /**
      * Respond to document events and collapse the sidenav if is clicked outside
-     * @param {*} event
+     *
+     * @param {*} _event
      * @memberof MainComponentLegacyComponent
      */
     @HostListener('click', ['$event'])
@@ -41,12 +52,24 @@ export class MainComponentLegacyComponent implements OnInit {
     ngOnInit(): void {
         document.body.style.backgroundColor = '';
         document.body.style.backgroundImage = '';
-        this.router.events.subscribe((_event) => this.setMenuState());
+        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((_event) => this.setMenuState());
         this.setMenuState();
     }
 
     /**
+     * Reload content search iframe when contentlet editor close
+     *
+     * @memberof MainComponentLegacyComponent
+     */
+    onCloseContentletEditor(): void {
+        if (this.dotRouterService.currentPortlet.id === 'content') {
+            this.dotIframeService.run('doSearch');
+        }
+    }
+
+    /**
      * Set collapsed menu state base on the screen size
+     *
      * @memberof MainComponentLegacyComponent
      */
     setMenuState(): void {
