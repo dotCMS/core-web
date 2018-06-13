@@ -161,7 +161,12 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.closeThemeDialog();
     }
 
-    closeThemeDialog() {
+    /**
+     * Close the Theme Dialog.
+     *
+     *  @memberof DotEditLayoutDesignerComponent
+     */
+    closeThemeDialog(): void {
         this.themeDialogVisibility = false;
     }
 
@@ -172,8 +177,9 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
-        this.dotThemesService.get(this.form.get('themeId').value);
-
+        this.dotThemesService.get(this.form.get('themeId').value).subscribe((theme: DotTheme[]) => {
+            this.currentTheme = theme[0];
+        });
         // Emit event to redraw the grid when the sidebar change
         this.form.get('layout.sidebar').valueChanges.subscribe(() => {
             this.dotEventsService.notify('layout-sidebar-change');
@@ -194,17 +200,6 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
         this.initialFormValue = _.cloneDeep(this.form.value);
         this.isModelUpdated = false;
-        // TODO put the value comming from the service here.
-        this.currentTheme = {
-            name: 'placehodler name',
-            title: 'test',
-            inode: this.pageState.template.theme,
-            host: {
-                hostName: '123',
-                inode: '123',
-                identifier: '123'
-            }
-        };
         this.form.valueChanges.subscribe(() => {
             this.isModelUpdated = !_.isEqual(this.form.value, this.initialFormValue);
             // TODO: Set sidebar to null if sidebar location is empty, we're expecting a change in the backend to accept null value

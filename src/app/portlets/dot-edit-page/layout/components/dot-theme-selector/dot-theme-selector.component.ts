@@ -3,8 +3,9 @@ import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { Site } from 'dotcms-js/core/treeable/shared/site.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
+import event = google.maps.event;
 
 /**
  * The DotThemeSelectorComponent is modal that
@@ -24,6 +25,7 @@ export class DotThemeSelectorComponent implements OnInit {
     @Output() selected = new EventEmitter<DotTheme>();
     @Output() close = new EventEmitter<boolean>();
     @ViewChild('searchInput') searchInput: ElementRef;
+    @ViewChild('dataGrid') datagrid: DataGrid;
 
     current: DotTheme;
     visible = true;
@@ -50,9 +52,11 @@ export class DotThemeSelectorComponent implements OnInit {
      *
      * @memberof DotThemeSelectorComponent
      */
-    paginate(event: LazyLoadEvent) {
-        console.log('lazyload');
-        this.paginatorService.getWithOffset(event.first).subscribe((items: DotTheme[]) => (this.themes = items));
+    paginate($event: LazyLoadEvent) {
+        this.paginatorService.getWithOffset($event.first).subscribe((items: DotTheme[]) => {
+            this.themes = items;
+            this.datagrid.first = $event.first;
+        });
     }
 
     /**
@@ -62,11 +66,9 @@ export class DotThemeSelectorComponent implements OnInit {
      * @memberof DotThemeSelectorComponent
      */
     siteChange(site: Site) {
-        // this,
-        this.getPagination(site.identifier).subscribe((response: DotTheme[]) => {
-            this.themes = response;
-        });
         this.searchInput.nativeElement.value = null;
+        this.setPagination(site.identifier);
+        this.paginate({ first: 0 });
     }
 
     /**
@@ -84,22 +86,26 @@ export class DotThemeSelectorComponent implements OnInit {
      *
      * @memberof DotThemeSelectorComponent
      */
-    apply() {
+    apply(): void {
         this.selected.emit(this.current);
         this.hideDialog();
     }
 
-    hideDialog() {
+    /**
+     * Propagate the close event wen the modal closes.
+     *
+     * @memberof DotThemeSelectorComponent
+     */
+    hideDialog(): void {
         this.close.emit(false);
     }
 
     private filterThemes(searchCriteria?: string) {
-        this.getPagination(null, searchCriteria).subscribe((response: DotTheme[]) => {
-            this.themes = response;
-        });
+        this.setPagination(null, searchCriteria);
+        this.paginate({ first: 0 });
     }
 
-    private getPagination(hostId?: string, searchCriteria?: string): Observable<DotTheme[]> {
+    private setPagination(hostId?: string, searchCriteria?: string): void {
         if (hostId) {
             this.paginatorService.setExtraParams('hostId', hostId);
         }
@@ -108,6 +114,5 @@ export class DotThemeSelectorComponent implements OnInit {
         } else {
             this.paginatorService.setExtraParams('searchParam', '');
         }
-        return this.paginatorService.get();
     }
 }

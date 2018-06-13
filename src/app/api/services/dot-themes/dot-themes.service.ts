@@ -8,23 +8,11 @@ import { RequestMethod } from '@angular/http';
 export class DotThemesService {
     constructor(private coreWebService: CoreWebService) {}
 
-    get(searchParam?: string): Observable<DotTheme[]> {
+    get(inode: string): Observable<DotTheme[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'v1/themes',
-                params: { searchParam: searchParam ? searchParam : '' }
-            })
-            .pluck('entity');
-    }
-
-    getByIdentifier(identifier?: string): Observable<DotTheme[]> {
-        const params = identifier ? { hostId: identifier } : {};
-        return this.coreWebService
-            .requestView({
-                method: RequestMethod.Get,
-                url: 'v1/themes',
-                params: params
+                url: 'v1/themes/id/' + inode
             })
             .pluck('entity');
     }
