@@ -75,14 +75,14 @@ describe('MainComponentLegacyComponent', () => {
     });
 
     describe('Create Contentlet', () => {
-        it('should refresh the current portlet on close if portlet is content', () => {
+        it('should refresh the current portlet data', () => {
             spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
-                id: 'content'
+                id: 'site-browser'
             });
             const createContentlet: DebugElement = de.query(By.css('dot-create-contentlet'));
             createContentlet.triggerEventHandler('close', {});
 
-            expect(dotIframeService.run).toHaveBeenCalledWith('doSearch');
+            expect(dotIframeService.run).toHaveBeenCalledWith('reloadContent');
         });
 
         it('should not refresh the current portlet on close', () => {
