@@ -11,7 +11,7 @@ import { DotDialogComponent, DotDialogAction } from './dot-dialog.component';
     selector: 'dot-test-host-component',
     template: `<dot-dialog [header]="header" [show]="show" [ok]="ok" [cancel]="cancel">
                     <b>Dialog content</b>
-                </dot-alert-confirm>`
+                </dot-dialog>`
 })
 class TestHostComponent {
     header: string;
@@ -21,7 +21,7 @@ class TestHostComponent {
     cancel: DotDialogAction;
 }
 
-describe('DotAlertConfirmComponent', () => {
+describe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let dialog: DebugElement;

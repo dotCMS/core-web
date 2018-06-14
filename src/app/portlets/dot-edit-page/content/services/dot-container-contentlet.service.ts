@@ -23,16 +23,16 @@ export class DotContainerContentletService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/containers/${container.identifier}/uuid/${container.uuid}/content/${content.identifier}`
+                url: `v1/containers/${container.identifier}/content/${content.identifier}`
             })
-            .pluck('bodyJsonObject', 'render');
+            .pluck('entity', 'render');
     }
 
-    getFormToContainer(container: DotPageContainer, form: ContentType): Observable<{render: string, content: DotPageContent}>  {
+    getFormToContainer(container: DotPageContainer, form: ContentType): Observable<string>  {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/containers/${container.identifier}/uuid/${container.uuid}/form/${form.id}`
+                url: `v1/containers/${container.identifier}/form/${form.id}`
             })
             .pluck('entity', 'render');
     }

@@ -42,6 +42,7 @@ import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
+import { ContentType } from '../../content-types/shared/content-type.model';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -63,6 +64,16 @@ class MockDotEditContentViewAsToolbarComponent {
 })
 class MockDotWhatsChangedComponent {
     @Input() pageId: string;
+}
+
+@Component({
+    selector: 'dot-form-selector',
+    template: ''
+})
+export class MockDotFormSelectorComponent {
+    @Input() show = false;
+    @Output() select = new EventEmitter<ContentType>();
+    @Output() close = new EventEmitter<any>();
 }
 
 describe('DotEditContentComponent', () => {
@@ -97,7 +108,12 @@ describe('DotEditContentComponent', () => {
         });
 
         DOTTestBed.configureTestingModule({
-            declarations: [DotEditContentComponent, MockDotEditContentViewAsToolbarComponent, MockDotWhatsChangedComponent],
+            declarations: [
+                DotEditContentComponent,
+                MockDotEditContentViewAsToolbarComponent,
+                MockDotWhatsChangedComponent,
+                MockDotFormSelectorComponent
+            ],
             imports: [
                 DialogModule,
                 BrowserAnimationsModule,
@@ -643,7 +659,47 @@ describe('DotEditContentComponent', () => {
             });
 
             describe('form', () => {
+                let dotFormSelector;
 
+                beforeEach(() => {
+                    dotEditContentHtmlService.iframeActions$.next({
+                        name: 'add',
+                        dataset: {
+                            dotAdd: 'form',
+                            dotIdentifier: '123',
+                            dotUuid: '456'
+                        }
+                    });
+
+                    fixture.detectChanges();
+
+                    dotFormSelector = de.query(By.css('dot-form-selector'));
+                });
+
+                it('should show form-selector and set container to add', () => {
+                    expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith({
+                        identifier: '123',
+                        uuid: '456'
+                    });
+
+                    fixture.detectChanges();
+
+                    expect(dotFormSelector.componentInstance.show).toBe(true);
+                });
+
+
+                it('select a form to add into the page', () => {
+                    const mockContentType = {};
+
+                    spyOn(dotEditContentHtmlService, 'renderAddedForm').and.callFake(() => {});
+
+                    dotFormSelector.componentInstance.select.emit(mockContentType);
+
+                    fixture.detectChanges();
+
+                    expect(dotFormSelector.componentInstance.show).toBe(false);
+                    expect(dotEditContentHtmlService.renderAddedForm).toHaveBeenCalledWith(mockContentType);
+                });
             });
         });
 

@@ -10,7 +10,7 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
 
 @Component({
-    selector: 'dot-dialog',
+    selector: 'dot-alert-confirm',
     template: ''
 })
 class MockDotDialogComponent {}
