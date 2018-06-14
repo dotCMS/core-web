@@ -12,7 +12,7 @@ describe('DotThemesService', () => {
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
-    it('should get Themes', () => {
+    xit('should get Themes', () => {
         let result;
 
         this.dotThemesService.get().subscribe(res => {
