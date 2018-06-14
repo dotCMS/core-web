@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DialogModule } from 'primeng/primeng';
+import { DialogModule, TooltipModule } from 'primeng/primeng';
 
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
@@ -38,7 +38,8 @@ const routes: Routes = [
         DotDirectivesModule,
         DotEditContentViewAsToolbarModule,
         DotWhatsChangedModule,
-        DotFormSelectorModule
+        DotFormSelectorModule,
+        TooltipModule
     ],
     exports: [DotEditContentComponent],
     providers: [
