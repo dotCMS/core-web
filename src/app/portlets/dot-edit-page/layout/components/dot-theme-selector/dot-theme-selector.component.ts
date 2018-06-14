@@ -1,11 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
-import { Site } from 'dotcms-js/core/treeable/shared/site.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
-import event = google.maps.event;
+import { Site } from 'dotcms-js/dotcms-js';
 
 /**
  * The DotThemeSelectorComponent is modal that
@@ -28,7 +27,6 @@ export class DotThemeSelectorComponent implements OnInit {
     @ViewChild('dataGrid') datagrid: DataGrid;
 
     current: DotTheme;
-    visible = true;
 
     constructor(public dotMessageService: DotMessageService, public paginatorService: PaginatorService) {}
 
@@ -37,7 +35,7 @@ export class DotThemeSelectorComponent implements OnInit {
             .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
             .subscribe();
         this.paginatorService.url = 'v1/themes';
-        this.paginatorService.paginationPerPage = 2;
+        this.paginatorService.paginationPerPage = 8;
         this.current = this.value;
         Observable.fromEvent(this.searchInput.nativeElement, 'keyup')
             .debounceTime(500)
@@ -82,13 +80,12 @@ export class DotThemeSelectorComponent implements OnInit {
     }
 
     /**
-     * Propagate the seleted theme once the user apply the changes.
+     * Propagate the selected theme once the user apply the changes.
      *
      * @memberof DotThemeSelectorComponent
      */
     apply(): void {
         this.selected.emit(this.current);
-        this.hideDialog();
     }
 
     /**

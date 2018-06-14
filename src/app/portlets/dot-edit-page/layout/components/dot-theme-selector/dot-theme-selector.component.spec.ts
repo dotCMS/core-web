@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 import { mockDotThemes } from '../../../../../test/dot-themes.mock';
 import { DataGridModule } from 'primeng/primeng';
 import { SiteSelectorModule } from '../../../../../view/components/_common/site-selector/site-selector.module';
-import { SiteServiceMock } from '../../../../../test/site-service.mock';
+import { mockSites, SiteServiceMock } from '../../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
@@ -34,7 +34,6 @@ fdescribe('DotThemeSelectorComponent', () => {
         'dot.common.cancel': 'Cancel'
     });
     const siteServiceMock = new SiteServiceMock();
-    let headerButton: HTMLElement;
     let dialog;
     let paginatorService: PaginatorService;
     let dotThemesService: DotThemesService;
@@ -61,7 +60,6 @@ fdescribe('DotThemeSelectorComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dialog = de.query(By.css('p-dialog')).componentInstance;
-        //  headerButton = de.query(By.css('button')).nativeElement;
         component.value = mockDotThemes[0];
         paginatorService = de.injector.get(PaginatorService);
         dotThemesService = de.injector.get(DotThemesService);
@@ -93,29 +91,57 @@ fdescribe('DotThemeSelectorComponent', () => {
             const applyBtn = de.query(By.css('.apply')).nativeElement;
             spyOn(component, 'apply').and.callThrough();
             spyOn(component.selected, 'emit');
-            debugger;
             component.current = mockDotThemes[1];
-            applyBtn.click();
             fixture.detectChanges();
+            applyBtn.click();
 
             expect(component.apply).toHaveBeenCalledTimes(1);
             expect(component.selected.emit).toHaveBeenCalledWith(mockDotThemes[1]);
         });
     });
 
+    describe('On Init', () => {
+        beforeEach(() => {});
 
+        it('should set url and the page size for the pagination service', () => {
+            fixture.detectChanges();
+            expect(paginatorService.paginationPerPage).toBe(8);
+            expect(paginatorService.url).toBe('v1/themes');
+        });
 
-    xit('should set the page size param onInit', () => {
-        fixture.detectChanges();
-        expect(paginatorService.extraParams.get('per_page')).toBe('8');
+        it('should set the current theme variable based on the Input value', () => {
+            component.value = mockDotThemes[0];
+            fixture.detectChanges();
+            expect(component.current).toBe(mockDotThemes[0]);
+        });
+
+        it('should call pagination service with offset of 0 ', () => {
+            spyOn(component, 'paginate').and.callThrough();
+            spyOn(paginatorService, 'getWithOffset');
+            fixture.detectChanges();
+
+            expect(component.paginate).toHaveBeenCalledTimes(1);
+            expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
+        });
     });
 
-    xit('should set the value of the current theme OnInit', () => {
-        //component.value = 'test';
-        spyOn(dotThemesService, 'get').and.callThrough();
-        fixture.detectChanges();
+    describe('Pagination setup', () => {
+        beforeEach(() => {
+            fixture.detectChanges();
+        });
 
-        expect(dotThemesService.get).toHaveBeenCalledWith('test');
+        it('should set pagination, call endpoint  and clear search field on site change ', () => {
+            spyOn(paginatorService, 'getWithOffset');
+            spyOn(component, 'paginate');
+            component.siteChange(mockSites[0]);
+
+            expect(component.searchInput.nativeElement.value).toBe('');
+            expect(paginatorService.extraParams.get('hostId')).toBe(mockSites[0].identifier);
+            expect(paginatorService.extraParams.get('searchParam')).toBe('');
+            expect(component.paginate).toHaveBeenCalledWith({ first: 0 });
+        });
+
+        xit('should set pagination on search and call endpoint', () => {});
     });
 
     // it('should paginate when the filter change', () => {

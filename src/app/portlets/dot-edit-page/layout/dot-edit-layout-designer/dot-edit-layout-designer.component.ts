@@ -168,7 +168,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     changeThemeHandler(theme: DotTheme): void {
         this.currentTheme = theme;
         this.form.get('themeId').setValue(theme.inode);
-        this.closeThemeDialog();
+        this.themeDialogVisibility = false;
     }
 
     /**
