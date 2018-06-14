@@ -52,5 +52,11 @@ describe('DotIframeService', () => {
 
             expect(this.service.run).toHaveBeenCalledWith('refreshHostTable');
         });
+
+        it('should reload data for worflow', () => {
+            this.service.reloadData('workflow');
+
+            expect(this.service.run).toHaveBeenCalledWith('doFilter');
+        });
     });
 });
