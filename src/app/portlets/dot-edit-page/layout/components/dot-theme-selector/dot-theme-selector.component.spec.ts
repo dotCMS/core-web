@@ -144,25 +144,6 @@ fdescribe('DotThemeSelectorComponent', () => {
         xit('should set pagination on search and call endpoint', () => {});
     });
 
-    // it('should paginate when the filter change', () => {
-    //     const filter = 'filter';
-    //
-    //     paginatorService.totalRecords = 2;
-    //     spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
-    //
-    //     const siteService = de.injector.get(SiteService);
-    //     spyOn(siteService, 'switchSite$').and.returnValue(Observable.of({}));
-    //
-    //     fixture.detectChanges();
-    //
-    //     const searchableDropdownComponent: SearchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
-    //
-    //     searchableDropdownComponent.filterChange.emit(filter);
-    //     comp.handleFilterChange(filter);
-    //
-    //     expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
-    //     expect(paginatorService.filter).toEqual(filter);
-
     xit('should recalculate pagination on string search', () => {});
 
     xit('should call theme enpoint when site changes', () => {});

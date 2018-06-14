@@ -1,6 +1,6 @@
 @import 'variables';
 
-$them-item-dimension: 240px;
+$theme-item-dimension: 240px;
 
 ::ng-deep {
     dot-site-selector {
@@ -12,8 +12,8 @@ $them-item-dimension: 240px;
     }
 
     .ui-datagrid-content {
-        width: $them-item-dimension * 4 + $basic-padding * 2 * 3;
-        height: $them-item-dimension * 2 + $basic-padding * 2 * 2;
+        width: $theme-item-dimension * 4 + $basic-padding * 2 * 3;
+        height: $theme-item-dimension * 2 + $basic-padding * 2 * 2;
         margin: 0 $basic-padding * 2;
 
         .ui-g {
@@ -41,8 +41,8 @@ $them-item-dimension: 240px;
 
 .dot-theme-item {
     margin: $basic-padding * 2 $basic-padding * 2 0 0;
-    width: $them-item-dimension;
-    height: $them-item-dimension;
+    width: $theme-item-dimension;
+    height: $theme-item-dimension;
     background: $gray-lighter;
     align-items: center;
     padding: $basic-padding * 3 $basic-padding * 2;
