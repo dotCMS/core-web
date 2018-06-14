@@ -3,36 +3,38 @@
 $them-item-dimension: 240px;
 
 ::ng-deep {
-
     dot-site-selector {
-        dot-searchable-dropdown .ui-button, .site-selector__title {
+        dot-searchable-dropdown .ui-button,
+        .site-selector__title {
             font-size: $font-size-large;
+            min-width: 180px;
         }
     }
 
     .ui-datagrid-content {
         width: $them-item-dimension * 4 + $basic-padding * 2 * 3;
         height: $them-item-dimension * 2 + $basic-padding * 2 * 2;
+        margin: 0 $basic-padding * 2;
 
         .ui-g {
             margin: 0;
         }
     }
 
-    .ui-datagrid-content .ui-widget-content.ui-g-12{
+    .ui-datagrid-content .ui-widget-content.ui-g-12 {
         text-align: center;
         font-size: $font-size-large;
         margin-top: $basic-padding * 5;
     }
 }
 
-.dot-theme-search-box{
+.dot-theme-search-box {
     display: inline-block;
     width: 200px;
-    margin-left:  $basic-padding * 2;
+    margin-left: $basic-padding * 3;
     position: relative;
 
-    input{
+    input {
         font-size: $font-size-large;
     }
 }
@@ -52,7 +54,8 @@ $them-item-dimension: 240px;
         fill: $gray;
     }
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
         box-shadow: $md-shadow-3;
         background: $white;
     }
@@ -71,5 +74,3 @@ $them-item-dimension: 240px;
     text-align: center;
     width: 100%;
 }
-
-
