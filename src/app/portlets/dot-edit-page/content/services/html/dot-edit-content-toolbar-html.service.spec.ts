@@ -177,6 +177,24 @@ describe('DotEditContentToolbarHtmlService', () => {
             xit('should bind events');
         });
 
+        describe('form', () => {
+            beforeEach(() => {
+                dummyContainer.innerHTML = `
+                    <div data-dot-object="container">
+                        <div data-dot-object="contentlet" data-dot-basetype="FORM">
+                            <div class="large-column"></div>
+                        </div>
+                    </div>
+                `;
+                htmlElement.appendChild(dummyContainer);
+                dotEditContentToolbarHtmlService.addContentletMarkup(testDoc);
+            });
+
+            it('should have edit button disabled', () => {
+                expect(testDoc.querySelector('.dotedit-contentlet__edit').classList.contains('dotedit-contentlet__disabled')).toBe(true);
+            });
+        });
+
         describe('with vtl files', () => {
 
             describe('enabled', () => {

@@ -445,11 +445,7 @@ export class DotEditContentHtmlService {
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.
         */
-        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(
-            contentletElement.dataset.identifier,
-            contentletElement.dataset.inode,
-            contentletElement.dataset.dotCanEdit === 'true'
-        );
+        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(contentletElement.dataset);
 
         dotEditContentletEl.innerHTML = `
             <div class="dotedit-contentlet__toolbar">

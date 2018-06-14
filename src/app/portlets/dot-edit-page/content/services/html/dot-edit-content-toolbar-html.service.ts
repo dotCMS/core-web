@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
+import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 
 interface DotEditPopupMenuItem {
     label: string;
@@ -84,11 +85,7 @@ export class DotEditContentToolbarHtmlService {
                         contentletToolbar.innerHTML += this.getEditVtlButtons(vtls);
                     }
 
-                    contentletToolbar.innerHTML += this.getContentButton(
-                        contentlet.dataset.dotIdentifier,
-                        contentlet.dataset.dotInode,
-                        contentlet.dataset.dotCanEdit === 'true'
-                    );
+                    contentletToolbar.innerHTML += this.getContentButton(contentlet.dataset);
 
                     const contentletContent = document.createElement('div');
                     contentletContent.classList.add('dotedit-contentlet__content');
@@ -101,14 +98,20 @@ export class DotEditContentToolbarHtmlService {
             });
     }
 
-    getContentButton(identifier: string, inode: string, canEdit?: boolean): string {
+    getContentButton(contentletDataset: {[key: string]: any}): string {
+
+        const identifier: string = contentletDataset.dotIdentifier;
+        const inode: string = contentletDataset.dotIdentifier;
+        const canEdit: boolean = contentletDataset.dotCanEdit === 'true';
+        const isForm: boolean = contentletDataset.dotBasetype === 'FORM';
+
         const dataset = {
             'dot-identifier': identifier,
             'dot-inode': inode
         };
 
         let editButtonClass = 'dotedit-contentlet__edit';
-        editButtonClass += !canEdit ? ' dotedit-contentlet__disabled' : '';
+        editButtonClass += !canEdit  || isForm ? ' dotedit-contentlet__disabled' : '';
 
         return `
             ${this.dotDOMHtmlUtilService.getButtomHTML(
