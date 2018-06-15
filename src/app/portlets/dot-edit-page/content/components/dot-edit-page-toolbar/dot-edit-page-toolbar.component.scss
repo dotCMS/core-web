@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
 
 :host {
     background-color: $white;
@@ -52,7 +52,7 @@
                 padding: 0 $basic-padding;
 
                 &.ui-state-active {
-                    background-color: rgba($brand-primary, 0.1);
+                    background-color: rgba($brand-primary_rgb, 0.1);
                     pointer-events: none;
 
                     .ui-button-text {

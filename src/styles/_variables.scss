@@ -2,14 +2,12 @@
     --color-background: #3A3847;
     --color-main: #C336E5;
     --color-main_mod: #D269EC;
+    --color-main_rgb: 195, 54, 229;
     --color-sec: #54428E;
 }
 
 // COLORS
 $black: #0A0725;
-$blue-ligth: #77cee6;
-$blue-lighter: #DAECF6;
-$blue: #0e80cb;
 $gray-dark: #5b5b5b;
 $gray-darker: #444444;
 $gray: #8a8a8a;
@@ -24,8 +22,9 @@ $white: #fff;
 $error: #d0021b;
 $red: #cb3927;
 
-$brand-primary: $blue;
-$brand-secondary: $red;
+$brand-primary: var(--color-main);
+$brand-primary_rgb: var(--color-main_rgb);
+$brand-secondary: var(--color-sec);
 
 // Basic stuffs
 $border-radius: 2px;

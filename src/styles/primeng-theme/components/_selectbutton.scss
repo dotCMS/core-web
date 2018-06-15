@@ -9,7 +9,7 @@
 
     [secondary] & {
         box-shadow: none;
-        background-color: rgba($brand-primary, 0.1);
+        background-color: rgba($brand-primary_rgb, 0.1);
 
         .ui-button {
             @extend #button-sec;
@@ -20,7 +20,7 @@
     .ui-button {
         box-shadow: none;
         line-height: $button-height;
-        transition: background-color $field-animation-speed ease-in; 
+        transition: background-color $field-animation-speed ease-in;
 
         &:hover {
             background-color: $selectbutton-button-hover-bgcolor;
