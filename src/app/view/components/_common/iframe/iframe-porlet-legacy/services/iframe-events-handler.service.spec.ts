@@ -65,7 +65,8 @@ describe('DotIframeEventsHandler', () => {
     });
 
     it('should edit a contentlet', () => {
-        spyOn(dotContentletEditorService, 'edit');
+        spyOn(dotRouterService, 'goToEditContentlet');
+
         service.handle(
             new CustomEvent('ng-event', {
                 detail: {
@@ -76,12 +77,22 @@ describe('DotIframeEventsHandler', () => {
                 }
             })
         );
+        expect(dotRouterService.goToEditContentlet).toHaveBeenCalledWith('123');
+    });
 
+    it('should edit a a workflow task', () => {
+        spyOn(dotRouterService, 'goToEditTask');
 
-        expect(dotContentletEditorService.edit).toHaveBeenCalledWith({
-            data: {
-                inode: '123'
-            }
-        });
+        service.handle(
+            new CustomEvent('ng-event', {
+                detail: {
+                    name: 'edit-task',
+                    data: {
+                        inode: '123'
+                    }
+                }
+            })
+        );
+        expect(dotRouterService.goToEditTask).toHaveBeenCalledWith('123');
     });
 });

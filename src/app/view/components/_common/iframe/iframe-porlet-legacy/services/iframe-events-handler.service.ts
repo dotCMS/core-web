@@ -22,6 +22,7 @@ export class DotIframeEventsHandler {
             this.handlers = {
                 'edit-page': this.goToEditPage.bind(this),
                 'edit-contentlet': this.editContentlet.bind(this),
+                'edit-task': this.editTask.bind(this),
                 'create-contentlet': this.createContentlet.bind(this)
             };
         }
@@ -51,8 +52,10 @@ export class DotIframeEventsHandler {
     }
 
     private editContentlet($event: CustomEvent): void {
-        this.dotContentletEditorService.edit({
-            data: $event.detail.data
-        });
+        this.dotRouterService.goToEditContentlet($event.detail.data.inode);
+    }
+
+    private editTask($event: CustomEvent): void {
+        this.dotRouterService.goToEditTask($event.detail.data.inode);
     }
 }

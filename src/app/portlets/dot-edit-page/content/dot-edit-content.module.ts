@@ -18,7 +18,9 @@ import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workf
 import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
 import { DotEditContentViewAsToolbarModule } from './components/dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
 import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-changed.module';
+
 import { DotFormSelectorModule } from './components/dot-form-selector/dot-form-selector.module';
+import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
 
 const routes: Routes = [
     {
@@ -39,7 +41,8 @@ const routes: Routes = [
         DotEditContentViewAsToolbarModule,
         DotWhatsChangedModule,
         DotFormSelectorModule,
-        TooltipModule
+        TooltipModule,
+        DotContentletEditorModule
     ],
     exports: [DotEditContentComponent],
     providers: [
