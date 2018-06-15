@@ -1,6 +1,5 @@
 <dot-dropdown-component
         id="dot-toolbar-notifications"
-        inverted="true"
         icon="fa-bell"
         (toggle)="toggleNotifications()"
         [disabled]="!notifications.length"
@@ -19,6 +18,6 @@
         </div>
         <div class="toolbar-notifications__footer" id="dot-toolbar-notifications-footer">
             <button riple pButton secondary id="dot-toolbar-notifications-button-load-more" *ngIf="existsMoreToLoad" (click)="loadMore()" label="{{ i18nMessages['notifications_load_more'] }}"></button>
-        </div>    
+        </div>
     </div>
 </dot-dropdown-component>

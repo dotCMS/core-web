@@ -73,11 +73,14 @@
 
         &:not([disabled]) {
             background: none;
-            opacity: 0.8;
 
             &:hover {
                 opacity: 1;
-                background: rgba($black, $button-hover-background-opacity);
+                background: rgba($brand-secondary_rgb, $button-hover-background-opacity);
+            }
+
+            [class^="ui-button-icon"] {
+                color: map-get(map-get($button-sec, normal), color);
             }
         }
     }
@@ -156,4 +159,9 @@
     [tiny] & {
         right: 15px;
     }
+}
+
+.ui-button-icon-only .fa {
+    margin-top: -.5em;
+    margin-left: -.65em;
 }

@@ -4,6 +4,7 @@
     --color-main_mod: #D269EC;
     --color-main_rgb: 195, 54, 229;
     --color-sec: #54428E;
+    --color-sec_rgb: 84, 66, 142;
 }
 
 // COLORS
@@ -25,6 +26,7 @@ $red: #cb3927;
 $brand-primary: var(--color-main);
 $brand-primary_rgb: var(--color-main_rgb);
 $brand-secondary: var(--color-sec);
+$brand-secondary_rgb: var(--color-sec_rgb);
 
 // Basic stuffs
 $border-radius: 2px;
