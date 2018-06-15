@@ -1,5 +1,4 @@
-/* tslint:disable:no-unused-variable */
-import { DebugElement, Input, Component, Injectable } from '@angular/core';
+import { DebugElement, Injectable } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';

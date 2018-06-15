@@ -28,6 +28,14 @@ export class DotContainerContentletService {
             .pluck('entity', 'render');
     }
 
+    /**
+     * Get the HTML of a form inside a container
+     *
+     * @param {DotPageContainer} container
+     * @param {ContentType} form
+     * @returns {Observable<string>}
+     * @memberof DotContainerContentletService
+     */
     getFormToContainer(container: DotPageContainer, form: ContentType): Observable<string>  {
         return this.coreWebService
             .requestView({

@@ -51,7 +51,6 @@ export class DotEditContentToolbarHtmlService {
                 take(1)
             )
             .subscribe((isEnterpriseLicense: boolean) => {
-                console.log('isEnterpriseLicense', isEnterpriseLicense);
                 const containers = Array.from(doc.querySelectorAll('div[data-dot-object="container"]'));
                 containers.forEach((container: HTMLElement) => {
                     const containerToolbar = document.createElement('div');
@@ -232,8 +231,7 @@ export class DotEditContentToolbarHtmlService {
                     .map((item: DotEditPopupMenuItem) => {
                         return `
                             <li class="dotedit-menu__item ${item.disabled ? 'dotedit-menu__item--disabled' : ''}"
-                                pTooltip="${item.tooltip}"
-                                tooltipPosition="left">
+                                ${item.tooltip ? 'title=' + item.tooltip : ''}">
                                     <a
                                         href="#"
                                         data-dot-object="popup-menu-item"

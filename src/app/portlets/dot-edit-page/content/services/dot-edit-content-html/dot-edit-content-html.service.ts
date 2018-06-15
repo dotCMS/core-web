@@ -174,6 +174,12 @@ export class DotEditContentHtmlService {
         });
     }
 
+    /**
+     * Render a form in the DOM after add it
+     *
+     * @param {ContentType} form
+     * @memberof DotEditContentHtmlService
+     */
     renderAddedForm(form: ContentType): void  {
         this.renderAddedItem({
             item: form,
@@ -365,9 +371,7 @@ export class DotEditContentHtmlService {
     private isFormExistInContainer(form: ContentType, containerEL: HTMLElement): boolean {
         const contentsSelector = `div[data-dot-object="contentlet"]`;
         const currentContentlets: HTMLElement[] = <HTMLElement[]>Array.from(containerEL.querySelectorAll(contentsSelector).values());
-        return currentContentlets.some((contentElement) => {
-            return contentElement.dataset.dotContentTypeId === form.id;
-        });
+        return currentContentlets.some((contentElement) => contentElement.dataset.dotContentTypeId === form.id);
     }
 
     private addContentToolBars(): void {

@@ -163,7 +163,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     /**
      * Handle form selected
      *
-     * @param {*} item
+     * @param {ContentType} item
      * @memberof DotEditContentComponent
      */
     onFormSelected(item: ContentType): void {

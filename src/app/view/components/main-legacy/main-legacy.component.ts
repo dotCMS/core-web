@@ -21,7 +21,6 @@ export class MainComponentLegacyComponent implements OnInit {
         private dotEventsService: DotEventsService,
         private dotRouterService: DotRouterService,
         private router: Router,
-        public dotDialotService: DotAlertConfirmService,
         private dotIframeService: DotIframeService,
     ) {}
 
