@@ -1,21 +1,18 @@
-<p-dialog visible="true" [draggable]="false" [modal]="true" [dismissableMask]="true" (onHide)="hideDialog()">
-    <p-header>
-        {{ dotMessageService.get('editpage.layout.theme.header') }}
-    </p-header>
-
-    <dot-site-selector #siteSelector class="" (change)="siteChange($event)" [archive]="false"></dot-site-selector>
+<p-dialog visible="true" [draggable]="false" [modal]="true" [dismissableMask]="true" (onHide)="hideDialog()" header="{{ dotMessageService.get('editpage.layout.theme.header') }}">
+    <dot-site-selector #siteSelector (change)="siteChange($event)" [archive]="false"></dot-site-selector>
     <div class="dot-theme-search-box">
         <i class="fa fa-search searchable-dropdown__search-icon"></i>
         <input #searchInput pInputText placeholder="{{ dotMessageService.get('editpage.layout.theme.search') }}" type="text" class="searchable-dropdown__search-field"/>
     </div>
     <div class="dot-themes-container">
         <p-dataGrid #dataGrid
-            [value]="themes"
+            [value]="themes | async"
             [paginator]="true"
             [rows]="paginatorService?.paginationPerPage"
             [totalRecords]="paginatorService?.totalRecords"
             [lazy]="true"
-            (onLazyLoad)="paginate($event)">
+            (onLazyLoad)="paginate($event)"
+            [emptyMessage]="dotMessageService.get('editpage.layout.theme.no.records.found')">
             <ng-template let-theme pTemplate="item" >
                 <div class="dot-theme-item ui-g-3" (click)="selectTheme(theme)" [ngClass]="{'active': theme.inode === current?.inode}">
                     <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">

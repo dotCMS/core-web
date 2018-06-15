@@ -58,6 +58,13 @@ export class PaginatorService {
         }
     }
 
+    /**
+     * Set value of extra parameters of the eventual request.
+     * @param {string} name
+     * @param value
+     *
+     * @memberof DotThemeSelectorComponent
+     */
     setExtraParams(name: string, value?: any): void {
         if (value !== null && value !== undefined) {
             this.extraParams.set(name, value.toString());

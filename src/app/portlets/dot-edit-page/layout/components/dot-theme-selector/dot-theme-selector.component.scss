@@ -12,8 +12,8 @@ $theme-item-dimension: 240px;
     }
 
     .ui-datagrid-content {
-        width: $theme-item-dimension * 4 + $basic-padding * 2 * 3;
-        height: $theme-item-dimension * 2 + $basic-padding * 2 * 2;
+        width: $theme-item-dimension * 4 + $basic-padding * 6;
+        height: $theme-item-dimension * 2 + $basic-padding * 4;
         margin: 0 $basic-padding * 2;
 
         .ui-g {

@@ -19,7 +19,7 @@ import { Site } from 'dotcms-js/dotcms-js';
     styleUrls: ['./dot-theme-selector.component.scss']
 })
 export class DotThemeSelectorComponent implements OnInit {
-    themes: DotTheme[];
+    themes: Observable<DotTheme[]>;
     @Input() value: DotTheme;
     @Output() selected = new EventEmitter<DotTheme>();
     @Output() close = new EventEmitter<boolean>();
@@ -32,7 +32,13 @@ export class DotThemeSelectorComponent implements OnInit {
 
     ngOnInit() {
         this.dotMessageService
-            .getMessages(['editpage.layout.theme.header', 'editpage.layout.theme.search', 'dot.common.apply', 'dot.common.cancel'])
+            .getMessages([
+                'editpage.layout.theme.header',
+                'editpage.layout.theme.search',
+                'editpage.layout.theme.no.records.found',
+                'dot.common.apply',
+                'dot.common.cancel'
+            ])
             .subscribe();
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.paginationPerPage = 8;
@@ -50,11 +56,9 @@ export class DotThemeSelectorComponent implements OnInit {
      *
      * @memberof DotThemeSelectorComponent
      */
-    paginate($event: LazyLoadEvent) {
-        this.paginatorService.getWithOffset($event.first).subscribe((items: DotTheme[]) => {
-            this.themes = items;
-            this.datagrid.first = $event.first;
-        });
+    paginate($event: LazyLoadEvent): void {
+        this.themes = this.paginatorService.getWithOffset($event.first);
+        this.datagrid.first = $event.first;
     }
 
     /**
@@ -63,7 +67,7 @@ export class DotThemeSelectorComponent implements OnInit {
      *
      * @memberof DotThemeSelectorComponent
      */
-    siteChange(site: Site) {
+    siteChange(site: Site): void {
         this.searchInput.nativeElement.value = null;
         this.setPagination(site.identifier);
         this.paginate({ first: 0 });
@@ -75,7 +79,7 @@ export class DotThemeSelectorComponent implements OnInit {
      *
      * @memberof DotThemeSelectorComponent
      */
-    selectTheme(theme: DotTheme) {
+    selectTheme(theme: DotTheme): void {
         this.current = theme;
     }
 
@@ -106,10 +110,6 @@ export class DotThemeSelectorComponent implements OnInit {
         if (hostId) {
             this.paginatorService.setExtraParams('hostId', hostId);
         }
-        if (searchCriteria) {
-            this.paginatorService.setExtraParams('searchParam', searchCriteria);
-        } else {
-            this.paginatorService.setExtraParams('searchParam', '');
-        }
+        this.paginatorService.setExtraParams('searchParam', searchCriteria || '');
     }
 }
