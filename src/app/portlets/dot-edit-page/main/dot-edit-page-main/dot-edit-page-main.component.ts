@@ -53,9 +53,11 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
 
     private subscribeIframeCloseAction(): void {
         this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dotPageStateService.reload(this.route.snapshot.queryParams.url).subscribe((page: DotRenderedPageState) => {
-                this.pageState = Observable.of(page);
-            });
+            this.dotPageStateService.reload(this.route.snapshot.queryParams.url);
+        });
+
+        this.dotPageStateService.reload$.pipe(takeUntil(this.destroy$)).subscribe((page: DotRenderedPageState) => {
+            this.pageState = Observable.of(page);
         });
     }
 }

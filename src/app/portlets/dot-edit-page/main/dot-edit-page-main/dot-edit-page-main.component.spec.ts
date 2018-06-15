@@ -29,7 +29,10 @@ class MockDotContentletEditorService {
 
 @Injectable()
 class MockDotPageStateService {
-    reload = jasmine.createSpy('reload').and.returnValue(Observable.of(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+    reload = jasmine.createSpy('reload');
+    reload$ = new Observable(observer => {
+        observer.next(new DotRenderedPageState(mockUser, mockDotRenderedPage));
+    });
 }
 
 describe('DotEditPageMainComponent', () => {

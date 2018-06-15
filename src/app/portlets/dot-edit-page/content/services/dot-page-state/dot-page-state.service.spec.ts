@@ -167,7 +167,7 @@ describe('DotPageStateService', () => {
             service.reload$.subscribe((page: DotRenderedPageState) => {
                 expect(page).toBe(renderedPage);
             });
-            service.reload('/hello/world').subscribe();
+            service.reload('/hello/world');
         });
     });
 

@@ -50,17 +50,15 @@ export class DotPageStateService {
      * Get page state
      *
      * @param {string} url
-     * @returns {Observable<DotRenderedPageState>}
      * @memberof DotPageStateService
      */
-    reload(url: string): Observable<DotRenderedPageState> {
-        return this.get(url).pipe(
+    reload(url: string): void {
+        this.get(url).pipe(
             take(1),
             tap((page: DotRenderedPageState) => {
                 this.reload$.next(page);
-                return page;
             })
-        );
+        ).subscribe();
     }
 
     /**
