@@ -56,6 +56,15 @@
         }
     }
 
+    &[tiny] {
+        height: $button-tiny-height;
+
+        .ui-button-text {
+            padding: 0 $basic-padding * 2;
+            font-size: $button-tiny-text-size;
+        }
+    }
+
     &.ui-button-icon-only {
         box-shadow: none;
         border-radius: 50%;
@@ -94,7 +103,11 @@
     }
 }
 
+
+// BUTTONS WITH ICONS
+
 .ui-button-text {
+    $text-margin-with-icon: 40px;
     transition: all $field-animation-speed ease-in;
 
     .ui-button-text-only & {
@@ -102,10 +115,45 @@
     }
 
     .ui-button-text-icon-left & {
-        padding: 0 $button-padding 0 $basic-padding * 3.5;
+        padding: 0 $button-padding 0 $text-margin-with-icon;
     }
 
     .ui-button-text-icon-right & {
-        padding: 0 $basic-padding * 3.5 0 $button-padding;
+        padding: 0 $text-margin-with-icon 0 $button-padding;
+    }
+
+    .ui-button-text-icon-left[tiny] & {
+        padding-left: 30px;
+    }
+
+    .ui-button-text-icon-right[tiny] & {
+        padding-right: 30px;
+    }
+}
+
+.ui-button-icon-left,
+.ui-button-icon-right {
+    font-size: 1rem;
+    margin-top: -0.45em;
+    transition: all $field-animation-speed ease-in;
+
+    [tiny] & {
+        font-size: $button-tiny-text-size;
+    }
+}
+
+.ui-button-icon-left {
+    left: 20px;
+
+    [tiny] & {
+        left: 15px;
+    }
+}
+
+.ui-button-icon-right {
+    right: 20px;
+
+    [tiny] & {
+        right: 15px;
     }
 }

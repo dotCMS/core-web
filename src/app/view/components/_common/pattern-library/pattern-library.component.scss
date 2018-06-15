@@ -7,9 +7,17 @@
 }
 
 .pl__forms {
-    display: grid;
+    display: inline-grid;
     grid-gap: $basic-padding * 2;
-    width: 500px;
+}
+
+.pl__buttons-row {
+    align-items: center;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: repeat(2, auto);
+    justify-items: flex-start;
 }
 
 hr {

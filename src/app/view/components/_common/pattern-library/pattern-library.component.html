@@ -4,12 +4,22 @@
     <input type="text" pInputText value="Hello World"/>
     <textarea pInputTextarea>Hello World</textarea>
     <div class="pl__buttons">
-        <button pButton type="button" label="Value"></button>
-        <button pButton type="button" label="Disabled" disabled="true"></button>
 
-        <hr />
+        <div class="pl__buttons-row">
+            <button pButton label="Value"></button>
+            <button pButton label="Disabled" disabled="true"></button>
+            <button pButton label="Value" icon="fa-heart"></button>
+            <button pButton label="Disabled" disabled="true" icon="fa-heart"></button>
+            <button pButton tiny label="Value"></button>
+            <button pButton tiny label="Disabled" disabled="true"></button>
 
-        <button pButton secondary type="button" label="Value"></button>
-        <button pButton secondary type="button" label="Disabled" disabled="true"></button>
+            <button pButton secondary label="Value"></button>
+            <button pButton secondary label="Disabled" disabled="true"></button>
+            <button pButton secondary label="Value" icon="fa-heart"></button>
+            <button pButton secondary label="Disabled" disabled="true" icon="fa-heart"></button>
+            <button pButton secondary tiny label="Value" icon="fa-heart"></button>
+            <button pButton secondary tiny label="Disabled" disabled="true" icon="fa-heart"></button>
+        </div>
+
     </div>
 </div>

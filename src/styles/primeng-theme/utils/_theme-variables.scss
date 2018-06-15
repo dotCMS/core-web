@@ -34,11 +34,13 @@ $field-disabled-border-color: $gray-lighter;
 $button-border: 0;
 $button-padding: $field-padding * 3;
 $button-height: $field-height;
+$button-tiny-height: 24px;
 $button-disabled-color: $body-font-color;
 $button-radius: $field-border-radius;
 $button-inverted-color: $white;
 $button-hover-background-opacity: 0.12;
 $button-text-size: 13px;
+$button-tiny-text-size: 10px;
 
 $button-main: (
     normal: (
