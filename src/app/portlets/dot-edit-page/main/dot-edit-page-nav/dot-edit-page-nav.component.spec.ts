@@ -89,7 +89,7 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should emit event when clicked on Properties button', () => {
-            spyOn(component.buttonClicked, 'emit');
+            spyOn(component.action, 'emit');
 
             const propertiesMock = {
                 evt: new MouseEvent('click'),
@@ -97,8 +97,13 @@ describe('DotEditPageNavComponent', () => {
                 label: 'Properties'
             };
 
-            component.emitClick(propertiesMock.evt, propertiesMock.inode, propertiesMock.label);
-            expect(component.buttonClicked.emit).toHaveBeenCalledWith({ inode: propertiesMock.inode, label: propertiesMock.label });
+            const data = {
+                inode: propertiesMock.inode,
+                label: propertiesMock.label
+            };
+
+            component.emitClick(propertiesMock.evt, data);
+            expect(component.action.emit).toHaveBeenCalledWith({ inode: propertiesMock.inode, label: propertiesMock.label });
         });
     });
 

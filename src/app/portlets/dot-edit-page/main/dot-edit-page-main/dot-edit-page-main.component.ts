@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
+import { DotMessageService } from '../../../../api/services/dot-messages-service';
 
 @Component({
     selector: 'dot-edit-page-main',
@@ -19,12 +20,14 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private dotContentletEditorService: DotContentletEditorService,
-        private dotPageStateService: DotPageStateService
+        private dotPageStateService: DotPageStateService,
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
         this.pageState = this.route.data.pluck('content');
         this.subscribeIframeCloseAction();
+        this.dotMessageService.getMessages(['editpage.toolbar.nav.properties']);
     }
 
     ngOnDestroy(): void {
@@ -38,12 +41,14 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
      * @param {inode: string; label: string} buttonClicked
      * @memberof DotEditPageMainComponent
      */
-    openPageProperties(buttonClicked: { inode: string; label: string }) {
-        this.dotContentletEditorService.edit({
-            data: {
-                inode: buttonClicked.inode
-            }
-        });
+    executeMenuAction(buttonClicked: { inode: string; label: string }): void {
+        if (buttonClicked.label === this.dotMessageService.get('editpage.toolbar.nav.properties')) {
+            this.dotContentletEditorService.edit({
+                data: {
+                    inode: buttonClicked.inode
+                }
+            });
+        }
     }
 
     private subscribeIframeCloseAction(): void {

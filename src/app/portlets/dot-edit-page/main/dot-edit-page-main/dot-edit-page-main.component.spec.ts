@@ -41,7 +41,8 @@ describe('DotEditPageMainComponent', () => {
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
-        'editpage.toolbar.nav.layout': 'Layout'
+        'editpage.toolbar.nav.layout': 'Layout',
+        'editpage.toolbar.nav.properties': 'Properties'
     });
 
     const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
@@ -98,15 +99,16 @@ describe('DotEditPageMainComponent', () => {
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
     });
 
-    it('should call the ContentletEditorService Edit when OpenProperties evt happens', () => {
+    it('should call the ContentletEditorService Edit when ExecuteMenuAction evt happens', () => {
         const buttonClicked = { inode: '123', label: 'Properties' };
-        const reponse = {
+        const response = {
             data: {
                 inode: buttonClicked.inode
             }
         };
-        component.openPageProperties(buttonClicked);
-        expect(dotContentletEditorService.edit).toHaveBeenCalledWith(reponse);
+        const domComponent = fixture.debugElement.query(By.css('dot-edit-page-nav'));
+        domComponent.triggerEventHandler('action', buttonClicked);
+        expect(dotContentletEditorService.edit).toHaveBeenCalledWith(response);
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {

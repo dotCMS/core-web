@@ -27,17 +27,22 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnChanges {
     @Input() pageState: DotRenderedPageState;
-    @Output() buttonClicked: EventEmitter<{ inode: string; label: string }> = new EventEmitter();
+    @Output() action: EventEmitter<{ inode: string; label: string }> = new EventEmitter();
     model: Observable<DotEditPageNavItem[]>;
     isEnterpriseLicense: boolean;
 
     constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
 
-    emitClick($event: MouseEvent, inode: string, label: string): void {
+    /**
+     * Handle Buttom click output event in component
+     *
+     * @param {(MouseEvent)} $event
+     * @param { inode: string; label: string } data
+     * @memberof DotEditPageNavComponent
+     */
+    emitClick($event: MouseEvent, data: { inode: string; label: string }): void {
         $event.stopPropagation();
-        if (inode) {
-            this.buttonClicked.emit({ inode, label });
-        }
+        this.action.emit({ inode: data.inode, label: data.label });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -95,7 +100,8 @@ export class DotEditPageNavComponent implements OnChanges {
                 icon: 'fa fa-plus',
                 label: this.dotMessageService.get('editpage.toolbar.nav.properties'),
                 action: (event, inode, label) => {
-                    this.emitClick(event, inode, label);
+                    const data = { inode, label };
+                    this.emitClick(event, data);
                 }
             }
         ];
