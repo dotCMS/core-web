@@ -5,7 +5,7 @@
             <a class="edit-page-nav__item" pTooltip="{{ item.tooltip }}"
                 [ngClass]="{'edit-page-nav__item--disabled': item.disabled, 'edit-page-nav__item--active': item.link === this.route.snapshot.firstChild.url[0].path}"
                 [routerLink]="!item.disabled && item.link ? ['./' + item.link] : null"
-                (click)="item.action ? item.action($event, pageState.page.inode, item.label) : ''"
+                (click)="item.action ? item.action(pageState.page.inode) : ''"
                 [queryParams]="route.queryParams | async">
                 <i class="{{ item.icon }}"></i>
                 <span class="edit-page-nav__item-text">{{ item.label }}</span>

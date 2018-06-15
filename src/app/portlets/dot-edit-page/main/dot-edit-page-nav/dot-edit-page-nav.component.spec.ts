@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
+import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,6 +15,11 @@ import { mockUser } from './../../../../test/login-service.mock';
 import { Injectable, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
+
+@Injectable()
+class MockDotContentletEditorService {
+    edit = jasmine.createSpy('edit');
+}
 
 @Injectable()
 class MockDotLicenseService {
@@ -32,6 +38,7 @@ class TestHostComponent {
 
 describe('DotEditPageNavComponent', () => {
     let dotLicenseService: DotLicenseService;
+    let dotContentletEditorService: DotContentletEditorService;
     let component: DotEditPageNavComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -54,6 +61,10 @@ describe('DotEditPageNavComponent', () => {
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotLicenseService, useClass: MockDotLicenseService },
                 {
+                    provide: DotContentletEditorService,
+                    useClass: MockDotContentletEditorService
+                },
+                {
                     provide: ActivatedRoute,
                     useValue: {
                         snapshot: {
@@ -74,6 +85,7 @@ describe('DotEditPageNavComponent', () => {
         de = fixture.debugElement;
         component = de.query(By.css('dot-edit-page-nav')).componentInstance;
         fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+        dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
         fixture.detectChanges();
     }));
 
@@ -88,22 +100,10 @@ describe('DotEditPageNavComponent', () => {
             expect(activeItem.nativeElement.innerText).toContain('Content');
         });
 
-        it('should emit event when clicked on Properties button', () => {
-            spyOn(component.action, 'emit');
-
-            const propertiesMock = {
-                evt: new MouseEvent('click'),
-                inode: '123',
-                label: 'Properties'
-            };
-
-            const data = {
-                inode: propertiesMock.inode,
-                label: propertiesMock.label
-            };
-
-            component.emitClick(propertiesMock.evt, data);
-            expect(component.action.emit).toHaveBeenCalledWith({ inode: propertiesMock.inode, label: propertiesMock.label });
+        it('should call the ContentletEditorService Edit when clicked on Properties button', () => {
+            const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
+            menuListItems[2].nativeNode.click();
+            expect(dotContentletEditorService.edit).toHaveBeenCalled();
         });
     });
 

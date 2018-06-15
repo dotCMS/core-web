@@ -35,22 +35,6 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    /**
-     * Handle call of contentlet dialog
-     *
-     * @param {inode: string; label: string} buttonClicked
-     * @memberof DotEditPageMainComponent
-     */
-    executeMenuAction(buttonClicked: { inode: string; label: string }): void {
-        if (buttonClicked.label === this.dotMessageService.get('editpage.toolbar.nav.properties')) {
-            this.dotContentletEditorService.edit({
-                data: {
-                    inode: buttonClicked.inode
-                }
-            });
-        }
-    }
-
     private subscribeIframeCloseAction(): void {
         this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.dotPageStateService.reload(this.route.snapshot.queryParams.url);

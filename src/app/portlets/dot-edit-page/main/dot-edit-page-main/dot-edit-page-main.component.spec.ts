@@ -21,7 +21,6 @@ import { DotPageStateService } from '../../content/services/dot-page-state/dot-p
 
 @Injectable()
 class MockDotContentletEditorService {
-    edit = jasmine.createSpy('edit');
     close$ = new Observable(observer => {
         observer.next(true);
     });
@@ -100,18 +99,6 @@ describe('DotEditPageMainComponent', () => {
     it('should bind correctly pageState param', () => {
         const nav: DotEditPageNavComponent = fixture.debugElement.query(By.css('dot-edit-page-nav')).componentInstance;
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
-    });
-
-    it('should call the ContentletEditorService Edit when ExecuteMenuAction evt happens', () => {
-        const buttonClicked = { inode: '123', label: 'Properties' };
-        const response = {
-            data: {
-                inode: buttonClicked.inode
-            }
-        };
-        const domComponent = fixture.debugElement.query(By.css('dot-edit-page-nav'));
-        domComponent.triggerEventHandler('action', buttonClicked);
-        expect(dotContentletEditorService.edit).toHaveBeenCalledWith(response);
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {

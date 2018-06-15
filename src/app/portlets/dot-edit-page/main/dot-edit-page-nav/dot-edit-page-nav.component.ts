@@ -1,11 +1,12 @@
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
+import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { map } from 'rxjs/operators/map';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import * as _ from 'lodash';
@@ -27,23 +28,15 @@ interface DotEditPageNavItem {
 })
 export class DotEditPageNavComponent implements OnChanges {
     @Input() pageState: DotRenderedPageState;
-    @Output() action: EventEmitter<{ inode: string; label: string }> = new EventEmitter();
     model: Observable<DotEditPageNavItem[]>;
     isEnterpriseLicense: boolean;
 
-    constructor(private dotLicenseService: DotLicenseService, public dotMessageService: DotMessageService, public route: ActivatedRoute) {}
-
-    /**
-     * Handle Buttom click output event in component
-     *
-     * @param {(MouseEvent)} $event
-     * @param { inode: string; label: string } data
-     * @memberof DotEditPageNavComponent
-     */
-    emitClick($event: MouseEvent, data: { inode: string; label: string }): void {
-        $event.stopPropagation();
-        this.action.emit({ inode: data.inode, label: data.label });
-    }
+    constructor(
+        private dotLicenseService: DotLicenseService,
+        private dotContentletEditorService: DotContentletEditorService,
+        public dotMessageService: DotMessageService,
+        public route: ActivatedRoute
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.layoutChanged(changes)) {
@@ -99,9 +92,12 @@ export class DotEditPageNavComponent implements OnChanges {
                 disabled: false,
                 icon: 'fa fa-plus',
                 label: this.dotMessageService.get('editpage.toolbar.nav.properties'),
-                action: (event, inode, label) => {
-                    const data = { inode, label };
-                    this.emitClick(event, data);
+                action: (inode) => {
+                    this.dotContentletEditorService.edit({
+                        data: {
+                            inode: inode
+                        }
+                    });
                 }
             }
         ];
