@@ -1,5 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
-
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotThemeSelectorComponent } from './dot-theme-selector.component';
 import { DebugElement } from '@angular/core';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -7,7 +6,6 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotThemesService } from '../../../../../api/services/dot-themes/dot-themes.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { Observable } from 'rxjs/Observable';
-import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { By } from '@angular/platform-browser';
 import { mockDotThemes } from '../../../../../test/dot-themes.mock';
 import { DataGridModule } from 'primeng/primeng';
@@ -16,12 +14,7 @@ import { mockSites, SiteServiceMock } from '../../../../../test/site-service.moc
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
-
-class DotThemesServiceeMock {
-    get(): Observable<DotTheme[]> {
-        return Observable.of(mockDotThemes);
-    }
-}
+import { DotThemesServiceMock } from '../../../../../test/dot-themes-service.mock';
 
 fdescribe('DotThemeSelectorComponent', () => {
     let component: DotThemeSelectorComponent;
@@ -45,7 +38,7 @@ fdescribe('DotThemeSelectorComponent', () => {
             providers: [
                 {
                     provide: DotThemesService,
-                    useClass: DotThemesServiceeMock
+                    useClass: DotThemesServiceMock
                 },
                 {
                     provide: DotMessageService,
@@ -123,17 +116,24 @@ fdescribe('DotThemeSelectorComponent', () => {
             expect(component.paginate).toHaveBeenCalledTimes(1);
             expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
         });
+
+        it('should disable the apply butotn', () => {
+            fixture.detectChanges();
+            const applyButton: DebugElement = fixture.debugElement.query(By.css('.apply'));
+
+            expect(applyButton.nativeElement.disabled).toBe(true);
+        });
     });
 
-    describe('Pagination setup', () => {
+    describe('User interaction', () => {
         beforeEach(() => {
-            fixture.detectChanges();
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(mockDotThemes));
         });
 
-        it('should set pagination, call endpoint  and clear search field on site change ', () => {
-            spyOn(paginatorService, 'getWithOffset');
+        it('should set pagination, call endpoint and clear search field on site change ', () => {
             spyOn(component, 'paginate');
             component.siteChange(mockSites[0]);
+            fixture.detectChanges();
 
             expect(component.searchInput.nativeElement.value).toBe('');
             expect(paginatorService.extraParams.get('hostId')).toBe(mockSites[0].identifier);
@@ -141,18 +141,41 @@ fdescribe('DotThemeSelectorComponent', () => {
             expect(component.paginate).toHaveBeenCalledWith({ first: 0 });
         });
 
-        xit('should set pagination on search and call endpoint', () => {});
+        it('should set the current value when the user click a specific theme', () => {
+            spyOn(component, 'selectTheme').and.callThrough();
+            component.paginate({ first: 0 });
+            fixture.detectChanges();
+            const themes: DebugElement[] = fixture.debugElement.queryAll(By.css('.dot-theme-item'));
+            themes[1].nativeElement.click();
+
+            expect(component.current).toBe(mockDotThemes[1]);
+            expect(component.selectTheme).toHaveBeenCalled();
+        });
+
+        it('should active the apply button and set active when user select a different theme than the one in value', () => {
+            component.paginate({ first: 0 });
+            fixture.detectChanges();
+            const themes: DebugElement[] = fixture.debugElement.queryAll(By.css('.dot-theme-item'));
+            const applyButton: DebugElement = fixture.debugElement.query(By.css('.apply'));
+            themes[1].nativeElement.click();
+            fixture.detectChanges();
+
+            expect(applyButton.nativeElement.disabled).toBe(false);
+            expect(themes[1].nativeElement.classList.contains('active')).toBe(true);
+        });
+
+        it(
+            'should call theme enpoint on search',
+            fakeAsync(() => {
+                spyOn(component, 'paginate');
+                fixture.detectChanges();
+                component.searchInput.nativeElement.value = 'test';
+                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+                tick(550);
+
+                expect(paginatorService.extraParams.get('searchParam')).toBe('test');
+                expect(component.paginate).toHaveBeenCalled();
+            })
+        );
     });
-
-    xit('should recalculate pagination on string search', () => {});
-
-    xit('should call theme enpoint when site changes', () => {});
-
-    xit('should call theme enpoint on search', () => {});
-
-    xit('should set the selected theme when click the card', () => {});
-
-    xit('should enable the apply button when pick a theme', () => {});
-
-    xit('should keep the apply button disable if the initial theme is selected', () => {});
 });

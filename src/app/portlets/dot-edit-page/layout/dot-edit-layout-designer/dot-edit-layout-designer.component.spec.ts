@@ -18,13 +18,15 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
-import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import {mockDotRenderedPage, mockDotTemplate} from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { async } from '@angular/core/testing';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotTheme } from '../../shared/models/dot-theme.model';
 import { mockDotThemes } from '../../../../test/dot-themes.mock';
+import { DotThemesService } from '../../../../api/services/dot-themes/dot-themes.service';
+import { DotThemesServiceMock } from '../../../../test/dot-themes-service.mock';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -99,21 +101,24 @@ const testConfigObject = {
         SocketFactory,
         DotEditLayoutService,
         TemplateContainersCacheService,
-        { provide: DotMessageService, useValue: messageServiceMock }
+        { provide: DotMessageService, useValue: messageServiceMock },
+        { provide: DotThemesService, useClass: DotThemesServiceMock }
     ]
 };
 
-describe('DotEditLayoutDesignerComponent', () => {
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            ...testConfigObject,
-            providers: [...testConfigObject.providers]
-        });
+fdescribe('DotEditLayoutDesignerComponent', () => {
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                ...testConfigObject,
+                providers: [...testConfigObject.providers]
+            });
 
-        fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
-        component = fixture.componentInstance;
-        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-    }));
+            fixture = DOTTestBed.createComponent(DotEditLayoutDesignerComponent);
+            component = fixture.componentInstance;
+            dotRouterService = fixture.debugElement.injector.get(DotRouterService);
+        })
+    );
 
     describe('edit layout', () => {
         beforeEach(() => {
@@ -121,7 +126,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                 mockUser,
                 {
                     ...mockDotRenderedPage,
-                    template: null,
+                    template: {...mockDotTemplate, theme: '123'},
                     canCreateTemplate: false
                 },
                 null
@@ -198,6 +203,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         it('should set form model correctly', () => {
             expect(component.form.value).toEqual({
                 title: null,
+                themeId: '123',
                 layout: {
                     body: mockDotRenderedPage.layout.body,
                     header: mockDotRenderedPage.layout.header,
@@ -210,7 +216,6 @@ describe('DotEditLayoutDesignerComponent', () => {
                 }
             });
         });
-
 
         describe('themes', () => {
             let themeSelector: MockDotThemeSelectorComponent;
@@ -230,7 +235,6 @@ describe('DotEditLayoutDesignerComponent', () => {
                 // TODO: expect of the call to the save method.
             });
         });
-
 
         describe('can save as template', () => {
             beforeEach(() => {
@@ -297,6 +301,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         it('should set form model correctly', () => {
             expect(component.form.value).toEqual({
                 title: mockDotRenderedPage.template.title,
+                themeId: '123',
                 layout: {
                     body: mockDotRenderedPage.layout.body,
                     header: mockDotRenderedPage.layout.header,
@@ -411,7 +416,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it('when user can\'t edit the template and set layout mode', () => {
+            it("when user can't edit the template and set layout mode", () => {
                 component.pageState = new DotRenderedPageState(
                     mockUser,
                     {
@@ -483,6 +488,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         it('should not break when sidebar property in layout is null', () => {
             expect(component.form.value).toEqual({
                 title: null,
+                themeId: '123',
                 layout: {
                     body: mockDotRenderedPage.layout.body,
                     header: mockDotRenderedPage.layout.header,
