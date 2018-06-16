@@ -17,12 +17,12 @@ $action-button-height: 56px;
             opacity: 1;
 
             &:hover {
-                background: var(--color-main_mod);
+                background: $brand-primary_mod;
                 box-shadow: $md-shadow-3;
             }
 
             &:active, &:focus {
-                background: var(--color-main_mod);
+                background: $brand-primary_mod;
             }
 
             [class^='ui-button-icon'],

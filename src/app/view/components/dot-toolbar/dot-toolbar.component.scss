@@ -39,7 +39,7 @@ p-toolbar::ng-deep {
 
 .toolbar__button-wrapper {
     align-items: center;
-    background-color: var(--color-background);
+    background-color: $brand-background;
     height: $toolbar-height;
     position: relative;
     width: 70px;
@@ -62,7 +62,7 @@ p-toolbar::ng-deep {
 }
 
 .toolbar__logo-bg {
-    background-color: var(--color-background);
+    background-color: $brand-background;
     display: block;
     height: $toolbar-height;
     left: 0;

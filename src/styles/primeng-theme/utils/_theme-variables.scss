@@ -49,17 +49,17 @@ $button-main: (
         border: $button-border,
     ),
     hover: (
-        background: var(--color-main_mod),
+        background: $brand-primary_mod,
         color: $white,
         border: $button-border,
     ),
     focus: (
-        background: var(--color-main_mod),
+        background: $brand-primary_mod,
         color: $white,
         border: $button-border,
     ),
     active: (
-        background: var(--color-main_mod),
+        background: $brand-primary_mod,
         color: $white,
         border: $button-border,
     ),
@@ -73,8 +73,8 @@ $button-main: (
 $button-sec: (
     normal: (
         background: $white,
-        color: var(--color-sec),
-        border: solid 1px var(--color-sec),
+        color: $brand-secondary,
+        border: solid 1px $brand-secondary,
     ),
     hover: (
         background: $white,
