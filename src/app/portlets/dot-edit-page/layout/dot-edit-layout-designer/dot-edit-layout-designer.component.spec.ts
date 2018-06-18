@@ -106,7 +106,7 @@ const testConfigObject = {
     ]
 };
 
-fdescribe('DotEditLayoutDesignerComponent', () => {
+describe('DotEditLayoutDesignerComponent', () => {
     beforeEach(
         async(() => {
             DOTTestBed.configureTestingModule({
@@ -219,11 +219,15 @@ fdescribe('DotEditLayoutDesignerComponent', () => {
 
         describe('themes', () => {
             let themeSelector: MockDotThemeSelectorComponent;
+            let themeButton;
             beforeEach(() => {
+                themeButton = fixture.debugElement.query(By.css('button[icon="fa-paint-brush"]')).nativeElement;
+                themeButton.click();
+                fixture.detectChanges();
                 themeSelector = fixture.debugElement.query(By.css('dot-theme-selector')).componentInstance;
             });
 
-            it('should have theme selector component', () => {
+            it('should expose theme selector component', () => {
                 expect(themeSelector).not.toBe(null);
             });
 
@@ -232,7 +236,6 @@ fdescribe('DotEditLayoutDesignerComponent', () => {
                 themeSelector.selected.emit(mockDotThemes[0]);
 
                 expect(component.changeThemeHandler).toHaveBeenCalledWith(mockDotThemes[0]);
-                // TODO: expect of the call to the save method.
             });
         });
 
@@ -301,7 +304,7 @@ fdescribe('DotEditLayoutDesignerComponent', () => {
         it('should set form model correctly', () => {
             expect(component.form.value).toEqual({
                 title: mockDotRenderedPage.template.title,
-                themeId: '123',
+                themeId: '',
                 layout: {
                     body: mockDotRenderedPage.layout.body,
                     header: mockDotRenderedPage.layout.header,
@@ -476,7 +479,7 @@ fdescribe('DotEditLayoutDesignerComponent', () => {
                 mockUser,
                 {
                     ...mockDotRenderedPage,
-                    template: null,
+                    template: {...mockDotTemplate, theme: '123'},
                     canCreateTemplate: false
                 },
                 null

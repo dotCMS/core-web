@@ -1,6 +1,6 @@
 import { DotThemesService } from './dot-themes.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { ConnectionBackend, ResponseOptions } from '@angular/http';
+import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { mockDotThemes } from '../../../test/dot-themes.mock';
 import { DotTheme } from '../../../portlets/dot-edit-page/shared/models/dot-theme.model';
@@ -14,6 +14,11 @@ describe('DotThemesService', () => {
     });
 
     it('should get Themes', () => {
+        this.dotThemesService.get('inode').subscribe((themes: DotTheme[]) => {
+            debugger;
+            expect(themes).toEqual(Array.of(mockDotThemes[0]));
+        });
+
         this.lastConnection.mockRespond(
             new Response(
                 new ResponseOptions({
@@ -23,9 +28,5 @@ describe('DotThemesService', () => {
                 })
             )
         );
-
-        this.dotThemesService.get(mockDotThemes[0].inode).subscribe((themes: DotTheme[]) => {
-            expect(themes).toEqual(Array.of(mockDotThemes[0]));
-        });
     });
 });
