@@ -18,12 +18,12 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { Injectable } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
+import { Subject } from 'rxjs/Subject';
+import { DotContentletEditorModule } from '../../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
 
 @Injectable()
 class MockDotContentletEditorService {
-    close$ = new Observable(observer => {
-        observer.next(true);
-    });
+    close$ = new Subject;
 }
 
 @Injectable()
@@ -35,7 +35,6 @@ class MockDotPageStateService {
 }
 
 describe('DotEditPageMainComponent', () => {
-    let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
     let dotContentletEditorService: DotContentletEditorService;
@@ -58,11 +57,22 @@ describe('DotEditPageMainComponent', () => {
                         path: ''
                     }
                 ]),
-                DotEditPageNavModule
+                DotEditPageNavModule,
+                DotContentletEditorModule
             ],
             declarations: [DotEditPageMainComponent],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        snapshot: {
+                            queryParams: {
+                                url: '/about-us/index'
+                            }
+                        }
+                    }
+                },
                 { provide: PageViewService, useClass: PageViewServiceMock },
                 {
                     provide: DotContentletEditorService,
@@ -82,7 +92,6 @@ describe('DotEditPageMainComponent', () => {
         route.data = Observable.of({
             content: mockDotRenderedPageState
         });
-        component = fixture.componentInstance;
         dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
         dotPageStateService = fixture.debugElement.injector.get(DotPageStateService);
         fixture.detectChanges();
@@ -102,6 +111,7 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {
-        expect(dotPageStateService.reload).toHaveBeenCalled();
+        dotContentletEditorService.close$.next(true);
+        expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index');
     });
 });
