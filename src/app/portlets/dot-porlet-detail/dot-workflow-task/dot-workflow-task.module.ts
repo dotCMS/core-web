@@ -1,24 +1,12 @@
 import { CommonModule } from '@angular/common';
-
-
 import { DotWorkflowTaskComponent } from './dot-workflow-task.component';
-import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-
-const routes: Routes = [
-    {
-        component: DotWorkflowTaskComponent,
-        path: ''
-    }
-];
+import { DotWorkflowTaskDetailModule } from '../../../view/components/dot-workflow-task-detail/dot-workflow-task-detail.module';
 
 @NgModule({
     declarations: [DotWorkflowTaskComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-    ],
-    exports: [],
+    imports: [CommonModule, DotWorkflowTaskDetailModule],
+    exports: [DotWorkflowTaskComponent],
     providers: []
 })
 export class DotWorkflowTaskModule {}

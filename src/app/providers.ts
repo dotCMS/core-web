@@ -25,6 +25,8 @@ import { PaginatorService } from './api/services/paginator';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
 import { StringFormat } from './api/util/stringFormat';
 import { StringPixels } from './api/util/string-pixels-util';
+import { DotContentletService } from './api/services/dot-contentlet.service';
+import { DotUiColorsService } from './api/services/dot-ui-colors/dot-ui-colors.service';
 
 const PROVIDERS: any[] = [
     AccountService,
@@ -35,6 +37,7 @@ const PROVIDERS: any[] = [
     ContentletGuardService,
     CrudService,
     DefaultGuardService,
+    DotContentletService,
     DotDialogService,
     DotHttpErrorManagerService,
     DotIframeService,
@@ -43,6 +46,7 @@ const PROVIDERS: any[] = [
     DotMessageService,
     DotRouterService,
     DotSaveOnDeactivateService,
+    DotUiColorsService,
     FormatDateService,
     GravatarService,
     IframeOverlayService,
