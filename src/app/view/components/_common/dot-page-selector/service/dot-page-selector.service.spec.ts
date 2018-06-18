@@ -15,7 +15,7 @@ describe('Service: DotPageSelector', () => {
     it('should get Page Selectors', () => {
         let result;
 
-        this.dotPageSelectorService.getPage('about').subscribe((res) => {
+        this.dotPageSelectorService.getPagesInFolder('about').subscribe((res) => {
             result = res;
         });
 

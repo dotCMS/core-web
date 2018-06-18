@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
-import { of } from 'rxjs/observable/of';
 import { RequestMethod } from '@angular/http';
 
 export interface DotPageAsset {
