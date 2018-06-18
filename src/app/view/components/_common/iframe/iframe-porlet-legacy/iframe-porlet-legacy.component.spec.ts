@@ -32,7 +32,6 @@ describe('IframePortletLegacyComponent', () => {
                 DotContentletService,
                 DotIframeEventsHandler,
                 DotMenuService,
-                DotUiColorsService,
                 LoginService,
                 SiteService,
                 SocketFactory,

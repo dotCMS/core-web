@@ -29,7 +29,6 @@ describe('IframeComponent', () => {
             providers: [
                 DotLoadingIndicatorService,
                 IframeOverlayService,
-                DotUiColorsService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock

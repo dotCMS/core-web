@@ -19,6 +19,7 @@ import { DotPageStateService } from '../../content/services/dot-page-state/dot-p
 import { DotPageStateServiceMock } from '../../../../test/dot-page-state.service.mock';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import { DotUiColorsService } from '../../../../api/services/dot-ui-colors/dot-ui-colors.service';
 
 class DotMenuServiceMock {
     getDotMenuId(): Observable<string> {
@@ -38,6 +39,7 @@ const basicModule = {
     declarations: [DotEditLayoutAdvancedComponent],
     providers: [
         DotGlobalMessageService,
+        DotUiColorsService,
         {
             provide: LoginService,
             useClass: LoginServiceMock
