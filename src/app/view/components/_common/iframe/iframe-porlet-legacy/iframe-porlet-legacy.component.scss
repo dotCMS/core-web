@@ -1,4 +1,16 @@
+@import "variables";
+
+$iframe-margin: $basic-padding * 3;
+
 :host {
+    background-color: $gray-lightest;
     display: block;
+    padding: $iframe-margin;
     height: 100%;
+}
+
+dot-iframe {
+    background-color: $white;
+    box-shadow: $md-shadow-2;
+    height: calc(100% - ($iframe-margin * 2));
 }
