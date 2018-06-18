@@ -419,7 +419,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it("when user can't edit the template and set layout mode", () => {
+            it('when user can\'t edit the template and set layout mode', () => {
                 component.pageState = new DotRenderedPageState(
                     mockUser,
                     {
