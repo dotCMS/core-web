@@ -386,7 +386,10 @@ export class DotEditContentHtmlService {
         this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
     }
 
-    private appendNewContentlets(contentletContentEl: any, html: string): void {
+    private appendNewContentlets(contentletEl: any, html: string): void {
+        const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
+        contentletContentEl.innerHTML = ''; // Removing the loading indicator
+
         const doc = this.getEditPageDocument();
 
         // Add innerHTML to a plain so we can get the HTML nodes later
@@ -550,8 +553,6 @@ export class DotEditContentHtmlService {
     }
 
     private renderHTMLToContentlet(contentletEl: HTMLElement, contentletHtml: string): void {
-        const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
-        contentletContentEl.innerHTML = ''; // Removing the loading indicator
 
         this.appendNewContentlets(contentletEl, contentletHtml);
 
@@ -575,3 +576,4 @@ export class DotEditContentHtmlService {
             });
     }
 }
+ 

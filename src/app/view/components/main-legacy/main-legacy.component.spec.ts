@@ -68,7 +68,7 @@ describe('MainComponentLegacyComponent', () => {
     });
 
     it('should have basic layout elements', () => {
-        expect(de.query(By.css('dot-dialog')) !== null).toBe(true);
+        expect(de.query(By.css('dot-alert-confirm')) !== null).toBe(true);
         expect(de.query(By.css('dot-toolbar')) !== null).toBe(true);
         expect(de.query(By.css('dot-main-nav')) !== null).toBe(true);
         expect(de.query(By.css('router-outlet')) !== null).toBe(true);

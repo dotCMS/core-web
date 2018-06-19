@@ -109,7 +109,7 @@ export class DotEditContentToolbarHtmlService {
     getContentButton(contentletDataset: {[key: string]: any}): string {
 
         const identifier: string = contentletDataset.dotIdentifier;
-        const inode: string = contentletDataset.dotIdentifier;
+        const inode: string = contentletDataset.dotInode;
         const canEdit: boolean = contentletDataset.dotCanEdit === 'true';
         const isForm: boolean = contentletDataset.dotBasetype === 'FORM';
 
