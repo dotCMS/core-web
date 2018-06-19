@@ -43,7 +43,6 @@ import { DotContentletEditorService } from '../../../view/components/dot-content
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
-import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,

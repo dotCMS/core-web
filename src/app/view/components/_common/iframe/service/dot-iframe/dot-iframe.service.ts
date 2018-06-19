@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { filter, map } from 'rxjs/operators';
-import { DotUiColorsService } from '../../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
 
 @Injectable()
 export class DotIframeService {
