@@ -102,7 +102,7 @@ export class DotThemeSelectorComponent implements OnInit {
         this.close.emit(false);
     }
 
-    private filterThemes(searchCriteria?: string) {
+    private filterThemes(searchCriteria?: string): void {
         this.paginatorService.setExtraParams('searchParam', searchCriteria);
         this.paginate({ first: 0 });
     }
