@@ -29,6 +29,17 @@ export class DotIframeService {
     }
 
     /**
+     * Get reload colors action
+     *
+     * @returns {Observable<any>}
+     * @memberof DotIframeService
+     */
+    reloadedColors(): Observable<any> {
+        return this._actions.asObservable().pipe(filter((action: string) => action === 'colors'));
+    }
+
+
+    /**
      * Get functions to run in the iframe window
      *
      * @returns {Observable<string>}
@@ -51,5 +62,41 @@ export class DotIframeService {
         this._actions.next({
             run: name
         });
+    }
+
+    /**
+     * Run a function to reload the data in the portlet
+     *
+     * @param {string} portlet
+     * @memberof DotIframeService
+     */
+    reloadData(portlet: string): void {
+        const functionToRun = this.getFunctionToRefreshIframe(portlet);
+
+        if (functionToRun) {
+            this.run(functionToRun);
+        }
+    }
+
+    /**
+     * Reload the colors in the jsp
+     *
+     * @memberof DotIframeService
+     */
+    reloadColors(): void {
+        this._actions.next('colors');
+    }
+
+    private getFunctionToRefreshIframe(portlet: string): string {
+        const mapOfFunctions = {
+            'content': 'doSearch',
+            'site-browser': 'reloadContent',
+            'vanity-urls': 'doSearch',
+            'sites': 'refreshHostTable',
+            'calendar': 'initializeCalendar',
+            'workflow': 'doFilter'
+        };
+
+        return mapOfFunctions[portlet];
     }
 }
