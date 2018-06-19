@@ -20,12 +20,13 @@ export class DotThemesService {
      * @returns {Observable<DotTheme[]>}
      * @memberof DotThemesService
      */
-    get(inode: string): Observable<DotTheme[]> {
+    get(inode: string): Observable<DotTheme> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
                 url: 'v1/themes/id/' + inode
             })
-            .pluck('entity');
+            .pluck('entity')
+            .map((themes: DotTheme[]) => themes[0]);
     }
 }

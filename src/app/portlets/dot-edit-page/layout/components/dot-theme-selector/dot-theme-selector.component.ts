@@ -69,7 +69,8 @@ export class DotThemeSelectorComponent implements OnInit {
      */
     siteChange(site: Site): void {
         this.searchInput.nativeElement.value = null;
-        this.setPagination(site.identifier);
+        this.paginatorService.setExtraParams('hostId', site.identifier);
+        this.paginatorService.setExtraParams('searchParam', '');
         this.paginate({ first: 0 });
     }
 
@@ -102,14 +103,7 @@ export class DotThemeSelectorComponent implements OnInit {
     }
 
     private filterThemes(searchCriteria?: string) {
-        this.setPagination(null, searchCriteria);
+        this.paginatorService.setExtraParams('searchParam', searchCriteria);
         this.paginate({ first: 0 });
-    }
-
-    private setPagination(hostId?: string, searchCriteria?: string): void {
-        if (hostId) {
-            this.paginatorService.setExtraParams('hostId', hostId);
-        }
-        this.paginatorService.setExtraParams('searchParam', searchCriteria || '');
     }
 }

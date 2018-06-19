@@ -221,7 +221,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             let themeSelector: MockDotThemeSelectorComponent;
             let themeButton;
             beforeEach(() => {
-                themeButton = fixture.debugElement.query(By.css('button[icon="fa-paint-brush"]')).nativeElement;
+                themeButton = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-themes')).nativeElement;
                 themeButton.click();
                 fixture.detectChanges();
                 themeSelector = fixture.debugElement.query(By.css('dot-theme-selector')).componentInstance;
