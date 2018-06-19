@@ -12,10 +12,18 @@ describe('Service: DotPageSelector', () => {
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
-    it('should get Page Selectors', () => {
+    it('should get pages in a folder', () => {
         let result;
+        const searchParam = 'about';
+        const query = {
+            query: {
+                query_string: {
+                    query: `+basetype:5 +parentpath:*${searchParam}*`
+                }
+            }
+        };
 
-        this.dotPageSelectorService.getPagesInFolder('about').subscribe((res) => {
+        this.dotPageSelectorService.getPagesInFolder(searchParam).subscribe((res) => {
             result = res;
         });
 
@@ -28,11 +36,22 @@ describe('Service: DotPageSelector', () => {
                 })
             )
         );
-        expect(result).toEqual(mockPageSelector);
+        expect(result[0]).toEqual(mockPageSelector);
+        expect(this.lastConnection.request.url).toContain('es/search');
+        expect(this.lastConnection.request.method).toEqual(1);
+        expect(this.lastConnection.request._body).toEqual(JSON.stringify(query));
     });
 
-    it('should get a specific Page Selector', () => {
+    it('should get a page by identifier', () => {
         let result;
+        const searchParam = 'fdeb07ff-6fc3-4237-91d9-728109bc621d';
+        const query = {
+            query: {
+                query_string: {
+                    query: `+basetype:5 +identifier:${searchParam}`
+                }
+            }
+        };
 
         this.dotPageSelectorService.getPage('fdeb07ff-6fc3-4237-91d9-728109bc621d').subscribe((res) => {
             result = res;
@@ -48,5 +67,8 @@ describe('Service: DotPageSelector', () => {
             )
         );
         expect(result).toEqual(mockPageSelector[0]);
+        expect(this.lastConnection.request.url).toContain('es/search');
+        expect(this.lastConnection.request.method).toEqual(1);
+        expect(this.lastConnection.request._body).toEqual(JSON.stringify(query));
     });
 });

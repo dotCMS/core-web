@@ -35,17 +35,17 @@ export class DotPageSelectorService {
     /**
      * Get all the pages in the folder
      *
-     * @param {string} _folder
+     * @param {string} searchParam
      * @returns {Observable<DotPageAsset[]>}
      * @memberof DotPageSelectorService
      */
-    getPagesInFolder(_folder: string): Observable<DotPageAsset[]> {
+    getPagesInFolder(searchParam: string): Observable<DotPageAsset[]> {
         return this.coreWebService
             .requestView({
                 body: {
                     query: {
                         query_string: {
-                            query: `+basetype:5 +parentpath:*${_folder}*`
+                            query: `+basetype:5 +parentpath:*${searchParam}*`
                         }
                     }
                 },
