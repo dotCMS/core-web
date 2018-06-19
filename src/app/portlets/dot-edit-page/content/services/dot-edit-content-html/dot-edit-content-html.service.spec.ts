@@ -15,8 +15,18 @@ import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page
 import { Observable } from 'rxjs/Observable';
 import { mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
+import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { Injectable } from '@angular/core';
+
+@Injectable()
+class MockDotLicenseService {
+    isEnterprise(): Observable<boolean> {
+        return Observable.of(false);
+    }
+}
 
 describe('DotEditContentHtmlService', () => {
+    let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
 
     const fakeHTML = `
@@ -116,7 +126,8 @@ describe('DotEditContentHtmlService', () => {
             Logger,
             StringUtils,
             DotAlertConfirmService,
-            { provide: DotMessageService, useValue: messageServiceMock }
+            { provide: DotMessageService, useValue: messageServiceMock },
+            { provide: DotLicenseService, useClass: MockDotLicenseService },
         ]);
         this.dotEditContentHtmlService = <DotEditContentHtmlService>this.injector.get(DotEditContentHtmlService);
         this.dotEditContentToolbarHtmlService = this.injector.get(DotEditContentToolbarHtmlService);
@@ -131,7 +142,7 @@ describe('DotEditContentHtmlService', () => {
             is not a good architecture.
         */
         this.dotEditContentHtmlService.initEditMode(fakeHTML, { nativeElement: fakeIframeEl });
-
+        dotLicenseService = this.injector.get(DotLicenseService);
         fakeDocument = fakeIframeEl.contentWindow.document;
     }));
 
@@ -339,6 +350,11 @@ describe('DotEditContentHtmlService', () => {
     });
 
     describe('document click', () => {
+
+        beforeEach(() => {
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+        });
+
         it('should open sub menu', () => {
             const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('[data-dot-object="popup-button"]');
             button.click();
@@ -353,7 +369,9 @@ describe('DotEditContentHtmlService', () => {
                     dataset: button.dataset
                 });
             });
-            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('[data-dot-object="popup-menu-item"]');
+
+            const button: HTMLButtonElement = <HTMLButtonElement>
+                fakeDocument.querySelector('[data-dot-object="popup-menu-item"]');
             button.click();
         });
 
