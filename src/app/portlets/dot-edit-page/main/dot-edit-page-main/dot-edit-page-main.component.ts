@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
-import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +18,6 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private dotContentletEditorService: DotContentletEditorService,
         private dotPageStateService: DotPageStateService,
         public dotMessageService: DotMessageService
     ) {}
@@ -35,11 +33,19 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    private subscribeIframeCloseAction(): void {
-        this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dotPageStateService.reload(this.route.snapshot.queryParams.url);
-        });
+    /**
+     * Call reload method to refresh page based on url
+     *
+     * @param {any} event
+     * @memberof DotEditPageMainComponent
+     */
+    onCustomEvent(event: any): void {
+        if (event.detail.name === 'close' && event.detail.htmlUrl) {
+            this.dotPageStateService.reload(event.detail.htmlUrl.split('?')[0]);
+        }
+    }
 
+    private subscribeIframeCloseAction(): void {
         this.dotPageStateService.reload$.pipe(takeUntil(this.destroy$)).subscribe((page: DotRenderedPageState) => {
             this.pageState = Observable.of(page);
         });

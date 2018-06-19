@@ -16,7 +16,7 @@ import { DotEditPageNavComponent } from '../dot-edit-page-nav/dot-edit-page-nav.
 import { PageViewServiceMock } from '../../../../test/page-view.mock';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { Subject } from 'rxjs/Subject';
 import { DotContentletEditorModule } from '../../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
@@ -34,10 +34,17 @@ class MockDotPageStateService {
     });
 }
 
+@Component({
+    selector: 'dot-edit-contentlet',
+    template: ''
+})
+class MockDotEditContentletComponent {
+    @Output() custom = new EventEmitter<any>();
+}
+
 describe('DotEditPageMainComponent', () => {
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
-    let dotContentletEditorService: DotContentletEditorService;
     let dotPageStateService: DotPageStateService;
 
     const messageServiceMock = new MockDotMessageService({
@@ -57,10 +64,9 @@ describe('DotEditPageMainComponent', () => {
                         path: ''
                     }
                 ]),
-                DotEditPageNavModule,
-                DotContentletEditorModule
+                DotEditPageNavModule
             ],
-            declarations: [DotEditPageMainComponent],
+            declarations: [DotEditPageMainComponent, MockDotEditContentletComponent],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 {
@@ -92,7 +98,6 @@ describe('DotEditPageMainComponent', () => {
         route.data = Observable.of({
             content: mockDotRenderedPageState
         });
-        dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
         dotPageStateService = fixture.debugElement.injector.get(DotPageStateService);
         fixture.detectChanges();
     });
@@ -111,7 +116,15 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {
-        dotContentletEditorService.close$.next(true);
+        let editContentlet: MockDotEditContentletComponent;
+        const mockMessage = {
+            detail: {
+                name: 'close',
+                htmlUrl: '/about-us/index?com.dotmarketing.htmlpage.language=1&host_id=48190c8c-42c4-46af-8d1a-0cd5db894797'
+            }
+        };
+        editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet')).componentInstance;
+        editContentlet.custom.emit(mockMessage);
         expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index');
     });
 });

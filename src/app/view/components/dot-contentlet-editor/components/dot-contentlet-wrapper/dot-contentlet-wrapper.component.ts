@@ -12,6 +12,7 @@ export class DotContentletWrapperComponent implements OnInit {
     @Input() header = '';
     @Input() url: string;
     @Output() close: EventEmitter<any> = new EventEmitter();
+    @Output() custom: EventEmitter<any> = new EventEmitter();
 
     private isContentletModified = false;
     private readonly customEventsHandler;
@@ -88,6 +89,7 @@ export class DotContentletWrapperComponent implements OnInit {
      */
     onCustomEvent($event) {
         this.customEventsHandler[$event.detail.name]($event);
+        this.custom.emit($event);
     }
 
     /**
