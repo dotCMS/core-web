@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 import { DotThemesServiceMock } from '../../../../../test/dot-themes-service.mock';
 
-fdescribe('DotThemeSelectorComponent', () => {
+describe('DotThemeSelectorComponent', () => {
     let component: DotThemeSelectorComponent;
     let fixture: ComponentFixture<DotThemeSelectorComponent>;
     let de: DebugElement;

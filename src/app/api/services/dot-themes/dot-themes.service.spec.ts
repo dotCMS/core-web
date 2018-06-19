@@ -5,7 +5,7 @@ import { MockBackend } from '@angular/http/testing';
 import { mockDotThemes } from '../../../test/dot-themes.mock';
 import { DotTheme } from '../../../portlets/dot-edit-page/shared/models/dot-theme.model';
 
-fdescribe('DotThemesService', () => {
+describe('DotThemesService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotThemesService]);
         this.dotThemesService = this.injector.get(DotThemesService);
