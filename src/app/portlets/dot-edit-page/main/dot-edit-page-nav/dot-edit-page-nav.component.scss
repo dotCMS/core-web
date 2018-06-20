@@ -2,11 +2,12 @@
 @import 'mixins';
 
 :host {
+    background-color: $white;
+    border-left: solid 1px $gray-lighter;
     display: flex;
-    background-color: $gray-darker;
+    flex-shrink: 0;
     order: 2;
     width: 64px;
-    flex-shrink: 0;
 }
 
 .edit-page-nav {
@@ -16,7 +17,7 @@
 
 .edit-page-nav__item {
     align-items: center;
-    color: $white;
+    color: $brand-background;
     display: block;
     display: flex;
     flex-direction: column;
@@ -26,7 +27,7 @@
     transition: background-color $basic-speed ease-in;
 
     &:hover {
-        background-color: rgba($white, 0.1);
+        background-color: $gray-lighter;
     }
 
     & > .fa {
@@ -37,12 +38,13 @@
     &--disabled,
     &--disabled:hover {
         background-color: transparent;
-        opacity: 0.2;
+        opacity: 0.4;
         cursor: not-allowed;
     }
 }
 
 .edit-page-nav__item--active {
-    background-color: $brand-primary;
+    background-color: $brand-background;
+    color: $white;
     pointer-events: none;
 }
