@@ -1,29 +1,18 @@
 @import "variables";
 @import "mixins";
 
-.page-info {
-    &__url-wrapper {
-        display: flex;
-    }
+:host {
+    display: flex;
+}
 
-    &__url,
+.page-info {
     &__title {
         margin: 0;
-    }
-
-    &__url {
         align-self: center;
         color: $body-font-color;
         font-size: $font-size-x-large;
         font-weight: normal;
         margin-right: $basic-padding / 2;
-    }
-
-    &__title {
-        color: $gray-light;
-        font-size: $font-size-medium;
-        font-weight: normal;
-        margin-top: -3px;
     }
 
     &__copy-url {
