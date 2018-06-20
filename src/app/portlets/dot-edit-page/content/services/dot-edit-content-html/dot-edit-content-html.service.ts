@@ -202,7 +202,7 @@ export class DotEditContentHtmlService {
     setContaintersChangeHeightListener(pageLayout: DotLayout): void {
         const doc = this.getEditPageDocument();
         const target = doc.querySelector('body');
-        const config = { attributes: true, childList: true, characterData: true };
+        const config = { attributes: false, childList: true, characterData: false };
         const debounceContainersHeightChange = _.debounce((layout: DotLayout) => this.setContaintersSameHeight(layout), 500, {
             leading: true
         });
