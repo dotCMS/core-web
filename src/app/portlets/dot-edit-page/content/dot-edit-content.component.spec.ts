@@ -866,6 +866,11 @@ describe('DotEditContentComponent', () => {
         });
     });
 
+    it('should have correct mutation Observer config params', () => {
+        const config = { attributes: false, childList: true, characterData: false };
+        expect(dotEditContentHtmlService.mutationConfig).toEqual(config);
+    });
+
     it('should set listener to change containers height', () => {
         spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
         fixture.detectChanges();
