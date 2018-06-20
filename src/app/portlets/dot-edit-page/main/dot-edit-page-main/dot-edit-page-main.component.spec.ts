@@ -20,6 +20,7 @@ import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { Subject } from 'rxjs/Subject';
 import { DotContentletEditorModule } from '../../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 
 @Injectable()
 class MockDotContentletEditorService {
@@ -28,10 +29,10 @@ class MockDotContentletEditorService {
 
 @Injectable()
 class MockDotPageStateService {
-    reload = jasmine.createSpy('reload');
-    reload$ = new Observable(observer => {
-        observer.next(new DotRenderedPageState(mockUser, mockDotRenderedPage));
-    });
+    reload$ = new Subject;
+    reload(): void {
+        this.reload$.next(new DotRenderedPageState(mockUser, mockDotRenderedPage));
+    }
 }
 
 @Component({
@@ -43,9 +44,12 @@ class MockDotEditContentletComponent {
 }
 
 describe('DotEditPageMainComponent', () => {
+    let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
+    let dotContentletEditorService: DotContentletEditorService;
     let dotPageStateService: DotPageStateService;
+    let dotRouterService: DotRouterService;
 
     const messageServiceMock = new MockDotMessageService({
         'editpage.toolbar.nav.content': 'Content',
@@ -94,10 +98,13 @@ describe('DotEditPageMainComponent', () => {
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotEditPageMainComponent);
+        component = fixture.debugElement.componentInstance;
         route = fixture.debugElement.injector.get(ActivatedRoute);
         route.data = Observable.of({
             content: mockDotRenderedPageState
         });
+        dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
         dotPageStateService = fixture.debugElement.injector.get(DotPageStateService);
         fixture.detectChanges();
     });
@@ -115,16 +122,29 @@ describe('DotEditPageMainComponent', () => {
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
     });
 
-    it('should call reload pageSte when IframeClose evt happens', () => {
+    it('should reload page when url attribute in dialog has been changed', () => {
+        spyOn(dotRouterService, 'goToEditPage');
         let editContentlet: MockDotEditContentletComponent;
         const mockMessage = {
             detail: {
-                name: 'close',
-                htmlUrl: '/about-us/index?com.dotmarketing.htmlpage.language=1&host_id=48190c8c-42c4-46af-8d1a-0cd5db894797'
+                name: 'save-page',
+                payload: {
+                    htmlPageReferer: '/about-us/index2?com.dotmarketing.htmlpage.language=1&host_id=48190c8c-42c4-46af-8d1a-0cd5db894797'
+                }
             }
         };
+
         editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet')).componentInstance;
         editContentlet.custom.emit(mockMessage);
+        dotContentletEditorService.close$.next(true);
+        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('/about-us/index2');
+    });
+
+    it('should call reload pageSte when IframeClose evt happens', () => {
+        spyOn(component, 'pageState');
+        spyOn(dotPageStateService, 'reload').and.callThrough();
+        dotContentletEditorService.close$.next(true);
         expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index');
+        expect(component.pageState).toEqual(Observable.of(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
     });
 });

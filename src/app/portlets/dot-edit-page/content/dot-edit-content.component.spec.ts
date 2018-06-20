@@ -866,6 +866,7 @@ describe('DotEditContentComponent', () => {
         });
     });
 
+    // TODO: Find The right way to test this by mocking the MutationObserver and spy that it was called with the right args
     it('should have correct mutation Observer config params', () => {
         const config = { attributes: false, childList: true, characterData: false };
         expect(dotEditContentHtmlService.mutationConfig).toEqual(config);
