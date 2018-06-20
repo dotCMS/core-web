@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
 import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { map, tap, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-persona-selector',

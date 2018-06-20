@@ -7,7 +7,6 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { mockDotLanguage } from '../../../test/dot-language.mock';
-import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
 import { Dropdown } from 'primeng/primeng';
 
 describe('DotLanguageSelectorComponent', () => {
