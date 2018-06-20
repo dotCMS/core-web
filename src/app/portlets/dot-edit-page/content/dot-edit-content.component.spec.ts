@@ -43,6 +43,7 @@ import { DotContentletEditorService } from '../../../view/components/dot-content
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
+import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -103,6 +104,7 @@ describe('DotEditContentComponent', () => {
                 DialogModule,
                 DotContentletEditorModule,
                 DotEditPageToolbarModule,
+                DotEditPageInfoModule,
                 DotLoadingIndicatorModule,
                 RouterTestingModule.withRoutes([
                     {

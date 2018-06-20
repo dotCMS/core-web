@@ -17,6 +17,7 @@
         .ui-button {
             border: none;
             background-color: transparent;
+            border-bottom: solid 4px transparent;
 
             &:hover {
                 background-color: rgba($brand-secondary_rgb, 0.1);
@@ -28,7 +29,7 @@
 
             &.ui-state-active {
                 background: none;
-                border-bottom: solid 2px $brand-secondary;
+                border-bottom: solid 4px $brand-secondary;
 
                 .ui-button-text {
                     color: $brand-secondary;
