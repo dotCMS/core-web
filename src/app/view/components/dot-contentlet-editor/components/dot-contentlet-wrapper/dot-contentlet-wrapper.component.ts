@@ -30,6 +30,9 @@ export class DotContentletWrapperComponent implements OnInit {
                 'edit-contentlet-data-updated': (e: CustomEvent) => {
                     this.isContentletModified = e.detail.payload;
                 },
+                'save-page': (e: CustomEvent) => {
+                    this.isContentletModified = false;
+                },
                 'edit-contentlet-loaded': (e: CustomEvent) => {
                     this.header = e.detail.data.contentType;
                 }
