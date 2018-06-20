@@ -283,7 +283,7 @@ export const EDIT_PAGE_CSS = `
         text-decoration: none;
     }
 
-    .dotedit-menu__item  a[title]:hover:after {
+    .dotedit-menu__item[title]:hover:after {
         content: attr(title);
         position: absolute;
         top: 100%;

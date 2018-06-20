@@ -190,7 +190,7 @@ export class DotEditContentToolbarHtmlService {
                             uuid: container.dataset.dotUuid
                         },
                         disabled: isDisabledFormAdd,
-                        tooltip: this.dotMessageService.get('dot.common.license.enterprise.only.error')
+                        tooltip: isDisabledFormAdd ? this.dotMessageService.get('dot.common.license.enterprise.only.error') : ''
                     };
                 })
         });
@@ -231,7 +231,7 @@ export class DotEditContentToolbarHtmlService {
                     .map((item: DotEditPopupMenuItem) => {
                         return `
                             <li class="dotedit-menu__item ${item.disabled ? 'dotedit-menu__item--disabled' : ''}"
-                                ${item.tooltip ? 'title=' + item.tooltip : ''}">
+                                ${item.tooltip ? 'title="' + item.tooltip + '"' : ''}">
                                     <a
                                         href="#"
                                         data-dot-object="popup-menu-item"

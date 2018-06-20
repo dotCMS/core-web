@@ -142,9 +142,6 @@ export class DotEditContentHtmlService {
             contentlet.type = currentContentlet.dataset.dotType;
 
             const containerEl = currentContentlet.parentNode;
-            const contentletEl: HTMLElement = this.createNewContentlet(currentContentlet);
-
-            containerEl.replaceChild(contentletEl, currentContentlet);
 
             const container: DotPageContainer = {
                 identifier: containerEl.dataset.dotIdentifier,
@@ -155,7 +152,9 @@ export class DotEditContentHtmlService {
                 .getContentletToContainer(container, contentlet)
                 .pipe(take(1))
                 .subscribe((contentletHtml: string) => {
+                    const contentletEl: HTMLElement = this.createNewContentletFromString(contentletHtml);
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                    containerEl.replaceChild(contentletEl, currentContentlet);
                 });
         });
     }
@@ -268,6 +267,8 @@ export class DotEditContentHtmlService {
                     containerEl.insertAdjacentElement('beforeend', contentletEl);
 
                     this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                    // Update the model with the recently added contentlet
+                    this.pageModel$.next(this.getContentModel());
                     this.currentAction = DotContentletAction.EDIT;
                 });
         }
@@ -445,20 +446,20 @@ export class DotEditContentHtmlService {
         const div = doc.createElement('div');
         div.innerHTML = contentletHTML;
 
-        return this.createNewContentlet(div.children[0]);
+        return this.createNewContentlet(div.children[0].dataset);
     }
 
-    private createNewContentlet(contentletElement: HTMLElement): HTMLElement {
+    private createNewContentlet(dotPageContent: DotPageContent): HTMLElement {
         const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
-        Object.assign(dotEditContentletEl.dataset, contentletElement.dataset);
+        Object.assign(dotEditContentletEl.dataset, dotPageContent);
 
         /*
             TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
             to consolidate this.
         */
-        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(contentletElement.dataset);
+        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(dotPageContent);
 
         dotEditContentletEl.innerHTML = `
             <div class="dotedit-contentlet__toolbar">
@@ -557,9 +558,6 @@ export class DotEditContentHtmlService {
         this.appendNewContentlets(contentletEl, contentletHtml);
 
         this.addVtlEditMenu(contentletEl);
-
-        // Update the model with the recently added contentlet
-        this.pageModel$.next(this.getContentModel());
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {
