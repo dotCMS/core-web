@@ -215,6 +215,18 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             expect(deviceSelector.value).toEqual(mockDotEditPageViewAs.device);
             expect(personaSelector.value).toEqual(mockDotEditPageViewAs.persona);
         });
+
+        it('should show device information', () => {
+            componentHost.pageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPage,
+                viewAs: mockDotEditPageViewAs
+            });
+            fixtureHost.detectChanges();
+            const label = de.query(By.css('.device-info__label'));
+            const content = de.query(By.css('.device-info__content'));
+            expect(label.nativeElement.textContent.trim()).toEqual('Previewing:');
+            expect(content.nativeElement.textContent.trim()).toEqual('iphone - 200 x 100');
+        });
     });
 
     describe('what\'s change event', () => {

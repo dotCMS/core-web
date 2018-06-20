@@ -2,21 +2,16 @@
 @import "mixins";
 
 :host {
+    align-items: center;
     display: flex;
 }
 
 .page-info {
     &__title {
-        margin: 0;
+        margin: 0 $basic-padding / 2 0 0;
         align-self: center;
         color: $body-font-color;
-        font-size: $font-size-x-large;
+        font-size: $font-size-xx-large;
         font-weight: normal;
-        margin-right: $basic-padding / 2;
-    }
-
-    &__copy-url {
-        width: 25px;
-        height: 25px;
     }
 }
