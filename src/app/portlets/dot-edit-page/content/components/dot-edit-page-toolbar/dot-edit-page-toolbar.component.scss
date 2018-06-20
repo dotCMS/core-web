@@ -59,6 +59,7 @@ $toolbar-height: 48px;
 
             &:after {
                 content: "\F023";
+                color: $brand-primary;
                 display: inline-block;
                 font-size: inherit;
                 font: normal normal normal 14px / 1 FontAwesome;
@@ -69,7 +70,7 @@ $toolbar-height: 48px;
             }
         }
 
-        &.ui-inputswitch-checked .ui-inputswitch-handle {
+        &.ui-inputswitch-checked .ui-inputswitch-handle:after {
             color: $white;
         }
 
