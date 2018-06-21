@@ -4,12 +4,11 @@ import { ActionMenuButtonComponent } from './action-menu-button.component';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { MenuModule } from 'primeng/primeng';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotDataTableAction } from '../../../../shared/models/data-table/dot-data-table-action';
-import {DotMenuModule} from '../dot-menu/dot-menu.module';
+import { DotMenuModule } from '../dot-menu/dot-menu.module';
 
-fdescribe('ActionMenuButtonComponent', () => {
+describe('ActionMenuButtonComponent', () => {
     let comp: ActionMenuButtonComponent;
     let fixture: ComponentFixture<ActionMenuButtonComponent>;
     let de: DebugElement;
@@ -203,7 +202,7 @@ fdescribe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa-check',
                     label: 'Test',
-                    command: (item) => {
+                    command: item => {
                         fakeCommand(item);
                     }
                 }
@@ -224,10 +223,9 @@ fdescribe('ActionMenuButtonComponent', () => {
         comp.actions = fakeActions;
         comp.item = mockContentType;
         fixture.detectChanges();
-        const actionButtonMenu = de.query(By.css('dot-menu'));
+        const actionButtonMenu = de.query(By.css('.dot-menu__button'));
         actionButtonMenu.triggerEventHandler('click', {});
         fixture.detectChanges();
-        debugger;
 
         const menuItemsLink = de.queryAll(By.css('.dot-menu-item__link'));
         menuItemsLink[1].nativeElement.click();

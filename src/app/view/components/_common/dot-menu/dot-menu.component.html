@@ -1,5 +1,5 @@
-<button class="dot-menu-button" type="button" pButton [icon]="icon || ''" (click)="toggle()"></button>
-<ul class="dot-menu-list" *ngIf="visible">
+<button class="dot-menu__button" type="button" pButton [icon]="icon || ''" (click)="toggle()"></button>
+<ul class="dot-menu__list" *ngIf="visible">
     <li class="dot-menu-item" *ngFor="let item of model">
         <a (click)="itemClick($event, item)" class="dot-menu-item__link"><span>{{ item.label }}</span></a>
     </li>
