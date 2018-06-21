@@ -17,12 +17,14 @@
 }
 
 .dot-menu-item {
-    padding: $basic-padding;
     list-style: none;
 
-    a,
-    a:visited {
+    .dot-menu-item__link,
+    .dot-menu-item__link:visited {
         color: $black;
+        display: block;
+        padding: $basic-padding;
+        text-decoration: none;
     }
 }
 

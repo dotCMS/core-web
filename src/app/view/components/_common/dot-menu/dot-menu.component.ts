@@ -1,37 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-menu',
     templateUrl: './dot-menu.component.html',
     styleUrls: ['./dot-menu.component.scss']
 })
-export class DotMenuComponent implements OnInit {
+export class DotMenuComponent {
     @Input() icon: string;
-    @Input() items: MenuItem[];
+    @Input() model: MenuItem[];
     visible = false;
-
     constructor() {}
 
-    ngOnInit() {}
-
     toggle(): void {
-        console.log('Inicio: '+this.visible);
         this.visible = !this.visible;
         if (this.visible) {
-            console.log('visible');
-            document.addEventListener('click', this.closemenu.bind(this)); // add handler
+            // Skip 1 because the event bubbling capture the document.click
+            Observable.fromEvent(document, 'click')
+                .skip(1)
+                .take(1)
+                .subscribe(() => {
+                    this.visible = false;
+                });
         }
     }
 
-    closemenu($event) {
-        const that = this;
-        debugger;
-        console.log('closemenu');
+    itemClick($event, item: MenuItem): void {
+        if (item.disabled) {
+            $event.preventDefault();
+            return;
+        }
 
-        this.toggle();
-        //this.visible = false;
-        console.log(this.visible);
-       // document.removeEventListener('click', this.closemenu); // add handler
+        if (item.command) {
+            item.command({
+                originalEvent: $event,
+                item: item
+            });
+        }
     }
 }
