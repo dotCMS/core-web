@@ -1,5 +1,7 @@
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
+
+$nav-size: 80px;
 
 :host {
     background-color: $white;
@@ -7,7 +9,7 @@
     display: flex;
     flex-shrink: 0;
     order: 2;
-    width: 64px;
+    width: $nav-size;
 }
 
 .edit-page-nav {
@@ -21,9 +23,11 @@
     display: block;
     display: flex;
     flex-direction: column;
-    height: 64px;
+    font-size: 11px;
+    height: $nav-size;
     justify-content: center;
     text-decoration: none;
+    text-transform: uppercase;
     transition: background-color $basic-speed ease-in;
 
     &:hover {
