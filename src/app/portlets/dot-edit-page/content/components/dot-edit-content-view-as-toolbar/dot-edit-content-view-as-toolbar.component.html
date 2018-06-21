@@ -1,6 +1,6 @@
 <ng-template [ngIf]="isEnterpriseLicense$ | async">
     <div class="device-info" *ngIf="pageState.viewAs.device">
-        <span class="device-info__label">Previewing:</span>
+        <span class="device-info__label">{{ messages['editpage.viewas.previewing'] }}:</span>
         <span class="device-info__content">
             {{ pageState.viewAs.device.name }} - {{ pageState.viewAs.device.cssWidth }} x {{ pageState.viewAs.device.cssHeight }}
         </span>
@@ -11,6 +11,6 @@
 
 <ng-template [ngIf]="isEnterpriseLicense$ | async">
     <dot-device-selector (selected)="changeDeviceHandler($event)" [value]="pageState.viewAs.device"></dot-device-selector>
-    <dot-persona-selector (selected)="changePersonaHandler($event)"  [value]="pageState.viewAs.persona"></dot-persona-selector>
-    <p-checkbox [label]="whatsChangedMessage$ | async" *ngIf="isPreview" (onChange)="whatschange.emit($event)"></p-checkbox>
+    <dot-persona-selector (selected)="changePersonaHandler($event)" [value]="pageState.viewAs.persona"></dot-persona-selector>
+    <p-checkbox [label]="messages['dot.common.whats.changed']" *ngIf="isPreview" (onChange)="whatschange.emit($event)"></p-checkbox>
 </ng-template>
