@@ -44,6 +44,8 @@ import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { ContentType } from '../../content-types/shared/content-type.model';
 import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
+import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
+import { DotEditPageInfoComponent } from '../components/dot-edit-page-info/dot-edit-page-info.component';
 
 export const mockDotPageState: DotPageState = {
     mode: PageMode.PREVIEW,
@@ -119,6 +121,7 @@ describe('DotEditContentComponent', () => {
                 DialogModule,
                 DotContentletEditorModule,
                 DotEditPageToolbarModule,
+                DotEditPageInfoModule,
                 DotLoadingIndicatorModule,
                 RouterTestingModule.withRoutes([
                     {
@@ -206,6 +209,14 @@ describe('DotEditContentComponent', () => {
         fixture.detectChanges();
         expect(toolbarComponent.pageState.page).toEqual(mockDotPage);
         expect(toolbarComponent.pageState.state).toEqual(mockDotPageState);
+    });
+
+    it('should have page information', () => {
+        fixture.detectChanges();
+        const pageInfo: DotEditPageInfoComponent = de.query(By.css('dot-edit-page-info')).componentInstance;
+        expect(pageInfo !== null).toBe(true);
+        expect(pageInfo.pageState.page).toEqual(mockDotPage);
+        expect(pageInfo.pageState.state).toEqual(mockDotPageState);
     });
 
     it('should redirect to site browser on toolbar cancel', () => {
@@ -938,6 +949,12 @@ describe('DotEditContentComponent', () => {
             dotEditContentHtmlService.pageModel$.next(model);
             expect(dotEditContentHtmlService.setContaintersSameHeight).not.toHaveBeenCalled();
         });
+    });
+
+    // TODO: Find The right way to test this by mocking the MutationObserver and spy that it was called with the right args
+    it('should have correct mutation Observer config params', () => {
+        const config = { attributes: false, childList: true, characterData: false };
+        expect(dotEditContentHtmlService.mutationConfig).toEqual(config);
     });
 
     it('should set listener to change containers height', () => {

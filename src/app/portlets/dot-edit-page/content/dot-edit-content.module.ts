@@ -21,6 +21,7 @@ import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-
 
 import { DotFormSelectorModule } from './components/dot-form-selector/dot-form-selector.module';
 import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
+import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
 
 const routes: Routes = [
     {
@@ -35,14 +36,16 @@ const routes: Routes = [
         CommonModule,
         DialogModule,
         RouterModule.forChild(routes),
-        DotEditPageToolbarModule,
-        DotLoadingIndicatorModule,
+        DotContentletEditorModule,
         DotDirectivesModule,
         DotEditContentViewAsToolbarModule,
         DotWhatsChangedModule,
         DotFormSelectorModule,
         TooltipModule,
-        DotContentletEditorModule
+        DotContentletEditorModule,
+        DotEditPageInfoModule,
+        DotEditPageToolbarModule,
+        DotLoadingIndicatorModule,
     ],
     exports: [DotEditContentComponent],
     providers: [

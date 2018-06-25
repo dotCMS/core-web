@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { ButtonModule, CheckboxModule, InputTextModule, DialogModule } from 'primeng/primeng';
+import { ButtonModule, CheckboxModule, InputTextModule, DialogModule, ToolbarModule } from 'primeng/primeng';
 
 import { DotActionButtonModule } from '../../../../view/components/_common/dot-action-button/dot-action-button.module';
 import { DotEditLayoutDesignerComponent } from '../dot-edit-layout-designer/dot-edit-layout-designer.component';
@@ -17,6 +17,7 @@ import { PageViewService } from '../../../../api/services/page-view/page-view.se
 import { DotLayoutDesignerComponent } from './components/dot-layout-designer/dot-layout-designer.component';
 import { DotContainerSelectorModule } from '../../../../view/components/dot-container-selector/dot-container-selector.module';
 import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
+import { DotThemeSelectorModule } from '../components/dot-theme-selector/dot-theme-selector.module';
 
 @NgModule({
     declarations: [DotEditLayoutDesignerComponent, DotLayoutDesignerComponent],
@@ -35,7 +36,9 @@ import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-e
         DialogModule,
         DotSidebarPropertiesModule,
         DotContainerSelectorModule,
-        DotEditPageInfoModule
+        DotEditPageInfoModule,
+        DotThemeSelectorModule,
+        ToolbarModule
     ],
     exports: [DotEditLayoutDesignerComponent],
     providers: [DotEditLayoutService, DotEditLayoutService, PageViewService, TemplateContainersCacheService]
