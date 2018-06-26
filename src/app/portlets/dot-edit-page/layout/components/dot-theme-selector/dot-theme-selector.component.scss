@@ -52,9 +52,11 @@ $theme-item-dimension: 240px;
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    border-radius: 4px;
 
     svg {
         fill: $gray;
+        border-radius: 6px;
     }
 
     &:hover,
@@ -70,10 +72,15 @@ $theme-item-dimension: 240px;
 
 .dot-theme-item__name {
     padding-top: $basic-padding * 3;
-    font-size: $font-size-large;
+    font-size: $font-size-x-large;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
     width: 100%;
+    line-height: 20px;
+}
+
+.dot-theme-iteme__image{
+    border-radius: 6px;
 }
