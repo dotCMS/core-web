@@ -387,7 +387,9 @@ export class DotEditContentHtmlService {
         this.dotEditContentToolbarHtmlService.addContentletMarkup(doc);
     }
 
-    private setScriptProperties(script: HTMLScriptElement, node: any): HTMLScriptElement {
+    private createScriptTag(node: any): HTMLScriptElement {
+        const doc = this.getEditPageDocument();
+        const script = doc.createElement('script');
         script.type = 'text/javascript';
 
         if (node.src) {
@@ -398,13 +400,10 @@ export class DotEditContentHtmlService {
         return script;
     }
 
-    private getScriptTags(scriptTags, contentDivWrapper: HTMLElement) {
-        const doc = this.getEditPageDocument();
-
+    private getScriptTags(scriptTags, contentDivWrapper: HTMLElement): HTMLScriptElement[] {
         Array.from(contentDivWrapper.children).forEach((node: any) => {
             if (node.tagName === 'SCRIPT') {
-                let script = doc.createElement('script');
-                script = this.setScriptProperties(script, node);
+                const script = this.createScriptTag(node);
                 scriptTags.push(script);
             } else if (node.children.length) {
                 this.getScriptTags(scriptTags, node);
