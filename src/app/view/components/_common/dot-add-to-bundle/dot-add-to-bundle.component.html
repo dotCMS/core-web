@@ -1,6 +1,7 @@
 <p-dialog
     modal="modal"
     width="500"
+    focusOnShow="false"
     [dismissableMask]="true"
     [visible]="true"
     [responsive]="true"
@@ -14,7 +15,7 @@
 
     <form [formGroup]="form" (ngSubmit)="submitBundle($event)" (keyup.enter)="submitBundle($event)" novalidate #formEl="ngForm">
         <div class="form__group">
-            <p-dropdown appendTo="body" [options]="bundle$ | async" editable="true" [autoWidth]="false" formControlName="addBundle" [placeholder]="placeholder" optionLabel="name" ></p-dropdown>
+            <p-dropdown #addBundleDropdown appendTo="body" [options]="bundle$ | async" editable="true" [autoWidth]="false" formControlName="addBundle" [placeholder]="placeholder" optionLabel="name" ></p-dropdown>
             <dot-field-validation-message message="{{ dotMessageService.get('contenttypes.content.add_to_bundle.errormsg') }}" [field]="form.get('addBundle')"></dot-field-validation-message>
         </div>
     </form>
