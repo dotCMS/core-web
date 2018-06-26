@@ -12,12 +12,14 @@
             [totalRecords]="paginatorService?.totalRecords"
             [lazy]="true"
             (onLazyLoad)="paginate($event)"
-            [emptyMessage]="dotMessageService.get('editpage.layout.theme.no.records.found')">
+            [emptyMessage]="dotMessageService.get('editpage.layout.theme.no.records.found')"
+            [alwaysShowPaginator]="false">
             <ng-template let-theme pTemplate="item" >
                 <div class="dot-theme-item ui-g-3" (click)="selectTheme(theme)" [ngClass]="{'active': theme.inode === current?.inode}">
-                    <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg *ngIf="!theme?.themeThumbnail" width="150" height="150"  viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M150 133.333V16.6667C150 7.5 142.5 0 133.333 0H16.6667C7.5 0 0 7.5 0 16.6667V133.333C0 142.5 7.5 150 16.6667 150H133.333C142.5 150 150 142.5 150 133.333ZM45.8333 87.5L66.6667 112.583L95.8333 75L133.333 125H16.6667L45.8333 87.5Z"/>
                     </svg>
+                    <img *ngIf="theme?.themeThumbnail" class="dot-theme-iteme__image" src="/dA/{{theme.themeThumbnail}}/150w/thumbnail.png">
                     <span class="dot-theme-item__name">{{ theme.name }}</span>
                 </div>
             </ng-template>
@@ -25,7 +27,7 @@
     </div>
 
     <p-footer>
-        <button type="button" pButton label="{{ dotMessageService.get('dot.common.cancel') }}" class="cancel" (click)="hideDialog()"></button>
+        <button type="button" pButton secondary label="{{ dotMessageService.get('dot.common.cancel') }}" class="cancel secondary" (click)="hideDialog()"></button>
         <button type="button" pButton label="{{ dotMessageService.get('dot.common.apply') }}" class="apply" [disabled]="value.inode === current.inode" (click)="apply()"></button>
     </p-footer>
 </p-dialog>
