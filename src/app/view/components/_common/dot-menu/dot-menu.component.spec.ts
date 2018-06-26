@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/primeng';
 
-fdescribe('DotMenuComponent', () => {
+describe('DotMenuComponent', () => {
     let component: DotMenuComponent;
     let fixture: ComponentFixture<DotMenuComponent>;
 

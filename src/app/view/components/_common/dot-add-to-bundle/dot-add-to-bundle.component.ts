@@ -1,19 +1,19 @@
 import { Observable } from 'rxjs/Observable';
-import {Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
 import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '../../../../shared/models/dot-bundle/dot-bundle';
-import {Dropdown} from 'primeng/primeng';
+import { Dropdown } from 'primeng/primeng';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-add-to-bundle',
     templateUrl: 'dot-add-to-bundle.component.html'
 })
-export class DotAddToBundleComponent implements OnInit,  AfterViewInit {
+export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     form: FormGroup;
     bundle$: Observable<DotBundle[]>;
     placeholder: string;
@@ -42,8 +42,8 @@ export class DotAddToBundleComponent implements OnInit,  AfterViewInit {
 
         this.bundle$ = this.addToBundleService.getBundles();
 
-        this.dotMessageService.getMessages(keys).subscribe((messages) => {
-            this.addToBundleService.getBundles().subscribe((bundles) => {
+        this.dotMessageService.getMessages(keys).subscribe(messages => {
+            this.addToBundleService.getBundles().subscribe(bundles => {
                 this.placeholder = bundles.length
                     ? messages['contenttypes.content.add_to_bundle.select']
                     : messages['contenttypes.content.add_to_bundle.type'];
