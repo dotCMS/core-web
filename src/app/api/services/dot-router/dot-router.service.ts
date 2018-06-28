@@ -32,7 +32,7 @@ export class DotRouterService {
 
     goToEditPage(url: string, languageId?: string): Promise<boolean> {
         return this.router.navigate(['/edit-page/content'],
-            { queryParams: { url: url, language_id: languageId} });
+            { queryParams: !!languageId ? { url: url, language_id: languageId} : { url: url } });
     }
 
     /**

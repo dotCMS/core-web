@@ -22,7 +22,7 @@ export class DotLanguagesService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: !contentInode ? `v2/languages` : `v2/languages?contentInode=${contentInode}`
+                url: !contentInode ? 'v2/languages' : `v2/languages?contentInode=${contentInode}`
             })
             .pluck('entity');
     }

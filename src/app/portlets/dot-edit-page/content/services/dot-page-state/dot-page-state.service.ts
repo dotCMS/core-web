@@ -68,22 +68,16 @@ export class DotPageStateService {
      * @returns {Observable<DotRenderedPageState>}
      * @memberof DotPageStateService
      */
-    get(url: string): Observable<DotRenderedPageState> {
-        return this.getPage({
-            url: url
-        });
-    }
-
-   getPage(options: GetPageOptions): Observable<DotRenderedPageState> {
+    get(url: string, languageId?: string): Observable<DotRenderedPageState> {
        return this.dotRenderHTMLService.get({
-               url: options.url,
-               languageId: options.languageId,
+               url: url,
+               languageId: languageId,
                mode: PageMode.EDIT
            })
            .map(
                (page: DotRenderedPage) => new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
            );
-   }
+    }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
         if (lock === true) {
@@ -94,10 +88,4 @@ export class DotPageStateService {
 
         return Observable.of(null);
     }
-}
-
-export interface GetPageOptions {
-    url: string;
-    languageId?: string;
-    mode?: PageMode;
 }
