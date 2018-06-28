@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { PortletNav } from '../../../shared/models/navigation';
 import { Subject } from 'rxjs/Subject';
+import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
+import { GetPageOptions } from '../../../portlets/dot-edit-page/content/services/dot-page-state/dot-page-state.service';
 
 @Injectable()
 export class DotRouterService {
@@ -28,8 +30,9 @@ export class DotRouterService {
         this.portletReload$.next(id);
     }
 
-    goToEditPage(url: string): Promise<boolean> {
-        return this.router.navigate(['/edit-page/content'], { queryParams: { url: url } });
+    goToEditPage(url: string, languageId?: string): Promise<boolean> {
+        return this.router.navigate(['/edit-page/content'],
+            { queryParams: { url: url, language_id: languageId} });
     }
 
     /**
