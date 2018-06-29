@@ -10,6 +10,7 @@ import { DotEditPageViewAs } from '../../../../../shared/models/dot-edit-page-vi
 import { Subject } from 'rxjs/Subject';
 import { take } from 'rxjs/operators';
 import { PageMode } from '../../../shared/models/page-mode.enum';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class DotPageStateService {
@@ -74,9 +75,13 @@ export class DotPageStateService {
                languageId: languageId,
                mode: PageMode.EDIT
            })
-           .map(
-               (page: DotRenderedPage) => new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
+           .pipe(
+                map(
+                    (page: DotRenderedPage) =>
+                        new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
+                )
            );
+;
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
