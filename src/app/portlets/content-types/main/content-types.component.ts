@@ -104,6 +104,11 @@ export class ContentTypesPortletComponent implements OnInit {
         });
     }
 
+    public onChangeContenTypesSelector() {
+        // this.listing.paginatorService.setExtraParams("type", selected);
+        // this.listing.paginatorService.getFirstPage();
+    }
+
     private createRowActions(rowActionsMap: any): DotDataTableAction[] {
         const listingActions: DotDataTableAction[] = [];
 
