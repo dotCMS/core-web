@@ -16,7 +16,6 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
 import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
-import {SelectItem} from 'primeng/primeng';
 
 /**
  * List of Content Types
