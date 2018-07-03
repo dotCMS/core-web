@@ -10,9 +10,7 @@
     url="v1/contenttype"
     [actions]="rowActions">
 
-    <b>Testing</b>
-
-    <dot-base-type-selector></dot-base-type-selector>
+    <dot-base-type-selector (selected)="changeBaseTypeSelector($event)"></dot-base-type-selector>
 
 </dot-listing-data-table>
 

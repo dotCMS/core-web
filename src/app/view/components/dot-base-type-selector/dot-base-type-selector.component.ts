@@ -13,7 +13,7 @@ import { map, take } from 'rxjs/operators';
 })
 export class DotBaseTypeSelectorComponent implements OnInit {
     @Input() value: SelectItem;
-    @Output() selected = new EventEmitter<SelectItem>();
+    @Output() selected = new EventEmitter<string>();
 
     options: Observable<SelectItem[]>;
 
@@ -36,16 +36,13 @@ export class DotBaseTypeSelectorComponent implements OnInit {
     }
 
     change(item: SelectItem) {
-        debugger;
-        this.selected.emit(item);
+        this.selected.emit(item.value);
     }
 
     setOptions(allOptions: string, baseTypes: StructureTypeView[]): SelectItem[] {
-        const c = [
+        return [
             { label: allOptions, value: '' },
             ...baseTypes.map((structure: StructureTypeView) => ({ label: structure.label, value: structure.name }))
         ];
-        debugger;
-        return c;
     }
 }
