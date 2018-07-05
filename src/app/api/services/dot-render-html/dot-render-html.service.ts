@@ -76,8 +76,7 @@ export class DotRenderHTMLService {
             ...params,
             ...this.getViewAsParameters(options)
         };
-
-        console.log('params', params);
+        
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
