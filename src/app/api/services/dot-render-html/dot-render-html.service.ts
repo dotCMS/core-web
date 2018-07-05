@@ -70,10 +70,14 @@ export class DotRenderHTMLService {
     }
 
     public get(options: DotRenderPageOptions): Observable<DotRenderedPage> {
-        const params: any = options.mode ? { mode: this.getPageModeString(options.mode) } : {};
+        let params: any = options.mode ? { mode: this.getPageModeString(options.mode) } : {};
 
-        this.setViewAsParameters(options, params);
+        params = {
+            ...params,
+            ...this.getViewAsParameters(options)
+        };
 
+        console.log('params', params);
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -83,14 +87,13 @@ export class DotRenderHTMLService {
             .pluck('entity');
     }
 
-    private setViewAsParameters(options: DotRenderPageOptions, params: any ) {
+    private getViewAsParameters(options: DotRenderPageOptions) {
         if (options.viewAs) {
-            params = {
-                ...params,
-                ...this.setOptionalViewAsParams(options.viewAs)
-            };
+            return this.setOptionalViewAsParams(options.viewAs);
         } else if (options.languageId) {
-            params.language_id = options.languageId;
+            return {
+                language_id: options.languageId
+            };
         }
     }
 
