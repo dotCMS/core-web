@@ -68,6 +68,7 @@ export class PaginatorService {
     setExtraParams(name: string, value?: any): void {
         if (value !== null && value !== undefined) {
             this.extraParams.set(name, value.toString());
+            this.links = {};
         }
     }
 
