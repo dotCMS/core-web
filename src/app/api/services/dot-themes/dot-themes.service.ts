@@ -27,6 +27,6 @@ export class DotThemesService {
                 url: 'v1/themes/id/' + inode
             })
             .pluck('entity')
-            .map((themes: DotTheme[]) => themes[0]);
+            .map((themes: DotTheme) => themes);
     }
 }

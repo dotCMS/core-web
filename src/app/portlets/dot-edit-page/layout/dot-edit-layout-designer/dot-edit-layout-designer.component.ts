@@ -64,7 +64,8 @@ export class DotEditLayoutDesignerComponent implements OnInit {
                 'editpage.layout.dialog.info',
                 'editpage.layout.toolbar.action.save',
                 'editpage.layout.toolbar.save.template',
-                'editpage.layout.toolbar.template.name'
+                'editpage.layout.toolbar.template.name',
+                'org.dotcms.frontend.content.submission.not.proper.permissions'
             ])
             .subscribe();
 
