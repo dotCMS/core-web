@@ -190,7 +190,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.saveAsTemplateHandleChange(false);
         this.dotThemesService.get(this.form.get('themeId').value).subscribe((theme: DotTheme) => {
             this.currentTheme = theme;
-        });
+        }, (error) => { this.currentTheme = null; });
         // Emit event to redraw the grid when the sidebar change
         this.form.get('layout.sidebar').valueChanges.subscribe(() => {
             this.dotEventsService.notify('layout-sidebar-change');

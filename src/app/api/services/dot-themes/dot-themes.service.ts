@@ -26,7 +26,6 @@ export class DotThemesService {
                 method: RequestMethod.Get,
                 url: 'v1/themes/id/' + inode
             })
-            .pluck('entity')
-            .map((themes: DotTheme) => themes);
+            .pluck('entity');
     }
 }
