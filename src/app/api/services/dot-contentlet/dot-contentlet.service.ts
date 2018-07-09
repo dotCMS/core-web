@@ -2,12 +2,12 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
-import { StructureTypeView, ContentTypeView } from '../../shared/models/contentlet';
+import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
+import { flatMap, filter, pluck } from '../../../../../node_modules/rxjs/operators';
 
 @Injectable()
 export class DotContentletService {
     private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
-    private types$: Observable<StructureTypeView[]>;
 
     constructor(private coreWebService: CoreWebService) {}
 
@@ -18,17 +18,12 @@ export class DotContentletService {
      * @memberof ContentletService
      */
     getContentTypes(): Observable<StructureTypeView[]> {
-        if (!this.types$) {
-            this.types$ = this.coreWebService
-                .requestView({
-                    method: RequestMethod.Get,
-                    url: 'v1/contenttype/basetypes'
-                })
-                .publishLast()
-                .refCount()
-                .pluck('entity');
-        }
-        return this.types$;
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: 'v1/contenttype/basetypes'
+            })
+            .pluck('entity');
     }
 
     /**
@@ -39,8 +34,10 @@ export class DotContentletService {
      */
     getMainContentTypes(): Observable<StructureTypeView[]> {
         return this.getContentTypes()
-            .flatMap((structures: StructureTypeView[]) => structures)
-            .filter((structure: StructureTypeView) => this.isMainContentType(structure))
+            .pipe(
+                flatMap((structures: StructureTypeView[]) => structures),
+                filter((structure: StructureTypeView) => this.isMainContentType(structure))
+            )
             .toArray();
     }
 
@@ -51,8 +48,10 @@ export class DotContentletService {
      */
     getAllContentTypes(): Observable<StructureTypeView[]> {
         return this.getContentTypes()
-            .flatMap((structures: StructureTypeView[]) => structures)
-            .filter((structure: StructureTypeView) => !this.isRecentContentType(structure))
+            .pipe(
+                flatMap((structures: StructureTypeView[]) => structures),
+                filter((structure: StructureTypeView) => !this.isRecentContentType(structure))
+            )
             .toArray();
     }
 
@@ -64,8 +63,10 @@ export class DotContentletService {
      */
     getMoreContentTypes(): Observable<StructureTypeView[]> {
         return this.getContentTypes()
-            .flatMap((structures: StructureTypeView[]) => structures)
-            .filter((structure: StructureTypeView) => this.isMoreContentType(structure))
+            .pipe(
+                flatMap((structures: StructureTypeView[]) => structures),
+                filter((structure: StructureTypeView) => this.isMoreContentType(structure))
+            )
             .toArray();
     }
 
@@ -77,8 +78,10 @@ export class DotContentletService {
      */
     getRecentContentTypes(): Observable<StructureTypeView[]> {
         return this.getContentTypes()
-            .flatMap((structures: StructureTypeView[]) => structures)
-            .filter((structure: StructureTypeView) => this.isRecentContentType(structure))
+            .pipe(
+                flatMap((structures: StructureTypeView[]) => structures),
+                filter((structure: StructureTypeView) => this.isRecentContentType(structure))
+            )
             .toArray();
     }
 
@@ -91,11 +94,13 @@ export class DotContentletService {
      */
     getUrlById(id: string): Observable<string> {
         return this.getContentTypes()
-            .flatMap((structures: StructureTypeView[]) => structures)
-            .pluck('types')
-            .flatMap((contentTypeViews: ContentTypeView[]) => contentTypeViews)
-            .filter((contentTypeView: ContentTypeView) => contentTypeView.variable.toLocaleLowerCase() === id)
-            .pluck('action');
+        .pipe(
+            flatMap((structures: StructureTypeView[]) => structures),
+            pluck('types'),
+            flatMap((contentTypeViews: ContentTypeView[]) => contentTypeViews),
+            filter((contentTypeView: ContentTypeView) => contentTypeView.variable.toLocaleLowerCase() === id),
+            pluck('action')
+        );
     }
 
     /**
@@ -109,17 +114,6 @@ export class DotContentletService {
         return this.getUrlById(id)
             .defaultIfEmpty(false)
             .map((url: string) => !!url);
-    }
-
-    /**
-     * Clear cache and return new content types.
-     *
-     * @returns {Observable<StructureTypeView[]>}
-     * @memberof ContentletService
-     */
-    reloadContentTypes(): Observable<StructureTypeView[]> {
-        this.types$ = null;
-        return this.getContentTypes();
     }
 
     private isRecentContentType(type: StructureTypeView): boolean {
