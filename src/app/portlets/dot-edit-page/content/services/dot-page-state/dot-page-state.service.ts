@@ -32,10 +32,10 @@ export class DotPageStateService {
      */
     set(page: DotPage, state: DotPageState, viewAs?: DotEditPageViewAs): Observable<DotRenderedPageState> {
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
-        const pageOpts = {
+        const pageOpts: DotRenderPageOptions = {
             url: page.pageURI,
             mode: state.mode,
-            viewAs: viewAs
+            viewAs: this.dotRenderHTMLService.getDotEditPageViewAsParams(viewAs)
         };
         const pageMode$: Observable<DotRenderedPage> =
             state.mode !== undefined ? this.dotRenderHTMLService.get(pageOpts) : Observable.of(null);
@@ -69,16 +69,16 @@ export class DotPageStateService {
      * @returns {Observable<DotRenderedPageState>}
      * @memberof DotPageStateService
      */
-    get(url: string, languageId?: string): Observable<DotRenderedPageState> {
+    get(url: string, languageId?: number): Observable<DotRenderedPageState> {
        const options: DotRenderPageOptions = {
-        url: url,
+            url: url
        };
 
        if (languageId) {
             options.viewAs = {
-                language: languageId
+                language_id: languageId
             };
-       }
+        }
 
        return this.dotRenderHTMLService.get(options)
            .pipe(
@@ -87,7 +87,6 @@ export class DotPageStateService {
                         new DotRenderedPageState(this.loginService.auth.loginAsUser || this.loginService.auth.user, page)
                 )
            );
-;
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {

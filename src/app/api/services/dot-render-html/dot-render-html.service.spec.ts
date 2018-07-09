@@ -11,7 +11,7 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../test/dot-rendered-page.mock';
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
 
-describe('DotRenderHTMLService', () => {
+fdescribe('DotRenderHTMLService', () => {
     let editPageService: DotRenderHTMLService;
     let backend: MockBackend;
     let lastConnection;
@@ -110,7 +110,7 @@ describe('DotRenderHTMLService', () => {
         const param: DotRenderPageOptions = {
             url: 'about-us',
             viewAs: {
-                language: '2'
+                language_id: 2
             }
         };
         editPageService.get(param).subscribe((renderedPage: DotRenderedPage) => (result = renderedPage));
@@ -133,7 +133,7 @@ describe('DotRenderHTMLService', () => {
         const param: DotRenderPageOptions = {
             url: 'about-us',
             viewAs: {
-                language: '2'
+                language_id: 2
             },
             mode: PageMode.EDIT
         };

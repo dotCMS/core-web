@@ -4,6 +4,6 @@ import { DotPersona } from '../dot-persona/dot-persona.model';
 
 export interface DotEditPageViewAs {
     persona?: DotPersona;
-    language?: DotLanguage | string;
+    language?: DotLanguage;
     device?: DotDevice;
 }

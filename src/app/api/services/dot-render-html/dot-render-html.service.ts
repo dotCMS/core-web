@@ -6,6 +6,8 @@ import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/d
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
+import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
+import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
 
 /**
  * Provide util methods to get a edit page html
@@ -29,7 +31,7 @@ export class DotRenderHTMLService {
             {
                 url: url,
                 mode: PageMode.EDIT,
-                viewAs: viewAsConfig
+                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
             }
         );
     }
@@ -47,7 +49,7 @@ export class DotRenderHTMLService {
             {
                 url: url,
                 mode: PageMode.PREVIEW,
-                viewAs: viewAsConfig
+                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
             }
         );
     }
@@ -65,7 +67,7 @@ export class DotRenderHTMLService {
             {
                 url: url,
                 mode: PageMode.LIVE,
-                viewAs: viewAsConfig
+                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
             }
         );
     }
@@ -75,7 +77,7 @@ export class DotRenderHTMLService {
 
         params = {
             ...params,
-            ...options.viewAs ? this.getViewAsParameters(options) : {}
+            ...options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {}
         };
 
         return this.coreWebService
@@ -87,22 +89,23 @@ export class DotRenderHTMLService {
             .pluck('entity');
     }
 
-    private getViewAsParameters(options: DotRenderPageOptions) {
-        if (typeof options.viewAs.language === 'string') {
-            return {
-                language_id: options.viewAs.language
-            };
-        } else {
-            return this.setOptionalViewAsParams(options.viewAs);
-        }
+    public getDotEditPageViewAsParams(viewAs: DotEditPageViewAs): DotEditPageViewAsParams {
+        return viewAs ? {
+            persona_id: this.getPropertyValue(viewAs.persona, 'identifier'),
+            language_id: this.getPropertyValue(viewAs.language, 'id'),
+            device_inode: this.getPropertyValue(viewAs.device, 'inode')
+        } : null;
     }
 
-    private setOptionalViewAsParams(viewAsConfig: DotEditPageViewAs) {
-        console.log('viewAsConfig', viewAsConfig);
+    private getPropertyValue(object: DotPersona | DotLanguage | DotDevice, propertyName: string ): any {
+        return object[propertyName] || null;
+    }
+
+    private getOptionalViewAsParams(viewAsConfig: DotEditPageViewAsParams) {
         return {
-            language_id: (<DotLanguage> viewAsConfig.language).id,
-            ...viewAsConfig.persona ? { 'com.dotmarketing.persona.id': viewAsConfig.persona.identifier } : {},
-            ...viewAsConfig.device ? { 'device_inode': viewAsConfig.device.inode } : {}
+            language_id: viewAsConfig.language_id,
+            ...viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {},
+            ...viewAsConfig.device_inode ? { 'device_inode': viewAsConfig.device_inode } : {}
         };
     }
 
@@ -119,5 +122,11 @@ export class DotRenderHTMLService {
 export interface DotRenderPageOptions {
     url: string;
     mode?: PageMode;
-    viewAs?: DotEditPageViewAs;
+    viewAs?:  DotEditPageViewAsParams;
+}
+
+interface DotEditPageViewAsParams {
+    persona_id?: string;
+    language_id?: number;
+    device_inode?: string;
 }
