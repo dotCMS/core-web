@@ -5,6 +5,7 @@ import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
 import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
 
 /**
  * Provide util methods to get a edit page html
@@ -74,9 +75,9 @@ export class DotRenderHTMLService {
 
         params = {
             ...params,
-            ...this.getViewAsParameters(options)
+            ...options.viewAs ? this.getViewAsParameters(options) : {}
         };
-        
+
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -87,18 +88,19 @@ export class DotRenderHTMLService {
     }
 
     private getViewAsParameters(options: DotRenderPageOptions) {
-        if (options.viewAs) {
-            return this.setOptionalViewAsParams(options.viewAs);
-        } else if (options.languageId) {
+        if (typeof options.viewAs.language === 'string') {
             return {
-                language_id: options.languageId
+                language_id: options.viewAs.language
             };
+        } else {
+            return this.setOptionalViewAsParams(options.viewAs);
         }
     }
 
     private setOptionalViewAsParams(viewAsConfig: DotEditPageViewAs) {
+        console.log('viewAsConfig', viewAsConfig);
         return {
-            language_id: viewAsConfig.language.id,
+            language_id: (<DotLanguage> viewAsConfig.language).id,
             ...viewAsConfig.persona ? { 'com.dotmarketing.persona.id': viewAsConfig.persona.identifier } : {},
             ...viewAsConfig.device ? { 'device_inode': viewAsConfig.device.inode } : {}
         };
@@ -118,5 +120,4 @@ export interface DotRenderPageOptions {
     url: string;
     mode?: PageMode;
     viewAs?: DotEditPageViewAs;
-    languageId?: string;
 }

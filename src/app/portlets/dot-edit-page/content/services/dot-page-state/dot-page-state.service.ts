@@ -1,7 +1,7 @@
 import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
-import { DotRenderHTMLService } from '../../../../../api/services/dot-render-html/dot-render-html.service';
+import { DotRenderHTMLService, DotRenderPageOptions } from '../../../../../api/services/dot-render-html/dot-render-html.service';
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
@@ -70,10 +70,17 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     get(url: string, languageId?: string): Observable<DotRenderedPageState> {
-       return this.dotRenderHTMLService.get({
-               url: url,
-               languageId: languageId
-           })
+       const options: DotRenderPageOptions = {
+        url: url,
+       };
+
+       if (languageId) {
+            options.viewAs = {
+                language: languageId
+            };
+       }
+
+       return this.dotRenderHTMLService.get(options)
            .pipe(
                 map(
                     (page: DotRenderedPage) =>
