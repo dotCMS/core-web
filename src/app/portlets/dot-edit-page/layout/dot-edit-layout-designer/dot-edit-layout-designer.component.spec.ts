@@ -300,7 +300,7 @@ describe('DotEditLayoutDesignerComponent', () => {
             spyOn(dotThemesService, 'get').and.returnValue(Observable.of(null));
             fixture.detectChanges();
             const themeSelectorBtn = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-themes')).nativeElement;
-            const themeSelectorBtnContainer = fixture.debugElement.query(By.css('.basic-container')).nativeElement;
+            const themeSelectorBtnContainer = fixture.debugElement.query(By.css('.dot-edit__layout-actions-themes')).nativeElement;
             expect(themeSelectorBtn.disabled).toBe(true);
             expect(themeSelectorBtnContainer.outerHTML).toContain('No Read Permission');
         });

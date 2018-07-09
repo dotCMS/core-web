@@ -17,7 +17,7 @@ export class DotThemesService {
      * Get Theme information based on the inode.
      *
      * @param {string} inode
-     * @returns {Observable<DotTheme[]>}
+     * @returns {Observable<DotTheme>}
      * @memberof DotThemesService
      */
     get(inode: string): Observable<DotTheme> {

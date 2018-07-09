@@ -65,6 +65,7 @@ export class DotEditLayoutDesignerComponent implements OnInit {
                 'editpage.layout.toolbar.action.save',
                 'editpage.layout.toolbar.save.template',
                 'editpage.layout.toolbar.template.name',
+                'editpage.layout.theme.button.label',
                 'org.dotcms.frontend.content.submission.not.proper.permissions'
             ])
             .subscribe();
@@ -188,9 +189,14 @@ export class DotEditLayoutDesignerComponent implements OnInit {
         this.templateContainersCacheService.set(this.pageState.containers);
         this.initForm();
         this.saveAsTemplateHandleChange(false);
-        this.dotThemesService.get(this.form.get('themeId').value).subscribe((theme: DotTheme) => {
-            this.currentTheme = theme;
-        }, (error) => { this.currentTheme = null; });
+        this.dotThemesService.get(this.form.get('themeId').value).subscribe(
+            (theme: DotTheme) => {
+                this.currentTheme = theme;
+            },
+            (error: ResponseView) => {
+                this.currentTheme = error.response.status === 403 ? null : this.currentTheme;
+            }
+        );
         // Emit event to redraw the grid when the sidebar change
         this.form.get('layout.sidebar').valueChanges.subscribe(() => {
             this.dotEventsService.notify('layout-sidebar-change');

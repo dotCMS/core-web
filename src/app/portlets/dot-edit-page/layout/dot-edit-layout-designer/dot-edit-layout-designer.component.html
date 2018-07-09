@@ -15,14 +15,14 @@
             <dot-template-addtional-actions-menu *ngIf="!isLayout()" [inode]="pageState.template.inode"></dot-template-addtional-actions-menu>
         </div>
     </p-toolbar>
-
+    
     <div class="dot-edit-layout__actions">
         <dot-edit-page-info [pageState]="pageState"></dot-edit-page-info>
         <div class="dot-edit__layout-actions-right">
             <div *ngIf="!currentTheme;then permission else noPermission "></div>
             <ng-template #permission>
-                <div class="basic-container" pTooltip="{{ dotMessageService.get('org.dotcms.frontend.content.submission.not.proper.permissions') }}" tooltipPosition="left">
-                    <button pButton tiny link type="button" class="dot-edit-layout__toolbar-action-themes" icon="fa-paint-brush" label="{{ 'Themes' }}"
+                <div class="dot-edit__layout-actions-themes" pTooltip="{{ dotMessageService.get('org.dotcms.frontend.content.submission.not.proper.permissions') }}" tooltipPosition="left">
+                    <button pButton tiny link type="button" class="dot-edit-layout__toolbar-action-themes" icon="fa-paint-brush" label="{{ dotMessageService.get('editpage.layout.theme.button.label') }}"
                         (click)="themeDialogVisibility = !themeDialogVisibility" disabled=false>
                     </button>
                 </div>
