@@ -22,7 +22,7 @@ export class DotDevicesService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'content/render/false/query/+contentType:previewDevice'
+                url: 'content/render/false/query/+contentType:previewDevice%20+live:true%20+deleted:false%20+working:true'
             })
             .pluck('contentlets');
     }
