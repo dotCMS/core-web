@@ -24,14 +24,6 @@ function isRecentContentType(type: StructureTypeView): boolean {
     return type.name.startsWith('RECENT');
 }
 
-function isMainContentType(type: StructureTypeView): boolean {
-    return MAIN_CONTENT_TYPES.indexOf(type.name) > -1;
-}
-
-function isMoreContentType(type: StructureTypeView): boolean {
-    return !isRecentContentType(type) && !isMainContentType(type);
-}
-
 describe('DotContentletService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([DotContentletService]);
@@ -49,33 +41,9 @@ describe('DotContentletService', () => {
         expect(lastConnection.request.url).toContain(`v1/contenttype/basetypes`);
     });
 
-    it('should get the Main Content Types for getMainContentTypes()', () => {
-        this.dotContentletService.getMainContentTypes().subscribe((structures: StructureTypeView[]) => {
-            const types = mockDotContentlet.filter((structure: StructureTypeView) => isMainContentType(structure));
-            expect(structures).toEqual(types);
-        });
-        mockConnectionContentletResponse();
-    });
-
     it('should get all content types excluding the RECENT ones for getAllContentTypes()', () => {
         this.dotContentletService.getAllContentTypes().subscribe((structures: StructureTypeView[]) => {
             const types = mockDotContentlet.filter((structure: StructureTypeView) => !isRecentContentType(structure));
-            expect(structures).toEqual(types);
-        });
-        mockConnectionContentletResponse();
-    });
-
-    it('should get extra content types for getMoreContentTypes()', () => {
-        this.dotContentletService.getMoreContentTypes().subscribe((structures: StructureTypeView[]) => {
-            const types = mockDotContentlet.filter((structure: StructureTypeView) => isMoreContentType(structure));
-            expect(structures).toEqual(types);
-        });
-        mockConnectionContentletResponse();
-    });
-
-    it('should get the recent content types for getRecentContentTypes()', () => {
-        this.dotContentletService.getRecentContentTypes().subscribe((structures: StructureTypeView[]) => {
-            const types = mockDotContentlet.filter((structure: StructureTypeView) => isRecentContentType(structure));
             expect(structures).toEqual(types);
         });
         mockConnectionContentletResponse();

@@ -27,21 +27,6 @@ export class DotContentletService {
     }
 
     /**
-     * Get the main content types
-     *
-     * @returns {Observable<StructureTypeView[]>}
-     * @memberof ContentletService
-     */
-    getMainContentTypes(): Observable<StructureTypeView[]> {
-        return this.getContentTypes()
-            .pipe(
-                flatMap((structures: StructureTypeView[]) => structures),
-                filter((structure: StructureTypeView) => this.isMainContentType(structure))
-            )
-            .toArray();
-    }
-
-    /**
      * Gets all content types excluding the RECENT ones
      *
      * @returns {Observable<StructureTypeView[]>}
@@ -51,36 +36,6 @@ export class DotContentletService {
             .pipe(
                 flatMap((structures: StructureTypeView[]) => structures),
                 filter((structure: StructureTypeView) => !this.isRecentContentType(structure))
-            )
-            .toArray();
-    }
-
-    /**
-     * Get the extra content types
-     *
-     * @returns {Observable<StructureTypeView[]>}
-     * @memberof ContentletService
-     */
-    getMoreContentTypes(): Observable<StructureTypeView[]> {
-        return this.getContentTypes()
-            .pipe(
-                flatMap((structures: StructureTypeView[]) => structures),
-                filter((structure: StructureTypeView) => this.isMoreContentType(structure))
-            )
-            .toArray();
-    }
-
-    /**
-     * Get the recent content types
-     *
-     * @returns {Observable<StructureTypeView[]>}
-     * @memberof ContentletService
-     */
-    getRecentContentTypes(): Observable<StructureTypeView[]> {
-        return this.getContentTypes()
-            .pipe(
-                flatMap((structures: StructureTypeView[]) => structures),
-                filter((structure: StructureTypeView) => this.isRecentContentType(structure))
             )
             .toArray();
     }
@@ -118,13 +73,5 @@ export class DotContentletService {
 
     private isRecentContentType(type: StructureTypeView): boolean {
         return type.name.startsWith('RECENT');
-    }
-
-    private isMainContentType(type: StructureTypeView): boolean {
-        return this.MAIN_CONTENT_TYPES.indexOf(type.name) > -1;
-    }
-
-    private isMoreContentType(type: StructureTypeView): boolean {
-        return !this.isRecentContentType(type) && !this.isMainContentType(type);
     }
 }
