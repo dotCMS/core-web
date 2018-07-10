@@ -16,9 +16,9 @@ describe('DotDevicesService', () => {
     it('should get Devices', () => {
         let result;
         const url = [
-            `content/render/false/query/+contentType:previewDevice%20`,
-            `+live:true%20`,
-            `+deleted:false%20`,
+            `content/render/false/query/+contentType:previewDevice `,
+            `+live:true `,
+            `+deleted:false `,
             `+working:true`
         ].join('');
 
