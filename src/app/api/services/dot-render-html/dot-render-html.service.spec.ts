@@ -11,7 +11,7 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../test/dot-rendered-page.mock';
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
 
-fdescribe('DotRenderHTMLService', () => {
+describe('DotRenderHTMLService', () => {
     let editPageService: DotRenderHTMLService;
     let backend: MockBackend;
     let lastConnection;
