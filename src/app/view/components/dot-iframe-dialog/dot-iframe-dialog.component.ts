@@ -23,6 +23,7 @@ export class DotIframeDialogComponent implements OnChanges {
     @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     show: boolean;
+    headerCssClass = '';
 
     constructor() {}
 
@@ -38,6 +39,7 @@ export class DotIframeDialogComponent implements OnChanges {
 
         if (changes.header) {
             this.header = changes.header.currentValue;
+            this.headerCssClass = this.header.length > 0 ? 'ui-dialog-titlebar-animate' : '';
         }
     }
 
