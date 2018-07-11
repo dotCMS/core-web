@@ -55,8 +55,10 @@ export const EDIT_PAGE_CSS = `
         float: right;
         height: 32px;
         opacity: 0.7;
+        position: relative!important;
         transition: all ${animation};
         width: 32px;
+        z-index: 2147483647!important;
     }
 
     div[data-dot-object="edit-content"]:hover {
@@ -151,6 +153,8 @@ export const EDIT_PAGE_CSS = `
         box-shadow: ${mdShadow1};
         font-size: 0;
         outline: none;
+        position: relative!important;
+        z-index: 2147483646!important;
     }
 
     .dotedit-container__toolbar button:not([disabled]):hover,
@@ -277,6 +281,7 @@ export const EDIT_PAGE_CSS = `
     .dotedit-menu__list.active {
         visibility: visible;
         opacity: 1;
+        z-index: 2147483647!important;
     }
 
     .dotedit-menu__item a {
