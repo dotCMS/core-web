@@ -4,7 +4,7 @@
 .dialog ::ng-deep {
     .ui-dialog.ui-dialog-titlebar-animate {
         .ui-dialog-titlebar {
-            transition: opacity 2s ease-in;
+            transition: opacity $basic-speed ease-in;
             opacity: 1;
         }
     }
