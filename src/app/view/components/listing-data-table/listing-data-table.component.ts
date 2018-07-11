@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/primeng';
+import {DataTable, LazyLoadEvent} from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
 import { BaseComponent } from '../_common/_base/base-component';
 import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
@@ -29,6 +29,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('gf') globalSearch: ElementRef;
+    @ViewChild('dataTable') dataTable: DataTable;
 
     readonly DATE_FORMAT = 'date';
 
@@ -89,6 +90,18 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
             this.paginatorService.getWithOffset(offset).subscribe((items) => this.setItems(items));
         }
+    }
+
+    /**
+     * Load first page of results and reset the pagination url's and set the table pagination.
+     * @memberof ListingDataTableComponent
+     */
+    renewUrlsAndLoadData(): void {
+        this.loading = true;
+        this.paginatorService.get().subscribe(items => {
+            this.setItems(items);
+            this.dataTable.first = 1;
+        });
     }
 
     /**
