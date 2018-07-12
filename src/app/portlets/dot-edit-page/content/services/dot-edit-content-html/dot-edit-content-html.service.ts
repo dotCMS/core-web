@@ -22,6 +22,7 @@ import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
+import { DotRouterService } from '../../../../../../../node_modules/dotcms-js/dotcms-js';
 
 export enum DotContentletAction {
     EDIT,
@@ -57,7 +58,8 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
-        private dotMessageService: DotMessageService
+        private dotMessageService: DotMessageService,
+        private dotRouterService: DotRouterService
     ) {
         this.contentletEvents$.subscribe((contentletEvent: any) => {
             this.handlerContentletEvents(contentletEvent.name)(contentletEvent);
@@ -508,7 +510,7 @@ export class DotEditContentHtmlService {
     private handlerContentletEvents(event: string): (contentletEvent: any) => void {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
-            save: (contentletEvent: any) => {
+            'save': (contentletEvent: any) => {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
                 } else {
@@ -519,18 +521,17 @@ export class DotEditContentHtmlService {
                 }
             },
             // When a user select a content from the search jsp
-            select: (contentletEvent: any) => {
+            'select': (contentletEvent: any) => {
                 this.renderAddedContentlet(contentletEvent.data);
                 this.iframeActions$.next({
                     name: 'select'
                 });
             },
             // When a user drag and drop a contentlet in the iframe
-            relocate: (contentletEvent: any) => {
+            'relocate': (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
             },
-            // When a user deletes a contentlet
-            deleted: (contentletEvent: any) => {
+            'deleted-contenlet': (contentletEvent: any) => {
                 this.removeCurrentContentlet();
             }
         };
