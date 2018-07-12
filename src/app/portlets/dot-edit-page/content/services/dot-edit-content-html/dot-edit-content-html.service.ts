@@ -525,9 +525,13 @@ export class DotEditContentHtmlService {
                     name: 'select'
                 });
             },
-            // When a user drang and drop a contentlet in the iframe
+            // When a user drag and drop a contentlet in the iframe
             relocate: (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
+            },
+            // When a user deletes a contentlet
+            deleted: (contentletEvent: any) => {
+                this.removeCurrentContentlet();
             }
         };
 
@@ -573,6 +577,15 @@ export class DotEditContentHtmlService {
                 ${contentletToolbarEl.innerHTML}
             `;
         }
+    }
+
+    private removeCurrentContentlet(): void {
+        const doc = this.getEditPageDocument();
+        const contentlets = doc.querySelectorAll(`div[data-dot-object="contentlet"][data-dot-inode="${this.currentContentlet.inode}"]`);
+
+        contentlets.forEach(contentlet => {
+            contentlet.remove();
+        });
     }
 
     private renderHTMLToContentlet(contentletEl: HTMLElement, contentletHtml: string): void {
