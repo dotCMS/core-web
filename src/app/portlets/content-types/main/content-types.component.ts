@@ -162,7 +162,7 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private setContentTypes(s: StructureTypeView[]): ButtonModel[] {
-        return s.map(structureTypeView => {
+        return s.map((structureTypeView: StructureTypeView) => {
             return {
                 command: $event => {
                     this.createContentType(structureTypeView.name.toLocaleLowerCase(), $event);
