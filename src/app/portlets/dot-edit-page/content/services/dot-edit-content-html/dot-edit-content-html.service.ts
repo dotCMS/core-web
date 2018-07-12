@@ -22,7 +22,6 @@ import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
-import { DotRouterService } from '../../../../../../../node_modules/dotcms-js/dotcms-js';
 
 export enum DotContentletAction {
     EDIT,
@@ -58,8 +57,7 @@ export class DotEditContentHtmlService {
         private dotEditContentToolbarHtmlService: DotEditContentToolbarHtmlService,
         private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
         private dotDialogService: DotAlertConfirmService,
-        private dotMessageService: DotMessageService,
-        private dotRouterService: DotRouterService
+        private dotMessageService: DotMessageService
     ) {
         this.contentletEvents$.subscribe((contentletEvent: any) => {
             this.handlerContentletEvents(contentletEvent.name)(contentletEvent);

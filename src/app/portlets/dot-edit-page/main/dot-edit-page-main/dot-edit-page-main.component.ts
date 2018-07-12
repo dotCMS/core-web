@@ -36,7 +36,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
                     }
                 },
                 'deleted-page': () => {
-                    this.dotRouterService.gotoPortlet('/c/site-browser');
+                    this.dotRouterService.goToSiteBrowser();
                 }
             };
         }

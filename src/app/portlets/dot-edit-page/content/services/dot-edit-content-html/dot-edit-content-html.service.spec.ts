@@ -290,7 +290,7 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should remove contentlet', () => {
-        const remove = jasmine.createSpy('remove');
+        const remove = jasmine.createSpy('deleted');
 
         spyOn(fakeDocument, 'querySelectorAll').and.returnValue([
             {
@@ -306,7 +306,7 @@ describe('DotEditContentHtmlService', () => {
         };
 
         this.dotEditContentHtmlService.contentletEvents$.next({
-            name: 'deleted'
+            name: 'deleted-contenlet'
         });
 
         expect(remove).toHaveBeenCalledTimes(2);
