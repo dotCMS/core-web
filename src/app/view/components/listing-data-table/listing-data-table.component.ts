@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
-import {DataTable, LazyLoadEvent} from 'primeng/primeng';
+import { DataTable, LazyLoadEvent } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
 import { BaseComponent } from '../_common/_base/base-component';
 import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
@@ -54,7 +54,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
         }
 
         if (changes.columns && changes.columns.currentValue) {
-            this.dateColumns = changes.columns.currentValue.filter((column) => column.format === this.DATE_FORMAT);
+            this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.DATE_FORMAT);
             this.loadData(0);
         }
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
@@ -88,7 +88,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
             this.paginatorService.sortField = sortField;
             this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-            this.paginatorService.getWithOffset(offset).subscribe((items) => this.setItems(items));
+            this.paginatorService.getWithOffset(offset).subscribe(items => this.setItems(items));
         }
     }
 
@@ -111,7 +111,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     loadCurrentPage(): void {
         this.loading = true;
         if (this.columns) {
-            this.paginatorService.getCurrentPage().subscribe((items) => this.setItems(items));
+            this.paginatorService.getCurrentPage().subscribe(items => this.setItems(items));
         }
     }
 
@@ -129,10 +129,8 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     }
 
     private formatData(items: any[]): any[] {
-        return items.map((item) => {
-            this.dateColumns.forEach(
-                (col) => (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]))
-            );
+        return items.map(item => {
+            this.dateColumns.forEach(col => (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName])));
             return item;
         });
     }
