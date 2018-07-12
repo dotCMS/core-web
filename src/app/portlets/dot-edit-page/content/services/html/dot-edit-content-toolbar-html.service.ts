@@ -3,6 +3,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
 import { take, switchMap } from 'rxjs/operators';
+import * as iframeStyles from '../../shared/iframe-edit-mode.css';
 
 interface DotEditPopupMenuItem {
     label: string;
@@ -28,8 +29,11 @@ interface DotEditPopupMenu {
  */
 @Injectable()
 export class DotEditContentToolbarHtmlService {
-    constructor(private dotMessageService: DotMessageService, private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
-        private dotLicenseService: DotLicenseService) {}
+    constructor(
+        private dotMessageService: DotMessageService,
+        private dotDOMHtmlUtilService: DotDOMHtmlUtilService,
+        private dotLicenseService: DotLicenseService
+    ) {}
 
     /**
      * Add custom HTML buttons to the containers div
@@ -46,7 +50,7 @@ export class DotEditContentToolbarHtmlService {
                 'editpage.content.container.menu.form',
                 'dot.common.license.enterprise.only.error'
             ])
-           .pipe(
+            .pipe(
                 switchMap(this.dotLicenseService.isEnterprise.bind(this.dotLicenseService)),
                 take(1)
             )
@@ -54,6 +58,7 @@ export class DotEditContentToolbarHtmlService {
                 const containers = Array.from(doc.querySelectorAll('div[data-dot-object="container"]'));
                 containers.forEach((container: HTMLElement) => {
                     const containerToolbar = document.createElement('div');
+                    containerToolbar.setAttribute('style', iframeStyles.DOTEDIT_CONTAINER__TOOLBAR);
                     containerToolbar.classList.add('dotedit-container__toolbar');
 
                     if (!container.dataset.dotCanAdd.length) {
@@ -106,8 +111,7 @@ export class DotEditContentToolbarHtmlService {
             });
     }
 
-    getContentButton(contentletDataset: {[key: string]: any}): string {
-
+    getContentButton(contentletDataset: { [key: string]: any }): string {
         const identifier: string = contentletDataset.dotIdentifier;
         const inode: string = contentletDataset.dotInode;
         const canEdit: boolean = contentletDataset.dotCanEdit === 'true';
@@ -119,7 +123,7 @@ export class DotEditContentToolbarHtmlService {
         };
 
         let editButtonClass = 'dotedit-contentlet__edit';
-        editButtonClass += !canEdit  || isForm ? ' dotedit-contentlet__disabled' : '';
+        editButtonClass += !canEdit || isForm ? ' dotedit-contentlet__disabled' : '';
 
         return `
             ${this.dotDOMHtmlUtilService.getButtomHTML(
@@ -212,14 +216,27 @@ export class DotEditContentToolbarHtmlService {
         return result;
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     private getDotEditPopupMenuButton(button: DotEditPopupButton, disabled = false): string {
+        // disabled = true;
         return `
             <button
                 data-dot-object="popup-button"
                 type="button"
                 class="dotedit-menu__button ${button.class ? button.class : ''}"
                 aria-label="${button.label}"
-                ${disabled ? 'disabled' : ''}>
+                style=" ${iframeStyles.DOTEDIT_CONTENTLET__TOOLBAR__BUTTON}
+                        ${iframeStyles.DOTEDIT_CONTAINER}
+                        ${iframeStyles.DOTEDIT_CONTAINER__ADD}
+                        ${disabled ? `${iframeStyles.DOTEDIT_CONTENTLET__TOOLBAR__BUTTON__DISABLED}` : ''}
+                        "
+                ${disabled ? 'disabled' : `
+                    onmouseover="this.style.backgroundColor='${iframeStyles.COLOR_MAIN_MOD}';
+                    this.style.boxShadow='${iframeStyles.MDSHADOW3}'"
+                    onmouseout="this.style.backgroundColor='${iframeStyles.COLOR_MAIN}';
+                    this.style.boxShadow='${iframeStyles.MDSHADOW1}'"
+                `}
+                >
             </button>
         `;
     }

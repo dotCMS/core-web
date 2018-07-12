@@ -1,10 +1,49 @@
 // tslint:disable:max-line-length
 
 const animation = '100ms ease-in';
-const mdShadow1 = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)';
-const mdShadow3 = '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)';
+export const MDSHADOW1 = '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important';
+export const MDSHADOW3 = '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important';
 const white = '#fff';
 const grayLight = '#c5c5c5';
+
+export const DOTEDIT_CONTAINER__TOOLBAR = `
+    margin: -15px 8px 0 0 !important;
+    float: right !important;
+    font-size: 0 !important;
+`;
+
+export const DOTEDIT_CONTENTLET__TOOLBAR__BUTTON = `
+    width: 32px !important;
+    height: 32px !important;
+    border: none !important;
+    border-radius: 16px !important;
+    cursor: pointer !important;
+    box-shadow: ${MDSHADOW1} !important;
+    font-size: 0 !important;
+    outline: none !important;
+    position: relative !important;
+    z-index: 2147483646 !important;
+`;
+
+export const DOTEDIT_CONTENTLET__TOOLBAR__BUTTON__DISABLED = `
+    background-color: ${grayLight} !important;
+`;
+
+export const DOTEDIT_CONTAINER = `
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    transition: background-color ${animation},
+                box-shadow ${animation},
+                color ${animation} !important;
+`;
+
+export const DOTEDIT_CONTAINER__ADD = `
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzaC02djZoLTJ2LTZINXYtMmg2VjVoMnY2aDZ2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==) !important;
+    background-color: var(--color-main) !important;
+`;
+
+export const COLOR_MAIN = `var(--color-main)`;
+export const COLOR_MAIN_MOD = `var(--color-main_mod)`;
 
 export const EDIT_PAGE_CSS = `
     :root {
@@ -55,10 +94,8 @@ export const EDIT_PAGE_CSS = `
         float: right;
         height: 32px;
         opacity: 0.7;
-        position: relative!important;
         transition: all ${animation};
         width: 32px;
-        z-index: 2147483647!important;
     }
 
     div[data-dot-object="edit-content"]:hover {
@@ -141,6 +178,7 @@ export const EDIT_PAGE_CSS = `
         margin: -15px 8px 0 0;
         float: right;
         font-size: 0;
+        background-color: red; //
     }
 
     .dotedit-container__toolbar button,
@@ -150,25 +188,27 @@ export const EDIT_PAGE_CSS = `
         border: none;
         border-radius: 16px;
         cursor: pointer;
-        box-shadow: ${mdShadow1};
+        box-shadow: ${MDSHADOW1};
         font-size: 0;
         outline: none;
-        position: relative!important;
-        z-index: 2147483646!important;
+        position: relative !important;
+        z-index: 2147483646 !important;
+        background-color: red; //
     }
 
     .dotedit-container__toolbar button:not([disabled]):hover,
     .dotedit-contentlet__toolbar button:not([disabled]):hover {
-        box-shadow: ${mdShadow3};
+        box-shadow: ${MDSHADOW3};
     }
 
     .dotedit-container__toolbar button:active,
     .dotedit-contentlet__toolbar button:active {
-        box-shadow: ${mdShadow1};
+        box-shadow: ${MDSHADOW1};
     }
 
     .dotedit-container__toolbar button:disabled {
         background-color: ${grayLight}
+        background-color: red; //
     }
 
     .dotedit-contentlet__toolbar {
@@ -212,6 +252,7 @@ export const EDIT_PAGE_CSS = `
         transition: background-color ${animation},
                     box-shadow ${animation},
                     color ${animation};
+        background-color: red;
     }
 
     .dotedit-container__add:focus,
@@ -225,6 +266,7 @@ export const EDIT_PAGE_CSS = `
     .dotedit-container__add {
         background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzaC02djZoLTJ2LTZINXYtMmg2VjVoMnY2aDZ2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
         background-color: var(--color-main);
+        background-color: red;
     }
 
     .dotedit-container__add:hover {
@@ -263,7 +305,7 @@ export const EDIT_PAGE_CSS = `
 
     .dotedit-menu__list {
         background-color: #ffffff;
-        box-shadow: ${mdShadow1};
+        box-shadow: ${MDSHADOW1};
         font-family: Roboto, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
         font-size: 13px;
         list-style: none;
