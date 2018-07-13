@@ -108,7 +108,7 @@ export class ContentTypesPortletComponent implements OnInit {
         value !== ''
             ? this.listing.paginatorService.setExtraParams('type', value)
             : this.listing.paginatorService.deleteExtraParams('type');
-        this.listing.renewUrlsAndLoadData();
+        this.listing.loadFirstPage();
     }
 
     private createRowActions(rowActionsMap: any): DotDataTableAction[] {

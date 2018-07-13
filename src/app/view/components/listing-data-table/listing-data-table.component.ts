@@ -94,9 +94,10 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
     /**
      * Load first page of results and reset the pagination url's and set the table pagination.
+     *
      * @memberof ListingDataTableComponent
      */
-    renewUrlsAndLoadData(): void {
+    loadFirstPage(): void {
         this.loading = true;
         this.paginatorService.get().subscribe(items => {
             this.setItems(items);

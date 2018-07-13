@@ -3,7 +3,7 @@ import { MockBackend } from '@angular/http/testing';
 import { PaginatorService, OrderDirection } from './';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 
-describe('PaginatorService setting', () => {
+fdescribe('PaginatorService setting', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([PaginatorService]);
 
@@ -32,6 +32,13 @@ describe('PaginatorService setting', () => {
         this.paginatorService.setExtraParams('live', null);
         this.paginatorService.get().subscribe((items) => (this.result = items));
         expect(this.lastConnection.request.url).toContain('v1/urldemo?archive=false&system=true');
+    });
+
+    it('should remove extra parameters', () => {
+        this.paginatorService.setExtraParams('name', 'John');
+        this.paginatorService.deleteExtraParams('name');
+
+        expect(this.paginatorService.extraParams.get('name')).toBeNull();
     });
 });
 
