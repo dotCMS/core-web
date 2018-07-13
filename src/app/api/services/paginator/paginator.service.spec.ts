@@ -3,7 +3,7 @@ import { MockBackend } from '@angular/http/testing';
 import { PaginatorService, OrderDirection } from './';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 
-fdescribe('PaginatorService setting', () => {
+describe('PaginatorService setting', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([PaginatorService]);
 
