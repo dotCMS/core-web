@@ -59,6 +59,15 @@ class MockPushPublishService {
     }
 }
 
+@Component({
+    selector: 'dot-add-to-bundle ',
+    template: ``
+})
+class MockDotAddToBundleComponent {
+    @Input() assetIdentifier: string;
+    @Output() cancel = new EventEmitter<boolean>();
+}
+
 describe('ContentTypesPortletComponent', () => {
     let comp: ContentTypesPortletComponent;
     let fixture: ComponentFixture<ContentTypesPortletComponent>;
@@ -83,13 +92,12 @@ describe('ContentTypesPortletComponent', () => {
         });
 
         DOTTestBed.configureTestingModule({
-            declarations: [ContentTypesPortletComponent, MockDotBaseTypeSelectorComponent],
+            declarations: [ContentTypesPortletComponent, MockDotBaseTypeSelectorComponent, MockDotAddToBundleComponent],
             imports: [
                 RouterTestingModule.withRoutes([{ path: 'test', component: ContentTypesPortletComponent }]),
                 BrowserAnimationsModule,
                 ListingDataTableModule,
-                PushPublishContentTypesDialogModule,
-                DotAddToBundleModule
+                PushPublishContentTypesDialogModule
             ],
             providers: [
                 ContentTypesInfoService,
