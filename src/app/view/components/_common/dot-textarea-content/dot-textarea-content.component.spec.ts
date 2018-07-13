@@ -176,4 +176,15 @@ describe('DotTextareaContentComponent', () => {
         expect(component.ace._mode).toBe('javascript', 'set mode correctly');
         expect(component.ace._options).toEqual({ cursorStyle: 'ace' }, 'set options correctly');
     });
+
+    it('should add new line character', () => {
+        component.propagateChange = (propagateChangeValue) => {
+            expect('aaaa\r\nbbbbb\r\nccccc').toEqual(propagateChangeValue);
+        };
+
+        const value = 'aaaa\nbbbbb\nccccc';
+        component.onModelChange(value);
+
+        expect(component.value).toEqual(value);
+    });
 });
