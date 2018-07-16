@@ -22,7 +22,7 @@ export const EDIT_PAGE_JS = `
                         return newStyle;
                     }
                     return item;
-                }).join('; ');
+                }).join(';');
 
                 // Add any style that is new (not overwritten)
                 styles = !styleChanged ? styles.concat(newStyle) : styles;
