@@ -111,6 +111,7 @@ export class DotEditContentToolbarHtmlService {
             });
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     getContentButton(contentletDataset: { [key: string]: any }): string {
         const identifier: string = contentletDataset.dotIdentifier;
         const inode: string = contentletDataset.dotInode;
@@ -129,6 +130,8 @@ export class DotEditContentToolbarHtmlService {
             ${this.dotDOMHtmlUtilService.getButtomHTML(
                 this.dotMessageService.get('editpage.content.contentlet.menu.drag'),
                 'dotedit-contentlet__drag',
+                `${iframeStyles.getContainerButton('DRAG')}`,
+                `${iframeStyles.getContentletButtonFunctions()}`,
                 {
                     ...dataset,
                     'dot-object': 'drag-content'
@@ -137,6 +140,8 @@ export class DotEditContentToolbarHtmlService {
             ${this.dotDOMHtmlUtilService.getButtomHTML(
                 this.dotMessageService.get('editpage.content.contentlet.menu.edit'),
                 editButtonClass,
+                `${iframeStyles.getContainerButton('EDIT', !canEdit || isForm)}`,
+                `${iframeStyles.getContentletButtonFunctions()}`,
                 {
                     ...dataset,
                     'dot-object': 'edit-content'
@@ -145,6 +150,8 @@ export class DotEditContentToolbarHtmlService {
             ${this.dotDOMHtmlUtilService.getButtomHTML(
                 this.dotMessageService.get('editpage.content.contentlet.menu.remove'),
                 'dotedit-contentlet__remove',
+                `${iframeStyles.getContainerButton('REMOVE', !canEdit || isForm)}`,
+                `${iframeStyles.getContentletButtonFunctions()}`,
                 {
                     ...dataset,
                     'dot-object': 'remove-content'
@@ -169,7 +176,7 @@ export class DotEditContentToolbarHtmlService {
                     }
                 };
             })
-        });
+        }, 'CODE');
     }
 
     private getContainerToolbarHtml(container: HTMLElement, isEnterpriseLicense: boolean): string {
@@ -197,15 +204,15 @@ export class DotEditContentToolbarHtmlService {
                         tooltip: isDisabledFormAdd ? this.dotMessageService.get('dot.common.license.enterprise.only.error') : ''
                     };
                 })
-        });
+        }, 'ADD');
     }
 
-    private getDotEditPopupMenuHtml(menu: DotEditPopupMenu): string {
+    private getDotEditPopupMenuHtml(menu: DotEditPopupMenu, action: string): string {
         const isMenuItems = menu.items.length > 0;
 
-        let result = '<div class="dotedit-menu">';
+        let result = `<div class="dotedit-menu" style="${iframeStyles.DOTEDIT_MENU}">`;
 
-        result += this.getDotEditPopupMenuButton(menu.button, !isMenuItems);
+        result += this.getDotEditPopupMenuButton(menu.button, !isMenuItems, action);
 
         if (isMenuItems) {
             result += this.getDotEditPopupMenuList(menu.items);
@@ -217,33 +224,22 @@ export class DotEditContentToolbarHtmlService {
     }
 
     // tslint:disable-next-line:cyclomatic-complexity
-    private getDotEditPopupMenuButton(button: DotEditPopupButton, disabled = false): string {
-        // disabled = true;
+    private getDotEditPopupMenuButton(button: DotEditPopupButton, disabled = false, action: string): string {
         return `
             <button
                 data-dot-object="popup-button"
                 type="button"
                 class="dotedit-menu__button ${button.class ? button.class : ''}"
                 aria-label="${button.label}"
-                style=" ${iframeStyles.DOTEDIT_CONTENTLET__TOOLBAR__BUTTON}
-                        ${iframeStyles.DOTEDIT_CONTAINER}
-                        ${iframeStyles.DOTEDIT_CONTAINER__ADD}
-                        ${disabled ? `${iframeStyles.DOTEDIT_CONTENTLET__TOOLBAR__BUTTON__DISABLED}` : ''}
-                        "
-                ${disabled ? 'disabled' : `
-                    onmouseover="this.style.backgroundColor='${iframeStyles.COLOR_MAIN_MOD}';
-                    this.style.boxShadow='${iframeStyles.MDSHADOW3}'"
-                    onmouseout="this.style.backgroundColor='${iframeStyles.COLOR_MAIN}';
-                    this.style.boxShadow='${iframeStyles.MDSHADOW1}'"
-                `}
-                >
+                style="${iframeStyles.getContainerButton(action, disabled)}"
+                ${disabled ? 'disabled' : `${iframeStyles.getContainerButtonFunctions()}`}>
             </button>
         `;
     }
 
     private getDotEditPopupMenuList(items: DotEditPopupMenuItem[]): string {
         return `
-            <ul class="dotedit-menu__list" >
+            <ul class="dotedit-menu__list" style="${iframeStyles.DOTEDIT_MENU__LIST}">
                 ${items
                     .map((item: DotEditPopupMenuItem) => {
                         return `
@@ -252,6 +248,8 @@ export class DotEditContentToolbarHtmlService {
                                     <a
                                         href="#"
                                         data-dot-object="popup-menu-item"
+                                        style="${iframeStyles.DOTEDIT_MENU__ITEM__BUTTON}"
+                                        ${iframeStyles.getMenuItemButtonFunctions()}
                                         ${this.getDotEditPopupMenuItemDataSet(item.dataset)} role="button">
                                         ${item.label}
                                     </a>

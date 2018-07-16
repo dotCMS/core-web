@@ -45,7 +45,13 @@ export class DotDOMHtmlUtilService {
         return script;
     }
 
-    public getButtomHTML(label: string, className: string, dataset: { [key: string]: string }): string {
+    public getButtomHTML(
+        label: string,
+        className: string,
+        cssStyles: string,
+        styleFunction: string,
+        dataset: { [key: string]: string }
+    ): string {
         // TODO look for a better way to do this
         let datasetString = '';
 
@@ -57,6 +63,8 @@ export class DotDOMHtmlUtilService {
         return `<button type="button" role="button"
                         ${datasetString}
                         class="${className}"
+                        style="${cssStyles}"
+                        ${styleFunction}
                         aria-label="${label}">
                     ${label}
                 </button>`;

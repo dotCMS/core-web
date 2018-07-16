@@ -5,6 +5,33 @@ export const EDIT_PAGE_JS = `
 (function () {
     var forbiddenTarget;
 
+    function replaceStyles(styles, newStyle, elem) {
+        var newStylesSplitted = newStyle.split(/\\s*;\\s*/);
+
+        newStylesSplitted.forEach(function(newStyle) {
+            var newStyleSplitted = newStyle.split(':');
+
+            if (newStyleSplitted.length > 1) {
+                var styleChanged = false;
+                var stylesSplitted = styles.split(/\\s*;\\s*/);
+                styles = stylesSplitted.map(function(item, index) {
+
+                    // Replace an existing style
+                    if (item.indexOf(newStyleSplitted[0]) === 0) {
+                        styleChanged = true;
+                        return newStyle;
+                    }
+                    return item;
+                }).join('; ');
+
+                // Add any style that is new (not overwritten)
+                styles = !styleChanged ? styles.concat(newStyle) : styles;
+            }
+        });
+
+        elem.setAttribute('style', styles);
+    }
+
     function getContainers() {
         var containers = [];
         var containersNodeList = document.querySelectorAll('div[data-dot-object="container"]');
@@ -92,6 +119,7 @@ export const EDIT_PAGE_JS = `
     })
 
     window.getDotNgModel = getDotNgModel;
+    window.replaceStyles = replaceStyles;
 })();
 `;
 
