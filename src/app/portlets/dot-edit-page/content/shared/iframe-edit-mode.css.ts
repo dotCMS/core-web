@@ -19,15 +19,15 @@ export const getEditPageCss = (timestampId: string): string => {
 
     ${timestampId} [data-dot-object="container"] {
         border: solid 1px #53c2f9 !important;
-        min-height: 120px !important;
         margin-bottom: 40px !important;
+        min-height: 120px !important;
     }
 
     ${timestampId} [data-dot-object="container"].no {
-        border-color: red !important;
-        box-shadow: 0 0 20px red !important;
-        border-radious: 2px !important;
         background-color: #ff00000f !important;
+        border-color: red !important;
+        border-radious: 2px !important;
+        box-shadow: 0 0 20px red !important;
     }
 
     ${timestampId} [data-dot-object="container"].disabled {
@@ -35,12 +35,12 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} [data-dot-object="contentlet"] {
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/6VxkhIHUjRWlu2WXgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCguSaB0AmkRwAAAABJRU5ErkJggg==") !important;
         margin: 40px 16px 16px !important;
+        min-height: 60px !important;
         position: relative !important;
         padding-top: 25px !important;
-        min-height: 60px !important;
         transition: background ${animation} !important;
-        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/6VxkhIHUjRWlu2WXgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCguSaB0AmkRwAAAABJRU5ErkJggg==") !important;
     }
 
     ${timestampId} [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
@@ -56,8 +56,10 @@ export const getEditPageCss = (timestampId: string): string => {
         float: right !important;
         height: 32px !important;
         opacity: 0.7 !important;
+        position: relative! important;
         transition: all ${animation} !important;
         width: 32px !important;
+        z-index: 2147483647 !important;
     }
 
     ${timestampId} div[data-dot-object="edit-content"]:hover {
@@ -72,33 +74,33 @@ export const getEditPageCss = (timestampId: string): string => {
 
     ${timestampId} .dotedit-contentlet__content:after {
         content: "" !important;
-        display: table !important;
         clear: both !important;
+        display: table !important;
     }
 
     ${timestampId} .loader,
     ${timestampId} .loader:after {
         border-radius: 50% !important;
-        width: 32px !important;
         height: 32px !important;
+        width: 32px !important;
     }
 
     ${timestampId} .loader {
-        display: inline-block !important;
-        vertical-align: middle !important;
-        font-size: 10px !important;
-        position: relative !important;
-        text-indent: -9999em !important;
-        border-top: solid 5px rgba(0, 0, 0, 0.2) !important;
-        border-right: solid 5px rgba(0, 0, 0, 0.2) !important;
+        -webkit-animation: load8 1.1s infinite linear !important;
+        animation: load8 1.1s infinite linear !important;
         border-bottom: solid 5px rgba(0, 0, 0, 0.2) !important;
         border-left: solid 5px #000 !important;
+        border-right: solid 5px rgba(0, 0, 0, 0.2) !important;
+        border-top: solid 5px rgba(0, 0, 0, 0.2) !important;
+        display: inline-block !important;
+        font-size: 10px !important;
+        overflow: hidden !important;
+        position: relative !important;
+        text-indent: -9999em !important;
         -webkit-transform: translateZ(0) !important;
         -ms-transform: translateZ(0) !important;
         transform: translateZ(0) !important;
-        -webkit-animation: load8 1.1s infinite linear !important;
-        animation: load8 1.1s infinite linear !important;
-        overflow: hidden !important;
+        vertical-align: middle !important;
     }
 
     ${timestampId} .loader__overlay {
@@ -137,21 +139,23 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} .dotedit-container__toolbar {
-        margin: -15px 8px 0 0 !important;
         float: right !important;
         font-size: 0 !important;
+        margin: -15px 8px 0 0 !important;
     }
 
     ${timestampId} .dotedit-container__toolbar button,
     ${timestampId} .dotedit-contentlet__toolbar button {
-        width: 32px !important;
-        height: 32px !important;
+        box-shadow: ${mdShadow1} !important;
         border: none !important;
         border-radius: 16px !important;
         cursor: pointer !important;
-        box-shadow: ${mdShadow1} !important;
         font-size: 0 !important;
+        height: 32px !important;
         outline: none !important;
+        position: relative !important;
+        width: 32px !important;
+        z-index: 2147483646 !important;
     }
 
     ${timestampId} .dotedit-container__toolbar button:not([disabled]):hover,
@@ -191,8 +195,8 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} .dotedit-contentlet__toolbar .dotedit-contentlet__disabled {
-        pointer-events: none !important;
         opacity: 0.25 !important;
+        pointer-events: none !important;
     }
 
     ${timestampId} .dotedit-contentlet__toolbar button:last-child {
@@ -237,9 +241,9 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} .dotedit-contentlet__drag {
-        touch-action: none !important;
-        cursor: move !important;
         background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNDQ0NDQ0IiBoZWlnaHQ9IjE4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgIDxkZWZzPiAgICAgICAgPHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBpZD0iYSIvPiAgICA8L2RlZnM+ICAgIDxjbGlwUGF0aCBpZD0iYiI+ICAgICAgICA8dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjYSIvPiAgICA8L2NsaXBQYXRoPiAgICA8cGF0aCBjbGlwLXBhdGg9InVybCgjYikiIGQ9Ik0yMCA5SDR2MmgxNlY5ek00IDE1aDE2di0ySDR2MnoiLz48L3N2Zz4=) !important;
+        cursor: move !important;
+        touch-action: none !important;
     }
 
     ${timestampId} .dotedit-contentlet__edit {
@@ -276,15 +280,16 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} .dotedit-menu__list.active {
-        visibility: visible !important;
         opacity: 1 !important;
+        visibility: visible !important;
+        z-index: 2147483647 !important;
     }
 
     ${timestampId} .dotedit-menu__item a {
-        padding: 8px !important;
-        line-height: 16px !important;
-        display: block !important;
         cursor: pointer !important;
+        display: block !important;
+        line-height: 16px !important;
+        padding: 8px !important;
         white-space: nowrap !important;
     }
 
@@ -295,9 +300,9 @@ export const getEditPageCss = (timestampId: string): string => {
 
     ${timestampId} .dotedit-menu__item[title]:hover:after {
         content: attr(title) !important;
+        left: 100% !important;
         position: absolute !important;
         top: 100% !important;
-        left: 100% !important;
     }
 
     ${timestampId} .dotedit-menu__item a,
@@ -312,8 +317,8 @@ export const getEditPageCss = (timestampId: string): string => {
     ${timestampId} .dotedit-menu__item--disabled a:focus,
     ${timestampId} .dotedit-menu__item--disabled a:visited {
         color: ${grayLight} !important;
-        pointer-events: none !important;
         cursor: not-allowed !important;
+        pointer-events: none !important;
     }
 `;
 };
