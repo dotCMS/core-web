@@ -79,7 +79,7 @@ export class ContentTypesPortletComponent implements OnInit {
             this.dotContentletService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),
             this.pushPublishService.getEnvironments().map((environments: DotEnvironment[]) => !!environments.length)
-        ).take(1).subscribe(res => {
+        ).subscribe(res => {
             const baseTypes: StructureTypeView[] = res[1];
             const rowActionsMap = {
                 delete: true,

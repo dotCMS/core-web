@@ -7,13 +7,11 @@ import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.serv
 const contentTypesRoutes: Routes = [
     {
         component: ContentTypesPortletComponent,
-        path: '',
-        pathMatch: 'full'
+        path: ''
     },
     {
         path: 'create',
-        redirectTo: '',
-        pathMatch: 'full'
+        redirectTo: ''
     },
     {
         component: ContentTypesEditComponent,

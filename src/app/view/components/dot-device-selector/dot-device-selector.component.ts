@@ -22,7 +22,6 @@ export class DotDeviceSelectorComponent implements OnInit {
             .getMessages(['editpage.viewas.default.device'])
             .pipe(take(1))
             .subscribe(() => {
-                this.dotMessageService.messageMap$
                 this.dotDevicesService
                     .get()
                     .pipe(
@@ -49,7 +48,6 @@ export class DotDeviceSelectorComponent implements OnInit {
     }
 
     private setOptions(message: string, devices: DotDevice[]): DotDevice[] {
-        console.log(message);
         return [
             {
                 name: message,
