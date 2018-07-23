@@ -96,7 +96,6 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     isJSPPortlet(): boolean {
-        debugger;
         return this.router.url.startsWith('/c/');
     }
 
