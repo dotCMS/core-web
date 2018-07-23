@@ -58,7 +58,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             this.moveFields();
         });
 
-        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => this.moveFields());
+        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => {
+            this.moveFields();
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
