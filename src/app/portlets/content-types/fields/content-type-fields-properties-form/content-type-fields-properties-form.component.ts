@@ -72,7 +72,6 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
 
     ngOnInit(): void {
         this.initFormGroup();
-        console.log(this.form);
     }
 
     /**
