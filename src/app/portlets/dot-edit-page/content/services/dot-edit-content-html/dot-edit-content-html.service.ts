@@ -92,6 +92,7 @@ export class DotEditContentHtmlService {
 
                 resolve(true);
             });
+
             // Load content after bind 'load' event.
             this.loadCodeIntoIframe(editPageHTML);
         });

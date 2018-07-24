@@ -51,6 +51,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
     editForm = false;
+    showIframe = true;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -98,7 +99,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
 
-        if (this.shouldSetContainersHeight()) {
+        if (this.shouldSetContainersHeight() && $event.currentTarget.contentDocument.body.innerHTML) {
             this.dotEditContentHtmlService.setContaintersChangeHeightListener(this.pageState.layout);
         }
 
@@ -375,7 +376,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private setPageState(pageState: DotRenderedPageState): void {
         this.pageState = pageState;
-        this.renderPage(pageState);
+        this.showIframe = false;
+
+        setTimeout(() => {
+            this.showIframe = true;
+        }, 0);
+
+        setTimeout(() => {
+            this.renderPage(pageState);
+        }, 1);
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {
