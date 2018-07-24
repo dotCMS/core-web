@@ -4,6 +4,7 @@ import { DebugElement, Injectable, Component, Input } from '@angular/core';
 import { ToolbarComponent } from './dot-toolbar.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SiteService } from 'dotcms-js/dotcms-js';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
@@ -63,7 +64,7 @@ class MockToolbarUsersComponent {}
 class MockToolbarAddContentletComponent {}
 
 describe('ToolbarComponent', () => {
-    let dotNavigationService: DotNavigationService;
+    let dotRouterService: DotRouterService;
     let routeService: ActivatedRoute;
     let comp: ToolbarComponent;
     let fixture: ComponentFixture<ToolbarComponent>;
@@ -94,17 +95,17 @@ describe('ToolbarComponent', () => {
         fixture = DOTTestBed.createComponent(ToolbarComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        dotNavigationService = fixture.debugElement.injector.get(DotNavigationService);
+        dotRouterService = fixture.debugElement.injector.get(DotRouterService);
         routeService = fixture.debugElement.injector.get(ActivatedRoute);
     }));
 
     it(`should trigger "siteChange" call "goToFirstPorlet" in "DotRouterService" when the "siteChange" method is actioned`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         spyOn(comp, 'siteChange').and.callThrough();
-        spyOn(dotNavigationService, 'goToFirstPortlet');
+        spyOn(dotRouterService, 'goToSiteBrowser');
         fixture.detectChanges();
         siteSelector.triggerEventHandler('change', { value: siteMock });
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
+        expect(dotRouterService.goToSiteBrowser).not.toHaveBeenCalled();
         expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
@@ -112,12 +113,12 @@ describe('ToolbarComponent', () => {
         is actioned and the url comes from Edit Page`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         spyOn(comp, 'siteChange').and.callThrough();
-        spyOn(dotNavigationService, 'goToFirstPortlet');
+        spyOn(dotRouterService, 'goToSiteBrowser');
         spyOnProperty(routeService, 'snapshot', 'get').and.returnValue({_routerState: {
             url: 'edit-page/content?url=about-us'
         }});
         siteSelector.triggerEventHandler('change', { value: siteMock });
-        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalled();
+        expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
         expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 });

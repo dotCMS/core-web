@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { SiteService, Site, DotcmsEventsService } from 'dotcms-js/dotcms-js';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 import { ActivatedRoute } from '../../../../../node_modules/@angular/router';
 
 @Component({
@@ -19,7 +18,6 @@ export class ToolbarComponent implements OnInit {
         private siteService: SiteService,
         private dotcmsEventsService: DotcmsEventsService,
         private dotRouterService: DotRouterService,
-        private dotNavigationService: DotNavigationService,
         private route: ActivatedRoute
     ) {}
 
@@ -36,7 +34,7 @@ export class ToolbarComponent implements OnInit {
     siteChange(site: Site): void {
         this.siteService.switchSite(site);
         if (this.route.snapshot['_routerState'].url.indexOf('edit-page/') >= 0) {
-            this.dotNavigationService.goToFirstPortlet();
+            this.dotRouterService.goToSiteBrowser();
         }
     }
 
