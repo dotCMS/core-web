@@ -199,9 +199,9 @@ export class DotEditContentHtmlService {
                 const containers: DotPageContainer[]  = this.getContentModel();
 
                 containers.filter(container =>
-                    container['id'] === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
-                    .filter(container => container['contentlets'])
-                    .forEach(container => container['contentlets'].push(response.content.identifier));
+                    container.identifier === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
+                    .filter(container => container.contentletsId)
+                    .forEach(container => container.contentletsId.push(response.content.identifier));
 
                 return containers;
             });
