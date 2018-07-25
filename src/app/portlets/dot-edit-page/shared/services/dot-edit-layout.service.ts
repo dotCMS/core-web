@@ -32,7 +32,7 @@ export class DotEditLayoutService {
                 grid.push({
                     containers: column.containers.map((dotPageContainer: DotPageContainer) => {
                         return {
-                            container: this.templateContainersCacheService.get(dotPageContainer.identifier),
+                            container: this.templateContainersCacheService.get(dotPageContainer.id),
                             uuid: dotPageContainer.uuid
                         };
                     }),
@@ -84,7 +84,7 @@ export class DotEditLayoutService {
     getDotLayoutSidebar(containers: DotPageContainer[]): DotContainerColumnBox[] {
         return containers.map((dotPageContainer: DotPageContainer) => {
             return {
-                container: this.templateContainersCacheService.get(dotPageContainer.identifier),
+                container: this.templateContainersCacheService.get(dotPageContainer.id),
                 uuid: dotPageContainer.uuid ? dotPageContainer.uuid : ''
             };
         });
@@ -100,7 +100,7 @@ export class DotEditLayoutService {
                         containers: layoutGridBox.containers.map(
                             (dotContainersColumnBox: DotContainerColumnBox) =>
                                 <DotPageContainer>{
-                                    identifier: dotContainersColumnBox.container.identifier,
+                                    id: dotContainersColumnBox.container.identifier,
                                     uuid: dotContainersColumnBox.uuid
                                 }
                         )

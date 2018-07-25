@@ -219,7 +219,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private addContentlet($event: any): void {
         const container: DotPageContainer = {
-            identifier: $event.dataset.dotIdentifier,
+            id: $event.dataset.dotIdentifier,
             uuid: $event.dataset.dotUuid
         };
         this.dotEditContentHtmlService.setContainterToAppendContentlet(container);
@@ -341,7 +341,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotDialogService.confirm({
             accept: () => {
                 const pageContainer: DotPageContainer = {
-                    identifier: $event.container.dotIdentifier,
+                    id: $event.container.dotIdentifier,
                     uuid: $event.container.dotUuid
                 };
 

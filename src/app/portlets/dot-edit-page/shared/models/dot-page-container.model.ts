@@ -2,7 +2,7 @@
  * Represent a Container linked with a page and with content added to it
  */
 export interface DotPageContainer {
-    identifier: string;
+    id: string;
     uuid: string;
-    contentletsId?: string[];
+    contentlets?: string[];
 }

@@ -121,7 +121,7 @@ export class DotEditContentHtmlService {
     removeContentlet(container: DotPageContainer, content: DotPageContent): void {
         const doc = this.getEditPageDocument();
         const selector = [
-            `div[data-dot-object="container"][data-dot-identifier="${container.identifier}"][data-dot-uuid="${container.uuid}"] `,
+            `div[data-dot-object="container"][data-dot-identifier="${container.id}"][data-dot-uuid="${container.uuid}"] `,
             `div[data-dot-object="contentlet"][data-dot-inode="${content.inode}"]`
         ].join('');
         const contenletEl = doc.querySelector(selector);
@@ -147,7 +147,7 @@ export class DotEditContentHtmlService {
             const containerEl = currentContentlet.parentNode;
 
             const container: DotPageContainer = {
-                identifier: containerEl.dataset.dotIdentifier,
+                id: containerEl.dataset.dotIdentifier,
                 uuid: containerEl.dataset.dotUuid
             };
 
@@ -186,7 +186,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
             // tslint:disable-next-line:max-line-length
-            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.id}"][data-dot-uuid="${
                 this.currentContainer.uuid
             }"]`
         );
@@ -199,9 +199,9 @@ export class DotEditContentHtmlService {
                 const containers: DotPageContainer[]  = this.getContentModel();
 
                 containers.filter(container =>
-                    container['id'] === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
-                    .filter(container => container['contentlets'])
-                    .forEach(container => container['contentlets'].push(response.content.identifier));
+                    container.id === this.currentContainer.id && container.uuid === this.currentContainer.uuid)
+                    .filter(container => container.contentlets)
+                    .forEach(container => container.contentlets.push(response.content.identifier));
 
                 return containers;
             });
@@ -274,7 +274,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
             // tslint:disable-next-line:max-line-length
-            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
+            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.id}"][data-dot-uuid="${
                 this.currentContainer.uuid
             }"]`
         );
@@ -351,7 +351,7 @@ export class DotEditContentHtmlService {
         return pageLayout.body.rows.map((row: DotLayoutRow) => {
             return row.columns.map((column: DotLayoutColumn) => {
                 return {
-                    identifier: column.containers[0].identifier,
+                    id: column.containers[0].id,
                     uuid: column.containers[0].uuid
                 };
             });
@@ -366,7 +366,7 @@ export class DotEditContentHtmlService {
             return containerRow.map((container: DotPageContainer) => {
                 const querySelector = [
                     `div[data-dot-object="container"]`,
-                    `[data-dot-identifier="${container.identifier}"]`,
+                    `[data-dot-identifier="${container.id}"]`,
                     `[data-dot-uuid="${container.uuid}"]`
                 ].join('');
                 const containerElement = doc.querySelector(querySelector);

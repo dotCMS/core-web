@@ -51,7 +51,7 @@ export const mockDotLayout: DotLayout = {
         width: 'small',
         containers: [
             {
-                identifier: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
+                id: 'fc193c82-8c32-4abe-ba8a-49522328c93e',
                 uuid: 'LEGACY_RELATION_TYPE'
             }
         ]
