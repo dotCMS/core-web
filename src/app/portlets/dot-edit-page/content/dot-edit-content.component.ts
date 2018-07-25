@@ -175,15 +175,16 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onFormSelected(item: ContentType): void {
         this.dotEditContentHtmlService.renderAddedForm(item).subscribe(model => {
+            if (model !== null) {
+                this.dotEditPageService
+                    .save(this.pageState.page.identifier, model)
+                    .pipe(take(1))
+                    .subscribe(() => {
+                        this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                    });
 
-            this.dotEditPageService
-                .save(this.pageState.page.identifier, model)
-                .pipe(take(1))
-                .subscribe(() => {
-                    this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-                });
-
-            this.reload();
+                this.reload();
+            }
         });
 
         this.editForm = false;
