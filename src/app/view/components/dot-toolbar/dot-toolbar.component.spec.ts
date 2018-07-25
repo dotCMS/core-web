@@ -97,27 +97,27 @@ describe('ToolbarComponent', () => {
         de = fixture.debugElement;
         dotRouterService = fixture.debugElement.injector.get(DotRouterService);
         routeService = fixture.debugElement.injector.get(ActivatedRoute);
-    }));
-
-    it(`should trigger "siteChange" call "goToFirstPorlet" in "DotRouterService" when the "siteChange" method is actioned`, () => {
-        const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         spyOn(comp, 'siteChange').and.callThrough();
         spyOn(dotRouterService, 'goToSiteBrowser');
+
+    }));
+
+    it(`should NOT go to site browser when site change in any portlet but edit page`, () => {
+        const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         fixture.detectChanges();
         siteSelector.triggerEventHandler('change', { value: siteMock });
         expect(dotRouterService.goToSiteBrowser).not.toHaveBeenCalled();
         expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
 
-    it(`should trigger "siteChange" call "goToFirstPorlet" in "DotRouterService" when the "siteChange" method
-        is actioned and the url comes from Edit Page`, () => {
+    it(`should go to site-browser when site change on edit page url`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
-        spyOn(comp, 'siteChange').and.callThrough();
-        spyOn(dotRouterService, 'goToSiteBrowser');
-        spyOnProperty(routeService, 'snapshot', 'get').and.returnValue({_routerState: {
-            url: 'edit-page/content?url=about-us'
-        }});
+        spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
+            id: 'edit-page',
+            url: ''
+        });
         siteSelector.triggerEventHandler('change', { value: siteMock });
+
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
         expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
     });
