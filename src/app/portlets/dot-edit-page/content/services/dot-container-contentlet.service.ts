@@ -23,7 +23,7 @@ export class DotContainerContentletService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/containers/${container.id}/content/${content.identifier}`
+                url: `v1/containers/${container.identifier}/content/${content.identifier}`
             })
             .pluck('entity', 'render');
     }
@@ -40,7 +40,7 @@ export class DotContainerContentletService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/containers/${container.id}/form/${form.id}`
+                url: `v1/containers/${container.identifier}/form/${form.id}`
             })
             .pluck('entity');
     }

@@ -47,7 +47,7 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
         if (containers) {
             this.value.containers = containers.map((item) => {
                 return {
-                    id: item.container.identifier,
+                    identifier: item.container.identifier,
                     uuid: item.uuid
                 };
             });
