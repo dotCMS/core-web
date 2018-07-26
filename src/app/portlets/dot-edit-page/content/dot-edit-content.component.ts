@@ -175,7 +175,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onFormSelected(item: ContentType): void {
         this.dotEditContentHtmlService.renderAddedForm(item).subscribe(model => {
-            if (model !== null) {
+            if (model) {
                 this.dotEditPageService
                     .save(this.pageState.page.identifier, model)
                     .pipe(take(1))
@@ -390,6 +390,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.pageState = pageState;
         this.showIframe = false;
 
+        // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
         setTimeout(() => {
             this.showIframe = true;
         }, 0);

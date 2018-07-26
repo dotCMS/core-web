@@ -185,10 +185,11 @@ export class DotEditContentHtmlService {
     renderAddedForm(form: ContentType): Observable<DotPageContainer[]> {
         const doc = this.getEditPageDocument();
         const containerEl = doc.querySelector(
-            // tslint:disable-next-line:max-line-length
-            `div[data-dot-object="container"][data-dot-identifier="${this.currentContainer.identifier}"][data-dot-uuid="${
-                this.currentContainer.uuid
-            }"]`
+            [
+                'div[data-dot-object="container"]',
+                `[data-dot-identifier="${this.currentContainer.identifier}"]`,
+                `[data-dot-uuid="${this.currentContainer.uuid}"]`
+            ].join()
         );
 
         if (this.isFormExistInContainer(form, containerEl)) {
@@ -200,8 +201,13 @@ export class DotEditContentHtmlService {
 
                 containers.filter(container =>
                     container.identifier === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
-                    .filter(container => container.contentletsId)
-                    .forEach(container => container.contentletsId.push(response.content.identifier));
+                    .forEach(container => {
+                        if (!container.contentletsId) {
+                            container.contentletsId = [];
+                        }
+
+                        container.contentletsId.push(response.content.identifier);
+                    });
 
                 return containers;
             });
