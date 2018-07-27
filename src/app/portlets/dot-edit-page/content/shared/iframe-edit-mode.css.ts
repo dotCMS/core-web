@@ -194,10 +194,6 @@ export const getEditPageCss = (timestampId: string): string => {
         opacity: 1 !important;
     }
 
-    ${timestampId} [data-dot-object="contentlet"][data-dot-has-page-lang-version="false"]:hover .dotedit-contentlet__toolbar  {
-        opacity: 0 !important;
-    }
-
     ${timestampId} .dotedit-contentlet__toolbar button {
         background-color: ${white} !important;
     }
