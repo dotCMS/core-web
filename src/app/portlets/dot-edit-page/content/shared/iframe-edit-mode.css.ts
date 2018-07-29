@@ -44,15 +44,11 @@ export const getEditPageCss = (timestampId: string): string => {
     }
 
     ${timestampId} [data-dot-object="contentlet"][data-dot-has-page-lang-version="false"] {
-        background: none !important;
+        display: none !important;
     }
 
     ${timestampId} [data-dot-object="container"]:hover [data-dot-object="contentlet"] {
         background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQoU2NkIAIEH/r5n5GQOpCitXbsjHgVwhSBDMOpEFkRToXoirAqxKYIQyEuRSgK8SmCKySkCKyQGEUghQCQPycYlScX0wAAAABJRU5ErkJggg==") !important;
-    }
-
-    ${timestampId} [data-dot-object="container"]:hover [data-dot-object="contentlet"][data-dot-has-page-lang-version="false"] {
-        background: none !important;
     }
 
     ${timestampId} div[data-dot-object="edit-content"] {
