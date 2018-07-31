@@ -41,6 +41,7 @@ describe('DotWhatsChangedComponent', () => {
         de = fixture.debugElement;
 
         component.pageId = '123';
+        component.languageId = '1';
         dotIframe = de.query(By.css('dot-iframe')).componentInstance;
         fixture.detectChanges();
     });
