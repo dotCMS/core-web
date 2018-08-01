@@ -341,7 +341,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             Observable.fromEvent(window.document, 'ng-event')
                 .pipe(
                     pluck('detail'),
-                    filter((eventDetail: any) => eventDetail.name === 'reload-edit-mode-page'),
+                    filter((eventDetail: any) => eventDetail.name === 'in-iframe'),
                     takeUntil(this.destroy$)
                 )
                 .subscribe(() => {
