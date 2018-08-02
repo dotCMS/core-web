@@ -17,7 +17,6 @@ import { DotSaveOnDeactivateService } from './shared/dot-save-on-deactivate-serv
 import { FormatDateService } from './api/services/format-date-service';
 import { GravatarService } from './api/services/gravatar-service';
 import { IframeOverlayService } from './view/components/_common/iframe/service/iframe-overlay.service';
-import { Logger } from 'angular2-logger/core';
 import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { NotLicensedService } from './api/services/not-licensed-service';
 import { NotificationsService } from './api/services/notifications-service';
@@ -50,7 +49,6 @@ const PROVIDERS: any[] = [
     FormatDateService,
     GravatarService,
     IframeOverlayService,
-    Logger,
     MenuGuardService,
     NotLicensedService,
     NotificationsService,
