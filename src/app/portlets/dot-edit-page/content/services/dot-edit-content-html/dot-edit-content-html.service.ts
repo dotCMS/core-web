@@ -458,7 +458,6 @@ export class DotEditContentHtmlService {
             contentletContentEl.appendChild(script);
         });
 
-        console.log('children' , contentDivWrapper.children);
         // TODO: need to come up with a more efficient way to do this
         Array.from(contentDivWrapper.childNodes).forEach((node: any) => {
             if (node.tagName !== 'SCRIPT') {
