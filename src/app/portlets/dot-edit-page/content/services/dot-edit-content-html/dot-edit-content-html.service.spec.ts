@@ -25,7 +25,7 @@ class MockDotLicenseService {
     }
 }
 
-xdescribe('DotEditContentHtmlService', () => {
+fdescribe('DotEditContentHtmlService', () => {
     let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
 
@@ -424,7 +424,7 @@ xdescribe('DotEditContentHtmlService', () => {
             button.click();
         });
 
-        it('should emit iframe action to edit content', () => {
+        fit('should emit iframe action to edit content', () => {
             this.dotEditContentHtmlService.iframeActions$.subscribe((res) => {
                 expect(res).toEqual({
                     name: 'edit',
