@@ -81,6 +81,7 @@ export class DotEditContentToolbarHtmlService {
                 'editpage.content.contentlet.menu.remove'
             ])
             .subscribe(() => {
+
                 const contentletQuery = `div[data-dot-object="contentlet"][data-dot-has-page-lang-version="true"]`;
                 const contentlets = Array.from(doc.querySelectorAll(contentletQuery));
 
