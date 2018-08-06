@@ -83,7 +83,8 @@ export class LoginComponent implements AfterViewInit {
     /**
      *  Executes the logIn service
      */
-    logInUser(): void {
+    logInUser($event: any): void {
+        $event.call();
         const isSetUserId = this.myAccountLogin !== undefined && this.myAccountLogin.length > 0;
         const isSetPassword = this.password !== undefined && this.password.length > 0;
         this.message = '';

@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
-import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
+// import { NgGrid, NgGridConfig, NgGridItemConfig } from 'angular2-grid';
 import * as _ from 'lodash';
 import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
@@ -32,33 +32,33 @@ import { DotEventsService } from '../../../../../api/services/dot-events/dot-eve
     ]
 })
 export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor {
-    @ViewChild(NgGrid) ngGrid: NgGrid;
+    // @ViewChild(NgGrid) ngGrid: NgGrid;
 
     value: DotLayoutBody;
     grid: DotLayoutGridBox[];
 
-    gridConfig: NgGridConfig = <NgGridConfig>{
-        margins: [0, 8, 8, 0],
-        draggable: true,
-        resizable: true,
-        max_cols: DOT_LAYOUT_GRID_MAX_COLUMNS,
-        max_rows: 0,
-        visible_cols: DOT_LAYOUT_GRID_MAX_COLUMNS,
-        min_cols: 1,
-        min_rows: 1,
-        col_width: 90,
-        row_height: 206,
-        cascade: 'up',
-        min_width: 40,
-        min_height: 206,
-        fix_to_grid: true,
-        auto_style: true,
-        auto_resize: true,
-        maintain_ratio: false,
-        prefer_new: false,
-        zoom_on_drag: false,
-        limit_to_screen: true
-    };
+    // gridConfig: NgGridConfig = <NgGridConfig>{
+    //     margins: [0, 8, 8, 0],
+    //     draggable: true,
+    //     resizable: true,
+    //     max_cols: DOT_LAYOUT_GRID_MAX_COLUMNS,
+    //     max_rows: 0,
+    //     visible_cols: DOT_LAYOUT_GRID_MAX_COLUMNS,
+    //     min_cols: 1,
+    //     min_rows: 1,
+    //     col_width: 90,
+    //     row_height: 206,
+    //     cascade: 'up',
+    //     min_width: 40,
+    //     min_height: 206,
+    //     fix_to_grid: true,
+    //     auto_style: true,
+    //     auto_resize: true,
+    //     maintain_ratio: false,
+    //     prefer_new: false,
+    //     zoom_on_drag: false,
+    //     limit_to_screen: true
+    // };
 
     constructor(
         private dotDialogService: DotAlertConfirmService,
@@ -98,8 +98,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     addBox(): void {
-        const conf: NgGridItemConfig = this.setConfigOfNewContainer();
-        this.grid.push({ config: conf, containers: [] });
+        // const conf: NgGridItemConfig = this.setConfigOfNewContainer();
+        // this.grid.push({ config: conf, containers: [] });
         this.propagateChange(this.getModel());
     }
 
@@ -198,8 +198,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         }
     }
 
-    private setConfigOfNewContainer(): NgGridItemConfig {
-        const newRow: NgGridItemConfig = Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE);
+    private setConfigOfNewContainer(): any {
+        const newRow: any = Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE);
 
         if (this.grid.length) {
             const lastContainer = _.chain(this.grid)
@@ -254,7 +254,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     private resizeGrid(timeOut?): void {
         setTimeout(() => {
-            this.ngGrid.triggerResize();
+            // this.ngGrid.triggerResize();
         }, timeOut ? timeOut : 0);
     }
 }
