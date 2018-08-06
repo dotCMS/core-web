@@ -98,7 +98,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
 
     private initForm(): void {
         this.form = this.fb.group({
-            addBundle: [ '', [Validators.required]]
+            addBundle: ['', [Validators.required]]
         });
     }
 
