@@ -42,16 +42,14 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
             'contenttypes.content.add_to_bundle.form.add'
         ];
 
-        // this.bundle$ = this.addToBundleService.getBundles();
-
+        this.initForm();
         this.dotMessageService.getMessages(keys).subscribe(messages => {
             this.addToBundleService.getBundles().subscribe(bundles => {
                 this.bundles = bundles;
                 this.placeholder = bundles.length
                     ? messages['contenttypes.content.add_to_bundle.select']
                     : messages['contenttypes.content.add_to_bundle.type'];
-                console.log(this.setDefaultBundle());
-                this.initForm();
+               this.form.get('addBundle').setValue(this.setDefaultBundle() ? this.setDefaultBundle().name : '');
             });
         });
     }
@@ -99,9 +97,8 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     }
 
     private initForm(): void {
-        debugger;
         this.form = this.fb.group({
-            addBundle: [ this.setDefaultBundle() ? this.setDefaultBundle().name : '', [Validators.required]]
+            addBundle: [ '', [Validators.required]]
         });
     }
 
@@ -112,14 +109,11 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
                 name: this.form.value.addBundle
             };
         } else {
-            debugger;
-            console.log('add Bundle value: ' + this.form.value.addBundle);
             return this.form.value.addBundle;
         }
     }
 
     private setDefaultBundle(): DotBundle {
-        debugger;
         const lastBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
         return lastBundle ? this.bundles.find(bundle => bundle.name === lastBundle.name) : null;
     }
