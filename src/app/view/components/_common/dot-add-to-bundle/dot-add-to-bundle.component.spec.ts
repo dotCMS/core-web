@@ -28,7 +28,7 @@ class TestHostComponent {
     addToBundleIdentifier: string;
 }
 
-describe('DotAddToBundleComponent', () => {
+fdescribe('DotAddToBundleComponent', () => {
     let comp: DotAddToBundleComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -162,6 +162,23 @@ describe('DotAddToBundleComponent', () => {
         );
         fixture.detectChanges();
         expect(comp.placeholder).toEqual('Select or type bundle');
+    });
+
+    it('should set as default Bundle previously selected', () => {
+        spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(
+            Observable.of([
+                {
+                    id: '1234',
+                    name: 'my bundle'
+                }
+            ])
+        );
+        sessionStorage.setItem('lastBundleUsed', JSON.stringify({
+            id: '1234',
+            name: 'my bundle'
+        }));
+        fixture.detectChanges();
+        expect(comp.form.value.addBundle).toEqual('my bundle');
     });
 
     describe('should call addToBundle service method with the right params when the form is submitted and is valid', () => {
