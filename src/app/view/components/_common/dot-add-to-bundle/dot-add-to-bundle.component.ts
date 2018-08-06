@@ -49,7 +49,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
                 this.placeholder = bundles.length
                     ? messages['contenttypes.content.add_to_bundle.select']
                     : messages['contenttypes.content.add_to_bundle.type'];
-               this.form.get('addBundle').setValue(this.setDefaultBundle() ? this.setDefaultBundle().name : '');
+               this.form.get('addBundle').setValue(this.getDefaultBundle() ? this.getDefaultBundle().name : '');
             });
         });
     }
@@ -113,7 +113,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private setDefaultBundle(): DotBundle {
+    private getDefaultBundle(): DotBundle {
         const lastBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
         return lastBundle ? this.bundles.find(bundle => bundle.name === lastBundle.name) : null;
     }
