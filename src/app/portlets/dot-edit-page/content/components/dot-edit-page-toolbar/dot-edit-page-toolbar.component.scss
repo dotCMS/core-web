@@ -11,7 +11,7 @@ $toolbar-height: 48px;
 
     ::ng-deep {
         .ui-toolbar {
-            border-bottom: solid 1px $gray-light;
+            border-bottom: solid 1px $gray-bg;
             height: $toolbar-height;
             padding-left: 0;
         }

@@ -21,7 +21,7 @@
 .dot-layout-designer__header,
 [class^='dot-layout-designer__sidebar'] {
     align-items: center;
-    background: $gray-light;
+    background: $gray-bg;
     color: $gray;
     display: flex;
     flex-shrink: 0;
@@ -95,8 +95,8 @@
         -90deg,
         transparent,
         transparent $basic-padding,
-        $gray-light $basic-padding,
-        $gray-light calc(100% / 12)
+        $gray-bg $basic-padding,
+        $gray-bg calc(100% / 12)
     );
     flex-grow: 1;
     margin-right: -$basic-padding;

@@ -15,7 +15,7 @@
 
 .environment-selector__list-item {
     @include naked-list;
-    border-top: 1px solid $gray-light;
+    border-top: 1px solid $gray-bg;
     padding: $basic-padding / 2 0;
 
     &:first-child {
