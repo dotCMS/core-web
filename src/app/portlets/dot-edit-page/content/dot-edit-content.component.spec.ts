@@ -412,8 +412,12 @@ describe('DotEditContentComponent', () => {
         }));
 
         it('should change the Language/Persona of the page when viewAs configuration changes and set the dev', () => {
+            const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+
             spyOn(component, 'changeViewAsHandler').and.callThrough();
-            spyOn(dotPageStateService, 'set').and.callThrough();
+            spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(mockRenderedPageState));
+            spyOn(dotPageStateService, 'reload');
+
             viewAsToolbar.componentInstance.changeViewAs.emit(mockDotEditPageViewAs);
 
             expect(component.changeViewAsHandler).toHaveBeenCalledWith(mockDotEditPageViewAs);
@@ -421,6 +425,11 @@ describe('DotEditContentComponent', () => {
                 component.pageState.page,
                 component.pageState.state,
                 mockDotEditPageViewAs
+            );
+
+            expect(dotPageStateService.reload).toHaveBeenCalledWith(
+                route.snapshot.queryParams.url,
+                mockRenderedPageState.page.languageId
             );
         });
 
@@ -675,7 +684,6 @@ describe('DotEditContentComponent', () => {
                 fixture.detectChanges();
             });
 
-
             describe('content or widget', () => {
                 beforeEach(() => {
                     dotEditContentHtmlService.iframeActions$.next({
@@ -753,7 +761,6 @@ describe('DotEditContentComponent', () => {
 
                     expect(dotFormSelector.componentInstance.show).toBe(true);
                 });
-
 
                 it('select a form to add into the page', fakeAsync(() => {
                     const mockContentType = {};
@@ -907,9 +914,7 @@ describe('DotEditContentComponent', () => {
                 });
                 document.dispatchEvent(customEvent);
 
-                expect(dotEditPageDataService.set).toHaveBeenCalledWith(
-                    new DotRenderedPageState(mockUser, copyMockDotRenderedPage)
-                );
+                expect(dotEditPageDataService.set).toHaveBeenCalledWith(new DotRenderedPageState(mockUser, copyMockDotRenderedPage));
 
                 expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(copyMockDotRenderedPage.page.pageURI);
             }));
@@ -978,7 +983,6 @@ describe('DotEditContentComponent', () => {
         }));
 
         it('should not execute setContaintersSameHeight() when layout is null', fakeAsync(() => {
-
             route.parent.parent.data = Observable.of({
                 content: {
                     ...mockDotRenderedPage,
@@ -1023,7 +1027,7 @@ describe('DotEditContentComponent', () => {
         waitForDetectChanges(fixture);
         component.pageState.state.mode = PageMode.EDIT;
         fixture.detectChanges();
-
+      
         const iframe: DebugElement = de.query(By.css('.dot-edit__iframe'));
         iframe.triggerEventHandler('load', {
             currentTarget: {
@@ -1060,5 +1064,4 @@ describe('DotEditContentComponent', () => {
 
         expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);
     }));
-
 });
