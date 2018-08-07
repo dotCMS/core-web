@@ -7,6 +7,7 @@ import { LoggerService } from 'dotcms-js/dotcms-js';
 import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '../../../../shared/models/dot-bundle/dot-bundle';
 import { Dropdown } from 'primeng/primeng';
+import { find, mergeMap, tap } from 'rxjs/operators';
 
 const LAST_BUNDLE_USED = 'lastBundleUsed';
 
@@ -17,7 +18,7 @@ const LAST_BUNDLE_USED = 'lastBundleUsed';
 })
 export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     form: FormGroup;
-    bundles: DotBundle[];
+    bundle$: Observable<DotBundle[]>;
     placeholder: string;
 
     @Input() assetIdentifier: string;
@@ -43,15 +44,22 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
         ];
 
         this.initForm();
-        this.dotMessageService.getMessages(keys).subscribe(messages => {
-            this.addToBundleService.getBundles().subscribe(bundles => {
-                this.bundles = bundles;
-                this.placeholder = bundles.length
-                    ? messages['contenttypes.content.add_to_bundle.select']
-                    : messages['contenttypes.content.add_to_bundle.type'];
-               this.form.get('addBundle').setValue(this.getDefaultBundle() ? this.getDefaultBundle().name : '');
-            });
-        });
+
+        this.bundle$ = this.dotMessageService.getMessages(keys).pipe(
+            mergeMap(messages => {
+                return this.addToBundleService.getBundles().pipe(
+                    mergeMap((bundles: DotBundle[]) => {
+                        setTimeout(() => {
+                            this.placeholder = bundles.length
+                                ? messages['contenttypes.content.add_to_bundle.select']
+                                : messages['contenttypes.content.add_to_bundle.type'];
+                        });
+                        this.form.get('addBundle').setValue(this.getDefaultBundle(bundles) ? this.getDefaultBundle(bundles).name : '');
+                        return Observable.of(bundles);
+                    })
+                );
+            })
+        );
     }
 
     ngAfterViewInit(): void {
@@ -113,8 +121,9 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private getDefaultBundle(): DotBundle {
-        const lastBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
-        return lastBundle ? this.bundles.find(bundle => bundle.name === lastBundle.name) : null;
+    private getDefaultBundle(bundles: DotBundle[]): DotBundle {
+        const lastBundle: DotBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
+        // return lastBundle ? this.bundle$.find(bundle => bundle.name === lastBundle.name) : null;
+        return lastBundle ? bundles.find(bundle => bundle.name === lastBundle.name) : null;
     }
 }
