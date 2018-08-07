@@ -7,7 +7,7 @@ import { LoggerService } from 'dotcms-js/dotcms-js';
 import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '../../../../shared/models/dot-bundle/dot-bundle';
 import { Dropdown } from 'primeng/primeng';
-import { find, mergeMap, tap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 const LAST_BUNDLE_USED = 'lastBundleUsed';
 
