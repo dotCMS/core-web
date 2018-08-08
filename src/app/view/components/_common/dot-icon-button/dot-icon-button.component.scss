@@ -1,0 +1,30 @@
+@import "variables";
+
+.dot-icon-button {
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+
+    &:hover {
+        background-color: $gray-bg;
+    }
+
+    &.disabled:hover {
+        background-color: transparent;
+        cursor: not-allowed;
+    }
+
+    &.tiny {
+        height: 16px;
+        width: 16px;
+    }
+
+    ::ng-deep &.disabled .material-icons {
+        color: $field-disabled-bgcolor;
+    }
+}
+
