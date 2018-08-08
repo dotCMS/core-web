@@ -9,18 +9,12 @@ import { Component, Input, EventEmitter, Output, HostListener } from '@angular/c
 @Component({
     selector: 'dot-icon-button',
     styleUrls: ['./dot-icon-button.component.scss'],
-
-    template: `<div class="dot-icon-button
-                {{ this.tiny ? 'tiny' : '' }}
-                {{ this.disabled ? 'disabled' : '' }}"
-                (click)='buttonOnClick($event)'>
-                   <dot-icon name="{{ this.icon }}" tiny="{{ this.tiny }}"  invertColor="{{ this.invertColor }}"></dot-icon>
-               </div>`
+    templateUrl: './dot-icon-button.component.html'
 })
 export class DotIconButtonComponent {
 
     @Input() disabled?: boolean;
-    @Input() invertColor?: boolean;
+    @Input() inverted?: boolean;
     @Input() tiny?: boolean;
     @Input() icon: string;
 

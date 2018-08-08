@@ -24,7 +24,7 @@ describe('DotIconButtonComponent', () => {
     it('should render component with dot-icon component and css classes', () => {
         comp.icon = 'test';
         comp.tiny = true;
-        comp.invertColor = true;
+        comp.inverted = true;
         fixture.detectChanges();
 
         const icon = fixture.debugElement.query(By.css('dot-icon'));
@@ -32,7 +32,7 @@ describe('DotIconButtonComponent', () => {
         expect(de.nativeElement.childNodes[0].classList).toContain('tiny');
 
         expect(icon.componentInstance.tiny).toBe('true');
-        expect(icon.componentInstance.invertColor).toBe('true');
+        expect(icon.componentInstance.inverted).toBe('true');
         expect(icon.componentInstance.name).toBe('test');
     });
 

@@ -9,13 +9,11 @@ import { Component, Input } from '@angular/core';
 @Component({
     selector: 'dot-icon',
     styleUrls: ['./dot-icon.component.scss'],
-    template: `<i class="material-icons {{ this.tiny ? 'tiny' : '' }} {{ this.invertColor ? 'invert-color' : '' }}">
-                    {{ this.name }}
-               </i>`
+    templateUrl: './dot-icon.component.html'
 })
 export class DotIconComponent {
     @Input() name: string;
-    @Input() invertColor: boolean;
+    @Input() inverted: boolean;
     @Input() tiny: boolean;
 
     constructor() {}

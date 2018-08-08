@@ -21,7 +21,7 @@ describe('DotIconComponent', () => {
     it('should have css classes based on attributes', () => {
         comp.name = 'test';
         comp.tiny = true;
-        comp.invertColor = true;
+        comp.inverted = true;
         fixture.detectChanges();
         expect(de.nativeElement.childNodes[0].classList).toContain('material-icons');
         expect(de.nativeElement.childNodes[0].classList).toContain('tiny');

@@ -2,11 +2,11 @@
 
 .material-icons {
     color: rgba(126, 122, 134, 1);
-    font-size: $font-size-xx-large;
+    font-size: $md-icon-size;
     user-select: none;
 
     &.tiny {
-        font-size: $font-size-small;
+        font-size: $md-icon-size / 2;
     }
 
     &.invert-color {
