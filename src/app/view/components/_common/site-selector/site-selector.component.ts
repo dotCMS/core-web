@@ -68,7 +68,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
 
         this.getSitesList();
-        ['login-as', 'logout-as'].map((event: string) => {
+        ['login-as', 'logout-as'].forEach((event: string) => {
             this.dotEventsService.listen(event).subscribe(() => {
                 this.getSitesList();
             });
