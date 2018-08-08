@@ -145,6 +145,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (pageState: DotRenderedPageState) => {
                     this.setPageState(pageState);
+                    this.dotPageStateService.reload(this.route.snapshot.queryParams.url, viewAsConfig.language.id);
                 },
                 (err: ResponseView) => {
                     this.handleSetPageStateFailed(err);
@@ -404,11 +405,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
         setTimeout(() => {
             this.showIframe = true;
-        }, 0);
 
-        setTimeout(() => {
-            this.renderPage(pageState);
-        }, 1);
+            const intervalId = setInterval(() => {
+
+                if (this.iframe) {
+                    this.renderPage(pageState);
+                    clearInterval(intervalId);
+                }
+            }, 1);
+        }, 0);
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {

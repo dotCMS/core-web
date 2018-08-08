@@ -29,7 +29,7 @@
 }
 
 .box {
-    background: linear-gradient(to bottom, $gray-lightest-x 0, $gray-lightest-x 48px, $white 48px, $white 100%);
+    background: linear-gradient(to bottom, $gray-bg 0, $gray-bg 48px, $white 48px, $white 100%);
     border: 1px solid $gray-light;
     height: 206px;
 }

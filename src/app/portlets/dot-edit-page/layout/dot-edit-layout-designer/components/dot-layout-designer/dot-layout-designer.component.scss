@@ -14,14 +14,13 @@
 .dot-layout-designer__main {
     display: flex;
     flex-grow: 1;
-    margin: 0 $basic-padding * 2;
 }
 
 .dot-layout-designer__footer,
 .dot-layout-designer__header,
 [class^='dot-layout-designer__sidebar'] {
     align-items: center;
-    background: $gray-lighter;
+    background: $gray-bg;
     color: $gray;
     display: flex;
     flex-shrink: 0;
@@ -39,7 +38,7 @@
 
 .dot-layout-designer__sidebar--left,
 .dot-layout-designer__sidebar--right {
-    border: 1px solid $gray-light;
+    border: 1px solid $gray;
 }
 
 .dot-layout-designer__sidebar {
@@ -67,7 +66,11 @@
 .dot-layout-designer__footer,
 .dot-layout-designer__header {
     height: 80px;
-    margin: 0 $basic-padding $basic-padding * 2;
+}
+
+.dot-layout-designer__header,
+.dot-layout-designer__main {
+    margin-bottom: $basic-padding * 2;
 }
 
 .dot-layout-designer__body {
@@ -95,8 +98,8 @@
         -90deg,
         transparent,
         transparent $basic-padding,
-        $gray-lighter $basic-padding,
-        $gray-lighter calc(100% / 12)
+        $gray-bg $basic-padding,
+        $gray-bg calc(100% / 12)
     );
     flex-grow: 1;
     margin-right: -$basic-padding;
