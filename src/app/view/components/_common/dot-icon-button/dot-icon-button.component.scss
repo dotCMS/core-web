@@ -1,13 +1,13 @@
-@import "variables";
+@import 'primeng-theme/utils/theme-variables';
 
 .dot-icon-button {
     align-items: center;
     border-radius: 50%;
     cursor: pointer;
     display: inline-flex;
-    height: 32px;
+    height: $basic-padding * 4;
     justify-content: center;
-    width: 32px;
+    width: $basic-padding * 4;
 
     &:hover {
         background-color: $gray-bg;
