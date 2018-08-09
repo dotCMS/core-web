@@ -23,16 +23,9 @@ describe('DotIconButtonComponent', () => {
 
     it('should render component with dot-icon component and css classes', () => {
         comp.icon = 'test';
-        comp.tiny = true;
-        comp.inverted = true;
         fixture.detectChanges();
 
         const icon = fixture.debugElement.query(By.css('dot-icon'));
-        expect(de.nativeElement.childNodes[0].classList).toContain('dot-icon-button');
-        expect(de.nativeElement.childNodes[0].classList).toContain('tiny');
-
-        expect(icon.componentInstance.tiny).toBe('true');
-        expect(icon.componentInstance.inverted).toBe('true');
         expect(icon.componentInstance.name).toBe('test');
     });
 
@@ -44,7 +37,7 @@ describe('DotIconButtonComponent', () => {
         });
         fixture.detectChanges();
 
-        const button = fixture.debugElement.query(By.css('.dot-icon-button'));
+        const button = fixture.debugElement.query(By.css('button'));
         button.nativeElement.click();
         expect(res).toBeDefined();
     });
@@ -60,9 +53,8 @@ describe('DotIconButtonComponent', () => {
         });
         fixture.detectChanges();
 
-        const button = fixture.debugElement.query(By.css('.dot-icon-button'));
+        const button = fixture.debugElement.query(By.css('button'));
         button.nativeElement.click();
         expect(res).not.toBeDefined();
-        expect(button.nativeElement.classList).toContain('disabled');
     });
 });

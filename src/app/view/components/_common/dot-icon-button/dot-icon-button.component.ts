@@ -14,8 +14,6 @@ import { Component, Input, EventEmitter, Output, HostListener } from '@angular/c
 export class DotIconButtonComponent {
 
     @Input() disabled?: boolean;
-    @Input() inverted?: boolean;
-    @Input() tiny?: boolean;
     @Input() icon: string;
 
     @Output() click: EventEmitter<any> = new EventEmitter();

@@ -1,15 +1,18 @@
 @import 'variables';
+@import 'mixins';
 
-.material-icons {
-    color: rgba(126, 122, 134, 1);
-    font-size: $md-icon-size;
-    user-select: none;
-
-    &.tiny {
-        font-size: $md-icon-size / 2;
+:host {
+    &[tiny] i {
+        @include dot_icon_tiny;
     }
 
-    &.invert-color {
-        color: $white;
+    &[inverted] i {
+        @include dot_icon_inverted;
+    }
+
+    i {
+        color: $gray;
+        font-size: $md-icon-size;
+        user-select: none;
     }
 }

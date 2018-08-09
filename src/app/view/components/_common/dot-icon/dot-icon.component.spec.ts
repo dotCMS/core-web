@@ -20,12 +20,8 @@ describe('DotIconComponent', () => {
 
     it('should have css classes based on attributes', () => {
         comp.name = 'test';
-        comp.tiny = true;
-        comp.inverted = true;
         fixture.detectChanges();
         expect(de.nativeElement.childNodes[0].classList).toContain('material-icons');
-        expect(de.nativeElement.childNodes[0].classList).toContain('tiny');
-        expect(de.nativeElement.childNodes[0].classList).toContain('invert-color');
         expect(de.nativeElement.childNodes[0].innerText).toBe(comp.name);
     });
 });
