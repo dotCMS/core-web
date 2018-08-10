@@ -37,12 +37,12 @@ const PORTLETS_ANGULAR = [
         path: 'content-types-angular',
         loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
     },
-    // {
-    //     canActivate: [MenuGuardService],
-    //     canActivateChild: [MenuGuardService],
-    //     path: 'rules',
-    //     loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
-    // },
+    {
+        canActivate: [MenuGuardService],
+        canActivateChild: [MenuGuardService],
+        path: 'rules',
+        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
+    },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
@@ -113,13 +113,13 @@ const appRoutes: Routes = [
     },
     {
         canActivate: [AuthGuardService],
-        // children: [
-        //     {
-        //         path: 'rules',
-        //         loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
-        //         canActivate: [AuthGuardService]
-        //     }
-        // ],
+        children: [
+            {
+                path: 'rules',
+                loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
+                canActivate: [AuthGuardService]
+            }
+        ],
         component: MainCoreLegacyComponent,
         path: 'fromCore'
     },

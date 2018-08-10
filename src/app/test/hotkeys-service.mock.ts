@@ -1,5 +1,9 @@
 import { Observable } from 'rxjs/Observable';
-import { Hotkey } from 'angular2-hotkeys';
+// import { Hotkey } from 'angular2-hotkeys';
+
+interface Hotkey {
+
+}
 
 /**
  * Mock of HotkeysService.
