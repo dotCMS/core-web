@@ -1,7 +1,7 @@
 .ui-datatable {
     th {
         &.ui-state-default {
-            background:  $datatable-head-bgcolor;
+            //background:  $datatable-head-bgcolor;
         }
     }
 
@@ -18,25 +18,28 @@
             & + td,
             & + th {
                 padding-left: 0;
-            } 
+            }
         }
 
         &:first-child {
-            padding-left: $basic-padding * 4;
+            padding-left: $basic-padding * 3;
         }
 
         &:last-child {
-            padding-right: $basic-padding * 4;
+            padding-right: $basic-padding * 3;
         }
     }
 
     .ui-datatable-thead > tr > th {
         color: $datatable-head-color;
-        font-weight: bold;
+        font-size: $font-size-small;
+        border-bottom: $datatable-cell-border;
+        padding: $datatable-header-cell-padding;
     }
 
     .ui-datatable-data > tr > td {
         border-bottom: $datatable-cell-border;
+        //font-size: ;
     }
 
     .ui-datatable-loading {

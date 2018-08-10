@@ -38,14 +38,19 @@
     &:last-child {
         margin-right: 0;
     }
+
+    &.empty {
+        background: $gray-bg;
+        padding: $basic-padding * 2;
+    }
 }
 
 .row-columns__item-empty-message {
     text-align: center;
     width: 100%;
-    border: solid 1px $gray-bg;
+    border: dashed 1px $gray;
     color: $gray;
-    min-height: 48px;
+    min-height: 150px;
     flex: 1;
     flex-grow: 1;
     display: flex;
