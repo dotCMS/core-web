@@ -11,7 +11,7 @@
     <ng-content></ng-content>
 
     <p-footer *ngIf="ok || cancel">
-        <button *ngIf="cancel" pButton class="dot-dialog__cancel" type="button"  [label]="cancel.label" (click)="cancel.action()"></button>
-        <button *ngIf="ok" pButton class="dot-dialog__ok" type="button"  [label]="ok.label" (click)="ok.action()"></button>
+        <button *ngIf="cancel" pButton id="button-sec" class="dot-dialog__cancel" type="button"  [label]="cancel.label" [disabled]="cancel.disabled" (click)="cancel.action(this)"></button>
+        <button *ngIf="ok" pButton class="dot-dialog__ok" type="button"  [label]="ok.label" [disabled]="ok.disabled" (click)="ok.action(this)"></button>
     </p-footer>
 </p-dialog>

@@ -5,7 +5,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
     templateUrl: './dot-dialog.component.html',
     styleUrls: ['./dot-dialog.component.scss']
 })
-export class DotDialogComponent {
+    export class DotDialogComponent {
     @Input() header = '';
     @Input() show: boolean;
     @Input() ok: DotDialogAction;
@@ -27,6 +27,7 @@ export class DotDialogComponent {
 }
 
 export interface DotDialogAction {
+    action: (dialog: any) => void;
+    disabled?: boolean;
     label: string;
-    action: () => void;
 }
