@@ -34,6 +34,10 @@
     font-size: 11px;
 }
 
+.field__attribute{
+    margin-left: -30px;
+}
+
 .field__actions {
     opacity: 0.25;
     transition: opacity $basic-speed;
@@ -48,5 +52,5 @@
 }
 
 dot-icon {
-    margin-right: $basic-padding * 2;
+    margin-right: $basic-padding;
 }

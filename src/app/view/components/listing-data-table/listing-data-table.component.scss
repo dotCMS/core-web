@@ -32,6 +32,12 @@
             padding-bottom: $basic-padding * 3;
             background: $white;
         }
+
+        dot-icon {
+            display: inline-block;
+            line-height: 0;
+            vertical-align: bottom;
+        }
     }
 }
 
