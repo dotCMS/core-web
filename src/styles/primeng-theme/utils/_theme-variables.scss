@@ -182,10 +182,10 @@ $paginator-page-size: 21px;
 // TABVIEW
 $tabview-item-color: $gray-dark;
 $tabview-item-selected-color: $brand-primary;
-$tabview-item-padding: 10px $basic-padding * 2; // To match the 40px height
+$tabview-item-padding: $basic-padding * 2 $basic-padding * 2 10px; // To match the 48px height
 $tabview-item-border: 3px solid $white;
 $tabview-item-selected-border: 3px solid $brand-primary;
-$tabview-nav-height: 40px;
+$tabview-nav-height: 48px;
 
 // MENU
 $menu-link-color: $black;

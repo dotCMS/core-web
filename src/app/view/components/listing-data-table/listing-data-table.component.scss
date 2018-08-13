@@ -14,6 +14,7 @@
 
         .ui-datatable-tablewrapper {
             flex-grow: 1;
+            background: $white;
 
             table tbody.ui-datatable-data td {
                 cursor: pointer;
@@ -28,7 +29,8 @@
         }
 
         dot-action-header {
-            margin-bottom: $basic-padding * 3;
+            padding-bottom: $basic-padding * 3;
+            background: $white;
         }
     }
 }
