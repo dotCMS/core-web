@@ -31,7 +31,10 @@ export class ToolbarComponent implements OnInit {
 
     siteChange(site: Site): void {
         this.siteService.switchSite(site);
-        this.dotRouterService.goToSiteBrowser();
+
+        if (this.dotRouterService.isEditPage()) {
+            this.dotRouterService.goToSiteBrowser();
+        }
     }
 
     handleMainButtonClick($event): void {

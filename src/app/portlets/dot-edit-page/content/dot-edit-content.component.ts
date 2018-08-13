@@ -51,6 +51,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     pageState: DotRenderedPageState;
     showWhatsChanged = false;
     editForm = false;
+    showIframe = true;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -98,7 +99,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
 
-        if (this.shouldSetContainersHeight()) {
+        if (this.shouldSetContainersHeight() && $event.currentTarget.contentDocument.body.innerHTML) {
             this.dotEditContentHtmlService.setContaintersChangeHeightListener(this.pageState.layout);
         }
 
@@ -144,6 +145,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe(
                 (pageState: DotRenderedPageState) => {
                     this.setPageState(pageState);
+                    this.dotPageStateService.reload(this.route.snapshot.queryParams.url, viewAsConfig.language.id);
                 },
                 (err: ResponseView) => {
                     this.handleSetPageStateFailed(err);
@@ -173,7 +175,19 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     onFormSelected(item: ContentType): void {
-        this.dotEditContentHtmlService.renderAddedForm(item);
+        this.dotEditContentHtmlService.renderAddedForm(item).subscribe(model => {
+            if (model) {
+                this.dotEditPageService
+                    .save(this.pageState.page.identifier, model)
+                    .pipe(take(1))
+                    .subscribe(() => {
+                        this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
+                    });
+
+                this.reload();
+            }
+        });
+
         this.editForm = false;
     }
 
@@ -323,6 +337,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     this.dotRouterService.goToEditPage(pageRendered.page.pageURI);
                 }
             });
+
+
+            Observable.fromEvent(window.document, 'ng-event')
+                .pipe(
+                    pluck('detail'),
+                    filter((eventDetail: any) => eventDetail.name === 'in-iframe'),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe(() => {
+                    this.reload();
+                });
     }
 
     private removeContentlet($event: any): void {
@@ -375,7 +400,20 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private setPageState(pageState: DotRenderedPageState): void {
         this.pageState = pageState;
-        this.renderPage(pageState);
+        this.showIframe = false;
+
+        // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
+        setTimeout(() => {
+            this.showIframe = true;
+
+            const intervalId = setInterval(() => {
+
+                if (this.iframe) {
+                    this.renderPage(pageState);
+                    clearInterval(intervalId);
+                }
+            }, 1);
+        }, 0);
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {

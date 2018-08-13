@@ -22,9 +22,9 @@ export const EDIT_PAGE_JS = `
             var contentlets = Array.from(container.querySelectorAll('div[data-dot-object="contentlet"]'));
 
             model.push({
-                id: container.dataset.dotIdentifier,
+                identifier: container.dataset.dotIdentifier,
                 uuid: container.dataset.dotUuid,
-                contentlets: contentlets.map(function(contentlet) {
+                contentletsId: contentlets.map(function(contentlet) {
                     return contentlet.dataset.dotIdentifier;
                 })
             });
@@ -70,7 +70,6 @@ export const EDIT_PAGE_JS = `
         if (forbiddenTarget && forbiddenTarget.classList.contains('no')) {
             forbiddenTarget.classList.remove('no');
         }
-
         window.${MODEL_VAR_NAME}.next(getDotNgModel());
     });
     drake.on('drop', function(el, target, source, sibling) {

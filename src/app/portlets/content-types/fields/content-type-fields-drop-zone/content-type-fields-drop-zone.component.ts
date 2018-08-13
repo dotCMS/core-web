@@ -58,7 +58,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             this.moveFields();
         });
 
-        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => this.moveFields());
+        this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => {
+            this.moveFields();
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -190,7 +192,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             const field = fields[i];
 
             if (this.formData.id === field.id) {
-                result = Object.assign(field, fieldToSave);
+                result = Object.assign({}, field, fieldToSave);
                 break;
             }
         }
@@ -227,7 +229,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             return fieldRow;
         });
 
-        return fieldRows;
+        return fieldRows.length ? fieldRows : this.getEmptyRow();
     }
 
     private getFields(): ContentTypeField[] {
@@ -243,5 +245,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         });
 
         return fields;
+    }
+
+    private getEmptyRow(): FieldRow[] {
+        const row = new FieldRow();
+        row.addFirstColumn();
+
+        return [row];
     }
 }

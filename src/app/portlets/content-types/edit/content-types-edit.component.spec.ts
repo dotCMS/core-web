@@ -25,6 +25,8 @@ import { mockResponseView } from '../../../test/response-view.mock';
 import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../test/hotkeys-service.mock';
+import { DotIconModule } from '../../../view/components/_common/dot-icon/dot-icon.module';
+import { DotIconButtonModule } from '../../../view/components/_common/dot-icon-button/dot-icon-button.module';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -86,7 +88,9 @@ const getConfig = (route) => {
                     component: ContentTypesEditComponent
                 }
             ]),
-            BrowserAnimationsModule
+            BrowserAnimationsModule,
+            DotIconModule,
+            DotIconButtonModule
         ],
         providers: [
             {
@@ -413,6 +417,33 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(fieldService.saveFields).toHaveBeenCalledWith('1234567890', newFieldsAdded);
         // ...and the comp.data.fields has to be set to the fields return by the service
         expect(comp.fields).toEqual(fieldsReturnByServer);
+    });
+
+    it('should handle 403 when user doesn\'t have permission to save feld', () => {
+        const newFieldsAdded: ContentTypeField[] = [
+            {
+                name: 'field 1',
+                id: '1',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                sortOrder: 1
+            },
+            {
+                name: 'field 2',
+                id: '2',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
+                sortOrder: 2
+            }
+        ];
+        const fieldService = fixture.debugElement.injector.get(FieldService);
+        spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
+        spyOn(fieldService, 'saveFields').and.returnValue(Observable.throw(mockResponseView(403)));
+
+        const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
+
+        // when: the saveFields event is tiggered in content-type-fields-drop-zone
+        contentTypeFieldsDropZone.componentInstance.saveFields.emit(newFieldsAdded);
+
+        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
     });
 
     it('should remove fields on dropzone event', () => {

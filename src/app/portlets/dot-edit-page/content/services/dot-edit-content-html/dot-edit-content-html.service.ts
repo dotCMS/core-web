@@ -18,10 +18,11 @@ import { DotLayoutRow } from '../../../shared/models/dot-layout-row.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { DotPageContainer } from '../../../shared/models/dot-page-container.model';
 import { DotPageContent } from '../../../shared/models/dot-page-content.model';
-import { EDIT_PAGE_CSS } from '../../shared/iframe-edit-mode.css';
+import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
+import { DotEditPageService } from '../../../../../api/services/dot-edit-page/dot-edit-page.service';
 
 export enum DotContentletAction {
     EDIT,
@@ -92,6 +93,7 @@ export class DotEditContentHtmlService {
 
                 resolve(true);
             });
+
             // Load content after bind 'load' event.
             this.loadCodeIntoIframe(editPageHTML);
         });
@@ -180,12 +182,37 @@ export class DotEditContentHtmlService {
      * @param {ContentType} form
      * @memberof DotEditContentHtmlService
      */
-    renderAddedForm(form: ContentType): void {
-        this.renderAddedItem({
-            item: form,
-            checkExistFunc: this.isFormExistInContainer.bind(this),
-            getContent: this.dotContainerContentletService.getFormToContainer.bind(this.dotContainerContentletService)
-        });
+    renderAddedForm(form: ContentType): Observable<DotPageContainer[]> {
+        const doc = this.getEditPageDocument();
+        const containerEl = doc.querySelector(
+            [
+                'div[data-dot-object="container"]',
+                `[data-dot-identifier="${this.currentContainer.identifier}"]`,
+                `[data-dot-uuid="${this.currentContainer.uuid}"]`
+            ].join()
+        );
+
+        if (this.isFormExistInContainer(form, containerEl)) {
+            this.showContentAlreadyAddedError();
+            return Observable.of(null);
+        } else {
+            return this.dotContainerContentletService.getFormToContainer(this.currentContainer, form).map(response => {
+
+                const containers: DotPageContainer[]  = this.getContentModel();
+
+                containers.filter(container =>
+                    container.identifier === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
+                    .forEach(container => {
+                        if (!container.contentletsId) {
+                            container.contentletsId = [];
+                        }
+
+                        container.contentletsId.push(response.content.identifier);
+                    });
+
+                return containers;
+            });
+        }
     }
 
     /**
@@ -433,7 +460,7 @@ export class DotEditContentHtmlService {
         });
 
         // TODO: need to come up with a more efficient way to do this
-        Array.from(contentDivWrapper.children).forEach((node: any) => {
+        Array.from(contentDivWrapper.childNodes).forEach((node: any) => {
             if (node.tagName !== 'SCRIPT') {
                 contentletContentEl.appendChild(node);
             }
@@ -549,10 +576,12 @@ export class DotEditContentHtmlService {
     }
 
     private setEditContentletStyles(): void {
-        const style = this.dotDOMHtmlUtilService.createStyleElement(EDIT_PAGE_CSS);
+        const timeStampId = `iframeId_${Math.floor(Date.now() / 100).toString()}`;
+        const style = this.dotDOMHtmlUtilService.createStyleElement(getEditPageCss(`#${timeStampId}`));
         const robotoFontElement = this.dotDOMHtmlUtilService.createLinkElement(GOOGLE_FONTS);
 
         const doc = this.getEditPageDocument();
+        doc.documentElement.id = timeStampId;
         doc.head.appendChild(style);
         doc.head.appendChild(robotoFontElement);
     }

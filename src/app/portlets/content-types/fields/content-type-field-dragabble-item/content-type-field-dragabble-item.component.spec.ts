@@ -8,6 +8,7 @@ import { IconButtonTooltipModule } from '../../../../view/components/_common/ico
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { FieldService } from '../service';
+import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 
 describe('ContentTypesFieldDragabbleItemComponent', () => {
     let comp: ContentTypesFieldDragabbleItemComponent;
@@ -17,31 +18,33 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     const messageServiceMock = new MockDotMessageService({
         'contenttypes.action.edit': 'Edit',
-        'contenttypes.action.delete': 'Delete'
+        'contenttypes.action.delete': 'Delete',
+        'contenttypes.field.atributes.required': 'Required',
+        'contenttypes.field.atributes.indexed': 'Indexed',
+        'contenttypes.field.atributes.listed': 'Show on list'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [ContentTypesFieldDragabbleItemComponent],
-                imports: [IconButtonTooltipModule],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }, FieldService]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [ContentTypesFieldDragabbleItemComponent],
+            imports: [IconButtonTooltipModule, DotIconModule],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }, FieldService]
+        });
 
-            fixture = DOTTestBed.createComponent(ContentTypesFieldDragabbleItemComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
-        })
-    );
+        fixture = DOTTestBed.createComponent(ContentTypesFieldDragabbleItemComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
+    }));
 
-    it('should have a name', () => {
+    it('should have a name & variable', () => {
         const field = {
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
             name: 'Field name',
             required: false,
+            variable: 'test',
             velocityVarName: 'velocityName'
         };
 
@@ -49,18 +52,20 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         fixture.detectChanges();
 
-        const span = de.query(By.css('.field__name'));
-        expect(span).not.toBeNull();
-        expect(span.nativeElement.textContent.trim()).toEqual(field.name);
+        const container = de.query(By.css('.field__name'));
+        expect(container).not.toBeNull();
+        expect(container.nativeElement.textContent.trim()).toEqual(`${field.name} (${field.variable})`);
     });
 
-    it('should have a name and required mark', () => {
+    it('should have field attributes label', () => {
         const field = {
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
+            listed: true,
             name: 'Field name',
             required: true,
+            variable: 'test',
             velocityVarName: 'velocityName'
         };
 
@@ -68,9 +73,11 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         fixture.detectChanges();
 
-        const span = de.query(By.css('.field__name'));
-        expect(span).not.toBeNull();
-        expect(span.nativeElement.textContent).toEqual(field.name + ' *');
+        const container = de.query(By.css('.field__attribute'));
+        expect(container).not.toBeNull();
+        expect(container.nativeElement.textContent).toEqual(
+            'Required\u00A0\u00A0•\u00A0\u00A0Indexed\u00A0\u00A0•\u00A0\u00A0Show on list'
+        );
     });
 
     it(
