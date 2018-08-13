@@ -14,7 +14,6 @@
     &[inverted] button {
 
         background-color: transparent;
-        transition: background-color $field-animation-speed ease-in;
 
         &:hover {
             background-color:rgba(255,255,255,0.3);
