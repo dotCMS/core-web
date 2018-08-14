@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { DotMenu } from '../../../shared/models/navigation';
+import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';
+import { CrumbTrailService } from '../_common/dot-crumb-trail/services/dot-crumb-trail.service';
+import { DotMenuService } from '../../../api/services/dot-menu.service';
 
 @Component({
     providers: [],
@@ -12,7 +14,9 @@ import { DotNavigationService } from './dot-navigation.service';
 export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
 
-    constructor(private dotNavigationService: DotNavigationService) {}
+    constructor(private dotNavigationService: DotNavigationService,
+        private crumbTrailService: CrumbTrailService,
+        private menuService: DotMenuService) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
@@ -25,10 +29,17 @@ export class DotNavigationComponent implements OnInit {
      * @param {string} id menu item id
      * @memberof MainNavigationComponent
      */
-    onClick(event: MouseEvent, id: string): void {
+    onClick(event: MouseEvent, menu: DotMenuItem): void {
         event.stopPropagation();
         if (!event.ctrlKey && !event.metaKey) {
-            this.dotNavigationService.reloadCurrentPortlet(id);
+            this.dotNavigationService.reloadCurrentPortlet(menu.id);
+
+            this.menuService.getDotMenu(menu.id).subscribe(((parentMenu: DotMenu) => {
+                console.log('parentMenu', parentMenu);
+                console.log('menu', menu);
+                this.crumbTrailService.clean('/', parentMenu.name);
+                this.crumbTrailService.push(menu.menuLink, menu.label);
+            }));
         }
     }
 

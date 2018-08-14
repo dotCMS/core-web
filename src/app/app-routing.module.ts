@@ -10,6 +10,7 @@ import { ContentletGuardService } from './api/services/guards/contentlet-guard.s
 import { MenuGuardService } from './api/services/guards/menu-guard.service';
 import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
 import { DefaultGuardService } from './api/services/guards/default-guard.service';
+import { CrumbTrailsGuardService } from './view/components/_common/dot-crumb-trail/services/crumb-trails-guard.service';
 
 const AUTH_MODULES: Routes = [
     {
@@ -129,6 +130,7 @@ const appRoutes: Routes = [
     },
     {
         canActivate: [AuthGuardService],
+        canActivateChild: [CrumbTrailsGuardService],
         component: MainComponentLegacyComponent,
         children: [...PORTLETS_IFRAME, ...PORTLETS_ANGULAR],
         path: ''

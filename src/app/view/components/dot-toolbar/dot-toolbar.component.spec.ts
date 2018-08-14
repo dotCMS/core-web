@@ -11,6 +11,7 @@ import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 import { SiteServiceMock, mockSites } from '../../../test/site-service.mock';
 import { RouterTestingModule } from '../../../../../node_modules/@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
+import { CrumbTrailModule } from '../_common/dot-crumb-trail/dot-crumb-trail.module';
 
 @Injectable()
 class MockDotNavigationService {
@@ -63,6 +64,12 @@ class MockToolbarUsersComponent {}
 })
 class MockToolbarAddContentletComponent {}
 
+@Component({
+    selector: 'dot-crumb-trail',
+    template: ''
+})
+class MockDotCrumbTrailComponent {}
+
 describe('ToolbarComponent', () => {
     let dotRouterService: DotRouterService;
     let routeService: ActivatedRoute;
@@ -81,7 +88,8 @@ describe('ToolbarComponent', () => {
                 MockGlobalMessageComponent,
                 MockToolbarNotificationsComponent,
                 MockToolbarUsersComponent,
-                MockToolbarAddContentletComponent
+                MockToolbarAddContentletComponent,
+                MockDotCrumbTrailComponent
             ],
             imports: [BrowserAnimationsModule, RouterTestingModule],
             providers: [
@@ -120,5 +128,11 @@ describe('ToolbarComponent', () => {
 
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
         expect(comp.siteChange).toHaveBeenCalledWith({ value: siteMock });
+    });
+
+    it(`should has a dot-crumb-trail`, () => {
+        const dotCrumbTrail: DebugElement = fixture.debugElement.query(By.css('dot-crumb-trail'));
+
+        expect(dotCrumbTrail).not.toBeNull();
     });
 });
