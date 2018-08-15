@@ -32,7 +32,7 @@ describe('DotIconButtonComponent', () => {
     it('should emit event on button click', () => {
         let res;
 
-        comp.click.subscribe((event) => {
+        comp.onClick.subscribe((event) => {
             res = event;
         });
         fixture.detectChanges();
@@ -48,7 +48,7 @@ describe('DotIconButtonComponent', () => {
 
         let res;
 
-        comp.click.subscribe((event) => {
+        comp.onClick.subscribe((event) => {
             res = event;
         });
         fixture.detectChanges();

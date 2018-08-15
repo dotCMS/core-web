@@ -7,7 +7,7 @@ $top-height: ($toolbar-height + $tabview-nav-height);
 :host {
     ::ng-deep {
         .ui-tabview-nav {
-            border-bottom: 1px solid $gray;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             position: relative;
             z-index: 1;
         }
@@ -54,6 +54,7 @@ $top-height: ($toolbar-height + $tabview-nav-height);
         padding: $basic-padding * 2;
         border-bottom: 1px solid $gray-light;
         display: flex;
+        line-height: 24px;
 
         dot-icon {
             margin-right: $basic-padding * 2;

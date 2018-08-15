@@ -1,0 +1,12 @@
+@import 'mixins';
+
+:host {
+    &[tiny] ::ng-deep button {
+        height: 16px;
+        width: 16px;
+
+        i {
+            @include dot_icon_tiny;
+        }
+    }
+}

@@ -18,6 +18,16 @@
 
             table tbody.ui-datatable-data td {
                 cursor: pointer;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                //span {
+                //    display: flex;
+                //
+                //    dot-icon {
+                //        margin-right: $basic-padding;
+                //    }
+                //}
             }
         }
 
@@ -29,7 +39,7 @@
         }
 
         dot-action-header {
-            padding-bottom: $basic-padding * 3;
+            padding-bottom: $basic-padding * 2;
             background: $white;
         }
 

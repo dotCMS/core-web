@@ -2,7 +2,7 @@
     <div class="content-type__edit-header container-fluid" id="content-type-edit-header">
         <div class="content-type__form-header-left">
             <div class="content-type__edit-title">
-                <h4>{{ data.name }} </h4>
+                <h5>{{ data.name }} </h5>
                 <div class="content-type__edit-subtitle">
                     <span class="content-type__edit-variable">
                         {{ dotMessageService.get('contenttypes.content.variable') }}: {{ data.variable }}
@@ -22,6 +22,17 @@
         (removeFields)="removeFields($event)">
     </dot-content-type-fields-drop-zone>
 </dot-content-type-layout>
+
+
+
+<!--<dot-dialog *ngIf="show" [header]="templateInfo.header">-->
+<!--<dot-content-types-form-->
+<!--#form-->
+<!--[fields]="fields"-->
+<!--[data]="data"-->
+<!--(submit)="handleFormSubmit($event)">-->
+<!--</dot-content-types-form>-->
+<!--</dot-dialog>-->
 
 <p-dialog
     *ngIf="show"
