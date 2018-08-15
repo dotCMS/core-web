@@ -50,9 +50,9 @@ export class DotThemeSelectorComponent implements OnInit {
                 this.applyDialogAction  = {
                     label: this.dotMessageService.get('dot.common.apply'),
                     disabled: true,
-                    action: (dialogElem => {
+                    action: () => {
                         this.apply();
-                    })
+                    }
                 };
             });
         this.paginatorService.url = 'v1/themes';

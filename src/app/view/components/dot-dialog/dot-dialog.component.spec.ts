@@ -132,16 +132,15 @@ describe('DotDialogComponent', () => {
 
         describe('ok button', () => {
 
-            beforeEach(() => {
+            it('should have ok button', () => {
+
                 hostComponent.ok = {
                     label: 'Ok',
+                    disabled: true,
                     action: jasmine.createSpy('ok'),
                 };
 
                 hostFixture.detectChanges();
-            });
-
-            it('shouls have ok button', () => {
                 const footer = dialog.query(By.css('p-footer'));
                 expect(footer).not.toBeNull('must have footer');
 
@@ -149,16 +148,25 @@ describe('DotDialogComponent', () => {
                 expect(buttons.length).toBe(1, 'should have ok button');
 
                 expect(buttons[0].nativeElement.className).toContain('dot-dialog__ok', 'should have the right class');
+                expect(buttons[0].properties.disabled).toBe(true, 'should be disabled');
                 // expect(buttons[0].componentInstance.label).toBe('Ok', 'should have the right label');
             });
 
-            it('shouls tigger the right action', () => {
+            it('should trigger the right action', () => {
+                hostComponent.ok = {
+                    label: 'Ok',
+                    action: jasmine.createSpy('ok'),
+                };
+
+                hostFixture.detectChanges();
+
                 const footer = dialog.query(By.css('p-footer'));
                 const buttons = footer.queryAll(By.css('button'));
 
                 buttons[0].triggerEventHandler('click', null);
                 expect(hostComponent.ok.action).toHaveBeenCalled();
             });
+
         });
 
 
