@@ -5,7 +5,7 @@ $nav-size: 80px;
 
 :host {
     background-color: $white;
-    border-left: solid 1px $gray-lighter;
+    border-left: solid 1px $gray-bg;
     display: flex;
     flex-shrink: 0;
     order: 2;
@@ -31,7 +31,7 @@ $nav-size: 80px;
     transition: background-color $basic-speed ease-in;
 
     &:hover {
-        background-color: $gray-lighter;
+        background-color: $gray-bg;
     }
 
     & > .fa {
@@ -51,4 +51,8 @@ $nav-size: 80px;
     background-color: $brand-background;
     color: $white;
     pointer-events: none;
+
+    ::ng-deep dot-icon i {
+        @include dot-icon_inverted;
+    }
 }

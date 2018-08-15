@@ -9,15 +9,11 @@
 
 // COLORS
 $black: #0A0725;
-$gray-dark: #5b5b5b;
-$gray-darker: #444444;
+$gray-dark: #524E5C;
 $gray: #7E7A86;
-$gray-light: #c5c5c5;
-$gray-lighter: #ecedee;
-$gray-lightest: #fafafa;
-$green-ligth: #e7e7e7;
-$gray-lightest-x: #F1F3F4;
-$green: #4a9d51;
+$gray-light: #B3B1B8;
+$gray-bg: #F1F3F4;
+
 $orange: #f3762a;
 $white: #fff;
 $error: #d0021b;
@@ -84,7 +80,8 @@ $container-md: (680px + $gutter-width);
 $container-lg: (975px + $gutter-width);
 $container-xl: (1381px + $gutter-width);
 
-// MATERIAL DESIGN SHADOWS
+// MATERIAL DESIGN
+$md-icon-size: 24px;
 $md-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 $md-shadow-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 $md-shadow-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);

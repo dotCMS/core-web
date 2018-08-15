@@ -2,7 +2,7 @@
 @import 'variables';
 
 :host {
-    border-left: solid 3px $gray-lighter;
+    border-left: solid 3px $gray-bg;
     cursor: move;
     display: flex;
     margin: $basic-padding 0;
@@ -50,10 +50,6 @@
     }
 }
 
-.field__icon {
-    color: $gray;
-    font-size: $basic-padding * 2;
+dot-icon {
     margin-right: $basic-padding * 2;
-    text-align: center;
-    width: $icon-size;
 }

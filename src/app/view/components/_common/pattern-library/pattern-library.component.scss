@@ -18,11 +18,15 @@
     grid-template-columns: repeat(6, auto);
     grid-template-rows: repeat(2, auto);
     justify-items: flex-start;
+
+    .pl__buttons-row-inverted {
+        background-color: var(--color-main);
+    }
 }
 
 hr {
     margin: $basic-padding * 3 0;
     border: 0;
     height: 1px;
-    background: $gray-lighter;
+    background: $gray-bg;
 }
