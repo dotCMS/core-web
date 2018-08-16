@@ -4,11 +4,12 @@
 .dialog ::ng-deep {
     .ui-dialog {
         max-width: 1200px;
+        top: auto !important;
         width: 95vw;
 
         .ui-dialog-content {
             overflow: hidden;
-            height: 80vh !important;
+            height: 70vh !important;
         }
 
     }
