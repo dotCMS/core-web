@@ -6,6 +6,7 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DialogModule, Dialog } from 'primeng/primeng';
 import { By } from '@angular/platform-browser';
 import { DotDialogComponent, DotDialogAction } from './dot-dialog.component';
+import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -31,7 +32,7 @@ describe('DotDialogComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            imports: [DialogModule, BrowserAnimationsModule],
+            imports: [DialogModule, BrowserAnimationsModule, DotIconButtonModule],
             providers: [],
             declarations: [DotDialogComponent, TestHostComponent]
         }).compileComponents();
@@ -62,7 +63,7 @@ describe('DotDialogComponent', () => {
             expect(dialogComponent.draggable).toEqual(false, 'draggable');
             expect(dialogComponent.dismissableMask).toEqual(true, 'dismissableMask');
             expect(dialogComponent.modal).toEqual(true, 'modal');
-            expect(dialogComponent.header).toBe('This is a header');
+            expect(component.header).toBe('This is a header');
         });
     });
 
@@ -126,7 +127,7 @@ describe('DotDialogComponent', () => {
 
             expect(footer).toBeNull('must have not footer');
 
-            const buttons = dialog.queryAll(By.css('button'));
+            const buttons = dialog.queryAll(By.css('ui-dialog-footer button'));
             expect(buttons.length).toBe(0, 'must have not buttons');
         });
 

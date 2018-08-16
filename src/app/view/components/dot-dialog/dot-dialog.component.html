@@ -1,12 +1,18 @@
 <p-dialog
+    #dialog
     class="dialog"
-    [header]="header"
     (onHide)="closeDialog($event)"
     [draggable]="false"
     [visible]="show"
     [dismissableMask]="true"
+    [closable]="false"
     [responsive]="true"
     [modal]="true">
+
+    <p-header>
+        {{ header }} 
+        <dot-icon-button icon="close" (click)="dialog.close()"></dot-icon-button>
+    </p-header>
 
     <ng-content></ng-content>
 
