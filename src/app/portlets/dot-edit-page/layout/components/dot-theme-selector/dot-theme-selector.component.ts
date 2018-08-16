@@ -45,7 +45,7 @@ export class DotThemeSelectorComponent implements OnInit {
             .subscribe(() => {
                 this.closeDialogAction = {
                     label: this.dotMessageService.get('dot.common.cancel'),
-                    action: (dialogElem => { dialogElem.closeDialog(); })
+                    action: () => {}
                 };
                 this.applyDialogAction  = {
                     label: this.dotMessageService.get('dot.common.apply'),

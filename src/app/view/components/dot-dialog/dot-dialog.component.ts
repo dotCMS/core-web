@@ -16,9 +16,19 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
     constructor() {}
 
     /**
+     * Action when pressed Cancel button
+     *
+     * @memberof DotDialogComponent
+     */
+    cancelAction(): void {
+        this.closeDialog();
+        this.cancel.action(this);
+    }
+
+    /**
      * Callback when dialog hide
      *
-     * @memberof DotIframeDialogComponent
+     * @memberof DotDialogComponent
      */
     closeDialog(): void {
         this.show = false;

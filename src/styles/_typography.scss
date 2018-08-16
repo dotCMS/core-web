@@ -6,23 +6,23 @@ h1, h2, h3, h4, h5 {
 }
 
 h1 {
-    font-size: 60px;
+    font-size: rem-cal(60px);
     letter-spacing: -0.5px;
 }
 
 h2 {
-    font-size: 48px;
+    font-size: rem-cal(48px);
 }
 
 h3 {
-    font-size: 34px;
+    font-size: rem-cal(34px);
     letter-spacing: 0.25px;
 }
 
 h4 {
-    font-size: 24px;
+    font-size: rem-cal(24px);
 }
 
 h5 {
-    font-size: 20px;
+    font-size: rem-cal(20px);
 }

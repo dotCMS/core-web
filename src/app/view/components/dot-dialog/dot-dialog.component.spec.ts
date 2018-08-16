@@ -195,8 +195,10 @@ describe('DotDialogComponent', () => {
             it('shouls tigger the right action', () => {
                 const footer = dialog.query(By.css('p-footer'));
                 const buttons = footer.queryAll(By.css('button'));
+                spyOn(component, 'closeDialog');
 
                 buttons[0].triggerEventHandler('click', null);
+                expect(component.closeDialog).toHaveBeenCalled();
                 expect(hostComponent.cancel.action).toHaveBeenCalled();
             });
         });
