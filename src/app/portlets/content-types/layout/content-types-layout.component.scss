@@ -55,6 +55,7 @@ $top-height: ($toolbar-height + $tabview-nav-height);
         border-bottom: 1px solid $gray-light;
         display: flex;
         line-height: 24px;
+        text-transform: uppercase;
 
         dot-icon {
             margin-right: $basic-padding * 2;

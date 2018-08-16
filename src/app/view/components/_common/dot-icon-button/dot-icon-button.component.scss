@@ -15,16 +15,18 @@
         @include dot_icon_inverted;
     }
 
-    &[disabled] button {
-        background-color: transparent;
-
-        &:hover {
+    &[disabled]{
+        button {
             background-color: transparent;
-            cursor: not-allowed;
-        }
 
-        ::ng-deep i {
-            color: $field-disabled-bgcolor;
+            &:hover {
+                background-color: transparent;
+                cursor: not-allowed;
+            }
+
+            ::ng-deep i {
+                color: $field-disabled-bgcolor;
+            }
         }
     }
 
@@ -37,6 +39,7 @@
         height: 32px;
         justify-content: center;
         width: 32px;
+        background: transparent;
 
         &:focus {
             outline: 0;

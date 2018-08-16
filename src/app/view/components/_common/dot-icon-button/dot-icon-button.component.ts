@@ -16,13 +16,6 @@ export class DotIconButtonComponent {
     @Input() disabled?: boolean;
     @Input() icon: string;
 
-    @Output() onClick: EventEmitter<any> = new EventEmitter();
-
-    @HostListener('click', ['$event'])
-    public oneClick($event: any): void {
-        $event.stopPropagation();
-    }
-
     /**
      * Emits the click of the button
      *
@@ -30,8 +23,9 @@ export class DotIconButtonComponent {
      * @memberof DotIconButtonComponent
      */
     buttonOnClick($event): void {
-        if (!this.disabled) {
-            this.onClick.emit($event);
+        debugger;
+        if (this.disabled) {
+            $event.stopPropagation();
         }
     }
 }

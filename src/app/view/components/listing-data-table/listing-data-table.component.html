@@ -28,7 +28,7 @@
             <ng-template let-item="rowData" pTemplate="body">
                 <i class="fa {{ col.icon(item) }} listing-datatable__icon" *ngIf="col.icon"></i>
                 <dot-icon name="{{ col.icon(item) }}" *ngIf="col.icon"></dot-icon>
-                {{ item[col.fieldName] }}
+                <span>{{ item[col.fieldName] }}</span>
             </ng-template>
         </p-column>
     </ng-template>
