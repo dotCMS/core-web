@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * The DotIconButtonComponent is a round button which
@@ -23,7 +23,6 @@ export class DotIconButtonComponent {
      * @memberof DotIconButtonComponent
      */
     buttonOnClick($event): void {
-        debugger;
         if (this.disabled) {
             $event.stopPropagation();
         }

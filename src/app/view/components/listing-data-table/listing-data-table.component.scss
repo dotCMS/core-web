@@ -26,6 +26,7 @@
 
                             dot-icon {
                                 margin-right: $basic-padding;
+                                line-height: 0;
                             }
                         }
                     }
@@ -53,12 +54,6 @@
         dot-action-header {
             padding-bottom: $basic-padding * 2;
             background: $white;
-        }
-
-        dot-icon {
-            display: inline-block;
-            line-height: 0;
-            vertical-align: bottom;
         }
     }
 }
