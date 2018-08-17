@@ -222,6 +222,11 @@ describe('DotEditContentHtmlService', () => {
         });
     });
 
+    it('should add base tag', () => {
+        const base = fakeDocument.querySelector('base');
+            expect(base.outerHTML).toEqual('<base href="/">');
+    });
+
     it('should add contentlet', () => {
         spyOn(this.dotEditContentHtmlService, 'renderAddedContentlet');
         this.dotEditContentHtmlService.setContainterToAppendContentlet({

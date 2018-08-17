@@ -568,10 +568,30 @@ export class DotEditContentHtmlService {
         return target.dataset.dotObject === 'edit-content' && target.tagName === 'BUTTON';
     }
 
+    private updateHtml(htmlCode: string): string {
+        const html = document.createElement('html');
+        html.innerHTML = htmlCode;
+
+        if (html.querySelector('base')) {
+            return htmlCode;
+        } else {
+            const head = html.querySelector('head');
+            head.insertBefore(this.getBaseTag(), head.childNodes[0]);
+        }
+
+        return html.innerHTML;
+    }
+
+    private getBaseTag(): HTMLBaseElement {
+        const base = document.createElement('base');
+        base.href = '/';
+        return base;
+    }
+
     private loadCodeIntoIframe(editPageHTML: string): void {
         const doc = this.getEditPageDocument();
         doc.open();
-        doc.write(editPageHTML);
+        doc.write(this.updateHtml(editPageHTML));
         doc.close();
     }
 
