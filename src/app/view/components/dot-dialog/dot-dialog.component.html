@@ -11,7 +11,7 @@
 
     <p-header>
         {{ header }} 
-        <dot-icon-button icon="close" (click)="dialog.close()"></dot-icon-button>
+        <dot-icon-button icon="close" (click)="dialog.close($event)"></dot-icon-button>
     </p-header>
 
     <ng-content></ng-content>
