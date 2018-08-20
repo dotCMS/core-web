@@ -68,6 +68,16 @@ describe('DotDialogComponent', () => {
     });
 
     describe('events', () => {
+
+        it('header "x" button should trigger the close action', () => {
+            hostFixture.detectChanges();
+
+            spyOn(component.close, 'emit');
+            const closeButton = dialog.query(By.css('p-header dot-icon-button'));
+            closeButton.nativeElement.click();
+            expect(component.close.emit).toHaveBeenCalledTimes(1);
+        });
+
         it('should emit close', () => {
             hostComponent.show = true;
             hostFixture.detectChanges();
@@ -193,7 +203,7 @@ describe('DotDialogComponent', () => {
                 // expect(buttons[0].componentInstance.label).toBe('Cancel', 'should have the right label');
             });
 
-            it('shouls tigger the right action', () => {
+            it('shouls trigger the right action', () => {
                 const footer = dialog.query(By.css('p-footer'));
                 const buttons = footer.queryAll(By.css('button'));
                 spyOn(component, 'closeDialog');

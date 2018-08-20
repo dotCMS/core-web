@@ -183,11 +183,8 @@
 }
 
 .ui-button-icon-right {
-    right: 20px;
-
-    [tiny] & {
-        right: 15px;
-    }
+    position: absolute;
+    right: 0px;
 }
 
 .ui-button-icon-only {

@@ -8,7 +8,7 @@ $theme-item-dimension: 240px;
         dot-searchable-dropdown .ui-button,
         .site-selector__title {
             font-size: $font-size-large;
-            min-width: 180px;
+            min-width: 200px;
         }
     }
 
@@ -25,6 +25,10 @@ $theme-item-dimension: 240px;
         text-align: center;
         font-size: $font-size-large;
         margin-top: $basic-padding * 5;
+    }
+
+    .ui-dialog .ui-dialog-content {
+        padding: 17px $basic-padding * 4 $dialog-padding;
     }
 }
 
