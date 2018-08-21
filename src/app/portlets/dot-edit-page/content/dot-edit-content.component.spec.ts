@@ -504,7 +504,7 @@ xdescribe('DotEditContentComponent', () => {
                 lockedByAnotherUser: false
             });
             expect(component.pageState.page).toEqual(customMockDotRenderedPage.page);
-            expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith('<html></html>', component.iframe);
+            expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith(component.pageState, component.iframe);
         });
 
         it('should set preview mode', () => {
@@ -529,7 +529,7 @@ xdescribe('DotEditContentComponent', () => {
                 lockedByAnotherUser: true
             });
             expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
-            expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
+            expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith(component.pageState, component.iframe);
         });
 
         it('should set live mode', () => {
@@ -555,7 +555,7 @@ xdescribe('DotEditContentComponent', () => {
             });
             expect(dotGlobalMessageService.display).not.toHaveBeenCalled();
             expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
-            expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith('<html></html>', component.iframe);
+            expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith(component.pageState, component.iframe);
         });
     });
 
@@ -985,8 +985,6 @@ xdescribe('DotEditContentComponent', () => {
         spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
         expect(dotEditContentHtmlService.setContaintersChangeHeightListener).not.toHaveBeenCalled();
         fixture.detectChanges();
-        component.pageState.state.mode = PageMode.EDIT;
-
 
         const iframe: DebugElement = de.query(By.css('.dot-edit__iframe'));
         iframe.triggerEventHandler('load', {
