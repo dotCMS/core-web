@@ -11,3 +11,10 @@
     font-size: $font-size-small;
     margin-left: $basic-padding;
 }
+
+:host ::ng-deep {
+    .ui-state-disabled .ui-multiselect-label-container,
+    .ui-state-disabled .ui-multiselect-label-container label:hover {
+        color: $gray-light;
+    }
+}
