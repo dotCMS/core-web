@@ -11,11 +11,16 @@
 
     &:hover {
         box-shadow: $md-shadow-5;
+        z-index: 1;
     }
 
     &:last-child {
         margin-bottom: 0;
     }
+}
+
+.field__icon {
+    display: flex;
 }
 
 .field__properties {
@@ -35,8 +40,7 @@
 }
 
 .field__attribute{
-    margin: 6px 0 0 -30px;
-
+    margin-top: 6px;
 }
 
 .field__actions {

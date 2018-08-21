@@ -51,10 +51,12 @@ $top-height: ($toolbar-height + $tabview-nav-height);
         font-size: $font-size-medium;
         font-weight: normal;
         margin: 0;
-        padding: $basic-padding * 2;
+        padding: $basic-padding $basic-padding * 2;
         border-bottom: 1px solid $gray-light;
         display: flex;
-        line-height: 24px;
+        align-items: center;
+        flex-shrink: 0;
+        line-height: $basic-padding * 4;
         text-transform: uppercase;
 
         dot-icon {

@@ -5,9 +5,9 @@
 }
 
 .action-header {
-    align-items: flex-end;
+    align-items: flex-start;
     display: flex;
-    height: 50px;
+    height: 85px;
     position: relative;
     z-index: 1;
 
@@ -39,7 +39,7 @@
     opacity: 1;
     position: absolute;
     right: $basic-padding * 3;
-    top: 0;
+    top: $basic-padding;
     transform: translateY(0);
     transition: background-color 100ms, transform 0.2s ease, opacity 0.2s ease;
     z-index: 1;

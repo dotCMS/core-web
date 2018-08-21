@@ -1,14 +1,24 @@
 @import 'primeng-theme/utils/theme-variables';
 @import 'mixins';
 
+@mixin tiny-button {
+    height: 16px;
+    width: 16px;
+
+    ::ng-deep i {
+        @include dot_icon_tiny;
+    }
+}
+
+[tiny] :host {
+    button {
+        @include tiny-button;
+    }
+}
+
 :host {
     &[tiny] button {
-        height: 16px;
-        width: 16px;
-
-        ::ng-deep i {
-            @include dot_icon_tiny;
-        }
+        @include tiny-button;
     }
 
     &[inverted] button {
@@ -22,7 +32,7 @@
         ::ng-deep i {
             @include dot_icon_inverted;
         }
-    
+
     }
 
     &[disabled]{

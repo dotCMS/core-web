@@ -26,9 +26,11 @@
             [sortable]="col.sortable"
             [style]="{'width': col.width, 'text-align': getAlign(col)}">
             <ng-template let-item="rowData" pTemplate="body">
-                <i class="fa {{ col.icon(item) }} listing-datatable__icon" *ngIf="col.icon"></i>
-                <dot-icon name="{{ col.icon(item) }}" *ngIf="col.icon"></dot-icon>
-                <span>{{ item[col.fieldName] }}</span>
+                <div class="listing-datatable__column-icon"  *ngIf="col.icon">
+                    <dot-icon name="{{ col.icon(item) }}"></dot-icon>
+                    <span>{{ item[col.fieldName] }}</span>
+                </div>
+                <span *ngIf="!col.icon">{{ item[col.fieldName] }}</span>
             </ng-template>
         </p-column>
     </ng-template>
