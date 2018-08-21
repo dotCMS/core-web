@@ -28,7 +28,7 @@
     .ui-dialog-content,
     &.ui-confirmdialog .ui-dialog-content {
         margin: 0;
-        padding: $dialog-padding $basic-padding * 4;
+        padding: 17px $basic-padding * 4 $dialog-padding;
     }
 
     .ui-dialog-content {
