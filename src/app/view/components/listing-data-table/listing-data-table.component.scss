@@ -16,13 +16,13 @@
             background: $white;
 
             table tbody.ui-datatable-data tr {
-                    td {
-                        cursor: pointer;
+                td {
+                    cursor: pointer;
 
-                        span {
-                            word-break: break-word;
-                        }
+                    span {
+                        word-break: break-word;
                     }
+                }
             }
         }
 
