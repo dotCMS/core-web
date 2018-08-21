@@ -1,4 +1,5 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Dialog } from 'primeng/primeng';
 
 @Component({
     selector: 'dot-dialog',
@@ -6,6 +7,8 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
     styleUrls: ['./dot-dialog.component.scss']
 })
     export class DotDialogComponent {
+    @ViewChild('dialog') dialog: Dialog;
+
     @Input() header = '';
     @Input() show: boolean;
     @Input() ok: DotDialogAction;
@@ -33,6 +36,17 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
     closeDialog(): void {
         this.show = false;
         this.close.emit();
+    }
+
+    /**
+     * Action to re-center opened dialog displayed
+     *
+     * @memberof DotDialogComponent
+     */
+    reRecenter(): void {
+        setTimeout(() => {
+            this.dialog.center();
+        });
     }
 }
 

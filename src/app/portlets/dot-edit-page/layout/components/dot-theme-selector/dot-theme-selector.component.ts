@@ -21,6 +21,7 @@ import { DotDialogAction, DotDialogComponent } from '../../../../../view/compone
 })
 export class DotThemeSelectorComponent implements OnInit {
     themes: Observable<DotTheme[]>;
+    @ViewChild('dotDialog') dotDialog: DotDialogComponent;
     @Input() value: DotTheme;
     @Output() selected = new EventEmitter<DotTheme>();
     @Output() close = new EventEmitter<boolean>();
@@ -54,6 +55,7 @@ export class DotThemeSelectorComponent implements OnInit {
                         this.apply();
                     }
                 };
+                this.dotDialog.reRecenter();
             });
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.setExtraParams('hostId', this.siteService.currentSite.identifier);

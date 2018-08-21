@@ -68,7 +68,6 @@ describe('DotDialogComponent', () => {
     });
 
     describe('events', () => {
-
         it('header "x" button should trigger the close action', () => {
             hostFixture.detectChanges();
 
@@ -115,7 +114,6 @@ describe('DotDialogComponent', () => {
     });
 
     describe('body content', () => {
-
         beforeEach(() => {
             hostFixture.detectChanges();
         });
@@ -127,7 +125,6 @@ describe('DotDialogComponent', () => {
             expect(content.nativeElement.innerHTML).toBe('Dialog content');
         });
     });
-
 
     describe('actions', () => {
         it('should not have footer', () => {
@@ -141,14 +138,21 @@ describe('DotDialogComponent', () => {
             expect(buttons.length).toBe(0, 'must have not buttons');
         });
 
+        describe('re-center', () => {
+            it('should have ok button', fakeAsync(() => {
+                spyOn(dialogComponent, 'center');
+                component.reRecenter();
+                tick();
+                expect(dialogComponent.center).toHaveBeenCalled();
+            }));
+        });
+
         describe('ok button', () => {
-
             it('should have ok button', () => {
-
                 hostComponent.ok = {
                     label: 'Ok',
                     disabled: true,
-                    action: jasmine.createSpy('ok'),
+                    action: jasmine.createSpy('ok')
                 };
 
                 hostFixture.detectChanges();
@@ -166,7 +170,7 @@ describe('DotDialogComponent', () => {
             it('should trigger the right action', () => {
                 hostComponent.ok = {
                     label: 'Ok',
-                    action: jasmine.createSpy('ok'),
+                    action: jasmine.createSpy('ok')
                 };
 
                 hostFixture.detectChanges();
@@ -177,16 +181,13 @@ describe('DotDialogComponent', () => {
                 buttons[0].triggerEventHandler('click', null);
                 expect(hostComponent.ok.action).toHaveBeenCalled();
             });
-
         });
 
-
         describe('cancel button', () => {
-
             beforeEach(() => {
                 hostComponent.cancel = {
                     label: 'Cancel',
-                    action: jasmine.createSpy('cancel'),
+                    action: jasmine.createSpy('cancel')
                 };
 
                 hostFixture.detectChanges();
@@ -215,16 +216,15 @@ describe('DotDialogComponent', () => {
         });
 
         describe('both buttons', () => {
-
             beforeEach(() => {
                 hostComponent.cancel = {
                     label: 'Cancel',
-                    action: jasmine.createSpy('cancel'),
+                    action: jasmine.createSpy('cancel')
                 };
 
                 hostComponent.ok = {
                     label: 'Ok',
-                    action: jasmine.createSpy('ok'),
+                    action: jasmine.createSpy('ok')
                 };
 
                 hostFixture.detectChanges();

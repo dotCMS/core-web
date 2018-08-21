@@ -3,8 +3,15 @@
 
 $theme-item-dimension: 240px;
 
-::ng-deep {
+:host ::ng-deep {
+
+    .ui-dialog .ui-dialog-content {
+        padding: 17px $basic-padding + 12 $dialog-padding;
+    }
+
     dot-site-selector {
+        margin-left: 12px;
+
         dot-searchable-dropdown .ui-button,
         .site-selector__title {
             font-size: $font-size-large;
@@ -13,6 +20,8 @@ $theme-item-dimension: 240px;
     }
 
     .ui-datagrid-content {
+        max-width: 1056px;
+
         .ui-g {
             margin: 0;
         }
@@ -48,7 +57,7 @@ $theme-item-dimension: 240px;
     display: flex;
     flex-direction: column;
     height: $theme-item-dimension;
-    margin: $basic-padding * 3 $basic-padding * 3 0 0;
+    margin: $basic-padding * 3 $basic-padding * 3 / 2 0;
     padding: $basic-padding * 3 $basic-padding * 2;
     transition: background-color $field-animation-speed ease-in;
     width: $theme-item-dimension;
@@ -63,10 +72,6 @@ $theme-item-dimension: 240px;
         box-shadow: $md-shadow-3;
         background: $white;
     }
-}
-
-.dot-theme-item:nth-child(4n) {
-    margin-right: 0;
 }
 
 .dot-theme-iteme__image{
