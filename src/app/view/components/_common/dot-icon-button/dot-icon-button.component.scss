@@ -49,7 +49,7 @@
         display: inline-flex;
         height: 32px;
         justify-content: center;
-        transition: background-color $field-animation-speed ease-in;
+        transition: all $field-animation-speed ease-in;
         width: 32px;
         background: transparent;
 
