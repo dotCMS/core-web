@@ -25,7 +25,10 @@ const dotEditPage: Routes = [
             },
             {
                 loadChildren: 'app/portlets/dot-edit-page/layout/dot-edit-layout.module#DotEditLayoutModule',
-                path: 'layout'
+                path: 'layout',
+                data: {
+                    excludeFromCrumbTrail: true
+                }
             }
         ]
     },

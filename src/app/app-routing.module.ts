@@ -79,7 +79,10 @@ const PORTLETS_IFRAME = [
                 children: [
                     {
                         loadChildren: 'app/portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
-                        path: ':asset'
+                        path: ':asset',
+                        data: {
+                            excludeFromCrumbTrail: true
+                        }
                     },
                 ]
             },

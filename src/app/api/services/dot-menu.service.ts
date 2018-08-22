@@ -88,6 +88,13 @@ export class DotMenuService {
             .find((menu: DotMenu) => menu.menuItems.some((menuItem) => menuItem.id === portletId));
     }
 
+    getDotMenuItem(portletId: string): Observable<DotMenuItem> {
+        return this.loadMenu()
+            .flatMap((menus: DotMenu[]) => menus)
+            .flatMap(menu => menu.menuItems)
+            .find((menuItem: DotMenuItem) => menuItem.id === portletId);
+    }
+
     private getMenuItems(): Observable<DotMenuItem> {
         return this.loadMenu()
             .flatMap((menus: DotMenu[]) => menus)

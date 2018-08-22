@@ -11,10 +11,11 @@ export class CrumbTrailsGuardService implements CanActivateChild {
     constructor(private crumbTrailService: CrumbTrailService) {}
 
     canActivateChild(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        console.log('CrumbTrailsGuardService', _route, state);
-        this.crumbTrailService.push(state.url);
+        this.crumbTrailService.activatedRoute = {
+            route: _route,
+            state: state
+        };
+
         return true;
     }
 }
-
-
