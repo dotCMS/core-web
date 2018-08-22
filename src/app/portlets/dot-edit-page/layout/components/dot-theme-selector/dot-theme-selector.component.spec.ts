@@ -65,13 +65,11 @@ describe('DotThemeSelectorComponent', () => {
 
     describe('Dialog', () => {
         beforeEach(() => {
-            component.dotDialog.reRecenter = jasmine.createSpy('reCenter');
             fixture.detectChanges();
         });
 
-        it('should be visible on init and re-centered', () => {
+        it('should be visible on init', () => {
             expect(dialog.visible).toBeTruthy();
-            expect(dotDialog.reRecenter).toHaveBeenCalled();
         });
 
         it('should not be draggable, modal and have dismissable Mask', () => {

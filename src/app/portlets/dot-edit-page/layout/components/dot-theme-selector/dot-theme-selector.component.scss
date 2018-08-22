@@ -5,6 +5,17 @@ $theme-item-dimension: 240px;
 
 :host ::ng-deep {
 
+    .ui-dialog{
+        min-width: 1056px !important;
+        top: calc((100vh - 760px) / 2) !important;
+    }
+
+    @media (max-width: 1100px) {
+        .ui-dialog{
+            min-width: calc(100vw - 5vw) !important;
+        }
+    }
+    
     .ui-dialog .ui-dialog-content {
         padding: 17px $basic-padding + 12 $dialog-padding;
     }
@@ -36,6 +47,7 @@ $theme-item-dimension: 240px;
 
 .dot-theme-container {
     margin-top: $basic-padding;
+    min-height: 550px;
 }
 
 .dot-theme-search-box {
