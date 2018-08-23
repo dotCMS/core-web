@@ -30,7 +30,6 @@ export class FieldService {
      * @memberof FieldService
      */
     saveFields(contentTypeId: string, fields: ContentTypeField[]): Observable<any> {
-        console.log(fields);
         fields.forEach((field, index) => {
             field.contentTypeId = contentTypeId;
 
