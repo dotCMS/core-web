@@ -38,11 +38,12 @@ export class CrumbTrailService {
             });
 
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-            try {
+            //try {
+                console.log('event');
                 this.push(this.activatedRoute$.route, this.activatedRoute$.state);
-            } catch (e) {
+            /*} catch (e) {
                 // ignore
-            }
+            }*/
         });
     }
 
@@ -64,7 +65,7 @@ export class CrumbTrailService {
         const absoluteUrl = this.removeQueryParams(this.getAbsoluteURL(state));
 
         if (this.lastURL === absoluteUrl) {
-            return;
+            throw new Error('Url already pushed');
         }
 
         if (this.isPreviousCrumbTrail(absoluteUrl)) {
@@ -242,7 +243,6 @@ export class CrumbTrailService {
     private getSegments(route: ActivatedRouteSnapshot): Segment[] {
        const paths: ActivatedRouteSnapshot[] = route.pathFromRoot
             .filter((path: ActivatedRouteSnapshot) => path.routeConfig && path.routeConfig.path !== '' && !path.data.excludeFromCrumbTrail);
-
         const segments: Segment[] = [{
             paths: []
         }];

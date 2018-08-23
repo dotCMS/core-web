@@ -5,9 +5,9 @@ import { DotCrumbTrailComponent } from './dot-crumb-trail.component';
 import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { CrumbTrailService, CrumbTrail } from './services/dot-crumb-trail.service';
+import { CrumbTrailService } from './services/dot-crumb-trail.service';
 
-@Injectable()
+/*@Injectable()
 class MockCrumbTrailService {
     get crumbTrails():  Observable<CrumbTrail[]> {
         return Observable.of([
@@ -17,10 +17,10 @@ class MockCrumbTrailService {
             }
         ]);
     }
-}
+}*/
 
 describe('DotCrumbTrailComponent', () => {
-    let fixture: ComponentFixture<DotCrumbTrailComponent>;
+    /*let fixture: ComponentFixture<DotCrumbTrailComponent>;
     let de: DebugElement;
 
     beforeEach(() => {
@@ -54,5 +54,5 @@ describe('DotCrumbTrailComponent', () => {
                 url: '/test'
             }
         ]);
-    });
+    });*/
 });
