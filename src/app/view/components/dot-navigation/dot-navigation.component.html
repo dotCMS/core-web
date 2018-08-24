@@ -1,6 +1,16 @@
 <dot-accordion>
     <nav>
-        <ng-template ngFor let-menu [ngForOf]="menu | async">
+        <ul>
+            <li *ngFor="let item of menu | async">
+                {{item.tabName}}
+                <ul>
+                    <li *ngFor="let subItem of item.menuItems">
+                        {{subItem.label}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- <ng-template ngFor let-menu [ngForOf]="menu | async">
             <dot-accordion-group [heading]="menu.tabName" [icon]="menu.tabIcon" [open]="menu.isOpen">
                 <div class="main-nav__submenu">
                     <ng-template ngFor let-menuItem [ngForOf]="menu.menuItems">
@@ -11,6 +21,6 @@
                     </ng-template>
                 </div>
             </dot-accordion-group>
-        </ng-template>
+        </ng-template> -->
     </nav>
 </dot-accordion>
