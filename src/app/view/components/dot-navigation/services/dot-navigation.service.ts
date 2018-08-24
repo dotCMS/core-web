@@ -9,10 +9,10 @@ import { Auth } from 'dotcms-js/core/login.service';
 import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 
-import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-iframe.service';
+import { DotMenu, DotMenuItem } from '../../../../shared/models/navigation';
+import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-iframe.service';
 import { filter, mergeMap } from 'rxjs/operators';
 
 @Injectable()

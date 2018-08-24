@@ -2,6 +2,7 @@
     <nav>
         <ul>
             <li *ngFor="let item of menu | async">
+                <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
                 {{item.tabName}}
                 <ul>
                     <li *ngFor="let subItem of item.menuItems">

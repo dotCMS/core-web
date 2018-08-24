@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'dot-dot-nav-icon',
+    selector: 'dot-nav-icon',
     templateUrl: './dot-nav-icon.component.html',
     styleUrls: ['./dot-nav-icon.component.scss']
 })

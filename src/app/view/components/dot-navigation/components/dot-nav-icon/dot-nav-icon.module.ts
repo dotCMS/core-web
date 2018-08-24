@@ -5,6 +5,7 @@ import { DotIconModule } from '../../_common/dot-icon/dot-icon.module';
 
 @NgModule({
     imports: [CommonModule, DotIconModule],
-    declarations: [DotNavIconComponent]
+    declarations: [DotNavIconComponent],
+    exports: [DotNavIconComponent]
 })
 export class DotNavIconModule {}

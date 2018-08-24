@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
-import { DotNavigationService } from './dot-navigation.service';
+import { DotNavigationService } from './services/dot-navigation.service';
 
 @Component({
     providers: [],
