@@ -1,9 +1,9 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotNavIconComponent } from './dot-nav-icon.component';
-import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotIconModule } from '../../_common/dot-icon/dot-icon.module';
-import { DotIconComponent } from '../../_common/dot-icon/dot-icon.component';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DotIconModule } from '../../../_common/dot-icon/dot-icon.module';
+import { DotIconComponent } from '../../../_common/dot-icon/dot-icon.component';
 import { By } from '@angular/platform-browser';
 
 fdescribe('DotNavIconComponent', () => {
