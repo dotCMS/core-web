@@ -7,7 +7,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 })
 export class DotReorderMenuComponent implements OnInit {
     @Input() url: string;
-    @Output() custom: EventEmitter<any> = new EventEmitter();
+    @Output() close: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private dotMessageService: DotMessageService
@@ -20,24 +20,12 @@ export class DotReorderMenuComponent implements OnInit {
     }
 
     /**
-     * Handle close event form the iframe
+     * Handle close event from the iframe
      *
      * @memberof DotContentletWrapperComponent
      */
     onClose(): void {
-        console.log('---onClose()');
-        this.custom.emit('cancel-save-menu-order');
-    }
-
-    /**
-     * Handle the custome events from the DotDialogIframe component
-     *
-     * @param {any} $event
-     * @memberof DotAddContentletComponent
-     */
-    onCustomEvent($event) {
-        console.log('--$event custom', $event);
-        this.custom.emit($event.detail.name);
+        this.close.emit();
     }
 
 }

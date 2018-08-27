@@ -31,7 +31,7 @@ import { DotContentletEditorService } from '../../../view/components/dot-content
 import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
 
-interface DotReorderMenu {
+export interface DotReorderMenu {
     cmd: string;
     depth: string;
     hostId: string;
@@ -106,6 +106,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         `${reorderMenu.url}&startLevel=${reorderMenu.startLevel}&depth=${reorderMenu.depth}`,
                         `&pagePath=${reorderMenu.pagePath}&hostId=${reorderMenu.hostId}`
                     ].join('');
+                },
+                'save-menu-order': () => {
+                    this.reorderMenuUrl = '';
+                    this.reload();
+                },
+                'error-saving-menu-order': () => {
+                    this.reorderMenuUrl = '';
+                    this.dotGlobalMessageService.display(this.dotMessageService.get('an-unexpected-system-error-occurred'));
+                },
+                'cancel-save-menu-order': () => {
+                    this.reorderMenuUrl = '';
                 }
             };
         }
@@ -128,22 +139,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Handle the custom events from Reorder Menu Dialog
-     * @param {string} eventName
+     * Close Reorder Menu Dialog
      * @memberof DotEditContentComponent
      */
-    // tslint:disable-next-line:cyclomatic-complexity
-    handleReorderDialogEvents(eventName: string): void {
-        console.log(eventName);
-        if (eventName === 'save-menu-order') {
-            this.reorderMenuUrl = '';
-            this.reload();
-        } else if (eventName === 'error-saving-menu-order') {
-            this.reorderMenuUrl = '';
-            this.dotGlobalMessageService.display(this.dotMessageService.get('an-unexpected-system-error-occurred'));
-        } else if (eventName === 'cancel-save-menu-order') {
-            this.reorderMenuUrl = '';
-        }
+    onCloseReorderDialog(): void {
+        this.reorderMenuUrl = '';
     }
 
     /**
@@ -382,7 +382,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$)
             )
             .subscribe((customEvent: any) => {
-                console.log('---customEvent.name', customEvent.name);
                 if (this.customEventsHandler[customEvent.name]) {
                     this.customEventsHandler[customEvent.name](customEvent.data);
                 }

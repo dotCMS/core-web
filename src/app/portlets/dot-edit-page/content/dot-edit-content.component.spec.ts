@@ -41,7 +41,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
-import { DotEditContentComponent } from './dot-edit-content.component';
+import { DotEditContentComponent, DotReorderMenu } from './dot-edit-content.component';
 import { ContentType } from '../../content-types/shared/content-type.model';
 import { DotContentletEditorModule } from '../../../view/components/dot-contentlet-editor/dot-contentlet-editor.module';
 import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
@@ -115,6 +115,8 @@ describe('DotEditContentComponent', () => {
     let toolbarElement: DebugElement;
     let dotContentletEditorService: DotContentletEditorService;
     let dotUiColorsService: DotUiColorsService;
+    let reorderMenuMock: DotReorderMenu;
+
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -126,7 +128,8 @@ describe('DotEditContentComponent', () => {
             'editpage.content.steal.lock.confirmation_message.accept': 'Cancel',
             'editpage.content.save.changes.confirmation.header': 'Save header',
             'editpage.content.save.changes.confirmation.message': 'Save message',
-            'dot.common.content.search': 'Content Search'
+            'dot.common.content.search': 'Content Search',
+            'an-unexpected-system-error-occurred': 'Error msg'
         });
 
         DOTTestBed.configureTestingModule({
@@ -933,6 +936,86 @@ describe('DotEditContentComponent', () => {
                 expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
             });
+        });
+
+        describe('listen reorder-menu event', () => {
+            it('should set the reorder menu url', fakeAsync(() => {
+                reorderMenuMock = {
+                    cmd: 'testCmd',
+                    depth: '3',
+                    hostId: 'testHost',
+                    pagePath: 'testPath',
+                    referer: 'test',
+                    startLevel: 'testLevel',
+                    url: 'testUrl'
+                };
+
+                waitForDetectChanges(fixture);
+
+                const customEvent = document.createEvent('CustomEvent');
+                customEvent.initCustomEvent('ng-event', false, false, {
+                    name: 'reorder-menu',
+                    data: reorderMenuMock
+                });
+                document.dispatchEvent(customEvent);
+
+                tick(2);
+                expect(component.reorderMenuUrl).toEqual('testUrl&startLevel=testLevel&depth=3&pagePath=testPath&hostId=testHost');
+            }));
+
+            it('should clean the reorder menu url & reload iframe (Saved Menu)', fakeAsync(() => {
+                spyOn(component, 'reload');
+                waitForDetectChanges(fixture);
+
+                const customEvent = document.createEvent('CustomEvent');
+                customEvent.initCustomEvent('ng-event', false, false, {
+                    name: 'save-menu-order',
+                    data: ''
+                });
+                document.dispatchEvent(customEvent);
+
+                tick(2);
+                expect(component.reorderMenuUrl).toEqual('');
+                expect(component.reload).toHaveBeenCalled();
+            }));
+
+            it('should clean the reorder menu url & display error msg (Error saving Menu)', fakeAsync(() => {
+                spyOn(dotGlobalMessageService, 'display');
+                waitForDetectChanges(fixture);
+
+                const customEvent = document.createEvent('CustomEvent');
+                customEvent.initCustomEvent('ng-event', false, false, {
+                    name: 'error-saving-menu-order',
+                    data: ''
+                });
+                document.dispatchEvent(customEvent);
+
+                tick(2);
+                expect(component.reorderMenuUrl).toEqual('');
+                expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Error msg');
+            }));
+
+            it('should clean the reorder menu url (Cancel custom event)', fakeAsync(() => {
+                waitForDetectChanges(fixture);
+
+                const customEvent = document.createEvent('CustomEvent');
+                customEvent.initCustomEvent('ng-event', false, false, {
+                    name: 'cancel-save-menu-order',
+                    data: ''
+                });
+                document.dispatchEvent(customEvent);
+
+                tick(2);
+                expect(component.reorderMenuUrl).toEqual('');
+            }));
+
+            it('should close menu dialog on close()', fakeAsync(() => {
+                const reorderMenuElement = de.query(By.css('dot-reorder-menu')).nativeElement;
+                waitForDetectChanges(fixture);
+                reorderMenuElement.dispatchEvent(new Event('close'));
+                expect(component.reorderMenuUrl).toEqual('');
+            }));
+
         });
     });
 
