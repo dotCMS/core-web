@@ -1,9 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './services/dot-navigation.service';
 
 @Component({
+    animations: [
+        trigger('expandAnimation', [
+            state(
+                'expanded',
+                style({
+                    height: '*',
+                    overflow: 'visible'
+                })
+            ),
+            state(
+                'collapsed',
+                style({
+                    height: '0px',
+                    overflow: 'hidden'
+                })
+            ),
+            transition('expanded <=> collapsed', animate('250ms ease-in-out'))
+        ])
+    ],
     providers: [],
     selector: 'dot-main-nav',
     styleUrls: ['./dot-navigation.component.scss'],

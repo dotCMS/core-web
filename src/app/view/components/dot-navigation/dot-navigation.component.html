@@ -1,11 +1,15 @@
 <nav>
-    <ul>
-        <li *ngFor="let item of menu | async">
-            <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
-            {{item.tabName}}
-            <ul>
-                <li *ngFor="let subItem of item.menuItems">
-                    {{subItem.label}}
+    <ul class="dot-nav">
+        <li *ngFor="let item of menu | async" class="dot-nav__item">
+            <div class="dot-nav__item-label" [class.dot-nav__item-label--active]="item.isOpen">
+                <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
+                {{item.tabName}}
+            </div>
+            <ul class="dot-nav-sub" [@expandAnimation]="item.isOpen ? 'expanded' : 'collapsed'">
+                <li *ngFor="let subItem of item.menuItems" class="dot-nav-sub__item">
+                    <a class="dot-nav-sub__link" (click)="onClick($event, item.id)" [routerLink]="subItem.menuLink">
+                        {{ subItem.label }}
+                    </a>
                 </li>
             </ul>
         </li>

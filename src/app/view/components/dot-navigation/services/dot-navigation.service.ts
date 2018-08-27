@@ -4,16 +4,15 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { filter, mergeMap } from 'rxjs/operators';
 
 import { Auth } from 'dotcms-js/core/login.service';
-import { DotcmsEventsService } from 'dotcms-js/core/dotcms-events.service';
-import { LoginService } from 'dotcms-js/dotcms-js';
+import { DotcmsEventsService, LoginService } from 'dotcms-js/dotcms-js';
 
 import { DotMenu, DotMenuItem } from '../../../../shared/models/navigation';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-iframe.service';
-import { filter, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class DotNavigationService {
@@ -29,7 +28,7 @@ export class DotNavigationService {
         private router: Router
     ) {
         this.router.events
-            .filter(event => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
+            .filter((event) => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
             .subscribe((_event: NavigationEnd) => {
                 this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
                     this.setMenu(menu);
