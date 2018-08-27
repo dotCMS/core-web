@@ -207,7 +207,7 @@ describe('ContentTypesPortletComponent', () => {
         ).toEqual([
             {
                 label: 'Delete',
-                icon: 'fa-trash'
+                icon: 'delete'
             }
         ]);
     });
