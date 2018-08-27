@@ -39,7 +39,6 @@ export class CrumbTrailService {
 
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
             //try {
-                console.log('event');
                 this.push(this.activatedRoute$.route, this.activatedRoute$.state);
             /*} catch (e) {
                 // ignore
@@ -55,6 +54,8 @@ export class CrumbTrailService {
         this.crumbTrail$.next({
             crumbs: []
         });
+
+        this.lastURL = null;
     }
 
     get crumbTrail(): Observable<DotCrumbTrail> {
@@ -236,7 +237,7 @@ export class CrumbTrailService {
 
     private getSegmentURL(segment: Segment): string {
         return segment.paths
-            .map(path => this.getKey(path))
+            .map(path => this.getKey(path, this.URL_SEPARTOR))
             .join(this.URL_SEPARTOR);
     }
 
@@ -283,16 +284,16 @@ export class CrumbTrailService {
 
     private getMessageKey(paths: ActivatedRouteSnapshot[]): string {
         return paths
-            .map(path => this.getKey(path))
+            .map(path => this.getKey(path, this.KEY_SEPARTOR))
             .filter(key => key && key.length)
             .join(this.KEY_SEPARTOR);
     }
 
-    private getKey(path: ActivatedRouteSnapshot): string {
+    private getKey(path: ActivatedRouteSnapshot, separator: string): string {
         return path.routeConfig.path.split('/')
             .map(pathSplit => pathSplit.startsWith(':') ? path.params[pathSplit.substr(1)] : pathSplit)
             .filter(key => !this.isId(key))
-            .join(this.KEY_SEPARTOR);
+            .join(separator);
     }
 
     private getDataId(paths: ActivatedRouteSnapshot[]): string {

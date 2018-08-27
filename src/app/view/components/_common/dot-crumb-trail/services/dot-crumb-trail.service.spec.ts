@@ -5,13 +5,36 @@ import { MockDotMessageService } from '../../../../../test/dot-message-service.m
 import { Injectable } from '@angular/core';
 import { LoginService, Auth } from 'dotcms-js/dotcms-js';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { mockUser } from '../../../../../test/login-service.mock';
 import { Subject } from 'rxjs/Subject';
 import { mockData } from './test-data';
 import { DotMenuItem } from '../../../../../shared/models/navigation/menu-item.model';
 import { DotMenu } from '../../../../../shared/models/navigation/menu.model';
+
+const menuItems = {
+    'content-types-angular': {
+        label: 'Content Types',
+    },
+    'categories': {
+        label: 'Categories',
+    },
+    'site-browser': {
+        label: 'Site Browser',
+    }
+};
+
+const menus = {
+    'content-types-angular': {
+        name: 'Types & Tags'
+    },
+    'categories': {
+        name: 'Types & Tags'
+    },
+    'site-browser': {
+        name: 'Site'
+    }
+};
 
 @Injectable()
 class MockLoginService {
@@ -25,27 +48,11 @@ class MockLoginService {
 @Injectable()
 class MockMenuService {
     getDotMenuItem(portletId: string): Observable<DotMenuItem> {
-        if (portletId === 'content-types-angular') {
-            return Observable.of(<DotMenuItem> {
-                label: 'Content Types',
-            });
-        } else if (portletId === 'categories') {
-            return Observable.of(<DotMenuItem> {
-                label: 'Categories',
-            });
-        }
-
-        throw new Error('Argument unvalid');
+        return Observable.of(<DotMenuItem> menuItems[portletId]);
     }
 
     getDotMenu(portletId: string): Observable<DotMenu> {
-        if (portletId === 'content-types-angular' || portletId === 'categories') {
-            return Observable.of(<DotMenu> {
-                name: 'Types & Tags'
-            });
-        }
-
-        throw new Error('Argument unvalid');
+        return Observable.of(<DotMenu> menus[portletId]);
     }
 }
 
@@ -64,15 +71,18 @@ class MockRouter {
 
 fdescribe('CrumbTrailService', () => {
     let crumbTrailService: CrumbTrailService;
-    const router = new MockRouter();
+    let router;
 
     const messageServiceMock = new MockDotMessageService({
         'content-types': 'Content Types',
         'categories': 'Categories',
         'create-content': 'Create Content',
+        'edit-page-content': 'Edit Page Content',
     });
 
     beforeEach(() => {
+        router = new MockRouter();
+
         TestBed.configureTestingModule({
             providers: [
                 CrumbTrailService,
@@ -96,25 +106,19 @@ fdescribe('CrumbTrailService', () => {
         });
 
         crumbTrailService = TestBed.get(CrumbTrailService);
+        crumbTrailService.clean();
     });
 
     it('should tigger crumb trails changed event', () => {
         let countCalled = 0;
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            console.log('crumbTrails', crumbTrail);
             countCalled++;
 
             if (crumbTrail.crumbs.length > 0) {
                expect(crumbTrail).toEqual(
                     {
-                        crumbs: [{
-                            label: 'Content Types',
-                            url: '/dotAdmin/#/content-types-angular',
-                            messageKey: 'content-types-angular',
-                            dataId: undefined,
-                            queryParams: undefined
-                        }],
+                        crumbs: [mockData['content-types'].crumb],
                         parentMenuLabel: 'Types & Tags'
                     }
                 );
@@ -140,13 +144,7 @@ fdescribe('CrumbTrailService', () => {
             if (crumbTrail.crumbs.length > 0) {
                 expect(crumbTrail).toEqual(
                     {
-                        crumbs: [{
-                            label: 'Categories',
-                            url: '/dotAdmin/#/c/categories',
-                            messageKey: 'categories',
-                            dataId: undefined,
-                            queryParams: undefined
-                        }],
+                        crumbs: [mockData['categories'].crumb],
                         parentMenuLabel: 'Types & Tags'
                     }
                 );
@@ -158,46 +156,22 @@ fdescribe('CrumbTrailService', () => {
         expect(countCalled).toBe(2);
     });
 
-    fit('should create a crumb trail when push is call twice', () => {
+    it('should create a crumb trail when push is call twice', () => {
         let countCalled = 0;
         crumbTrailService.activatedRoute = mockData['content-types'];
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            console.log('crumbTrail', crumbTrail);
             countCalled++;
 
             if (countCalled === 1) {
                 expect(crumbTrail).toEqual({
-                    crumbs: [
-                        {
-                            label: 'Content Types',
-                            url: '/dotAdmin/#/content-types-angular',
-                            messageKey: 'content-types-angular',
-                            dataId: undefined,
-                            queryParams: undefined
-                        }
-                    ],
+                    crumbs: [mockData['content-types'].crumb],
                     parentMenuLabel: 'Types & Tags'
                 });
             } else {
                 expect(crumbTrail).toEqual({
-                    crumbs: [
-                        {
-                            label: 'Content Types',
-                            url: '/dotAdmin/#/content-types-angular',
-                            messageKey: 'content-types-angular',
-                            dataId: undefined,
-                            queryParams: undefined
-                        },
-                        {
-                            label: 'Create Content',
-                            url: '/dotAdmin/#/content-types-angular/create/content',
-                            messageKey: 'create-content',
-                            dataId: undefined,
-                            queryParams: undefined
-                        }
-                    ],
+                    crumbs: [mockData['content-types'].crumb, mockData['content-types-create'].crumb],
                     parentMenuLabel: 'Types & Tags'
                 });
             }
@@ -208,82 +182,50 @@ fdescribe('CrumbTrailService', () => {
         expect(countCalled).toBe(2);
     });
 
-   /*it('should create a crumb trail when push is call twice with completly disjoin url', () => {
+   it('should create a crumb trail when push is call twice with completly disjoin url', () => {
         let countCalled = 0;
-        crumbTrailService.push('/content-types');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
             countCalled++;
 
             if (countCalled === 1) {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    }
-                ]);
+                expect(crumbTrail).toEqual({
+                    crumbs: [mockData['content-types'].crumb],
+                    parentMenuLabel: 'Types & Tags'
+                });
             } else {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    },
-                    {
-                        label: 'Categories',
-                        url: '/dotAdmin/#/categories'
-                    }
-                ]);
+                expect(crumbTrail).toEqual({
+                    crumbs: [mockData['content-types'].crumb, mockData['categories'].crumb],
+                    parentMenuLabel: 'Types & Tags'
+                });
             }
         });
 
-        crumbTrailService.push('/categories');
-        expect(countCalled).toBe(2);
-    });
+        crumbTrailService.activatedRoute = mockData['categories'];
+        router.trigger(new NavigationEnd(1, mockData['categories'].state.url, mockData['categories'].state.url));
 
-    it('should clean the crumb trails and set url', () => {
-        let countCalled = 0;
-        crumbTrailService.push('/content-types');
-
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
-            countCalled++;
-
-            if (countCalled === 1) {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    }
-                ]);
-            } else {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Categories',
-                        url: '/dotAdmin/#/categories'
-                    }
-                ]);
-            }
-        });
-
-        crumbTrailService.clean('/categories');
         expect(countCalled).toBe(2);
     });
 
     it('should clean the crumb trails', () => {
         let countCalled = 0;
-        crumbTrailService.push('/content-types');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
             countCalled++;
 
             if (countCalled === 1) {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    }
-                ]);
+                expect(crumbTrail).toEqual({
+                    crumbs: [mockData['content-types'].crumb],
+                    parentMenuLabel: 'Types & Tags'
+                });
             } else {
-                expect(crumbTrails).toEqual([]);
+                expect(crumbTrail).toEqual({
+                    crumbs: []
+                });
             }
         });
 
@@ -291,86 +233,49 @@ fdescribe('CrumbTrailService', () => {
         expect(countCalled).toBe(2);
     });
 
-    it('should no crash if url not init with /', (done) => {
-        crumbTrailService.push('content-types');
-
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
-            expect(crumbTrails).toEqual([
-                {
-                    label: 'Content Types',
-                    url: 'content-types'
-                }
-            ]);
-
-            done();
-        });
-    });
-
-    it('should no crash if url not init with / and contain c', (done) => {
-        crumbTrailService.push('c/content-types');
-
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
-            expect(crumbTrails).toEqual([
-                {
-                    label: 'C Content Types',
-                    url: 'c/content-types'
-                }
-            ]);
-            done();
-        });
-    });
-
     it('should ignore push when url is equal to lastUrl', () => {
         let countCalled = 0;
 
-        crumbTrailService.push('/content-types');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
             countCalled++;
-            expect(crumbTrails).toEqual([
-                {
-                    label: 'Content Types',
-                    url: '/dotAdmin/#/content-types'
-                }
-            ]);
+
+            expect(crumbTrail).toEqual({
+                crumbs: [mockData['content-types'].crumb],
+                parentMenuLabel: 'Types & Tags'
+            });
         });
 
-        crumbTrailService.push('/content-types');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
         expect(countCalled).toBe(1);
     });
 
-    it('should not look for label when the label is pass', (done) => {
-        crumbTrailService.push('/content-types', 'Types');
+    fit('should ignore query params for label', (done) => {
+        crumbTrailService.activatedRoute = mockData['edit-page'];
+        router.trigger(new NavigationEnd(1, mockData['edit-page'].state.url, mockData['edit-page'].state.url));
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
-            expect(crumbTrails).toEqual([
-                {
-                    label: 'Types',
-                    url: '/dotAdmin/#/content-types'
-                }
-            ]);
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            console.log('crumbTrail', crumbTrail);
+
+            expect(crumbTrail.crumbs[crumbTrail.crumbs.length - 1]).toEqual(mockData['edit-page'].crumb);
 
             done();
         });
     });
 
-    it('should ignore query params for label', (done) => {
-        crumbTrailService.push('/edit-page/content?url=%2Findex&language_id=1');
+    it('should create all the crum trail at once', () => {
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
-            expect(crumbTrails).toEqual([
-                {
-                    label: 'Edit Page Content',
-                    url: '/dotAdmin/#/edit-page/content?url=%2Findex&language_id=1'
-                }
-            ]);
-
-            done();
-        });
     });
 
-    it('should come back to previous state', () => {
+    it('should create all the edit-page crumb trail', () => {
+
+    });
+
+    /*it('should come back to previous state', () => {
         let countCalled = 0;
 
         crumbTrailService.push('/test');
