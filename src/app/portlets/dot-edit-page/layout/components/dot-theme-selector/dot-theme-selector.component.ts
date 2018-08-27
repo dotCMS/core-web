@@ -28,8 +28,8 @@ export class DotThemeSelectorComponent implements OnInit {
     @ViewChild('searchInput') searchInput: ElementRef;
     @ViewChild('dataGrid') datagrid: DataGrid;
 
-    closeDialogAction: DotDialogAction;
-    applyDialogAction: DotDialogAction;
+    closeDialogAction: DotDialogAction = { label: '', action: () => {} };
+    applyDialogAction: DotDialogAction = { label: '', action: () => {} };
     current: DotTheme;
 
     constructor(public dotMessageService: DotMessageService, public paginatorService: PaginatorService, private siteService: SiteService) {}
