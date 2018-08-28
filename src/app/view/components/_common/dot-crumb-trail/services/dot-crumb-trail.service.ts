@@ -38,11 +38,11 @@ export class CrumbTrailService {
             });
 
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-            //try {
+            try {
                 this.push(this.activatedRoute$.route, this.activatedRoute$.state);
-            /*} catch (e) {
+            } catch (e) {
                 // ignore
-            }*/
+            }
         });
     }
 
@@ -237,7 +237,7 @@ export class CrumbTrailService {
 
     private getSegmentURL(segment: Segment): string {
         return segment.paths
-            .map(path => this.getKey(path, this.URL_SEPARTOR))
+            .map(path => this.getUrlSplit(path))
             .join(this.URL_SEPARTOR);
     }
 
@@ -284,16 +284,22 @@ export class CrumbTrailService {
 
     private getMessageKey(paths: ActivatedRouteSnapshot[]): string {
         return paths
-            .map(path => this.getKey(path, this.KEY_SEPARTOR))
+            .map(path => this.getKey(path))
             .filter(key => key && key.length)
             .join(this.KEY_SEPARTOR);
     }
 
-    private getKey(path: ActivatedRouteSnapshot, separator: string): string {
+    private getKey(path: ActivatedRouteSnapshot): string {
         return path.routeConfig.path.split('/')
             .map(pathSplit => pathSplit.startsWith(':') ? path.params[pathSplit.substr(1)] : pathSplit)
             .filter(key => !this.isId(key))
-            .join(separator);
+            .join(this.KEY_SEPARTOR);
+    }
+
+    private getUrlSplit(path: ActivatedRouteSnapshot): string {
+        return path.routeConfig.path.split('/')
+            .map(pathSplit => pathSplit.startsWith(':') ? path.params[pathSplit.substr(1)] : pathSplit)
+            .join(this.URL_SEPARTOR);
     }
 
     private getDataId(paths: ActivatedRouteSnapshot[]): string {

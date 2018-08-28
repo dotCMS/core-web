@@ -43,6 +43,13 @@ class MockLoginService {
     get auth$(): Observable<Auth> {
         return this.auth.asObservable();
     }
+
+    tiggerLogOut(): void {
+        this.auth.next({
+            user: null,
+            loginAsUser: null
+        });
+    }
 }
 
 @Injectable()
@@ -69,19 +76,23 @@ class MockRouter {
     }
 }
 
-fdescribe('CrumbTrailService', () => {
+describe('CrumbTrailService', () => {
     let crumbTrailService: CrumbTrailService;
     let router;
+    let mockLoginService;
 
     const messageServiceMock = new MockDotMessageService({
         'content-types': 'Content Types',
         'categories': 'Categories',
         'create-content': 'Create Content',
         'edit-page-content': 'Edit Page Content',
+        'edit': 'Edit',
+        'edit-page': 'Edit Page',
     });
 
     beforeEach(() => {
         router = new MockRouter();
+        mockLoginService = new MockLoginService();
 
         TestBed.configureTestingModule({
             providers: [
@@ -91,16 +102,16 @@ fdescribe('CrumbTrailService', () => {
                     useValue: messageServiceMock
                 },
                 {
-                    provide: LoginService,
-                    useClass: MockLoginService
-                },
-                {
                     provide: DotMenuService,
                     useClass: MockMenuService
                 },
                 {
                     provide: Router,
                     useValue: router
+                },
+                {
+                    provide: LoginService,
+                    useValue: mockLoginService
                 }
             ]
         });
@@ -254,74 +265,134 @@ fdescribe('CrumbTrailService', () => {
         expect(countCalled).toBe(1);
     });
 
-    fit('should ignore query params for label', (done) => {
+    it('should ignore query params for label', (done) => {
         crumbTrailService.activatedRoute = mockData['edit-page'];
         router.trigger(new NavigationEnd(1, mockData['edit-page'].state.url, mockData['edit-page'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            console.log('crumbTrail', crumbTrail);
-
             expect(crumbTrail.crumbs[crumbTrail.crumbs.length - 1]).toEqual(mockData['edit-page'].crumb);
 
             done();
         });
     });
 
-    it('should create all the crum trail at once', () => {
+    it('should create all the crum trail at once', (done) => {
+        crumbTrailService.activatedRoute = mockData['content-types-create'];
+        router.trigger(new NavigationEnd(2, mockData['content-types-create'].state.url, mockData['content-types-create'].state.url));
 
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            expect(crumbTrail).toEqual({
+                crumbs: [mockData['content-types'].crumb, mockData['content-types-create'].crumb],
+                parentMenuLabel: 'Types & Tags'
+            });
+
+            done();
+        });
     });
 
-    it('should create all the edit-page crumb trail', () => {
+    it('should create all the edit-page crumb trail', (done) => {
+        crumbTrailService.activatedRoute = mockData['edit-page'];
+        router.trigger(new NavigationEnd(1, mockData['edit-page'].state.url, mockData['edit-page'].state.url));
 
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            expect(crumbTrail).toEqual({
+                crumbs: [
+                    {
+                        label: 'Site Browser',
+                        messageKey: 'site-browser',
+                        url: '/dotAdmin/#/c/site-browser'
+                    },
+                    mockData['edit-page'].crumb
+                ],
+                parentMenuLabel: 'Site'
+            });
+
+            done();
+        });
     });
 
-    /*it('should come back to previous state', () => {
+    it('should come back to previous state', () => {
         let countCalled = 0;
 
-        crumbTrailService.push('/test');
-        crumbTrailService.push('/content-types');
-        crumbTrailService.push('/content-types/create/content');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-        crumbTrailService.crumbTrails.subscribe((crumbTrails: CrumbTrail[]) => {
+        crumbTrailService.activatedRoute = mockData['content-types-create'];
+        router.trigger(new NavigationEnd(2, mockData['content-types-create'].state.url, mockData['content-types-create'].state.url));
+
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
             countCalled++;
-            console.log('crumbTrails', crumbTrails);
+
             if (countCalled === 1) {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Test',
-                        url: '/dotAdmin/#/test'
-                    },
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    },
-                    {
-                        label: 'Create Content',
-                        url: '/dotAdmin/#/content-types/create/content'
-                    }
-                ]);
+                expect(crumbTrail).toEqual({
+                    crumbs: [mockData['content-types'].crumb, mockData['content-types-create'].crumb],
+                    parentMenuLabel: 'Types & Tags'
+                });
             } else {
-                expect(crumbTrails).toEqual([
-                    {
-                        label: 'Test',
-                        url: '/dotAdmin/#/test'
-                    },
-                    {
-                        label: 'Content Types',
-                        url: '/dotAdmin/#/content-types'
-                    }
-                ]);
+                expect(crumbTrail).toEqual({
+                    crumbs: [mockData['content-types'].crumb],
+                    parentMenuLabel: 'Types & Tags'
+                });
             }
 
         });
 
-        crumbTrailService.push('/content-types');
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
+
         expect(countCalled).toBe(2);
-    });*/
+    });
 
-    // it('should clean when logout', () => {});
+    it('should clean when logout', (done) => {
+        crumbTrailService.activatedRoute = mockData['content-types'];
+        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-    // it('should change id url param to data name', () => {});
+        mockLoginService.tiggerLogOut();
 
-    // it('should exclude from crumb trail', () => {});
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            expect(crumbTrail).toEqual({
+                crumbs: []
+            });
+
+            done();
+        });
+    });
+
+    it('should change id url param to data name', (done) => {
+        crumbTrailService.activatedRoute = mockData['edit-content-type'];
+        router.trigger(new NavigationEnd(1, mockData['edit-content-type'].state.url, mockData['edit-content-type'].state.url));
+
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            expect(crumbTrail).toEqual({
+                crumbs: [
+                    mockData['content-types'].crumb,
+                    mockData['edit-content-type'].crumb
+                ],
+                parentMenuLabel: 'Types & Tags'
+            });
+
+            done();
+        });
+    });
+
+    it('should exclude from crumb trail', (done) => {
+        crumbTrailService.activatedRoute = mockData[ 'page-layout'];
+        router.trigger(new NavigationEnd(1, mockData['page-layout'].state.url, mockData[ 'page-layout'].state.url));
+
+        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
+            expect(crumbTrail).toEqual({
+                crumbs: [
+                    {
+                        label: 'Site Browser',
+                        messageKey: 'site-browser',
+                        url: '/dotAdmin/#/c/site-browser'
+                    },
+                    mockData['page-layout'].crumb
+                ],
+                parentMenuLabel: 'Site'
+            });
+
+            done();
+        });
+    });
 });
