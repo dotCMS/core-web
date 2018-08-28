@@ -12,7 +12,7 @@ export class DotCrumbTrailComponent {
 
     constructor(private crumbTrailService: CrumbTrailService, private sanitizer: DomSanitizer) {
         this.crumbTrailService.crumbTrail.subscribe(crumsTrail => {
-            this.crumbs = crumsTrail.crumbs.map((crumb) => {
+            this.crumbs = crumsTrail.crumbs.map((crumb: DotCrumb) => {
                 return {
                     label: crumb.label,
                     url: crumb.queryParams ? this.getUrlWithQueryParams(crumb) : crumb.url
