@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operators';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { DotMenu } from '../../../shared/models/navigation';
@@ -12,7 +13,7 @@ import { DotNavigationService } from './services/dot-navigation.service';
                 'expanded',
                 style({
                     height: '*',
-                    overflow: 'visible'
+                    overflow: 'hidden'
                 })
             ),
             state(
@@ -31,12 +32,14 @@ import { DotNavigationService } from './services/dot-navigation.service';
     templateUrl: 'dot-navigation.component.html'
 })
 export class DotNavigationComponent implements OnInit {
-    menu: Observable<DotMenu[]>;
+    menu: DotMenu[];
 
     constructor(private dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
-        this.menu = this.dotNavigationService.items$;
+        this.dotNavigationService.items$.pipe(take(1)).subscribe((menu: DotMenu[]) => {
+            this.menu = menu;
+        });
     }
 
     /**
@@ -62,5 +65,12 @@ export class DotNavigationComponent implements OnInit {
      */
     isActive(id: string) {
         return this.dotNavigationService.isActive(id);
+    }
+
+    expand(currentItem: DotMenu): void {
+        this.menu = this.menu.map((item: DotMenu) => {
+            item.isOpen = currentItem.id === item.id;
+            return item;
+        });
     }
 }

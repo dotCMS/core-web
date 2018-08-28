@@ -19,23 +19,33 @@ ul {
     min-height: $nav-item-min-height;
 }
 
-.dot-nav__item-label {
-    cursor: pointer;
-    padding: 0 $basic-padding * 3;
+.dot-nav {
+    &__item-label {
+        cursor: pointer;
+        padding: 0 $basic-padding 0 $basic-padding * 3;
 
-    dot-nav-icon {
-        margin-right: $basic-padding;
+        dot-nav-icon {
+            margin-right: $basic-padding;
+        }
+
+        dot-icon {
+            margin-left: auto;
+        }
+    }
+
+    &__item {
+        &--active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
 }
 
-.dot-nav__item-label--active {
-    background-color: $brand-primary;
-}
-
-.dot-nav-sub__link {
-    padding: 0 $basic-padding 0 46px;
-}
-
 .dot-nav-sub {
-    background-color: rgba(255, 255, 255, 0.1);
+    &__link {
+        padding: 0 $basic-padding 0 46px;
+
+        &--active {
+            background-color: $brand-primary
+        }
+    }
 }
