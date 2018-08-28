@@ -31,16 +31,6 @@ import { DotContentletEditorService } from '../../../view/components/dot-content
 import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
 
-export interface DotReorderMenu {
-    cmd: string;
-    depth: string;
-    hostId: string;
-    pagePath: string;
-    referer: string;
-    startLevel: string;
-    url: string;
-}
-
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
  *
@@ -55,8 +45,7 @@ export interface DotReorderMenu {
     styleUrls: ['./dot-edit-content.component.scss']
 })
 export class DotEditContentComponent implements OnInit, OnDestroy {
-    @ViewChild('iframe')
-    iframe: ElementRef;
+    @ViewChild('iframe') iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
     pageState: DotRenderedPageState;
@@ -101,11 +90,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'in-iframe': () => {
                     this.reload();
                 },
-                'reorder-menu': (reorderMenu: DotReorderMenu) => {
-                    this.reorderMenuUrl = [
-                        `${reorderMenu.url}&startLevel=${reorderMenu.startLevel}&depth=${reorderMenu.depth}`,
-                        `&pagePath=${reorderMenu.pagePath}&hostId=${reorderMenu.hostId}`
-                    ].join('');
+                'reorder-menu': (reorderMenuUrl: string) => {
+                    this.reorderMenuUrl = reorderMenuUrl;
                 },
                 'save-menu-order': () => {
                     this.reorderMenuUrl = '';
