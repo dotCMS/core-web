@@ -16,6 +16,8 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
 import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
+import { catchError } from 'rxjs/operators';
+import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 
 /**
  * List of Content Types
@@ -70,7 +72,8 @@ export class ContentTypesPortletComponent implements OnInit {
         private router: Router,
         public dotMessageService: DotMessageService,
         private pushPublishService: PushPublishService,
-        private dotLicenseService: DotLicenseService
+        private dotLicenseService: DotLicenseService,
+        private httpErrorManagerService: DotHttpErrorManagerService,
     ) {}
 
     ngOnInit() {
@@ -225,9 +228,13 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private removeContentType(item): void {
-        this.crudService.delete(`v1/contenttype/id`, item.id).subscribe(() => {
-            this.listing.loadCurrentPage();
-        });
+        this.crudService.delete(`v1/contenttype/id`, item.id)
+            .pipe(
+                catchError((error) => this.httpErrorManagerService.handle(error))
+            )
+            .subscribe(() => {
+                this.listing.loadCurrentPage();
+            });
     }
 
     private pushPublishContentType(item: any) {
