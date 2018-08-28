@@ -36,10 +36,6 @@ export class DotNavigationComponent implements OnInit {
         event.stopPropagation();
         if (!this.isMetaKeyPress(event)) {
             this.dotNavigationService.reloadCurrentPortlet(menuId);
-
-            if (this.dotRouterService.currentPortlet.id !== menuId) {
-                this.crumbTrailService.clean();
-            }
         }
     }
 

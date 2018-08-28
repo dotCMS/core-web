@@ -38,9 +38,6 @@ describe('CrumbTrailsGuardService', () => {
         mockRouterStateSnapshot.url = '/test/test';
         crumbTrailsGuardService.canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
 
-        expect(crumbTrailService.activatedRoute).toEqual({
-            route: mockActivatedRouteSnapshot,
-            state: mockRouterStateSnapshot
-        });
+        expect(crumbTrailService.activatedRoute).toEqual(mockActivatedRouteSnapshot);
     });
 });

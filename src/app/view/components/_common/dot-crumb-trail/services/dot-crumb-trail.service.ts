@@ -15,134 +15,54 @@ export class CrumbTrailService {
     private KEY_SEPARTOR = '-';
     private LEGACY_PORLET_PREFIX = 'c';
 
-    private lastURL: string;
     private crumbTrail$:  BehaviorSubject<DotCrumbTrail> = new BehaviorSubject({
         crumbs: []
     });
 
-    private activatedRoute$: ActivateRouteState;
+    private activatedRoute$: ActivatedRouteSnapshot;
 
     constructor(
         private dotMessageService: DotMessageService,
-        private loginService: LoginService,
         private dotMenuService: DotMenuService,
         private router: Router
     ) {
 
-        this.loginService.auth$
-            .pipe(
-                filter((auth: Auth) => !auth.user)
-            )
-            .subscribe(() => {
-                this.clean();
-            });
-
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-            try {
-                this.push(this.activatedRoute$.route, this.activatedRoute$.state);
-            } catch (e) {
-                // ignore
-            }
+            this.push(this.activatedRoute$);
         });
     }
 
-    set activatedRoute(activatedRoute: ActivateRouteState) {
+    set activatedRoute(activatedRoute: ActivatedRouteSnapshot) {
         this.activatedRoute$ = activatedRoute;
-    }
-
-    public clean(): void {
-        this.crumbTrail$.next({
-            crumbs: []
-        });
-
-        this.lastURL = null;
     }
 
     get crumbTrail(): Observable<DotCrumbTrail> {
         return this.crumbTrail$.asObservable();
     }
 
-    private push(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): void {
-        const absoluteUrl = this.removeQueryParams(this.getAbsoluteURL(state));
+    private push(route: ActivatedRouteSnapshot): void {
 
-        if (this.lastURL === absoluteUrl) {
-            throw new Error('Url already pushed');
-        }
-
-        if (this.isPreviousCrumbTrail(absoluteUrl)) {
-            this.comeBackTo(absoluteUrl);
-        } else {
-            this.pushRoute(route);
-        }
-
-        this.lastURL = absoluteUrl;
-    }
-
-    private removeQueryParams(url: string): string {
-        const queryParamsIndex = url.indexOf('?');
-        return queryParamsIndex === -1 ? url : url.substr(0, queryParamsIndex);
-    }
-
-    private isPreviousCrumbTrail(url: string): boolean {
-        return this.crumbTrail$.getValue().crumbs.some(crumbTrail => crumbTrail.url === url);
-    }
-
-    private getAbsoluteURL(state: RouterStateSnapshot): string {
-        return this.BASE_PATH + state.url;
-    }
-
-    private comeBackTo(url: string) {
-        const crumbTrails: DotCrumbTrail = this.crumbTrail$.getValue();
-
-        const index = crumbTrails.crumbs.findIndex(crumb => crumb.url === url);
-        crumbTrails.crumbs.splice(index + 1);
-        this.crumbTrail$.next(crumbTrails);
-    }
-
-    private pushRoute(route: ActivatedRouteSnapshot): void {
-
-        const crumbsTrail = this.crumbTrail$.getValue();
-        let crumbs: DotCrumb[] = this.crumbTrail$.getValue().crumbs;
-
-        if (crumbs.length) {
-            crumbs.push(this.getLastCrumb(route));
-        } else {
-            crumbs = this.getCrumbs(route);
-
-            if (!crumbs.length) {
-                throw new Error('Anything to push');
-            }
-        }
+        const crumbs = this.getCrumbs(route);
 
         this.setLabels(crumbs, route).subscribe(crumbTrailWithLabel => {
-            crumbsTrail.crumbs = crumbTrailWithLabel;
-            this.crumbTrail$.next(crumbsTrail);
+            this.crumbTrail$.next(crumbTrailWithLabel);
         });
     }
 
-    private getLastCrumb(route: ActivatedRouteSnapshot): DotCrumb {
-        const crumbs = this.getCrumbs(route);
-        const lastCrumb = crumbs.pop();
-
-        if (this.lastURL.indexOf(lastCrumb.url) !== -1) {
-            throw new Error('Url is already in trail');
-        }
-        return lastCrumb;
-    }
-
-    private setLabels(crumbs: DotCrumb[], route: ActivatedRouteSnapshot): Observable<DotCrumb[]> {
+    private setLabels(crumbs: DotCrumb[], route: ActivatedRouteSnapshot): Observable<DotCrumbTrail> {
 
         return this.getMessages(crumbs).pipe(
             switchMap((messages: Messages) => {
-                const crumbsTrail = this.crumbTrail$.getValue();
-                crumbsTrail.parentMenuLabel = messages.parentMenuLabel;
 
                 return Observable.of(
-                            crumbs.map((crumb, index) => crumb.label ? crumb : {
+                    {
+                        crumbs: crumbs.map((crumb, index) => crumb.label ? crumb : {
                                 ...crumb,
                                 label: index === 0 ? messages.menuLabel : this.getLabel(crumb, messages.messages, route.data)
-                            })
-                        );
+                            }),
+                        parentMenuLabel: messages.parentMenuLabel
+                    }
+                );
             }),
             take(1)
         );
@@ -166,11 +86,7 @@ export class CrumbTrailService {
     }
 
     private getMenuLabel(portletName: string): Observable<string> {
-        const crumbsTrail = this.crumbTrail$.getValue();
-
-        if (crumbsTrail.parentMenuLabel) {
-            return Observable.of(crumbsTrail.parentMenuLabel);
-        } else if (portletName.startsWith('edit-page')) {
+        if (portletName.startsWith('edit-page')) {
             return this.dotMenuService.getDotMenu('site-browser')
                 .map(dotMenu => dotMenu ? dotMenu.name : null);
         } else {
@@ -336,11 +252,6 @@ interface Messages {
     messages: any;
     menuLabel: string;
     parentMenuLabel: string;
-}
-
-interface ActivateRouteState {
-    route: ActivatedRouteSnapshot;
-    state: RouterStateSnapshot;
 }
 
 interface Segment {

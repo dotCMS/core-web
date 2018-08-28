@@ -37,22 +37,6 @@ const menus = {
 };
 
 @Injectable()
-class MockLoginService {
-    private auth = new Subject<Auth>();
-
-    get auth$(): Observable<Auth> {
-        return this.auth.asObservable();
-    }
-
-    tiggerLogOut(): void {
-        this.auth.next({
-            user: null,
-            loginAsUser: null
-        });
-    }
-}
-
-@Injectable()
 class MockMenuService {
     getDotMenuItem(portletId: string): Observable<DotMenuItem> {
         return Observable.of(<DotMenuItem> menuItems[portletId]);
@@ -79,7 +63,6 @@ class MockRouter {
 describe('CrumbTrailService', () => {
     let crumbTrailService: CrumbTrailService;
     let router;
-    let mockLoginService;
 
     const messageServiceMock = new MockDotMessageService({
         'content-types': 'Content Types',
@@ -92,7 +75,6 @@ describe('CrumbTrailService', () => {
 
     beforeEach(() => {
         router = new MockRouter();
-        mockLoginService = new MockLoginService();
 
         TestBed.configureTestingModule({
             providers: [
@@ -108,16 +90,11 @@ describe('CrumbTrailService', () => {
                 {
                     provide: Router,
                     useValue: router
-                },
-                {
-                    provide: LoginService,
-                    useValue: mockLoginService
                 }
             ]
         });
 
         crumbTrailService = TestBed.get(CrumbTrailService);
-        crumbTrailService.clean();
     });
 
     it('should tigger crumb trails changed event', () => {
@@ -142,7 +119,7 @@ describe('CrumbTrailService', () => {
             }
         });
 
-        crumbTrailService.activatedRoute = mockData['content-types'];
+        crumbTrailService.activatedRoute = mockData['content-types'].route;
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
         expect(countCalled).toBe(2);
     });
@@ -162,14 +139,14 @@ describe('CrumbTrailService', () => {
             }
         });
 
-        crumbTrailService.activatedRoute = mockData['categories'];
+        crumbTrailService.activatedRoute = mockData['categories'].route;
         router.trigger(new NavigationEnd(1, mockData['categories'].state.url, mockData['categories'].state.url));
         expect(countCalled).toBe(2);
     });
 
     it('should create a crumb trail when push is call twice', () => {
         let countCalled = 0;
-        crumbTrailService.activatedRoute = mockData['content-types'];
+        crumbTrailService.activatedRoute = mockData['content-types'].route;
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -188,14 +165,14 @@ describe('CrumbTrailService', () => {
             }
         });
 
-        crumbTrailService.activatedRoute = mockData['content-types-create'];
+        crumbTrailService.activatedRoute = mockData['content-types-create'].route;
         router.trigger(new NavigationEnd(2, mockData['content-types-create'].state.url, mockData['content-types-create'].state.url));
         expect(countCalled).toBe(2);
     });
 
    it('should create a crumb trail when push is call twice with completly disjoin url', () => {
         let countCalled = 0;
-        crumbTrailService.activatedRoute = mockData['content-types'];
+        crumbTrailService.activatedRoute = mockData['content-types'].route;
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -208,65 +185,20 @@ describe('CrumbTrailService', () => {
                 });
             } else {
                 expect(crumbTrail).toEqual({
-                    crumbs: [mockData['content-types'].crumb, mockData['categories'].crumb],
+                    crumbs: [mockData['categories'].crumb],
                     parentMenuLabel: 'Types & Tags'
                 });
             }
         });
 
-        crumbTrailService.activatedRoute = mockData['categories'];
+        crumbTrailService.activatedRoute = mockData['categories'].route;
         router.trigger(new NavigationEnd(1, mockData['categories'].state.url, mockData['categories'].state.url));
 
         expect(countCalled).toBe(2);
     });
 
-    it('should clean the crumb trails', () => {
-        let countCalled = 0;
-        crumbTrailService.activatedRoute = mockData['content-types'];
-        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
-
-        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            countCalled++;
-
-            if (countCalled === 1) {
-                expect(crumbTrail).toEqual({
-                    crumbs: [mockData['content-types'].crumb],
-                    parentMenuLabel: 'Types & Tags'
-                });
-            } else {
-                expect(crumbTrail).toEqual({
-                    crumbs: []
-                });
-            }
-        });
-
-        crumbTrailService.clean();
-        expect(countCalled).toBe(2);
-    });
-
-    it('should ignore push when url is equal to lastUrl', () => {
-        let countCalled = 0;
-
-        crumbTrailService.activatedRoute = mockData['content-types'];
-        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
-
-        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            countCalled++;
-
-            expect(crumbTrail).toEqual({
-                crumbs: [mockData['content-types'].crumb],
-                parentMenuLabel: 'Types & Tags'
-            });
-        });
-
-        crumbTrailService.activatedRoute = mockData['content-types'];
-        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
-
-        expect(countCalled).toBe(1);
-    });
-
     it('should ignore query params for label', (done) => {
-        crumbTrailService.activatedRoute = mockData['edit-page'];
+        crumbTrailService.activatedRoute = mockData['edit-page'].route;
         router.trigger(new NavigationEnd(1, mockData['edit-page'].state.url, mockData['edit-page'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -277,7 +209,7 @@ describe('CrumbTrailService', () => {
     });
 
     it('should create all the crum trail at once', (done) => {
-        crumbTrailService.activatedRoute = mockData['content-types-create'];
+        crumbTrailService.activatedRoute = mockData['content-types-create'].route;
         router.trigger(new NavigationEnd(2, mockData['content-types-create'].state.url, mockData['content-types-create'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -291,7 +223,7 @@ describe('CrumbTrailService', () => {
     });
 
     it('should create all the edit-page crumb trail', (done) => {
-        crumbTrailService.activatedRoute = mockData['edit-page'];
+        crumbTrailService.activatedRoute = mockData['edit-page'].route;
         router.trigger(new NavigationEnd(1, mockData['edit-page'].state.url, mockData['edit-page'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -314,10 +246,10 @@ describe('CrumbTrailService', () => {
     it('should come back to previous state', () => {
         let countCalled = 0;
 
-        crumbTrailService.activatedRoute = mockData['content-types'];
+        crumbTrailService.activatedRoute = mockData['content-types'].route;
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
-        crumbTrailService.activatedRoute = mockData['content-types-create'];
+        crumbTrailService.activatedRoute = mockData['content-types-create'].route;
         router.trigger(new NavigationEnd(2, mockData['content-types-create'].state.url, mockData['content-types-create'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -337,29 +269,14 @@ describe('CrumbTrailService', () => {
 
         });
 
-        crumbTrailService.activatedRoute = mockData['content-types'];
+        crumbTrailService.activatedRoute = mockData['content-types'].route;
         router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
 
         expect(countCalled).toBe(2);
     });
 
-    it('should clean when logout', (done) => {
-        crumbTrailService.activatedRoute = mockData['content-types'];
-        router.trigger(new NavigationEnd(1, mockData['content-types'].state.url, mockData['content-types'].state.url));
-
-        mockLoginService.tiggerLogOut();
-
-        crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
-            expect(crumbTrail).toEqual({
-                crumbs: []
-            });
-
-            done();
-        });
-    });
-
     it('should change id url param to data name', (done) => {
-        crumbTrailService.activatedRoute = mockData['edit-content-type'];
+        crumbTrailService.activatedRoute = mockData['edit-content-type'].route;
         router.trigger(new NavigationEnd(1, mockData['edit-content-type'].state.url, mockData['edit-content-type'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
@@ -376,7 +293,7 @@ describe('CrumbTrailService', () => {
     });
 
     it('should exclude from crumb trail', (done) => {
-        crumbTrailService.activatedRoute = mockData[ 'page-layout'];
+        crumbTrailService.activatedRoute = mockData[ 'page-layout'].route;
         router.trigger(new NavigationEnd(1, mockData['page-layout'].state.url, mockData[ 'page-layout'].state.url));
 
         crumbTrailService.crumbTrail.subscribe((crumbTrail: DotCrumbTrail) => {
