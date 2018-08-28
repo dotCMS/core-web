@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operators';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -31,10 +31,21 @@ import { DotNavigationService } from './services/dot-navigation.service';
     styleUrls: ['./dot-navigation.component.scss'],
     templateUrl: 'dot-navigation.component.html'
 })
-export class DotNavigationComponent implements OnInit {
+export class DotNavigationComponent implements OnInit, OnChanges {
+    @Input() collapsed = false;
+    @Output() change = new EventEmitter<boolean>();
     menu: DotMenu[];
 
     constructor(private dotNavigationService: DotNavigationService) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.collapsed.currentValue) {
+            this.menu = this.menu.map((item: DotMenu) => {
+                item.isOpen = false;
+                return item;
+            });
+        }
+    }
 
     ngOnInit() {
         this.dotNavigationService.items$.pipe(take(1)).subscribe((menu: DotMenu[]) => {
@@ -67,9 +78,23 @@ export class DotNavigationComponent implements OnInit {
         return this.dotNavigationService.isActive(id);
     }
 
+    /**
+     * Set isOpen to the passed DotMenu item
+     *
+     * @param {DotMenu} currentItem
+     * @memberof DotNavigationComponent
+     */
     expand(currentItem: DotMenu): void {
+        this.change.emit();
+
         this.menu = this.menu.map((item: DotMenu) => {
             item.isOpen = currentItem.id === item.id;
+            item.active = item.isOpen;
+
+            // if (currentItem.id === item.id) {
+            //     item.isOpen = !item.isOpen;
+            // }
+
             return item;
         });
     }

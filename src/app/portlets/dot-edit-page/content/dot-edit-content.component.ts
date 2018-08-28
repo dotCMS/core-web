@@ -371,11 +371,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private renderPage(pageState: DotRenderedPageState): void {
-        if (this.shouldEditMode(pageState)) {
-            this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-        } else {
-            this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
-        }
+        this.showIframe = false;
+
+        setTimeout(() => {
+            this.showIframe = true;
+
+            if (this.shouldEditMode(pageState)) {
+                this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+            } else {
+                this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
+            }
+        }, 0);
     }
 
     private subscribeIframeActions(): void {

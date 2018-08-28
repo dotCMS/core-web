@@ -55,6 +55,13 @@ export class MainComponentLegacyComponent implements OnInit {
         this.setMenuState();
     }
 
+    handleMenuChange(): void {
+        if (this.isMenuCollapsed) {
+            this.isMenuCollapsed = false;
+            this.dotEventsService.notify('dot-side-nav-toggle');
+        }
+    }
+
     /**
      * Reload content search iframe when contentlet editor close
      *

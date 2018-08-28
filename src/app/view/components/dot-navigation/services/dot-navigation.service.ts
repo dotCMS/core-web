@@ -125,6 +125,7 @@ export class DotNavigationService {
                 menuItem.menuLink = menuItem.angular ? menuItem.url : this.getMenuLink(menuItem.id);
                 menuGroup.isOpen =
                     menuGroup.isOpen || this.isFirstMenuActive(currentUrl, menuIndex) || this.isMenuItemCurrentUrl(currentUrl, menuItem.id);
+                menuGroup.active = menuGroup.isOpen;
             });
             return menuGroup;
         });

@@ -1,18 +1,25 @@
 @import "mixins";
 @import "variables";
+@import "primeng-theme/utils/theme-variables";
 
 $nav-item-min-height: 48px;
 
-:host, a {
+:host,
+a {
     color: $white;
     text-decoration: none;
+}
+
+nav {
+    transition: width $basic-speed ease;
+    width: 200px;
 }
 
 ul {
     @include naked-list;
 }
 
-.dot-nav__item-label,
+.dot-nav__item,
 .dot-nav-sub__link {
     align-items: center;
     display: flex;
@@ -20,23 +27,34 @@ ul {
 }
 
 .dot-nav {
-    &__item-label {
+    &__item {
         cursor: pointer;
-        padding: 0 $basic-padding 0 $basic-padding * 3;
+        padding: 0 $basic-padding 0 23px; // Centered when the menu is collapsed
+        transition: background-color $basic-speed ease $basic-speed;
+        position: relative;
 
         dot-nav-icon {
-            margin-right: $basic-padding;
+            display: flex;
         }
 
         dot-icon {
             margin-left: auto;
         }
-    }
 
-    &__item {
         &--active {
             background-color: rgba(255, 255, 255, 0.1);
         }
+    }
+
+    &__item-label {
+        position: absolute;
+        left: 56px;
+        white-space: nowrap;
+    }
+
+    dot-icon,
+    &__item-label {
+        transition: opacity $basic-speed ease;
     }
 }
 
@@ -45,7 +63,20 @@ ul {
         padding: 0 $basic-padding 0 46px;
 
         &--active {
-            background-color: $brand-primary
+            background-color: $brand-primary;
         }
+    }
+}
+
+.collapsed {
+    width: 70px;
+
+    dot-icon,
+    .dot-nav__item-label {
+        opacity: 0;
+    }
+
+    .dot-nav__item--active {
+        background-color: $brand-primary;
     }
 }

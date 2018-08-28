@@ -1,9 +1,9 @@
-<nav>
+<nav [class.collapsed]="collapsed">
     <ul class="dot-nav">
-        <li *ngFor="let item of menu" class="dot-nav__item" [class.dot-nav__item--active]="item.isOpen">
-            <div class="dot-nav__item-label" (click)="expand(item)">
+        <li *ngFor="let item of menu">
+            <div class="dot-nav__item" (click)="expand(item)" [class.dot-nav__item--active]="item.active">
                 <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
-                {{item.tabName}}
+                <span class="dot-nav__item-label">{{item.tabName}}</span>
                 <dot-icon
                     name="{{item.isOpen ? 'arrow_drop_down' : 'arrow_drop_up'}}"
                     aria-hidden="true">
@@ -18,5 +18,4 @@
             </ul>
         </li>
     </ul>
-
 </nav>
