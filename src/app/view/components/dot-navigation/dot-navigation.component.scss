@@ -28,6 +28,11 @@ ul {
 }
 
 .dot-nav {
+    &__item,
+    &__item-wrapper {
+        transition: background-color $basic-speed ease $basic-speed;
+    }
+
     &__item {
         position: relative;
 
@@ -47,7 +52,6 @@ ul {
     &__item-wrapper {
         cursor: pointer;
         padding: 0 $basic-padding 0 23px; // Centered when the menu is collapsed
-        transition: background-color $basic-speed ease $basic-speed;
     }
 
     &__item-label {

@@ -78,16 +78,22 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {DotMenu} currentItem
      * @memberof DotNavigationComponent
      */
-    expand(menu: DotMenu): void {
+    onMenuClick(menu: DotMenu): void {
+        this.change.emit();
+
         if (this.collapsed) {
             this.dotNavigationService.goTo(menu.menuItems[0].menuLink);
         }
-        this.change.emit();
 
         this.menu = this.menu.map((item: DotMenu) => {
-            item.isOpen = menu.id === item.id;
+            if (item.isOpen) {
+                item.isOpen = false;
+            } else {
+                item.isOpen = menu.id === item.id;
+            }
             return item;
         });
+
     }
 
     private setActive(id: string) {

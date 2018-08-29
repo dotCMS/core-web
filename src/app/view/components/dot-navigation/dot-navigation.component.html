@@ -1,7 +1,7 @@
 <nav [class.collapsed]="collapsed">
     <ul class="dot-nav">
         <li *ngFor="let item of menu" class="dot-nav__item" [class.dot-nav__item--active]="item.isOpen">
-            <div class="dot-nav__item-wrapper" (click)="expand(item)" [class.dot-nav__item-wrapper--active]="item.active">
+            <div class="dot-nav__item-wrapper" (click)="onMenuClick(item)" [class.dot-nav__item-wrapper--active]="item.active">
                 <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
                 <span class="dot-nav__item-label">{{item.tabName}}</span>
                 <dot-icon
