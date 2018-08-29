@@ -229,12 +229,11 @@ export class ContentTypesPortletComponent implements OnInit {
 
     private removeContentType(item): void {
         this.crudService.delete(`v1/contenttype/id`, item.id)
-            .pipe(
-                catchError((error) => this.httpErrorManagerService.handle(error))
-            )
             .subscribe(() => {
                 this.listing.loadCurrentPage();
-            });
+            },
+            (error) => this.httpErrorManagerService.handle(error).subscribe()
+        );
     }
 
     private pushPublishContentType(item: any) {

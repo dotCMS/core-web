@@ -66,7 +66,6 @@ class MockPushPublishService {
 @Injectable()
 class MockDotHttpErrorManagerService {
     handle(err: ResponseView): Observable<DotHttpErrorHandled> {
-        console.log('handle');
         return Observable.of({
             redirected: false
         });
