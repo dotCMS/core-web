@@ -55,25 +55,18 @@ describe('DotCrumbTrailComponent', () => {
         expect(de.query(By.css('p-breadcrumb')) !== null).toBe(true);
     });
 
-    describe('DotCrumbTrailComponent', () => {
-        let breadcrumb;
+    it('should update p-breadcrumb model', () => {
+        fixture.detectChanges();
+        const breadcrumb = de.query(By.css('p-breadcrumb'));
 
-        beforeEach(() => {
-            breadcrumb = de.query(By.css('p-breadcrumb'));
-        });
-
-        it('should update p-breadcrumb model', () => {
-            fixture.detectChanges();
-
-            expect(breadcrumb.componentInstance.model).toEqual([
-                {
-                    label: 'menu'
-                },
-                {
-                    label: 'crumbTrail_1',
-                    url: '/test?a=b'
-                }
-            ]);
-        });
+        expect(breadcrumb.componentInstance.model).toEqual([
+            {
+                label: 'menu'
+            },
+            {
+                label: 'crumbTrail_1',
+                url: '/test?a=b'
+            }
+        ]);
     });
 });

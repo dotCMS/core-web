@@ -82,12 +82,20 @@ export class DotMenuService {
             .map((menu: DotMenu) => menu.id);
     }
 
+    /**
+     * Return the parent menu of a portlet
+     * @param portletId MenuItems id
+     */
     getDotMenu(portletId: string): Observable<DotMenu> {
         return this.loadMenu()
             .flatMap((menus: DotMenu[]) => menus)
             .find((menu: DotMenu) => menu.menuItems.some((menuItem: DotMenuItem) => menuItem.id === portletId));
     }
 
+    /**
+     * Return the DotMenuItem
+     * @param portletId MenuItems id
+     */
     getDotMenuItem(portletId: string): Observable<DotMenuItem> {
         return this.loadMenu()
             .flatMap((menus: DotMenu[]) => menus)

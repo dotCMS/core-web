@@ -240,7 +240,7 @@ export const mockData = {
                 },
                 {
                     data: {
-                        excludeFromCrumbTrail: true
+                        excludeCrumbTrail: true
                     },
                     loadChildren: 'app/portlets/dot-edit-page/layout/dot-edit-layout.module#DotEditLayoutModule',
                     path: 'layout'

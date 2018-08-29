@@ -34,7 +34,7 @@ describe('CrumbTrailsGuardService', () => {
         ]);
     });
 
-    it('should push then Crumb trails', () => {
+    it('should set the activatedRoute in CrumbTrailService', () => {
         mockRouterStateSnapshot.url = '/test/test';
         crumbTrailsGuardService.canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot);
 

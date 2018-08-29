@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { take, filter, switchMap } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { LoginService, Auth } from 'dotcms-js/dotcms-js';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Data, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRouteSnapshot, Data, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { DotMenuService } from '../../../../../api/services/dot-menu.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
@@ -26,7 +25,6 @@ export class CrumbTrailService {
         private dotMenuService: DotMenuService,
         private router: Router
     ) {
-
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
             this.push(this.activatedRoute$);
         });
@@ -86,13 +84,8 @@ export class CrumbTrailService {
     }
 
     private getMenuLabel(portletName: string): Observable<string> {
-        if (portletName.startsWith('edit-page')) {
-            return this.dotMenuService.getDotMenu('site-browser')
-                .map(dotMenu => dotMenu ? dotMenu.name : null);
-        } else {
-            return this.dotMenuService.getDotMenu(portletName)
-                .map(dotMenu => dotMenu ? dotMenu.name : null);
-        }
+        return this.dotMenuService.getDotMenu(portletName.startsWith('edit-page') ? 'site-browser' : portletName)
+                    .map(dotMenu => dotMenu ? dotMenu.name : null);
     }
 
     private getPortletLabel(portletName: string, crumbs: DotCrumb[]): Observable<string> {
@@ -159,7 +152,7 @@ export class CrumbTrailService {
 
     private getSegments(route: ActivatedRouteSnapshot): Segment[] {
        const paths: ActivatedRouteSnapshot[] = route.pathFromRoot
-            .filter((path: ActivatedRouteSnapshot) => path.routeConfig && path.routeConfig.path !== '' && !path.data.excludeFromCrumbTrail);
+            .filter((path: ActivatedRouteSnapshot) => path.routeConfig && path.routeConfig.path !== '' && !path.data.excludeCrumbTrail);
         const segments: Segment[] = [{
             paths: []
         }];
