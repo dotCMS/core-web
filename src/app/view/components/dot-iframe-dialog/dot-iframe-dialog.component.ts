@@ -32,7 +32,6 @@ export class DotIframeDialogComponent implements OnChanges {
 
             // Need to wait til' the dialog is rendered
             setTimeout(() => {
-                this.header = '';
                 this.handleMaskEvents(this.show);
             }, 0);
         }
