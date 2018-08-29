@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operators';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { NavigationEnd } from '@angular/router';
 
-import { DotMenu } from '../../../shared/models/navigation';
+import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotNavigationService } from './services/dot-navigation.service';
 
 @Component({
@@ -51,6 +51,10 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         this.dotNavigationService.items$.pipe(take(1)).subscribe((menu: DotMenu[]) => {
             this.menu = menu;
         });
+
+        this.dotNavigationService.onNavigationEnd().subscribe((event: NavigationEnd) => {
+            this.setActive(event.url.split('/').pop());
+        });
     }
 
     /**
@@ -60,22 +64,12 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {string} id menu item id
      * @memberof MainNavigationComponent
      */
-    onClick(event: MouseEvent, id: string): void {
+    onClick(event: MouseEvent, menuItem: DotMenuItem): void {
         event.stopPropagation();
-        if (!event.ctrlKey && !event.metaKey) {
-            this.dotNavigationService.reloadCurrentPortlet(id);
-        }
-    }
 
-    /**
-     * Check is the portlet in the nav is active.
-     *
-     * @param {string} id
-     * @returns
-     * @memberof DotNavigationComponent
-     */
-    isActive(id: string) {
-        return this.dotNavigationService.isActive(id);
+        if (!event.ctrlKey && !event.metaKey) {
+            this.dotNavigationService.reloadCurrentPortlet(menuItem.id);
+        }
     }
 
     /**
@@ -84,18 +78,36 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {DotMenu} currentItem
      * @memberof DotNavigationComponent
      */
-    expand(currentItem: DotMenu): void {
+    expand(menu: DotMenu): void {
+        if (this.collapsed) {
+            this.dotNavigationService.goTo(menu.menuItems[0].menuLink);
+        }
         this.change.emit();
 
         this.menu = this.menu.map((item: DotMenu) => {
-            item.isOpen = currentItem.id === item.id;
-            item.active = item.isOpen;
-
-            // if (currentItem.id === item.id) {
-            //     item.isOpen = !item.isOpen;
-            // }
-
+            item.isOpen = menu.id === item.id;
             return item;
         });
+    }
+
+    private setActive(id: string) {
+        this.menu = this.menu.map((item: DotMenu) => this.isMenuActive(item, id));
+    }
+
+    private isMenuActive(menu: DotMenu, id: string): DotMenu {
+        let isActive = false;
+
+        menu.menuItems.forEach((item: DotMenuItem) => {
+            if (item.id === id) {
+                item.active = true;
+                isActive = true;
+            } else {
+                item.active = false;
+            }
+        });
+
+        menu.active = isActive;
+
+        return menu;
     }
 }

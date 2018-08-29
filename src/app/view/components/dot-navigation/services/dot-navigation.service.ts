@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { filter, mergeMap } from 'rxjs/operators';
+import { filter, mergeMap, take } from 'rxjs/operators';
 
 import { Auth } from 'dotcms-js/core/login.service';
 import { DotcmsEventsService, LoginService } from 'dotcms-js/dotcms-js';
@@ -27,8 +27,11 @@ export class DotNavigationService {
         private dotIframeService: DotIframeService,
         private router: Router
     ) {
-        this.router.events
-            .filter((event) => event instanceof NavigationEnd && !this.dotRouterService.isPublicPage())
+        this.onNavigationEnd()
+            .pipe(
+                filter(() => !this.dotRouterService.isPublicPage()),
+                take(1)
+            )
             .subscribe((_event: NavigationEnd) => {
                 this.dotMenuService.loadMenu().subscribe((menu: DotMenu[]) => {
                     this.setMenu(menu);
@@ -82,6 +85,16 @@ export class DotNavigationService {
     }
 
     /**
+     * Emit event when navigation end
+     *
+     * @returns {Observable<Event>}
+     * @memberof DotNavigationService
+     */
+    onNavigationEnd(): Observable<Event> {
+        return this.router.events.filter((event: Event) => event instanceof NavigationEnd);
+    }
+
+    /**
      * Reload current portlet
      *
      * @param {string} id
@@ -106,6 +119,10 @@ export class DotNavigationService {
         });
     }
 
+    goTo(url: string): void {
+        this.dotRouterService.gotoPortlet(url);
+    }
+
     private reloadIframePage(): void {
         if (this.router.url.indexOf('c/') > -1) {
             this.dotIframeService.reload();
@@ -126,6 +143,7 @@ export class DotNavigationService {
                 menuGroup.isOpen =
                     menuGroup.isOpen || this.isFirstMenuActive(currentUrl, menuIndex) || this.isMenuItemCurrentUrl(currentUrl, menuItem.id);
                 menuGroup.active = menuGroup.isOpen;
+                menuItem.active = this.isMenuItemCurrentUrl(currentUrl, menuItem.id);
             });
             return menuGroup;
         });

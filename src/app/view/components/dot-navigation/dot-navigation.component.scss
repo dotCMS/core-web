@@ -3,6 +3,7 @@
 @import "primeng-theme/utils/theme-variables";
 
 $nav-item-min-height: 48px;
+$nav-label-left-margin: 56px;
 
 :host,
 a {
@@ -19,7 +20,7 @@ ul {
     @include naked-list;
 }
 
-.dot-nav__item,
+.dot-nav__item-wrapper,
 .dot-nav-sub__link {
     align-items: center;
     display: flex;
@@ -28,9 +29,6 @@ ul {
 
 .dot-nav {
     &__item {
-        cursor: pointer;
-        padding: 0 $basic-padding 0 23px; // Centered when the menu is collapsed
-        transition: background-color $basic-speed ease $basic-speed;
         position: relative;
 
         dot-nav-icon {
@@ -46,9 +44,15 @@ ul {
         }
     }
 
+    &__item-wrapper {
+        cursor: pointer;
+        padding: 0 $basic-padding 0 23px; // Centered when the menu is collapsed
+        transition: background-color $basic-speed ease $basic-speed;
+    }
+
     &__item-label {
         position: absolute;
-        left: 56px;
+        left: $nav-label-left-margin;
         white-space: nowrap;
     }
 
@@ -60,7 +64,8 @@ ul {
 
 .dot-nav-sub {
     &__link {
-        padding: 0 $basic-padding 0 46px;
+        padding: 0 $basic-padding 0 $nav-label-left-margin;
+        white-space: nowrap;
 
         &--active {
             background-color: $brand-primary;
@@ -76,7 +81,7 @@ ul {
         opacity: 0;
     }
 
-    .dot-nav__item--active {
+    .dot-nav__item-wrapper--active {
         background-color: $brand-primary;
     }
 }
