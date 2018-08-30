@@ -13,6 +13,7 @@ import { async } from '@angular/core/testing';
 
 const mockMenu: DotMenu[] = [
     {
+        active: false,
         id: '123',
         name: 'Parent 1',
         tabDescription: '',
@@ -20,6 +21,7 @@ const mockMenu: DotMenu[] = [
         url: '',
         menuItems: [
             {
+                active: false,
                 ajax: true,
                 angular: true,
                 id: '',

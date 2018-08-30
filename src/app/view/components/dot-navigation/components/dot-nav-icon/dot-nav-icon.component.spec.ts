@@ -6,7 +6,7 @@ import { DotIconModule } from '../../../_common/dot-icon/dot-icon.module';
 import { DotIconComponent } from '../../../_common/dot-icon/dot-icon.component';
 import { By } from '@angular/platform-browser';
 
-fdescribe('DotNavIconComponent', () => {
+describe('DotNavIconComponent', () => {
     let comp: DotNavIconComponent;
     let fixture: ComponentFixture<DotNavIconComponent>;
     let de: DebugElement;

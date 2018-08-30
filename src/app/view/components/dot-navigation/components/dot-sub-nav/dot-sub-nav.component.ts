@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DotMenu, DotMenuItem } from '../../../../../shared/models/navigation';
 
@@ -26,14 +26,19 @@ import { DotMenu, DotMenuItem } from '../../../../../shared/models/navigation';
     templateUrl: './dot-sub-nav.component.html',
     styleUrls: ['./dot-sub-nav.component.scss']
 })
-export class DotSubNavComponent implements OnInit {
+export class DotSubNavComponent {
     @Input() data: DotMenu;
     @Output() itemClick: EventEmitter<{originalEvent: MouseEvent, data: DotMenuItem}> = new EventEmitter();
 
     constructor() {}
 
-    ngOnInit() {}
-
+    /**
+     * Handle click event in a menu sub item
+     *
+     * @param {MouseEvent} $event
+     * @param {DotMenuItem} item
+     * @memberof DotSubNavComponent
+     */
     onItemClick($event: MouseEvent, item: DotMenuItem): void {
         this.itemClick.emit({
             originalEvent: $event,
