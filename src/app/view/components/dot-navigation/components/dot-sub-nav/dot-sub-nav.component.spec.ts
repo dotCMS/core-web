@@ -5,38 +5,7 @@ import { DebugElement } from '@angular/core';
 import { DotSubNavComponent } from './dot-sub-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMenu } from '../../../../../shared/models/navigation';
-
-const mockData: DotMenu = {
-    active: true,
-    id: '123',
-    isOpen: false,
-    menuItems: [
-        {
-            active: false,
-            ajax: true,
-            angular: true,
-            id: '123',
-            label: 'Label 1',
-            url: 'url/one',
-            menuLink: 'url/link1'
-        },
-        {
-            active: true,
-            ajax: true,
-            angular: true,
-            id: '456',
-            label: 'Label 2',
-            url: 'url/two',
-            menuLink: 'url/link2'
-        }
-    ],
-    name: 'Menu',
-    tabDescription: 'Descriptuon',
-    tabIcon: 'icon',
-    tabName: 'Name',
-    url: '/url/index'
-};
+import { dotMenuMock } from '../dot-nav-item/dot-nav-item.component.spec';
 
 describe('DotSubNavComponent', () => {
     let component: DotSubNavComponent;
@@ -54,7 +23,7 @@ describe('DotSubNavComponent', () => {
         fixture = TestBed.createComponent(DotSubNavComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;
-        component.data = mockData;
+        component.data = dotMenuMock;
         fixture.detectChanges();
     });
 
@@ -90,7 +59,7 @@ describe('DotSubNavComponent', () => {
         component.itemClick.subscribe((event) => {
             expect(event).toEqual({
                 originalEvent: {hello: 'world'},
-                data: mockData.menuItems[0]
+                data: dotMenuMock.menuItems[0]
             });
         });
 
