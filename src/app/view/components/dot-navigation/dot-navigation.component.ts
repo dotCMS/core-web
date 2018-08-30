@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output, SimpleChange } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { NavigationEnd } from '@angular/router';
 
@@ -19,9 +19,9 @@ export class DotNavigationComponent implements OnInit, OnChanges {
     constructor(private dotNavigationService: DotNavigationService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.collapsed.currentValue) {
+        if (!changes.collapsed.firstChange) {
             this.menu = this.menu.map((item: DotMenu) => {
-                item.isOpen = false;
+                item.isOpen = this.shouldOpenMenuWhenUncollapse(changes.collapsed, item);
                 return item;
             });
         }
@@ -66,17 +66,9 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         }
 
         this.menu = this.menu.map((item: DotMenu) => {
-            if (item.isOpen) {
-                item.isOpen = false;
-            } else {
-                item.isOpen = event.data.id === item.id;
-            }
+            item.isOpen = item.isOpen ? false : event.data.id === item.id;
             return item;
         });
-    }
-
-    private setActive(id: string) {
-        this.menu = this.menu.map((item: DotMenu) => this.isMenuActive(item, id));
     }
 
     private isMenuActive(menu: DotMenu, id: string): DotMenu {
@@ -94,5 +86,13 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         menu.active = isActive;
 
         return menu;
+    }
+
+    private setActive(id: string) {
+        this.menu = this.menu.map((item: DotMenu) => this.isMenuActive(item, id));
+    }
+
+    private shouldOpenMenuWhenUncollapse(collapsed: SimpleChange, item: DotMenu): boolean {
+        return !collapsed.currentValue && item.active;
     }
 }
