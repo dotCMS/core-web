@@ -1,0 +1,8 @@
+<div class="dot-nav__item" (click)="clickHandler($event, data)" [class.dot-nav__item-wrapper--active]="data.active">
+    <dot-nav-icon [icon]="data.tabIcon"></dot-nav-icon>
+    <span class="dot-nav__item-label">{{data.tabName}}</span>
+    <dot-icon
+        name="{{data.isOpen ? 'arrow_drop_down' : 'arrow_drop_up'}}"
+        aria-hidden="true">
+    </dot-icon>
+</div>

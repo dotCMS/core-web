@@ -1,31 +1,11 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NavigationEnd } from '@angular/router';
 
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotNavigationService } from './services/dot-navigation.service';
 
 @Component({
-    animations: [
-        trigger('expandAnimation', [
-            state(
-                'expanded',
-                style({
-                    height: '*',
-                    overflow: 'hidden'
-                })
-            ),
-            state(
-                'collapsed',
-                style({
-                    height: '0px',
-                    overflow: 'hidden'
-                })
-            ),
-            transition('expanded <=> collapsed', animate('250ms ease-in-out'))
-        ])
-    ],
     providers: [],
     selector: 'dot-main-nav',
     styleUrls: ['./dot-navigation.component.scss'],
@@ -64,11 +44,11 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {string} id menu item id
      * @memberof MainNavigationComponent
      */
-    onClick(event: MouseEvent, menuItem: DotMenuItem): void {
+    onClick($event: {originalEvent: MouseEvent, data: DotMenuItem}): void {
         event.stopPropagation();
 
-        if (!event.ctrlKey && !event.metaKey) {
-            this.dotNavigationService.reloadCurrentPortlet(menuItem.id);
+        if (!$event.originalEvent.ctrlKey && !$event.originalEvent.metaKey) {
+            this.dotNavigationService.reloadCurrentPortlet($event.data.id);
         }
     }
 
@@ -78,22 +58,21 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {DotMenu} currentItem
      * @memberof DotNavigationComponent
      */
-    onMenuClick(menu: DotMenu): void {
+    onMenuClick(event: {originalEvent: MouseEvent, data: DotMenu}): void {
         this.change.emit();
 
         if (this.collapsed) {
-            this.dotNavigationService.goTo(menu.menuItems[0].menuLink);
+            this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
         }
 
         this.menu = this.menu.map((item: DotMenu) => {
             if (item.isOpen) {
                 item.isOpen = false;
             } else {
-                item.isOpen = menu.id === item.id;
+                item.isOpen = event.data.id === item.id;
             }
             return item;
         });
-
     }
 
     private setActive(id: string) {

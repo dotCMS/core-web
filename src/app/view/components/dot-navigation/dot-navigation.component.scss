@@ -2,11 +2,7 @@
 @import "variables";
 @import "primeng-theme/utils/theme-variables";
 
-$nav-item-min-height: 48px;
-$nav-label-left-margin: 56px;
-
-:host,
-a {
+:host {
     color: $white;
     text-decoration: none;
 }
@@ -20,72 +16,14 @@ ul {
     @include naked-list;
 }
 
-.dot-nav__item-wrapper,
-.dot-nav-sub__link {
-    align-items: center;
-    display: flex;
-    min-height: $nav-item-min-height;
-}
-
 .dot-nav {
-    &__item,
-    &__item-wrapper {
-        transition: background-color $basic-speed ease $basic-speed;
-    }
-
     &__item {
-        position: relative;
-
-        dot-nav-icon {
-            display: flex;
-        }
-
-        dot-icon {
-            margin-left: auto;
-        }
-
         &--active {
             background-color: rgba(255, 255, 255, 0.1);
-        }
-    }
-
-    &__item-wrapper {
-        cursor: pointer;
-        padding: 0 $basic-padding 0 23px; // Centered when the menu is collapsed
-    }
-
-    &__item-label {
-        position: absolute;
-        left: $nav-label-left-margin;
-        white-space: nowrap;
-    }
-
-    dot-icon,
-    &__item-label {
-        transition: opacity $basic-speed ease;
-    }
-}
-
-.dot-nav-sub {
-    &__link {
-        padding: 0 $basic-padding 0 $nav-label-left-margin;
-        white-space: nowrap;
-
-        &--active {
-            background-color: $brand-primary;
         }
     }
 }
 
 .collapsed {
     width: 70px;
-
-    dot-icon,
-    .dot-nav__item-label {
-        opacity: 0;
-    }
-
-    .dot-nav__item-wrapper--active {
-        background-color: $brand-primary;
-    }
 }

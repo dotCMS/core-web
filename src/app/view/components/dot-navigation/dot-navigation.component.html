@@ -1,21 +1,8 @@
 <nav [class.collapsed]="collapsed">
     <ul class="dot-nav">
         <li *ngFor="let item of menu" class="dot-nav__item" [class.dot-nav__item--active]="item.isOpen">
-            <div class="dot-nav__item-wrapper" (click)="onMenuClick(item)" [class.dot-nav__item-wrapper--active]="item.active">
-                <dot-nav-icon [icon]="item.tabIcon"></dot-nav-icon>
-                <span class="dot-nav__item-label">{{item.tabName}}</span>
-                <dot-icon
-                    name="{{item.isOpen ? 'arrow_drop_down' : 'arrow_drop_up'}}"
-                    aria-hidden="true">
-                </dot-icon>
-            </div>
-            <ul class="dot-nav-sub" [@expandAnimation]="item.isOpen ? 'expanded' : 'collapsed'">
-                <li *ngFor="let subItem of item.menuItems" class="dot-nav-sub__item">
-                    <a class="dot-nav-sub__link" [class.dot-nav-sub__link--active]="subItem.active" (click)="onClick($event, subItem)" [routerLink]="subItem.menuLink">
-                        {{ subItem.label }}
-                    </a>
-                </li>
-            </ul>
+            <dot-nav-item [data]="item" [class.collapsed]="collapsed" (menuClick)="onMenuClick($event)"></dot-nav-item>
+            <dot-sub-nav [data]="item" (itemClick)="onClick($event)"></dot-sub-nav>
         </li>
     </ul>
 </nav>

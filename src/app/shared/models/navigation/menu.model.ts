@@ -1,13 +1,13 @@
 import { DotMenuItem } from './menu-item.model';
 
 export interface DotMenu {
-    url: string;
-    tabName: string;
-    tabIcon: string;
-    tabDescription: string;
-    name: string;
-    menuItems: DotMenuItem[];
-    isOpen: boolean;
-    id: string;
     active: boolean;
+    id: string;
+    isOpen: boolean;
+    menuItems: DotMenuItem[];
+    name: string;
+    tabDescription: string;
+    tabIcon: string;
+    tabName: string;
+    url: string;
 }
