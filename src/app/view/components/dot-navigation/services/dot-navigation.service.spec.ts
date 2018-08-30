@@ -125,7 +125,7 @@ describe('DotNavigationService', () => {
 
         let result: DotMenu[];
 
-        dotNavigationService.items$.subscribe((menu: DotMenu[]) => {
+        dotNavigationService._items$.subscribe((menu: DotMenu[]) => {
             result = menu;
         });
 

@@ -4,43 +4,13 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { DotNavItemComponent } from './dot-nav-item.component';
-import { DotMenu } from '../../../../../shared/models/navigation';
 import { DotNavIconModule } from '../dot-nav-icon/dot-nav-icon.module';
 import { DotIconModule } from '../../../_common/dot-icon/dot-icon.module';
 import { DotSubNavComponent } from '../dot-sub-nav/dot-sub-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { dotMenuMock } from '../../dot-navigation.component.spec';
 
-export const dotMenuMock: DotMenu = {
-    active: true,
-    id: '123',
-    isOpen: false,
-    menuItems: [
-        {
-            active: false,
-            ajax: true,
-            angular: true,
-            id: '123',
-            label: 'Label 1',
-            url: 'url/one',
-            menuLink: 'url/link1'
-        },
-        {
-            active: true,
-            ajax: true,
-            angular: true,
-            id: '456',
-            label: 'Label 2',
-            url: 'url/two',
-            menuLink: 'url/link2'
-        }
-    ],
-    name: 'Menu',
-    tabDescription: 'Descriptuon',
-    tabIcon: 'icon',
-    tabName: 'Name',
-    url: '/url/index'
-};
 
 describe('DotNavItemComponent', () => {
     let component: DotNavItemComponent;

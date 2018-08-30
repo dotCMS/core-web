@@ -16,7 +16,7 @@ import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-if
 
 @Injectable()
 export class DotNavigationService {
-    items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
+    _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
 
     constructor(
         private dotMenuService: DotMenuService,
@@ -52,6 +52,10 @@ export class DotNavigationService {
             .subscribe(() => {
                 this.goToFirstPortlet();
             });
+    }
+
+    get items$(): Observable<DotMenu[]> {
+        return this._items$.asObservable();
     }
 
     /**
@@ -166,6 +170,6 @@ export class DotNavigationService {
     }
 
     private setMenu(menu: DotMenu[]) {
-        this.items$.next(this.formatMenuItems(menu));
+        this._items$.next(this.formatMenuItems(menu));
     }
 }

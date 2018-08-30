@@ -45,7 +45,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @memberof MainNavigationComponent
      */
     onClick($event: {originalEvent: MouseEvent, data: DotMenuItem}): void {
-        event.stopPropagation();
+        $event.originalEvent.stopPropagation();
 
         if (!$event.originalEvent.ctrlKey && !$event.originalEvent.metaKey) {
             this.dotNavigationService.reloadCurrentPortlet($event.data.id);

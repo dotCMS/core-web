@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-
-import { DotSubNavComponent } from './dot-sub-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { dotMenuMock } from '../dot-nav-item/dot-nav-item.component.spec';
+
+import { DotSubNavComponent } from './dot-sub-nav.component';
+import { dotMenuMock } from '../../dot-navigation.component.spec';
 
 describe('DotSubNavComponent', () => {
     let component: DotSubNavComponent;
