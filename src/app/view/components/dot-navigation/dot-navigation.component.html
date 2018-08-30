@@ -1,8 +1,12 @@
-<nav [class.collapsed]="collapsed">
+<nav [class.collapsed]="collapsed" role="navigation">
     <ul class="dot-nav">
         <li *ngFor="let item of menu" class="dot-nav__item" [class.dot-nav__item--active]="item.isOpen">
-            <dot-nav-item [data]="item" [class.collapsed]="collapsed" (menuClick)="onMenuClick($event)"></dot-nav-item>
-            <dot-sub-nav [data]="item" (itemClick)="onClick($event)"></dot-sub-nav>
+            <dot-nav-item
+                [data]="item"
+                [class.collapsed]="collapsed"
+                (menuClick)="onMenuClick($event)"
+                (itemClick)="onClick($event)">
+            </dot-nav-item>
         </li>
     </ul>
 </nav>
