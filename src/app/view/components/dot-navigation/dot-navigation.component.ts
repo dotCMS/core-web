@@ -33,7 +33,11 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         });
 
         this.dotNavigationService.onNavigationEnd().subscribe((event: NavigationEnd) => {
-            this.setActive(event.url.split('/').pop());
+            const urlSegments: string[] = event.url.split('/');
+
+            if (urlSegments.length < 4) {
+                this.setActive(urlSegments.pop());
+            }
         });
     }
 
