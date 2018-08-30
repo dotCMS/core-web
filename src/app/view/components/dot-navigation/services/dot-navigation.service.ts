@@ -123,6 +123,10 @@ export class DotNavigationService {
         });
     }
 
+    /**
+     * Navigate to portlet
+     * @param url
+     */
     goTo(url: string): void {
         this.dotRouterService.gotoPortlet(url);
     }

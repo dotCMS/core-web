@@ -75,7 +75,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         });
     }
 
-    private isMenuActive(menu: DotMenu, id: string): DotMenu {
+    private getActiveUpdatedMenu(menu: DotMenu, id: string): DotMenu {
         let isActive = false;
 
         menu.menuItems.forEach((item: DotMenuItem) => {
@@ -93,7 +93,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
     }
 
     private setActive(id: string) {
-        this.menu = this.menu.map((item: DotMenu) => this.isMenuActive(item, id));
+        this.menu = this.menu.map((item: DotMenu) => this.getActiveUpdatedMenu(item, id));
     }
 
     private shouldOpenMenuWhenUncollapse(collapsed: SimpleChange, item: DotMenu): boolean {
