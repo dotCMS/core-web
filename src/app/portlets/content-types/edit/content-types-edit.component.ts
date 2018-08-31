@@ -13,6 +13,7 @@ import { DotRouterService } from '../../../api/services/dot-router/dot-router.se
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 /**
  * Portlet component for edit content types
@@ -41,6 +42,7 @@ export class ContentTypesEditComponent implements OnInit {
         private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
+        private dotEventsService: DotEventsService,
         private dotRouterService: DotRouterService,
         private fieldService: FieldService,
         private hotkeysService: HotkeysService,
@@ -76,7 +78,8 @@ export class ContentTypesEditComponent implements OnInit {
                 'contenttypes.content.vanity_url',
                 'contenttypes.content.variable',
                 'contenttypes.content.widget',
-                'contenttypes.form.identifier'
+                'contenttypes.form.identifier',
+                'contenttypes.dropzone.rows.add'
             ])
             .subscribe();
 

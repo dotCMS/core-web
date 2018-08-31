@@ -1,6 +1,7 @@
 import { Component, OnDestroy, Input, Output, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 /**
  * Display select columns row
@@ -23,19 +24,25 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     @Input() disabled = false;
     @Input()
     toolTips: string[] = [
-        'contenttypes.content.one_column',
-        'contenttypes.content.two_columns',
-        'contenttypes.content.three_columns',
-        'contenttypes.content.four_columns'
+        'contenttypes.content.single_column',
+        'contenttypes.content.many_columns',
+        'contenttypes.content.add_column_title'
     ];
     @Output() selectColums: EventEmitter<number> = new EventEmitter<number>();
     @ViewChild('colContainer') colContainerElem: ElementRef;
 
-    constructor(private hotkeysService: HotkeysService, public dotMessageService: DotMessageService) {}
+    constructor(
+        private hotkeysService: HotkeysService,
+        public dotMessageService: DotMessageService,
+        private dotEventsService: DotEventsService
+    ) {}
 
     ngOnInit(): void {
         this.setKeyboardEvent('ctrl+a', this.setColumnSelect.bind(this));
         this.loadMessages();
+        this.dotEventsService.listen('add-row').subscribe(() => {
+            this.setColumnSelect();
+        });
     }
 
     ngOnDestroy(): void {
@@ -130,8 +137,10 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      * @returns {string}
      * @memberof ContentTypeFieldsAddRowComponent
      */
-    setTooltipValue(col: number): string {
-        return this.i18nMessages[this.toolTips[col]];
+    setColumnValue(col: number): string {
+        return col === 0
+            ? `${col + 1} ${this.i18nMessages['contenttypes.content.single_column']}`
+            : `${col + 1} ${this.i18nMessages['contenttypes.content.many_columns']}`;
     }
 
     private getElementSelected(): HTMLElement {

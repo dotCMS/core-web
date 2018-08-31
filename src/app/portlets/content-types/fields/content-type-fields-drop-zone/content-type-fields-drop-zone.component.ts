@@ -76,6 +76,15 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     /**
+     * Adds columns to the layout of content type
+     * @param {number} columns
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    addRow(columns: number): void {
+        this.fieldRows.push(new FieldRow(columns));
+    }
+
+    /**
      * Emit the saveField event
      * @param {ContentTypeField} fieldToSave
      * @memberof ContentTypeFieldsDropZoneComponent

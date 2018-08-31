@@ -27,6 +27,7 @@ import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../test/hotkeys-service.mock';
 import { DotIconModule } from '../../../view/components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../../../view/components/_common/dot-icon-button/dot-icon-button.module';
+import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -371,6 +372,15 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(dialog).not.toBeNull();
         expect(comp.show).toBeTruthy();
         expect(dialog.componentInstance.visible).toBeTruthy();
+    });
+
+    it('should open dialog on edit button click', () => {
+        const dotEventsService = fixture.debugElement.injector.get(DotEventsService);
+        spyOn(dotEventsService, 'notify');
+        const addRowButton: DebugElement = fixture.debugElement.query(By.css('#form-add-row'));
+        addRowButton.nativeNode.click();
+        fixture.detectChanges();
+        expect(dotEventsService.notify).toHaveBeenCalledWith('add-row');
     });
 
     it('should close the dialog', () => {
