@@ -82,6 +82,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
             if (item.id === id) {
                 item.active = true;
                 isActive = true;
+
             } else {
                 item.active = false;
             }
