@@ -56,7 +56,6 @@ const dotMenuMock1: DotMenu = {
     ...dotMenuMock,
     active: false,
     id: '456',
-    isOpen: false,
     name: 'Menu 2',
     url: '/url/456',
     menuItems: [
@@ -223,22 +222,26 @@ describe('DotNavigationComponent', () => {
         expect(comp.menu[0].isOpen).toBe(true);
     });
 
-    it('should active the correct and menu link after navigation end', () => {
+    it('should active and open the correct menu and menu links when navigation end', () => {
         expect(comp.menu[0].active).toBe(true);
+        expect(comp.menu[0].isOpen).toBe(false);
         expect(comp.menu[0].menuItems[0].active).toBe(false);
         expect(comp.menu[0].menuItems[1].active).toBe(true);
 
         expect(comp.menu[1].active).toBe(false);
+        expect(comp.menu[1].isOpen).toBe(false);
         expect(comp.menu[1].menuItems[0].active).toBe(false);
         expect(comp.menu[1].menuItems[1].active).toBe(false);
 
         dotNavigationService.triggerOnNavigationEnd();
 
         expect(comp.menu[0].active).toBe(false);
+        expect(comp.menu[0].isOpen).toBe(false);
         expect(comp.menu[0].menuItems[0].active).toBe(false);
         expect(comp.menu[0].menuItems[1].active).toBe(false);
 
         expect(comp.menu[1].active).toBe(true);
+        expect(comp.menu[1].isOpen).toBe(true);
         expect(comp.menu[1].menuItems[0].active).toBe(true);
         expect(comp.menu[1].menuItems[1].active).toBe(false);
     });

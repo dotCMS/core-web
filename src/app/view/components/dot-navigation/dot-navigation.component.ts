@@ -89,6 +89,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         });
 
         menu.active = isActive;
+        menu.isOpen = menu.active;
 
         return menu;
     }
