@@ -4,7 +4,7 @@ export interface DotMenu {
     id: string;
     name: string;
     tabDescription: string;
-    tabName: string;
+    label: string;
     url: string;
     menuItems: DotMenuItem[];
     isOpen: boolean;

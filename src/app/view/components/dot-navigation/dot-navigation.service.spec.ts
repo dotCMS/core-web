@@ -10,13 +10,14 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
+import { CrumbTrailModule } from '../_common/dot-crumb-trail/dot-crumb-trail.module';
 
 const mockMenu: DotMenu[] = [
     {
         id: '123',
         name: 'Parent 1',
         tabDescription: '',
-        tabName: '',
+        label: '',
         url: '',
         menuItems: [
             {
@@ -73,7 +74,7 @@ describe('DotNavigationService', () => {
                         }
                     }
                 ],
-                imports: [RouterTestingModule]
+                imports: [RouterTestingModule, CrumbTrailModule]
             });
 
             dotMenuService = testbed.get(DotMenuService);

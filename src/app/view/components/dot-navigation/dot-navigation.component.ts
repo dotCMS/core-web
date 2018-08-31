@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { DotMenu } from '../../../shared/models/navigation';
 import { DotNavigationService } from './dot-navigation.service';
+import { CrumbTrailService } from '../_common/dot-crumb-trail/services/dot-crumb-trail.service';
+import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+
 
 @Component({
     providers: [],
@@ -12,7 +15,11 @@ import { DotNavigationService } from './dot-navigation.service';
 export class DotNavigationComponent implements OnInit {
     menu: Observable<DotMenu[]>;
 
-    constructor(private dotNavigationService: DotNavigationService) {}
+    constructor(
+        private dotNavigationService: DotNavigationService,
+        private crumbTrailService: CrumbTrailService,
+        private dotRouterService: DotRouterService
+    ) {}
 
     ngOnInit() {
         this.menu = this.dotNavigationService.items$;
@@ -25,10 +32,10 @@ export class DotNavigationComponent implements OnInit {
      * @param {string} id menu item id
      * @memberof MainNavigationComponent
      */
-    onClick(event: MouseEvent, id: string): void {
+    onClick(event: MouseEvent, menuId: string): void {
         event.stopPropagation();
-        if (!event.ctrlKey && !event.metaKey) {
-            this.dotNavigationService.reloadCurrentPortlet(id);
+        if (!this.isMetaKeyPress(event)) {
+            this.dotNavigationService.reloadCurrentPortlet(menuId);
         }
     }
 
@@ -41,5 +48,9 @@ export class DotNavigationComponent implements OnInit {
      */
     isActive(id: string) {
         return this.dotNavigationService.isActive(id);
+    }
+
+    private isMetaKeyPress(event: MouseEvent): boolean {
+        return event.ctrlKey && event.metaKey;
     }
 }
