@@ -25,5 +25,5 @@ a {
 .dot-nav-sub__link {
     align-items: center;
     display: flex;
-    min-height: 48px;
+    min-height: $navigation-item-height;
 }

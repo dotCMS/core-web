@@ -55,6 +55,11 @@ export class MainComponentLegacyComponent implements OnInit {
         this.setMenuState();
     }
 
+    /**
+     * When navigation change gets handled
+     *
+     * @memberof MainComponentLegacyComponent
+     */
     handleMenuChange(): void {
         if (this.isMenuCollapsed) {
             this.isMenuCollapsed = false;

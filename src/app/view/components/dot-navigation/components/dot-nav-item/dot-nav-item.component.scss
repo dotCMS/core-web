@@ -22,7 +22,7 @@
         align-items: center;
         cursor: pointer;
         display: flex;
-        min-height: 48px;
+        min-height: $navigation-item-height;
         padding: 0 $basic-padding 0 23px; // Centered icon when the menu is collapsed
         position: relative;
         transition: background-color $basic-speed ease $basic-speed;
