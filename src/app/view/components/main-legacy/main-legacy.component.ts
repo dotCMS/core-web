@@ -15,7 +15,6 @@ import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-ifram
 })
 export class MainComponentLegacyComponent implements OnInit {
     isMenuCollapsed = false;
-    isTablet = false;
 
     constructor(
         private dotEventsService: DotEventsService,
