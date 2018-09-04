@@ -224,7 +224,6 @@ fdescribe('Load fields and drag and drop', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
     let el: HTMLElement;
-    let testHotKeysMock: TestHotkeysMock;
     const mockRouter = {
         navigate: jasmine.createSpy('navigate')
     };
@@ -270,7 +269,7 @@ fdescribe('Load fields and drag and drop', () => {
                 FieldService,
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: Router, useValue: mockRouter },
-                { provide: HotkeysService, useValue: testHotKeysMock },
+                { provide: HotkeysService, useValue: new TestHotkeysMock() },
             ]
         });
 
@@ -280,7 +279,6 @@ fdescribe('Load fields and drag and drop', () => {
         de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
         comp = de.componentInstance;
         el = de.nativeElement;
-        testHotKeysMock = new TestHotkeysMock();
 
         fakeFields = [
             {
