@@ -37,6 +37,8 @@ export class ContentTypesEditComponent implements OnInit {
         icon: '',
         header: ''
     };
+    addRowsButtonLbl: string;
+    editButtonLbl: string;
 
     constructor(
         private contentTypesInfoService: ContentTypesInfoService,
@@ -81,7 +83,10 @@ export class ContentTypesEditComponent implements OnInit {
                 'contenttypes.form.identifier',
                 'contenttypes.dropzone.rows.add'
             ])
-            .subscribe();
+            .subscribe(() => {
+                this.addRowsButtonLbl = this.dotMessageService.get('contenttypes.dropzone.rows.add');
+                this.editButtonLbl = this.dotMessageService.get('contenttypes.action.edit');
+            });
 
         this.setTemplateInfo();
 
@@ -147,6 +152,7 @@ export class ContentTypesEditComponent implements OnInit {
     /**
      * Remove fields from the content type
      * @param fieldsToDelete Fields to be removed
+     * @memberof ContentTypesEditComponent
      */
     removeFields(fieldsToDelete: ContentTypeField[]): void {
         this.fieldService
@@ -162,6 +168,7 @@ export class ContentTypesEditComponent implements OnInit {
     /**
      * Save fields to the content type
      * @param fieldsToSave Fields to be save
+     * @memberof ContentTypesEditComponent
      */
     saveFields(fieldsToSave: ContentTypeField[]): void {
         this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe((fields: ContentTypeField[]) => {
@@ -169,6 +176,15 @@ export class ContentTypesEditComponent implements OnInit {
         }, (err: ResponseView) => {
             this.dotHttpErrorManagerService.handle(err).subscribe((() => {}));
         });
+    }
+
+    /**
+     * Send a notification of Add Row event to be handle elsewhere
+     *
+     * @memberof ContentTypesEditComponent
+     */
+    notifyAddRowsEvt(): void {
+        this.dotEventsService.notify('add-row');
     }
 
     private bindEscKey(): void {

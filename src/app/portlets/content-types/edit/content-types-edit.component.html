@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="content-type__edit-actions">
-            <button type="button" pButton secondary label="{{ dotMessageService.get('contenttypes.action.edit') }}" (click)="show = true" icon="fa-edit" id="form-edit-button"></button>
-            <button type="button" pButton label="{{ dotMessageService.get('contenttypes.dropzone.rows.add') }}" icon="fa-plus" (click)="dotEventsService.notify('add-row')" id="form-add-row"></button>
+            <button type="button" pButton secondary label="{{ editButtonLbl }}" (click)="show = true" icon="fa-edit" id="form-edit-button"></button>
+            <button type="button" pButton label="{{ addRowsButtonLbl }}" icon="fa-plus" (click)="notifyAddRowsEvt()" id="form-add-row"></button>
         </div>
     </div>
     <dot-content-type-fields-drop-zone

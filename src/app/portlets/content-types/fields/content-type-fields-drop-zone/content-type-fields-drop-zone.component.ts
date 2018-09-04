@@ -7,6 +7,7 @@ import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 /**
  * Display all the Field Types
@@ -34,7 +35,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     constructor(
         dotMessageService: DotMessageService,
         private fieldDragDropService: FieldDragDropService,
-        private fieldPropertyService: FieldPropertyService
+        private fieldPropertyService: FieldPropertyService,
+        private dotEventsService: DotEventsService
     ) {
         super(
             [
@@ -60,6 +62,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
         this.fieldDragDropService.fieldRowDropFromTarget$.subscribe(() => {
             this.moveFields();
+        });
+
+        this.dotEventsService.listen('add-row').subscribe(() => {
+            document.querySelector('dot-add-rows').scrollIntoView({
+                behavior: 'smooth'
+            });
         });
     }
 

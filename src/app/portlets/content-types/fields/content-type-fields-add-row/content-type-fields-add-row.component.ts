@@ -101,7 +101,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
      * @param elem
      */
     setFocus(elem: any): void {
-        elem.focus();
+        elem.focus({ preventScroll: true });
     }
 
     /**
