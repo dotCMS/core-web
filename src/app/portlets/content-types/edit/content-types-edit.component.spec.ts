@@ -71,7 +71,8 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.edit.contenttype': 'Edit {0}',
     'contenttypes.content.create.contenttype': 'Create {0}',
     'contenttypes.form.identifier': 'Idenfifier',
-    'contenttypes.content.content': 'Content'
+    'contenttypes.content.content': 'Content',
+    'contenttypes.dropzone.rows.add' : 'Add rows'
 });
 
 const getConfig = (route) => {
@@ -353,6 +354,7 @@ describe('ContentTypesEditComponent edit mode', () => {
 
     it('should have edit button', () => {
         const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
+        expect(editButton.nativeElement.outerText).toBe('Edit');
         expect(editButton.nativeElement.disabled).toBe(false);
         expect(editButton).toBeTruthy();
     });
@@ -378,6 +380,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         const dotEventsService = fixture.debugElement.injector.get(DotEventsService);
         spyOn(dotEventsService, 'notify');
         const addRowButton: DebugElement = fixture.debugElement.query(By.css('#form-add-row'));
+        expect(addRowButton.nativeElement.outerText).toBe('Add rows');
         addRowButton.nativeNode.click();
         fixture.detectChanges();
         expect(dotEventsService.notify).toHaveBeenCalledWith('add-row');

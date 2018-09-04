@@ -217,7 +217,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-fdescribe('Load fields and drag and drop', () => {
+describe('Load fields and drag and drop', () => {
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
     let comp: ContentTypeFieldsDropZoneComponent;
@@ -340,7 +340,7 @@ fdescribe('Load fields and drag and drop', () => {
         hostComp.fields = fakeFields;
     }));
 
-    fit('should handler editField event', () => {
+    it('should handler editField event', () => {
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -352,7 +352,6 @@ fdescribe('Load fields and drag and drop', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
         const fieldRows = fieldsContainer.queryAll(By.css('dot-content-type-fields-row'));
         fieldRows[0].componentInstance.editField.emit(field);
-
         expect(spy).toHaveBeenCalledWith(field);
     });
 
@@ -388,6 +387,16 @@ fdescribe('Load fields and drag and drop', () => {
 
         expect(fakeFields[8]).toBe(comp.formData);
     });
+
+    it('should display dialog if a drop event happen from source', () => {
+        spyOn(comp, 'addRow');
+        fixture.detectChanges();
+        const addRowsContainer = de.query(By.css('dot-add-rows')).componentInstance;
+        addRowsContainer.selectColums.emit(2);
+        expect(comp.addRow).toHaveBeenCalled();
+        expect(comp.fieldRows[0].columns.length).toBe(2);
+    });
+
 
     it('should display dialog if a drop event happen from source', () => {
         fixture.detectChanges();
