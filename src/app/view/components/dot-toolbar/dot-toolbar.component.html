@@ -1,6 +1,7 @@
 <p-toolbar>
     <div class="ui-toolbar-group-left">
         <div class="toolbar__button-wrapper">
+
             <div class="toolbar__button" [class.toolbar__button--hide]="collapsed">
                 <dot-icon-button icon="arrow_back" inverted (click)="handleMainButtonClick($event)"></dot-icon-button>
             </div>
@@ -14,6 +15,7 @@
         </div>
     </div>
     <div class="ui-toolbar-group-right">
+        <dot-crumbtrail></dot-crumbtrail>
         <dot-global-message></dot-global-message>
         <dot-site-selector
             #siteSelector
