@@ -44,7 +44,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
         this.dotNavigationService.onNavigationEnd().subscribe((event: NavigationEnd) => {
             const urlSegments: string[] = event.url.split('/');
 
-            if (urlSegments.length < 4) {
+            if (this.shouldUpdateActiveState(urlSegments)) {
                 this.setActive(urlSegments.pop());
             }
         });
@@ -108,5 +108,11 @@ export class DotNavigationComponent implements OnInit, OnChanges {
 
     private shouldOpenMenuWhenUncollapse(collapsed: SimpleChange, item: DotMenu): boolean {
         return !collapsed.currentValue && item.active;
+    }
+
+    private shouldUpdateActiveState(urlSegments: string[]): boolean {
+        const blackList = ['edit-page'];
+        const isBlackListed = !!urlSegments.filter(element => blackList.includes(element)).length;
+        return urlSegments.length < 4 && !isBlackListed;
     }
 }
