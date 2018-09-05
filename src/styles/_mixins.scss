@@ -6,7 +6,7 @@
 }
 
 @mixin dot-icon_tiny {
-    font-size: 12px;
+    font-size: $font-size-small;
 }
 
 @mixin tiny-button {
