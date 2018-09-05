@@ -37,7 +37,7 @@ export class ContentTypesEditComponent implements OnInit {
         icon: '',
         header: ''
     };
-    addRowsButtonLbl: string;
+    messagesKey: {[key: string]: string} = {};
     editButtonLbl: string;
 
     constructor(
@@ -67,7 +67,6 @@ export class ContentTypesEditComponent implements OnInit {
             .getMessages([
                 'contenttypes.action.create',
                 'contenttypes.action.edit',
-                'contenttypes.action.form.cancel',
                 'contenttypes.action.update',
                 'contenttypes.content.content',
                 'contenttypes.content.create.contenttype',
@@ -83,9 +82,8 @@ export class ContentTypesEditComponent implements OnInit {
                 'contenttypes.form.identifier',
                 'contenttypes.dropzone.rows.add'
             ])
-            .subscribe(() => {
-                this.addRowsButtonLbl = this.dotMessageService.get('contenttypes.dropzone.rows.add');
-                this.editButtonLbl = this.dotMessageService.get('contenttypes.action.edit');
+            .subscribe((messages: {[key: string]: string}) => {
+                this.messagesKey = messages;
             });
 
         this.setTemplateInfo();
@@ -117,7 +115,7 @@ export class ContentTypesEditComponent implements OnInit {
     setTemplateInfo(): void {
         this.dotMessageService.messageMap$.subscribe(() => {
             const type = this.contentTypesInfoService.getLabel(this.data.baseType);
-            const contentTypeName = this.dotMessageService.get(`contenttypes.content.${type}`);
+            const contentTypeName = this.messagesKey[`contenttypes.content.${type}`];
 
             this.templateInfo = {
                 icon: this.contentTypesInfoService.getIcon(type),
