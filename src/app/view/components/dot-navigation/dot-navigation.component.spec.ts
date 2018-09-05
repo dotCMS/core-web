@@ -149,7 +149,7 @@ describe('DotNavigationComponent', () => {
         navItem = compDe.query(By.css('dot-nav-item'));
     });
 
-    it('should have dot-nav-item print correctly', () => {
+    fit('should have dot-nav-item print correctly', () => {
         const items: DebugElement[] = compDe.queryAll(By.css('dot-nav-item'));
         expect(items.length).toBe(2);
         expect(items[0].componentInstance.data).toEqual(dotMenuMock());
