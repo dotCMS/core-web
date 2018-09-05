@@ -23,7 +23,6 @@ describe('DotSubNavComponent', () => {
         fixture = TestBed.createComponent(DotSubNavComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;
-        console.log(dotMenuMock().menuItems[1].active);
         component.data = dotMenuMock();
         fixture.detectChanges();
     });
