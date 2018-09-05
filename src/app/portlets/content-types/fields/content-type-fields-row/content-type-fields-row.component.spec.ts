@@ -39,12 +39,9 @@ mockFieldRowFieldEmpty.columns = [new FieldColumn([]), new FieldColumn([])];
     template: ''
 })
 class TestContentTypeFieldDraggableItemComponent {
-    @Input()
-    field: ContentTypeField;
-    @Output()
-    remove: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output()
-    edit: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Input() field: ContentTypeField;
+    @Output() remove: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output() edit: EventEmitter<ContentTypeField> = new EventEmitter();
 }
 
 @Component({

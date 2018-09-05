@@ -23,7 +23,8 @@ describe('DotSubNavComponent', () => {
         fixture = TestBed.createComponent(DotSubNavComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;
-        component.data = dotMenuMock;
+        console.log(dotMenuMock().menuItems[1].active);
+        component.data = dotMenuMock();
         fixture.detectChanges();
     });
 
@@ -59,7 +60,7 @@ describe('DotSubNavComponent', () => {
         component.itemClick.subscribe((event) => {
             expect(event).toEqual({
                 originalEvent: {hello: 'world'},
-                data: dotMenuMock.menuItems[0]
+                data: dotMenuMock().menuItems[0]
             });
         });
 
