@@ -170,7 +170,9 @@ export class ContentTypesEditComponent implements OnInit {
      */
     saveFields(fieldsToSave: ContentTypeField[]): void {
         this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe((fields: ContentTypeField[]) => {
-            this.fields = fields;
+            if (this.updateOrNewField(fieldsToSave)) {
+                this.fields = fields;
+            }
         }, (err: ResponseView) => {
             this.dotHttpErrorManagerService.handle(err).subscribe((() => {}));
         });
@@ -183,6 +185,10 @@ export class ContentTypesEditComponent implements OnInit {
      */
     notifyAddRowsEvt(): void {
         this.dotEventsService.notify('add-row');
+    }
+
+    private updateOrNewField(fieldsToSave: ContentTypeField[]): boolean {
+        return (!fieldsToSave[0].id || fieldsToSave.length === 1);
     }
 
     private bindEscKey(): void {
