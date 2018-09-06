@@ -208,6 +208,7 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         closeButton.nativeElement.click();
         fixture.detectChanges();
         expect(comp.rowState).toBe('add');
+        expect(comp.selectedColumnIndex).toBe(0);
     });
 
     it('should call setColumnSelect when "add-row" event received', fakeAsync(() => {

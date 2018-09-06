@@ -143,6 +143,15 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
             : `${col + 1} ${this.i18nMessages['contenttypes.content.many_columns']}`;
     }
 
+    /**
+     * Set initial values of component when click on cancel button
+     * @memberof ContentTypeFieldsAddRowComponent
+     */
+    showAddView(): void {
+        this.rowState = 'add';
+        this.selectedColumnIndex = 0;
+    }
+
     private getElementSelected(): HTMLElement {
         return this.colContainerElem.nativeElement.children[this.selectedColumnIndex];
     }

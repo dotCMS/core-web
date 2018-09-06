@@ -10,7 +10,7 @@
     
     <div class="dot-add-rows-columns-list__container" *ngIf="rowState === 'select'">
         <div class="dot-add-rows-columns-list__title">{{ i18nMessages['contenttypes.content.add_column_title'] }}</div>
-        <dot-icon-button icon="close" (click)="rowState = 'add'"></dot-icon-button>
+        <dot-icon-button icon="close" (click)="showAddView()"></dot-icon-button>
         <ul #colContainer class="dot-add-rows-columns-list"
             [ngClass]="{'dot-add-rows__select': rowState === 'select'}">
             <li *ngFor="let colNum of columns; let i = index" 
