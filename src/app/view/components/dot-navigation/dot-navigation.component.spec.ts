@@ -3,9 +3,8 @@ import { DebugElement, Component } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs/observable/of';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router, NavigationEnd } from '@angular/router';
+import { NavigationEnd } from '@angular/router';
 
 import { DotNavigationComponent } from './dot-navigation.component';
 import { DotNavIconModule } from './components/dot-nav-icon/dot-nav-icon.module';
@@ -19,61 +18,7 @@ import { LoginServiceMock } from '../../../test/login-service.mock';
 import { DotMenu } from '../../../shared/models/navigation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
-
-export const dotMenuMock = () => {
-    return {
-        active: false,
-        id: '123',
-        isOpen: false,
-        menuItems: [
-            {
-                active: false,
-                ajax: true,
-                angular: true,
-                id: '123',
-                label: 'Label 1',
-                url: 'url/one',
-                menuLink: 'url/link1'
-            },
-            {
-                active: false,
-                ajax: true,
-                angular: true,
-                id: '456',
-                label: 'Label 2',
-                url: 'url/two',
-                menuLink: 'url/link2'
-            }
-        ],
-        name: 'Menu 1',
-        tabDescription: 'Description',
-        tabIcon: 'icon',
-        tabName: 'Name',
-        url: '/url/index'
-    };
-};
-
-const dotMenuMock1 = () => {
-    return {
-        ...dotMenuMock(),
-        active: false,
-        id: '456',
-        name: 'Menu 2',
-        url: '/url/456',
-        menuItems: [
-            {
-                ...dotMenuMock().menuItems[0],
-                active: false,
-                id: '789'
-            },
-            {
-                ...dotMenuMock().menuItems[1],
-                active: false,
-                id: '000'
-            }
-        ]
-    };
-};
+import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
 
 @Component({
     selector: 'dot-test',
