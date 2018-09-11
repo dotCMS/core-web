@@ -20,10 +20,15 @@ import { FieldPropertyService } from '../service/field-properties.service';
     templateUrl: './content-type-fields-drop-zone.component.html'
 })
 export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements OnInit, OnChanges {
+    dialogActiveTab: number;
     displayDialog = false;
     fieldRows: FieldRow[] = [];
     formData: ContentTypeField;
     currentFieldType: FieldType;
+    currentField: {
+        id?: string,
+        typeId?: string
+    } = {};
 
     @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
@@ -42,7 +47,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 'contenttypes.dropzone.action.cancel',
                 'contenttypes.dropzone.action.edit',
                 'contenttypes.dropzone.action.create.field',
-                'contenttypes.dropzone.empty.message'
+                'contenttypes.dropzone.empty.message',
+                'contenttypes.dropzone.tab.overview',
+                'contenttypes.dropzone.tab.variables'
             ],
             dotMessageService
         );
@@ -95,6 +102,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields();
         this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
+        this.currentField = {};
+        this.currentField.id = this.formData.id;
+        this.currentField.typeId = this.formData.contentTypeId;
+        this.dialogActiveTab = null;
         this.toggleDialog();
     }
 
@@ -126,7 +137,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 });
             });
         });
-
         this.formData = null;
         this.propertiesForm.destroy();
     }
@@ -217,6 +227,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     private toggleDialog(): void {
         this.displayDialog = !this.displayDialog;
+        setTimeout(() => {
+            this.dialogActiveTab = 0;
+        }, 0);
     }
 
     private getRowFields(fields: ContentTypeField[]): FieldRow[] {

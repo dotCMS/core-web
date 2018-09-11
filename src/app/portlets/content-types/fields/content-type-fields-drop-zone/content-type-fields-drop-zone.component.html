@@ -34,11 +34,20 @@
         {{ currentFieldType?.label }} <dot-icon-button icon="help_outline" (click)="fieldHelperOverlay.toggle($event)"></dot-icon-button>
     </p-header>
 
-    <dot-content-type-fields-properties-form
-        [formFieldData]="formData"
-        (saveField)="saveFieldsHandler($event)"
-        #fieldPropertiesForm>
-    </dot-content-type-fields-properties-form>
+    <p-tabView [activeIndex]="dialogActiveTab">
+        <p-tabPanel header="{{ i18nMessages['contenttypes.dropzone.tab.overview'] }}">
+            <dot-content-type-fields-properties-form
+                [formFieldData]="formData"
+                (saveField)="saveFieldsHandler($event)"
+                #fieldPropertiesForm>
+            </dot-content-type-fields-properties-form>
+        </p-tabPanel>
+        <p-tabPanel header="{{ i18nMessages['contenttypes.dropzone.tab.variables'] }}">
+            <ng-template pTemplate="content">
+                <dot-content-type-fields-variables [field]="currentField"></dot-content-type-fields-variables>
+            </ng-template>
+        </p-tabPanel>
+    </p-tabView>
 
     <p-footer>
         <button type="button" secondary pButton (click)="toggleDialog()" [label]="i18nMessages['contenttypes.dropzone.action.cancel']"></button>

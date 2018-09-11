@@ -14,13 +14,14 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SiteSelectorFieldModule } from '../../view/components/_common/site-selector-field/site-selector-field.module';
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
-import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
+import { FieldService, FieldDragDropService, FieldPropertyService, FieldVariablesService } from './fields/service';
 import { ContentTypeFieldsAddRowModule } from './fields/content-type-fields-add-row';
 import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.service';
 
 import {
     ContentTypeFieldsDropZoneComponent,
     ContentTypeFieldsPropertiesFormComponent,
+    ContentTypeFieldsVariablesComponent,
     ContentTypeFieldsRowComponent,
     ContentTypeFieldsRowListComponent,
     ContentTypesFieldDragabbleItemComponent,
@@ -29,6 +30,7 @@ import {
 import {
     ButtonModule,
     ConfirmDialogModule,
+    DataTableModule,
     DialogModule,
     DropdownModule,
     InputTextModule,
@@ -71,6 +73,7 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsPropertiesFormComponent,
+        ContentTypeFieldsVariablesComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypesEditComponent,
@@ -104,6 +107,7 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         CommonModule,
         ConfirmDialogModule,
         ContentTypesRoutingModule,
+        DataTableModule,
         DialogModule,
         DotIconModule,
         DotIconButtonModule,
@@ -137,6 +141,7 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         DragulaService,
         FieldDragDropService,
         FieldPropertyService,
+        FieldVariablesService,
         FieldService,
         FormatDateService,
         ContentTypeEditResolver,

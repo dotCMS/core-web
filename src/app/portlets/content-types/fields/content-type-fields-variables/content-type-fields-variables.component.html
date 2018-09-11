@@ -1,0 +1,18 @@
+<p-dataTable
+    [value]="fieldVariables"
+    [editable]="true"
+    (onEditComplete)="changeVariable($event)"
+    (onEditInit)="changeInitVariable($event)"
+    (onEditCancel)="changeCancelVariable($event)"
+    sortField="clazz"
+    sortOrder=0
+    >
+    <p-column field="key" header="{{ messages['contenttypes.field.variables.key_header.label'] }}" [editable]="true"></p-column>
+    <p-column field="value" header="{{ messages['contenttypes.field.variables.value_header.label'] }}" [editable]="true"></p-column>
+    <p-column class="buttons">
+        <ng-template let-fieldVar="rowData" let-index="rowIndex" pTemplate="body">
+            <dot-icon-button icon="save" (click)="saveVariable(fieldVar)"></dot-icon-button>
+            <dot-icon-button *ngIf="index !== fieldVariables.length - 1" icon="delete" (click)="deleteVariable(fieldVar)"></dot-icon-button>
+        </ng-template>
+    </p-column>
+</p-dataTable>

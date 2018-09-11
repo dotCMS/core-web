@@ -1,0 +1,21 @@
+::ng-deep {
+    .ui-datatable {
+        .ui-datatable-thead tr {
+            th {
+                padding: .5em;
+                text-align: left;
+    
+                &:last-child {
+                    width: 108px;
+                }
+            }
+        }
+        .ui-datatable-data tr {
+            td {
+                &:last-child {
+                    width: 108px;
+                }
+            }
+        }
+    }
+}
