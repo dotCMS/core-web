@@ -45,7 +45,6 @@ class FakeNavigationService {
     }
 
     setOpen() {
-        console.log('setOpen');
         this._items$.next([
             {
                 ...dotMenuMock(),
@@ -56,7 +55,6 @@ class FakeNavigationService {
     }
 
     expandMenu() {
-        console.log('expandMenu');
         this._items$.next([
             {
                 ...dotMenuMock(),
