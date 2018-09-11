@@ -22,7 +22,7 @@ import { skip } from 'rxjs/operators';
 
 export const dotMenuMock = () => {
     return {
-        active: true,
+        active: false,
         id: '123',
         isOpen: false,
         menuItems: [
@@ -36,7 +36,7 @@ export const dotMenuMock = () => {
                 menuLink: 'url/link1'
             },
             {
-                active: true,
+                active: false,
                 ajax: true,
                 angular: true,
                 id: '456',
@@ -89,13 +89,46 @@ class HostTestComponent {
 
 class FakeNavigationService {
     _routeEvents: BehaviorSubject<NavigationEnd> = new BehaviorSubject(new NavigationEnd(0, '', ''));
+    _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([dotMenuMock(), dotMenuMock1()]);
 
     get items$(): Observable<DotMenu[]> {
-        return of([dotMenuMock(), dotMenuMock1()]);
+        return this._items$.asObservable();
     }
 
     onNavigationEnd(): Observable<NavigationEnd> {
         return this._routeEvents.asObservable().pipe(skip(1));
+    }
+
+    setOpen() {
+        console.log('setOpen');
+        this._items$.next([
+            {
+                ...dotMenuMock(),
+                isOpen: true,
+            },
+            dotMenuMock1()
+        ]);
+    }
+
+    expandMenu() {
+        console.log('expandMenu');
+        this._items$.next([
+            {
+                ...dotMenuMock(),
+                isOpen: true,
+                menuItems: [
+                    {
+                        ...dotMenuMock().menuItems[0],
+                        active: true,
+                    },
+                    {
+                        ...dotMenuMock().menuItems[1],
+                        active: false,
+                    }
+                ]
+            },
+            dotMenuMock1()
+        ]);
     }
 
     triggerOnNavigationEnd(url?: string) {
@@ -144,9 +177,18 @@ describe('DotNavigationComponent', () => {
 
         spyOn(dotNavigationService, 'goTo');
         spyOn(dotNavigationService, 'reloadCurrentPortlet');
+        spyOn(dotNavigationService, 'setOpen').and.callThrough();
 
         hostFixture.detectChanges();
         navItem = compDe.query(By.css('dot-nav-item'));
+    });
+
+    it('should have all menus closed', () => {
+        const items: DebugElement[] = compDe.queryAll(By.css('.dot-nav__list-item'));
+
+        items.forEach((item: DebugElement) => {
+            expect(item.nativeElement.classList.contains('dot-nav__list-item--active')).toBe(false);
+        });
     });
 
     it('should have dot-nav-item print correctly', () => {
@@ -156,26 +198,53 @@ describe('DotNavigationComponent', () => {
         expect(items[1].componentInstance.data).toEqual(dotMenuMock1());
     });
 
-    it('should handle menuClick event', () => {
-        comp.collapsed = false;
-        let changeResult = false;
+    describe('menuClick event', () => {
+        it('should emit change', () => {
+            let changeResult = false;
 
-        comp.change.subscribe((e) => {
-            changeResult = true;
+            comp.change.subscribe((e) => {
+                changeResult = true;
+            });
+
+            navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+            expect(changeResult).toBe(true);
         });
 
-        expect(comp.menu.map((menuItem: DotMenu) => menuItem.isOpen)).toEqual([false, false]);
+        it('should open menu', () => {
+            navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+            expect(dotNavigationService.setOpen).toHaveBeenCalledWith('123');
 
-        navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+            hostFixture.detectChanges();
 
-        expect(changeResult).toBe(true);
-        expect(comp.menu.map((menuItem: DotMenu) => menuItem.isOpen)).toEqual([true, false]);
-        expect(dotNavigationService.goTo).not.toHaveBeenCalled();
-    });
+            const firstItem: DebugElement = compDe.query(By.css('.dot-nav__list-item'));
+            expect(firstItem.nativeElement.classList.contains('dot-nav__list-item--active')).toBe(true);
+        });
 
-    it('should navigate to portlet', () => {
-        navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
-        expect(dotNavigationService.goTo).toHaveBeenCalledWith('url/link1');
+        it('should expand menu', () => {
+            hostFixture.detectChanges();
+            hostComp.collapsed = false;
+            hostFixture.detectChanges();
+
+            const firstItem: DebugElement = compDe.query(By.css('.dot-nav__list-item'));
+            expect(firstItem.nativeElement.classList.contains('dot-nav__list-item--active')).toBe(true);
+            const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
+            expect(firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')).toBe(false);
+        });
+
+        it('should NOT navigate to porlet', () => {
+            hostComp.collapsed = false;
+            hostFixture.detectChanges();
+
+            navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+            expect(dotNavigationService.goTo).not.toHaveBeenCalled();
+        });
+
+        it('should navigate to portlet', () => {
+            navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+            hostFixture.detectChanges();
+
+            expect(dotNavigationService.goTo).toHaveBeenCalledWith('url/link1');
+        });
     });
 
     it('should reload portlet', () => {
@@ -208,48 +277,5 @@ describe('DotNavigationComponent', () => {
 
         expect(stopProp).toHaveBeenCalledTimes(1);
         expect(dotNavigationService.reloadCurrentPortlet).not.toHaveBeenCalled();
-    });
-
-    it('should expand active menu on uncollapsed', () => {
-        expect(comp.menu[0].active).toBe(true);
-        expect(comp.menu[0].isOpen).toBe(false);
-
-        hostComp.toggleCollapsed();
-        hostFixture.detectChanges();
-
-        expect(comp.menu[0].active).toBe(true);
-        expect(comp.menu[0].isOpen).toBe(true);
-    });
-
-    it('should active and open the correct menu and menu links when navigation end', () => {
-        expect(comp.menu[0].active).toBe(true);
-        expect(comp.menu[0].isOpen).toBe(false);
-        expect(comp.menu[0].menuItems[0].active).toBe(false);
-        expect(comp.menu[0].menuItems[1].active).toBe(true);
-
-        expect(comp.menu[1].active).toBe(false);
-        expect(comp.menu[1].isOpen).toBe(false);
-        expect(comp.menu[1].menuItems[0].active).toBe(false);
-        expect(comp.menu[1].menuItems[1].active).toBe(false);
-
-        dotNavigationService.triggerOnNavigationEnd();
-
-        expect(comp.menu[0].active).toBe(false);
-        expect(comp.menu[0].isOpen).toBe(false);
-        expect(comp.menu[0].menuItems[0].active).toBe(false);
-        expect(comp.menu[0].menuItems[1].active).toBe(false);
-
-        expect(comp.menu[1].active).toBe(true);
-        expect(comp.menu[1].isOpen).toBe(true);
-        expect(comp.menu[1].menuItems[0].active).toBe(true);
-        expect(comp.menu[1].menuItems[1].active).toBe(false);
-    });
-
-    it('should NOT set active nav item', () => {
-        expect(comp.menu[0].menuItems[1].active).toBe(true);
-
-        dotNavigationService.triggerOnNavigationEnd('/edit-page/content');
-
-        expect(comp.menu[0].menuItems[1].active).toBe(true);
     });
 });

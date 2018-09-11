@@ -101,10 +101,6 @@ describe('DotNavigationService', () => {
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/url');
     });
 
-    it('should return correct value in isActive', () => {
-        expect(dotNavigationService.isActive('hello')).toBe(true);
-    });
-
     it('should reload current portlet', () => {
         spyOn(dotRouterService, 'reloadCurrentPortlet');
         dotNavigationService.reloadCurrentPortlet('hello');

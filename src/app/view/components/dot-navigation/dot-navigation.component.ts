@@ -34,7 +34,7 @@ export class DotNavigationComponent implements OnInit, OnChanges {
      * @param {string} id menu item id
      * @memberof MainNavigationComponent
      */
-    onClick($event: { originalEvent: MouseEvent; data: DotMenuItem }): void {
+    onItemClick($event: { originalEvent: MouseEvent; data: DotMenuItem }): void {
         $event.originalEvent.stopPropagation();
 
         if (!$event.originalEvent.ctrlKey && !$event.originalEvent.metaKey) {
