@@ -69,7 +69,7 @@ class MockToolbarUsersComponent {}
 })
 class MockToolbarAddContentletComponent {}
 
-fdescribe('ToolbarComponent', () => {
+describe('ToolbarComponent', () => {
     let dotRouterService: DotRouterService;
     let dotNavigationService: DotNavigationService;
     let comp: ToolbarComponent;

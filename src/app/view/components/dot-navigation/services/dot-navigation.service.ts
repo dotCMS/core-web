@@ -13,6 +13,7 @@ import { DotMenu, DotMenuItem } from '../../../../shared/models/navigation';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-iframe.service';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 const replaceSectionsMap = {
     'edit-page': 'site-browser'
@@ -58,11 +59,12 @@ export class DotNavigationService {
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
 
     constructor(
+        private dotEventsService: DotEventsService,
+        private dotIframeService: DotIframeService,
         private dotMenuService: DotMenuService,
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
         private loginService: LoginService,
-        private dotIframeService: DotIframeService,
         private router: Router
     ) {
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
@@ -181,6 +183,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     toggle(): void {
+        this.dotEventsService.notify('dot-side-nav-toggle');
         this._collapsed ? this.expandMenu() : this.collapseMenu();
     }
 

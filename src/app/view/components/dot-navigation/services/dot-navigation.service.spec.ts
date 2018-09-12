@@ -13,6 +13,7 @@ import { async } from '@angular/core/testing';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs';
 import { skip } from 'rxjs/operators';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
 class DotMenuServiceMock {
     loadMenu(): Observable<DotMenu[]> {
@@ -114,6 +115,7 @@ describe('DotNavigationService', () => {
     let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;
+    let dotEventService: DotEventsService;
     let loginService: LoginServiceMock;
 
     beforeEach(
@@ -152,9 +154,11 @@ describe('DotNavigationService', () => {
             dotRouterService = testbed.get(DotRouterService);
             dotcmsEventsService = testbed.get(DotcmsEventsService);
             loginService = testbed.get(LoginService);
+            dotEventService = testbed.get(DotEventsService);
 
             spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => new Promise((resolve) => resolve(true)));
             spyOn(dotRouterService, 'reloadCurrentPortlet');
+            spyOn(dotEventService, 'notify');
         })
     );
 
@@ -257,6 +261,8 @@ describe('DotNavigationService', () => {
 
             service.toggle();
             expect(service.collapsed).toBe(false);
+
+            expect(dotEventService.notify).toHaveBeenCalledTimes(2);
         });
     });
 
