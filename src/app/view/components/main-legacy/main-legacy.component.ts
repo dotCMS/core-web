@@ -14,7 +14,6 @@ import { DotIframeService } from '../_common/iframe/service/dot-iframe/dot-ifram
     templateUrl: './main-legacy.component.html'
 })
 export class MainComponentLegacyComponent implements OnInit {
-    isMenuCollapsed = false;
 
     constructor(
         private dotEventsService: DotEventsService,
@@ -34,10 +33,10 @@ export class MainComponentLegacyComponent implements OnInit {
      * @memberof MainComponentLegacyComponent
      */
     handleMenuChange(): void {
-        if (this.isMenuCollapsed) {
-            this.isMenuCollapsed = false;
-            this.dotEventsService.notify('dot-side-nav-toggle');
-        }
+        // if (this.isMenuCollapsed) {
+        //     this.isMenuCollapsed = false;
+        //     this.dotEventsService.notify('dot-side-nav-toggle');
+        // }
     }
 
     /**
@@ -55,7 +54,6 @@ export class MainComponentLegacyComponent implements OnInit {
      * @memberof MainComponentLegacyComponent
      */
     toggleSidenav(): void {
-        this.isMenuCollapsed = !this.isMenuCollapsed;
         this.dotEventsService.notify('dot-side-nav-toggle');
     }
 }

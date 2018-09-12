@@ -12,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 class DotMenuServiceMock {
     loadMenu(): Observable<DotMenu[]> {
@@ -154,7 +155,6 @@ describe('DotNavigationService', () => {
 
             spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => new Promise((resolve) => resolve(true)));
             spyOn(dotRouterService, 'reloadCurrentPortlet');
-            // spyOn(dotcmsEventsService, 'subscribeTo').and.callThrough();
         })
     );
 
@@ -179,6 +179,7 @@ describe('DotNavigationService', () => {
 
     describe('collapseMenu', () => {
         it('should close all the menu sections', () => {
+            expect(service.collapsed).toBe(false);
             let counter = 0;
 
             service.items$.subscribe((menus: DotMenu[]) => {
@@ -191,15 +192,19 @@ describe('DotNavigationService', () => {
             });
 
             service.collapseMenu();
+            expect(service.collapsed).toBe(true);
         });
     });
 
     describe('expandMenu', () => {
         it('should expand active menu section', () => {
+            service.toggle();
+            expect(service.collapsed).toBe(true);
+
             let counter = 0;
             service.items$.subscribe((menus: DotMenu[]) => {
                 if (counter === 0) {
-                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([true, false]);
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
                 } else {
                     expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
                 }
@@ -208,15 +213,19 @@ describe('DotNavigationService', () => {
             });
 
             service.expandMenu();
+            expect(service.collapsed).toBe(false);
         });
     });
 
     describe('setOpen', () => {
         it('should expand expecific menu section', () => {
+            service.toggle();
+            expect(service.collapsed).toBe(true);
+
             let counter = 0;
             service.items$.subscribe((menus: DotMenu[]) => {
                 if (counter === 0) {
-                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([true, false]);
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
                 } else {
                     expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
                 }
@@ -224,7 +233,30 @@ describe('DotNavigationService', () => {
                 counter++;
             });
 
+
             service.setOpen('456');
+
+            expect(service.collapsed).toBe(false);
+        });
+    });
+
+    describe('toggle', () => {
+        it('should toggle the menu', () => {
+            let counter = 0;
+            service.items$.pipe(skip(1)).subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
+                }
+                counter++;
+            });
+
+            service.toggle();
+            expect(service.collapsed).toBe(true);
+
+            service.toggle();
+            expect(service.collapsed).toBe(false);
         });
     });
 
