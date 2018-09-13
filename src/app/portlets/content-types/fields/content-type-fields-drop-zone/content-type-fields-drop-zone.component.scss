@@ -7,6 +7,11 @@
     flex-direction: column;
     margin-bottom: $gutter-border;
     padding: 0 $gutter-border;
+
+    ::ng-deep .ui-tabview {
+        margin-left: -$basic-padding * 4;
+        margin-right: -$basic-padding * 4;
+    }
 }
 
 .content-type-fields-drop-zone__container {

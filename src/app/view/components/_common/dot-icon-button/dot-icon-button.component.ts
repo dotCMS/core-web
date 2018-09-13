@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 
 /**
  * The DotIconButtonComponent is a round button which
@@ -12,8 +12,12 @@ import { Component, Input } from '@angular/core';
     templateUrl: './dot-icon-button.component.html'
 })
 export class DotIconButtonComponent {
-    @Input() disabled?: boolean;
     @Input() icon: string;
+    element: ElementRef;
+
+    constructor(elm: ElementRef) {
+        this.element = elm;
+    }
 
     /**
      * Emits the click of the button
@@ -22,7 +26,7 @@ export class DotIconButtonComponent {
      * @memberof DotIconButtonComponent
      */
     buttonOnClick($event): void {
-        if (this.disabled) {
+        if (this.element.nativeElement.attributes.disabled) {
             $event.stopPropagation();
         }
     }

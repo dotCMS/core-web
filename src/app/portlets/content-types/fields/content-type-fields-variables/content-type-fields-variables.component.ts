@@ -1,12 +1,14 @@
 import { Component, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { FieldVariablesService } from '../service/';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { ResponseView } from 'dotcms-js/dotcms-js';
 
 export interface FieldVariable {
     id?: string;
-    clazz: string;
-    fieldId: string;
+    clazz?: string;
+    fieldId?: string;
     key: string;
     value: string;
 }
@@ -25,8 +27,14 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
 
     fieldVariables: FieldVariable[] = [];
     messages: {[key: string]: string} = {};
+    form: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService, private fieldVariablesService: FieldVariablesService) {}
+    constructor(
+        private dotHttpErrorManagerService: DotHttpErrorManagerService,
+        public dotMessageService: DotMessageService,
+        private fieldVariablesService: FieldVariablesService,
+        private fb: FormBuilder
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -34,12 +42,18 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
                 'contenttypes.field.variables.key_header.label',
                 'contenttypes.field.variables.value_header.label',
                 'contenttypes.field.variables.key_placeholder.label',
-                'contenttypes.field.variables.value_placeholder.label'
+                'contenttypes.field.variables.value_placeholder.label',
+                'contenttypes.field.variables.actions_header.label',
+                'contenttypes.field.variables.value_no_rows.label'
             ])
             .subscribe((messages: {[key: string]: string}) => {
                 this.messages = messages;
                 this.initTableData();
             });
+        this.form = this.fb.group({
+            key: '',
+            value: ''
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -49,14 +63,30 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
     }
 
     /**
+     * Handle Create Variable event from form
+     * @memberof ContentTypeFieldsVariablesComponent
+     */
+    addVariableForm(): void {
+        const variable: FieldVariable = {
+            key: this.form.controls.key.value,
+            value: this.form.controls.value.value
+        };
+        this.saveVariable(variable);
+        this.form.setValue({ key: '', value: '' });
+    }
+
+    /**
      * Handle Delete event
      * @param {FieldVariable} variable
      * @memberof ContentTypeFieldsVariablesComponent
      */
-    deleteVariable(variable: FieldVariable): void {
-        this.fieldVariablesService.deleteFieldVariables(this.field.typeId, this.field.id, variable.id).subscribe(() => {
-            this.fieldVariables = this.fieldVariables.filter((item: FieldVariable) => item !== variable);
-        });
+    deleteVariable(fieldIndex: number): void {
+        this.fieldVariablesService.deleteFieldVariables(this.field.typeId, this.field.id, this.fieldVariables[fieldIndex].id)
+            .subscribe(() => {
+                this.fieldVariables = this.fieldVariables.filter((item: FieldVariable, index: number) => index !== fieldIndex);
+            }, (err: ResponseView) => {
+                this.dotHttpErrorManagerService.handle(err).subscribe();
+            });
     }
 
     /**
@@ -64,74 +94,41 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
      * @param {FieldVariable} variable
      * @memberof ContentTypeFieldsVariablesComponent
      */
-    saveVariable(variable: FieldVariable): void {
+    saveVariable(variable: FieldVariable, variableIndex?: number): void {
         this.fieldVariablesService.saveFieldVariables(this.field.typeId, this.field.id, variable)
             .subscribe((savedVariable: FieldVariable) => {
-                variable = savedVariable;
-                this.initTableData();
+                if (typeof variableIndex !== 'undefined') {
+                    this.fieldVariables = this.updateVariableCollection(savedVariable, variableIndex);
+                } else {
+                    this.fieldVariables = this.fieldVariables.concat(savedVariable);
+                }
+            }, (err: ResponseView) => {
+                this.dotHttpErrorManagerService.handle(err).subscribe();
             });
     }
 
     /**
-     * Handle table input's placeholder when an input has been changed succesfully
-     * @param {FieldVariable} variable
+     * Checks if a existing variable meets conditions to be updated
+     * @param {number} index
+     * @returns {boolean}
      * @memberof ContentTypeFieldsVariablesComponent
      */
-    changeVariable(variable: any): void  {
-        this.handlePlaceholderInput(
-            variable,
-            '',
-            '',
-            this.messages['contenttypes.field.variables.key_placeholder.label'],
-            this.messages['contenttypes.field.variables.value_placeholder.label']);
-    }
-
-    /**
-     * Handle table input's placeholder when an input get focus
-     * @param {FieldVariable} variable
-     * @memberof ContentTypeFieldsVariablesComponent
-     */
-    changeInitVariable(variable: any): void  {
-        this.handlePlaceholderInput(
-            variable,
-            this.messages['contenttypes.field.variables.key_placeholder.label'],
-            this.messages['contenttypes.field.variables.value_placeholder.label'],
-            '',
-            '');
-    }
-
-    /**
-     * Handle table input's placeholder when an input lost focus
-     * @param {FieldVariable} variable
-     * @memberof ContentTypeFieldsVariablesComponent
-     */
-    changeCancelVariable(variable: any): void  {
-        this.handlePlaceholderInput(
-            variable,
-            '',
-            '',
-            this.messages['contenttypes.field.variables.key_placeholder.label'],
-            this.messages['contenttypes.field.variables.value_placeholder.label']);
-    }
-
-    // tslint:disable-next-line:cyclomatic-complexity
-    private handlePlaceholderInput(variable: any, compareKey: string, compareValue: string, keyLbl: string, valLbl: string): void {
-        variable.data.key = variable.data.key === compareKey && variable.column.field === 'key' ? keyLbl : variable.data.key;
-        variable.data.value = variable.data.value === compareValue && variable.column.field === 'value' ? valLbl : variable.data.value;
+    shouldBeDisabled(index: number): boolean {
+        return this.fieldVariables[index].key === '' || this.fieldVariables[index].value === '';
     }
 
     private initTableData(): void {
         this.fieldVariablesService.loadFieldVariables(this.field.typeId, this.field.id).subscribe((fieldVariables: FieldVariable[]) => {
             this.fieldVariables = fieldVariables;
+        });
+    }
 
-            const empty = {
-                clazz: '',
-                fieldId: '',
-                key: this.messages['contenttypes.field.variables.key_placeholder.label'],
-                value: this.messages['contenttypes.field.variables.value_placeholder.label']
-            };
-
-            this.fieldVariables.push(empty);
+    private updateVariableCollection(savedVariable: FieldVariable, variableIndex?: number): FieldVariable[] {
+        return this.fieldVariables.map((item, index) => {
+            if (index === variableIndex) {
+                item = savedVariable;
+            }
+            return item;
         });
     }
 
