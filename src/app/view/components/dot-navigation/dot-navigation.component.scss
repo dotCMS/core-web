@@ -9,7 +9,7 @@
 
 nav {
     transition: width $basic-speed ease;
-    width: 200px;
+    width: $navigation-width;
 }
 
 ul {
@@ -17,7 +17,7 @@ ul {
 }
 
 .dot-nav {
-    &__item {
+    &__list-item {
         &--active {
             background-color: rgba(255, 255, 255, 0.1);
         }
@@ -25,5 +25,5 @@ ul {
 }
 
 .collapsed {
-    width: 70px;
+    width: $navigation-width-collased;
 }
