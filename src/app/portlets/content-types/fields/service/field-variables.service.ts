@@ -4,6 +4,12 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { FieldVariable } from '../content-type-fields-variables/content-type-fields-variables.component';
 
+export interface FieldVariableParams {
+    contentTypeId: string;
+    fieldId: string;
+    variable?: FieldVariable;
+}
+
 /**
  * Provide method to handle with the Field Variables
  */
@@ -13,56 +19,51 @@ export class FieldVariablesService {
 
     /**
      * Load Field Variables.
-     * @param {string} contentTypeId Content Type Id
-     * @param {string} fieldId Field Id
+     * @param {FieldVariableParams} params Variable params to get id of variables to be listed
      * @returns {Observable<FieldVariable[]>}
      * @memberof FieldVariablesService
      */
-    loadFieldVariables(contentTypeId: string, fieldId: string): Observable<FieldVariable[]> {
+    load(params: FieldVariableParams): Observable<FieldVariable[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/contenttype/${contentTypeId}/fields/id/${fieldId}/variables`
+                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables`
             })
             .pluck('entity');
     }
 
     /**
      * Save Field Variables.
-     * @param {string} contentTypeId Content Type Id
-     * @param {string} fieldId Field Id
-     * @param {FieldVariable} variable Variable data to be saved
+     * @param {FieldVariableParams} params Variable params to be saved
      * @returns {Observable<FieldVariable>}
      * @memberof FieldVariablesService
      */
-    saveFieldVariables(contentTypeId: string, fieldId: string, variable: FieldVariable): Observable<FieldVariable> {
+    save(params: FieldVariableParams): Observable<FieldVariable> {
         return this.coreWebService
             .requestView({
                 body: {
-                    'key': variable.key,
-                    'value': variable.value,
+                    'key': params.variable.key,
+                    'value': params.variable.value,
                     'clazz': 'com.dotcms.contenttype.model.field.FieldVariable',
-                    'fieldId': fieldId
+                    'fieldId': params.fieldId
                 },
                 method: RequestMethod.Post,
-                url: `v1/contenttype/${contentTypeId}/fields/id/${fieldId}/variables`
+                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables`
             })
             .pluck('entity');
     }
 
     /**
      * Delete Field Variables.
-     * @param {string} contentTypeId Content Type Id
-     * @param {string} fieldId Field Id
-     * @param {string} variableId Variable Id
+     * @param {FieldVariableParams} params Variable params to be deleted
      * @returns {Observable<FieldVariable>}
      * @memberof FieldVariablesService
      */
-    deleteFieldVariables(contentTypeId: string, fieldId: string, variableId: string): Observable<FieldVariable> {
+    delete(params: FieldVariableParams): Observable<FieldVariable> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/contenttype/${contentTypeId}/fields/id/${fieldId}/variables/id/${variableId}`
+                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables/id/${params.variable.id}`
             })
             .pluck('entity');
     }

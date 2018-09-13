@@ -1,7 +1,7 @@
 ///<reference path="../shared/field-type.model.ts"/>
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { FieldDragDropService } from '../service';
+import { FieldDragDropService, FieldVariableParams } from '../service';
 import { FieldRow, ContentTypeField, FieldType } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
@@ -26,10 +26,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     fieldRows: FieldRow[] = [];
     formData: ContentTypeField;
     currentFieldType: FieldType;
-    currentField: {
-        id?: string,
-        typeId?: string
-    } = {};
+    currentField: FieldVariableParams;
 
     @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
@@ -119,9 +116,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields();
         this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
-        this.currentField = {};
-        this.currentField.id = this.formData.id;
-        this.currentField.typeId = this.formData.contentTypeId;
+        this.currentField = {
+            fieldId: this.formData.id,
+            contentTypeId: this.formData.contentTypeId
+        };
         this.dialogActiveTab = null;
         this.toggleDialog();
     }

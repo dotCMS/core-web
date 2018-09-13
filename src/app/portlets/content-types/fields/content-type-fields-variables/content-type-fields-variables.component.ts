@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { FieldVariablesService } from '../service/';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FieldVariablesService, FieldVariableParams } from '../service/';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
@@ -20,10 +20,7 @@ export interface FieldVariable {
 })
 export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
     @Input() contentTypeId: string;
-    @Input() field: {
-        id?: string,
-        typeId?: string
-    } = {};
+    @Input() field: FieldVariableParams;
 
     fieldVariables: FieldVariable[] = [];
     messages: {[key: string]: string} = {};
@@ -51,8 +48,8 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
                 this.initTableData();
             });
         this.form = this.fb.group({
-            key: '',
-            value: ''
+            key: new FormControl('', Validators.required),
+            value: new FormControl('', Validators.required)
         });
     }
 
@@ -72,7 +69,7 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
             value: this.form.controls.value.value
         };
         this.saveVariable(variable);
-        this.form.setValue({ key: '', value: '' });
+        this.form.reset();
     }
 
     /**
@@ -81,7 +78,12 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
      * @memberof ContentTypeFieldsVariablesComponent
      */
     deleteVariable(fieldIndex: number): void {
-        this.fieldVariablesService.deleteFieldVariables(this.field.typeId, this.field.id, this.fieldVariables[fieldIndex].id)
+        const params: FieldVariableParams = {
+            contentTypeId: this.field.contentTypeId,
+            fieldId: this.field.fieldId,
+            variable: this.fieldVariables[fieldIndex]
+        };
+        this.fieldVariablesService.delete(params)
             .subscribe(() => {
                 this.fieldVariables = this.fieldVariables.filter((item: FieldVariable, index: number) => index !== fieldIndex);
             }, (err: ResponseView) => {
@@ -95,7 +97,12 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
      * @memberof ContentTypeFieldsVariablesComponent
      */
     saveVariable(variable: FieldVariable, variableIndex?: number): void {
-        this.fieldVariablesService.saveFieldVariables(this.field.typeId, this.field.id, variable)
+        const params: FieldVariableParams = {
+            contentTypeId: this.field.contentTypeId,
+            fieldId: this.field.fieldId,
+            variable: variable
+        };
+        this.fieldVariablesService.save(params)
             .subscribe((savedVariable: FieldVariable) => {
                 if (typeof variableIndex !== 'undefined') {
                     this.fieldVariables = this.updateVariableCollection(savedVariable, variableIndex);
@@ -118,7 +125,11 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
     }
 
     private initTableData(): void {
-        this.fieldVariablesService.loadFieldVariables(this.field.typeId, this.field.id).subscribe((fieldVariables: FieldVariable[]) => {
+        const params: FieldVariableParams = {
+            contentTypeId: this.field.contentTypeId,
+            fieldId: this.field.fieldId
+        };
+        this.fieldVariablesService.load(params).subscribe((fieldVariables: FieldVariable[]) => {
             this.fieldVariables = fieldVariables;
         });
     }
