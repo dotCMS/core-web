@@ -61,6 +61,8 @@
         }
     }
     &--over {
+        padding-bottom: 0;
+
         .row-columns__item-empty-message {
             display: none;
         }
