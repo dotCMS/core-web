@@ -98,7 +98,7 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
      * @returns {boolean}
      * @memberof ContentTypeFieldsVariablesComponent
      */
-    shouldBeDisabled(index: number): boolean {
+    canSaveField(index: number): boolean {
         return this.fieldVariables[index].key === '' || this.fieldVariables[index].value === '';
     }
 

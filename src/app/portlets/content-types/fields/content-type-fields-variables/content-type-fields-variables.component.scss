@@ -1,30 +1,5 @@
 @import "variables";
 
-.content-type-fields__variables-form {
-    align-items: center;
-    background-color: $gray-bg;
-    display: flex;
-    justify-content: space-between;
-    margin: $basic-padding * 4 $basic-padding * 3;
-    padding: $basic-padding * 2 $basic-padding * 3;
-
-    div {
-
-        &:first-child {
-            width: 25%
-        }
-
-        &:last-of-type {
-            width: 60%
-        }
-
-        input {
-            width: 100%
-        }
-
-    }
-}
-
 ::ng-deep {
     .ui-datatable {
         .ui-datatable-thead tr {
@@ -32,7 +7,7 @@
                 padding: .5em;
                 text-align: left;
     
-                &:last-child {
+                &.content-type-fields__variables-actions {
                     width: 88px;
                 }
             }
@@ -42,15 +17,15 @@
                 padding-left: 0;
                 padding-right: 0;
 
-                &:last-child {
-                    padding-right: 0;
-                    width: 88px;
-                }
-
                 &:first-child {
                     .ui-cell-editor {
                         padding: 0 $basic-padding * 3;
                     }
+                }
+
+                &.content-type-fields__variables-actions {
+                    padding-right: 0;
+                    width: 88px;
                 }
 
                 .ui-cell-editor {
