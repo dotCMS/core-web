@@ -66,6 +66,8 @@ import { DotPageSelectorModule } from '../../view/components/_common/dot-page-se
 import { DotBaseTypeSelectorModule } from '../../view/components/dot-base-type-selector/dot-base-type-selector.module';
 import { DotIconModule } from '../../view/components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../../view/components/_common/dot-icon-button/dot-icon-button.module';
+import { DotDialogModule } from '../../view/components/dot-dialog/dot-dialog.module';
+import { AddVariableFormComponent } from './fields/content-type-fields-variables/add-variable-form';
 
 @NgModule({
     declarations: [
@@ -74,6 +76,7 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsVariablesComponent,
+        AddVariableFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypesEditComponent,
@@ -109,6 +112,7 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         ContentTypesRoutingModule,
         DataTableModule,
         DialogModule,
+        DotDialogModule,
         DotIconModule,
         DotIconButtonModule,
         DragulaModule,

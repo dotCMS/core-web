@@ -1,7 +1,6 @@
 import { Component, Input, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { FieldVariablesService, FieldVariableParams } from '../service/';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DotHttpErrorManagerService } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
@@ -24,13 +23,11 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
 
     fieldVariables: FieldVariable[] = [];
     messages: {[key: string]: string} = {};
-    form: FormGroup;
 
     constructor(
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         public dotMessageService: DotMessageService,
         private fieldVariablesService: FieldVariablesService,
-        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
@@ -38,8 +35,6 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
             .getMessages([
                 'contenttypes.field.variables.key_header.label',
                 'contenttypes.field.variables.value_header.label',
-                'contenttypes.field.variables.key_placeholder.label',
-                'contenttypes.field.variables.value_placeholder.label',
                 'contenttypes.field.variables.actions_header.label',
                 'contenttypes.field.variables.value_no_rows.label'
             ])
@@ -47,29 +42,12 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
                 this.messages = messages;
                 this.initTableData();
             });
-        this.form = this.fb.group({
-            key: new FormControl('', Validators.required),
-            value: new FormControl('', Validators.required)
-        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.field.currentValue && !changes.field.firstChange) {
             this.initTableData();
         }
-    }
-
-    /**
-     * Handle Create Variable event from form
-     * @memberof ContentTypeFieldsVariablesComponent
-     */
-    addVariableForm(): void {
-        const variable: FieldVariable = {
-            key: this.form.controls.key.value,
-            value: this.form.controls.value.value
-        };
-        this.saveVariable(variable);
-        this.form.reset();
     }
 
     /**

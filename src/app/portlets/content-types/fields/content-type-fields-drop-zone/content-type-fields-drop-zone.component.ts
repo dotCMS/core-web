@@ -1,5 +1,4 @@
 ///<reference path="../shared/field-type.model.ts"/>
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { FieldDragDropService, FieldVariableParams } from '../service';
 import { FieldRow, ContentTypeField, FieldType } from '../shared';
@@ -8,6 +7,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotDialogAction } from '../../../../view/components/dot-dialog/dot-dialog.component';
 
 /**
  * Display all the Field Types
@@ -20,13 +20,16 @@ import { DotEventsService } from '../../../../api/services/dot-events/dot-events
     styleUrls: ['./content-type-fields-drop-zone.component.scss'],
     templateUrl: './content-type-fields-drop-zone.component.html'
 })
-export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements OnInit, OnChanges {
+export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
     dialogActiveTab: number;
     displayDialog = false;
     fieldRows: FieldRow[] = [];
     formData: ContentTypeField;
     currentFieldType: FieldType;
     currentField: FieldVariableParams;
+    messages: {[key: string]: string} = {};
+    closeDialogAction: DotDialogAction;
+    saveDialogAction: DotDialogAction;
 
     @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
@@ -35,13 +38,16 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     @Output() removeFields = new EventEmitter<ContentTypeField[]>();
 
     constructor(
-        dotMessageService: DotMessageService,
+        public dotMessageService: DotMessageService,
         private fieldDragDropService: FieldDragDropService,
         private fieldPropertyService: FieldPropertyService,
         private dotEventsService: DotEventsService
-    ) {
-        super(
-            [
+    ) {}
+
+    ngOnInit(): void {
+
+        this.dotMessageService
+            .getMessages([
                 'contenttypes.dropzone.action.save',
                 'contenttypes.dropzone.action.cancel',
                 'contenttypes.dropzone.action.edit',
@@ -49,12 +55,22 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 'contenttypes.dropzone.empty.message',
                 'contenttypes.dropzone.tab.overview',
                 'contenttypes.dropzone.tab.variables'
-            ],
-            dotMessageService
-        );
-    }
+            ])
+            .subscribe((messages: {[key: string]: string}) => {
+                this.messages = messages;
 
-    ngOnInit(): void {
+                this.closeDialogAction = {
+                    label: this.messages['contenttypes.dropzone.action.cancel'],
+                    action: () => {}
+                };
+                this.saveDialogAction  = {
+                    label: this.messages['contenttypes.dropzone.action.save'],
+                    action: () => {
+                        this.propertiesForm.saveFieldProperties();
+                    }
+                };
+            });
+
         this.fieldDragDropService.fieldDropFromSource$.subscribe(() => {
             this.setDroppedField();
             this.toggleDialog();
@@ -152,6 +168,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 });
             });
         });
+        this.displayDialog = false;
         this.formData = null;
         this.propertiesForm.destroy();
     }
@@ -160,8 +177,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     getDialogHeader(): string {
         const dialogTitle =
             this.formData && this.formData.id
-                ? this.i18nMessages['contenttypes.dropzone.action.edit']
-                : this.i18nMessages['contenttypes.dropzone.action.create.field'];
+                ? this.messages['contenttypes.dropzone.action.edit']
+                : this.messages['contenttypes.dropzone.action.create.field'];
         return `${dialogTitle}`;
     }
 
@@ -241,9 +258,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private toggleDialog(): void {
-        this.displayDialog = !this.displayDialog;
         setTimeout(() => {
             this.dialogActiveTab = 0;
+            this.displayDialog = !this.displayDialog;
+            
         }, 0);
     }
 

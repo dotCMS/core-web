@@ -14,6 +14,11 @@
     }
 }
 
+dot-dialog ::ng-deep {
+    .ui-dialog {
+        width: 900px;
+    }
+}
 .content-type-fields-drop-zone__container {
     flex-grow: 1;
     padding-bottom: $basic-padding * 2;
