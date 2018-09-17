@@ -26,7 +26,7 @@
         "angular2-tinymce": "^2.1.2",
         "core-js": "^2.5.3",
         "dotcms-js": "file:/Users/fmontes/dev/dotcms-js/build-dotcms-js/dotcms-js-4.2.0-b70.tgz",
-        "dotcms-rules-engine": "file:/Users/fmontes/dev/dotcms-rules-engine/dist/dotcms-rules-engine-0.0.19.tgz",
+        "dotcms-rules-engine": "file:/Users/fmontes/dev/dotcms-rules-engine/dist/dotcms-rules-engine-0.0.21.tgz",
         "lodash": "4.16.6",
         "md5": "^2.2.1",
         "moment": "^2.19.4",
