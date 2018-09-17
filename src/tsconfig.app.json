@@ -4,7 +4,15 @@
         "outDir": "../out-tsc/app",
         "baseUrl": "./",
         "module": "es2015",
-        "types": []
+        "types": [],
+        "paths": {
+            "dot-layout-grid": [
+                "dist/dot-layout-grid"
+            ],
+            "dot-layout-grid/*": [
+                "dist/dot-layout-grid/*"
+            ]
+        }
     },
     "exclude": [
         "test.ts",

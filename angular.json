@@ -32,9 +32,9 @@
           },
           "configurations": {
             "dotcms": {
-                "baseHref": "./",
-                "watch": true,
-                "poll": 1000
+              "baseHref": "./",
+              "watch": true,
+              "poll": 1000
             },
             "production": {
               "optimization": true,
@@ -120,6 +120,46 @@
           "options": {
             "tsConfig": [
               "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "dot-layout-grid": {
+      "root": "projects/dot-layout-grid",
+      "sourceRoot": "projects/dot-layout-grid/src",
+      "projectType": "library",
+      "prefix": "dot",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/dot-layout-grid/tsconfig.lib.json",
+            "project": "projects/dot-layout-grid/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/dot-layout-grid/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dot-layout-grid/src/test.ts",
+            "tsConfig": "projects/dot-layout-grid/tsconfig.spec.json",
+            "karmaConfig": "projects/dot-layout-grid/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dot-layout-grid/tsconfig.lib.json",
+              "projects/dot-layout-grid/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
