@@ -16,6 +16,7 @@ import { PaginatorService } from '../../../../api/services/paginator';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component';
 import { Observable } from 'rxjs/Observable';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { of } from 'rxjs/observable/of';
 
 /**
  * It is dropdown of sites, it handle pagination and global search
@@ -93,7 +94,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.getCurrentPage().subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.paginationService.totalRecords;
-            this.currentSite = Observable.of(this.siteService.currentSite);
+            this.currentSite = of(this.siteService.currentSite);
         });
     }
 
@@ -149,10 +150,10 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private selectCurrentSite(siteId: string): void {
         const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
-        this.currentSite = selectedInCurrentPage ? Observable.of(selectedInCurrentPage) : this.siteService.getSiteById(siteId);
+        this.currentSite = selectedInCurrentPage ? of(selectedInCurrentPage) : this.siteService.getSiteById(siteId);
     }
 
     private setCurrentSiteAsDefault() {
-        this.currentSite = Observable.of(this.siteService.currentSite);
+        this.currentSite = of(this.siteService.currentSite);
     }
 }

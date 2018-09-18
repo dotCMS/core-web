@@ -17,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { Observable } from 'rxjs/Observable';
 import { OverlayPanel } from 'primeng/primeng';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 /**
  * Dropdown with pagination and global search
@@ -74,7 +75,7 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
     }
 
     ngOnInit(): void {
-        Observable.fromEvent(this.searchInput.nativeElement, 'keyup')
+        fromEvent(this.searchInput.nativeElement, 'keyup')
             .debounceTime(500)
             .subscribe((keyboardEvent: Event) => {
                 this.filterChange.emit(keyboardEvent.target['value']);

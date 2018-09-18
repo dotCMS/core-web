@@ -30,6 +30,7 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -362,7 +363,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private subscribeIframeCustomEvents(): void {
-        Observable.fromEvent(window.document, 'ng-event')
+        fromEvent(window.document, 'ng-event')
             .pipe(
                 pluck('detail'),
                 takeUntil(this.destroy$)

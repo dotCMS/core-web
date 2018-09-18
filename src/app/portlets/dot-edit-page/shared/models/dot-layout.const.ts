@@ -1,4 +1,3 @@
-// import { NgGridItemConfig } from 'angular2-grid';
 import { DotLayoutGridBox } from './dot-layout-grid-box.model';
 import { DotContainerColumnBox } from './dot-container-column-box.model';
 

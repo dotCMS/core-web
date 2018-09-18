@@ -12,6 +12,7 @@ import { DotPageStateService } from '../../../content/services/dot-page-state/do
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 /**
  * With the url return a string of the edit page html
@@ -32,7 +33,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
         const data = this.dotEditPageDataService.getAndClean();
         if (data) {
-            return Observable.of(data);
+            return of(data);
         } else {
             return this.dotPageStateService
                 .get(route.queryParams.url, route.queryParams.language_id)
@@ -45,7 +46,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                         if (isLayout) {
                             return this.checkUserCanGoToLayout(dotRenderedPageState);
                         } else {
-                            return Observable.of(dotRenderedPageState);
+                            return of(dotRenderedPageState);
                         }
                     }),
                     catchError((err: ResponseView) => {
@@ -77,7 +78,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                 merge: null
             })));
         } else {
-            return Observable.of(dotRenderedPageState);
+            return of(dotRenderedPageState);
         }
     }
 

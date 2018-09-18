@@ -50,6 +50,7 @@ export class DotHttpErrorManagerService {
      * @memberof DotHttpErrorManagerService
      */
     handle(err: ResponseView): Observable<DotHttpErrorHandled> {
+        debugger;
         return this.getMessages().pipe(
             switchMap(() => {
                 const result: DotHttpErrorHandled = {
@@ -81,10 +82,11 @@ export class DotHttpErrorManagerService {
     }
 
     private callErrorHandler(response: Response): boolean {
-        const code = response.status;
-        return code === HttpCode.FORBIDDEN ?
-            this.isLicenseError(response) ? this.handleLicense() : this.handleForbidden() :
-            this.errorHandlers[code]();
+        return true;
+        // const code = response.status;
+        // return code === HttpCode.FORBIDDEN ?
+        //     this.isLicenseError(response) ? this.handleLicense() : this.handleForbidden() :
+        //     this.errorHandlers[code]();
     }
 
     private contentletIsForbidden(error: string): boolean {

@@ -1,14 +1,14 @@
-export { NgGrid } from "./directives/NgGrid";
-export { NgGridItem } from "./directives/NgGridItem";
-export { NgGridPlaceholder } from "./components/NgGridPlaceholder";
+export { NgGrid } from './directives/NgGrid';
+export { NgGridItem } from './directives/NgGridItem';
+export { NgGridPlaceholder } from './components/NgGridPlaceholder';
 export {
-	NgGridConfig,
-	NgGridItemConfig,
-	NgGridItemEvent,
-	NgGridItemSize,
-	NgGridItemPosition,
-	NgGridRawPosition,
-	NgGridItemDimensions,
-	NgConfigFixDirection,
-} from "./interfaces/INgGrid";
-export { NgGridModule } from "./modules/NgGrid.module";
+    NgGridConfig,
+    NgGridItemConfig,
+    NgGridItemEvent,
+    NgGridItemSize,
+    NgGridItemPosition,
+    NgGridRawPosition,
+    NgGridItemDimensions,
+    NgConfigFixDirection
+} from './interfaces/INgGrid';
+export { NgGridModule } from './modules/NgGrid.module';
