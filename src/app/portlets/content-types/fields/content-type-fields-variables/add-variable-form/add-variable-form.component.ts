@@ -21,7 +21,8 @@ export class AddVariableFormComponent implements OnInit {
         this.dotMessageService
             .getMessages([
                 'contenttypes.field.variables.key_header.label',
-                'contenttypes.field.variables.value_header.label'
+                'contenttypes.field.variables.value_header.label',
+                'contenttypes.field.variables.add_button.label'
             ])
             .subscribe((messages: {[key: string]: string}) => {
                 this.messages = messages;

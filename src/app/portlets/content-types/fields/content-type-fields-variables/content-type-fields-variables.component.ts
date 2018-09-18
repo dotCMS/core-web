@@ -18,7 +18,6 @@ export interface FieldVariable {
     templateUrl: './content-type-fields-variables.component.html'
 })
 export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
-    @Input() contentTypeId: string;
     @Input() field: FieldVariableParams;
 
     fieldVariables: FieldVariable[] = [];

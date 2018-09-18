@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, SimpleChange, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
-import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule } from '../';
+import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule, ContentTypeFieldsVariablesComponent } from '../';
 import { DragulaModule } from 'ng2-dragula';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
@@ -23,6 +23,8 @@ import { DotIconButtonModule } from '../../../../view/components/_common/dot-ico
 import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
+import { DotDialogModule } from '../../../../view/components/dot-dialog/dot-dialog.module';
+import { AddVariableFormComponent } from '../content-type-fields-variables/add-variable-form';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -95,6 +97,8 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypeFieldsDropZoneComponent,
+                ContentTypeFieldsVariablesComponent,
+                AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
                 TestPOverlayPanelComponent
@@ -110,6 +114,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 FieldValidationMessageModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
+                DotDialogModule,
                 DotIconModule,
                 DotIconButtonModule,
                 ContentTypeFieldsAddRowModule
@@ -240,6 +245,8 @@ describe('Load fields and drag and drop', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypeFieldsDropZoneComponent,
+                ContentTypeFieldsVariablesComponent,
+                AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
                 TestPOverlayPanelComponent,
@@ -253,6 +260,7 @@ describe('Load fields and drag and drop', () => {
                     }
                 ]),
                 DragulaModule,
+                DotDialogModule,
                 FieldValidationMessageModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
@@ -285,55 +293,64 @@ describe('Load fields and drag and drop', () => {
                 name: 'field 1',
                 id: '1',
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                sortOrder: 1
+                sortOrder: 1,
+                contentTypeId: '1b'
             },
             {
                 name: 'field 2',
                 id: '2',
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                sortOrder: 2
+                sortOrder: 2,
+                contentTypeId: '2b'
             },
             {
                 clazz: 'text',
                 id: '3',
                 name: 'field 3',
-                sortOrder: 3
+                sortOrder: 3,
+                contentTypeId: '3b'
             },
             {
                 clazz: 'text',
                 id: '4',
                 name: 'field 4',
-                sortOrder: 4
+                sortOrder: 4,
+                contentTypeId: '4b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                 id: '5',
                 name: 'field 5',
-                sortOrder: 5
+                sortOrder: 5,
+                contentTypeId: '5b'
             },
             {
                 clazz: 'text',
                 id: '6',
                 name: 'field 6',
-                sortOrder: 6
+                sortOrder: 6,
+                contentTypeId: '6b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                 id: '7',
                 name: 'field 7',
-                sortOrder: 7
+                sortOrder: 7,
+                contentTypeId: '7b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                 id: '8',
                 name: 'field 8',
-                sortOrder: 8
+                sortOrder: 8,
+                contentTypeId: '8b'
             },
             {
                 clazz: 'text',
                 id: '9',
                 name: 'field 9',
-                sortOrder: 9
+                sortOrder: 9,
+                contentTypeId: '9b'
             }
         ];
 
@@ -398,7 +415,7 @@ describe('Load fields and drag and drop', () => {
     });
 
 
-    it('should display dialog if a drop event happen from source', () => {
+    it('should display dialog if a drop event happen from source', fakeAsync(() => {
         fixture.detectChanges();
 
         this.testFieldDragDropService._fieldDropFromSource.next([
@@ -414,11 +431,12 @@ describe('Load fields and drag and drop', () => {
 
         fixture.detectChanges();
 
+        tick();
         expect(true).toBe(comp.displayDialog);
-
-        const dialog = de.query(By.css('p-dialog'));
-        expect(true).toBe(dialog.componentInstance.visible);
-    });
+        const dialog = de.query(By.css('dot-dialog'));
+        expect(true).toBe(dialog.componentInstance.show);
+        expect(comp.dialogActiveTab).toBe(0);
+    }));
 
     it('should save all the fields (moving the last line to the top)', () => {
         const testFields = [...fakeFields.slice(6, 9), ...fakeFields.slice(0, 6)];
@@ -515,6 +533,7 @@ describe('Load fields and drag and drop', () => {
         expect(original).toEqual(fakeFields[8]);
         expect(saveFields[0].fixed).toEqual(true);
         expect(saveFields[0].indexed).toEqual(true);
+        expect(comp.currentField).toEqual({fieldId: fakeFields[8].id, contentTypeId: fakeFields[8].contentTypeId});
     });
 
     it('should handler removeField event', () => {
