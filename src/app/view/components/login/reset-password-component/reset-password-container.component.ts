@@ -1,3 +1,5 @@
+
+import {pluck} from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
@@ -27,7 +29,7 @@ export class ResetPasswordContainerComponent {
         private route: ActivatedRoute,
         private loggerService: LoggerService
     ) {
-        this.route.params.pluck('token').subscribe((token) => {
+        this.route.params.pipe(pluck('token')).subscribe((token) => {
             this.token = <string>token;
         });
 

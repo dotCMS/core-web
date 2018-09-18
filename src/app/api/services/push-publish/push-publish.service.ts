@@ -1,6 +1,8 @@
+
+import {toArray, filter, pluck, mergeMap} from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
@@ -38,17 +40,17 @@ export class PushPublishService {
      */
     getEnvironments(): Observable<DotEnvironment[]> {
         return this.currentUser
-            .getCurrentUser()
-            .mergeMap((user) => {
+            .getCurrentUser().pipe(
+            mergeMap((user) => {
                 return this.coreWebService.requestView({
                     method: RequestMethod.Get,
                     url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
                 });
-            })
-            .pluck('bodyJsonObject')
-            .flatMap((environments: DotEnvironment[]) => environments)
-            .filter((environment) => environment.name !== '')
-            .toArray();
+            }),
+            pluck('bodyJsonObject'),
+            mergeMap((environments: DotEnvironment[]) => environments),
+            filter((environment) => environment.name !== ''),
+            toArray(),);
     }
 
     /**

@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input, OnInit, AfterViewChecked } from '@angular/core';
 import { FormatDateService } from '../../../../api/services/format-date-service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,

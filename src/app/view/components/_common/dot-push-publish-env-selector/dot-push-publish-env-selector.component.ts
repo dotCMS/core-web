@@ -3,7 +3,7 @@ import { PushPublishService } from '../../../../api/services/push-publish/push-p
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotEnvironment } from '../../../../shared/models/dot-environment/dot-environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-env-selector',

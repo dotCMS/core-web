@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
 import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { SelectItem } from 'primeng/primeng';
 import { map, take } from 'rxjs/operators';

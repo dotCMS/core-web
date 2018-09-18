@@ -1,3 +1,5 @@
+
+import {take, mergeMap, pluck} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
@@ -59,7 +61,7 @@ export class ContentTypesEditComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.route.data.pluck('contentType').subscribe((contentType: ContentType) => {
+        this.route.data.pipe(pluck('contentType')).subscribe((contentType: ContentType) => {
             this.data = contentType;
 
             if (contentType.fields) {
@@ -158,8 +160,8 @@ export class ContentTypesEditComponent implements OnInit {
      */
     removeFields(fieldsToDelete: ContentTypeField[]): void {
         this.fieldService
-            .deleteFields(this.data.id, fieldsToDelete)
-            .pluck('fields')
+            .deleteFields(this.data.id, fieldsToDelete).pipe(
+            pluck('fields'))
             .subscribe((fields: ContentTypeField[]) => {
                 this.fields = fields;
             }, (err: ResponseView) => {
@@ -206,9 +208,9 @@ export class ContentTypesEditComponent implements OnInit {
 
     private createContentType(value: ContentType): void {
         this.crudService
-            .postData('v1/contenttype', value)
-            .flatMap((contentTypes: ContentType[]) => contentTypes)
-            .take(1)
+            .postData('v1/contenttype', value).pipe(
+            mergeMap((contentTypes: ContentType[]) => contentTypes),
+            take(1),)
             .subscribe((contentType: ContentType) => {
                 this.data = contentType;
                 this.fields = this.data.fields;

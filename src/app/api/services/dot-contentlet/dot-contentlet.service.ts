@@ -1,9 +1,9 @@
+import { toArray, defaultIfEmpty, map, pluck, flatMap, filter } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
-import { flatMap, filter, pluck } from '../../../../../node_modules/rxjs/operators';
 
 @Injectable()
 export class DotContentletService {
@@ -23,7 +23,7 @@ export class DotContentletService {
                 method: RequestMethod.Get,
                 url: 'v1/contenttype/basetypes'
             })
-            .pluck('entity');
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -37,7 +37,7 @@ export class DotContentletService {
                 flatMap((structures: StructureTypeView[]) => structures),
                 filter((structure: StructureTypeView) => !this.isRecentContentType(structure))
             )
-            .toArray();
+            .pipe(toArray());
     }
 
     /**
@@ -48,8 +48,7 @@ export class DotContentletService {
      * @memberof ContentletService
      */
     getUrlById(id: string): Observable<string> {
-        return this.getContentTypes()
-        .pipe(
+        return this.getContentTypes().pipe(
             flatMap((structures: StructureTypeView[]) => structures),
             pluck('types'),
             flatMap((contentTypeViews: ContentTypeView[]) => contentTypeViews),
@@ -66,9 +65,10 @@ export class DotContentletService {
      * @memberof ContentletService
      */
     isContentTypeInMenu(id: string): Observable<boolean> {
-        return this.getUrlById(id)
-            .defaultIfEmpty(false)
-            .map((url: string) => !!url);
+        return this.getUrlById(id).pipe(
+            defaultIfEmpty(false),
+            map((url: string) => !!url)
+        );
     }
 
     private isRecentContentType(type: StructureTypeView): boolean {

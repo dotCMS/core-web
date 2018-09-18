@@ -1,8 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-messages-service';
 import { Injectable } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
 
 import { ResponseView, LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 
@@ -61,7 +61,7 @@ export class DotHttpErrorManagerService {
                     result.forbidden = this.contentletIsForbidden(err['bodyJsonObject'].error);
                 }
 
-                return Observable.of(result);
+                return observableOf(result);
             })
         );
     }

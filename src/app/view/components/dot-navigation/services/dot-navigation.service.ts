@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, flatMap, toArray, tap } from 'rxjs/operators';
 
 import { Auth } from 'dotcms-js/core/login.service';
@@ -158,8 +156,8 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     goToFirstPortlet(): Promise <boolean> {
-        return this.getFirstMenuLink()
-            .map((link: string) => this.dotRouterService.gotoPortlet(link))
+        return this.getFirstMenuLink().pipe(
+            map((link: string) => this.dotRouterService.gotoPortlet(link)))
             .toPromise()
             .then((isRouted: Promise<boolean>) => {
                 if (!isRouted) {
@@ -227,7 +225,7 @@ export class DotNavigationService {
     }
 
     private getFirstMenuLink(): Observable <string> {
-        return this.dotMenuService.loadMenu().map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus));
+        return this.dotMenuService.loadMenu().pipe(map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus)));
     }
 
     private getLegacyPortletUrl(menuItemId: string): string {

@@ -1,6 +1,9 @@
+
+import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
+
+import {take, skip} from 'rxjs/operators';
 import { Component, Input } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { Observable } from 'rxjs/Observable';
 
 /**
  * Custom Menu to display options as a pop-up.
@@ -29,9 +32,9 @@ export class DotMenuComponent {
         this.visible = !this.visible;
         if (this.visible) {
             // Skip 1 because the event bubbling capture the document.click
-            Observable.fromEvent(document, 'click')
-                .skip(1)
-                .take(1)
+            observableFromEvent(document, 'click').pipe(
+                skip(1),
+                take(1),)
                 .subscribe(() => {
                     this.visible = false;
                 });

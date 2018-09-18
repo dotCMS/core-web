@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotWorkflowAction } from '../shared/models/dot-workflow-action/dot-workflow-action.model';
 import { DotWorkflow } from '../shared/models/dot-workflow/dot-workflow.model';
 import * as _ from 'lodash';
@@ -101,19 +102,19 @@ export const mockWorkflows: DotWorkflow[] = [
 
 export class DotWorkflowServiceMock {
     get(): Observable<DotWorkflow[]> {
-        return Observable.of(_.cloneDeep(mockWorkflows));
+        return observableOf(_.cloneDeep(mockWorkflows));
     }
 
     getSystem(): Observable<DotWorkflow> {
         const systemWorkflow = mockWorkflows.filter((workflow: DotWorkflow) => workflow.system);
-        return Observable.of(_.cloneDeep(systemWorkflow[0]));
+        return observableOf(_.cloneDeep(systemWorkflow[0]));
     }
 
     getContentWorkflowActions(_inode: string): Observable<DotWorkflowAction[]> {
-        return Observable.of(_.cloneDeep(mockWorkflowsActions));
+        return observableOf(_.cloneDeep(mockWorkflowsActions));
     }
 
     fireWorkflowAction(): Observable<any[]> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 }

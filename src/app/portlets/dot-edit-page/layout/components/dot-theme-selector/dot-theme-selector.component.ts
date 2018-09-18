@@ -1,9 +1,12 @@
+
+import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
+
+import {debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
-import { Observable } from 'rxjs/Observable';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
 import { DotDialogAction, DotDialogComponent } from '../../../../../view/components/dot-dialog/dot-dialog.component';
 
@@ -62,8 +65,8 @@ export class DotThemeSelectorComponent implements OnInit {
 
         this.current = this.value;
 
-        Observable.fromEvent(this.searchInput.nativeElement, 'keyup')
-            .debounceTime(500)
+        observableFromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+            debounceTime(500))
             .subscribe((keyboardEvent: Event) => {
                 this.filterThemes(keyboardEvent.target['value']);
             });

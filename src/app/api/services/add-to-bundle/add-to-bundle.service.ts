@@ -1,6 +1,8 @@
+
+import {pluck, mergeMap} from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotCurrentUser } from '../../../shared/models/dot-current-user/dot-current-user';
 import { DotBundle } from '../../../shared/models/dot-bundle/dot-bundle';
@@ -30,14 +32,14 @@ export class AddToBundleService {
      * @memberof AddToBundleService
      */
     getBundles(): Observable<any[]> {
-        return this.currentUser.getCurrentUser().mergeMap((user: DotCurrentUser) => {
+        return this.currentUser.getCurrentUser().pipe(mergeMap((user: DotCurrentUser) => {
             return this.coreWebService
                 .requestView({
                     method: RequestMethod.Get,
                     url: `${this.bundleUrl}/${user.userId}`
-                })
-                .pluck('bodyJsonObject', 'items');
-        });
+                }).pipe(
+                pluck('bodyJsonObject', 'items'));
+        }));
     }
 
     /**

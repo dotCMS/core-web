@@ -1,7 +1,9 @@
+
+import {pluck, map, withLatestFrom, mergeMap} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
 
@@ -124,7 +126,7 @@ export class IframePortletLegacyComponent implements OnInit {
 
     private setIframeSrc(): void {
         // We use the query param to load a page in edit mode in the iframe
-        const queryUrl$ = this.route.queryParams.pluck('url').map((url: string) => url);
+        const queryUrl$ = this.route.queryParams.pipe(pluck('url'),map((url: string) => url),);
 
         queryUrl$.subscribe((queryUrl: string) => {
             if (queryUrl) {
@@ -136,14 +138,14 @@ export class IframePortletLegacyComponent implements OnInit {
     }
 
     private setPortletUrl(): void {
-        const portletId$ = this.route.params.pluck('id').map((id: string) => id);
+        const portletId$ = this.route.params.pipe(pluck('id'),map((id: string) => id),);
 
-        portletId$
-            .withLatestFrom(this.route.parent.url.map((urlSegment: UrlSegment[]) => urlSegment[0].path))
-            .flatMap(
+        portletId$.pipe(
+            withLatestFrom(this.route.parent.url.pipe(map((urlSegment: UrlSegment[]) => urlSegment[0].path))),
+            mergeMap(
                 ([id, url]) =>
                     url === 'add' ? this.contentletService.getUrlById(id) : this.dotMenuService.getUrlById(id)
-            )
+            ),)
             .subscribe((url: string) => {
                 this.setUrl(url);
             });

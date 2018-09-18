@@ -1,10 +1,10 @@
+
+import {empty as observableEmpty,  Observable ,  Subject ,  fromEvent } from 'rxjs';
+
+import {concatMap, catchError,  filter, takeUntil, pluck, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-import { Observable } from 'rxjs/Observable';
-import { filter, takeUntil, pluck, take } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 import { SiteService, ResponseView } from 'dotcms-js/dotcms-js';
 
@@ -30,7 +30,6 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -161,8 +160,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         }
 
         this.dotPageStateService
-            .set(this.pageState.page, newState)
-            .takeUntil(this.destroy$)
+            .set(this.pageState.page, newState).pipe(
+            takeUntil(this.destroy$))
             .subscribe(
                 (pageState: DotRenderedPageState) => {
                     this.setPageState(pageState);
@@ -202,8 +201,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     reload(): void {
         this.dotPageStateService
-            .get(this.route.snapshot.queryParams.url)
-            .catch((err: ResponseView) => this.errorHandler(err))
+            .get(this.route.snapshot.queryParams.url).pipe(
+            catchError((err: ResponseView) => this.errorHandler(err)))
             .pipe(takeUntil(this.destroy$))
             .subscribe((pageState: DotRenderedPageState) => {
                 this.setPageState(pageState);
@@ -308,7 +307,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     this.dotRouterService.goToSiteBrowser();
                 }
             });
-        return Observable.empty();
+        return observableEmpty();
     }
 
     private getMessages(): void {
@@ -351,10 +350,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 if (res.forbidden) {
                     this.dotRouterService.goToSiteBrowser();
                 } else {
-                    this.route.queryParams
-                        .pluck('url')
-                        .concatMap((url: string) => this.dotPageStateService.get(url))
-                        .takeUntil(this.destroy$)
+                    this.route.queryParams.pipe(
+                        pluck('url'),
+                        concatMap((url: string) => this.dotPageStateService.get(url)),
+                        takeUntil(this.destroy$),)
                         .subscribe((pageState: DotRenderedPageState) => {
                             this.setPageState(pageState);
                         });

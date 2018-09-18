@@ -1,7 +1,9 @@
+
+import {pluck, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 /**
  * Handle license information of current logged in user
@@ -23,8 +25,8 @@ export class DotLicenseService {
      * @memberof DotLicenseService
      */
     isEnterprise(): Observable<boolean> {
-        return this.getLicense()
-            .map((license) => license['level'] >= 200);
+        return this.getLicense().pipe(
+            map((license) => license['level'] >= 200));
     }
 
     private getLicense(): Observable<any> {
@@ -32,8 +34,8 @@ export class DotLicenseService {
             .requestView({
                 method: RequestMethod.Get,
                 url: this.licenseURL
-            })
-            .pluck('entity', 'config', 'license');
+            }).pipe(
+            pluck('entity', 'config', 'license'));
     }
 
 }

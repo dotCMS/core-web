@@ -1,11 +1,12 @@
+
+import {mergeMap,  flatMap, map, tap, toArray } from 'rxjs/operators';
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { DotWorkflow } from './../../../../shared/models/dot-workflow/dot-workflow.model';
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { SelectItem } from 'primeng/components/common/selectitem';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { flatMap, map, tap, toArray } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-workflows-selector-field',
@@ -42,7 +43,7 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     registerOnTouched(): void {}
 
     ngOnInit() {
-        this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).mergeMap(() => {
+        this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).pipe(mergeMap(() => {
             return this.dotWorkflowService.get().pipe(
                 tap((workflows: DotWorkflow[]) => {
                     this.workflowsModel = workflows;
@@ -51,7 +52,7 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
                 map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
                 toArray()
             );
-        });
+        }));
     }
 
     /**

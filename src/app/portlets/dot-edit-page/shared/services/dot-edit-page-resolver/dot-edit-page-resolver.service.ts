@@ -1,8 +1,8 @@
+
+import {throwError as observableThrowError,  Observable ,  of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Response, Headers } from '@angular/http';
-
-import { Observable } from 'rxjs/Observable';
 
 import { ResponseView, HttpCode } from 'dotcms-js/dotcms-js';
 
@@ -12,7 +12,6 @@ import { DotPageStateService } from '../../../content/services/dot-page-state/do
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 /**
  * With the url return a string of the edit page html
@@ -60,7 +59,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
 
     private checkUserCanGoToLayout (dotRenderedPageState: DotRenderedPageState): Observable<DotRenderedPageState> {
         if (!dotRenderedPageState.page.canEdit) {
-            return Observable.throw(new ResponseView(new Response({
+            return observableThrowError(new ResponseView(new Response({
                 body: {},
                 status: HttpCode.FORBIDDEN,
                 headers: null,
@@ -68,7 +67,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                 merge: null
             })));
         } else if (!dotRenderedPageState.layout) {
-            return Observable.throw(new ResponseView(new Response({
+            return observableThrowError(new ResponseView(new Response({
                 body: {},
                 status: HttpCode.FORBIDDEN,
                 headers: new Headers({

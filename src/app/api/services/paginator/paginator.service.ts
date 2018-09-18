@@ -1,6 +1,8 @@
+
+import {take, map} from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RequestMethod, URLSearchParams } from '@angular/http';
 
 export enum OrderDirection {
@@ -143,8 +145,8 @@ export class PaginatorService {
                 method: RequestMethod.Get,
                 search: params,
                 url: url || this.url
-            })
-            .map((response) => {
+            }).pipe(
+            map((response) => {
                 this.setLinks(response.header(PaginatorService.LINK_HEADER_NAME));
                 this.paginationPerPage = parseInt(
                     response.header(PaginatorService.PAGINATION_PER_PAGE_HEADER_NAME),
@@ -160,7 +162,7 @@ export class PaginatorService {
                     10
                 );
                 return response.entity;
-            }).take(1);
+            }),take(1),);
     }
 
     /**

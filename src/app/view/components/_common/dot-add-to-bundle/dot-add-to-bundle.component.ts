@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -55,7 +56,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
                                 : messages['contenttypes.content.add_to_bundle.type'];
                         });
                         this.form.get('addBundle').setValue(this.getDefaultBundle(bundles) ? this.getDefaultBundle(bundles).name : '');
-                        return Observable.of(bundles);
+                        return observableOf(bundles);
                     })
                 );
             })

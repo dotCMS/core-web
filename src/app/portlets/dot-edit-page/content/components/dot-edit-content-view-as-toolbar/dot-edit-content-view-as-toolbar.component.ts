@@ -6,7 +6,7 @@ import { DotDevice } from '../../../../../shared/models/dot-device/dot-device.mo
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
 
 @Component({

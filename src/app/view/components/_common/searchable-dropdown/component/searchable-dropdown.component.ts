@@ -1,3 +1,5 @@
+
+import {debounceTime} from 'rxjs/operators';
 import { DotContainer } from '../../../../../shared/models/container/dot-container.model';
 import {
     Component,
@@ -15,9 +17,8 @@ import {
 import { BaseComponent } from '../../_base/base-component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  fromEvent } from 'rxjs';
 import { OverlayPanel } from 'primeng/primeng';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 
 /**
  * Dropdown with pagination and global search
@@ -75,8 +76,8 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
     }
 
     ngOnInit(): void {
-        fromEvent(this.searchInput.nativeElement, 'keyup')
-            .debounceTime(500)
+        fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+            debounceTime(500))
             .subscribe((keyboardEvent: Event) => {
                 this.filterChange.emit(keyboardEvent.target['value']);
             });

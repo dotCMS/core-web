@@ -1,14 +1,14 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
 import { Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { map } from 'rxjs/operators/map';
-import { mergeMap } from 'rxjs/operators/mergeMap';
+import { map ,  mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 interface DotEditPageNavItem {
@@ -40,7 +40,7 @@ export class DotEditPageNavComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.layoutChanged(changes)) {
-            this.model = !this.model ? this.loadNavItems() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+            this.model = !this.model ? this.loadNavItems() : observableOf(this.getNavItems(this.pageState, this.isEnterpriseLicense));
         }
     }
 

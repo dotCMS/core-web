@@ -1,3 +1,7 @@
+
+import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
+
+import {map,  catchError } from 'rxjs/operators';
 import { ListingDataTableComponent } from '../../../view/components/listing-data-table/listing-data-table.component';
 import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { CrudService } from '../../../api/services/crud';
@@ -8,7 +12,6 @@ import { ActionHeaderOptions } from '../../../shared/models/action-header';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { DataTableColumn } from '../../../shared/models/data-table';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
 import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
 import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
 import { ButtonModel } from '../../../shared/models/action-header/button.model';
@@ -16,7 +19,6 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
 import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
 import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
 import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
-import { catchError } from 'rxjs/operators';
 import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 
 /**
@@ -77,11 +79,11 @@ export class ContentTypesPortletComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        Observable.forkJoin(
+        observableForkJoin(
             this.dotMessageService.getMessages(this.i18nKeys),
             this.dotContentletService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),
-            this.pushPublishService.getEnvironments().map((environments: DotEnvironment[]) => !!environments.length)
+            this.pushPublishService.getEnvironments().pipe(map((environments: DotEnvironment[]) => !!environments.length))
         ).subscribe(res => {
             const baseTypes: StructureTypeView[] = res[1];
             const rowActionsMap = {

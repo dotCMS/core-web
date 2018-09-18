@@ -1,7 +1,7 @@
+
+import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
 import { DotEvent } from '../../../shared/models/dot-event/dot-event';
 
 /**
@@ -22,7 +22,7 @@ export class DotEventsService {
      */
     listen(eventName: string): Observable<DotEvent> {
         // TODO: need to make this method to support multiple events
-        return this.subject.asObservable().filter((res) => res.name === eventName);
+        return this.subject.asObservable().pipe(filter((res) => res.name === eventName));
     }
 
     /**

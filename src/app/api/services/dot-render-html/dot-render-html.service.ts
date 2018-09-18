@@ -1,6 +1,8 @@
+
+import {pluck} from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
@@ -85,8 +87,8 @@ export class DotRenderHTMLService {
                 method: RequestMethod.Get,
                 url: `v1/page/render/${options.url.replace(/^\//, '')}`,
                 params: params
-            })
-            .pluck('entity');
+            }).pipe(
+            pluck('entity'));
     }
 
     public getDotEditPageViewAsParams(viewAs: DotEditPageViewAs): DotEditPageViewAsParams {

@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { CrudService } from '../../../api/services/crud';
 import { ContentType } from '../shared/content-type.model';
 import { ContentTypesInfoService } from '../../../api/services/content-types-info';
@@ -54,7 +55,7 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
     }
 
     private getDefaultContentType(type: string): Observable<ContentType> {
-        return Observable.of({
+        return observableOf({
             owner: this.loginService.auth.user.userId,
             baseType: type.toUpperCase(),
             clazz: this.contentTypesInfoService.getClazz(type),

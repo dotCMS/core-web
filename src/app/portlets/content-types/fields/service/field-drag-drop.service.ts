@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
-import { Subject } from 'rxjs/Subject';
 
 /**
  * Provide method to handle with the Field Types

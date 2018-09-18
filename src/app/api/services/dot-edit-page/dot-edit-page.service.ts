@@ -1,8 +1,10 @@
+
+import {pluck} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { DotPageContainer } from '../../../portlets/dot-edit-page/shared/models/dot-page-container.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DotEditPageService {
@@ -23,7 +25,7 @@ export class DotEditPageService {
                 method: RequestMethod.Post,
                 body: content,
                 url: `v1/page/${pageId}/content`
-            })
-            .pluck('entity');
+            }).pipe(
+            pluck('entity'));
     }
 }

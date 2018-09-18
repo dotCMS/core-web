@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {
     Component,
     ElementRef,
@@ -13,7 +15,7 @@ import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { IframeOverlayService } from '../service/iframe-overlay.service';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { DotUiColorsService } from '../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
 
 @Component({
@@ -46,19 +48,19 @@ export class IframeComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.iframeOverlayService.overlay.subscribe((val) => (this.showOverlay = val));
 
-        this.dotIframeService.reloaded().takeUntil(this.destroy$).subscribe(() => {
+        this.dotIframeService.reloaded().pipe(takeUntil(this.destroy$)).subscribe(() => {
             if (this.getIframeWindow()) {
                 this.getIframeLocation().reload();
             }
         });
 
-        this.dotIframeService.ran().takeUntil(this.destroy$).subscribe((func: string) => {
+        this.dotIframeService.ran().pipe(takeUntil(this.destroy$)).subscribe((func: string) => {
             if (this.getIframeWindow() && typeof this.getIframeWindow()[func] === 'function') {
                 this.getIframeWindow()[func]();
             }
         });
 
-        this.dotIframeService.reloadedColors().takeUntil(this.destroy$).subscribe(() => {
+        this.dotIframeService.reloadedColors().pipe(takeUntil(this.destroy$)).subscribe(() => {
             const doc = this.getIframeDocument();
 
             if (doc) {

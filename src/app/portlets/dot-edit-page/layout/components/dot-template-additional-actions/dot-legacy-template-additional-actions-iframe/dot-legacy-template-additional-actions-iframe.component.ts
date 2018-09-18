@@ -1,7 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
+
+import {switchMap, combineLatest} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-legacy-addtional-actions',
@@ -13,14 +16,14 @@ export class DotLegacyTemplateAdditionalActionsComponent implements OnInit {
     constructor(private route: ActivatedRoute, private dotMenuService: DotMenuService) {}
 
     ngOnInit(): void {
-        this.url = this.route.params.combineLatest(this.dotMenuService.getDotMenuId('templates')).switchMap((resp) => {
+        this.url = this.route.params.pipe(combineLatest(this.dotMenuService.getDotMenuId('templates')),switchMap((resp) => {
             const tabName = resp[0].tabName;
             const templateId = resp[0].id;
             const portletId = resp[1];
-            return Observable.of(
+            return observableOf(
                 // tslint:disable-next-line:max-line-length
                 `c/portal/layout?p_l_id=${portletId}&p_p_id=templates&p_p_action=1&p_p_state=maximized&p_p_mode=view&_templates_struts_action=%2Fext%2Ftemplates%2Fedit_template&_templates_cmd=edit&inode=${templateId}&drawed=false&selectedTab=${tabName}`
             );
-        });
+        }),);
     }
 }

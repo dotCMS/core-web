@@ -1,5 +1,7 @@
+
+import {map, pluck} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
 
@@ -55,8 +57,8 @@ export class DotPageSelectorService {
                 },
                 method: RequestMethod.Post,
                 url: 'es/search'
-            })
-            .pluck('contentlets');
+            }).pipe(
+            pluck('contentlets'));
     }
 
     /**
@@ -77,8 +79,8 @@ export class DotPageSelectorService {
                 },
                 method: RequestMethod.Post,
                 url: 'es/search'
-            })
-            .pluck('contentlets')
-            .map((pages: DotPageAsset[]) => pages[0]);
+            }).pipe(
+            pluck('contentlets'),
+            map((pages: DotPageAsset[]) => pages[0]),);
     }
 }

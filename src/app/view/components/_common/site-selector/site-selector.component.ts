@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable ,  of } from 'rxjs';
 import {
     Component,
     ViewEncapsulation,
@@ -14,9 +14,7 @@ import {
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
 import { PaginatorService } from '../../../../api/services/paginator';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component';
-import { Observable } from 'rxjs/Observable';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
-import { of } from 'rxjs/observable/of';
 
 /**
  * It is dropdown of sites, it handle pagination and global search

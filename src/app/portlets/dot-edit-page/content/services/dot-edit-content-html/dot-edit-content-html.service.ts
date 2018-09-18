@@ -1,9 +1,8 @@
-import { Injectable, ElementRef } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { take } from 'rxjs/operators/take';
+import {fromEvent as observableFromEvent, of as observableOf,  Observable ,  Subject ,  Subscription } from 'rxjs';
+
+import {map,  take } from 'rxjs/operators';
+import { Injectable, ElementRef } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -195,9 +194,9 @@ export class DotEditContentHtmlService {
 
         if (this.isFormExistInContainer(form, containerEl)) {
             this.showContentAlreadyAddedError();
-            return Observable.of(null);
+            return observableOf(null);
         } else {
-            return this.dotContainerContentletService.getFormToContainer(this.currentContainer, form).map(response => {
+            return this.dotContainerContentletService.getFormToContainer(this.currentContainer, form).pipe(map(response => {
 
                 const containers: DotPageContainer[]  = this.getContentModel();
 
@@ -212,7 +211,7 @@ export class DotEditContentHtmlService {
                     });
 
                 return containers;
-            });
+            }));
         }
     }
 
@@ -309,7 +308,7 @@ export class DotEditContentHtmlService {
             this.docClickSubscription.unsubscribe();
         }
 
-        this.docClickSubscription = Observable.fromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
+        this.docClickSubscription = observableFromEvent(doc, 'click').subscribe(($event: MouseEvent) => {
             const target = <HTMLElement>$event.target;
             const method = this.docClickHandlers[target.dataset.dotObject];
             if (method) {

@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { DotGlobalMessage } from '../../../../shared/models/dot-global-message/dot-global-message.model';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
@@ -26,8 +28,8 @@ export class DotGlobalMessageComponent implements OnInit {
 
     ngOnInit() {
         this.dotEventsService
-            .listen('dot-global-message')
-            .filter((event) => !!event.data)
+            .listen('dot-global-message').pipe(
+            filter((event) => !!event.data))
             .subscribe((event: DotEvent) => {
                 this.message = event.data;
                 this.visibility = true;
