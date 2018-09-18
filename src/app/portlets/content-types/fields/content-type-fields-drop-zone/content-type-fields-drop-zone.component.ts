@@ -170,6 +170,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
         });
         this.displayDialog = false;
         this.formData = null;
+        this.dialogActiveTab = 0;
         this.propertiesForm.destroy();
     }
 
@@ -259,9 +260,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
 
     private toggleDialog(): void {
         this.displayDialog = !this.displayDialog;
-        setTimeout(() => {
-            this.dialogActiveTab = 0;
-        }, 0);
     }
 
     private getRowFields(fields: ContentTypeField[]): FieldRow[] {

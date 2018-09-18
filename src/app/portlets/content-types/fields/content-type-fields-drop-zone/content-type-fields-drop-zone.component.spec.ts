@@ -23,8 +23,8 @@ import { DotIconButtonModule } from '../../../../view/components/_common/dot-ico
 import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
-import { DotDialogModule } from '../../../../view/components/dot-dialog/dot-dialog.module';
 import { AddVariableFormComponent } from '../content-type-fields-variables/add-variable-form';
+import { DotDialogAction } from '../../../../view/components/dot-dialog/dot-dialog.component';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -46,11 +46,16 @@ class TestContentTypeFieldsPropertiesFormComponent {
 }
 
 @Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'p-overlayPanel',
+    selector: 'dot-dialog',
     template: ''
 })
-class TestPOverlayPanelComponent {}
+class DotDialogComponent {
+    @Input() header = '';
+    @Input() show: boolean;
+    @Input() ok: DotDialogAction;
+    @Input() cancel: DotDialogAction;
+    @Output() close: EventEmitter<any> = new EventEmitter();
+}
 
 @Injectable()
 class TestFieldDragDropService {
@@ -101,7 +106,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
-                TestPOverlayPanelComponent
+                DotDialogComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
@@ -114,7 +119,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 FieldValidationMessageModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
-                DotDialogModule,
                 DotIconModule,
                 DotIconButtonModule,
                 ContentTypeFieldsAddRowModule
@@ -152,7 +156,17 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     it('should has a dialog', () => {
         const dialog = de.query(By.css('p-dialog'));
-        expect(dialog).not.toBeNull();
+        expect(dialog).toBeNull();
+    });
+
+    it('should reset values when close dialog', () => {
+        comp.displayDialog = true;
+        fixture.detectChanges();
+        const dialog = de.query(By.css('dot-dialog')).componentInstance;
+        dialog.close.emit();
+        expect(comp.displayDialog).toBe(false);
+        expect(comp.formData).toBe(null);
+        expect(comp.dialogActiveTab).toBe(0);
     });
 
     it(
@@ -249,7 +263,7 @@ describe('Load fields and drag and drop', () => {
                 AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
-                TestPOverlayPanelComponent,
+                DotDialogComponent,
                 TestHostComponent
             ],
             imports: [
@@ -260,7 +274,6 @@ describe('Load fields and drag and drop', () => {
                     }
                 ]),
                 DragulaModule,
-                DotDialogModule,
                 FieldValidationMessageModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
@@ -435,7 +448,6 @@ describe('Load fields and drag and drop', () => {
         expect(true).toBe(comp.displayDialog);
         const dialog = de.query(By.css('dot-dialog'));
         expect(true).toBe(dialog.componentInstance.show);
-        expect(comp.dialogActiveTab).toBe(0);
     }));
 
     it('should save all the fields (moving the last line to the top)', () => {
