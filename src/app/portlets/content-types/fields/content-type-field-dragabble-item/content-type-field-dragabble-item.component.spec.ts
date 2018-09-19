@@ -10,7 +10,7 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { FieldService } from '../service';
 import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 
-xdescribe('ContentTypesFieldDragabbleItemComponent', () => {
+describe('ContentTypesFieldDragabbleItemComponent', () => {
     let comp: ContentTypesFieldDragabbleItemComponent;
     let fixture: ComponentFixture<ContentTypesFieldDragabbleItemComponent>;
     let de: DebugElement;
