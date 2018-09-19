@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DotBaseTypeSelectorComponent } from './dot-base-type-selector.component';
 import { DebugElement, Injectable } from '@angular/core';
@@ -8,13 +10,12 @@ import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { Dropdown, SelectItem } from 'primeng/primeng';
 import { By } from '@angular/platform-browser';
 import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 class MockDotContentletService {
     getAllContentTypes = jasmine
         .createSpy('getContentTypes')
-        .and.returnValue(Observable.of([{ name: 'FORM', label: 'Form' }, { name: 'WIDGET', label: 'Widget' }]));
+        .and.returnValue(observableOf([{ name: 'FORM', label: 'Form' }, { name: 'WIDGET', label: 'Widget' }]));
 }
 
 describe('DotBaseTypeSelectorComponent', () => {

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotThemeSelectorComponent } from './dot-theme-selector.component';
 import { DebugElement } from '@angular/core';
@@ -5,7 +7,6 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotThemesService } from '../../../../../api/services/dot-themes/dot-themes.service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { Observable } from 'rxjs/Observable';
 import { By } from '@angular/platform-browser';
 import { mockDotThemes } from '../../../../../test/dot-themes.mock';
 import { DataGridModule } from 'primeng/primeng';
@@ -130,7 +131,7 @@ describe('DotThemeSelectorComponent', () => {
         });
 
         it('should show theme image when available', () => {
-            spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(mockDotThemes));
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(mockDotThemes));
             component.siteChange(mockSites[0]);
             fixture.detectChanges();
             const themeImage: DebugElement = fixture.debugElement.query(By.css('.dot-theme-iteme__image'));
@@ -141,7 +142,7 @@ describe('DotThemeSelectorComponent', () => {
 
     describe('User interaction', () => {
         beforeEach(() => {
-            spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of(mockDotThemes));
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(mockDotThemes));
         });
 
         it('should set pagination, call endpoint and clear search field on site change ', () => {

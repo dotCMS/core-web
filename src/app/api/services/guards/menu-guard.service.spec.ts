@@ -1,6 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { DotMenuService } from '../dot-menu.service';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
@@ -57,7 +58,7 @@ describe('ValidMenuGuardService', () => {
     it('should allow access to Menu Portlets', () => {
         let result: boolean;
         mockRouterStateSnapshot.url = '/test';
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(observableOf(true));
         menuGuardService
             .canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));
@@ -68,7 +69,7 @@ describe('ValidMenuGuardService', () => {
     it('should prevent access to Menu Portlets', () => {
         let result: boolean;
         mockRouterStateSnapshot.url = '/test';
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(observableOf(false));
         menuGuardService
             .canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));
@@ -80,7 +81,7 @@ describe('ValidMenuGuardService', () => {
     it('should allow children access to Menu Portlets', () => {
         let result: boolean;
         mockRouterStateSnapshot.url = '/test';
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(observableOf(true));
         menuGuardService
             .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));
@@ -91,7 +92,7 @@ describe('ValidMenuGuardService', () => {
     it('should prevent children access to Menu Portlets', () => {
         let result: boolean;
         mockRouterStateSnapshot.url = '/test';
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
+        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(observableOf(false));
         menuGuardService
             .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { IconButtonTooltipModule } from '../_common/icon-button-tooltip/icon-button-tooltip.module';
 import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-menu-button.component';
@@ -13,7 +15,6 @@ import { ListingDataTableComponent } from './listing-data-table.component';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 import { PaginatorService } from '../../../api/services/paginator';
 import { ActionHeaderComponent } from './action-header/action-header';
 import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
@@ -303,7 +304,7 @@ describe('ListingDataTableComponent', () => {
 
     it('should show the loading indicator while the data is received', () => {
         expect(comp.loading).toEqual(true);
-        spyOn(this.paginatorService, 'getCurrentPage').and.returnValue(Observable.of(this.items));
+        spyOn(this.paginatorService, 'getCurrentPage').and.returnValue(observableOf(this.items));
         comp.columns = this.columns;
         comp.loadCurrentPage();
         expect(comp.loading).toEqual(false);
@@ -311,7 +312,7 @@ describe('ListingDataTableComponent', () => {
 
     it('should load first page of resutls and set pagination to 1', () => {
         comp.dataTable.first = 3;
-        spyOn(this.paginatorService, 'get').and.returnValue(Observable.of(this.items));
+        spyOn(this.paginatorService, 'get').and.returnValue(observableOf(this.items));
 
         comp.loadFirstPage();
 

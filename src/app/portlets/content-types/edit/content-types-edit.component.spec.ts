@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -10,7 +12,6 @@ import { FieldService } from '../fields/service';
 import { Location } from '@angular/common';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
 import { ContentType } from '../shared/content-type.model';
@@ -105,7 +106,7 @@ const getConfig = (route) => {
             },
             {
                 provide: ActivatedRoute,
-                useValue: { data: Observable.of(route) }
+                useValue: { data: observableOf(route) }
             },
             {
                 provide: HotkeysService,
@@ -243,8 +244,8 @@ describe('ContentTypesEditComponent create mode', () => {
                 fields: [{ hello: 'world' }]
             });
 
-            spyOn(crudService, 'postData').and.returnValue(Observable.of([responseContentType]));
-            spyOn(location, 'replaceState').and.returnValue(Observable.of([responseContentType]));
+            spyOn(crudService, 'postData').and.returnValue(observableOf([responseContentType]));
+            spyOn(location, 'replaceState').and.returnValue(observableOf([responseContentType]));
 
             contentTypeForm.triggerEventHandler('submit', mockContentType);
 
@@ -255,7 +256,7 @@ describe('ContentTypesEditComponent create mode', () => {
         });
 
         it('should handle error', () => {
-            spyOn(crudService, 'postData').and.returnValue(Observable.throw(mockResponseView(403)));
+            spyOn(crudService, 'postData').and.returnValue(observableThrowError(mockResponseView(403)));
             spyOn(dotRouterService, 'gotoPortlet');
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
@@ -421,7 +422,7 @@ describe('ContentTypesEditComponent edit mode', () => {
 
         const fieldsReturnByServer: ContentTypeField[] = newFieldsAdded.concat(currentFieldsInServer);
         const fieldService = fixture.debugElement.injector.get(FieldService);
-        spyOn(fieldService, 'saveFields').and.returnValue(Observable.of(fieldsReturnByServer));
+        spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -443,7 +444,7 @@ describe('ContentTypesEditComponent edit mode', () => {
 
         const fieldsReturnByServer: ContentTypeField[] = newFieldsAdded.concat(currentFieldsInServer);
         const fieldService = fixture.debugElement.injector.get(FieldService);
-        spyOn(fieldService, 'saveFields').and.returnValue(Observable.of(fieldsReturnByServer));
+        spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -470,7 +471,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         ];
         const fieldService = fixture.debugElement.injector.get(FieldService);
         spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-        spyOn(fieldService, 'saveFields').and.returnValue(Observable.throw(mockResponseView(403)));
+        spyOn(fieldService, 'saveFields').and.returnValue(observableThrowError(mockResponseView(403)));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -483,7 +484,7 @@ describe('ContentTypesEditComponent edit mode', () => {
     it('should remove fields on dropzone event', () => {
         const fieldsReturnByServer: ContentTypeField[] = currentFieldsInServer.slice(-1);
         const fieldService = fixture.debugElement.injector.get(FieldService);
-        spyOn(fieldService, 'deleteFields').and.returnValue(Observable.of({ fields: fieldsReturnByServer }));
+        spyOn(fieldService, 'deleteFields').and.returnValue(observableOf({ fields: fieldsReturnByServer }));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -506,7 +507,7 @@ describe('ContentTypesEditComponent edit mode', () => {
     it('should handle remove field error', () => {
         spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
         const fieldService = fixture.debugElement.injector.get(FieldService);
-        spyOn(fieldService, 'deleteFields').and.returnValue(Observable.throw(mockResponseView(403)));
+        spyOn(fieldService, 'deleteFields').and.returnValue(observableThrowError(mockResponseView(403)));
 
         const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -536,7 +537,7 @@ describe('ContentTypesEditComponent edit mode', () => {
                 fields: [{ hello: 'world' }]
             });
 
-            spyOn(crudService, 'putData').and.returnValue(Observable.of(responseContentType));
+            spyOn(crudService, 'putData').and.returnValue(observableOf(responseContentType));
 
             contentTypeForm.triggerEventHandler('submit', fakeContentType);
 
@@ -547,7 +548,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         it('should handle error', () => {
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
             spyOn(dotRouterService, 'gotoPortlet');
-            spyOn(crudService, 'putData').and.returnValue(Observable.throw(mockResponseView(403)));
+            spyOn(crudService, 'putData').and.returnValue(observableThrowError(mockResponseView(403)));
 
             contentTypeForm.triggerEventHandler('submit', fakeContentType);
 

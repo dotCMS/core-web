@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs/Observable';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { CrudService } from '../../../api/services/crud/crud.service';
 import { ContentType } from '../shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,14 +44,14 @@ class MockDotBaseTypeSelectorComponent {
 @Injectable()
 class MockDotLicenseService {
     isEnterprise(): Observable<boolean> {
-        return Observable.of(true);
+        return observableOf(true);
     }
 }
 
 @Injectable()
 class MockPushPublishService {
     getEnvironments() {
-        return Observable.of([
+        return observableOf([
             {
                 id: '123',
                 name: 'Environment 1'
@@ -66,7 +67,7 @@ class MockPushPublishService {
 @Injectable()
 class MockDotHttpErrorManagerService {
     handle(err: ResponseView): Observable<DotHttpErrorHandled> {
-        return Observable.of({
+        return observableOf({
             redirected: false
         });
     }
@@ -137,7 +138,7 @@ describe('ContentTypesPortletComponent', () => {
         dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
 
         spyOn(dotContentletService, 'getAllContentTypes').and.returnValue(
-            Observable.of([
+            observableOf([
                 { name: 'CONTENT', label: 'Content', types: [] },
                 { name: 'WIDGET', label: 'Widget', types: [] },
                 { name: 'FORM', label: 'Form', types: [] }
@@ -196,7 +197,7 @@ describe('ContentTypesPortletComponent', () => {
             conf.accept();
         });
 
-        spyOn(crudService, 'delete').and.returnValue(Observable.of(mockContentType));
+        spyOn(crudService, 'delete').and.returnValue(observableOf(mockContentType));
 
         comp.rowActions[0].menuItem.command(mockContentType);
 
@@ -211,7 +212,7 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should have ONLY remove action because is community license', () => {
-        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
 
         fixture.detectChanges();
         expect(
@@ -230,7 +231,7 @@ describe('ContentTypesPortletComponent', () => {
     });
 
     it('should have remove and add to bundle actions if is not community license and no publish environments are created', () => {
-        spyOn(pushPublishService, 'getEnvironments').and.returnValue(Observable.of([]));
+        spyOn(pushPublishService, 'getEnvironments').and.returnValue(observableOf([]));
         fixture.detectChanges();
 
         expect(comp.rowActions.map(action => action.menuItem.label)).toEqual(['Delete', 'Add to bundle']);
@@ -334,7 +335,7 @@ describe('ContentTypesPortletComponent', () => {
         });
 
         spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-        spyOn(crudService, 'delete').and.returnValue(Observable.throw(forbiddenError));
+        spyOn(crudService, 'delete').and.returnValue(observableThrowError(forbiddenError));
 
         comp.rowActions[0].menuItem.command(mockContentType);
 

@@ -9,7 +9,7 @@ import { DotHttpErrorManagerService } from './dot-http-error-manager.service';
 import { mockResponseView } from '../../../test/response-view.mock';
 import { Headers } from '@angular/http';
 
-describe('DotHttpErrorManagerService', () => {
+fdescribe('DotHttpErrorManagerService', () => {
     let service: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
     let dotDialogService: DotAlertConfirmService;

@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async } from '@angular/core/testing';
 import { DotEditContentHtmlService, DotContentletAction } from './dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
@@ -11,7 +13,6 @@ import { Config } from 'dotcms-js/core/config.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
-import { Observable } from 'rxjs/Observable';
 import { mockDotLayout, mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
 import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
@@ -22,7 +23,7 @@ import { mockUser } from '../../../../../test/login-service.mock';
 @Injectable()
 class MockDotLicenseService {
     isEnterprise(): Observable<boolean> {
-        return Observable.of(false);
+        return observableOf(false);
     }
 }
 
@@ -289,7 +290,7 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.currentAction = DotContentletAction.ADD;
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
-        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(Observable.of('<i>testing</i>'));
+        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(observableOf('<i>testing</i>'));
 
         const contentlet: DotPageContent = {
             identifier: '67',
@@ -353,7 +354,7 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.currentContainer = currentContainer;
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
-        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(Observable.of('<i>testing</i>'));
+        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(observableOf('<i>testing</i>'));
 
         const dotDialogService = this.injector.get(DotAlertConfirmService);
         spyOn(dotDialogService, 'alert');
@@ -398,7 +399,7 @@ describe('DotEditContentHtmlService', () => {
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
-            Observable.of(`
+            observableOf(`
         <div>
             <script>
                 console.log('First');
@@ -433,7 +434,7 @@ describe('DotEditContentHtmlService', () => {
 
     describe('document click', () => {
         beforeEach(() => {
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
         });
 
         it('should open sub menu', () => {
@@ -662,7 +663,7 @@ describe('DotEditContentHtmlService', () => {
 
             const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
 
-            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(Observable.of({
+            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(observableOf({
                 render: '<i>testing</i>',
                 content: {
                     identifier: '4'

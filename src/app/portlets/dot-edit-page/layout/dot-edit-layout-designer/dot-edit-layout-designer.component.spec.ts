@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -28,7 +30,6 @@ import { mockDotThemes } from '../../../../test/dot-themes.mock';
 import { DotThemesService } from '../../../../api/services/dot-themes/dot-themes.service';
 import { DotThemesServiceMock } from '../../../../test/dot-themes-service.mock';
 import { TooltipModule } from 'primeng/primeng';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
 
@@ -296,7 +297,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         it('should Theme button be disabled', () => {
-            spyOn(dotThemesService, 'get').and.returnValue(Observable.of(null));
+            spyOn(dotThemesService, 'get').and.returnValue(observableOf(null));
             fixture.detectChanges();
             const themeSelectorBtn = fixture.debugElement.query(By.css('.dot-edit-layout__toolbar-action-themes')).nativeElement;
             const themeSelectorBtnContainer = fixture.debugElement.query(By.css('.dot-edit__layout-actions-themes')).nativeElement;

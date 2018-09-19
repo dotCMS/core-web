@@ -1,5 +1,6 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LoginService } from 'dotcms-js/dotcms-js';
@@ -22,7 +23,7 @@ import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 
 class DotMenuServiceMock {
     getDotMenuId(): Observable<string> {
-        return Observable.of('123');
+        return observableOf('123');
     }
 }
 

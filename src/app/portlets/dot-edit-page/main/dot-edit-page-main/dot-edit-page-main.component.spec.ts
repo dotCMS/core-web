@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable ,  Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
@@ -10,7 +12,6 @@ import { By } from '@angular/platform-browser';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditPageNavComponent } from '../dot-edit-page-nav/dot-edit-page-nav.component';
 import { PageViewServiceMock } from '../../../../test/page-view.mock';
@@ -18,7 +19,6 @@ import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-stat
 import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
-import { Subject } from 'rxjs/Subject';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 
 @Injectable()
@@ -42,7 +42,7 @@ class MockDotEditContentletComponent {
     @Output() custom = new EventEmitter<any>();
 }
 
-describe('DotEditPageMainComponent', () => {
+fdescribe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
@@ -99,7 +99,7 @@ describe('DotEditPageMainComponent', () => {
         fixture = DOTTestBed.createComponent(DotEditPageMainComponent);
         component = fixture.debugElement.componentInstance;
         route = fixture.debugElement.injector.get(ActivatedRoute);
-        route.data = Observable.of({
+        route.data = observableOf({
             content: mockDotRenderedPageState
         });
         dotContentletEditorService = fixture.debugElement.injector.get(DotContentletEditorService);
@@ -126,7 +126,7 @@ describe('DotEditPageMainComponent', () => {
         spyOn(dotPageStateService, 'reload').and.callThrough();
         dotContentletEditorService.close$.next(true);
         expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index', mockDotRenderedPage.page.languageId);
-        expect(component.pageState).toEqual(Observable.of(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+        expect(component.pageState).toEqual(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
     });
 
     describe('handle custom events from contentlet editor', () => {

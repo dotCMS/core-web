@@ -26,7 +26,7 @@ import { DotLanguageSelectorComponent } from '../../../../../view/components/dot
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 

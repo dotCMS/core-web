@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { SiteSelectorComponent } from './site-selector.component';
@@ -8,7 +10,6 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { SiteServiceMock, mockSites } from '../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js/dotcms-js';
-import { Observable } from 'rxjs/Observable';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component/searchable-dropdown.component';
 import { PaginatorService } from '../../../../api/services/paginator';
 import { IframeOverlayService } from '../iframe/service/iframe-overlay.service';
@@ -95,9 +96,9 @@ describe('SiteSelectorComponent', () => {
         };
 
         const siteService = de.injector.get(SiteService);
-        spyOn(siteService, 'switchSite$').and.returnValue(Observable.of(site1));
+        spyOn(siteService, 'switchSite$').and.returnValue(observableOf(site1));
 
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([site1, site2]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([site1, site2]));
 
         fixture.detectChanges();
 
@@ -116,7 +117,7 @@ describe('SiteSelectorComponent', () => {
         };
 
         const siteService = de.injector.get(SiteService);
-        spyOn(siteService, 'refreshSites$').and.returnValue(Observable.of([site1, site2]));
+        spyOn(siteService, 'refreshSites$').and.returnValue(observableOf([site1, site2]));
         spyOn(comp, 'handleSitesRefresh').and.callThrough();
 
         fixture.detectChanges();
@@ -129,10 +130,10 @@ describe('SiteSelectorComponent', () => {
         const page = 1;
 
         paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
         const siteService = de.injector.get(SiteService);
-        spyOn(siteService, 'switchSite$').and.returnValue(Observable.of({}));
+        spyOn(siteService, 'switchSite$').and.returnValue(observableOf({}));
 
         fixture.detectChanges();
 
@@ -154,10 +155,10 @@ describe('SiteSelectorComponent', () => {
         const filter = 'filter';
 
         paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
         const siteService = de.injector.get(SiteService);
-        spyOn(siteService, 'switchSite$').and.returnValue(Observable.of({}));
+        spyOn(siteService, 'switchSite$').and.returnValue(observableOf({}));
 
         fixture.detectChanges();
 
@@ -173,7 +174,7 @@ describe('SiteSelectorComponent', () => {
     it('should be assign to filter if empty', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
         fixture.detectChanges();
 
@@ -187,7 +188,7 @@ describe('SiteSelectorComponent', () => {
     it('should emit change event', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
         fixture.detectChanges();
         const searchableDropdownComponent: DebugElement = de.query(By.css('dot-searchable-dropdown'));
@@ -201,7 +202,7 @@ describe('SiteSelectorComponent', () => {
     it('should set current site correctly', () => {
         paginatorService.filter = 'filter';
         paginatorService.totalRecords = 2;
-        spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+        spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
         fixture.detectChanges();
 

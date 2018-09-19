@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DebugElement, Injectable } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { PaginatorService } from '../../../../../api/services/paginator';
-import { Observable } from 'rxjs/Observable';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MessageKeyDirective } from '../../../../../view/directives/message-keys/message-keys.directive';
@@ -79,7 +80,7 @@ xdescribe('DotFormSelectorComponent', () => {
     describe('show dialog', () => {
         beforeEach(() => {
             spyOn(paginatorService, 'getWithOffset').and.callFake((offset) => {
-                return Observable.of([mockContentType]);
+                return observableOf([mockContentType]);
             });
 
             component.show = true;

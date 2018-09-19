@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +19,6 @@ import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
 import { DotPage } from '../../../shared/models/dot-page.model';
 import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -170,7 +171,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         describe('disabled', () => {
             beforeEach(() => {
-                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(Observable.of([]));
+                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(observableOf([]));
                 fixture.detectChanges();
             });
 

@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
@@ -5,7 +7,6 @@ import { ContentTypesInfoService } from '../../../api/services/content-types-inf
 import { CrudService } from '../../../api/services/crud';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
@@ -55,7 +56,7 @@ describe('ContentTypeEditResolver', () => {
     it('should get and return a content type', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
         spyOn(crudService, 'getDataById').and.returnValue(
-            Observable.of({
+            observableOf({
                 fake: 'content-type',
                 object: 'right?'
             })
@@ -73,13 +74,13 @@ describe('ContentTypeEditResolver', () => {
     it('should redirect to content-types if content type it\'s not found', () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
             redirected: false
         }));
 
         spyOn(dotRouterService, 'gotoPortlet');
 
-        spyOn(crudService, 'getDataById').and.returnValue(Observable.throw({
+        spyOn(crudService, 'getDataById').and.returnValue(observableThrowError({
             bodyJsonObject: {
                 error: ''
             },
@@ -97,11 +98,11 @@ describe('ContentTypeEditResolver', () => {
     it('should get and return null and go to home', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
             redirected: false
         }));
         spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(crudService, 'getDataById').and.returnValue(Observable.throw({
+        spyOn(crudService, 'getDataById').and.returnValue(observableThrowError({
             bodyJsonObject: {
                 error: ''
             },
@@ -120,7 +121,7 @@ describe('ContentTypeEditResolver', () => {
             return param === 'type' ? 'content' : false;
         };
         spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(crudService, 'getDataById').and.returnValue(Observable.of(false));
+        spyOn(crudService, 'getDataById').and.returnValue(observableOf(false));
         contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe((res: any) => {
             expect(res).toEqual({
                 clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',

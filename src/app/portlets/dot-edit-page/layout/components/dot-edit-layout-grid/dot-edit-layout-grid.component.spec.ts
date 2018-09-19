@@ -33,7 +33,7 @@ class TestHostComponent {
     }
 }
 
-describe('DotEditLayoutGridComponent', () => {
+fdescribe('DotEditLayoutGridComponent', () => {
     let component: DotEditLayoutGridComponent;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;

@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { mockDotRenderedPage } from './../../../../../test/dot-rendered-page.mock';
-import { Observable } from 'rxjs/Observable';
 import { DotContentletLockerService } from './../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotRenderHTMLService } from './../../../../../api/services/dot-render-html/dot-render-html.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
@@ -76,7 +77,7 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
@@ -91,7 +92,7 @@ describe('DotEditPageResolver', () => {
                     layout: null
                 }
             );
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockDotRenderedPageState));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(mockDotRenderedPageState));
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(mockDotRenderedPageState);
@@ -101,10 +102,10 @@ describe('DotEditPageResolver', () => {
         it('should return handle 403', () => {
             const fake403Response = mockResponseView(403);
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
                 redirected: true
             }));
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake403Response));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
 
             resolver.resolve(route).subscribe();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake403Response);
@@ -114,10 +115,10 @@ describe('DotEditPageResolver', () => {
         it('should redirect to site-browser', () => {
             const fake403Response = mockResponseView(403);
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
                 redirected: false
             }));
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake403Response));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
 
             spyOn(dotRouterService, 'goToSiteBrowser');
 
@@ -142,7 +143,7 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
@@ -150,7 +151,7 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should trigger 403 error when try to go to layout because user canEdit page', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(
                 mockUser,
                 {
                     ...mockDotRenderedPage,
@@ -162,7 +163,7 @@ describe('DotEditPageResolver', () => {
             )));
 
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
                 redirected: false
             }));
 
@@ -175,7 +176,7 @@ describe('DotEditPageResolver', () => {
 
 
         it('should trigger 403 error when try to go to layout because layout is null', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(new DotRenderedPageState(
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(
                 mockUser,
                 {
                     ...mockDotRenderedPage,
@@ -183,7 +184,7 @@ describe('DotEditPageResolver', () => {
                 }
             )));
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(Observable.of({
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
                 redirected: false
             }));
 

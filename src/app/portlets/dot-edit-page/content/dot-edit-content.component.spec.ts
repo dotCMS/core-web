@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { SiteServiceMock, mockSites } from './../../../test/site-service.mock';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -5,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 import { DialogModule } from 'primeng/primeng';
 import { LoginService, SiteService } from 'dotcms-js/dotcms-js';
 import { DOTTestBed } from '../../../test/dot-test-bed';
@@ -98,7 +99,7 @@ function waitForDetectChanges(fixture) {
     tick(10);
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -188,7 +189,7 @@ describe('DotEditContentComponent', () => {
                     useValue: {
                         parent: {
                             parent: {
-                                data: Observable.of({
+                                data: observableOf({
                                     content: {
                                         ...mockDotRenderedPage,
                                         state: mockDotPageState
@@ -348,7 +349,7 @@ describe('DotEditContentComponent', () => {
         it('should reload', () => {
             expect(component.pageState).toBe(null);
 
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.of(mockRenderedPageState));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(mockRenderedPageState));
 
             component.reload();
 
@@ -358,7 +359,7 @@ describe('DotEditContentComponent', () => {
 
         it('should handle error on reload', () => {
             const fake500Response = mockResponseView(500);
-            spyOn(dotPageStateService, 'get').and.returnValue(Observable.throw(fake500Response));
+            spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake500Response));
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
             spyOn(dotRouterService, 'goToSiteBrowser');
 
@@ -416,7 +417,7 @@ describe('DotEditContentComponent', () => {
             const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
 
             spyOn(component, 'changeViewAsHandler').and.callThrough();
-            spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(mockRenderedPageState));
+            spyOn(dotPageStateService, 'set').and.returnValue(observableOf(mockRenderedPageState));
             spyOn(dotPageStateService, 'reload');
 
             viewAsToolbar.componentInstance.changeViewAs.emit(mockDotEditPageViewAs);
@@ -454,7 +455,7 @@ describe('DotEditContentComponent', () => {
         }));
 
         it('should set page mode in edit', fakeAsync(() => {
-            route.parent.parent.data = Observable.of({
+            route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,
                     page: {
@@ -474,7 +475,7 @@ describe('DotEditContentComponent', () => {
         }));
 
         it('should set page mode in preview when the page is locked by another user', fakeAsync(() => {
-            route.parent.parent.data = Observable.of({
+            route.parent.parent.data = observableOf({
                 content: {
                     page: {
                         ...mockDotRenderedPage,
@@ -498,7 +499,7 @@ describe('DotEditContentComponent', () => {
 
     describe('set page state when toolbar emit new state', () => {
         const spyStateSet = (val) => {
-            spyOn(dotPageStateService, 'set').and.returnValue(Observable.of(val));
+            spyOn(dotPageStateService, 'set').and.returnValue(observableOf(val));
         };
 
         beforeEach(() => {
@@ -617,7 +618,7 @@ describe('DotEditContentComponent', () => {
                 name: 'remove'
             };
 
-            spyOn(dotEditContentHtmlService, 'contentletEvents$').and.returnValue(Observable.of(mockResEvent));
+            spyOn(dotEditContentHtmlService, 'contentletEvents$').and.returnValue(observableOf(mockResEvent));
             spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
 
             spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
@@ -766,7 +767,7 @@ describe('DotEditContentComponent', () => {
                 it('select a form to add into the page', fakeAsync(() => {
                     const mockContentType = {};
 
-                    spyOn(dotEditContentHtmlService, 'renderAddedForm').and.callFake(() => Observable.of(null));
+                    spyOn(dotEditContentHtmlService, 'renderAddedForm').and.callFake(() => observableOf(null));
 
                     dotFormSelector.componentInstance.select.emit(mockContentType);
 
@@ -866,7 +867,7 @@ describe('DotEditContentComponent', () => {
 
         describe('listen load-edit-mode-page event', () => {
             beforeEach(() => {
-                route.parent.parent.data = Observable.of({
+                route.parent.parent.data = observableOf({
                     content: new DotRenderedPageState(mockUser, mockDotRenderedPage)
                 });
 
@@ -1000,7 +1001,7 @@ describe('DotEditContentComponent', () => {
 
     describe('Auto save', () => {
         it('should call the save endpoint after a model change happens', fakeAsync(() => {
-            route.parent.parent.data = Observable.of({
+            route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,
                     page: {
@@ -1033,7 +1034,7 @@ describe('DotEditContentComponent', () => {
             let dotEditPageService: DotEditPageService;
             dotEditPageService = de.injector.get(DotEditPageService);
 
-            spyOn(dotEditPageService, 'save').and.returnValue(Observable.of(true));
+            spyOn(dotEditPageService, 'save').and.returnValue(observableOf(true));
             spyOn(dotEditContentHtmlService, 'getContentModel').and.returnValue({});
             spyOn(dotEditContentHtmlService, 'setContaintersSameHeight');
 
@@ -1045,7 +1046,7 @@ describe('DotEditContentComponent', () => {
         }));
 
         it('should not execute setContaintersSameHeight() when layout is null', fakeAsync(() => {
-            route.parent.parent.data = Observable.of({
+            route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,
                     layout: null,

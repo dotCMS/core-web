@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Injectable } from '@angular/core';
@@ -8,7 +10,6 @@ import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selecto
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AutoComplete } from 'primeng/primeng';
 import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
-import { Observable } from 'rxjs/Observable';
 
 export const mockPageSelector = [
     {
@@ -64,10 +65,10 @@ export const mockPageSelector = [
 @Injectable()
 class MockDotPageSelectorService {
     getPagesInFolder(_folder: string): Observable<DotPageAsset[]> {
-        return Observable.of(mockPageSelector);
+        return observableOf(mockPageSelector);
     }
     getPage(_idenfier: string): Observable<DotPageAsset> {
-        return Observable.of(mockPageSelector[0]);
+        return observableOf(mockPageSelector[0]);
     }
 }
 @Component({

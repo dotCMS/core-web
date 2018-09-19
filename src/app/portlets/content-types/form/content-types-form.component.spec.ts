@@ -1,11 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Injectable } from '@angular/core';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { Observable } from 'rxjs/Observable';
 
 import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
 
@@ -34,7 +34,7 @@ import { DotIconButtonModule } from '../../../view/components/_common/dot-icon-b
 @Injectable()
 class MockDotLicenseService {
     isEnterprise(): Observable<boolean> {
-        return Observable.of(false);
+        return observableOf(false);
     }
 }
 
@@ -217,7 +217,7 @@ describe('ContentTypesFormComponent', () => {
 
     // tslint:disable-next-line:max-line-length
     it('should set canSave property false when the form value is updated and then gets back to the original content (no community license)', () => {
-        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
 
         comp.data = {
             baseType: 'CONTENT',
@@ -238,7 +238,7 @@ describe('ContentTypesFormComponent', () => {
 
     // tslint:disable-next-line:max-line-length
     it('should set canSave property false when the form value is updated and then gets back to the original content (community license)', () => {
-        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
         comp.data = {
             baseType: 'CONTENT',
@@ -357,7 +357,7 @@ describe('ContentTypesFormComponent', () => {
     });
 
     it('should set value to the form', () => {
-        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+        spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
         const fakeData = {
             baseType: 'CONTENT',
@@ -547,7 +547,7 @@ describe('ContentTypesFormComponent', () => {
         let data;
 
         beforeEach(() => {
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
             comp.data = {
                 baseType: 'CONTENT'
             };
@@ -607,7 +607,7 @@ describe('ContentTypesFormComponent', () => {
 
             describe('community license true', () => {
                 beforeEach(() => {
-                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                     fixture.detectChanges();
                 });
 
@@ -620,7 +620,7 @@ describe('ContentTypesFormComponent', () => {
 
             describe('community license true', () => {
                 beforeEach(() => {
-                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+                    spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
                     fixture.detectChanges();
                 });
 
@@ -648,7 +648,7 @@ describe('ContentTypesFormComponent', () => {
                         }
                     ]
                 };
-                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                 fixture.detectChanges();
                 expect(comp.form.get('workflow').value).toEqual(['123', '456']);
             });
@@ -658,7 +658,7 @@ describe('ContentTypesFormComponent', () => {
                     baseType: 'CONTENT',
                     id: '123'
                 };
-                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(false));
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                 fixture.detectChanges();
                 expect(comp.form.get('workflow').value).toEqual([]);
             });

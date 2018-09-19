@@ -18,7 +18,7 @@ import { DotEditLayoutSidebarModule } from '../../../components/dot-edit-layout-
 import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 
-describe('DotLayoutDesignerComponent', () => {
+fdescribe('DotLayoutDesignerComponent', () => {
     let component: DotLayoutDesignerComponent;
     let fixture: ComponentFixture<DotLayoutDesignerComponent>;
 

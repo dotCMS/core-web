@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotContainer } from '../../../shared/models/container/dot-container.model';
 import { By } from '@angular/platform-browser';
 import { PaginatorService } from '../../../api/services/paginator/paginator.service';
@@ -6,7 +8,6 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { SearchableDropDownModule } from '../_common/searchable-dropdown/searchable-dropdown.module';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DotContainerSelectorComponent } from './dot-container-selector.component';
@@ -74,7 +75,7 @@ describe('ContainerSelectorComponent', () => {
 
             const paginatorService: PaginatorService = de.injector.get(PaginatorService);
             paginatorService.totalRecords = 2;
-            spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
             fixture.detectChanges();
 
@@ -100,7 +101,7 @@ describe('ContainerSelectorComponent', () => {
 
             const paginatorService: PaginatorService = de.injector.get(PaginatorService);
             paginatorService.totalRecords = 2;
-            spyOn(paginatorService, 'getWithOffset').and.returnValue(Observable.of([]));
+            spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf([]));
 
             fixture.detectChanges();
 

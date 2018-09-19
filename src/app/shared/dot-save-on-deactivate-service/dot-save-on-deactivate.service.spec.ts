@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotSaveOnDeactivateService } from './dot-save-on-deactivate.service';
 import { DotAlertConfirmService } from '../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DOTTestBed } from '../../test/dot-test-bed';
@@ -6,7 +8,6 @@ import { LoginServiceMock } from '../../test/login-service.mock';
 import { OnSaveDeactivate } from './save-on-deactivate';
 import { DotAlertConfirm } from '../models/dot-alert-confirm/dot-alert-confirm.model';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'dot-test',
@@ -18,7 +19,7 @@ class MockComponent implements OnSaveDeactivate {
     }
 
     onDeactivateSave(): Observable<boolean> {
-        return Observable.of(true);
+        return observableOf(true);
     }
 
     getSaveWarningMessages(): DotAlertConfirm {
@@ -79,7 +80,7 @@ describe('DotSaveOnDeactivateService', () => {
     });
 
     it('should return false if the save fails and stay in the current route', () => {
-        spyOn(mockComponent, 'onDeactivateSave').and.returnValue(Observable.of(false));
+        spyOn(mockComponent, 'onDeactivateSave').and.returnValue(observableOf(false));
         spyOn(dotDialogService, 'confirm').and.callFake(conf => {
             conf.accept();
         });

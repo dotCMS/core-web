@@ -13,9 +13,7 @@ import { DotRouterService } from '../../../../api/services/dot-router/dot-router
 
 import { DotcmsEventsService, LoginService, Auth } from 'dotcms-js/dotcms-js';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { of } from 'rxjs/observable/of';
+import { Observable ,  Subject ,  of } from 'rxjs';
 import { skip } from 'rxjs/operators';
 
 class RouterMock {

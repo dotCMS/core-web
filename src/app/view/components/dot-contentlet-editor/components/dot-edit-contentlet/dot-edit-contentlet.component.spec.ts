@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -12,7 +14,6 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 
 describe('DotEditContentletComponent', () => {
     let component: DotEditContentletComponent;
@@ -31,7 +32,7 @@ describe('DotEditContentletComponent', () => {
                     provide: DotMenuService,
                     useValue: {
                         getDotMenuId() {
-                            return Observable.of('999');
+                            return observableOf('999');
                         }
                     }
                 },

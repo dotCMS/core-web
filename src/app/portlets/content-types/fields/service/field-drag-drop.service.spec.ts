@@ -22,7 +22,7 @@ class MockDragulaService {
     }
 }
 
-describe('FieldDragDropService', () => {
+fdescribe('FieldDragDropService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             FieldDragDropService,

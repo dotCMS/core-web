@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DotRenderedPage } from './../../shared/models/dot-rendered-page.model';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEditLayoutAdvancedModule } from '../dot-edit-layout-advanced/dot-edit-layout-advanced.module';
 import { DotEditLayoutComponent } from './dot-edit-layout.component';
@@ -32,7 +33,7 @@ const getTestingModule = (dotRenderedPage?: DotRenderedPage) => {
                 useValue: {
                     parent: {
                         parent: {
-                            data: Observable.of({
+                            data: observableOf({
                                 content: {
                                     ...(dotRenderedPage || mockDotRenderedPage),
                                     state: mockDotPageState

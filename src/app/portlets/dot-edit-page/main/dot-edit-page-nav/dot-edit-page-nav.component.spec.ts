@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
@@ -13,7 +15,6 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
 import { Injectable, Component, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 
@@ -25,7 +26,7 @@ class MockDotContentletEditorService {
 @Injectable()
 class MockDotLicenseService {
     isEnterprise(): Observable<boolean> {
-        return Observable.of(false);
+        return observableOf(false);
     }
 }
 
@@ -128,7 +129,7 @@ describe('DotEditPageNavComponent', () => {
             const { layout, ...noLayoutPage } = mockDotRenderedPage;
             fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, noLayoutPage);
             component.model = undefined;
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
             fixture.detectChanges();
             const menuListItemsUpdated = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));
             expect(menuListItems[1].nativeElement.classList).toContain('edit-page-nav__item--disabled');
@@ -164,7 +165,7 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should have layout option disabled and cant edit message when template is advance and license is enterprise', () => {
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
             component.model = undefined;
             fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPageAdvanceTemplate);
@@ -226,7 +227,7 @@ describe('DotEditPageNavComponent', () => {
         describe('license enterprise', () => {
             beforeEach(() => {
                 dotLicenseService = de.injector.get(DotLicenseService);
-                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+                spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
                 fixture.detectChanges();
             });
 

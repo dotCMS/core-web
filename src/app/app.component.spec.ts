@@ -11,7 +11,7 @@ import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { DotAlertConfirmService } from './api/services/dot-alert-confirm';
 import { DotUiColorsService } from './api/services/dot-ui-colors/dot-ui-colors.service';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;

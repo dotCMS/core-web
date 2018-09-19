@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { FieldPropertyService } from './field-properties.service';
 import {
@@ -9,11 +11,10 @@ import { FieldService } from './field.service';
 import { Validators } from '@angular/forms';
 import { validateDateDefaultValue } from './validators';
 import { FieldType } from '../';
-import { Observable } from 'rxjs/Observable';
 
 class TestFieldService {
     loadFieldTypes(): Observable<FieldType[]> {
-        return Observable.of([
+        return observableOf([
             {
                 clazz: 'fieldClass',
                 helpText: 'help',

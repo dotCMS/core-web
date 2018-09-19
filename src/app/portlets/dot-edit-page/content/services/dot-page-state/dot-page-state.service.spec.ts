@@ -1,3 +1,5 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -13,7 +15,6 @@ import { PageMode } from '../../../shared/models/page-mode.enum';
 import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../../test/login-service.mock';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 
 describe('DotPageStateService', () => {
@@ -166,7 +167,7 @@ describe('DotPageStateService', () => {
                 ...mockDotRenderedPage
             });
             spyOn(service, 'get').and.returnValue(
-                Observable.of(renderedPage)
+                observableOf(renderedPage)
             );
             service.reload$.subscribe((page: DotRenderedPageState) => {
                 expect(page).toBe(renderedPage);

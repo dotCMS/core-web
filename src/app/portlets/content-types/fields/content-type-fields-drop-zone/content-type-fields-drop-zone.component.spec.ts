@@ -11,11 +11,10 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject } from 'rxjs';
 import { FormatDateService } from '../../../../api/services/format-date-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs/Subject';
 import { FieldDragDropService } from '../service/index';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { FieldService } from '../service/field.service';
@@ -73,7 +72,7 @@ function becomeNewField(field) {
     delete field.id;
 }
 
-describe('ContentTypeFieldsDropZoneComponent', () => {
+fdescribe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;

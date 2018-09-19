@@ -1,10 +1,10 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture } from '@angular/core/testing';
-
-import { Observable } from 'rxjs/Observable';
 
 import { LoginService } from 'dotcms-js/dotcms-js';
 
@@ -45,7 +45,7 @@ describe('DotContentletWrapperComponent', () => {
                     provide: DotMenuService,
                     useValue: {
                         getDotMenuId() {
-                            return Observable.of('999');
+                            return observableOf('999');
                         }
                     }
                 },
