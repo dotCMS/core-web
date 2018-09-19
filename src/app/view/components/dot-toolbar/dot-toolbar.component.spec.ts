@@ -146,7 +146,7 @@ describe('ToolbarComponent', () => {
 
     it('should toggle menu and update icon on click', () => {
         spyOn(dotNavigationService, 'toggle').and.callThrough();
-        const stopPro = jasmine.createSpy();
+        const stopPro = jasmine.createSpy('stopPro');
 
         fixture.detectChanges();
 

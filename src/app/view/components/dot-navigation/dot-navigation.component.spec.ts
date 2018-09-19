@@ -134,7 +134,7 @@ describe('DotNavigationComponent', () => {
         let stopProp;
 
         beforeEach(() => {
-            stopProp = jasmine.createSpy();
+            stopProp = jasmine.createSpy('stopProp');
         });
 
         it('should reload portlet', () => {

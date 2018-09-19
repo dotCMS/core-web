@@ -1,9 +1,9 @@
 import { DotRouterService } from './dot-router.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { async } from 'q';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { Router } from '@angular/router';
+import { async } from '@angular/core/testing';
 
 describe('DotRouterService', () => {
     let service: DotRouterService;

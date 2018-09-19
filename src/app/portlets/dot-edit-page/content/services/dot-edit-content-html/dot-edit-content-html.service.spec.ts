@@ -8,7 +8,6 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoggerService, StringUtils } from 'dotcms-js/dotcms-js';
 import { Config } from 'dotcms-js/core/config.service';
-import { Logger } from 'angular2-logger/core';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
@@ -134,7 +133,6 @@ describe('DotEditContentHtmlService', () => {
             DotDOMHtmlUtilService,
             LoggerService,
             Config,
-            Logger,
             StringUtils,
             DotAlertConfirmService,
             { provide: DotMessageService, useValue: messageServiceMock },

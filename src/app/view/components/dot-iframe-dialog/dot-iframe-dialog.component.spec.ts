@@ -85,7 +85,7 @@ describe('DotIframeDialogComponent', () => {
             return {
                 target: {
                     contentWindow: {
-                        focus: jasmine.createSpy()
+                        focus: jasmine.createSpy('focus')
                     }
                 }
             };

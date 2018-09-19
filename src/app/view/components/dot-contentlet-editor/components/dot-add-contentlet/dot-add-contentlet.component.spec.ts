@@ -72,8 +72,8 @@ describe('DotAddContentletComponent', () => {
                     baseTypes: 'content,form'
                 },
                 events: {
-                    load: jasmine.createSpy(),
-                    keyDown: jasmine.createSpy()
+                    load: jasmine.createSpy('load'),
+                    keyDown: jasmine.createSpy('keyDown')
                 }
             });
 

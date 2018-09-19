@@ -12,9 +12,9 @@ import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { NgGridModule } from 'angular2-grid';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
+import { NgGridModule } from '../../../../../../../projects/dot-layout-grid/src/lib/modules/NgGrid.module';
 
 let fakeValue: DotLayoutBody;
 
