@@ -23,6 +23,7 @@
     "dependencies": {
         "@angular/platform-server": "^6.1.2",
         "@ctrl/tinycolor": "^2.0.0",
+        "angular2-hotkeys": "^2.1.2",
         "angular2-tinymce": "^2.1.2",
         "core-js": "^2.5.3",
         "dotcms-js": "file:/Users/fmontes/dev/dotcms-js/build-dotcms-js/dotcms-js-4.2.0-b70.tgz",
@@ -31,7 +32,7 @@
         "md5": "^2.2.1",
         "moment": "^2.19.4",
         "ng2-ace-editor": "^0.3.8",
-        "ng2-dragula": "^1.5.0",
+        "ng2-dragula": "^2.1.0",
         "rxjs-compat": "^6.0.0-rc.0",
         "zone.js": "^0.8.26"
     },

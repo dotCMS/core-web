@@ -18,7 +18,7 @@ import {
 } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
-// import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
 
 /**
@@ -53,7 +53,7 @@ export class ContentTypesEditComponent implements OnInit {
         private dotEventsService: DotEventsService,
         private dotRouterService: DotRouterService,
         private fieldService: FieldService,
-        // private hotkeysService: HotkeysService,
+        private hotkeysService: HotkeysService,
         private location: Location,
         private route: ActivatedRoute,
         public dotMessageService: DotMessageService,
@@ -198,19 +198,19 @@ export class ContentTypesEditComponent implements OnInit {
     }
 
     private bindEscKey(): void {
-        // this.hotkeysService.add(
-        //     new Hotkey('esc', (_event: KeyboardEvent): boolean => {
-        //         this.cancelForm();
-        //         return false;
-        //     })
-        // );
+        this.hotkeysService.add(
+            new Hotkey('esc', (_event: KeyboardEvent): boolean => {
+                this.cancelForm();
+                return false;
+            })
+        );
     }
 
     private createContentType(value: ContentType): void {
         this.crudService
             .postData('v1/contenttype', value).pipe(
             mergeMap((contentTypes: ContentType[]) => contentTypes),
-            take(1),)
+            take(1), )
             .subscribe((contentType: ContentType) => {
                 this.data = contentType;
                 this.fields = this.data.fields;

@@ -1,3 +1,5 @@
+{{columns?.fields | json}}
+
 <div class="row-header">
     <span class="row-header__drag"></span>
 </div>
@@ -5,7 +7,7 @@
     <span
         *ngFor="let column of fieldRow.columns"
         [class.empty]="!column.fields.length"
-        [dragulaModel]="column.fields"
+        [(dragulaModel)]="column.fields"
         [style.width]="getColumnWidth()"
         class="row-columns__item"
         data-drag-type="target"

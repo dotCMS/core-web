@@ -1,7 +1,7 @@
 
-import {forkJoin as observableForkJoin,  Observable } from 'rxjs';
+import {forkJoin as observableForkJoin } from 'rxjs';
 
-import {map,  catchError } from 'rxjs/operators';
+import {map } from 'rxjs/operators';
 import { ListingDataTableComponent } from '../../../view/components/listing-data-table/listing-data-table.component';
 import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { CrudService } from '../../../api/services/crud';
@@ -68,14 +68,14 @@ export class ContentTypesPortletComponent implements OnInit {
     constructor(
         private contentTypesInfoService: ContentTypesInfoService,
         private crudService: CrudService,
-        private dotDialogService: DotAlertConfirmService,
         private dotContentletService: DotContentletService,
+        private dotDialogService: DotAlertConfirmService,
+        private dotLicenseService: DotLicenseService,
+        private httpErrorManagerService: DotHttpErrorManagerService,
+        private pushPublishService: PushPublishService,
         private route: ActivatedRoute,
         private router: Router,
         public dotMessageService: DotMessageService,
-        private pushPublishService: PushPublishService,
-        private dotLicenseService: DotLicenseService,
-        private httpErrorManagerService: DotHttpErrorManagerService,
     ) {}
 
     ngOnInit() {

@@ -26,11 +26,15 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     formData: ContentTypeField;
     currentFieldType: FieldType;
 
-    @ViewChild('fieldPropertiesForm') propertiesForm: ContentTypeFieldsPropertiesFormComponent;
+    @ViewChild('fieldPropertiesForm')
+    propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
-    @Input() fields: ContentTypeField[];
-    @Output() saveFields = new EventEmitter<ContentTypeField[]>();
-    @Output() removeFields = new EventEmitter<ContentTypeField[]>();
+    @Input()
+    fields: ContentTypeField[];
+    @Output()
+    saveFields = new EventEmitter<ContentTypeField[]>();
+    @Output()
+    removeFields = new EventEmitter<ContentTypeField[]>();
 
     constructor(
         dotMessageService: DotMessageService,
@@ -51,7 +55,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     ngOnInit(): void {
-        this.fieldDragDropService.fieldDropFromSource$.subscribe(() => {
+        this.fieldDragDropService.fieldDropFromSource$.subscribe((a) => {
             this.setDroppedField();
             this.toggleDialog();
         });
@@ -110,7 +114,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     editField(fieldToEdit: ContentTypeField): void {
         const fields = this.getFields();
-        this.formData = fields.filter(field => fieldToEdit.id === field.id)[0];
+        this.formData = fields.filter((field) => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         this.toggleDialog();
     }
@@ -121,9 +125,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     setDroppedField(): void {
         const fields = this.getFields();
-        this.formData = fields.find(field => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
+        this.formData = fields.find((field) => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
+
+        console.log(fields);
         if (this.formData) {
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
+            console.log(this.currentFieldType);
         }
     }
 
@@ -134,7 +141,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     removeFieldsWithoutId(): void {
         const fieldRows: any = this.fieldRows;
         // TODO needs an improvement for performance reasons
-        fieldRows.forEach(row => {
+        fieldRows.forEach((row) => {
             row.columns.forEach((col, colIndex) => {
                 col.fields.forEach((field, fieldIndex) => {
                     if (!field.id) {
@@ -174,12 +181,16 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fieldsToDelete: ContentTypeField[] = [];
         if (fieldRow.lineDivider.id) {
             fieldsToDelete.push(fieldRow.lineDivider);
-            fieldRow.columns.forEach(fieldColumn => {
+            fieldRow.columns.forEach((fieldColumn) => {
                 fieldsToDelete.push(fieldColumn.tabDivider);
-                fieldColumn.fields.forEach(field => fieldsToDelete.push(field));
+                fieldColumn.fields.forEach((field) => fieldsToDelete.push(field));
             });
             this.removeFields.emit(fieldsToDelete);
         }
+    }
+
+    what($what) {
+        console.log('what', $what);
     }
 
     private moveFields(): void {
@@ -240,7 +251,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         let fieldRows: FieldRow[] = [];
         const splitFields: ContentTypeField[][] = FieldUtil.splitFieldsByLineDivider(fields);
 
-        fieldRows = splitFields.map(fieldsByLineDivider => {
+        fieldRows = splitFields.map((fieldsByLineDivider) => {
             const fieldRow: FieldRow = new FieldRow();
             fieldRow.addFields(fieldsByLineDivider);
             return fieldRow;
@@ -252,12 +263,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-        this.fieldRows.forEach(fieldRow => {
+        this.fieldRows.forEach((fieldRow) => {
             fields.push(fieldRow.lineDivider);
 
-            fieldRow.columns.forEach(fieldColumn => {
+            fieldRow.columns.forEach((fieldColumn) => {
                 fields.push(fieldColumn.tabDivider);
-                fieldColumn.fields.forEach(field => fields.push(field));
+                fieldColumn.fields.forEach((field) => fields.push(field));
             });
         });
 

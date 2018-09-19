@@ -133,14 +133,14 @@ import { DotIconButtonModule } from '../../view/components/_common/dot-icon-butt
         DotBaseTypeSelectorModule
     ],
     providers: [
+        ContentTypeEditResolver,
         ContentTypesInfoService,
+        DotWorkflowService,
         DragulaService,
         FieldDragDropService,
         FieldPropertyService,
         FieldService,
-        FormatDateService,
-        ContentTypeEditResolver,
-        DotWorkflowService
+        FormatDateService
     ]
 })
 export class ContentTypesModule {}

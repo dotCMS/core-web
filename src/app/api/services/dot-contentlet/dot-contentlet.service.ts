@@ -66,8 +66,8 @@ export class DotContentletService {
      */
     isContentTypeInMenu(id: string): Observable<boolean> {
         return this.getUrlById(id).pipe(
-            defaultIfEmpty(false),
-            map((url: string) => !!url)
+            map((url: string) => !!url),
+            defaultIfEmpty(false)
         );
     }
 

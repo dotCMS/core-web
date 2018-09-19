@@ -1,10 +1,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-// import { Hotkey } from 'angular2-hotkeys';
-
-interface Hotkey {
-
-}
+import { Hotkey } from 'angular2-hotkeys';
 
 /**
  * Mock of HotkeysService.
