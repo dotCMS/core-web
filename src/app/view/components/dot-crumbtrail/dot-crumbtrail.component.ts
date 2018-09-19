@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, filter } from 'rxjs/operators';
 
 import { DotMenu, DotMenuItem } from '../../../shared/models/navigation';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
@@ -14,6 +14,8 @@ import { DotNavigationService } from '../dot-navigation/services/dot-navigation.
 export class DotCrumbtrailComponent implements OnInit {
     crumb: Observable<string>;
 
+    private URL_EXCLUDES = ['/content-types-angular/create/content'];
+
     constructor(public dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
@@ -22,7 +24,7 @@ export class DotCrumbtrailComponent implements OnInit {
                 console.log('event', event);
                 return event.url;
             }),
-            map(this.splitURL),
+            filter((url: string) => !this.URL_EXCLUDES.includes(url)),
             switchMap(this.getCrumbtrail.bind(this))
         );
     }
@@ -55,14 +57,16 @@ export class DotCrumbtrailComponent implements OnInit {
         return res;
     }
 
-    private getCrumbtrail(sections: string[]): Observable<string> {
+    private getCrumbtrail(url: string): Observable<string> {
+        const sections: string[] = this.splitURL(url);
         const portletId = sections[0];
 
         return this.dotNavigationService.items$.pipe(
             map((dotMenus: DotMenu[]) => {
                 return [
                     ...this.getPortletLabel(portletId, dotMenus),
-                    ...this.getCrumbtrailSection(sections.slice(1))].join(' > ');
+                    ...this.URL_EXCLUDES.includes(url) ?
+                        [] : this.getCrumbtrailSection(sections.slice(1))].join(' > ');
             })
         );
     }
