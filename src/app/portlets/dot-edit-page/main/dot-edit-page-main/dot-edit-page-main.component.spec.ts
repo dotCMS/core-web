@@ -1,4 +1,3 @@
-
 import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
@@ -39,10 +38,11 @@ class MockDotPageStateService {
     template: ''
 })
 class MockDotEditContentletComponent {
-    @Output() custom = new EventEmitter<any>();
+    @Output()
+    custom = new EventEmitter<any>();
 }
 
-xdescribe('DotEditPageMainComponent', () => {
+describe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;
@@ -124,9 +124,13 @@ xdescribe('DotEditPageMainComponent', () => {
     it('should call reload pageSte when IframeClose evt happens', () => {
         spyOn(component, 'pageState');
         spyOn(dotPageStateService, 'reload').and.callThrough();
+
+        component.pageState.subscribe((res) => {
+            expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
+        });
+
         dotContentletEditorService.close$.next(true);
         expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index', mockDotRenderedPage.page.languageId);
-        expect(component.pageState).toEqual(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
     });
 
     describe('handle custom events from contentlet editor', () => {
