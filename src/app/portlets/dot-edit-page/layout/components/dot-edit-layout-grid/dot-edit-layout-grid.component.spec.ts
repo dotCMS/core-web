@@ -33,7 +33,7 @@ class TestHostComponent {
     }
 }
 
-xdescribe('DotEditLayoutGridComponent', () => {
+describe('DotEditLayoutGridComponent', () => {
     let component: DotEditLayoutGridComponent;
     let de: DebugElement;
     let hostComponentfixture: ComponentFixture<TestHostComponent>;
@@ -119,7 +119,7 @@ xdescribe('DotEditLayoutGridComponent', () => {
     it('should remove one Container from the Grid', () => {
         component.addBox();
         const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         component.onRemoveContainer(1);
@@ -145,28 +145,25 @@ xdescribe('DotEditLayoutGridComponent', () => {
         });
     });
 
-    it(
-        'should remove the empty rows in the grid',
-        fakeAsync(() => {
-            component.addBox();
-            component.addBox();
-            component.grid[0].config.row = 5;
-            component.grid[0].config.sizex = 5;
-            component.grid[1].config.row = 2;
-            component.grid[2].config.row = 4;
-            component.grid[2].config.sizex = 1;
-            component.updateModel();
-            tick();
-            expect(component.grid[0].config.sizex).toEqual(3);
-            expect(component.grid[1].config.sizex).toEqual(1);
-            expect(component.grid[2].config.sizex).toEqual(5);
-        })
-    );
+    it('should remove the empty rows in the grid', fakeAsync(() => {
+        component.addBox();
+        component.addBox();
+        component.grid[0].config.row = 5;
+        component.grid[0].config.sizex = 5;
+        component.grid[1].config.row = 2;
+        component.grid[2].config.row = 4;
+        component.grid[2].config.sizex = 1;
+        component.updateModel();
+        tick();
+        expect(component.grid[0].config.sizex).toEqual(3);
+        expect(component.grid[1].config.sizex).toEqual(1);
+        expect(component.grid[2].config.sizex).toEqual(5);
+    }));
 
     it('should Propagate Change after a grid box is deleted', () => {
         component.addBox();
         const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         spyOn(component, 'propagateChange');
@@ -191,27 +188,21 @@ xdescribe('DotEditLayoutGridComponent', () => {
         expect(component.propagateChange).toHaveBeenCalled();
     });
 
-    it(
-        'should resize the grid when the left menu is toggle',
-        fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
-            spyOn(component.ngGrid, 'triggerResize');
-            dotEventsService.notify('dot-side-nav-toggle');
-            tick(210);
-            expect(component.ngGrid.triggerResize).toHaveBeenCalled();
-        })
-    );
+    it('should resize the grid when the left menu is toggle', fakeAsync(() => {
+        const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+        spyOn(component.ngGrid, 'triggerResize');
+        dotEventsService.notify('dot-side-nav-toggle');
+        tick(210);
+        expect(component.ngGrid.triggerResize).toHaveBeenCalled();
+    }));
 
-    it(
-        'should resize the grid when the layout sidebar change',
-        fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
-            spyOn(component.ngGrid, 'triggerResize');
-            dotEventsService.notify('layout-sidebar-change');
-            tick(0);
-            expect(component.ngGrid.triggerResize).toHaveBeenCalled();
-        })
-    );
+    it('should resize the grid when the layout sidebar change', fakeAsync(() => {
+        const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+        spyOn(component.ngGrid, 'triggerResize');
+        dotEventsService.notify('layout-sidebar-change');
+        tick(0);
+        expect(component.ngGrid.triggerResize).toHaveBeenCalled();
+    }));
 
     it('should call writeValue to define the initial value of grid', () => {
         hostComponentfixture.detectChanges();
