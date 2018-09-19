@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable ,  Subject } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
+import { delay } from 'rxjs/operators';
 
 /**
  * Provide method to handle with the Field Types
@@ -19,14 +20,12 @@ export class FieldDragDropService {
         dragulaService.over().subscribe(this.toggleOverClass);
         dragulaService.out().subscribe(this.toggleOverClass);
 
-        // (4) ["fields-bag", li.content-types-fields-list__item.gu-transit, span.row-columns__item.row-columns__item--over, ul.content-types-fields-list]
-
-        dragulaService.dropModel().subscribe((value: any) => {
+        dragulaService.dropModel().pipe(delay(0)).subscribe((value: any) => {
             this.handleDrop(value.name, value.source.dataset.dragType);
         });
 
-        dragulaService.removeModel().subscribe((value) => {
-            // this.handleDrop(value[0], value[3].dataset.dragType);
+        dragulaService.removeModel().pipe(delay(0)).subscribe((value: any) => {
+            this.handleDrop(value.name, value.source.dataset.dragType);
         });
     }
 
@@ -52,7 +51,6 @@ export class FieldDragDropService {
                 accepts: this.shouldAccepts,
                 moves: this.shouldMovesField,
                 copyItem: (item: any) => {
-                    console.log('setFieldBagOptions', item);
                     return item;
                 }
             });
@@ -107,7 +105,6 @@ export class FieldDragDropService {
     }
 
     private handleDrop(dragType: string, source: string) {
-        console.log(dragType, source);
         if (dragType === 'fields-bag') {
             this.handleDropField(dragType, source);
         } else if (dragType === 'fields-row-bag') {

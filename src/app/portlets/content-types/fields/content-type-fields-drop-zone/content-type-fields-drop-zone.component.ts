@@ -1,4 +1,3 @@
-///<reference path="../shared/field-type.model.ts"/>
 import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { FieldDragDropService } from '../service';
@@ -31,8 +30,10 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     @Input()
     fields: ContentTypeField[];
+
     @Output()
     saveFields = new EventEmitter<ContentTypeField[]>();
+
     @Output()
     removeFields = new EventEmitter<ContentTypeField[]>();
 
@@ -125,12 +126,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     setDroppedField(): void {
         const fields = this.getFields();
-        this.formData = fields.find((field) => FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field));
+        this.formData = fields.find((field) => {
+            return FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field);
+        });
 
-        console.log(fields);
+
         if (this.formData) {
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
-            console.log(this.currentFieldType);
         }
     }
 
@@ -187,10 +189,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             });
             this.removeFields.emit(fieldsToDelete);
         }
-    }
-
-    what($what) {
-        console.log('what', $what);
     }
 
     private moveFields(): void {
@@ -263,7 +261,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-        this.fieldRows.forEach((fieldRow) => {
+
+        this.fieldRows.forEach((fieldRow, index) => {
             fields.push(fieldRow.lineDivider);
 
             fieldRow.columns.forEach((fieldColumn) => {
@@ -271,6 +270,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 fieldColumn.fields.forEach((field) => fields.push(field));
             });
         });
+
+
 
         return fields;
     }
