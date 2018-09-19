@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
 import { DotNavigationService } from '../../dot-navigation/services/dot-navigation.service';
 import { map, switchMap, filter } from 'rxjs/operators';
-import { NavigationEnd } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { DotMenu, DotMenuItem } from '../../../../shared/models/navigation';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class DotCrumbtrailService {
     private URL_EXCLUDES = ['/content-types-angular/create/content'];
-    private crumbTrail: Observable<string>;
+    private crumbTrail: Subject<string> = new BehaviorSubject('');
 
-    constructor(public dotNavigationService: DotNavigationService) {
-        this.crumbTrail = this.dotNavigationService.onNavigationEnd().pipe(
+    constructor(public dotNavigationService: DotNavigationService, router: Router, private route: ActivatedRoute) {
+        this.dotNavigationService.onNavigationEnd().pipe(
             map((event: NavigationEnd) => {
                 console.log('event', event);
                 return event.url;
             }),
             filter((url: string) => !this.URL_EXCLUDES.includes(url)),
             switchMap(this.getCrumbtrail.bind(this))
-        );
+        ).subscribe((crumbTrail: string) => {
+            this.crumbTrail.next(crumbTrail);
+        });
     }
 
     get crumbTrail$(): Observable<string> {
-        return this.crumbTrail;
+        return this.crumbTrail.asObservable();
     }
 
     private splitURL(url: string): string[] {
