@@ -4,14 +4,13 @@ import { DebugElement, Component, Input, SimpleChange, Output, EventEmitter, Inj
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
 import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule } from '../';
-import { DragulaModule } from 'ng2-dragula';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldValidationMessageModule } from '../../../../view/components/_common/field-validation-message/file-validation-message.module';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FormatDateService } from '../../../../api/services/format-date-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +21,7 @@ import { DotIconButtonModule } from '../../../../view/components/_common/dot-ico
 import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -72,7 +72,7 @@ function becomeNewField(field) {
     delete field.id;
 }
 
-xdescribe('ContentTypeFieldsDropZoneComponent', () => {
+describe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;
@@ -114,15 +114,16 @@ xdescribe('ContentTypeFieldsDropZoneComponent', () => {
                 ContentTypeFieldsAddRowModule
             ],
             providers: [
-                { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
-                LoginService,
-                SocketFactory,
-                FormatDateService,
+                DragulaService,
                 FieldPropertyService,
                 FieldService,
+                FormatDateService,
+                LoginService,
+                SocketFactory,
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: Router, useValue: mockRouter },
+                { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
                 { provide: HotkeysService, useValue: testHotKeysMock },
+                { provide: Router, useValue: mockRouter },
             ]
         });
 
