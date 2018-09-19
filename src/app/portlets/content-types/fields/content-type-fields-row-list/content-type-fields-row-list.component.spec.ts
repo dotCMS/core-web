@@ -4,9 +4,9 @@ import { DebugElement } from '@angular/core';
 import { ContentTypeFieldsRowListComponent } from './';
 import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
-import { DragulaModule } from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 
-describe('ContentTypesFieldDragabbleItemComponent', () => {
+describe('ContentTypeFieldsRowListComponent', () => {
     let comp: ContentTypeFieldsRowListComponent;
     let fixture: ComponentFixture<ContentTypeFieldsRowListComponent>;
     let de: DebugElement;
@@ -16,7 +16,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
             DOTTestBed.configureTestingModule({
                 declarations: [ContentTypeFieldsRowListComponent],
                 imports: [DragulaModule],
-                providers: [FieldDragDropService]
+                providers: [FieldDragDropService, DragulaService]
             });
 
             fixture = DOTTestBed.createComponent(ContentTypeFieldsRowListComponent);
