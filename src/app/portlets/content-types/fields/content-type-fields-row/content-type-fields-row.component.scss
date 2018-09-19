@@ -1,11 +1,11 @@
-@import 'variables';
+@import "variables";
+
 
 :host {
-    // box-shadow: $md-shadow-1;
     border-radius: $border-radius;
     display: block;
     margin-bottom: $basic-padding * 2;
-    padding:  0 $basic-padding * 2 $basic-padding * 2;
+    padding: 0 $basic-padding * 2 $basic-padding * 2;
     position: relative;
     transition: box-shadow $basic-speed;
     background: $white;
@@ -18,50 +18,74 @@
 .row-columns {
     display: flex;
     background: $gray-bg;
+    padding: $basic-padding;
 }
 
 .row-columns__item {
-    margin: 0 $basic-padding / 2;
     display: flex;
     flex-direction: column;
-    padding: $basic-padding;
+    margin: 0 $basic-padding / 2;
+    padding-bottom: 0;
+
+    &:after {
+        border: dashed 1px $gray;
+        bottom: 0;
+        color: $gray;
+        content: var(--empty-message);
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        font-size: $font-size-small;
+        justify-content: center;
+        min-height: $content-type-field-height;
+        pointer-events: none;
+        text-align: center;
+    }
+
+    &::ng-deep {
+        li {
+            background-color: $white;
+            height: $content-type-field-height;
+            margin: 0;
+        }
+    }
+
+    dot-content-type-field-dragabble-item {
+        margin-bottom: $basic-padding;
+    }
 
     &:first-child {
         margin-left: 0;
     }
 
-    &:last-child {
+    &:last-of-type {
         margin-right: 0;
     }
 
     &.empty {
         background: $gray-bg;
+        min-height: $content-type-field-height * 2;
 
-        .row-columns__item-empty-message {
-            min-height: 150px;
+        dot-content-type-field-dragabble-item {
+            margin-bottom: 0;
+        }
+
+        &:after {
+            min-height: 100%;
         }
     }
-}
-
-.row-columns__item-empty-message {
-    text-align: center;
-    width: 100%;
-    border: dashed 1px $gray;
-    color: $gray;
-    min-height: 68px;
-    flex: 1;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    font-size: $font-size-small;
+    &--over {
+        &:after {
+            display: none;
+        }
+    }
 }
 
 .row-header {
     opacity: 0.25;
     text-align: center;
     transition: opacity $basic-speed;
-    margin: 0 -#{$basic-padding * 2}
+    margin: 0 -#{$basic-padding * 2};
 }
 
 .row-header__drag {

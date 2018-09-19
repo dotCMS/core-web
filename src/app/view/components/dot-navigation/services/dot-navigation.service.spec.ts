@@ -1,39 +1,128 @@
-import { Auth } from 'dotcms-js/core/login.service';
+import { async } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router, NavigationEnd } from '@angular/router';
+
+
+import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
+import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 import { DotMenu } from '../../../../shared/models/navigation';
 import { DotMenuService } from '../../../../api/services/dot-menu.service';
 import { DotNavigationService } from './dot-navigation.service';
 import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
-import { DotcmsEventsService, LoginService } from 'dotcms-js/dotcms-js';
-import { LoginServiceMock } from '../../../../test/login-service.mock';
-import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { async } from '@angular/core/testing';
 
-const mockMenu: DotMenu[] = [
-    {
+import { DotcmsEventsService, LoginService, Auth } from 'dotcms-js/dotcms-js';
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { of } from 'rxjs/observable/of';
+import { skip } from 'rxjs/operators';
+
+class RouterMock {
+    _events: Subject<any> = new Subject();
+    _routerState: any;
+
+    get events() {
+        return this._events.asObservable();
+    }
+
+    get routerState() {
+        return {
+            snapshot: {
+                url: 'hello/world'
+            }
+        };
+    }
+
+    triggerNavigationEnd(url: string): void {
+        this._events.next(new NavigationEnd(0, url || '/url/789', url || '/url/789'));
+    }
+
+
+}
+class DotMenuServiceMock {
+    loadMenu(): Observable<DotMenu[]> {
+        return of([
+            {
+                ...dotMenuMock(),
+                active: true,
+                isOpen: true
+            },
+            dotMenuMock1()
+        ]);
+    }
+
+    reloadMenu(): Observable<DotMenu[]> {
+        return of([dotMenuMock(), dotMenuMock1()]);
+    }
+}
+
+class DotcmsEventsServiceMock {
+    _events: Subject<any> = new Subject();
+
+    subscribeTo() {
+        return this._events;
+    }
+
+    trigger() {
+        this._events.next();
+    }
+}
+
+export const dotMenuMock = () => {
+    return {
         active: false,
         id: '123',
-        name: 'Parent 1',
-        tabDescription: '',
-        tabName: '',
-        url: '',
+        isOpen: false,
         menuItems: [
             {
                 active: false,
                 ajax: true,
                 angular: true,
-                id: '',
-                label: 'Child 1',
-                url: 'hello/url',
-                menuLink: ''
+                id: '123',
+                label: 'Label 1',
+                url: 'url/one',
+                menuLink: 'url/link1'
+            },
+            {
+                active: false,
+                ajax: true,
+                angular: true,
+                id: '456',
+                label: 'Label 2',
+                url: 'url/two',
+                menuLink: 'url/link2'
             }
         ],
-        isOpen: true,
-        tabIcon: ''
-    }
-];
+        name: 'Menu 1',
+        tabDescription: 'Description',
+        tabIcon: 'icon',
+        tabName: 'Name',
+        url: '/url/index'
+    };
+};
+
+export const dotMenuMock1 = () => {
+    return {
+        ...dotMenuMock(),
+        active: false,
+        id: '456',
+        name: 'Menu 2',
+        url: '/url/456',
+        menuItems: [
+            {
+                ...dotMenuMock().menuItems[0],
+                active: true,
+                id: '789'
+            },
+            {
+                ...dotMenuMock().menuItems[1],
+                active: false,
+                id: '000'
+            }
+        ]
+    };
+};
 
 const baseMockUser = {
     emailAddress: 'admin@dotcms.com',
@@ -48,118 +137,192 @@ const baseMockAuth: Auth = {
 };
 
 describe('DotNavigationService', () => {
-    let dotMenuService: DotMenuService;
-    let dotNavigationService: DotNavigationService;
+    let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;
+    let dotEventService: DotEventsService;
+    let dotMenuService: DotMenuService;
     let loginService: LoginServiceMock;
+    let router;
 
     beforeEach(
         async(() => {
             const testbed = DOTTestBed.configureTestingModule({
                 providers: [
                     DotNavigationService,
-                    DotMenuService,
+                    {
+                        provide: DotcmsEventsService,
+                        useClass: DotcmsEventsServiceMock
+                    },
+                    {
+                        provide: DotMenuService,
+                        useClass: DotMenuServiceMock
+                    },
                     {
                         provide: LoginService,
                         useClass: LoginServiceMock
                     },
                     {
                         provide: Router,
-                        useValue: {
-                            routerState: {
-                                snapshot: {
-                                    url: 'hello/world'
-                                }
-                            },
-                            events: Observable.of({})
-                        }
+                        useClass: RouterMock
                     }
                 ],
                 imports: [RouterTestingModule]
             });
 
-            dotMenuService = testbed.get(DotMenuService);
-            dotNavigationService = testbed.get(DotNavigationService);
+            service = testbed.get(DotNavigationService);
             dotRouterService = testbed.get(DotRouterService);
             dotcmsEventsService = testbed.get(DotcmsEventsService);
+            dotMenuService = testbed.get(DotMenuService);
             loginService = testbed.get(LoginService);
+            dotEventService = testbed.get(DotEventsService);
+            router = testbed.get(Router);
+
+            spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => new Promise((resolve) => resolve(true)));
+            spyOn(dotRouterService, 'reloadCurrentPortlet');
+            spyOn(dotEventService, 'notify');
+            spyOn(dotMenuService, 'reloadMenu').and.callThrough();
         })
     );
 
-    // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
-    xit('should subscribe to UPDATE_PORTLET_LAYOUTS websocket event', () => {
-        spyOn(dotcmsEventsService, 'subscribeTo');
-        expect(dotcmsEventsService.subscribeTo).toHaveBeenCalledWith('UPDATE_PORTLET_LAYOUTS');
+    describe('goToFirstPortlet', () => {
+        it('should go to first portlet: ', () => {
+            service.goToFirstPortlet();
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('url/one');
+        });
     });
 
-    it('should go to first portlet', () => {
-        spyOn(dotMenuService, 'loadMenu').and.returnValue(Observable.of(mockMenu));
-
-        spyOn(dotRouterService, 'gotoPortlet');
-        dotNavigationService.goToFirstPortlet();
-        expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/url');
-    });
-
-    it('should return correct value in isActive', () => {
-        expect(dotNavigationService.isActive('hello')).toBe(true);
-    });
-
-    it('should reload current portlet', () => {
-        spyOn(dotRouterService, 'reloadCurrentPortlet');
-        dotNavigationService.reloadCurrentPortlet('hello');
-
-        expect(dotRouterService.reloadCurrentPortlet).toHaveBeenCalledWith('hello');
-    });
-
-    it('should NOT reload current portlet', () => {
-        spyOn(dotRouterService, 'reloadCurrentPortlet');
-        dotNavigationService.reloadCurrentPortlet('123');
-
-        expect(dotRouterService.reloadCurrentPortlet).not.toHaveBeenCalled();
-    });
-
-    it('should reload navigation and set menu', () => {
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-
-        let result: DotMenu[];
-
-        dotNavigationService._items$.subscribe((menu: DotMenu[]) => {
-            result = menu;
+    describe('reloadCurrentPortlet', () => {
+        it('should reload current portlet', () => {
+            service.reloadCurrentPortlet('hello');
+            expect(dotRouterService.reloadCurrentPortlet).toHaveBeenCalledWith('hello');
         });
 
-        loginService.triggerNewAuth(baseMockAuth);
-
-        expect(result).toEqual(mockMenu);
+        it('should NOT reload current portlet', () => {
+            service.reloadCurrentPortlet('123');
+            expect(dotRouterService.reloadCurrentPortlet).not.toHaveBeenCalled();
+        });
     });
 
-    it('should reload navigation, set menu and redirect to first portlet', () => {
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
-        spyOn(dotNavigationService, 'goToFirstPortlet');
+    describe('collapseMenu', () => {
+        it('should close all the menu sections', () => {
+            expect(service.collapsed).toBe(false);
+            let counter = 0;
 
-        loginService.triggerNewAuth(baseMockAuth);
-        expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalledTimes(1);
+            service.items$.subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([true, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                }
+                counter++;
+            });
+
+            service.collapseMenu();
+            expect(service.collapsed).toBe(true);
+        });
     });
 
-    it('should reload navigation, set menu and NOT redirect to first portlet (portlet is in menu)', () => {
-        dotRouterService.previousSavedURL = 'hello/url2';
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(true));
-        spyOn(dotNavigationService, 'goToFirstPortlet');
+    describe('expandMenu', () => {
+        it('should expand active menu section', () => {
+            service.toggle();
+            expect(service.collapsed).toBe(true);
 
-        loginService.triggerNewAuth(baseMockAuth);
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
+            let counter = 0;
+            service.items$.subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
+                }
+
+                counter++;
+            });
+
+            service.expandMenu();
+            expect(service.collapsed).toBe(false);
+        });
     });
 
-    it('should reload navigation, set menu and NOT redirect to first portlet (previousSavedURL in routerService)', () => {
-        dotRouterService.previousSavedURL = 'hello/url';
-        spyOn(dotMenuService, 'reloadMenu').and.returnValue(Observable.of(mockMenu));
-        spyOn(dotMenuService, 'isPortletInMenu').and.returnValue(Observable.of(false));
-        spyOn(dotNavigationService, 'goToFirstPortlet');
+    describe('setOpen', () => {
+        it('should expand expecific menu section', () => {
+            service.toggle();
+            expect(service.collapsed).toBe(true);
 
+            let counter = 0;
+            service.items$.subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
+                }
+
+                counter++;
+            });
+
+
+            service.setOpen('456');
+
+            expect(service.collapsed).toBe(false);
+        });
+    });
+
+    describe('toggle', () => {
+        it('should toggle the menu', () => {
+            let counter = 0;
+            service.items$.pipe(skip(1)).subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
+                }
+                counter++;
+            });
+
+            service.toggle();
+            expect(service.collapsed).toBe(true);
+
+            service.toggle();
+            expect(service.collapsed).toBe(false);
+
+            expect(dotEventService.notify).toHaveBeenCalledTimes(2);
+        });
+    });
+
+    describe('goTo', () => {
+        it ('should go to url', () => {
+            service.goTo('hello/world');
+            expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/world');
+        });
+    });
+
+
+    it('should go to first portlet on auth change', () => {
+        spyOn(service, 'goToFirstPortlet');
         loginService.triggerNewAuth(baseMockAuth);
-        expect(dotNavigationService.goToFirstPortlet).not.toHaveBeenCalled();
+        expect(service.goToFirstPortlet).toHaveBeenCalledTimes(1);
+        expect(dotMenuService.reloadMenu).toHaveBeenCalledTimes(1);
+    });
+
+    it('should expand and set active menu option by url when is not collapsed', () => {
+        let counter = 0;
+
+        service.items$.subscribe((menus: DotMenu[]) => {
+            if (counter === 0) {
+                expect(menus[1].isOpen).toBe(false);
+                expect(menus[1].menuItems[0].active).toBe(true);
+            } else {
+                expect(menus[1].isOpen).toBe(true);
+                expect(menus[1].menuItems[0].active).toBe(true);
+            }
+            counter++;
+        });
+
+        router.triggerNavigationEnd('/789');
+    });
+
+    // TODO: needs to fix this, looks like the dotcmsEventsService instance is different here not sure why.
+    xit('should subscribe to UPDATE_PORTLET_LAYOUTS websocket event', () => {
+        expect(dotcmsEventsService.subscribeTo).toHaveBeenCalledWith('UPDATE_PORTLET_LAYOUTS');
     });
 });

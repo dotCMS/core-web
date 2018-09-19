@@ -1,13 +1,13 @@
-@import 'mixins';
-@import 'variables';
+@import "mixins";
+@import "variables";
 
 :host {
+    background: $white;
     cursor: move;
     display: flex;
-    margin: 0 0 $basic-padding 0;
+    height: $content-type-field-height;
     padding: $basic-padding * 2;
     transition: border-left-color $basic-speed, box-shadow $basic-speed;
-    background: $white;
 
     &:hover {
         box-shadow: $md-shadow-5;
@@ -19,17 +19,25 @@
     }
 }
 
+.field__properties,
 .field__icon {
     display: flex;
 }
 
 .field__properties {
+    justify-content: center;
+    flex-direction: column;
     flex-grow: 1;
 }
 
 .field__name {
     color: black;
     line-height: $basic-padding * 3;
+}
+
+.field__name-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .field__attribute,
@@ -39,21 +47,15 @@
     line-height: $font-size-small;
 }
 
-.field__attribute{
-    margin-top: 6px;
+.field__attribute {
     min-height: $font-size-small;
+    margin-top: 6px;
+    margin-left: 26px;
 }
 
 .field__actions {
-    opacity: 0.25;
-    transition: opacity $basic-speed;
-
     & > * {
         margin: 0 $basic-padding / 4;
-    }
-
-    :host:hover & {
-        opacity: 1;
     }
 }
 

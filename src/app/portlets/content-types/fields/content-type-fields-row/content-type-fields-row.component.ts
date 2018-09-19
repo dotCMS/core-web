@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { ContentTypeField, FieldRow } from '../shared';
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm';
 import { FieldColumn } from '..';
@@ -17,16 +16,20 @@ import { FieldColumn } from '..';
     styleUrls: ['./content-type-fields-row.component.scss'],
     templateUrl: './content-type-fields-row.component.html'
 })
-export class ContentTypeFieldsRowComponent extends BaseComponent {
+export class ContentTypeFieldsRowComponent implements OnInit {
     @Input() fieldRow: FieldRow;
 
     @Output() editField: EventEmitter<ContentTypeField> = new EventEmitter();
     @Output() removeField: EventEmitter<ContentTypeField> = new EventEmitter();
     @Output() removeRow: EventEmitter<FieldRow> = new EventEmitter();
 
-    constructor(dotMessageService: DotMessageService, private dotDialogService: DotAlertConfirmService) {
-        super(
-            [
+    i18nMessages: any = {};
+
+    constructor(private dotMessageService: DotMessageService, private dotDialogService: DotAlertConfirmService) {}
+
+    ngOnInit() {
+        this.dotMessageService
+            .getMessages([
                 'contenttypes.dropzone.rows.empty.message',
                 'contenttypes.action.delete',
                 'contenttypes.confirm.message.delete.field',
@@ -34,14 +37,20 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
                 'contenttypes.content.field',
                 'contenttypes.content.row',
                 'contenttypes.action.cancel'
-            ],
-            dotMessageService
-        );
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+                document
+                    .querySelector('html')
+                    .style.setProperty('--empty-message', `"${this.i18nMessages['contenttypes.dropzone.rows.empty.message']}"`);
+            });
     }
 
     /**
      * Remove a field
-     * @param field field to remove
+     *
+     * @param {ContentTypeField} field
+     * @memberof ContentTypeFieldsRowComponent
      */
     onRemoveField(field: ContentTypeField): void {
         this.dotDialogService.confirm({
@@ -59,6 +68,7 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
 
     /**
      * Return the width for each column
+     *
      * @returns {string} Return the column's width width '%', for example, '30%'
      * @memberof ContentTypeFieldsRowComponent
      */
@@ -69,12 +79,21 @@ export class ContentTypeFieldsRowComponent extends BaseComponent {
 
     /**
      * Tigger the removeRow event whit the current FieldRow
+     *
+     * @memberof ContentTypeFieldsRowComponent
      */
     onRemoveFieldRow(): void {
         this.removeRow.emit(this.fieldRow);
     }
 
-    private isRowFieldEmpty(): boolean {
-        return this.fieldRow.columns.map((column: FieldColumn) => column.fields.length).every(fieldsNumber => fieldsNumber === 0);
+    /**
+     * Check if a given row have fields in any of the columns
+     *
+     * @param {FieldRow} row
+     * @returns {boolean}
+     * @memberof ContentTypeFieldsRowComponent
+     */
+    rowHaveFields(row: FieldRow): boolean {
+        return row.columns.map((column: FieldColumn) => column.fields.length).every((fieldsNumber: number) => fieldsNumber === 0);
     }
 }

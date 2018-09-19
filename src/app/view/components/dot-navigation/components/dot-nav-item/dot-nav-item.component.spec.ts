@@ -9,7 +9,13 @@ import { DotIconModule } from '../../../_common/dot-icon/dot-icon.module';
 import { DotSubNavComponent } from '../dot-sub-nav/dot-sub-nav.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { dotMenuMock } from '../../dot-navigation.component.spec';
+import { dotMenuMock } from '../../services/dot-navigation.service.spec';
+import { DotMenu } from '../../../../../shared/models/navigation';
+
+const data: DotMenu = {
+    ...dotMenuMock(),
+    active: true
+};
 
 
 describe('DotNavItemComponent', () => {
@@ -28,13 +34,13 @@ describe('DotNavItemComponent', () => {
         fixture = TestBed.createComponent(DotNavItemComponent);
         de = fixture.debugElement;
         component = fixture.componentInstance;
-        component.data = dotMenuMock;
+        component.data = data;
         fixture.detectChanges();
     });
 
     it('should set classes', () => {
         const label = de.query(By.css('.dot-nav__item'));
-        expect(label.nativeElement.classList.contains('dot-nav__item-wrapper--active')).toBe(true);
+        expect(label.nativeElement.classList.contains('dot-nav__item--active')).toBe(true);
     });
 
     it('should have icons set', () => {
@@ -52,6 +58,6 @@ describe('DotNavItemComponent', () => {
 
     it('should have dot-sub-nav', () => {
         const subNav: DebugElement = de.query(By.css('dot-sub-nav'));
-        expect(subNav.componentInstance.data).toBe(dotMenuMock);
+        expect(subNav.componentInstance.data).toEqual(data);
     });
 });
