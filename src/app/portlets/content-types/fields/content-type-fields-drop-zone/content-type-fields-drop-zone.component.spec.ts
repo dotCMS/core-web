@@ -72,7 +72,7 @@ function becomeNewField(field) {
     delete field.id;
 }
 
-describe('ContentTypeFieldsDropZoneComponent', () => {
+xdescribe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;
@@ -217,7 +217,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-describe('Load fields and drag and drop', () => {
+describe('ContentTypeFieldsDropZoneComponent', () => {
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
     let comp: ContentTypeFieldsDropZoneComponent;
@@ -261,15 +261,16 @@ describe('Load fields and drag and drop', () => {
                 ContentTypeFieldsAddRowModule
             ],
             providers: [
-                { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
-                LoginService,
-                SocketFactory,
-                FormatDateService,
+                DragulaService,
                 FieldPropertyService,
                 FieldService,
+                FormatDateService,
+                LoginService,
+                SocketFactory,
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: Router, useValue: mockRouter },
+                { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
                 { provide: HotkeysService, useValue: new TestHotkeysMock() },
+                { provide: Router, useValue: mockRouter },
             ]
         });
 
