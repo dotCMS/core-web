@@ -5,7 +5,7 @@ import { ContentTypeFieldsRowComponent } from './';
 import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
 import { ContentTypeField, FieldRow, FieldColumn } from '../';
-import { DragulaModule } from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { IconButtonTooltipModule } from '../../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -56,7 +56,7 @@ class DotTestHostComponent {
     }
 }
 
-xdescribe('ContentTypeFieldsRowComponent', () => {
+describe('ContentTypeFieldsRowComponent', () => {
     let hostFixture: ComponentFixture<DotTestHostComponent>;
     let hostDe: DebugElement;
     let hostComp: DotTestHostComponent;
@@ -86,6 +86,7 @@ xdescribe('ContentTypeFieldsRowComponent', () => {
             providers: [
                 FieldDragDropService,
                 DotAlertConfirmService,
+                DragulaService,
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
