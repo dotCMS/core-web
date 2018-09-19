@@ -72,7 +72,7 @@ function becomeNewField(field) {
     delete field.id;
 }
 
-fdescribe('ContentTypeFieldsDropZoneComponent', () => {
+xdescribe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;

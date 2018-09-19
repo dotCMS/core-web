@@ -5,7 +5,7 @@ import { LoginService } from 'dotcms-js/core/login.service';
 import { Router } from '@angular/router';
 import { async } from '@angular/core/testing';
 
-fdescribe('DotRouterService', () => {
+xdescribe('DotRouterService', () => {
     let service: DotRouterService;
     let router: Router;
 

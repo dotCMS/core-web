@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable ,  Subject } from 'rxjs';
+import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
 import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { PageViewService } from '../../../../api/services/page-view/page-view.service';
@@ -42,7 +42,7 @@ class MockDotEditContentletComponent {
     @Output() custom = new EventEmitter<any>();
 }
 
-fdescribe('DotEditPageMainComponent', () => {
+xdescribe('DotEditPageMainComponent', () => {
     let component: DotEditPageMainComponent;
     let fixture: ComponentFixture<DotEditPageMainComponent>;
     let route: ActivatedRoute;

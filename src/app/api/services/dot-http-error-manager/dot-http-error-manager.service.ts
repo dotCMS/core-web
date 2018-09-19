@@ -8,7 +8,7 @@ import { ResponseView, LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
 import { Response } from '@angular/http';
-import { take, switchMap } from 'rxjs/operators';
+import { take, switchMap, map } from 'rxjs/operators';
 
 export interface DotHttpErrorHandled {
     redirected: boolean;
@@ -50,9 +50,8 @@ export class DotHttpErrorManagerService {
      * @memberof DotHttpErrorManagerService
      */
     handle(err: ResponseView): Observable<DotHttpErrorHandled> {
-        debugger;
         return this.getMessages().pipe(
-            switchMap(() => {
+            map(() => {
                 const result: DotHttpErrorHandled = {
                     redirected: this.callErrorHandler(err.response)
                 };
@@ -61,7 +60,7 @@ export class DotHttpErrorManagerService {
                     result.forbidden = this.contentletIsForbidden(err['bodyJsonObject'].error);
                 }
 
-                return observableOf(result);
+                return result;
             })
         );
     }
@@ -82,11 +81,10 @@ export class DotHttpErrorManagerService {
     }
 
     private callErrorHandler(response: Response): boolean {
-        return true;
-        // const code = response.status;
-        // return code === HttpCode.FORBIDDEN ?
-        //     this.isLicenseError(response) ? this.handleLicense() : this.handleForbidden() :
-        //     this.errorHandlers[code]();
+        const code = response.status;
+        return code === HttpCode.FORBIDDEN ?
+            this.isLicenseError(response) ? this.handleLicense() : this.handleForbidden() :
+            this.errorHandlers[code]();
     }
 
     private contentletIsForbidden(error: string): boolean {
