@@ -208,6 +208,10 @@ export class DotNavigationService {
         this.setMenu(updatedMenu);
     }
 
+    onNavigationEnd(): Observable <Event> {
+        return this.router.events.filter((event: Event) => event instanceof NavigationEnd);
+    }
+
     private addMenuLinks(menu: DotMenu[]): DotMenu[] {
         return menu.map((menuGroup: DotMenu) => {
             menuGroup.menuItems.forEach((menuItem: DotMenuItem) => {
@@ -233,10 +237,6 @@ export class DotNavigationService {
     private getTheUrlId(url: string): string {
         const urlSegments: string[] = url.split('/').filter((item: string) => item.length);
         return urlSegments[0] === 'c' ? urlSegments.pop() : urlSegments[0];
-    }
-
-    private onNavigationEnd(): Observable <Event> {
-        return this.router.events.filter((event: Event) => event instanceof NavigationEnd);
     }
 
     private reloadIframePage(): void {

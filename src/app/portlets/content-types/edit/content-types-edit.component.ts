@@ -208,7 +208,7 @@ export class ContentTypesEditComponent implements OnInit {
             .subscribe((contentType: ContentType) => {
                 this.data = contentType;
                 this.fields = this.data.fields;
-                this.location.replaceState(`/content-types-angular/edit/${this.data.id}`);
+                this.dotRouterService.goToEditContentType(this.data.id);
                 this.show = false;
             }, (err: ResponseView) => {
                 this.handleHttpError(err);

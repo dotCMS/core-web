@@ -18,22 +18,25 @@ export class DotCrumbtrailComponent implements OnInit {
 
     ngOnInit() {
         this.crumb = this.dotNavigationService.onNavigationEnd().pipe(
-            map((event: NavigationEnd) => event.url),
-            map(this.getMenuItem),
+            map((event: NavigationEnd) => {
+                console.log('event', event);
+                return event.url;
+            }),
+            map(this.splitURL),
             switchMap(this.getCrumbtrail.bind(this))
         );
     }
 
-    private getMenuItem(url: string): string {
-        return url.split('/').filter((section: string) => section !== '' && section !== 'c').join('');
+    private splitURL(url: string): string[] {
+        return url.split('/').filter((section: string) => section !== '' && section !== 'c');
     }
 
-    private getMenuSection(section: string, dotMenus: DotMenu[]): string[] {
-        let res = [];
+    private getPortletLabel(portletId: string, dotMenus: DotMenu[]): string[] {
+        let res;
 
         dotMenus.forEach((menu: DotMenu) => {
             menu.menuItems.forEach((menuItem: DotMenuItem) => {
-                if (menuItem.id === section) {
+                if (menuItem.id === portletId) {
                     res = [menu.name, menuItem.label];
                 }
             });
@@ -42,9 +45,25 @@ export class DotCrumbtrailComponent implements OnInit {
         return res;
     }
 
-    private getCrumbtrail(section: string): Observable<string> {
-        return this.dotNavigationService._items$.pipe(
-            map((dotMenus: DotMenu[]) => this.getMenuSection(section, dotMenus).join(' > '))
+    private getCrumbtrailSection(sections: string[]): string[] {
+        const res = [];
+
+        sections.forEach(section => {
+            res.push(section);
+        });
+
+        return res;
+    }
+
+    private getCrumbtrail(sections: string[]): Observable<string> {
+        const portletId = sections[0];
+
+        return this.dotNavigationService.items$.pipe(
+            map((dotMenus: DotMenu[]) => {
+                return [
+                    ...this.getPortletLabel(portletId, dotMenus),
+                    ...this.getCrumbtrailSection(sections.slice(1))].join(' > ');
+            })
         );
     }
 }
