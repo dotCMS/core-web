@@ -7,7 +7,7 @@ import { PaginatorService } from '../../../../../../api/services/paginator';
 import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
 import { PaginationEvent } from '../../../../../../view/components/_common/searchable-dropdown/component';
 
-import { NgControl, FormGroup } from '@angular/forms';
+import { NgControl, FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 @Component({
@@ -23,6 +23,7 @@ class TestSearchableDropdownComponent {
     @Input() totalRecords: number;
     @Input() placeholder = '';
 
+    @Output() change: EventEmitter<any> = new EventEmitter();
     @Output() filterChange: EventEmitter<string> = new EventEmitter();
     @Output() pageChange: EventEmitter<PaginationEvent> = new EventEmitter();
 }
@@ -81,6 +82,9 @@ describe('CategoriesPropertyComponent', () => {
     });
 
     it('should set PaginatorService url & placeholder empty label', () => {
+        comp.group = new FormGroup({
+            categories: new FormControl('')
+        });
         comp.property = {
             field: {},
             name: 'categories',
@@ -92,6 +96,9 @@ describe('CategoriesPropertyComponent', () => {
     });
 
     it('should set stored value in placeholder label', () => {
+        comp.group = new FormGroup({
+            categories: new FormControl('')
+        });
         comp.property = {
             field: {},
             name: 'categories',
@@ -104,6 +111,29 @@ describe('CategoriesPropertyComponent', () => {
             }};
         comp.ngOnInit();
         expect(comp.placeholder).toBe(comp.property.value);
+    });
+
+    it('should set inode when dropdown change', () => {
+        comp.group = new FormGroup({
+            categories: new FormControl('')
+        });
+        const params = {
+            categoryName: 'A-Z Index',
+            description: '',
+            key: 'azindex',
+            sortOrder: 0,
+            inode: '3297fcca-d88a-45a7-aef4-7960bc6964aa'
+        };
+
+        comp.property = {
+            field: {},
+            name: 'categories',
+            value: params};
+
+        comp.ngOnInit();
+        const dropdown = de.query(By.css('dot-searchable-dropdown')).componentInstance;
+        dropdown.change.emit(params);
+        expect(comp.group.controls.categories.value).toBe(params.inode);
     });
 
     describe('Pagination events', () => {
