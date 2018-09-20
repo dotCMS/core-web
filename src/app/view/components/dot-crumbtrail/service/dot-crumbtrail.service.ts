@@ -23,6 +23,8 @@ export class DotCrumbtrailService {
         ).subscribe((crumbTrail: string) => {
             this.crumbTrail.next(crumbTrail);
         });
+
+        this.getCrumbtrail(router.url).subscribe(crumbTrail => this.crumbTrail.next(crumbTrail));
     }
 
     get crumbTrail$(): Observable<string> {
