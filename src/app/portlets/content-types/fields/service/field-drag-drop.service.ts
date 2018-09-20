@@ -87,11 +87,6 @@ export class FieldDragDropService {
         return this._fieldRowDropFromTarget.asObservable();
     }
 
-<<<<<<< HEAD
-    private toggleOverClass([bag, el, target, source]: [string, HTMLElement, HTMLElement, HTMLElement]): void {
-        if (target.classList.contains('row-columns__item') && source !== target) {
-            target.classList.toggle('row-columns__item--over');
-=======
     private toggleOverClass(group: {
         name: string;
         el: Element;
@@ -100,7 +95,6 @@ export class FieldDragDropService {
     }): void {
         if (group.container.classList.contains('row-columns__item')) {
             group.container.classList.toggle('row-columns__item--over');
->>>>>>> d4030622... Update ng-dragula (WIP)
         }
     }
 
