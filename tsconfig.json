@@ -1,11 +1,11 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        // "allowJs": true,
-        // "allowUnreachableCode": true,
+        "baseUrl": "./",
         "outDir": "./dist/out-tsc",
         "sourceMap": true,
         "declaration": false,
+        "module": "es2015",
         "moduleResolution": "node",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -18,6 +18,13 @@
             "dom",
             "dom.iterable"
         ],
-        "module": "es2015"
+        "paths": {
+            "dot-layout-grid": [
+                "dist/dot-layout-grid"
+            ],
+            "dot-layout-grid/*": [
+                "dist/dot-layout-grid/*"
+            ]
+        }
     }
 }

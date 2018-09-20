@@ -2,21 +2,10 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "outDir": "../out-tsc/app",
-        "baseUrl": "./",
-        "module": "es2015",
-        "types": [],
-        "paths": {
-            "dot-layout-grid": [
-                "dist/dot-layout-grid"
-            ],
-            "dot-layout-grid/*": [
-                "dist/dot-layout-grid/*"
-            ]
-        }
+        "types": []
     },
     "exclude": [
-        "test.ts",
-        "**/*.spec.ts",
-        "node_modules"
+        "src/test.ts",
+        "**/*.spec.ts"
     ]
 }

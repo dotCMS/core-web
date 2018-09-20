@@ -14,15 +14,15 @@ import { DefaultGuardService } from './api/services/guards/default-guard.service
 const AUTH_MODULES: Routes = [
     {
         path: 'forgotPassword',
-        loadChildren: 'app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
+        loadChildren: 'src/app/view/components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
     },
     {
         path: 'login',
-        loadChildren: 'app/view/components/login/login-component/login.module#LoginModule'
+        loadChildren: 'src/app/view/components/login/login-component/login.module#LoginModule'
     },
     {
         path: 'resetPassword/:token',
-        loadChildren: 'app/view/components/login/reset-password-component/reset-password.module#ResetPasswordModule'
+        loadChildren: 'src/app/view/components/login/reset-password-component/reset-password.module#ResetPasswordModule'
     },
     {
         path: '',
@@ -35,31 +35,31 @@ const PORTLETS_ANGULAR = [
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'content-types-angular',
-        loadChildren: 'app/portlets/content-types/content-types.module#ContentTypesModule'
+        loadChildren: 'src/app/portlets/content-types/content-types.module#ContentTypesModule'
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'rules',
-        loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
+        loadChildren: 'src/app/portlets/rule-engine/rule-engine.module#RuleEngineModule'
     },
     {
         canActivate: [MenuGuardService],
         canActivateChild: [MenuGuardService],
         path: 'dot-browser',
-        loadChildren: 'app/portlets/dot-browser/dot-browser.module#DotBrowserModule'
+        loadChildren: 'src/app/portlets/dot-browser/dot-browser.module#DotBrowserModule'
     },
     {
         path: 'pl',
-        loadChildren: 'app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
+        loadChildren: 'src/app/view/components/_common/pattern-library/pattern-library.module#PatternLibraryModule'
     },
     {
         path: 'notLicensed',
-        loadChildren: 'app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
+        loadChildren: 'src/app/view/components/not-licensed/not-licensed.module#NotLicensedModule'
     },
     {
         path: 'edit-page',
-        loadChildren: 'app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
+        loadChildren: 'src/app/portlets/dot-edit-page/dot-edit-page.module#DotEditPageModule'
     },
     {
         canActivate: [MenuGuardService],
@@ -77,7 +77,7 @@ const PORTLETS_IFRAME = [
                 path: ':id',
                 children: [
                     {
-                        loadChildren: 'app/portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
+                        loadChildren: 'src/app/portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
                         path: ':asset'
                     },
                 ]
@@ -116,7 +116,7 @@ const appRoutes: Routes = [
         children: [
             {
                 path: 'rules',
-                loadChildren: 'app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
+                loadChildren: 'src/app/portlets/rule-engine/rule-engine.module#RuleEngineModule',
                 canActivate: [AuthGuardService]
             }
         ],

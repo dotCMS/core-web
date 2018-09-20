@@ -14,7 +14,7 @@ import { DotMessageService } from '../../../../../api/services/dot-messages-serv
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
-import { NgGridModule } from '../../../../../../../projects/dot-layout-grid/src/lib/modules/NgGrid.module';
+import { NgGridModule } from 'dot-layout-grid';
 
 let fakeValue: DotLayoutBody;
 
