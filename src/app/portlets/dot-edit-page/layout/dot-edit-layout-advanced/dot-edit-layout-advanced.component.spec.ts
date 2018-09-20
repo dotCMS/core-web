@@ -103,9 +103,10 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
         expect(component.onLoad).toHaveBeenCalled();
     });
 
-    it('should handle custom events from the iframe', () => {
+    xit('should handle custom events from the iframe', () => {
         spyOn(dotGlobalMessageService, 'display');
         spyOn(dotPageStateService, 'get');
+
         const dotIframe: IframeComponent = de.query(By.css('dot-iframe')).componentInstance;
         const iframe: any = dotIframe.iframeElement.nativeElement;
 
