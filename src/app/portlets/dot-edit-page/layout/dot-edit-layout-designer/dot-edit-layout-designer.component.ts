@@ -16,9 +16,9 @@ import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotTheme } from '../../shared/models/dot-theme.model';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
-import { Observable } from '../../../../../../node_modules/rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { tap } from '../../../../../../node_modules/rxjs/operators/tap';
+import { tap } from 'rxjs/operators/tap';
 import { DotLayout } from '../../shared/models/dot-layout.model';
 
 @Component({
