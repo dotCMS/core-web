@@ -13,7 +13,7 @@ import { DotWorkflowTaskDetailService } from './services/dot-workflow-task-detai
 import { DotWorkflowTaskDetailComponent } from './dot-workflow-task-detail.component';
 import { DotIframeDialogComponent } from '../dot-iframe-dialog/dot-iframe-dialog.component';
 import { DotIframeDialogModule } from '../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 
 describe('DotWorkflowTaskDetailComponent', () => {

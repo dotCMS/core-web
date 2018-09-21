@@ -1,6 +1,6 @@
 import { DotDevicesService } from './dot-devices.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 import { Response, ConnectionBackend, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { mockDotDevices } from '../../../test/dot-device.mock';

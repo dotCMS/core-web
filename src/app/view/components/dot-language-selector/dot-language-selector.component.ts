@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DotLanguagesService } from '../../../api/services/dot-languages/dot-languages.service';
-import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
+import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
+import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { take } from 'rxjs/operators';
 
 @Component({

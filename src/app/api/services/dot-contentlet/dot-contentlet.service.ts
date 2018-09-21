@@ -3,7 +3,7 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { StructureTypeView, ContentTypeView } from '../../../shared/models/contentlet';
+import { StructureTypeView, ContentTypeView } from '@models/contentlet';
 
 @Injectable()
 export class DotContentletService {

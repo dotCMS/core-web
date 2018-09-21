@@ -6,18 +6,18 @@ import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolb
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoggerService, StringUtils } from 'dotcms-js/dotcms-js';
 import { Config } from 'dotcms-js/core/config.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
 import { mockDotLayout, mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { Injectable } from '@angular/core';
-import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { mockUser } from '../../../../../test/login-service.mock';
 
 @Injectable()

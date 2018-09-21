@@ -3,10 +3,10 @@ import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { FieldValidationMessageComponent } from '../../../../../../view/components/_common/field-validation-message/field-validation-message';
+import { FieldValidationMessageComponent } from '@components/_common/field-validation-message/field-validation-message';
 
 describe('DefaultValuePropertyComponent', () => {
     let comp: DefaultValuePropertyComponent;

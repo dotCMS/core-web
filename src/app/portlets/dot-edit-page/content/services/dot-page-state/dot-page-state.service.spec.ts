@@ -6,16 +6,16 @@ import { MockBackend } from '@angular/http/testing';
 import { LoginService } from 'dotcms-js/dotcms-js';
 
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPageStateService } from './dot-page-state.service';
-import { DotRenderHTMLService } from '../../../../../api/services/dot-render-html/dot-render-html.service';
-import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
+import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { PageMode } from '../../../shared/models/page-mode.enum';
+import { PageMode } from '@models/page-mode.enum';
 import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../../test/login-service.mock';
 import * as _ from 'lodash';
-import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
+import { DotRenderedPage } from '@models/dot-rendered-page.model';
 
 describe('DotPageStateService', () => {
     let service: DotPageStateService;

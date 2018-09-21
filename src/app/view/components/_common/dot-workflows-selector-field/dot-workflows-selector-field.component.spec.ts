@@ -9,7 +9,7 @@ import { DotWorkflowServiceMock, mockWorkflows } from './../../../../test/dot-wo
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
 import { MultiSelect } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 const messageServiceMock = new MockDotMessageService({

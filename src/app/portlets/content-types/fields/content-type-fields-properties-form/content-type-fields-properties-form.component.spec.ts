@@ -5,7 +5,7 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { FieldPropertyService } from '../service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypeField } from '../index';
 import { By } from '@angular/platform-browser';
 

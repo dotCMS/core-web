@@ -2,10 +2,10 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { DotEditContentToolbarHtmlService } from './dot-edit-content-toolbar-html.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()

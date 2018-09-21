@@ -1,12 +1,12 @@
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
+import { BaseComponent } from '@components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { FieldDragDropService } from '../service';
 import { FieldRow, ContentTypeField, FieldType } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 /**
  * Display all the Field Types

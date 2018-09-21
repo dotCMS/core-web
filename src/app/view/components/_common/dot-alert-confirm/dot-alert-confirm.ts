@@ -1,4 +1,4 @@
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, ViewChild } from '@angular/core';
 import { ConfirmDialog } from 'primeng/primeng';
 

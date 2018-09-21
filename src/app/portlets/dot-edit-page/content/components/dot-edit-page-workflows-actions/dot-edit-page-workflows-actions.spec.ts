@@ -12,13 +12,13 @@ import { mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
-import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
-import { DotPage } from '../../../shared/models/dot-page.model';
-import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotPage } from '@models/dot-page.model';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-test-host-component',

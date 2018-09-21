@@ -1,7 +1,7 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { DotWorkflowAction } from '../shared/models/dot-workflow-action/dot-workflow-action.model';
-import { DotWorkflow } from '../shared/models/dot-workflow/dot-workflow.model';
+import { DotWorkflowAction } from '@models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
 import * as _ from 'lodash';
 
 export const mockWorkflowsActions = [

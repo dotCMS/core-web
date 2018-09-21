@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { GravatarService } from '../../../../api/services/gravatar-service';
+import { GravatarService } from '@services/gravatar-service';
 import * as md5 from 'md5';
 
 @Component({

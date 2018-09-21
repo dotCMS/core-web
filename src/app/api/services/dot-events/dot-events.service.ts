@@ -2,7 +2,7 @@
 import {filter} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
-import { DotEvent } from '../../../shared/models/dot-event/dot-event';
+import { DotEvent } from '@models/dot-event/dot-event';
 
 /**
  * Provide a Global service to Subscribe to custom events and notify subscribers when those events occur.

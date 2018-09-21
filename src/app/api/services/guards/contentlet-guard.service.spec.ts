@@ -2,7 +2,7 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ContentletGuardService } from './contentlet-guard.service';
 import { DotContentletService } from '../dot-contentlet/dot-contentlet.service';

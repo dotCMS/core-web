@@ -4,7 +4,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 import {switchMap, combineLatest} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 
 @Component({
     selector: 'dot-legacy-addtional-actions',

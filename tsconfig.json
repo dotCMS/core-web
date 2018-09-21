@@ -24,7 +24,28 @@
             ],
             "dot-layout-grid/*": [
                 "dist/dot-layout-grid/*"
-            ]
+            ],
+            "@services/*": [
+                "src/app/api/services/*"
+            ],
+            "@components/*": [
+                "src/app/view/components/*"
+            ],
+            "@directives/*": [
+                "src/app/view/directives/*"
+            ],
+            "@pipes/*": [
+                "src/app/view/pipes/*"
+            ],
+            "@shared/*": [
+                "src/app/shared/*"
+            ],
+            "@models/*": [
+                "src/app/shared/models/*"
+            ],
+            "@portlets/*": [
+                "src/app/portlets/*"
+            ],
         }
     }
 }

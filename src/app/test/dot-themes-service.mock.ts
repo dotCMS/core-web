@@ -1,6 +1,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { DotTheme } from '../portlets/dot-edit-page/shared/models/dot-theme.model';
+import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
 import { mockDotThemes } from './dot-themes.mock';
 
 export class DotThemesServiceMock {

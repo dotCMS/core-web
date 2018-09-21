@@ -8,20 +8,20 @@ import * as _ from 'lodash';
 
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotLayout } from '../../../shared/models/dot-layout.model';
 import { DotLayoutColumn } from '../../../shared/models/dot-layout-column.model';
 import { DotLayoutRow } from '../../../shared/models/dot-layout-row.model';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageContainer } from '../../../shared/models/dot-page-container.model';
 import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
-import { DotEditPageService } from '../../../../../api/services/dot-edit-page/dot-edit-page.service';
+import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 
 export enum DotContentletAction {

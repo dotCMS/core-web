@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotClipboardUtil } from '../../../../api/util/clipboard/ClipboardUtil';
 import { SiteService } from '../../../../../../node_modules/dotcms-js/dotcms-js';
 

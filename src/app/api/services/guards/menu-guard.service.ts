@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DotMenuService } from '../dot-menu.service';
 import { DotRouterService } from '../dot-router/dot-router.service';
-import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { environment } from '../../../../environments/environment';
 
 /**

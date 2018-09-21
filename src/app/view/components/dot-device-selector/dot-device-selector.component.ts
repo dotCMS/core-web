@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
+import { DotDevice } from '@models/dot-device/dot-device.model';
+import { DotMessageService } from '@services/dot-messages-service';
 import { map, take, flatMap, filter, toArray } from 'rxjs/operators';
 
 @Component({

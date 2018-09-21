@@ -6,15 +6,15 @@ import { SiteSelectorComponent } from './site-selector.component';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { SiteServiceMock, mockSites } from '../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js/dotcms-js';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component/searchable-dropdown.component';
-import { PaginatorService } from '../../../../api/services/paginator';
+import { PaginatorService } from '@services/paginator';
 import { IframeOverlayService } from '../iframe/service/iframe-overlay.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 describe('SiteSelectorComponent', () => {
     let comp: SiteSelectorComponent;

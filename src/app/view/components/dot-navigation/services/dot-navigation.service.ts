@@ -7,11 +7,11 @@ import { filter, switchMap, map, flatMap, toArray, tap } from 'rxjs/operators';
 import { Auth } from 'dotcms-js/core/login.service';
 import { DotcmsEventsService, LoginService } from 'dotcms-js/dotcms-js';
 
-import { DotMenu, DotMenuItem } from '../../../../shared/models/navigation';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotMenu, DotMenuItem } from '@models/navigation';
+import { DotMenuService } from '@services/dot-menu.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-iframe.service';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 export const replaceSectionsMap = {
     'edit-page': 'site-browser'

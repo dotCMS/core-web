@@ -4,9 +4,9 @@ import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotCurrentUser } from '../../../shared/models/dot-current-user/dot-current-user';
-import { DotBundle } from '../../../shared/models/dot-bundle/dot-bundle';
-import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
+import { DotCurrentUser } from '@models/dot-current-user/dot-current-user';
+import { DotBundle } from '@models/dot-bundle/dot-bundle';
+import { AjaxActionResponseView } from '@models/ajax-action-response/ajax-action-response';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 
 @Injectable()

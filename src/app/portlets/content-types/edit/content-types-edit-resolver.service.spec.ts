@@ -1,15 +1,15 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { CrudService } from '../../../api/services/crud';
+import { ContentTypesInfoService } from '@services/content-types-info';
+import { CrudService } from '@services/crud';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 
 class CrudServiceMock {

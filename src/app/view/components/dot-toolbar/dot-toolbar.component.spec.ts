@@ -4,7 +4,7 @@ import { DebugElement, Injectable, Component, Input } from '@angular/core';
 import { ToolbarComponent } from './dot-toolbar.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SiteService } from 'dotcms-js/dotcms-js';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';

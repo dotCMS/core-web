@@ -2,24 +2,20 @@
 import {take, mergeMap, pluck} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
-import { CrudService } from '../../../api/services/crud';
+import { CrudService } from '@services/crud';
 import { ContentTypeField } from '../fields/index';
 import { FieldService } from '../fields/service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
-import {
-    DotHttpErrorManagerService,
-    DotHttpErrorHandled
-} from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService, DotHttpErrorHandled } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 /**
  * Portlet component for edit content types
@@ -54,7 +50,6 @@ export class ContentTypesEditComponent implements OnInit {
         private dotRouterService: DotRouterService,
         private fieldService: FieldService,
         private hotkeysService: HotkeysService,
-        private location: Location,
         private route: ActivatedRoute,
         public dotMessageService: DotMessageService,
         public router: Router

@@ -5,11 +5,11 @@ import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
-import { PaginatorService } from '../../../../../api/services/paginator';
+import { PaginatorService } from '@services/paginator';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { MessageKeyDirective } from '../../../../../view/directives/message-keys/message-keys.directive';
-import { DotDialogModule } from '../../../../../view/components/dot-dialog/dot-dialog.module';
+import { DotMessageService } from '@services/dot-messages-service';
+import { MessageKeyDirective } from '@directives/message-keys/message-keys.directive';
+import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const mockContentType = {

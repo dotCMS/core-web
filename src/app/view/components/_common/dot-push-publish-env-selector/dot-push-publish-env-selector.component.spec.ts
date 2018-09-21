@@ -5,11 +5,11 @@ import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { PushPublishEnvSelectorComponent } from './dot-push-publish-env-selector.component';
-import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
 class PushPublishServiceMock {
     _lastEnvironmentPushed: string[];

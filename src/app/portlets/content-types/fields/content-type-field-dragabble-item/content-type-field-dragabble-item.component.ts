@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, HostListener, OnInit } from '@angular/core';
 
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
+import { BaseComponent } from '@components/_common/_base/base-component';
 import { ContentTypeField } from '../shared';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FieldService } from '../service';
 
 /**

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DotMenu, DotMenuItem } from '../../../../../shared/models/navigation';
+import { DotMenu, DotMenuItem } from '@models/navigation';
 
 @Component({
     animations: [

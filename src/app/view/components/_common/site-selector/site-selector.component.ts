@@ -12,9 +12,9 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
-import { PaginatorService } from '../../../../api/services/paginator';
+import { PaginatorService } from '@services/paginator';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 /**
  * It is dropdown of sites, it handle pagination and global search

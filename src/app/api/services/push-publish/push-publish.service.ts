@@ -4,9 +4,9 @@ import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
-import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
-import { PushPublishData } from '../../../shared/models/push-publish-data/push-publish-data';
+import { DotEnvironment } from '@models/dot-environment/dot-environment';
+import { AjaxActionResponseView } from '@models/ajax-action-response/ajax-action-response';
+import { PushPublishData } from '@models/push-publish-data/push-publish-data';
 import * as moment from 'moment';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 

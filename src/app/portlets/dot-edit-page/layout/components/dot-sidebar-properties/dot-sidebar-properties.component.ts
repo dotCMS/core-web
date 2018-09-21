@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, forwardRef, Output, EventEmitter } from '@angular/core';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotLayoutSideBar } from '../../../shared/models/dot-layout-sidebar.model';
-import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 // TODO: Implement ControlValueAccessor instead of passing the formGroup
 @Component({

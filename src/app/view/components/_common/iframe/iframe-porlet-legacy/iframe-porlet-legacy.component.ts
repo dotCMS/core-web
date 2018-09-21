@@ -7,10 +7,10 @@ import { BehaviorSubject } from 'rxjs';
 
 import { SiteService, DotcmsEventsService, LoggerService } from 'dotcms-js/dotcms-js';
 
-import { DotContentletService } from '../../../../../api/services/dot-contentlet/dot-contentlet.service';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
-import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
+import { DotMenuService } from '@services/dot-menu.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
 
 @Component({

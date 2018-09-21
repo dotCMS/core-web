@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { take, switchMap } from 'rxjs/operators';
 
 interface DotEditPopupMenuItem {

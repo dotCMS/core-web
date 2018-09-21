@@ -6,10 +6,10 @@ import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
 import { ContentTypeField, FieldRow, FieldColumn } from '../';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
-import { IconButtonTooltipModule } from '../../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { IconButtonTooltipModule } from '@components/_common/icon-button-tooltip/icon-button-tooltip.module';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 const mockFieldRow = new FieldRow();
 mockFieldRow.columns = [

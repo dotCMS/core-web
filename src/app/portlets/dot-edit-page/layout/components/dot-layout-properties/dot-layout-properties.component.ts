@@ -1,4 +1,4 @@
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup } from '@angular/forms';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 

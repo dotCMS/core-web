@@ -2,12 +2,12 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { Component, Input, OnChanges, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { DotWorkflowAction } from '../../../../../shared/models/dot-workflow-action/dot-workflow-action.model';
-import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
-import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotWorkflowAction } from '@models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotPage } from '../../../shared/models/dot-page.model';
-import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
 import { tap, map, mergeMap, catchError, pluck } from 'rxjs/operators';
 

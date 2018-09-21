@@ -1,8 +1,8 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { BaseComponent } from '../_base/base-component';
-import { INotification } from '../../../../shared/models/notifications';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { INotification } from '@models/notifications';
+import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,

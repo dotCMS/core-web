@@ -2,24 +2,24 @@
 import {forkJoin as observableForkJoin } from 'rxjs';
 
 import {map } from 'rxjs/operators';
-import { ListingDataTableComponent } from '../../../view/components/listing-data-table/listing-data-table.component';
-import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
-import { CrudService } from '../../../api/services/crud';
+import { ListingDataTableComponent } from '@components/listing-data-table/listing-data-table.component';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
+import { CrudService } from '@services/crud';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ActionHeaderOptions } from '../../../shared/models/action-header';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { DataTableColumn } from '../../../shared/models/data-table';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
-import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
-import { ButtonModel } from '../../../shared/models/action-header/button.model';
-import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
-import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
-import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
-import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
-import { DotHttpErrorManagerService } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { ActionHeaderOptions } from '@models/action-header';
+import { ContentTypesInfoService } from '@services/content-types-info';
+import { DataTableColumn } from '@models/data-table';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
+import { ButtonModel } from '@models/action-header/button.model';
+import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
+import { DotEnvironment } from '@models/dot-environment/dot-environment';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 /**
  * List of Content Types

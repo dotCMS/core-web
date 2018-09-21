@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { DotWorkflow } from './../../../../shared/models/dot-workflow/dot-workflow.model';
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { SelectItem } from 'primeng/components/common/selectitem';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Component({

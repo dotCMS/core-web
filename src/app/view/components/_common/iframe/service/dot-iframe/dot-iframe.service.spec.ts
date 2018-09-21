@@ -1,6 +1,6 @@
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DotIframeService } from './dot-iframe.service';
-import { DotUiColorsService } from '../../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { async } from '@angular/core/testing';
 
 describe('DotIframeService', () => {

@@ -1,8 +1,8 @@
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DotEditContentViewAsToolbarComponent } from './dot-edit-content-view-as-toolbar.component';
-import { DotDevicesService } from '../../../../../api/services/dot-devices/dot-devices.service';
-import { DotLanguagesService } from '../../../../../api/services/dot-languages/dot-languages.service';
-import { DotPersonasService } from '../../../../../api/services/dot-personas/dot-personas.service';
+import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
+import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
+import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { Component, DebugElement, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,23 +12,23 @@ import { DotLanguagesServiceMock } from '../../../../../test/dot-languages-servi
 import { DotPersonasServiceMock } from '../../../../../test/dot-personas-service.mock';
 import { mockDotLanguage } from '../../../../../test/dot-language.mock';
 import { mockDotDevices } from '../../../../../test/dot-device.mock';
-import { DotPersona } from '../../../../../shared/models/dot-persona/dot-persona.model';
-import { DotDevice } from '../../../../../shared/models/dot-device/dot-device.model';
-import { DotLanguage } from '../../../../../shared/models/dot-language/dot-language.model';
+import { DotPersona } from '@models/dot-persona/dot-persona.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
+import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { mockDotEditPageViewAs } from '../../../../../test/dot-edit-page-view-as.mock';
 import { mockDotPersona } from '../../../../../test/dot-persona.mock';
-import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../../../test/dot-rendered-page.mock';
-import { DotDeviceSelectorComponent } from '../../../../../view/components/dot-device-selector/dot-device-selector.component';
-import { DotPersonaSelectorComponent } from '../../../../../view/components/dot-persona-selector/dot-persona-selector.component';
-import { DotLanguageSelectorComponent } from '../../../../../view/components/dot-language-selector/dot-language-selector.component';
-import { PageMode } from '../../../shared/models/page-mode.enum';
+import { DotDeviceSelectorComponent } from '@components/dot-device-selector/dot-device-selector.component';
+import { DotPersonaSelectorComponent } from '@components/dot-persona-selector/dot-persona-selector.component';
+import { DotLanguageSelectorComponent } from '@components/dot-language-selector/dot-language-selector.component';
+import { PageMode } from '@models/page-mode.enum';
 import { LoginService } from 'dotcms-js/dotcms-js';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { of } from 'rxjs';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     selector: 'dot-test-host',

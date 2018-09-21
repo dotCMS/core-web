@@ -4,13 +4,12 @@ import {of as observableOf,  Observable ,  Subject } from 'rxjs';
 import {mergeMap, pluck,  take ,  map } from 'rxjs/operators';
 import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService } from 'dotcms-js/dotcms-js';
-import { DotRenderedPageState, DotPageState } from '../../../shared/models/dot-rendered-page-state.model';
-import { DotRenderHTMLService, DotRenderPageOptions } from '../../../../../api/services/dot-render-html/dot-render-html.service';
+import { DotPageState, DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderHTMLService, DotRenderPageOptions } from '@services/dot-render-html/dot-render-html.service';
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { Injectable } from '@angular/core';
-import { DotContentletLockerService } from '../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { DotEditPageViewAs } from '../../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { PageMode } from '../../../shared/models/page-mode.enum';
+import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
 @Injectable()
 export class DotPageStateService {

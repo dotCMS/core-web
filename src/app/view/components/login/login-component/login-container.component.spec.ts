@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotLoadingIndicatorComponent } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.component';
 import { MdInputTextModule } from '../../../directives/md-inputtext/md-input-text.module';
 import { LoginContainerComponent } from './login-container.component';

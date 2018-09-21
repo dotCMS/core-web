@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { ContentTypeField, FieldRow } from '../shared';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { FieldColumn } from '..';
 
 /**

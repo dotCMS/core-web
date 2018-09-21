@@ -3,9 +3,9 @@ import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Injectable, Input, Output, EventEmitter, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
-import { PaginatorService } from '../../../../../../api/services/paginator';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
-import { PaginationEvent } from '../../../../../../view/components/_common/searchable-dropdown/component';
+import { PaginatorService } from '@services/paginator';
+import { DotMessageService } from '@services/dot-messages-service';
+import { PaginationEvent } from '@components/_common/searchable-dropdown/component';
 
 import { NgControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';

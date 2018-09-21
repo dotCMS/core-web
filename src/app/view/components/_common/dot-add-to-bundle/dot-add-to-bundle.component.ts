@@ -3,10 +3,10 @@ import {of as observableOf,  Observable } from 'rxjs';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
-import { DotBundle } from '../../../../shared/models/dot-bundle/dot-bundle';
+import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
+import { DotBundle } from '@models/dot-bundle/dot-bundle';
 import { Dropdown } from 'primeng/primeng';
 import { mergeMap } from 'rxjs/operators';
 

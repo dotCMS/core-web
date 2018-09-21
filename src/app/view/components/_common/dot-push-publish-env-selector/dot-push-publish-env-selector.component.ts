@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewEncapsulation, forwardRef } from '@angular/core';
-import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { DotEnvironment } from '../../../../shared/models/dot-environment/dot-environment';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotEnvironment } from '@models/dot-environment/dot-environment';
 import { Observable } from 'rxjs';
 @Component({
     encapsulation: ViewEncapsulation.None,

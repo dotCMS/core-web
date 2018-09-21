@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { DotMenu, DotMenuItem } from '../../../../../shared/models/navigation';
+import { DotMenu, DotMenuItem } from '@models/navigation';
 
 @Component({
     selector: 'dot-nav-item',

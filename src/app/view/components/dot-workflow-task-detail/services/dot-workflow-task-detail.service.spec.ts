@@ -2,7 +2,7 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotWorkflowTaskDetailService } from './dot-workflow-task-detail.service';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 
 describe('DotWorkflowTaskDetailService', () => {
     let service: DotWorkflowTaskDetailService;

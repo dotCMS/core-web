@@ -3,12 +3,12 @@ import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
 
 import {debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotTheme } from '../../../shared/models/dot-theme.model';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
+import { PaginatorService } from '@services/paginator/paginator.service';
 import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
-import { DotDialogAction, DotDialogComponent } from '../../../../../view/components/dot-dialog/dot-dialog.component';
+import { DotDialogAction, DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 /**
  * The DotThemeSelectorComponent is modal that

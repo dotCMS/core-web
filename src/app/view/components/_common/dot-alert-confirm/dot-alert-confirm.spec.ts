@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';

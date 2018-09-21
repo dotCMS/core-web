@@ -1,6 +1,6 @@
 
 import {debounceTime} from 'rxjs/operators';
-import { DotContainer } from '../../../../../shared/models/container/dot-container.model';
+import { DotContainer } from '@models/container/dot-container.model';
 import {
     Component,
     ElementRef,
@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { BaseComponent } from '../../_base/base-component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { Observable ,  fromEvent } from 'rxjs';
 import { OverlayPanel } from 'primeng/primeng';
 

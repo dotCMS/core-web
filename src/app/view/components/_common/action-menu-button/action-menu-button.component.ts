@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { DotDataTableAction } from '../../../../shared/models/data-table/dot-data-table-action';
+import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
 
 /**
  * The ActionMenuButtonComponent is a configurable button with

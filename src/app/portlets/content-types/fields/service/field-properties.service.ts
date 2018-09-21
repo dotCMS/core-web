@@ -3,7 +3,7 @@ import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
 import { ValidationErrors } from '@angular/forms';
 import { FieldService } from './field.service';
-import { FieldType } from '../shared/field-type.model';
+import { FieldType } from '../shared';
 
 /**
  * Provide method to handle with the Field Types's properties

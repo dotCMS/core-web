@@ -1,31 +1,31 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { CrudService } from '../../../api/services/crud/crud.service';
-import { ContentType } from '../shared/content-type.model';
+import { CrudService } from '@services/crud/crud.service';
+import { ContentType } from '@shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ListingDataTableModule } from '../../../view/components/listing-data-table/listing-data-table.module';
-import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { ListingDataTableModule } from '@components/listing-data-table/listing-data-table.module';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
+import { ContentTypesInfoService } from '@services/content-types-info';
 import { ContentTypesPortletComponent } from './content-types.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { FormatDateService } from '../../../api/services/format-date-service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { FormatDateService } from '@services/format-date-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Injectable } from '@angular/core';
-import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
-import { PushPublishContentTypesDialogModule } from '../../../view/components/_common/push-publish-dialog/push-publish-dialog.module';
-import { PushPublishService } from '../../../api/services/push-publish/push-publish.service';
-import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog/push-publish-dialog.module';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { SelectItem } from 'primeng/primeng';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import {
     DotHttpErrorHandled,
     DotHttpErrorManagerService
-} from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+} from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
 class MockDotContentletService {

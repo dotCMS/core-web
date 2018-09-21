@@ -1,11 +1,11 @@
 import { DotIframeEventsHandler } from './iframe-events-handler.service';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DotLoadingIndicatorService } from '../../dot-loading-indicator/dot-loading-indicator.service';
-import { DotRouterService } from '../../../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { DotContentletEditorService } from '../../../../dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotUiColorsService } from '../../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 
 describe('DotIframeEventsHandler', () => {
     let service: DotIframeEventsHandler;

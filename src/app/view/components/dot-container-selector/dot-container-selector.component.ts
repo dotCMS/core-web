@@ -1,8 +1,8 @@
-import { DotContainer } from '../../../shared/models/container/dot-container.model';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { PaginatorService } from '../../../api/services/paginator/paginator.service';
+import { DotContainer } from '@models/container/dot-container.model';
+import { DotMessageService } from '@services/dot-messages-service';
+import { PaginatorService } from '@services/paginator/paginator.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { DotContainerColumnBox } from '../../../portlets/dot-edit-page/shared/models/dot-container-column-box.model';
+import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models/dot-container-column-box.model';
 
 @Component({
     selector: 'dot-container-selector',

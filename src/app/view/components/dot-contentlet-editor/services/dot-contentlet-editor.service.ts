@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject ,  Observable ,  of } from 'rxjs';
 import { mergeMap, map, filter } from 'rxjs/operators';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 
 interface DotAddEditEvents {
     load?: ($event: any) => void;

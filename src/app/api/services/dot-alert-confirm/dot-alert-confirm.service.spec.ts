@@ -1,5 +1,5 @@
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
-import { DotAlertConfirm } from '../../../shared/models/dot-alert-confirm/dot-alert-confirm.model';
+import { DotAlertConfirm } from '@models/dot-alert-confirm/dot-alert-confirm.model';
 import { ConfirmationService } from 'primeng/primeng';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotAlertConfirmService } from './dot-alert-confirm.service';

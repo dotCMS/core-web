@@ -6,10 +6,10 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FieldValidationMessageModule } from '../field-validation-message/file-validation-message.module';
 import { DotAddToBundleComponent } from './dot-add-to-bundle.component';
-import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
+import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
 
 class AddToBundleServiceMock {
     getBundles(): Observable<any> {

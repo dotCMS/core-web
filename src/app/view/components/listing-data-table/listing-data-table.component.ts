@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { DataTable, LazyLoadEvent } from 'primeng/primeng';
-import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
+import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 import { BaseComponent } from '../_common/_base/base-component';
-import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
+import { DataTableColumn } from '@models/data-table/data-table-column';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-import { FormatDateService } from '../../../api/services/format-date-service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
-import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
+import { FormatDateService } from '@services/format-date-service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { PaginatorService, OrderDirection } from '@services/paginator';
+import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
 
 @Component({
     providers: [PaginatorService],

@@ -4,11 +4,11 @@ import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
 import { DotPersonasServiceMock } from '../../../test/dot-personas-service.mock';
 import { By } from '@angular/platform-browser';
-import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
+import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { Dropdown } from 'primeng/primeng';
 
 describe('DotPersonaSelectorComponent', () => {

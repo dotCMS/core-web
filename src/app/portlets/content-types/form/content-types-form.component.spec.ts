@@ -14,22 +14,22 @@ import { SiteService } from 'dotcms-js/dotcms-js';
 
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { FieldValidationMessageModule } from '../../../view/components/_common/field-validation-message/file-validation-message.module';
+import { FieldValidationMessageModule } from '@components/_common/field-validation-message/file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
-import { SiteSelectorFieldModule } from '../../../view/components/_common/site-selector-field/site-selector-field.module';
+import { ContentTypesInfoService } from '@services/content-types-info';
+import { SiteSelectorFieldModule } from '@components/_common/site-selector-field/site-selector-field.module';
 import { SiteServiceMock } from '../../../test/site-service.mock';
-import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 // tslint:disable-next-line:max-line-length
-import { DotWorkflowsSelectorFieldModule } from '../../../view/components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
+import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
 import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
-import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
-import { DotPageSelectorModule } from '../../../view/components/_common/dot-page-selector/dot-page-selector.module';
-import { DotDirectivesModule } from '../../../shared/dot-directives.module';
-import { DotIconModule } from '../../../view/components/_common/dot-icon/dot-icon.module';
-import { DotIconButtonModule } from '../../../view/components/_common/dot-icon-button/dot-icon-button.module';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot-page-selector.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 
 @Injectable()
 class MockDotLicenseService {

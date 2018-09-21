@@ -3,10 +3,10 @@ import {of as observableOf,  Observable } from 'rxjs';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
-import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'primeng/primeng';
@@ -16,7 +16,7 @@ import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
 import { mockUser } from './../../../../test/login-service.mock';
 import { Injectable, Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 
 @Injectable()
 class MockDotContentletEditorService {

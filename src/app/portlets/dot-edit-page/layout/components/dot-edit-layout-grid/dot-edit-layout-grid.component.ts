@@ -1,7 +1,7 @@
 import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotLayoutGridBox } from '../../../shared/models/dot-layout-grid-box.model';
 import {
     DOT_LAYOUT_GRID_MAX_COLUMNS,
@@ -11,7 +11,7 @@ import {
 import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { NgGrid, NgGridConfig, NgGridItemConfig } from 'dot-layout-grid';
 
 /**

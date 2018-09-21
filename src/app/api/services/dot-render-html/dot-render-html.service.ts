@@ -4,12 +4,12 @@ import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotRenderedPage } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
-import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotLanguage } from '../../../shared/models/dot-language/dot-language.model';
-import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotRenderedPage } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotLanguage } from '@models/dot-language/dot-language.model';
+import { DotPersona } from '@models/dot-persona/dot-persona.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 
 /**
  * Provide util methods to get a edit page html

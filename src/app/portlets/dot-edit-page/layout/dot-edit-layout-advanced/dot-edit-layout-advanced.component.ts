@@ -3,9 +3,9 @@ import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
 
 import {map} from 'rxjs/operators';
 import { Component, OnInit, Input, NgZone } from '@angular/core';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMenuService } from '@services/dot-menu.service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 

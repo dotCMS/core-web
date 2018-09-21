@@ -1,9 +1,9 @@
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, Input, SimpleChanges, ViewEncapsulation, OnChanges } from '@angular/core';
 
 import { BaseComponent } from '../../_common/_base/base-component';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { ActionHeaderOptions, ButtonAction } from '../../../../shared/models/action-header';
+import { DotMessageService } from '@services/dot-messages-service';
+import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 
 @Component({
     encapsulation: ViewEncapsulation.None,

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DotEditLayoutGridComponent } from '../../../components/dot-edit-layout-grid/dot-edit-layout-grid.component';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     selector: 'dot-layout-designer',

@@ -3,14 +3,14 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DotDeviceSelectorComponent } from './dot-device-selector.component';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
+import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
 import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { By } from '@angular/platform-browser';
 import { mockDotDevices } from '../../../test/dot-device.mock';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 import { Dropdown } from 'primeng/primeng';
 
 describe('DotDeviceSelectorComponent', () => {

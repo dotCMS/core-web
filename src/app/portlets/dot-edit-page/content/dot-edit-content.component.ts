@@ -8,27 +8,27 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SiteService, ResponseView } from 'dotcms-js/dotcms-js';
 
-import { DotAlertConfirmService } from '../../../api/services/dot-alert-confirm';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
-import { DotEditPageService } from '../../../api/services/dot-edit-page/dot-edit-page.service';
-import { DotEditPageViewAs } from '../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotGlobalMessageService } from '../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
+import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import {
     DotHttpErrorManagerService,
     DotHttpErrorHandled
-} from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotLoadingIndicatorService } from '../../../view/components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+} from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageContainer } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
 import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { PageMode } from '../shared/models/page-mode.enum';
 import { DotRenderedPage } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
-import { DotContentletEditorService } from '../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotUiColorsService } from '../../../api/services/dot-ui-colors/dot-ui-colors.service';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
 
 /**
@@ -353,7 +353,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     this.route.queryParams.pipe(
                         pluck('url'),
                         concatMap((url: string) => this.dotPageStateService.get(url)),
-                        takeUntil(this.destroy$),)
+                        takeUntil(this.destroy$), )
                         .subscribe((pageState: DotRenderedPageState) => {
                             this.setPageState(pageState);
                         });

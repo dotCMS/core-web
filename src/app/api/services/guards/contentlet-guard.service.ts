@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DotContentletService } from '../dot-contentlet/dot-contentlet.service';
-import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
 /**
  * Route Guard that checks if a User have access to the specified Content Type.

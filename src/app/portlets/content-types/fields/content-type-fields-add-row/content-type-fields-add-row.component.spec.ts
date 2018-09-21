@@ -1,5 +1,5 @@
 import { ContentTypeFieldsAddRowComponent } from './content-type-fields-add-row.component';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'primeng/primeng';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
@@ -9,8 +9,8 @@ import { By } from '@angular/platform-browser';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotIconButtonModule } from '../../../../view/components/_common/dot-icon-button/dot-icon-button.module';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 describe('ContentTypeFieldsAddRowComponent', () => {
     let comp: ContentTypeFieldsAddRowComponent;

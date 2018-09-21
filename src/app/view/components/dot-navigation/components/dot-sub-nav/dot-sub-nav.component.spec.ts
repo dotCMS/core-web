@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DotSubNavComponent } from './dot-sub-nav.component';
 import { dotMenuMock } from '../../services/dot-navigation.service.spec';
-import { DotMenu } from '../../../../../shared/models/navigation';
+import { DotMenu } from '@models/navigation';
 
 const data: DotMenu = {
     ...dotMenuMock(),

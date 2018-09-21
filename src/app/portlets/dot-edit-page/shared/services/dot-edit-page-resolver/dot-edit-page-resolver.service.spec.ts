@@ -1,13 +1,13 @@
 
 import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
 import { mockDotRenderedPage } from './../../../../../test/dot-rendered-page.mock';
-import { DotContentletLockerService } from './../../../../../api/services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { DotRenderHTMLService } from './../../../../../api/services/dot-render-html/dot-render-html.service';
+import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotEditPageResolver } from './dot-edit-page-resolver.service';
-import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotPageStateService } from '../../../content/services/dot-page-state/dot-page-state.service';
-import { DotRouterService } from './../../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock, mockUser } from './../../../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';

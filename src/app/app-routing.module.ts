@@ -1,15 +1,15 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { MainCoreLegacyComponent } from './view/components/main-core-legacy/main-core-legacy-component';
-import { MainComponentLegacyComponent } from './view/components/main-legacy/main-legacy.component';
-import { LoginPageComponent } from './view/components/login/login-page-component';
-import { LogOutContainerComponent } from './view/components/login/login-component/log-out-container';
-import { IframePortletLegacyComponent } from './view/components/_common/iframe/iframe-porlet-legacy/index';
-import { AuthGuardService } from './api/services/guards/auth-guard.service';
-import { ContentletGuardService } from './api/services/guards/contentlet-guard.service';
-import { MenuGuardService } from './api/services/guards/menu-guard.service';
-import { PublicAuthGuardService } from './api/services/guards/public-auth-guard.service';
-import { DefaultGuardService } from './api/services/guards/default-guard.service';
+import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
+import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
+import { LoginPageComponent } from '@components/login/login-page-component';
+import { LogOutContainerComponent } from '@components/login/login-component/log-out-container';
+import { IframePortletLegacyComponent } from '@components/_common/iframe/iframe-porlet-legacy/index';
+import { AuthGuardService } from '@services/guards/auth-guard.service';
+import { ContentletGuardService } from '@services/guards/contentlet-guard.service';
+import { DefaultGuardService } from '@services/guards/default-guard.service';
+import { MenuGuardService } from '@services/guards/menu-guard.service';
+import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
 
 const AUTH_MODULES: Routes = [
     {

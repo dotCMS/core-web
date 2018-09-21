@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 @Component({
     selector: 'dot-contentlet-wrapper',

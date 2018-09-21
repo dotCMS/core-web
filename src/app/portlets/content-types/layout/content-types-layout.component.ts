@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { BaseComponent } from '@components/_common/_base/base-component';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
 
 @Component({

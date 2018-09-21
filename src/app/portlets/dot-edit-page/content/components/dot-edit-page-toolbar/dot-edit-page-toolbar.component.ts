@@ -1,9 +1,9 @@
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { SelectItem, InputSwitch } from 'primeng/primeng';
 import * as _ from 'lodash';
-import { DotEditPageState } from '../../../../../shared/models/dot-edit-page-state/dot-edit-page-state.model';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotEditPageState } from '@models/dot-edit-page-state/dot-edit-page-state.model';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';

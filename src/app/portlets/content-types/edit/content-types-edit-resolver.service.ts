@@ -1,13 +1,13 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService, DotHttpErrorHandled } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { CrudService } from '../../../api/services/crud';
+import { CrudService } from '@services/crud';
+import { ContentTypesInfoService } from '@services/content-types-info';
 import { ContentType } from '../shared/content-type.model';
-import { ContentTypesInfoService } from '../../../api/services/content-types-info';
 import { LoginService, ResponseView } from 'dotcms-js/dotcms-js';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { take, map, catchError } from 'rxjs/operators';
 
 /**

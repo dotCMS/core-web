@@ -5,11 +5,11 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
-import { DotMenu } from '../../../../shared/models/navigation';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotMenu } from '@models/navigation';
+import { DotMenuService } from '@services/dot-menu.service';
 import { DotNavigationService } from './dot-navigation.service';
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { DotcmsEventsService, LoginService, Auth } from 'dotcms-js/dotcms-js';
 

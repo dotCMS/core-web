@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { SelectItem } from 'primeng/primeng';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
 @Component({
     encapsulation: ViewEncapsulation.None,

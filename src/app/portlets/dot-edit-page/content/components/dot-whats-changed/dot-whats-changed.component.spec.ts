@@ -7,7 +7,7 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotWhatsChangedComponent } from './dot-whats-changed.component';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { IframeComponent } from '../../../../../view/components/_common/iframe/iframe-component';
+import { IframeComponent } from '@components/_common/iframe/iframe-component';
 
 @Component({
     selector: 'dot-test',

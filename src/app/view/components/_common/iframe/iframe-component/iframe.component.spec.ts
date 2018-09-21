@@ -12,7 +12,7 @@ import { IframeComponent } from './iframe.component';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
-import { DotUiColorsService } from '../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 
 describe('IframeComponent', () => {
     let comp: IframeComponent;

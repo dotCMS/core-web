@@ -4,11 +4,11 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import * as _ from 'lodash';
 import { SelectItem } from 'primeng/primeng';
 
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
-import { DotWorkflow } from '../../../shared/models/dot-workflow/dot-workflow.model';
-import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
-import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { SiteSelectorComponent } from '@components/_common/site-selector/site-selector.component';
+import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 // TODO: move this to models
 import { ContentTypeField } from '../fields';

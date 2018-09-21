@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PortletNav } from '../../../shared/models/navigation';
+import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
 
 @Injectable()

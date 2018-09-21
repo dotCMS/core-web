@@ -12,11 +12,11 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContentletEditorService } from '../../services/dot-contentlet-editor.service';
 import { DotContentletWrapperComponent } from './dot-contentlet-wrapper.component';
 import { DotIframeDialogModule } from '../../../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMenuService } from '@services/dot-menu.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 const messageServiceMock = new MockDotMessageService({
     'editcontentlet.lose.dialog.header': 'Header',

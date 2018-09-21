@@ -1,8 +1,8 @@
 import { BaseComponent } from '../_common/_base/base-component';
-import { AccountService, AccountUser } from '../../../api/services/account-service';
+import { AccountService, AccountUser } from '@services/account-service';
 import { Component, EventEmitter, Output, ViewEncapsulation, Input } from '@angular/core';
 import { LoginService, User, Auth } from 'dotcms-js/dotcms-js';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { StringFormat } from '../../../api/util/stringFormat';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 

@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, SimpleChanges, ViewChild, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { BaseComponent } from '../../../../view/components/_common/_base/base-component';
+import { DotMessageService } from '@services/dot-messages-service';
+import { BaseComponent } from '@components/_common/_base/base-component';
 import { ContentTypeField } from '../shared';
 import { FieldPropertyService } from '../service/';
 

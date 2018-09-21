@@ -16,7 +16,7 @@ import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading
 import { IframeOverlayService } from '../service/iframe-overlay.service';
 import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
 import { Subject } from 'rxjs';
-import { DotUiColorsService } from '../../../../../api/services/dot-ui-colors/dot-ui-colors.service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 
 @Component({
     selector: 'dot-iframe',

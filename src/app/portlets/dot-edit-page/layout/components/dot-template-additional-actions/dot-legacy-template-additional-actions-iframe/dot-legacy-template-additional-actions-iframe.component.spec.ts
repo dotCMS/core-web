@@ -2,7 +2,7 @@
 import {of as observableOf,  Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
-import { DotMenuService } from '../../../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input } from '@angular/core';
 import { DotLegacyTemplateAdditionalActionsComponent } from './dot-legacy-template-additional-actions-iframe.component';

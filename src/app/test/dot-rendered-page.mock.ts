@@ -1,9 +1,9 @@
 import { DotTemplate } from './../portlets/dot-edit-page/shared/models/dot-template.model';
 import { DotPage } from './../portlets/dot-edit-page/shared/models/dot-page.model';
-import { DotRenderedPage } from '../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotLayout } from '../portlets/dot-edit-page/shared/models/dot-layout.model';
+import { DotRenderedPage } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotLayout } from '@portlets/dot-edit-page/shared/models/dot-layout.model';
 import { mockDotLanguage } from './dot-language.mock';
-import { PageMode } from '../portlets/dot-edit-page/shared/models/page-mode.enum';
+import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 
 export const mockDotPage: DotPage = {
     canEdit: true,

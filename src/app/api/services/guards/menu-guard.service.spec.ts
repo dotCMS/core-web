@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotMenuService } from '../dot-menu.service';
 import { DotRouterService } from '../dot-router/dot-router.service';
-import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { MenuGuardService } from './menu-guard.service';

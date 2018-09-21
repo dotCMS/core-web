@@ -8,16 +8,16 @@ import { LoginAsComponent } from './login-as';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SEARCHABLE_NGFACES_MODULES, SearchableDropDownModule } from '../_common/searchable-dropdown/searchable-dropdown.module';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
-import { PaginatorService } from '../../../api/services/paginator';
+import { PaginatorService } from '@services/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { InputTextModule } from 'primeng/primeng';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
-import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Injectable()
 class MockDotNavigationService {

@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { DotEditPageViewAs } from '../../../../../shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
-import { DotPersona } from '../../../../../shared/models/dot-persona/dot-persona.model';
-import { DotLanguage } from '../../../../../shared/models/dot-language/dot-language.model';
-import { DotDevice } from '../../../../../shared/models/dot-device/dot-device.model';
+import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotPersona } from '@models/dot-persona/dot-persona.model';
+import { DotLanguage } from '@models/dot-language/dot-language.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',

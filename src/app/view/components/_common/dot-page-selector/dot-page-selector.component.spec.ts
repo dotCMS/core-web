@@ -9,7 +9,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AutoComplete } from 'primeng/primeng';
-import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 
 export const mockPageSelector = [
     {
