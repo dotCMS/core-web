@@ -112,6 +112,9 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
         } else {
             this.valueString = value ? value[this.labelPropertyName] : this.placeholder;
         }
+        setTimeout(() => {
+            this.propagateValue(value);
+        }, 0);
     }
 
     /**
@@ -170,11 +173,15 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
             } else {
                 this.valueString = item[this.labelPropertyName];
             }
-            this.propagateChange(!this.valuePropertyName ? item : item[this.valuePropertyName]);
+            this.propagateValue(item);
             this.change.emit(Object.assign({}, this.value));
         }
 
         this.searchPanelRef.hide();
+    }
+
+    private propagateValue(value: any): void {
+        this.propagateChange(!this.valuePropertyName ? value : value[this.valuePropertyName]);
     }
 }
 

@@ -5,7 +5,6 @@ import { FieldProperty } from '../field-properties.model';
 import { PaginatorService } from '../../../../../../api/services/paginator';
 import { FormGroup } from '@angular/forms';
 import { Category } from '../../../shared';
-import * as _ from 'lodash';
 
 /**
  * List all the categories and allow select one.
@@ -24,7 +23,6 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
     categoriesCurrentPage: Category[];
     property: FieldProperty;
     group: FormGroup;
-    groupLocalCopy: FormGroup;
     placeholder: string;
 
     constructor(public dotMessageService: DotMessageService, private paginationService: PaginatorService) {
@@ -36,8 +34,6 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
             ? this.dotMessageService.get('contenttypes.field.properties.category.label')
             : this.property.value;
             this.paginationService.url = 'v1/categories';
-        this.groupLocalCopy = _.cloneDeep(this.group);
-        this.group.controls.categories.setValue(this.property.value.inode);
     }
 
     /**
@@ -56,15 +52,6 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
      */
     handlePageChange(event): void {
         this.getCategoriesList(event.filter, event.first);
-    }
-
-    /**
-     * Propagate the inode value to the parent form
-     * @param {Category} categoryOptionSelected
-     * @memberof CategoriesPropertyComponent
-     */
-    categoryChanged(categoryOptionSelected: Category): void {
-        this.group.controls.categories.setValue(categoryOptionSelected.inode);
     }
 
     private getCategoriesList(filter = '', offset = 0): void {

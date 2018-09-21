@@ -1,8 +1,7 @@
-<div [formGroup]="groupLocalCopy">
+<div [formGroup]="group">
     <label class="form__label">{{ i18nMessages['categories'] }}</label>
     <dot-searchable-dropdown #searchableDropdown 
         [data]="categoriesCurrentPage"
-        (change)="categoryChanged($event)"
         [formControlName]="property.name"
         [pageLinkSize]="paginationService.maxLinksPage"
         [rows]="paginationService.paginationPerPage"
@@ -15,7 +14,7 @@
     </dot-searchable-dropdown>*
 
     <dot-field-validation-message 
-        [field]="groupLocalCopy.controls[property.name]"
+        [field]="group.controls[property.name]"
         [message]="i18nMessages['contenttypes.field.properties.category.error.required']">
     </dot-field-validation-message>
 </div>
