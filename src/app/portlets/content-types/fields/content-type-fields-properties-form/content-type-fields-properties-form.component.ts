@@ -81,8 +81,7 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
      */
     saveFieldProperties(): void {
         if (this.form.valid) {
-            this.formatFormData();
-            this.saveField.emit(this.form.value);
+            this.saveField.emit(this.formatFormData());
         } else {
             this.fieldProperties.forEach(property => this.form.get(property).markAsTouched());
         }
@@ -98,18 +97,19 @@ export class ContentTypeFieldsPropertiesFormComponent extends BaseComponent impl
         });
     }
 
-    private formatFormData(): void {
+    private formatFormData(): any {
+        const formCopy = Object.assign({}, this.form.value);
         const mapOfFieldsValues = {
             'categories': 'inode'
         };
 
         for (const [key, value] of Object.entries(mapOfFieldsValues)) {
             if (this.form.value[key] && this.form.value[key][value]) {
-                const formCopy = Object.assign({}, this.form.value);
                 formCopy[key] = this.form.value[key][value];
-                this.form.setValue(formCopy);
             }
         }
+
+        return formCopy;
     }
 
     private initFormGroup(properties?: string[]): void {
