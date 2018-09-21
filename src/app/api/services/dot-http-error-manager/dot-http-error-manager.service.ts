@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-messages-service';
 import { Injectable } from '@angular/core';
@@ -7,7 +7,7 @@ import { ResponseView, LoginService, HttpCode } from 'dotcms-js/dotcms-js';
 
 import { DotAlertConfirmService } from '../dot-alert-confirm';
 import { Response } from '@angular/http';
-import { take, switchMap, map } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 export interface DotHttpErrorHandled {
     redirected: boolean;

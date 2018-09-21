@@ -7,8 +7,6 @@ import { StructureTypeView, ContentTypeView } from '@models/contentlet';
 
 @Injectable()
 export class DotContentletService {
-    private MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
-
     constructor(private coreWebService: CoreWebService) {}
 
     /**

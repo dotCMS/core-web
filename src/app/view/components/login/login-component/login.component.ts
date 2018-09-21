@@ -50,7 +50,6 @@ export class LoginComponent implements AfterViewInit {
     serverLabel = '';
     userIdOrEmailLabel = '';
 
-    private cancelButton = '';
     private emailAddressLabel = '';
     private mandatoryFieldError = '';
     private resetEmailMessage = '';
@@ -84,7 +83,7 @@ export class LoginComponent implements AfterViewInit {
     /**
      *  Executes the logIn service
      */
-    logInUser($event: any): void {
+    logInUser(_$event: any): void {
         const isSetUserId = this.myAccountLogin !== undefined && this.myAccountLogin.length > 0;
         const isSetPassword = this.password !== undefined && this.password.length > 0;
         this.message = '';
@@ -148,7 +147,6 @@ export class LoginComponent implements AfterViewInit {
                 this.rememberMeLabel = dataI18n['remember-me'];
                 this.loginButton = dataI18n['sign-in'].toUpperCase();
                 this.forgotPasswordButton = dataI18n['get-new-password'];
-                this.cancelButton = dataI18n.cancel;
                 this.serverLabel = dataI18n.Server;
                 this.mandatoryFieldError = dataI18n['error.form.mandatory'];
                 this.communityLicenseInfoMessage = dataI18n['angular.login.component.community.licence.message'];

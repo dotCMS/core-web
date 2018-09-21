@@ -20,7 +20,6 @@ import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
-import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 
 export enum DotContentletAction {
@@ -558,7 +557,7 @@ export class DotEditContentHtmlService {
             relocate: (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
             },
-            'deleted-contenlet': (contentletEvent: any) => {
+            'deleted-contenlet': () => {
                 this.removeCurrentContentlet();
             }
         };

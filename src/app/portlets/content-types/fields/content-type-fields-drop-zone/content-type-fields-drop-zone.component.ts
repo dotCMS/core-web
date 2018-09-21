@@ -56,7 +56,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     ngOnInit(): void {
-        this.fieldDragDropService.fieldDropFromSource$.subscribe((a) => {
+        this.fieldDragDropService.fieldDropFromSource$.subscribe(() => {
             this.setDroppedField();
             this.toggleDialog();
         });
@@ -260,7 +260,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-        this.fieldRows.forEach((fieldRow, index) => {
+        this.fieldRows.forEach((fieldRow) => {
             fields.push(fieldRow.lineDivider);
 
             fieldRow.columns.forEach((fieldColumn) => {

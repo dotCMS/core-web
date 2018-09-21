@@ -1,4 +1,4 @@
-import { fromEvent as observableFromEvent, Observable } from 'rxjs';
+import { fromEvent as observableFromEvent } from 'rxjs';
 
 import { take, skip } from 'rxjs/operators';
 import { Component, Input } from '@angular/core';

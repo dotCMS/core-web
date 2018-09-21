@@ -29,7 +29,6 @@ export class ResetPasswordComponent implements OnInit {
 
     private language = '';
     // Message
-    private resetPasswordSuccessMessage = '';
     private resetPasswordConfirmationDoNotMessage = '';
     private mandatoryFieldError = '';
     private i18nMessages: Array<string> = [
@@ -57,7 +56,6 @@ export class ResetPasswordComponent implements OnInit {
                 this.passwordMandatoryFieldError = this.mandatoryFieldError.replace('{0}', this.enterPasswordLabel);
                 this.confirmPasswordMandatoryFieldError = this.mandatoryFieldError.replace('{0}', this.confirmPasswordLabel);
                 this.resetPasswordConfirmationDoNotMessage = dataI18n['reset-password-confirmation-do-not-match'];
-                this.resetPasswordSuccessMessage = dataI18n['reset-password-success'];
             },
             (error) => {
                 this.loggerService.error(error);

@@ -123,7 +123,7 @@ export class FieldDragDropService {
         }
     }
 
-    private shouldCopy(el: HTMLElement, source: HTMLElement): boolean {
+    private shouldCopy(_el: HTMLElement, source: HTMLElement): boolean {
         return source.dataset.dragType === 'source';
     }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PaginatorService, OrderDirection } from '@services/paginator';
-import { Observable } from 'rxjs';
+import { PaginatorService } from '@services/paginator';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LazyLoadEvent } from 'primeng/primeng';
