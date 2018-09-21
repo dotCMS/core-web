@@ -40,7 +40,7 @@ describe('DotEditPageInfoComponent', () => {
                     provide: DotMessageService,
                     useValue: messageServiceMock
                 },
-                { provide: SiteService, useClass: SiteServiceMock },
+                { provide: SiteService, useClass: SiteServiceMock }
             ]
         }).compileComponents();
     }));

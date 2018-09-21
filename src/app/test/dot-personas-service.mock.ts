@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { mockDotPersona } from './dot-persona.mock';
 

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotThemeSelectorComponent } from './dot-theme-selector.component';
 import { DebugElement } from '@angular/core';
@@ -178,15 +177,18 @@ describe('DotThemeSelectorComponent', () => {
             expect(component.applyDialogAction.disabled).toBe(false);
         });
 
-        it('should call theme enpoint on search', fakeAsync(() => {
-            spyOn(component, 'paginate');
-            fixture.detectChanges();
-            component.searchInput.nativeElement.value = 'test';
-            component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
-            tick(550);
+        it(
+            'should call theme enpoint on search',
+            fakeAsync(() => {
+                spyOn(component, 'paginate');
+                fixture.detectChanges();
+                component.searchInput.nativeElement.value = 'test';
+                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+                tick(550);
 
-            expect(paginatorService.extraParams.get('searchParam')).toBe('test');
-            expect(component.paginate).toHaveBeenCalled();
-        }));
+                expect(paginatorService.extraParams.get('searchParam')).toBe('test');
+                expect(component.paginate).toHaveBeenCalled();
+            })
+        );
     });
 });

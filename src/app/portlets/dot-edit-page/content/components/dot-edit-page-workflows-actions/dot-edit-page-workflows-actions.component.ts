@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { Component, Input, OnChanges, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 import { DotWorkflowAction } from '@models/dot-workflow-action/dot-workflow-action.model';
@@ -17,9 +16,11 @@ import { tap, map, mergeMap, catchError, pluck } from 'rxjs/operators';
     styleUrls: ['./dot-edit-page-workflows-actions.component.scss']
 })
 export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
-    @Input() page: DotPage;
+    @Input()
+    page: DotPage;
 
-    @Output() fired: EventEmitter<any> = new EventEmitter();
+    @Output()
+    fired: EventEmitter<any> = new EventEmitter();
 
     actionsAvailable: boolean;
     actions: Observable<MenuItem[]>;
@@ -42,16 +43,14 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
     }
 
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
-        return this.workflowsService
-            .getContentWorkflowActions(inode)
-            .pipe(
-                tap((workflows: DotWorkflowAction[]) => {
-                    this.actionsAvailable = !!workflows.length;
-                }),
-                map((newWorkflows: DotWorkflowAction[]) => {
-                    return newWorkflows.length !== 0 ? this.getWorkflowOptions(newWorkflows) : [];
-                })
-            );
+        return this.workflowsService.getContentWorkflowActions(inode).pipe(
+            tap((workflows: DotWorkflowAction[]) => {
+                this.actionsAvailable = !!workflows.length;
+            }),
+            map((newWorkflows: DotWorkflowAction[]) => {
+                return newWorkflows.length !== 0 ? this.getWorkflowOptions(newWorkflows) : [];
+            })
+        );
     }
 
     private getWorkflowOptions(workflows: DotWorkflowAction[]): MenuItem[] {
@@ -60,28 +59,25 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
                 label: workflow.name,
                 command: () => {
                     const currentMenuActions = this.actions;
-                    this.actions = this.workflowsService
-                        .fireWorkflowAction(this.page.workingInode, workflow.id)
-                        .pipe(
-                            pluck('inode'),
-                            tap(() => {
-                                this.dotGlobalMessageService.display(
-                                    this.dotMessageService.get('editpage.actions.fire.confirmation', workflow.name)
-                                );
-                            }),
-                            // TODO: A better implementation needs to be done to handle workflow actions errors, which are edge cases
-                            catchError(() => observableOf(null)),
-                            mergeMap((inode: string) => {
-                                const newInode = inode || this.page.workingInode;
-                                this.fired.emit();
-                                return this.getWorkflowActions(newInode);
-                            }),
-                            catchError((error) => {
-                                this.httpErrorManagerService.handle(error);
-                                return currentMenuActions;
-                            })
-                        );
-
+                    this.actions = this.workflowsService.fireWorkflowAction(this.page.workingInode, workflow.id).pipe(
+                        pluck('inode'),
+                        tap(() => {
+                            this.dotGlobalMessageService.display(
+                                this.dotMessageService.get('editpage.actions.fire.confirmation', workflow.name)
+                            );
+                        }),
+                        // TODO: A better implementation needs to be done to handle workflow actions errors, which are edge cases
+                        catchError(() => observableOf(null)),
+                        mergeMap((inode: string) => {
+                            const newInode = inode || this.page.workingInode;
+                            this.fired.emit();
+                            return this.getWorkflowActions(newInode);
+                        }),
+                        catchError((error) => {
+                            this.httpErrorManagerService.handle(error);
+                            return currentMenuActions;
+                        })
+                    );
                 }
             };
         });

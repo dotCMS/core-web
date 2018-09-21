@@ -9,9 +9,12 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./dot-language-selector.component.scss']
 })
 export class DotLanguageSelectorComponent implements OnInit {
-    @Input() value: DotLanguage;
-    @Input() contentInode: string;
-    @Output() selected = new EventEmitter<DotLanguage>();
+    @Input()
+    value: DotLanguage;
+    @Input()
+    contentInode: string;
+    @Output()
+    selected = new EventEmitter<DotLanguage>();
 
     languagesOptions: DotLanguage[];
 

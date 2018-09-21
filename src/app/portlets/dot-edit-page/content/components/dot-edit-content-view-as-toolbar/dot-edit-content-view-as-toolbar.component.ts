@@ -9,19 +9,20 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
-
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
     templateUrl: './dot-edit-content-view-as-toolbar.component.html',
     styleUrls: ['./dot-edit-content-view-as-toolbar.component.scss']
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
-    @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output() whatschange = new EventEmitter<boolean>();
+    @Output()
+    changeViewAs = new EventEmitter<DotEditPageViewAs>();
+    @Output()
+    whatschange = new EventEmitter<boolean>();
 
     isEnterpriseLicense$: Observable<boolean>;
     isPreview: boolean;
-    messages: {[key: string]: string} = {};
+    messages: { [key: string]: string } = {};
 
     private value: DotEditPageViewAs;
     private _pageState: DotRenderedPageState;
@@ -32,7 +33,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
         this.dotMessageService
             .getMessages(['dot.common.whats.changed', 'editpage.viewas.previewing'])
-            .subscribe((messages: {[key: string]: string}) => {
+            .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
     }

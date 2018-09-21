@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
@@ -8,7 +7,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class DotEditPageService {
-
     constructor(private coreWebService: CoreWebService) {}
 
     /**
@@ -25,7 +23,7 @@ export class DotEditPageService {
                 method: RequestMethod.Post,
                 body: content,
                 url: `v1/page/${pageId}/content`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 }

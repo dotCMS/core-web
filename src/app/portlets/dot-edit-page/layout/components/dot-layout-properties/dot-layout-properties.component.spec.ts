@@ -41,13 +41,7 @@ describe('DotLayoutPropertiesComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotLayoutPropertiesComponent, TestHostComponent],
-            imports: [
-                DotLayoutPropertiesItemModule,
-                DotLayoutSidebarModule,
-                OverlayPanelModule,
-                ButtonModule,
-                ReactiveFormsModule
-            ],
+            imports: [DotLayoutPropertiesItemModule, DotLayoutSidebarModule, OverlayPanelModule, ButtonModule, ReactiveFormsModule],
             providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
         });
 

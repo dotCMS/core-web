@@ -19,15 +19,16 @@ import { SiteService } from '../../../../../../node_modules/dotcms-js/dotcms-js'
     styleUrls: ['./dot-edit-page-info.component.scss']
 })
 export class DotEditPageInfoComponent implements OnInit {
-    @Input() pageState: DotRenderedPageState;
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @Input()
+    pageState: DotRenderedPageState;
+    @ViewChild('lockedPageMessage')
+    lockedPageMessage: ElementRef;
 
     constructor(
         private dotClipboardUtil: DotClipboardUtil,
         private dotGlobalMessageService: DotGlobalMessageService,
         private siteService: SiteService,
-        public dotMessageService: DotMessageService,
-
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -73,12 +74,6 @@ export class DotEditPageInfoComponent implements OnInit {
     }
 
     private getFullUrl(url: string): string {
-        return [
-            location.protocol,
-            '//',
-            this.siteService.currentSite['name'],
-            (location.port ? `:${location.port}` : ''),
-            url
-        ].join('');
+        return [location.protocol, '//', this.siteService.currentSite['name'], location.port ? `:${location.port}` : '', url].join('');
     }
 }

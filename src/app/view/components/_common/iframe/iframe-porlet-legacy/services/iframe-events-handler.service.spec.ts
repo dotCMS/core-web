@@ -104,7 +104,7 @@ describe('DotIframeEventsHandler', () => {
 
     it('should set colors in the ui', () => {
         spyOn(dotUiColorsService, 'setColors');
-        const fakeHtmlEl = {hello: 'html'};
+        const fakeHtmlEl = { hello: 'html' };
         spyOn(document, 'querySelector').and.returnValue(fakeHtmlEl);
 
         service.handle(
@@ -115,7 +115,7 @@ describe('DotIframeEventsHandler', () => {
                         colors: {
                             primary: '#fff',
                             secondary: '#000',
-                            background: '#ccc',
+                            background: '#ccc'
                         }
                     }
                 }
@@ -124,7 +124,7 @@ describe('DotIframeEventsHandler', () => {
         expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl, {
             primary: '#fff',
             secondary: '#000',
-            background: '#ccc',
+            background: '#ccc'
         });
     });
 });

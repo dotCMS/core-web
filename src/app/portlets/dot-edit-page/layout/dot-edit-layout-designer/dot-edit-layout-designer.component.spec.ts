@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -38,7 +37,8 @@ import { SiteServiceMock } from '../../../../test/site-service.mock';
     template: ''
 })
 class MockAdditionalOptionsComponent {
-    @Input() inode: '';
+    @Input()
+    inode: '';
 }
 
 @Component({
@@ -46,7 +46,8 @@ class MockAdditionalOptionsComponent {
     template: ''
 })
 class MockDotLayoutPropertiesComponent {
-    @Input() group: FormGroup;
+    @Input()
+    group: FormGroup;
 }
 
 @Component({
@@ -54,7 +55,8 @@ class MockDotLayoutPropertiesComponent {
     template: ''
 })
 class MockDotLayoutDesignerComponent {
-    @Input() group: FormGroup;
+    @Input()
+    group: FormGroup;
 }
 
 @Component({
@@ -62,8 +64,10 @@ class MockDotLayoutDesignerComponent {
     template: ''
 })
 class MockDotThemeSelectorComponent {
-    @Input() value: DotTheme;
-    @Output() selected = new EventEmitter<DotTheme>();
+    @Input()
+    value: DotTheme;
+    @Output()
+    selected = new EventEmitter<DotTheme>();
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -130,14 +134,11 @@ describe('DotEditLayoutDesignerComponent', () => {
 
     describe('edit layout', () => {
         beforeEach(() => {
-            component.pageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
-                    canCreateTemplate: false
-                }
-            );
+            component.pageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPage,
+                template: { ...mockDotTemplate, theme: '123' },
+                canCreateTemplate: false
+            });
             fixture.detectChanges();
         });
 
@@ -226,14 +227,11 @@ describe('DotEditLayoutDesignerComponent', () => {
 
         describe('can save as template', () => {
             beforeEach(() => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: null,
-                        canCreateTemplate: true
-                    }
-                );
+                component.pageState = new DotRenderedPageState(mockUser, {
+                    ...mockDotRenderedPage,
+                    template: null,
+                    canCreateTemplate: true
+                });
                 component.editTemplate = true;
                 fixture.detectChanges();
             });
@@ -275,14 +273,11 @@ describe('DotEditLayoutDesignerComponent', () => {
         let themeSelector: MockDotThemeSelectorComponent;
         let themeButton;
         beforeEach(() => {
-            component.pageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
-                    canCreateTemplate: false
-                }
-            );
+            component.pageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPage,
+                template: { ...mockDotTemplate, theme: '123' },
+                canCreateTemplate: false
+            });
             component.themeDialogVisibility = true;
         });
 
@@ -449,49 +444,40 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it('when user can\'t edit the template and set layout mode', () => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: {
-                            ...mockDotRenderedPage.template,
-                            canEdit: false
-                        }
+            it("when user can't edit the template and set layout mode", () => {
+                component.pageState = new DotRenderedPageState(mockUser, {
+                    ...mockDotRenderedPage,
+                    template: {
+                        ...mockDotRenderedPage.template,
+                        canEdit: false
                     }
-                );
+                });
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
             });
 
             it('when page have a layout and set layout mode', () => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: {
-                            ...mockDotRenderedPage.template,
-                            anonymous: true
-                        }
+                component.pageState = new DotRenderedPageState(mockUser, {
+                    ...mockDotRenderedPage,
+                    template: {
+                        ...mockDotRenderedPage.template,
+                        anonymous: true
                     }
-                );
+                });
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
             });
 
             it('when editTemplate is false by default', () => {
-                component.pageState = new DotRenderedPageState(
-                    mockUser,
-                    {
-                        ...mockDotRenderedPage,
-                        template: {
-                            ...mockDotRenderedPage.template,
-                            canEdit: true
-                        }
+                component.pageState = new DotRenderedPageState(mockUser, {
+                    ...mockDotRenderedPage,
+                    template: {
+                        ...mockDotRenderedPage.template,
+                        canEdit: true
                     }
-                );
+                });
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();
@@ -502,14 +488,11 @@ describe('DotEditLayoutDesignerComponent', () => {
 
     describe('edit layout No sidebars', () => {
         beforeEach(() => {
-            component.pageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    template: { ...mockDotTemplate, theme: '123' },
-                    canCreateTemplate: false
-                }
-            );
+            component.pageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPage,
+                template: { ...mockDotTemplate, theme: '123' },
+                canCreateTemplate: false
+            });
             component.pageState.layout.sidebar = null;
             fixture.detectChanges();
         });

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ConnectionBackend, ResponseOptions, Response } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
@@ -166,9 +165,7 @@ describe('DotPageStateService', () => {
             const renderedPage = new DotRenderedPageState(mockUser, {
                 ...mockDotRenderedPage
             });
-            spyOn(service, 'get').and.returnValue(
-                observableOf(renderedPage)
-            );
+            spyOn(service, 'get').and.returnValue(observableOf(renderedPage));
             service.reload$.subscribe((page: DotRenderedPageState) => {
                 expect(page).toBe(renderedPage);
             });

@@ -39,9 +39,12 @@ mockFieldRowFieldEmpty.columns = [new FieldColumn([]), new FieldColumn([])];
     template: ''
 })
 class TestContentTypeFieldDraggableItemComponent {
-    @Input() field: ContentTypeField;
-    @Output() remove: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() edit: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Input()
+    field: ContentTypeField;
+    @Output()
+    remove: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    edit: EventEmitter<ContentTypeField> = new EventEmitter();
 }
 
 @Component({
@@ -77,11 +80,7 @@ describe('ContentTypeFieldsRowComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [
-                ContentTypeFieldsRowComponent,
-                TestContentTypeFieldDraggableItemComponent,
-                DotTestHostComponent
-            ],
+            declarations: [ContentTypeFieldsRowComponent, TestContentTypeFieldDraggableItemComponent, DotTestHostComponent],
             imports: [DragulaModule, IconButtonTooltipModule],
             providers: [
                 FieldDragDropService,
@@ -109,7 +108,6 @@ describe('ContentTypeFieldsRowComponent', () => {
         });
 
         it('should has row and columns', () => {
-
             const columns = de.queryAll(By.css('.row-columns__item'));
             expect(2).toEqual(columns.length);
 

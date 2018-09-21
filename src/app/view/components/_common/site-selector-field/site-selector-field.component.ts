@@ -22,9 +22,12 @@ import { Subscription } from 'rxjs';
     ]
 })
 export class SiteSelectorFieldComponent implements ControlValueAccessor {
-    @Input() archive: boolean;
-    @Input() live: boolean;
-    @Input() system: boolean;
+    @Input()
+    archive: boolean;
+    @Input()
+    live: boolean;
+    @Input()
+    system: boolean;
 
     value: string;
 

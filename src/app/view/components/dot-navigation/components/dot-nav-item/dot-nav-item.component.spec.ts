@@ -17,7 +17,6 @@ const data: DotMenu = {
     active: true
 };
 
-
 describe('DotNavItemComponent', () => {
     let component: DotNavItemComponent;
     let fixture: ComponentFixture<DotNavItemComponent>;

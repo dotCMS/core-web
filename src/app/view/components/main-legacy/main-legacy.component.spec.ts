@@ -22,7 +22,8 @@ class MockDotDialogComponent {}
     template: ''
 })
 class MockDotToolbarComponent {
-    @Input() collapsed: boolean;
+    @Input()
+    collapsed: boolean;
 }
 
 @Component({
@@ -30,7 +31,8 @@ class MockDotToolbarComponent {
     template: ''
 })
 class MockDotMainNavComponent {
-    @Input() collapsed: boolean;
+    @Input()
+    collapsed: boolean;
 }
 
 describe('MainComponentLegacyComponent', () => {
@@ -50,12 +52,7 @@ describe('MainComponentLegacyComponent', () => {
                 },
                 DotMenuService
             ],
-            declarations: [
-                MainComponentLegacyComponent,
-                MockDotDialogComponent,
-                MockDotMainNavComponent,
-                MockDotToolbarComponent
-            ]
+            declarations: [MainComponentLegacyComponent, MockDotDialogComponent, MockDotMainNavComponent, MockDotToolbarComponent]
         }).compileComponents();
     }));
 

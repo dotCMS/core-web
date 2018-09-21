@@ -7,7 +7,8 @@ import { DotMessageService } from '@services/dot-messages-service';
     templateUrl: './dot-template-additional-actions-menu.component.html'
 })
 export class DotTemplateAdditionalActionsMenuComponent implements OnInit {
-    @Input() inode: string;
+    @Input()
+    inode: string;
     items: MenuItem[];
 
     constructor(private dotMessageService: DotMessageService) {}

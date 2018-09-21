@@ -27,8 +27,10 @@ import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-pag
     template: ''
 })
 class MockWorkflowActionsComponent {
-    @Input() inode = '';
-    @Input() label = 'Acciones';
+    @Input()
+    inode = '';
+    @Input()
+    label = 'Acciones';
 }
 
 @Component({
@@ -36,7 +38,8 @@ class MockWorkflowActionsComponent {
     template: `<dot-edit-page-toolbar [pageState]="pageState"></dot-edit-page-toolbar>`
 })
 class TestHostComponent {
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
 }
 
 describe('DotEditPageToolbarComponent', () => {
@@ -69,70 +72,65 @@ describe('DotEditPageToolbarComponent', () => {
         'dot.common.cancel': 'Cancel',
         'editpage.toolbar.edit.page': 'Edit',
         'editpage.toolbar.preview.page': 'Preview',
-        'editpage.toolbar.live.page': 'Live',
+        'editpage.toolbar.live.page': 'Live'
     });
 
     let testbed;
 
-    beforeEach(
-        async(() => {
-            testbed = DOTTestBed.configureTestingModule({
-                declarations: [MockWorkflowActionsComponent, TestHostComponent],
-                imports: [
-                    DotEditPageToolbarModule,
-                    DotEditPageWorkflowsActionsModule,
-                    RouterTestingModule.withRoutes([
-                        {
-                            component: DotEditPageToolbarComponent,
-                            path: 'test'
-                        }
-                    ]),
-                    BrowserAnimationsModule
-                ],
-                providers: [
-                    { provide: DotMessageService, useValue: messageServiceMock },
-                    DotGlobalMessageService,
-                    DotEventsService,
+    beforeEach(async(() => {
+        testbed = DOTTestBed.configureTestingModule({
+            declarations: [MockWorkflowActionsComponent, TestHostComponent],
+            imports: [
+                DotEditPageToolbarModule,
+                DotEditPageWorkflowsActionsModule,
+                RouterTestingModule.withRoutes([
                     {
-                        provide: DotWorkflowService,
-                        useClass: DotWorkflowServiceMock
-                    },
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
+                        component: DotEditPageToolbarComponent,
+                        path: 'test'
                     }
-                ]
-            });
-        })
-    );
+                ]),
+                BrowserAnimationsModule
+            ],
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                DotGlobalMessageService,
+                DotEventsService,
+                {
+                    provide: DotWorkflowService,
+                    useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                }
+            ]
+        });
+    }));
 
     beforeEach(() => {
         fixture = testbed.createComponent(TestHostComponent);
         de = fixture.debugElement;
         component = de.query(By.css('dot-edit-page-toolbar')).componentInstance;
-        fixture.componentInstance.pageState = new DotRenderedPageState(
-            mockUser,
-            {
-                page: {
-                    ...mockDotPage,
-                    canEdit: true,
-                    canLock: true,
-                    languageId: 1,
-                    title: '',
-                    pageURI: '',
-                    shortyLive: '',
-                    shortyWorking: '',
-                    workingInode: '',
-                    lockedBy: null,
-                    rendered: '',
-                },
-                layout: mockDotLayout,
-                canCreateTemplate: true,
-                viewAs: {
-                    mode: PageMode[PageMode.EDIT]
-                }
+        fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, {
+            page: {
+                ...mockDotPage,
+                canEdit: true,
+                canLock: true,
+                languageId: 1,
+                title: '',
+                pageURI: '',
+                shortyLive: '',
+                shortyWorking: '',
+                workingInode: '',
+                lockedBy: null,
+                rendered: ''
+            },
+            layout: mockDotLayout,
+            canCreateTemplate: true,
+            viewAs: {
+                mode: PageMode[PageMode.EDIT]
             }
-        );
+        });
 
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
@@ -212,7 +210,7 @@ describe('DotEditPageToolbarComponent', () => {
         expect(component.lockerModel).toBeFalsy();
     });
 
-    it('should have disabled edit button (user can\'t edit)', () => {
+    it("should have disabled edit button (user can't edit)", () => {
         fixture.componentInstance.pageState.page.canEdit = false;
         fixture.detectChanges();
 
@@ -260,17 +258,14 @@ describe('DotEditPageToolbarComponent', () => {
 
     it('should have live button disabled', () => {
         const { liveInode, ...unpublishedPage } = mockDotPage;
-        fixture.componentInstance.pageState = new DotRenderedPageState(
-            mockUser,
-            {
-                page: unpublishedPage,
-                layout: mockDotLayout,
-                canCreateTemplate: true,
-                viewAs: {
-                    mode: PageMode[PageMode.LIVE]
-                }
+        fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, {
+            page: unpublishedPage,
+            layout: mockDotLayout,
+            canCreateTemplate: true,
+            viewAs: {
+                mode: PageMode[PageMode.LIVE]
             }
-        );
+        });
 
         fixture.detectChanges();
 
@@ -392,7 +387,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             expect(component.lockerModel).toBe(false);
             expect(component.mode).toBe(PageMode.LIVE, 'The mode should be the same');
-            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
+            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
         });
 
         it('should call confirmation service on edit attemp when page is locked by another user', () => {
@@ -440,7 +435,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('edit');
 
-            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
+            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
             expect(component.lockerModel).toBe(false);
         });
 
@@ -497,7 +492,7 @@ describe('DotEditPageToolbarComponent', () => {
             expect(pageStateResult.locked).toBeUndefined();
         });
 
-        it('should edit tab don\'t be called twice', () => {
+        it("should edit tab don't be called twice", () => {
             spyOn(_, 'debounce').and.callFake(function(cb) {
                 return function() {
                     cb();

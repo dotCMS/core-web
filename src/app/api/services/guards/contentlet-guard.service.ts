@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,10 +10,7 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
  */
 @Injectable()
 export class ContentletGuardService implements CanActivateChild {
-    constructor(
-        private dotContentletService: DotContentletService,
-        private dotNavigationService: DotNavigationService
-    ) {}
+    constructor(private dotContentletService: DotContentletService, private dotNavigationService: DotNavigationService) {}
 
     canActivateChild(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
         return this.canAccessContentType(route.params.id);
@@ -27,11 +23,13 @@ export class ContentletGuardService implements CanActivateChild {
      * @returns {boolean}
      */
     canAccessContentType(url: string): Observable<boolean> {
-        return this.dotContentletService.isContentTypeInMenu(url).pipe(map((res) => {
-            if (!res) {
-                this.dotNavigationService.goToFirstPortlet();
-            }
-            return res;
-        }));
+        return this.dotContentletService.isContentTypeInMenu(url).pipe(
+            map((res) => {
+                if (!res) {
+                    this.dotNavigationService.goToFirstPortlet();
+                }
+                return res;
+            })
+        );
     }
 }

@@ -1,5 +1,4 @@
-
-import {pluck, map} from 'rxjs/operators';
+import { pluck, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { RequestMethod } from '@angular/http';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
@@ -25,8 +24,7 @@ export class DotLicenseService {
      * @memberof DotLicenseService
      */
     isEnterprise(): Observable<boolean> {
-        return this.getLicense().pipe(
-            map((license) => license['level'] >= 200));
+        return this.getLicense().pipe(map((license) => license['level'] >= 200));
     }
 
     private getLicense(): Observable<any> {
@@ -34,8 +32,7 @@ export class DotLicenseService {
             .requestView({
                 method: RequestMethod.Get,
                 url: this.licenseURL
-            }).pipe(
-            pluck('entity', 'config', 'license'));
+            })
+            .pipe(pluck('entity', 'config', 'license'));
     }
-
 }

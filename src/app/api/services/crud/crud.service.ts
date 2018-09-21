@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -28,8 +27,8 @@ export class CrudService {
                 body: data,
                 method: RequestMethod.Post,
                 url: `${baseUrl}`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -46,8 +45,8 @@ export class CrudService {
                 body: data,
                 method: RequestMethod.Put,
                 url: `${baseUrl}`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -63,8 +62,8 @@ export class CrudService {
             .requestView({
                 method: RequestMethod.Get,
                 url: `${baseUrl}/id/${id}`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -80,7 +79,7 @@ export class CrudService {
             .requestView({
                 method: RequestMethod.Delete,
                 url: `${baseUrl}/${id}`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 }

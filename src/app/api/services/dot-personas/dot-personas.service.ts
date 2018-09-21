@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { Observable } from 'rxjs';
@@ -25,7 +24,7 @@ export class DotPersonasService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'content/render/false/query/+contentType:persona +live:true +deleted:false +working:true'
-            }).pipe(
-            pluck('contentlets'));
+            })
+            .pipe(pluck('contentlets'));
     }
 }

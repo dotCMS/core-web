@@ -19,15 +19,13 @@ describe('LoginContainerComponent', () => {
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<LoginContainerComponent>;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
-                declarations: [LoginContainerComponent, LoginComponent, DotLoadingIndicatorComponent],
-                providers: [DotLoadingIndicatorService, { provide: LoginService, useClass: LoginServiceMock }]
-            }).compileComponents();
-        })
-    );
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
+            declarations: [LoginContainerComponent, LoginComponent, DotLoadingIndicatorComponent],
+            providers: [DotLoadingIndicatorService, { provide: LoginService, useClass: LoginServiceMock }]
+        }).compileComponents();
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(LoginContainerComponent);
@@ -72,6 +70,5 @@ describe('LoginContainerComponent', () => {
         it('should redirect correctly after login', () => {
             expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
         });
-
     });
 });

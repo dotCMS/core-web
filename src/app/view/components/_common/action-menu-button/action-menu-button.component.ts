@@ -15,9 +15,12 @@ import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
 })
 export class ActionMenuButtonComponent implements OnInit {
     filteredActions: MenuItem[] = [];
-    @Input() item: any;
-    @Input() icon? = 'fa-ellipsis-v';
-    @Input() actions?: DotDataTableAction[];
+    @Input()
+    item: any;
+    @Input()
+    icon? = 'fa-ellipsis-v';
+    @Input()
+    actions?: DotDataTableAction[];
 
     ngOnInit() {
         this.filteredActions = this.actions

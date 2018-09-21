@@ -8,13 +8,7 @@ import { NgGridModule } from 'dot-layout-grid';
 
 @NgModule({
     declarations: [DotEditLayoutGridComponent],
-    imports: [
-        CommonModule,
-        NgGridModule,
-        DotActionButtonModule,
-        DotContainerSelectorModule,
-        ButtonModule
-    ],
+    imports: [CommonModule, NgGridModule, DotActionButtonModule, DotContainerSelectorModule, ButtonModule],
     exports: [DotEditLayoutGridComponent],
     providers: []
 })

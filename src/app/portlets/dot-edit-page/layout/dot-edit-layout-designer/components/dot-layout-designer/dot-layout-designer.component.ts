@@ -9,19 +9,16 @@ import { DotMessageService } from '@services/dot-messages-service';
     styleUrls: ['./dot-layout-designer.component.scss']
 })
 export class DotLayoutDesignerComponent implements OnInit {
-    @ViewChild('editLayoutGrid') editLayoutGrid: DotEditLayoutGridComponent;
+    @ViewChild('editLayoutGrid')
+    editLayoutGrid: DotEditLayoutGridComponent;
 
-    @Input() group: FormGroup;
+    @Input()
+    group: FormGroup;
 
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService
-            .getMessages([
-                'editpage.layout.designer.header',
-                'editpage.layout.designer.footer'
-            ])
-            .subscribe();
+        this.dotMessageService.getMessages(['editpage.layout.designer.header', 'editpage.layout.designer.footer']).subscribe();
     }
 
     /**

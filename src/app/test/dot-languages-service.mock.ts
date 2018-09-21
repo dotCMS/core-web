@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { mockDotLanguage } from './dot-language.mock';
 

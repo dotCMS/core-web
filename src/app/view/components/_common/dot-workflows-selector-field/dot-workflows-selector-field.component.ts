@@ -1,5 +1,4 @@
-
-import {mergeMap,  flatMap, map, tap, toArray } from 'rxjs/operators';
+import { mergeMap, flatMap, map, tap, toArray } from 'rxjs/operators';
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
 import { Observable } from 'rxjs';
 import { DotWorkflow } from './../../../../shared/models/dot-workflow/dot-workflow.model';
@@ -43,16 +42,18 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     registerOnTouched(): void {}
 
     ngOnInit() {
-        this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).pipe(mergeMap(() => {
-            return this.dotWorkflowService.get().pipe(
-                tap((workflows: DotWorkflow[]) => {
-                    this.workflowsModel = workflows;
-                }),
-                flatMap((workflows: DotWorkflow[]) => workflows),
-                map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
-                toArray()
-            );
-        }));
+        this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).pipe(
+            mergeMap(() => {
+                return this.dotWorkflowService.get().pipe(
+                    tap((workflows: DotWorkflow[]) => {
+                        this.workflowsModel = workflows;
+                    }),
+                    flatMap((workflows: DotWorkflow[]) => workflows),
+                    map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
+                    toArray()
+                );
+            })
+        );
     }
 
     /**

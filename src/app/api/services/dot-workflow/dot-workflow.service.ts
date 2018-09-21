@@ -1,5 +1,4 @@
-
-import {pluck,  switchMap, take } from 'rxjs/operators';
+import { pluck, switchMap, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs';
@@ -27,8 +26,8 @@ export class DotWorkflowService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'v1/workflow/schemes'
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -56,8 +55,8 @@ export class DotWorkflowService {
             .requestView({
                 method: RequestMethod.Get,
                 url: `v1/workflow/contentlet/${inode}/actions`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -72,7 +71,7 @@ export class DotWorkflowService {
             .requestView({
                 method: RequestMethod.Put,
                 url: `v1/workflow/actions/${actionId}/fire?inode=${inode}`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 }

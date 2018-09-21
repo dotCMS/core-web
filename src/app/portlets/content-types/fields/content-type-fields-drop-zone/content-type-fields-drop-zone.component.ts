@@ -130,7 +130,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
             return FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field);
         });
 
-
         if (this.formData) {
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         }
@@ -261,7 +260,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-
         this.fieldRows.forEach((fieldRow, index) => {
             fields.push(fieldRow.lineDivider);
 
@@ -270,8 +268,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 fieldColumn.fields.forEach((field) => fields.push(field));
             });
         });
-
-
 
         return fields;
     }

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
 import { DotMenuService } from '@services/dot-menu.service';
@@ -12,7 +11,8 @@ import { DotLegacyTemplateAdditionalActionsComponent } from './dot-legacy-templa
     template: ''
 })
 class MockDotIframeComponent {
-    @Input() src: string;
+    @Input()
+    src: string;
 }
 
 describe('DotLegacyAdditionalActionsComponent', () => {

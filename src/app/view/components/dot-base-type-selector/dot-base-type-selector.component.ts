@@ -12,8 +12,10 @@ import { map, take } from 'rxjs/operators';
     styleUrls: ['./dot-base-type-selector.component.scss']
 })
 export class DotBaseTypeSelectorComponent implements OnInit {
-    @Input() value: SelectItem;
-    @Output() selected = new EventEmitter<string>();
+    @Input()
+    value: SelectItem;
+    @Output()
+    selected = new EventEmitter<string>();
 
     options: Observable<SelectItem[]>;
 
@@ -24,14 +26,12 @@ export class DotBaseTypeSelectorComponent implements OnInit {
             .getMessages(['contenttypes.selector.any.content.type'])
             .pipe(take(1))
             .subscribe(() => {
-                this.options = this.dotContentletService
-                    .getAllContentTypes()
-                    .pipe(
-                        take(1),
-                        map((structures: StructureTypeView[]) =>
-                            this.setOptions(this.dotMessageService.get('contenttypes.selector.any.content.type'), structures)
-                        )
-                    );
+                this.options = this.dotContentletService.getAllContentTypes().pipe(
+                    take(1),
+                    map((structures: StructureTypeView[]) =>
+                        this.setOptions(this.dotMessageService.get('contenttypes.selector.any.content.type'), structures)
+                    )
+                );
             });
     }
 

@@ -1,7 +1,6 @@
+import { forkJoin as observableForkJoin } from 'rxjs';
 
-import {forkJoin as observableForkJoin } from 'rxjs';
-
-import {map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ListingDataTableComponent } from '@components/listing-data-table/listing-data-table.component';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { CrudService } from '@services/crud';
@@ -34,7 +33,8 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
     templateUrl: 'content-types.component.html'
 })
 export class ContentTypesPortletComponent implements OnInit {
-    @ViewChild('listing') listing: ListingDataTableComponent;
+    @ViewChild('listing')
+    listing: ListingDataTableComponent;
     public contentTypeColumns: DataTableColumn[];
     public item: any;
     public actionHeaderOptions: ActionHeaderOptions;
@@ -75,7 +75,7 @@ export class ContentTypesPortletComponent implements OnInit {
         private pushPublishService: PushPublishService,
         private route: ActivatedRoute,
         private router: Router,
-        public dotMessageService: DotMessageService,
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -84,7 +84,7 @@ export class ContentTypesPortletComponent implements OnInit {
             this.dotContentletService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),
             this.pushPublishService.getEnvironments().pipe(map((environments: DotEnvironment[]) => !!environments.length))
-        ).subscribe(res => {
+        ).subscribe((res) => {
             const baseTypes: StructureTypeView[] = res[1];
             const rowActionsMap = {
                 delete: true,
@@ -123,10 +123,10 @@ export class ContentTypesPortletComponent implements OnInit {
             listingActions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.action.delete'),
-                    command: item => this.removeConfirmation(item),
+                    command: (item) => this.removeConfirmation(item),
                     icon: 'delete'
                 },
-                shouldShow: item => !item.fixed
+                shouldShow: (item) => !item.fixed
             });
         }
 
@@ -138,7 +138,7 @@ export class ContentTypesPortletComponent implements OnInit {
             listingActions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.push_publish'),
-                    command: item => this.pushPublishContentType(item)
+                    command: (item) => this.pushPublishContentType(item)
                 }
             });
         }
@@ -147,7 +147,7 @@ export class ContentTypesPortletComponent implements OnInit {
             listingActions.push({
                 menuItem: {
                     label: this.dotMessageService.get('contenttypes.content.add_to_bundle'),
-                    command: item => this.addToBundleContentType(item)
+                    command: (item) => this.addToBundleContentType(item)
                 }
             });
         }
@@ -169,7 +169,7 @@ export class ContentTypesPortletComponent implements OnInit {
     private setContentTypes(s: StructureTypeView[]): ButtonModel[] {
         return s.map((structureTypeView: StructureTypeView) => {
             return {
-                command: $event => {
+                command: ($event) => {
                     this.createContentType(structureTypeView.name.toLocaleLowerCase(), $event);
                 },
                 icon: this.contentTypesInfoService.getIcon(`${structureTypeView.name}_old`),
@@ -230,8 +230,8 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     private removeContentType(item): void {
-        this.crudService.delete(`v1/contenttype/id`, item.id)
-            .subscribe(() => {
+        this.crudService.delete(`v1/contenttype/id`, item.id).subscribe(
+            () => {
                 this.listing.loadCurrentPage();
             },
             (error) => this.httpErrorManagerService.handle(error).subscribe()

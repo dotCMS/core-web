@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,8 +6,7 @@ import { RequestMethod } from '@angular/http';
 
 @Injectable()
 export class DotContentletLockerService {
-
-    constructor(private coreWebService: CoreWebService) { }
+    constructor(private coreWebService: CoreWebService) {}
 
     /**
      * Lock a content asset
@@ -22,8 +20,8 @@ export class DotContentletLockerService {
             .requestView({
                 method: RequestMethod.Put,
                 url: `content/lock/inode/${inode}`
-            }).pipe(
-            pluck('bodyJsonObject'));
+            })
+            .pipe(pluck('bodyJsonObject'));
     }
 
     /**
@@ -38,7 +36,7 @@ export class DotContentletLockerService {
             .requestView({
                 method: RequestMethod.Put,
                 url: `content/unlock/inode/${inode}`
-            }).pipe(
-            pluck('bodyJsonObject'));
+            })
+            .pipe(pluck('bodyJsonObject'));
     }
 }

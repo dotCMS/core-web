@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -35,9 +34,12 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
     template: ''
 })
 class TestContentTypeFieldsDropZoneComponent {
-    @Input() fields: ContentTypeField[];
-    @Output() saveFields = new EventEmitter<ContentTypeField[]>();
-    @Output() removeFields = new EventEmitter<ContentTypeField[]>();
+    @Input()
+    fields: ContentTypeField[];
+    @Output()
+    saveFields = new EventEmitter<ContentTypeField[]>();
+    @Output()
+    removeFields = new EventEmitter<ContentTypeField[]>();
 }
 
 @Component({
@@ -45,7 +47,8 @@ class TestContentTypeFieldsDropZoneComponent {
     template: '<ng-content></ng-content>'
 })
 class TestContentTypeLayoutComponent {
-    @Input() contentTypeId: string;
+    @Input()
+    contentTypeId: string;
 }
 
 @Component({
@@ -53,10 +56,13 @@ class TestContentTypeLayoutComponent {
     template: ''
 })
 class TestContentTypesFormComponent {
-    @Input() data: any;
-    @Input() fields: ContentTypeField[];
+    @Input()
+    data: any;
+    @Input()
+    fields: ContentTypeField[];
     // tslint:disable-next-line:no-output-on-prefix
-    @Output() submit: EventEmitter<any> = new EventEmitter();
+    @Output()
+    submit: EventEmitter<any> = new EventEmitter();
 
     resetForm = jasmine.createSpy('resetForm');
 
@@ -73,7 +79,7 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.content.create.contenttype': 'Create {0}',
     'contenttypes.form.identifier': 'Idenfifier',
     'contenttypes.content.content': 'Content',
-    'contenttypes.dropzone.rows.add' : 'Add rows'
+    'contenttypes.dropzone.rows.add': 'Add rows'
 });
 
 const getConfig = (route) => {
@@ -454,7 +460,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(comp.fields).toEqual(fieldsReturnByServer);
     });
 
-    it('should handle 403 when user doesn\'t have permission to save feld', () => {
+    it("should handle 403 when user doesn't have permission to save feld", () => {
         const newFieldsAdded: ContentTypeField[] = [
             {
                 name: 'field 1',

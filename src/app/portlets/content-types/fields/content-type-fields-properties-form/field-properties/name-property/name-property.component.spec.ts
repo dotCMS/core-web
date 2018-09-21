@@ -12,8 +12,10 @@ import { By } from '@angular/platform-browser';
     template: ''
 })
 class TestFieldValidationMessageComponent {
-    @Input() field: NgControl;
-    @Input() message: string;
+    @Input()
+    field: NgControl;
+    @Input()
+    message: string;
 }
 
 describe('NamePropertyComponent', () => {
@@ -25,25 +27,23 @@ describe('NamePropertyComponent', () => {
         'Default-Value': 'Default-Value'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [NamePropertyComponent, TestFieldValidationMessageComponent],
-                imports: [],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [NamePropertyComponent, TestFieldValidationMessageComponent],
+            imports: [],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+        });
 
-            fixture = DOTTestBed.createComponent(NamePropertyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
+        fixture = DOTTestBed.createComponent(NamePropertyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
 
-            comp.property = {
-                name: 'name',
-                value: 'value',
-                field: {}
-            };
-        })
-    );
+        comp.property = {
+            name: 'name',
+            value: 'value',
+            field: {}
+        };
+    }));
 
     it('should have a form', () => {
         const group = new FormGroup({});
@@ -95,7 +95,7 @@ describe('NamePropertyComponent', () => {
         spyOn(comp.name.nativeElement, 'focus');
 
         comp.group = new FormGroup({
-            name: new FormControl({value: '', disabled: true})
+            name: new FormControl({ value: '', disabled: true })
         });
 
         fixture.detectChanges();

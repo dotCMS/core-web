@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
@@ -100,8 +99,8 @@ describe('DotWorkflowTaskDetailComponent', () => {
             });
 
             it('should call clear and emit close', () => {
-                dotIframeDialog.triggerEventHandler('custom', {hello: 'world'});
-                expect(component.custom.emit).toHaveBeenCalledWith({hello: 'world'});
+                dotIframeDialog.triggerEventHandler('custom', { hello: 'world' });
+                expect(component.custom.emit).toHaveBeenCalledWith({ hello: 'world' });
             });
         });
     });

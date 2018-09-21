@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DotContainer } from '@models/container/dot-container.model';
 import { By } from '@angular/platform-browser';
 import { PaginatorService } from '@services/paginator/paginator.service';
@@ -21,49 +20,43 @@ describe('ContainerSelectorComponent', () => {
     let searchableDropdownComponent;
     let containers: DotContainer[];
 
-    beforeEach(
-        async(() => {
-            const messageServiceMock = new MockDotMessageService({
-                addcontainer: 'Add a Container'
-            });
+    beforeEach(async(() => {
+        const messageServiceMock = new MockDotMessageService({
+            addcontainer: 'Add a Container'
+        });
 
-            DOTTestBed.configureTestingModule({
-                declarations: [DotContainerSelectorComponent],
-                imports: [SearchableDropDownModule, BrowserAnimationsModule],
-                providers: [
-                    { provide: DotMessageService, useValue: messageServiceMock },
-                    IframeOverlayService,
-                    PaginatorService
-                ]
-            });
+        DOTTestBed.configureTestingModule({
+            declarations: [DotContainerSelectorComponent],
+            imports: [SearchableDropDownModule, BrowserAnimationsModule],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }, IframeOverlayService, PaginatorService]
+        });
 
-            fixture = DOTTestBed.createComponent(DotContainerSelectorComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
+        fixture = DOTTestBed.createComponent(DotContainerSelectorComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
 
-            searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
+        searchableDropdownComponent = de.query(By.css('dot-searchable-dropdown')).componentInstance;
 
-            containers = [
-                {
-                    categoryId: '427c47a4-c380-439f-a6d0-97d81deed57e',
-                    deleted: false,
-                    friendlyName: 'Friendly Container name',
-                    identifier: '427c47a4-c380-439f',
-                    name: 'Container 1',
-                    type: 'Container'
-                },
-                {
-                    categoryId: '40204d-c380-439f-a6d0-97d8sdeed57e',
-                    deleted: false,
-                    friendlyName: 'Friendly Container2 name',
-                    identifier: '427c47a4-c380-439f',
-                    name: 'Container 2',
-                    type: 'Container'
-                }
-            ];
-        })
-    );
+        containers = [
+            {
+                categoryId: '427c47a4-c380-439f-a6d0-97d81deed57e',
+                deleted: false,
+                friendlyName: 'Friendly Container name',
+                identifier: '427c47a4-c380-439f',
+                name: 'Container 1',
+                type: 'Container'
+            },
+            {
+                categoryId: '40204d-c380-439f-a6d0-97d8sdeed57e',
+                deleted: false,
+                friendlyName: 'Friendly Container2 name',
+                identifier: '427c47a4-c380-439f',
+                name: 'Container 2',
+                type: 'Container'
+            }
+        ];
+    }));
 
     it(
         'should change Page',

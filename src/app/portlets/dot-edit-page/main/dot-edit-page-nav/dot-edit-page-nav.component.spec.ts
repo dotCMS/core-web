@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { By } from '@angular/platform-browser';
 import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
@@ -35,7 +34,8 @@ class MockDotLicenseService {
     template: `<dot-edit-page-nav [pageState]="pageState"></dot-edit-page-nav>`
 })
 class TestHostComponent {
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
 }
 
 describe('DotEditPageNavComponent', () => {
@@ -187,16 +187,13 @@ describe('DotEditPageNavComponent', () => {
         });
 
         it('should have code option disabled because user can not edit the page thus the layout or template', () => {
-            fixture.componentInstance.pageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPageAdvanceTemplate,
-                    page: {
-                        ...mockDotRenderedPageAdvanceTemplate.page,
-                        canEdit: false
-                    }
+            fixture.componentInstance.pageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPageAdvanceTemplate,
+                page: {
+                    ...mockDotRenderedPageAdvanceTemplate.page,
+                    canEdit: false
                 }
-            );
+            });
             fixture.detectChanges();
 
             const menuListItems = fixture.debugElement.queryAll(By.css('.edit-page-nav__item'));

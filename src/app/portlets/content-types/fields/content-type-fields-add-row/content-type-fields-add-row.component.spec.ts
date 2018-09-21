@@ -56,7 +56,6 @@ describe('ContentTypeFieldsAddRowComponent', () => {
     });
 
     it('should render columns input', () => {
-
         comp.columns = [1, 2, 3];
         comp.rowState = 'select';
 
@@ -211,14 +210,17 @@ describe('ContentTypeFieldsAddRowComponent', () => {
         expect(comp.selectedColumnIndex).toBe(0);
     });
 
-    it('should call setColumnSelect when "add-row" event received', fakeAsync(() => {
-        fixture.detectChanges();
-        const dotEventsService = fixture.debugElement.injector.get(DotEventsService);
-        spyOn(comp, 'setColumnSelect');
-        dotEventsService.notify('add-row');
-        tick();
-        expect(comp.setColumnSelect).toHaveBeenCalled();
-    }));
+    it(
+        'should call setColumnSelect when "add-row" event received',
+        fakeAsync(() => {
+            fixture.detectChanges();
+            const dotEventsService = fixture.debugElement.injector.get(DotEventsService);
+            spyOn(comp, 'setColumnSelect');
+            dotEventsService.notify('add-row');
+            tick();
+            expect(comp.setColumnSelect).toHaveBeenCalled();
+        })
+    );
 
     it('should remove hotkeysService on destroy', () => {
         const hoykeys: Hotkey[] = <Hotkey[]>testHotKeysMock.get(['left', 'right', 'enter', 'esc']);

@@ -8,7 +8,8 @@ import { ConfirmDialog } from 'primeng/primeng';
     styleUrls: ['./dot-alert-confirm.scss']
 })
 export class DotAlertConfirmComponent {
-    @ViewChild('cd') cd: ConfirmDialog;
+    @ViewChild('cd')
+    cd: ConfirmDialog;
 
     constructor(public dotDialogService: DotAlertConfirmService) {}
 

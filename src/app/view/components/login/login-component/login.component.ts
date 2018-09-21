@@ -6,19 +6,27 @@ import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-login-component',
     templateUrl: 'login.component.html'
-}) /**
+})
+/**
  * The login component allows the user to fill all
  * the info required to log in the dotCMS angular backend
  */
 export class LoginComponent implements AfterViewInit {
-    @Input() isLoginInProgress = false;
-    @Input() message = '';
-    @Input() passwordChanged = false;
-    @Input() resetEmailSent = false;
-    @Input() resetEmail = '';
+    @Input()
+    isLoginInProgress = false;
+    @Input()
+    message = '';
+    @Input()
+    passwordChanged = false;
+    @Input()
+    resetEmailSent = false;
+    @Input()
+    resetEmail = '';
 
-    @Output() recoverPassword = new EventEmitter<any>();
-    @Output() login = new EventEmitter<LoginData>();
+    @Output()
+    recoverPassword = new EventEmitter<any>();
+    @Output()
+    login = new EventEmitter<LoginData>();
 
     myAccountLogin: string;
     password: string;
@@ -48,7 +56,6 @@ export class LoginComponent implements AfterViewInit {
     private resetEmailMessage = '';
     private resetPasswordSuccess = '';
 
-
     private i18nMessages: Array<string> = [
         'Login',
         'email-address',
@@ -65,19 +72,13 @@ export class LoginComponent implements AfterViewInit {
         'a-new-password-has-been-sent-to-x'
     ];
 
-    constructor(
-        private loginService: LoginService,
-        private ngZone: NgZone,
-        private loggerService: LoggerService
-    ) {
+    constructor(private loginService: LoginService, private ngZone: NgZone, private loggerService: LoggerService) {
         this.language = '';
         this.renderPageData();
     }
 
     ngAfterViewInit(): void {
-        this.ngZone.runOutsideAngular(() =>
-            setTimeout(() => document.getElementById('login-component-login-input').focus())
-        );
+        this.ngZone.runOutsideAngular(() => setTimeout(() => document.getElementById('login-component-login-input').focus()));
     }
 
     /**

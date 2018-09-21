@@ -1,7 +1,6 @@
-
-import {filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { DotEvent } from '@models/dot-event/dot-event';
 
 /**

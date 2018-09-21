@@ -6,8 +6,10 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
     styleUrls: ['./dot-whats-changed.component.scss']
 })
 export class DotWhatsChangedComponent implements OnChanges {
-    @Input() languageId: string;
-    @Input() pageId: string;
+    @Input()
+    languageId: string;
+    @Input()
+    pageId: string;
     url: string;
 
     constructor() {}

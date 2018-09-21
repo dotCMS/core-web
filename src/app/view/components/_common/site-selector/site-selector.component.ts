@@ -1,4 +1,4 @@
-import { Subscription ,  Observable ,  of } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 import {
     Component,
     ViewEncapsulation,
@@ -27,25 +27,30 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
  */
 @Component({
     encapsulation: ViewEncapsulation.None,
-    providers: [
-        PaginatorService,
-        SearchableDropdownComponent
-    ],
+    providers: [PaginatorService, SearchableDropdownComponent],
     selector: 'dot-site-selector',
     styleUrls: ['./site-selector.component.scss'],
     templateUrl: 'site-selector.component.html'
 })
 export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() archive: boolean;
-    @Input() id: string;
-    @Input() live: boolean;
-    @Input() system: boolean;
+    @Input()
+    archive: boolean;
+    @Input()
+    id: string;
+    @Input()
+    live: boolean;
+    @Input()
+    system: boolean;
 
-    @Output() change: EventEmitter<Site> = new EventEmitter();
-    @Output() hide: EventEmitter<any> = new EventEmitter();
-    @Output() show: EventEmitter<any> = new EventEmitter();
+    @Output()
+    change: EventEmitter<Site> = new EventEmitter();
+    @Output()
+    hide: EventEmitter<any> = new EventEmitter();
+    @Output()
+    show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown')
+    searchableDropdown: SearchableDropdownComponent;
 
     currentSite: Observable<Site>;
     sitesCurrentPage: Site[];

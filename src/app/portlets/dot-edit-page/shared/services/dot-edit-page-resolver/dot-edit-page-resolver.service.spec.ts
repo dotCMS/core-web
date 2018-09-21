@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { mockDotRenderedPage } from './../../../../../test/dot-rendered-page.mock';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
@@ -30,36 +29,34 @@ describe('DotEditPageResolver', () => {
     let dotRouterService: DotRouterService;
     let dotEditPageDataService: DotEditPageDataService;
 
-    beforeEach(
-        async(() => {
-            const testbed = DOTTestBed.configureTestingModule({
-                providers: [
-                    DotHttpErrorManagerService,
-                    DotPageStateService,
-                    DotEditPageResolver,
-                    DotRenderHTMLService,
-                    DotContentletLockerService,
-                    {
-                        provide: ActivatedRouteSnapshot,
-                        useValue: route
-                    },
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    DotEditPageDataService
-                ],
-                imports: [RouterTestingModule]
-            });
+    beforeEach(async(() => {
+        const testbed = DOTTestBed.configureTestingModule({
+            providers: [
+                DotHttpErrorManagerService,
+                DotPageStateService,
+                DotEditPageResolver,
+                DotRenderHTMLService,
+                DotContentletLockerService,
+                {
+                    provide: ActivatedRouteSnapshot,
+                    useValue: route
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                DotEditPageDataService
+            ],
+            imports: [RouterTestingModule]
+        });
 
-            resolver = testbed.get(DotEditPageResolver);
-            dotPageStateService = testbed.get(DotPageStateService);
-            dotRenderHTMLService = testbed.get(DotRenderHTMLService);
-            dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
-            dotRouterService = testbed.get(DotRouterService);
-            dotEditPageDataService = testbed.get(DotEditPageDataService);
-        })
-    );
+        resolver = testbed.get(DotEditPageResolver);
+        dotPageStateService = testbed.get(DotPageStateService);
+        dotRenderHTMLService = testbed.get(DotRenderHTMLService);
+        dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
+        dotRouterService = testbed.get(DotRouterService);
+        dotEditPageDataService = testbed.get(DotEditPageDataService);
+    }));
 
     describe('content', () => {
         beforeEach(() => {
@@ -85,13 +82,10 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object when layout is null', () => {
-            const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    layout: null
-                }
-            );
+            const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(mockUser, {
+                ...mockDotRenderedPage,
+                layout: null
+            });
             spyOn(dotPageStateService, 'get').and.returnValue(observableOf(mockDotRenderedPageState));
 
             resolver.resolve(route).subscribe((res) => {
@@ -102,29 +96,33 @@ describe('DotEditPageResolver', () => {
         it('should return handle 403', () => {
             const fake403Response = mockResponseView(403);
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-                redirected: true
-            }));
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+                observableOf({
+                    redirected: true
+                })
+            );
             spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
 
             resolver.resolve(route).subscribe();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake403Response);
-            expect(dotPageStateService.get).toHaveBeenCalledWith('edit-page/content', '2' );
+            expect(dotPageStateService.get).toHaveBeenCalledWith('edit-page/content', '2');
         });
 
         it('should redirect to site-browser', () => {
             const fake403Response = mockResponseView(403);
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-                redirected: false
-            }));
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+                observableOf({
+                    redirected: false
+                })
+            );
             spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
 
             spyOn(dotRouterService, 'goToSiteBrowser');
 
             resolver.resolve(route).subscribe();
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
-            expect(dotPageStateService.get).toHaveBeenCalledWith('edit-page/content', '2' );
+            expect(dotPageStateService.get).toHaveBeenCalledWith('edit-page/content', '2');
         });
     });
 
@@ -151,48 +149,50 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should trigger 403 error when try to go to layout because user canEdit page', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    page: {
-                        ...mockDotRenderedPage.page,
-                        canEdit: false
-                    }
-                }
-            )));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableOf(
+                    new DotRenderedPageState(mockUser, {
+                        ...mockDotRenderedPage,
+                        page: {
+                            ...mockDotRenderedPage.page,
+                            canEdit: false
+                        }
+                    })
+                )
+            );
 
-
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-                redirected: false
-            }));
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+                observableOf({
+                    redirected: false
+                })
+            );
 
             spyOn(dotRouterService, 'goToSiteBrowser');
 
             resolver.resolve(route).subscribe();
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
-
         });
 
-
         it('should trigger 403 error when try to go to layout because layout is null', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(
-                mockUser,
-                {
-                    ...mockDotRenderedPage,
-                    layout: null
-                }
-            )));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableOf(
+                    new DotRenderedPageState(mockUser, {
+                        ...mockDotRenderedPage,
+                        layout: null
+                    })
+                )
+            );
 
-            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-                redirected: false
-            }));
+            spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+                observableOf({
+                    redirected: false
+                })
+            );
 
             spyOn(dotRouterService, 'goToSiteBrowser');
 
             resolver.resolve(route).subscribe();
             expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
-
         });
     });
 

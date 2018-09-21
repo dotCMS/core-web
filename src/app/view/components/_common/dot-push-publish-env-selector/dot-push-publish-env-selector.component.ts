@@ -18,7 +18,8 @@ import { Observable } from 'rxjs';
     ]
 })
 export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAccessor {
-    @Input() assetIdentifier: string;
+    @Input()
+    assetIdentifier: string;
     pushEnvironments$: Observable<any>;
     selectedEnvironments: DotEnvironment[];
     selectedEnvironmentIds: string[] = [];
@@ -88,9 +89,7 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      * @memberof PushPublishEnvSelectorComponent
      */
     removeEnvironmentItem(environmentItem: DotEnvironment): void {
-        this.selectedEnvironments = this.selectedEnvironments.filter(
-            (environment) => environment.id !== environmentItem.id
-        );
+        this.selectedEnvironments = this.selectedEnvironments.filter((environment) => environment.id !== environmentItem.id);
         this.propagateEnvironmentId(this.selectedEnvironments);
     }
 

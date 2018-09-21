@@ -16,9 +16,12 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
     templateUrl: 'login-as.html'
 })
 export class LoginAsComponent extends BaseComponent implements OnInit {
-    @Output() cancel = new EventEmitter<boolean>();
-    @Input() visible: boolean;
-    @ViewChild('password') passwordElem: ElementRef;
+    @Output()
+    cancel = new EventEmitter<boolean>();
+    @Input()
+    visible: boolean;
+    @ViewChild('password')
+    passwordElem: ElementRef;
 
     form: FormGroup;
     needPassword = false;

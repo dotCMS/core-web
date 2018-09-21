@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +24,8 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
     template: `<dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>`
 })
 class TestHostComponent {
-    @Input() page: DotPage;
+    @Input()
+    page: DotPage;
 }
 
 describe('DotEditPageWorkflowsActionsComponent', () => {
@@ -42,29 +42,28 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
     });
 
-    beforeEach(
-        async(() => {
-            testbed = DOTTestBed.configureTestingModule({
-                imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
-                declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
-                providers: [
-                    {
-                        provide: DotWorkflowService,
-                        useClass: DotWorkflowServiceMock
-                    },
-                    {
-                        provide: DotMessageService,
-                        useValue: messageServiceMock },
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    DotHttpErrorManagerService,
-                    DotRouterService
-                ]
-            });
-        })
-    );
+    beforeEach(async(() => {
+        testbed = DOTTestBed.configureTestingModule({
+            imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
+            declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
+            providers: [
+                {
+                    provide: DotWorkflowService,
+                    useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                DotHttpErrorManagerService,
+                DotRouterService
+            ]
+        });
+    }));
 
     beforeEach(() => {
         fixture = testbed.createComponent(TestHostComponent);

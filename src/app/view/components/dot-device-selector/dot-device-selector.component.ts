@@ -10,8 +10,10 @@ import { map, take, flatMap, filter, toArray } from 'rxjs/operators';
     styleUrls: ['./dot-device-selector.component.scss']
 })
 export class DotDeviceSelectorComponent implements OnInit {
-    @Input() value: DotDevice;
-    @Output() selected = new EventEmitter<DotDevice>();
+    @Input()
+    value: DotDevice;
+    @Output()
+    selected = new EventEmitter<DotDevice>();
 
     options: DotDevice[];
 

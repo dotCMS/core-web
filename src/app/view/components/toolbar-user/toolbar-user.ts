@@ -13,7 +13,8 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
     templateUrl: 'toolbar-user.html'
 })
 export class ToolbarUserComponent extends BaseComponent implements OnInit {
-    @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
+    @ViewChild(DotDropdownComponent)
+    dropdown: DotDropdownComponent;
     auth: Auth;
 
     showLoginAs = false;

@@ -13,8 +13,8 @@ export class FieldPropertyService {
     private fieldTypes = new Map<string, FieldType>();
 
     constructor(fieldService: FieldService) {
-        fieldService.loadFieldTypes().subscribe(fieldTypes => {
-            fieldTypes.forEach(fieldType => {
+        fieldService.loadFieldTypes().subscribe((fieldTypes) => {
+            fieldTypes.forEach((fieldType) => {
                 this.fieldTypes.set(fieldType.clazz, fieldType);
             });
         });

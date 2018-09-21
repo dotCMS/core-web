@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js/dotcms-js';

@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError,  Observable ,  of } from 'rxjs';
+import { throwError as observableThrowError, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Response, Headers } from '@angular/http';
@@ -34,48 +33,52 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         if (data) {
             return of(data);
         } else {
-            return this.dotPageStateService
-                .get(route.queryParams.url, route.queryParams.language_id)
-                .pipe(
-                    take(1),
-                    switchMap((dotRenderedPageState: DotRenderedPageState) => {
-                        const currentSection = route.children[0].url[0].path;
-                        const isLayout = currentSection === 'layout';
+            return this.dotPageStateService.get(route.queryParams.url, route.queryParams.language_id).pipe(
+                take(1),
+                switchMap((dotRenderedPageState: DotRenderedPageState) => {
+                    const currentSection = route.children[0].url[0].path;
+                    const isLayout = currentSection === 'layout';
 
-                        if (isLayout) {
-                            return this.checkUserCanGoToLayout(dotRenderedPageState);
-                        } else {
-                            return of(dotRenderedPageState);
-                        }
-                    }),
-                    catchError((err: ResponseView) => {
-                        return this.errorHandler(err).pipe(
-                            map(() => null)
-                        );
-                    })
-                );
+                    if (isLayout) {
+                        return this.checkUserCanGoToLayout(dotRenderedPageState);
+                    } else {
+                        return of(dotRenderedPageState);
+                    }
+                }),
+                catchError((err: ResponseView) => {
+                    return this.errorHandler(err).pipe(map(() => null));
+                })
+            );
         }
     }
 
-    private checkUserCanGoToLayout (dotRenderedPageState: DotRenderedPageState): Observable<DotRenderedPageState> {
+    private checkUserCanGoToLayout(dotRenderedPageState: DotRenderedPageState): Observable<DotRenderedPageState> {
         if (!dotRenderedPageState.page.canEdit) {
-            return observableThrowError(new ResponseView(new Response({
-                body: {},
-                status: HttpCode.FORBIDDEN,
-                headers: null,
-                url: '',
-                merge: null
-            })));
+            return observableThrowError(
+                new ResponseView(
+                    new Response({
+                        body: {},
+                        status: HttpCode.FORBIDDEN,
+                        headers: null,
+                        url: '',
+                        merge: null
+                    })
+                )
+            );
         } else if (!dotRenderedPageState.layout) {
-            return observableThrowError(new ResponseView(new Response({
-                body: {},
-                status: HttpCode.FORBIDDEN,
-                headers: new Headers({
-                    'error-key': 'dotcms.api.error.license.required'
-                }),
-                url: '',
-                merge: null
-            })));
+            return observableThrowError(
+                new ResponseView(
+                    new Response({
+                        body: {},
+                        status: HttpCode.FORBIDDEN,
+                        headers: new Headers({
+                            'error-key': 'dotcms.api.error.license.required'
+                        }),
+                        url: '',
+                        merge: null
+                    })
+                )
+            );
         } else {
             return of(dotRenderedPageState);
         }
@@ -83,12 +86,11 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
 
     private errorHandler(err: ResponseView): Observable<any> {
         return this.dotHttpErrorManagerService.handle(err).pipe(
-                tap((res: DotHttpErrorHandled) => {
-
+            tap((res: DotHttpErrorHandled) => {
                 if (!res.redirected) {
                     this.dotRouterService.goToSiteBrowser();
                 }
-            }
-        ));
+            })
+        );
     }
 }

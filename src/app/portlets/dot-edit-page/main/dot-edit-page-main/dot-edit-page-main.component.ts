@@ -1,7 +1,6 @@
+import { of as observableOf, Observable, Subject } from 'rxjs';
 
-import {of as observableOf,  Observable ,  Subject } from 'rxjs';
-
-import {take, pluck,  takeUntil } from 'rxjs/operators';
+import { take, pluck, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';

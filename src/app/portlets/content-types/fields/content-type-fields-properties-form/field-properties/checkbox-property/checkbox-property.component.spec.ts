@@ -21,20 +21,18 @@ describe('CheckboxPropertyComponent', () => {
         'contenttypes.field.properties.unique.label': 'unique'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [CheckboxPropertyComponent],
-                imports: [],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [CheckboxPropertyComponent],
+            imports: [],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+        });
 
-            fixture = DOTTestBed.createComponent(CheckboxPropertyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
-        })
-    );
+        fixture = DOTTestBed.createComponent(CheckboxPropertyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
+    }));
 
     it('should have a form', () => {
         const group = new FormGroup({});

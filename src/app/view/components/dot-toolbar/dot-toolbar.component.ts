@@ -10,7 +10,8 @@ import { DotNavigationService } from '../dot-navigation/services/dot-navigation.
     templateUrl: './dot-toolbar.component.html'
 })
 export class ToolbarComponent implements OnInit {
-    @Input() collapsed: boolean;
+    @Input()
+    collapsed: boolean;
 
     constructor(
         private dotRouterService: DotRouterService,

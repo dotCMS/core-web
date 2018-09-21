@@ -15,27 +15,25 @@ describe('DotAlertConfirmComponent', () => {
     let fixture: ComponentFixture<DotAlertConfirmComponent>;
     let de: DebugElement;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [DotAlertConfirmComponent],
-                providers: [
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    DotAlertConfirmService
-                ],
-                imports: [BrowserAnimationsModule]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DotAlertConfirmComponent],
+            providers: [
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                DotAlertConfirmService
+            ],
+            imports: [BrowserAnimationsModule]
+        });
 
-            fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
-            component = fixture.componentInstance;
-            de = fixture.debugElement;
-            dialogService = de.injector.get(DotAlertConfirmService);
-            fixture.detectChanges();
-        })
-    );
+        fixture = DOTTestBed.createComponent(DotAlertConfirmComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
+        dialogService = de.injector.get(DotAlertConfirmService);
+        fixture.detectChanges();
+    }));
 
     it('should have confirm and dialog null by default', () => {
         const confirm = de.query(By.css('p-confirmDialog'));
@@ -209,7 +207,6 @@ describe('DotAlertConfirmComponent', () => {
             const buttons = de.queryAll(By.css('p-dialog button'));
             expect(buttons.length).toBe(2);
         });
-
 
         it('should bind accept and reject button events', () => {
             spyOn(dialogService, 'alertAccept');

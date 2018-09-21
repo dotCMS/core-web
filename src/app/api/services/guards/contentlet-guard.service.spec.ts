@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
@@ -43,18 +42,14 @@ describe('ValidContentletGuardService', () => {
         dotContentletService = TestBed.get(DotContentletService);
         dotNavigationService = TestBed.get(DotNavigationService);
         mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
-        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
-            'toString'
-        ]);
+        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
     });
 
     it('should allow children access to Content Types Portlets', () => {
         let result: boolean;
         mockActivatedRouteSnapshot.params = { id: 'banner' };
         spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(observableOf(true));
-        contentletGuardService
-            .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
-            .subscribe((res) => (result = res));
+        contentletGuardService.canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot).subscribe((res) => (result = res));
         expect(dotContentletService.isContentTypeInMenu).toHaveBeenCalledWith('banner');
         expect(result).toBe(true);
     });
@@ -63,9 +58,7 @@ describe('ValidContentletGuardService', () => {
         let result: boolean;
         mockActivatedRouteSnapshot.params = { id: 'banner' };
         spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(observableOf(false));
-        contentletGuardService
-            .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
-            .subscribe((res) => (result = res));
+        contentletGuardService.canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot).subscribe((res) => (result = res));
         expect(dotContentletService.isContentTypeInMenu).toHaveBeenCalledWith('banner');
         expect(dotNavigationService.goToFirstPortlet).toHaveBeenCalled();
         expect(result).toBe(false);

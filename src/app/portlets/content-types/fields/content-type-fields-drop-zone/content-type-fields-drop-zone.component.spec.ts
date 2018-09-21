@@ -28,9 +28,12 @@ import { DragulaModule, DragulaService } from 'ng2-dragula';
     template: ''
 })
 class TestContentTypeFieldsRowComponent {
-    @Input() fieldRow: FieldRow;
-    @Output() editField: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() removeField: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Input()
+    fieldRow: FieldRow;
+    @Output()
+    editField: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    removeField: EventEmitter<ContentTypeField> = new EventEmitter();
 }
 
 @Component({
@@ -38,8 +41,10 @@ class TestContentTypeFieldsRowComponent {
     template: ''
 })
 class TestContentTypeFieldsPropertiesFormComponent {
-    @Output() saveField: EventEmitter<any> = new EventEmitter();
-    @Input() formFieldData: ContentTypeField;
+    @Output()
+    saveField: EventEmitter<any> = new EventEmitter();
+    @Input()
+    formFieldData: ContentTypeField;
 }
 
 @Component({
@@ -123,7 +128,7 @@ xdescribe('ContentTypeFieldsDropZoneComponent', () => {
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
                 { provide: HotkeysService, useValue: testHotKeysMock },
-                { provide: Router, useValue: mockRouter },
+                { provide: Router, useValue: mockRouter }
             ]
         });
 
@@ -270,7 +275,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
                 { provide: HotkeysService, useValue: new TestHotkeysMock() },
-                { provide: Router, useValue: mockRouter },
+                { provide: Router, useValue: mockRouter }
             ]
         });
 
@@ -397,7 +402,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         expect(comp.addRow).toHaveBeenCalled();
         expect(comp.fieldRows[0].columns.length).toBe(2);
     });
-
 
     it('should display dialog if a drop event happen from source', () => {
         fixture.detectChanges();

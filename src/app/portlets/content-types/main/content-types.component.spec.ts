@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { CrudService } from '@services/crud/crud.service';
 import { ContentType } from '@shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,10 +21,7 @@ import { PushPublishService } from '@services/push-publish/push-publish.service'
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { SelectItem } from 'primeng/primeng';
 import { ResponseView } from 'dotcms-js/dotcms-js';
-import {
-    DotHttpErrorHandled,
-    DotHttpErrorManagerService
-} from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorHandled, DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
 class MockDotContentletService {
@@ -37,8 +33,10 @@ class MockDotContentletService {
     template: ''
 })
 class MockDotBaseTypeSelectorComponent {
-    @Input() value: SelectItem;
-    @Output() selected = new EventEmitter<string>();
+    @Input()
+    value: SelectItem;
+    @Output()
+    selected = new EventEmitter<string>();
 }
 
 @Injectable()
@@ -78,8 +76,10 @@ class MockDotHttpErrorManagerService {
     template: ``
 })
 class MockDotAddToBundleComponent {
-    @Input() assetIdentifier: string;
-    @Output() cancel = new EventEmitter<boolean>();
+    @Input()
+    assetIdentifier: string;
+    @Output()
+    cancel = new EventEmitter<boolean>();
 }
 
 describe('ContentTypesPortletComponent', () => {
@@ -100,7 +100,7 @@ describe('ContentTypesPortletComponent', () => {
             'contenttypes.fieldname.entries': 'Entries',
             'contenttypes.fieldname.structure.name': 'Content Type Name',
             'contenttypes.content.variable': 'Variable Name',
-            'mod_date': 'Last Edit Date',
+            mod_date: 'Last Edit Date',
             'contenttypes.action.delete': 'Delete',
             'contenttypes.content.push_publish': 'Push Publish',
             'contenttypes.content.add_to_bundle': 'Add to bundle'
@@ -193,7 +193,7 @@ describe('ContentTypesPortletComponent', () => {
         };
 
         const dotDialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
 
@@ -208,7 +208,7 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should have remove, push publish and Add to bundle actions to the list item', () => {
         fixture.detectChanges();
-        expect(comp.rowActions.map(action => action.menuItem.label)).toEqual(['Delete', 'Push Publish', 'Add to bundle']);
+        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual(['Delete', 'Push Publish', 'Add to bundle']);
     });
 
     it('should have ONLY remove action because is community license', () => {
@@ -216,7 +216,7 @@ describe('ContentTypesPortletComponent', () => {
 
         fixture.detectChanges();
         expect(
-            comp.rowActions.map(action => {
+            comp.rowActions.map((action) => {
                 return {
                     label: action.menuItem.label,
                     icon: action.menuItem.icon
@@ -234,7 +234,7 @@ describe('ContentTypesPortletComponent', () => {
         spyOn(pushPublishService, 'getEnvironments').and.returnValue(observableOf([]));
         fixture.detectChanges();
 
-        expect(comp.rowActions.map(action => action.menuItem.label)).toEqual(['Delete', 'Add to bundle']);
+        expect(comp.rowActions.map((action) => action.menuItem.label)).toEqual(['Delete', 'Add to bundle']);
     });
 
     it('should open push publish dialog', () => {
@@ -310,7 +310,7 @@ describe('ContentTypesPortletComponent', () => {
                 error: ''
             },
             response: {
-                status: 403,
+                status: 403
             }
         };
 
@@ -330,7 +330,7 @@ describe('ContentTypesPortletComponent', () => {
         };
 
         const dotDialogService = fixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
 

@@ -35,7 +35,8 @@ import { DotMessageService } from '@services/dot-messages-service';
     template: `<dot-edit-content-view-as-toolbar [pageState]="pageState"></dot-edit-content-view-as-toolbar>`
 })
 class DotTestHostComponent implements OnInit {
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
 
     ngOnInit() {}
 }
@@ -45,8 +46,10 @@ class DotTestHostComponent implements OnInit {
     template: ''
 })
 class MockDotPersonaSelectorComponent {
-    @Input() value: DotPersona;
-    @Output() selected = new EventEmitter<DotPersona>();
+    @Input()
+    value: DotPersona;
+    @Output()
+    selected = new EventEmitter<DotPersona>();
 }
 
 @Component({
@@ -54,19 +57,24 @@ class MockDotPersonaSelectorComponent {
     template: ''
 })
 class MockDotDeviceSelectorComponent {
-    @Input() value: DotDevice;
-    @Output() selected = new EventEmitter<DotDevice>();
+    @Input()
+    value: DotDevice;
+    @Output()
+    selected = new EventEmitter<DotDevice>();
 }
 
 @Component({
     selector: 'dot-language-selector',
-    template: '',
+    template: ''
 })
 class MockDotLanguageSelectorComponent {
-    @Input() value: DotLanguage;
-    @Input() contentInode: string;
+    @Input()
+    value: DotLanguage;
+    @Input()
+    contentInode: string;
 
-    @Output() selected = new EventEmitter<DotLanguage>();
+    @Output()
+    selected = new EventEmitter<DotLanguage>();
 }
 
 const messageServiceMock = new MockDotMessageService({
@@ -215,11 +223,10 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             languageSelector.selected.emit(testlanguage);
 
             expect(component.changeLanguageHandler).toHaveBeenCalledWith(testlanguage);
-            expect(component.changeViewAs.emit).toHaveBeenCalledWith(
-                {
-                    language: testlanguage,
-                    mode: 'PREVIEW'
-                });
+            expect(component.changeViewAs.emit).toHaveBeenCalledWith({
+                language: testlanguage,
+                mode: 'PREVIEW'
+            });
         });
 
         it('should have What is Changed selector', () => {
@@ -235,7 +242,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
             });
             fixtureHost.detectChanges();
 
-            expect(languageSelector.value).toEqual(<DotLanguage> mockDotEditPageViewAs.language);
+            expect(languageSelector.value).toEqual(<DotLanguage>mockDotEditPageViewAs.language);
             expect(deviceSelector.value).toEqual(mockDotEditPageViewAs.device);
             expect(personaSelector.value).toEqual(mockDotEditPageViewAs.persona);
         });
@@ -253,29 +260,26 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         });
     });
 
-    describe('what\'s change event', () => {
+    describe("what's change event", () => {
         let whatsChanged: DebugElement;
 
         describe('events', () => {
             beforeEach(() => {
                 spyOn(component.whatschange, 'emit');
-                componentHost.pageState = new DotRenderedPageState(
-                    mockUser,
-                    JSON.parse(JSON.stringify(mockDotRenderedPage))
-                );
+                componentHost.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)));
                 spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(true));
                 fixtureHost.detectChanges();
 
                 whatsChanged = de.query(By.css('p-checkbox'));
             });
 
-            it('should emit what\'s change in true', () => {
+            it("should emit what's change in true", () => {
                 whatsChanged.triggerEventHandler('onChange', true);
                 expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
                 expect(component.whatschange.emit).toHaveBeenCalledWith(true);
             });
 
-            it('should emit what\'s change in false', () => {
+            it("should emit what's change in false", () => {
                 whatsChanged.triggerEventHandler('onChange', false);
                 expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
                 expect(component.whatschange.emit).toHaveBeenCalledWith(false);

@@ -6,17 +6,15 @@ import { DotMessageService } from '@services/dot-messages-service';
     templateUrl: './dot-reorder-menu.component.html'
 })
 export class DotReorderMenuComponent implements OnInit {
-    @Input() url: string;
-    @Output() close: EventEmitter<any> = new EventEmitter();
+    @Input()
+    url: string;
+    @Output()
+    close: EventEmitter<any> = new EventEmitter();
 
-    constructor(
-        private dotMessageService: DotMessageService
-    ) {}
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
-            'editpage.content.contentlet.menu.reorder.title'
-        ]).subscribe();
+        this.dotMessageService.getMessages(['editpage.content.contentlet.menu.reorder.title']).subscribe();
     }
 
     /**
@@ -27,5 +25,4 @@ export class DotReorderMenuComponent implements OnInit {
     onClose(): void {
         this.close.emit();
     }
-
 }

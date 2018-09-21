@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, flatMap, toArray, tap } from 'rxjs/operators';
 
 import { Auth } from 'dotcms-js/core/login.service';
@@ -17,7 +17,7 @@ export const replaceSectionsMap = {
     'edit-page': 'site-browser'
 };
 
-const replaceIdForNonMenuSection = id => {
+const replaceIdForNonMenuSection = (id) => {
     return replaceSectionsMap[id];
 };
 
@@ -85,10 +85,7 @@ export class DotNavigationService {
         });
 
         this.loginService.auth$
-            .pipe(
-                filter((auth: Auth) => !!(auth.loginAsUser || auth.user)),
-                switchMap(() => this.dotMenuService.reloadMenu())
-            )
+            .pipe(filter((auth: Auth) => !!(auth.loginAsUser || auth.user)), switchMap(() => this.dotMenuService.reloadMenu()))
             .subscribe((menus: DotMenu[]) => {
                 this.setMenu(menus);
                 this.goToFirstPortlet();
@@ -155,9 +152,9 @@ export class DotNavigationService {
      *
      * @memberof DotNavigationService
      */
-    goToFirstPortlet(): Promise <boolean> {
-        return this.getFirstMenuLink().pipe(
-            map((link: string) => this.dotRouterService.gotoPortlet(link)))
+    goToFirstPortlet(): Promise<boolean> {
+        return this.getFirstMenuLink()
+            .pipe(map((link: string) => this.dotRouterService.gotoPortlet(link)))
             .toPromise()
             .then((isRouted: Promise<boolean>) => {
                 if (!isRouted) {
@@ -224,7 +221,7 @@ export class DotNavigationService {
         return firstMenuItem.angular ? firstMenuItem.url : this.getLegacyPortletUrl(firstMenuItem.id);
     }
 
-    private getFirstMenuLink(): Observable <string> {
+    private getFirstMenuLink(): Observable<string> {
         return this.dotMenuService.loadMenu().pipe(map((menus: DotMenu[]) => this.extractFirtsMenuLink(menus)));
     }
 
@@ -243,7 +240,7 @@ export class DotNavigationService {
         }
     }
 
-    private reloadNavigation(): Observable <DotMenu[] > {
+    private reloadNavigation(): Observable<DotMenu[]> {
         return this.dotMenuService.reloadMenu().pipe(
             setActiveItems(this.dotRouterService.currentPortlet.id, this._collapsed),
             tap((menus: DotMenu[]) => {

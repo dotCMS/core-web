@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DotBaseTypeSelectorComponent } from './dot-base-type-selector.component';
 import { DebugElement, Injectable } from '@angular/core';
@@ -61,7 +60,7 @@ describe('DotBaseTypeSelectorComponent', () => {
     it('should add All Content Types option as first position', () => {
         fixture.detectChanges();
 
-        component.options.subscribe(options => {
+        component.options.subscribe((options) => {
             expect(options[0]).toEqual(allContentTypesItem);
         });
     });

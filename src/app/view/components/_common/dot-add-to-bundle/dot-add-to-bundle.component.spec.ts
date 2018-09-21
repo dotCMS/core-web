@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -90,7 +89,7 @@ describe('DotAddToBundleComponent', () => {
 
         fixture.detectChanges();
 
-        comp.cancel.subscribe(res => {
+        comp.cancel.subscribe((res) => {
             expect(res).toEqual(true);
         });
     });
@@ -146,7 +145,8 @@ describe('DotAddToBundleComponent', () => {
         });
     });
 
-    it('should set placeholder "Type bundle name" if NO bundles exist',
+    it(
+        'should set placeholder "Type bundle name" if NO bundles exist',
         fakeAsync(() => {
             spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(observableOf([]));
             fixture.detectChanges();
@@ -155,7 +155,8 @@ describe('DotAddToBundleComponent', () => {
         })
     );
 
-    it('should set placeholder "Select or type bundle" if bundles exist',
+    it(
+        'should set placeholder "Select or type bundle" if bundles exist',
         fakeAsync(() => {
             spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(
                 observableOf([

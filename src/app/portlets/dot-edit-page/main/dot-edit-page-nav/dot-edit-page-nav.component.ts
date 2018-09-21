@@ -1,14 +1,13 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { map ,  mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 interface DotEditPageNavItem {
@@ -27,7 +26,8 @@ interface DotEditPageNavItem {
     styleUrls: ['./dot-edit-page-nav.component.scss']
 })
 export class DotEditPageNavComponent implements OnChanges {
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
     isEnterpriseLicense: boolean;
 

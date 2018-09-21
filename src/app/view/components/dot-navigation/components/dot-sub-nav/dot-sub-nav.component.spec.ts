@@ -12,7 +12,7 @@ const data: DotMenu = {
     ...dotMenuMock(),
     menuItems: [
         {
-            ...dotMenuMock().menuItems[0],
+            ...dotMenuMock().menuItems[0]
         },
         {
             ...dotMenuMock().menuItems[1],
@@ -72,11 +72,11 @@ describe('DotSubNavComponent', () => {
 
         component.itemClick.subscribe((event) => {
             expect(event).toEqual({
-                originalEvent: {hello: 'world'},
+                originalEvent: { hello: 'world' },
                 data: data.menuItems[0]
             });
         });
 
-        link.triggerEventHandler('click',  {hello: 'world'});
+        link.triggerEventHandler('click', { hello: 'world' });
     });
 });

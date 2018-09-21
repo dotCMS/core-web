@@ -19,8 +19,10 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 })
 export class DotSidebarPropertiesComponent implements OnInit, ControlValueAccessor {
     value: DotLayoutSideBar;
-    @ViewChild('overlay') overlay: any;
-    @Output() change: EventEmitter<String> = new EventEmitter();
+    @ViewChild('overlay')
+    overlay: any;
+    @Output()
+    change: EventEmitter<String> = new EventEmitter();
 
     constructor(private dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {}
 
@@ -39,7 +41,8 @@ export class DotSidebarPropertiesComponent implements OnInit, ControlValueAccess
             containers: [],
             location: '',
             width: ''
-        };    }
+        };
+    }
 
     /**
      * Hides overlay panel and emits a notification to repainted the Grid

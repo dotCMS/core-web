@@ -27,9 +27,12 @@ import { DotLayout } from '../../shared/models/dot-layout.model';
     styleUrls: ['./dot-edit-layout-designer.component.scss']
 })
 export class DotEditLayoutDesignerComponent implements OnInit {
-    @ViewChild('templateName') templateName: ElementRef;
-    @Input() editTemplate = false;
-    @Input() pageState: DotRenderedPageState;
+    @ViewChild('templateName')
+    templateName: ElementRef;
+    @Input()
+    editTemplate = false;
+    @Input()
+    pageState: DotRenderedPageState;
 
     form: FormGroup;
     initialFormValue: any;
@@ -263,12 +266,12 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     private errorHandler(err: ResponseView): Observable<any> {
         return this.dotHttpErrorManagerService.handle(err).pipe(
-                tap((res: DotHttpErrorHandled) => {
+            tap((res: DotHttpErrorHandled) => {
                 if (!res.redirected) {
                     this.dotRouterService.goToSiteBrowser();
                 }
                 this.currentTheme = err.response.status === 403 ? null : this.currentTheme;
-            }
-        ));
+            })
+        );
     }
 }

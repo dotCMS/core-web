@@ -13,8 +13,10 @@ import { DotTemplateAdditionalActionsMenuComponent } from './dot-template-additi
     template: ''
 })
 class MockPrimeNGMenuComponent {
-    @Input() model: MenuItem[];
-    @Input() popup: boolean;
+    @Input()
+    model: MenuItem[];
+    @Input()
+    popup: boolean;
 }
 
 describe('DotLegacyAdditionalActionsMenuComponent', () => {

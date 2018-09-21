@@ -14,14 +14,20 @@ import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-in
     styleUrls: ['./dot-edit-page-toolbar.component.scss']
 })
 export class DotEditPageToolbarComponent implements OnInit, OnChanges {
-    @ViewChild('locker') locker: InputSwitch;
-    @ViewChild('pageLockInfo') pageLockInfo: DotEditPageLockInfoComponent;
+    @ViewChild('locker')
+    locker: InputSwitch;
+    @ViewChild('pageLockInfo')
+    pageLockInfo: DotEditPageLockInfoComponent;
 
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
 
-    @Output() changeState = new EventEmitter<DotEditPageState>();
-    @Output() actionFired = new EventEmitter<any>();
-    @Output() cancel = new EventEmitter<any>();
+    @Output()
+    changeState = new EventEmitter<DotEditPageState>();
+    @Output()
+    actionFired = new EventEmitter<any>();
+    @Output()
+    cancel = new EventEmitter<any>();
 
     states: SelectItem[] = [];
     lockerModel: boolean;

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { async } from '@angular/core/testing';
 import { DotEditContentHtmlService, DotContentletAction } from './dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
@@ -464,7 +463,7 @@ describe('DotEditContentHtmlService', () => {
                     dataset: button.dataset
                 });
             });
-            const button: HTMLButtonElement = <HTMLButtonElement> fakeDocument.querySelector('.dotedit-contentlet__edit');
+            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('.dotedit-contentlet__edit');
             const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
             button.click();
         });
@@ -663,12 +662,14 @@ describe('DotEditContentHtmlService', () => {
 
             const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
 
-            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(observableOf({
-                render: '<i>testing</i>',
-                content: {
-                    identifier: '4'
-                }
-            }));
+            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(
+                observableOf({
+                    render: '<i>testing</i>',
+                    content: {
+                        identifier: '4'
+                    }
+                })
+            );
 
             this.dotEditContentHtmlService.renderAddedForm(form).subscribe((model) => {
                 currentModel = model;

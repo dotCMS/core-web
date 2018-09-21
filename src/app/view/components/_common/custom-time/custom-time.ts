@@ -9,7 +9,8 @@ import { Subject } from 'rxjs';
     templateUrl: 'custom-time.html'
 })
 export class CustomTimeComponent implements OnInit, AfterViewChecked {
-    @Input() time;
+    @Input()
+    time;
 
     private formattedTime: Subject<string> = new Subject();
 

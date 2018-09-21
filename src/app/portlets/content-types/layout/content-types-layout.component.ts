@@ -10,7 +10,8 @@ import { FieldDragDropService } from '../fields/service';
     templateUrl: 'content-types-layout.component.html'
 })
 export class ContentTypesLayoutComponent extends BaseComponent implements OnChanges, OnInit {
-    @Input() contentTypeId: string;
+    @Input()
+    contentTypeId: string;
 
     permissionURL: string;
     pushHistoryURL: string;
@@ -47,12 +48,8 @@ export class ContentTypesLayoutComponent extends BaseComponent implements OnChan
                 }`;
             });
 
-            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${
-                changes.contentTypeId.currentValue
-            }&popup=true`;
-            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${
-                changes.contentTypeId.currentValue
-            }&popup=true`;
+            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
+            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
         }
     }
 }

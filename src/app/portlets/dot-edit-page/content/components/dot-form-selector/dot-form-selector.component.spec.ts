@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DebugElement, Injectable } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
@@ -26,12 +25,11 @@ const mockContentType = {
 @Injectable()
 class PaginatorServiceMock {
     url = '';
-
 }
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.form.name': 'Name',
-    'Select': 'Select',
+    Select: 'Select',
     'modes.Add-Form': 'Add Form'
 });
 
@@ -101,7 +99,6 @@ xdescribe('DotFormSelectorComponent', () => {
         });
 
         describe('data', () => {
-
             let pTableComponent;
 
             beforeEach(() => {

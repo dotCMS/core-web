@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -22,10 +21,14 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     bundle$: Observable<DotBundle[]>;
     placeholder: string;
 
-    @Input() assetIdentifier: string;
-    @Output() cancel = new EventEmitter<boolean>();
-    @ViewChild('formEl') formEl: HTMLFormElement;
-    @ViewChild('addBundleDropdown') addBundleDropdown: Dropdown;
+    @Input()
+    assetIdentifier: string;
+    @Output()
+    cancel = new EventEmitter<boolean>();
+    @ViewChild('formEl')
+    formEl: HTMLFormElement;
+    @ViewChild('addBundleDropdown')
+    addBundleDropdown: Dropdown;
 
     constructor(
         private addToBundleService: AddToBundleService,
@@ -47,7 +50,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
         this.initForm();
 
         this.bundle$ = this.dotMessageService.getMessages(keys).pipe(
-            mergeMap(messages => {
+            mergeMap((messages) => {
                 return this.addToBundleService.getBundles().pipe(
                     mergeMap((bundles: DotBundle[]) => {
                         setTimeout(() => {
@@ -125,6 +128,6 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     private getDefaultBundle(bundles: DotBundle[]): DotBundle {
         const lastBundle: DotBundle = JSON.parse(sessionStorage.getItem(LAST_BUNDLE_USED));
         // return lastBundle ? this.bundle$.find(bundle => bundle.name === lastBundle.name) : null;
-        return lastBundle ? bundles.find(bundle => bundle.name === lastBundle.name) : null;
+        return lastBundle ? bundles.find((bundle) => bundle.name === lastBundle.name) : null;
     }
 }

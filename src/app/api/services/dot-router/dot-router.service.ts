@@ -37,8 +37,9 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     goToEditPage(url: string, languageId?: string): Promise<boolean> {
-        return this.router.navigate(['/edit-page/content'],
-            { queryParams: !!languageId ? { url: url, language_id: languageId} : { url: url } });
+        return this.router.navigate(['/edit-page/content'], {
+            queryParams: !!languageId ? { url: url, language_id: languageId } : { url: url }
+        });
     }
 
     /**
@@ -119,7 +120,6 @@ export class DotRouterService {
      */
     isEditPage(): boolean {
         return this.currentPortlet.id === 'edit-page';
-
     }
 
     gotoPortlet(link: string, replaceUrl?: boolean): Promise<boolean> {
@@ -154,7 +154,6 @@ export class DotRouterService {
     isPublicPage(): boolean {
         return this.currentPortlet.url.startsWith('/public');
     }
-
 
     private redirectMain(): Promise<boolean> {
         if (this._previousSavedURL) {

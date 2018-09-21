@@ -32,7 +32,8 @@ import { NgGrid, NgGridConfig, NgGridItemConfig } from 'dot-layout-grid';
     ]
 })
 export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor {
-    @ViewChild(NgGrid) ngGrid: NgGrid;
+    @ViewChild(NgGrid)
+    ngGrid: NgGrid;
 
     value: DotLayoutBody;
     grid: DotLayoutGridBox[];

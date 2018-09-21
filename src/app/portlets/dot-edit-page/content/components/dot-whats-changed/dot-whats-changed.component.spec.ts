@@ -23,7 +23,8 @@ class TestHostComponent {
     template: ''
 })
 class TestDotIframeComponent {
-    @Input() src: string;
+    @Input()
+    src: string;
 }
 
 describe('DotWhatsChangedComponent', () => {
@@ -70,17 +71,13 @@ describe('DotWhatsChangedComponent', () => {
         fixture.componentInstance.languageId = '123';
         fixture.detectChanges();
 
-        expect(dotIframe.src).toEqual(
-            `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=123&pageLang=123`
-        );
+        expect(dotIframe.src).toEqual(`/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=123&pageLang=123`);
     });
 
     it('should reset url when pageId is change', () => {
         fixture.componentInstance.pageId = '321';
         fixture.detectChanges();
 
-        expect(dotIframe.src).toEqual(
-            `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=321&pageLang=321`
-        );
+        expect(dotIframe.src).toEqual(`/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=321&pageLang=321`);
     });
 });

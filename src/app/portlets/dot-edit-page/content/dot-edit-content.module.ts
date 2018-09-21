@@ -45,7 +45,7 @@ const routes: Routes = [
         DotContentletEditorModule,
         DotEditPageInfoModule,
         DotEditPageToolbarModule,
-        DotLoadingIndicatorModule,
+        DotLoadingIndicatorModule
     ],
     exports: [DotEditContentComponent],
     providers: [

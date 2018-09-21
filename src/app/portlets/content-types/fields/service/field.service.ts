@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContentTypeField, FieldType } from '../shared';
@@ -20,8 +19,8 @@ export class FieldService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'v1/fieldTypes'
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -49,8 +48,8 @@ export class FieldService {
                 body: fields,
                 method: RequestMethod.Put,
                 url: `v1/contenttype/${contentTypeId}/fields`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -58,17 +57,14 @@ export class FieldService {
      * @param contentTypeId content types's id that contains the fields
      * @param fields Fields to delete
      */
-    deleteFields(
-        contentTypeId: string,
-        fields: ContentTypeField[]
-    ): Observable<{ fields: ContentTypeField[]; deletedIds: string[] }> {
+    deleteFields(contentTypeId: string, fields: ContentTypeField[]): Observable<{ fields: ContentTypeField[]; deletedIds: string[] }> {
         return this.coreWebService
             .requestView({
                 body: fields.map((field) => field.id),
                 method: RequestMethod.Delete,
                 url: `v1/contenttype/${contentTypeId}/fields`
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     /**

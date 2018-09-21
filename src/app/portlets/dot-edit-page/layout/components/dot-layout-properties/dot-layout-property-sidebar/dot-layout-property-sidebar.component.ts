@@ -16,8 +16,10 @@ import { DotLayoutSideBar } from '../../../../shared/models/dot-layout-sidebar.m
     ]
 })
 export class DotLayoutSidebarComponent implements ControlValueAccessor, OnInit {
-    @ViewChild('propertyItemLeft') propertyItemLeft: DotLayoutPropertiesItemComponent;
-    @ViewChild('propertyItemRight') propertyItemRight: DotLayoutPropertiesItemComponent;
+    @ViewChild('propertyItemLeft')
+    propertyItemLeft: DotLayoutPropertiesItemComponent;
+    @ViewChild('propertyItemRight')
+    propertyItemRight: DotLayoutPropertiesItemComponent;
     value: DotLayoutSideBar;
 
     constructor(public dotMessageService: DotMessageService) {}

@@ -75,6 +75,6 @@ describe('DotDeviceSelectorComponent', () => {
     it('shoudl set fixed width to dropdown', () => {
         fixture.detectChanges();
         const pDropDown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
-        expect(pDropDown.style).toEqual({width: '100px'});
+        expect(pDropDown.style).toEqual({ width: '100px' });
     });
 });

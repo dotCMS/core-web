@@ -11,19 +11,17 @@ describe('ContentTypeFieldsRowListComponent', () => {
     let fixture: ComponentFixture<ContentTypeFieldsRowListComponent>;
     let de: DebugElement;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [ContentTypeFieldsRowListComponent],
-                imports: [DragulaModule],
-                providers: [FieldDragDropService, DragulaService]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [ContentTypeFieldsRowListComponent],
+            imports: [DragulaModule],
+            providers: [FieldDragDropService, DragulaService]
+        });
 
-            fixture = DOTTestBed.createComponent(ContentTypeFieldsRowListComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-        })
-    );
+        fixture = DOTTestBed.createComponent(ContentTypeFieldsRowListComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+    }));
 
     it('should has a ul', () => {
         const ul = de.query(By.css('ul'));

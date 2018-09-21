@@ -1,5 +1,4 @@
-
-import {toArray, filter, pluck, mergeMap} from 'rxjs/operators';
+import { toArray, filter, pluck, mergeMap } from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -23,15 +22,9 @@ export class PushPublishService {
         TODO: I had to do this because this line concat'api/' into the URL
         https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
     */
-    private publishUrl = `${
-        this._apiRoot.baseUrl
-    }DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
+    private publishUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/publish`;
 
-    constructor(
-        public _apiRoot: ApiRoot,
-        private coreWebService: CoreWebService,
-        private currentUser: DotCurrentUserService
-    ) {}
+    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService, private currentUser: DotCurrentUserService) {}
 
     /**
      * Get push publish environments.
@@ -39,8 +32,7 @@ export class PushPublishService {
      * @memberof PushPublishService
      */
     getEnvironments(): Observable<DotEnvironment[]> {
-        return this.currentUser
-            .getCurrentUser().pipe(
+        return this.currentUser.getCurrentUser().pipe(
             mergeMap((user) => {
                 return this.coreWebService.requestView({
                     method: RequestMethod.Get,
@@ -50,7 +42,8 @@ export class PushPublishService {
             pluck('bodyJsonObject'),
             mergeMap((environments: DotEnvironment[]) => environments),
             filter((environment) => environment.name !== ''),
-            toArray(),);
+            toArray()
+        );
     }
 
     /**

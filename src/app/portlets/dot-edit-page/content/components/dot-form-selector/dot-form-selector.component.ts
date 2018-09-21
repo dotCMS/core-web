@@ -13,9 +13,12 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./dot-form-selector.component.scss']
 })
 export class DotFormSelectorComponent implements OnInit {
-    @Input() show = false;
-    @Output() select = new EventEmitter<ContentType>();
-    @Output() close = new EventEmitter<any>();
+    @Input()
+    show = false;
+    @Output()
+    select = new EventEmitter<ContentType>();
+    @Output()
+    close = new EventEmitter<any>();
 
     items: ContentType[];
     messages: {

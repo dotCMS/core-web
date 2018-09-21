@@ -13,8 +13,10 @@ import { DotTextareaContentModule } from '@components/_common/dot-textarea-conte
     template: ''
 })
 class TestFieldValidationMessageComponent {
-    @Input() field: NgControl;
-    @Input() message: string;
+    @Input()
+    field: NgControl;
+    @Input()
+    message: string;
 }
 
 describe('ValuesPropertyComponent', () => {
@@ -25,28 +27,26 @@ describe('ValuesPropertyComponent', () => {
         'Validation-RegEx': 'Validation-RegEx'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [TestFieldValidationMessageComponent, ValuesPropertyComponent],
-                imports: [DotTextareaContentModule],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [TestFieldValidationMessageComponent, ValuesPropertyComponent],
+            imports: [DotTextareaContentModule],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+        });
 
-            fixture = DOTTestBed.createComponent(ValuesPropertyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
+        fixture = DOTTestBed.createComponent(ValuesPropertyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
 
-            comp.group = new FormGroup({
-                values: new FormControl('')
-            });
-            comp.property = {
-                name: 'values',
-                value: 'value',
-                field: {}
-            };
-        })
-    );
+        comp.group = new FormGroup({
+            values: new FormControl('')
+        });
+        comp.property = {
+            name: 'values',
+            value: 'value',
+            field: {}
+        };
+    }));
 
     it('should have a form', () => {
         const group = new FormGroup({});

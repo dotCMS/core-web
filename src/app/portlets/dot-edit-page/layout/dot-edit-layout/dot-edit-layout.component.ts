@@ -1,5 +1,4 @@
-
-import {map, pluck} from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -19,8 +18,8 @@ export class DotEditLayoutComponent implements OnInit {
     ngOnInit() {
         this.pageState = this.route.parent.parent.data.pipe(pluck('content'));
 
-        this.isAdvancedTemplate = this.pageState.pipe(map(
-            (dotRenderedPageState: DotRenderedPageState) => dotRenderedPageState.template && !dotRenderedPageState.template.drawed
-        ));
+        this.isAdvancedTemplate = this.pageState.pipe(
+            map((dotRenderedPageState: DotRenderedPageState) => dotRenderedPageState.template && !dotRenderedPageState.template.drawed)
+        );
     }
 }

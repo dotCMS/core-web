@@ -27,12 +27,16 @@ import { ContentTypeField } from '../fields';
     templateUrl: 'content-types-form.component.html'
 })
 export class ContentTypesFormComponent implements OnInit {
-    @ViewChild('name') name: ElementRef;
+    @ViewChild('name')
+    name: ElementRef;
 
-    @Input() data: any;
-    @Input() fields: ContentTypeField[];
+    @Input()
+    data: any;
+    @Input()
+    fields: ContentTypeField[];
 
-    @Output() submit: EventEmitter<any> = new EventEmitter();
+    @Output()
+    submit: EventEmitter<any> = new EventEmitter();
 
     canSave = false;
     dateVarOptions: SelectItem[] = [];
@@ -200,11 +204,9 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private initWorkflowField(): void {
-        this.dotLicenseService.isEnterprise()
-            .subscribe((isEnterpriseLicense: boolean) => {
-                this.updateWorkflowFormControl(isEnterpriseLicense);
-            });
-
+        this.dotLicenseService.isEnterprise().subscribe((isEnterpriseLicense: boolean) => {
+            this.updateWorkflowFormControl(isEnterpriseLicense);
+        });
     }
 
     private isBaseTypeContent(): boolean {

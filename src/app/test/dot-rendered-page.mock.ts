@@ -39,7 +39,7 @@ export const mockDotPage: DotPage = {
     type: '',
     uri: '',
     versionType: '',
-    rendered: '<html></html>',
+    rendered: '<html></html>'
 };
 
 export const mockDotLayout: DotLayout = {
@@ -109,5 +109,5 @@ export const mockDotRenderedPage: DotRenderedPage = {
     viewAs: {
         language: mockDotLanguage,
         mode: PageMode[PageMode.PREVIEW]
-     }
+    }
 };

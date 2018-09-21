@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -20,11 +19,13 @@ export class PublicAuthGuardService implements CanActivate {
      * @returns {Observable<boolean>}
      */
     canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): Observable<boolean> {
-        return this.loginService.isLogin$.pipe(map((isLogin) => {
-            if (isLogin) {
-                this.router.goToMain();
-            }
-            return !isLogin;
-        }));
+        return this.loginService.isLogin$.pipe(
+            map((isLogin) => {
+                if (isLogin) {
+                    this.router.goToMain();
+                }
+                return !isLogin;
+            })
+        );
     }
 }

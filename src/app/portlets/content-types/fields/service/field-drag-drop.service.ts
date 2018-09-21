@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { delay } from 'rxjs/operators';
 
@@ -20,13 +20,19 @@ export class FieldDragDropService {
         dragulaService.over().subscribe(this.toggleOverClass);
         dragulaService.out().subscribe(this.toggleOverClass);
 
-        dragulaService.dropModel().pipe(delay(0)).subscribe((value: any) => {
-            this.handleDrop(value.name, value.source.dataset.dragType);
-        });
+        dragulaService
+            .dropModel()
+            .pipe(delay(0))
+            .subscribe((value: any) => {
+                this.handleDrop(value.name, value.source.dataset.dragType);
+            });
 
-        dragulaService.removeModel().pipe(delay(0)).subscribe((value: any) => {
-            this.handleDrop(value.name, value.source.dataset.dragType);
-        });
+        dragulaService
+            .removeModel()
+            .pipe(delay(0))
+            .subscribe((value: any) => {
+                this.handleDrop(value.name, value.source.dataset.dragType);
+            });
     }
 
     /**
@@ -77,7 +83,7 @@ export class FieldDragDropService {
 
     get fieldDropFromTarget$(): Observable<any> {
         return this._fieldDropFromTarget.asObservable();
-}
+    }
 
     get fieldRowDropFromSource$(): Observable<any> {
         return this._fieldRowDropFromSource.asObservable();
@@ -87,12 +93,7 @@ export class FieldDragDropService {
         return this._fieldRowDropFromTarget.asObservable();
     }
 
-    private toggleOverClass(group: {
-        name: string;
-        el: Element;
-        container: Element;
-        source: Element;
-    }): void {
+    private toggleOverClass(group: { name: string; el: Element; container: Element; source: Element }): void {
         if (group.container.classList.contains('row-columns__item')) {
             group.container.classList.toggle('row-columns__item--over');
         }
@@ -127,9 +128,7 @@ export class FieldDragDropService {
     }
 
     private shouldMoveRow(_el: HTMLElement, source: HTMLElement, handle: HTMLElement, _sibling: HTMLElement): boolean {
-        const isDragButton =
-            handle.parentElement.classList.contains('row-header__drag') ||
-            handle.classList.contains('row-header__drag');
+        const isDragButton = handle.parentElement.classList.contains('row-header__drag') || handle.classList.contains('row-header__drag');
         return source.dataset.dragType === 'source' || isDragButton;
     }
 

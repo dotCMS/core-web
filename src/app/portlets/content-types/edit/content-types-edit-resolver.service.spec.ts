@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
@@ -16,10 +15,7 @@ class CrudServiceMock {
     getDataById() {}
 }
 
-
-const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
-    'toString'
-]);
+const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
 activatedRouteSnapshotMock.paramMap = {};
 
 describe('ContentTypeEditResolver', () => {
@@ -29,29 +25,27 @@ describe('ContentTypeEditResolver', () => {
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
-    beforeEach(
-        async(() => {
-            const testbed = DOTTestBed.configureTestingModule({
-                providers: [
-                    ContentTypeEditResolver,
-                    ContentTypesInfoService,
-                    DotHttpErrorManagerService,
-                    { provide: CrudService, useClass: CrudServiceMock },
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    {
-                        provide: ActivatedRouteSnapshot,
-                        useValue: activatedRouteSnapshotMock
-                    }
-                ],
-                imports: [RouterTestingModule]
-            });
-            crudService = testbed.get(CrudService);
-            router = testbed.get(ActivatedRouteSnapshot);
-            contentTypeEditResolver = testbed.get(ContentTypeEditResolver);
-            dotRouterService = testbed.get(DotRouterService);
-            dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
-        })
-    );
+    beforeEach(async(() => {
+        const testbed = DOTTestBed.configureTestingModule({
+            providers: [
+                ContentTypeEditResolver,
+                ContentTypesInfoService,
+                DotHttpErrorManagerService,
+                { provide: CrudService, useClass: CrudServiceMock },
+                { provide: LoginService, useClass: LoginServiceMock },
+                {
+                    provide: ActivatedRouteSnapshot,
+                    useValue: activatedRouteSnapshotMock
+                }
+            ],
+            imports: [RouterTestingModule]
+        });
+        crudService = testbed.get(CrudService);
+        router = testbed.get(ActivatedRouteSnapshot);
+        contentTypeEditResolver = testbed.get(ContentTypeEditResolver);
+        dotRouterService = testbed.get(DotRouterService);
+        dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
+    }));
 
     it('should get and return a content type', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
@@ -71,23 +65,27 @@ describe('ContentTypeEditResolver', () => {
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
     });
 
-    it('should redirect to content-types if content type it\'s not found', () => {
+    it("should redirect to content-types if content type it's not found", () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-            redirected: false
-        }));
+        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+            observableOf({
+                redirected: false
+            })
+        );
 
         spyOn(dotRouterService, 'gotoPortlet');
 
-        spyOn(crudService, 'getDataById').and.returnValue(observableThrowError({
-            bodyJsonObject: {
-                error: ''
-            },
-            response: {
-                status: 403,
-            }
-        }));
+        spyOn(crudService, 'getDataById').and.returnValue(
+            observableThrowError({
+                bodyJsonObject: {
+                    error: ''
+                },
+                response: {
+                    status: 403
+                }
+            })
+        );
 
         contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
 
@@ -98,18 +96,22 @@ describe('ContentTypeEditResolver', () => {
     it('should get and return null and go to home', () => {
         activatedRouteSnapshotMock.paramMap.get = () => '123';
 
-        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(observableOf({
-            redirected: false
-        }));
+        spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
+            observableOf({
+                redirected: false
+            })
+        );
         spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(crudService, 'getDataById').and.returnValue(observableThrowError({
-            bodyJsonObject: {
-                error: ''
-            },
-            response: {
-                status: 403
-            }
-        }));
+        spyOn(crudService, 'getDataById').and.returnValue(
+            observableThrowError({
+                bodyJsonObject: {
+                    error: ''
+                },
+                response: {
+                    status: 403
+                }
+            })
+        );
 
         contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');

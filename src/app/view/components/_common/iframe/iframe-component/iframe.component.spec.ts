@@ -152,10 +152,7 @@ describe('IframeComponent', () => {
                 jasmine.any(Function)
             );
 
-            expect(comp.iframeElement.nativeElement.contentWindow.addEventListener).toHaveBeenCalledWith(
-                'keydown',
-                jasmine.any(Function)
-            );
+            expect(comp.iframeElement.nativeElement.contentWindow.addEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
             expect(comp.iframeElement.nativeElement.contentWindow.document.addEventListener).toHaveBeenCalledWith(
                 'ng-event',
                 jasmine.any(Function)
@@ -163,7 +160,6 @@ describe('IframeComponent', () => {
         });
 
         it('should set the colors to the jsp on load', () => {
-
             iframeEl.triggerEventHandler('load', {});
 
             expect(dotUiColorsService.setColors).toHaveBeenCalledWith(fakeHtmlEl);

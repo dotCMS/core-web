@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -29,13 +28,11 @@ export class DotRenderHTMLService {
      * @memberof DotRenderHTMLService
      */
     getEdit(url: string, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
-        return this.get(
-            {
-                url: url,
-                mode: PageMode.EDIT,
-                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
-            }
-        );
+        return this.get({
+            url: url,
+            mode: PageMode.EDIT,
+            viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
+        });
     }
 
     /**
@@ -47,13 +44,11 @@ export class DotRenderHTMLService {
      * @memberof DotRenderHTMLService
      */
     getPreview(url: string, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
-        return this.get(
-            {
-                url: url,
-                mode: PageMode.PREVIEW,
-                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
-            }
-        );
+        return this.get({
+            url: url,
+            mode: PageMode.PREVIEW,
+            viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
+        });
     }
 
     /**
@@ -65,13 +60,11 @@ export class DotRenderHTMLService {
      * @memberof DotRenderHTMLService
      */
     getLive(url: string, viewAsConfig?: DotEditPageViewAs): Observable<DotRenderedPage> {
-        return this.get(
-            {
-                url: url,
-                mode: PageMode.LIVE,
-                viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
-            }
-        );
+        return this.get({
+            url: url,
+            mode: PageMode.LIVE,
+            viewAs: this.getDotEditPageViewAsParams(viewAsConfig)
+        });
     }
 
     public get(options: DotRenderPageOptions): Observable<DotRenderedPage> {
@@ -79,7 +72,7 @@ export class DotRenderHTMLService {
 
         params = {
             ...params,
-            ...options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {}
+            ...(options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {})
         };
 
         return this.coreWebService
@@ -87,27 +80,29 @@ export class DotRenderHTMLService {
                 method: RequestMethod.Get,
                 url: `v1/page/render/${options.url.replace(/^\//, '')}`,
                 params: params
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 
     public getDotEditPageViewAsParams(viewAs: DotEditPageViewAs): DotEditPageViewAsParams {
-        return viewAs ? {
-            persona_id: this.getPropertyValue(viewAs.persona, 'identifier'),
-            language_id: this.getPropertyValue(viewAs.language, 'id'),
-            device_inode: this.getPropertyValue(viewAs.device, 'inode')
-        } : null;
+        return viewAs
+            ? {
+                  persona_id: this.getPropertyValue(viewAs.persona, 'identifier'),
+                  language_id: this.getPropertyValue(viewAs.language, 'id'),
+                  device_inode: this.getPropertyValue(viewAs.device, 'inode')
+              }
+            : null;
     }
 
-    private getPropertyValue(object: DotPersona | DotLanguage | DotDevice, propertyName: string ): any {
+    private getPropertyValue(object: DotPersona | DotLanguage | DotDevice, propertyName: string): any {
         return object ? object[propertyName] : null;
     }
 
     private getOptionalViewAsParams(viewAsConfig: DotEditPageViewAsParams) {
         return {
             language_id: viewAsConfig.language_id,
-            ...viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {},
-            ...viewAsConfig.device_inode ? { 'device_inode': viewAsConfig.device_inode } : {}
+            ...(viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {}),
+            ...(viewAsConfig.device_inode ? { device_inode: viewAsConfig.device_inode } : {})
         };
     }
 
@@ -124,7 +119,7 @@ export class DotRenderHTMLService {
 export interface DotRenderPageOptions {
     url: string;
     mode?: PageMode;
-    viewAs?:  DotEditPageViewAsParams;
+    viewAs?: DotEditPageViewAsParams;
 }
 
 interface DotEditPageViewAsParams {

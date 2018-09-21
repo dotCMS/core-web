@@ -1,5 +1,4 @@
-
-import {filter, refCount, defaultIfEmpty, map, pluck, find, mergeMap, first, publishLast} from 'rxjs/operators';
+import { filter, refCount, defaultIfEmpty, map, pluck, find, mergeMap, first, publishLast } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -25,7 +24,8 @@ export class DotMenuService {
         return this.getMenuItems().pipe(
             filter((res: any) => !res.angular && res.id === id),
             first(),
-            pluck('url'),);
+            pluck('url')
+        );
     }
 
     /**
@@ -40,7 +40,8 @@ export class DotMenuService {
             pluck('id'),
             map((id: string) => menuId === id),
             filter((val) => !!val),
-            defaultIfEmpty(false),);
+            defaultIfEmpty(false)
+        );
     }
 
     /**
@@ -55,10 +56,12 @@ export class DotMenuService {
                 .requestView({
                     method: RequestMethod.Get,
                     url: this.urlMenus
-                }).pipe(
-                publishLast(),
-                refCount(),
-                pluck('entity'),);
+                })
+                .pipe(
+                    publishLast(),
+                    refCount(),
+                    pluck('entity')
+                );
         }
 
         return this.menu$;
@@ -83,12 +86,14 @@ export class DotMenuService {
         return this.loadMenu().pipe(
             mergeMap((menus: DotMenu[]) => menus),
             find((menu: DotMenu) => menu.menuItems.some((menuItem) => menuItem.id === portletId)),
-            map((menu: DotMenu) => menu.id),);
+            map((menu: DotMenu) => menu.id)
+        );
     }
 
     private getMenuItems(): Observable<DotMenuItem> {
         return this.loadMenu().pipe(
             mergeMap((menus: DotMenu[]) => menus),
-            mergeMap((menu: DotMenu) => menu.menuItems),);
+            mergeMap((menu: DotMenu) => menu.menuItems)
+        );
     }
 }

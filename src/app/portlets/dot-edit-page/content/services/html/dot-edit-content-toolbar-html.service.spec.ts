@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { DotEditContentToolbarHtmlService } from './dot-edit-content-toolbar-html.service';
 import { DotMessageService } from '@services/dot-messages-service';

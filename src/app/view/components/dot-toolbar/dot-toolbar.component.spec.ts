@@ -39,10 +39,14 @@ class MockRouterService {
     template: ''
 })
 class MockSiteSelectorComponent {
-    @Input() archive = false;
-    @Input() id = '';
-    @Input() live = true;
-    @Input() system = true;
+    @Input()
+    archive = false;
+    @Input()
+    id = '';
+    @Input()
+    live = true;
+    @Input()
+    system = true;
 }
 
 @Component({
@@ -114,7 +118,6 @@ describe('ToolbarComponent', () => {
         dotNavigationService = de.injector.get(DotNavigationService);
         spyOn(comp, 'siteChange').and.callThrough();
         spyOn(dotRouterService, 'goToSiteBrowser');
-
     }));
 
     it(`should has a crumbtrail`, () => {

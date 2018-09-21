@@ -1,5 +1,4 @@
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -14,12 +13,14 @@ export class AuthGuardService implements CanActivate {
     constructor(private dotRouterService: DotRouterService, private loginService: LoginService) {}
 
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return this.loginService.isLogin$.pipe(map((isLogin) => {
-            if (!isLogin) {
-                this.dotRouterService.goToLogin();
-                this.dotRouterService.previousSavedURL = state.url;
-            }
-            return isLogin;
-        }));
+        return this.loginService.isLogin$.pipe(
+            map((isLogin) => {
+                if (!isLogin) {
+                    this.dotRouterService.goToLogin();
+                    this.dotRouterService.previousSavedURL = state.url;
+                }
+                return isLogin;
+            })
+        );
     }
 }

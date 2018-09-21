@@ -10,9 +10,12 @@ import { DotContainerColumnBox } from '@portlets/dot-edit-page/shared/models/dot
     styleUrls: ['./dot-container-selector.component.scss']
 })
 export class DotContainerSelectorComponent implements OnInit {
-    @Input() data: DotContainerColumnBox[] = [];
-    @Input() multiple: boolean;
-    @Output() change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
+    @Input()
+    data: DotContainerColumnBox[] = [];
+    @Input()
+    multiple: boolean;
+    @Output()
+    change: EventEmitter<DotContainerColumnBox[]> = new EventEmitter();
 
     totalRecords: number;
     currentContainers: DotContainer[] = [];
@@ -76,9 +79,7 @@ export class DotContainerSelectorComponent implements OnInit {
      * @memberof DotContainerSelectorComponent
      */
     isContainerSelected(dotContainer: DotContainer): boolean {
-        return this.data.some(
-            (containerItem) => containerItem.container.identifier === dotContainer.identifier
-        );
+        return this.data.some((containerItem) => containerItem.container.identifier === dotContainer.identifier);
     }
 
     private getContainersList(filter = '', offset = 0): void {

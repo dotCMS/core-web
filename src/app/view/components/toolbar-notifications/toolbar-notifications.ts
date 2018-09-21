@@ -15,7 +15,8 @@ import { NotificationsService } from '@services/notifications-service';
     templateUrl: 'toolbar-notifications.html'
 })
 export class ToolbarNotificationsComponent extends BaseComponent implements OnInit {
-    @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
+    @ViewChild(DotDropdownComponent)
+    dropdown: DotDropdownComponent;
     existsMoreToLoad = false;
     notifications: Array<INotification> = [];
     notificationsUnreadCount = 0;
@@ -119,5 +120,4 @@ export class ToolbarNotificationsComponent extends BaseComponent implements OnIn
             this.isNotificationsMarkedAsRead = false;
         });
     }
-
 }

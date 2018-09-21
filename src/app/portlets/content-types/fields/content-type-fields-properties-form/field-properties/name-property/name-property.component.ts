@@ -9,7 +9,8 @@ import { BaseComponent } from '@components/_common/_base/base-component';
     templateUrl: './name-property.component.html'
 })
 export class NamePropertyComponent extends BaseComponent implements OnInit {
-    @ViewChild('name') name: ElementRef;
+    @ViewChild('name')
+    name: ElementRef;
 
     property: FieldProperty;
     group: FormGroup;

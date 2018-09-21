@@ -5,7 +5,6 @@ import { DotContainerColumnBox } from '../../../shared/models/dot-container-colu
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { DotMessageService } from '@services/dot-messages-service';
 
-
 /**
  * Component in charge of update the model that will be used in the sidebar display containers
  *
@@ -30,11 +29,7 @@ export class DotEditLayoutSidebarComponent implements OnInit, ControlValueAccess
     constructor(private dotEditLayoutService: DotEditLayoutService, public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService
-            .getMessages([
-                'editpage.layout.designer.sidebar'
-            ])
-            .subscribe();
+        this.dotMessageService.getMessages(['editpage.layout.designer.sidebar']).subscribe();
     }
 
     /**

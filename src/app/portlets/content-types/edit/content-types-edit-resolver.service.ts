@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DotHttpErrorManagerService, DotHttpErrorHandled } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
@@ -36,22 +35,20 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
     }
 
     private getContentType(id: string): Observable<ContentType> {
-        return this.crudService
-            .getDataById('v1/contenttype', id)
-            .pipe(
-                take(1),
-                catchError((err: ResponseView) => {
-                    return this.dotHttpErrorManagerService.handle(err).pipe(
-                        map((res: DotHttpErrorHandled) => {
-                            if (!res.redirected) {
-                                this.dotRouterService.gotoPortlet('/content-types-angular', true);
-                            }
-
-                            return null;
+        return this.crudService.getDataById('v1/contenttype', id).pipe(
+            take(1),
+            catchError((err: ResponseView) => {
+                return this.dotHttpErrorManagerService.handle(err).pipe(
+                    map((res: DotHttpErrorHandled) => {
+                        if (!res.redirected) {
+                            this.dotRouterService.gotoPortlet('/content-types-angular', true);
                         }
-                    ));
-                })
-            );
+
+                        return null;
+                    })
+                );
+            })
+        );
     }
 
     private getDefaultContentType(type: string): Observable<ContentType> {

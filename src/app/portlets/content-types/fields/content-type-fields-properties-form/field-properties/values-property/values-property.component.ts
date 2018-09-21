@@ -10,7 +10,8 @@ import { DotTextareaContentComponent } from '@components/_common/dot-textarea-co
     templateUrl: './values-property.component.html'
 })
 export class ValuesPropertyComponent extends BaseComponent {
-    @ViewChild('value') value: DotTextareaContentComponent;
+    @ViewChild('value')
+    value: DotTextareaContentComponent;
     property: FieldProperty;
     group: FormGroup;
 

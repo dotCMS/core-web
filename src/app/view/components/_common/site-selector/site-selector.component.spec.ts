@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { SiteSelectorComponent } from './site-selector.component';

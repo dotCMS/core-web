@@ -202,7 +202,7 @@ describe('ActionMenuButtonComponent', () => {
                 menuItem: {
                     icon: 'fa-check',
                     label: 'Test',
-                    command: item => {
+                    command: (item) => {
                         fakeCommand(item);
                     }
                 }

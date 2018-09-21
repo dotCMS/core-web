@@ -9,13 +9,12 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
     encapsulation: ViewEncapsulation.None
 })
 export class DotLayoutPropertiesComponent implements OnInit {
-    @Input() group: FormGroup;
+    @Input()
+    group: FormGroup;
 
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService
-            .getMessages(['editpage.layout.properties.header', 'editpage.layout.properties.footer'])
-            .subscribe();
+        this.dotMessageService.getMessages(['editpage.layout.properties.header', 'editpage.layout.properties.footer']).subscribe();
     }
 }

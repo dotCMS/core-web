@@ -1,7 +1,6 @@
+import { of as observableOf, Observable } from 'rxjs';
 
-import {of as observableOf,  Observable } from 'rxjs';
-
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DotMenuService } from '../dot-menu.service';
@@ -39,11 +38,13 @@ export class MenuGuardService implements CanActivate {
      * @returns {boolean}
      */
     private canAccessPortlet(url: string): Observable<boolean> {
-        return this.dotMenuService.isPortletInMenu(url).pipe(map((isValidPortlet) => {
-            if (!isValidPortlet) {
-                this.dotNavigationService.goToFirstPortlet();
-            }
-            return isValidPortlet;
-        }));
+        return this.dotMenuService.isPortletInMenu(url).pipe(
+            map((isValidPortlet) => {
+                if (!isValidPortlet) {
+                    this.dotNavigationService.goToFirstPortlet();
+                }
+                return isValidPortlet;
+            })
+        );
     }
 }

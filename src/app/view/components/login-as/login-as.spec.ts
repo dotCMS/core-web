@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError, of as observableOf, from as observableFrom,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, from as observableFrom, Observable } from 'rxjs';
 import { mockUser, LoginServiceMock } from './../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';

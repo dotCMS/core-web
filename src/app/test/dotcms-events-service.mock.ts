@@ -1,4 +1,4 @@
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export class DotcmsEventsServiceMock {
     private observers: Subject<any>[] = [];

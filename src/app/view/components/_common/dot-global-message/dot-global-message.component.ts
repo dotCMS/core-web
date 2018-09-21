@@ -1,5 +1,4 @@
-
-import {filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { DotGlobalMessage } from '@models/dot-global-message/dot-global-message.model';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
@@ -17,7 +16,8 @@ import { DotEvent } from '@models/dot-event/dot-event';
     styleUrls: ['./dot-global-message.component.scss']
 })
 export class DotGlobalMessageComponent implements OnInit {
-    @HostBinding('class.dot-global-message--visible') visibility = false;
+    @HostBinding('class.dot-global-message--visible')
+    visibility = false;
     message: DotGlobalMessage = { value: '' };
 
     private icons = {
@@ -28,8 +28,8 @@ export class DotGlobalMessageComponent implements OnInit {
 
     ngOnInit() {
         this.dotEventsService
-            .listen('dot-global-message').pipe(
-            filter((event) => !!event.data))
+            .listen('dot-global-message')
+            .pipe(filter((event) => !!event.data))
             .subscribe((event: DotEvent) => {
                 this.message = event.data;
                 this.visibility = true;

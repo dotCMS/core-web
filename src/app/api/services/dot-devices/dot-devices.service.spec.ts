@@ -15,14 +15,9 @@ describe('DotDevicesService', () => {
 
     it('should get Devices', () => {
         let result;
-        const url = [
-            `content/render/false/query/+contentType:previewDevice `,
-            `+live:true `,
-            `+deleted:false `,
-            `+working:true`
-        ].join('');
+        const url = [`content/render/false/query/+contentType:previewDevice `, `+live:true `, `+deleted:false `, `+working:true`].join('');
 
-        this.dotDevicesService.get().subscribe(res => {
+        this.dotDevicesService.get().subscribe((res) => {
             result = res;
         });
 

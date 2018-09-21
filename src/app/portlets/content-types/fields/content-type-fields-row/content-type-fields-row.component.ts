@@ -17,11 +17,15 @@ import { FieldColumn } from '..';
     templateUrl: './content-type-fields-row.component.html'
 })
 export class ContentTypeFieldsRowComponent implements OnInit {
-    @Input() fieldRow: FieldRow;
+    @Input()
+    fieldRow: FieldRow;
 
-    @Output() editField: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() removeField: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() removeRow: EventEmitter<FieldRow> = new EventEmitter();
+    @Output()
+    editField: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    removeField: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    removeRow: EventEmitter<FieldRow> = new EventEmitter();
 
     i18nMessages: any = {};
 

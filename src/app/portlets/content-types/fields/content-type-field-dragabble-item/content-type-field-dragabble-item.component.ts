@@ -16,9 +16,12 @@ import { FieldService } from '../service';
     templateUrl: './content-type-field-dragabble-item.component.html'
 })
 export class ContentTypesFieldDragabbleItemComponent extends BaseComponent implements OnInit {
-    @Input() field: ContentTypeField;
-    @Output() remove: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() edit: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Input()
+    field: ContentTypeField;
+    @Output()
+    remove: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    edit: EventEmitter<ContentTypeField> = new EventEmitter();
     fieldAttributes: string;
 
     constructor(dotMessageService: DotMessageService, public fieldService: FieldService) {

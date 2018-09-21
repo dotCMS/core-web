@@ -8,19 +8,27 @@ import { fromEvent } from 'rxjs';
     styleUrls: ['./dot-iframe-dialog.component.scss']
 })
 export class DotIframeDialogComponent implements OnChanges {
-    @ViewChild('dialog') dialog: Dialog;
+    @ViewChild('dialog')
+    dialog: Dialog;
 
-    @Input() url: string;
-    @Input() header = '';
+    @Input()
+    url: string;
+    @Input()
+    header = '';
 
-    @Output() beforeClose: EventEmitter<{
-        originalEvent: MouseEvent | KeyboardEvent,
-        close: () => void
+    @Output()
+    beforeClose: EventEmitter<{
+        originalEvent: MouseEvent | KeyboardEvent;
+        close: () => void;
     }> = new EventEmitter();
-    @Output() close: EventEmitter<any> = new EventEmitter();
-    @Output() custom: EventEmitter<CustomEvent> = new EventEmitter();
-    @Output() load: EventEmitter<any> = new EventEmitter();
-    @Output() keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
+    @Output()
+    close: EventEmitter<any> = new EventEmitter();
+    @Output()
+    custom: EventEmitter<CustomEvent> = new EventEmitter();
+    @Output()
+    load: EventEmitter<any> = new EventEmitter();
+    @Output()
+    keydown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     show: boolean;
 

@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable ,  Observer } from 'rxjs';
+import { of as observableOf, Observable, Observer } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { OnSaveDeactivate } from './save-on-deactivate';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
@@ -14,7 +13,7 @@ export class DotSaveOnDeactivateService implements CanDeactivate<OnSaveDeactivat
             return Observable.create((observer: Observer<boolean>) => {
                 this.dotDialogService.confirm({
                     accept: () => {
-                        component.onDeactivateSave().subscribe( res => {
+                        component.onDeactivateSave().subscribe((res) => {
                             observer.next(res);
                             observer.complete();
                         });

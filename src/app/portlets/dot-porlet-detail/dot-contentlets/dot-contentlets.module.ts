@@ -4,9 +4,7 @@ import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot
 
 @NgModule({
     declarations: [DotContentletsComponent],
-    imports: [
-        DotContentletEditorModule,
-    ],
+    imports: [DotContentletEditorModule],
     exports: [DotContentletsComponent],
     providers: []
 })

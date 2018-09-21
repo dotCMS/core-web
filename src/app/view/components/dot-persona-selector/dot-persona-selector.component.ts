@@ -10,8 +10,10 @@ import { map, take } from 'rxjs/operators';
     styleUrls: ['./dot-persona-selector.component.scss']
 })
 export class DotPersonaSelectorComponent implements OnInit {
-    @Input() value: DotPersona;
-    @Output() selected = new EventEmitter<DotPersona>();
+    @Input()
+    value: DotPersona;
+    @Output()
+    selected = new EventEmitter<DotPersona>();
 
     options: DotPersona[];
 

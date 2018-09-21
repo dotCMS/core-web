@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Observable } from 'rxjs';
@@ -27,7 +26,7 @@ export class DotThemesService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'v1/themes/id/' + inode
-            }).pipe(
-            pluck('entity'));
+            })
+            .pipe(pluck('entity'));
     }
 }

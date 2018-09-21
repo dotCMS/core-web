@@ -12,8 +12,10 @@ import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
     templateUrl: 'action-header.html'
 })
 export class ActionHeaderComponent extends BaseComponent implements OnChanges {
-    @Input() selectedItems = [];
-    @Input() options: ActionHeaderOptions;
+    @Input()
+    selectedItems = [];
+    @Input()
+    options: ActionHeaderOptions;
     public dynamicOverflow = 'visible';
 
     constructor(dotMessageService: DotMessageService, private dotDialogService: DotAlertConfirmService) {

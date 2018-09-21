@@ -45,14 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpModule,
-        ReactiveFormsModule,
-        RouterModule.forChild(routes),
-        DotDirectivesModule
-    ],
+    imports: [CommonModule, FormsModule, HttpModule, ReactiveFormsModule, RouterModule.forChild(routes), DotDirectivesModule],
     declarations: [
         AddToBundleDialogComponent,
         AddToBundleDialogContainer,
@@ -77,15 +70,7 @@ const routes: Routes = [
         VisitorsLocationComponent,
         VisitorsLocationContainer
     ],
-    providers: [
-        ActionService,
-        BundleService,
-        ConditionGroupService,
-        ConditionService,
-        GoogleMapService,
-        I18nService,
-        RuleService
-    ],
+    providers: [ActionService, BundleService, ConditionGroupService, ConditionService, GoogleMapService, I18nService, RuleService],
     exports: [AppRulesComponent]
 })
 export class RuleEngineModule {}

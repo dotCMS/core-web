@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
@@ -10,7 +9,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
-import {DotIconModule} from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -29,7 +28,8 @@ class TestContentTypeFieldsRowListComponent {}
     template: ''
 })
 class TestDotIframeComponent {
-    @Input() src: string;
+    @Input()
+    src: string;
 }
 
 @Component({
@@ -37,7 +37,8 @@ class TestDotIframeComponent {
     template: '<dot-content-type-layout [contentTypeId]="contentTypeId"></dot-content-type-layout>'
 })
 class TestHostComponent {
-    @Input() contentTypeId: string;
+    @Input()
+    contentTypeId: string;
 }
 
 @Component({

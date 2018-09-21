@@ -20,28 +20,26 @@ describe('DefaultValuePropertyComponent', () => {
         'contenttypes.field.properties.default_value.immutable_date_time.error.format': 'date-time error'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [DefaultValuePropertyComponent, FieldValidationMessageComponent],
-                imports: [],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DefaultValuePropertyComponent, FieldValidationMessageComponent],
+            imports: [],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+        });
 
-            fixture = DOTTestBed.createComponent(DefaultValuePropertyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            el = de.nativeElement;
-            comp.group = new FormGroup({
-                name: new FormControl('')
-            });
-            comp.property = {
-                name: 'name',
-                value: 'value',
-                field: {}
-            };
-        })
-    );
+        fixture = DOTTestBed.createComponent(DefaultValuePropertyComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        el = de.nativeElement;
+        comp.group = new FormGroup({
+            name: new FormControl('')
+        });
+        comp.property = {
+            name: 'name',
+            value: 'value',
+            field: {}
+        };
+    }));
 
     it('should have a form', () => {
         const group = new FormGroup({});

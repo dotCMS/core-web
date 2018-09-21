@@ -27,7 +27,8 @@ describe('DotReorderMenuComponent', () => {
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
-                }, {
+                },
+                {
                     provide: DotMessageService,
                     useValue: messageServiceMock
                 }

@@ -1,7 +1,6 @@
+import { fromEvent as observableFromEvent, of as observableOf, Observable, Subject, Subscription } from 'rxjs';
 
-import {fromEvent as observableFromEvent, of as observableOf,  Observable ,  Subject ,  Subscription } from 'rxjs';
-
-import {map,  take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Injectable, ElementRef } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -196,22 +195,26 @@ export class DotEditContentHtmlService {
             this.showContentAlreadyAddedError();
             return observableOf(null);
         } else {
-            return this.dotContainerContentletService.getFormToContainer(this.currentContainer, form).pipe(map(response => {
+            return this.dotContainerContentletService.getFormToContainer(this.currentContainer, form).pipe(
+                map((response) => {
+                    const containers: DotPageContainer[] = this.getContentModel();
 
-                const containers: DotPageContainer[]  = this.getContentModel();
+                    containers
+                        .filter(
+                            (container) =>
+                                container.identifier === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid
+                        )
+                        .forEach((container) => {
+                            if (!container.contentletsId) {
+                                container.contentletsId = [];
+                            }
 
-                containers.filter(container =>
-                    container.identifier === this.currentContainer.identifier && container.uuid === this.currentContainer.uuid)
-                    .forEach(container => {
-                        if (!container.contentletsId) {
-                            container.contentletsId = [];
-                        }
+                            container.contentletsId.push(response.content.identifier);
+                        });
 
-                        container.contentletsId.push(response.content.identifier);
-                    });
-
-                return containers;
-            }));
+                    return containers;
+                })
+            );
         }
     }
 
@@ -441,7 +444,6 @@ export class DotEditContentHtmlService {
     }
 
     private appendNewContentlets(contentletEl: any, html: string): void {
-
         const contentletContentEl = contentletEl.querySelector('.dotedit-contentlet__content');
         contentletContentEl.innerHTML = ''; // Removing the loading indicator
         let scriptTags: HTMLScriptElement[] = [];
@@ -535,7 +537,7 @@ export class DotEditContentHtmlService {
     private handlerContentletEvents(event: string): (contentletEvent: any) => void {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
-            'save': (contentletEvent: any) => {
+            save: (contentletEvent: any) => {
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentletEvent.data);
                 } else {
@@ -546,14 +548,14 @@ export class DotEditContentHtmlService {
                 }
             },
             // When a user select a content from the search jsp
-            'select': (contentletEvent: any) => {
+            select: (contentletEvent: any) => {
                 this.renderAddedContentlet(contentletEvent.data);
                 this.iframeActions$.next({
                     name: 'select'
                 });
             },
             // When a user drag and drop a contentlet in the iframe
-            'relocate': (contentletEvent: any) => {
+            relocate: (contentletEvent: any) => {
                 this.renderRelocatedContentlet(contentletEvent.data);
             },
             'deleted-contenlet': (contentletEvent: any) => {
@@ -635,7 +637,7 @@ export class DotEditContentHtmlService {
         const doc = this.getEditPageDocument();
         const contentlets = doc.querySelectorAll(`div[data-dot-object="contentlet"][data-dot-inode="${this.currentContentlet.inode}"]`);
 
-        contentlets.forEach(contentlet => {
+        contentlets.forEach((contentlet) => {
             contentlet.remove();
         });
     }

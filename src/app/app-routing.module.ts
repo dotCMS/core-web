@@ -79,7 +79,7 @@ const PORTLETS_IFRAME = [
                     {
                         loadChildren: 'src/app/portlets/dot-porlet-detail/dot-portlet-detail.module#DotPortletDetailModule',
                         path: ':asset'
-                    },
+                    }
                 ]
             },
             {

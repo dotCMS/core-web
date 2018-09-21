@@ -17,7 +17,8 @@ import { DotContentletEditorService } from '../../services/dot-contentlet-editor
     styleUrls: ['./dot-add-contentlet.component.scss']
 })
 export class DotAddContentletComponent implements OnInit {
-    @Output() close: EventEmitter<any> = new EventEmitter();
+    @Output()
+    close: EventEmitter<any> = new EventEmitter();
     url$: Observable<string>;
     header$: Observable<string>;
 

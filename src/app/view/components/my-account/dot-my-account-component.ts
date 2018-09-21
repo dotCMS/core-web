@@ -14,8 +14,10 @@ import { DotcmsConfig } from 'dotcms-js/dotcms-js';
     templateUrl: 'dot-my-account-component.html'
 })
 export class MyAccountComponent extends BaseComponent {
-    @Output() close = new EventEmitter<any>();
-    @Input() visible: boolean;
+    @Output()
+    close = new EventEmitter<any>();
+    @Input()
+    visible: boolean;
 
     emailRegex: string;
     passwordMatch: boolean;
@@ -73,9 +75,7 @@ export class MyAccountComponent extends BaseComponent {
             this.message = null;
         }
         this.passwordMatch =
-            this.accountUser.newPassword !== '' &&
-            this.passwordConfirm !== '' &&
-            this.accountUser.newPassword === this.passwordConfirm;
+            this.accountUser.newPassword !== '' && this.passwordConfirm !== '' && this.accountUser.newPassword === this.passwordConfirm;
     }
 
     toggleChangePasswordOption(): void {

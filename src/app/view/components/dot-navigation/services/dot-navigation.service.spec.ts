@@ -2,7 +2,6 @@ import { async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, NavigationEnd } from '@angular/router';
 
-
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
@@ -13,7 +12,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 import { DotcmsEventsService, LoginService, Auth } from 'dotcms-js/dotcms-js';
 
-import { Observable ,  Subject ,  of } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { skip } from 'rxjs/operators';
 
 class RouterMock {
@@ -35,8 +34,6 @@ class RouterMock {
     triggerNavigationEnd(url: string): void {
         this._events.next(new NavigationEnd(0, url || '/url/789', url || '/url/789'));
     }
-
-
 }
 class DotMenuServiceMock {
     loadMenu(): Observable<DotMenu[]> {
@@ -143,45 +140,43 @@ describe('DotNavigationService', () => {
     let loginService: LoginServiceMock;
     let router;
 
-    beforeEach(
-        async(() => {
-            const testbed = DOTTestBed.configureTestingModule({
-                providers: [
-                    DotNavigationService,
-                    {
-                        provide: DotcmsEventsService,
-                        useClass: DotcmsEventsServiceMock
-                    },
-                    {
-                        provide: DotMenuService,
-                        useClass: DotMenuServiceMock
-                    },
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    {
-                        provide: Router,
-                        useClass: RouterMock
-                    }
-                ],
-                imports: [RouterTestingModule]
-            });
+    beforeEach(async(() => {
+        const testbed = DOTTestBed.configureTestingModule({
+            providers: [
+                DotNavigationService,
+                {
+                    provide: DotcmsEventsService,
+                    useClass: DotcmsEventsServiceMock
+                },
+                {
+                    provide: DotMenuService,
+                    useClass: DotMenuServiceMock
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                {
+                    provide: Router,
+                    useClass: RouterMock
+                }
+            ],
+            imports: [RouterTestingModule]
+        });
 
-            service = testbed.get(DotNavigationService);
-            dotRouterService = testbed.get(DotRouterService);
-            dotcmsEventsService = testbed.get(DotcmsEventsService);
-            dotMenuService = testbed.get(DotMenuService);
-            loginService = testbed.get(LoginService);
-            dotEventService = testbed.get(DotEventsService);
-            router = testbed.get(Router);
+        service = testbed.get(DotNavigationService);
+        dotRouterService = testbed.get(DotRouterService);
+        dotcmsEventsService = testbed.get(DotcmsEventsService);
+        dotMenuService = testbed.get(DotMenuService);
+        loginService = testbed.get(LoginService);
+        dotEventService = testbed.get(DotEventsService);
+        router = testbed.get(Router);
 
-            spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => new Promise((resolve) => resolve(true)));
-            spyOn(dotRouterService, 'reloadCurrentPortlet');
-            spyOn(dotEventService, 'notify');
-            spyOn(dotMenuService, 'reloadMenu').and.callThrough();
-        })
-    );
+        spyOn(dotRouterService, 'gotoPortlet').and.callFake(() => new Promise((resolve) => resolve(true)));
+        spyOn(dotRouterService, 'reloadCurrentPortlet');
+        spyOn(dotEventService, 'notify');
+        spyOn(dotMenuService, 'reloadMenu').and.callThrough();
+    }));
 
     describe('goToFirstPortlet', () => {
         it('should go to first portlet: ', () => {
@@ -258,7 +253,6 @@ describe('DotNavigationService', () => {
                 counter++;
             });
 
-
             service.setOpen('456');
 
             expect(service.collapsed).toBe(false);
@@ -288,12 +282,11 @@ describe('DotNavigationService', () => {
     });
 
     describe('goTo', () => {
-        it ('should go to url', () => {
+        it('should go to url', () => {
             service.goTo('hello/world');
             expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('hello/world');
         });
     });
-
 
     it('should go to first portlet on auth change', () => {
         spyOn(service, 'goToFirstPortlet');

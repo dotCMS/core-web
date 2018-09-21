@@ -9,14 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [DotEditLayoutSidebarComponent],
-    imports: [
-        CommonModule,
-        DotActionButtonModule,
-        FormsModule,
-        DotContainerSelectorModule,
-        ButtonModule,
-        DotSidebarPropertiesModule
-    ],
+    imports: [CommonModule, DotActionButtonModule, FormsModule, DotContainerSelectorModule, ButtonModule, DotSidebarPropertiesModule],
     exports: [DotEditLayoutSidebarComponent],
     providers: []
 })

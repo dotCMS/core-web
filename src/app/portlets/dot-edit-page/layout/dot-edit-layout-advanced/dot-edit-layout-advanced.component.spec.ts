@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -63,11 +62,9 @@ describe('DotEditLayoutAdvancedComponent - Basic', () => {
     let fixture: ComponentFixture<DotEditLayoutAdvancedComponent>;
     let de: DebugElement;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule(basicModule);
-        })
-    );
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule(basicModule);
+    }));
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotEditLayoutAdvancedComponent);

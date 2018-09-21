@@ -1,7 +1,6 @@
+import { fromEvent as observableFromEvent, Observable } from 'rxjs';
 
-import {fromEvent as observableFromEvent,  Observable } from 'rxjs';
-
-import {take, skip} from 'rxjs/operators';
+import { take, skip } from 'rxjs/operators';
 import { Component, Input } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
 
@@ -17,8 +16,10 @@ import { MenuItem } from 'primeng/primeng';
     styleUrls: ['./dot-menu.component.scss']
 })
 export class DotMenuComponent {
-    @Input() icon: string;
-    @Input() model: MenuItem[];
+    @Input()
+    icon: string;
+    @Input()
+    model: MenuItem[];
     visible = false;
     constructor() {}
 
@@ -32,9 +33,11 @@ export class DotMenuComponent {
         this.visible = !this.visible;
         if (this.visible) {
             // Skip 1 because the event bubbling capture the document.click
-            observableFromEvent(document, 'click').pipe(
-                skip(1),
-                take(1),)
+            observableFromEvent(document, 'click')
+                .pipe(
+                    skip(1),
+                    take(1)
+                )
                 .subscribe(() => {
                     this.visible = false;
                 });

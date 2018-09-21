@@ -1,5 +1,4 @@
-
-import {pluck} from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DotDevice } from '@models/dot-device/dot-device.model';
@@ -25,7 +24,7 @@ export class DotDevicesService {
             .requestView({
                 method: RequestMethod.Get,
                 url: 'content/render/false/query/+contentType:previewDevice +live:true +deleted:false +working:true'
-            }).pipe(
-            pluck('contentlets'));
+            })
+            .pipe(pluck('contentlets'));
     }
 }

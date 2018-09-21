@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable ,  Subject } from 'rxjs';
+import { of as observableOf, Observable, Subject } from 'rxjs';
 import { Site } from 'dotcms-js/dotcms-js';
 
 export const mockSites: Site[] = [

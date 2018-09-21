@@ -1,5 +1,4 @@
-
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -120,7 +119,7 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         fixture.detectChanges();
 
-        comp.cancel.subscribe(res => {
+        comp.cancel.subscribe((res) => {
             expect(res).toEqual(true);
         });
     });
