@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DebugElement, SimpleChange, Component } from '@angular/core';
+import { DebugElement, SimpleChange } from '@angular/core';
 import { DotMessageService } from '../../../../../api/services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
@@ -9,31 +9,12 @@ import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconModule } from '../../dot-icon/dot-icon.module';
-import { FormGroup, FormControl } from '@angular/forms';
-
-@Component({
-    selector: 'dot-test-host-component',
-    template: `<form [formGroup]="form">
-                <dot-searchable-dropdown formControlName="test" valuePropertyName="id"></dot-searchable-dropdown>
-            </form>`
-})
-class TestHostComponent {
-    form: FormGroup;
-    constructor() {
-        this.form = new FormGroup({
-            test: new FormControl({
-                name: 'testName',
-                id: 'testId'
-            })
-        });
-    }
-}
 
 describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let comp: SearchableDropdownComponent;
-    let fixture: ComponentFixture<TestHostComponent>;
+    let fixture: ComponentFixture<SearchableDropdownComponent>;
     let de: DebugElement;
     let el: HTMLElement;
     const data = [];
@@ -47,14 +28,14 @@ describe('SearchableDropdownComponent', () => {
             });
 
             DOTTestBed.configureTestingModule({
-                declarations: [SearchableDropdownComponent, TestHostComponent],
+                declarations: [SearchableDropdownComponent],
                 imports: [...SEARCHABLE_NGFACES_MODULES, BrowserAnimationsModule, DotIconModule],
                 providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
             });
 
-            fixture = DOTTestBed.createComponent(TestHostComponent);
-            comp = fixture.debugElement.query(By.css('dot-searchable-dropdown')).componentInstance;
-            de = fixture.debugElement.query(By.css('dot-searchable-dropdown'));
+            fixture = DOTTestBed.createComponent(SearchableDropdownComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
             el = de.nativeElement;
 
             for (let i = 0; i < NROWS; i++) {
@@ -76,15 +57,9 @@ describe('SearchableDropdownComponent', () => {
         })
     );
 
-    it('should propagate value on init', fakeAsync(() => {
-        fixture.detectChanges();
-        const hostInstance = fixture.componentInstance;
-        tick();
-        expect(hostInstance.form.controls['test'].value).toBe('testId');
-    }));
-
     it('should renderer the pagination links', () => {
         fixture.detectChanges();
+
         const paginator = fixture.debugElement.query(By.css('p-paginator'));
 
         const componentInstance = paginator.componentInstance;
