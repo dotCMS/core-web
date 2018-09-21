@@ -60,10 +60,10 @@ export class CategoriesPropertyComponent extends BaseComponent implements OnInit
 
     /**
      * Propagate the inode value to the parent form
-     * @param {any} categoryOptionSelected
+     * @param {Category} categoryOptionSelected
      * @memberof CategoriesPropertyComponent
      */
-    categoryChanged(categoryOptionSelected: any): void {
+    categoryChanged(categoryOptionSelected: Category): void {
         this.group.controls.categories.setValue(categoryOptionSelected.inode);
     }
 
