@@ -77,7 +77,6 @@ export class DotCrumbtrailService {
         this.dataMatch[sectionKey].split('.')
             .forEach(key => currentData = currentData[key]);
 
-        console.log('currentData', currentData);
         return currentData;
     }
 
@@ -89,8 +88,6 @@ export class DotCrumbtrailService {
             lastChild = lastChild.firstChild;
             data = Object.assign(data, lastChild.data['value']);
         } while (lastChild.firstChild !== null);
-
-        console.log('data', data);
 
         return data;
     }
