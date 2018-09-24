@@ -4,8 +4,7 @@ import { DotCrumbtrailService, Crumb } from './service/dot-crumbtrail.service';
 @Component({
     selector: 'dot-crumbtrail',
     templateUrl: './dot-crumbtrail.component.html',
-    styleUrls: ['./dot-crumbtrail.component.scss'],
-    providers: [DotCrumbtrailService]
+    styleUrls: ['./dot-crumbtrail.component.scss']
 })
 export class DotCrumbtrailComponent implements OnInit {
     crumb: Observable<Crumb[]>;

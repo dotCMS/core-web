@@ -29,7 +29,6 @@ export const COMPONENTS = [
     LoginAsComponent,
     LogOutContainerComponent,
     GlobalSearchComponent,
-    DotCrumbtrailComponent,
     DotAlertConfirmComponent,
     CustomTimeComponent
 ];
