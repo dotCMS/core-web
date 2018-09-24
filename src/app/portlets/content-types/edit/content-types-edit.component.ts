@@ -212,19 +212,6 @@ export class ContentTypesEditComponent implements OnInit {
 
     private createContentType(value: ContentType): void {
         this.crudService
-<<<<<<< HEAD
-            .postData('v1/contenttype', value).pipe(
-            mergeMap((contentTypes: ContentType[]) => contentTypes),
-            take(1), )
-            .subscribe((contentType: ContentType) => {
-                this.data = contentType;
-                this.fields = this.data.fields;
-                this.dotRouterService.goToEditContentType(this.data.id);
-                this.show = false;
-            }, (err: ResponseView) => {
-                this.handleHttpError(err);
-            });
-=======
             .postData('v1/contenttype', value)
             .pipe(
                 mergeMap((contentTypes: ContentType[]) => contentTypes),
@@ -241,7 +228,6 @@ export class ContentTypesEditComponent implements OnInit {
                     this.handleHttpError(err);
                 }
             );
->>>>>>> 730e237e... Prettier ts files
     }
 
     private handleHttpError(err: ResponseView) {
