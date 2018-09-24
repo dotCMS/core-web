@@ -15,7 +15,7 @@ import { DotRouterService } from '../../../../api/services/dot-router/dot-router
 import { DotIframeService } from '../../_common/iframe/service/dot-iframe/dot-iframe.service';
 import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
 
-const replaceSectionsMap = {
+export const replaceSectionsMap = {
     'edit-page': 'site-browser'
 };
 

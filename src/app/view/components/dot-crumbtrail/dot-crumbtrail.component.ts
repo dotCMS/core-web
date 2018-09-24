@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { DotCrumbtrailService } from './service/dot-crumbtrail.service';
-
+import { DotCrumbtrailService, Crumb } from './service/dot-crumbtrail.service';
 @Component({
     selector: 'dot-crumbtrail',
     templateUrl: './dot-crumbtrail.component.html',
@@ -9,7 +8,7 @@ import { DotCrumbtrailService } from './service/dot-crumbtrail.service';
     providers: [DotCrumbtrailService]
 })
 export class DotCrumbtrailComponent implements OnInit {
-    crumb: Observable<string>;
+    crumb: Observable<Crumb[]>;
 
     constructor(private crumbTrailService: DotCrumbtrailService) {
 
