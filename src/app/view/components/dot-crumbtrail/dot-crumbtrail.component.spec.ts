@@ -1,8 +1,7 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotCrumbtrailComponent } from './dot-crumbtrail.component';
 import { BreadcrumbModule } from 'primeng/primeng';
-import { DotCrumbtrailService, Crumb } from './service/dot-crumbtrail.service';
+import { DotCrumbtrailService, DotCrumb } from './service/dot-crumbtrail.service';
 import { Injectable, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
@@ -11,13 +10,13 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 class MockDotCrumbtrailService {
 
-    private crumbTrail: Subject<Crumb[]> = new Subject();
+    private crumbTrail: Subject<DotCrumb[]> = new Subject();
 
-    get crumbTrail$(): Observable<Crumb[]> {
+    get crumbTrail$(): Observable<DotCrumb[]> {
         return this.crumbTrail.asObservable();
     }
 
-    trigger(crumbs: Crumb[]): void {
+    trigger(crumbs: DotCrumb[]): void {
         this.crumbTrail.next(crumbs);
     }
 }
