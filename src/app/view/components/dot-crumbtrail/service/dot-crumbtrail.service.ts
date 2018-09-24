@@ -10,7 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class DotCrumbtrailService {
     private URL_EXCLUDES = ['/content-types-angular/create/content'];
-    private crumbTrail: Subject<Crumb[]> = new BehaviorSubject([]);
+    private crumbTrail: Subject<DotCrumb[]> = new BehaviorSubject([]);
 
     private dataMatch = {
         'content-types-angular': 'contentType.name',
@@ -26,12 +26,12 @@ export class DotCrumbtrailService {
             map((event: NavigationEnd) => event.url),
             filter((url: string) => !this.URL_EXCLUDES.includes(url)),
             switchMap(this.getCrumbtrail.bind(this))
-        ).subscribe((crumbTrail: Crumb[]) => this.crumbTrail.next(crumbTrail));
+        ).subscribe((crumbTrail: DotCrumb[]) => this.crumbTrail.next(crumbTrail));
 
-        this.getCrumbtrail(router.url).subscribe(crumbTrail => this.crumbTrail.next(crumbTrail));
+        this.getCrumbtrail(router.url).subscribe((crumbTrail: DotCrumb[]) => this.crumbTrail.next(crumbTrail));
     }
 
-    get crumbTrail$(): Observable<Crumb[]> {
+    get crumbTrail$(): Observable<DotCrumb[]> {
         return this.crumbTrail.asObservable();
     }
 
@@ -39,13 +39,13 @@ export class DotCrumbtrailService {
         return url.split('/').filter((section: string) => section !== '' && section !== 'c');
     }
 
-    private getMenuLabel(portletId: string): Observable<Crumb[]> {
+    private getMenuLabel(portletId: string): Observable<DotCrumb[]> {
 
         return this.dotNavigationService.items$.pipe(
             filter((dotMenus: DotMenu[]) => !!dotMenus.length),
             map((dotMenus: DotMenu[]) => {
 
-                let res: Crumb[] = [];
+                let res: DotCrumb[] = [];
 
                 dotMenus.forEach((menu: DotMenu) => {
                     menu.menuItems.forEach((menuItem: DotMenuItem) => {
@@ -92,12 +92,12 @@ export class DotCrumbtrailService {
         return data;
     }
 
-    private getCrumbtrail(url: string): Observable<Crumb[]> {
+    private getCrumbtrail(url: string): Observable<DotCrumb[]> {
         const sections: string[] = this.splitURL(url);
         const portletId = replaceSectionsMap[sections[0]] || sections[0];
 
         return this.getMenuLabel(portletId).pipe(
-            map((crumbTrail: Crumb[]) => {
+            map((crumbTrail: DotCrumb[]) => {
                 if (sections.length > 1 ) {
                     crumbTrail.push({
                         label: this.getCrumbtrailSection(sections[0]),
@@ -111,7 +111,7 @@ export class DotCrumbtrailService {
     }
 }
 
-export interface Crumb {
+export interface DotCrumb {
     label: string;
     url: string;
 }
