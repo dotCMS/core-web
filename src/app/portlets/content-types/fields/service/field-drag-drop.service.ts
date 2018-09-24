@@ -23,15 +23,37 @@ export class FieldDragDropService {
         dragulaService
             .dropModel()
             .pipe(delay(0))
-            .subscribe((value: any) => {
-                this.handleDrop(value.name, value.source.dataset.dragType);
+            .subscribe((data: {
+                name: string;
+                el: Element;
+                target: Element;
+                source: Element;
+                sibling: Element;
+                item: any;
+                sourceModel: any[];
+                targetModel: any[];
+                sourceIndex: number;
+                targetIndex: number;
+
+            }) => {
+                const source: HTMLElement = <HTMLElement>data.source;
+                this.handleDrop(data.name, source.dataset.dragType);
             });
 
         dragulaService
             .removeModel()
             .pipe(delay(0))
-            .subscribe((value: any) => {
-                this.handleDrop(value.name, value.source.dataset.dragType);
+            .subscribe((data: {
+                name: string;
+                el: Element;
+                container: Element;
+                source: Element;
+                item: any;
+                sourceModel: any[];
+                sourceIndex: number;
+            }) => {
+                const source: HTMLElement = <HTMLElement>data.source;
+                this.handleDrop(data.name, source.dataset.dragType);
             });
     }
 
