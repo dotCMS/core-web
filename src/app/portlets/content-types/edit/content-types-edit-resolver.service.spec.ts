@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
@@ -20,7 +20,6 @@ activatedRouteSnapshotMock.paramMap = {};
 
 describe('ContentTypeEditResolver', () => {
     let crudService: CrudService;
-    let router: ActivatedRouteSnapshot;
     let contentTypeEditResolver: ContentTypeEditResolver;
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
@@ -41,7 +40,6 @@ describe('ContentTypeEditResolver', () => {
             imports: [RouterTestingModule]
         });
         crudService = testbed.get(CrudService);
-        router = testbed.get(ActivatedRouteSnapshot);
         contentTypeEditResolver = testbed.get(ContentTypeEditResolver);
         dotRouterService = testbed.get(DotRouterService);
         dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
@@ -65,7 +63,7 @@ describe('ContentTypeEditResolver', () => {
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
     });
 
-    it("should redirect to content-types if content type it's not found", () => {
+    it('should redirect to content-types if content type it\'s not found', () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
         spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(

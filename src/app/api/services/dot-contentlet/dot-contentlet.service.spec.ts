@@ -6,7 +6,6 @@ import { mockDotContentlet } from '../../../test/dot-contentlet.mock';
 import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
 
 let lastConnection: any;
-const MAIN_CONTENT_TYPES = ['CONTENT', 'WIDGET', 'FORM', 'FILEASSET', 'HTMLPAGE'];
 
 function mockConnectionContentletResponse(): void {
     return lastConnection.mockRespond(

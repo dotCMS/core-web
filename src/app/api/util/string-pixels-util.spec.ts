@@ -2,10 +2,9 @@ import { StringPixels } from './string-pixels-util';
 import { DOTTestBed } from '../../test/dot-test-bed';
 
 describe('StringPixelsUtil', () => {
-    let injector;
 
     beforeEach(() => {
-        injector = DOTTestBed.configureTestingModule({
+        DOTTestBed.configureTestingModule({
             providers: [StringPixels]
         });
     });

@@ -5,14 +5,14 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 import { DotEditLayoutSidebarComponent } from './dot-edit-layout-sidebar.component';
-import { DotEditLayoutService } from '@shared/services/dot-edit-layout.service';
-import { DotLayoutSideBar } from '@models/dot-layout-sidebar.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
 import { DotSidebarPropertiesModule } from '../dot-sidebar-properties/dot-sidebar-properties.module';
 import { mockDotContainers } from '../../../../../test/dot-rendered-page.mock';
+import { DotLayoutSideBar } from '@portlets/dot-edit-page/shared/models/dot-layout-sidebar.model';
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 
 let fakeValue: DotLayoutSideBar;
 

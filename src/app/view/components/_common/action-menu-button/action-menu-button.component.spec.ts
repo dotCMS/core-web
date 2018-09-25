@@ -12,7 +12,6 @@ describe('ActionMenuButtonComponent', () => {
     let comp: ActionMenuButtonComponent;
     let fixture: ComponentFixture<ActionMenuButtonComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -23,7 +22,6 @@ describe('ActionMenuButtonComponent', () => {
         fixture = DOTTestBed.createComponent(ActionMenuButtonComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
     });
 
     it('should display a menu button with multiple actions if actions are more than 1', () => {

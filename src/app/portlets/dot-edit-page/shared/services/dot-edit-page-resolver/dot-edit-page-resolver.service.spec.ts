@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockDotRenderedPage } from './../../../../../test/dot-rendered-page.mock';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
@@ -14,7 +14,6 @@ import { async } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { DotRenderedPageState } from '../../models/dot-rendered-page-state.model';
 import { mockResponseView } from '../../../../../test/response-view.mock';
-import { PageMode } from '../../models/page-mode.enum';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 
 const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
@@ -24,7 +23,6 @@ route.queryParams = {};
 describe('DotEditPageResolver', () => {
     let resolver: DotEditPageResolver;
     let dotPageStateService: DotPageStateService;
-    let dotRenderHTMLService: DotRenderHTMLService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
     let dotEditPageDataService: DotEditPageDataService;
@@ -52,7 +50,6 @@ describe('DotEditPageResolver', () => {
 
         resolver = testbed.get(DotEditPageResolver);
         dotPageStateService = testbed.get(DotPageStateService);
-        dotRenderHTMLService = testbed.get(DotRenderHTMLService);
         dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
         dotRouterService = testbed.get(DotRouterService);
         dotEditPageDataService = testbed.get(DotEditPageDataService);

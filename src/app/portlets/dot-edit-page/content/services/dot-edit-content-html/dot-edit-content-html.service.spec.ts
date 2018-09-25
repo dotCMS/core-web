@@ -16,7 +16,7 @@ import { mockDotLayout, mockDotRenderedPage, mockDotPage } from '../../../../../
 import { ContentType } from '../../../../content-types/shared/content-type.model';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { Injectable } from '@angular/core';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockUser } from '../../../../../test/login-service.mock';
 
 @Injectable()

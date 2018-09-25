@@ -10,16 +10,14 @@ describe('DotDevicesService', () => {
         this.injector = DOTTestBed.resolveAndCreate([DotDevicesService]);
         this.dotDevicesService = this.injector.get(DotDevicesService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
-        this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
+        this.backend.connections.subscribe((connection: any) => {
+            console.log(connection);
+            this.lastConnection = connection;
+        });
     });
 
     it('should get Devices', () => {
-        let result;
         const url = [`content/render/false/query/+contentType:previewDevice `, `+live:true `, `+deleted:false `, `+working:true`].join('');
-
-        this.dotDevicesService.get().subscribe((res) => {
-            result = res;
-        });
 
         this.lastConnection.mockRespond(
             new Response(

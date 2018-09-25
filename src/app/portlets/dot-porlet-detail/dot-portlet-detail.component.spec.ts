@@ -15,7 +15,6 @@ import { DotContentletsModule } from './dot-contentlets/dot-contentlets.module';
 import { ActivatedRoute } from '@angular/router';
 
 describe('DotPortletDetailComponent', () => {
-    let component: DotPortletDetailComponent;
     let fixture: ComponentFixture<DotPortletDetailComponent>;
     let de: DebugElement;
     let router: ActivatedRoute;
@@ -36,7 +35,6 @@ describe('DotPortletDetailComponent', () => {
 
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotPortletDetailComponent);
-        component = fixture.componentInstance;
         de = fixture.debugElement;
         router = de.injector.get(ActivatedRoute);
     });

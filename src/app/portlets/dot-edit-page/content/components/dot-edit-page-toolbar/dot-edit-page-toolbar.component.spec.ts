@@ -15,12 +15,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { PageMode } from '@models/page-mode.enum';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 import { mockUser } from '../../../../../test/login-service.mock';
 import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { mockDotPage, mockDotLayout } from '../../../../../test/dot-rendered-page.mock';
+
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -46,7 +47,6 @@ describe('DotEditPageToolbarComponent', () => {
     let component: DotEditPageToolbarComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let dotGlobalMessageService: DotGlobalMessageService;
     let dotDialogService: DotAlertConfirmService;
     let actions: DebugElement;
     let cancel: DebugElement;
@@ -132,7 +132,6 @@ describe('DotEditPageToolbarComponent', () => {
             }
         });
 
-        dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
         actions = de.query(By.css('dot-edit-page-workflows-actions'));
         cancel = de.query(By.css('.edit-page-toolbar__cancel'));
@@ -210,7 +209,7 @@ describe('DotEditPageToolbarComponent', () => {
         expect(component.lockerModel).toBeFalsy();
     });
 
-    it("should have disabled edit button (user can't edit)", () => {
+    it('should have disabled edit button (user can\'t edit)', () => {
         fixture.componentInstance.pageState.page.canEdit = false;
         fixture.detectChanges();
 
@@ -387,7 +386,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             expect(component.lockerModel).toBe(false);
             expect(component.mode).toBe(PageMode.LIVE, 'The mode should be the same');
-            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
+            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
         });
 
         it('should call confirmation service on edit attemp when page is locked by another user', () => {
@@ -435,7 +434,7 @@ describe('DotEditPageToolbarComponent', () => {
 
             clickStateButton('edit');
 
-            expect(pageStateResult).toEqual(undefined, "doesn't emit state");
+            expect(pageStateResult).toEqual(undefined, 'doesn\'t emit state');
             expect(component.lockerModel).toBe(false);
         });
 
@@ -492,7 +491,7 @@ describe('DotEditPageToolbarComponent', () => {
             expect(pageStateResult.locked).toBeUndefined();
         });
 
-        it("should edit tab don't be called twice", () => {
+        it('should edit tab don\'t be called twice', () => {
             spyOn(_, 'debounce').and.callFake(function(cb) {
                 return function() {
                     cb();

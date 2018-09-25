@@ -29,6 +29,7 @@ import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 
 @Injectable()
 class MockDotLicenseService {
@@ -41,9 +42,6 @@ describe('ContentTypesFormComponent', () => {
     let comp: ContentTypesFormComponent;
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
-    let dotcmsConfig: DotcmsConfig;
-    let dotWorkflowService: DotWorkflowService;
     let dotLicenseService: DotLicenseService;
 
     beforeEach(async(() => {
@@ -98,7 +96,8 @@ describe('ContentTypesFormComponent', () => {
                 DotPageSelectorModule,
                 DotWorkflowsSelectorFieldModule,
                 DotIconModule,
-                DotIconButtonModule
+                DotIconButtonModule,
+                MdInputTextModule
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
@@ -115,11 +114,6 @@ describe('ContentTypesFormComponent', () => {
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         dotLicenseService = de.injector.get(DotLicenseService);
-        el = de.nativeElement;
-
-        dotcmsConfig = fixture.debugElement.injector.get(DotcmsConfig);
-
-        dotWorkflowService = fixture.debugElement.injector.get(DotWorkflowService);
     }));
 
     it('should be invalid by default', () => {

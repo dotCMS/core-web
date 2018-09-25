@@ -33,7 +33,6 @@ describe('PushPublishContentTypesDialogComponent', () => {
     let comp: PushPublishContentTypesDialogComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let pushPublishServiceMock: PushPublishServiceMock;
 
     const messageServiceMock = new MockDotMessageService({
@@ -65,7 +64,6 @@ describe('PushPublishContentTypesDialogComponent', () => {
         fixture = DOTTestBed.createComponent(TestHostComponent);
         de = fixture.debugElement.query(By.css('dot-push-publish-dialog'));
         comp = de.componentInstance;
-        el = de.nativeElement;
     });
 
     it('should have a dialog', () => {

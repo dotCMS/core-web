@@ -1,6 +1,5 @@
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { CrudService } from '@services/crud/crud.service';
-import { ContentType } from '@shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListingDataTableModule } from '@components/listing-data-table/listing-data-table.module';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -22,6 +21,7 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { SelectItem } from 'primeng/primeng';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { DotHttpErrorHandled, DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { ContentType } from '@portlets/content-types/shared/content-type.model';
 
 @Injectable()
 class MockDotContentletService {
@@ -64,7 +64,7 @@ class MockPushPublishService {
 
 @Injectable()
 class MockDotHttpErrorManagerService {
-    handle(err: ResponseView): Observable<DotHttpErrorHandled> {
+    handle(_err: ResponseView): Observable<DotHttpErrorHandled> {
         return observableOf({
             redirected: false
         });
@@ -86,7 +86,6 @@ describe('ContentTypesPortletComponent', () => {
     let comp: ContentTypesPortletComponent;
     let fixture: ComponentFixture<ContentTypesPortletComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let crudService: CrudService;
     let dotContentletService: DotContentletService;
     let pushPublishService: PushPublishService;
@@ -130,7 +129,6 @@ describe('ContentTypesPortletComponent', () => {
         fixture = DOTTestBed.createComponent(ContentTypesPortletComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
         crudService = fixture.debugElement.injector.get(CrudService);
         dotContentletService = fixture.debugElement.injector.get(DotContentletService);
         pushPublishService = fixture.debugElement.injector.get(PushPublishService);

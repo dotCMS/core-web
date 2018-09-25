@@ -5,7 +5,6 @@ import { DotEditPageNavComponent } from './dot-edit-page-nav.component';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TooltipModule } from 'primeng/primeng';
@@ -16,6 +15,7 @@ import { mockUser } from './../../../../test/login-service.mock';
 import { Injectable, Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 
 @Injectable()
 class MockDotContentletEditorService {

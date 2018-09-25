@@ -12,7 +12,6 @@ describe('DefaultValuePropertyComponent', () => {
     let comp: DefaultValuePropertyComponent;
     let fixture: ComponentFixture<DefaultValuePropertyComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     const messageServiceMock = new MockDotMessageService({
         'Default-Value': 'Default-Value',
         'contenttypes.field.properties.default_value.error.format': 'default error',
@@ -30,7 +29,6 @@ describe('DefaultValuePropertyComponent', () => {
         fixture = DOTTestBed.createComponent(DefaultValuePropertyComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
         comp.group = new FormGroup({
             name: new FormControl('')
         });

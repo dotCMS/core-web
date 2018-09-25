@@ -1,10 +1,13 @@
 import { DotEditLayoutService } from './dot-edit-layout.service';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DotLayoutGridBox } from '@models/dot-layout-grid-box.model';
-import { DotLayoutBody } from '@models/dot-layout-body.model';
+
+
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { mockDotContainers } from '../../../../test/dot-rendered-page.mock';
 import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
+import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
+import { DotLayoutGridBox } from '@portlets/dot-edit-page/shared/models/dot-layout-grid-box.model';
+
 
 describe('DotEditLayoutService', () => {
     const containers = {

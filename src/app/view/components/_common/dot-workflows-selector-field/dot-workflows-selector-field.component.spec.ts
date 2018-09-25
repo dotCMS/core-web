@@ -115,7 +115,6 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
     });
 
     describe('value accessor', () => {
-        let componentHost: FakeFormComponent;
         let fixtureHost: ComponentFixture<FakeFormComponent>;
         let deHost: DebugElement;
         let innerMultiselect: DebugElement;
@@ -137,7 +136,6 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
             });
 
             fixtureHost = DOTTestBed.createComponent(FakeFormComponent);
-            componentHost = fixtureHost.componentInstance;
             deHost = fixtureHost.debugElement;
             component = deHost.query(By.css('dot-workflows-selector-field')).componentInstance;
             innerMultiselect = deHost.query(By.css('dot-workflows-selector-field')).query(By.css('p-multiSelect'));

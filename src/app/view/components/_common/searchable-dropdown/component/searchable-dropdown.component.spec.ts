@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DebugElement, SimpleChange } from '@angular/core';
+import { SimpleChange } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
@@ -15,8 +15,6 @@ describe('SearchableDropdownComponent', () => {
 
     let comp: SearchableDropdownComponent;
     let fixture: ComponentFixture<SearchableDropdownComponent>;
-    let de: DebugElement;
-    let el: HTMLElement;
     const data = [];
     let rows: number;
     let pageLinkSize: number;
@@ -34,8 +32,6 @@ describe('SearchableDropdownComponent', () => {
 
         fixture = DOTTestBed.createComponent(SearchableDropdownComponent);
         comp = fixture.componentInstance;
-        de = fixture.debugElement;
-        el = de.nativeElement;
 
         for (let i = 0; i < NROWS; i++) {
             data[i] = {

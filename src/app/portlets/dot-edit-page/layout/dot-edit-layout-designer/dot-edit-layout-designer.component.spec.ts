@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
@@ -12,25 +12,24 @@ import { MockDotMessageService } from '../../../../test/dot-message-service.mock
 import { PageViewService } from '@services/page-view/page-view.service';
 import { PaginatorService } from '@services/paginator';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotEditLayoutService } from '@shared/services/dot-edit-layout.service';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
 import { FormsModule, FormGroup } from '@angular/forms';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { FieldValidationMessageModule } from '@components/_common/field-validation-message/file-validation-message.module';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { mockDotRenderedPage, mockDotTemplate } from '../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../test/login-service.mock';
-import { async } from '@angular/core/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotEditPageInfoModule } from '../../components/dot-edit-page-info/dot-edit-page-info.module';
-import { DotTheme } from '@models/dot-theme.model';
 import { mockDotThemes } from '../../../../test/dot-themes.mock';
 import { DotThemesService } from '@services/dot-themes/dot-themes.service';
 import { DotThemesServiceMock } from '../../../../test/dot-themes-service.mock';
 import { TooltipModule } from 'primeng/primeng';
 import * as _ from 'lodash';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
+import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model';
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -444,7 +443,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it("when user can't edit the template and set layout mode", () => {
+            it('when user can\'t edit the template and set layout mode', () => {
                 component.pageState = new DotRenderedPageState(mockUser, {
                     ...mockDotRenderedPage,
                     template: {

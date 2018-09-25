@@ -31,10 +31,8 @@ describe('ToolbarUserComponent', () => {
     let comp: ToolbarUserComponent;
     let fixture: ComponentFixture<ToolbarUserComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let dotDropdownComponent: DotDropdownComponent;
     let loginService: LoginService;
-    let dotNavigationService: DotNavigationService;
     let dotEventsService: DotEventsService;
 
     beforeEach(async(() => {
@@ -64,9 +62,7 @@ describe('ToolbarUserComponent', () => {
         fixture = DOTTestBed.createComponent(ToolbarUserComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
 
-        dotNavigationService = de.injector.get(DotNavigationService);
         loginService = de.injector.get(LoginService);
         dotEventsService = de.injector.get(DotEventsService);
     }));

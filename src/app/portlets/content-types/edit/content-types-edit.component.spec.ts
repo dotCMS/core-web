@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -13,7 +13,6 @@ import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async } from '@angular/core/testing';
-import { ContentType } from '@shared/content-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -28,6 +27,7 @@ import { TestHotkeysMock } from '../../../test/hotkeys-service.mock';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { ContentType } from '@portlets/content-types/shared/content-type.model';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -130,7 +130,6 @@ const getConfig = (route) => {
 let comp: ContentTypesEditComponent;
 let fixture: ComponentFixture<ContentTypesEditComponent>;
 let de: DebugElement;
-let el: HTMLElement;
 let crudService: CrudService;
 let location: Location;
 let dotRouterService: DotRouterService;
@@ -151,7 +150,6 @@ describe('ContentTypesEditComponent create mode', () => {
         fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
 
         crudService = de.injector.get(CrudService);
         location = de.injector.get(Location);
@@ -336,7 +334,6 @@ describe('ContentTypesEditComponent edit mode', () => {
         fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
 
         crudService = fixture.debugElement.injector.get(CrudService);
         location = fixture.debugElement.injector.get(Location);
@@ -460,7 +457,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(comp.fields).toEqual(fieldsReturnByServer);
     });
 
-    it("should handle 403 when user doesn't have permission to save feld", () => {
+    it('should handle 403 when user doesn\'t have permission to save feld', () => {
         const newFieldsAdded: ContentTypeField[] = [
             {
                 name: 'field 1',

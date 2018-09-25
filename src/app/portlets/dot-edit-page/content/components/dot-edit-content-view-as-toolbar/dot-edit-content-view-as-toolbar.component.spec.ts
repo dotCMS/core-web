@@ -17,18 +17,17 @@ import { DotDevice } from '@models/dot-device/dot-device.model';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { mockDotEditPageViewAs } from '../../../../../test/dot-edit-page-view-as.mock';
 import { mockDotPersona } from '../../../../../test/dot-persona.mock';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
 import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../../../test/dot-rendered-page.mock';
 import { DotDeviceSelectorComponent } from '@components/dot-device-selector/dot-device-selector.component';
 import { DotPersonaSelectorComponent } from '@components/dot-persona-selector/dot-persona-selector.component';
 import { DotLanguageSelectorComponent } from '@components/dot-language-selector/dot-language-selector.component';
-import { PageMode } from '@models/page-mode.enum';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { of } from 'rxjs';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 
 @Component({
     selector: 'dot-test-host',
@@ -260,7 +259,7 @@ describe('DotEditContentViewAsToolbarComponent', () => {
         });
     });
 
-    describe("what's change event", () => {
+    describe('what\'s change event', () => {
         let whatsChanged: DebugElement;
 
         describe('events', () => {
@@ -273,13 +272,13 @@ describe('DotEditContentViewAsToolbarComponent', () => {
                 whatsChanged = de.query(By.css('p-checkbox'));
             });
 
-            it("should emit what's change in true", () => {
+            it('should emit what\'s change in true', () => {
                 whatsChanged.triggerEventHandler('onChange', true);
                 expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
                 expect(component.whatschange.emit).toHaveBeenCalledWith(true);
             });
 
-            it("should emit what's change in false", () => {
+            it('should emit what\'s change in false', () => {
                 whatsChanged.triggerEventHandler('onChange', false);
                 expect(component.whatschange.emit).toHaveBeenCalledTimes(1);
                 expect(component.whatschange.emit).toHaveBeenCalledWith(false);

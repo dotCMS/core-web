@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf, from as observableFrom, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, from as observableFrom } from 'rxjs';
 import { mockUser, LoginServiceMock } from './../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
@@ -27,10 +27,8 @@ describe('LoginAsComponent', () => {
     let comp: LoginAsComponent;
     let fixture: ComponentFixture<LoginAsComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let paginatorService: PaginatorService;
     let loginService: LoginService;
-    let dotNavigationService: DotNavigationService;
     let dotEventsService: DotEventsService;
 
     const users: User[] = [
@@ -81,12 +79,10 @@ describe('LoginAsComponent', () => {
         fixture = DOTTestBed.createComponent(LoginAsComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
 
         paginatorService = de.injector.get(PaginatorService);
         loginService = de.injector.get(LoginService);
         spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(users));
-        dotNavigationService = de.injector.get(DotNavigationService);
         dotEventsService = de.injector.get(DotEventsService);
     }));
 

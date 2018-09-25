@@ -6,15 +6,15 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
-import { DotEditLayoutService } from '@shared/services/dot-edit-layout.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { DotLayoutBody } from '@models/dot-layout-body.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { PaginatorService } from '@services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
 import { NgGridModule } from 'dot-layout-grid';
+import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 
 let fakeValue: DotLayoutBody;
 

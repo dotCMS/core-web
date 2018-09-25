@@ -53,8 +53,6 @@ class TestPaginatorService {}
 describe('CategoriesPropertyComponent', () => {
     let comp: CategoriesPropertyComponent;
     let fixture: ComponentFixture<CategoriesPropertyComponent>;
-    let de: DebugElement;
-    let el: HTMLElement;
     const messageServiceMock = new MockDotMessageService({
         'contenttypes.field.properties.category.label': 'Select category',
         search: 'search'
@@ -72,8 +70,6 @@ describe('CategoriesPropertyComponent', () => {
 
         fixture = DOTTestBed.createComponent(CategoriesPropertyComponent);
         comp = fixture.componentInstance;
-        de = fixture.debugElement;
-        el = de.nativeElement;
     }));
 
     it('should have a form', () => {

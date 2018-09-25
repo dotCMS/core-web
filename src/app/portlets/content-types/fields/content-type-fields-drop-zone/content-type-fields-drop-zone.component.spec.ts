@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DebugElement, Component, Input, SimpleChange, Output, EventEmitter, Injectable } from '@angular/core';
+import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
 import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule } from '../';
@@ -81,7 +81,6 @@ xdescribe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let testHotKeysMock: TestHotkeysMock;
     const mockRouter = {
         navigate: jasmine.createSpy('navigate')
@@ -135,7 +134,6 @@ xdescribe('ContentTypeFieldsDropZoneComponent', () => {
         fixture = DOTTestBed.createComponent(ContentTypeFieldsDropZoneComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
         testHotKeysMock = new TestHotkeysMock();
     }));
 
@@ -228,7 +226,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     const mockRouter = {
         navigate: jasmine.createSpy('navigate')
     };
@@ -284,7 +281,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         hostDe = fixture.debugElement;
         de = hostDe.query(By.css('dot-content-type-fields-drop-zone'));
         comp = de.componentInstance;
-        el = de.nativeElement;
 
         fakeFields = [
             {

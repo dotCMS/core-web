@@ -78,7 +78,6 @@ class FakeNavigationService {
 
 describe('DotNavigationComponent', () => {
     let fixture: ComponentFixture<DotNavigationComponent>;
-    let comp: DotNavigationComponent;
     let de: DebugElement;
     let navItem: DebugElement;
 
@@ -103,7 +102,6 @@ describe('DotNavigationComponent', () => {
 
         fixture = DOTTestBed.createComponent(DotNavigationComponent);
         de = fixture.debugElement;
-        comp = fixture.componentInstance;
 
         dotNavigationService = de.injector.get(DotNavigationService);
 

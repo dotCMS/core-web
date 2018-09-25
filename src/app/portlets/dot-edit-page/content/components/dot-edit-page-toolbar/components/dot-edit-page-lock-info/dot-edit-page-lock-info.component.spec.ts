@@ -9,7 +9,7 @@ import { DotGlobalMessageService } from '@components/_common/dot-global-message/
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../../../test/dot-message-service.mock';
 import { mockUser } from '../../../../../../../test/login-service.mock';
-import { DotRenderedPageState } from '@models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../../../../test/dot-rendered-page.mock';
 import { DotClipboardUtil } from '../../../../../../../api/util/clipboard/ClipboardUtil';
 
@@ -128,7 +128,7 @@ describe('DotEditPageLockInfoComponent', () => {
                 fixture.detectChanges();
             });
 
-            it("should have don't have permissions messages", () => {
+            it('should have don\'t have permissions messages', () => {
                 const lockedMessage: DebugElement = de.query(By.css('.page-info__cant-edit-message'));
                 expect(lockedMessage.nativeElement.textContent.trim()).toEqual('No permissions...');
             });

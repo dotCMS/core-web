@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DotThemeSelectorComponent } from './dot-theme-selector.component';
 import { DebugElement } from '@angular/core';
@@ -17,7 +17,6 @@ import { PaginatorService } from '@services/paginator/paginator.service';
 import { DotThemesServiceMock } from '../../../../../test/dot-themes-service.mock';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 describe('DotThemeSelectorComponent', () => {
     let component: DotThemeSelectorComponent;
@@ -31,9 +30,7 @@ describe('DotThemeSelectorComponent', () => {
     });
     const siteServiceMock = new SiteServiceMock();
     let dialog;
-    let dotDialog: DotDialogComponent;
     let paginatorService: PaginatorService;
-    let dotThemesService: DotThemesService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -57,10 +54,8 @@ describe('DotThemeSelectorComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dialog = de.query(By.css('p-dialog')).componentInstance;
-        dotDialog = de.query(By.css('dot-dialog')).componentInstance;
         component.value = Object.assign({}, mockDotThemes[0]);
         paginatorService = de.injector.get(PaginatorService);
-        dotThemesService = de.injector.get(DotThemesService);
     });
 
     describe('Dialog', () => {
@@ -170,7 +165,6 @@ describe('DotThemeSelectorComponent', () => {
             component.paginate({ first: 0 });
             fixture.detectChanges();
             const themes: DebugElement[] = fixture.debugElement.queryAll(By.css('.dot-theme-item'));
-            const applyButton: DebugElement = fixture.debugElement.query(By.css('.apply'));
             themes[1].nativeElement.click();
             fixture.detectChanges();
 

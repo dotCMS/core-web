@@ -93,7 +93,7 @@ describe('DotCrumbtrailService', () => {
         }
     );
 
-    fit('should take the current url', () => {
+    it('should take the current url', () => {
         service.crumbTrail$.subscribe(crumbs => {
             console.log('CRUMBS', crumbs);
         });

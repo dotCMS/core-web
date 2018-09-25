@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotMenuService } from '../dot-menu.service';
@@ -26,7 +26,6 @@ class MockDotNavigationService {
 describe('ValidMenuGuardService', () => {
     let menuGuardService: MenuGuardService;
     let dotMenuService: DotMenuService;
-    let dotRouterService: DotRouterService;
     let dotNavigationService: DotNavigationService;
     let mockRouterStateSnapshot: RouterStateSnapshot;
     let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
@@ -46,7 +45,6 @@ describe('ValidMenuGuardService', () => {
 
         menuGuardService = TestBed.get(MenuGuardService);
         dotMenuService = TestBed.get(DotMenuService);
-        dotRouterService = TestBed.get(DotRouterService);
         dotNavigationService = TestBed.get(DotNavigationService);
         mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
         mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
