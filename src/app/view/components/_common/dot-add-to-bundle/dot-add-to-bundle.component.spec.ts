@@ -28,7 +28,7 @@ class TestHostComponent {
     addToBundleIdentifier: string;
 }
 
-describe('DotAddToBundleComponent', () => {
+fdescribe('DotAddToBundleComponent', () => {
     let comp: DotAddToBundleComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;

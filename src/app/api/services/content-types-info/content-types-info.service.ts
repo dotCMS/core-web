@@ -51,42 +51,42 @@ export class ContentTypesInfoService {
         // TODO: Remove this when set Material Design icons on NgPrime native components - BEGIN
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
-            icon: 'fa-newspaper-o',
+            icon: 'pi-newspaper-o',
             label: 'content_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
-            icon: 'fa-cog',
+            icon: 'pi-cog',
             label: 'widget_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableFileAssetContentType',
-            icon: 'fa-file-o',
+            icon: 'pi-file-o',
             label: 'fileasset_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutablePageContentType',
-            icon: 'fa-file-text-o',
+            icon: 'pi-file-text-o',
             label: 'htmlpage_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutablePersonaContentType',
-            icon: 'fa-user',
+            icon: 'pi-user',
             label: 'persona_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableFormContentType',
-            icon: 'fa-list',
+            icon: 'pi-list',
             label: 'form_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableVanityUrlContentType',
-            icon: 'fa-map-signs',
+            icon: 'pi-map-signs',
             label: 'vanity_url_old'
         },
         {
             clazz: 'com.dotcms.contenttype.model.type.ImmutableKeyValueContentType',
-            icon: 'fa-globe',
+            icon: 'pi-globe',
             label: 'key_value_old'
         }
         // TODO: Remove this when set Material Design icons on NgPrime native components - END

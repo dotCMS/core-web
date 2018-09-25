@@ -84,7 +84,7 @@ describe('ActionHeaderComponent', () => {
                     model: [
                         {
                             command: primarySpy,
-                            icon: 'fa-refresh',
+                            icon: 'pi pi-refresh',
                             label: 'Action 1-1'
                         }
                     ]
@@ -94,7 +94,7 @@ describe('ActionHeaderComponent', () => {
                     model: [
                         {
                             command: secondarySpy,
-                            icon: 'fa-refresh',
+                            icon: 'pi pi-refresh',
                             label: 'Action 2-1'
                         }
                     ]

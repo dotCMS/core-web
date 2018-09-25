@@ -46,7 +46,7 @@ export class NotificationsItemComponent implements OnInit {
     }
 
     getIconName(val: string): string {
-        return 'notification-item__icon fa fa-' + this.notificationIcons[val];
+        return 'notification-item__icon pi pi-' + this.notificationIcons[val];
     }
 
     onClear(): void {

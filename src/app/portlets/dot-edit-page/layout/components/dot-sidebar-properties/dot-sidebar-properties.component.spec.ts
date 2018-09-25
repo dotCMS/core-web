@@ -8,7 +8,7 @@ import { OverlayPanelModule } from 'primeng/primeng';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DebugElement } from '@angular/core';
 
-describe('DotSidebarPropertiesComponent', () => {
+fdescribe('DotSidebarPropertiesComponent', () => {
     let component: DotSidebarPropertiesComponent;
     let fixture: ComponentFixture<DotSidebarPropertiesComponent>;
     let de: DebugElement;

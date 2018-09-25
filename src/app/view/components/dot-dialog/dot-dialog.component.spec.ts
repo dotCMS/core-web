@@ -22,7 +22,7 @@ class TestHostComponent {
     cancel: DotDialogAction;
 }
 
-describe('DotDialogComponent', () => {
+fdescribe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let dialog: DebugElement;

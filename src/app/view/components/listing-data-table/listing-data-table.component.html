@@ -14,7 +14,7 @@
              (onRowClick)="handleRowClick($event)"
              [globalFilter]="gf"
              [sortOrder]="sortOrder && sortOrder.toLowerCase() === 'desc' ? -1 : 1"
-             [loading]="loading" loadingIcon="fa fa-circle-o-notch fa-spin">
+             [loading]="loading" loadingIcon="pi pi-spinner pi-spin">
 
     <p-column selectionMode="multiple" *ngIf="multipleSelection"></p-column>
 

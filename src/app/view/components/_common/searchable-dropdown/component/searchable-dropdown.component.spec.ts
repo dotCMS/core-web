@@ -10,7 +10,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconModule } from '../../dot-icon/dot-icon.module';
 
-describe('SearchableDropdownComponent', () => {
+fdescribe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let comp: SearchableDropdownComponent;

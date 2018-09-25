@@ -28,7 +28,7 @@ class TestHostComponent {
     page: DotPage;
 }
 
-describe('DotEditPageWorkflowsActionsComponent', () => {
+fdescribe('DotEditPageWorkflowsActionsComponent', () => {
     let component: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -102,7 +102,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
             it('should have right attr in button', () => {
                 const attr = button.attributes;
-                expect(attr.icon).toEqual('fa-ellipsis-v');
+                expect(attr.icon).toEqual('pi pi-ellipsis-v');
                 expect(attr.pButton).toBeDefined();
                 expect(attr.secondary).toBeDefined();
             });

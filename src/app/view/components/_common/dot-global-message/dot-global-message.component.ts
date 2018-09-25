@@ -21,7 +21,7 @@ export class DotGlobalMessageComponent implements OnInit {
     message: DotGlobalMessage = { value: '' };
 
     private icons = {
-        loading: 'fa fa-circle-o-notch fa-spin'
+        loading: 'pi pi-spinner pi-spin'
     };
 
     constructor(private dotEventsService: DotEventsService) {}

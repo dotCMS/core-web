@@ -18,7 +18,7 @@ export class ActionMenuButtonComponent implements OnInit {
     @Input()
     item: any;
     @Input()
-    icon? = 'fa-ellipsis-v';
+    icon? = 'pi pi-ellipsis-v';
     @Input()
     actions?: DotDataTableAction[];
 
