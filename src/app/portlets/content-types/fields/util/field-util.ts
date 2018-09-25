@@ -1,11 +1,15 @@
 import { ContentTypeField } from '../';
 
-const TAB_DIVIDER = {
+const COLUMN_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
 };
 
-const LINE_DIVIDER = {
+const ROW_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField'
+};
+
+const TAB_FIELD = {
+    clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
 };
 
 export class FieldUtil {
@@ -29,8 +33,8 @@ export class FieldUtil {
      * @returns {Boolean}
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isRow(field: ContentTypeField): Boolean {
-        return field.clazz === LINE_DIVIDER.clazz;
+    static isRow(field: ContentTypeField): boolean {
+        return field.clazz === ROW_FIELD.clazz;
     }
 
     /**
@@ -39,37 +43,47 @@ export class FieldUtil {
      * @returns {Boolean}
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isColumn(field: ContentTypeField): Boolean {
-        return field.clazz === TAB_DIVIDER.clazz;
+    static isColumn(field: ContentTypeField): boolean {
+        return field.clazz === COLUMN_FIELD.clazz;
+    }
+
+    /**
+     * Verify if the Field is a tab
+     * @param {ContentTypeField} field
+     * @returns {Boolean}
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
+    static isTabDivider(field: ContentTypeField): boolean {
+        return field.clazz === TAB_FIELD.clazz;
     }
 
     static createLineDivider(): ContentTypeField {
-        return Object.assign({}, LINE_DIVIDER);
+        return Object.assign({}, ROW_FIELD);
     }
 
     static createTabDivider(): ContentTypeField {
-        return Object.assign({}, TAB_DIVIDER);
+        return Object.assign({}, COLUMN_FIELD);
     }
 
     static splitFieldsByLineDivider(fields: ContentTypeField[]): ContentTypeField[][] {
-        return FieldUtil.splitFieldsBy(fields, LINE_DIVIDER.clazz);
+        return FieldUtil.splitFieldsBy(fields, [ROW_FIELD.clazz, TAB_FIELD.clazz]);
     }
 
     static splitFieldsByTabDivider(fields: ContentTypeField[]): ContentTypeField[][] {
-        return FieldUtil.splitFieldsBy(fields, TAB_DIVIDER.clazz);
+        return FieldUtil.splitFieldsBy(fields, [COLUMN_FIELD.clazz]);
     }
 
-    static splitFieldsBy(fields: ContentTypeField[], fieldClass: string): ContentTypeField[][] {
+    static splitFieldsBy(fields: ContentTypeField[], fieldClass: string[]): ContentTypeField[][] {
         const result: ContentTypeField[][] = [];
         let currentFields: ContentTypeField[];
 
         fields.forEach((field) => {
-            if (field.clazz === fieldClass) {
+            if (fieldClass.includes(field.clazz)) {
                 currentFields = [];
                 result.push(currentFields);
             }
 
-            // TODO: this code is for avoid error in edit mode when the content types dont has LINE_DIVIDER and TAB_DIVIDER,
+            // TODO: this code is for avoid error in edit mode when the content types dont has ROW_FIELD and COLUMN_FIELD,
             // this happend when the content types is saved in old UI
             // but I dont know if this it's the bets fix
             if (!currentFields) {

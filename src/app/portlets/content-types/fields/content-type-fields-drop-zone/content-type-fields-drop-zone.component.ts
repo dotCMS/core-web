@@ -1,12 +1,13 @@
 import { BaseComponent } from '@components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { FieldDragDropService } from '../service';
-import { FieldRow, ContentTypeField, FieldType } from '../shared';
+import { FieldRow, FieldTab, ContentTypeField, FieldType } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.interface';
 
 /**
  * Display all the Field Types
@@ -21,7 +22,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 })
 export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements OnInit, OnChanges {
     displayDialog = false;
-    fieldRows: FieldRow[] = [];
+    fieldRows: FieldDivider[] = [];
     formData: ContentTypeField;
     currentFieldType: FieldType;
 
@@ -190,6 +191,11 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         }
     }
 
+    isTab(row: FieldDivider): boolean {
+        // debugger
+        return row instanceof FieldTab;
+    }
+
     private moveFields(): void {
         const fields = this.getFields().filter((field, index) => {
             const currentSortOrder = index + 1;
@@ -244,14 +250,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         this.displayDialog = !this.displayDialog;
     }
 
-    private getRowFields(fields: ContentTypeField[]): FieldRow[] {
-        let fieldRows: FieldRow[] = [];
+    private getRowFields(fields: ContentTypeField[]): FieldDivider[] {
         const splitFields: ContentTypeField[][] = FieldUtil.splitFieldsByLineDivider(fields);
 
-        fieldRows = splitFields.map((fieldsByLineDivider) => {
-            const fieldRow: FieldRow = new FieldRow();
-            fieldRow.addFields(fieldsByLineDivider);
-            return fieldRow;
+        const fieldRows: FieldDivider[] = splitFields.map((fieldDivider) => {
+            if (FieldUtil.isRow(fieldDivider[0])) {
+                const fieldRow: FieldRow = new FieldRow();
+                fieldRow.addFields(fieldDivider);
+                return fieldRow;
+            } else if (FieldUtil.isTabDivider(fieldDivider[0])) {
+                const tabRow: FieldTab = new FieldTab();
+                return tabRow;
+            }
         });
 
         return fieldRows.length ? fieldRows : this.getEmptyRow();
@@ -260,19 +270,24 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     private getFields(): ContentTypeField[] {
         const fields: ContentTypeField[] = [];
 
-        this.fieldRows.forEach((fieldRow) => {
-            fields.push(fieldRow.lineDivider);
+        this.fieldRows.forEach((fieldDivider) => {
+            if (FieldUtil.isRow(fieldDivider)) {
+                const fieldRow = <FieldRow> fieldDivider;
+                fields.push(fieldRow.lineDivider);
 
-            fieldRow.columns.forEach((fieldColumn) => {
-                fields.push(fieldColumn.tabDivider);
-                fieldColumn.fields.forEach((field) => fields.push(field));
-            });
+                fieldRow.columns.forEach((fieldColumn) => {
+                    fields.push(fieldColumn.tabDivider);
+                    fieldColumn.fields.forEach((field) => fields.push(field));
+                });
+            } else {
+                fields.push(fieldDivider);
+            }
         });
 
         return fields;
     }
 
-    private getEmptyRow(): FieldRow[] {
+    private getEmptyRow(): FieldDivider[] {
         const row = new FieldRow();
         row.addFirstColumn();
 

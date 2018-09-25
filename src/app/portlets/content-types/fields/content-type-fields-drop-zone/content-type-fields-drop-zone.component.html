@@ -6,14 +6,22 @@
 
     <ng-template ngFor let-row [ngForOf]="fieldRows">
         <dot-content-type-fields-row
-            *ngIf="row.columns.length"
+            *ngIf="row.columns && row.columns.length"
             [fieldRow]="row"
             (editField)="editField($event)"
             (removeField)="removeField($event)"
             (removeRow)="removeFieldRow($event)">
         </dot-content-type-fields-row>
+        <div *ngIf="isTab(row)">tab</div>
+        <!-- <dot-content-type-fields-row
+            *ngIf="row.columns.length"
+            [fieldRow]="row"
+            (editField)="editField($event)"
+            (removeField)="removeField($event)"
+            (removeRow)="removeFieldRow($event)">
+        </dot-content-type-fields-row> -->
     </ng-template>
-
+xx
     <dot-add-rows (selectColums)="addRow($event)"></dot-add-rows>
 </div>
 <p-dialog
