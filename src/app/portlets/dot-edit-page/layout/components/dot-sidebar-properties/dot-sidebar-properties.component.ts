@@ -24,7 +24,7 @@ export class DotSidebarPropertiesComponent implements OnInit, ControlValueAccess
     @Output()
     change: EventEmitter<String> = new EventEmitter();
 
-    constructor(private dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {}
+    constructor(public dotMessageService: DotMessageService, private dotEventsService: DotEventsService) {}
 
     propagateChange = (_: any) => {};
 

@@ -79,7 +79,7 @@ export class ResetPasswordComponent implements OnInit {
         }
     }
 
-    private clean(): void {
+    clean(): void {
         this.message = '';
     }
 }
