@@ -11,6 +11,7 @@ import { MultiSelect } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const messageServiceMock = new MockDotMessageService({
     'dot.common.select.workflows': 'Pick it up',
@@ -61,7 +62,7 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                         useValue: messageServiceMock
                     }
                 ],
-                imports: []
+                imports: [BrowserAnimationsModule]
             });
 
             fixture = DOTTestBed.createComponent(DotWorkflowsSelectorFieldComponent);
@@ -95,22 +96,31 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                 expect(dotWorkflowService.get).toHaveBeenCalledTimes(1);
             });
 
-            it('should fill the workflows options', () => {
-                const itemsLabels = de
-                    .queryAll(By.css('.ui-multiselect-items .workflow__label'))
-                    .map((item) => item.nativeElement.innerText);
-                expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
+            describe('show options', () => {
+                beforeEach(() => {
+                    de.query(By.css('.ui-multiselect')).triggerEventHandler('click', {});
+                    fixture.detectChanges();
+                });
+
+                it('should fill the workflows options', () => {
+                    const itemsLabels = de
+                        .queryAll(By.css('.ui-multiselect-items .workflow__label'))
+                        .map((item) => item.nativeElement.innerText);
+                    expect(itemsLabels).toEqual(mockWorkflows.map((workflow) => workflow.name));
+                });
+
+                it('should have archived item and message', () => {
+                    const archivedItems = de.queryAll(By.css('.workflow__archive-label'));
+                    expect(archivedItems.length).toBe(1);
+                    expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
+
+                    const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
+                    expect(archivedMessage.length).toBe(1);
+                    expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
+                });
             });
 
-            it('should have archived item and message', () => {
-                const archivedItems = de.queryAll(By.css('.workflow__archive-label'));
-                expect(archivedItems.length).toBe(1);
-                expect(archivedItems[0].nativeElement.innerText).toBe(mockWorkflows[1].name);
 
-                const archivedMessage = de.queryAll(By.css('.workflow__archive-message'));
-                expect(archivedMessage.length).toBe(1);
-                expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
-            });
         });
     });
 

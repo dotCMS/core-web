@@ -1,4 +1,8 @@
-import { throwError as observableThrowError, of as observableOf, from as observableFrom } from 'rxjs';
+import {
+    throwError as observableThrowError,
+    of as observableOf,
+    from as observableFrom
+} from 'rxjs';
 import { mockUser, LoginServiceMock } from './../../../test/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
@@ -6,7 +10,10 @@ import { DebugElement, Injectable } from '@angular/core';
 import { LoginAsComponent } from './login-as';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { SEARCHABLE_NGFACES_MODULES, SearchableDropDownModule } from '../_common/searchable-dropdown/searchable-dropdown.module';
+import {
+    SEARCHABLE_NGFACES_MODULES,
+    SearchableDropDownModule
+} from '../_common/searchable-dropdown/searchable-dropdown.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { PaginatorService } from '@services/paginator';
@@ -23,7 +30,7 @@ class MockDotNavigationService {
     goToFirstPortlet() {}
 }
 
-describe('LoginAsComponent', () => {
+xdescribe('LoginAsComponent', () => {
     let comp: LoginAsComponent;
     let fixture: ComponentFixture<LoginAsComponent>;
     let de: DebugElement;

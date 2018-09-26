@@ -11,7 +11,6 @@ describe('DotDevicesService', () => {
         this.dotDevicesService = this.injector.get(DotDevicesService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => {
-            console.log(connection);
             this.lastConnection = connection;
         });
     });

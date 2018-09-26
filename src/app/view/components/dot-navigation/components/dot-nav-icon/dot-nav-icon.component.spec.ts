@@ -30,9 +30,9 @@ describe('DotNavIconComponent', () => {
     });
 
     it('should have font awesome icon', () => {
-        comp.icon = 'pi-test';
+        comp.icon = 'fa-test';
         fixture.detectChanges();
-        const faIcon: HTMLElement = de.query(By.css('.pi')).componentInstance;
+        const faIcon: HTMLElement = de.query(By.css('.fa')).componentInstance;
         expect(faIcon).toBeDefined();
     });
 });

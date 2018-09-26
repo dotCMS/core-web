@@ -13,8 +13,10 @@ import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 export class ActionHeaderComponent implements OnChanges, OnInit {
     @Input()
     selectedItems = [];
+
     @Input()
     options: ActionHeaderOptions;
+
     public dynamicOverflow = 'visible';
 
     i18nMessages: {

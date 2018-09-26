@@ -28,7 +28,7 @@ class TestHostComponent {
     page: DotPage;
 }
 
-fdescribe('DotEditPageWorkflowsActionsComponent', () => {
+describe('DotEditPageWorkflowsActionsComponent', () => {
     let component: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
@@ -119,6 +119,10 @@ fdescribe('DotEditPageWorkflowsActionsComponent', () => {
                 let thirdButton;
 
                 beforeEach(() => {
+                    const mainButton: DebugElement = de.query(By.css('button'));
+                    mainButton.triggerEventHandler('click', {});
+                    fixture.detectChanges();
+
                     splitButtons = de.queryAll(By.css('.ui-menuitem-link'));
                     firstButton = splitButtons[0].nativeElement;
                     secondButton = splitButtons[1].nativeElement;

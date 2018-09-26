@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { SimpleChange } from '@angular/core';
+import { SimpleChange, DebugElement } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
@@ -10,14 +10,16 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotIconModule } from '../../dot-icon/dot-icon.module';
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let comp: SearchableDropdownComponent;
     let fixture: ComponentFixture<SearchableDropdownComponent>;
+    let de: DebugElement;
     const data = [];
     let rows: number;
     let pageLinkSize: number;
+    let mainButton: DebugElement;
 
     beforeEach(async(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -32,6 +34,7 @@ fdescribe('SearchableDropdownComponent', () => {
 
         fixture = DOTTestBed.createComponent(SearchableDropdownComponent);
         comp = fixture.componentInstance;
+        de = fixture.debugElement;
 
         for (let i = 0; i < NROWS; i++) {
             data[i] = {
@@ -49,6 +52,9 @@ fdescribe('SearchableDropdownComponent', () => {
         comp.totalRecords = NROWS;
         comp.rows = rows;
         comp.pageLinkSize = pageLinkSize;
+
+        mainButton = de.query(By.css('button'));
+        mainButton.triggerEventHandler('click', {});
     }));
 
     it('should renderer the pagination links', () => {
@@ -106,14 +112,14 @@ fdescribe('SearchableDropdownComponent', () => {
             const filter = 'filter';
             let event;
 
-            const input = fixture.debugElement.query(By.css('input[type="text"]'));
-            input.nativeElement.value = filter;
-
             comp.pageChange.subscribe((e) => {
                 event = e;
             });
 
             fixture.detectChanges();
+            const input = fixture.debugElement.query(By.css('input[type="text"]'));
+            input.nativeElement.value = filter;
+
             const dataList = fixture.debugElement.query(By.css('p-dataList'));
             const dataListComponentInstance = dataList.componentInstance;
 

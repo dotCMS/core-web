@@ -17,8 +17,10 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 export class LoginAsComponent implements OnInit {
     @Output()
     cancel = new EventEmitter<boolean>();
+
     @Input()
     visible: boolean;
+
     @ViewChild('password')
     passwordElem: ElementRef;
 
