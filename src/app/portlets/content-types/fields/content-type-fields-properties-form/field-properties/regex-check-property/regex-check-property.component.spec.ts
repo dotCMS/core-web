@@ -76,6 +76,8 @@ describe('RegexCheckPropertyComponent', () => {
             value: '^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,4})$'
         });
 
-        expect('^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,4})$').toBe(comp.group.get('regexCheck').value);
+        expect('^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,4})$').toBe(
+            comp.group.get('regexCheck').value
+        );
     });
 });

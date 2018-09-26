@@ -56,7 +56,10 @@ describe('DotEditPageMainComponent', () => {
         'editpage.toolbar.nav.properties': 'Properties'
     });
 
-    const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+    const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(
+        mockUser,
+        mockDotRenderedPage
+    );
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
@@ -117,7 +120,8 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should bind correctly pageState param', () => {
-        const nav: DotEditPageNavComponent = fixture.debugElement.query(By.css('dot-edit-page-nav')).componentInstance;
+        const nav: DotEditPageNavComponent = fixture.debugElement.query(By.css('dot-edit-page-nav'))
+            .componentInstance;
         expect(nav.pageState).toEqual(mockDotRenderedPageState);
     });
 
@@ -130,7 +134,10 @@ describe('DotEditPageMainComponent', () => {
         });
 
         dotContentletEditorService.close$.next(true);
-        expect(dotPageStateService.reload).toHaveBeenCalledWith('/about-us/index', mockDotRenderedPage.page.languageId);
+        expect(dotPageStateService.reload).toHaveBeenCalledWith(
+            '/about-us/index',
+            mockDotRenderedPage.page.languageId
+        );
     });
 
     describe('handle custom events from contentlet editor', () => {
@@ -139,7 +146,8 @@ describe('DotEditPageMainComponent', () => {
         beforeEach(() => {
             spyOn(dotRouterService, 'goToEditPage');
             spyOn(dotRouterService, 'goToSiteBrowser');
-            editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet')).componentInstance;
+            editContentlet = fixture.debugElement.query(By.css('dot-edit-contentlet'))
+                .componentInstance;
         });
 
         it('should reload page when url attribute in dialog has been changed', () => {
@@ -153,7 +161,10 @@ describe('DotEditPageMainComponent', () => {
                 }
             });
             dotContentletEditorService.close$.next(true);
-            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('/about-us/index2', mockDotRenderedPage.page.languageId.toString());
+            expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(
+                '/about-us/index2',
+                mockDotRenderedPage.page.languageId.toString()
+            );
         });
 
         it('should go to site-browser when page is deleted', () => {

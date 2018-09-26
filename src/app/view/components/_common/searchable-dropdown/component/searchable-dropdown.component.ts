@@ -78,11 +78,10 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
     valueString = '';
 
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
-    constructor(private dotMessageService: DotMessageService) {
-    }
+    constructor(private dotMessageService: DotMessageService) {}
 
     propagateChange = (_: any) => {};
 
@@ -93,7 +92,7 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
     }
 
     ngOnInit(): void {
-        this.dotMessageService.getMessages(['search']).subscribe(res => {
+        this.dotMessageService.getMessages(['search']).subscribe((res) => {
             this.i18nMessages = res;
         });
 

@@ -54,7 +54,9 @@ describe('AddToBundleService', () => {
             );
 
             tick();
-            expect(this.lastConnection.request.url).toContain('api/bundle/getunsendbundles/userid/1234');
+            expect(this.lastConnection.request.url).toContain(
+                'api/bundle/getunsendbundles/userid/1234'
+            );
             expect(result).toEqual(mockBundleItems);
         })
     );

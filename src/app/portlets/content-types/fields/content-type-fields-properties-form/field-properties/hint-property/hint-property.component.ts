@@ -18,8 +18,10 @@ export class HintPropertyComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['contenttypes.field.properties.hint.label']).subscribe((res) => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages(['contenttypes.field.properties.hint.label'])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 }

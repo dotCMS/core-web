@@ -5,7 +5,10 @@ import { async } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotWorkflowsSelectorFieldComponent } from './dot-workflows-selector-field.component';
-import { DotWorkflowServiceMock, mockWorkflows } from './../../../../test/dot-workflow-service.mock';
+import {
+    DotWorkflowServiceMock,
+    mockWorkflows
+} from './../../../../test/dot-workflow-service.mock';
 import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
 import { MultiSelect } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -119,8 +122,6 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
                     expect(archivedMessage[0].nativeElement.innerText).toBe('(Archivado)');
                 });
             });
-
-
         });
     });
 
@@ -148,7 +149,9 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
             fixtureHost = DOTTestBed.createComponent(FakeFormComponent);
             deHost = fixtureHost.debugElement;
             component = deHost.query(By.css('dot-workflows-selector-field')).componentInstance;
-            innerMultiselect = deHost.query(By.css('dot-workflows-selector-field')).query(By.css('p-multiSelect'));
+            innerMultiselect = deHost
+                .query(By.css('dot-workflows-selector-field'))
+                .query(By.css('p-multiSelect'));
         }));
 
         it('should get value', () => {

@@ -38,7 +38,8 @@ describe('DotAddToBundleComponent', () => {
         'contenttypes.content.add_to_bundle': 'Add to bundle',
         'contenttypes.content.add_to_bundle.select': 'Select or type bundle',
         'contenttypes.content.add_to_bundle.type': 'Type bundle name',
-        'contenttypes.content.add_to_bundle.errormsg': 'Please select a Bundle from the list or type a bundle name',
+        'contenttypes.content.add_to_bundle.errormsg':
+            'Please select a Bundle from the list or type a bundle name',
         'contenttypes.content.add_to_bundle.form.cancel': 'Cancel',
         'contenttypes.content.add_to_bundle.form.add': 'Add'
     });
@@ -83,7 +84,9 @@ describe('DotAddToBundleComponent', () => {
 
     it('should call close() on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.add-to-bundle__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.add-to-bundle__form-cancel')
+        );
         expect(cancelButton).toBeDefined();
 
         spyOn(comp, 'close');
@@ -100,7 +103,9 @@ describe('DotAddToBundleComponent', () => {
 
     it('should reset the form value on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.add-to-bundle__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.add-to-bundle__form-cancel')
+        );
 
         comp.form.get('addBundle').setValue({ id: '12345', name: 'my bundle' });
 
@@ -206,10 +211,13 @@ describe('DotAddToBundleComponent', () => {
             expect(comp.form.value).toEqual({
                 addBundle: ''
             });
-            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                id: '12345',
-                name: 'my bundle'
-            });
+            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    id: '12345',
+                    name: 'my bundle'
+                }
+            );
         });
 
         it('should submit form correctly on Enter', () => {
@@ -219,10 +227,13 @@ describe('DotAddToBundleComponent', () => {
             expect(comp.form.value).toEqual({
                 addBundle: ''
             });
-            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                id: '12345',
-                name: 'my bundle'
-            });
+            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    id: '12345',
+                    name: 'my bundle'
+                }
+            );
         });
     });
 });

@@ -9,7 +9,6 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 class MockDotCrumbtrailService {
-
     private crumbTrail: Subject<DotCrumb[]> = new Subject();
 
     get crumbTrail$(): Observable<DotCrumb[]> {
@@ -34,10 +33,9 @@ describe('DotCrumbtrailComponent', () => {
                 {
                     provide: DotCrumbtrailService,
                     useValue: dotCrumbtrailService
-                },
+                }
             ]
         }).compileComponents();
-
     }));
 
     beforeEach(() => {

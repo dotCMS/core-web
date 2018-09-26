@@ -35,7 +35,13 @@ describe('DotThemeSelectorComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotThemeSelectorComponent],
-            imports: [DataGridModule, SiteSelectorModule, BrowserAnimationsModule, DotDialogModule, DotIconModule],
+            imports: [
+                DataGridModule,
+                SiteSelectorModule,
+                BrowserAnimationsModule,
+                DotDialogModule,
+                DotIconModule
+            ],
             providers: [
                 {
                     provide: DotThemesService,
@@ -87,8 +93,12 @@ describe('DotThemeSelectorComponent', () => {
                     dialogElem.closeDialog();
                 }
             };
-            expect(JSON.stringify(component.applyDialogAction)).toBe(JSON.stringify(applyDialogActionTpl));
-            expect(JSON.stringify(component.closeDialogAction)).toBe(JSON.stringify(closeDialogActionTpl));
+            expect(JSON.stringify(component.applyDialogAction)).toBe(
+                JSON.stringify(applyDialogActionTpl)
+            );
+            expect(JSON.stringify(component.closeDialogAction)).toBe(
+                JSON.stringify(closeDialogActionTpl)
+            );
         });
     });
 
@@ -100,7 +110,10 @@ describe('DotThemeSelectorComponent', () => {
             fixture.detectChanges();
             expect(paginatorService.paginationPerPage).toBe(8);
             expect(paginatorService.url).toBe('v1/themes');
-            expect(paginatorService.setExtraParams).toHaveBeenCalledWith('hostId', '123-xyz-567-xxl');
+            expect(paginatorService.setExtraParams).toHaveBeenCalledWith(
+                'hostId',
+                '123-xyz-567-xxl'
+            );
         });
 
         it('should set the current theme variable based on the Input value', () => {
@@ -128,7 +141,9 @@ describe('DotThemeSelectorComponent', () => {
             spyOn(paginatorService, 'getWithOffset').and.returnValue(observableOf(mockDotThemes));
             component.siteChange(mockSites[0]);
             fixture.detectChanges();
-            const themeImage: DebugElement = fixture.debugElement.query(By.css('.dot-theme-iteme__image'));
+            const themeImage: DebugElement = fixture.debugElement.query(
+                By.css('.dot-theme-iteme__image')
+            );
 
             expect(themeImage).not.toBeNull();
         });

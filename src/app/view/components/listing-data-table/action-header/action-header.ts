@@ -1,5 +1,12 @@
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { Component, Input, SimpleChanges, ViewEncapsulation, OnChanges, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    SimpleChanges,
+    ViewEncapsulation,
+    OnChanges,
+    OnInit
+} from '@angular/core';
 
 import { DotMessageService } from '@services/dot-messages-service';
 import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
@@ -23,12 +30,17 @@ export class ActionHeaderComponent implements OnChanges, OnInit {
         [key: string]: string;
     } = {};
 
-    constructor(private dotMessageService: DotMessageService, private dotDialogService: DotAlertConfirmService) {}
+    constructor(
+        private dotMessageService: DotMessageService,
+        private dotDialogService: DotAlertConfirmService
+    ) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['selected', 'contenttypes.action.delete', 'contenttypes.action.cancel']).subscribe((res) => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages(['selected', 'contenttypes.action.delete', 'contenttypes.action.cancel'])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     ngOnChanges(changes: SimpleChanges): any {
@@ -36,7 +48,11 @@ export class ActionHeaderComponent implements OnChanges, OnInit {
             this.hideDinamycOverflow();
         }
 
-        if (changes.options && changes.options.currentValue && changes.options.currentValue.secondary) {
+        if (
+            changes.options &&
+            changes.options.currentValue &&
+            changes.options.currentValue.secondary
+        ) {
             this.setCommandWrapper(changes.options.currentValue.secondary);
         }
     }

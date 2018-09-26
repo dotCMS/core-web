@@ -16,7 +16,8 @@ describe('DefaultValuePropertyComponent', () => {
         'Default-Value': 'Default-Value',
         'contenttypes.field.properties.default_value.error.format': 'default error',
         'contenttypes.field.properties.default_value.immutable_date.error.format': 'date error',
-        'contenttypes.field.properties.default_value.immutable_date_time.error.format': 'date-time error'
+        'contenttypes.field.properties.default_value.immutable_date_time.error.format':
+            'date-time error'
     });
 
     beforeEach(async(() => {
@@ -57,7 +58,9 @@ describe('DefaultValuePropertyComponent', () => {
 
     it('should have a field-message', () => {
         fixture.detectChanges();
-        const fieldValidationmessage: DebugElement = fixture.debugElement.query(By.css('dot-field-validation-message'));
+        const fieldValidationmessage: DebugElement = fixture.debugElement.query(
+            By.css('dot-field-validation-message')
+        );
 
         expect(fieldValidationmessage).not.toBeNull();
         expect(comp.group.controls['name']).toBe(fieldValidationmessage.componentInstance.field);
@@ -94,6 +97,8 @@ describe('DefaultValuePropertyComponent', () => {
         comp.group.get('name').markAsTouched();
         fixture.detectChanges();
 
-        expect(de.query(By.css('dot-field-validation-message')).nativeElement.innerText).toContain('default error');
+        expect(de.query(By.css('dot-field-validation-message')).nativeElement.innerText).toContain(
+            'default error'
+        );
     });
 });

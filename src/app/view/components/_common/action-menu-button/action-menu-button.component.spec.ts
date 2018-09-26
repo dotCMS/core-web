@@ -180,7 +180,10 @@ describe('ActionMenuButtonComponent', () => {
         comp.item = mockContentType;
         fixture.detectChanges();
 
-        expect(de.query(By.css('dot-icon-button-tooltip')) === null).toEqual(true, 'tooltip button hide');
+        expect(de.query(By.css('dot-icon-button-tooltip')) === null).toEqual(
+            true,
+            'tooltip button hide'
+        );
         expect(de.query(By.css('dot-menu')) === null).toEqual(false, 'menu options show');
         expect(de.query(By.css('button')) === null).toEqual(false, 'button to show/hide menu show');
     });

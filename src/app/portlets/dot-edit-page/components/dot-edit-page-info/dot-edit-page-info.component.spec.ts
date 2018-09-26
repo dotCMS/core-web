@@ -59,7 +59,10 @@ describe('DotEditPageInfoComponent', () => {
             spyOnProperty(siteService, 'currentSite', 'get').and.returnValue({
                 name: 'demo.dotcms.com'
             });
-            component.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)));
+            component.pageState = new DotRenderedPageState(
+                mockUser,
+                JSON.parse(JSON.stringify(mockDotRenderedPage))
+            );
             fixture.detectChanges();
         });
 
@@ -83,7 +86,9 @@ describe('DotEditPageInfoComponent', () => {
                 copyUrlButton.nativeElement.click();
 
                 tick();
-                expect(dotClipboardUtil.copy).toHaveBeenCalledWith('http://demo.dotcms.com:9876/an/url/test');
+                expect(dotClipboardUtil.copy).toHaveBeenCalledWith(
+                    'http://demo.dotcms.com:9876/an/url/test'
+                );
                 expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Copied to clipboard');
             })
         );
@@ -103,7 +108,9 @@ describe('DotEditPageInfoComponent', () => {
                 copyUrlButton.nativeElement.click();
 
                 tick();
-                expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Can not copy to cliploard');
+                expect(dotGlobalMessageService.error).toHaveBeenCalledWith(
+                    'Can not copy to cliploard'
+                );
             })
         );
     });

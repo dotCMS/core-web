@@ -28,15 +28,20 @@ export class CategoriesPropertyComponent implements OnInit {
         [key: string]: string;
     } = {};
 
-    constructor(public dotMessageService: DotMessageService, public paginationService: PaginatorService) {
-    }
+    constructor(
+        public dotMessageService: DotMessageService,
+        public paginationService: PaginatorService
+    ) {}
 
     ngOnInit(): void {
-        this.dotMessageService.getMessages([
-            'contenttypes.field.properties.category.label', 'contenttypes.field.properties.category.error.required'
-        ]).subscribe(res => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages([
+                'contenttypes.field.properties.category.label',
+                'contenttypes.field.properties.category.error.required'
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
 
         this.placeholder = !this.property.value
             ? this.dotMessageService.get('contenttypes.field.properties.category.label')

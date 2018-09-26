@@ -130,15 +130,20 @@ xdescribe('DotFormSelectorComponent', () => {
                 });
 
                 it('first column should have the right header and content', () => {
-                    const label = de.query(By.css('table thead tr:first-child th:first-child span')).nativeElement.innerHTML;
+                    const label = de.query(By.css('table thead tr:first-child th:first-child span'))
+                        .nativeElement.innerHTML;
                     expect(label).toBe('Name');
 
-                    const content = de.query(By.css('table tbody tr:first-child td:first-child span')).nativeElement.innerHTML;
+                    const content = de.query(
+                        By.css('table tbody tr:first-child td:first-child span')
+                    ).nativeElement.innerHTML;
                     expect(content).toBe('Hello World');
                 });
 
                 it('second column should have the right header and select button', () => {
-                    const label = de.query(By.css('table thead tr:first-child th:nth-child(2n) span')).nativeElement.innerHTML;
+                    const label = de.query(
+                        By.css('table thead tr:first-child th:nth-child(2n) span')
+                    ).nativeElement.innerHTML;
                     expect(label).toBe('');
 
                     const link = de.query(By.css('.form-selector__button'));

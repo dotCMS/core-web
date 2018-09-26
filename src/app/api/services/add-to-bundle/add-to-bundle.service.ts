@@ -15,9 +15,15 @@ export class AddToBundleService {
         TODO: I had to do this because this line concat 'api/' into the URL
         https://github.com/dotCMS/dotcms-js/blob/master/src/core/core-web.service.ts#L169
     */
-    private addToBundleUrl = `${this._apiRoot.baseUrl}DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
+    private addToBundleUrl = `${
+        this._apiRoot.baseUrl
+    }DotAjaxDirector/com.dotcms.publisher.ajax.RemotePublishAjaxAction/cmd/addToBundle`;
 
-    constructor(public _apiRoot: ApiRoot, private coreWebService: CoreWebService, private currentUser: DotCurrentUserService) {}
+    constructor(
+        public _apiRoot: ApiRoot,
+        private coreWebService: CoreWebService,
+        private currentUser: DotCurrentUserService
+    ) {}
 
     /**
      * Get bundle items
@@ -44,9 +50,14 @@ export class AddToBundleService {
      * @returns {Observable<AjaxActionResponseView>}
      * @memberof AddToBundleService
      */
-    addToBundle(assetIdentifier: string, bundleData: DotBundle): Observable<AjaxActionResponseView> {
+    addToBundle(
+        assetIdentifier: string,
+        bundleData: DotBundle
+    ): Observable<AjaxActionResponseView> {
         return this.coreWebService.request({
-            body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${bundleData.id}`,
+            body: `assetIdentifier=${assetIdentifier}&bundleName=${bundleData.name}&bundleSelect=${
+                bundleData.id
+            }`,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },

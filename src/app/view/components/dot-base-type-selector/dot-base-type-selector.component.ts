@@ -19,7 +19,10 @@ export class DotBaseTypeSelectorComponent implements OnInit {
 
     options: Observable<SelectItem[]>;
 
-    constructor(private dotContentletService: DotContentletService, private dotMessageService: DotMessageService) {}
+    constructor(
+        private dotContentletService: DotContentletService,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -29,7 +32,10 @@ export class DotBaseTypeSelectorComponent implements OnInit {
                 this.options = this.dotContentletService.getAllContentTypes().pipe(
                     take(1),
                     map((structures: StructureTypeView[]) =>
-                        this.setOptions(this.dotMessageService.get('contenttypes.selector.any.content.type'), structures)
+                        this.setOptions(
+                            this.dotMessageService.get('contenttypes.selector.any.content.type'),
+                            structures
+                        )
                     )
                 );
             });
@@ -42,7 +48,10 @@ export class DotBaseTypeSelectorComponent implements OnInit {
     setOptions(allOptions: string, baseTypes: StructureTypeView[]): SelectItem[] {
         return [
             { label: allOptions, value: '' },
-            ...baseTypes.map((structure: StructureTypeView) => ({ label: structure.label, value: structure.name }))
+            ...baseTypes.map((structure: StructureTypeView) => ({
+                label: structure.label,
+                value: structure.name
+            }))
         ];
     }
 }

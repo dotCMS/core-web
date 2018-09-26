@@ -14,7 +14,9 @@ import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.se
 class MockDotContentletService {
     getAllContentTypes = jasmine
         .createSpy('getContentTypes')
-        .and.returnValue(observableOf([{ name: 'FORM', label: 'Form' }, { name: 'WIDGET', label: 'Widget' }]));
+        .and.returnValue(
+            observableOf([{ name: 'FORM', label: 'Form' }, { name: 'WIDGET', label: 'Widget' }])
+        );
 }
 
 describe('DotBaseTypeSelectorComponent', () => {

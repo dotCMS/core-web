@@ -19,7 +19,10 @@ export class DotContainerContentletService {
      * @returns {Observable<string>}
      * @memberof DotContainerContentletService
      */
-    getContentletToContainer(container: DotPageContainer, content: DotPageContent): Observable<string> {
+    getContentletToContainer(
+        container: DotPageContainer,
+        content: DotPageContent
+    ): Observable<string> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -36,7 +39,10 @@ export class DotContainerContentletService {
      * @returns {Observable<string>}
      * @memberof DotContainerContentletService
      */
-    getFormToContainer(container: DotPageContainer, form: ContentType): Observable<{ render: string; content: any }> {
+    getFormToContainer(
+        container: DotPageContainer,
+        form: ContentType
+    ): Observable<{ render: string; content: any }> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,

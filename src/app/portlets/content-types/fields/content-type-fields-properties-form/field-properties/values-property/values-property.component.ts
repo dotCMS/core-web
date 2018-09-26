@@ -21,8 +21,10 @@ export class ValuesPropertyComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['contenttypes.field.properties.value.label']).subscribe((res) => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages(['contenttypes.field.properties.value.label'])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 }

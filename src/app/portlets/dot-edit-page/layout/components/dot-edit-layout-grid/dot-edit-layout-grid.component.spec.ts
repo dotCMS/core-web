@@ -118,7 +118,9 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should remove one Container from the Grid', () => {
         component.addBox();
-        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(
+            DotAlertConfirmService
+        );
         spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
@@ -165,7 +167,9 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should Propagate Change after a grid box is deleted', () => {
         component.addBox();
-        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(
+            DotAlertConfirmService
+        );
         spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
@@ -194,7 +198,9 @@ describe('DotEditLayoutGridComponent', () => {
     it(
         'should resize the grid when the left menu is toggle',
         fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(
+                DotEventsService
+            );
             spyOn(component.ngGrid, 'triggerResize');
             dotEventsService.notify('dot-side-nav-toggle');
             tick(210);
@@ -205,7 +211,9 @@ describe('DotEditLayoutGridComponent', () => {
     it(
         'should resize the grid when the layout sidebar change',
         fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(
+                DotEventsService
+            );
             spyOn(component.ngGrid, 'triggerResize');
             dotEventsService.notify('layout-sidebar-change');
             tick(0);

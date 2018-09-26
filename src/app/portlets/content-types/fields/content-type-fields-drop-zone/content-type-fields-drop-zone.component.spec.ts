@@ -191,7 +191,9 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
             comp.removeFieldRow(fieldRow);
 
-            expect([fieldRow.lineDivider, fieldRow.columns[0].tabDivider, field]).toEqual(fieldsToRemove);
+            expect([fieldRow.lineDivider, fieldRow.columns[0].tabDivider, field]).toEqual(
+                fieldsToRemove
+            );
         })
     );
 
@@ -212,7 +214,8 @@ let fakeFields: ContentTypeField[];
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-content-type-fields-drop-zone [fields]="fields"></dot-content-type-fields-drop-zone>'
+    template:
+        '<dot-content-type-fields-drop-zone [fields]="fields"></dot-content-type-fields-drop-zone>'
 })
 class TestHostComponent {
     fields: ContentTypeField[];
@@ -540,7 +543,11 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         fixture.detectChanges();
 
         expect(comp.fieldRows[0].columns[0].fields.length).toEqual(0);
-        expect(comp.fieldRows[0].columns[0].tabDivider.clazz).toEqual('com.dotcms.contenttype.model.field.ImmutableColumnField');
-        expect(comp.fieldRows[0].lineDivider.clazz).toEqual('com.dotcms.contenttype.model.field.ImmutableRowField');
+        expect(comp.fieldRows[0].columns[0].tabDivider.clazz).toEqual(
+            'com.dotcms.contenttype.model.field.ImmutableColumnField'
+        );
+        expect(comp.fieldRows[0].lineDivider.clazz).toEqual(
+            'com.dotcms.contenttype.model.field.ImmutableRowField'
+        );
     });
 });

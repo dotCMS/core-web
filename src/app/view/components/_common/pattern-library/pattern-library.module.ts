@@ -15,7 +15,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [CommonModule, FormsModule, ...NGFACES_MODULES, RouterModule.forChild(routes), DotIconButtonModule, MultiSelectModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ...NGFACES_MODULES,
+        RouterModule.forChild(routes),
+        DotIconButtonModule,
+        MultiSelectModule
+    ],
     declarations: [PatternLibraryComponent]
 })
 export class PatternLibraryModule {}

@@ -26,7 +26,10 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
 
     value: string[];
 
-    constructor(private pushPublishService: PushPublishService, public dotMessageService: DotMessageService) {}
+    constructor(
+        private pushPublishService: PushPublishService,
+        public dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.pushEnvironments$ = this.pushPublishService.getEnvironments();
@@ -41,7 +44,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
                 this.valueChange('', this.selectedEnvironments);
             }
         });
-        this.dotMessageService.getMessages(['contenttypes.content.push_publish.select_environment']).subscribe();
+        this.dotMessageService
+            .getMessages(['contenttypes.content.push_publish.select_environment'])
+            .subscribe();
     }
 
     propagateChange = (_: any) => {};
@@ -89,7 +94,9 @@ export class PushPublishEnvSelectorComponent implements OnInit, ControlValueAcce
      * @memberof PushPublishEnvSelectorComponent
      */
     removeEnvironmentItem(environmentItem: DotEnvironment): void {
-        this.selectedEnvironments = this.selectedEnvironments.filter((environment) => environment.id !== environmentItem.id);
+        this.selectedEnvironments = this.selectedEnvironments.filter(
+            (environment) => environment.id !== environmentItem.id
+        );
         this.propagateEnvironmentId(this.selectedEnvironments);
     }
 

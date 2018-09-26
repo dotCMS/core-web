@@ -145,7 +145,8 @@ export class ContentTypesInfoService {
                 const item = this.contentTypeInfoCollection[i];
                 if (
                     item.clazz.toLocaleLowerCase() === type.toLocaleLowerCase() ||
-                    item.label.toLocaleLowerCase() === (oldValue ? `${type}_old` : type).toLocaleLowerCase()
+                    item.label.toLocaleLowerCase() ===
+                        (oldValue ? `${type}_old` : type).toLocaleLowerCase()
                 ) {
                     result = item[prop];
                     break;

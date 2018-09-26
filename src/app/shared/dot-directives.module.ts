@@ -6,16 +6,8 @@ import { NgModule } from '@angular/core';
 import { LowercasePipe } from '../view/pipes';
 
 @NgModule({
-    declarations: [
-        LowercasePipe,
-    ],
-    imports: [
-        CommonModule,
-        MessageKeysModule,
-        RippleEffectModule,
-        MdInputTextModule
-    ],
-    exports: [
-    ]
+    declarations: [LowercasePipe],
+    imports: [CommonModule, MessageKeysModule, RippleEffectModule, MdInputTextModule],
+    exports: []
 })
 export class DotDirectivesModule {}

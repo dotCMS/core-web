@@ -94,14 +94,19 @@ export class DotRenderHTMLService {
             : null;
     }
 
-    private getPropertyValue(object: DotPersona | DotLanguage | DotDevice, propertyName: string): any {
+    private getPropertyValue(
+        object: DotPersona | DotLanguage | DotDevice,
+        propertyName: string
+    ): any {
         return object ? object[propertyName] : null;
     }
 
     private getOptionalViewAsParams(viewAsConfig: DotEditPageViewAsParams) {
         return {
             language_id: viewAsConfig.language_id,
-            ...(viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {}),
+            ...(viewAsConfig.persona_id
+                ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id }
+                : {}),
             ...(viewAsConfig.device_inode ? { device_inode: viewAsConfig.device_inode } : {})
         };
     }

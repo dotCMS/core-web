@@ -41,10 +41,14 @@ describe('DotContentletService', () => {
     });
 
     it('should get all content types excluding the RECENT ones for getAllContentTypes()', () => {
-        this.dotContentletService.getAllContentTypes().subscribe((structures: StructureTypeView[]) => {
-            const types = mockDotContentlet.filter((structure: StructureTypeView) => !isRecentContentType(structure));
-            expect(structures).toEqual(types);
-        });
+        this.dotContentletService
+            .getAllContentTypes()
+            .subscribe((structures: StructureTypeView[]) => {
+                const types = mockDotContentlet.filter(
+                    (structure: StructureTypeView) => !isRecentContentType(structure)
+                );
+                expect(structures).toEqual(types);
+            });
         mockConnectionContentletResponse();
     });
 

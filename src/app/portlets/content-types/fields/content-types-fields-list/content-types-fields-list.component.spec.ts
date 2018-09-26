@@ -56,7 +56,9 @@ describe('ContentTypesFieldsListComponent', () => {
         const itemsElements = de.queryAll(By.css('li'));
 
         expect(itemsData.length).toEqual(itemsElements.length);
-        itemsData.forEach((fieldType, index) => expect(itemsElements[index].nativeElement.textContent).toContain(fieldType.label));
+        itemsData.forEach((fieldType, index) =>
+            expect(itemsElements[index].nativeElement.textContent).toContain(fieldType.label)
+        );
 
         const ulElement = de.query(By.css('ul'));
 

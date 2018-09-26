@@ -38,7 +38,9 @@ export class DotWorkflowService {
      */
     getSystem(): Observable<DotWorkflow> {
         return this.get().pipe(
-            switchMap((workflows: DotWorkflow[]) => workflows.filter((workflow: DotWorkflow) => workflow.system)),
+            switchMap((workflows: DotWorkflow[]) =>
+                workflows.filter((workflow: DotWorkflow) => workflow.system)
+            ),
             take(1)
         );
     }

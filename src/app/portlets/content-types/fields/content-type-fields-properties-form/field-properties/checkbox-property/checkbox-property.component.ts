@@ -23,18 +23,20 @@ export class CheckboxPropertyComponent implements OnInit {
         unique: 'contenttypes.field.properties.unique.label'
     };
 
-    constructor(public dotMessageService: DotMessageService) { }
+    constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
-            'contenttypes.field.properties.required.label',
-            'contenttypes.field.properties.user_searchable.label',
-            'contenttypes.field.properties.system_indexed.label',
-            'contenttypes.field.properties.listed.label',
-            'contenttypes.field.properties.unique.label'
-        ]).subscribe(res => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages([
+                'contenttypes.field.properties.required.label',
+                'contenttypes.field.properties.user_searchable.label',
+                'contenttypes.field.properties.system_indexed.label',
+                'contenttypes.field.properties.listed.label',
+                'contenttypes.field.properties.unique.label'
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     setCheckboxLabel(field): string {

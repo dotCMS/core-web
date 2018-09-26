@@ -32,7 +32,10 @@ xdescribe('ActionHeaderComponent', () => {
                     }
                 ])
             ],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }, DotAlertConfirmService]
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                DotAlertConfirmService
+            ]
         });
 
         fixture = DOTTestBed.createComponent(ActionHeaderComponent);
@@ -50,7 +53,9 @@ xdescribe('ActionHeaderComponent', () => {
     it('should show the number of items selected', () => {
         comp.selectedItems = [{ key: 'value' }, { key: 'value' }];
         fixture.detectChanges();
-        const selectedItemsCounter: DebugElement = de.query(By.css('.action-header__selected-items-counter'));
+        const selectedItemsCounter: DebugElement = de.query(
+            By.css('.action-header__selected-items-counter')
+        );
         expect(de.nativeElement.className).toContain('selected');
         expect(selectedItemsCounter.nativeElement.textContent).toBe('2 selected');
     });
@@ -75,7 +80,6 @@ xdescribe('ActionHeaderComponent', () => {
     });
 
     it('should trigger the methods in the action buttons', () => {
-
         const primarySpy = jasmine.createSpy('spy');
         const secondarySpy = jasmine.createSpy('spy2');
         const options = {

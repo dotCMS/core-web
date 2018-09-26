@@ -1,5 +1,13 @@
 import { Observable } from 'rxjs';
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewEncapsulation,
+    ViewChild,
+    AfterViewInit
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -62,7 +70,13 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
                                 : messages['contenttypes.content.add_to_bundle.type'];
                         }, 0);
 
-                        this.form.get('addBundle').setValue(this.getDefaultBundle(bundles) ? this.getDefaultBundle(bundles).name : '');
+                        this.form
+                            .get('addBundle')
+                            .setValue(
+                                this.getDefaultBundle(bundles)
+                                    ? this.getDefaultBundle(bundles).name
+                                    : ''
+                            );
                         return bundles;
                     })
                 );
@@ -92,15 +106,20 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
      */
     submitBundle(_event): void {
         if (this.form.valid) {
-            this.addToBundleService.addToBundle(this.assetIdentifier, this.setBundleData()).subscribe((result: any) => {
-                if (!result.errors) {
-                    sessionStorage.setItem(LAST_BUNDLE_USED, JSON.stringify(this.setBundleData()));
-                    this.form.reset();
-                    this.close();
-                } else {
-                    this.loggerService.debug(result.errorMessages);
-                }
-            });
+            this.addToBundleService
+                .addToBundle(this.assetIdentifier, this.setBundleData())
+                .subscribe((result: any) => {
+                    if (!result.errors) {
+                        sessionStorage.setItem(
+                            LAST_BUNDLE_USED,
+                            JSON.stringify(this.setBundleData())
+                        );
+                        this.form.reset();
+                        this.close();
+                    } else {
+                        this.loggerService.debug(result.errorMessages);
+                    }
+                });
         }
     }
 

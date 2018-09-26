@@ -50,7 +50,10 @@ export class DotContentletService {
             flatMap((structures: StructureTypeView[]) => structures),
             pluck('types'),
             flatMap((contentTypeViews: ContentTypeView[]) => contentTypeViews),
-            filter((contentTypeView: ContentTypeView) => contentTypeView.variable.toLocaleLowerCase() === id),
+            filter(
+                (contentTypeView: ContentTypeView) =>
+                    contentTypeView.variable.toLocaleLowerCase() === id
+            ),
             pluck('action')
         );
     }

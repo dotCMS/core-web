@@ -39,10 +39,18 @@ export class NotificationsItemComponent implements OnInit {
         // TODO: hand more than one action
         const actions = this.data.actions ? this.data.actions[0] : null;
         this.showLinkAction =
-            actions && actions.actionType === 'LINK' && (actions.text || actions.text !== '') && actions.action && actions.action !== '';
+            actions &&
+            actions.actionType === 'LINK' &&
+            (actions.text || actions.text !== '') &&
+            actions.action &&
+            actions.action !== '';
 
         this.showTitleLinked =
-            actions && actions.actionType === 'LINK' && (!actions.text || actions.text === '') && actions.action && actions.action !== '';
+            actions &&
+            actions.actionType === 'LINK' &&
+            (!actions.text || actions.text === '') &&
+            actions.action &&
+            actions.action !== '';
     }
 
     getIconName(val: string): string {

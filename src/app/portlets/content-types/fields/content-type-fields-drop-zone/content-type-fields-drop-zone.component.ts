@@ -1,4 +1,13 @@
-import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
+import {
+    Component,
+    SimpleChanges,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    OnChanges,
+    ViewChild
+} from '@angular/core';
 import { FieldDragDropService } from '../service';
 import { FieldRow, ContentTypeField, FieldType } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
@@ -213,7 +222,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
     }
 
     private getFieldsToSave(fieldToSave: ContentTypeField): ContentTypeField[] {
-        return this.formData.id ? [this.getUpdatedField(fieldToSave)] : this.getNewFields(fieldToSave);
+        return this.formData.id
+            ? [this.getUpdatedField(fieldToSave)]
+            : this.getNewFields(fieldToSave);
     }
 
     private getUpdatedField(fieldToSave: ContentTypeField): ContentTypeField {
@@ -239,7 +250,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
         fields.forEach((field, index) => {
             if (FieldUtil.isNewField(field)) {
                 field.sortOrder = index + 1;
-                const fieldToPush = FieldUtil.isRowOrColumn(field) ? field : Object.assign(field, fieldToSave);
+                const fieldToPush = FieldUtil.isRowOrColumn(field)
+                    ? field
+                    : Object.assign(field, fieldToSave);
                 result.push(fieldToPush);
             }
         });

@@ -26,7 +26,10 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
 
     private workflowsModel: DotWorkflow[];
 
-    constructor(private dotWorkflowService: DotWorkflowService, public dotMessageService: DotMessageService) {}
+    constructor(
+        private dotWorkflowService: DotWorkflowService,
+        public dotMessageService: DotMessageService
+    ) {}
 
     propagateChange = (_: any) => {};
 
@@ -42,18 +45,20 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     registerOnTouched(): void {}
 
     ngOnInit() {
-        this.options = this.dotMessageService.getMessages(['dot.common.select.workflows', 'dot.common.archived']).pipe(
-            mergeMap(() => {
-                return this.dotWorkflowService.get().pipe(
-                    tap((workflows: DotWorkflow[]) => {
-                        this.workflowsModel = workflows;
-                    }),
-                    flatMap((workflows: DotWorkflow[]) => workflows),
-                    map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
-                    toArray()
-                );
-            })
-        );
+        this.options = this.dotMessageService
+            .getMessages(['dot.common.select.workflows', 'dot.common.archived'])
+            .pipe(
+                mergeMap(() => {
+                    return this.dotWorkflowService.get().pipe(
+                        tap((workflows: DotWorkflow[]) => {
+                            this.workflowsModel = workflows;
+                        }),
+                        flatMap((workflows: DotWorkflow[]) => workflows),
+                        map((workflow: DotWorkflow) => this.getWorkflowFieldOption(workflow)),
+                        toArray()
+                    );
+                })
+            );
     }
 
     /**
@@ -74,7 +79,8 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
      * @memberof DotWorkflowsSelectorFieldComponent
      */
     isWorkflowArchive(id: string): boolean {
-        return this.workflowsModel.filter((workflow: DotWorkflow) => workflow.id === id)[0].archived;
+        return this.workflowsModel.filter((workflow: DotWorkflow) => workflow.id === id)[0]
+            .archived;
     }
 
     /**

@@ -29,7 +29,12 @@ describe('DotPortletDetailComponent', () => {
                 }
             ],
             declarations: [DotPortletDetailComponent],
-            imports: [DotWorkflowTaskModule, DotContentletsModule, RouterTestingModule, BrowserAnimationsModule]
+            imports: [
+                DotWorkflowTaskModule,
+                DotContentletsModule,
+                RouterTestingModule,
+                BrowserAnimationsModule
+            ]
         }).compileComponents();
     }));
 

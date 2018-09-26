@@ -24,7 +24,10 @@ export class ActionMenuButtonComponent implements OnInit {
 
     ngOnInit() {
         this.filteredActions = this.actions
-            .filter((action: DotDataTableAction) => (action.shouldShow ? action.shouldShow(this.item) : true))
+            .filter(
+                (action: DotDataTableAction) =>
+                    action.shouldShow ? action.shouldShow(this.item) : true
+            )
             .map((action: DotDataTableAction) => {
                 return {
                     ...action.menuItem,

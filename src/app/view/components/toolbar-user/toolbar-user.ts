@@ -20,7 +20,7 @@ export class ToolbarUserComponent implements OnInit {
     showMyAccount = false;
 
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
     constructor(
@@ -30,11 +30,10 @@ export class ToolbarUserComponent implements OnInit {
         private loginService: LoginService,
         public iframeOverlayService: IframeOverlayService,
         private dotNavigationService: DotNavigationService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
-        this.dotMessageService.getMessages(['my-account']).subscribe(res => {
+        this.dotMessageService.getMessages(['my-account']).subscribe((res) => {
             this.i18nMessages = res;
         });
 

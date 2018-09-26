@@ -16,7 +16,12 @@ describe('DotDevicesService', () => {
     });
 
     it('should get Devices', () => {
-        const url = [`content/render/false/query/+contentType:previewDevice `, `+live:true `, `+deleted:false `, `+working:true`].join('');
+        const url = [
+            `content/render/false/query/+contentType:previewDevice `,
+            `+live:true `,
+            `+deleted:false `,
+            `+working:true`
+        ].join('');
 
         this.dotDevicesService.get().subscribe((devices: DotDevice[]) => {
             expect(devices).toEqual(mockDotDevices);

@@ -6,7 +6,13 @@ import { DebugElement, Injectable } from '@angular/core';
 import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { DropdownModule, OverlayPanelModule, ButtonModule, InputTextModule, TabViewModule } from 'primeng/primeng';
+import {
+    DropdownModule,
+    OverlayPanelModule,
+    ButtonModule,
+    InputTextModule,
+    TabViewModule
+} from 'primeng/primeng';
 
 import { DotcmsConfig, LoginService } from 'dotcms-js/dotcms-js';
 import { SiteService } from 'dotcms-js/dotcms-js';
@@ -81,7 +87,9 @@ describe('ContentTypesFormComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [ContentTypesFormComponent],
             imports: [
-                RouterTestingModule.withRoutes([{ component: ContentTypesFormComponent, path: 'test' }]),
+                RouterTestingModule.withRoutes([
+                    { component: ContentTypesFormComponent, path: 'test' }
+                ]),
                 BrowserAnimationsModule,
                 ButtonModule,
                 DropdownModule,

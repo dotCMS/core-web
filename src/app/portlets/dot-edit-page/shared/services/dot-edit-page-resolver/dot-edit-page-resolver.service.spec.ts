@@ -16,7 +16,9 @@ import { DotRenderedPageState } from '../../models/dot-rendered-page-state.model
 import { mockResponseView } from '../../../../../test/response-view.mock';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 
-const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', ['toString']);
+const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
+    'toString'
+]);
 
 route.queryParams = {};
 
@@ -71,7 +73,9 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage))
+            );
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
@@ -79,11 +83,16 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object when layout is null', () => {
-            const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(mockUser, {
-                ...mockDotRenderedPage,
-                layout: null
-            });
-            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(mockDotRenderedPageState));
+            const mockDotRenderedPageState: DotRenderedPageState = new DotRenderedPageState(
+                mockUser,
+                {
+                    ...mockDotRenderedPage,
+                    layout: null
+                }
+            );
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableOf(mockDotRenderedPageState)
+            );
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(mockDotRenderedPageState);
@@ -98,7 +107,9 @@ describe('DotEditPageResolver', () => {
                     redirected: true
                 })
             );
-            spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableThrowError(fake403Response)
+            );
 
             resolver.resolve(route).subscribe();
             expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake403Response);
@@ -113,7 +124,9 @@ describe('DotEditPageResolver', () => {
                     redirected: false
                 })
             );
-            spyOn(dotPageStateService, 'get').and.returnValue(observableThrowError(fake403Response));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableThrowError(fake403Response)
+            );
 
             spyOn(dotRouterService, 'goToSiteBrowser');
 
@@ -138,7 +151,9 @@ describe('DotEditPageResolver', () => {
         });
 
         it('should return a DotRenderedPageState valid object', () => {
-            spyOn(dotPageStateService, 'get').and.returnValue(observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage)));
+            spyOn(dotPageStateService, 'get').and.returnValue(
+                observableOf(new DotRenderedPageState(mockUser, mockDotRenderedPage))
+            );
 
             resolver.resolve(route).subscribe((res) => {
                 expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
@@ -194,7 +209,10 @@ describe('DotEditPageResolver', () => {
     });
 
     describe('with dotRenderedPageState', () => {
-        const renderedPageState: DotRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+        const renderedPageState: DotRenderedPageState = new DotRenderedPageState(
+            mockUser,
+            mockDotRenderedPage
+        );
 
         beforeEach(() => {
             dotEditPageDataService.set(renderedPageState);

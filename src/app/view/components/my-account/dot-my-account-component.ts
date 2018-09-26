@@ -33,7 +33,7 @@ export class MyAccountComponent implements OnInit {
     changePasswordOption = false;
 
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
     constructor(
@@ -52,25 +52,27 @@ export class MyAccountComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dotMessageService.getMessages([
-            'my-account',
-            'modes.Close',
-            'save',
-            'error.form.mandatory',
-            'errors.email',
-            'First-Name',
-            'Last-Name',
-            'email-address',
-            'new-password',
-            're-enter-new-password',
-            'error.forgot.password.passwords.dont.match',
-            'message.createaccount.success',
-            'Error-communicating-with-server-Please-try-again',
-            'change-password',
-            'current-password'
-        ]).subscribe(res => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages([
+                'my-account',
+                'modes.Close',
+                'save',
+                'error.form.mandatory',
+                'errors.email',
+                'First-Name',
+                'Last-Name',
+                'email-address',
+                'new-password',
+                're-enter-new-password',
+                'error.forgot.password.passwords.dont.match',
+                'message.createaccount.success',
+                'Error-communicating-with-server-Please-try-again',
+                'change-password',
+                'current-password'
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     checkPasswords(): void {
@@ -78,7 +80,9 @@ export class MyAccountComponent implements OnInit {
             this.message = null;
         }
         this.passwordMatch =
-            this.accountUser.newPassword !== '' && this.passwordConfirm !== '' && this.accountUser.newPassword === this.passwordConfirm;
+            this.accountUser.newPassword !== '' &&
+            this.passwordConfirm !== '' &&
+            this.accountUser.newPassword === this.passwordConfirm;
     }
 
     toggleChangePasswordOption(): void {

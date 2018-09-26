@@ -22,8 +22,16 @@ describe('DotGlobalMessageComponent', () => {
     });
 
     it('should set the value of the message with the corresponding icon and life time ', () => {
-        dotEventsService.notify('dot-global-message', { value: 'test', type: 'loading', life: 3000 });
-        expect(component.message).toEqual({ value: 'test', type: 'pi pi-spinner pi-spin', life: 3000 });
+        dotEventsService.notify('dot-global-message', {
+            value: 'test',
+            type: 'loading',
+            life: 3000
+        });
+        expect(component.message).toEqual({
+            value: 'test',
+            type: 'pi pi-spinner pi-spin',
+            life: 3000
+        });
     });
 
     it('should set visibility to false after 10 ms', () => {

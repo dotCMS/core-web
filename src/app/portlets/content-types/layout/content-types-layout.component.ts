@@ -17,28 +17,29 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
     relationshipURL: string;
 
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
     constructor(
         private dotMessageService: DotMessageService,
         private dotMenuService: DotMenuService,
         private fieldDragDropService: FieldDragDropService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.fieldDragDropService.setBagOptions();
-        this.dotMessageService.getMessages([
-            'contenttypes.sidebar.components.title',
-            'contenttypes.tab.fields.header',
-            'contenttypes.sidebar.layouts.title',
-            'contenttypes.tab.permissions.header',
-            'contenttypes.tab.publisher.push.history.header',
-            'contenttypes.tab.relationship.header'
-        ]).subscribe(res => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages([
+                'contenttypes.sidebar.components.title',
+                'contenttypes.tab.fields.header',
+                'contenttypes.sidebar.layouts.title',
+                'contenttypes.tab.permissions.header',
+                'contenttypes.tab.publisher.push.history.header',
+                'contenttypes.tab.relationship.header'
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     ngOnChanges(changes): void {
@@ -50,8 +51,12 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
                 }`;
             });
 
-            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
-            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${changes.contentTypeId.currentValue}&popup=true`;
+            this.permissionURL = `/html/content_types/permissions.jsp?contentTypeId=${
+                changes.contentTypeId.currentValue
+            }&popup=true`;
+            this.pushHistoryURL = `/html/content_types/push_history.jsp?contentTypeId=${
+                changes.contentTypeId.currentValue
+            }&popup=true`;
         }
     }
 }

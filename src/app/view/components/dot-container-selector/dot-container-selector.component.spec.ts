@@ -27,7 +27,11 @@ describe('ContainerSelectorComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotContainerSelectorComponent],
             imports: [SearchableDropDownModule, BrowserAnimationsModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }, IframeOverlayService, PaginatorService]
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                IframeOverlayService,
+                PaginatorService
+            ]
         });
 
         fixture = DOTTestBed.createComponent(DotContainerSelectorComponent);

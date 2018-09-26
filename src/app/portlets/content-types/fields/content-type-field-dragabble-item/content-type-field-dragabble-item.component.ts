@@ -23,11 +23,10 @@ export class ContentTypesFieldDragabbleItemComponent implements OnInit {
     edit: EventEmitter<ContentTypeField> = new EventEmitter();
     fieldAttributes: string;
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
-    constructor(private dotMessageService: DotMessageService, public fieldService: FieldService) {
-    }
+    constructor(private dotMessageService: DotMessageService, public fieldService: FieldService) {}
 
     ngOnInit(): void {
         this.dotMessageService

@@ -1,4 +1,13 @@
-import { Component, Output, EventEmitter, Input, ViewEncapsulation, OnInit, ElementRef, ViewChild } from '@angular/core';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    Input,
+    ViewEncapsulation,
+    OnInit,
+    ElementRef,
+    ViewChild
+} from '@angular/core';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { DotMessageService } from '@services/dot-messages-service';
 import { PaginatorService } from '@services/paginator';
@@ -30,7 +39,7 @@ export class LoginAsComponent implements OnInit {
     errorMessage: string;
 
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
     constructor(
@@ -41,8 +50,7 @@ export class LoginAsComponent implements OnInit {
         public paginationService: PaginatorService,
         private iframeOverlayService: IframeOverlayService,
         private dotNavigationService: DotNavigationService
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.paginationService.url = 'v2/users/loginAsData';
@@ -53,16 +61,18 @@ export class LoginAsComponent implements OnInit {
             password: ''
         });
 
-        this.dotMessageService.getMessages([
-            'Change',
-            'cancel',
-            'loginas.select.loginas.user',
-            'loginas.input.loginas.password',
-            'loginas.error.wrong-credentials',
-            'login-as'
-        ]).subscribe(res => {
-            this.i18nMessages = res;
-        });
+        this.dotMessageService
+            .getMessages([
+                'Change',
+                'cancel',
+                'loginas.select.loginas.user',
+                'loginas.input.loginas.password',
+                'loginas.error.wrong-credentials',
+                'login-as'
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     close(): boolean {

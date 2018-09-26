@@ -39,7 +39,7 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         AppRoutingModule,
         MdInputTextModule,
         DotDirectivesModule,
-        HotkeyModule.forRoot(),
+        HotkeyModule.forRoot()
     ],
     providers: [ENV_PROVIDERS]
 })

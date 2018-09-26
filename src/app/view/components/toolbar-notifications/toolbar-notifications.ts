@@ -37,7 +37,11 @@ export class ToolbarNotificationsComponent implements OnInit {
 
     ngOnInit(): void {
         this.dotMessageService
-            .getMessages(['notifications_dismissall', 'notifications_title', 'notifications_load_more'])
+            .getMessages([
+                'notifications_dismissall',
+                'notifications_title',
+                'notifications_load_more'
+            ])
             .subscribe((res) => {
                 this.i18nMessages = res;
             });
@@ -63,23 +67,25 @@ export class ToolbarNotificationsComponent implements OnInit {
     onDismissNotification($event): void {
         const notificationId = $event.id;
 
-        this.notificationService.dismissNotifications({ items: [notificationId] }).subscribe((res) => {
-            if (res.errors.length) {
-                return;
-            }
+        this.notificationService
+            .dismissNotifications({ items: [notificationId] })
+            .subscribe((res) => {
+                if (res.errors.length) {
+                    return;
+                }
 
-            this.notifications = this.notifications.filter((item) => {
-                return item.id !== notificationId;
+                this.notifications = this.notifications.filter((item) => {
+                    return item.id !== notificationId;
+                });
+
+                if (this.notificationsUnreadCount) {
+                    this.notificationsUnreadCount--;
+                }
+
+                if (!this.notifications.length && !this.notificationsUnreadCount) {
+                    this.clearNotitications();
+                }
             });
-
-            if (this.notificationsUnreadCount) {
-                this.notificationsUnreadCount--;
-            }
-
-            if (!this.notifications.length && !this.notificationsUnreadCount) {
-                this.clearNotitications();
-            }
-        });
     }
 
     loadMore(): void {

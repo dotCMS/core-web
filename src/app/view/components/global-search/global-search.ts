@@ -9,14 +9,13 @@ import { DotMessageService } from '@services/dot-messages-service';
 })
 export class GlobalSearchComponent implements OnInit {
     i18nMessages: {
-        [key: string]: string
+        [key: string]: string;
     } = {};
 
-    constructor(private dotMessageService: DotMessageService) {
-    }
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService.getMessages(['search']).subscribe(res => {
+        this.dotMessageService.getMessages(['search']).subscribe((res) => {
             this.i18nMessages = res;
         });
     }

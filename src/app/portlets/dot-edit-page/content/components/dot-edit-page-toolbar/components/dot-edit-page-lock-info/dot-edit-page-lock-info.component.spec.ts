@@ -94,7 +94,9 @@ describe('DotEditPageLockInfoComponent', () => {
             });
 
             it('should have message', () => {
-                expect(lockedMessage.nativeElement.textContent.trim()).toEqual('Page is locked by...');
+                expect(lockedMessage.nativeElement.textContent.trim()).toEqual(
+                    'Page is locked by...'
+                );
             });
 
             it(
@@ -104,9 +106,13 @@ describe('DotEditPageLockInfoComponent', () => {
                     spyOn(lockedMessage.nativeElement.classList, 'remove');
                     component.blinkLockMessage();
 
-                    expect(lockedMessage.nativeElement.classList.add).toHaveBeenCalledWith('page-info__locked-by-message--blink');
+                    expect(lockedMessage.nativeElement.classList.add).toHaveBeenCalledWith(
+                        'page-info__locked-by-message--blink'
+                    );
                     tick(500);
-                    expect(lockedMessage.nativeElement.classList.remove).toHaveBeenCalledWith('page-info__locked-by-message--blink');
+                    expect(lockedMessage.nativeElement.classList.remove).toHaveBeenCalledWith(
+                        'page-info__locked-by-message--blink'
+                    );
                 })
             );
         });
@@ -128,8 +134,10 @@ describe('DotEditPageLockInfoComponent', () => {
                 fixture.detectChanges();
             });
 
-            it('should have don\'t have permissions messages', () => {
-                const lockedMessage: DebugElement = de.query(By.css('.page-info__cant-edit-message'));
+            it("should have don't have permissions messages", () => {
+                const lockedMessage: DebugElement = de.query(
+                    By.css('.page-info__cant-edit-message')
+                );
                 expect(lockedMessage.nativeElement.textContent.trim()).toEqual('No permissions...');
             });
         });

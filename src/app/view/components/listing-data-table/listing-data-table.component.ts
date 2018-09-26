@@ -1,4 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnChanges,
+    ViewChild,
+    ElementRef,
+    OnInit
+} from '@angular/core';
 import { DataTable, LazyLoadEvent } from 'primeng/primeng';
 import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
 import { DataTableColumn } from '@models/data-table/data-table-column';
@@ -68,7 +77,9 @@ export class ListingDataTableComponent implements OnChanges, OnInit {
         }
 
         if (changes.columns && changes.columns.currentValue) {
-            this.dateColumns = changes.columns.currentValue.filter((column) => column.format === this.DATE_FORMAT);
+            this.dateColumns = changes.columns.currentValue.filter(
+                (column) => column.format === this.DATE_FORMAT
+            );
             this.loadData(0);
         }
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
@@ -104,7 +115,8 @@ export class ListingDataTableComponent implements OnChanges, OnInit {
 
             this.paginatorService.filter = this.filter;
             this.paginatorService.sortField = sortField;
-            this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
+            this.paginatorService.sortOrder =
+                sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
             this.paginatorService.getWithOffset(offset).subscribe((items) => this.setItems(items));
         }
@@ -151,7 +163,10 @@ export class ListingDataTableComponent implements OnChanges, OnInit {
 
     private formatData(items: any[]): any[] {
         return items.map((item) => {
-            this.dateColumns.forEach((col) => (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName])));
+            this.dateColumns.forEach(
+                (col) =>
+                    (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]))
+            );
             return item;
         });
     }

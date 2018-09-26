@@ -170,7 +170,9 @@ describe('DotPageSelectorComponent', () => {
         });
 
         it('should write value', () => {
-            expect(component.writeValue).toHaveBeenCalledWith('c12fe7e6-d338-49d5-973b-2d974d57015b');
+            expect(component.writeValue).toHaveBeenCalledWith(
+                'c12fe7e6-d338-49d5-973b-2d974d57015b'
+            );
             expect(component.val.identifier).toEqual('c12fe7e6-d338-49d5-973b-2d974d57015b');
         });
 

@@ -49,7 +49,12 @@ describe('MainComponentLegacyComponent', () => {
                 },
                 DotMenuService
             ],
-            declarations: [MainComponentLegacyComponent, MockDotDialogComponent, MockDotMainNavComponent, MockDotToolbarComponent]
+            declarations: [
+                MainComponentLegacyComponent,
+                MockDotDialogComponent,
+                MockDotMainNavComponent,
+                MockDotToolbarComponent
+            ]
         }).compileComponents();
     }));
 

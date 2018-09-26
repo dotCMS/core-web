@@ -1,4 +1,14 @@
-import { filter, refCount, defaultIfEmpty, map, pluck, find, mergeMap, first, publishLast } from 'rxjs/operators';
+import {
+    filter,
+    refCount,
+    defaultIfEmpty,
+    map,
+    pluck,
+    find,
+    mergeMap,
+    first,
+    publishLast
+} from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

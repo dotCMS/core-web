@@ -21,7 +21,12 @@ import { SiteServiceMock } from '../../../../test/site-service.mock';
 const getTestingModule = (dotRenderedPage?: DotRenderedPage) => {
     return {
         declarations: [DotEditLayoutComponent],
-        imports: [BrowserAnimationsModule, DotEditLayoutAdvancedModule, DotEditLayoutDesignerModule, RouterTestingModule],
+        imports: [
+            BrowserAnimationsModule,
+            DotEditLayoutAdvancedModule,
+            DotEditLayoutDesignerModule,
+            RouterTestingModule
+        ],
         providers: [
             {
                 provide: LoginService,
@@ -67,12 +72,16 @@ describe('DotEditLayoutComponent with Layout Designer', () => {
     });
 
     it('should have dot-edit-layout-designer', () => {
-        const layoutDesigner: DebugElement = fixture.debugElement.query(By.css('dot-edit-layout-designer'));
+        const layoutDesigner: DebugElement = fixture.debugElement.query(
+            By.css('dot-edit-layout-designer')
+        );
         expect(layoutDesigner).toBeTruthy();
     });
 
     it('should pass pageView to the dot-edit-layout-designer', () => {
-        const layoutDesigner: DebugElement = fixture.debugElement.query(By.css('dot-edit-layout-designer'));
+        const layoutDesigner: DebugElement = fixture.debugElement.query(
+            By.css('dot-edit-layout-designer')
+        );
         expect(layoutDesigner.componentInstance.pageState).toEqual({
             ...mockDotRenderedPage,
             state: mockDotPageState

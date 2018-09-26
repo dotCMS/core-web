@@ -8,7 +8,13 @@ import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 
 @NgModule({
-    imports: [CommonModule, AutoCompleteModule, FormsModule, DotDirectivesModule, MdInputTextModule],
+    imports: [
+        CommonModule,
+        AutoCompleteModule,
+        FormsModule,
+        DotDirectivesModule,
+        MdInputTextModule
+    ],
     declarations: [DotPageSelectorComponent],
     providers: [DotPageSelectorService],
     exports: [DotPageSelectorComponent]

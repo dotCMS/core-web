@@ -19,7 +19,10 @@ export class DotEditLayoutComponent implements OnInit {
         this.pageState = this.route.parent.parent.data.pipe(pluck('content'));
 
         this.isAdvancedTemplate = this.pageState.pipe(
-            map((dotRenderedPageState: DotRenderedPageState) => dotRenderedPageState.template && !dotRenderedPageState.template.drawed)
+            map(
+                (dotRenderedPageState: DotRenderedPageState) =>
+                    dotRenderedPageState.template && !dotRenderedPageState.template.drawed
+            )
         );
     }
 }

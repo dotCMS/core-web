@@ -52,7 +52,9 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
         const container = de.query(By.css('.field__name'));
         expect(container).not.toBeNull();
-        expect(container.nativeElement.textContent.trim()).toEqual(`${field.name} (${field.variable})`);
+        expect(container.nativeElement.textContent.trim()).toEqual(
+            `${field.name} (${field.variable})`
+        );
     });
 
     it('should have field attributes label', () => {

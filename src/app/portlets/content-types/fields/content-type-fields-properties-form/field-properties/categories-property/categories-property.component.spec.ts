@@ -60,7 +60,11 @@ describe('CategoriesPropertyComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [CategoriesPropertyComponent, TestFieldValidationMessageComponent, TestSearchableDropdownComponent],
+            declarations: [
+                CategoriesPropertyComponent,
+                TestFieldValidationMessageComponent,
+                TestSearchableDropdownComponent
+            ],
             imports: [],
             providers: [
                 { provide: PaginatorService, useClass: TestPaginatorService },

@@ -46,7 +46,9 @@ describe('DotSidebarPropertiesComponent', () => {
     });
 
     it('should has 3 radio buttons', () => {
-        const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
+        const radioButtons = fixture.debugElement.query(
+            By.css('.dot-sidebar-properties__radio-buttons-container')
+        );
 
         expect(radioButtons.children.length).toEqual(3);
         expect(radioButtons.children[0].attributes.value).toEqual('small');
@@ -64,7 +66,9 @@ describe('DotSidebarPropertiesComponent', () => {
 
     it('should hide overlay panel when a sidebar size property is clicked', () => {
         spyOn(component.overlay, 'hide');
-        const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
+        const radioButtons = fixture.debugElement.query(
+            By.css('.dot-sidebar-properties__radio-buttons-container')
+        );
         radioButtons.children[0].nativeElement.click();
         expect(component.overlay.hide).toHaveBeenCalledTimes(1);
     });
@@ -72,7 +76,9 @@ describe('DotSidebarPropertiesComponent', () => {
     it('should send a layout-sidebar-change notification when a sidebar size property is updated', () => {
         spyOn(component.change, 'emit');
         spyOn(dotEventsService, 'notify');
-        const radioButtons = fixture.debugElement.query(By.css('.dot-sidebar-properties__radio-buttons-container'));
+        const radioButtons = fixture.debugElement.query(
+            By.css('.dot-sidebar-properties__radio-buttons-container')
+        );
         radioButtons.children[0].nativeElement.click();
         expect(dotEventsService.notify).toHaveBeenCalledWith('layout-sidebar-change');
         expect(component.change.emit).toHaveBeenCalled();

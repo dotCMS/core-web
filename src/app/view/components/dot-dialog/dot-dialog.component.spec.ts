@@ -168,7 +168,10 @@ describe('DotDialogComponent', () => {
                 const buttons = footer.queryAll(By.css('button'));
                 expect(buttons.length).toBe(1, 'should have ok button');
 
-                expect(buttons[0].nativeElement.className).toContain('dot-dialog__ok', 'should have the right class');
+                expect(buttons[0].nativeElement.className).toContain(
+                    'dot-dialog__ok',
+                    'should have the right class'
+                );
                 expect(buttons[0].properties.disabled).toBe(true, 'should be disabled');
             });
 
@@ -205,7 +208,10 @@ describe('DotDialogComponent', () => {
                 const buttons = footer.queryAll(By.css('button'));
                 expect(buttons.length).toBe(1, 'should have cancel button');
 
-                expect(buttons[0].nativeElement.className).toContain('dot-dialog__cancel', 'should have the right class');
+                expect(buttons[0].nativeElement.className).toContain(
+                    'dot-dialog__cancel',
+                    'should have the right class'
+                );
                 // expect(buttons[0].componentInstance.label).toBe('Cancel', 'should have the right label');
             });
 
