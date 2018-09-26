@@ -15,7 +15,7 @@ export class DataTypePropertyComponent implements OnInit {
 
     i18nMessages: {
         [key: string]: string;
-    };
+    } = {};
 
     constructor(public dotMessageService: DotMessageService) {}
 

@@ -13,7 +13,7 @@ export class CheckboxPropertyComponent implements OnInit {
 
     i18nMessages: {
         [key: string]: string;
-    };
+    } = {};
 
     private readonly map = {
         indexed: 'contenttypes.field.properties.system_indexed.label',

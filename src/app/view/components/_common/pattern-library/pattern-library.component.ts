@@ -11,6 +11,8 @@ export class PatternLibraryComponent implements OnInit {
     selectButtonStates: SelectItem[] = [];
     selectButtonValue: string;
     lockerModel = false;
+    radioVal1 = 'Option 4';
+    checkboxVal1 = ['Option 4'];
 
     constructor() {}
 

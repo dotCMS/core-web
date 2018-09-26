@@ -55,4 +55,19 @@
 
     <p-inputSwitch [(ngModel)]="lockerModel"></p-inputSwitch>
     <p-inputSwitch [(ngModel)]="lockerModel" [disabled]="true"></p-inputSwitch>
+
+    <div class="pl__radio">
+        <p-radioButton name="group1" value="Option 1" label="Option 1" [(ngModel)]="radioVal1" inputId="opt1"></p-radioButton>
+        <p-radioButton name="group1" value="Option 2" label="Option 2" [(ngModel)]="radioVal1" inputId="opt2" [disabled]="true"></p-radioButton>
+        <p-radioButton name="group1" value="Option 3" label="Option 3" [(ngModel)]="radioVal1" inputId="opt3"></p-radioButton>
+        <p-radioButton name="group1" value="Option 4" label="Option 4" [(ngModel)]="radioVal1" inputId="opt4" [disabled]="true"></p-radioButton>
+    </div>
+
+
+    <div class="pl__checkbox">
+        <p-checkbox name="group1" value="Option 1" label="Option 1" [(ngModel)]="checkboxVal1" inputId="ny"></p-checkbox>
+        <p-checkbox name="group1" value="Option 2" label="Option 2" [(ngModel)]="checkboxVal1" inputId="sf" [disabled]="true"></p-checkbox>
+        <p-checkbox name="group1" value="Option 3" label="Option 3" [(ngModel)]="checkboxVal1" inputId="la"></p-checkbox>
+        <p-checkbox name="group1" value="Option 4" label="Option 4" [(ngModel)]="checkboxVal1" inputId="la" [disabled]="true"></p-checkbox>
+    </div>
 </div>
