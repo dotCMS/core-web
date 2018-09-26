@@ -10,6 +10,7 @@ export class PatternLibraryComponent implements OnInit {
     dropdownOptions: SelectItem[];
     selectButtonStates: SelectItem[] = [];
     selectButtonValue: string;
+    lockerModel = false;
 
     constructor() {}
 
