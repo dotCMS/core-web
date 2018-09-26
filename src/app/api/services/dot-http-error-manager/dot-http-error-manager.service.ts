@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { DotRouterService } from '../dot-router/dot-router.service';
 import { DotMessageService } from '../dot-messages-service';
 import { Injectable } from '@angular/core';
