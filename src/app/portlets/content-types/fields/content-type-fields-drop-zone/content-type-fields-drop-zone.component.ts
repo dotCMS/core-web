@@ -192,11 +192,11 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     isTab(row: FieldDivider): boolean {
-        // debugger
         return row instanceof FieldTab;
     }
 
     private moveFields(): void {
+        // debugger
         const fields = this.getFields().filter((field, index) => {
             const currentSortOrder = index + 1;
 
@@ -259,7 +259,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 fieldRow.addFields(fieldDivider);
                 return fieldRow;
             } else if (FieldUtil.isTabDivider(fieldDivider[0])) {
-                const tabRow: FieldTab = new FieldTab();
+                const tabRow: FieldTab = new FieldTab(fieldDivider[0]);
                 return tabRow;
             }
         });
@@ -268,10 +268,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private getFields(): ContentTypeField[] {
+        debugger;
+
         const fields: ContentTypeField[] = [];
 
         this.fieldRows.forEach((fieldDivider) => {
-            if (FieldUtil.isRow(fieldDivider)) {
+            if (fieldDivider instanceof FieldRow) {
                 const fieldRow = <FieldRow> fieldDivider;
                 fields.push(fieldRow.lineDivider);
 
@@ -280,7 +282,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                     fieldColumn.fields.forEach((field) => fields.push(field));
                 });
             } else {
-                fields.push(fieldDivider);
+                const fieldTab = <FieldTab> fieldDivider;
+                if (FieldUtil.isNewField(fieldTab.field)) {
+                    const tabField = FieldUtil.createFieldTabDivider();
+                    tabField.name = fieldTab.field.name;
+                } else {
+                    fields.push(fieldTab.field);
+                }
             }
         });
 

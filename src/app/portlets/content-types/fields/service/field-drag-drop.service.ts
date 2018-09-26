@@ -122,6 +122,7 @@ export class FieldDragDropService {
     }
 
     private handleDrop(dragType: string, source: string) {
+        // debugger
         if (dragType === 'fields-bag') {
             this.handleDropField(dragType, source);
         } else if (dragType === 'fields-row-bag') {

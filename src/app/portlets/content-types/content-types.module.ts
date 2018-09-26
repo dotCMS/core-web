@@ -22,6 +22,7 @@ import {
     ContentTypeFieldsDropZoneComponent,
     ContentTypeFieldsPropertiesFormComponent,
     ContentTypeFieldsRowComponent,
+    ContentTypeFieldsTabComponent,
     ContentTypeFieldsRowListComponent,
     ContentTypesFieldDragabbleItemComponent,
     ContentTypesFieldsListComponent
@@ -70,6 +71,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
+        ContentTypeFieldsTabComponent,
         ContentTypeFieldsRowListComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,

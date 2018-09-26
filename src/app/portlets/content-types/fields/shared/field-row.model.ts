@@ -9,7 +9,7 @@ export class FieldRow implements FieldDivider {
 
     constructor(nColumns?: number) {
         this.columns = [];
-        this.lineDivider = FieldUtil.createLineDivider();
+        this.lineDivider = FieldUtil.createFieldRow();
 
         if (nColumns) {
             for (let i = 0; i < nColumns; i++) {

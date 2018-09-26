@@ -12,7 +12,8 @@
             (removeField)="removeField($event)"
             (removeRow)="removeFieldRow($event)">
         </dot-content-type-fields-row>
-        <div *ngIf="isTab(row)">tab</div>
+        <!-- <div class="row-header__drag" *ngIf="isTab(row)">tab</div> -->
+        <dot-content-type-fields-tab class="row-header__drag" *ngIf="isTab(row)"></dot-content-type-fields-tab>
         <!-- <dot-content-type-fields-row
             *ngIf="row.columns.length"
             [fieldRow]="row"
@@ -21,7 +22,7 @@
             (removeRow)="removeFieldRow($event)">
         </dot-content-type-fields-row> -->
     </ng-template>
-xx
+
     <dot-add-rows (selectColums)="addRow($event)"></dot-add-rows>
 </div>
 <p-dialog

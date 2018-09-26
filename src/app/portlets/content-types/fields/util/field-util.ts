@@ -8,7 +8,7 @@ const ROW_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField'
 };
 
-const TAB_FIELD = {
+export const TAB_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
 };
 
@@ -57,12 +57,16 @@ export class FieldUtil {
         return field.clazz === TAB_FIELD.clazz;
     }
 
-    static createLineDivider(): ContentTypeField {
+    static createFieldRow(): ContentTypeField {
         return Object.assign({}, ROW_FIELD);
     }
 
-    static createTabDivider(): ContentTypeField {
+    static createFieldColumn(): ContentTypeField {
         return Object.assign({}, COLUMN_FIELD);
+    }
+
+    static createFieldTabDivider(): ContentTypeField {
+        return Object.assign({}, TAB_FIELD);
     }
 
     static splitFieldsByLineDivider(fields: ContentTypeField[]): ContentTypeField[][] {
