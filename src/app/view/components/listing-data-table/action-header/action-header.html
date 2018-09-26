@@ -1,4 +1,3 @@
-<h1>here {{options | json}}</h1>
 <div class="action-header" [class.selected]="selectedItems.length">
     <ng-container *ngIf="options && options.primary">
         <dot-action-button class="action-header__primary-button" [model]="options.primary.model" (click)="handlePrimaryAction()"></dot-action-button>
