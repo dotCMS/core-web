@@ -29,12 +29,16 @@ export class DotActionButtonComponent implements OnInit, OnChanges {
 
     @Input()
     disabled: boolean;
+
     @Input()
     icon: string;
+
     @Input()
     label: string;
+
     @Input()
     model: MenuItem[];
+
     @Input()
     selected: boolean;
 
