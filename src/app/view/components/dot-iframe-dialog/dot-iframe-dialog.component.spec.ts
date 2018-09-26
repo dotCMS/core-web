@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { DebugElement, Component } from '@angular/core';
+import { DebugElement, Component, OnInit } from '@angular/core';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../test/dot-test-bed';
@@ -265,11 +265,15 @@ describe('DotIframeDialogComponent', () => {
     template:
         '<dot-iframe-dialog [url]="url" [header]="header" (beforeClose)="onBeforeClose($event)"></dot-iframe-dialog>'
 })
-class TestHost2Component {
+class TestHost2Component implements OnInit {
     url: string;
     header: string;
 
     onBeforeClose(_$event: { originalEvent: MouseEvent | KeyboardEvent; close: () => {} }) {}
+
+    ngOnInit() {
+        this.url = 'http://';
+    }
 }
 
 describe('DotIframeDialogComponent with onBeforeClose event', () => {
@@ -284,6 +288,9 @@ describe('DotIframeDialogComponent with onBeforeClose event', () => {
         hostDe = hostFixture.debugElement;
         de = hostDe.query(By.css('dot-iframe-dialog'));
         component = de.componentInstance;
+
+        hostFixture.detectChanges();
+
         closeButton = de.query(
             By.css('.ui-dialog-titlebar-icon.ui-dialog-titlebar-close.dialog__close')
         );
