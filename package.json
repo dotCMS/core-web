@@ -26,7 +26,7 @@
         "dotcms-js": "^4.2.0-b99",
         "dotcms-rules-engine": "0.0.12",
         "font-awesome": "^4.7.0",
-        "lodash": "4.16.6",
+        "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "moment": "^2.19.4",
         "ng2-ace-editor": "^0.3.8",
