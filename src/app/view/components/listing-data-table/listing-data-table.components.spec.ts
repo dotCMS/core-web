@@ -276,7 +276,7 @@ describe('ListingDataTableComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 }
@@ -309,7 +309,7 @@ describe('ListingDataTableComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 }

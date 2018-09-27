@@ -89,7 +89,7 @@ xdescribe('ActionHeaderComponent', () => {
                     model: [
                         {
                             command: primarySpy,
-                            icon: 'pi pi-refresh',
+                            icon: 'fa fa-refresh',
                             label: 'Action 1-1'
                         }
                     ]
@@ -99,7 +99,7 @@ xdescribe('ActionHeaderComponent', () => {
                     model: [
                         {
                             command: secondarySpy,
-                            icon: 'pi pi-refresh',
+                            icon: 'fa fa-refresh',
                             label: 'Action 2-1'
                         }
                     ]

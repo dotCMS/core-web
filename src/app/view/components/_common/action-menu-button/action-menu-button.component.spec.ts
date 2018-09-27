@@ -29,7 +29,7 @@ describe('ActionMenuButtonComponent', () => {
             {
                 menuItem: {
                     command: () => {},
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove'
                 },
                 shouldShow: () => true
@@ -37,7 +37,7 @@ describe('ActionMenuButtonComponent', () => {
             {
                 menuItem: {
                     command: () => {},
-                    icon: 'pi pi-pencil',
+                    icon: 'fa fa-pencil',
                     label: 'Edit'
                 }
             }
@@ -60,7 +60,7 @@ describe('ActionMenuButtonComponent', () => {
             {
                 menuItem: {
                     command: () => {},
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove'
                 }
             }
@@ -80,7 +80,7 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 }
@@ -116,7 +116,7 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 },
@@ -125,7 +125,7 @@ describe('ActionMenuButtonComponent', () => {
             {
                 menuItem: {
                     command: () => {},
-                    icon: 'pi pi-pencil',
+                    icon: 'fa fa-pencil',
                     label: 'Edit'
                 },
                 shouldShow: () => false
@@ -133,7 +133,7 @@ describe('ActionMenuButtonComponent', () => {
             {
                 menuItem: {
                     command: () => {},
-                    icon: 'pi pi-plus',
+                    icon: 'fa fa-plus',
                     label: 'Add'
                 },
                 shouldShow: () => true
@@ -150,14 +150,14 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 }
             },
             {
                 menuItem: {
-                    icon: 'pi pi-check',
+                    icon: 'fa fa-check',
                     label: 'Test',
                     command: () => {}
                 }
@@ -194,14 +194,14 @@ describe('ActionMenuButtonComponent', () => {
         const fakeActions: DotDataTableAction[] = [
             {
                 menuItem: {
-                    icon: 'pi pi-trash',
+                    icon: 'fa fa-trash',
                     label: 'Remove',
                     command: () => {}
                 }
             },
             {
                 menuItem: {
-                    icon: 'pi pi-check',
+                    icon: 'fa fa-check',
                     label: 'Test',
                     command: (item) => {
                         fakeCommand(item);
