@@ -63,6 +63,7 @@ import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector/dot-base-type-selector.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+import { DotMenuModule } from '@components/_common/dot-menu/dot-menu.module';
 
 @NgModule({
     declarations: [
@@ -107,6 +108,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
         DialogModule,
         DotIconModule,
         DotIconButtonModule,
+        DotMenuModule,
         DragulaModule,
         DropdownModule,
         FieldValidationMessageModule,

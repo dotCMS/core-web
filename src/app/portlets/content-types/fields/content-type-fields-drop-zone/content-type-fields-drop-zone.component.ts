@@ -75,6 +75,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 behavior: 'smooth'
             });
         });
+
+        this.dotEventsService.listen('add-tab-divider').subscribe(() => {
+            this.fieldRows.push(new FieldTab(FieldUtil.createFieldTabDivider()));
+            this.setDroppedField();
+            this.toggleDialog();
+        });
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -104,9 +111,16 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: ContentTypeField): void {
-        const fields = this.getFieldsToSave(fieldToSave);
+        let fields: ContentTypeField[];
+
+        if (fieldToSave.id) {
+            fields = [fieldToSave];
+        } else {
+            fields = this.getFieldsToSave(fieldToSave);
+            this.toggleDialog();
+        }
+
         this.saveFields.emit(fields);
-        this.toggleDialog();
     }
 
     /**
@@ -175,7 +189,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     /**
-     * Tigger the removeFields event with all the fields in fieldRow
+     * Trigger the removeFields event with all the fields in fieldRow
      * @param fieldToDelete
      */
     removeFieldRow(fieldRow: FieldRow): void {
@@ -191,12 +205,20 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         }
     }
 
+    /**
+     * Trigger the removeFields event with the tab to be removed
+     * @param fieldToDelete
+     */
+    removeTab(fieldTab: FieldTab): void {
+        this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
+        this.removeFields.emit([fieldTab.field]);
+    }
+
     isTab(row: FieldDivider): boolean {
         return row instanceof FieldTab;
     }
 
     private moveFields(): void {
-        // debugger
         const fields = this.getFields().filter((field, index) => {
             const currentSortOrder = index + 1;
 
@@ -252,7 +274,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     private getRowFields(fields: ContentTypeField[]): FieldDivider[] {
         const splitFields: ContentTypeField[][] = FieldUtil.splitFieldsByLineDivider(fields);
-
         const fieldRows: FieldDivider[] = splitFields.map((fieldDivider) => {
             if (FieldUtil.isRow(fieldDivider[0])) {
                 const fieldRow: FieldRow = new FieldRow();
@@ -268,7 +289,6 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     private getFields(): ContentTypeField[] {
-        debugger;
 
         const fields: ContentTypeField[] = [];
 
@@ -286,6 +306,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                 if (FieldUtil.isNewField(fieldTab.field)) {
                     const tabField = FieldUtil.createFieldTabDivider();
                     tabField.name = fieldTab.field.name;
+                    fields.push(tabField);
                 } else {
                     fields.push(fieldTab.field);
                 }
