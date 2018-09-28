@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map } from 'rxjs/operators';
 import { FieldDivider } from '@portlets/content-types/fields/shared';
+import * as _ from 'lodash';
 
 /**
  * Provide method to handle with the Field Types
@@ -54,10 +55,10 @@ export class FieldDragDropService {
                     (<HTMLElement> data.source).dataset.dragType === 'source'),
                 map((data: DragulaDropModel) => {
                     return {
-                        item: data.item,
+                        item: _.cloneDeep(data.item),
                         target: {
                             columnId: (<HTMLElement> data.target).dataset.columnid,
-                            model: data.targetModel
+                            model: _.cloneDeep(data.targetModel)
                         }
                     };
                 })

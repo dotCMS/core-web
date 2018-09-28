@@ -43,7 +43,7 @@ export class ContentTypeFieldsTabComponent implements OnInit {
     }
 
     changeLabel(): void {
-        this.editTab.emit(this.fieldTab.field);
+        this.editTab.emit(this.fieldTab);
     }
 
     removeItem($event: MouseEvent): void {
@@ -53,7 +53,7 @@ export class ContentTypeFieldsTabComponent implements OnInit {
                 this.removeTab.emit(this.fieldTab);
             },
             header: `${this.i18nMessages['contenttypes.action.delete']} ${this.i18nMessages['contenttypes.content.field']}`,
-            message: this.dotMessageService.get('contenttypes.confirm.message.delete.field', this.fieldTab.field.name),
+            message: this.dotMessageService.get('contenttypes.confirm.message.delete.field', this.fieldTab.getFieldDivider().name),
             footerLabel: {
                 accept: this.i18nMessages['contenttypes.action.delete'],
                 reject: this.i18nMessages['contenttypes.action.cancel']

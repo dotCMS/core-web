@@ -58,7 +58,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     ngOnInit(): void {
         this.fieldDragDropService.fieldDropFromSource$.subscribe((data) => {
-            this.setDroppedField(data);
+            this.setDroppedField(data.item);
+            this.setModel(data.target);
             this.toggleDialog();
         });
 
@@ -84,8 +85,9 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         });
 
         this.dotEventsService.listen('add-tab-divider').subscribe(() => {
-            this.fieldRows.push(new FieldTab(FieldUtil.createFieldTabDivider()));
-            this.setDroppedField();
+            const fieldTab: FieldTab = new FieldTab(FieldUtil.createFieldTabDivider());
+            this.fieldRows.push(fieldTab);
+            this.setDroppedField(fieldTab.getFieldDivider());
             this.toggleDialog();
         });
 
@@ -216,13 +218,12 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      * Set the field to be edited
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    private setDroppedField(data: any): void {
-        this.formData = data.item;
+    private setDroppedField(droppedField: ContentTypeField): void {
+        this.formData = droppedField;
 
         if (this.formData) {
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         }
-        this.setModel(data.target);
     }
 
     private setModel(data: {columnId: string, model: ContentTypeField[]}): void {
