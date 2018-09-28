@@ -173,6 +173,7 @@ export class ContentTypesEditComponent implements OnInit {
      * @memberof ContentTypesEditComponent
      */
     saveFields(fieldsToSave: ContentTypeField[]): void {
+
         this.fieldService.saveFields(this.data.id, fieldsToSave).subscribe(
             (fields: ContentTypeField[]) => {
                 if (this.updateOrNewField(fieldsToSave)) {

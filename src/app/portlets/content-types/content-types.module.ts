@@ -23,7 +23,6 @@ import {
     ContentTypeFieldsPropertiesFormComponent,
     ContentTypeFieldsRowComponent,
     ContentTypeFieldsTabComponent,
-    ContentTypeFieldsRowListComponent,
     ContentTypesFieldDragabbleItemComponent,
     ContentTypesFieldsListComponent
 } from './fields';
@@ -72,7 +71,6 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
         ContentTypeFieldsPropertiesFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsTabComponent,
-        ContentTypeFieldsRowListComponent,
         ContentTypesEditComponent,
         ContentTypesFieldDragabbleItemComponent,
         ContentTypesFieldsListComponent,

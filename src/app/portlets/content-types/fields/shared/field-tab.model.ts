@@ -1,12 +1,10 @@
 import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.interface';
 import { ContentTypeField } from '@portlets/content-types/fields/shared';
 
-export class FieldTab implements FieldDivider {
-    constructor(private fieldTab: ContentTypeField) {
+export class FieldTab extends FieldDivider {
 
-    }
-
-    get field() {
-        return this.fieldTab;
+    constructor(fieldTab: ContentTypeField) {
+        super();
+        this.setFieldDivider(fieldTab);
     }
 }

@@ -1,7 +1,6 @@
 <div
     [dragulaModel]="fieldRows"
     class="content-type-fields-drop-zone__container"
-    data-drag-type="target"
     dragula="fields-row-bag">
 
     <ng-template ngFor let-row [ngForOf]="fieldRows">
@@ -12,15 +11,8 @@
             (removeField)="removeField($event)"
             (removeRow)="removeFieldRow($event)">
         </dot-content-type-fields-row>
-        <!-- <div class="row-header__drag" *ngIf="isTab(row)">tab</div> -->
+
         <dot-content-type-fields-tab class="row-header__drag" *ngIf="isTab(row)"></dot-content-type-fields-tab>
-        <!-- <dot-content-type-fields-row
-            *ngIf="row.columns.length"
-            [fieldRow]="row"
-            (editField)="editField($event)"
-            (removeField)="removeField($event)"
-            (removeRow)="removeFieldRow($event)">
-        </dot-content-type-fields-row> -->
     </ng-template>
 
     <dot-add-rows (selectColums)="addRow($event)"></dot-add-rows>

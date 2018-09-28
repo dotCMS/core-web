@@ -13,6 +13,8 @@ export const TAB_FIELD = {
 };
 
 export class FieldUtil {
+
+    private static NG_ID__PREFIX = 'ng-';
     /**
      * Verify if the Field already exist
      * @param {ContentTypeField} field
@@ -20,7 +22,7 @@ export class FieldUtil {
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     static isNewField(field: ContentTypeField): Boolean {
-        return !field.id;
+        return !field.id || field.id.startsWith(FieldUtil.NG_ID__PREFIX);
     }
 
     static isRowOrColumn(field: ContentTypeField) {
@@ -99,5 +101,9 @@ export class FieldUtil {
         });
 
         return result;
+    }
+
+    static createNGID(): string {
+        return `${FieldUtil.NG_ID__PREFIX}${new Date().getTime()}`;
     }
 }
