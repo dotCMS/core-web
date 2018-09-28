@@ -11,7 +11,10 @@
             (removeField)="removeField($event)"
             (removeRow)="removeFieldRow($event)">
         </dot-content-type-fields-row>
+<<<<<<< HEAD
 
+        <dot-content-type-fields-tab class="row-header__drag" *ngIf="isTab(row)"></dot-content-type-fields-tab>
+=======
         <dot-content-type-fields-tab
             *ngIf="isTab(row)"
             class="row-header__drag"
@@ -19,6 +22,7 @@
             (editTab)="saveFieldsHandler($event)"
             (removeTab)="removeTab($event)">
         </dot-content-type-fields-tab>
+>>>>>>> 53917abe0a02514d21323210e4891a40b5b92806
     </ng-template>
 
     <dot-add-rows (selectColums)="addRow($event)"></dot-add-rows>

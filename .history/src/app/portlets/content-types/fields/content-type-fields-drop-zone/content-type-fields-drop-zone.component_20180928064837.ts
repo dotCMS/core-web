@@ -304,6 +304,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                     fields.push(fieldColumn.columnDivider);
                     fieldColumn.fields.forEach((field) => fields.push(field));
                 });
+<<<<<<< HEAD
+=======
+            } else {
+                const fieldTab = <FieldTab> fieldDivider;
+                if (FieldUtil.isNewField(fieldTab.field)) {
+                    const tabField = FieldUtil.createFieldTabDivider();
+                    tabField.name = fieldTab.field.name;
+                    fields.push(tabField);
+                } else {
+                    fields.push(fieldTab.field);
+                }
+>>>>>>> 53917abe0a02514d21323210e4891a40b5b92806
             }
         });
 

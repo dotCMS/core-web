@@ -205,7 +205,7 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     removeTab(fieldTab: FieldTab): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
-        this.removeFields.emit([fieldTab.getFieldDivider()]);
+        this.removeFields.emit([fieldTab.field]);
     }
 
     isTab(row: FieldDivider): boolean {
@@ -240,13 +240,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         const fields = this.getFields().filter((field, index) => {
             const currentSortOrder = index + 1;
 
-            if (field.sortOrder !== currentSortOrder) {
-                field.sortOrder = currentSortOrder;
-                return true;
-            } else {
-                return false;
-            }
-        });
+                if (field.sortOrder !== currentSortOrder) {
+                    field.sortOrder = currentSortOrder;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
         this.saveFields.emit(fields);
     }
@@ -290,6 +290,25 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
         this.displayDialog = !this.displayDialog;
     }
 
+<<<<<<< HEAD
+=======
+    private getRowFields(fields: ContentTypeField[]): FieldDivider[] {
+        const splitFields: ContentTypeField[][] = FieldUtil.splitFieldsByLineDivider(fields);
+        const fieldRows: FieldDivider[] = splitFields.map((fieldDivider) => {
+            if (FieldUtil.isRow(fieldDivider[0])) {
+                const fieldRow: FieldRow = new FieldRow();
+                fieldRow.addFields(fieldDivider);
+                return fieldRow;
+            } else if (FieldUtil.isTabDivider(fieldDivider[0])) {
+                const tabRow: FieldTab = new FieldTab(fieldDivider[0]);
+                return tabRow;
+            }
+        });
+
+        return fieldRows.length ? fieldRows : this.getEmptyRow();
+    }
+>>>>>>> 53917abe0a02514d21323210e4891a40b5b92806
+
     private getFields(): ContentTypeField[] {
 
         const fields: ContentTypeField[] = [];
@@ -304,6 +323,18 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                     fields.push(fieldColumn.columnDivider);
                     fieldColumn.fields.forEach((field) => fields.push(field));
                 });
+<<<<<<< HEAD
+=======
+            } else {
+                const fieldTab = <FieldTab> fieldDivider;
+                if (FieldUtil.isNewField(fieldTab.field)) {
+                    const tabField = FieldUtil.createFieldTabDivider();
+                    tabField.name = fieldTab.field.name;
+                    fields.push(tabField);
+                } else {
+                    fields.push(fieldTab.field);
+                }
+>>>>>>> 53917abe0a02514d21323210e4891a40b5b92806
             }
         });
 
