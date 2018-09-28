@@ -125,7 +125,6 @@ export class FieldDragDropService {
     }
 
     private shouldCopy(_el: HTMLElement, source: HTMLElement): boolean {
-        console.log('source.dataset', source.dataset);
         return source.dataset.dragType === 'source';
     }
 
