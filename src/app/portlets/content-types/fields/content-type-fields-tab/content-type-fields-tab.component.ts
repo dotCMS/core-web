@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
-import { FieldTab } from '../shared';
+import { FieldTab, ContentTypeField } from '../shared';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.interface';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -19,7 +18,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-co
 export class ContentTypeFieldsTabComponent implements OnInit {
     @Input() fieldTab: FieldTab;
 
-    @Output() editTab: EventEmitter<FieldDivider> = new EventEmitter();
+    @Output() editTab: EventEmitter<ContentTypeField> = new EventEmitter();
     @Output() removeTab: EventEmitter<FieldDivider> = new EventEmitter();
 
     i18nMessages: any = {};
@@ -29,12 +28,9 @@ export class ContentTypeFieldsTabComponent implements OnInit {
     ngOnInit() {
         this.dotMessageService
             .getMessages([
-                'contenttypes.dropzone.rows.empty.message',
                 'contenttypes.action.delete',
                 'contenttypes.confirm.message.delete.field',
-                'contenttypes.confirm.message.delete.row',
                 'contenttypes.content.field',
-                'contenttypes.content.row',
                 'contenttypes.action.cancel'
             ])
             .subscribe((res) => {
@@ -42,10 +38,19 @@ export class ContentTypeFieldsTabComponent implements OnInit {
             });
     }
 
+    /**
+     * Trigger the editTab event to change tab label
+     * @memberof ContentTypeFieldsTabComponent
+     */
     changeLabel(): void {
-        this.editTab.emit(this.fieldTab);
+        this.editTab.emit(this.fieldTab.getFieldDivider());
     }
 
+    /**
+     * Trigger confirmation dialog to remove Tab Divider
+     * @param {MouseEvent} $event
+     * @memberof ContentTypeFieldsTabComponent
+     */
     removeItem($event: MouseEvent): void {
         $event.stopPropagation();
         this.dotDialogService.confirm({

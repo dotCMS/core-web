@@ -13,7 +13,7 @@ import { FieldDivider } from '@portlets/content-types/fields/shared/field-divide
  * Display all the Field Types
  *
  * @export
- * @class FieldTypesContainerComponent
+ * @class ContentTypeFieldsDropZoneComponent
  */
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -21,22 +21,16 @@ import { FieldDivider } from '@portlets/content-types/fields/shared/field-divide
     templateUrl: './content-type-fields-drop-zone.component.html'
 })
 export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements OnInit, OnChanges {
+    currentFieldType: FieldType;
     displayDialog = false;
     fieldRows: FieldDivider[] = [];
     formData: ContentTypeField;
-    currentFieldType: FieldType;
-
-    @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
-    @Input()
-    fields: ContentTypeField[];
-
-    @Output()
-    saveFields = new EventEmitter<ContentTypeField[]>();
-
-    @Output()
-    removeFields = new EventEmitter<ContentTypeField[]>();
+    @ViewChild('fieldPropertiesForm')
+    @Input() fields: ContentTypeField[];
+    @Output() saveFields = new EventEmitter<ContentTypeField[]>();
+    @Output() removeFields = new EventEmitter<ContentTypeField[]>();
 
     constructor(
         dotMessageService: DotMessageService,
@@ -145,16 +139,15 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     /**
-     * Remove the last dropped field added without ID
+     * Removes the last dropped field added without ID
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeFieldsWithoutId(): void {
         const fieldRows: any = this.fieldRows;
 
         // TODO needs an improvement for performance reasons
-        fieldRows.filter((row) => row.columns)
-            .forEach((row) => {
-                console.log('row', row);
+        fieldRows.forEach((row, rowIndex) => {
+            if (row.columns) {
                 row.columns.forEach((col, colIndex) => {
                     col.fields.forEach((field, fieldIndex) => {
                         if (!field.id) {
@@ -162,24 +155,19 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
                         }
                     });
                 });
-            });
+            } else if (!row.fieldDivider.name) {
+                this.fieldRows.splice(rowIndex, 1);
+            }
+        });
 
         this.formData = null;
         this.propertiesForm.destroy();
     }
 
-    // TODO: Remove if we will not use this anymore.
-    getDialogHeader(): string {
-        const dialogTitle =
-            this.formData && this.formData.id
-                ? this.i18nMessages['contenttypes.dropzone.action.edit']
-                : this.i18nMessages['contenttypes.dropzone.action.create.field'];
-        return `${dialogTitle}`;
-    }
-
     /**
-     * Tigger the removeFields event with fieldToDelete
-     * @param fieldToDelete
+     * Trigger the removeFields event with fieldToDelete
+     * @param {ContentTypeField} fieldToDelete
+     * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeField(fieldToDelete: ContentTypeField): void {
         this.removeFields.emit([fieldToDelete]);
@@ -187,7 +175,8 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     /**
      * Trigger the removeFields event with all the fields in fieldRow
-     * @param fieldToDelete
+     * @param {FieldRow} fieldRow
+     * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeFieldRow(fieldRow: FieldRow): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
@@ -206,21 +195,24 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
 
     /**
      * Trigger the removeFields event with the tab to be removed
-     * @param fieldToDelete
+     * @param {FieldTab} fieldTab
+     * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeTab(fieldTab: FieldTab): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
         this.removeFields.emit([fieldTab.getFieldDivider()]);
     }
 
+    /**
+     * Checks if field is Tab Divider
+     * @param {FieldDivider} row
+     * @returns {boolean}
+     * @memberof ContentTypeFieldsDropZoneComponent
+     */
     isTab(row: FieldDivider): boolean {
         return row instanceof FieldTab;
     }
 
-    /**
-     * Set the field to be edited
-     * @memberof ContentTypeFieldsDropZoneComponent
-     */
     private setDroppedField(droppedField: ContentTypeField): void {
         this.formData = droppedField;
 
