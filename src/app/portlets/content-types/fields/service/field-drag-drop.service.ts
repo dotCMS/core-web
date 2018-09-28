@@ -63,6 +63,7 @@ export class FieldDragDropService {
                         }
                     };
                 })
+
             );
     }
 
@@ -120,7 +121,12 @@ export class FieldDragDropService {
         return this._fieldRowDropFromTarget;
     }
 
-    private toggleOverClass(group: { name: string; el: Element; container: Element; source: Element }): void {
+    private toggleOverClass(group: {
+        name: string;
+        el: Element;
+        container: Element;
+        source: Element;
+    }): void {
         if (group.container.classList.contains('row-columns__item')) {
             group.container.classList.toggle('row-columns__item--over');
         }
@@ -130,16 +136,33 @@ export class FieldDragDropService {
         return source.dataset.dragType === 'source';
     }
 
-    private shouldMoveRow(_el: HTMLElement, source: HTMLElement, handle: HTMLElement, _sibling: HTMLElement): boolean {
-        const isDragButton = handle.parentElement.classList.contains('row-header__drag') || handle.classList.contains('row-header__drag');
+    private shouldMoveRow(
+        _el: HTMLElement,
+        source: HTMLElement,
+        handle: HTMLElement,
+        _sibling: HTMLElement
+    ): boolean {
+        const isDragButton =
+            handle.parentElement.classList.contains('row-header__drag') ||
+            handle.classList.contains('row-header__drag');
         return source.dataset.dragType === 'source' || isDragButton;
     }
 
-    private shouldAccepts(_el: HTMLElement, source: HTMLElement, _handle: HTMLElement, _sibling: HTMLElement): boolean {
+    private shouldAccepts(
+        _el: HTMLElement,
+        source: HTMLElement,
+        _handle: HTMLElement,
+        _sibling: HTMLElement
+    ): boolean {
         return source.dataset.dragType !== 'source';
     }
 
-    private shouldMovesField(el: HTMLElement, _source: HTMLElement, _handle: HTMLElement, _sibling: HTMLElement): boolean {
+    private shouldMovesField(
+        el: HTMLElement,
+        _source: HTMLElement,
+        _handle: HTMLElement,
+        _sibling: HTMLElement
+    ): boolean {
         return el.dataset.dragType !== 'not_field';
     }
 }
