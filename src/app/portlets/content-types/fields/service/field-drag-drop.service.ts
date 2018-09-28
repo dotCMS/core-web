@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map } from 'rxjs/operators';
-import { FieldDivider } from '@portlets/content-types/fields/shared';
+import { FieldDivider, ContentTypeField } from '@portlets/content-types/fields/shared';
 import * as _ from 'lodash';
 
 /**
@@ -13,8 +13,8 @@ export class FieldDragDropService {
     private static readonly FIELD_BAG_NAME = 'fields-bag';
     private static readonly FIELD_ROW_BAG_NAME = 'fields-row-bag';
 
-    private _fieldDropFromSource: Observable<any>;
-    private _fieldDropFromTarget: Observable<any>;
+    private _fieldDropFromSource: Observable<DropFieldData>;
+    private _fieldDropFromTarget: Observable<DropFieldData>;
     private _fieldRowDropFromTarget: Observable<FieldDivider[]>;
 
     constructor(private dragulaService: DragulaService) {
@@ -35,6 +35,7 @@ export class FieldDragDropService {
                     (<HTMLElement> data.source).dataset.dragType === 'target'),
                 map((data: DragulaDropModel) => {
                     return {
+                        item: data.item,
                         source: {
                             columnId: (<HTMLElement> data.source).dataset.columnid,
                             model: data.sourceModel
@@ -155,4 +156,16 @@ interface DragulaDropModel {
     sourceIndex: number;
     targetIndex: number;
 
+}
+
+export interface DropFieldData {
+    item: ContentTypeField;
+    source?: {
+        columnId: string;
+        model: ContentTypeField[]
+    };
+    target: {
+        columnId: string;
+        model: ContentTypeField[]
+    };
 }

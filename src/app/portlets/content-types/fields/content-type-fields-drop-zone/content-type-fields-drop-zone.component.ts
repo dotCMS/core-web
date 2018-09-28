@@ -1,6 +1,6 @@
 import { BaseComponent } from '@components/_common/_base/base-component';
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { FieldDragDropService } from '../service';
+import { FieldDragDropService, DropFieldData } from '../service';
 import { FieldRow, FieldTab, ContentTypeField, FieldType, FieldColumn } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -57,13 +57,13 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
     }
 
     ngOnInit(): void {
-        this.fieldDragDropService.fieldDropFromSource$.subscribe((data) => {
+        this.fieldDragDropService.fieldDropFromSource$.subscribe((data: DropFieldData) => {
             this.setDroppedField(data.item);
             this.setModel(data.target);
             this.toggleDialog();
         });
 
-        this.fieldDragDropService.fieldDropFromTarget$.subscribe((data: any) => {
+        this.fieldDragDropService.fieldDropFromTarget$.subscribe((data: DropFieldData) => {
             this.setModel(data.target);
 
             if (data.source !== data.target) {
