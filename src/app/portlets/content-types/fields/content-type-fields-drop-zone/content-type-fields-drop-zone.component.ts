@@ -150,16 +150,19 @@ export class ContentTypeFieldsDropZoneComponent extends BaseComponent implements
      */
     removeFieldsWithoutId(): void {
         const fieldRows: any = this.fieldRows;
+
         // TODO needs an improvement for performance reasons
-        fieldRows.forEach((row) => {
-            row.columns.forEach((col, colIndex) => {
-                col.fields.forEach((field, fieldIndex) => {
-                    if (!field.id) {
-                        row.columns[colIndex].fields.splice(fieldIndex, 1);
-                    }
+        fieldRows.filter((row) => row.columns)
+            .forEach((row) => {
+                console.log('row', row);
+                row.columns.forEach((col, colIndex) => {
+                    col.fields.forEach((field, fieldIndex) => {
+                        if (!field.id) {
+                            row.columns[colIndex].fields.splice(fieldIndex, 1);
+                        }
+                    });
                 });
             });
-        });
 
         this.formData = null;
         this.propertiesForm.destroy();
