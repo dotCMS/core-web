@@ -55,10 +55,10 @@ export class FieldDragDropService {
                     (<HTMLElement> data.source).dataset.dragType === 'source'),
                 map((data: DragulaDropModel) => {
                     return {
-                        item: _.cloneDeep(data.item),
+                        item: data.item,
                         target: {
                             columnId: (<HTMLElement> data.target).dataset.columnid,
-                            model: _.cloneDeep(data.targetModel)
+                            model: data.targetModel
                         }
                     };
                 })
@@ -87,7 +87,7 @@ export class FieldDragDropService {
                 accepts: this.shouldAccepts,
                 moves: this.shouldMovesField,
                 copyItem: (item: any) => {
-                    return item;
+                    return _.cloneDeep(item);
                 }
             });
         }
