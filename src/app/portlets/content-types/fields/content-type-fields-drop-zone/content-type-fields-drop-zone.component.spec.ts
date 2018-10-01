@@ -183,7 +183,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 name: 'nameField'
             };
             fieldRow.addFields([field]);
-            fieldRow.lineDivider.id = 'test';
+            fieldRow.getFieldDivider().id = 'test';
 
             comp.removeFields.subscribe((removeFields) => (fieldsToRemove = removeFields));
 
@@ -191,7 +191,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
             comp.removeFieldRow(fieldRow);
 
-            expect([fieldRow.lineDivider, fieldRow.columns[0].tabDivider, field]).toEqual(
+            expect([fieldRow.getFieldDivider(), fieldRow.columns[0].columnDivider, field]).toEqual(
                 fieldsToRemove
             );
         })
@@ -200,7 +200,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     it('should remove and empty row without lineDivider id, and not emit removeFields ', () => {
         const fieldRow1 = new FieldRow();
         const fieldRow2 = new FieldRow();
-        fieldRow1.lineDivider.id = 'test';
+        fieldRow1.getFieldDivider().id = 'test';
         comp.fieldRows = [fieldRow1, fieldRow2];
         spyOn(comp.removeFields, 'emit');
         comp.removeFieldRow(fieldRow2);
@@ -399,7 +399,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         const addRowsContainer = de.query(By.css('dot-add-rows')).componentInstance;
         addRowsContainer.selectColums.emit(2);
         expect(comp.addRow).toHaveBeenCalled();
-        expect(comp.fieldRows[0].columns.length).toBe(2);
+        expect((<FieldRow> comp.fieldRows[0]).columns.length).toBe(2);
     });
 
     it('should display dialog if a drop event happen from source', () => {
@@ -542,11 +542,11 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         hostComp.fields = [];
         fixture.detectChanges();
 
-        expect(comp.fieldRows[0].columns[0].fields.length).toEqual(0);
-        expect(comp.fieldRows[0].columns[0].tabDivider.clazz).toEqual(
+        expect((<FieldRow> comp.fieldRows[0]).columns[0].fields.length).toEqual(0);
+        expect((<FieldRow> comp.fieldRows[0]).columns[0].columnDivider.clazz).toEqual(
             'com.dotcms.contenttype.model.field.ImmutableColumnField'
         );
-        expect(comp.fieldRows[0].lineDivider.clazz).toEqual(
+        expect(comp.fieldRows[0].getFieldDivider().clazz).toEqual(
             'com.dotcms.contenttype.model.field.ImmutableRowField'
         );
     });
