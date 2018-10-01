@@ -187,7 +187,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
         const fieldsToDelete: ContentTypeField[] = [];
         const fieldDivider = fieldRow.getFieldDivider();
 
-        if (FieldUtil.isNewField(fieldDivider)) {
+        if (!FieldUtil.isNewField(fieldDivider)) {
             fieldsToDelete.push(fieldDivider);
             fieldRow.columns.forEach((fieldColumn) => {
                 fieldsToDelete.push(fieldColumn.columnDivider);

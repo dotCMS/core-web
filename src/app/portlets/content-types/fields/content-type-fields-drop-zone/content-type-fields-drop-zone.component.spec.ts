@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
-import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule } from '../';
+import { ContentTypeField, FieldRow, ContentTypeFieldsAddRowModule, FieldTab, FieldDivider } from '../';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldValidationMessageModule } from '@components/_common/field-validation-message/file-validation-message.module';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -54,6 +54,17 @@ class TestContentTypeFieldsPropertiesFormComponent {
 })
 class TestPOverlayPanelComponent {}
 
+@Component({
+    selector: 'dot-content-type-fields-tab',
+    template: ''
+})
+class TestDotContentTypeFieldsTabComponent {
+    @Input() fieldTab: FieldTab;
+
+    @Output() editTab: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output() removeTab: EventEmitter<FieldDivider> = new EventEmitter();
+}
+
 @Injectable()
 class TestFieldDragDropService {
     _fieldDropFromSource: Subject<any> = new Subject();
@@ -100,7 +111,8 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 ContentTypeFieldsDropZoneComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
-                TestPOverlayPanelComponent
+                TestPOverlayPanelComponent,
+                TestDotContentTypeFieldsTabComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
@@ -144,7 +156,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     it('should has the right dragula attributes', () => {
         const fieldsContainer = de.query(By.css('.content-type-fields-drop-zone__container'));
-        expect('target').toEqual(fieldsContainer.attributes['data-drag-type']);
         expect('fields-row-bag').toEqual(fieldsContainer.attributes['dragula']);
     });
 
@@ -187,9 +198,9 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
             comp.removeFields.subscribe((removeFields) => (fieldsToRemove = removeFields));
 
-            tick();
-
             comp.removeFieldRow(fieldRow);
+
+            tick();
 
             expect([fieldRow.getFieldDivider(), fieldRow.columns[0].columnDivider, field]).toEqual(
                 fieldsToRemove
