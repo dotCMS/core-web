@@ -53,6 +53,7 @@ export class ContentTypeFieldsTabComponent implements OnInit {
      */
     removeItem($event: MouseEvent): void {
         $event.stopPropagation();
+
         this.dotDialogService.confirm({
             accept: () => {
                 this.removeTab.emit(this.fieldTab);
