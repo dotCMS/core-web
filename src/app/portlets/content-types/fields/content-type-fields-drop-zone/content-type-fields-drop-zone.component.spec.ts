@@ -22,7 +22,7 @@ import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
-
+import * as _ from 'lodash';
 @Component({
     selector: 'dot-content-type-fields-row',
     template: ''
@@ -234,6 +234,20 @@ class TestHostComponent {
     constructor() {}
 }
 
+const removeSortOrder = (fieldRows: FieldRow[] ) => {
+    return fieldRows.map((fieldRow: FieldRow) => {
+        fieldRow.getFieldDivider().sortOrder = null;
+        fieldRow.columns = fieldRow.columns.map(column => {
+            column.columnDivider.sortOrder = null;
+            column.fields = column.fields.map(field => {
+                field.sortOrder = null;
+                return field;
+            });
+            return column;
+        });
+    });
+};
+
 describe('ContentTypeFieldsDropZoneComponent', () => {
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
@@ -250,6 +264,28 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         'contenttypes.dropzone.action.create.field': 'Create field'
     });
 
+    const moveFromSecondRowToFirstRowAndEmitEvent = () => {
+        const fieldsMoved =  _.cloneDeep(comp.fieldRows);
+        const fieldToMove = fieldsMoved[1].columns[0].fields[0];
+
+        fieldsMoved[1].columns[0].fields = [];
+        fieldsMoved[0].columns[1].fields.unshift(fieldToMove);
+
+        this.testFieldDragDropService._fieldDropFromTarget.next({
+            item: fieldToMove,
+            source: {
+                columnId: fieldsMoved[1].columns[0].columnDivider.id,
+                model: fieldsMoved[1].columns[0].fields
+            },
+            target: {
+                columnId: fieldsMoved[0].columns[1].columnDivider.id,
+                model: fieldsMoved[0].columns[1].fields
+            }
+        });
+
+        return fieldsMoved;
+    };
+
     beforeEach(async(() => {
         this.testFieldDragDropService = new TestFieldDragDropService();
 
@@ -259,7 +295,8 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
                 TestPOverlayPanelComponent,
-                TestHostComponent
+                TestHostComponent,
+                TestDotContentTypeFieldsTabComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
@@ -390,16 +427,13 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         becomeNewField(fakeFields[8]);
         fixture.detectChanges();
 
-        this.testFieldDragDropService._fieldDropFromSource.next([
-            'fields-bag',
-            null,
-            null,
-            {
-                dataset: {
-                    dragType: 'source'
-                }
+        this.testFieldDragDropService._fieldDropFromSource.next({
+            item: fakeFields[8],
+            target: {
+                columnId: '12',
+                model: []
             }
-        ]);
+        });
 
         expect(fakeFields[8]).toBe(comp.formData);
     });
@@ -414,18 +448,16 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should display dialog if a drop event happen from source', () => {
+
         fixture.detectChanges();
 
-        this.testFieldDragDropService._fieldDropFromSource.next([
-            'fields-bag',
-            null,
-            null,
-            {
-                dataset: {
-                    dragType: 'source'
-                }
+        this.testFieldDragDropService._fieldDropFromSource.next({
+            item: fakeFields[8],
+            target: {
+                columnId: '8',
+                model: [fakeFields[8]]
             }
-        ]);
+        });
 
         fixture.detectChanges();
 
@@ -436,49 +468,56 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should save all the fields (moving the last line to the top)', () => {
-        const testFields = [...fakeFields.slice(6, 9), ...fakeFields.slice(0, 6)];
-        hostComp.fields = testFields;
-
         spyOn(comp.saveFields, 'emit');
 
         fixture.detectChanges();
 
-        this.testFieldDragDropService._fieldRowDropFromTarget.next([
-            'fields-bag',
-            null,
-            null,
-            {
-                dataset: {
-                    dragType: 'target'
-                }
-            }
-        ]);
+        const fieldMoved = [_.cloneDeep(comp.fieldRows[1]), _.cloneDeep(comp.fieldRows[0])];
 
-        expect(comp.saveFields.emit).toHaveBeenCalledWith(testFields);
+        this.testFieldDragDropService._fieldRowDropFromTarget.next(fieldMoved);
+
+        const expected = [
+            fakeFields[6],
+            fakeFields[7],
+            fakeFields[8],
+            fakeFields[0],
+            fakeFields[1],
+            fakeFields[2],
+            fakeFields[3],
+            fakeFields[4],
+            fakeFields[5],
+        ].map((fakeField, index) => {
+            fakeField.sortOrder = index + 1;
+            return fakeField;
+        });
+
+        expect(comp.saveFields.emit).toHaveBeenCalledWith(expected);
+        expect(removeSortOrder(<FieldRow[]> comp.fieldRows)).toEqual(removeSortOrder(fieldMoved));
     });
 
     it('should save all the fields (moving just the last field)', () => {
-        const testFields = [...fakeFields.slice(0, 5), fakeFields[8], ...fakeFields.slice(5, 8)];
-        hostComp.fields = testFields;
 
         spyOn(comp.saveFields, 'emit');
 
         fixture.detectChanges();
-
-        this.testFieldDragDropService._fieldDropFromTarget.next([
-            'fields-bag',
-            null,
-            null,
-            {
-                dataset: {
-                    dragType: 'target'
-                }
-            }
-        ]);
+        const fieldsMoved = moveFromSecondRowToFirstRowAndEmitEvent();
 
         fixture.detectChanges();
 
-        expect(comp.saveFields.emit).toHaveBeenCalledWith(testFields.slice(5, 9));
+        let expectedIndex = 6;
+
+        const expected = [
+            fakeFields[8],
+            fakeFields[5],
+            fakeFields[6],
+            fakeFields[7],
+        ].map(fakeField => {
+            fakeField.sortOrder = expectedIndex++;
+            return fakeField;
+        });
+
+        expect(comp.saveFields.emit).toHaveBeenCalledWith(expected);
+        expect(removeSortOrder(<FieldRow[]>  comp.fieldRows)).toEqual(removeSortOrder(fieldsMoved));
     });
 
     it('should save all the new fields', () => {
@@ -491,16 +530,13 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         fixture.detectChanges();
 
         // sleect the fields[8] as the current field
-        this.testFieldDragDropService._fieldDropFromSource.next([
-            'fields-bag',
-            null,
-            null,
-            {
-                dataset: {
-                    dragType: 'source'
-                }
+        this.testFieldDragDropService._fieldDropFromSource.next({
+            item: fakeFields[8],
+            target: {
+                columnId: '6',
+                model: [fakeFields[8]]
             }
-        ]);
+        });
 
         comp.saveFields.subscribe((fields) => (saveFields = fields));
         comp.saveFieldsHandler(fakeFields[8]);
