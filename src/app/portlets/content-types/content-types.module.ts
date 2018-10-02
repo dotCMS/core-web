@@ -14,13 +14,19 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SiteSelectorFieldModule } from '@components/_common/site-selector-field/site-selector-field.module';
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
-import { FieldService, FieldDragDropService, FieldPropertyService } from './fields/service';
+import {
+    FieldService,
+    FieldDragDropService,
+    FieldPropertyService,
+    FieldVariablesService
+} from './fields/service';
 import { ContentTypeFieldsAddRowModule } from './fields/content-type-fields-add-row';
 import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.service';
 
 import {
     ContentTypeFieldsDropZoneComponent,
     ContentTypeFieldsPropertiesFormComponent,
+    ContentTypeFieldsVariablesComponent,
     ContentTypeFieldsRowComponent,
     ContentTypeFieldsTabComponent,
     ContentTypesFieldDragabbleItemComponent,
@@ -29,6 +35,7 @@ import {
 import {
     ButtonModule,
     ConfirmDialogModule,
+    DataTableModule,
     DialogModule,
     DropdownModule,
     InputTextModule,
@@ -49,21 +56,24 @@ import {
     RegexCheckPropertyComponent,
     ValuesPropertyComponent
 } from './fields/content-type-fields-properties-form/field-properties';
-import { DynamicFieldPropertyDirective } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
-import { IFrameModule } from '@components/_common/iframe';
-import { DotTextareaContentModule } from '@components/_common/dot-textarea-content/dot-textarea-content.module';
-import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
-import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
-import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog/push-publish-dialog.module';
+import { AddVariableFormComponent } from './fields/content-type-fields-variables/add-variable-form';
+
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle/dot-add-to-bundle.module';
-import { DotDirectivesModule } from '@shared/dot-directives.module';
-import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
-import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot-page-selector.module';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector/dot-base-type-selector.module';
-import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotDialogModule } from '../../view/components/dot-dialog/dot-dialog.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotMenuModule } from '@components/_common/dot-menu/dot-menu.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot-page-selector.module';
+import { DotTextareaContentModule } from '@components/_common/dot-textarea-content/dot-textarea-content.module';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
+import { DynamicFieldPropertyDirective } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
+import { IFrameModule } from '@components/_common/iframe';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
+import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog/push-publish-dialog.module';
+import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 
 @NgModule({
     declarations: [
@@ -71,6 +81,8 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         CheckboxPropertyComponent,
         ContentTypeFieldsDropZoneComponent,
         ContentTypeFieldsPropertiesFormComponent,
+        ContentTypeFieldsVariablesComponent,
+        AddVariableFormComponent,
         ContentTypeFieldsRowComponent,
         ContentTypeFieldsTabComponent,
         ContentTypesEditComponent,
@@ -104,7 +116,9 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         CommonModule,
         ConfirmDialogModule,
         ContentTypesRoutingModule,
+        DataTableModule,
         DialogModule,
+        DotDialogModule,
         DotIconModule,
         DotIconButtonModule,
         DotMenuModule,
@@ -141,6 +155,7 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         DragulaService,
         FieldDragDropService,
         FieldPropertyService,
+        FieldVariablesService,
         FieldService,
         FormatDateService
     ]

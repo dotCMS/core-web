@@ -21,6 +21,8 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { HotkeysService } from 'angular2-hotkeys';
 import { TestHotkeysMock } from '../../../../test/hotkeys-service.mock';
+import { AddVariableFormComponent } from '../content-type-fields-variables/add-variable-form';
+import { DotDialogAction } from '../../../../view/components/dot-dialog/dot-dialog.component';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';
 @Component({
@@ -48,11 +50,16 @@ class TestContentTypeFieldsPropertiesFormComponent {
 }
 
 @Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'p-overlayPanel',
+    selector: 'dot-dialog',
     template: ''
 })
-class TestPOverlayPanelComponent {}
+class DotDialogComponent {
+    @Input() header = '';
+    @Input() show: boolean;
+    @Input() ok: DotDialogAction;
+    @Input() cancel: DotDialogAction;
+    @Output() close: EventEmitter<any> = new EventEmitter();
+}
 
 @Component({
     selector: 'dot-content-type-fields-tab',
@@ -109,10 +116,13 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypeFieldsDropZoneComponent,
+                ContentTypeFieldsVariablesComponent,
+                AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
                 TestPOverlayPanelComponent,
                 TestDotContentTypeFieldsTabComponent
+                DotDialogComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
@@ -161,7 +171,17 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     it('should has a dialog', () => {
         const dialog = de.query(By.css('p-dialog'));
-        expect(dialog).not.toBeNull();
+        expect(dialog).toBeNull();
+    });
+
+    it('should reset values when close dialog', () => {
+        comp.displayDialog = true;
+        fixture.detectChanges();
+        const dialog = de.query(By.css('dot-dialog')).componentInstance;
+        dialog.close.emit();
+        expect(comp.displayDialog).toBe(false);
+        expect(comp.formData).toBe(null);
+        expect(comp.dialogActiveTab).toBe(0);
     });
 
     it(
@@ -292,11 +312,15 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 ContentTypeFieldsDropZoneComponent,
+                ContentTypeFieldsVariablesComponent,
+                AddVariableFormComponent,
                 TestContentTypeFieldsRowComponent,
                 TestContentTypeFieldsPropertiesFormComponent,
                 TestPOverlayPanelComponent,
                 TestHostComponent,
                 TestDotContentTypeFieldsTabComponent
+                DotDialogComponent,
+                TestHostComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
@@ -338,55 +362,64 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
                 name: 'field 1',
                 id: '1',
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                sortOrder: 1
+                sortOrder: 1,
+                contentTypeId: '1b'
             },
             {
                 name: 'field 2',
                 id: '2',
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                sortOrder: 2
+                sortOrder: 2,
+                contentTypeId: '2b'
             },
             {
                 clazz: 'text',
                 id: '3',
                 name: 'field 3',
-                sortOrder: 3
+                sortOrder: 3,
+                contentTypeId: '3b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField',
                 id: '4',
                 name: 'field 4',
-                sortOrder: 4
+                sortOrder: 4,
+                contentTypeId: '4b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                 id: '5',
                 name: 'field 5',
-                sortOrder: 5
+                sortOrder: 5,
+                contentTypeId: '5b'
             },
             {
                 clazz: 'text',
                 id: '6',
                 name: 'field 6',
-                sortOrder: 6
+                sortOrder: 6,
+                contentTypeId: '6b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                 id: '7',
                 name: 'field 7',
-                sortOrder: 7
+                sortOrder: 7,
+                contentTypeId: '7b'
             },
             {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                 id: '8',
                 name: 'field 8',
-                sortOrder: 8
+                sortOrder: 8,
+                contentTypeId: '8b'
             },
             {
                 clazz: 'text',
                 id: '9',
                 name: 'field 9',
-                sortOrder: 9
+                sortOrder: 9,
+                contentTypeId: '9b'
             }
         ];
 
@@ -446,8 +479,7 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
         expect((<FieldRow> comp.fieldRows[0]).columns.length).toBe(1);
     });
 
-    it('should display dialog if a drop event happen from source', () => {
-
+    it('should display dialog if a drop event happen from source', fakeAsync(() => {
         fixture.detectChanges();
 
         this.testFieldDragDropService._fieldDropFromSource.next({
@@ -460,11 +492,11 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
 
         fixture.detectChanges();
 
+        tick();
         expect(true).toBe(comp.displayDialog);
-
-        const dialog = de.query(By.css('p-dialog'));
-        expect(true).toBe(dialog.componentInstance.visible);
-    });
+        const dialog = de.query(By.css('dot-dialog'));
+        expect(true).toBe(dialog.componentInstance.show);
+    }));
 
     it('should save all the fields (moving the last line to the top)', () => {
         spyOn(comp.saveFields, 'emit');
@@ -560,6 +592,7 @@ fdescribe('ContentTypeFieldsDropZoneComponent', () => {
         expect(original).toEqual(fakeFields[8]);
         expect(saveFields[0].fixed).toEqual(true);
         expect(saveFields[0].indexed).toEqual(true);
+        expect(comp.currentField).toEqual({fieldId: fakeFields[8].id, contentTypeId: fakeFields[8].contentTypeId});
     });
 
     it('should handler removeField event', () => {

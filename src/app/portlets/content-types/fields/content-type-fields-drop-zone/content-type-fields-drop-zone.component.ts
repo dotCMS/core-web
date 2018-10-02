@@ -1,10 +1,11 @@
 import { Component, SimpleChanges, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild } from '@angular/core';
-import { FieldDragDropService, DropFieldData } from '../service';
+import { FieldDragDropService, DropFieldData, FieldVariableParams } from '../service';
 import { FieldRow, FieldTab, ContentTypeField, FieldType, FieldColumn } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
+import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.interface';
 
@@ -21,10 +22,16 @@ import { FieldDivider } from '@portlets/content-types/fields/shared/field-divide
 })
 
 export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
-    currentFieldType: FieldType;
+    dialogActiveTab: number;
     displayDialog = false;
     fieldRows: FieldDivider[] = [];
     formData: ContentTypeField;
+    currentFieldType: FieldType;
+    currentField: FieldVariableParams;
+    closeDialogAction: DotDialogAction;
+    saveDialogAction: DotDialogAction;
+
+    @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
     @ViewChild('fieldPropertiesForm')
@@ -37,7 +44,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
     } = {};
 
     constructor(
-        private dotMessageService: DotMessageService,
+        public dotMessageService: DotMessageService,
         private fieldDragDropService: FieldDragDropService,
         private fieldPropertyService: FieldPropertyService,
         private dotEventsService: DotEventsService
@@ -50,10 +57,24 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
                 'contenttypes.dropzone.action.cancel',
                 'contenttypes.dropzone.action.edit',
                 'contenttypes.dropzone.action.create.field',
+                'contenttypes.dropzone.empty.message',
+                'contenttypes.dropzone.tab.overview',
+                'contenttypes.dropzone.tab.variables',
                 'contenttypes.dropzone.empty.message'
             ])
-            .subscribe((res) => {
-                this.i18nMessages = res;
+            .subscribe((messages: {[key: string]: string}) => {
+                this.i18nMessages = messages;
+
+                this.closeDialogAction = {
+                    label: this.i18nMessages['contenttypes.dropzone.action.cancel'],
+                    action: () => {}
+                };
+                this.saveDialogAction  = {
+                    label: this.i18nMessages['contenttypes.dropzone.action.save'],
+                    action: () => {
+                        this.propertiesForm.saveFieldProperties();
+                    }
+                };
             });
             this.fieldDragDropService.fieldDropFromSource$.subscribe((data: DropFieldData) => {
             this.setDroppedField(data.item);
@@ -139,6 +160,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
         const fields = this.getFields();
         this.formData = fields.filter((field) => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
+        this.currentField = {
+            fieldId: this.formData.id,
+            contentTypeId: this.formData.contentTypeId
+        };
+        this.dialogActiveTab = null;
         this.toggleDialog();
     }
 
@@ -163,8 +189,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
                 this.fieldRows.splice(rowIndex, 1);
             }
         });
-
+        this.displayDialog = false;
         this.formData = null;
+        this.dialogActiveTab = 0;
         this.propertiesForm.destroy();
     }
 
