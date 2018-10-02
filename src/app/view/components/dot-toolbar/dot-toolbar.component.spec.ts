@@ -4,7 +4,7 @@ import { DebugElement, Injectable, Component, Input } from '@angular/core';
 import { ToolbarComponent } from './dot-toolbar.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SiteService } from 'dotcms-js/dotcms-js';
-import { DotRouterService } from '../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
@@ -39,10 +39,14 @@ class MockRouterService {
     template: ''
 })
 class MockSiteSelectorComponent {
-    @Input() archive = false;
-    @Input() id = '';
-    @Input() live = true;
-    @Input() system = true;
+    @Input()
+    archive = false;
+    @Input()
+    id = '';
+    @Input()
+    live = true;
+    @Input()
+    system = true;
 }
 
 @Component({
@@ -69,6 +73,12 @@ class MockToolbarUsersComponent {}
 })
 class MockToolbarAddContentletComponent {}
 
+@Component({
+    selector: 'dot-crumbtrail',
+    template: ''
+})
+class MockDotCrumbtrailComponent {}
+
 describe('ToolbarComponent', () => {
     let dotRouterService: DotRouterService;
     let dotNavigationService: DotNavigationService;
@@ -87,9 +97,15 @@ describe('ToolbarComponent', () => {
                 MockGlobalMessageComponent,
                 MockToolbarNotificationsComponent,
                 MockToolbarUsersComponent,
-                MockToolbarAddContentletComponent
+                MockToolbarAddContentletComponent,
+                MockDotCrumbtrailComponent
             ],
-            imports: [BrowserAnimationsModule, RouterTestingModule, DotIconModule, DotIconButtonModule],
+            imports: [
+                BrowserAnimationsModule,
+                RouterTestingModule,
+                DotIconModule,
+                DotIconButtonModule
+            ],
             providers: [
                 { provide: DotNavigationService, useClass: MockDotNavigationService },
                 { provide: SiteService, useValue: siteServiceMock },
@@ -105,8 +121,14 @@ describe('ToolbarComponent', () => {
         dotNavigationService = de.injector.get(DotNavigationService);
         spyOn(comp, 'siteChange').and.callThrough();
         spyOn(dotRouterService, 'goToSiteBrowser');
-
     }));
+
+    it(`should has a crumbtrail`, () => {
+        fixture.detectChanges();
+
+        const crumbtrail: DebugElement = fixture.debugElement.query(By.css('dot-crumbtrail'));
+        expect(crumbtrail).not.toBeNull();
+    });
 
     it(`should NOT go to site browser when site change in any portlet but edit page`, () => {
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
@@ -130,7 +152,7 @@ describe('ToolbarComponent', () => {
 
     it('should toggle menu and update icon on click', () => {
         spyOn(dotNavigationService, 'toggle').and.callThrough();
-        const stopPro = jasmine.createSpy();
+        const stopPro = jasmine.createSpy('stopPro');
 
         fixture.detectChanges();
 

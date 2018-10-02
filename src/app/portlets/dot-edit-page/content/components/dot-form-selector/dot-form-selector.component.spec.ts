@@ -1,14 +1,14 @@
+import { of as observableOf } from 'rxjs';
 import { DebugElement, Injectable } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
-import { ComponentFixture, TestBed, async, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
-import { PaginatorService } from '../../../../../api/services/paginator';
-import { Observable } from 'rxjs/Observable';
+import { PaginatorService } from '@services/paginator';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { MessageKeyDirective } from '../../../../../view/directives/message-keys/message-keys.directive';
-import { DotDialogModule } from '../../../../../view/components/dot-dialog/dot-dialog.module';
+import { DotMessageService } from '@services/dot-messages-service';
+import { MessageKeyDirective } from '@directives/message-keys/message-keys.directive';
+import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const mockContentType = {
@@ -25,12 +25,11 @@ const mockContentType = {
 @Injectable()
 class PaginatorServiceMock {
     url = '';
-
 }
 
 const messageServiceMock = new MockDotMessageService({
     'contenttypes.form.name': 'Name',
-    'Select': 'Select',
+    Select: 'Select',
     'modes.Add-Form': 'Add Form'
 });
 
@@ -78,8 +77,8 @@ xdescribe('DotFormSelectorComponent', () => {
 
     describe('show dialog', () => {
         beforeEach(() => {
-            spyOn(paginatorService, 'getWithOffset').and.callFake((offset) => {
-                return Observable.of([mockContentType]);
+            spyOn(paginatorService, 'getWithOffset').and.callFake(() => {
+                return observableOf([mockContentType]);
             });
 
             component.show = true;
@@ -100,12 +99,8 @@ xdescribe('DotFormSelectorComponent', () => {
         });
 
         describe('data', () => {
-
-            let pTableComponent;
-
             beforeEach(() => {
                 fixture.detectChanges();
-                pTableComponent = de.query(By.css('p-dataTable'));
             });
 
             describe('pagination', () => {
@@ -135,15 +130,20 @@ xdescribe('DotFormSelectorComponent', () => {
                 });
 
                 it('first column should have the right header and content', () => {
-                    const label = de.query(By.css('table thead tr:first-child th:first-child span')).nativeElement.innerHTML;
+                    const label = de.query(By.css('table thead tr:first-child th:first-child span'))
+                        .nativeElement.innerHTML;
                     expect(label).toBe('Name');
 
-                    const content = de.query(By.css('table tbody tr:first-child td:first-child span')).nativeElement.innerHTML;
+                    const content = de.query(
+                        By.css('table tbody tr:first-child td:first-child span')
+                    ).nativeElement.innerHTML;
                     expect(content).toBe('Hello World');
                 });
 
                 it('second column should have the right header and select button', () => {
-                    const label = de.query(By.css('table thead tr:first-child th:nth-child(2n) span')).nativeElement.innerHTML;
+                    const label = de.query(
+                        By.css('table thead tr:first-child th:nth-child(2n) span')
+                    ).nativeElement.innerHTML;
                     expect(label).toBe('');
 
                     const link = de.query(By.css('.form-selector__button'));

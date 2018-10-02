@@ -1,8 +1,11 @@
-@import 'mixins';
-@import 'variables';
+@import "mixins";
+@import "variables";
 
 :host {
+    background-color: $white;
+    box-shadow: $md-shadow-1;
     display: block;
+    margin: $basic-padding * 3;
     padding: $basic-padding * 3;
 }
 

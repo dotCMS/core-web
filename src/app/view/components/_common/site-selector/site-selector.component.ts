@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Observable, of } from 'rxjs';
 import {
     Component,
     ViewEncapsulation,
@@ -12,10 +12,9 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
-import { PaginatorService } from '../../../../api/services/paginator';
+import { PaginatorService } from '@services/paginator';
 import { SearchableDropdownComponent } from '../searchable-dropdown/component';
-import { Observable } from 'rxjs/Observable';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 /**
  * It is dropdown of sites, it handle pagination and global search
@@ -28,25 +27,30 @@ import { DotEventsService } from '../../../../api/services/dot-events/dot-events
  */
 @Component({
     encapsulation: ViewEncapsulation.None,
-    providers: [
-        PaginatorService,
-        SearchableDropdownComponent
-    ],
+    providers: [PaginatorService, SearchableDropdownComponent],
     selector: 'dot-site-selector',
     styleUrls: ['./site-selector.component.scss'],
     templateUrl: 'site-selector.component.html'
 })
 export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() archive: boolean;
-    @Input() id: string;
-    @Input() live: boolean;
-    @Input() system: boolean;
+    @Input()
+    archive: boolean;
+    @Input()
+    id: string;
+    @Input()
+    live: boolean;
+    @Input()
+    system: boolean;
 
-    @Output() change: EventEmitter<Site> = new EventEmitter();
-    @Output() hide: EventEmitter<any> = new EventEmitter();
-    @Output() show: EventEmitter<any> = new EventEmitter();
+    @Output()
+    change: EventEmitter<Site> = new EventEmitter();
+    @Output()
+    hide: EventEmitter<any> = new EventEmitter();
+    @Output()
+    show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown')
+    searchableDropdown: SearchableDropdownComponent;
 
     currentSite: Observable<Site>;
     sitesCurrentPage: Site[];
@@ -54,7 +58,11 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     private refreshSitesSub: Subscription;
 
-    constructor(private siteService: SiteService, public paginationService: PaginatorService, private dotEventsService: DotEventsService) {}
+    constructor(
+        private siteService: SiteService,
+        public paginationService: PaginatorService,
+        private dotEventsService: DotEventsService
+    ) {}
 
     propagateChange = (_: any) => {};
 
@@ -65,7 +73,9 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.setExtraParams('live', this.live);
         this.paginationService.setExtraParams('system', this.system);
 
-        this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) => this.handleSitesRefresh());
+        this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) =>
+            this.handleSitesRefresh()
+        );
 
         this.getSitesList();
         ['login-as', 'logout-as'].forEach((event: string) => {
@@ -93,7 +103,7 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
         this.paginationService.getCurrentPage().subscribe((items) => {
             this.sitesCurrentPage = [...items];
             this.totalRecords = this.paginationService.totalRecords;
-            this.currentSite = Observable.of(this.siteService.currentSite);
+            this.currentSite = of(this.siteService.currentSite);
         });
     }
 
@@ -144,15 +154,20 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getSiteByIdFromCurrentPage(siteId: string): Site {
-        return this.sitesCurrentPage && this.sitesCurrentPage.filter((site) => site.identifier === siteId)[0];
+        return (
+            this.sitesCurrentPage &&
+            this.sitesCurrentPage.filter((site) => site.identifier === siteId)[0]
+        );
     }
 
     private selectCurrentSite(siteId: string): void {
         const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
-        this.currentSite = selectedInCurrentPage ? Observable.of(selectedInCurrentPage) : this.siteService.getSiteById(siteId);
+        this.currentSite = selectedInCurrentPage
+            ? of(selectedInCurrentPage)
+            : this.siteService.getSiteById(siteId);
     }
 
     private setCurrentSiteAsDefault() {
-        this.currentSite = Observable.of(this.siteService.currentSite);
+        this.currentSite = of(this.siteService.currentSite);
     }
 }

@@ -1,3 +1,4 @@
+import { of as observableOf } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
@@ -7,8 +8,7 @@ import { FieldService, FieldDragDropService } from '../service';
 
 import { DragulaModule } from 'ng2-dragula';
 import { DragulaService } from 'ng2-dragula';
-import { Observable } from 'rxjs/Observable';
-import { DotIconModule } from '../../../../view/components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 
 describe('ContentTypesFieldsListComponent', () => {
     let comp: ContentTypesFieldsListComponent;
@@ -44,7 +44,7 @@ describe('ContentTypesFieldsListComponent', () => {
             }
         ];
 
-        spyOn(fieldService, 'loadFieldTypes').and.returnValue(Observable.of(itemsData));
+        spyOn(fieldService, 'loadFieldTypes').and.returnValue(observableOf(itemsData));
 
         const fieldDragDropService = fixture.debugElement.injector.get(FieldDragDropService);
         spyOn(fieldDragDropService, 'setFieldBagOptions');
@@ -56,7 +56,9 @@ describe('ContentTypesFieldsListComponent', () => {
         const itemsElements = de.queryAll(By.css('li'));
 
         expect(itemsData.length).toEqual(itemsElements.length);
-        itemsData.forEach((fieldType, index) => expect(itemsElements[index].nativeElement.textContent).toContain(fieldType.label));
+        itemsData.forEach((fieldType, index) =>
+            expect(itemsElements[index].nativeElement.textContent).toContain(fieldType.label)
+        );
 
         const ulElement = de.query(By.css('ul'));
 

@@ -4,10 +4,17 @@ import { DotPageSelectorComponent } from './dot-page-selector.component';
 import { DotPageSelectorService } from './service/dot-page-selector.service';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { FormsModule } from '@angular/forms';
-import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 
 @NgModule({
-    imports: [CommonModule, AutoCompleteModule, FormsModule, DotDirectivesModule],
+    imports: [
+        CommonModule,
+        AutoCompleteModule,
+        FormsModule,
+        DotDirectivesModule,
+        MdInputTextModule
+    ],
     declarations: [DotPageSelectorComponent],
     providers: [DotPageSelectorService],
     exports: [DotPageSelectorComponent]

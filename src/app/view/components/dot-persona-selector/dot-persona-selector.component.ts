@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DotPersonasService } from '../../../api/services/dot-personas/dot-personas.service';
-import { DotPersona } from '../../../shared/models/dot-persona/dot-persona.model';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
+import { DotPersona } from '@models/dot-persona/dot-persona.model';
+import { DotMessageService } from '@services/dot-messages-service';
 import { map, take } from 'rxjs/operators';
 
 @Component({
@@ -10,12 +10,17 @@ import { map, take } from 'rxjs/operators';
     styleUrls: ['./dot-persona-selector.component.scss']
 })
 export class DotPersonaSelectorComponent implements OnInit {
-    @Input() value: DotPersona;
-    @Output() selected = new EventEmitter<DotPersona>();
+    @Input()
+    value: DotPersona;
+    @Output()
+    selected = new EventEmitter<DotPersona>();
 
     options: DotPersona[];
 
-    constructor(private dotPersonasService: DotPersonasService, private dotMessageService: DotMessageService) {}
+    constructor(
+        private dotPersonasService: DotPersonasService,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -25,7 +30,12 @@ export class DotPersonaSelectorComponent implements OnInit {
                 this.dotPersonasService
                     .get()
                     .pipe(
-                        map((personas: DotPersona[]) => this.setOptions(this.dotMessageService.get('modes.persona.no.persona'), personas))
+                        map((personas: DotPersona[]) =>
+                            this.setOptions(
+                                this.dotMessageService.get('modes.persona.no.persona'),
+                                personas
+                            )
+                        )
                     )
                     .subscribe((personas: DotPersona[]) => {
                         this.options = personas;

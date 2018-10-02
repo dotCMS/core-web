@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { DotDataTableAction } from '../../../../shared/models/data-table/dot-data-table-action';
+import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
 
 /**
  * The ActionMenuButtonComponent is a configurable button with
@@ -15,13 +15,19 @@ import { DotDataTableAction } from '../../../../shared/models/data-table/dot-dat
 })
 export class ActionMenuButtonComponent implements OnInit {
     filteredActions: MenuItem[] = [];
-    @Input() item: any;
-    @Input() icon? = 'fa-ellipsis-v';
-    @Input() actions?: DotDataTableAction[];
+    @Input()
+    item: any;
+    @Input()
+    icon? = 'fa fa-ellipsis-v';
+    @Input()
+    actions?: DotDataTableAction[];
 
     ngOnInit() {
         this.filteredActions = this.actions
-            .filter((action: DotDataTableAction) => (action.shouldShow ? action.shouldShow(this.item) : true))
+            .filter(
+                (action: DotDataTableAction) =>
+                    action.shouldShow ? action.shouldShow(this.item) : true
+            )
             .map((action: DotDataTableAction) => {
                 return {
                     ...action.menuItem,

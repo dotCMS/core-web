@@ -1,14 +1,13 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { DotTemplate } from './../../shared/models/dot-template.model';
 import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
-import { Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
-import { DotLicenseService } from '../../../../api/services/dot-license/dot-license.service';
-import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
-import { map } from 'rxjs/operators/map';
-import { mergeMap } from 'rxjs/operators/mergeMap';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
+import { map, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 interface DotEditPageNavItem {
@@ -27,7 +26,8 @@ interface DotEditPageNavItem {
     styleUrls: ['./dot-edit-page-nav.component.scss']
 })
 export class DotEditPageNavComponent implements OnChanges {
-    @Input() pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
     model: Observable<DotEditPageNavItem[]>;
     isEnterpriseLicense: boolean;
 
@@ -40,14 +40,19 @@ export class DotEditPageNavComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (this.layoutChanged(changes)) {
-            this.model = !this.model ? this.loadNavItems() : Observable.of(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+            this.model = !this.model
+                ? this.loadNavItems()
+                : observableOf(this.getNavItems(this.pageState, this.isEnterpriseLicense));
         }
     }
 
     private layoutChanged(changes: SimpleChanges): boolean {
         return changes.pageState.firstChange
             ? true
-            : !_.isEqual(changes.pageState.currentValue.layout, changes.pageState.previousValue.layout);
+            : !_.isEqual(
+                  changes.pageState.currentValue.layout,
+                  changes.pageState.previousValue.layout
+              );
     }
 
     private loadNavItems(): Observable<DotEditPageNavItem[]> {
@@ -77,7 +82,10 @@ export class DotEditPageNavComponent implements OnChanges {
         return dotRenderedPage.page.canEdit && dotRenderedPage.template.drawed;
     }
 
-    private getNavItems(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem[] {
+    private getNavItems(
+        dotRenderedPage: DotRenderedPage,
+        enterpriselicense: boolean
+    ): DotEditPageNavItem[] {
         const result = [
             {
                 needsEntepriseLicense: false,
@@ -105,7 +113,10 @@ export class DotEditPageNavComponent implements OnChanges {
         return result;
     }
 
-    private getTemplateNavItem(dotRenderedPage: DotRenderedPage, enterpriselicense: boolean): DotEditPageNavItem {
+    private getTemplateNavItem(
+        dotRenderedPage: DotRenderedPage,
+        enterpriselicense: boolean
+    ): DotEditPageNavItem {
         // Right now we only allowing users to edit layout, so no templates or advanced template can be edit from here.
         // https://github.com/dotCMS/core-web/pull/589
         return {
@@ -114,11 +125,15 @@ export class DotEditPageNavComponent implements OnChanges {
             icon: 'view_quilt',
             label: this.getTemplateItemLabel(dotRenderedPage.template),
             link: 'layout',
-            tooltip: dotRenderedPage.template.drawed ? null : this.dotMessageService.get('editpage.toolbar.nav.layout.advance.disabled')
+            tooltip: dotRenderedPage.template.drawed
+                ? null
+                : this.dotMessageService.get('editpage.toolbar.nav.layout.advance.disabled')
         };
     }
 
     private getTemplateItemLabel(template: DotTemplate): string {
-        return this.dotMessageService.get(!template ? 'editpage.toolbar.nav.layout' : 'editpage.toolbar.nav.layout');
+        return this.dotMessageService.get(
+            !template ? 'editpage.toolbar.nav.layout' : 'editpage.toolbar.nav.layout'
+        );
     }
 }

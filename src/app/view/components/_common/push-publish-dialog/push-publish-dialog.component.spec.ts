@@ -1,3 +1,4 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -6,24 +7,24 @@ import { PushPublishEnvSelectorModule } from '../dot-push-publish-env-selector/d
 import { PushPublishContentTypesDialogComponent } from './push-publish-dialog.component';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
-import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { FieldValidationMessageModule } from '../field-validation-message/file-validation-message.module';
 
 class PushPublishServiceMock {
     pushPublishContent(): Observable<any> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     getEnvironments(): Observable<any> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 }
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-push-publish-dialog [assetIdentifier]="pushPublishIdentifier"></dot-push-publish-dialog>'
+    template:
+        '<dot-push-publish-dialog [assetIdentifier]="pushPublishIdentifier"></dot-push-publish-dialog>'
 })
 class TestHostComponent {
     pushPublishIdentifier: string;
@@ -33,7 +34,6 @@ describe('PushPublishContentTypesDialogComponent', () => {
     let comp: PushPublishContentTypesDialogComponent;
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let pushPublishServiceMock: PushPublishServiceMock;
 
     const messageServiceMock = new MockDotMessageService({
@@ -55,7 +55,11 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         DOTTestBed.configureTestingModule({
             declarations: [PushPublishContentTypesDialogComponent, TestHostComponent],
-            imports: [PushPublishEnvSelectorModule, BrowserAnimationsModule, FieldValidationMessageModule],
+            imports: [
+                PushPublishEnvSelectorModule,
+                BrowserAnimationsModule,
+                FieldValidationMessageModule
+            ],
             providers: [
                 { provide: PushPublishService, useValue: pushPublishServiceMock },
                 { provide: DotMessageService, useValue: messageServiceMock }
@@ -65,7 +69,6 @@ describe('PushPublishContentTypesDialogComponent', () => {
         fixture = DOTTestBed.createComponent(TestHostComponent);
         de = fixture.debugElement.query(By.css('dot-push-publish-dialog'));
         comp = de.componentInstance;
-        el = de.nativeElement;
     });
 
     it('should have a dialog', () => {
@@ -109,7 +112,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
     it('should call close() on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.push-publish-dialog__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.push-publish-dialog__form-cancel')
+        );
         expect(cancelButton).toBeDefined();
 
         spyOn(comp, 'close');
@@ -119,14 +124,16 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         fixture.detectChanges();
 
-        comp.cancel.subscribe(res => {
+        comp.cancel.subscribe((res) => {
             expect(res).toEqual(true);
         });
     });
 
     it('should reset the form value on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.push-publish-dialog__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.push-publish-dialog__form-cancel')
+        );
 
         comp.form.get('environment').setValue('my environment');
         comp.form.get('forcePush').setValue(true);
@@ -145,7 +152,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         fixture.detectChanges();
 
-        const publishDate: DebugElement = formEl.query(By.css('.push-publish-dialog__publish-date'));
+        const publishDate: DebugElement = formEl.query(
+            By.css('.push-publish-dialog__publish-date')
+        );
         const expireDate: DebugElement = formEl.query(By.css('.push-publish-dialog__expire-date'));
 
         expect(publishDate).not.toBeNull();
@@ -160,7 +169,9 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
         fixture.detectChanges();
 
-        const publishDate: DebugElement = formEl.query(By.css('.push-publish-dialog__publish-date'));
+        const publishDate: DebugElement = formEl.query(
+            By.css('.push-publish-dialog__publish-date')
+        );
         const expireDate: DebugElement = formEl.query(By.css('.push-publish-dialog__expire-date'));
 
         expect(publishDate).toBeNull();
@@ -217,13 +228,16 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
             expect(comp.submitPushAction).toHaveBeenCalledTimes(1);
             expect(comp.form.valid).toBeTruthy();
-            expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                pushActionSelected: 'publishexpire',
-                publishdate: newDate,
-                expiredate: newDate,
-                environment: ['my environment, my second environment'],
-                forcePush: true
-            });
+            expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    pushActionSelected: 'publishexpire',
+                    publishdate: newDate,
+                    expiredate: newDate,
+                    environment: ['my environment, my second environment'],
+                    forcePush: true
+                }
+            );
         });
 
         it('should submit form correctly on Enter', () => {
@@ -231,13 +245,16 @@ describe('PushPublishContentTypesDialogComponent', () => {
 
             expect(comp.submitPushAction).toHaveBeenCalledTimes(1);
             expect(comp.form.valid).toBeTruthy();
-            expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                pushActionSelected: 'publishexpire',
-                publishdate: newDate,
-                expiredate: newDate,
-                environment: ['my environment, my second environment'],
-                forcePush: true
-            });
+            expect(pushPublishServiceMock.pushPublishContent).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    pushActionSelected: 'publishexpire',
+                    publishdate: newDate,
+                    expiredate: newDate,
+                    environment: ['my environment, my second environment'],
+                    forcePush: true
+                }
+            );
         });
     });
 });

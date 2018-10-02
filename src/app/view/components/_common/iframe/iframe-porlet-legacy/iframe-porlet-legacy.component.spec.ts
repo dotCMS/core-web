@@ -1,13 +1,13 @@
+import { of as observableOf } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DebugElement } from '@angular/core';
-import { DotContentletService } from '../../../../../api/services/dot-contentlet/dot-contentlet.service';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { IFrameModule } from '../index';
 import { IframePortletLegacyComponent } from './iframe-porlet-legacy.component';
-import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SocketFactory, SiteService, LoginService } from 'dotcms-js/dotcms-js';
 import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
@@ -16,7 +16,6 @@ describe('IframePortletLegacyComponent', () => {
     let comp: IframePortletLegacyComponent;
     let fixture: ComponentFixture<IframePortletLegacyComponent>;
     let de: DebugElement;
-    let el: HTMLElement;
     let dotIframe: DebugElement;
     let dotMenuService: DotMenuService;
     let dotIframeEventsHandler: DotIframeEventsHandler;
@@ -37,7 +36,7 @@ describe('IframePortletLegacyComponent', () => {
                     provide: ActivatedRoute,
                     useValue: {
                         parent: {
-                            url: Observable.of([
+                            url: observableOf([
                                 {
                                     path: 'an-url'
                                 }
@@ -51,7 +50,6 @@ describe('IframePortletLegacyComponent', () => {
         fixture = DOTTestBed.createComponent(IframePortletLegacyComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
-        el = de.nativeElement;
         dotIframe = de.query(By.css('dot-iframe'));
         dotMenuService = de.injector.get(DotMenuService);
         dotIframeEventsHandler = de.injector.get(DotIframeEventsHandler);
@@ -63,8 +61,8 @@ describe('IframePortletLegacyComponent', () => {
     });
 
     it('should set query param url to the dot-iframe src', () => {
-        route.queryParams = Observable.of({ url: 'hello/world' });
-        route.params = Observable.of({ id: 'portlet-id' });
+        route.queryParams = observableOf({ url: 'hello/world' });
+        route.params = observableOf({ id: 'portlet-id' });
 
         let src: string;
         comp.url.subscribe((url) => {
@@ -77,10 +75,10 @@ describe('IframePortletLegacyComponent', () => {
     });
 
     it('should set router param id to the dot-iframe src', () => {
-        route.queryParams = Observable.of({});
-        route.params = Observable.of({ id: 'portlet-id' });
+        route.queryParams = observableOf({});
+        route.params = observableOf({ id: 'portlet-id' });
 
-        spyOn(dotMenuService, 'getUrlById').and.returnValue(Observable.of('fake-url'));
+        spyOn(dotMenuService, 'getUrlById').and.returnValue(observableOf('fake-url'));
 
         let src: string;
 

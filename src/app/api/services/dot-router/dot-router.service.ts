@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PortletNav } from '../../../shared/models/navigation';
-import { Subject } from 'rxjs/Subject';
+import { PortletNav } from '@models/navigation';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class DotRouterService {
@@ -37,8 +37,9 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     goToEditPage(url: string, languageId?: string): Promise<boolean> {
-        return this.router.navigate(['/edit-page/content'],
-            { queryParams: !!languageId ? { url: url, language_id: languageId} : { url: url } });
+        return this.router.navigate(['/edit-page/content'], {
+            queryParams: !!languageId ? { url: url, language_id: languageId } : { url: url }
+        });
     }
 
     /**
@@ -82,6 +83,10 @@ export class DotRouterService {
         this.router.navigate(['/c/site-browser']);
     }
 
+    goToEditContentType(id: string): void {
+        this.router.navigate([`/content-types-angular/edit/${id}`]);
+    }
+
     goToURL(url: string): void {
         this.router.navigate([url]);
     }
@@ -115,7 +120,6 @@ export class DotRouterService {
      */
     isEditPage(): boolean {
         return this.currentPortlet.id === 'edit-page';
-
     }
 
     gotoPortlet(link: string, replaceUrl?: boolean): Promise<boolean> {
@@ -135,7 +139,9 @@ export class DotRouterService {
             url = url.substring(0, url.indexOf('?url='));
         }
 
-        const urlSegments = url.split('/').filter((item) => item !== '' && item !== '#' && item !== 'c');
+        const urlSegments = url
+            .split('/')
+            .filter((item) => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
 
@@ -150,7 +156,6 @@ export class DotRouterService {
     isPublicPage(): boolean {
         return this.currentPortlet.url.startsWith('/public');
     }
-
 
     private redirectMain(): Promise<boolean> {
         if (this._previousSavedURL) {

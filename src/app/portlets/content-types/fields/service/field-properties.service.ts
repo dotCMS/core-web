@@ -3,7 +3,7 @@ import { PROPERTY_INFO } from './field-property-info';
 import { DATA_TYPE_PROPERTY_INFO } from './data-type-property-info';
 import { ValidationErrors } from '@angular/forms';
 import { FieldService } from './field.service';
-import { FieldType } from '../shared/field-type.model';
+import { FieldType } from '../shared';
 
 /**
  * Provide method to handle with the Field Types's properties
@@ -13,8 +13,8 @@ export class FieldPropertyService {
     private fieldTypes = new Map<string, FieldType>();
 
     constructor(fieldService: FieldService) {
-        fieldService.loadFieldTypes().subscribe(fieldTypes => {
-            fieldTypes.forEach(fieldType => {
+        fieldService.loadFieldTypes().subscribe((fieldTypes) => {
+            fieldTypes.forEach((fieldType) => {
                 this.fieldTypes.set(fieldType.clazz, fieldType);
             });
         });
@@ -48,7 +48,9 @@ export class FieldPropertyService {
      * @memberof FieldPropertyService
      */
     getDefaultValue(propertyName: string, fieldTypeClass?: string): any {
-        return propertyName === 'dataType' ? this.getDataType(fieldTypeClass) : this.getPropInfo(propertyName);
+        return propertyName === 'dataType'
+            ? this.getDataType(fieldTypeClass)
+            : this.getPropInfo(propertyName);
     }
 
     /**
@@ -124,7 +126,9 @@ export class FieldPropertyService {
     }
 
     private getDataType(fieldTypeClass: string): any {
-        return DATA_TYPE_PROPERTY_INFO[fieldTypeClass] ? DATA_TYPE_PROPERTY_INFO[fieldTypeClass][0].value : null;
+        return DATA_TYPE_PROPERTY_INFO[fieldTypeClass]
+            ? DATA_TYPE_PROPERTY_INFO[fieldTypeClass][0].value
+            : null;
     }
 
     private getPropInfo(propertyName: string): any {

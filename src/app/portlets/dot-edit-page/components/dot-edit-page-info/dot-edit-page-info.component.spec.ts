@@ -5,11 +5,11 @@ import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 
 import { DotEditPageInfoComponent } from './dot-edit-page-info.component';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { mockUser } from '../../../../test/login-service.mock';
-import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
 import { DotClipboardUtil } from '../../../../api/util/clipboard/ClipboardUtil';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
@@ -40,7 +40,7 @@ describe('DotEditPageInfoComponent', () => {
                     provide: DotMessageService,
                     useValue: messageServiceMock
                 },
-                { provide: SiteService, useClass: SiteServiceMock },
+                { provide: SiteService, useClass: SiteServiceMock }
             ]
         }).compileComponents();
     }));
@@ -59,7 +59,10 @@ describe('DotEditPageInfoComponent', () => {
             spyOnProperty(siteService, 'currentSite', 'get').and.returnValue({
                 name: 'demo.dotcms.com'
             });
-            component.pageState = new DotRenderedPageState(mockUser, JSON.parse(JSON.stringify(mockDotRenderedPage)));
+            component.pageState = new DotRenderedPageState(
+                mockUser,
+                JSON.parse(JSON.stringify(mockDotRenderedPage))
+            );
             fixture.detectChanges();
         });
 
@@ -83,7 +86,9 @@ describe('DotEditPageInfoComponent', () => {
                 copyUrlButton.nativeElement.click();
 
                 tick();
-                expect(dotClipboardUtil.copy).toHaveBeenCalledWith('http://demo.dotcms.com:9876/an/url/test');
+                expect(dotClipboardUtil.copy).toHaveBeenCalledWith(
+                    'http://demo.dotcms.com:9876/an/url/test'
+                );
                 expect(dotGlobalMessageService.display).toHaveBeenCalledWith('Copied to clipboard');
             })
         );
@@ -103,7 +108,9 @@ describe('DotEditPageInfoComponent', () => {
                 copyUrlButton.nativeElement.click();
 
                 tick();
-                expect(dotGlobalMessageService.error).toHaveBeenCalledWith('Can not copy to cliploard');
+                expect(dotGlobalMessageService.error).toHaveBeenCalledWith(
+                    'Can not copy to cliploard'
+                );
             })
         );
     });

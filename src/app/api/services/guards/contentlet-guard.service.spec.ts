@@ -1,7 +1,7 @@
+import { of as observableOf } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { DotNavigationService } from '../../../view/components/dot-navigation/services/dot-navigation.service';
+import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ContentletGuardService } from './contentlet-guard.service';
 import { DotContentletService } from '../dot-contentlet/dot-contentlet.service';
@@ -41,16 +41,19 @@ describe('ValidContentletGuardService', () => {
         contentletGuardService = TestBed.get(ContentletGuardService);
         dotContentletService = TestBed.get(DotContentletService);
         dotNavigationService = TestBed.get(DotNavigationService);
-        mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
-        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
+        mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', [
             'toString'
         ]);
+        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>(
+            'ActivatedRouteSnapshot',
+            ['toString']
+        );
     });
 
     it('should allow children access to Content Types Portlets', () => {
         let result: boolean;
         mockActivatedRouteSnapshot.params = { id: 'banner' };
-        spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(Observable.of(true));
+        spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(observableOf(true));
         contentletGuardService
             .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));
@@ -61,7 +64,7 @@ describe('ValidContentletGuardService', () => {
     it('should prevent children access to Content Types Portlets', () => {
         let result: boolean;
         mockActivatedRouteSnapshot.params = { id: 'banner' };
-        spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(Observable.of(false));
+        spyOn(dotContentletService, 'isContentTypeInMenu').and.returnValue(observableOf(false));
         contentletGuardService
             .canActivateChild(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));

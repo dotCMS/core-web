@@ -23,7 +23,9 @@ describe('PaginatorService setting', () => {
         this.paginatorService.sortField = 'name';
         this.paginatorService.sortOrder = OrderDirection.DESC;
         this.paginatorService.get().subscribe((items) => (this.result = items));
-        expect(this.lastConnection.request.url).toContain('v1/urldemo?filter=test&orderby=name&direction=DESC');
+        expect(this.lastConnection.request.url).toContain(
+            'v1/urldemo?filter=test&orderby=name&direction=DESC'
+        );
     });
 
     it('should do a request with extra params', () => {
@@ -101,7 +103,9 @@ describe('PaginatorService getting', () => {
         expect(this.paginatorService.links.last).toEqual('</baseURL?filter=filter&page=5');
         expect(this.paginatorService.links.next).toEqual('</baseURL?filter=filter&page=4');
         expect(this.paginatorService.links.prev).toEqual('</baseURL?filter=filter&page=2');
-        expect(this.paginatorService.links['x-page']).toEqual('</baseURL?filter=filter&page=pageValue');
+        expect(this.paginatorService.links['x-page']).toEqual(
+            '</baseURL?filter=filter&page=pageValue'
+        );
     });
 
     it('clean links after set any extra params', () => {

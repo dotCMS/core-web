@@ -1,3 +1,4 @@
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ContentTypeField, FieldType } from '../shared';
@@ -19,7 +20,7 @@ export class FieldService {
                 method: RequestMethod.Get,
                 url: 'v1/fieldTypes'
             })
-            .pluck('entity');
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -48,7 +49,7 @@ export class FieldService {
                 method: RequestMethod.Put,
                 url: `v1/contenttype/${contentTypeId}/fields`
             })
-            .pluck('entity');
+            .pipe(pluck('entity'));
     }
 
     /**
@@ -66,7 +67,7 @@ export class FieldService {
                 method: RequestMethod.Delete,
                 url: `v1/contenttype/${contentTypeId}/fields`
             })
-            .pluck('entity');
+            .pipe(pluck('entity'));
     }
 
     /**

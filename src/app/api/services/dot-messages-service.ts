@@ -1,10 +1,10 @@
+import { pluck } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { CoreWebService, LoginService, User } from 'dotcms-js/dotcms-js';
 import { FormatDateService } from './format-date-service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class DotMessageService {
@@ -31,7 +31,7 @@ export class DotMessageService {
         this.messagesLoaded = {};
         this.setRelativeDateMessages();
 
-        loginService.auth$.pluck('user').subscribe((user: User) => {
+        loginService.auth$.pipe(pluck('user')).subscribe((user: User) => {
             if (user && this.lang !== user.languageId) {
                 this.messagesLoaded = {};
                 this.messageKeys = [];
@@ -50,7 +50,9 @@ export class DotMessageService {
      */
     get(key: string, ...args: string[]): string {
         if (args.length) {
-            return this.messagesLoaded[key] ? this.formatMessage(this.messagesLoaded[key], args) : key;
+            return this.messagesLoaded[key]
+                ? this.formatMessage(this.messagesLoaded[key], args)
+                : key;
         } else {
             return this.messagesLoaded[key] || key;
         }
@@ -129,7 +131,7 @@ export class DotMessageService {
                 method: RequestMethod.Post,
                 url: this.i18nUrl
             })
-            .pluck('i18nMessagesMap')
+            .pipe(pluck('i18nMessagesMap'))
             .subscribe((messages) => {
                 this.messageKeys = [];
                 this.messagesLoaded = Object.assign({}, this.messagesLoaded, messages);

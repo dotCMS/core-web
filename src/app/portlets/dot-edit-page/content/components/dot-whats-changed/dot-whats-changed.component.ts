@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
     selector: 'dot-whats-changed',
@@ -6,13 +6,17 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
     styleUrls: ['./dot-whats-changed.component.scss']
 })
 export class DotWhatsChangedComponent implements OnChanges {
-    @Input() languageId: string;
-    @Input() pageId: string;
+    @Input()
+    languageId: string;
+    @Input()
+    pageId: string;
     url: string;
 
     constructor() {}
 
     ngOnChanges(): void {
-        this.url = `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=${this.pageId}&pageLang=${this.languageId}`;
+        this.url = `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=${
+            this.pageId
+        }&pageLang=${this.languageId}`;
     }
 }

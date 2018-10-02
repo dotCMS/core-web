@@ -1,20 +1,30 @@
-import { Component, ViewChild } from '@angular/core';
-import { BaseComponent } from '../../../../../../view/components/_common/_base/base-component';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FieldProperty } from '../field-properties.model';
 import { FormGroup } from '@angular/forms';
-import { DotTextareaContentComponent } from '../../../../../../view/components/_common/dot-textarea-content/dot-textarea-content.component';
+import { DotTextareaContentComponent } from '@components/_common/dot-textarea-content/dot-textarea-content.component';
 
 @Component({
     selector: 'dot-values-property',
     templateUrl: './values-property.component.html'
 })
-export class ValuesPropertyComponent extends BaseComponent {
-    @ViewChild('value') value: DotTextareaContentComponent;
+export class ValuesPropertyComponent implements OnInit {
+    @ViewChild('value')
+    value: DotTextareaContentComponent;
     property: FieldProperty;
     group: FormGroup;
 
-    constructor(public dotMessageService: DotMessageService) {
-        super(['contenttypes.field.properties.value.label'], dotMessageService);
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
+    constructor(public dotMessageService: DotMessageService) {}
+
+    ngOnInit() {
+        this.dotMessageService
+            .getMessages(['contenttypes.field.properties.value.label'])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 }

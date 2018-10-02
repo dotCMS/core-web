@@ -1,5 +1,5 @@
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DotLayoutSidebarComponent } from './dot-layout-property-sidebar.component';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -60,8 +60,10 @@ describe('DotLayoutSidebarComponent', () => {
 
     it('should propagate change after sidebar property item is clicked', () => {
         let res = false;
-        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item')).componentInstance;
-        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item'))
+            .componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item'))
+            .nativeElement;
 
         dotLayoutPropertiesItem.change.subscribe((value) => (res = value));
         layoutPropertyItemEl.click();
@@ -74,8 +76,10 @@ describe('DotLayoutSidebarComponent', () => {
 
     it('should check left value and unchecked right value', () => {
         let res = false;
-        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item')).componentInstance;
-        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item'))
+            .componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item'))
+            .nativeElement;
 
         dotLayoutPropertiesItem.change.subscribe((value) => (res = value));
         layoutPropertyItemEl.click();
@@ -91,8 +95,10 @@ describe('DotLayoutSidebarComponent', () => {
 
     it('should check right value and unchecked left value', () => {
         let res = false;
-        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item')).componentInstance;
-        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item')).nativeElement;
+        const dotLayoutPropertiesItem = de.query(By.css('dot-layout-properties-item'))
+            .componentInstance;
+        const layoutPropertyItemEl: HTMLElement = de.query(By.css('dot-layout-properties-item'))
+            .nativeElement;
 
         dotLayoutPropertiesItem.change.subscribe((value) => (res = value));
         layoutPropertyItemEl.click();

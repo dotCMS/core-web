@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldProperty } from '../field-properties.model';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -30,7 +30,9 @@ export class DefaultValuePropertyComponent implements OnInit {
     }
 
     private getErrorLabel(clazz: string): string {
-        return this.errorLabelsMap.get(clazz) ? this.errorLabelsMap.get(clazz) : this.errorLabelsMap.get('default');
+        return this.errorLabelsMap.get(clazz)
+            ? this.errorLabelsMap.get(clazz)
+            : this.errorLabelsMap.get('default');
     }
 
     private setErrorLabelMap(messages: string[]): void {
@@ -42,6 +44,9 @@ export class DefaultValuePropertyComponent implements OnInit {
             'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
             messages['contenttypes.field.properties.default_value.immutable_date_time.error.format']
         );
-        this.errorLabelsMap.set('default', messages['contenttypes.field.properties.default_value.error.format']);
+        this.errorLabelsMap.set(
+            'default',
+            messages['contenttypes.field.properties.default_value.error.format']
+        );
     }
 }

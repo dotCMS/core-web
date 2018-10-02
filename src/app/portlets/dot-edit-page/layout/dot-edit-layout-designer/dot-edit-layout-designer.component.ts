@@ -2,24 +2,27 @@ import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-st
 import { DotAlertConfirmService } from './../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { PageViewService } from '../../../../api/services/page-view/page-view.service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { PageViewService } from '@services/page-view/page-view.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
-import { DotLayout } from '../../shared/models/dot-layout.model';
-import { DotEventsService } from '../../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import * as _ from 'lodash';
 import { DotEditLayoutService } from '../../shared/services/dot-edit-layout.service';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js/core/login.service';
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotTheme } from '../../shared/models/dot-theme.model';
-import { DotThemesService } from '../../../../api/services/dot-themes/dot-themes.service';
-import { Observable } from '../../../../../../node_modules/rxjs/Observable';
-import { DotHttpErrorManagerService, DotHttpErrorHandled } from '../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
-import { tap } from '../../../../../../node_modules/rxjs/operators/tap';
+import { DotThemesService } from '@services/dot-themes/dot-themes.service';
+import { Observable } from 'rxjs/Observable';
+import {
+    DotHttpErrorManagerService,
+    DotHttpErrorHandled
+} from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { tap } from 'rxjs/operators/tap';
+import { DotLayout } from '../../shared/models/dot-layout.model';
 
 @Component({
     selector: 'dot-edit-layout-designer',
@@ -27,9 +30,12 @@ import { tap } from '../../../../../../node_modules/rxjs/operators/tap';
     styleUrls: ['./dot-edit-layout-designer.component.scss']
 })
 export class DotEditLayoutDesignerComponent implements OnInit {
-    @ViewChild('templateName') templateName: ElementRef;
-    @Input() editTemplate = false;
-    @Input() pageState: DotRenderedPageState;
+    @ViewChild('templateName')
+    templateName: ElementRef;
+    @Input()
+    editTemplate = false;
+    @Input()
+    pageState: DotRenderedPageState;
 
     form: FormGroup;
     initialFormValue: any;
@@ -138,12 +144,18 @@ export class DotEditLayoutDesignerComponent implements OnInit {
      * @memberof DotEditLayoutDesignerComponent
      */
     saveLayout(): void {
-        this.dotGlobalMessageService.loading(this.dotMessageService.get('dot.common.message.saving'));
+        this.dotGlobalMessageService.loading(
+            this.dotMessageService.get('dot.common.message.saving')
+        );
         const dotLayout: DotLayout = this.form.value;
         this.pageViewService.save(this.pageState.page.identifier, dotLayout).subscribe(
             (updatedPage: DotRenderedPage) => {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
-                this.setupLayout(new DotRenderedPageState(this.loginService.auth.user, updatedPage));
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('dot.common.message.saved')
+                );
+                this.setupLayout(
+                    new DotRenderedPageState(this.loginService.auth.user, updatedPage)
+                );
             },
             (err: ResponseView) => {
                 this.dotGlobalMessageService.error(err.response.statusText);
@@ -210,7 +222,9 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             title: this.isLayout() ? null : this.pageState.template.title,
             themeId: this.pageState.template.theme,
             layout: this.fb.group({
-                body: this.dotEditLayoutService.cleanupDotLayoutBody(this.pageState.layout.body) || {},
+                body:
+                    this.dotEditLayoutService.cleanupDotLayoutBody(this.pageState.layout.body) ||
+                    {},
                 header: this.pageState.layout.header,
                 footer: this.pageState.layout.footer,
                 sidebar: this.createSidebarForm()
@@ -236,7 +250,10 @@ export class DotEditLayoutDesignerComponent implements OnInit {
             .subscribe(() => {
                 this.dotDialogService.alert({
                     header: this.dotMessageService.get('editpage.layout.dialog.header'),
-                    message: this.dotMessageService.get('editpage.layout.dialog.info', this.pageState.template.name),
+                    message: this.dotMessageService.get(
+                        'editpage.layout.dialog.info',
+                        this.pageState.template.name
+                    ),
                     footerLabel: {
                         accept: this.dotMessageService.get('editpage.layout.dialog.edit.page'),
                         reject: this.dotMessageService.get('editpage.layout.dialog.edit.template')
@@ -252,7 +269,9 @@ export class DotEditLayoutDesignerComponent implements OnInit {
     private createSidebarForm(): DotLayoutSideBar {
         return {
             location: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.location : '',
-            containers: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.containers : [],
+            containers: this.pageState.layout.sidebar
+                ? this.pageState.layout.sidebar.containers
+                : [],
             width: this.pageState.layout.sidebar ? this.pageState.layout.sidebar.width : 'small'
         };
     }
@@ -263,12 +282,12 @@ export class DotEditLayoutDesignerComponent implements OnInit {
 
     private errorHandler(err: ResponseView): Observable<any> {
         return this.dotHttpErrorManagerService.handle(err).pipe(
-                tap((res: DotHttpErrorHandled) => {
+            tap((res: DotHttpErrorHandled) => {
                 if (!res.redirected) {
                     this.dotRouterService.goToSiteBrowser();
                 }
                 this.currentTheme = err.response.status === 403 ? null : this.currentTheme;
-            }
-        ));
+            })
+        );
     }
 }

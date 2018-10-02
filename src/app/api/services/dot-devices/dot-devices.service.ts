@@ -1,6 +1,7 @@
+import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 import { CoreWebService } from 'dotcms-js/dotcms-js';
 import { RequestMethod } from '@angular/http';
 
@@ -22,8 +23,9 @@ export class DotDevicesService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'content/render/false/query/+contentType:previewDevice +live:true +deleted:false +working:true'
+                url:
+                    'content/render/false/query/+contentType:previewDevice +live:true +deleted:false +working:true'
             })
-            .pluck('contentlets');
+            .pipe(pluck('contentlets'));
     }
 }

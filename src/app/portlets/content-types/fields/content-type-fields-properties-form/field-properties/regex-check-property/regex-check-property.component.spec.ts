@@ -7,12 +7,11 @@ import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../../../test/dot-test-bed';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 
 describe('RegexCheckPropertyComponent', () => {
     let comp: RegexCheckPropertyComponent;
     let fixture: ComponentFixture<RegexCheckPropertyComponent>;
-    let de: DebugElement;
     const messageServiceMock = new MockDotMessageService({
         'contenttypes.field.properties.validation_regex.label': 'Validation-RegEx',
         'contenttypes.field.properties.validation_regex.values.select': 'Select',
@@ -26,28 +25,25 @@ describe('RegexCheckPropertyComponent', () => {
         'contenttypes.field.properties.validation_regex.values.no_html': 'No HTML'
     });
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [RegexCheckPropertyComponent],
-                imports: [NoopAnimationsModule],
-                providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [RegexCheckPropertyComponent],
+            imports: [NoopAnimationsModule],
+            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+        });
 
-            fixture = DOTTestBed.createComponent(RegexCheckPropertyComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
+        fixture = DOTTestBed.createComponent(RegexCheckPropertyComponent);
+        comp = fixture.componentInstance;
 
-            comp.group = new FormGroup({
-                regexCheck: new FormControl('')
-            });
-            comp.property = {
-                name: 'regexCheck',
-                value: 'value',
-                field: {}
-            };
-        })
-    );
+        comp.group = new FormGroup({
+            regexCheck: new FormControl('')
+        });
+        comp.property = {
+            name: 'regexCheck',
+            value: 'value',
+            field: {}
+        };
+    }));
 
     it('should have a form', () => {
         const group = new FormGroup({});

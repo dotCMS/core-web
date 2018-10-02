@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject, Observable, of } from 'rxjs';
 import { mergeMap, map, filter } from 'rxjs/operators';
-import { DotMenuService } from '../../../../api/services/dot-menu.service';
-import { of } from 'rxjs/observable/of';
+import { DotMenuService } from '@services/dot-menu.service';
 
 interface DotAddEditEvents {
     load?: ($event: any) => void;
@@ -146,7 +144,9 @@ export class DotContentletEditorService {
     private geAddtUrl(action: DotEditorAction): string {
         return action === null
             ? ''
-            : `/html/ng-contentlet-selector.jsp?ng=true&container_id=${action.data.container}&add=${action.data.baseTypes}`;
+            : `/html/ng-contentlet-selector.jsp?ng=true&container_id=${action.data.container}&add=${
+                  action.data.baseTypes
+              }`;
     }
 
     private getCreateUrl(action: DotEditorAction): string {

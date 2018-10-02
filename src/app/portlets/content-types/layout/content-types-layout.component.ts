@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { BaseComponent } from '../../../view/components/_common/_base/base-component';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
 
 @Component({
@@ -9,33 +8,38 @@ import { FieldDragDropService } from '../fields/service';
     styleUrls: ['./content-types-layout.component.scss'],
     templateUrl: 'content-types-layout.component.html'
 })
-export class ContentTypesLayoutComponent extends BaseComponent implements OnChanges, OnInit {
-    @Input() contentTypeId: string;
+export class ContentTypesLayoutComponent implements OnChanges, OnInit {
+    @Input()
+    contentTypeId: string;
 
     permissionURL: string;
     pushHistoryURL: string;
     relationshipURL: string;
 
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
     constructor(
-        dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotMenuService: DotMenuService,
         private fieldDragDropService: FieldDragDropService
-    ) {
-        super(
-            [
+    ) {}
+
+    ngOnInit(): void {
+        this.fieldDragDropService.setBagOptions();
+        this.dotMessageService
+            .getMessages([
                 'contenttypes.sidebar.components.title',
                 'contenttypes.tab.fields.header',
                 'contenttypes.sidebar.layouts.title',
                 'contenttypes.tab.permissions.header',
                 'contenttypes.tab.publisher.push.history.header',
                 'contenttypes.tab.relationship.header'
-            ],
-            dotMessageService
-        );
-    }
-
-    ngOnInit(): void {
-        this.fieldDragDropService.setBagOptions();
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     ngOnChanges(changes): void {

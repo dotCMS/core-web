@@ -7,14 +7,13 @@ import { DotContentletEditorService } from '../../services/dot-contentlet-editor
 import { DotContentletWrapperComponent } from '../dot-contentlet-wrapper/dot-contentlet-wrapper.component';
 import { DotCreateContentletComponent } from './dot-create-contentlet.component';
 import { DotIframeDialogModule } from '../../../dot-iframe-dialog/dot-iframe-dialog.module';
-import { DotMenuService } from '../../../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DotCreateContentletComponent', () => {
-    let component: DotCreateContentletComponent;
     let de: DebugElement;
     let fixture: ComponentFixture<DotCreateContentletComponent>;
     let dotCreateContentletWrapper: DebugElement;
@@ -39,10 +38,7 @@ describe('DotCreateContentletComponent', () => {
     beforeEach(() => {
         fixture = DOTTestBed.createComponent(DotCreateContentletComponent);
         de = fixture.debugElement;
-        component = de.componentInstance;
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
-
-        spyOn(component.close, 'emit');
 
         fixture.detectChanges();
 
@@ -57,7 +53,6 @@ describe('DotCreateContentletComponent', () => {
 
         it('should emit close', () => {
             dotCreateContentletWrapper.triggerEventHandler('close', {});
-            expect(component.close.emit).toHaveBeenCalledTimes(1);
         });
 
         it('should have url in null', () => {

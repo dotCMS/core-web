@@ -7,7 +7,7 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotWhatsChangedComponent } from './dot-whats-changed.component';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { IframeComponent } from '../../../../../view/components/_common/iframe/iframe-component';
+import { IframeComponent } from '@components/_common/iframe/iframe-component';
 
 @Component({
     selector: 'dot-test',
@@ -23,7 +23,8 @@ class TestHostComponent {
     template: ''
 })
 class TestDotIframeComponent {
-    @Input() src: string;
+    @Input()
+    src: string;
 }
 
 describe('DotWhatsChangedComponent', () => {
@@ -62,7 +63,9 @@ describe('DotWhatsChangedComponent', () => {
 
     it('should set url based on the page id', () => {
         expect(dotIframe.src).toEqual(
-            `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=${component.pageId}&pageLang=${component.languageId}`
+            `/html/portlet/ext/htmlpages/view_live_working_diff.jsp?id=${
+                component.pageId
+            }&pageLang=${component.languageId}`
         );
     });
 

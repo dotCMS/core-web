@@ -13,28 +13,26 @@ describe('ActionButtonComponent', () => {
     let fixture: ComponentFixture<DotActionButtonComponent>;
     let de: DebugElement;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                declarations: [DotActionButtonComponent],
-                imports: [
-                    BrowserAnimationsModule,
-                    MenuModule,
-                    DotIconButtonModule,
-                    RouterTestingModule.withRoutes([
-                        {
-                            component: DotActionButtonComponent,
-                            path: 'test'
-                        }
-                    ])
-                ]
-            });
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            declarations: [DotActionButtonComponent],
+            imports: [
+                BrowserAnimationsModule,
+                MenuModule,
+                DotIconButtonModule,
+                RouterTestingModule.withRoutes([
+                    {
+                        component: DotActionButtonComponent,
+                        path: 'test'
+                    }
+                ])
+            ]
+        });
 
-            fixture = TestBed.createComponent(DotActionButtonComponent);
-            de = fixture.debugElement;
-            comp = fixture.componentInstance;
-        })
-    );
+        fixture = TestBed.createComponent(DotActionButtonComponent);
+        de = fixture.debugElement;
+        comp = fixture.componentInstance;
+    }));
 
     it('should have no-label class by default', () => {
         fixture.detectChanges();
@@ -54,7 +52,10 @@ describe('ActionButtonComponent', () => {
             true,
             'label hidden by default'
         );
-        expect(fixture.debugElement.query(By.css('p-menu')) === null).toBe(true, 'menu hidden by default');
+        expect(fixture.debugElement.query(By.css('p-menu')) === null).toBe(
+            true,
+            'menu hidden by default'
+        );
     });
 
     it('should have label', () => {
@@ -78,7 +79,10 @@ describe('ActionButtonComponent', () => {
         const menu = fixture.debugElement.query(By.css('p-menu'));
         expect(menu).toBeDefined();
 
-        expect(menu.componentInstance.model).toEqual(model, 'model its being pass to primeng component');
+        expect(menu.componentInstance.model).toEqual(
+            model,
+            'model its being pass to primeng component'
+        );
     });
 
     it('should emit event on button click', () => {
@@ -118,7 +122,12 @@ describe('ActionButtonComponent', () => {
         fixture.detectChanges();
         const button = fixture.debugElement.query(By.css('dot-icon-button'));
         const label = fixture.debugElement.query(By.css('.action-button__label'));
-        expect(button.nativeElement.getAttribute('ng-reflect-disabled')).toBeDefined('Button disabled attr');
-        expect(label.nativeElement.classList).toContain('action-button__label--disabled', 'Label disabled class');
+        expect(button.nativeElement.getAttribute('ng-reflect-disabled')).toBeDefined(
+            'Button disabled attr'
+        );
+        expect(label.nativeElement.classList).toContain(
+            'action-button__label--disabled',
+            'Label disabled class'
+        );
     });
 });

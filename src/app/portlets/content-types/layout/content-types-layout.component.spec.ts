@@ -1,15 +1,15 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { TabViewModule } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
-import { Observable } from 'rxjs/Observable';
+import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
-import {DotIconModule} from '../../../view/components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -28,7 +28,8 @@ class TestContentTypeFieldsRowListComponent {}
     template: ''
 })
 class TestDotIframeComponent {
-    @Input() src: string;
+    @Input()
+    src: string;
 }
 
 @Component({
@@ -36,7 +37,8 @@ class TestDotIframeComponent {
     template: '<dot-content-type-layout [contentTypeId]="contentTypeId"></dot-content-type-layout>'
 })
 class TestHostComponent {
-    @Input() contentTypeId: string;
+    @Input()
+    contentTypeId: string;
 }
 
 @Component({
@@ -48,7 +50,7 @@ class TestContentTypesRelationshipListingComponent {}
 @Injectable()
 export class MockDotMenuService {
     getDotMenuId(): Observable<string> {
-        return Observable.of('1234');
+        return observableOf('1234');
     }
 }
 
@@ -103,7 +105,9 @@ describe('ContentTypesLayoutComponent', () => {
     });
 
     it('should set the field and row bag options', () => {
-        const fieldDragDropService: FieldDragDropService = fixture.debugElement.injector.get(FieldDragDropService);
+        const fieldDragDropService: FieldDragDropService = fixture.debugElement.injector.get(
+            FieldDragDropService
+        );
         spyOn(fieldDragDropService, 'setBagOptions');
         fixture.detectChanges();
 
@@ -130,26 +134,38 @@ describe('ContentTypesLayoutComponent', () => {
             });
 
             it('should have a content-type__fields-main', () => {
-                const contentTypeFieldsMain = this.pTabPanel.query(By.css('.content-type__fields-main'));
+                const contentTypeFieldsMain = this.pTabPanel.query(
+                    By.css('.content-type__fields-main')
+                );
                 expect(contentTypeFieldsMain).not.toBeNull();
             });
 
             it('should have a content-type__fields-sidebar', () => {
-                const contentTypeFieldsSideBar = this.pTabPanel.query(By.css('.content-type__fields-sidebar'));
+                const contentTypeFieldsSideBar = this.pTabPanel.query(
+                    By.css('.content-type__fields-sidebar')
+                );
                 expect(contentTypeFieldsSideBar).not.toBeNull();
             });
 
             it('should have a field types list', () => {
-                const fieldTitle = this.pTabPanel.query(By.css('.content-type__fields-sidebar-title span'));
-                const contentTypesFieldsList = this.pTabPanel.query(By.css('dot-content-types-fields-list'));
+                const fieldTitle = this.pTabPanel.query(
+                    By.css('.content-type__fields-sidebar-title span')
+                );
+                const contentTypesFieldsList = this.pTabPanel.query(
+                    By.css('dot-content-types-fields-list')
+                );
                 expect(fieldTitle.nativeElement.textContent).toBe('Field Title');
                 expect(contentTypesFieldsList).not.toBeNull();
             });
 
             // Hiding the rows list for 5.0
             xit('should have a field row list', () => {
-                const layoutTitle = this.pTabPanel.queryAll(By.css('.content-type__fields-sidebar-title'))[1];
-                const fieldRowList = this.pTabPanel.query(By.css('dot-content-type-fields-row-list'));
+                const layoutTitle = this.pTabPanel.queryAll(
+                    By.css('.content-type__fields-sidebar-title')
+                )[1];
+                const fieldRowList = this.pTabPanel.query(
+                    By.css('dot-content-type-fields-row-list')
+                );
 
                 expect(layoutTitle.nativeElement.textContent).toBe('Layout Title');
                 expect(fieldRowList).not.toBeNull();
@@ -175,7 +191,9 @@ describe('ContentTypesLayoutComponent', () => {
             });
 
             it('should set the src attribute', () => {
-                expect(iframe.componentInstance.src).toBe('/html/content_types/permissions.jsp?contentTypeId=2&popup=true');
+                expect(iframe.componentInstance.src).toBe(
+                    '/html/content_types/permissions.jsp?contentTypeId=2&popup=true'
+                );
             });
         });
 
@@ -198,7 +216,9 @@ describe('ContentTypesLayoutComponent', () => {
             });
 
             it('should set the src attribute', () => {
-                expect(iframe.componentInstance.src).toBe('/html/content_types/push_history.jsp?contentTypeId=2&popup=true');
+                expect(iframe.componentInstance.src).toBe(
+                    '/html/content_types/push_history.jsp?contentTypeId=2&popup=true'
+                );
             });
         });
 

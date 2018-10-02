@@ -25,7 +25,7 @@ $field-active-color: $body-font-color;
 $field-active-border-size: 2px;
 $field-active-border-color: $brand-primary;
 
-$field-disabled-bgcolor: #DEDEE1;
+$field-disabled-bgcolor: #dedee1;
 $field-disabled-color: $gray-light;
 $field-disabled-border-size: $field-border-size;
 $field-disabled-border-color: $gray-bg;
@@ -46,27 +46,27 @@ $button-main: (
     normal: (
         background: $brand-primary,
         color: $white,
-        border: $button-border,
+        border: $button-border
     ),
     hover: (
         background: $brand-primary_mod,
         color: $white,
-        border: $button-border,
+        border: $button-border
     ),
     focus: (
         background: $brand-primary_mod,
         color: $white,
-        border: $button-border,
+        border: $button-border
     ),
     active: (
         background: $brand-primary_mod,
         color: $white,
-        border: $button-border,
+        border: $button-border
     ),
     disabled: (
         background: $field-disabled-bgcolor,
         color: $field-disabled-color,
-        border: $button-border,
+        border: $button-border
     )
 );
 
@@ -74,27 +74,27 @@ $button-sec: (
     normal: (
         background: $white,
         color: $brand-secondary,
-        border: solid 1px $brand-secondary,
+        border: solid 1px $brand-secondary
     ),
     hover: (
         background: $white,
         color: $brand-primary,
-        border: solid 1px $brand-primary,
+        border: solid 1px $brand-primary
     ),
     focus: (
         background: rgba($brand-primary_rgb, $button-hover-background-opacity),
         color: $brand-primary,
-        border: $button-border,
+        border: $button-border
     ),
     active: (
         background: rgba($brand-primary_rgb, 0.26),
         color: $brand-primary,
-        border: $button-border,
+        border: $button-border
     ),
     disabled: (
         background: $white,
         color: $field-disabled-bgcolor,
-        border: solid 1px $field-disabled-bgcolor,
+        border: solid 1px $field-disabled-bgcolor
     )
 );
 
@@ -132,10 +132,10 @@ $check-radius: 2px;
 $check-size: 14px;
 
 $check-checked-bgcolor: $brand-primary;
-$check-checked-border: solid $check-border-width $black;
+$check-checked-border: solid $check-border-width $brand-primary;
 $check-checked-color: $white;
 
-$check-disabled-border: solid $check-border-width $gray;
+$check-disabled-border: solid $check-border-width $gray-light;
 $check-disabled-bgcolor: $gray-bg;
 $check-disabled-color: $field-disabled-color;
 $check-disabled-label-color: $field-disabled-color;
@@ -143,25 +143,19 @@ $check-disabled-label-color: $field-disabled-color;
 $check-normal-bgcolor: $white;
 $check-normal-border: solid $field-border-size $black;
 
-$check-hover-bgcolor: $white;
-$check-hover-border: $check-checked-border;
-
 $radio-size: $check-size;
 
 $radio-checked-bgcolor: $white;
 $radio-checked-border: solid $check-border-width $brand-primary;
 $radio-checked-color: $brand-primary;
 
-$radio-disabled-border: solid $check-border-width $gray;
+$radio-disabled-border: solid $check-border-width $gray-light;
 $radio-disabled-bgcolor: $field-disabled-bgcolor;
 $radio-disabled-color: $field-disabled-color;
 $radio-disabled-label-color: $field-disabled-color;
 
 $radio-normal-bgcolor: $white;
 $radio-normal-border: solid $field-border-size $black;
-
-$radio-hover-bgcolor: $white;
-$radio-hover-border: $check-checked-border;
 
 // DATATABLE
 $datatable-cell-padding: 18px $basic-padding * 2; // We need to have 40px min height in the cell

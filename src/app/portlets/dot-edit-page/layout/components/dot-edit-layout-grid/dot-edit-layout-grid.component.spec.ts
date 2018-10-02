@@ -3,18 +3,18 @@ import { By } from '@angular/platform-browser';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotContainerSelectorModule } from '../../../../../view/components/dot-container-selector/dot-container-selector.module';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 import { DotEditLayoutGridComponent } from './dot-edit-layout-grid.component';
-import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
-import { DotEventsService } from '../../../../../api/services/dot-events/dot-events.service';
-import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { NgGridModule } from 'angular2-grid';
-import { PaginatorService } from '../../../../../api/services/paginator/paginator.service';
+import { PaginatorService } from '@services/paginator/paginator.service';
 import { TemplateContainersCacheService } from '../../../template-containers-cache.service';
+import { NgGridModule } from 'dot-layout-grid';
+import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
+import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 
 let fakeValue: DotLayoutBody;
 
@@ -118,8 +118,10 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should remove one Container from the Grid', () => {
         component.addBox();
-        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(
+            DotAlertConfirmService
+        );
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         component.onRemoveContainer(1);
@@ -165,8 +167,10 @@ describe('DotEditLayoutGridComponent', () => {
 
     it('should Propagate Change after a grid box is deleted', () => {
         component.addBox();
-        const dotDialogService = hostComponentfixture.debugElement.injector.get(DotAlertConfirmService);
-        spyOn(dotDialogService, 'confirm').and.callFake(conf => {
+        const dotDialogService = hostComponentfixture.debugElement.injector.get(
+            DotAlertConfirmService
+        );
+        spyOn(dotDialogService, 'confirm').and.callFake((conf) => {
             conf.accept();
         });
         spyOn(component, 'propagateChange');
@@ -194,7 +198,9 @@ describe('DotEditLayoutGridComponent', () => {
     it(
         'should resize the grid when the left menu is toggle',
         fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(
+                DotEventsService
+            );
             spyOn(component.ngGrid, 'triggerResize');
             dotEventsService.notify('dot-side-nav-toggle');
             tick(210);
@@ -205,7 +211,9 @@ describe('DotEditLayoutGridComponent', () => {
     it(
         'should resize the grid when the layout sidebar change',
         fakeAsync(() => {
-            const dotEventsService = hostComponentfixture.debugElement.injector.get(DotEventsService);
+            const dotEventsService = hostComponentfixture.debugElement.injector.get(
+                DotEventsService
+            );
             spyOn(component.ngGrid, 'triggerResize');
             dotEventsService.notify('layout-sidebar-change');
             tick(0);

@@ -1,36 +1,42 @@
-import { BaseComponent } from '../_common/_base/base-component';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { LoginService, Auth, LoggerService } from 'dotcms-js/dotcms-js';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
-import { DotEventsService } from '../../../api/services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-toolbar-user',
     styleUrls: ['./toolbar-user.scss'],
     templateUrl: 'toolbar-user.html'
 })
-export class ToolbarUserComponent extends BaseComponent implements OnInit {
-    @ViewChild(DotDropdownComponent) dropdown: DotDropdownComponent;
+export class ToolbarUserComponent implements OnInit {
+    @ViewChild(DotDropdownComponent)
+    dropdown: DotDropdownComponent;
     auth: Auth;
 
     showLoginAs = false;
     showMyAccount = false;
 
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
     constructor(
-        dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private dotEventsService: DotEventsService,
         private loggerService: LoggerService,
         private loginService: LoginService,
         public iframeOverlayService: IframeOverlayService,
         private dotNavigationService: DotNavigationService
-    ) {
-        super(['my-account'], dotMessageService);
-    }
+    ) {}
 
     ngOnInit(): void {
+        this.dotMessageService.getMessages(['my-account']).subscribe((res) => {
+            this.i18nMessages = res;
+        });
+
         this.loginService.watchUser((auth: Auth) => {
             this.auth = auth;
         });

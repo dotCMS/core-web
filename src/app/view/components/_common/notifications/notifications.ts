@@ -1,8 +1,7 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { BaseComponent } from '../_base/base-component';
-import { INotification } from '../../../../shared/models/notifications';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { INotification } from '@models/notifications';
+import { DotMessageService } from '@services/dot-messages-service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -11,12 +10,18 @@ import { DotMessageService } from '../../../../api/services/dot-messages-service
     styleUrls: ['./notifications-item.scss'],
     templateUrl: 'notifications-item.html'
 })
-export class NotificationsItemComponent extends BaseComponent implements OnInit {
-    @Input() data;
-    @Output() clear = new EventEmitter<Object>();
+export class NotificationsItemComponent implements OnInit {
+    @Input()
+    data;
+    @Output()
+    clear = new EventEmitter<Object>();
 
     showLinkAction = false;
     showTitleLinked = false;
+
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
 
     private notificationIcons: Object = {
         ERROR: 'exclamation-triangle',
@@ -24,11 +29,13 @@ export class NotificationsItemComponent extends BaseComponent implements OnInit 
         WARNING: 'ban'
     };
 
-    constructor(dotMessageService: DotMessageService) {
-        super(['notifications_dismiss'], dotMessageService);
-    }
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
+        this.dotMessageService.getMessages(['notifications_dismiss']).subscribe((res) => {
+            this.i18nMessages = res;
+        });
+
         // TODO: hand more than one action
         const actions = this.data.actions ? this.data.actions[0] : null;
         this.showLinkAction =
@@ -47,7 +54,7 @@ export class NotificationsItemComponent extends BaseComponent implements OnInit 
     }
 
     getIconName(val: string): string {
-        return 'notification-item__icon fa fa-' + this.notificationIcons[val];
+        return 'notification-item__icon pi pi-' + this.notificationIcons[val];
     }
 
     onClear(): void {
@@ -65,8 +72,10 @@ export class NotificationsItemComponent extends BaseComponent implements OnInit 
     templateUrl: 'notifications-list.html'
 })
 export class NotificationsListComponent {
-    @Input() notifications: INotification;
-    @Output() dismissNotification = new EventEmitter<Object>();
+    @Input()
+    notifications: INotification;
+    @Output()
+    dismissNotification = new EventEmitter<Object>();
 
     constructor() {}
 

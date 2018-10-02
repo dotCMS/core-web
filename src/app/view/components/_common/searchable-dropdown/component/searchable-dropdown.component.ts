@@ -1,4 +1,5 @@
-import { DotContainer } from '../../../../../shared/models/container/dot-container.model';
+import { debounceTime } from 'rxjs/operators';
+import { DotContainer } from '@models/container/dot-container.model';
 import {
     Component,
     ElementRef,
@@ -12,16 +13,14 @@ import {
     OnChanges,
     OnInit
 } from '@angular/core';
-import { BaseComponent } from '../../_base/base-component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { Observable } from 'rxjs/Observable';
+import { DotMessageService } from '@services/dot-messages-service';
+import { fromEvent } from 'rxjs';
 import { OverlayPanel } from 'primeng/primeng';
 
 /**
  * Dropdown with pagination and global search
  * @export
- * @extends {BaseComponent}
  * @class SearchableDropdownComponent
  * @implements {ControlValueAccessor}
  */
@@ -38,32 +37,51 @@ import { OverlayPanel } from 'primeng/primeng';
     styleUrls: ['./searchable-dropdown.component.scss'],
     templateUrl: './searchable-dropdown.component.html'
 })
-export class SearchableDropdownComponent extends BaseComponent implements ControlValueAccessor, OnChanges, OnInit {
-    @Input() data: string[];
-    @Input() labelPropertyName: string | string[];
-    @Input() valuePropertyName: string;
-    @Input() pageLinkSize = 3;
-    @Input() rows: number;
-    @Input() totalRecords: number;
-    @Input() placeholder = '';
-    @Input() persistentPlaceholder: boolean;
-    @Input() width: string;
-    @Input() multiple: boolean;
-    @Output() change: EventEmitter<any> = new EventEmitter();
-    @Output() filterChange: EventEmitter<string> = new EventEmitter();
-    @Output() hide: EventEmitter<any> = new EventEmitter();
-    @Output() pageChange: EventEmitter<PaginationEvent> = new EventEmitter();
-    @Output() show: EventEmitter<any> = new EventEmitter();
+export class SearchableDropdownComponent implements ControlValueAccessor, OnChanges, OnInit {
+    @Input()
+    data: string[];
+    @Input()
+    labelPropertyName: string | string[];
+    @Input()
+    valuePropertyName: string;
+    @Input()
+    pageLinkSize = 3;
+    @Input()
+    rows: number;
+    @Input()
+    totalRecords: number;
+    @Input()
+    placeholder = '';
+    @Input()
+    persistentPlaceholder: boolean;
+    @Input()
+    width: string;
+    @Input()
+    multiple: boolean;
+    @Output()
+    change: EventEmitter<any> = new EventEmitter();
+    @Output()
+    filterChange: EventEmitter<string> = new EventEmitter();
+    @Output()
+    hide: EventEmitter<any> = new EventEmitter();
+    @Output()
+    pageChange: EventEmitter<PaginationEvent> = new EventEmitter();
+    @Output()
+    show: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('searchInput') searchInput: ElementRef;
-    @ViewChild('searchPanel') searchPanelRef: OverlayPanel;
+    @ViewChild('searchInput')
+    searchInput: ElementRef;
+    @ViewChild('searchPanel')
+    searchPanelRef: OverlayPanel;
 
     value: any = {};
     valueString = '';
 
-    constructor(dotMessageService: DotMessageService) {
-        super(['search'], dotMessageService);
-    }
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
+    constructor(private dotMessageService: DotMessageService) {}
 
     propagateChange = (_: any) => {};
 
@@ -74,8 +92,12 @@ export class SearchableDropdownComponent extends BaseComponent implements Contro
     }
 
     ngOnInit(): void {
-        Observable.fromEvent(this.searchInput.nativeElement, 'keyup')
-            .debounceTime(500)
+        this.dotMessageService.getMessages(['search']).subscribe((res) => {
+            this.i18nMessages = res;
+        });
+
+        fromEvent(this.searchInput.nativeElement, 'keyup')
+            .pipe(debounceTime(500))
             .subscribe((keyboardEvent: Event) => {
                 this.filterChange.emit(keyboardEvent.target['value']);
             });

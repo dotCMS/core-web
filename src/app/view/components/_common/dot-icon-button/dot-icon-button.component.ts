@@ -12,7 +12,12 @@ import { Component, Input, ElementRef } from '@angular/core';
     templateUrl: './dot-icon-button.component.html'
 })
 export class DotIconButtonComponent {
-    @Input() icon: string;
+    @Input()
+    disabled?: boolean;
+
+    @Input()
+    icon: string;
+
     element: ElementRef;
 
     constructor(elm: ElementRef) {

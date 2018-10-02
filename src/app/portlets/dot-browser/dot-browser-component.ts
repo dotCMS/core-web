@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Folder } from 'dotcms-js/core/treeable/shared/folder.model';
-import { FileService, FolderService, SiteBrowserState, SiteDatagridComponent } from 'dotcms-js/dotcms-js';
+import {
+    FileService,
+    FolderService,
+    SiteBrowserState,
+    SiteDatagridComponent
+} from 'dotcms-js/dotcms-js';
 import { FileUpload } from 'primeng/primeng';
 
 @Component({
@@ -11,8 +16,10 @@ import { FileUpload } from 'primeng/primeng';
     templateUrl: 'dot-browser.html'
 })
 export class DotBrowserComponent implements OnInit {
-    @ViewChild('siteDatagridWidget') siteDatagrid: SiteDatagridComponent;
-    @ViewChild('fileUploadWidget') fieldUpload: FileUpload;
+    @ViewChild('siteDatagridWidget')
+    siteDatagrid: SiteDatagridComponent;
+    @ViewChild('fileUploadWidget')
+    fieldUpload: FileUpload;
     uploadedFiles: any[] = [];
     uploadDialog: boolean;
     siteView = 'tree';
@@ -33,7 +40,10 @@ export class DotBrowserComponent implements OnInit {
     onUpload(e: any) {
         const uri: String = this.updateService.getURI();
         this.folderService
-            .loadFolderByURI(this.updateService.getSelectedSite().hostname, uri !== null ? uri : '/')
+            .loadFolderByURI(
+                this.updateService.getSelectedSite().hostname,
+                uri !== null ? uri : '/'
+            )
             .subscribe((folder: Folder) => this.uploadIntoFolder(folder, e.files));
         setTimeout(() => {}, 100);
         return;

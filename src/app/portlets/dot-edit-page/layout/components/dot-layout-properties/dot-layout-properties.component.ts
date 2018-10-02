@@ -1,4 +1,4 @@
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup } from '@angular/forms';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
@@ -9,7 +9,8 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
     encapsulation: ViewEncapsulation.None
 })
 export class DotLayoutPropertiesComponent implements OnInit {
-    @Input() group: FormGroup;
+    @Input()
+    group: FormGroup;
 
     constructor(public dotMessageService: DotMessageService) {}
 

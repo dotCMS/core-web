@@ -1,15 +1,15 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { DebugElement, Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
 import { ContentTypeFieldsRowComponent } from './';
 import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
 import { ContentTypeField, FieldRow, FieldColumn } from '../';
-import { DragulaModule } from 'ng2-dragula';
-import { IconButtonTooltipModule } from '../../../../view/components/_common/icon-button-tooltip/icon-button-tooltip.module';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
+import { IconButtonTooltipModule } from '@components/_common/icon-button-tooltip/icon-button-tooltip.module';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
-import { DotAlertConfirmService } from '../../../../api/services/dot-alert-confirm';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 const mockFieldRow = new FieldRow();
 mockFieldRow.columns = [
@@ -39,9 +39,12 @@ mockFieldRowFieldEmpty.columns = [new FieldColumn([]), new FieldColumn([])];
     template: ''
 })
 class TestContentTypeFieldDraggableItemComponent {
-    @Input() field: ContentTypeField;
-    @Output() remove: EventEmitter<ContentTypeField> = new EventEmitter();
-    @Output() edit: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Input()
+    field: ContentTypeField;
+    @Output()
+    remove: EventEmitter<ContentTypeField> = new EventEmitter();
+    @Output()
+    edit: EventEmitter<ContentTypeField> = new EventEmitter();
 }
 
 @Component({
@@ -86,6 +89,7 @@ describe('ContentTypeFieldsRowComponent', () => {
             providers: [
                 FieldDragDropService,
                 DotAlertConfirmService,
+                DragulaService,
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
@@ -108,7 +112,6 @@ describe('ContentTypeFieldsRowComponent', () => {
         });
 
         it('should has row and columns', () => {
-
             const columns = de.queryAll(By.css('.row-columns__item'));
             expect(2).toEqual(columns.length);
 
@@ -116,7 +119,9 @@ describe('ContentTypeFieldsRowComponent', () => {
                 expect('fields-bag').toEqual(col.attributes['dragula']);
                 expect('target').toEqual(col.attributes['data-drag-type']);
 
-                const draggableItems = col.queryAll(By.css('dot-content-type-field-dragabble-item'));
+                const draggableItems = col.queryAll(
+                    By.css('dot-content-type-field-dragabble-item')
+                );
                 expect(mockFieldRow.columns[index].fields.length).toEqual(draggableItems.length);
             });
         });

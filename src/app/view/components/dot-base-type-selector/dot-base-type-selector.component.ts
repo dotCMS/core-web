@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DotContentletService } from '../../../api/services/dot-contentlet/dot-contentlet.service';
-import { StructureTypeView } from '../../../shared/models/contentlet/structure-type-view.model';
+import { DotContentletService } from '@services/dot-contentlet/dot-contentlet.service';
+import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
 import { Observable } from 'rxjs/Observable';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { SelectItem } from 'primeng/primeng';
 import { map, take } from 'rxjs/operators';
 
@@ -12,26 +12,32 @@ import { map, take } from 'rxjs/operators';
     styleUrls: ['./dot-base-type-selector.component.scss']
 })
 export class DotBaseTypeSelectorComponent implements OnInit {
-    @Input() value: SelectItem;
-    @Output() selected = new EventEmitter<string>();
+    @Input()
+    value: SelectItem;
+    @Output()
+    selected = new EventEmitter<string>();
 
     options: Observable<SelectItem[]>;
 
-    constructor(private dotContentletService: DotContentletService, private dotMessageService: DotMessageService) {}
+    constructor(
+        private dotContentletService: DotContentletService,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages(['contenttypes.selector.any.content.type'])
             .pipe(take(1))
             .subscribe(() => {
-                this.options = this.dotContentletService
-                    .getAllContentTypes()
-                    .pipe(
-                        take(1),
-                        map((structures: StructureTypeView[]) =>
-                            this.setOptions(this.dotMessageService.get('contenttypes.selector.any.content.type'), structures)
+                this.options = this.dotContentletService.getAllContentTypes().pipe(
+                    take(1),
+                    map((structures: StructureTypeView[]) =>
+                        this.setOptions(
+                            this.dotMessageService.get('contenttypes.selector.any.content.type'),
+                            structures
                         )
-                    );
+                    )
+                );
             });
     }
 
@@ -42,7 +48,10 @@ export class DotBaseTypeSelectorComponent implements OnInit {
     setOptions(allOptions: string, baseTypes: StructureTypeView[]): SelectItem[] {
         return [
             { label: allOptions, value: '' },
-            ...baseTypes.map((structure: StructureTypeView) => ({ label: structure.label, value: structure.name }))
+            ...baseTypes.map((structure: StructureTypeView) => ({
+                label: structure.label,
+                value: structure.name
+            }))
         ];
     }
 }

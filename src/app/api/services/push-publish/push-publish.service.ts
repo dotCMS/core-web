@@ -1,10 +1,11 @@
+import { toArray, filter, pluck, mergeMap } from 'rxjs/operators';
 import { CoreWebService, ApiRoot } from 'dotcms-js/dotcms-js';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RequestMethod } from '@angular/http';
-import { DotEnvironment } from '../../../shared/models/dot-environment/dot-environment';
-import { AjaxActionResponseView } from '../../../shared/models/ajax-action-response/ajax-action-response';
-import { PushPublishData } from '../../../shared/models/push-publish-data/push-publish-data';
+import { DotEnvironment } from '@models/dot-environment/dot-environment';
+import { AjaxActionResponseView } from '@models/ajax-action-response/ajax-action-response';
+import { PushPublishData } from '@models/push-publish-data/push-publish-data';
 import * as moment from 'moment';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 
@@ -37,18 +38,18 @@ export class PushPublishService {
      * @memberof PushPublishService
      */
     getEnvironments(): Observable<DotEnvironment[]> {
-        return this.currentUser
-            .getCurrentUser()
-            .mergeMap((user) => {
+        return this.currentUser.getCurrentUser().pipe(
+            mergeMap((user) => {
                 return this.coreWebService.requestView({
                     method: RequestMethod.Get,
                     url: `${this.pushEnvironementsUrl}/${user.roleId}/name=0`
                 });
-            })
-            .pluck('bodyJsonObject')
-            .flatMap((environments: DotEnvironment[]) => environments)
-            .filter((environment) => environment.name !== '')
-            .toArray();
+            }),
+            pluck('bodyJsonObject'),
+            mergeMap((environments: DotEnvironment[]) => environments),
+            filter((environment) => environment.name !== ''),
+            toArray()
+        );
     }
 
     /**
@@ -58,7 +59,10 @@ export class PushPublishService {
      * @returns {Observable<AjaxActionResponseView>}
      * @memberof PushPublishService
      */
-    pushPublishContent(assetIdentifier: string, pushPublishData: PushPublishData): Observable<AjaxActionResponseView> {
+    pushPublishContent(
+        assetIdentifier: string,
+        pushPublishData: PushPublishData
+    ): Observable<AjaxActionResponseView> {
         this._lastEnvironmentPushed = pushPublishData.environment;
         return this.coreWebService.request({
             body: this.getPublishEnvironmentData(assetIdentifier, pushPublishData),
@@ -70,12 +74,17 @@ export class PushPublishService {
         });
     }
 
-    private getPublishEnvironmentData(assetIdentifier: string, pushPublishData: PushPublishData): string {
+    private getPublishEnvironmentData(
+        assetIdentifier: string,
+        pushPublishData: PushPublishData
+    ): string {
         let result = '';
         result += `assetIdentifier=${assetIdentifier}`;
         result += `&remotePublishDate=${moment(pushPublishData.publishdate).format('YYYY-MM-DD')}`;
         result += `&remotePublishTime=${moment(pushPublishData.publishdate).format('h-mm')}`;
-        result += `&remotePublishExpireDate=${moment(pushPublishData.expiredate).format('YYYY-MM-DD')}`;
+        result += `&remotePublishExpireDate=${moment(pushPublishData.expiredate).format(
+            'YYYY-MM-DD'
+        )}`;
         result += `&remotePublishExpireTime=${moment(pushPublishData.expiredate).format('h-mm')}`;
         result += `&iWantTo=${pushPublishData.pushActionSelected}`;
         result += `&whoToSend=${pushPublishData.environment}`;

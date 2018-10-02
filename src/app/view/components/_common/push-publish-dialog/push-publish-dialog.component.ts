@@ -1,9 +1,16 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewEncapsulation,
+    ViewChild
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { PushPublishService } from '../../../../api/services/push-publish/push-publish.service';
+import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { SelectItem } from 'primeng/primeng';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -16,9 +23,12 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     pushActions: SelectItem[];
     dateFieldMinDate = new Date();
 
-    @Input() assetIdentifier: string;
-    @Output() cancel = new EventEmitter<boolean>();
-    @ViewChild('formEl') formEl: HTMLFormElement;
+    @Input()
+    assetIdentifier: string;
+    @Output()
+    cancel = new EventEmitter<boolean>();
+    @ViewChild('formEl')
+    formEl: HTMLFormElement;
 
     constructor(
         private pushPublishService: PushPublishService,
@@ -28,7 +38,6 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-
         this.dotMessageService
             .getMessages([
                 'contenttypes.content.push_publish',
@@ -49,15 +58,21 @@ export class PushPublishContentTypesDialogComponent implements OnInit {
             .subscribe(() => {
                 this.pushActions = [
                     {
-                        label: this.dotMessageService.get('contenttypes.content.push_publish.action.push'),
+                        label: this.dotMessageService.get(
+                            'contenttypes.content.push_publish.action.push'
+                        ),
                         value: 'publish'
                     },
                     {
-                        label: this.dotMessageService.get('contenttypes.content.push_publish.action.remove'),
+                        label: this.dotMessageService.get(
+                            'contenttypes.content.push_publish.action.remove'
+                        ),
                         value: 'expire'
                     },
                     {
-                        label: this.dotMessageService.get('contenttypes.content.push_publish.action.pushremove'),
+                        label: this.dotMessageService.get(
+                            'contenttypes.content.push_publish.action.pushremove'
+                        ),
                         value: 'publishexpire'
                     }
                 ];

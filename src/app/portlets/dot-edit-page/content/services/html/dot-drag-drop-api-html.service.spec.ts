@@ -51,32 +51,34 @@ describe('DotDragDropAPIHtmlService', () => {
         }
     };
 
-    beforeEach(
-        async(() => {
-            TestBed.configureTestingModule({
-                providers: [
-                    DotDragDropAPIHtmlService,
-                    { provide: DotDOMHtmlUtilService, useClass: MockDotDOMHtmlUtilService }
-                ],
-                imports: []
-            });
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                DotDragDropAPIHtmlService,
+                { provide: DotDOMHtmlUtilService, useClass: MockDotDOMHtmlUtilService }
+            ],
+            imports: []
+        });
 
-            dotDragDropAPIHtmlService = TestBed.get(DotDragDropAPIHtmlService);
-            dotDOMHtmlUtilService = TestBed.get(DotDOMHtmlUtilService);
+        dotDragDropAPIHtmlService = TestBed.get(DotDragDropAPIHtmlService);
+        dotDOMHtmlUtilService = TestBed.get(DotDOMHtmlUtilService);
 
-            spyOn(dotDOMHtmlUtilService, 'createLinkElement').and.returnValue(cssElement);
-            spyOn(iframe.contentWindow.document.head, 'appendChild');
+        spyOn(dotDOMHtmlUtilService, 'createLinkElement').and.returnValue(cssElement);
+        spyOn(iframe.contentWindow.document.head, 'appendChild');
 
-            spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake((_src, callback) => {
+        spyOn(dotDOMHtmlUtilService, 'creatExternalScriptElement').and.callFake(
+            (_src, callback) => {
                 callbackFunc = callback;
-            });
-        })
-    );
+            }
+        );
+    }));
 
     it('should crate and set js and css draguls element', () => {
         dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
 
-        expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith('/html/js/dragula-3.7.2/dragula.min.css');
+        expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(
+            '/html/js/dragula-3.7.2/dragula.min.css'
+        );
         expect(iframe.contentWindow.document.head.appendChild).toHaveBeenCalledWith(cssElement);
 
         expect(dotDOMHtmlUtilService.creatExternalScriptElement).toHaveBeenCalledWith(
@@ -91,7 +93,9 @@ describe('DotDragDropAPIHtmlService', () => {
 
         callbackFunc();
 
-        expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(EDIT_PAGE_JS);
+        expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(
+            EDIT_PAGE_JS
+        );
 
         expect(lastAppendChildCallElementParam).toEqual(jsDragulaInlineElement);
     });
@@ -100,7 +104,9 @@ describe('DotDragDropAPIHtmlService', () => {
         iframe.contentWindow.dojo = 'test';
         dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
 
-        expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(EDIT_PAGE_JS_DOJO_REQUIRE);
+        expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(
+            EDIT_PAGE_JS_DOJO_REQUIRE
+        );
         expect(lastAppendChildCallElementParam).toEqual(jsDragulaInlineElement);
     });
 });

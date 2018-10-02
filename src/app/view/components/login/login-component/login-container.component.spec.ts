@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotLoadingIndicatorComponent } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.component';
 import { MdInputTextModule } from '../../../directives/md-inputtext/md-input-text.module';
 import { LoginContainerComponent } from './login-container.component';
@@ -19,15 +19,16 @@ describe('LoginContainerComponent', () => {
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<LoginContainerComponent>;
 
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
-                declarations: [LoginContainerComponent, LoginComponent, DotLoadingIndicatorComponent],
-                providers: [DotLoadingIndicatorService, { provide: LoginService, useClass: LoginServiceMock }]
-            }).compileComponents();
-        })
-    );
+    beforeEach(async(() => {
+        DOTTestBed.configureTestingModule({
+            imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
+            declarations: [LoginContainerComponent, LoginComponent, DotLoadingIndicatorComponent],
+            providers: [
+                DotLoadingIndicatorService,
+                { provide: LoginService, useClass: LoginServiceMock }
+            ]
+        }).compileComponents();
+    }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(LoginContainerComponent);
@@ -46,7 +47,9 @@ describe('LoginContainerComponent', () => {
             spyOn(loginService, 'loginUser').and.callThrough();
             spyOn(component, 'logInUser').and.callThrough();
             spyOn(dotRouterService, 'goToMain');
-            const loginComponent: LoginComponent = fixture.debugElement.query(By.css('dot-login-component')).componentInstance;
+            const loginComponent: LoginComponent = fixture.debugElement.query(
+                By.css('dot-login-component')
+            ).componentInstance;
 
             loginComponent.login.emit({
                 login: 'admin@dotcms.com',
@@ -66,12 +69,16 @@ describe('LoginContainerComponent', () => {
         });
 
         it('should call login service correctly', () => {
-            expect(loginService.loginUser).toHaveBeenCalledWith('admin@dotcms.com', 'admin', false, 'en');
+            expect(loginService.loginUser).toHaveBeenCalledWith(
+                'admin@dotcms.com',
+                'admin',
+                false,
+                'en'
+            );
         });
 
         it('should redirect correctly after login', () => {
             expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
         });
-
     });
 });

@@ -100,7 +100,9 @@ export class WebSocketProtocol extends Protocol {
         while (this.sendQueue.length && this.socket.readyState === this.readyStateConstants.OPEN) {
             const data = this.sendQueue.shift();
 
-            this.socket.send(_.isString(data.message) ? data.message : JSON.stringify(data.message));
+            this.socket.send(
+                _.isString(data.message) ? data.message : JSON.stringify(data.message)
+            );
             data.deferred.resolve();
         }
     }

@@ -21,7 +21,7 @@ describe('DotPersonasService', () => {
             `+working:true`
         ].join('');
 
-        this.dotPersonasService.get().subscribe(res => {
+        this.dotPersonasService.get().subscribe((res) => {
             result = res;
         });
 

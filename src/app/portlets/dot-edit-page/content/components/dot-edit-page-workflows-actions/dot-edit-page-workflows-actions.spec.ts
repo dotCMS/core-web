@@ -1,3 +1,4 @@
+import { of as observableOf } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -5,26 +6,29 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MenuModule, Menu } from 'primeng/primeng';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotWorkflowServiceMock, mockWorkflowsActions } from '../../../../../test/dot-workflow-service.mock';
+import {
+    DotWorkflowServiceMock,
+    mockWorkflowsActions
+} from '../../../../../test/dot-workflow-service.mock';
 import { mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { DotWorkflowService } from '../../../../../api/services/dot-workflow/dot-workflow.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
-import { DotRouterService } from '../../../../../api/services/dot-router/dot-router.service';
-import { DotHttpErrorManagerService } from '../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
-import { DotPage } from '../../../shared/models/dot-page.model';
-import { DotGlobalMessageService } from '../../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { Observable } from 'rxjs/Observable';
+import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 
 @Component({
     selector: 'dot-test-host-component',
     template: `<dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>`
 })
 class TestHostComponent {
-    @Input() page: DotPage;
+    @Input()
+    page: DotPage;
 }
 
 describe('DotEditPageWorkflowsActionsComponent', () => {
@@ -41,36 +45,38 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
     });
 
-    beforeEach(
-        async(() => {
-            testbed = DOTTestBed.configureTestingModule({
-                imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
-                declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
-                providers: [
-                    {
-                        provide: DotWorkflowService,
-                        useClass: DotWorkflowServiceMock
-                    },
-                    {
-                        provide: DotMessageService,
-                        useValue: messageServiceMock },
-                    {
-                        provide: LoginService,
-                        useClass: LoginServiceMock
-                    },
-                    DotHttpErrorManagerService,
-                    DotRouterService
-                ]
-            });
-        })
-    );
+    beforeEach(async(() => {
+        testbed = DOTTestBed.configureTestingModule({
+            imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
+            declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
+            providers: [
+                {
+                    provide: DotWorkflowService,
+                    useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: DotMessageService,
+                    useValue: messageServiceMock
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
+                },
+                DotHttpErrorManagerService,
+                DotRouterService
+            ]
+        });
+    }));
 
     beforeEach(() => {
         fixture = testbed.createComponent(TestHostComponent);
         de = fixture.debugElement;
 
         component = fixture.componentInstance;
-        component.page = { ...mockDotPage, ...{ workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123' } };
+        component.page = {
+            ...mockDotPage,
+            ...{ workingInode: 'cc2cdf9c-a20d-4862-9454-2a76c1132123' }
+        };
 
         workflowActionDebugEl = de.query(By.css('dot-edit-page-workflows-actions'));
         workflowActionComponent = workflowActionDebugEl.componentInstance;
@@ -102,13 +108,15 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
             it('should have right attr in button', () => {
                 const attr = button.attributes;
-                expect(attr.icon).toEqual('fa-ellipsis-v');
+                expect(attr.icon).toEqual('fa fa-ellipsis-v');
                 expect(attr.pButton).toBeDefined();
                 expect(attr.secondary).toBeDefined();
             });
 
             it('should get workflow actions when page changes"', () => {
-                expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledWith('cc2cdf9c-a20d-4862-9454-2a76c1132123');
+                expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledWith(
+                    'cc2cdf9c-a20d-4862-9454-2a76c1132123'
+                );
                 expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(1);
             });
 
@@ -119,6 +127,10 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 let thirdButton;
 
                 beforeEach(() => {
+                    const mainButton: DebugElement = de.query(By.css('button'));
+                    mainButton.triggerEventHandler('click', {});
+                    fixture.detectChanges();
+
                     splitButtons = de.queryAll(By.css('.ui-menuitem-link'));
                     firstButton = splitButtons[0].nativeElement;
                     secondButton = splitButtons[1].nativeElement;
@@ -163,14 +175,18 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                     spyOn(workflowActionComponent.fired, 'emit');
                     firstButton.click();
                     fixture.detectChanges();
-                    expect(workflowActionDebugEl.componentInstance.fired.emit).toHaveBeenCalledTimes(1);
+                    expect(
+                        workflowActionDebugEl.componentInstance.fired.emit
+                    ).toHaveBeenCalledTimes(1);
                 });
             });
         });
 
         describe('disabled', () => {
             beforeEach(() => {
-                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(Observable.of([]));
+                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(
+                    observableOf([])
+                );
                 fixture.detectChanges();
             });
 

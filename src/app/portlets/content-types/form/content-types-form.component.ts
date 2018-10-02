@@ -1,14 +1,22 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import * as _ from 'lodash';
 import { SelectItem } from 'primeng/primeng';
 
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { SiteSelectorComponent } from '../../../view/components/_common/site-selector/site-selector.component';
-import { DotWorkflow } from '../../../shared/models/dot-workflow/dot-workflow.model';
-import { DotWorkflowService } from '../../../api/services/dot-workflow/dot-workflow.service';
-import { DotLicenseService } from '../../../api/services/dot-license/dot-license.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { SiteSelectorComponent } from '@components/_common/site-selector/site-selector.component';
+import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 // TODO: move this to models
 import { ContentTypeField } from '../fields';
@@ -27,12 +35,16 @@ import { ContentTypeField } from '../fields';
     templateUrl: 'content-types-form.component.html'
 })
 export class ContentTypesFormComponent implements OnInit {
-    @ViewChild('name') name: ElementRef;
+    @ViewChild('name')
+    name: ElementRef;
 
-    @Input() data: any;
-    @Input() fields: ContentTypeField[];
+    @Input()
+    data: any;
+    @Input()
+    fields: ContentTypeField[];
 
-    @Output() submit: EventEmitter<any> = new EventEmitter();
+    @Output()
+    submit: EventEmitter<any> = new EventEmitter();
 
     canSave = false;
     dateVarOptions: SelectItem[] = [];
@@ -146,7 +158,9 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private setSaveState() {
-        this.canSave = this.isEditMode() ? this.form.valid && this.isFormValueUpdated() : this.form.valid;
+        this.canSave = this.isEditMode()
+            ? this.form.valid && this.isFormValueUpdated()
+            : this.form.valid;
     }
 
     private getDateVarFieldOption(field: ContentTypeField): SelectItem {
@@ -179,7 +193,14 @@ export class ContentTypesFormComponent implements OnInit {
             host: this.data.host || '',
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
-            workflow: [{ value: this.data.workflows ? this.data.workflows.map((workflow) => workflow.id) : [], disabled: true }],
+            workflow: [
+                {
+                    value: this.data.workflows
+                        ? this.data.workflows.map((workflow) => workflow.id)
+                        : [],
+                    disabled: true
+                }
+            ],
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -200,11 +221,9 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private initWorkflowField(): void {
-        this.dotLicenseService.isEnterprise()
-            .subscribe((isEnterpriseLicense: boolean) => {
-                this.updateWorkflowFormControl(isEnterpriseLicense);
-            });
-
+        this.dotLicenseService.isEnterprise().subscribe((isEnterpriseLicense: boolean) => {
+            this.updateWorkflowFormControl(isEnterpriseLicense);
+        });
     }
 
     private isBaseTypeContent(): boolean {
@@ -212,7 +231,10 @@ export class ContentTypesFormComponent implements OnInit {
     }
 
     private isDateVarField(field: ContentTypeField): boolean {
-        return field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' && field.indexed;
+        return (
+            field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' &&
+            field.indexed
+        );
     }
 
     private isFormValueUpdated(): boolean {
@@ -225,7 +247,10 @@ export class ContentTypesFormComponent implements OnInit {
 
     private setBaseTypeContentSpecificFields(): void {
         this.form.addControl('detailPage', new FormControl(this.data.detailPage || ''));
-        this.form.addControl('urlMapPattern', new FormControl((this.data && this.data.urlMapPattern) || ''));
+        this.form.addControl(
+            'urlMapPattern',
+            new FormControl((this.data && this.data.urlMapPattern) || '')
+        );
     }
 
     private setDateVarFieldsState(): void {

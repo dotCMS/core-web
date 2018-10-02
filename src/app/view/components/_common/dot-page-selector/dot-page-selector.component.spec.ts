@@ -1,3 +1,4 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, Component, Injectable } from '@angular/core';
@@ -7,8 +8,8 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotPageSelectorService, DotPageAsset } from './service/dot-page-selector.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AutoComplete } from 'primeng/primeng';
-import { DotDirectivesModule } from '../../../../shared/dot-directives.module';
-import { Observable } from 'rxjs/Observable';
+import { DotDirectivesModule } from '@shared/dot-directives.module';
+import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 
 export const mockPageSelector = [
     {
@@ -64,10 +65,10 @@ export const mockPageSelector = [
 @Injectable()
 class MockDotPageSelectorService {
     getPagesInFolder(_folder: string): Observable<DotPageAsset[]> {
-        return Observable.of(mockPageSelector);
+        return observableOf(mockPageSelector);
     }
     getPage(_idenfier: string): Observable<DotPageAsset> {
-        return Observable.of(mockPageSelector[0]);
+        return observableOf(mockPageSelector[0]);
     }
 }
 @Component({
@@ -101,7 +102,7 @@ class FakeFormComponent {
 const config = (host) => {
     return {
         declarations: [host, DotPageSelectorComponent],
-        imports: [DotDirectivesModule],
+        imports: [DotDirectivesModule, MdInputTextModule],
         providers: [{ provide: DotPageSelectorService, useClass: MockDotPageSelectorService }]
     };
 };
@@ -169,7 +170,9 @@ describe('DotPageSelectorComponent', () => {
         });
 
         it('should write value', () => {
-            expect(component.writeValue).toHaveBeenCalledWith('c12fe7e6-d338-49d5-973b-2d974d57015b');
+            expect(component.writeValue).toHaveBeenCalledWith(
+                'c12fe7e6-d338-49d5-973b-2d974d57015b'
+            );
             expect(component.val.identifier).toEqual('c12fe7e6-d338-49d5-973b-2d974d57015b');
         });
 

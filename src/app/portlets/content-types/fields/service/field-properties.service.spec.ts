@@ -1,3 +1,4 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { FieldPropertyService } from './field-properties.service';
 import {
@@ -9,11 +10,10 @@ import { FieldService } from './field.service';
 import { Validators } from '@angular/forms';
 import { validateDateDefaultValue } from './validators';
 import { FieldType } from '../';
-import { Observable } from 'rxjs/Observable';
 
 class TestFieldService {
     loadFieldTypes(): Observable<FieldType[]> {
-        return Observable.of([
+        return observableOf([
             {
                 clazz: 'fieldClass',
                 helpText: 'help',
@@ -44,9 +44,15 @@ describe('FieldPropertyService', () => {
     });
 
     it('should return the right component', () => {
-        expect(CategoriesPropertyComponent).toEqual(this.fieldPropertiesService.getComponent('categories'));
-        expect(DataTypePropertyComponent).toEqual(this.fieldPropertiesService.getComponent('dataType'));
-        expect(DefaultValuePropertyComponent).toEqual(this.fieldPropertiesService.getComponent('defaultValue'));
+        expect(CategoriesPropertyComponent).toEqual(
+            this.fieldPropertiesService.getComponent('categories')
+        );
+        expect(DataTypePropertyComponent).toEqual(
+            this.fieldPropertiesService.getComponent('dataType')
+        );
+        expect(DefaultValuePropertyComponent).toEqual(
+            this.fieldPropertiesService.getComponent('defaultValue')
+        );
 
         expect(this.fieldPropertiesService.getComponent('property')).toBeNull();
     });

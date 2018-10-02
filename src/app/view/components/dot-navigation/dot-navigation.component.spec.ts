@@ -9,13 +9,13 @@ import { NavigationEnd } from '@angular/router';
 import { DotNavigationComponent } from './dot-navigation.component';
 import { DotNavIconModule } from './components/dot-nav-icon/dot-nav-icon.module';
 import { DotNavigationService } from './services/dot-navigation.service';
-import { DotMenuService } from '../../../api/services/dot-menu.service';
+import { DotMenuService } from '@services/dot-menu.service';
 import { DotSubNavComponent } from './components/dot-sub-nav/dot-sub-nav.component';
 import { DotNavItemComponent } from './components/dot-nav-item/dot-nav-item.component';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { LoginService } from 'dotcms-js/dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
-import { DotMenu } from '../../../shared/models/navigation';
+import { DotMenu } from '@models/navigation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
@@ -23,7 +23,9 @@ import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spe
 class FakeNavigationService {
     _collapsed = false;
 
-    _routeEvents: BehaviorSubject<NavigationEnd> = new BehaviorSubject(new NavigationEnd(0, '', ''));
+    _routeEvents: BehaviorSubject<NavigationEnd> = new BehaviorSubject(
+        new NavigationEnd(0, '', '')
+    );
     _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([dotMenuMock(), dotMenuMock1()]);
 
     get items$(): Observable<DotMenu[]> {
@@ -78,7 +80,6 @@ class FakeNavigationService {
 
 describe('DotNavigationComponent', () => {
     let fixture: ComponentFixture<DotNavigationComponent>;
-    let comp: DotNavigationComponent;
     let de: DebugElement;
     let navItem: DebugElement;
 
@@ -87,7 +88,12 @@ describe('DotNavigationComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotNavigationComponent, DotSubNavComponent, DotNavItemComponent],
-            imports: [DotNavIconModule, DotIconModule, RouterTestingModule, BrowserAnimationsModule],
+            imports: [
+                DotNavIconModule,
+                DotIconModule,
+                RouterTestingModule,
+                BrowserAnimationsModule
+            ],
             providers: [
                 DotMenuService,
                 {
@@ -103,7 +109,6 @@ describe('DotNavigationComponent', () => {
 
         fixture = DOTTestBed.createComponent(DotNavigationComponent);
         de = fixture.debugElement;
-        comp = fixture.componentInstance;
 
         dotNavigationService = de.injector.get(DotNavigationService);
 
@@ -134,7 +139,7 @@ describe('DotNavigationComponent', () => {
         let stopProp;
 
         beforeEach(() => {
-            stopProp = jasmine.createSpy();
+            stopProp = jasmine.createSpy('stopProp');
         });
 
         it('should reload portlet', () => {
@@ -170,21 +175,30 @@ describe('DotNavigationComponent', () => {
         describe('collapsed', () => {
             beforeEach(() => {
                 spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(true);
-                navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+                navItem.triggerEventHandler('menuClick', {
+                    originalEvent: {},
+                    data: dotMenuMock()
+                });
                 fixture.detectChanges();
             });
 
             it('should open menu', () => {
                 expect(dotNavigationService.setOpen).toHaveBeenCalledWith('123');
                 const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(firstItem.nativeElement.classList.contains('dot-nav__list-item--active')).toBe(true);
+                expect(
+                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
+                ).toBe(true);
             });
 
             it('should expand menu', () => {
                 const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(firstItem.nativeElement.classList.contains('dot-nav__list-item--active')).toBe(true);
+                expect(
+                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
+                ).toBe(true);
                 const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
-                expect(firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')).toBe(false);
+                expect(
+                    firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')
+                ).toBe(false);
             });
 
             it('should navigate to portlet when menu is collapsed', () => {
@@ -195,7 +209,10 @@ describe('DotNavigationComponent', () => {
         describe('expanded', () => {
             beforeEach(() => {
                 spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(false);
-                navItem.triggerEventHandler('menuClick', { originalEvent: {}, data: dotMenuMock() });
+                navItem.triggerEventHandler('menuClick', {
+                    originalEvent: {},
+                    data: dotMenuMock()
+                });
                 fixture.detectChanges();
             });
 

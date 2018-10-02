@@ -16,11 +16,15 @@ describe('DotContainerContentletService', () => {
     let lastConnection: any;
 
     beforeEach(() => {
-        const injector: ReflectiveInjector = DOTTestBed.resolveAndCreate([DotContainerContentletService]);
+        const injector: ReflectiveInjector = DOTTestBed.resolveAndCreate([
+            DotContainerContentletService
+        ]);
 
         dotContainerContentletService = injector.get(DotContainerContentletService);
         backend = injector.get(ConnectionBackend);
-        backend.connections.subscribe((connection: MockConnection) => (lastConnection = connection));
+        backend.connections.subscribe(
+            (connection: MockConnection) => (lastConnection = connection)
+        );
     });
 
     it(
@@ -51,7 +55,8 @@ describe('DotContainerContentletService', () => {
         })
     );
 
-    it('should do a request for get the form html code',
+    it(
+        'should do a request for get the form html code',
         fakeAsync(() => {
             const formId = '2';
             const pageContainer: DotPageContainer = {

@@ -1,13 +1,21 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ViewChild, ElementRef, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnChanges,
+    ViewChild,
+    ElementRef,
+    OnInit
+} from '@angular/core';
 import { DataTable, LazyLoadEvent } from 'primeng/primeng';
-import { ActionHeaderOptions, ButtonAction } from '../../../shared/models/action-header';
-import { BaseComponent } from '../_common/_base/base-component';
-import { DataTableColumn } from '../../../shared/models/data-table/data-table-column';
+import { ActionHeaderOptions, ButtonAction } from '@models/action-header';
+import { DataTableColumn } from '@models/data-table/data-table-column';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-import { FormatDateService } from '../../../api/services/format-date-service';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
-import { PaginatorService, OrderDirection } from '../../../api/services/paginator';
-import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-table-action';
+import { FormatDateService } from '@services/format-date-service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { PaginatorService, OrderDirection } from '@services/paginator';
+import { DotDataTableAction } from '@models/data-table/dot-data-table-action';
 
 @Component({
     providers: [PaginatorService],
@@ -15,21 +23,33 @@ import { DotDataTableAction } from '../../../shared/models/data-table/dot-data-t
     styleUrls: ['./listing-data-table.component.scss'],
     templateUrl: 'listing-data-table.component.html'
 })
-export class ListingDataTableComponent extends BaseComponent implements OnChanges, OnInit {
-    @Input() columns: DataTableColumn[];
-    @Input() url: string;
-    @Input() actionHeaderOptions: ActionHeaderOptions;
-    @Input() buttonActions: ButtonAction[] = [];
-    @Input() sortOrder: number;
-    @Input() sortField: string;
-    @Input() multipleSelection = false;
-    @Input() paginationPerPage: number;
-    @Input() actions: DotDataTableAction[];
+export class ListingDataTableComponent implements OnChanges, OnInit {
+    @Input()
+    columns: DataTableColumn[];
+    @Input()
+    url: string;
+    @Input()
+    actionHeaderOptions: ActionHeaderOptions;
+    @Input()
+    buttonActions: ButtonAction[] = [];
+    @Input()
+    sortOrder: string;
+    @Input()
+    sortField: string;
+    @Input()
+    multipleSelection = false;
+    @Input()
+    paginationPerPage: number;
+    @Input()
+    actions: DotDataTableAction[];
 
-    @Output() rowWasClicked: EventEmitter<any> = new EventEmitter();
+    @Output()
+    rowWasClicked: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('gf') globalSearch: ElementRef;
-    @ViewChild('dataTable') dataTable: DataTable;
+    @ViewChild('gf')
+    globalSearch: ElementRef;
+    @ViewChild('dataTable')
+    dataTable: DataTable;
 
     readonly DATE_FORMAT = 'date';
 
@@ -38,13 +58,16 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     dateColumns: DataTableColumn[];
     loading = true;
 
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
     constructor(
         public dotMessageService: DotMessageService,
         public loggerService: LoggerService,
         public paginatorService: PaginatorService,
         private formatDateService: FormatDateService
     ) {
-        super(['global-search'], dotMessageService);
         this.paginatorService.url = this.url;
     }
 
@@ -54,7 +77,9 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
         }
 
         if (changes.columns && changes.columns.currentValue) {
-            this.dateColumns = changes.columns.currentValue.filter(column => column.format === this.DATE_FORMAT);
+            this.dateColumns = changes.columns.currentValue.filter(
+                (column) => column.format === this.DATE_FORMAT
+            );
             this.loadData(0);
         }
         if (changes.paginationPerPage && changes.paginationPerPage.currentValue) {
@@ -64,6 +89,10 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
     ngOnInit(): void {
         this.globalSearch.nativeElement.focus();
+
+        this.dotMessageService.getMessages(['global-search']).subscribe((res) => {
+            this.i18nMessages = res;
+        });
     }
 
     handleRowClick($event): void {
@@ -86,9 +115,10 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
 
             this.paginatorService.filter = this.filter;
             this.paginatorService.sortField = sortField;
-            this.paginatorService.sortOrder = sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
+            this.paginatorService.sortOrder =
+                sortOrder === 1 ? OrderDirection.ASC : OrderDirection.DESC;
 
-            this.paginatorService.getWithOffset(offset).subscribe(items => this.setItems(items));
+            this.paginatorService.getWithOffset(offset).subscribe((items) => this.setItems(items));
         }
     }
 
@@ -99,7 +129,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
      */
     loadFirstPage(): void {
         this.loading = true;
-        this.paginatorService.get().subscribe(items => {
+        this.paginatorService.get().subscribe((items) => {
             this.setItems(items);
             this.dataTable.first = 1;
         });
@@ -112,7 +142,7 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     loadCurrentPage(): void {
         this.loading = true;
         if (this.columns) {
-            this.paginatorService.getCurrentPage().subscribe(items => this.setItems(items));
+            this.paginatorService.getCurrentPage().subscribe((items) => this.setItems(items));
         }
     }
 
@@ -126,12 +156,17 @@ export class ListingDataTableComponent extends BaseComponent implements OnChange
     getAlign(col: DataTableColumn): string {
         return col.textAlign
             ? col.textAlign
-            : this.items && this.items[0] && typeof this.items[0][col.fieldName] === 'number' ? 'right' : 'left';
+            : this.items && this.items[0] && typeof this.items[0][col.fieldName] === 'number'
+                ? 'right'
+                : 'left';
     }
 
     private formatData(items: any[]): any[] {
-        return items.map(item => {
-            this.dateColumns.forEach(col => (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName])));
+        return items.map((item) => {
+            this.dateColumns.forEach(
+                (col) =>
+                    (item[col.fieldName] = this.formatDateService.getRelative(item[col.fieldName]))
+            );
             return item;
         });
     }

@@ -1,22 +1,22 @@
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { of as observableOf, Observable } from 'rxjs';
+import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { FieldValidationMessageModule } from '../field-validation-message/file-validation-message.module';
 import { DotAddToBundleComponent } from './dot-add-to-bundle.component';
-import { AddToBundleService } from '../../../../api/services/add-to-bundle/add-to-bundle.service';
+import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
 
 class AddToBundleServiceMock {
     getBundles(): Observable<any> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 
     addToBundle(): Observable<any> {
-        return Observable.of([]);
+        return observableOf([]);
     }
 }
 
@@ -38,7 +38,8 @@ describe('DotAddToBundleComponent', () => {
         'contenttypes.content.add_to_bundle': 'Add to bundle',
         'contenttypes.content.add_to_bundle.select': 'Select or type bundle',
         'contenttypes.content.add_to_bundle.type': 'Type bundle name',
-        'contenttypes.content.add_to_bundle.errormsg': 'Please select a Bundle from the list or type a bundle name',
+        'contenttypes.content.add_to_bundle.errormsg':
+            'Please select a Bundle from the list or type a bundle name',
         'contenttypes.content.add_to_bundle.form.cancel': 'Cancel',
         'contenttypes.content.add_to_bundle.form.add': 'Add'
     });
@@ -58,10 +59,14 @@ describe('DotAddToBundleComponent', () => {
         fixture = DOTTestBed.createComponent(TestHostComponent);
         de = fixture.debugElement.query(By.css('dot-add-to-bundle'));
         comp = de.componentInstance;
+
+        spyOn(addToBundleServiceMock, 'addToBundle').and.callThrough();
+        spyOn(comp, 'submitBundle').and.callThrough();
     });
 
     it('should have a form', () => {
-        const form: DebugElement = fixture.debugElement.query(By.css('form'));
+        fixture.detectChanges();
+        const form: DebugElement = de.query(By.css('form'));
         expect(form).not.toBeNull();
         expect(comp.form).toEqual(form.componentInstance.form);
     });
@@ -79,7 +84,9 @@ describe('DotAddToBundleComponent', () => {
 
     it('should call close() on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.add-to-bundle__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.add-to-bundle__form-cancel')
+        );
         expect(cancelButton).toBeDefined();
 
         spyOn(comp, 'close');
@@ -89,14 +96,16 @@ describe('DotAddToBundleComponent', () => {
 
         fixture.detectChanges();
 
-        comp.cancel.subscribe(res => {
+        comp.cancel.subscribe((res) => {
             expect(res).toEqual(true);
         });
     });
 
     it('should reset the form value on cancel button click', () => {
         fixture.detectChanges();
-        const cancelButton: DebugElement = fixture.debugElement.query(By.css('.add-to-bundle__form-cancel'));
+        const cancelButton: DebugElement = fixture.debugElement.query(
+            By.css('.add-to-bundle__form-cancel')
+        );
 
         comp.form.get('addBundle').setValue({ id: '12345', name: 'my bundle' });
 
@@ -106,7 +115,6 @@ describe('DotAddToBundleComponent', () => {
     });
 
     it('should call submitBundle() on submit event', () => {
-        spyOn(comp, 'submitBundle');
         fixture.detectChanges();
 
         const form = fixture.debugElement.query(By.css('form'));
@@ -117,8 +125,6 @@ describe('DotAddToBundleComponent', () => {
 
     it('should not send data with invalid form', () => {
         fixture.detectChanges();
-        spyOn(comp, 'submitBundle').and.callThrough();
-        spyOn(addToBundleServiceMock, 'addToBundle');
 
         const form = fixture.debugElement.query(By.css('form'));
         form.nativeElement.dispatchEvent(new Event('submit'));
@@ -130,8 +136,6 @@ describe('DotAddToBundleComponent', () => {
 
     it('should create bundle object if type bundle name in the dropdown', () => {
         fixture.detectChanges();
-        spyOn(comp, 'submitBundle').and.callThrough();
-        spyOn(addToBundleServiceMock, 'addToBundle');
         comp.form.get('addBundle').setValue('my new bundle');
 
         fixture.componentInstance.addToBundleIdentifier = '123ad979-89a-123456';
@@ -145,34 +149,31 @@ describe('DotAddToBundleComponent', () => {
         });
     });
 
-    it('should set placeholder "Type bundle name" if NO bundles exist',
-        fakeAsync(() => {
-            spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(Observable.of([]));
-            fixture.detectChanges();
-            tick();
+    it('should set placeholder "Type bundle name" if NO bundles exist', async(() => {
+        fixture.detectChanges();
+        setTimeout(() => {
             expect(comp.placeholder).toEqual('Type bundle name');
-        })
-    );
+        }, 0);
+    }));
 
-    it('should set placeholder "Select or type bundle" if bundles exist',
-        fakeAsync(() => {
-            spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(
-                Observable.of([
-                    {
-                        id: '1234',
-                        name: 'my bundle'
-                    }
-                ])
-            );
-            fixture.detectChanges();
-            tick();
+    it('should set placeholder "Select or type bundle" if bundles exist', async(() => {
+        spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(
+            observableOf([
+                {
+                    id: '1234',
+                    name: 'my bundle'
+                }
+            ])
+        );
+        fixture.detectChanges();
+        setTimeout(() => {
             expect(comp.placeholder).toEqual('Select or type bundle');
-        })
-    );
+        }, 0);
+    }));
 
     it('should set as default Bundle previously selected', () => {
         spyOn(addToBundleServiceMock, 'getBundles').and.returnValue(
-            Observable.of([
+            observableOf([
                 {
                     id: '1234',
                     name: 'my bundle'
@@ -190,41 +191,49 @@ describe('DotAddToBundleComponent', () => {
         expect(comp.form.value.addBundle).toEqual('my bundle');
     });
 
-    describe('should call addToBundle service method with the right params when the form is submitted and is valid', () => {
-        let form;
+    describe('addToBundle', () => {
+        let form: DebugElement;
 
         beforeEach(() => {
             fixture.detectChanges();
-            spyOn(comp, 'submitBundle').and.callThrough();
-            spyOn(addToBundleServiceMock, 'addToBundle');
             form = fixture.debugElement.query(By.css('form'));
 
+            fixture.componentInstance.addToBundleIdentifier = '7ad979-89a-97ada9d9ad';
             comp.form.get('addBundle').setValue({ id: '12345', name: 'my bundle' });
 
-            fixture.componentInstance.addToBundleIdentifier = '7ad979-89a-97ada9d9ad';
             fixture.detectChanges();
         });
 
         it('should submit form correctly', () => {
-            form.nativeElement.dispatchEvent(new Event('submit'));
+            form.triggerEventHandler('submit', {});
 
             expect(comp.submitBundle).toHaveBeenCalledTimes(1);
-            expect(comp.form.valid).toBeTruthy();
-            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                id: '12345',
-                name: 'my bundle'
+            expect(comp.form.value).toEqual({
+                addBundle: ''
             });
+            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    id: '12345',
+                    name: 'my bundle'
+                }
+            );
         });
 
         it('should submit form correctly on Enter', () => {
             form.nativeElement.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
 
             expect(comp.submitBundle).toHaveBeenCalledTimes(1);
-            expect(comp.form.valid).toBeTruthy();
-            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith('7ad979-89a-97ada9d9ad', {
-                id: '12345',
-                name: 'my bundle'
+            expect(comp.form.value).toEqual({
+                addBundle: ''
             });
+            expect(addToBundleServiceMock.addToBundle).toHaveBeenCalledWith(
+                '7ad979-89a-97ada9d9ad',
+                {
+                    id: '12345',
+                    name: 'my bundle'
+                }
+            );
         });
     });
 });

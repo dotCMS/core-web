@@ -5,13 +5,10 @@ import { ComponentFixture } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { DOTTestBed } from './test/dot-test-bed';
-import { NotLicensedService } from './api/services/not-licensed-service';
-import { DotMenuService } from './api/services/dot-menu.service';
-import { LoginService, SocketFactory } from 'dotcms-js/dotcms-js';
-import { DotAlertConfirmService } from './api/services/dot-alert-confirm';
-import { DotUiColorsService } from './api/services/dot-ui-colors/dot-ui-colors.service';
+import { NotLicensedService } from '@services/not-licensed-service';
+import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
     let fixture: ComponentFixture<AppComponent>;

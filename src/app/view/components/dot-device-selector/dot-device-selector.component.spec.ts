@@ -3,14 +3,14 @@ import { ComponentFixture } from '@angular/core/testing';
 import { DotDeviceSelectorComponent } from './dot-device-selector.component';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
+import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
 import { DotDevicesServiceMock } from '../../../test/dot-device-service.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { By } from '@angular/platform-browser';
 import { mockDotDevices } from '../../../test/dot-device.mock';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
+import { DotDevice } from '@models/dot-device/dot-device.model';
 import { Dropdown } from 'primeng/primeng';
 
 describe('DotDeviceSelectorComponent', () => {
@@ -68,13 +68,15 @@ describe('DotDeviceSelectorComponent', () => {
 
     it('should set devices that have Width & Height bigger than 0', () => {
         fixture.detectChanges();
-        const devicesMock = mockDotDevices.filter((device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0);
+        const devicesMock = mockDotDevices.filter(
+            (device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0
+        );
         expect(component.options.length).toEqual(devicesMock.length + 1);
     });
 
     it('shoudl set fixed width to dropdown', () => {
         fixture.detectChanges();
         const pDropDown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
-        expect(pDropDown.style).toEqual({width: '100px'});
+        expect(pDropDown.style).toEqual({ width: '100px' });
     });
 });

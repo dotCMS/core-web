@@ -1,29 +1,32 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { async } from '@angular/core/testing';
 import { DotEditContentHtmlService, DotContentletAction } from './dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from '../html/dot-edit-content-toolbar-html.service';
 import { DotContainerContentletService } from '../dot-container-contentlet.service';
 import { DotDragDropAPIHtmlService } from '../html/dot-drag-drop-api-html.service';
 import { DotDOMHtmlUtilService } from '../html/dot-dom-html-util.service';
-import { DotMessageService } from '../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { LoggerService, StringUtils } from 'dotcms-js/dotcms-js';
 import { Config } from 'dotcms-js/core/config.service';
-import { Logger } from 'angular2-logger/core';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DotAlertConfirmService } from '../../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotPageContent } from '../../../../dot-edit-page/shared/models/dot-page-content.model';
-import { Observable } from 'rxjs/Observable';
-import { mockDotLayout, mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
+import {
+    mockDotLayout,
+    mockDotRenderedPage,
+    mockDotPage
+} from '../../../../../test/dot-rendered-page.mock';
 import { ContentType } from '../../../../content-types/shared/content-type.model';
-import { DotLicenseService } from '../../../../../api/services/dot-license/dot-license.service';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { Injectable } from '@angular/core';
-import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockUser } from '../../../../../test/login-service.mock';
 
 @Injectable()
 class MockDotLicenseService {
     isEnterprise(): Observable<boolean> {
-        return Observable.of(false);
+        return observableOf(false);
     }
 }
 
@@ -134,13 +137,14 @@ describe('DotEditContentHtmlService', () => {
             DotDOMHtmlUtilService,
             LoggerService,
             Config,
-            Logger,
             StringUtils,
             DotAlertConfirmService,
             { provide: DotMessageService, useValue: messageServiceMock },
             { provide: DotLicenseService, useClass: MockDotLicenseService }
         ]);
-        this.dotEditContentHtmlService = <DotEditContentHtmlService>this.injector.get(DotEditContentHtmlService);
+        this.dotEditContentHtmlService = <DotEditContentHtmlService>(
+            this.injector.get(DotEditContentHtmlService)
+        );
         this.dotEditContentToolbarHtmlService = this.injector.get(DotEditContentToolbarHtmlService);
 
         fakeIframeEl = document.createElement('iframe');
@@ -214,15 +218,33 @@ describe('DotEditContentHtmlService', () => {
         });
 
         it('should set same height to containers when more than one per row', () => {
-            const querySelector1 = [`div[data-dot-object="container"]`, `[data-dot-identifier="123"]`, `[data-dot-uuid="456"]`].join('');
-            const querySelector2 = [`div[data-dot-object="container"]`, `[data-dot-identifier="321"]`, `[data-dot-uuid="654"]`].join('');
-            const querySelector3 = [`div[data-dot-object="container"]`, `[data-dot-identifier="976"]`, `[data-dot-uuid="156"]`].join('');
+            const querySelector1 = [
+                `div[data-dot-object="container"]`,
+                `[data-dot-identifier="123"]`,
+                `[data-dot-uuid="456"]`
+            ].join('');
+            const querySelector2 = [
+                `div[data-dot-object="container"]`,
+                `[data-dot-identifier="321"]`,
+                `[data-dot-uuid="654"]`
+            ].join('');
+            const querySelector3 = [
+                `div[data-dot-object="container"]`,
+                `[data-dot-identifier="976"]`,
+                `[data-dot-uuid="156"]`
+            ].join('');
 
             this.dotEditContentHtmlService.setContaintersSameHeight(mockLayout);
 
-            const firstContainer = this.dotEditContentHtmlService.getEditPageDocument().querySelector(querySelector1);
-            const secondContainer = this.dotEditContentHtmlService.getEditPageDocument().querySelector(querySelector2);
-            const thirdContainer = this.dotEditContentHtmlService.getEditPageDocument().querySelector(querySelector3);
+            const firstContainer = this.dotEditContentHtmlService
+                .getEditPageDocument()
+                .querySelector(querySelector1);
+            const secondContainer = this.dotEditContentHtmlService
+                .getEditPageDocument()
+                .querySelector(querySelector2);
+            const thirdContainer = this.dotEditContentHtmlService
+                .getEditPageDocument()
+                .querySelector(querySelector3);
 
             expect(firstContainer.offsetHeight).toEqual(secondContainer.offsetHeight);
             expect(thirdContainer.style.height).toEqual('auto');
@@ -291,7 +313,9 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.currentAction = DotContentletAction.ADD;
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
-        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(Observable.of('<i>testing</i>'));
+        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
+            observableOf('<i>testing</i>')
+        );
 
         const contentlet: DotPageContent = {
             identifier: '67',
@@ -309,7 +333,10 @@ describe('DotEditContentHtmlService', () => {
             'update the action after content creation'
         );
 
-        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(currentContainer, contentlet);
+        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(
+            currentContainer,
+            contentlet
+        );
 
         expect(this.dotEditContentHtmlService.currentContainer).toEqual(
             {
@@ -355,7 +382,9 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.currentContainer = currentContainer;
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
-        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(Observable.of('<i>testing</i>'));
+        spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
+            observableOf('<i>testing</i>')
+        );
 
         const dotDialogService = this.injector.get(DotAlertConfirmService);
         spyOn(dotDialogService, 'alert');
@@ -372,7 +401,9 @@ describe('DotEditContentHtmlService', () => {
         this.dotEditContentHtmlService.renderAddedContentlet(contentlet);
 
         expect(dotEditContentToolbarHtmlService.getContentletToContainer).not.toHaveBeenCalled();
-        expect(this.dotEditContentHtmlService.currentContainer).toBeNull('The current container must be null');
+        expect(this.dotEditContentHtmlService.currentContainer).toBeNull(
+            'The current container must be null'
+        );
         expect(currentModel).toBeNull('should not tigger model change event');
         expect(dotDialogService.alert).toHaveBeenCalled();
     });
@@ -400,7 +431,7 @@ describe('DotEditContentHtmlService', () => {
 
         const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
         spyOn(dotEditContentToolbarHtmlService, 'getContentletToContainer').and.returnValue(
-            Observable.of(`
+            observableOf(`
         <div>
             <script>
                 console.log('First');
@@ -428,18 +459,26 @@ describe('DotEditContentHtmlService', () => {
 
         this.dotEditContentHtmlService.renderEditedContentlet(contentlet);
 
-        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(currentContainer, contentlet);
-        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(anotherContainer, contentlet);
+        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(
+            currentContainer,
+            contentlet
+        );
+        expect(dotEditContentToolbarHtmlService.getContentletToContainer).toHaveBeenCalledWith(
+            anotherContainer,
+            contentlet
+        );
         expect(window.top['changed']).toEqual(true);
     });
 
     describe('document click', () => {
         beforeEach(() => {
-            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(Observable.of(true));
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
         });
 
         it('should open sub menu', () => {
-            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('[data-dot-object="popup-button"]');
+            const button: HTMLButtonElement = <HTMLButtonElement>(
+                fakeDocument.querySelector('[data-dot-object="popup-button"]')
+            );
             button.click();
             expect(button.nextElementSibling.classList.contains('active')).toBe(true);
         });
@@ -453,7 +492,9 @@ describe('DotEditContentHtmlService', () => {
                 });
             });
 
-            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('[data-dot-object="popup-menu-item"]');
+            const button: HTMLButtonElement = <HTMLButtonElement>(
+                fakeDocument.querySelector('[data-dot-object="popup-menu-item"]')
+            );
             button.click();
         });
 
@@ -465,7 +506,9 @@ describe('DotEditContentHtmlService', () => {
                     dataset: button.dataset
                 });
             });
-            const button: HTMLButtonElement = <HTMLButtonElement> fakeDocument.querySelector('.dotedit-contentlet__edit');
+            const button: HTMLButtonElement = <HTMLButtonElement>(
+                fakeDocument.querySelector('.dotedit-contentlet__edit')
+            );
             const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
             button.click();
         });
@@ -478,7 +521,9 @@ describe('DotEditContentHtmlService', () => {
                     dataset: button.dataset
                 });
             });
-            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('.dotedit-contentlet__remove');
+            const button: HTMLButtonElement = <HTMLButtonElement>(
+                fakeDocument.querySelector('.dotedit-contentlet__remove')
+            );
             const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
             button.click();
         });
@@ -492,7 +537,9 @@ describe('DotEditContentHtmlService', () => {
                 });
             });
             const button: HTMLButtonElement = <HTMLButtonElement>(
-                fakeDocument.querySelector('.dotedit-contentlet__toolbar [data-dot-object="popup-menu-item"]')
+                fakeDocument.querySelector(
+                    '.dotedit-contentlet__toolbar [data-dot-object="popup-menu-item"]'
+                )
             );
             const container = <HTMLElement>button.closest('div[data-dot-object="container"]');
             button.click();
@@ -529,7 +576,9 @@ describe('DotEditContentHtmlService', () => {
                 });
             });
 
-            const button: HTMLButtonElement = <HTMLButtonElement>fakeDocument.querySelector('.dotedit-contentlet__edit');
+            const button: HTMLButtonElement = <HTMLButtonElement>(
+                fakeDocument.querySelector('.dotedit-contentlet__edit')
+            );
             button.click();
 
             this.dotEditContentHtmlService.contentletEvents$.next({
@@ -568,7 +617,9 @@ describe('DotEditContentHtmlService', () => {
                 });
             });
 
-            const button = fakeIframeEl.contentWindow.document.querySelector('[data-dot-action="code"][data-dot-object="popup-menu-item"]');
+            const button = fakeIframeEl.contentWindow.document.querySelector(
+                '[data-dot-action="code"][data-dot-object="popup-menu-item"]'
+            );
             button.click();
 
             this.dotEditContentHtmlService.contentletEvents$.next({
@@ -605,7 +656,9 @@ describe('DotEditContentHtmlService', () => {
                 });
             });
 
-            const button = fakeIframeEl.contentWindow.document.querySelector('[data-dot-object="edit-content"]');
+            const button = fakeIframeEl.contentWindow.document.querySelector(
+                '[data-dot-object="edit-content"]'
+            );
 
             button.click();
 
@@ -662,20 +715,27 @@ describe('DotEditContentHtmlService', () => {
 
             let currentModel;
 
-            const dotEditContentToolbarHtmlService = this.injector.get(DotContainerContentletService);
+            const dotEditContentToolbarHtmlService = this.injector.get(
+                DotContainerContentletService
+            );
 
-            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(Observable.of({
-                render: '<i>testing</i>',
-                content: {
-                    identifier: '4'
-                }
-            }));
+            spyOn(dotEditContentToolbarHtmlService, 'getFormToContainer').and.returnValue(
+                observableOf({
+                    render: '<i>testing</i>',
+                    content: {
+                        identifier: '4'
+                    }
+                })
+            );
 
             this.dotEditContentHtmlService.renderAddedForm(form).subscribe((model) => {
                 currentModel = model;
             });
 
-            expect(dotEditContentToolbarHtmlService.getFormToContainer).toHaveBeenCalledWith(currentContainer, form);
+            expect(dotEditContentToolbarHtmlService.getFormToContainer).toHaveBeenCalledWith(
+                currentContainer,
+                form
+            );
 
             expect(this.dotEditContentHtmlService.currentContainer).toEqual(
                 {

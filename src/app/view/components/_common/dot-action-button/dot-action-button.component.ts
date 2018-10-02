@@ -1,4 +1,14 @@
-import { Component, Input, ViewChild, OnInit, HostBinding, SimpleChanges, EventEmitter, Output, HostListener } from '@angular/core';
+import {
+    Component,
+    Input,
+    ViewChild,
+    OnInit,
+    HostBinding,
+    SimpleChanges,
+    EventEmitter,
+    Output,
+    HostListener
+} from '@angular/core';
 import { MenuItem, Menu } from 'primeng/primeng';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
@@ -14,17 +24,29 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
     templateUrl: 'dot-action-button.component.html'
 })
 export class DotActionButtonComponent implements OnInit, OnChanges {
-    @ViewChild('menu') menu: Menu;
+    @ViewChild('menu')
+    menu: Menu;
 
-    @Input() disabled: boolean;
-    @Input() icon: string;
-    @Input() label: string;
-    @Input() model: MenuItem[];
-    @Input() selected: boolean;
+    @Input()
+    disabled: boolean;
 
-    @Output() click: EventEmitter<any> = new EventEmitter();
+    @Input()
+    icon: string;
 
-    @HostBinding('class.action-button--no-label') isNotLabeled = true;
+    @Input()
+    label: string;
+
+    @Input()
+    model: MenuItem[];
+
+    @Input()
+    selected: boolean;
+
+    @Output()
+    click: EventEmitter<any> = new EventEmitter();
+
+    @HostBinding('class.action-button--no-label')
+    isNotLabeled = true;
 
     @HostListener('click', ['$event'])
     public onClick(event: any): void {

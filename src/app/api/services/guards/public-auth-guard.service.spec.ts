@@ -1,6 +1,6 @@
+import { of as observableOf, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { PublicAuthGuardService } from './public-auth-guard.service';
 import { LoginService } from 'dotcms-js/dotcms-js';
@@ -38,15 +38,18 @@ describe('ValidPublicAuthGuardService', () => {
         publicAuthGuardService = TestBed.get(PublicAuthGuardService);
         dotRouterService = TestBed.get(DotRouterService);
         loginService = TestBed.get(LoginService);
-        mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', ['toString']);
-        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
+        mockRouterStateSnapshot = jasmine.createSpyObj<RouterStateSnapshot>('RouterStateSnapshot', [
             'toString'
         ]);
+        mockActivatedRouteSnapshot = jasmine.createSpyObj<ActivatedRouteSnapshot>(
+            'ActivatedRouteSnapshot',
+            ['toString']
+        );
     });
 
     it('should redirect to to Main Portlet if User is logged in', () => {
         let result: boolean;
-        spyOnProperty(loginService, 'isLogin$', 'get').and.returnValue(Observable.of(true));
+        spyOnProperty(loginService, 'isLogin$', 'get').and.returnValue(observableOf(true));
         publicAuthGuardService
             .canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));
@@ -56,7 +59,7 @@ describe('ValidPublicAuthGuardService', () => {
 
     it('should allow access to the requested route if User is NOT logged in', () => {
         let result: boolean;
-        spyOnProperty(loginService, 'isLogin$', 'get').and.returnValue(Observable.of(false));
+        spyOnProperty(loginService, 'isLogin$', 'get').and.returnValue(observableOf(false));
         publicAuthGuardService
             .canActivate(mockActivatedRouteSnapshot, mockRouterStateSnapshot)
             .subscribe((res) => (result = res));

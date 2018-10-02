@@ -1,21 +1,21 @@
-import { BaseComponent } from '../_common/_base/base-component';
-import { AccountService, AccountUser } from '../../../api/services/account-service';
-import { Component, EventEmitter, Output, ViewEncapsulation, Input } from '@angular/core';
+import { AccountService, AccountUser } from '@services/account-service';
+import { Component, EventEmitter, Output, ViewEncapsulation, Input, OnInit } from '@angular/core';
 import { LoginService, User, Auth } from 'dotcms-js/dotcms-js';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { StringFormat } from '../../../api/util/stringFormat';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
-
     selector: 'dot-my-account',
     styleUrls: ['./dot-my-account-component.scss'],
     templateUrl: 'dot-my-account-component.html'
 })
-export class MyAccountComponent extends BaseComponent {
-    @Output() close = new EventEmitter<any>();
-    @Input() visible: boolean;
+export class MyAccountComponent implements OnInit {
+    @Output()
+    close = new EventEmitter<any>();
+    @Input()
+    visible: boolean;
 
     emailRegex: string;
     passwordMatch: boolean;
@@ -32,15 +32,28 @@ export class MyAccountComponent extends BaseComponent {
     message = null;
     changePasswordOption = false;
 
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
+
     constructor(
-        dotMessageService: DotMessageService,
+        private dotMessageService: DotMessageService,
         private accountService: AccountService,
         private dotcmsConfig: DotcmsConfig,
         private loginService: LoginService,
         private stringFormat: StringFormat
     ) {
-        super(
-            [
+        this.passwordMatch = false;
+        this.changePasswordOption = false;
+        this.loginService.watchUser(this.loadUser.bind(this));
+        this.dotcmsConfig.getConfig().subscribe((res) => {
+            this.emailRegex = res.emailRegex;
+        });
+    }
+
+    ngOnInit() {
+        this.dotMessageService
+            .getMessages([
                 'my-account',
                 'modes.Close',
                 'save',
@@ -56,16 +69,10 @@ export class MyAccountComponent extends BaseComponent {
                 'Error-communicating-with-server-Please-try-again',
                 'change-password',
                 'current-password'
-            ],
-            dotMessageService
-        );
-
-        this.passwordMatch = false;
-        this.changePasswordOption = false;
-        this.loginService.watchUser(this.loadUser.bind(this));
-        this.dotcmsConfig.getConfig().subscribe((res) => {
-            this.emailRegex = res.emailRegex;
-        });
+            ])
+            .subscribe((res) => {
+                this.i18nMessages = res;
+            });
     }
 
     checkPasswords(): void {

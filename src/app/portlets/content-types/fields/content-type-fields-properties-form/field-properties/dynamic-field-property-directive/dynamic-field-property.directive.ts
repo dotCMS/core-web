@@ -15,9 +15,12 @@ import { FieldPropertyService } from '../../../service';
     selector: '[dotDynamicFieldProperty]'
 })
 export class DynamicFieldPropertyDirective implements OnChanges {
-    @Input() propertyName: string;
-    @Input() field: ContentTypeField;
-    @Input() group: FormGroup;
+    @Input()
+    propertyName: string;
+    @Input()
+    field: ContentTypeField;
+    @Input()
+    group: FormGroup;
 
     constructor(
         private viewContainerRef: ViewContainerRef,
@@ -34,7 +37,9 @@ export class DynamicFieldPropertyDirective implements OnChanges {
     private createComponent(property): void {
         const component = this.fieldPropertyService.getComponent(property);
         const componentFactory = this.resolver.resolveComponentFactory(component);
-        const componentRef: ComponentRef<any> = this.viewContainerRef.createComponent(componentFactory);
+        const componentRef: ComponentRef<any> = this.viewContainerRef.createComponent(
+            componentFactory
+        );
 
         componentRef.instance.property = {
             field: this.field,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DotDevicesService } from '../../../api/services/dot-devices/dot-devices.service';
-import { DotDevice } from '../../../shared/models/dot-device/dot-device.model';
-import { DotMessageService } from '../../../api/services/dot-messages-service';
+import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
+import { DotDevice } from '@models/dot-device/dot-device.model';
+import { DotMessageService } from '@services/dot-messages-service';
 import { map, take, flatMap, filter, toArray } from 'rxjs/operators';
 
 @Component({
@@ -10,12 +10,17 @@ import { map, take, flatMap, filter, toArray } from 'rxjs/operators';
     styleUrls: ['./dot-device-selector.component.scss']
 })
 export class DotDeviceSelectorComponent implements OnInit {
-    @Input() value: DotDevice;
-    @Output() selected = new EventEmitter<DotDevice>();
+    @Input()
+    value: DotDevice;
+    @Output()
+    selected = new EventEmitter<DotDevice>();
 
     options: DotDevice[];
 
-    constructor(private dotDevicesService: DotDevicesService, private dotMessageService: DotMessageService) {}
+    constructor(
+        private dotDevicesService: DotDevicesService,
+        private dotMessageService: DotMessageService
+    ) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -27,10 +32,15 @@ export class DotDeviceSelectorComponent implements OnInit {
                     .pipe(
                         take(1),
                         flatMap((devices: DotDevice[]) => devices),
-                        filter((device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0),
+                        filter(
+                            (device: DotDevice) => +device.cssHeight > 0 && +device.cssWidth > 0
+                        ),
                         toArray(),
                         map((devices: DotDevice[]) =>
-                            this.setOptions(this.dotMessageService.get('editpage.viewas.default.device'), devices)
+                            this.setOptions(
+                                this.dotMessageService.get('editpage.viewas.default.device'),
+                                devices
+                            )
                         )
                     )
                     .subscribe((devices: DotDevice[]) => {

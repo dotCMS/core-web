@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
-import { DotGlobalMessageService } from '../../../../view/components/_common/dot-global-message/dot-global-message.service';
-import { DotMessageService } from '../../../../api/services/dot-messages-service';
+import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { DotClipboardUtil } from '../../../../api/util/clipboard/ClipboardUtil';
-import { SiteService } from '../../../../../../node_modules/dotcms-js/dotcms-js';
+import { SiteService } from 'dotcms-js/dotcms-js';
 
 /**
  * Basic page information for edit mode
@@ -18,15 +19,16 @@ import { SiteService } from '../../../../../../node_modules/dotcms-js/dotcms-js'
     styleUrls: ['./dot-edit-page-info.component.scss']
 })
 export class DotEditPageInfoComponent implements OnInit {
-    @Input() pageState: DotRenderedPageState;
-    @ViewChild('lockedPageMessage') lockedPageMessage: ElementRef;
+    @Input()
+    pageState: DotRenderedPageState;
+    @ViewChild('lockedPageMessage')
+    lockedPageMessage: ElementRef;
 
     constructor(
         private dotClipboardUtil: DotClipboardUtil,
         private dotGlobalMessageService: DotGlobalMessageService,
         private siteService: SiteService,
-        public dotMessageService: DotMessageService,
-
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnInit() {
@@ -64,10 +66,14 @@ export class DotEditPageInfoComponent implements OnInit {
         this.dotClipboardUtil
             .copy(this.getFullUrl(this.pageState.page.pageURI))
             .then(() => {
-                this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard'));
+                this.dotGlobalMessageService.display(
+                    this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard')
+                );
             })
             .catch(() => {
-                this.dotGlobalMessageService.error(this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error'));
+                this.dotGlobalMessageService.error(
+                    this.dotMessageService.get('dot.common.message.pageurl.copied.clipboard.error')
+                );
             });
     }
 
@@ -76,7 +82,7 @@ export class DotEditPageInfoComponent implements OnInit {
             location.protocol,
             '//',
             this.siteService.currentSite['name'],
-            (location.port ? `:${location.port}` : ''),
+            location.port ? `:${location.port}` : '',
             url
         ].join('');
     }
