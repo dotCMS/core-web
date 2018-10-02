@@ -35,7 +35,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
     formData: ContentTypeField;
     currentFieldType: FieldType;
     currentField: FieldVariableParams;
-    messages: {[key: string]: string} = {};
     closeDialogAction: DotDialogAction;
     saveDialogAction: DotDialogAction;
 
@@ -75,14 +74,14 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
                 'contenttypes.dropzone.empty.message'
             ])
             .subscribe((messages: {[key: string]: string}) => {
-                this.i18nMessages = res;
+                this.i18nMessages = messages;
 
                 this.closeDialogAction = {
-                    label: this.messages['contenttypes.dropzone.action.cancel'],
+                    label: this.i18nMessages['contenttypes.dropzone.action.cancel'],
                     action: () => {}
                 };
                 this.saveDialogAction  = {
-                    label: this.messages['contenttypes.dropzone.action.save'],
+                    label: this.i18nMessages['contenttypes.dropzone.action.save'],
                     action: () => {
                         this.propertiesForm.saveFieldProperties();
                     }
@@ -199,8 +198,8 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges {
     getDialogHeader(): string {
         const dialogTitle =
             this.formData && this.formData.id
-                ? this.messages['contenttypes.dropzone.action.edit']
-                : this.messages['contenttypes.dropzone.action.create.field'];
+                ? this.i18nMessages['contenttypes.dropzone.action.edit']
+                : this.i18nMessages['contenttypes.dropzone.action.create.field'];
         return `${dialogTitle}`;
     }
 

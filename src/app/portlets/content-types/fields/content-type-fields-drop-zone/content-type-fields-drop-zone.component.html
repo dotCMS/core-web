@@ -26,14 +26,14 @@
     [header]="currentFieldType?.label">
 
     <p-tabView [activeIndex]="dialogActiveTab">
-        <p-tabPanel [header]="messages['contenttypes.dropzone.tab.overview']">
+        <p-tabPanel [header]="i18nMessages['contenttypes.dropzone.tab.overview']">
             <dot-content-type-fields-properties-form
                 [formFieldData]="formData"
                 (saveField)="saveFieldsHandler($event)"
                 #fieldPropertiesForm>
             </dot-content-type-fields-properties-form>
         </p-tabPanel>
-        <p-tabPanel [header]="messages['contenttypes.dropzone.tab.variables']">
+        <p-tabPanel [header]="i18nMessages['contenttypes.dropzone.tab.variables']">
             <ng-template pTemplate="content">
                 <dot-content-type-fields-variables [field]="currentField"></dot-content-type-fields-variables>
             </ng-template>

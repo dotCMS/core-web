@@ -62,7 +62,7 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
         };
         this.fieldVariablesService.delete(params)
             .subscribe(() => {
-                this.fieldVariables = this.fieldVariables.filter((item: FieldVariable, index: number) => index !== fieldIndex);
+                this.fieldVariables = this.fieldVariables.filter((_item: FieldVariable, index: number) => index !== fieldIndex);
             }, (err: ResponseView) => {
                 this.dotHttpErrorManagerService.handle(err).subscribe();
             });
