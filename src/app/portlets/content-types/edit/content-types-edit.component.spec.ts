@@ -559,7 +559,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
     });
 
-    fdescribe('update', () => {
+    describe('update', () => {
         let contentTypeForm: DebugElement;
 
         beforeEach(() => {
