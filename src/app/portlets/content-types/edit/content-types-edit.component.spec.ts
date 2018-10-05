@@ -346,7 +346,7 @@ const configEditMode = getConfig({
     contentType: fakeContentType
 });
 
-fdescribe('ContentTypesEditComponent edit mode', () => {
+describe('ContentTypesEditComponent edit mode', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule(configEditMode);
 
