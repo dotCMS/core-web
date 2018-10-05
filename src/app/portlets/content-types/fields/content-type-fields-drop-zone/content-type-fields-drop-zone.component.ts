@@ -403,8 +403,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     private getEmptyRow(): FieldDivider[] {
-        const row = new FieldRow();
-        row.addFirstColumn();
+        const row = new FieldRow(1);
 
         return [row];
     }
