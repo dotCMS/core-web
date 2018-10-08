@@ -5,7 +5,6 @@ import { DotNavigationService } from '../../dot-navigation/services/dot-navigati
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Observable, Subject, of, BehaviorSubject } from 'rxjs';
 import { DotMenu } from '../../../../shared/models/navigation';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 @Injectable()
 class MockDotNavigationService {
@@ -112,7 +111,7 @@ describe('DotCrumbtrailService', () => {
     let firstCrumb: DotCrumb[];
     let secondCrumb: DotCrumb[];
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
                 DotCrumbtrailService,
@@ -140,9 +139,7 @@ describe('DotCrumbtrailService', () => {
                 secondCrumb = crumbs;
             }
         });
-
-        tick();
-    }));
+    });
 
     it('should take the current url from Router', () => {
         expect(firstCrumb).toEqual([
@@ -157,7 +154,7 @@ describe('DotCrumbtrailService', () => {
         ]);
     });
 
-    it('Should take url from NavegationEnd event', fakeAsync(() => {
+    it('Should take url from NavegationEnd event', () => {
         dotNavigationServiceMock.navigationEnd.next(
             {
                 url: '/first_portlet',
@@ -165,8 +162,6 @@ describe('DotCrumbtrailService', () => {
                 id: 1,
             }
         );
-
-        tick();
 
         expect(secondCrumb).toEqual([
             {
@@ -178,9 +173,9 @@ describe('DotCrumbtrailService', () => {
                 url: '#/menulink/first_portlet'
             }
         ]);
-    }));
+    });
 
-    it('Should ignore c prefix', fakeAsync(() => {
+    it('Should ignore c prefix', () => {
         dotNavigationServiceMock.navigationEnd.next(
             {
                 url: '/first_portlet',
@@ -188,8 +183,6 @@ describe('DotCrumbtrailService', () => {
                 id: 1,
             }
         );
-
-        tick();
 
         expect(secondCrumb).toEqual([
             {
@@ -201,9 +194,9 @@ describe('DotCrumbtrailService', () => {
                 url: '#/menulink/first_portlet'
             }
         ]);
-    }));
+    });
 
-    it('Should exclude URL', fakeAsync(() => {
+    it('Should exclude URL', () => {
         dotNavigationServiceMock.navigationEnd.next(
             {
                 url: '/content-types-angular/create/content',
@@ -211,8 +204,6 @@ describe('DotCrumbtrailService', () => {
                 id: 1,
             }
         );
-
-        tick();
 
         expect(secondCrumb).toEqual([
             {
@@ -224,9 +215,9 @@ describe('DotCrumbtrailService', () => {
                 url: '#/content-types-angular'
             }
         ]);
-    }));
+    });
 
-    it('Should take content types data', fakeAsync(() => {
+    it('Should take content types data', () => {
         mockActivatedRoute.root = {
             firstChild: {
                 data: new BehaviorSubject({}),
@@ -254,8 +245,6 @@ describe('DotCrumbtrailService', () => {
             }
         );
 
-        tick();
-
         expect(secondCrumb).toEqual([
             {
                 label: 'Types & Tag',
@@ -270,9 +259,9 @@ describe('DotCrumbtrailService', () => {
                 url: ''
             }
         ]);
-    }));
+    });
 
-    it('Should take edit page data', fakeAsync(() => {
+    it('Should take edit page data', () => {
         mockActivatedRoute.root = {
             firstChild: {
                 data: new BehaviorSubject({}),
@@ -305,8 +294,6 @@ describe('DotCrumbtrailService', () => {
             }
         );
 
-        tick();
-
         expect(secondCrumb).toEqual([
             {
                 label: 'site',
@@ -321,5 +308,5 @@ describe('DotCrumbtrailService', () => {
                 url: ''
             }
         ]);
-    }));
+    });
 });
