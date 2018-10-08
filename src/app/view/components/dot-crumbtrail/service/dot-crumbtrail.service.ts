@@ -13,7 +13,7 @@ export class DotCrumbtrailService {
     private URL_EXCLUDES = ['/content-types-angular/create/content'];
     private crumbTrail: Subject<DotCrumb[]> = new BehaviorSubject([]);
 
-    private dataMatch = {
+    private portletsTitlePathFinder = {
         'content-types-angular': 'contentType.name',
         'edit-page': 'content.page.title'
     };
@@ -84,7 +84,7 @@ export class DotCrumbtrailService {
 
         let currentData: any = data;
 
-        this.dataMatch[sectionKey].split('.').forEach((key) => (currentData = currentData[key]));
+        this.portletsTitlePathFinder[sectionKey].split('.').forEach((key) => (currentData = currentData[key]));
         return currentData;
     }
 
@@ -122,7 +122,7 @@ export class DotCrumbtrailService {
 
     private isTranslateDataURL(url: string): boolean {
         const sections: string[] = this.splitURL(url);
-        return this.dataMatch[sections[0]];
+        return this.portletsTitlePathFinder[sections[0]];
     }
 }
 
