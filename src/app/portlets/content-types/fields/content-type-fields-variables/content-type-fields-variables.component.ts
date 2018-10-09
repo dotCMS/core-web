@@ -94,11 +94,11 @@ export class ContentTypeFieldsVariablesComponent implements OnInit, OnChanges {
     /**
      * Checks if a existing variable meets conditions to be updated
      * @param {number} index
-     * @returns {boolean}
+     * @returns {boolean | null}
      * @memberof ContentTypeFieldsVariablesComponent
      */
-    canSaveField(index: number): boolean {
-        return this.fieldVariables[index].key === '' || this.fieldVariables[index].value === '';
+    canSaveField(index: number): boolean | null {
+        return (this.fieldVariables[index].key === '' || this.fieldVariables[index].value === '') ? true : null;
     }
 
     private initTableData(): void {
