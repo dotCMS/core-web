@@ -106,7 +106,7 @@ export class DotCrumbtrailService {
 
         return this.getMenuLabel(portletId).pipe(
             map((crumbTrail: DotCrumb[]) => {
-                if (sections.length > 1 && this.isTranslateDataURL(url)) {
+                if (sections.length > 1 && this.isPortletTitleAvailable(url)) {
                     const sectionLabel = this.getCrumbtrailSection(sections[0]);
 
                     crumbTrail.push({
@@ -120,7 +120,7 @@ export class DotCrumbtrailService {
         );
     }
 
-    private isTranslateDataURL(url: string): boolean {
+    private isPortletTitleAvailable(url: string): boolean {
         const sections: string[] = this.splitURL(url);
         return !!this.portletsTitlePathFinder[sections[0]];
     }
