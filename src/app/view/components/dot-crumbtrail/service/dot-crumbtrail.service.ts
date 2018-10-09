@@ -122,7 +122,7 @@ export class DotCrumbtrailService {
 
     private isTranslateDataURL(url: string): boolean {
         const sections: string[] = this.splitURL(url);
-        return this.portletsTitlePathFinder[sections[0]];
+        return !!this.portletsTitlePathFinder[sections[0]];
     }
 }
 
