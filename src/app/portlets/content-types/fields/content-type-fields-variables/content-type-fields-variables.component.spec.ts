@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement, Component, Output, EventEmitter } from '@angular/core';
 import { ContentTypeFieldsVariablesComponent, FieldVariable } from './content-type-fields-variables.component';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -77,10 +77,11 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         fixture.detectChanges();
         const dataTable = de.query(By.css('p-dataTable'));
         expect(dataTable.componentInstance.value).toEqual(mockFieldVariables);
+        expect(dataTable.listeners[0].name).toBe('onEditComplete');
     });
 
-    it('should load the component and create', () => {
-        spyOn(fieldVariableService, 'save');
+    it('should load the component and create', fakeAsync(() => {
+        spyOn(fieldVariableService, 'save').and.callThrough();
         const params = {
             contentTypeId: comp.field.contentTypeId,
             fieldId: comp.field.fieldId,
@@ -91,14 +92,16 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         const addVariableForm = de.query(By.css('dot-add-variable-form')).componentInstance;
         addVariableForm.saveVariable.emit(mockFieldVariables[0]);
         expect(fieldVariableService.save).toHaveBeenCalledWith(params);
-    });
+        tick(1);
+        expect(comp.canSaveFields[0]).toBe(null);
+    }));
 
     it('should load the component and update', () => {
         spyOn(fieldVariableService, 'save');
         fixture.detectChanges();
 
         const buttons = fixture.debugElement.queryAll(By.css('button'));
-        buttons[0].nativeElement.click();
+        buttons[1].nativeElement.click();
         fixture.detectChanges();
 
         const params = {
@@ -108,6 +111,7 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         };
 
         expect(fieldVariableService.save).toHaveBeenCalledWith(params);
+
     });
 
     it('should load the component and delete', () => {
@@ -115,7 +119,7 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         fixture.detectChanges();
 
         const buttons = fixture.debugElement.queryAll(By.css('button'));
-        buttons[1].nativeElement.click();
+        buttons[0].nativeElement.click();
         fixture.detectChanges();
 
         const params = {
