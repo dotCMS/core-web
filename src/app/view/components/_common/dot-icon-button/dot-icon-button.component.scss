@@ -3,7 +3,7 @@
 
 [tiny] :host {
     button {
-        @include tiny-button;
+        @include icon-button-tiny;
     }
 }
 
@@ -26,8 +26,14 @@
         }
     }
 
+    &[big] button {
+        ::ng-deep i {
+            font-size: $md-icon-size-big
+        }
+    }
+
     &[tiny] button {
-        @include tiny-button;
+        @include icon-button-tiny;
     }
 
     &[inverted] button {

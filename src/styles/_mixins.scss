@@ -5,17 +5,12 @@
     @return #{$remSize}rem;
 }
 
-@mixin dot-icon_tiny {
-    // The icon size is not related to a font-size, that's why I use the value directly
-    font-size: 14px;
-}
-
-@mixin tiny-button {
-    height: 16px;
-    width: 16px;
+@mixin icon-button-tiny {
+    height: 24px;
+    width: 24px;
 
     ::ng-deep i {
-        @include dot_icon_tiny;
+        font-size: $md-icon-size-tiny;
     }
 }
 
