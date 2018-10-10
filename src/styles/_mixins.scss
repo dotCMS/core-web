@@ -5,15 +5,6 @@
     @return #{$remSize}rem;
 }
 
-@mixin icon-button-tiny {
-    height: 24px;
-    width: 24px;
-
-    ::ng-deep i {
-        font-size: $md-icon-size-tiny;
-    }
-}
-
 @mixin dot-icon_inverted {
     color: $white;
 }

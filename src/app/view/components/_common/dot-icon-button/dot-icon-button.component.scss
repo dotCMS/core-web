@@ -1,9 +1,18 @@
 @import "primeng-theme/utils/theme-variables";
 @import "mixins";
 
+#icon-button-tiny {
+    height: 24px;
+    width: 24px;
+
+    ::ng-deep i {
+        font-size: $md-icon-size-tiny;
+    }
+}
+
 [tiny] :host {
     button {
-        @include icon-button-tiny;
+        @extend #icon-button-tiny;
     }
 }
 
@@ -33,7 +42,7 @@
     }
 
     &[tiny] button {
-        @include icon-button-tiny;
+        @extend #icon-button-tiny;
     }
 
     &[inverted] button {
