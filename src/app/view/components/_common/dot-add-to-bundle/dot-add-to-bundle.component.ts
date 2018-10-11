@@ -15,19 +15,23 @@ import { LoggerService } from 'dotcms-js/dotcms-js';
 import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.service';
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
 import { Dropdown } from 'primeng/primeng';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, tap } from 'rxjs/operators';
+import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
 
 const LAST_BUNDLE_USED = 'lastBundleUsed';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-add-to-bundle',
-    templateUrl: 'dot-add-to-bundle.component.html'
+    templateUrl: 'dot-add-to-bundle.component.html',
+    styleUrls: ['dot-add-to-bundle.component.scss']
 })
 export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     form: FormGroup;
     bundle$: Observable<DotBundle[]>;
     placeholder = '';
+    okDialogAction: DotDialogAction;
+    cancelDialogAction: DotDialogAction;
 
     @Input()
     assetIdentifier: string;
@@ -63,6 +67,22 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
         this.bundle$ = this.dotMessageService.getMessages(keys).pipe(
             mergeMap((messages) => {
                 return this.addToBundleService.getBundles().pipe(
+                    tap(() => {
+                        this.okDialogAction = {
+                            action: () => {
+                                this.submitForm();
+                            },
+                            label: this.dotMessageService.get('contenttypes.content.add_to_bundle.form.add'),
+                            disabled: !this.form.valid
+                        };
+
+                        this.cancelDialogAction = {
+                            action: () => {
+                                this.close();
+                            },
+                            label: this.dotMessageService.get('contenttypes.content.add_to_bundle.form.cancel')
+                        };
+                    }),
                     map((bundles: DotBundle[]) => {
                         setTimeout(() => {
                             this.placeholder = bundles.length
@@ -134,6 +154,13 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit {
     private initForm(): void {
         this.form = this.fb.group({
             addBundle: ['', [Validators.required]]
+        });
+
+        this.form.valueChanges.subscribe(() => {
+            this.okDialogAction = {
+                ...this.okDialogAction,
+                disabled: !this.form.valid
+            };
         });
     }
 

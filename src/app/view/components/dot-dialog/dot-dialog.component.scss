@@ -1,16 +1,64 @@
 @import "mixins";
 @import "variables";
+@import "primeng-theme/utils/theme-variables";
 
-.dialog ::ng-deep {
-    .ui-dialog {
-        .ui-dialog-content {
-            overflow: auto;
-        }
+$dialog-padding: $basic-padding * 4;
+$header-padding: $dialog-padding $dialog-padding 0 ;
+$footer-padding: 0 $dialog-padding $dialog-padding;
 
-        p-header {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-        }
+:host {
+    opacity: 0;
+    transition: opacity 200ms ease;
+    display: none;
+
+    &.active {
+        background-color: rgba($black, 0.8);
+        bottom: 0;
+        display: block;
+        left: 0;
+        opacity: 1;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 9999;
     }
+}
+
+.dialog {
+    background-color: $white;
+    max-height: 80vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog__content {
+    overflow: auto;
+    padding: $dialog-padding;
+}
+
+.dialog__footer {
+    min-height: $button-height;
+    display: flex;
+    justify-content: flex-end;
+    padding: $footer-padding;
+
+    button {
+        margin-left: $basic-padding;
+    }
+}
+
+.dialog__header {
+    min-height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $header-padding;
+}
+
+.dialog__title {
+    margin: 0;
 }

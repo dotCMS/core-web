@@ -1,4 +1,12 @@
-import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    EventEmitter,
+    Output,
+    ViewChild,
+    HostBinding,
+    HostListener
+} from '@angular/core';
 import { Dialog } from 'primeng/primeng';
 
 @Component({
@@ -7,15 +15,19 @@ import { Dialog } from 'primeng/primeng';
     styleUrls: ['./dot-dialog.component.scss']
 })
 export class DotDialogComponent {
+    @Input()
+    @HostBinding('class.active')
+    show: boolean;
+
     @ViewChild('dialog')
     dialog: Dialog;
 
     @Input()
     header = '';
-    @Input()
-    show: boolean;
+
     @Input()
     ok: DotDialogAction;
+
     @Input()
     cancel: DotDialogAction;
 
@@ -23,6 +35,13 @@ export class DotDialogComponent {
     close: EventEmitter<any> = new EventEmitter();
 
     constructor() {}
+
+    @HostListener('click', ['$event.target'])
+    closeSomething(target: HTMLElement) {
+        if (target.className === 'active') {
+            this.closeDialog();
+        }
+    }
 
     /**
      * Action when pressed Cancel button
@@ -42,17 +61,6 @@ export class DotDialogComponent {
     closeDialog(): void {
         this.show = false;
         this.close.emit();
-    }
-
-    /**
-     * Action to re-center opened dialog displayed
-     *
-     * @memberof DotDialogComponent
-     */
-    reRecenter(): void {
-        setTimeout(() => {
-            this.dialog.center();
-        });
     }
 }
 
