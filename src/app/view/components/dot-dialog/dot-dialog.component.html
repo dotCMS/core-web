@@ -11,6 +11,7 @@
     <footer class="dialog__footer" *ngIf="ok || cancel">
         <button
             *ngIf="cancel"
+            class="dialog__button-cancel"
             pButton
             secondary
             (click)="cancelAction()"
@@ -19,10 +20,11 @@
         </button>
         <button
             *ngIf="ok"
+            class="dialog__button-ok"
             pButton
             [disabled]="ok.disabled"
             [label]="ok.label"
-            (click)="ok.action(this)">
+            (click)="ok.action()">
         </button>
     </footer>
 </div>

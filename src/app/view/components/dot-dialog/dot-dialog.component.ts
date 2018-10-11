@@ -1,13 +1,4 @@
-import {
-    Component,
-    Input,
-    EventEmitter,
-    Output,
-    ViewChild,
-    HostBinding,
-    HostListener
-} from '@angular/core';
-import { Dialog } from 'primeng/primeng';
+import { Component, Input, EventEmitter, Output, HostBinding, HostListener } from '@angular/core';
 
 @Component({
     selector: 'dot-dialog',
@@ -15,9 +6,6 @@ import { Dialog } from 'primeng/primeng';
     styleUrls: ['./dot-dialog.component.scss']
 })
 export class DotDialogComponent {
-    @ViewChild('dialog')
-    dialog: Dialog;
-
     @Input()
     @HostBinding('class.active')
     show: boolean;
