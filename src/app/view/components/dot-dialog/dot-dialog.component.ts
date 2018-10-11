@@ -15,12 +15,12 @@ import { Dialog } from 'primeng/primeng';
     styleUrls: ['./dot-dialog.component.scss']
 })
 export class DotDialogComponent {
+    @ViewChild('dialog')
+    dialog: Dialog;
+
     @Input()
     @HostBinding('class.active')
     show: boolean;
-
-    @ViewChild('dialog')
-    dialog: Dialog;
 
     @Input()
     header = '';
@@ -37,7 +37,7 @@ export class DotDialogComponent {
     constructor() {}
 
     @HostListener('click', ['$event.target'])
-    closeSomething(target: HTMLElement) {
+    closeDialogByMask(target: HTMLElement) {
         if (target.className === 'active') {
             this.closeDialog();
         }
