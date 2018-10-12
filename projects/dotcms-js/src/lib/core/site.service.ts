@@ -160,6 +160,20 @@ export class SiteService {
             .subscribe(() => this.setCurrentSite(site));
     }
 
+    /**
+     * Request the current site
+     * @returns Observable<Site>
+     * @memberof SiteService
+     */
+    getCurrentSite(): Observable<Site> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: this.urls.currentSiteUrl
+            })
+            .pipe(pluck('entity'));
+    }
+
     private setCurrentSite(site: Site): void {
         if (this.selectedSite) {
             this._switchSite$.next(Object.assign({}, site));
@@ -169,13 +183,7 @@ export class SiteService {
     }
 
     private loadCurrentSite(): void {
-        this.coreWebService
-            .requestView({
-                method: RequestMethod.Get,
-                url: this.urls.currentSiteUrl
-            })
-            .pipe(pluck('entity'))
-            .subscribe((currentSite) => {
+        this.getCurrentSite().subscribe((currentSite) => {
                 this.setCurrentSite(<Site>currentSite);
             });
     }
