@@ -11,13 +11,19 @@ import { ButtonModule } from 'primeng/primeng';
 @Component({
     selector: 'dot-test-host-component',
     template: `
-        <dot-dialog [header]="header" [show]="show" [ok]="ok" [cancel]="cancel">
+        <dot-dialog
+            [header]="header"
+            [show]="show"
+            [ok]="ok"
+            [cancel]="cancel"
+            [closeable]="closeable">
             <b>Dialog content</b>
         </dot-dialog>`
 })
 class TestHostComponent {
     header: string;
     show = false;
+    closeable = false;
 
     ok: DotDialogAction;
     cancel: DotDialogAction;
@@ -59,6 +65,11 @@ describe('DotDialogComponent', () => {
             const footer = de.query(By.css('.dialog__footer'));
             expect(footer === null).toBe(true);
         });
+
+        it('should not show close button', () => {
+            const close: DebugElement = de.query(By.css('dot-icon-button'));
+            expect(close === null).toBe(true);
+        });
     });
 
     describe('show', () => {
@@ -66,6 +77,7 @@ describe('DotDialogComponent', () => {
         const cancelAction = jasmine.createSpy('cancel');
 
         beforeEach(() => {
+            hostComponent.closeable = true;
             hostComponent.show = true;
             hostComponent.header = 'Hello World';
             hostComponent.ok = {

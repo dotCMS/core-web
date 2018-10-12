@@ -37,6 +37,9 @@ export class DotDialogComponent implements OnInit {
     @Input()
     cancel: DotDialogAction;
 
+    @Input()
+    closeable = true;
+
     @Output()
     close: EventEmitter<any> = new EventEmitter();
 

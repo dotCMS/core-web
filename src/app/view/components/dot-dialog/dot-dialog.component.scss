@@ -3,8 +3,6 @@
 @import "primeng-theme/utils/theme-variables";
 
 $dialog-padding: $basic-padding * 4;
-$header-padding: $dialog-padding $dialog-padding 0 ;
-$footer-padding: 0 $dialog-padding $dialog-padding;
 
 :host {
     opacity: 0;
@@ -20,7 +18,7 @@ $footer-padding: 0 $dialog-padding $dialog-padding;
         position: absolute;
         right: 0;
         top: 0;
-        z-index: 9999;
+        z-index: 1001;
     }
 }
 
@@ -39,7 +37,7 @@ $footer-padding: 0 $dialog-padding $dialog-padding;
 
 .dialog__content {
     overflow: auto;
-    padding: 0 $dialog-padding;
+    padding: 0 $dialog-padding $dialog-padding;
 }
 
 .dialog__footer,
