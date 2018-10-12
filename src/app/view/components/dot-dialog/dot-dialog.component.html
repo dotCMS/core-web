@@ -1,14 +1,14 @@
 <div class="dialog">
-    <header class="dialog__header">
+    <header class="dialog__header" [class.shadowed]="contentScrolled$ | async">
         <h4 class="dialog__title" [textContent]="header"></h4>
         <dot-icon-button big icon="close" (click)="closeDialog()"></dot-icon-button>
     </header>
 
-    <div class="dialog__content">
+    <div class="dialog__content" #content>
         <ng-content></ng-content>
     </div>
 
-    <footer class="dialog__footer" *ngIf="ok || cancel">
+    <footer class="dialog__footer" *ngIf="ok || cancel" [class.shadowed]="contentScrolled$ | async">
         <button
             *ngIf="cancel"
             class="dialog__button-cancel"

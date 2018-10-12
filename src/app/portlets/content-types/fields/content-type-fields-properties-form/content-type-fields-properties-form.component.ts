@@ -6,8 +6,7 @@ import {
     SimpleChanges,
     ViewChild,
     OnChanges,
-    OnInit,
-    ViewEncapsulation
+    OnInit
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -18,7 +17,6 @@ import { FieldPropertyService } from '../service/';
     selector: 'dot-content-type-fields-properties-form',
     styleUrls: ['./content-type-fields-properties-form.component.scss'],
     templateUrl: './content-type-fields-properties-form.component.html',
-    encapsulation: ViewEncapsulation.None
 })
 export class ContentTypeFieldsPropertiesFormComponent implements OnChanges, OnInit {
     @Output()

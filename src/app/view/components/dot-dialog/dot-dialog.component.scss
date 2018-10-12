@@ -39,14 +39,24 @@ $footer-padding: 0 $dialog-padding $dialog-padding;
 
 .dialog__content {
     overflow: auto;
+    padding: 0 $dialog-padding;
+}
+
+.dialog__footer,
+.dialog__header {
+    flex-shrink: 0;
     padding: $dialog-padding;
+    position: relative;
+    transition: box-shadow $basic-speed ease-out;
 }
 
 .dialog__footer {
-    min-height: $button-height;
     display: flex;
     justify-content: flex-end;
-    padding: $footer-padding;
+
+    &.shadowed {
+        box-shadow: 0px -3px 20px 0 #00000026;
+    }
 
     button {
         margin-left: $basic-padding;
@@ -54,11 +64,13 @@ $footer-padding: 0 $dialog-padding $dialog-padding;
 }
 
 .dialog__header {
-    min-height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $header-padding;
+
+    &.shadowed {
+        box-shadow: 0px 3px 20px 0 #00000026;
+    }
 }
 
 .dialog__title {

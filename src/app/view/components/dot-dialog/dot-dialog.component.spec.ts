@@ -129,6 +129,8 @@ fdescribe('DotDialogComponent', () => {
             expect(buttonsAttr).toEqual([false, true]);
         });
 
+        xit('should add shadow to header and footer on content scroll');
+
         describe('events', () => {
             beforeEach(() => {
                 spyOn(component.close, 'emit');
