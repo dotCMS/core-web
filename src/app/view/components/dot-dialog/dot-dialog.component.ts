@@ -49,7 +49,7 @@ export class DotDialogComponent implements OnInit {
 
     ngOnInit() {
         this.contentScrolled$ = fromEvent(this.content.nativeElement, 'scroll').pipe(
-            map((e: { target: HTMLInputElement; }) => e.target.scrollTop > 0)
+            map((e: { target: HTMLInputElement }) => e.target.scrollTop > 0)
         );
     }
 
@@ -67,7 +67,10 @@ export class DotDialogComponent implements OnInit {
      */
     cancelAction(): void {
         this.closeDialog();
-        this.cancel.action(this);
+
+        if (this.cancel.action) {
+            this.cancel.action();
+        }
     }
 
     /**
@@ -82,7 +85,7 @@ export class DotDialogComponent implements OnInit {
 }
 
 export interface DotDialogAction {
-    action: (dialog: any) => void;
+    action?: (dialog?: any) => void;
     disabled?: boolean;
     label: string;
 }
