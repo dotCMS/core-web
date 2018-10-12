@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CoreWebService } from './core-web.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { pluck, map } from 'rxjs/operators';
 import { LoginService, Auth } from './login.service';
@@ -166,12 +166,16 @@ export class SiteService {
      * @memberof SiteService
      */
     getCurrentSite(): Observable<Site> {
-        return this.coreWebService
+        if (this.selectedSite) {
+            return of(this.selectedSite);
+        } else {
+            return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
                 url: this.urls.currentSiteUrl
             })
             .pipe(pluck('entity'));
+        }
     }
 
     private setCurrentSite(site: Site): void {
