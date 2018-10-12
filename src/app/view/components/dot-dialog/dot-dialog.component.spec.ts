@@ -23,7 +23,7 @@ class TestHostComponent {
     cancel: DotDialogAction;
 }
 
-fdescribe('DotDialogComponent', () => {
+describe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;
@@ -109,7 +109,7 @@ fdescribe('DotDialogComponent', () => {
 
         it('should show footer', () => {
             const footer: DebugElement = de.query(By.css('.dialog__footer'));
-            expect(footer === null).toBe(true);
+            expect(footer === null).toBe(false);
         });
 
         it('should show action buttons', () => {
