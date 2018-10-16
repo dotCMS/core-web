@@ -170,7 +170,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
         return lastBundle ? bundles.find((bundle) => bundle.name === lastBundle.name) : null;
     }
 
-    private setDialogConfig(messages, form: FormGroup): void {
+    private setDialogConfig(messages: {[key: string]: string}, form: FormGroup): void {
         this.dialogActions = {
             accept: {
                 action: () => {

@@ -139,6 +139,11 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Show and set options for dialog
+     *
+     * @memberof ContentTypesEditComponent
+     */
     startFormDialog(): void {
         this.show = true;
         this.setEditContentletDialogOptions(this.messagesKey);
@@ -174,12 +179,12 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param {boolean} $event
      * @memberof ContentTypesEditComponent
      */
-    setDialogOkButtonState($event: boolean): void {
+    setDialogOkButtonState(formIsValid: boolean): void {
         this.dialogActions = {
             ...this.dialogActions,
             accept: {
                 ...this.dialogActions.accept,
-                disabled: !$event
+                disabled: !formIsValid
             }
         };
     }
