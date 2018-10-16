@@ -13,7 +13,7 @@
         <ng-content></ng-content>
     </div>
 
-    <footer class="dialog__footer" *ngIf="actions.accept || actions.cancel" [class.dialog__footer--shadowed]="isContentScrolled$ | async">
+    <footer class="dialog__footer" *ngIf="actions" [class.dialog__footer--shadowed]="isContentScrolled$ | async">
         <button
             *ngIf="actions.cancel"
             class="dialog__button-cancel"

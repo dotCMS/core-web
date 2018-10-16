@@ -39,7 +39,7 @@ class TestHostComponent {
     actions: DotDialogActions;
 }
 
-describe('DotDialogComponent', () => {
+fdescribe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;
@@ -83,11 +83,11 @@ describe('DotDialogComponent', () => {
     });
 
     describe('show', () => {
-        let okAction: jasmine.Spy;
+        let accceptAction: jasmine.Spy;
         let cancelAction: jasmine.Spy;
 
         beforeEach(() => {
-            okAction = jasmine.createSpy('ok');
+            accceptAction = jasmine.createSpy('ok');
             cancelAction = jasmine.createSpy('cancel');
 
             hostComponent.closeable = true;
@@ -96,7 +96,7 @@ describe('DotDialogComponent', () => {
                 accept: {
                     label: 'Accept',
                     disabled: true,
-                    action: okAction
+                    action: accceptAction
                 },
                 cancel: {
                     label: 'Cancel',
@@ -233,13 +233,13 @@ describe('DotDialogComponent', () => {
 
                         hostFixture.detectChanges();
 
-                        expect(okAction).toHaveBeenCalledTimes(1);
+                        expect(accceptAction).toHaveBeenCalledTimes(1);
                     });
                 });
             });
 
             describe('actions', () => {
-                it('should call ok action', () => {
+                it('should call accept action', () => {
                     hostComponent.actions = {
                         ...hostComponent.actions,
                         accept: {
@@ -249,10 +249,10 @@ describe('DotDialogComponent', () => {
                     };
                     hostFixture.detectChanges();
 
-                    const ok: DebugElement = de.query(By.css('.dialog__button-ok'));
-                    ok.triggerEventHandler('click', {});
+                    const accept: DebugElement = de.query(By.css('.dialog__button-accept'));
+                    accept.triggerEventHandler('click', {});
 
-                    expect(okAction).toHaveBeenCalledTimes(1);
+                    expect(accceptAction).toHaveBeenCalledTimes(1);
                 });
 
                 it('should call cancel action and close the dialog', () => {
