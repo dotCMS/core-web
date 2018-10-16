@@ -537,60 +537,6 @@ textarea,
     }
 }
 
-/* DatePicker */
-
-.ui-datepicker.ui-widget {
-    padding: 0;
-    .ui-datepicker-header {
-        -webkit-border-radius: 0px;
-        -moz-border-radius: 0px;
-        border-radius: 0px;
-        border-top: 0 none;
-        border-left: 0 none;
-        border-right: 0 none;
-    }
-    table {
-        margin: 0;
-    }
-    .ui-datepicker-calendar {
-        td {
-            border-bottom: 1px solid rgba(213, 213, 213, 0.5);
-            padding: 0;
-        }
-        tr:last-child td {
-            border-bottom: 0 none;
-        }
-        thead th {
-            background-color: #f6f8fa;
-            padding: $basic-padding;
-        }
-        td {
-            a {
-                border: 0 none;
-                text-align: center;
-                padding: $basic-padding;
-                &.ui-state-highlight {
-                    background-color: #d6d6d6;
-                    color: #212121;
-                }
-                &.ui-state-active {
-                    background-color: #186ba0;
-                    color: $white;
-                }
-            }
-
-            span {
-                padding: $basic-padding;
-            }
-        }
-    }
-    .ui-timepicker {
-        border-bottom: 0 none;
-        border-left: 0 none;
-        border-right: 0 none;
-    }
-}
-
 /* Steps */
 
 .ui-steps .ui-steps-item.ui-state-highlight .ui-menuitem-link {
