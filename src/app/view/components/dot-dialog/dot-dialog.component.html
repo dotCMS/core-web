@@ -13,22 +13,22 @@
         <ng-content></ng-content>
     </div>
 
-    <footer class="dialog__footer" *ngIf="ok || cancel" [class.dialog__footer--shadowed]="isContentScrolled$ | async">
+    <footer class="dialog__footer" *ngIf="actions.accept || actions.cancel" [class.dialog__footer--shadowed]="isContentScrolled$ | async">
         <button
-            *ngIf="cancel"
+            *ngIf="actions.cancel"
             class="dialog__button-cancel"
             pButton
             secondary
             (click)="cancelAction()"
-            [disabled]="cancel.disabled"
-            [label]="cancel.label">
+            [disabled]="actions.cancel.disabled"
+            [label]="actions.cancel.label">
         </button>
         <button
-            *ngIf="ok"
+            *ngIf="actions.accept"
             class="dialog__button-ok"
             pButton
-            [disabled]="ok.disabled"
-            [label]="ok.label"
+            [disabled]="actions.accept.disabled"
+            [label]="actions.accept.label"
             (click)="acceptAction()">
         </button>
     </footer>

@@ -13,13 +13,13 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { PaginatorService } from '@services/paginator';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -45,8 +45,7 @@ export class LoginAsComponent implements OnInit, OnDestroy {
     needPassword = false;
     userCurrentPage: User[];
     errorMessage: string;
-    dialogOk: DotDialogAction;
-    dialogCancel: DotDialogAction;
+    dialogActions: DotDialogActions;
 
     i18nMessages: {
         [key: string]: string;
@@ -74,9 +73,12 @@ export class LoginAsComponent implements OnInit, OnDestroy {
         });
 
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogOk = {
-                ...this.dialogOk,
-                disabled: !this.form.valid
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.form.valid
+                }
             };
         });
 
@@ -93,16 +95,17 @@ export class LoginAsComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 this.i18nMessages = res;
 
-                this.dialogCancel = {
-                    label: this.i18nMessages['cancel']
-                };
-
-                this.dialogOk = {
-                    label: this.i18nMessages['Change'],
-                    action: () => {
-                        this.formEl.ngSubmit.emit();
+                this.dialogActions = {
+                    accept: {
+                        label: this.i18nMessages['Change'],
+                        action: () => {
+                            this.formEl.ngSubmit.emit();
+                        },
+                        disabled: true
                     },
-                    disabled: true
+                    cancel: {
+                        label: this.i18nMessages['cancel']
+                    },
                 };
             });
     }

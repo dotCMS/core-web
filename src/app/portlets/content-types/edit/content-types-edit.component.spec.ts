@@ -29,6 +29,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { ContentType } from '@portlets/content-types/shared/content-type.model';
 import { MenuItem } from 'primeng/primeng';
+import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -116,7 +117,8 @@ const getConfig = (route) => {
             ]),
             BrowserAnimationsModule,
             DotIconModule,
-            DotIconButtonModule
+            DotIconButtonModule,
+            DotDialogModule
         ],
         providers: [
             {
@@ -176,11 +178,10 @@ describe('ContentTypesEditComponent create mode', () => {
         fixture.detectChanges();
     }));
 
-    it('should has dialog opened by default & has css base-type class', () => {
-        const dialog = de.query(By.css('p-dialog'));
+    it('should have dialog opened by default & has css base-type class', () => {
+        const dialog = de.query(By.css('dot-dialog'));
         expect(dialog).not.toBeNull();
         expect(dialog.componentInstance.visible).toBeTruthy();
-        expect(dialog.componentInstance.styleClass).toEqual('basetype-content');
     });
 
     it('should have cancel button', () => {
@@ -222,7 +223,7 @@ describe('ContentTypesEditComponent create mode', () => {
     });
 
     it('should have show form by default', () => {
-        const dialog = de.query(By.css('p-dialog'));
+        const dialog = de.query(By.css('dot-dialog'));
         const contentTypeForm = de.query(By.css('dot-content-types-form'));
         expect(contentTypeForm === null).toBe(false);
         expect(dialog === null).toBe(false);
@@ -395,7 +396,7 @@ describe('ContentTypesEditComponent edit mode', () => {
    it('should open dialog on edit button click', () => {
         clickEditButton();
 
-        const dialog = de.query(By.css('p-dialog'));
+        const dialog = de.query(By.css('dot-dialog'));
         expect(dialog).not.toBeNull();
         expect(comp.show).toBeTruthy();
         expect(dialog.componentInstance.visible).toBeTruthy();

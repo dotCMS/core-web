@@ -26,8 +26,7 @@
 
 <dot-dialog
     [(visible)]="displayDialog"
-    [ok]="saveDialogAction"
-    [cancel]="closeDialogAction"
+    [actions]="dialogActions"
     (hide)="removeFieldsWithoutId()"
     [header]="currentFieldType?.label">
 

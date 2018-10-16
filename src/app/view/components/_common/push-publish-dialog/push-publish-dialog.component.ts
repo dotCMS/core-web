@@ -11,7 +11,7 @@ import { PushPublishService } from '@services/push-publish/push-publish.service'
 import { SelectItem } from 'primeng/primeng';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LoggerService } from 'dotcms-js/dotcms-js';
-import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 @Component({
@@ -21,8 +21,7 @@ import { Subject } from 'rxjs';
 })
 export class PushPublishContentTypesDialogComponent implements OnInit, OnDestroy {
     dateFieldMinDate = new Date();
-    dialogCancel: DotDialogAction;
-    dialogOk: DotDialogAction;
+    dialogActions: DotDialogActions;
     dialogShow = false;
     form: FormGroup;
     pushActions: SelectItem[];
@@ -143,25 +142,30 @@ export class PushPublishContentTypesDialogComponent implements OnInit, OnDestroy
     }
 
     private setDialogConfig(messages: { [key: string]: string }, form: FormGroup): void {
-        this.dialogOk = {
-            action: () => {
-                this.submitForm();
+        this.dialogActions = {
+            accept: {
+                action: () => {
+                    this.submitForm();
+                },
+                label: messages['contenttypes.content.push_publish.form.push'],
+                disabled: true
             },
-            label: messages['contenttypes.content.push_publish.form.push'],
-            disabled: true
+            cancel: {
+                action: () => {
+                    this.close();
+                },
+                label: messages['contenttypes.content.push_publish.form.cancel']
+            }
         };
 
-        this.dialogCancel = {
-            action: () => {
-                this.close();
-            },
-            label: messages['contenttypes.content.push_publish.form.cancel']
-        };
 
         form.valueChanges.subscribe(() => {
-            this.dialogOk = {
-                ...this.dialogOk,
-                disabled: !this.form.valid
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.form.valid
+                }
             };
         });
     }

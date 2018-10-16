@@ -3,7 +3,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
-import { DotDialogComponent, DotDialogAction } from './dot-dialog.component';
+import { DotDialogComponent, DotDialogActions } from './dot-dialog.component';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotIconButtonComponent } from '@components/_common/dot-icon-button/dot-icon-button.component';
 import { ButtonModule } from 'primeng/primeng';
@@ -22,12 +22,11 @@ const dispatchKeydownEvent = (key: string) => {
     selector: 'dot-test-host-component',
     template: `
         <dot-dialog
+            [actions]="actions"
             [headerStyle]="{'margin': '0'}"
             [contentStyle]="{'padding': '0'}"
             [header]="header"
             [(visible)]="show"
-            [ok]="ok"
-            [cancel]="cancel"
             [closeable]="closeable">
             <b>Dialog content</b>
         </dot-dialog>
@@ -37,12 +36,10 @@ class TestHostComponent {
     header: string;
     show = false;
     closeable = false;
-
-    ok: DotDialogAction;
-    cancel: DotDialogAction;
+    actions: DotDialogActions;
 }
 
-describe('DotDialogComponent', () => {
+fdescribe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;
@@ -95,18 +92,18 @@ describe('DotDialogComponent', () => {
 
             hostComponent.closeable = true;
             hostComponent.header = 'Hello World';
-            hostComponent.ok = {
-                label: 'Accept',
-                disabled: true,
-                action: okAction
+            hostComponent.actions = {
+                accept: {
+                    label: 'Accept',
+                    disabled: true,
+                    action: okAction
+                },
+                cancel: {
+                    label: 'Cancel',
+                    disabled: false,
+                    action: cancelAction
+                }
             };
-
-            hostComponent.cancel = {
-                label: 'Cancel',
-                disabled: false,
-                action: cancelAction
-            };
-
             hostComponent.show = true;
 
             hostFixture.detectChanges();
@@ -219,9 +216,12 @@ describe('DotDialogComponent', () => {
                 });
 
                 it('should trigger accept action on Enter', () => {
-                    hostComponent.ok = {
-                        ...hostComponent.ok,
-                        disabled: false
+                    hostComponent.actions = {
+                        ...hostComponent.actions,
+                        accept: {
+                            ...hostComponent.actions.accept,
+                            disabled: false
+                        }
                     };
 
                     hostFixture.detectChanges();
@@ -240,11 +240,13 @@ describe('DotDialogComponent', () => {
 
             describe('actions', () => {
                 it('should call ok action', () => {
-                    hostComponent.ok = {
-                        ...hostComponent.ok,
-                        disabled: false
+                    hostComponent.actions = {
+                        ...hostComponent.actions,
+                        accept: {
+                            ...hostComponent.actions.accept,
+                            disabled: false
+                        }
                     };
-
                     hostFixture.detectChanges();
 
                     const ok: DebugElement = de.query(By.css('.dialog__button-ok'));

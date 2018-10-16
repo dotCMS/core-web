@@ -1,7 +1,6 @@
 <dot-dialog
     [(visible)]="dialogShow"
-    [ok]="dialogOk"
-    [cancel]="dialogCancel"
+    [actions]="dialogActions"
     [header]="dotMessageService.get('contenttypes.content.push_publish')"
     (hide)="close()">
 

@@ -1,8 +1,7 @@
 <dot-dialog
     [header]="i18nMessages['login-as']"
     [visible]="visible"
-    [ok]="dialogOk"
-    [cancel]="dialogCancel"
+    [actions]="dialogActions"
     (hide)="close()"
 >
     <!--TODO: manage errors on required fields and errors messages -->

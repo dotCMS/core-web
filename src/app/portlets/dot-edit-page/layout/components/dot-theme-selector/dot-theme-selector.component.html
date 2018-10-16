@@ -1,8 +1,6 @@
 <dot-dialog
-    #dotDialog
     [(visible)]="visible"
-    [ok]="applyDialogAction"
-    [cancel]="closeDialogAction"
+    [actions]="dialogActions"
     (hide)="hideDialog()"
     [header]="dotMessageService.get('editpage.layout.theme.header')">
 

@@ -15,7 +15,7 @@ import { AddToBundleService } from '@services/add-to-bundle/add-to-bundle.servic
 import { DotBundle } from '@models/dot-bundle/dot-bundle';
 import { Dropdown } from 'primeng/primeng';
 import { mergeMap, map, tap, take, takeUntil } from 'rxjs/operators';
-import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 const LAST_BUNDLE_USED = 'lastBundleUsed';
 
@@ -28,9 +28,8 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
     form: FormGroup;
     bundle$: Observable<DotBundle[]>;
     placeholder = '';
-    okDialogAction: DotDialogAction;
-    cancelDialogAction: DotDialogAction;
     dialogShow = false;
+    dialogActions: DotDialogActions;
 
     @Input()
     assetIdentifier: string;
@@ -172,25 +171,29 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     private setDialogConfig(messages, form: FormGroup): void {
-        this.okDialogAction = {
-            action: () => {
-                this.submitForm();
+        this.dialogActions = {
+            accept: {
+                action: () => {
+                    this.submitForm();
+                },
+                label: messages['contenttypes.content.add_to_bundle.form.add'],
+                disabled: !form.valid
             },
-            label: messages['contenttypes.content.add_to_bundle.form.add'],
-            disabled: !form.valid
-        };
-
-        this.cancelDialogAction = {
-            action: () => {
-                this.close();
-            },
-            label: messages['contenttypes.content.add_to_bundle.form.cancel']
+            cancel: {
+                action: () => {
+                    this.close();
+                },
+                label: messages['contenttypes.content.add_to_bundle.form.cancel']
+            }
         };
 
         form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.okDialogAction = {
-                ...this.okDialogAction,
-                disabled: !this.form.valid
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.form.valid
+                }
             };
         });
     }

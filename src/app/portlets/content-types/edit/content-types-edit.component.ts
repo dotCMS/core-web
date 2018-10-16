@@ -19,7 +19,7 @@ import { ResponseView } from 'dotcms-js/dotcms-js';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
-import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 /**
  * Portlet component for edit content types
@@ -40,8 +40,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     contentTypeActions: MenuItem[];
     dialogCloseable = false;
     data: ContentType;
-    dialogCancel: DotDialogAction;
-    dialogOk: DotDialogAction;
+    dialogActions: DotDialogActions;
     editButtonLbl: string;
     fields: ContentTypeField[];
     messagesKey: { [key: string]: string } = {};
@@ -119,7 +118,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 }
 
                 this.dialogCloseable = this.isEditMode();
-
             });
 
         this.setTemplateInfo();
@@ -177,9 +175,12 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof ContentTypesEditComponent
      */
     setDialogOkButtonState($event: boolean): void {
-        this.dialogOk = {
-            ...this.dialogOk,
-            disabled: !$event
+        this.dialogActions = {
+            ...this.dialogActions,
+            accept: {
+                ...this.dialogActions.accept,
+                disabled: !$event
+            }
         };
     }
 
@@ -249,21 +250,22 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         this.dotEventsService.notify(typeEvt);
     }
 
-    private setEditContentletDialogOptions(messages: {[key: string]: string}): void {
-        this.dialogCancel = {
-            label: 'Cancel',
-            action: () => {
-                this.cancelForm();
-            }
-        };
-
-        this.dialogOk = {
-            disabled: true,
-            label: this.isEditMode()
-                ? messages['contenttypes.action.update']
-                : messages['contenttypes.action.create'],
-            action: () => {
-                this.contentTypesForm.submitForm();
+    private setEditContentletDialogOptions(messages: { [key: string]: string }): void {
+        this.dialogActions = {
+            accept: {
+                disabled: true,
+                label: this.isEditMode()
+                    ? messages['contenttypes.action.update']
+                    : messages['contenttypes.action.create'],
+                action: () => {
+                    this.contentTypesForm.submitForm();
+                }
+            },
+            cancel: {
+                label: 'Cancel',
+                action: () => {
+                    this.cancelForm();
+                }
             }
         };
     }

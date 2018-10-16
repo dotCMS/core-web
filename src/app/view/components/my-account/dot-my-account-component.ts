@@ -13,7 +13,7 @@ import { NgForm } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotcmsConfig } from 'dotcms-js/dotcms-js';
 import { LoginService, User, Auth } from 'dotcms-js/dotcms-js';
@@ -54,8 +54,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
         [key: string]: string;
     } = {};
 
-    dialogOk: DotDialogAction;
-    dialogCancel: DotDialogAction;
+    dialogActions: DotDialogActions;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -96,26 +95,30 @@ export class MyAccountComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 this.i18nMessages = res;
 
-                this.dialogOk = {
-                    label: this.i18nMessages['save'],
-                    action: () => {
-                        this.save();
+                this.dialogActions = {
+                    accept: {
+                        label: this.i18nMessages['save'],
+                        action: () => {
+                            this.save();
+                        },
+                        disabled: true
                     },
-                    disabled: true
-                };
-
-                this.dialogCancel = {
-                    label: this.i18nMessages['modes.Close'],
-                    action: () => {
-                        this.close.emit();
+                    cancel: {
+                        label: this.i18nMessages['modes.Close'],
+                        action: () => {
+                            this.close.emit();
+                        }
                     }
                 };
             });
 
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogOk = {
-                ...this.dialogOk,
-                disabled: (this.changePasswordOption && !this.passwordMatch) || !this.form.valid
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: (this.changePasswordOption && !this.passwordMatch) || !this.form.valid
+                }
             };
         });
     }

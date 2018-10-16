@@ -15,7 +15,7 @@ import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { PaginatorService } from '@services/paginator/paginator.service';
 import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 import { Site, SiteService } from 'dotcms-js/dotcms-js';
-import { DotDialogAction, DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 /**
  * The DotThemeSelectorComponent is modal that
@@ -32,9 +32,6 @@ import { DotDialogAction, DotDialogComponent } from '@components/dot-dialog/dot-
 export class DotThemeSelectorComponent implements OnInit {
     themes: Observable<DotTheme[]>;
 
-    @ViewChild('dotDialog')
-    dotDialog: DotDialogComponent;
-
     @Input()
     value: DotTheme;
 
@@ -50,10 +47,10 @@ export class DotThemeSelectorComponent implements OnInit {
     @ViewChild('dataGrid')
     datagrid: DataGrid;
 
-    closeDialogAction: DotDialogAction = { label: '', action: () => {} };
-    applyDialogAction: DotDialogAction = { label: '', action: () => {} };
     current: DotTheme;
     visible = true;
+
+    dialogActions: DotDialogActions;
 
     constructor(
         public dotMessageService: DotMessageService,
@@ -71,15 +68,17 @@ export class DotThemeSelectorComponent implements OnInit {
                 'dot.common.cancel'
             ])
             .subscribe(() => {
-                this.closeDialogAction = {
-                    label: this.dotMessageService.get('dot.common.cancel'),
-                    action: () => {}
-                };
-                this.applyDialogAction = {
-                    label: this.dotMessageService.get('dot.common.apply'),
-                    disabled: true,
-                    action: () => {
-                        this.apply();
+                this.dialogActions = {
+                    accept: {
+                        label: this.dotMessageService.get('dot.common.cancel'),
+                        action: () => {}
+                    },
+                    cancel: {
+                        label: this.dotMessageService.get('dot.common.apply'),
+                        disabled: true,
+                        action: () => {
+                            this.apply();
+                        }
                     }
                 };
             });
@@ -128,9 +127,13 @@ export class DotThemeSelectorComponent implements OnInit {
      */
     selectTheme(theme: DotTheme): void {
         this.current = theme;
-        this.applyDialogAction = Object.assign({}, this.applyDialogAction, {
-            disabled: this.value.inode === this.current.inode
-        });
+        this.dialogActions = {
+            ...this.dialogActions,
+            accept: {
+                ...this.dialogActions.accept,
+                disabled: this.value.inode === this.current.inode
+            }
+        };
     }
 
     /**

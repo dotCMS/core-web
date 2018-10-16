@@ -1,6 +1,5 @@
 <dot-dialog
-    [ok]="okDialogAction"
-    [cancel]="cancelDialogAction"
+    [actions]="dialogActions"
     (hide)="close()"
     [header]="dotMessageService.get('contenttypes.content.add_to_bundle')"
     [(visible)]="dialogShow">

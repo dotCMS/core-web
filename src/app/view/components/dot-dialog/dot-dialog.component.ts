@@ -49,10 +49,7 @@ export class DotDialogComponent implements OnInit {
     header = '';
 
     @Input()
-    ok: DotDialogAction;
-
-    @Input()
-    cancel: DotDialogAction;
+    actions: DotDialogActions;
 
     @Input()
     closeable = true;
@@ -89,8 +86,8 @@ export class DotDialogComponent implements OnInit {
      * @memberof DotDialogComponent
      */
     acceptAction(): void {
-        if (this.canTriggerAction(this.ok)) {
-            this.ok.action();
+        if (this.canTriggerAction(this.actions.accept)) {
+            this.actions.accept.action();
         }
     }
 
@@ -102,8 +99,8 @@ export class DotDialogComponent implements OnInit {
     cancelAction(): void {
         this.close();
 
-        if (this.canTriggerAction(this.cancel)) {
-            this.cancel.action();
+        if (this.canTriggerAction(this.actions.cancel)) {
+            this.actions.cancel.action();
         }
     }
 
@@ -157,7 +154,7 @@ export class DotDialogComponent implements OnInit {
         );
     }
 
-    private canTriggerAction(item: DotDialogAction): boolean {
+    private canTriggerAction(item: DialogButton): boolean {
         return item && !item.disabled && !!item.action;
     }
 
@@ -199,8 +196,13 @@ export class DotDialogComponent implements OnInit {
     }
 }
 
-export interface DotDialogAction {
+interface DialogButton {
     action?: (dialog?: any) => void;
     disabled?: boolean;
     label: string;
+}
+
+export interface DotDialogActions {
+    accept?: DialogButton;
+    cancel?: DialogButton;
 }
