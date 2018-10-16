@@ -564,17 +564,23 @@ textarea,
             background-color: #f6f8fa;
             padding: 8px;
         }
-        td a {
-            border: 0 none;
-            text-align: center;
-            padding: 8px;
-            &.ui-state-highlight {
-                background-color: #d6d6d6;
-                color: #212121;
+        td {
+            a {
+                border: 0 none;
+                text-align: center;
+                padding: 8px;
+                &.ui-state-highlight {
+                    background-color: #d6d6d6;
+                    color: #212121;
+                }
+                &.ui-state-active {
+                    background-color: #186ba0;
+                    color: #ffffff;
+                }
             }
-            &.ui-state-active {
-                background-color: #186ba0;
-                color: #ffffff;
+
+            span {
+                padding: 8px;
             }
         }
     }
