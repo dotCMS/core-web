@@ -39,7 +39,7 @@ class TestHostComponent {
     actions: DotDialogActions;
 }
 
-fdescribe('DotDialogComponent', () => {
+describe('DotDialogComponent', () => {
     let component: DotDialogComponent;
     let de: DebugElement;
     let hostComponent: TestHostComponent;

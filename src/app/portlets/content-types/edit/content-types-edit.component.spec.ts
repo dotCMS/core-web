@@ -154,6 +154,7 @@ let location: Location;
 let dotRouterService: DotRouterService;
 let dotHttpErrorManagerService: DotHttpErrorManagerService;
 let testHotKeysMock: TestHotkeysMock;
+let dialog: DebugElement;
 
 describe('ContentTypesEditComponent create mode', () => {
     beforeEach(async(() => {
@@ -176,45 +177,39 @@ describe('ContentTypesEditComponent create mode', () => {
         dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
 
         fixture.detectChanges();
+        dialog = de.query(By.css('dot-dialog'));
+
+        spyOn(comp, 'cancelForm').and.callThrough();
+        spyOn(dotRouterService, 'gotoPortlet');
     }));
 
     it('should have dialog opened by default & has css base-type class', () => {
-        const dialog = de.query(By.css('dot-dialog'));
         expect(dialog).not.toBeNull();
         expect(dialog.componentInstance.visible).toBeTruthy();
     });
 
-    it('should have cancel button', () => {
-        const cancelButton = de.query(By.css('.content-type__cancel'));
-        expect(cancelButton === null).toBe(false);
-    });
-
-    it('should have save button and disabled by default', () => {
-        const saveButton = de.query(By.css('.content-type__save'));
-        expect(saveButton === null).toBe(false);
-        expect(saveButton.nativeElement.disabled).toBe(true);
+    it('should set dialog actions set correctly', () => {
+        expect(dialog.componentInstance.actions).toEqual({
+            accept: {
+                disabled: true,
+                label: 'Create',
+                action: jasmine.any(Function)
+            },
+            cancel: {
+                label: 'Cancel',
+                action: jasmine.any(Function)
+            }
+        });
     });
 
     it('should close the dialog and redirect', () => {
-        spyOn(dotRouterService, 'gotoPortlet');
-        spyOn(comp, 'cancelForm').and.callThrough();
-
-        const cancelButton = de.query(By.css('.content-type__cancel'));
-        cancelButton.nativeElement.click();
+        const dialogCancelButton = dialog.query(By.css('.dialog__button-cancel')).nativeElement;
+        dialogCancelButton.click();
         fixture.detectChanges();
 
         expect(comp.cancelForm).toHaveBeenCalledTimes(1);
         expect(comp.show).toBe(false);
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
-    });
-
-    it('should close dialog and redirect on esc key', () => {
-        spyOn(comp, 'cancelForm').and.callThrough();
-
-        testHotKeysMock.callback(['esc']);
-        fixture.detectChanges();
-
-        expect(comp.cancelForm).toHaveBeenCalledTimes(1);
     });
 
     it('should NOT have dot-content-type-layout', () => {
@@ -223,7 +218,6 @@ describe('ContentTypesEditComponent create mode', () => {
     });
 
     it('should have show form by default', () => {
-        const dialog = de.query(By.css('dot-dialog'));
         const contentTypeForm = de.query(By.css('dot-content-types-form'));
         expect(contentTypeForm === null).toBe(false);
         expect(dialog === null).toBe(false);
@@ -235,9 +229,7 @@ describe('ContentTypesEditComponent create mode', () => {
     });
 
     it('should have create title create mode', () => {
-        const dialogTitle: DebugElement = de.query(By.css('p-header'));
-        expect(dialogTitle).toBeTruthy();
-        expect(dialogTitle.nativeElement.innerText).toEqual('Create Content');
+        expect(dialog.componentInstance.header).toEqual('Create Content');
     });
 
     describe('create', () => {
@@ -281,7 +273,6 @@ describe('ContentTypesEditComponent create mode', () => {
             spyOn(crudService, 'postData').and.returnValue(
                 observableThrowError(mockResponseView(403))
             );
-            spyOn(dotRouterService, 'gotoPortlet');
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
             contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
@@ -290,26 +281,25 @@ describe('ContentTypesEditComponent create mode', () => {
         });
     });
 
-    describe('bind submit button', () => {
-        let form: ContentTypesFormComponent;
+    describe('bind dialog actions to form', () => {
+        let form: DebugElement;
 
         beforeEach(() => {
-            form = de.query(By.css('dot-content-types-form')).componentInstance;
-            spyOn(form, 'submitForm');
-            form.canSave = true;
-            fixture.detectChanges();
+            form = de.query(By.css('dot-content-types-form'));
+            spyOn(form.componentInstance, 'submitForm');
         });
 
         it('should bind save button disabled attribute to canSave property from the form', () => {
-            const saveButton = de.query(By.css('.content-type__save'));
-            expect(saveButton === null).toBe(false);
-            expect(saveButton.nativeElement.disabled).toBe(false);
+            form.triggerEventHandler('valid', true);
+            expect(comp.dialogActions.accept.disabled).toBe(false);
         });
 
         it('should submit form when save button is clicked', () => {
-            const saveButton = de.query(By.css('.content-type__save'));
+            form.triggerEventHandler('valid', true);
+            fixture.detectChanges();
+            const saveButton = de.query(By.css('.dialog__button-accept'));
             saveButton.nativeElement.click();
-            expect(form.submitForm).toHaveBeenCalledTimes(1);
+            expect(form.componentInstance.submitForm).toHaveBeenCalledTimes(1);
         });
     });
 });
@@ -359,13 +349,18 @@ describe('ContentTypesEditComponent edit mode', () => {
         location = fixture.debugElement.injector.get(Location);
         dotRouterService = fixture.debugElement.injector.get(DotRouterService);
         dotHttpErrorManagerService = fixture.debugElement.injector.get(DotHttpErrorManagerService);
+
         fixture.detectChanges();
+
+        spyOn(comp, 'cancelForm').and.callThrough();
+        spyOn(dotRouterService, 'gotoPortlet');
     }));
 
     const clickEditButton = () => {
         const editButton: DebugElement = fixture.debugElement.query(By.css('#form-edit-button'));
         editButton.nativeNode.click();
         fixture.detectChanges();
+        dialog = de.query(By.css('dot-dialog'));
     };
 
     it('should have dot-content-type-layout', () => {
@@ -387,16 +382,12 @@ describe('ContentTypesEditComponent edit mode', () => {
 
     it('should have edit content type title', () => {
         clickEditButton();
-
-        const dialogTitle: DebugElement = de.query(By.css('p-header'));
-        expect(dialogTitle).toBeTruthy();
-        expect(dialogTitle.nativeElement.innerText).toEqual('Edit Content');
+        expect(dialog.componentInstance.header).toEqual('Edit Content');
     });
 
    it('should open dialog on edit button click', () => {
         clickEditButton();
 
-        const dialog = de.query(By.css('dot-dialog'));
         expect(dialog).not.toBeNull();
         expect(comp.show).toBeTruthy();
         expect(dialog.componentInstance.visible).toBeTruthy();
@@ -418,10 +409,7 @@ describe('ContentTypesEditComponent edit mode', () => {
     it('should close the dialog', () => {
         clickEditButton();
 
-        spyOn(dotRouterService, 'gotoPortlet');
-
-        spyOn(comp, 'cancelForm').and.callThrough();
-        const cancelButton = de.query(By.css('.content-type__cancel'));
+        const cancelButton = de.query(By.css('.dialog__button-cancel'));
         cancelButton.nativeElement.click();
         fixture.detectChanges();
 
@@ -586,7 +574,6 @@ describe('ContentTypesEditComponent edit mode', () => {
 
         it('should handle error', () => {
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-            spyOn(dotRouterService, 'gotoPortlet');
             spyOn(crudService, 'putData').and.returnValue(
                 observableThrowError(mockResponseView(403))
             );
