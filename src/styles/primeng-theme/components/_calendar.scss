@@ -21,14 +21,14 @@ p-calendar {
         }
         .ui-datepicker-calendar {
             td {
-                border-bottom: 1px solid rgba(213, 213, 213, 0.5);
+                border-bottom: 1px solid $gray-light;
                 padding: 0;
             }
             tr:last-child td {
                 border-bottom: 0 none;
             }
             thead th {
-                background-color: #f6f8fa;
+                background-color: $gray-bg;
                 padding: $basic-padding;
             }
             td {
@@ -37,11 +37,11 @@ p-calendar {
                     text-align: center;
                     padding: $basic-padding;
                     &.ui-state-highlight {
-                        background-color: #d6d6d6;
-                        color: #212121;
+                        background-color: $gray-light;
+                        color: $gray-dark;
                     }
                     &.ui-state-active {
-                        background-color: #186ba0;
+                        background-color: $brand-primary;
                         color: $white;
                     }
                 }
