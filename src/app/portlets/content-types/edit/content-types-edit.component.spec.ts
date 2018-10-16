@@ -19,7 +19,6 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotMenuService } from '@services/dot-menu.service';
-import { ContentTypesFormComponent } from '../form';
 import { mockResponseView } from '../../../test/response-view.mock';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { HotkeysService } from 'angular2-hotkeys';
