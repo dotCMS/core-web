@@ -7,18 +7,31 @@ import { DotDialogComponent, DotDialogAction } from './dot-dialog.component';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotIconButtonComponent } from '@components/_common/dot-icon-button/dot-icon-button.component';
 import { ButtonModule } from 'primeng/primeng';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+const dispatchKeydownEvent = (key: string) => {
+    const event = new KeyboardEvent('keydown', {
+        'key': key,
+        'code': key
+    });
+
+    document.dispatchEvent(event);
+};
 
 @Component({
     selector: 'dot-test-host-component',
     template: `
         <dot-dialog
+            [headerStyle]="{'margin': '0'}"
+            [contentStyle]="{'padding': '0'}"
             [header]="header"
-            [show]="show"
+            [(visible)]="show"
             [ok]="ok"
             [cancel]="cancel"
             [closeable]="closeable">
             <b>Dialog content</b>
-        </dot-dialog>`
+        </dot-dialog>
+    `
 })
 class TestHostComponent {
     header: string;
@@ -38,7 +51,7 @@ describe('DotDialogComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            imports: [DotIconButtonModule, ButtonModule],
+            imports: [DotIconButtonModule, ButtonModule, BrowserAnimationsModule],
             providers: [],
             declarations: [DotDialogComponent, TestHostComponent]
         }).compileComponents();
@@ -73,12 +86,14 @@ describe('DotDialogComponent', () => {
     });
 
     describe('show', () => {
-        const okAction = jasmine.createSpy('ok');
-        const cancelAction = jasmine.createSpy('cancel');
+        let okAction: jasmine.Spy;
+        let cancelAction: jasmine.Spy;
 
         beforeEach(() => {
+            okAction = jasmine.createSpy('ok');
+            cancelAction = jasmine.createSpy('cancel');
+
             hostComponent.closeable = true;
-            hostComponent.show = true;
             hostComponent.header = 'Hello World';
             hostComponent.ok = {
                 label: 'Accept',
@@ -91,6 +106,8 @@ describe('DotDialogComponent', () => {
                 disabled: false,
                 action: cancelAction
             };
+
+            hostComponent.show = true;
 
             hostFixture.detectChanges();
             de = hostDe.query(By.css('dot-dialog'));
@@ -106,6 +123,11 @@ describe('DotDialogComponent', () => {
             expect(header.nativeElement.textContent).toBe('Hello World');
         });
 
+        it('should set the header custom styles', () => {
+            const header: DebugElement = de.query(By.css('.dialog__header'));
+            expect(header.styles).toEqual({margin: '0'});
+        });
+
         it('should have close button', () => {
             const close: DebugElement = de.query(By.css('dot-icon-button'));
             const closeComponent: DotIconButtonComponent = close.componentInstance;
@@ -117,6 +139,11 @@ describe('DotDialogComponent', () => {
         it('should show content', () => {
             const content: DebugElement = de.query(By.css('.dialog__content'));
             expect(content.nativeElement.innerHTML).toBe('<b>Dialog content</b>');
+        });
+
+        it('should set the content custom styles', () => {
+            const content: DebugElement = de.query(By.css('.dialog__content'));
+            expect(content.styles).toEqual({padding: '0'});
         });
 
         it('should show footer', () => {
@@ -133,46 +160,113 @@ describe('DotDialogComponent', () => {
                 (button: HTMLButtonElement) => button.textContent
             );
 
-            const buttonsAttr = buttonsElements.map(
-                (button: HTMLButtonElement) => button.disabled
-            );
+            const buttonsAttr = buttonsElements.map((button: HTMLButtonElement) => button.disabled);
 
             expect(buttonsComponents).toEqual(['Cancel', 'Accept']);
             expect(buttonsAttr).toEqual([false, true]);
         });
 
-        xit('should add shadow to header and footer on content scroll');
-
         describe('events', () => {
             beforeEach(() => {
-                spyOn(component.close, 'emit');
+                spyOn(component.hide, 'emit').and.callThrough();
+                spyOn(component.visibleChange, 'emit').and.callThrough();
             });
 
             it('should close dialog and emit close', () => {
-                const close: DebugElement = de.query(By.css('dot-icon-button'));
+                hostFixture.whenStable().then(() => {
+                    expect(component.visible).toBe(true);
 
-                expect(component.show).toBe(true);
+                    const close: DebugElement = de.query(By.css('dot-icon-button'));
 
-                close.triggerEventHandler('click', {});
+                    close.triggerEventHandler('click', {
+                        preventDefault: () => {}
+                    });
 
-                expect(component.show).toBe(false);
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
+                    hostFixture.detectChanges();
+                    expect(component.visibleChange.emit).toHaveBeenCalledTimes(1);
+                    expect(component.visible).toBe(false);
+                    // expect(component.hide.emit).toHaveBeenCalledTimes(1);
+                });
             });
 
-            it('shoudl call ok action', () => {
-                const ok: DebugElement = de.query(By.css('.dialog__button-ok'));
-                ok.triggerEventHandler('click', {});
+            it('should close the dialog on overlay click', () => {
+                hostFixture.whenStable().then(() => {
+                    de.nativeElement.click();
+                    hostFixture.detectChanges();
 
-                expect(okAction).toHaveBeenCalledTimes(1);
+                    expect(component.visible).toBe(false);
+                });
             });
 
-            it('should call cancel action and close the dialog', () => {
-                const cancel: DebugElement = de.query(By.css('.dialog__button-cancel'));
-                cancel.triggerEventHandler('click', {});
+            xit('it should set shadow to header and footer on scroll', () => {
 
-                expect(cancelAction).toHaveBeenCalledTimes(1);
-                expect(component.show).toBe(false);
-                expect(component.close.emit).toHaveBeenCalledTimes(1);
+            });
+
+            describe('keyboard events', () => {
+
+                it('should trigger cancel action and close the dialog on Escape', () => {
+                    hostFixture.whenStable().then(() => {
+                        expect(component.visible).toBe(true);
+
+                        dispatchKeydownEvent('Escape');
+
+                        hostFixture.detectChanges();
+
+                        expect(cancelAction).toHaveBeenCalledTimes(1);
+                        expect(component.visible).toBe(false);
+                        // expect(component.hide.emit).toHaveBeenCalledTimes(1);
+                    });
+                });
+
+                it('should trigger accept action on Enter', () => {
+                    hostComponent.ok = {
+                        ...hostComponent.ok,
+                        disabled: false
+                    };
+
+                    hostFixture.detectChanges();
+
+                    hostFixture.whenStable().then(() => {
+                        expect(component.visible).toBe(true);
+
+                        dispatchKeydownEvent('Enter');
+
+                        hostFixture.detectChanges();
+
+                        expect(okAction).toHaveBeenCalledTimes(1);
+                    });
+                });
+            });
+
+            describe('actions', () => {
+                it('should call ok action', () => {
+                    hostComponent.ok = {
+                        ...hostComponent.ok,
+                        disabled: false
+                    };
+
+                    hostFixture.detectChanges();
+
+                    const ok: DebugElement = de.query(By.css('.dialog__button-ok'));
+                    ok.triggerEventHandler('click', {});
+
+                    expect(okAction).toHaveBeenCalledTimes(1);
+                });
+
+                it('should call cancel action and close the dialog', () => {
+                    hostFixture.whenStable().then(() => {
+                        expect(component.visible).toBe(true);
+
+                        const cancel: DebugElement = de.query(By.css('.dialog__button-cancel'));
+                        cancel.triggerEventHandler('click', {});
+
+                        hostFixture.detectChanges();
+
+                        expect(cancelAction).toHaveBeenCalledTimes(1);
+                        expect(component.visible).toBe(false);
+                        // expect(component.hide.emit).toHaveBeenCalledTimes(1);
+                    });
+                });
             });
         });
     });

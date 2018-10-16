@@ -4,29 +4,46 @@ import {
     EventEmitter,
     Output,
     HostBinding,
-    HostListener,
     ViewChild,
     ElementRef,
     OnInit
 } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { trigger, transition, style, animate, state, AnimationEvent } from '@angular/animations';
+import { Observable, fromEvent, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-dialog',
     templateUrl: './dot-dialog.component.html',
-    styleUrls: ['./dot-dialog.component.scss']
+    styleUrls: ['./dot-dialog.component.scss'],
+    animations: [
+        trigger('animation', [
+            state(
+                'show',
+                style({
+                    opacity: 1
+                })
+            ),
+            state(
+                'void',
+                style({
+                    opacity: 0
+                })
+            ),
+            transition('* => *', animate('300ms ease-in'))
+        ])
+    ]
 })
 export class DotDialogComponent implements OnInit {
+    @ViewChild('dialog')
+    dialog: ElementRef;
+
     @ViewChild('content')
     content: ElementRef;
 
-    @ViewChild('headerEl')
-    headerEl: ElementRef;
-
     @Input()
     @HostBinding('class.active')
-    show: boolean;
+    visible: boolean;
 
     @Input()
     header = '';
@@ -40,47 +57,145 @@ export class DotDialogComponent implements OnInit {
     @Input()
     closeable = true;
 
+    @Input()
+    contentStyle: {
+        [key: string]: string;
+    };
+
+    @Input()
+    headerStyle: {
+        [key: string]: string;
+    };
+
+
     @Output()
-    close: EventEmitter<any> = new EventEmitter();
+    hide: EventEmitter<any> = new EventEmitter();
 
-    contentScrolled$: Observable<boolean>;
+    @Output()
+    visibleChange: EventEmitter<any> = new EventEmitter();
 
-    constructor() {}
+    isContentScrolled$: Observable<boolean>;
 
-    ngOnInit() {
-        this.contentScrolled$ = fromEvent(this.content.nativeElement, 'scroll').pipe(
-            map((e: { target: HTMLInputElement }) => e.target.scrollTop > 0)
-        );
-    }
+    private subscription: Subscription[] = [];
 
-    @HostListener('click', ['$event.target'])
-    closeDialogByMask(target: HTMLElement) {
-        if (target.className === 'active') {
-            this.closeDialog();
+    constructor(private el: ElementRef) {}
+
+    ngOnInit() {}
+
+
+    /**
+     * Accept button handler
+     *
+     * @memberof DotDialogComponent
+     */
+    acceptAction(): void {
+        if (this.canTriggerAction(this.ok)) {
+            this.ok.action();
         }
     }
 
     /**
-     * Action when pressed Cancel button
+     * Cancel button handler
      *
      * @memberof DotDialogComponent
      */
     cancelAction(): void {
-        this.closeDialog();
+        this.close();
 
-        if (this.cancel.action) {
+        if (this.canTriggerAction(this.cancel)) {
             this.cancel.action();
         }
     }
 
     /**
-     * Callback when dialog hide
+     * Close dialog
      *
      * @memberof DotDialogComponent
      */
-    closeDialog(): void {
-        this.show = false;
-        this.close.emit();
+    close($event?: MouseEvent): void {
+        this.visibleChange.emit(false);
+
+        if ($event) {
+            $event.preventDefault();
+        }
+    }
+
+    /**
+     * Handle animation start
+     *
+     * @param {AnimationEvent} $event
+     * @memberof DotDialogComponent
+     */
+    onAnimationStart($event: AnimationEvent): void {
+        switch ($event.toState) {
+            case 'visible':
+                this.bindEvents();
+                break;
+            case 'void':
+                this.hide.emit();
+                this.unBindEvents();
+                break;
+        }
+    }
+
+    private bindEvents(): void {
+        this.isContentScrolled$ = this.isContentScrolled();
+
+        this.subscription.push(
+            fromEvent(document, 'keydown').subscribe(this.handleKeyboardEvents.bind(this))
+        );
+
+        this.subscription.push(
+            fromEvent(this.el.nativeElement, 'click')
+                .pipe(
+                    filter((event: MouseEvent) => {
+                        const el = <HTMLElement>event.target;
+                        return el.localName === 'dot-dialog' && el.classList.contains('active');
+                    })
+                )
+                .subscribe(this.close.bind(this))
+        );
+    }
+
+    private canTriggerAction(item: DotDialogAction): boolean {
+        return item && !item.disabled && !!item.action;
+    }
+
+    private handleKeyboardEvents(event: KeyboardEvent): void {
+        switch (event.code) {
+            case 'Escape':
+                this.cancelAction();
+                break;
+            case 'Enter':
+                this.acceptAction();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private isContentScrolled(): Observable<boolean> {
+        return fromEvent(this.content.nativeElement, 'scroll').pipe(
+            tap((e: { target: HTMLInputElement }) => {
+                /*
+                    Absolute positioned overlays panels (in dropdowns, menus, etc...) inside the
+                    dialog content needs to be append to the body, this click is to hide them on
+                    scroll because they mantain their position relative to the body.
+                */
+                e.target.click();
+            }),
+            map((e: { target: HTMLInputElement }) => {
+                return e.target.scrollTop > 0;
+            })
+        );
+    }
+
+    private unBindEvents(): void {
+        this.isContentScrolled$ = null;
+
+        this.subscription.forEach((sub: Subscription) => {
+            sub.unsubscribe();
+        });
     }
 }
 

@@ -87,10 +87,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                     action: () => {}
                 };
                 this.saveDialogAction = {
-                    label: this.i18nMessages['contenttypes.dropzone.action.save'],
                     action: () => {
                         this.propertiesForm.saveFieldProperties();
-                    }
+                    },
+                    label: this.i18nMessages['contenttypes.dropzone.action.save']
                 };
             });
 

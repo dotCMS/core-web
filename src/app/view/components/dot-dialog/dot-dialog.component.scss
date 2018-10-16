@@ -5,8 +5,6 @@
 $dialog-padding: $basic-padding * 4;
 
 :host {
-    opacity: 0;
-    transition: opacity 200ms ease;
     display: none;
 
     &.active {
@@ -14,7 +12,6 @@ $dialog-padding: $basic-padding * 4;
         bottom: 0;
         display: block;
         left: 0;
-        opacity: 1;
         position: absolute;
         right: 0;
         top: 0;
@@ -36,7 +33,7 @@ $dialog-padding: $basic-padding * 4;
 }
 
 .dialog__content {
-    overflow: auto;
+    overflow-y: scroll;
     padding: 0 $dialog-padding $dialog-padding;
 }
 
@@ -52,23 +49,23 @@ $dialog-padding: $basic-padding * 4;
     display: flex;
     justify-content: flex-end;
 
-    &.shadowed {
-        box-shadow: 0px -3px 20px 0 #00000026;
-    }
-
     button {
         margin-left: $basic-padding;
     }
+}
+
+.dialog__footer--shadowed {
+    box-shadow: 0px -3px 20px 0 #00000026;
 }
 
 .dialog__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
 
-    &.shadowed {
-        box-shadow: 0px 3px 20px 0 #00000026;
-    }
+.dialog__header--shadowed {
+    box-shadow: 0px 3px 20px 0 #00000026;
 }
 
 .dialog__title {

@@ -31,22 +31,29 @@ import { DotDialogAction, DotDialogComponent } from '@components/dot-dialog/dot-
 })
 export class DotThemeSelectorComponent implements OnInit {
     themes: Observable<DotTheme[]>;
+
     @ViewChild('dotDialog')
     dotDialog: DotDialogComponent;
+
     @Input()
     value: DotTheme;
+
     @Output()
     selected = new EventEmitter<DotTheme>();
+
     @Output()
     close = new EventEmitter<boolean>();
+
     @ViewChild('searchInput')
     searchInput: ElementRef;
+
     @ViewChild('dataGrid')
     datagrid: DataGrid;
 
     closeDialogAction: DotDialogAction = { label: '', action: () => {} };
     applyDialogAction: DotDialogAction = { label: '', action: () => {} };
     current: DotTheme;
+    visible = true;
 
     constructor(
         public dotMessageService: DotMessageService,

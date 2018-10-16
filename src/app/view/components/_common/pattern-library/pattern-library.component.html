@@ -1,4 +1,11 @@
+<h3>Custom Components</h3>
+<button pButton (click)="dialogShow = true" label="Open Dialog"></button>
 
+<dot-dialog [(visible)]="dialogShow" header="Hello Dialog">
+    <h1>Hello World</h1>
+</dot-dialog>
+
+<h3>Form Fields</h3>
 <div class="pl__forms">
     <p-dropdown [options]="dropdownOptions"></p-dropdown>
     <p-dropdown tiny [options]="dropdownOptions"></p-dropdown>

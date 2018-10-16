@@ -1,20 +1,4 @@
-<p-dialog
-    #dialog
-    class="dialog"
-    [dismissableMask]="false"
-    [closable]="false"
-    [draggable]="false"
-    [visible]="show"
-    [dismissableMask]="true"
-    [responsive]="true"
-    [modal]="true"
-    [styleClass]="header?.length > 0 ? 'ui-dialog-titlebar-animate' : ''">
-
-    <p-header>
-        {{ header }}
-        <dot-icon-button big icon="close" (click)="onClose($event)" class="dialog__close"></dot-icon-button>
-    </p-header>
-
+<dot-dialog [header]="header" [(visible)]="show" (hide)="close.emit()" [contentStyle]="{'padding': '0'}" [headerStyle]="{'background-color': '#f1f3f4'}">
     <dot-iframe
         class="dialog__iframe"
         [src]="url"
@@ -23,4 +7,4 @@
         (keydown)="onKeyDown($event)"
         (custom)="onCustomEvents($event)">
     </dot-iframe>
-</p-dialog>
+</dot-dialog>

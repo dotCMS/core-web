@@ -16,7 +16,6 @@ import {
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
@@ -39,6 +38,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     contentTypesForm: ContentTypesFormComponent;
 
     contentTypeActions: MenuItem[];
+    dialogCloseable = false;
     data: ContentType;
     dialogCancel: DotDialogAction;
     dialogOk: DotDialogAction;
@@ -60,7 +60,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         private dotEventsService: DotEventsService,
         private dotRouterService: DotRouterService,
         private fieldService: FieldService,
-        private hotkeysService: HotkeysService,
         private route: ActivatedRoute,
         public dotMessageService: DotMessageService,
         public router: Router
@@ -117,8 +116,9 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
                 if (!this.isEditMode()) {
                     this.startFormDialog();
-                    this.bindEscKey();
                 }
+
+                this.dialogCloseable = this.isEditMode();
 
             });
 
@@ -136,8 +136,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof ContentTypesEditComponent
      */
     cancelForm(): void {
-        this.show = false;
-
         if (!this.isEditMode()) {
             this.dotRouterService.gotoPortlet('/content-types-angular');
         }
@@ -172,6 +170,12 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    /**
+     * Set the state for the ok action for the dialog
+     *
+     * @param {boolean} $event
+     * @memberof ContentTypesEditComponent
+     */
     setDialogOkButtonState($event: boolean): void {
         this.dialogOk = {
             ...this.dialogOk,
@@ -186,7 +190,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof ContentTypesEditComponent
      */
     handleFormSubmit(value: any): void {
-        this.show = false;
         this.isEditMode() ? this.updateContentType(value) : this.createContentType(value);
     }
 
@@ -267,18 +270,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
     private updateOrNewField(fieldsToSave: ContentTypeField[]): boolean {
         return !fieldsToSave[0].id || fieldsToSave.length === 1;
-    }
-
-    private bindEscKey(): void {
-        this.hotkeysService.add(
-            new Hotkey(
-                'esc',
-                (_event: KeyboardEvent): boolean => {
-                    this.cancelForm();
-                    return false;
-                }
-            )
-        );
     }
 
     private createContentType(value: ContentType): void {

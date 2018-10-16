@@ -3,7 +3,6 @@ import {
     Input,
     Output,
     EventEmitter,
-    ViewEncapsulation,
     ViewChild
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -16,7 +15,6 @@ import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-push-publish-dialog',
     styleUrls: ['./push-publish-dialog.component.scss'],
     templateUrl: 'push-publish-dialog.component.html'

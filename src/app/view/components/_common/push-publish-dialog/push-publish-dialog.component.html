@@ -1,9 +1,9 @@
 <dot-dialog
-    [show]="dialogShow"
+    [(visible)]="dialogShow"
     [ok]="dialogOk"
     [cancel]="dialogCancel"
     [header]="dotMessageService.get('contenttypes.content.push_publish')"
-    (close)="close()">
+    (hide)="close()">
 
     <form *ngIf="pushActions" [formGroup]="form" (ngSubmit)="submitPushAction($event)" (keyup.enter)="submitPushAction($event)" novalidate #formEl="ngForm">
         <div class="form__group">

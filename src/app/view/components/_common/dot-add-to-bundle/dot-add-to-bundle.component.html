@@ -1,9 +1,9 @@
 <dot-dialog
     [ok]="okDialogAction"
     [cancel]="cancelDialogAction"
-    (close)="close()"
+    (hide)="close()"
     [header]="dotMessageService.get('contenttypes.content.add_to_bundle')"
-    [show]="dialogShow">
+    [(visible)]="dialogShow">
 
     <form [formGroup]="form" (ngSubmit)="submitBundle($event)" (keyup.enter)="submitBundle($event)" novalidate #formEl="ngForm">
         <div class="form__group">

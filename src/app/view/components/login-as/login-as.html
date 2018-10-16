@@ -1,9 +1,9 @@
 <dot-dialog
     [header]="i18nMessages['login-as']"
-    [show]="visible"
+    [visible]="visible"
     [ok]="dialogOk"
     [cancel]="dialogCancel"
-    (close)="close()"
+    (hide)="close()"
 >
     <!--TODO: manage errors on required fields and errors messages -->
     <span class="error-message">{{ errorMessage }}</span>

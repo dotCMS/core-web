@@ -11,10 +11,13 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 export class DotContentletWrapperComponent implements OnInit {
     @Input()
     header = '';
+
     @Input()
     url: string;
+
     @Output()
     close: EventEmitter<any> = new EventEmitter();
+
     @Output()
     custom: EventEmitter<any> = new EventEmitter();
 

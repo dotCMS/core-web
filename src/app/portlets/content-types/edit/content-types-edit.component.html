@@ -28,11 +28,10 @@
 <dot-dialog
     *ngIf="show"
     [cancel]="dialogCancel"
-    [closeable]="false"
+    [closeable]="dialogCloseable"
     [header]="templateInfo.header"
     [ok]="dialogOk"
-    [show]="show"
-    (close)="show = false"
+    [(visible)]="show"
 >
     <dot-content-types-form
         #form

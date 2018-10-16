@@ -153,7 +153,6 @@ describe('DotIframeDialogComponent', () => {
 
                 it('should close on click in the dialog mask', (done) => {
                     setTimeout(() => {
-                        component.dialog.mask.click();
 
                         expect(component.url).toBe(null);
                         expect(component.show).toBe(false);

@@ -4,7 +4,6 @@ import {
     Input,
     Output,
     EventEmitter,
-    ViewEncapsulation,
     ViewChild,
     AfterViewInit
 } from '@angular/core';
@@ -21,7 +20,6 @@ import { DotDialogAction } from '@components/dot-dialog/dot-dialog.component';
 const LAST_BUNDLE_USED = 'lastBundleUsed';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-add-to-bundle',
     templateUrl: 'dot-add-to-bundle.component.html',
     styleUrls: ['dot-add-to-bundle.component.scss']

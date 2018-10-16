@@ -1,9 +1,9 @@
 <dot-dialog
     [header]="i18nMessages['my-account']"
-    [show]="visible"
+    [visible]="visible"
     [ok]="dialogOk"
     [cancel]="dialogCancel"
-    (close)="close.emit()"
+    (hide)="close.emit()"
 >
 
     <div class="error-message" [innerHTML]="message" *ngIf="message" id="dot-my-account-general-error-message"></div>

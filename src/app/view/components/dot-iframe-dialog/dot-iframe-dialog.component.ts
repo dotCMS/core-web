@@ -6,10 +6,7 @@ import {
     EventEmitter,
     Output,
     HostListener,
-    ViewChild
 } from '@angular/core';
-import { Dialog } from 'primeng/primeng';
-import { fromEvent } from 'rxjs';
 
 @Component({
     selector: 'dot-iframe-dialog',
@@ -17,9 +14,6 @@ import { fromEvent } from 'rxjs';
     styleUrls: ['./dot-iframe-dialog.component.scss']
 })
 export class DotIframeDialogComponent implements OnChanges {
-    @ViewChild('dialog')
-    dialog: Dialog;
-
     @Input()
     url: string;
 
@@ -51,11 +45,6 @@ export class DotIframeDialogComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         if (changes.url) {
             this.show = !!changes.url.currentValue;
-
-            // Need to wait til' the dialog is rendered
-            setTimeout(() => {
-                this.handleMaskEvents(this.show);
-            }, 0);
         }
 
         if (changes.header) {
@@ -74,16 +63,19 @@ export class DotIframeDialogComponent implements OnChanges {
             $event.preventDefault();
         }
 
-        if (this.beforeClose.observers.length) {
-            this.beforeClose.emit({
-                originalEvent: $event,
-                close: () => {
-                    this.closeDialog();
-                }
-            });
-        } else {
-            this.closeDialog();
-        }
+        this.closeDialog();
+
+
+        // if (this.beforeClose.observers.length) {
+        //     this.beforeClose.emit({
+        //         originalEvent: $event,
+        //         close: () => {
+        //             this.closeDialog();
+        //         }
+        //     });
+        // } else {
+        //     this.closeDialog();
+        // }
     }
 
     /**
@@ -106,9 +98,9 @@ export class DotIframeDialogComponent implements OnChanges {
     onKeyDown($event: KeyboardEvent): void {
         this.keydown.emit($event);
 
-        if ($event.key === 'Escape') {
-            this.onClose($event);
-        }
+        // if ($event.key === 'Escape') {
+        //     this.onClose($event);
+        // }
     }
 
     /**
@@ -127,11 +119,5 @@ export class DotIframeDialogComponent implements OnChanges {
         this.show = false;
         this.header = '';
         this.close.emit();
-    }
-
-    private handleMaskEvents(show: boolean): void {
-        if (show) {
-            fromEvent(this.dialog.mask, 'click').subscribe(this.onClose.bind(this));
-        }
     }
 }
