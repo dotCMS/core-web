@@ -70,15 +70,14 @@ export class DotThemeSelectorComponent implements OnInit {
             .subscribe(() => {
                 this.dialogActions = {
                     accept: {
-                        label: this.dotMessageService.get('dot.common.cancel'),
-                        action: () => {}
-                    },
-                    cancel: {
                         label: this.dotMessageService.get('dot.common.apply'),
                         disabled: true,
                         action: () => {
                             this.apply();
                         }
+                    },
+                    cancel: {
+                        label: this.dotMessageService.get('dot.common.cancel')
                     }
                 };
             });
