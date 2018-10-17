@@ -5,8 +5,9 @@ import {
     OnChanges,
     EventEmitter,
     Output,
-    HostListener,
+    ViewChild
 } from '@angular/core';
+import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
     selector: 'dot-iframe-dialog',
@@ -14,6 +15,8 @@ import {
     styleUrls: ['./dot-iframe-dialog.component.scss']
 })
 export class DotIframeDialogComponent implements OnChanges {
+    @ViewChild('dialog') dotDialog: DotDialogComponent;
+
     @Input()
     url: string;
 
@@ -22,7 +25,6 @@ export class DotIframeDialogComponent implements OnChanges {
 
     @Output()
     beforeClose: EventEmitter<{
-        originalEvent: MouseEvent | KeyboardEvent;
         close: () => void;
     }> = new EventEmitter();
 
@@ -53,54 +55,17 @@ export class DotIframeDialogComponent implements OnChanges {
     }
 
     /**
-     * Handle attemp to close the dialog
-     *
-     * @param (MouseEvent | KeyboardEvent) $event
-     * @memberof DotIframeDialogComponent
-     */
-    onClose($event: MouseEvent | KeyboardEvent): void {
-        if ($event.preventDefault) {
-            $event.preventDefault();
-        }
-
-        this.closeDialog();
-
-
-        // if (this.beforeClose.observers.length) {
-        //     this.beforeClose.emit({
-        //         originalEvent: $event,
-        //         close: () => {
-        //             this.closeDialog();
-        //         }
-        //     });
-        // } else {
-        //     this.closeDialog();
-        // }
-    }
-
-    /**
-     * Handle custom event from the iframe window
-     *
-     * @param CustomEvent $event
-     * @memberof DotIframeDialogComponent
-     */
-    onCustomEvents($event: CustomEvent): void {
-        this.custom.emit($event);
-    }
-
-    /**
      * Handle keydown event from the iframe window
      *
      * @param any $event
      * @memberof DotIframeDialogComponent
      */
-    @HostListener('document:keydown', ['$event'])
     onKeyDown($event: KeyboardEvent): void {
         this.keydown.emit($event);
 
-        // if ($event.key === 'Escape') {
-        //     this.onClose($event);
-        // }
+        if ($event.key === 'Escape') {
+            this.dotDialog.close();
+        }
     }
 
     /**
@@ -114,7 +79,12 @@ export class DotIframeDialogComponent implements OnChanges {
         this.load.emit($event);
     }
 
-    private closeDialog(): void {
+    /**
+     * Handle dialog close/hide
+     *
+     * @memberof DotIframeDialogComponent
+     */
+    onDialogHide(): void {
         this.url = null;
         this.show = false;
         this.header = '';

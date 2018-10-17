@@ -1,10 +1,16 @@
-<dot-dialog [header]="header" [(visible)]="show" (hide)="close.emit()" [contentStyle]="{'padding': '0'}" [headerStyle]="{'background-color': '#f1f3f4'}">
+<dot-dialog
+    #dialog
+    (beforeClose)="beforeClose.emit($event)"
+    (hide)="onDialogHide()"
+    [(visible)]="show"
+    [contentStyle]="{'padding': '0'}"
+    [headerStyle]="{'background-color': '#f1f3f4'}"
+    [header]="header">
     <dot-iframe
         class="dialog__iframe"
         [src]="url"
-        *ngIf="show"
         (load)="onLoad($event)"
         (keydown)="onKeyDown($event)"
-        (custom)="onCustomEvents($event)">
+        (custom)="custom.emit($event)">
     </dot-iframe>
 </dot-dialog>

@@ -5,8 +5,7 @@ import {
     Output,
     HostBinding,
     ViewChild,
-    ElementRef,
-    OnInit
+    ElementRef
 } from '@angular/core';
 import { trigger, transition, style, animate, state, AnimationEvent } from '@angular/animations';
 import { Observable, fromEvent, Subscription } from 'rxjs';
@@ -34,7 +33,7 @@ import { filter, map, tap } from 'rxjs/operators';
         ])
     ]
 })
-export class DotDialogComponent implements OnInit {
+export class DotDialogComponent {
     @ViewChild('dialog')
     dialog: ElementRef;
 
@@ -64,9 +63,13 @@ export class DotDialogComponent implements OnInit {
         [key: string]: string;
     };
 
-
     @Output()
     hide: EventEmitter<any> = new EventEmitter();
+
+    @Output()
+    beforeClose: EventEmitter<{
+        close: () => void;
+    }> = new EventEmitter();
 
     @Output()
     visibleChange: EventEmitter<any> = new EventEmitter();
@@ -77,16 +80,13 @@ export class DotDialogComponent implements OnInit {
 
     constructor(private el: ElementRef) {}
 
-    ngOnInit() {}
-
-
     /**
      * Accept button handler
      *
      * @memberof DotDialogComponent
      */
     acceptAction(): void {
-        if (this.canTriggerAction(this.actions.accept)) {
+        if (this.actions && this.canTriggerAction(this.actions.accept)) {
             this.actions.accept.action();
         }
     }
@@ -99,7 +99,7 @@ export class DotDialogComponent implements OnInit {
     cancelAction(): void {
         this.close();
 
-        if (this.canTriggerAction(this.actions.cancel)) {
+        if (this.actions && this.canTriggerAction(this.actions.cancel)) {
             this.actions.cancel.action();
         }
     }
@@ -110,7 +110,15 @@ export class DotDialogComponent implements OnInit {
      * @memberof DotDialogComponent
      */
     close($event?: MouseEvent): void {
-        this.visibleChange.emit(false);
+        if (this.beforeClose.observers.length) {
+            this.beforeClose.emit({
+                close: () => {
+                    this.visibleChange.emit(false);
+                }
+            });
+        } else {
+            this.visibleChange.emit(false);
+        }
 
         if ($event) {
             $event.preventDefault();
@@ -146,6 +154,7 @@ export class DotDialogComponent implements OnInit {
             fromEvent(this.el.nativeElement, 'click')
                 .pipe(
                     filter((event: MouseEvent) => {
+                        console.log('click');
                         const el = <HTMLElement>event.target;
                         return el.localName === 'dot-dialog' && el.classList.contains('active');
                     })
@@ -159,6 +168,7 @@ export class DotDialogComponent implements OnInit {
     }
 
     private handleKeyboardEvents(event: KeyboardEvent): void {
+        console.log('handleKeyboardEvents');
         switch (event.code) {
             case 'Escape':
                 this.cancelAction();
@@ -174,6 +184,7 @@ export class DotDialogComponent implements OnInit {
     private isContentScrolled(): Observable<boolean> {
         return fromEvent(this.content.nativeElement, 'scroll').pipe(
             tap((e: { target: HTMLInputElement }) => {
+                console.log('scroll');
                 /*
                     Absolute positioned overlays panels (in dropdowns, menus, etc...) inside the
                     dialog content needs to be append to the body, this click is to hide them on

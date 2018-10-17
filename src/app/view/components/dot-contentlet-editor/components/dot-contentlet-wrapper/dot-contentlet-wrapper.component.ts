@@ -66,7 +66,7 @@ export class DotContentletWrapperComponent implements OnInit {
      * @param * $event
      * @memberof DotEditContentletComponent
      */
-    onBeforeClose($event?: { originalEvent: MouseEvent | KeyboardEvent; close: () => void }): void {
+    onBeforeClose($event?: { close: () => void }): void {
         if (this.isContentletModified) {
             this.dotAlertConfirmService.confirm({
                 accept: () => {
@@ -92,8 +92,8 @@ export class DotContentletWrapperComponent implements OnInit {
     onClose(): void {
         this.dotContentletEditorService.clear();
         this.isContentletModified = false;
-        this.close.emit();
         this.header = '';
+        this.close.emit();
     }
 
     /**

@@ -14,6 +14,7 @@ export class PatternLibraryComponent implements OnInit {
     radioVal1 = 'Option 4';
     checkboxVal1 = ['Option 4'];
     dialogShow = false;
+    dialogShow2 = false;
 
     constructor() {}
 
@@ -35,5 +36,11 @@ export class PatternLibraryComponent implements OnInit {
         ];
 
         this.selectButtonValue = 'one';
+    }
+
+    onBeforeClose($event: { close: () => void }): void {
+        if (confirm('Are you sure you want to close the dialog?')) {
+            $event.close();
+        }
     }
 }
