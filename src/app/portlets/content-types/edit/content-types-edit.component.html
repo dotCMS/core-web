@@ -26,13 +26,13 @@
 </dot-content-type-layout>
 
 <dot-dialog
-    *ngIf="show"
     [actions]="dialogActions"
     [closeable]="dialogCloseable"
     [header]="templateInfo.header"
     [(visible)]="show"
 >
     <dot-content-types-form
+        *ngIf="show"
         #form
         [fields]="fields"
         [data]="data"

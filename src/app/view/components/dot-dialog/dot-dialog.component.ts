@@ -154,7 +154,6 @@ export class DotDialogComponent {
             fromEvent(this.el.nativeElement, 'click')
                 .pipe(
                     filter((event: MouseEvent) => {
-                        console.log('click');
                         const el = <HTMLElement>event.target;
                         return el.localName === 'dot-dialog' && el.classList.contains('active');
                     })
@@ -168,7 +167,6 @@ export class DotDialogComponent {
     }
 
     private handleKeyboardEvents(event: KeyboardEvent): void {
-        console.log('handleKeyboardEvents');
         switch (event.code) {
             case 'Escape':
                 this.cancelAction();
@@ -184,7 +182,6 @@ export class DotDialogComponent {
     private isContentScrolled(): Observable<boolean> {
         return fromEvent(this.content.nativeElement, 'scroll').pipe(
             tap((e: { target: HTMLInputElement }) => {
-                console.log('scroll');
                 /*
                     Absolute positioned overlays panels (in dropdowns, menus, etc...) inside the
                     dialog content needs to be append to the body, this click is to hide them on

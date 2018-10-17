@@ -84,14 +84,14 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
                 this.dialogActions = {
                     accept: {
-                        label: this.i18nMessages['contenttypes.dropzone.action.cancel'],
-                        action: () => {}
-                    },
-                    cancel: {
                         action: () => {
                             this.propertiesForm.saveFieldProperties();
                         },
                         label: this.i18nMessages['contenttypes.dropzone.action.save']
+                    },
+                    cancel: {
+                        label: this.i18nMessages['contenttypes.dropzone.action.cancel'],
+                        action: () => {}
                     }
                 };
             });
