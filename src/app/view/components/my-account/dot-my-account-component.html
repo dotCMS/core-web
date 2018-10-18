@@ -1,6 +1,6 @@
 <dot-dialog
     [header]="i18nMessages['my-account']"
-    [visible]="visible"
+    [(visible)]="visible"
     [actions]="dialogActions"
     (hide)="close.emit()"
 >

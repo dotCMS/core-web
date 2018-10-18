@@ -104,23 +104,20 @@ export class MyAccountComponent implements OnInit, OnDestroy {
                         disabled: true
                     },
                     cancel: {
-                        label: this.i18nMessages['modes.Close'],
-                        action: () => {
-                            this.close.emit();
-                        }
+                        label: this.i18nMessages['modes.Close']
                     }
                 };
-            });
 
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogActions = {
-                ...this.dialogActions,
-                accept: {
-                    ...this.dialogActions.accept,
-                    disabled: (this.changePasswordOption && !this.passwordMatch) || !this.form.valid
-                }
-            };
-        });
+                this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+                    this.dialogActions = {
+                        ...this.dialogActions,
+                        accept: {
+                            ...this.dialogActions.accept,
+                            disabled: (this.changePasswordOption && !this.passwordMatch) || !this.form.valid
+                        }
+                    };
+                });
+            });
     }
 
     ngOnDestroy(): void {
