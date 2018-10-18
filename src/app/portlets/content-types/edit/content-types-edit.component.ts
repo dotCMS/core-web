@@ -129,11 +129,11 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Handle cancel button in dialog
+     * Handle hide dialog
      *
      * @memberof ContentTypesEditComponent
      */
-    cancelForm(): void {
+    onDialogHide(): void {
         if (!this.isEditMode()) {
             this.dotRouterService.gotoPortlet('/content-types-angular');
         }
@@ -267,10 +267,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 }
             },
             cancel: {
-                label: 'Cancel',
-                action: () => {
-                    this.cancelForm();
-                }
+                label: 'Cancel'
             }
         };
     }

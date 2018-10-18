@@ -26,6 +26,7 @@
 </dot-content-type-layout>
 
 <dot-dialog
+    (hide)="onDialogHide()"
     [actions]="dialogActions"
     [closeable]="dialogCloseable"
     [header]="templateInfo.header"
