@@ -111,7 +111,6 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         };
 
         expect(fieldVariableService.save).toHaveBeenCalledWith(params);
-
     });
 
     it('should load the component and delete', () => {
@@ -129,6 +128,17 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         };
 
         expect(fieldVariableService.delete).toHaveBeenCalledWith(params);
+    });
+
+    it('should stoppropagation of keydown.enter event in the datatable', () => {
+        fixture.detectChanges();
+        const stopPropagationSpy = jasmine.createSpy('spy');
+        const dataTable = de.query(By.css('p-dataTable'));
+        dataTable.triggerEventHandler('keydown.enter', {
+            stopPropagation: stopPropagationSpy
+        });
+
+        expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
     });
 
 });
