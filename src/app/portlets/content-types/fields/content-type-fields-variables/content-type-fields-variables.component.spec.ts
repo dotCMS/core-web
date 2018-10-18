@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component, Output, EventEmitter } from '@angular/core';
 import { ContentTypeFieldsVariablesComponent, FieldVariable } from './content-type-fields-variables.component';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -11,6 +11,7 @@ import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FieldVariablesServiceMock, mockFieldVariables } from '../../../../test/field-variable-service.mock';
 import { FieldVariablesService } from '../service/field-variables.service';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
     selector: 'dot-add-variable-form',
@@ -80,8 +81,8 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         expect(dataTable.listeners[0].name).toBe('onEditComplete');
     });
 
-    it('should load the component and create', fakeAsync(() => {
-        spyOn(fieldVariableService, 'save').and.callThrough();
+    it('should load the component and create', () => {
+        spyOn(fieldVariableService, 'save').and.returnValue(of(mockFieldVariables[0]));
         const params = {
             contentTypeId: comp.field.contentTypeId,
             fieldId: comp.field.fieldId,
@@ -92,9 +93,8 @@ describe('ContentTypeFieldsVariablesComponent', () => {
         const addVariableForm = de.query(By.css('dot-add-variable-form')).componentInstance;
         addVariableForm.saveVariable.emit(mockFieldVariables[0]);
         expect(fieldVariableService.save).toHaveBeenCalledWith(params);
-        tick(1);
         expect(comp.canSaveFields[0]).toBe(null);
-    }));
+    });
 
     it('should load the component and update', () => {
         spyOn(fieldVariableService, 'save');
