@@ -336,7 +336,7 @@ const configEditMode = getConfig({
     contentType: fakeContentType
 });
 
-describe('ContentTypesEditComponent edit mode', () => {
+fdescribe('ContentTypesEditComponent edit mode', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule(configEditMode);
 
@@ -384,7 +384,7 @@ describe('ContentTypesEditComponent edit mode', () => {
         expect(dialog.componentInstance.header).toEqual('Edit Content');
     });
 
-   it('should open dialog on edit button click', () => {
+    it('should open dialog on edit button click', () => {
         clickEditButton();
 
         expect(dialog).not.toBeNull();
@@ -410,7 +410,6 @@ describe('ContentTypesEditComponent edit mode', () => {
 
         const cancelButton = de.query(By.css('.dialog__button-cancel'));
         cancelButton.nativeElement.click();
-        fixture.detectChanges();
 
         expect(comp.cancelForm).toHaveBeenCalledTimes(1);
         expect(comp.show).toBe(false);
