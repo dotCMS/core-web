@@ -66,7 +66,7 @@ export class DotAddToBundleComponent implements OnInit, AfterViewInit, OnDestroy
 
         this.bundle$ = this.dotMessageService.getMessages(keys).pipe(
             take(1),
-            mergeMap((messages) => {
+            mergeMap((messages: {[key: string]: string}) => {
                 return this.addToBundleService.getBundles().pipe(
                     take(1),
                     map((bundles: DotBundle[]) => {
