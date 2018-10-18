@@ -28,8 +28,8 @@ $dialog-padding: $basic-padding * 4;
     left: 50%;
     max-height: 90vh;
     position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 5vh;
+    transform: translate(-50%, 0);
 }
 
 .dialog__content {
