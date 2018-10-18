@@ -9,12 +9,10 @@ p-calendar {
     .ui-datepicker.ui-widget {
         padding: 0;
         .ui-datepicker-header {
-            -webkit-border-radius: 0px;
-            -moz-border-radius: 0px;
-            border-radius: 0px;
-            border-top: 0 none;
-            border-left: 0 none;
-            border-right: 0 none;
+            border-radius: 0;
+            border-top: none;
+            border-left: none;
+            border-right: none;
         }
         table {
             margin: 0;
@@ -25,7 +23,7 @@ p-calendar {
                 padding: 0;
             }
             tr:last-child td {
-                border-bottom: 0 none;
+                border-bottom: none;
             }
             thead th {
                 background-color: $gray-bg;
@@ -33,7 +31,7 @@ p-calendar {
             }
             td {
                 a {
-                    border: 0 none;
+                    border: none;
                     text-align: center;
                     padding: $basic-padding;
                     &.ui-state-highlight {
@@ -52,9 +50,9 @@ p-calendar {
             }
         }
         .ui-timepicker {
-            border-bottom: 0 none;
-            border-left: 0 none;
-            border-right: 0 none;
+            border-bottom: none;
+            border-left: none;
+            border-right: none;
         }
     }
 
