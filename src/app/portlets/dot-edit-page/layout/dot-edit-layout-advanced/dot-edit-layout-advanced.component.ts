@@ -5,6 +5,7 @@ import { DotGlobalMessageService } from '../../../../view/components/_common/dot
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
+import { DotRenderPageOptions } from '../../../../api/services/dot-render-html/dot-render-html.service';
 
 
 @Component({
@@ -48,7 +49,11 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
                 if (event.detail.name === 'advanced-template-saved') {
                     this.dotGlobalMessageService.display(this.dotMessageService.get('dot.common.message.saved'));
 
-                    this.dotPageStateService.get(this.pageState.page.pageURI).subscribe(
+                    const options: DotRenderPageOptions = {
+                        url: this.pageState.page.pageURI
+                    };
+
+                    this.dotPageStateService.get(options).subscribe(
                         (pageState: DotRenderedPageState) => this.pageState.dotRenderedPageState = pageState
                     );
                 } else {
