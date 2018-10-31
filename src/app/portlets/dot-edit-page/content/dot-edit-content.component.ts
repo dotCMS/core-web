@@ -138,6 +138,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
+        console.log('changeViewAsHandler');
         this.dotPageStateService.reload(
             {
                 url: this.route.snapshot.queryParams.url,
