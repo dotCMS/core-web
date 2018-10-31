@@ -41,10 +41,16 @@ export class DotPageSelectorService {
      * @memberof DotPageSelectorService
      */
     getPagesInFolder(searchParam: string, hostId?: string): Observable<DotPageAsset[]> {
-        searchParam = searchParam.replace(/\//g, '\\/');
-        let query = `+basetype:5 +parentpath:*${searchParam}*`;
-        query += hostId ? ` +conhost:${hostId}` : '';
+        console.log(searchParam);
+        const parsedQuery = this.parseQueryString(searchParam);
 
+        let query = `+basetype:5 +path:*${parsedQuery[0]}*`;
+        query += parsedQuery.length > 1
+            ? ` conhostName:*${parsedQuery[1]}*`
+            : hostId
+                ? ` conhost:${hostId}`
+                : '';
+        console.log(query);
         return this.coreWebService
             .requestView({
                 body: {
@@ -59,6 +65,22 @@ export class DotPageSelectorService {
             })
             .pipe(pluck('contentlets'));
     }
+
+    parseQueryString(searchQuery: string) {
+        searchQuery = searchQuery.replace(/\//g, '\\/');
+        const returnVal = new Array();
+        if (searchQuery.split(':').length > 1) {
+            returnVal[0] = searchQuery.split(':')[1];
+            returnVal[1] = searchQuery.split(':')[0];
+        } else {
+            returnVal[0] = searchQuery;
+        }
+        return returnVal;
+
+    }
+
+
+
 
     /**
      * Get a page by id
