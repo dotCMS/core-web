@@ -61,7 +61,6 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
      * @memberof DotEditPageMainComponent
      */
     onCustomEvent($event: CustomEvent): void {
-        console.log('$event', $event);
         if (this.customEventsHandler[$event.detail.name]) {
             this.customEventsHandler[$event.detail.name]($event);
         }
