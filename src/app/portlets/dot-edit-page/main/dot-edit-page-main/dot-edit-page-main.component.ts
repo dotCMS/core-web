@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotRenderedPageState } from '../../shared/models/dot-rendered-page-state.model';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { DotMessageService } from '../../../../api/services/dot-messages-service';
 import { DotContentletEditorService } from '../../../../view/components/dot-contentlet-editor/services/dot-contentlet-editor.service';
@@ -68,15 +68,20 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
 
     private subscribeIframeCloseAction(): void {
         this.dotContentletEditorService.close$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            if (this.pageUrl !== this.route.snapshot.queryParams.url) {
-                this.dotRouterService.goToEditPage(this.pageUrl);
-            } else {
-                this.dotPageStateService.reload(
-                    {
-                        url: this.route.snapshot.queryParams.url
-                    }
-                );
-            }
+            this.pageState.pipe(take(1)).subscribe((pageState: DotRenderedPageState) => {
+                if (this.pageUrl !== this.route.snapshot.queryParams.url) {
+                    this.dotRouterService.goToEditPage(
+                        this.pageUrl,
+                        pageState.page.languageId.toString()
+                    );
+                } else {
+                    this.dotPageStateService.reload(
+                        {
+                            url: this.route.snapshot.queryParams.url
+                        }
+                    );
+                }
+            });
         });
 
         this.dotPageStateService.reload$.pipe(takeUntil(this.destroy$)).subscribe((page: DotRenderedPageState) => {
