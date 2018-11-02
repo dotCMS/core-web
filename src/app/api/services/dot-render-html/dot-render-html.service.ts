@@ -101,12 +101,18 @@ export class DotRenderHTMLService {
         return object ? object[propertyName] : null;
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     private getOptionalViewAsParams(viewAsConfig: DotEditPageViewAsParams) {
-        return {
-            language_id: viewAsConfig.language_id,
+        const options: any = {
             ...viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {},
             ...viewAsConfig.device_inode ? { 'device_inode': viewAsConfig.device_inode } : {}
         };
+
+        if (viewAsConfig.language_id ) {
+            options.language_id = viewAsConfig.language_id;
+        }
+
+        return options;
     }
 
     private getPageModeString(pageMode: PageMode): string {
@@ -127,6 +133,6 @@ export interface DotRenderPageOptions {
 
 interface DotEditPageViewAsParams {
     persona_id?: string;
-    language_id?: number;
+    language_id?:  number;
     device_inode?: string;
 }

@@ -75,11 +75,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
                         pageState.page.languageId.toString()
                     );
                 } else {
-                    this.dotPageStateService.reload(
-                        {
-                            url: this.route.snapshot.queryParams.url
-                        }
-                    );
+                    this.dotPageStateService.reload(this.route.snapshot.queryParams.url);
                 }
             });
         });
