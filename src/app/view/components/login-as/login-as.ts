@@ -67,9 +67,7 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
         this.loginService.loginAs({ user: user, password: password }).subscribe(
             (data) => {
                 if (data) {
-                    this.close();
-                    this.iframeOverlayService.hide();
-                    this.dotNavigationService.goToFirstPortlet();
+                    document.location.reload();
                 }
             },
             (response) => {
