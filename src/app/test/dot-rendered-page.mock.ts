@@ -7,6 +7,7 @@ import { PageMode } from '../portlets/dot-edit-page/shared/models/page-mode.enum
 
 export const mockDotPage: DotPage = {
     canEdit: true,
+    canRead: true,
     canLock: true,
     identifier: '123',
     languageId: 1,
