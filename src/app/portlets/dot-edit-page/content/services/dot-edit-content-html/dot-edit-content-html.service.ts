@@ -633,6 +633,8 @@ export class DotEditContentHtmlService {
             head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
         }
 
+        console.log(fakeHtml.innerHTML);
+
         return fakeHtml.innerHTML;
     }
 
@@ -649,7 +651,7 @@ export class DotEditContentHtmlService {
     private loadCodeIntoIframe(pageState: DotRenderedPageState): void {
         const doc = this.getEditPageDocument();
         doc.open();
-        doc.write(this.updateHtml(pageState));
+        doc.write(pageState.page.rendered);
         doc.close();
     }
 

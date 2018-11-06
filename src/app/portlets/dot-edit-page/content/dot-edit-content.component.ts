@@ -145,17 +145,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
 
-        if (
-            this.shouldSetContainersHeight() &&
-            $event.currentTarget.contentDocument.body.innerHTML
-        ) {
-            this.dotEditContentHtmlService.setContaintersChangeHeightListener(
-                this.pageState.layout
-            );
-        }
+        // if (
+        //     this.shouldSetContainersHeight() &&
+        //     $event.currentTarget.contentDocument.body.innerHTML
+        // ) {
+        //     this.dotEditContentHtmlService.setContaintersChangeHeightListener(
+        //         this.pageState.layout
+        //     );
+        // }
 
-        const doc = $event.target.contentWindow.document;
-        this.dotUiColorsService.setColors(doc.querySelector('html'));
+        // const doc = $event.target.contentWindow.document;
+        // this.dotUiColorsService.setColors(doc.querySelector('html'));
     }
 
     /**
@@ -417,11 +417,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private renderPage(pageState: DotRenderedPageState): void {
-        if (this.shouldEditMode(pageState)) {
-            this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
-        } else {
+        // if (this.shouldEditMode(pageState)) {
+            // this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
+        // } else {
             this.dotEditContentHtmlService.renderPage(pageState, this.iframe);
-        }
+        // }
     }
 
     private subscribeIframeActions(): void {
