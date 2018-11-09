@@ -61,7 +61,9 @@ export class ToolbarUserComponent extends BaseComponent implements OnInit {
 
         this.loginService.logoutAs().subscribe(
             () => {
-                document.location.reload();
+                this.dotNavigationService.goToFirstPortlet().then(() => {
+                    document.location.reload();
+                });
             },
             (error) => {
                 this.loggerService.error(error);

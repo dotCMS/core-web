@@ -4,7 +4,6 @@ import { LoginService, User } from 'dotcms-js/dotcms-js';
 import { DotMessageService } from '../../../api/services/dot-messages-service';
 import { PaginatorService } from '../../../api/services/paginator';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/dot-navigation.service';
 
 @Component({
@@ -29,7 +28,6 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
         private fb: FormBuilder,
         private loginService: LoginService,
         public paginationService: PaginatorService,
-        private iframeOverlayService: IframeOverlayService,
         private dotNavigationService: DotNavigationService
     ) {
         super(
@@ -67,7 +65,9 @@ export class LoginAsComponent extends BaseComponent implements OnInit {
         this.loginService.loginAs({ user: user, password: password }).subscribe(
             (data) => {
                 if (data) {
-                    document.location.reload();
+                    this.dotNavigationService.goToFirstPortlet().then(() => {
+                        document.location.reload();
+                    });
                 }
             },
             (response) => {
