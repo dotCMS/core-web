@@ -22,7 +22,7 @@ export class DotPersonasService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: 'content/render/false/query/+contentType:persona +live:true +deleted:false +working:true'
+                url: 'content/respectFrontendRoles/false/render/false/query/+contentType:persona +live:true +deleted:false +working:true'
             })
             .pluck('contentlets');
     }
