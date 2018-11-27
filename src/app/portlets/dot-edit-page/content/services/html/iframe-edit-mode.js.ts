@@ -9,6 +9,8 @@ export const EDIT_PAGE_JS = `
         var containers = [];
         var containersNodeList = document.querySelectorAll('div[data-dot-object="container"]');
 
+        console.log('containersNodeList', containersNodeList);
+
         for (var i = 0; i < containersNodeList.length; i++) {
             containers.push(containersNodeList[i]);
         };
@@ -46,6 +48,8 @@ export const EDIT_PAGE_JS = `
         return Array.from(target.querySelectorAll("div[data-dot-object='contentlet']:not(.gu-transit)"))
             .map(node => node.dataset.dotInode).indexOf(el.dataset.dotInode) === -1;
     }
+
+    console.log(getContainers());
 
     var drake = dragula(
         getContainers(), {

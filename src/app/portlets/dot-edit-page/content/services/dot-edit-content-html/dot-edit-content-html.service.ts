@@ -651,7 +651,8 @@ export class DotEditContentHtmlService {
     private loadCodeIntoIframe(pageState: DotRenderedPageState): void {
         const doc = this.getEditPageDocument();
         doc.open();
-        doc.write(pageState.page.rendered);
+        // doc.write(pageState.page.rendered);
+        doc.write(this.updateHtml(pageState));
         doc.close();
     }
 
@@ -670,9 +671,13 @@ export class DotEditContentHtmlService {
 
     private setEditMode(): void {
         this.addContentToolBars();
-
-        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
         this.setEditContentletStyles();
+
+        setTimeout(() => {
+            this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
+
+        }, 1000);
+
     }
 
     private addVtlEditMenu(contentletEl: HTMLElement): void {
