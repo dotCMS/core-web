@@ -19,7 +19,6 @@ export class DotDragDropAPIHtmlService {
      * - Inject dragula init code from iframe-edit-mode.js
      */
     public initDragAndDropContext(iframe: any): void {
-        console.log('initDragAndDropContext');
         const doc = iframe.contentDocument || iframe.contentWindow.document;
         const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(
             `${API_ROOT_PATH}/dragula.min.css`

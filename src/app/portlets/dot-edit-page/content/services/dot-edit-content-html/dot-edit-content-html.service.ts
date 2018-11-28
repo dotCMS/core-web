@@ -672,12 +672,7 @@ export class DotEditContentHtmlService {
     private setEditMode(): void {
         this.addContentToolBars();
         this.setEditContentletStyles();
-
-        setTimeout(() => {
-            this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
-
-        }, 1000);
-
+        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
     }
 
     private addVtlEditMenu(contentletEl: HTMLElement): void {
