@@ -14,7 +14,6 @@ import {
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 
 /**
  * With the url return a string of the edit page html
@@ -29,8 +28,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
-        private dotEditPageDataService: DotEditPageDataService,
-        private http: HttpClient
+        private dotEditPageDataService: DotEditPageDataService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotRenderedPageState> {
@@ -46,22 +44,14 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                 .pipe(
                     take(1),
                     switchMap((dotRenderedPageState: DotRenderedPageState) => {
-                        return this.http.get('http://localhost:3000/', {
-                            responseType: 'text'
-                        }).pipe(switchMap((content) => {
-                            console.log(content);
-                            dotRenderedPageState.page.rendered = content;
+                        const currentSection = route.children[0].url[0].path;
+                        const isLayout = currentSection === 'layout';
 
-                            const currentSection = route.children[0].url[0].path;
-                            const isLayout = currentSection === 'layout';
-
-                            if (isLayout) {
-                                return this.checkUserCanGoToLayout(dotRenderedPageState);
-                            } else {
-                                return of(dotRenderedPageState);
-                            }
-                        }));
-
+                        if (isLayout) {
+                            return this.checkUserCanGoToLayout(dotRenderedPageState);
+                        } else {
+                            return of(dotRenderedPageState);
+                        }
                     }),
                     catchError((err: ResponseView) => {
                         return this.errorHandler(err).pipe(map(() => null));
