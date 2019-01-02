@@ -633,8 +633,6 @@ export class DotEditContentHtmlService {
             head.insertBefore(this.getBaseTag(pageState.page.pageURI), head.childNodes[0]);
         }
 
-        console.log(fakeHtml.innerHTML);
-
         return fakeHtml.innerHTML;
     }
 

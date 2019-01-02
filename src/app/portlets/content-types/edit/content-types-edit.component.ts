@@ -180,6 +180,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         });
     }
 
+
     /**
      * Set the state for the ok action for the dialog
      *
