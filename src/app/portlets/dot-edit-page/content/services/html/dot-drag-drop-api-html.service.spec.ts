@@ -3,7 +3,7 @@ import { async } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
-import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE } from './iframe-edit-mode.js';
+import { getEditPageJS, getEditPageJSDojoRequire } from './iframe-edit-mode.js';
 
 const jsDragulaInlineElement = {};
 let lastAppendChildCallElementParam;
@@ -74,7 +74,7 @@ describe('DotDragDropAPIHtmlService', () => {
     }));
 
     it('should crate and set js and css draguls element', () => {
-        dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
+        dotDragDropAPIHtmlService.initDragAndDropContext(iframe, true);
 
         expect(dotDOMHtmlUtilService.createLinkElement).toHaveBeenCalledWith(
             '/html/js/dragula-3.7.2/dragula.min.css'
@@ -89,12 +89,12 @@ describe('DotDragDropAPIHtmlService', () => {
     });
 
     it('should init dragula context', () => {
-        dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
+        dotDragDropAPIHtmlService.initDragAndDropContext(iframe, true);
 
         callbackFunc();
 
         expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(
-            EDIT_PAGE_JS
+            getEditPageJS(true)
         );
 
         expect(lastAppendChildCallElementParam).toEqual(jsDragulaInlineElement);
@@ -102,10 +102,10 @@ describe('DotDragDropAPIHtmlService', () => {
 
     it('should init dragula context with require import', () => {
         iframe.contentWindow.dojo = 'test';
-        dotDragDropAPIHtmlService.initDragAndDropContext(iframe);
+        dotDragDropAPIHtmlService.initDragAndDropContext(iframe, true);
 
         expect(dotDOMHtmlUtilService.createInlineScriptElementLastCallTextParam).toEqual(
-            EDIT_PAGE_JS_DOJO_REQUIRE
+            getEditPageJSDojoRequire(true)
         );
         expect(lastAppendChildCallElementParam).toEqual(jsDragulaInlineElement);
     });

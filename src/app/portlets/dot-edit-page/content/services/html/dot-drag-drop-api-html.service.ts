@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EDIT_PAGE_JS, EDIT_PAGE_JS_DOJO_REQUIRE } from './iframe-edit-mode.js';
+import { getEditPageJS, getEditPageJSDojoRequire } from './iframe-edit-mode.js';
 import { DotDOMHtmlUtilService } from './dot-dom-html-util.service';
 
 const API_ROOT_PATH = '/html/js/dragula-3.7.2';
@@ -18,30 +18,32 @@ export class DotDragDropAPIHtmlService {
      * - Load the js dragula file, either with required (if DOJO is present) or directly.
      * - Inject dragula init code from iframe-edit-mode.js
      */
-    public initDragAndDropContext(iframe: any): void {
+    public initDragAndDropContext(iframe: any, remoteRendered: boolean): void {
         const doc = iframe.contentDocument || iframe.contentWindow.document;
         const dragulaCSSElement = this.dotDOMHtmlUtilService.createLinkElement(
             `${API_ROOT_PATH}/dragula.min.css`
         );
 
         doc.head.appendChild(dragulaCSSElement);
+        // 03 send param spa-page
         const dragulaJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
             `${API_ROOT_PATH}/dragula.min.js`,
-            () => this.initDragula(doc)
+            () => this.initDragula(doc, remoteRendered)
         );
         // If the page has DOJO, we need to inject the Dragula dependency with require.
         if (iframe.contentWindow.hasOwnProperty('dojo')) {
             doc.body.appendChild(
-                this.dotDOMHtmlUtilService.createInlineScriptElement(EDIT_PAGE_JS_DOJO_REQUIRE)
+                this.dotDOMHtmlUtilService.createInlineScriptElement(getEditPageJSDojoRequire(remoteRendered))
             );
         } else {
             doc.body.appendChild(dragulaJSElement);
         }
     }
 
-    private initDragula(doc: any): any {
+    private initDragula(doc: any, remoteRendered: boolean): any {
+        // 04 send param spa-page
         const dragAndDropScript = this.dotDOMHtmlUtilService.createInlineScriptElement(
-            EDIT_PAGE_JS
+            getEditPageJS(remoteRendered)
         );
         doc.body.appendChild(dragAndDropScript);
     }

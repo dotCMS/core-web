@@ -89,10 +89,10 @@ export class DotEditContentHtmlService {
      *
      * @param string editPageHTML
      * @param ElementRef iframeEl
-     * @returns Promise<any>
+     * @returns Promise<boolean>
      * @memberof DotEditContentHtmlService
      */
-    renderPage(pageState: DotRenderedPageState, iframeEl: ElementRef): Promise<any> {
+    renderPage(pageState: DotRenderedPageState, iframeEl: ElementRef): Promise<boolean> {
         return new Promise((resolve, _reject) => {
             this.iframe = iframeEl;
             const iframeElement = this.getEditPageIframe();
@@ -102,8 +102,9 @@ export class DotEditContentHtmlService {
                 iframeElement.contentWindow.contentletEvents = this.contentletEvents$;
 
                 this.bindGlobalEvents();
-
-                resolve(true);
+                // 00 return true if spa, else false, CHECK THIS RETURN PROMISE
+                console.log('---00', pageState);
+                resolve(pageState.page.remoteRendered);
             });
 
             // Load content after bind 'load' event.
@@ -112,15 +113,17 @@ export class DotEditContentHtmlService {
     }
 
     /**
-     * Initalize edit content mode
+     * Initalize edit content mode, returns true/false of page remote rendered
      *
      * @param string editPageHTML
      * @param ElementRef iframeEl
      * @memberof DotEditContentHtmlService
      */
     initEditMode(pageState: DotRenderedPageState, iframeEl: ElementRef): void {
-        this.renderPage(pageState, iframeEl).then(() => {
-            this.setEditMode();
+        this.renderPage(pageState, iframeEl).then((remoteRendered: boolean) => {
+            // 01 send spa mode param
+            // debugger
+            this.setEditMode(remoteRendered);
         });
     }
 
@@ -587,6 +590,7 @@ export class DotEditContentHtmlService {
     }
 
     private handlerContentletEvents(event: string): (contentletEvent: any) => void {
+        // debugger
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentletEvent: any) => {
@@ -608,6 +612,8 @@ export class DotEditContentHtmlService {
             },
             // When a user drag and drop a contentlet in the iframe
             relocate: (contentletEvent: any) => {
+                // debugger
+                // 06 get & send param spa-page
                 this.renderRelocatedContentlet(contentletEvent.data);
             },
             'deleted-contenlet': () => {
@@ -666,10 +672,10 @@ export class DotEditContentHtmlService {
         doc.head.appendChild(robotoFontElement);
     }
 
-    private setEditMode(): void {
+    private setEditMode(remoteRendered: boolean): void {
         this.addContentToolBars();
-
-        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe());
+        // 02 send param spa-page
+        this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe(), remoteRendered);
         this.setEditContentletStyles();
     }
 
@@ -707,20 +713,24 @@ export class DotEditContentHtmlService {
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {
-        const doc = this.getEditPageDocument();
-        const contenletEl = doc.querySelector(
-            `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
-        );
-        const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
-        contentletContentEl.innerHTML +=
-            '<div class="loader__overlay"><div class="loader"></div></div>';
-        relocateInfo.container =
-            relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
+        // 07 IF NOT param spa-page, then:
+        debugger
+        if (!relocateInfo.remoteRendered) {
 
-        this.dotContainerContentletService
-            .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
-            .subscribe((contentletHtml: string) => {
-                this.appendNewContentlets(contenletEl, contentletHtml);
-            });
-    }
+            const doc = this.getEditPageDocument();
+            const contenletEl = doc.querySelector(
+                `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
+            );
+            const contentletContentEl = contenletEl.querySelector('.dotedit-contentlet__content');
+            contentletContentEl.innerHTML +=
+                '<div class="loader__overlay"><div class="loader"></div></div>';
+            relocateInfo.container =
+                relocateInfo.container || contenletEl.parentNode.dataset.dotIdentifier;
+            this.dotContainerContentletService
+                .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
+                .subscribe((contentletHtml: string) => {
+                    this.appendNewContentlets(contenletEl, contentletHtml);
+                });
+                }
+        }
 }

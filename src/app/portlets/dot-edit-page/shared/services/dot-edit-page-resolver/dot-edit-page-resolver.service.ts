@@ -46,7 +46,7 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
                     switchMap((dotRenderedPageState: DotRenderedPageState) => {
                         const currentSection = route.children[0].url[0].path;
                         const isLayout = currentSection === 'layout';
-
+                        dotRenderedPageState.page.remoteRendered = true;
                         if (isLayout) {
                             return this.checkUserCanGoToLayout(dotRenderedPageState);
                         } else {

@@ -278,18 +278,54 @@ describe('DotEditContentHtmlService', () => {
     });
 
     it('should render relocated contentlet', () => {
-        spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet');
+        const dotContainerContentletService = this.injector.get(DotContainerContentletService);
+        spyOn(dotContainerContentletService, 'getContentletToContainer').and.callThrough();
+        spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet').and.callThrough();
+
+        const dataObj = {
+            container: {
+                identifier: '123',
+                uuid: '456'
+            },
+            contentlet: {
+                identifier: '456',
+                inode: '456'
+            }
+        };
 
         this.dotEditContentHtmlService.contentletEvents$.next({
             name: 'relocate',
-            data: {
-                identifier: '456'
-            }
+            data: dataObj
         });
 
-        expect(this.dotEditContentHtmlService.renderRelocatedContentlet).toHaveBeenCalledWith({
-            identifier: '456'
+        expect(this.dotEditContentHtmlService.renderRelocatedContentlet).toHaveBeenCalledWith(dataObj);
+        expect(dotContainerContentletService.getContentletToContainer).toHaveBeenCalledWith(dataObj.container, dataObj.contentlet);
+    });
+
+    it('should not render relocated contentlet', () => {
+        const dotContainerContentletService = this.injector.get(DotContainerContentletService);
+        spyOn(dotContainerContentletService, 'getContentletToContainer').and.returnValue('test');
+        spyOn(this.dotEditContentHtmlService, 'renderRelocatedContentlet').and.callThrough();
+
+        const dataObj = {
+            container: {
+                identifier: '123',
+                uuid: '456'
+            },
+            contentlet: {
+                identifier: '456',
+                inode: '456'
+            },
+            remoteRendered: true
+        };
+
+        this.dotEditContentHtmlService.contentletEvents$.next({
+            name: 'relocate',
+            data: dataObj
         });
+
+        expect(this.dotEditContentHtmlService.renderRelocatedContentlet).toHaveBeenCalledWith(dataObj);
+        expect(dotContainerContentletService.getContentletToContainer).not.toHaveBeenCalled();
     });
 
     it('should render added contentlet', () => {
