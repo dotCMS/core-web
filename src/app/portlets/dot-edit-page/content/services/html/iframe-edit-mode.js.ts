@@ -75,8 +75,6 @@ export function getEditPageJS(remoteRendered: boolean) {
         });
         drake.on('drop', function(el, target, source, sibling) {
             if (target !== source) {
-                debugger
-                // 05 send param spa-page
                 window.contentletEvents.next({
                     name: 'relocate',
                     data: {

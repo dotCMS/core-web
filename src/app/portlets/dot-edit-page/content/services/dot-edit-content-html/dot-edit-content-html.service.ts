@@ -102,8 +102,6 @@ export class DotEditContentHtmlService {
                 iframeElement.contentWindow.contentletEvents = this.contentletEvents$;
 
                 this.bindGlobalEvents();
-                // 00 return true if spa, else false, CHECK THIS RETURN PROMISE
-                console.log('---00', pageState);
                 resolve(pageState.page.remoteRendered);
             });
 
@@ -121,8 +119,6 @@ export class DotEditContentHtmlService {
      */
     initEditMode(pageState: DotRenderedPageState, iframeEl: ElementRef): void {
         this.renderPage(pageState, iframeEl).then((remoteRendered: boolean) => {
-            // 01 send spa mode param
-            // debugger
             this.setEditMode(remoteRendered);
         });
     }
@@ -590,7 +586,6 @@ export class DotEditContentHtmlService {
     }
 
     private handlerContentletEvents(event: string): (contentletEvent: any) => void {
-        // debugger
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentletEvent: any) => {
@@ -612,8 +607,6 @@ export class DotEditContentHtmlService {
             },
             // When a user drag and drop a contentlet in the iframe
             relocate: (contentletEvent: any) => {
-                // debugger
-                // 06 get & send param spa-page
                 this.renderRelocatedContentlet(contentletEvent.data);
             },
             'deleted-contenlet': () => {
@@ -674,7 +667,6 @@ export class DotEditContentHtmlService {
 
     private setEditMode(remoteRendered: boolean): void {
         this.addContentToolBars();
-        // 02 send param spa-page
         this.dotDragDropAPIHtmlService.initDragAndDropContext(this.getEditPageIframe(), remoteRendered);
         this.setEditContentletStyles();
     }
@@ -713,8 +705,6 @@ export class DotEditContentHtmlService {
     }
 
     private renderRelocatedContentlet(relocateInfo: any): void {
-        // 07 IF NOT param spa-page, then:
-        debugger
         if (!relocateInfo.remoteRendered) {
 
             const doc = this.getEditPageDocument();

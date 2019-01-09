@@ -25,7 +25,6 @@ export class DotDragDropAPIHtmlService {
         );
 
         doc.head.appendChild(dragulaCSSElement);
-        // 03 send param spa-page
         const dragulaJSElement = this.dotDOMHtmlUtilService.creatExternalScriptElement(
             `${API_ROOT_PATH}/dragula.min.js`,
             () => this.initDragula(doc, remoteRendered)
@@ -41,7 +40,6 @@ export class DotDragDropAPIHtmlService {
     }
 
     private initDragula(doc: any, remoteRendered: boolean): any {
-        // 04 send param spa-page
         const dragAndDropScript = this.dotDOMHtmlUtilService.createInlineScriptElement(
             getEditPageJS(remoteRendered)
         );
