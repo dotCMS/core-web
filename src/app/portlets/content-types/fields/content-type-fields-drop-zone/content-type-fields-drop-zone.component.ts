@@ -63,7 +63,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         [key: string]: string;
     } = {};
 
-    private _loading: boolean;
+    _loading: boolean;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
