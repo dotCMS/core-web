@@ -29,7 +29,10 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
-import { PageModelChangeEvent, PageModelChangeEventType } from './services/dot-edit-content-html/models';
+import {
+    PageModelChangeEvent,
+    PageModelChangeEventType
+} from './services/dot-edit-content-html/models';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -99,6 +102,11 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 },
                 'reorder-menu': (reorderMenuUrl: string) => {
                     this.reorderMenuUrl = reorderMenuUrl;
+                },
+                'save-page': () => {
+                    if (this.pageState.page.remoteRendered) {
+                        this.reload();
+                    }
                 },
                 'save-menu-order': () => {
                     this.reorderMenuUrl = '';
@@ -253,6 +261,18 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotRouterService.goToSiteBrowser();
     }
 
+    /**
+     * Handle custom events from DotEditContenlet component
+     *
+     * @param customEvent $event
+     * @memberof DotEditContentComponent
+     */
+    onEditContentletCustomEvent(customEvent): void {
+        if (this.customEventsHandler[customEvent.detail.name]) {
+            this.customEventsHandler[customEvent.detail.name](customEvent.detail.payload);
+        }
+    }
+
     private shouldSetContainersHeight() {
         return (
             this.pageState && this.pageState.layout && this.pageState.state.mode === PageMode.EDIT
@@ -274,7 +294,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 this.dotGlobalMessageService.display(
                     this.dotMessageService.get('dot.common.message.saved')
                 );
-                if (event.type !== PageModelChangeEventType.MOVE_CONTENT && this.pageState.page.remoteRendered) {
+                if (
+                    event.type !== PageModelChangeEventType.MOVE_CONTENT &&
+                    this.pageState.page.remoteRendered
+                ) {
                     this.reload();
                 }
             });

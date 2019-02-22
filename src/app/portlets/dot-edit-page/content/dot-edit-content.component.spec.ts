@@ -933,6 +933,31 @@ describe('DotEditContentComponent', () => {
         });
     });
 
+    describe('dot-edit-contentlet', () => {
+        it('should reload contentlet when "save-page" event in remote rendered', fakeAsync(() => {
+            route.parent.parent.data = observableOf({
+                content: {
+                    ...mockDotRenderedPage,
+                    page: {
+                        ...mockDotRenderedPage.page,
+                        canLock: true,
+                        remoteRendered: true
+                    },
+                    state: {
+                        locked: true,
+                        mode: PageMode.EDIT
+                    }
+                }
+            });
+            spyOn(component, 'reload').and.callThrough();
+            waitForDetectChanges(fixture);
+
+            const dotEditContentlet = de.query(By.css('dot-edit-contentlet'));
+            dotEditContentlet.triggerEventHandler('custom', {detail: { name: 'save-page'}});
+            expect(component.reload).toHaveBeenCalled();
+        }));
+    });
+
     describe('dialog configuration', () => {
         describe('page iframe', () => {
             let event;
