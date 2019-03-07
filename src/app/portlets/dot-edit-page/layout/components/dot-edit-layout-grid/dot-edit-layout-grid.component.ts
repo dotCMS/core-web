@@ -2,18 +2,13 @@ import { Component, OnInit, forwardRef, ViewChild, ElementRef } from '@angular/c
 import * as _ from 'lodash';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotLayoutGridBox } from '../../../shared/models/dot-layout-grid-box.model';
-import {
-    DOT_LAYOUT_GRID_MAX_COLUMNS,
-    DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE,
-    DOT_LAYOUT_DEFAULT_GRID
-} from '../../../shared/models/dot-layout.const';
 import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { NgGrid, NgGridConfig, NgGridItemConfig } from 'dot-layout-grid';
+import { NgGrid, NgGridConfig } from 'dot-layout-grid';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { DotLayoutGrid, DOT_LAYOUT_GRID_MAX_COLUMNS } from '@portlets/dot-edit-page/shared/models/dot-layout-grid.model';
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -39,12 +34,10 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     @ViewChild('classToAddInput')
     classToAddInput: ElementRef;
     value: DotLayoutBody;
-    grid: DotLayoutGridBox[];
+    grid: DotLayoutGrid;
 
     showAddClassDialog = false;
     dialogActions: DotDialogActions;
-
-    rowClasses: string[] = [];
 
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [0, 8, 8, 0],
@@ -106,10 +99,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     addBox(): void {
-        const conf: NgGridItemConfig = this.setConfigOfNewContainer();
-        this.grid.push({ config: conf, containers: [] });
+        this.grid.addBox();
         this.propagateGridLayoutChange();
-        this.setRowClass();
     }
 
     /**
@@ -119,7 +110,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     getModel(): DotLayoutBody {
-        return this.dotEditLayoutService.getDotLayoutBody(this.grid, this.rowClasses);
+        return this.dotEditLayoutService.getDotLayoutBody(this.grid);
     }
 
     /**
@@ -206,8 +197,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     addRowClass(index: number): void {
         this.addClass(
-            () => this.rowClasses[index],
-            () => this.rowClasses[index] = this.classToAddInput.nativeElement.value
+            () => this.grid.getRowClass(index),
+            () => this.grid.setRowClass(this.classToAddInput.nativeElement.value, index)
         );
     }
 
@@ -244,89 +235,21 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     private setGridValue(): void {
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
-            : [...DOT_LAYOUT_DEFAULT_GRID];
-
-        this.rowClasses = this.value.rows.map(row => row.styleClass);
-        console.log('setGridValue', this.rowClasses, this.value);
-        this.setRowClass();
-    }
-
-    private setRowClass(): void {
-        console.log('setRowClass');
-        const newNRows = this.grid
-            .map(box => box.config.row)
-            .reduce((before, current) => {
-                return before > current ? before : current;
-            }, 0);
-        console.log('nRows', newNRows, this.grid);
-        console.log('this.rowClass.length', this.rowClasses.length);
-
-        if (this.rowClasses.length > newNRows) {
-            this.rowClasses = this.rowClasses.splice(0, this.rowClasses.length - newNRows);
-        } else {
-            this.rowClasses = [...this.rowClasses, ...Array(newNRows - this.rowClasses.length).fill(null)];
-        }
-
-        console.log('this.rowClass', this.rowClasses, this.rowClasses.length);
+            : DotLayoutGrid.getDefaultGrid();
     }
 
     private removeContainer(index: number): void {
         if (this.grid[index]) {
-            this.grid.splice(index, 1);
-            this.deleteEmptyRows();
+            this.grid.removeContainer(index);
             this.propagateGridLayoutChange();
-            this.setRowClass();
         }
-    }
-
-    private setConfigOfNewContainer(): any {
-        const newRow: any = Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE);
-
-        if (this.grid.length) {
-            const lastContainer = _.chain(this.grid)
-                .groupBy('config.row')
-                .values()
-                .last()
-                .maxBy('config.col')
-                .value();
-
-            let busyColumns: number = DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE.sizex;
-
-            busyColumns += lastContainer.config.col - 1 + lastContainer.config.sizex;
-
-            if (busyColumns <= DOT_LAYOUT_GRID_MAX_COLUMNS) {
-                newRow.row = lastContainer.config.row;
-                newRow.col = lastContainer.config.col + lastContainer.config.sizex;
-            } else {
-                newRow.row = lastContainer.config.row + 1;
-                newRow.col = 1;
-            }
-        }
-
-        return newRow;
     }
 
     private deleteEmptyRows(): void {
         // TODO: Find a solution to remove setTimeout
         setTimeout(() => {
-            this.grid = _.chain(this.grid)
-                .sortBy('config.row')
-                .groupBy('config.row')
-                .values()
-                .map(this.updateContainerIndex)
-                .flatten()
-                .value();
+            this.grid.deleteEmptyRows();
         }, 0);
-    }
-
-    private updateContainerIndex(rowArray, index) {
-        if (rowArray[0].row !== index + 1) {
-            return rowArray.map((container) => {
-                container.config.row = index + 1;
-                return container;
-            });
-        }
-        return rowArray;
     }
 
     private isHaveRows(): boolean {

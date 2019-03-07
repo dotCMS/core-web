@@ -4,10 +4,11 @@ import { DotLayoutGridBox } from '../../shared/models/dot-layout-grid-box.model'
 import { DotLayoutRow } from '../../shared/models/dot-layout-row.model';
 import { DotLayoutColumn } from '../../shared/models/dot-layout-column.model';
 import * as _ from 'lodash';
-import { DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE } from '../../shared/models/dot-layout.const';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotPageContainer } from '../models/dot-page-container.model';
 import { DotContainerColumnBox } from '../models/dot-container-column-box.model';
+import { DotLayoutGrid } from '../models/dot-layout-grid.model';
+import { DotLayoutGridRow } from '../models/dot-layout-grid-row.model';
 
 /**
  * Provide methods to transform NgGrid model into PageView model and viceversa.
@@ -24,7 +25,7 @@ export class DotEditLayoutService {
      * @param DotLayoutBody dotLayoutBody
      * @returns DotLayoutGridBox[]
      */
-    getDotLayoutGridBox(dotLayoutBody: DotLayoutBody): DotLayoutGridBox[] {
+    getDotLayoutGridBox(dotLayoutBody: DotLayoutBody): DotLayoutGrid {
         const grid: DotLayoutGridBox[] = [];
 
         dotLayoutBody.rows.forEach((row, rowIndex) => {
@@ -33,7 +34,7 @@ export class DotEditLayoutService {
                     containers: this.getDotContainerColumnBoxFromDotPageContainer(
                         column.containers
                     ),
-                    config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
+                    config: Object.assign(DotLayoutGrid.getDefaultConfig(), {
                         sizex: column.width,
                         col: column.leftOffset,
                         row: rowIndex + 1,
@@ -45,7 +46,7 @@ export class DotEditLayoutService {
             });
         });
 
-        return grid;
+        return new DotLayoutGrid(grid, dotLayoutBody.rows.map(row => row.styleClass));
     }
 
     /**
@@ -54,17 +55,9 @@ export class DotEditLayoutService {
      * @param DotLayoutGridBox[] grid
      * @returns DotLayoutBody
      */
-    getDotLayoutBody(grid: DotLayoutGridBox[], rowClasses?: string[]): DotLayoutBody {
-        return <DotLayoutBody>{
-            rows: _.chain(grid)
-                .sortBy('config.row')
-                .sortBy('config.col')
-                .groupBy('config.row')
-                .values()
-                .map((dotLayoutGrid: DotLayoutGridBox[], index: number) =>
-                    this.getLayoutRowFromLayoutGridBoxes(dotLayoutGrid, rowClasses ? rowClasses[index] : '')
-                )
-                .value()
+    getDotLayoutBody(grid: DotLayoutGrid): DotLayoutBody {
+        return <DotLayoutBody> {
+            rows: grid.getRows().map(row => this.getLayoutRowFromLayoutGridBoxes(row))
         };
     }
 
@@ -74,7 +67,7 @@ export class DotEditLayoutService {
      * @returns DotLayoutBody
      */
     cleanupDotLayoutBody(layoutBody: DotLayoutBody): DotLayoutBody {
-        return this.getDotLayoutBody(this.getDotLayoutGridBox(layoutBody), layoutBody.rows.map(row => row.styleClass));
+        return this.getDotLayoutBody(this.getDotLayoutGridBox(layoutBody));
     }
 
     /**
@@ -102,10 +95,10 @@ export class DotEditLayoutService {
             });
     }
 
-    private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[], styleClass: string): DotLayoutRow {
+    private getLayoutRowFromLayoutGridBoxes(dotLayoutGridRow: DotLayoutGridRow): DotLayoutRow {
         return {
-            styleClass: styleClass,
-            columns: gridBoxes.map(
+            styleClass: dotLayoutGridRow.styleClass,
+            columns: dotLayoutGridRow.boxes.map(
                 (layoutGridBox: DotLayoutGridBox) =>
                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,

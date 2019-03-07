@@ -1,9 +1,9 @@
 <div>
-        <button type="button" pButton (click)="addRowClass(i)" *ngFor="let rowClass of rowClasses; let i = index"></button>
+        <button type="button" pButton (click)="addRowClass(i)" *ngFor="let rowClass of grid.getAllRowClass(); let i = index"></button>
     </div>
 
 <div [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
-    <div class="box" *ngFor="let gridBox of grid; let i = index" [(ngGridItem)]="gridBox.config">
+    <div class="box" *ngFor="let gridBox of grid.boxes; let i = index" [(ngGridItem)]="gridBox.config">
         <button class="box__remove" type="button" pButton icon="fa fa-times" (click)="onRemoveContainer(i)"></button>
         <button type="button" pButton (click)="addColumnClass(i)"></button>
         <dot-container-selector (change)="propagateGridLayoutChange($event)" (remove)="onRemoveContainer(i)" [data]="gridBox.containers"
