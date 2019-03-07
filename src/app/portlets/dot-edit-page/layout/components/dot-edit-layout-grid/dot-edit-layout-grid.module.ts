@@ -5,6 +5,7 @@ import { DotActionButtonModule } from '@components/_common/dot-action-button/dot
 import { DotContainerSelectorModule } from '@components/dot-container-selector/dot-container-selector.module';
 import { ButtonModule } from 'primeng/primeng';
 import { NgGridModule } from 'dot-layout-grid';
+import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 
 @NgModule({
     declarations: [DotEditLayoutGridComponent],
@@ -13,7 +14,8 @@ import { NgGridModule } from 'dot-layout-grid';
         NgGridModule,
         DotActionButtonModule,
         DotContainerSelectorModule,
-        ButtonModule
+        ButtonModule,
+        DotDialogModule
     ],
     exports: [DotEditLayoutGridComponent],
     providers: []

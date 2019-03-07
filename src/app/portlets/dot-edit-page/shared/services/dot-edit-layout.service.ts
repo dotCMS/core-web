@@ -36,7 +36,10 @@ export class DotEditLayoutService {
                     config: Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE, {
                         sizex: column.width,
                         col: column.leftOffset,
-                        row: rowIndex + 1
+                        row: rowIndex + 1,
+                        payload: {
+                            styleClass: column.styleClass
+                        }
                     })
                 });
             });
@@ -51,15 +54,15 @@ export class DotEditLayoutService {
      * @param DotLayoutGridBox[] grid
      * @returns DotLayoutBody
      */
-    getDotLayoutBody(grid: DotLayoutGridBox[]): DotLayoutBody {
+    getDotLayoutBody(grid: DotLayoutGridBox[], rowClasses?: string[]): DotLayoutBody {
         return <DotLayoutBody>{
             rows: _.chain(grid)
                 .sortBy('config.row')
                 .sortBy('config.col')
                 .groupBy('config.row')
                 .values()
-                .map((dotLayoutGrid: DotLayoutGridBox[]) =>
-                    this.getLayoutRowFromLayoutGridBoxes(dotLayoutGrid)
+                .map((dotLayoutGrid: DotLayoutGridBox[], index: number) =>
+                    this.getLayoutRowFromLayoutGridBoxes(dotLayoutGrid, rowClasses ? rowClasses[index] : '')
                 )
                 .value()
         };
@@ -70,8 +73,8 @@ export class DotEditLayoutService {
      * @param DotLayoutBody grid
      * @returns DotLayoutBody
      */
-    cleanupDotLayoutBody(grid: DotLayoutBody): DotLayoutBody {
-        return this.getDotLayoutBody(this.getDotLayoutGridBox(grid));
+    cleanupDotLayoutBody(layoutBody: DotLayoutBody): DotLayoutBody {
+        return this.getDotLayoutBody(this.getDotLayoutGridBox(layoutBody), layoutBody.rows.map(row => row.styleClass));
     }
 
     /**
@@ -99,13 +102,15 @@ export class DotEditLayoutService {
             });
     }
 
-    private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[]): DotLayoutRow {
+    private getLayoutRowFromLayoutGridBoxes(gridBoxes: DotLayoutGridBox[], styleClass: string): DotLayoutRow {
         return {
+            styleClass: styleClass,
             columns: gridBoxes.map(
                 (layoutGridBox: DotLayoutGridBox) =>
                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
+                        styleClass: layoutGridBox.config.payload.styleClass,
                         containers: layoutGridBox.containers
                             .filter(dotContainersColumnBox => dotContainersColumnBox.container)
                             .map(
