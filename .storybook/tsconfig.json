@@ -1,0 +1,30 @@
+{
+    "extends": "../tsconfig.json",
+    "exclude": [
+        "../src/test.ts",
+        "../src/**/*.spec.ts",
+        "../projects/**/*.spec.ts",
+        "../projects/**/*"
+    ],
+    "include": ["../src/**/*"],
+    "compilerOptions": {
+        "paths": {
+            "@services/*": ["src/app/api/services/*"],
+            "@components/*": ["src/app/view/components/*"],
+            "@directives/*": ["src/app/view/directives/*"],
+            "@pipes/*": ["src/app/view/pipes/*"],
+            "@shared/*": ["src/app/shared/*"],
+            "@tests/*": ["src/app/test/*"],
+            "@models/*": ["src/app/shared/models/*"],
+            "@portlets/*": ["src/app/portlets/*"],
+            "dot-layout-grid": ["dist-lib/dot-layout-grid"],
+            "dot-layout-grid/*": ["dist-lib/dot-layout-grid/*"],
+            "dot-rules": ["dist-lib/dot-rules"],
+            "dot-rules/*": ["dist-lib/dot-rules/*"],
+            "dotcms-js": ["dist-lib/dotcms-js"],
+            "dotcms-js/*": ["dist-lib/dotcms-js/*"],
+            "dotcms": ["dist-lib/dotcms"],
+            "dotcms/*": ["dist-lib/dotcms/*"]
+        }
+    }
+}
