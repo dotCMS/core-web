@@ -130,7 +130,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     onRemoveContainer(index: number): void {
-        if (this.grid[index].containers.length) {
+        if (this.grid.boxes[index].containers.length) {
             this.dotDialogService.confirm({
                 accept: () => {
                     this.removeContainer(index);
@@ -190,8 +190,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
     addColumnClass(index: number): void {
         this.addClass(
-            () => this.grid[index].config.payload.styleClass || '',
-            () => this.grid[index].config.payload.styleClass = this.classToAddInput.nativeElement.value
+            () => this.grid.boxes[index].config.payload.styleClass || '',
+            () => this.grid.boxes[index].config.payload.styleClass = this.classToAddInput.nativeElement.value
         );
     }
 
@@ -202,16 +202,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         );
     }
 
-    handlerClassToAddInputChanged(): void {
-        this.dialogActions = {
-            accept: {
-                ...this.dialogActions.accept,
-                disabled: !this.classToAddInput.nativeElement.value
-            },
-            cancel: this.dialogActions.cancel
-        };
-    }
-
     private addClass(getterFunc: () => string, setterFunc): void {
         this.dialogActions = {
             accept: {
@@ -220,8 +210,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                     this.propagateGridLayoutChange();
                     dialog.close();
                 },
-                label: 'Ok',
-                disabled: false
+                label: 'Ok'
             },
             cancel: {
                 label: 'Cancel'
@@ -239,7 +228,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     private removeContainer(index: number): void {
-        if (this.grid[index]) {
+        if (this.grid.boxes[index]) {
             this.grid.removeContainer(index);
             this.propagateGridLayoutChange();
         }

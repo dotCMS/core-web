@@ -103,7 +103,7 @@ export class DotEditLayoutService {
                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
-                        styleClass: layoutGridBox.config.payload.styleClass,
+                        styleClass: layoutGridBox.config.payload ? layoutGridBox.config.payload.styleClass : null,
                         containers: layoutGridBox.containers
                             .filter(dotContainersColumnBox => dotContainersColumnBox.container)
                             .map(
