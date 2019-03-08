@@ -6,11 +6,12 @@ import { DotLoadingIndicatorModule } from '../../_common/iframe/dot-loading-indi
 import { ButtonModule, CheckboxModule, DropdownModule, InputTextModule } from 'primeng/primeng';
 
 import { LoginContainerComponent } from './login-container.component';
-import { LoginComponent } from './login.component';
+import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
 
 import { SharedModule } from '@shared/shared.module';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
+
 
 const routes: Routes = [
     {
@@ -33,6 +34,6 @@ const routes: Routes = [
         MdInputTextModule,
         DotDirectivesModule
     ],
-    declarations: [LoginContainerComponent, LoginComponent]
+    declarations: [LoginContainerComponent, DotLoginComponent]
 })
-export class LoginModule {}
+export class DotLoginModule {}

@@ -1,13 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import {
-    HttpRequestUtils,
-    LoginService,
-    LoggerService,
-    HttpCode,
-    User
-} from 'dotcms-js';
+import { HttpRequestUtils, LoginService, LoggerService, HttpCode, User } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotLoginData } from '@models/dot-login/dot-login-data.model';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -51,7 +46,7 @@ export class LoginContainerComponent {
         }
     }
 
-    logInUser(loginData: LoginData): void {
+    logInUser(loginData: DotLoginData): void {
         this.isLoginInProgress = true;
         this.dotLoadingIndicatorService.show();
         this.message = '';
@@ -91,11 +86,4 @@ export class LoginContainerComponent {
     private isBadRequestOrUnathorized(status: number) {
         return status === HttpCode.BAD_REQUEST || status === HttpCode.UNAUTHORIZED;
     }
-}
-
-export interface LoginData {
-    login: string;
-    password: string;
-    rememberMe: boolean;
-    language: string;
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
+import { pluck } from 'rxjs/operators';
+import { DotSystemInformation } from '@models/dot-login';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -15,22 +17,36 @@ export class LoginPageComponent implements OnInit {
     constructor(private loginService: LoginService, private loggerService: LoggerService) {}
 
     ngOnInit(): void {
-        this.loginService.getLoginFormInfo('', []).subscribe(
-            (data) => {
-                // Translate labels and messages
-                const entity = data.entity;
+        this.loginService
+            .getLoginFormInfo('', [])
+            .pipe(pluck('entity'))
+            .subscribe(
+                (systemInformation: DotSystemInformation) => {
+                    document.body.style.backgroundColor = this.setBackgroundColor(
+                        systemInformation
+                    );
 
-                // Set background color and image with the values provided by the service
-                if (entity.backgroundColor !== 'undefined' && entity.backgroundColor !== '') {
-                    document.body.style.backgroundColor = entity.backgroundColor;
+                    document.body.style.backgroundImage = this.setBackgroundImage(
+                        systemInformation
+                    );
+                },
+                error => {
+                    this.loggerService.debug(error);
                 }
-                if (entity.backgroundPicture !== 'undefined' && entity.backgroundPicture !== '') {
-                    document.body.style.backgroundImage = 'url(' + entity.backgroundPicture + ')';
-                }
-            },
-            (error) => {
-                this.loggerService.debug(error);
-            }
-        );
+            );
+    }
+
+    private setBackgroundColor(systemInformation: DotSystemInformation): string {
+        return systemInformation.backgroundColor !== 'undefined' &&
+            systemInformation.backgroundColor !== ''
+            ? systemInformation.backgroundColor
+            : '';
+    }
+
+    private setBackgroundImage(systemInformation: DotSystemInformation): string {
+        return systemInformation.backgroundPicture !== 'undefined' &&
+            systemInformation.backgroundPicture !== ''
+            ? 'url(' + systemInformation.backgroundPicture + ')'
+            : '';
     }
 }

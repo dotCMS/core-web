@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
 import { LoginPageComponent } from '@components/login/login-page-component';
-import { LogOutContainerComponent } from '@components/login/login-component/log-out-container';
+import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
 import { IframePortletLegacyComponent } from '@components/_common/iframe/iframe-porlet-legacy/index';
 import { AuthGuardService } from '@services/guards/auth-guard.service';
 import { ContentletGuardService } from '@services/guards/contentlet-guard.service';
@@ -19,7 +19,7 @@ const AUTH_MODULES: Routes = [
     },
     {
         path: 'login',
-        loadChildren: '@components/login/login-component/login.module#LoginModule'
+        loadChildren: '@components/login/dot-login-component/dot-login.module#DotLoginModule'
     },
     {
         path: 'resetPassword/:token',
@@ -128,7 +128,7 @@ const appRoutes: Routes = [
         path: 'fromCore'
     },
     {
-        component: LogOutContainerComponent,
+        component: DotLogOutContainerComponent,
         path: 'logout'
     },
     {

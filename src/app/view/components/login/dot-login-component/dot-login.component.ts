@@ -8,39 +8,33 @@ import {
     AfterViewInit,
     OnInit
 } from '@angular/core';
-import { LoginData } from './login-container.component';
 import { LoginService, LoggerService } from 'dotcms-js';
+import { DotLoginData } from '@models/dot-login';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-login-component',
-    templateUrl: 'login.component.html'
+    templateUrl: './dot-login.component.html',
+    styleUrls: ['./dot-login.component.scss']
 })
 /**
  * The login component allows the user to fill all
  * the info required to log in the dotCMS angular backend
  */
-export class LoginComponent implements AfterViewInit, OnInit {
-    @Input()
-    isLoginInProgress = false;
+export class DotLoginComponent implements AfterViewInit, OnInit {
+    @Input() isLoginInProgress = false;
 
-    @Input()
-    message = '';
+    @Input() message = '';
 
-    @Input()
-    passwordChanged = false;
+    @Input() passwordChanged = false;
 
-    @Input()
-    resetEmailSent = false;
+    @Input() resetEmailSent = false;
 
-    @Input()
-    resetEmail = '';
+    @Input() resetEmail = '';
 
-    @Output()
-    recoverPassword = new EventEmitter<any>();
+    @Output() recoverPassword = new EventEmitter<any>();
 
-    @Output()
-    login = new EventEmitter<LoginData>();
+    @Output() login = new EventEmitter<DotLoginData>();
 
     myAccountLogin: string;
     password: string;
@@ -82,7 +76,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
         'error.form.mandatory',
         'angular.login.component.community.licence.message',
         'reset-password-success',
-        'a-new-password-has-been-sent-to-x'
+        'a-new-password-has-been-sent-to-x',
+        'welcome-back'
     ];
 
     constructor(
@@ -160,7 +155,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
      */
     private renderPageData(): void {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
-            (data) => {
+            data => {
                 // Translate labels and messages
                 const dataI18n = data.i18nMessagesMap;
                 const entity = data.entity;
@@ -195,7 +190,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
                 if (this.languages.length === 0) {
                     const currentLanguage = entity.currentLanguage;
 
-                    entity.languages.forEach((lang) => {
+                    entity.languages.forEach(lang => {
                         this.languages.push({
                             label: lang.displayName,
                             value: lang.language + '_' + lang.country
@@ -212,7 +207,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
                     this.message = this.resetEmailMessage.replace('{0}', this.resetEmail);
                 }
             },
-            (error) => {
+            error => {
                 this.loggerService.debug(error);
             }
         );

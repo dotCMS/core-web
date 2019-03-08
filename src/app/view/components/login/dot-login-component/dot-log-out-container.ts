@@ -7,7 +7,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
     selector: 'dot-log-out-container',
     template: ''
 })
-export class LogOutContainerComponent {
+export class DotLogOutContainerComponent {
     constructor(loginService: LoginService, router: DotRouterService) {
         loginService.isLogin$.subscribe((isLogin) => {
             if (isLogin) {

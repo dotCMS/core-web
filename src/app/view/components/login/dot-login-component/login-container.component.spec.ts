@@ -7,7 +7,7 @@ import { MdInputTextModule } from '../../../directives/md-inputtext/md-input-tex
 import { LoginContainerComponent } from './login-container.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
-import { LoginComponent } from './login.component';
+import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { LoginService } from 'dotcms-js';
@@ -22,7 +22,7 @@ describe('LoginContainerComponent', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
-            declarations: [LoginContainerComponent, LoginComponent, DotLoadingIndicatorComponent],
+            declarations: [LoginContainerComponent, DotLoginComponent, DotLoadingIndicatorComponent],
             providers: [
                 DotLoadingIndicatorService,
                 { provide: LoginService, useClass: LoginServiceMock }
@@ -47,7 +47,7 @@ describe('LoginContainerComponent', () => {
             spyOn(loginService, 'loginUser').and.callThrough();
             spyOn(component, 'logInUser').and.callThrough();
             spyOn(dotRouterService, 'goToMain');
-            const loginComponent: LoginComponent = fixture.debugElement.query(
+            const loginComponent: DotLoginComponent = fixture.debugElement.query(
                 By.css('dot-login-component')
             ).componentInstance;
 

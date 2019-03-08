@@ -1,7 +1,8 @@
 @import "variables";
 @import "mixins";
+@import "../styles/primeng-theme/utils/theme-variables";
 
-/*.cms-info {
+.cms-info {
     color: $gray-light;
     text-align: center;
     text-transform: uppercase;
@@ -36,9 +37,9 @@
         overflow: inherit;
         width: 100%;
     }
-}*/
+}
 
-.login__container {
+/*.login__container {
     @include box_shadow(5);
     background-color: $white;
     border-radius: $border-radius * 3;
@@ -58,26 +59,31 @@
         padding: 30px;
         width: 500px;
     }
+}*/
+
+.login__title {
+    color: $black;
+    font-size: rem-cal(32px);
+    margin: $basic-padding * 5 0;
 }
 
-//.login__title {
-//    color: $black;
-//    font-size: rem-cal(32px);
-//    font-weight: 100;
-//    line-height: 1em;
-//    margin: 0 0 rem-cal($basic-padding * 2);
-//}
-//
-//.login__button {
-//    margin-right: $basic-padding;
-//}
-//
-//.signin {
-//    @media (min-width: $screen-md-min) {
-//
-//    }
-//
-//    @media (min-width: $screen-lg-min) {
-//
-//    }
-//}
+.login__button {
+    margin-right: $basic-padding;
+}
+
+.signin {
+    @media (min-width: $screen-md-min) {
+
+    }
+
+    @media (min-width: $screen-lg-min) {
+
+    }
+}
+
+a[actionLink]{
+    color: $brand-secondary;
+    font-size: $button-tiny-text-size;
+    text-transform: uppercase;
+    cursor: pointer;
+}

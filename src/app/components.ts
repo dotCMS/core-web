@@ -1,7 +1,7 @@
 import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
 import { DotAlertConfirmComponent } from './view/components/_common/dot-alert-confirm/dot-alert-confirm';
 import { GlobalSearchComponent } from './view/components/global-search/global-search';
-import { LogOutContainerComponent } from './view/components/login/login-component/log-out-container';
+import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
 import { LoginAsComponent } from './view/components/login-as/login-as';
 import { LoginPageComponent } from './view/components/login/login-page-component';
 import { MainComponentLegacyComponent } from './view/components/main-legacy/main-legacy.component';
@@ -29,7 +29,7 @@ export const COMPONENTS = [
     MainComponentLegacyComponent,
     LoginPageComponent,
     LoginAsComponent,
-    LogOutContainerComponent,
+    DotLogOutContainerComponent,
     GlobalSearchComponent,
     DotAlertConfirmComponent,
     CustomTimeComponent
