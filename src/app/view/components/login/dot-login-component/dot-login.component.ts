@@ -9,7 +9,7 @@ import {
     OnInit
 } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
-import { DotLoginData } from '@models/dot-login';
+import { DotLoginData, DotLoginLanguage, DotSystemInformation } from '@models/dot-login';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -36,35 +36,25 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
 
     @Output() login = new EventEmitter<DotLoginData>();
 
-    myAccountLogin: string;
-    password: string;
-    myAccountRememberMe = false;
-    language = '';
+    dotLoginData: DotLoginData = {
+        language: '',
+        login: '',
+        password: '',
+        rememberMe: false
+    };
     languages: Array<any> = [];
 
+    dotSystemInformation: DotSystemInformation;
+
     // labels
-    communityLicenseInfoMessage = '';
-    dotcmsBuildDateString = '';
-    dotcmsServerId = '';
-    dotcmsVersion = '';
-    dotcmscompanyLogo = '';
-    dotcmslicenceLevel = '';
-    forgotPasswordButton = '';
+    dataI18n: { [key: string]: string } = {};
+
     isCommunityLicense = true;
-    loginButton = '';
-    loginLabel = '';
-    passwordLabel = '';
-    rememberMeLabel = '';
-    serverLabel = '';
     userIdOrEmailLabel = '';
 
     private emailAddressLabel = '';
-    private mandatoryFieldError = '';
-    private resetEmailMessage = '';
-    private resetPasswordSuccess = '';
 
     private i18nMessages: Array<string> = [
-        'Login',
         'email-address',
         'user-id',
         'password',
@@ -85,7 +75,6 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
         private ngZone: NgZone,
         private loggerService: LoggerService
     ) {
-        this.language = '';
         this.renderPageData();
     }
 
@@ -107,28 +96,31 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
      *  Executes the logIn service
      */
     logInUser(_$event: any): void {
-        const isSetUserId = this.myAccountLogin !== undefined && this.myAccountLogin.length > 0;
-        const isSetPassword = this.password !== undefined && this.password.length > 0;
+        const isSetUserId =
+            this.dotLoginData.login !== undefined && this.dotLoginData.login.length > 0;
+        const isSetPassword =
+            this.dotLoginData.password !== undefined && this.dotLoginData.password.length > 0;
         this.message = '';
 
         if (isSetUserId && isSetPassword) {
-            this.login.emit({
-                language: this.language,
-                login: this.myAccountLogin,
-                password: this.password,
-                rememberMe: this.myAccountRememberMe
-            });
+            this.login.emit(this.dotLoginData);
         } else {
             let error = '';
             if (!isSetUserId) {
-                error += this.mandatoryFieldError.replace('{0}', this.emailAddressLabel);
+                error += this.dataI18n['error.form.mandatory'].replace(
+                    '{0}',
+                    this.emailAddressLabel
+                );
             }
 
             if (!isSetPassword) {
                 if (error !== '') {
                     error += '<br>';
                 }
-                error += this.mandatoryFieldError.replace('{0}', this.passwordLabel);
+                error += this.dataI18n['error.form.mandatory'].replace(
+                    '{0}',
+                    this.dataI18n['password']
+                );
             }
             this.message = error;
             this.isLoginInProgress = false;
@@ -138,8 +130,8 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
     /**
      * Execute the change language service
      */
-    changeLanguage(lang: string): void {
-        this.language = lang;
+    changeLanguage(lang: DotLoginLanguage): void {
+        this.dotLoginData.language = this.setLanguageFormat(lang);
         this.renderPageData();
     }
 
@@ -154,62 +146,46 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
      * Renders all the labels, images, and placeholder values for the Log In page.
      */
     private renderPageData(): void {
-        this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
+        this.loginService.getLoginFormInfo(this.dotLoginData.language, this.i18nMessages).subscribe(
             data => {
-                // Translate labels and messages
-                const dataI18n = data.i18nMessagesMap;
-                const entity = data.entity;
+                this.dataI18n = data.i18nMessagesMap;
+                this.dotSystemInformation = data.entity;
 
-                this.loginLabel = dataI18n.Login;
                 this.emailAddressLabel =
-                    'emailAddress' === entity.authorizationType
-                        ? (this.userIdOrEmailLabel = dataI18n['email-address'])
-                        : (this.userIdOrEmailLabel = dataI18n['user-id']);
+                    'emailAddress' === this.dotSystemInformation.authorizationType
+                        ? (this.userIdOrEmailLabel = this.dataI18n['email-address'])
+                        : (this.userIdOrEmailLabel = this.dataI18n['user-id']);
 
-                this.passwordLabel = dataI18n.password;
-                this.rememberMeLabel = dataI18n['remember-me'];
-                this.loginButton = dataI18n['sign-in'].toUpperCase();
-                this.forgotPasswordButton = dataI18n['get-new-password'];
-                this.serverLabel = dataI18n.Server;
-                this.mandatoryFieldError = dataI18n['error.form.mandatory'];
-                this.communityLicenseInfoMessage =
-                    dataI18n['angular.login.component.community.licence.message'];
-                this.resetPasswordSuccess = dataI18n['reset-password-success'];
-                this.resetEmailMessage = dataI18n['a-new-password-has-been-sent-to-x'];
-
-                // Set dotCMS Info
-                this.dotcmscompanyLogo = entity.logo;
-                this.dotcmsServerId = entity.serverId;
-                this.dotcmslicenceLevel = entity.levelName;
-                this.isCommunityLicense = this.dotcmslicenceLevel.indexOf('COMMUNITY') !== -1;
-
-                this.dotcmsVersion = entity.version;
-                this.dotcmsBuildDateString = entity.buildDateString;
+                this.isCommunityLicense =
+                    this.dotSystemInformation.levelName.indexOf('COMMUNITY') !== -1;
 
                 // Configure languages
                 if (this.languages.length === 0) {
-                    const currentLanguage = entity.currentLanguage;
-
-                    entity.languages.forEach(lang => {
-                        this.languages.push({
-                            label: lang.displayName,
-                            value: lang.language + '_' + lang.country
-                        });
-                    });
-
-                    this.language = currentLanguage.language + '_' + currentLanguage.country;
+                    this.languages = this.dotSystemInformation.languages.map(
+                        lang => (lang.language = this.setLanguageFormat(lang))
+                    );
+                    this.dotLoginData.language = this.setLanguageFormat(
+                        this.dotSystemInformation.currentLanguage
+                    );
                 }
 
                 if (this.passwordChanged) {
-                    this.message = this.resetPasswordSuccess;
+                    this.message = this.dataI18n['reset-password-success'];
                 }
                 if (this.resetEmailSent) {
-                    this.message = this.resetEmailMessage.replace('{0}', this.resetEmail);
+                    this.message = this.dataI18n['a-new-password-has-been-sent-to-x'].replace(
+                        '{0}',
+                        this.resetEmail
+                    );
                 }
             },
             error => {
                 this.loggerService.debug(error);
             }
         );
+    }
+
+    private setLanguageFormat(lang: DotLoginLanguage): string {
+        return lang.language + '_' + lang.country;
     }
 }

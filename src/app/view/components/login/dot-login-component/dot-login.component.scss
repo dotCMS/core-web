@@ -2,20 +2,44 @@
 @import "mixins";
 @import "../styles/primeng-theme/utils/theme-variables";
 
-.cms-info {
+.login__header {
+    display: flex;
+}
+
+.login__logo {
+    flex-grow: 1;
+    align-self: center;
+    display: flex;
+
+    img {
+        width: 102px;
+        height: 19px;
+    }
+}
+
+.login__title {
+    color: $black;
+    font-size: rem-cal(34px);
+    margin: $basic-padding * 9 0 $basic-padding * 6 0;
+}
+
+.login__password-settings {
+    display: flex;
+
+    p-checkbox {
+        flex-grow: 1;
+    }
+
+    a {
+        align-self: center;
+    }
+}
+
+.login__footer {
     color: $gray-light;
     text-align: center;
     text-transform: uppercase;
     font-size: $font-size-x-small;
-}
-
-.cms-info__message {
-    color: $gray-dark;
-    font-size: rem-cal(12px);
-}
-
-.cms-info__logo {
-    width: 102px;
 }
 
 .login {
@@ -61,27 +85,19 @@
     }
 }*/
 
-.login__title {
-    color: $black;
-    font-size: rem-cal(32px);
-    margin: $basic-padding * 5 0;
-}
-
 .login__button {
     margin-right: $basic-padding;
 }
 
 .signin {
     @media (min-width: $screen-md-min) {
-
     }
 
     @media (min-width: $screen-lg-min) {
-
     }
 }
 
-a[actionLink]{
+a[actionlink] {
     color: $brand-secondary;
     font-size: $button-tiny-text-size;
     text-transform: uppercase;
