@@ -30,6 +30,13 @@ export class DotEditLayoutService {
 
         dotLayoutBody.rows.forEach((row, rowIndex) => {
             row.columns.forEach(column => {
+                const payload: any = column.styleClass ?
+                    {
+                        payload: {
+                            styleClass: column.styleClass
+                        }
+                    } : {};
+
                 grid.push({
                     containers: this.getDotContainerColumnBoxFromDotPageContainer(
                         column.containers
@@ -38,9 +45,7 @@ export class DotEditLayoutService {
                         sizex: column.width,
                         col: column.leftOffset,
                         row: rowIndex + 1,
-                        payload: {
-                            styleClass: column.styleClass
-                        }
+                        ...payload
                     })
                 });
             });
@@ -96,14 +101,15 @@ export class DotEditLayoutService {
     }
 
     private getLayoutRowFromLayoutGridBoxes(dotLayoutGridRow: DotLayoutGridRow): DotLayoutRow {
+
         return {
-            styleClass: dotLayoutGridRow.styleClass,
+            ...dotLayoutGridRow.styleClass ? { styleClass: dotLayoutGridRow.styleClass } : {},
             columns: dotLayoutGridRow.boxes.map(
                 (layoutGridBox: DotLayoutGridBox) =>
-                    <DotLayoutColumn>{
+                     <DotLayoutColumn>{
                         leftOffset: layoutGridBox.config.col,
                         width: layoutGridBox.config.sizex,
-                        styleClass: layoutGridBox.config.payload ? layoutGridBox.config.payload.styleClass : null,
+                        ...this.getPayload(layoutGridBox),
                         containers: layoutGridBox.containers
                             .filter(dotContainersColumnBox => dotContainersColumnBox.container)
                             .map(
@@ -114,9 +120,15 @@ export class DotEditLayoutService {
                                         ),
                                         uuid: dotContainersColumnBox.uuid
                                     }
-                            )
-                    }
+                            ),
+                        }
             )
         };
+    }
+
+    private getPayload(layoutGridBox: DotLayoutGridBox): any {
+        return layoutGridBox.config.payload && layoutGridBox.config.payload.styleClass
+            ? {styleClass: layoutGridBox.config.payload.styleClass }
+            : {};
     }
 }

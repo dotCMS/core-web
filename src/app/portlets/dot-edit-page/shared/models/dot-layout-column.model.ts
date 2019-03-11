@@ -4,5 +4,5 @@ export interface DotLayoutColumn {
     containers: DotPageContainer[];
     leftOffset: number;
     width: number;
-    styleClass: string;
+    styleClass?: string;
 }

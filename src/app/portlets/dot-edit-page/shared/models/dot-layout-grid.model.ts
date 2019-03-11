@@ -102,22 +102,17 @@ export class DotLayoutGrid {
     }
 
     private setRowClases(): void {
-        console.log('setRowClass');
         const newNRows = this.dotLayoutGridBoxs
             .map(box => box.config.row)
             .reduce((before, current) => {
                 return before > current ? before : current;
             }, 0);
-        console.log('nRows', newNRows, this.dotLayoutGridBoxs);
-        console.log('this.rowClass.length', this.rowClasses.length);
 
         if (this.rowClasses.length > newNRows) {
             this.rowClasses = this.rowClasses.splice(0, this.rowClasses.length - newNRows);
         } else {
             this.rowClasses = [...this.rowClasses, ...Array(newNRows - this.rowClasses.length).fill(null)];
         }
-
-        console.log('this.rowClass', this.rowClasses, this.rowClasses.length);
     }
 
     private getConfigOfNewBox(): NgGridItemConfig {

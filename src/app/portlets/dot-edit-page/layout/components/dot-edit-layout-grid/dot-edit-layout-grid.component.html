@@ -1,11 +1,11 @@
 <div>
-        <button type="button" pButton (click)="addRowClass(i)" *ngFor="let rowClass of grid.getAllRowClass(); let i = index"></button>
-    </div>
+    <button type="button" pButton class="box__add-row-class-button" (click)="addRowClass(i)" *ngFor="let rowClass of grid.getAllRowClass(); let i = index"></button>
+</div>
 
 <div [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
     <div class="box" *ngFor="let gridBox of grid.boxes; let i = index" [(ngGridItem)]="gridBox.config">
         <button class="box__remove" type="button" pButton icon="fa fa-times" (click)="onRemoveContainer(i)"></button>
-        <button type="button" pButton (click)="addColumnClass(i)"></button>
+        <button class="box__add-column-class-button" type="button" pButton (click)="addColumnClass(i)"></button>
         <dot-container-selector (change)="propagateGridLayoutChange($event)" (remove)="onRemoveContainer(i)" [data]="gridBox.containers"
             [multiple]="true">
         </dot-container-selector>
@@ -19,5 +19,5 @@
     header="Header"
     [(visible)]="showAddClassDialog"
 >
-    <input pInputText #classToAddInput type="text"/>
+    <input pInputText #classToAddInput class="box__add-class-text"  type="text"/>
 </dot-dialog>
