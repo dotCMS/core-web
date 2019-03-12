@@ -10,6 +10,34 @@ import { take, pluck } from 'rxjs/operators';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+    variables = [
+        {
+            clazz: 'com.dotcms.contenttype.model.field.ImmutableFieldVariable',
+            fieldId: 'ec8cc36f-6058-4ab5-9bfb-fc36ab011ee5',
+            id: 'fd39ccaa-ffbc-420f-9839-46eaad625f59',
+            key: 'a1',
+            value: 'asd1'
+        },
+        {
+            clazz: 'com.dotcms.contenttype.model.field.ImmutableFieldVariable',
+            fieldId: 'ec8cc36f-6058-4ab5-9bfb-fc36ab011ee5',
+            id: 'fd39ccaa-ffbc-420f-9839-46eaad625f59',
+            key: 'b2',
+            value: 'bvc2'
+        }
+    ];
+
+    labels = {
+        value: 'Value',
+        key: 'Key',
+        actions: 'Actions',
+        noRows: 'No Rows',
+        cancel: 'Cancel',
+        save: 'Save',
+        keyPlaceholder: 'Enter key',
+        valuePlaceholder: 'Enter value'
+    };
+
     constructor(
         notLicensedService: NotLicensedService,
         private dotCmsConfig: DotcmsConfig,
@@ -28,5 +56,9 @@ export class AppComponent implements OnInit {
             .subscribe((colors: DotUiColors) => {
                 this.dotUiColors.setColors(document.querySelector('html'), colors);
             });
+    }
+
+    output(e) {
+        console.log('--emit', e);
     }
 }

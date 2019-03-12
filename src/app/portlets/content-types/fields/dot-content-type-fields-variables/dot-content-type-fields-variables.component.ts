@@ -124,6 +124,8 @@ export class DotContentTypeFieldsVariablesComponent implements OnInit, OnChanges
             .load(params)
             .pipe(takeUntil(this.destroy$))
             .subscribe((fieldVariables: DotFieldVariable[]) => {
+        console.log('---fieldVariables', fieldVariables);
+
                 this.fieldVariables = fieldVariables;
                 this.fieldVariablesBackup = _.cloneDeep(fieldVariables);
             });

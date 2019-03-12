@@ -45,6 +45,9 @@
       "@portlets/*": [
         "src/app/portlets/*"
       ],
+      "@projects/*": [
+        "projects/*"
+      ],
       "dot-layout-grid": [
         "dist-lib/dot-layout-grid"
       ],

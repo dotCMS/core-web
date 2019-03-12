@@ -45,6 +45,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
+        console.log('---fieldVariable', this.fieldVariable)
         this.dotMessageService
             .getMessages([
                 'contenttypes.field.variables.key_input.placeholder',

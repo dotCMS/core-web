@@ -19,6 +19,7 @@ import { SharedModule } from './shared/shared.module';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
+import { DotKeyvalueModule } from '@projects/dot-keyvalue/src/dot-keyvalue/dot-keyvalue.module';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -39,7 +40,8 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         AppRoutingModule,
         MdInputTextModule,
         DotDirectivesModule,
-        HotkeyModule.forRoot()
+        HotkeyModule.forRoot(),
+        DotKeyvalueModule
     ],
     providers: [ENV_PROVIDERS]
 })

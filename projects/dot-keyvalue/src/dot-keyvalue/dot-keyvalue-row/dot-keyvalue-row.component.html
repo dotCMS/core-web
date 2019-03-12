@@ -1,0 +1,33 @@
+<tr>
+    <td pEditableColumn>
+        <p-cellEditor>
+            <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="rowData.key">
+            </ng-template>
+            <ng-template pTemplate="output">
+                {{rowData.key}}
+            </ng-template>
+        </p-cellEditor>
+    </td>
+    <td pEditableColumn>
+        <p-cellEditor>
+            <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="rowData.value" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+                {{rowData.value}}
+            </ng-template>
+        </p-cellEditor>
+    </td>
+    <td pEditableColumn>
+        <!-- <p-cellEditor>
+            <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="rowData.brand">
+            </ng-template>
+            <ng-template pTemplate="output">
+                {{rowData.brand}}
+            </ng-template>
+        </p-cellEditor> -->
+    </td>
+    
+</tr>
