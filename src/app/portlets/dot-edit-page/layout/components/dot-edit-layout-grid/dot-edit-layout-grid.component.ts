@@ -210,8 +210,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     /**
-     * Add style class to a column
-     * @param index column index into {@link DotLayoutGrid#boxes}
+     * Add style class to a row
+     * @param index row index
      */
     addRowClass(index: number): void {
         this.addClass(
