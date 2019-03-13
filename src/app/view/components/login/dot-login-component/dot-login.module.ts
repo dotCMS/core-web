@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DotLoadingIndicatorModule } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { ButtonModule, CheckboxModule, DropdownModule, InputTextModule } from 'primeng/primeng';
 
@@ -11,7 +11,7 @@ import { DotLoginComponent } from '@components/login/dot-login-component/dot-log
 import { SharedModule } from '@shared/shared.module';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
-
+import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 
 const routes: Routes = [
     {
@@ -32,7 +32,9 @@ const routes: Routes = [
         SharedModule,
         DotLoadingIndicatorModule,
         MdInputTextModule,
-        DotDirectivesModule
+        DotDirectivesModule,
+        ReactiveFormsModule,
+        DotFieldValidationMessageModule
     ],
     declarations: [LoginContainerComponent, DotLoginComponent]
 })

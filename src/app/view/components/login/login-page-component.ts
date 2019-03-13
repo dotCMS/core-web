@@ -6,7 +6,7 @@ import { DotSystemInformation } from '@models/dot-login';
 @Component({
     encapsulation: ViewEncapsulation.None,
     selector: 'dot-login-page-component',
-    styleUrls: ['./login-page.scss'],
+    styleUrls: ['./login-page.component.scss'],
     templateUrl: 'login-page-component.html'
 })
 /**

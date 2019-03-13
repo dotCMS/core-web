@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 import { DotLoginData, DotLoginLanguage, DotSystemInformation } from '@models/dot-login';
+import { SelectItem } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -36,23 +38,15 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
 
     @Output() login = new EventEmitter<DotLoginData>();
 
-    dotLoginData: DotLoginData = {
-        language: '',
-        login: '',
-        password: '',
-        rememberMe: false
-    };
-    languages: Array<any> = [];
-
+    loginForm: FormGroup;
+    languages: SelectItem[] = [];
     dotSystemInformation: DotSystemInformation;
 
-    // labels
     dataI18n: { [key: string]: string } = {};
 
     isCommunityLicense = true;
     userIdOrEmailLabel = '';
-
-    private emailAddressLabel = '';
+    emailAddressLabel = '';
 
     private i18nMessages: Array<string> = [
         'email-address',
@@ -73,8 +67,15 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
     constructor(
         private loginService: LoginService,
         private ngZone: NgZone,
-        private loggerService: LoggerService
+        private loggerService: LoggerService,
+        private fb: FormBuilder
     ) {
+        this.loginForm = this.fb.group({
+            login: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
+            language: [{ value: '', disabled: this.isLoginInProgress }],
+            password: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
+            rememberMe: false
+        });
         this.renderPageData();
     }
 
@@ -96,42 +97,17 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
      *  Executes the logIn service
      */
     logInUser(_$event: any): void {
-        const isSetUserId =
-            this.dotLoginData.login !== undefined && this.dotLoginData.login.length > 0;
-        const isSetPassword =
-            this.dotLoginData.password !== undefined && this.dotLoginData.password.length > 0;
-        this.message = '';
-
-        if (isSetUserId && isSetPassword) {
-            this.login.emit(this.dotLoginData);
-        } else {
-            let error = '';
-            if (!isSetUserId) {
-                error += this.dataI18n['error.form.mandatory'].replace(
-                    '{0}',
-                    this.emailAddressLabel
-                );
-            }
-
-            if (!isSetPassword) {
-                if (error !== '') {
-                    error += '<br>';
-                }
-                error += this.dataI18n['error.form.mandatory'].replace(
-                    '{0}',
-                    this.dataI18n['password']
-                );
-            }
-            this.message = error;
-            this.isLoginInProgress = false;
+        if (this.loginForm.valid) {
+            this.login.emit(this.loginForm.value);
         }
     }
 
     /**
      * Execute the change language service
      */
-    changeLanguage(lang: DotLoginLanguage): void {
-        this.dotLoginData.language = this.setLanguageFormat(lang);
+    changeLanguage(lang: string): void {
+        this.loginForm.get('language').setValue(lang);
+        // this.dotLoginData.language = lang;
         this.renderPageData();
     }
 
@@ -146,43 +122,54 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
      * Renders all the labels, images, and placeholder values for the Log In page.
      */
     private renderPageData(): void {
-        this.loginService.getLoginFormInfo(this.dotLoginData.language, this.i18nMessages).subscribe(
-            data => {
-                this.dataI18n = data.i18nMessagesMap;
-                this.dotSystemInformation = data.entity;
+        this.loginService
+            .getLoginFormInfo(this.loginForm.get('language').value, this.i18nMessages)
+            .subscribe(
+                data => {
+                    this.dataI18n = data.i18nMessagesMap;
+                    this.dotSystemInformation = data.entity;
 
-                this.emailAddressLabel =
-                    'emailAddress' === this.dotSystemInformation.authorizationType
-                        ? (this.userIdOrEmailLabel = this.dataI18n['email-address'])
-                        : (this.userIdOrEmailLabel = this.dataI18n['user-id']);
+                    this.emailAddressLabel = this.setUserNameLabel();
+                    this.isCommunityLicense =
+                        this.dotSystemInformation.levelName.indexOf('COMMUNITY') !== -1;
+                    this.languages = this.setLanguageItems();
+                    this.loginForm
+                        .get('language')
+                        .setValue(
+                            this.setLanguageFormat(this.dotSystemInformation.currentLanguage)
+                        );
 
-                this.isCommunityLicense =
-                    this.dotSystemInformation.levelName.indexOf('COMMUNITY') !== -1;
-
-                // Configure languages
-                if (this.languages.length === 0) {
-                    this.languages = this.dotSystemInformation.languages.map(
-                        lang => (lang.language = this.setLanguageFormat(lang))
-                    );
-                    this.dotLoginData.language = this.setLanguageFormat(
-                        this.dotSystemInformation.currentLanguage
-                    );
+                    if (this.passwordChanged) {
+                        this.message = this.dataI18n['reset-password-success'];
+                    }
+                    if (this.resetEmailSent) {
+                        this.message = this.dataI18n['a-new-password-has-been-sent-to-x'].replace(
+                            '{0}',
+                            this.resetEmail
+                        );
+                    }
+                },
+                error => {
+                    this.loggerService.debug(error);
                 }
+            );
+    }
 
-                if (this.passwordChanged) {
-                    this.message = this.dataI18n['reset-password-success'];
-                }
-                if (this.resetEmailSent) {
-                    this.message = this.dataI18n['a-new-password-has-been-sent-to-x'].replace(
-                        '{0}',
-                        this.resetEmail
-                    );
-                }
-            },
-            error => {
-                this.loggerService.debug(error);
-            }
-        );
+    private setUserNameLabel(): string {
+        return 'emailAddress' === this.dotSystemInformation.authorizationType
+            ? (this.userIdOrEmailLabel = this.dataI18n['email-address'])
+            : (this.userIdOrEmailLabel = this.dataI18n['user-id']);
+    }
+
+    private setLanguageItems(): SelectItem[] {
+        return this.languages.length === 0
+            ? (this.languages = this.dotSystemInformation.languages.map(
+                  (lang: DotLoginLanguage) => ({
+                      label: lang.displayName,
+                      value: this.setLanguageFormat(lang)
+                  })
+              ))
+            : this.languages;
     }
 
     private setLanguageFormat(lang: DotLoginLanguage): string {

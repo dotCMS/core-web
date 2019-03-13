@@ -1,66 +1,61 @@
-<!--LOGIN FORM-->
-
-<div class="login__container">
-
-    <div class="login__header">
-        <div class="login__logo">
-            <img src="{{ dotSystemInformation?.logo }}" />
+<form [formGroup]="loginForm" >
+    <div class="login__container">
+        <div class="login__header">
+            <div class="login__logo">
+                <img src="{{ dotSystemInformation?.logo }}" />
+            </div>
+            <p-dropdown tiny noUnderline [options]="languages"
+                        formControlName="language"
+                        (onChange)="changeLanguage($event.value)">
+            </p-dropdown>
         </div>
-        {{dotLoginData | json}}
 
-        {{languages | json }}
+        <h3 class="login__title" >{{ dataI18n['welcome-back'] }}</h3>
 
-        <p-dropdown tiny noUnderline [options]="languages"
-                    [style]="{'width':'auto'}"
-                    id="login-component-language-select"
-                    [(ngModel)]="dotLoginData.language"
-                    (onChange)="changeLanguage($event.value)"
-                    [disabled]="isLoginInProgress"
-                    optionLabel="displayName">
-        </p-dropdown>
-    </div>
-
-    <h3 class="login__title" >{{ dataI18n['welcome-back'] }}</h3>
-
-    <div class="error-message" [innerHTML]="message" *ngIf="message"></div>
-    <div class="form__group">
-        <span dotMdInputtext label="{{  userIdOrEmailLabel }}">
+        <div class="error-message" [innerHTML]="message" *ngIf="message"></div>
+        <div class="form__group">
+            <span dotMdInputtext label="{{  userIdOrEmailLabel }}">
             <input pInputText type="text" id="login-component-login-input"
-                   (keyup)="message=''"
-                   (keyup.enter)="logInUser($event)"
-                   [(ngModel)]="dotLoginData.login"
-                   [disabled]="isLoginInProgress" />
+                   formControlName="login" name="login" />
+             <dot-field-validation-message
+                 [message]="dataI18n['error.form.mandatory']?.replace('{0}',emailAddressLabel)"
+                 [field]="loginForm.get('login')"></dot-field-validation-message>
         </span>
-    </div>
-    <div class="form__group">
-        <span dotMdInputtext label="{{ dataI18n['password'] }}">
+        </div>
+        <div class="form__group">
+            <span dotMdInputtext label="{{ dataI18n['password'] }}">
             <input pInputText type="password" id="login-component-password-input"
-                   (keyup)="message=''"
-                   (keyup.enter)="logInUser($event)"
-                   [(ngModel)]="dotLoginData.password"
-                   [disabled]="isLoginInProgress" />
-        </span>
-    </div>
-    <div class="form__group login__password-settings">
-        <p-checkbox [(ngModel)]="dotLoginData.rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
-        <a actionLink *ngIf="!isLoginInProgress" (click)="showForgotPassword()" >{{ dataI18n['get-new-password'] }}</a>
-    </div>
-    <div class="form__group">
-        <dot-loading-indicator></dot-loading-indicator>
-        <button
-            dotMdRipple
-            pButton
-            id="login-component-login-submit-button"
-            *ngIf="!isLoginInProgress"
-            (click)="logInUser()"
-            [label]="dataI18n['sign-in']"
-            class="login__button"></button>
+                   formControlName="password"/>
 
-    </div>
-    <div class="login__footer">
+            <dot-field-validation-message
+                [message]=" dataI18n['error.form.mandatory']?.replace('{0}', this.dataI18n['password'])"
+                [field]="loginForm.get('password')"></dot-field-validation-message>
+        </span>
+        </div>
+        <div class="form__group login__password-settings">
+            <p-checkbox formControlName="rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
+            <a actionLink *ngIf="!isLoginInProgress" (click)="showForgotPassword()" >{{ dataI18n['get-new-password'] }}</a>
+        </div>
+        <div class="form__group">
+            <dot-loading-indicator></dot-loading-indicator>
+            <button
+                [disabled]="!loginForm.valid"
+                dotMdRipple
+                pButton
+                id="login-component-login-submit-button"
+                *ngIf="!isLoginInProgress"
+                (click)="logInUser()"
+                [label]="dataI18n['sign-in']"
+                class="login__button"></button>
+
+        </div>
+        <div class="login__footer">
             <span>{{ dataI18n['Server'] }}: {{ dotSystemInformation?.serverId }}</span> |
-            <span>{{ dotSystemInformation?.levelName }} {{ dotSystemInformation?.version }}</span> -
-            <span *ngIf="isCommunityLicense" [innerHTML]="dataI18n['angular.login.component.community.licence.message']" ></span>
+            <span>{{ dotSystemInformation?.levelName }} {{ dotSystemInformation?.version }}</span>
+            <span *ngIf="true" [innerHTML]="' - ' + dataI18n['angular.login.component.community.licence.message']" >
+            </span>
+        </div>
     </div>
-</div>
+</form>
+
 

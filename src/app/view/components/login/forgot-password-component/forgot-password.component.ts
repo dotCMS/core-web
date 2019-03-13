@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnInit } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
+import {DotSystemInformation} from '@models/dot-login';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-forgot-password-component',
-    templateUrl: 'forgot-password.component.html'
+    templateUrl: 'forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
     @Input()
@@ -14,12 +16,12 @@ export class ForgotPasswordComponent implements OnInit {
     @Output()
     recoverPassword = new EventEmitter<string>();
 
+    dataI18n: { [key: string]: string } = {};
     forgotPasswordLogin: string;
-    cancelButton = '';
-    forgotPasswordButton = '';
-    forgotPasswordLabel = '';
     userIdOrEmailLabel = '';
     emailMandatoryFieldError = '';
+
+
 
     private forgotPasswordConfirmationMessage = '';
     private language = '';
@@ -55,21 +57,19 @@ export class ForgotPasswordComponent implements OnInit {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
             (data) => {
                 // Translate labels and messages
-                const dataI18n = data.i18nMessagesMap;
-                const entity = data.entity;
+                this.dataI18n = data.i18nMessagesMap;
+                const dotSystemInformation: DotSystemInformation = data.entity;
 
-                if ('emailAddress' === entity.authorizationType) {
-                    this.userIdOrEmailLabel = dataI18n['email-address'];
+                if ('emailAddress' === dotSystemInformation.authorizationType) {
+                    this.userIdOrEmailLabel = this.dataI18n['email-address'];
                 } else {
-                    this.userIdOrEmailLabel = dataI18n['user-id'];
+                    this.userIdOrEmailLabel = this.dataI18n['user-id'];
                 }
 
-                this.forgotPasswordLabel = dataI18n['forgot-password'];
-                this.forgotPasswordButton = dataI18n['get-new-password'];
-                this.cancelButton = dataI18n.cancel;
+
                 this.forgotPasswordConfirmationMessage =
-                    dataI18n['an-email-with-instructions-will-be-sent'];
-                this.emailMandatoryFieldError = dataI18n['error.form.mandatory'].replace(
+                    this.dataI18n['an-email-with-instructions-will-be-sent'];
+                this.emailMandatoryFieldError = this.dataI18n['error.form.mandatory'].replace(
                     '{0}',
                     this.userIdOrEmailLabel
                 );
