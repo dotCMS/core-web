@@ -67,15 +67,6 @@ export class DotEditLayoutService {
     }
 
     /**
-     * Remove the extra attributes that come from the server and are not longer needed in DotLayoutBody.
-     * @param DotLayoutBody grid
-     * @returns DotLayoutBody
-     */
-    cleanupDotLayoutBody(layoutBody: DotLayoutBody): DotLayoutBody {
-        return this.getDotLayoutBody(this.getDotLayoutGridBox(layoutBody));
-    }
-
-    /**
      * Take an array of DotPageContainer and return a DotContainerColumnBox.
      *
      * @param DotPageContainer[] containers
