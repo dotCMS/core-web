@@ -21,9 +21,10 @@ const DEFAULT_CONFIG_FOR_NOT_EMPTY_GRID_TEMPLATE: any = {
 };
 
 /**
- * TODO
+ * Layout using NgGrid box and DotLayoutGridBox
  *
  */
+
 export class DotLayoutGrid {
 
     constructor(private dotLayoutGridBoxs: DotLayoutGridBox[], private rowClasses: string[]) {

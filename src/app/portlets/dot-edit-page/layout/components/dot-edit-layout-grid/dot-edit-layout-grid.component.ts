@@ -188,6 +188,10 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         }
     }
 
+    /**
+     * Add style class to a column
+     * @param index column index into {@link DotLayoutGrid#boxes}
+     */
     addColumnClass(index: number): void {
         this.addClass(
             () => this.grid.boxes[index].config.payload ? this.grid.boxes[index].config.payload.styleClass || null : null,
@@ -205,6 +209,10 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         );
     }
 
+    /**
+     * Add style class to a column
+     * @param index column index into {@link DotLayoutGrid#boxes}
+     */
     addRowClass(index: number): void {
         this.addClass(
             () => this.grid.getRowClass(index) || '',
