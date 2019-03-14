@@ -3,24 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule, InputTextModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
-// import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 
 
-import { DotKeyvalueRowComponent } from './dot-keyvalue-row.component';
+import { DotKeyvalueListComponent } from './dot-keyvalue-list.component';
 
 @NgModule({
   declarations: [
-    DotKeyvalueRowComponent
+    DotKeyvalueListComponent
   ],
   imports: [
     ButtonModule,
     CommonModule,
-    // DotIconButtonModule,
     InputTextModule,
     FormsModule,
     TableModule
   ],
-  exports: [DotKeyvalueRowComponent]
+  exports: [DotKeyvalueListComponent]
 })
-export class DotKeyvalueRowModule {
+export class DotKeyvalueListModule {
 }

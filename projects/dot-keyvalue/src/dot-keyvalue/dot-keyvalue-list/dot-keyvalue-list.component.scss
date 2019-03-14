@@ -1,0 +1,29 @@
+.variableTable {
+    border-spacing: 0;
+    color: #555;
+    font-size: 13px;
+    width: 100%;
+
+    .variableRow {
+        display: block;
+
+        &:nth-child(even) {
+            background: #f3f3f3;
+        }
+
+        &:hover {
+            background-color: #e0e9f6;
+        }
+
+        td {
+            border-bottom: 1px solid #ecedee;
+            padding: 7px 8px;
+            vertical-align: middle;
+        }
+    }
+
+    .material-icons {
+        font-size: 16px;
+        cursor: pointer;
+    }
+}

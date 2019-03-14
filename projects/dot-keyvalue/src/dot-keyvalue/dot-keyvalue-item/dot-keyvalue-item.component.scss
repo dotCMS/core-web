@@ -1,3 +1,76 @@
 :host {
     display: contents;
+
+    .keyvalueForm {
+        display: flex;
+        margin-bottom: 16px;
+    }
+
+    .ui-button {
+        background: #fff;
+        border: solid 1px #54428e;
+        border-radius: 2px;
+        cursor: pointer;
+        font-weight: normal;
+        height: 36px;
+        margin-right: 0;
+        outline: none;
+        transition: all 150ms ease-in;
+
+        &:hover {
+            border-color: #bb30e1;
+        }
+
+        &:disabled {
+            border-color: #c5c5c5;
+            cursor: not-allowed;
+        }
+
+        &:disabled .ui-button-text,
+        &:disabled .ui-button-text:hover {
+            color: #c5c5c5;
+        }
+
+        .ui-button-text {
+            color: #54428e;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 11px 16px;
+            text-transform: uppercase;
+
+            &:hover {
+                color: #bb30e1;
+            }
+        }
+    }
+
+    .inputContainer {
+        background-color: #fff;
+        border: solid 1px #c5c5c5;
+        border-radius: 2px;
+        font-size: 13px;
+        height: 36px;
+        margin-right: 8px;
+        padding: 0 8px;
+        width: 100%;
+
+        &:hover,
+        &:focus {
+            border: solid 1px #54428e;
+        }
+
+        .inputText {
+            border: 0;
+            background-color: transparent;
+            color: #555;
+            font-size: 13px;
+            margin-left: 0;
+            margin-right: 0;
+            height: 34px;
+            line-height: 34px;
+            padding: 0;
+            outline: none;
+            width: 100%;
+        }
+    }
 }

@@ -1,29 +1,30 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Output, EventEmitter, Input } from '@angular/core';
 import { DotFieldVariable } from '@portlets/content-types/fields/dot-content-type-fields-variables/models/dot-field-variable.interface';
 
 @Component({
     selector: 'dot-keyvalue-item',
     templateUrl: './dot-keyvalue-item.component.html',
     styleUrls: ['./dot-keyvalue-item.component.scss'],
-    // encapsulation: ViewEncapsulation.Native
     encapsulation: ViewEncapsulation.Emulated
+    // encapsulation: ViewEncapsulation.Native
 })
-export class DotKeyvalueItemComponent implements OnInit {
-    @Input()
-    fieldVariable: DotFieldVariable;
-    @Input()
-    variableIndex: number;
-    @Input()
-    labels;
+export class DotKeyvalueItemComponent {
+    @Input() labels;
+    @Output()
+    save: EventEmitter<DotFieldVariable> = new EventEmitter<DotFieldVariable>();
 
-    rowActiveHighlight: Boolean = false;
-    showEditMenu: Boolean = false;
+    fieldVariable: DotFieldVariable = {
+        key: '',
+        value: ''
+    };
 
-    constructor() {
-        console.log('--- preitem', this.fieldVariable);
-    }
+    constructor() {}
 
-    ngOnInit() {
-        console.log('---item', this.fieldVariable);
+    onSubmit() {
+        this.save.emit(Object.assign({}, this.fieldVariable));
+        this.fieldVariable = {
+            key: '',
+            value: ''
+        };
     }
 }

@@ -10,28 +10,32 @@ import { DotFieldVariable } from '@portlets/content-types/fields/dot-content-typ
 })
 export class DotKeyvalueComponent implements OnInit, OnChanges {
     @Input() labels;
-    @Input() variables: DotFieldVariable[];
-    @Output() action = new EventEmitter<string>();
+    @Input() variables: DotFieldVariable[] = [{ key: '', value: ''}];
+    @Output() variablesEmitted = new EventEmitter<DotFieldVariable[]>();
+    variables2: DotFieldVariable[] = [{ key: '', value: ''}];
 
-    cars = [
-        { brand: 'VW', year: 2012, color: 'Orange', vin: 'dsad231ff' },
-        { brand: 'Audi', year: 2011, color: 'Black', vin: 'gwregre345' },
-        { brand: 'Renault', year: 2005, color: 'Gray', vin: 'h354htr' }
-    ];
-
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit() {
-        console.log('***variables', this.variables)
+
+        console.log('--variables', this.variables);
 
     }
 
-    ngOnChanges(change): void {
-       console.log('***changes', change)
+    ngOnChanges(change) {
+        console.log('---change', change.variables.currentValue)
+        this.variables2 = change.variables.currentValue;
+
     }
 
-    handleClick() {
-        console.log('--click', typeof this.variables);
-        this.action.emit(`value: ${this.variables[0].value}`);
+    addVariable(variable: DotFieldVariable) {
+        this.variables.push(variable);
+        this.variablesEmitted.emit(this.variables);
+    }
+
+    deleteVariable(index: number) {
+        this.variables2.splice(index, 1);
+        this.variablesEmitted.emit(this.variables2);
     }
 }

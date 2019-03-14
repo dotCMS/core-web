@@ -29,21 +29,24 @@ const createFile = require('create-file');
                     id: 'fd39ccaa-ffbc-420f-9839-46eaad625f59',
                     key: 'b2',
                     value: 'bvc2'
+                }, {
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableFieldVariable',
+                    fieldId: 'ec8cc36f-6058-4ab5-9bfb-fc36ab011ee3',
+                    id: 'fd39ccaa-ffbc-420f-9839-46eaad625f59',
+                    key: 'b3',
+                    value: 'bvc3'
                 }];
                 keyvalue.labels = {
-                    value: 'Value',
-                    key: 'Key',
-                    actions: 'Actions',
-                    keyPlaceholder: 'Enter key',
-                    valuePlaceholder: 'Enter value',
-                    noRows: 'No Rows',
-                    cancel: 'Cancel',
-                    save: 'Save'
+                    add: 'Add',
+                    delete: 'Delete',
+                    keyPlaceholder: 'Key',
+                    title: 'Key and Value:',
+                    valuePlaceholder: 'Value'
                 };
 
-                keyvalue.addEventListener('action', (event) => {
-                    console.log(event);
-                    console.log("action emitted:" + event.detail);
+                keyvalue.addEventListener('variablesEmitted', (event) => {
+                    console.log(event.detail);
+                    console.log("variablesEmitted emitted:" + event.detail);
                 });
                 //setTimeout(() => (keyvalue.value = 'Second Value'), 3000);
             </script>

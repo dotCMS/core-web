@@ -1,0 +1,14 @@
+<table class="variableTable">
+    <tbody>
+        <tr class="variableRow" *ngFor="let variable of variables; let i = index">
+            <td width="6%">
+                <i (click)="deleteVariable(i)" class="material-icons">
+                    delete
+                </i>
+                <button (click)="deleteVariable(i)" >X</button>
+            </td>
+            <td width="34%">{{ variable.key }}</td>
+            <td width="60%">{{ variable.value }}</td>
+        </tr>
+    </tbody>
+</table>

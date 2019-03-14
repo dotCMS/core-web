@@ -28,14 +28,11 @@ export class AppComponent implements OnInit {
     ];
 
     labels = {
-        value: 'Value',
-        key: 'Key',
-        actions: 'Actions',
-        noRows: 'No Rows',
-        cancel: 'Cancel',
-        save: 'Save',
-        keyPlaceholder: 'Enter key',
-        valuePlaceholder: 'Enter value'
+        add: 'Add',
+        delete: 'Delete',
+        keyPlaceholder: 'Key',
+        title: 'Key and Value:',
+        valuePlaceholder: 'Value'
     };
 
     constructor(
