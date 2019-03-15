@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonModule, InputTextModule } from 'primeng/primeng';
 
 import { ResetPasswordContainerComponent } from './reset-password-container.component';
 import { ResetPasswordComponent } from './reset-password.component';
+import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 
 const routes: Routes = [
     {
@@ -21,6 +22,8 @@ const routes: Routes = [
         FormsModule,
         InputTextModule,
         ButtonModule,
+        ReactiveFormsModule,
+        DotFieldValidationMessageModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ResetPasswordContainerComponent, ResetPasswordComponent]

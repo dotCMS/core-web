@@ -6,6 +6,8 @@
             </div>
             <p-dropdown tiny noUnderline [options]="languages"
                         formControlName="language"
+                        [disabled]="this.isLoginInProgress"
+                        [style]="{'width':'auto'}"
                         (onChange)="changeLanguage($event.value)">
             </p-dropdown>
         </div>
@@ -16,7 +18,9 @@
         <div class="form__group">
             <span dotMdInputtext label="{{  userIdOrEmailLabel }}">
             <input pInputText type="text" id="login-component-login-input"
-                   formControlName="login" name="login" />
+                   formControlName="login"
+                   autocomplete="username"
+                   [attr.disabled]="this.isLoginInProgress?'':null"/>
              <dot-field-validation-message
                  [message]="dataI18n['error.form.mandatory']?.replace('{0}',emailAddressLabel)"
                  [field]="loginForm.get('login')"></dot-field-validation-message>
@@ -25,7 +29,9 @@
         <div class="form__group">
             <span dotMdInputtext label="{{ dataI18n['password'] }}">
             <input pInputText type="password" id="login-component-password-input"
-                   formControlName="password"/>
+                   formControlName="password"
+                   autocomplete="current-password"
+                   [attr.disabled]="this.isLoginInProgress?'':null"/>
 
             <dot-field-validation-message
                 [message]=" dataI18n['error.form.mandatory']?.replace('{0}', this.dataI18n['password'])"
@@ -33,7 +39,7 @@
         </span>
         </div>
         <div class="form__group login__password-settings">
-            <p-checkbox formControlName="rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
+            <p-checkbox [attr.disable]="this.isLoginInProgress" formControlName="rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
             <a actionLink *ngIf="!isLoginInProgress" (click)="showForgotPassword()" >{{ dataI18n['get-new-password'] }}</a>
         </div>
         <div class="form__group">

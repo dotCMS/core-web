@@ -69,15 +69,7 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
         private ngZone: NgZone,
         private loggerService: LoggerService,
         private fb: FormBuilder
-    ) {
-        this.loginForm = this.fb.group({
-            login: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
-            language: [{ value: '', disabled: this.isLoginInProgress }],
-            password: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
-            rememberMe: false
-        });
-        this.renderPageData();
-    }
+    ) {}
 
     ngOnInit() {
         this.loginService.setAuth({
@@ -85,6 +77,13 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
             user: null,
             isLoginAs: false
         });
+        this.loginForm = this.fb.group({
+            login: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
+            language: [{ value: '', disabled: this.isLoginInProgress }],
+            password: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
+            rememberMe: false
+        });
+        this.renderPageData();
     }
 
     ngAfterViewInit(): void {

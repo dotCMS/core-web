@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnInit } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
-import {DotSystemInformation} from '@models/dot-login';
+import { DotSystemInformation } from '@models/dot-login';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -9,19 +10,13 @@ import {DotSystemInformation} from '@models/dot-login';
     styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
-    @Input()
-    message: string;
-    @Output()
-    cancel = new EventEmitter<any>();
-    @Output()
-    recoverPassword = new EventEmitter<string>();
+    @Input() message: string;
+    @Output() cancel = new EventEmitter<any>();
+    @Output() recoverPassword = new EventEmitter<string>();
 
+    forgotPasswordForm: FormGroup;
     dataI18n: { [key: string]: string } = {};
-    forgotPasswordLogin: string;
     userIdOrEmailLabel = '';
-    emailMandatoryFieldError = '';
-
-
 
     private forgotPasswordConfirmationMessage = '';
     private language = '';
@@ -35,9 +30,17 @@ export class ForgotPasswordComponent implements OnInit {
         'an-email-with-instructions-will-be-sent'
     ];
 
-    constructor(private loginService: LoginService, private loggerService: LoggerService) {}
+    constructor(
+        private loginService: LoginService,
+        private loggerService: LoggerService,
+        private fb: FormBuilder
+    ) {}
 
     ngOnInit(): void {
+        this.forgotPasswordForm = this.fb.group({
+            login: ['', [Validators.required]]
+        });
+
         this.loadLabels();
     }
 
@@ -46,7 +49,7 @@ export class ForgotPasswordComponent implements OnInit {
      */
     ok(): void {
         if (confirm(this.forgotPasswordConfirmationMessage)) {
-            this.recoverPassword.emit(this.forgotPasswordLogin);
+            this.recoverPassword.emit(this.forgotPasswordForm.get('login').value);
         }
     }
 
@@ -55,26 +58,20 @@ export class ForgotPasswordComponent implements OnInit {
      */
     private loadLabels(): void {
         this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
-            (data) => {
-                // Translate labels and messages
+            data => {
                 this.dataI18n = data.i18nMessagesMap;
                 const dotSystemInformation: DotSystemInformation = data.entity;
 
-                if ('emailAddress' === dotSystemInformation.authorizationType) {
-                    this.userIdOrEmailLabel = this.dataI18n['email-address'];
-                } else {
-                    this.userIdOrEmailLabel = this.dataI18n['user-id'];
-                }
+                this.userIdOrEmailLabel =
+                    'emailAddress' === dotSystemInformation.authorizationType
+                        ? this.dataI18n['email-address']
+                        : this.dataI18n['user-id'];
 
-
-                this.forgotPasswordConfirmationMessage =
-                    this.dataI18n['an-email-with-instructions-will-be-sent'];
-                this.emailMandatoryFieldError = this.dataI18n['error.form.mandatory'].replace(
-                    '{0}',
-                    this.userIdOrEmailLabel
-                );
+                this.forgotPasswordConfirmationMessage = this.dataI18n[
+                    'an-email-with-instructions-will-be-sent'
+                ];
             },
-            (error) => {
+            error => {
                 this.loggerService.error(error);
             }
         );

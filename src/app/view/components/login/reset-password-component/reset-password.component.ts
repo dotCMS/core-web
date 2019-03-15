@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 import { ChangePasswordData } from './reset-password-container.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -14,15 +15,9 @@ export class ResetPasswordComponent implements OnInit {
     @Input() message = '';
     @Output() changePassword = new EventEmitter<ChangePasswordData>();
 
+    resetPasswordForm: FormGroup;
     dataI18n: { [key: string]: string } = {};
 
-    // labels
-
-    confirmPassword = '';
-    password = '';
-
-    private language = '';
-    // Message
     private i18nMessages: Array<string> = [
         'error.form.mandatory',
         'reset-password',
@@ -33,10 +28,14 @@ export class ResetPasswordComponent implements OnInit {
         'reset-password-confirmation-do-not-match'
     ];
 
-    constructor(private loginService: LoginService, private loggerService: LoggerService) {}
+    constructor(
+        private loginService: LoginService,
+        private loggerService: LoggerService,
+        private fb: FormBuilder
+    ) {}
 
     ngOnInit(): void {
-        this.loginService.getLoginFormInfo(this.language, this.i18nMessages).subscribe(
+        this.loginService.getLoginFormInfo('', this.i18nMessages).subscribe(
             data => {
                 this.dataI18n = data.i18nMessagesMap;
             },
@@ -44,17 +43,26 @@ export class ResetPasswordComponent implements OnInit {
                 this.loggerService.error(error);
             }
         );
+
+        this.resetPasswordForm = this.fb.group({
+            password: ['', [Validators.required]],
+            confirmPassword: ['', [Validators.required]]
+        });
     }
 
     cleanConfirmPassword(): void {
         this.clean();
-        this.confirmPassword = '';
+        this.resetPasswordForm.get('confirmPassword').setValue('');
     }
 
     ok(): void {
-        if (this.password === this.confirmPassword) {
+        if (
+            this.resetPasswordForm.valid &&
+            this.resetPasswordForm.get('password').value ===
+                this.resetPasswordForm.get('confirmPassword').value
+        ) {
             this.changePassword.emit({
-                password: this.password,
+                password: this.resetPasswordForm.get('password').value,
                 token: this.token
             });
         } else {
