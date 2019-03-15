@@ -27,7 +27,7 @@ class TestDotLoginComponent {
     @Output() login = new EventEmitter<DotLoginData>();
 }
 
-fdescribe('LoginContainerComponent', () => {
+describe('LoginContainerComponent', () => {
     let component: LoginContainerComponent;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
