@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
         add: 'Add',
         delete: 'Delete',
         keyPlaceholder: 'Key',
+        name: 'Ngtest',
         title: 'Key and Value:',
         valuePlaceholder: 'Value'
     };
