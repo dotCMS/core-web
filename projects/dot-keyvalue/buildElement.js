@@ -12,8 +12,9 @@ const createFile = require('create-file');
         <link href="styles.css" rel="stylesheet" type="text/css" media="all">
         </head>
         <body>
-            <dot-keyvalue></dot-keyvalue>
-            <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/custom-elements-es5-adapter.js"></script>
+        <dot-keyvalue></dot-keyvalue>
+        <dot-test></dot-test>
+        <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/custom-elements-es5-adapter.js"></script>
             <script src="./dot-keyvalue.js"></script>
             <script>
                 const keyvalue = document.querySelector('dot-keyvalue');
@@ -49,6 +50,10 @@ const createFile = require('create-file');
                     console.log("variablesEmitted emitted:" + event.detail);
                 });
                 //setTimeout(() => (keyvalue.value = 'Second Value'), 3000);
+
+                const test = document.querySelector('dot-test');
+                test.labels = { name: 'Hello' }
+
             </script>
         </body>
         </html>`;

@@ -1,6 +1,6 @@
 <div>
     <span class="fieldName">{{ labels ? labels.title : '' }}</span>
     <dot-keyvalue-item [labels]="labels" (save)="addVariable($event)"></dot-keyvalue-item>
-    <dot-keyvalue-list *ngIf="variables2" [variables]="variables2" (delete)="deleteVariable($event)"></dot-keyvalue-list>
+    <dot-keyvalue-list *ngIf="variables" [variables]="variables" (delete)="deleteVariable($event)"></dot-keyvalue-list>
     
 </div>

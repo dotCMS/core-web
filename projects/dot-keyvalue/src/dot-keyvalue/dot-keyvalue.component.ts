@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, NgZone } from '@angular/core';
 import { DotFieldVariable } from '@portlets/content-types/fields/dot-content-type-fields-variables/models/dot-field-variable.interface';
 
 @Component({
@@ -14,7 +14,7 @@ export class DotKeyvalueComponent implements OnInit, OnChanges {
     @Output() variablesEmitted = new EventEmitter<DotFieldVariable[]>();
     variables2: DotFieldVariable[] = [{ key: '', value: ''}];
 
-    constructor() {
+    constructor(private ngZone: NgZone) {
     }
 
     ngOnInit() {
@@ -25,7 +25,7 @@ export class DotKeyvalueComponent implements OnInit, OnChanges {
 
     ngOnChanges(change) {
         console.log('---change', change.variables.currentValue)
-        this.variables2 = change.variables.currentValue;
+        // this.variables = change.variables.currentValue;
 
     }
 
@@ -35,7 +35,9 @@ export class DotKeyvalueComponent implements OnInit, OnChanges {
     }
 
     deleteVariable(index: number) {
-        this.variables2.splice(index, 1);
-        this.variablesEmitted.emit(this.variables2);
+        this.ngZone.run(() => {
+            this.variables.splice(index, 1);
+        });
+        this.variablesEmitted.emit(this.variables);
     }
 }
