@@ -4,14 +4,12 @@ import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from 'dotcms-js';
-import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mock';
+import { LoginServiceMock } from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-
-import { of } from 'rxjs';
 
 describe('ForgotPasswordComponent', () => {
     let component: ForgotPasswordComponent;
@@ -19,16 +17,6 @@ describe('ForgotPasswordComponent', () => {
     let de: DebugElement;
 
     beforeEach(() => {
-        this.i18nMessages = [
-            'error.form.mandatory',
-            'user-id',
-            'email-address',
-            'forgot-password',
-            'get-new-password',
-            'cancel',
-            'an-email-with-instructions-will-be-sent'
-        ];
-
         DOTTestBed.configureTestingModule({
             declarations: [ForgotPasswordComponent],
             imports: [
@@ -46,7 +34,7 @@ describe('ForgotPasswordComponent', () => {
         de = fixture.debugElement;
 
         this.loginService = de.injector.get(LoginService);
-        spyOn(this.loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
+        // spyOn(this.loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
         fixture.detectChanges();
 
         this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
@@ -79,8 +67,8 @@ describe('ForgotPasswordComponent', () => {
         component.forgotPasswordForm.get('login').markAsDirty();
         fixture.detectChanges();
 
-        const erroresMessages = de.queryAll(By.css('.ui-messages-error'));
-        expect(erroresMessages.length).toBe(1);
+        const erroreMessages = de.queryAll(By.css('.ui-messages-error'));
+        expect(erroreMessages.length).toBe(1);
     });
 
     it('should show messages', () => {

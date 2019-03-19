@@ -1,4 +1,13 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+    Component,
+    ViewEncapsulation,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    AfterViewInit,
+    ViewChild, ElementRef
+} from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 import { ChangePasswordData } from './reset-password-container.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,10 +19,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     styleUrls: ['./reset-password.component.scss'],
     templateUrl: 'reset-password.component.html'
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, AfterViewInit {
     @Input() token = '';
     @Input() message = '';
     @Output() changePassword = new EventEmitter<ChangePasswordData>();
+    @ViewChild('newPasswordInput') newPasswordInput: ElementRef;
+
 
     resetPasswordForm: FormGroup;
     dataI18n: { [key: string]: string } = {};
@@ -48,6 +59,10 @@ export class ResetPasswordComponent implements OnInit {
             password: ['', [Validators.required]],
             confirmPassword: ['', [Validators.required]]
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.newPasswordInput.nativeElement.focus();
     }
 
     cleanConfirmPassword(): void {

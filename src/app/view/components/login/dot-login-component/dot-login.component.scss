@@ -63,7 +63,6 @@
     height: 100%;
     justify-content: center;
 
-
     input.ui-inputtext {
         display: block;
         width: 100%;
@@ -81,11 +80,4 @@
 
 .login__button {
     margin-right: $basic-padding;
-}
-
-a[actionlink] {
-    color: $brand-secondary;
-    font-size: $button-tiny-text-size;
-    text-transform: uppercase;
-    cursor: pointer;
 }

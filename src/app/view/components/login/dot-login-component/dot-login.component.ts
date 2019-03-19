@@ -3,7 +3,6 @@ import {
     EventEmitter,
     Input,
     Output,
-    ViewEncapsulation,
     AfterViewInit,
     OnInit,
     ViewChild,
@@ -15,7 +14,6 @@ import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-login-component',
     templateUrl: './dot-login.component.html',
     styleUrls: ['./dot-login.component.scss']

@@ -4,7 +4,7 @@
             <div class="login__logo">
                 <img src="{{ dotSystemInformation?.logo }}" />
             </div>
-            <p-dropdown tiny noUnderline [options]="languages"
+            <p-dropdown tiny noBorder [options]="languages"
                         formControlName="language"
                         [disabled]="this.isLoginInProgress"
                         [style]="{'width':'auto'}"
@@ -57,7 +57,7 @@
         <div class="login__footer">
             <span>{{ dataI18n['Server'] }}: {{ dotSystemInformation?.serverId }}</span> |
             <span>{{ dotSystemInformation?.levelName }} {{ dotSystemInformation?.version }}</span>
-            <span *ngIf="true" [innerHTML]="' - ' + dataI18n['angular.login.component.community.licence.message']" >
+            <span *ngIf="isCommunityLicense" [innerHTML]="' - ' + dataI18n['angular.login.component.community.licence.message']" >
             </span>
         </div>
     </div>
