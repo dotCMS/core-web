@@ -6,7 +6,6 @@
             </div>
             <p-dropdown tiny noBorder [options]="languages"
                         formControlName="language"
-                        [disabled]="this.isLoginInProgress"
                         [style]="{'width':'auto'}"
                         (onChange)="changeLanguage($event.value)">
             </p-dropdown>
@@ -19,8 +18,7 @@
             <span dotMdInputtext label="{{  userIdOrEmailLabel }}">
             <input pInputText type="text" #emailInput
                    formControlName="login"
-                   autocomplete="username"
-                   [attr.disabled]="this.isLoginInProgress?'':null"/>
+                   autocomplete="username"/>
              <dot-field-validation-message
                  [message]="dataI18n['error.form.mandatory']?.replace('{0}',emailAddressLabel)"
                  [field]="loginForm.get('login')"></dot-field-validation-message>
@@ -30,16 +28,14 @@
             <span dotMdInputtext label="{{ dataI18n['password'] }}">
             <input pInputText type="password"
                    formControlName="password"
-                   autocomplete="current-password"
-                   [attr.disabled]="this.isLoginInProgress?'':null"/>
-
+                   autocomplete="current-password"/>
             <dot-field-validation-message
                 [message]=" dataI18n['error.form.mandatory']?.replace('{0}', this.dataI18n['password'])"
                 [field]="loginForm.get('password')"></dot-field-validation-message>
         </span>
         </div>
         <div class="form__group login__password-settings">
-            <p-checkbox [attr.disable]="this.isLoginInProgress" formControlName="rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
+            <p-checkbox  formControlName="rememberMe" binary="true" [label]="dataI18n['remember-me']"></p-checkbox>
             <a actionLink *ngIf="!isLoginInProgress" (click)="showForgotPassword()" >{{ dataI18n['get-new-password'] }}</a>
         </div>
         <div class="form__group">
@@ -48,11 +44,10 @@
                 [disabled]="!loginForm.valid"
                 dotMdRipple
                 pButton
-                *ngIf="!isLoginInProgress"
+                *ngIf="loginForm.enabled"
                 (click)="logInUser()"
                 [label]="dataI18n['sign-in']"
                 class="login__button"></button>
-
         </div>
         <div class="login__footer">
             <span>{{ dataI18n['Server'] }}: {{ dotSystemInformation?.serverId }}</span> |

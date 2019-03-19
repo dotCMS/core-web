@@ -23,18 +23,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
  * the info required to log in the dotCMS angular backend
  */
 export class DotLoginComponent implements AfterViewInit, OnInit {
-    @Input() isLoginInProgress = false;
-
     @Input() message = '';
-
     @Input() passwordChanged = false;
-
     @Input() resetEmailSent = false;
-
     @Input() resetEmail = '';
-
+    @Input()
+    set isLoginInProgress(value: boolean) {
+        this.disableFormFields(value);
+    }
     @Output() recoverPassword = new EventEmitter<any>();
-
     @Output() login = new EventEmitter<DotLoginData>();
 
     @ViewChild('emailInput') emailInput: ElementRef;
@@ -77,10 +74,16 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
             user: null,
             isLoginAs: false
         });
-        this.loginForm = this.fb.group({
+        /*this.loginForm = this.fb.group({
             login: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
             language: [{ value: '', disabled: this.isLoginInProgress }],
             password: [{ value: '', disabled: this.isLoginInProgress }, [Validators.required]],
+            rememberMe: false
+        });*/
+        this.loginForm = this.fb.group({
+            login: ['', [Validators.required]],
+            language: [''],
+            password: ['', [Validators.required]],
             rememberMe: false
         });
         this.renderPageData();
@@ -170,5 +173,15 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
 
     private setLanguageFormat(lang: DotLoginLanguage): string {
         return lang.language + '_' + lang.country;
+    }
+
+    private disableFormFields(disable: boolean): void {
+        if (this.loginForm) {
+            if (disable) {
+                this.loginForm.disable();
+            } else {
+                this.loginForm.enable();
+            }
+        }
     }
 }

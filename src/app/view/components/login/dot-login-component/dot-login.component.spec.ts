@@ -8,7 +8,7 @@ import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mo
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule, Dropdown, DropdownModule, InputTextModule } from 'primeng/primeng';
+import {Checkbox, CheckboxModule, Dropdown, DropdownModule, InputTextModule} from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
@@ -117,7 +117,7 @@ describe('DotLoginComponent', () => {
     });
 
     it('should keep submit button disabled until the form is valid', () => {
-        expect(this.signInButton.nativeElement.disabled).toBe(true);
+        expect(this.signInButton.nativeElement.disabled).toBeTruthy();;
     });
 
     it('should show error message for required form fields', () => {
@@ -142,11 +142,13 @@ describe('DotLoginComponent', () => {
         const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
         const emailInput = de.query(By.css('input[pInputText][type="text"]'));
         const passwordInput = de.query(By.css('input[type="password"]'));
+        const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
 
         fixture.detectChanges();
 
-        expect(languageDropdown.disabled).toBe(true);
-        expect(emailInput.nativeElement.disabled).toBe(true);
-        expect(passwordInput.nativeElement.disabled).toBe(true);
+        expect(languageDropdown.disabled).toBeTruthy();;
+        expect(emailInput.nativeElement.disabled).toBeTruthy();;
+        expect(passwordInput.nativeElement.disabled).toBeTruthy();;
+        expect(rememberCheckBox.disabled).toBeTruthy();
     });
 });
