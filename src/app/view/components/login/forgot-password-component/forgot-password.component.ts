@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnInit } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    ViewEncapsulation,
+    OnInit,
+    ViewChild,
+    ElementRef,
+    AfterViewInit
+} from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 import { DotSystemInformation } from '@models/dot-login';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,10 +19,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     templateUrl: 'forgot-password.component.html',
     styleUrls: ['./forgot-password.component.scss']
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     @Input() message: string;
     @Output() cancel = new EventEmitter<any>();
     @Output() recoverPassword = new EventEmitter<string>();
+    @ViewChild('emailInput') emailInput: ElementRef;
 
     forgotPasswordForm: FormGroup;
     dataI18n: { [key: string]: string } = {};
@@ -42,6 +53,10 @@ export class ForgotPasswordComponent implements OnInit {
         });
 
         this.loadLabels();
+    }
+
+    ngAfterViewInit(): void {
+        this.emailInput.nativeElement.focus();
     }
 
     /**

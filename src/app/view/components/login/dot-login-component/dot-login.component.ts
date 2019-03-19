@@ -2,11 +2,12 @@ import {
     Component,
     EventEmitter,
     Input,
-    NgZone,
     Output,
     ViewEncapsulation,
     AfterViewInit,
-    OnInit
+    OnInit,
+    ViewChild,
+    ElementRef
 } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 import { DotLoginData, DotLoginLanguage, DotSystemInformation } from '@models/dot-login';
@@ -38,6 +39,8 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
 
     @Output() login = new EventEmitter<DotLoginData>();
 
+    @ViewChild('emailInput') emailInput: ElementRef;
+
     loginForm: FormGroup;
     languages: SelectItem[] = [];
     dotSystemInformation: DotSystemInformation;
@@ -66,7 +69,6 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
 
     constructor(
         private loginService: LoginService,
-        private ngZone: NgZone,
         private loggerService: LoggerService,
         private fb: FormBuilder
     ) {}
@@ -87,15 +89,13 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
     }
 
     ngAfterViewInit(): void {
-        this.ngZone.runOutsideAngular(() =>
-            setTimeout(() => document.getElementById('login-component-login-input').focus())
-        );
+        this.emailInput.nativeElement.focus();
     }
 
     /**
      *  Executes the logIn service
      */
-    logInUser(_$event: any): void {
+    logInUser(): void {
         if (this.loginForm.valid) {
             this.login.emit(this.loginForm.value);
         }
@@ -106,7 +106,6 @@ export class DotLoginComponent implements AfterViewInit, OnInit {
      */
     changeLanguage(lang: string): void {
         this.loginForm.get('language').setValue(lang);
-        // this.dotLoginData.language = lang;
         this.renderPageData();
     }
 

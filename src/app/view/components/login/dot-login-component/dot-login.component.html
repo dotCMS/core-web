@@ -17,7 +17,7 @@
         <div class="error-message" [innerHTML]="message" *ngIf="message"></div>
         <div class="form__group">
             <span dotMdInputtext label="{{  userIdOrEmailLabel }}">
-            <input pInputText type="text" id="login-component-login-input"
+            <input pInputText type="text" #emailInput
                    formControlName="login"
                    autocomplete="username"
                    [attr.disabled]="this.isLoginInProgress?'':null"/>
@@ -28,7 +28,7 @@
         </div>
         <div class="form__group">
             <span dotMdInputtext label="{{ dataI18n['password'] }}">
-            <input pInputText type="password" id="login-component-password-input"
+            <input pInputText type="password"
                    formControlName="password"
                    autocomplete="current-password"
                    [attr.disabled]="this.isLoginInProgress?'':null"/>
@@ -48,7 +48,6 @@
                 [disabled]="!loginForm.valid"
                 dotMdRipple
                 pButton
-                id="login-component-login-submit-button"
                 *ngIf="!isLoginInProgress"
                 (click)="logInUser()"
                 [label]="dataI18n['sign-in']"
