@@ -43,6 +43,10 @@ export class SiteService {
             .subscribe((data) => this.eventResponse(data));
 
         dotcmsEventsService
+            .subscribeTo('SWITCH_SITE')
+            .subscribe((event) => this.setCurrentSite(event.data));
+
+        dotcmsEventsService
             .subscribeToEvents(this.events)
             .subscribe((data) => this.siteEventsHandler(data));
 

@@ -81,6 +81,8 @@ export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
                 this.getSitesList();
             });
         });
+
+        this.siteService.switchSite$.subscribe((site) => this.selectCurrentSite(site.identifier));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
