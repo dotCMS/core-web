@@ -83,6 +83,9 @@ export class DotcmsEventsService {
         return subject.asObservable();
     }
 
+    /**
+     * Trigger when the event socket connection is opened
+     */
     open(): Observable<boolean> {
         return this.dotEventsSocket.open();
     }

@@ -1,12 +1,12 @@
 
-import { Injectable, ReflectiveInjector } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { ReflectiveInjector } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { DotcmsEventsService } from './dotcms-events.service';
-import { DotEventsSocketFactoryService } from './dot-events-socket-factory.service';
 import { StringUtils } from './string-utils.service';
 import { LoggerService } from './logger.service';
 import { DotEventTypeWrapper } from './models';
 import { DotEventMessage } from './util/models/dot-event-message';
+import { DotEventsSocket } from 'dotcms-js';
 
 class DotEventsSocketMock {
     _messages: Subject<any> = new Subject();
@@ -22,28 +22,18 @@ class DotEventsSocketMock {
     }
 }
 
-@Injectable()
-class DotEventsSocketFactoryServiceMock  {
-    socket = new DotEventsSocketMock();
+fdescribe('DotcmsEventsService', () => {
 
-    public createSocket(): Observable<any> {
-        return of(this.socket);
-    }
-}
-
-
-describe('DotcmsEventsService', () => {
-
-    let socketFactory: DotEventsSocketFactoryServiceMock;
+    let socket: DotEventsSocketMock;
     let dotcmsEventsService: DotcmsEventsService;
 
     let injector: ReflectiveInjector;
 
     beforeEach(() => {
-        socketFactory = new DotEventsSocketFactoryServiceMock();
+        socket = new DotEventsSocketMock();
 
         injector = ReflectiveInjector.resolveAndCreate([
-            { provide: DotEventsSocketFactoryService, useValue: socketFactory },
+            { provide: DotEventsSocket, useValue: socket },
             StringUtils,
             LoggerService,
             DotcmsEventsService
@@ -53,21 +43,20 @@ describe('DotcmsEventsService', () => {
     });
 
     it('should create and connect a new socket', () => {
-        spyOn(socketFactory.socket, 'connect');
+        spyOn(socket, 'connect');
 
         dotcmsEventsService.start();
 
-        expect(socketFactory.socket.connect).toHaveBeenCalled();
+        expect(socket.connect).toHaveBeenCalled();
     });
 
-    it('should reuse socket', () => {
-        const dotEventsSocketFactoryService = injector.get(DotEventsSocketFactoryService);
-        spyOn(dotEventsSocketFactoryService, 'createSocket').and.callThrough();
+    it('should reuse socket connection', () => {
+        spyOn(socket, 'connect');
 
         dotcmsEventsService.start();
         dotcmsEventsService.start();
 
-        expect(dotEventsSocketFactoryService.createSocket).toHaveBeenCalledTimes(1);
+        expect(socket.connect).toHaveBeenCalledTimes(1);
     });
 
     it('should subscribe to a event', (done) => {
@@ -78,7 +67,7 @@ describe('DotcmsEventsService', () => {
             done();
         });
 
-        socketFactory.socket.sendMessage({
+        socket.sendMessage({
             event: 'test_event',
             payload: 'test payload'
         });
@@ -102,12 +91,12 @@ describe('DotcmsEventsService', () => {
                 count++;
             });
 
-        socketFactory.socket.sendMessage({
+            socket.sendMessage({
             event: 'test_event_1',
             payload: 'test payload_1'
         });
 
-        socketFactory.socket.sendMessage({
+        socket.sendMessage({
             event: 'test_event_2',
             payload: 'test payload_2'
         });
