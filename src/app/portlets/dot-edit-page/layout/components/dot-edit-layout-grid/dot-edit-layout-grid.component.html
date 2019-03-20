@@ -1,14 +1,29 @@
-<div>
-    <button type="button" pButton class="box__add-row-class-button" (click)="addRowClass(i)" *ngFor="let rowClass of grid.getAllRowClass(); let i = index"></button>
-</div>
+<div class="grid" [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
+    <button
+        class="box__add-row-class-button"
+        *ngFor="let rowClass of grid.getAllRowClass(); let i = index"
+        [ngStyle]="{ 'top.px': i ? (206 + 8) * i : 0 }"
+        (click)="addRowClass(i)"
+    >
+        <span>Add class</span>
+    </button>
 
-<div [ngGrid]="gridConfig" (onDragStop)="updateModel()" (onResizeStop)="updateModel()">
-    <div class="box" *ngFor="let gridBox of grid.boxes; let i = index" [(ngGridItem)]="gridBox.config">
-        <button class="box__remove" type="button" pButton icon="fa fa-times" (click)="onRemoveContainer(i)"></button>
-        <button class="box__add-column-class-button" type="button" pButton (click)="addColumnClass(i)"></button>
-        <dot-container-selector (change)="propagateGridLayoutChange($event)" (remove)="onRemoveContainer(i)" [data]="gridBox.containers"
-            [multiple]="true">
+    <div
+        class="box"
+        *ngFor="let gridBox of grid.boxes; let i = index"
+        [(ngGridItem)]="gridBox.config"
+    >
+        <dot-container-selector
+            (change)="propagateGridLayoutChange($event)"
+            (remove)="onRemoveContainer(i)"
+            [data]="gridBox.containers"
+            [multiple]="true"
+        >
         </dot-container-selector>
+        <div class="box__actions">
+            <dot-icon-button icon="more_horiz" (click)="addColumnClass(i)"></dot-icon-button>
+            <dot-icon-button icon="close" (click)="onRemoveContainer(i)"></dot-icon-button>
+        </div>
     </div>
 </div>
 
@@ -16,8 +31,12 @@
     #dialog
     (hide)="showAddClassDialog = false"
     [actions]="dialogActions"
-    header="Header"
+    header="Add Class"
     [(visible)]="showAddClassDialog"
+    [width]="300px"
 >
-    <input pInputText #classToAddInput class="box__add-class-text"  type="text"/>
+    <div class="form__group">
+        <label for="content-type-form-workflow" class="form__label">Class Names</label>
+        <input pInputText #classToAddInput type="text" />
+    </div>
 </dot-dialog>

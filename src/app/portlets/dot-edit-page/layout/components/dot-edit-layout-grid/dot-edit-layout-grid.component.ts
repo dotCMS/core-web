@@ -243,6 +243,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
             : DotLayoutGrid.getDefaultGrid();
+        console.log(this.grid);
     }
 
     private removeContainer(index: number): void {
