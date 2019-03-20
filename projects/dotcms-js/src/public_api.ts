@@ -11,7 +11,6 @@ export * from './lib/core/logger.service';
 export * from './lib/core/login.service';
 export * from './lib/core/routing.service';
 export * from './lib/core/site.service';
-export * from './lib/core/dot-events-socket-factory.service';
 export * from './lib/core/string-utils.service';
 export * from './lib/core/util/app.config';
 export * from './lib/core/util/folder.service';

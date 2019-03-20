@@ -38,6 +38,8 @@ export class SiteService {
             switchSiteUrl: 'v1/site/switch'
         };
 
+        dotcmsEventsService.open().subscribe(() => this.switchSite(this.selectedSite));
+
         dotcmsEventsService
             .subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE'])
             .subscribe((data) => this.eventResponse(data));

@@ -11,7 +11,7 @@ import {
     SiteService,
     StringUtils,
     UserModel,
-    DotEventsSocketFactoryService
+    DotEventsSocket
 } from 'dotcms-js';
 
 // Common Modules
@@ -47,7 +47,7 @@ export class SharedModule {
                 LoggerService,
                 LoginService,
                 SiteService,
-                DotEventsSocketFactoryService,
+                DotEventsSocket,
                 StringUtils,
                 UserModel
             ]

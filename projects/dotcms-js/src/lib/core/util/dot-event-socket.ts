@@ -3,10 +3,12 @@ import { Protocol } from './protocol';
 import { LoggerService } from '../logger.service';
 import { LongPollingProtocol } from './long-polling-protocol';
 import { CoreWebService } from '../core-web.service';
-import { ConfigParams } from '../dotcms-config.service';
+import { ConfigParams, DotcmsConfig } from '../dotcms-config.service';
 import { Subject, Observable } from 'rxjs';
 import { DotEventsSocketURL } from './models/dot-event-socket-url';
 import { DotEventMessage } from './models/dot-event-message';
+import { Injectable } from '@angular/core';
+import { map, tap } from 'rxjs/operators';
 
 enum ConnectionStatus {
     NONE,
@@ -16,12 +18,16 @@ enum ConnectionStatus {
     CLOSED
 }
 
+@Injectable()
 export class DotEventsSocket {
     private protocolImpl: Protocol;
 
     private status: ConnectionStatus = ConnectionStatus.NONE;
     private _message: Subject<DotEventMessage> = new Subject<DotEventMessage>();
     private _open: Subject<boolean> = new Subject<boolean>();
+
+    private configParams: ConfigParams;
+    private dotEventsSocketURL: DotEventsSocketURL;
 
     /**
      * Initializes this service with the configuration properties that are
@@ -31,25 +37,24 @@ export class DotEventsSocket {
      * the Websocket parameters.
      */
     constructor(
-        private dotEventsSocketURL: DotEventsSocketURL,
-        private configParams: ConfigParams,
+        private dotcmsConfig: DotcmsConfig,
         private loggerService: LoggerService,
         private coreWebService: CoreWebService
     ) {
 
-        this.protocolImpl = this.isWebSocketsBrowserSupport() && !configParams.disabledWebsockets ?
-            this.getWebSocketProtocol() : this.getLongPollingProtocol();
     }
 
     /**
      * Connect to a Event socket using  Web Socket protocol,
      * if a Web Socket connection can be stablish then try again with a Long Polling connection.
      */
-    connect(): void {
-        this.loggerService.debug('Creating a new socket connection', this.dotEventsSocketURL.url);
-
-        this.status = ConnectionStatus.CONNECTING;
-        this.connectProtocol();
+    connect(): Observable<ConfigParams> {
+        return this.init().pipe(
+            tap(() => {
+                this.status = ConnectionStatus.CONNECTING;
+                this.connectProtocol();
+            })
+        );
     }
 
     /**
@@ -76,6 +81,26 @@ export class DotEventsSocket {
      */
     open(): Observable<boolean> {
         return this._open.asObservable();
+    }
+
+    isConnected(): boolean {
+        return this.status === ConnectionStatus.CONNECTED;
+    }
+
+    private init(): Observable<ConfigParams> {
+        return this.dotcmsConfig.getConfig().pipe(
+            tap((configParams) => {
+                this.dotEventsSocketURL = new DotEventsSocketURL(
+                    configParams.websocketProtocol,
+                    configParams.websocketBaseURL,
+                    configParams.websocketsSystemEventsEndpoint
+                );
+
+                this.configParams = configParams;
+                this.protocolImpl = this.isWebSocketsBrowserSupport() && !configParams.disabledWebsockets ?
+                this.getWebSocketProtocol() : this.getLongPollingProtocol();
+            })
+        );
     }
 
     private connectProtocol(): void {
