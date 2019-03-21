@@ -18,6 +18,12 @@ enum ConnectionStatus {
     CLOSED
 }
 
+/**
+ * It is a socket to receive notifications when a event is tiggered by the server, first this try to stablish a web socket
+ * connection if it fail then try to a Long polling connection instead.
+ *
+ * If the connection is lost in any point the it try to reconnect automaticatly after a time set by configuration parameters.
+ */
 @Injectable()
 export class DotEventsSocket {
     private protocolImpl: Protocol;
@@ -82,6 +88,9 @@ export class DotEventsSocket {
         return this._open.asObservable();
     }
 
+    /**
+     * Return true if the socket is connected otherwise return false
+     */
     isConnected(): boolean {
         return this.status === ConnectionStatus.CONNECTED;
     }

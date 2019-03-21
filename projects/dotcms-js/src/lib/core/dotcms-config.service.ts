@@ -14,10 +14,6 @@ import { Menu } from './routing.service';
  *
  */
 const DOTCMS_WEBSOCKET_RECONNECT_TIME = 'dotcms.websocket.reconnect.time';
-const DOTCMS_WEBSOCKET_ENDPOINTS = 'dotcms.websocket.endpoints';
-const WEBSOCKET_SYSTEMEVENTS_ENDPOINT = 'websocket.systemevents.endpoint';
-const DOTCMS_WEBSOCKET_BASEURL = 'dotcms.websocket.baseurl';
-const DOTCMS_WEBSOCKET_PROTOCOL = 'dotcms.websocket.protocol';
 const DOTCMS_DISABLE_WEBSOCKET_PROTOCOL = 'dotcms.websocket.disable';
 const DOTCMS_PAGINATOR_ROWS = 'dotcms.paginator.rows';
 const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';

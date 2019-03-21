@@ -25,7 +25,7 @@ export class DotcmsEventsService {
      * Start the socket
      */
     start(): void {
-        this.loggerService.debug('start DotcmsEventsService');
+        this.loggerService.debug('start DotcmsEventsService', this.dotEventsSocket.isConnected());
         if (!this.dotEventsSocket.isConnected()) {
 
             this.loggerService.debug('Connecting with socket');
@@ -84,6 +84,9 @@ export class DotcmsEventsService {
         return subject.asObservable();
     }
 
+    /**
+     * Listen  when the socket is opened
+     */
     open(): Observable<boolean> {
         return this.dotEventsSocket.open();
     }
