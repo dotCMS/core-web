@@ -1,11 +1,21 @@
 export class DotEventsSocketURL {
-    constructor(private protocol: string, private baseUrl: string, private endPoint: string) {}
+    constructor(private url: string, private useSSL: boolean) {
 
-    get url(): string {
-        return `${this.protocol}://${this.baseUrl}${this.endPoint}`;
     }
 
-    public getHttpUrl(): string {
-        return new DotEventsSocketURL(this.protocol === 'ws' ? 'http' : 'https', this.baseUrl, this.endPoint).url;
+    public getWebSocketURL(): string {
+        return `${this.getWebSocketProtocol()}://${this.url}`;
+    }
+
+    public getLongPoolingURL(): string {
+        return `${this.getHttpProtocol()}://${this.url}`;
+    }
+
+    private getWebSocketProtocol(): string {
+        return `${this.useSSL ? 'wss' : 'ws'}`;
+    }
+
+    private getHttpProtocol(): string {
+        return `${this.useSSL ? 'https' : 'http'}`;
     }
 }
