@@ -1,34 +1,45 @@
-import { async } from '@angular/core/testing';
+import { LoginPageResolver } from '@components/login/login-page-resolver.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { DotPageStateService } from '@portlets/dot-edit-page/content/services/dot-page-state/dot-page-state.service';
-import { DotEditPageResolver } from '@portlets/dot-edit-page/shared/services/dot-edit-page-resolver/dot-edit-page-resolver.service';
-import { ActivatedRouteSnapshot } from '@angular/router';
 import { LoginService } from 'dotcms-js';
-import { LoginServiceMock } from '@tests/login-service.mock';
-import { DotEditPageDataService } from '@portlets/dot-edit-page/shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
+import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-
-const route: any = jasmine.createSpyObj<ActivatedRouteSnapshot>('ActivatedRouteSnapshot', [
-    'toString'
-]);
-
-route.queryParams = {};
+import { async } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 describe('LoginPageResolver', () => {
+    let loginService: LoginService;
+    let loginPageResolver: LoginPageResolver;
+
     beforeEach(
         async(() => {
             const testbed = DOTTestBed.configureTestingModule({
-                providers: [{ provide: LoginService, useClass: LoginServiceMock }],
+                providers: [
+                    LoginPageResolver,
+                    { provide: LoginService, useClass: LoginServiceMock }
+                ],
                 imports: [RouterTestingModule]
             });
-
-            resolver = testbed.get(DotEditPageResolver);
-            dotPageStateService = testbed.get(DotPageStateService);
-            dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
-            dotRouterService = testbed.get(DotRouterService);
-            dotEditPageDataService = testbed.get(DotEditPageDataService);
+            loginPageResolver = testbed.get(LoginPageResolver);
+            loginService = testbed.get(LoginService);
         })
     );
+
+    it('should set the background Image and background color', () => {
+        spyOn(loginService, 'getLoginFormInfo').and.returnValue(
+            of({ bodyJsonObject: mockLoginFormResponse })
+        );
+        loginPageResolver.resolve().subscribe(() => {
+            expect(document.body.style.backgroundColor).toEqual('rgb(58, 56, 71)');
+            expect(document.body.style.backgroundImage).toEqual(
+                'url("/html/images/backgrounds/bg-11.jpg")'
+            );
+        });
+    });
+
+    it('should set the background Image and background color empty when no info', () => {
+        loginPageResolver.resolve().subscribe(() => {
+            expect(document.body.style.backgroundColor).toEqual('');
+            expect(document.body.style.backgroundImage).toEqual('');
+        });
+    });
 });

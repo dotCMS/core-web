@@ -5,16 +5,18 @@ import {
     Output,
     OnInit,
     ViewChild,
-    AfterViewInit
+    OnDestroy
 } from '@angular/core';
 import { LoginService } from 'dotcms-js';
 import { DotLoginCredentials, DotLoginInformation, DotLoginLanguage } from '@models/dot-login';
 import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { pluck, tap } from 'rxjs/operators';
-import { concat, fromEvent, Observable, Subject } from 'rxjs';
+import { map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { merge, Observable, Subject } from 'rxjs';
 import { Dropdown } from 'primeng/primeng';
+import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 @Component({
     selector: 'dot-login-component',
@@ -25,7 +27,7 @@ import { Dropdown } from 'primeng/primeng';
  * The login component allows the user to fill all
  * the info required to log in the dotCMS angular backend
  */
-export class DotLoginComponent implements OnInit, AfterViewInit {
+export class DotLoginComponent implements OnInit, OnDestroy {
     @Input() message = '';
     @Input() passwordChanged = false;
     @Input() resetEmailSent = false;
@@ -34,45 +36,26 @@ export class DotLoginComponent implements OnInit, AfterViewInit {
     set isLoginInProgress(value: boolean) {
         this.disableFormFields(value);
     }
-    @Output() recoverPassword = new EventEmitter<any>();
     @Output() login = new EventEmitter<DotLoginCredentials>();
 
     @ViewChild('languageDropdown') languageDropdown: Dropdown;
 
     loginForm: FormGroup;
-    languages: SelectItem[] = []; // Hacerlo observable.
+    languages: SelectItem[] = [];
 
     loginInfo$: Observable<DotLoginInformation>;
 
     private languageChange$: Subject<DotLoginInformation> = new Subject<DotLoginInformation>();
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private loginService: LoginService,
         private fb: FormBuilder,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private dotRouterService: DotRouterService
     ) {}
 
     ngOnInit() {
-        this.loginInfo$ = concat(this.route.data, this.languageChange$).pipe(
-            pluck('loginFormInfo'),
-            tap((loginInfo: DotLoginInformation) => {
-                this.setLanguageItems(loginInfo);
-                this.checkMessages(loginInfo);
-            })
-        );
-        this.languageChange$.subscribe(x => {
-            debugger;
-            console.log(x);
-        });
-
-        /* this.loginInfo$ = this.route.data.pipe(
-            // take(1),
-            pluck('loginFormInfo'),
-            tap((loginInfo: DotLoginInformation) => this.setLanguageItems(loginInfo)),
-            map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
-            tap((loginInfo: DotLoginInformation) => this.checkMessages(loginInfo))
-        );*/
-
         this.loginService.setAuth({
             loginAsUser: null,
             user: null,
@@ -85,15 +68,32 @@ export class DotLoginComponent implements OnInit, AfterViewInit {
             password: ['', [Validators.required]],
             rememberMe: false
         });
+
+        const onLanguageChange = this.languageChange$
+            .asObservable()
+            .pipe(
+                takeUntil(this.destroy$),
+                switchMap((event: any) =>
+                    this.loginService
+                        .getLoginFormInfo(event, LOGIN_LABELS)
+                        .pipe(map(loginInfo => ({ loginFormInfo: loginInfo })))
+                )
+            );
+
+        this.loginInfo$ = merge(this.route.data, onLanguageChange).pipe(
+            takeUntil(this.destroy$),
+            pluck('loginFormInfo'),
+            map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
+            tap((loginInfo: DotLoginInformation) => {
+                this.setInitialFormValues(loginInfo);
+            })
+        );
     }
 
-    ngAfterViewInit(): void {
-        fromEvent(this.languageDropdown.el.nativeElement, 'Onchange').subscribe(x => {
-            debugger;
-            console.log(x);
-        });
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
-
     /**
      *  Executes the logIn service
      */
@@ -104,46 +104,18 @@ export class DotLoginComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * Execute the change language service
-     */
-    changeLanguage(lang: string): void {
-        this.loginForm.get('language').setValue(lang);
-        console.log('test');
-        /* this.languageChange$.next(
-            this.loginService.getLoginFormInfo(this.loginForm.get('language').value, LOGIN_LABELS)
-        );*/
-
-        /*   this.loginForm.get('language').setValue(lang);
-        debugger;
-        fromEvent(this.languageDropdown.el.nativeElement, 'change')
-            .pipe(
-                take(1),
-                switchMap(language => {
-                    debugger;
-                    console.log(language);
-                    return this.loginService.getLoginFormInfo('es', LOGIN_LABELS);
-                })
-            )
-            .subscribe(data => {
-                debugger;
-                console.log(data);
-            });*/
-
-        /*   this.loginService
-            .getLoginFormInfo(this.loginForm.get('language').value, LOGIN_LABELS)
-            .pipe(
-                take(1),
-                pluck('bodyJsonObject'),
-                map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo))
-            )
-            .subscribe(data => this.lc.next(data));*/
-    }
-
-    /**
      * Display the forgot password card
      */
     showForgotPassword(): void {
-        this.recoverPassword.emit();
+        this.dotRouterService.goToForgotPassword();
+    }
+
+    private setInitialFormValues(loginInfo: DotLoginInformation): void {
+        this.loginForm
+            .get('language')
+            .setValue(this.setLanguageFormat(loginInfo.entity.currentLanguage));
+        this.setLanguageItems(loginInfo);
+        this.checkMessages(loginInfo);
     }
 
     private checkMessages(loginInfo: DotLoginInformation): void {
@@ -157,62 +129,6 @@ export class DotLoginComponent implements OnInit, AfterViewInit {
             );
         }
     }
-
-    /*private renderPageData(loginInfo: DotLoginInformation): void {
-        debugger;
-        console.log(loginInfo);
-        // this.dataI18n = data.i18nMessagesMap;
-        // this.dotSystemInformation = data.entity;
-
-        // this.emailAddressLabel = this.setUserNameLabel();
-             // this.isCommunityLicense = this.dotSystemInformation.levelName.indexOf('COMMUNITY') !== -1;
-        // this.languages = this.setLanguageItems();
-        this.loginForm
-            .get('language')
-            .setValue(this.setLanguageFormat(this.dotSystemInformation.currentLanguage));
-
-        /!* if (this.passwordChanged) {
-            this.message = this.dataI18n['reset-password-success'];
-        }
-        if (this.resetEmailSent) {
-            this.message = this.dataI18n['a-new-password-has-been-sent-to-x'].replace(
-                '{0}',
-                this.resetEmail
-            );
-        }*!/
-
-        /!*this.loginService
-            .getLoginFormInfo(this.loginForm.get('language').value, this.i18nMessages)
-            .subscribe(
-                data => {
-                    this.dataI18n = data.i18nMessagesMap;
-                    this.dotSystemInformation = data.entity;
-
-                    this.emailAddressLabel = this.setUserNameLabel();
-                    this.isCommunityLicense =
-                        this.dotSystemInformation.levelName.indexOf('COMMUNITY') !== -1;
-                    this.languages = this.setLanguageItems();
-                    this.loginForm
-                        .get('language')
-                        .setValue(
-                            this.setLanguageFormat(this.dotSystemInformation.currentLanguage)
-                        );
-
-                    if (this.passwordChanged) {
-                        this.message = this.dataI18n['reset-password-success'];
-                    }
-                    if (this.resetEmailSent) {
-                        this.message = this.dataI18n['a-new-password-has-been-sent-to-x'].replace(
-                            '{0}',
-                            this.resetEmail
-                        );
-                    }
-                },
-                error => {
-                    this.loggerService.debug(error);
-                }
-            );*!/
-    }*/
 
     private setLanguageItems(loginInfo: DotLoginInformation): void {
         this.languages =
@@ -236,5 +152,13 @@ export class DotLoginComponent implements OnInit, AfterViewInit {
                 this.loginForm.enable();
             }
         }
+    }
+
+    private setUserNameLabel(loginInfo: DotLoginInformation): DotLoginInformation {
+        loginInfo.i18nMessagesMap['emailAddressLabel'] =
+            'emailAddress' === loginInfo.entity.authorizationType
+                ? loginInfo.i18nMessagesMap['email-address']
+                : loginInfo.i18nMessagesMap['user-id'];
+        return loginInfo;
     }
 }

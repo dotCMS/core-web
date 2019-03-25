@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoginService } from 'dotcms-js';
 import { Observable } from 'rxjs';
 import { DotLoginInformation, DotSystemInformation } from '@models/dot-login';
-import { map, pluck, tap } from 'rxjs/operators';
+import { pluck, tap } from 'rxjs/operators';
 
 export const LOGIN_LABELS = [
     'email-address',
@@ -43,7 +43,6 @@ export class LoginPageResolver implements Resolve<DotLoginInformation> {
     resolve(): Observable<DotLoginInformation> {
         return this.loginService.getLoginFormInfo('', LOGIN_LABELS).pipe(
             pluck('bodyJsonObject'),
-            map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
             tap((loginInfo: DotLoginInformation) => {
                 document.body.style.backgroundColor = this.setBackgroundColor(loginInfo.entity);
                 document.body.style.backgroundImage = this.setBackgroundImage(loginInfo.entity);
@@ -63,13 +62,5 @@ export class LoginPageResolver implements Resolve<DotLoginInformation> {
             systemInformation.backgroundPicture !== ''
             ? 'url(' + systemInformation.backgroundPicture + ')'
             : '';
-    }
-
-    private setUserNameLabel(loginInfo: DotLoginInformation): DotLoginInformation {
-        loginInfo.i18nMessagesMap['emailAddressLabel'] =
-            'emailAddress' === loginInfo.entity.authorizationType
-                ? loginInfo.i18nMessagesMap['email-address']
-                : loginInfo.i18nMessagesMap['user-id'];
-        return loginInfo;
     }
 }

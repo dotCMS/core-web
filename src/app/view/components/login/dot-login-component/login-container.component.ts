@@ -15,7 +15,6 @@ import { take } from 'rxjs/operators';
             [message]="message"
             [isLoginInProgress]="isLoginInProgress"
             (login)="logInUser($event)"
-            (recoverPassword)="showForgotPassword()"
             [passwordChanged]="passwordChanged"
             [resetEmailSent]="resetEmailSent"
             [resetEmail]="resetEmail"
@@ -78,13 +77,6 @@ export class LoginContainerComponent implements OnInit {
                     this.dotLoadingIndicatorService.hide();
                 }
             );
-    }
-
-    /**
-     * Display the forgot password card
-     */
-    showForgotPassword(): void {
-        this.dotRouterService.goToForgotPassword();
     }
 
     private isBadRequestOrUnathorized(status: number) {

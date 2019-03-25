@@ -1,15 +1,15 @@
-<div class="login" *ngIf="(loginInfo$ | async) || {} as loginInfo">
-    <form [formGroup]="loginForm" >
-        <div class="login__container">
+<div class="login" *ngIf="(loginInfo$ | async)  as loginInfo">
+    <div class="login__container">
+        <form [formGroup]="loginForm" >
             <div class="login__header">
                 <div class="login__logo">
-                    <img src="{{ loginInfo.entity?.logo }}" />
+                    <img src="{{ loginInfo.entity.logo }}" />
                 </div>
                 <p-dropdown tiny noBorder [options]="languages"
                             formControlName="language"
                             #languageDropdown
                             [style]="{'width':'auto'}"
-                            (onChange)="changeLanguage($event.value)">
+                            (onChange)="languageChange$.next($event.value)">
                 </p-dropdown>
             </div>
 
@@ -17,12 +17,12 @@
 
             <div class="error-message" [innerHTML]="message" *ngIf="message"></div>
             <div class="form__group">
-            <span dotMdInputtext label="{{  loginInfo.i18nMessagesMap['emailAddressLabel'] }}">
-                <input pInputText type="text" #emailInput dotAutofocus
+            <span dotMdInputtext label="{{ loginInfo.i18nMessagesMap['emailAddressLabel'] }}">
+                <input pInputText type="text" dotAutofocus
                        formControlName="login"
                        autocomplete="username"/>
                 <dot-field-validation-message
-                    [message]="loginInfo.i18nMessagesMap['error.form.mandatory']?.replace('{0}',loginInfo.i18nMessagesMap['emailAddressLabel'])"
+                    [message]="loginInfo.i18nMessagesMap['error.form.mandatory'].replace('{0}',loginInfo.i18nMessagesMap['emailAddressLabel'])"
                     [field]="loginForm.get('login')">
                 </dot-field-validation-message>
             </span>
@@ -33,7 +33,7 @@
                        formControlName="password"
                        autocomplete="current-password"/>
                 <dot-field-validation-message
-                    [message]=" loginInfo.i18nMessagesMap['error.form.mandatory']?.replace('{0}', loginInfo.i18nMessagesMap['password'])"
+                    [message]=" loginInfo.i18nMessagesMap['error.form.mandatory'].replace('{0}', loginInfo.i18nMessagesMap['password'])"
                     [field]="loginForm.get('password')">
                 </dot-field-validation-message>
             </span>
@@ -55,13 +55,13 @@
                 </button>
             </div>
             <div class="login__footer">
-                <span>{{ loginInfo.i18nMessagesMap['Server'] }}: {{ loginInfo.entity?.serverId }}</span> |
-                <span>{{ loginInfo.entity?.levelName }}: {{ loginInfo.entity?.version }}</span>
+                <span>{{ loginInfo.i18nMessagesMap['Server'] }}: {{ loginInfo.entity.serverId }}</span> |
+                <span>{{ loginInfo.entity.levelName }}: {{ loginInfo.entity.version }}</span>
                 <span *ngIf="loginInfo.entity.levelName.indexOf('COMMUNITY') !== -1"
                       [innerHTML]="' - ' + loginInfo.i18nMessagesMap['angular.login.component.community.licence.message']" >
             </span>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 

@@ -13,11 +13,10 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-fdescribe('ForgotPasswordComponent', () => {
+describe('ForgotPasswordComponent', () => {
     let component: ForgotPasswordComponent;
     let fixture: ComponentFixture<ForgotPasswordComponent>;
     let de: DebugElement;
-    let route: ActivatedRoute;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -45,23 +44,11 @@ fdescribe('ForgotPasswordComponent', () => {
         fixture = DOTTestBed.createComponent(ForgotPasswordComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        route = de.injector.get(ActivatedRoute);
 
         this.loginService = de.injector.get(LoginService);
-        // spyOn(this.loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
         fixture.detectChanges();
 
         this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
-    });
-
-    it('should focus the email/username input on load', function() {
-        const emailInput = de.query(By.css('input[dotAutofocus]')).nativeElement;
-        debugger;
-        spyOn(emailInput, 'focus');
-
-        fixture.whenStable().then(() => {
-            expect(emailInput.focus).toHaveBeenCalledTimes(1);
-        });
     });
 
     it('should keep recover password button disabled until the form is valid', () => {

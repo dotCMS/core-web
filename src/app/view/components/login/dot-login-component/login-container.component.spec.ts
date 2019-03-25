@@ -23,7 +23,6 @@ class TestDotLoginComponent {
     @Input() passwordChanged = false;
     @Input() resetEmailSent = false;
     @Input() resetEmail = '';
-    @Output() recoverPassword = new EventEmitter<any>();
     @Output() login = new EventEmitter<DotLoginCredentials>();
 }
 

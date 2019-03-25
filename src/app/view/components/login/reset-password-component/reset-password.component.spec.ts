@@ -4,12 +4,14 @@ import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from 'dotcms-js';
-import { LoginServiceMock } from '@tests/login-service.mock';
+import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
@@ -26,7 +28,17 @@ describe('ResetPasswordComponent', () => {
                 InputTextModule,
                 DotFieldValidationMessageModule
             ],
-            providers: [{ provide: LoginService, useClass: LoginServiceMock }]
+            providers: [
+                { provide: LoginService, useClass: LoginServiceMock },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        data: of({
+                            loginFormInfo: mockLoginFormResponse
+                        })
+                    }
+                }
+            ]
         });
 
         fixture = DOTTestBed.createComponent(ResetPasswordComponent);
@@ -39,15 +51,6 @@ describe('ResetPasswordComponent', () => {
         fixture.detectChanges();
 
         this.changePasswordButton = de.query(By.css('button[type="submit"]'));
-    });
-
-    it('should focus the new password input on load', function() {
-        const newPasswordInput = de.query(By.css('input[dotAutofocus]')).nativeElement;
-        spyOn(newPasswordInput.nativeElement, 'focus');
-
-        fixture.whenStable().then(() => {
-            expect(newPasswordInput.nativeElement.focus).toHaveBeenCalledTimes(1);
-        });
     });
 
     it('should keep change password button disabled until the form is valid', () => {

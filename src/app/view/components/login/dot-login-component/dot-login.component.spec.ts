@@ -8,34 +8,30 @@ import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mo
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import {Checkbox, CheckboxModule, Dropdown, DropdownModule, InputTextModule} from 'primeng/primeng';
+import {
+    Checkbox,
+    CheckboxModule,
+    Dropdown,
+    DropdownModule,
+    InputTextModule
+} from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { of } from 'rxjs';
+import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
+import { ActivatedRoute } from '@angular/router';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
+    let loginService: LoginService;
+    let dotRouterService: DotRouterService;
 
     beforeEach(() => {
-        this.i18nMessages = [
-            'email-address',
-            'user-id',
-            'password',
-            'remember-me',
-            'sign-in',
-            'get-new-password',
-            'cancel',
-            'Server',
-            'error.form.mandatory',
-            'angular.login.component.community.licence.message',
-            'reset-password-success',
-            'a-new-password-has-been-sent-to-x',
-            'welcome-back'
-        ];
-
         DOTTestBed.configureTestingModule({
             declarations: [DotLoginComponent],
             imports: [
@@ -47,39 +43,47 @@ describe('DotLoginComponent', () => {
                 MdInputTextModule,
                 InputTextModule,
                 DotLoadingIndicatorModule,
-                DotFieldValidationMessageModule
+                DotFieldValidationMessageModule,
+                RouterTestingModule
             ],
-            providers: [{ provide: LoginService, useClass: LoginServiceMock }]
+            providers: [
+                { provide: LoginService, useClass: LoginServiceMock },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        data: of({
+                            loginFormInfo: mockLoginFormResponse
+                        })
+                    }
+                }
+            ]
         });
 
         fixture = DOTTestBed.createComponent(DotLoginComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
 
-        this.loginService = de.injector.get(LoginService);
-        spyOn(this.loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
+        loginService = de.injector.get(LoginService);
+        dotRouterService = de.injector.get(DotRouterService);
+        spyOn(loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
         fixture.detectChanges();
         this.signInButton = de.query(By.css('button[pButton]'));
-    });
-
-    it('should focus the email/username input on load', function() {
-        expect(component.emailInput.nativeElement).toBe(document.activeElement);
     });
 
     it('should call service on language change', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-        expect(this.loginService.getLoginFormInfo).toHaveBeenCalledWith('es_ES', this.i18nMessages);
+        expect(loginService.getLoginFormInfo).toHaveBeenCalledWith('es_ES', LOGIN_LABELS);
     });
 
-    it('should emit event to go recover password screen', () => {
-        spyOn(component.recoverPassword, 'emit');
+    it('should navigate to the recover password screen', () => {
+        spyOn(dotRouterService, 'goToForgotPassword');
         const forgotPasswordLink: DebugElement = de.query(By.css('a[actionLink]'));
 
         forgotPasswordLink.triggerEventHandler('click', { value: '' });
 
-        expect(component.recoverPassword.emit).toHaveBeenCalledTimes(1);
+        expect(dotRouterService.goToForgotPassword).toHaveBeenCalledTimes(1);
     });
 
     it('should load initial value of the form', () => {
@@ -113,7 +117,7 @@ describe('DotLoginComponent', () => {
     });
 
     it('should keep submit button disabled until the form is valid', () => {
-        expect(this.signInButton.nativeElement.disabled).toBeTruthy();;
+        expect(this.signInButton.nativeElement.disabled).toBeTruthy();
     });
 
     it('should show error message for required form fields', () => {
@@ -142,9 +146,9 @@ describe('DotLoginComponent', () => {
 
         fixture.detectChanges();
 
-        expect(languageDropdown.disabled).toBeTruthy();;
-        expect(emailInput.nativeElement.disabled).toBeTruthy();;
-        expect(passwordInput.nativeElement.disabled).toBeTruthy();;
+        expect(languageDropdown.disabled).toBeTruthy();
+        expect(emailInput.nativeElement.disabled).toBeTruthy();
+        expect(passwordInput.nativeElement.disabled).toBeTruthy();
         expect(rememberCheckBox.disabled).toBeTruthy();
     });
 });
