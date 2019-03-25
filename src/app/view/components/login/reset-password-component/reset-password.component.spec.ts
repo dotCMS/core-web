@@ -13,7 +13,7 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-fdescribe('ResetPasswordComponent', () => {
+describe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
     let fixture: ComponentFixture<ResetPasswordComponent>;
     let de: DebugElement;
