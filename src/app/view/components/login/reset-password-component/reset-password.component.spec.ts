@@ -13,7 +13,7 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('ResetPasswordComponent', () => {
+fdescribe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
     let fixture: ComponentFixture<ResetPasswordComponent>;
     let de: DebugElement;
@@ -46,7 +46,6 @@ describe('ResetPasswordComponent', () => {
         de = fixture.debugElement;
 
         this.loginService = de.injector.get(LoginService);
-        spyOn(component, 'submitResetForm').and.callThrough();
         spyOn(component.changePassword, 'emit');
         fixture.detectChanges();
 
@@ -64,10 +63,9 @@ describe('ResetPasswordComponent', () => {
         });
         this.changePasswordButton.triggerEventHandler('click', {});
         fixture.detectChanges();
-        const erroresMessages = de.queryAll(By.css('.error-message'));
+        const errorMessage = de.queryAll(By.css('.error-message'));
 
-        expect(erroresMessages.length).toBe(1);
-        expect(component.submitResetForm).toHaveBeenCalledTimes(1);
+        expect(errorMessage.length).toBe(1);
         expect(component.changePassword.emit).not.toHaveBeenCalled();
     });
 
@@ -78,7 +76,6 @@ describe('ResetPasswordComponent', () => {
         });
         this.changePasswordButton.triggerEventHandler('click', {});
 
-        expect(component.submitResetForm).toHaveBeenCalledTimes(1);
         expect(component.changePassword.emit).toHaveBeenCalledTimes(1);
     });
 
