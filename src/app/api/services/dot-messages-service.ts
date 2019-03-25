@@ -26,7 +26,7 @@ export class DotMessageService {
         this.doMessageLoad = _.debounce(this.requestMessages, 100);
 
         this.i18nUrl = 'v1/languages/i18n';
-        this.lang = loginService.auth.user.languageId;
+        this.lang = loginService.auth ? loginService.auth.user.languageId : '';
         this.messageKeys = [];
         this.messagesLoaded = {};
         this.setRelativeDateMessages();

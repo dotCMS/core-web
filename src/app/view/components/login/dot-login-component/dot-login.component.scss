@@ -2,19 +2,8 @@
 @import "mixins";
 @import "../styles/primeng-theme/utils/theme-variables";
 
-/* Login box */
-#login-container {
-    @include box_shadow(5);
-    background-color: $white;
-    border-radius: $border-radius * 3;
-    padding: $basic-padding * 10 $basic-padding * 10 $basic-padding * 8;
-    width: 360px;
-    box-sizing: content-box;
-    margin: 0 auto;
-
-    @media (max-width: $screen-sm-min) {
-        padding: $basic-padding * 5 $basic-padding * 5 $basic-padding * 3;
-    }
+:host{
+    @include login;
 }
 
 .login__header {
@@ -57,25 +46,8 @@
     font-size: $font-size-x-small;
 }
 
-.login {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-
-    input.ui-inputtext {
-        display: block;
-        width: 100%;
-    }
-
-    md-input {
-        overflow: inherit;
-        width: 100%;
-    }
-}
-
 .login__container {
-    @extend #login-container;
+    @include login-container;
 }
 
 .login__button {

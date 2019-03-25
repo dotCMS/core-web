@@ -68,12 +68,8 @@ describe('DotLoginComponent', () => {
 
     it('should call service on language change', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
-        spyOn(component, 'changeLanguage').and.callThrough();
-        // spyOn(this.loginService, 'getLoginFormInfo');
-
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-        expect(component.changeLanguage).toHaveBeenCalledWith('es_ES');
         expect(this.loginService.getLoginFormInfo).toHaveBeenCalledWith('es_ES', this.i18nMessages);
     });
 

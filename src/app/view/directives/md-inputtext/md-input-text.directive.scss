@@ -28,8 +28,6 @@
 
         &.ui-state-filled,
         &.ui-inputwrapper-focus,
-        &.ng-dirty.ng-invalid.ng-touched,
-        &.ng-invalid.ng-touched,
         &:focus {
             & ~ label {
                 top: 0;

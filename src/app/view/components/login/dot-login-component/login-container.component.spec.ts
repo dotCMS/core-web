@@ -10,8 +10,8 @@ import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { LoginService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {DotLoginData} from '@models/dot-login';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DotLoginCredentials } from '@models/dot-login';
 
 @Component({
     selector: 'dot-login-component',
@@ -24,7 +24,7 @@ class TestDotLoginComponent {
     @Input() resetEmailSent = false;
     @Input() resetEmail = '';
     @Output() recoverPassword = new EventEmitter<any>();
-    @Output() login = new EventEmitter<DotLoginData>();
+    @Output() login = new EventEmitter<DotLoginCredentials>();
 }
 
 describe('LoginContainerComponent', () => {
@@ -33,16 +33,18 @@ describe('LoginContainerComponent', () => {
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<LoginContainerComponent>;
 
-    beforeEach(async(() => {
-        DOTTestBed.configureTestingModule({
-            imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
-            declarations: [LoginContainerComponent, TestDotLoginComponent],
-            providers: [
-                DotLoadingIndicatorService,
-                { provide: LoginService, useClass: LoginServiceMock }
-            ]
-        }).compileComponents();
-    }));
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
+                declarations: [LoginContainerComponent, TestDotLoginComponent],
+                providers: [
+                    DotLoadingIndicatorService,
+                    { provide: LoginService, useClass: LoginServiceMock }
+                ]
+            }).compileComponents();
+        })
+    );
 
     beforeEach(() => {
         fixture = TestBed.createComponent(LoginContainerComponent);

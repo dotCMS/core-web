@@ -9,6 +9,7 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 import { ForgotPasswordContainerComponent } from './forgot-password-container.component';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 
 const routes: Routes = [
     {
@@ -26,6 +27,7 @@ const routes: Routes = [
         MdInputTextModule,
         ReactiveFormsModule,
         DotFieldValidationMessageModule,
+        DotAutofocusModule,
         RouterModule.forChild(routes)
     ],
     declarations: [ForgotPasswordComponent, ForgotPasswordContainerComponent]

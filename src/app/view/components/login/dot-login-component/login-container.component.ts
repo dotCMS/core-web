@@ -1,8 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpRequestUtils, LoginService, LoggerService, HttpCode, User } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotLoginData } from '@models/dot-login/dot-login-data.model';
+import { DotLoginCredentials } from '@models/dot-login/dot-login-credentials.model';
+import { ActivatedRoute, Params } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -21,7 +23,7 @@ import { DotLoginData } from '@models/dot-login/dot-login-data.model';
         </dot-login-component>
     `
 })
-export class LoginContainerComponent {
+export class LoginContainerComponent implements OnInit {
     public isLoginInProgress = false;
     public message: string;
     public passwordChanged = false;
@@ -30,34 +32,36 @@ export class LoginContainerComponent {
 
     constructor(
         private dotRouterService: DotRouterService,
-        private httprequestUtils: HttpRequestUtils,
         private loginService: LoginService,
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
-        private loggerService: LoggerService
-    ) {
-        // this.dotLoadingIndicatorService.hide();
-        // TODO: change the httpRequestUtils.getQueryParams() with an NG2 method equivalent to QueryParams on NGRX.
-        const queryParams: Map<string, any> = this.httprequestUtils.getQueryParams();
-        if (<boolean>queryParams.get('changedPassword')) {
-            this.passwordChanged = queryParams.get('changedPassword');
-        } else if (<boolean>queryParams.get('resetEmailSent')) {
-            this.resetEmailSent = queryParams.get('resetEmailSent');
-            this.resetEmail = decodeURIComponent(queryParams.get('resetEmail'));
-        }
+        private loggerService: LoggerService,
+        private activatedRoute: ActivatedRoute
+    ) {}
+
+    ngOnInit() {
+        this.activatedRoute.queryParams.pipe(take(1)).subscribe((params: Params) => {
+            if (params['changedPassword']) {
+                this.passwordChanged = params['changedPassword'];
+            } else if (params['resetEmailSent']) {
+                this.resetEmailSent = params['resetEmailSent'];
+                this.resetEmail = decodeURIComponent(params['resetEmail']);
+            }
+        });
     }
 
-    logInUser(loginData: DotLoginData): void {
+    logInUser(loginCredentials: DotLoginCredentials): void {
         this.isLoginInProgress = true;
         this.dotLoadingIndicatorService.show();
         this.message = '';
 
         this.loginService
             .loginUser(
-                loginData.login,
-                loginData.password,
-                loginData.rememberMe,
-                loginData.language
+                loginCredentials.login,
+                loginCredentials.password,
+                loginCredentials.rememberMe,
+                loginCredentials.language
             )
+            .pipe(take(1))
             .subscribe(
                 (user: User) => {
                     this.message = '';

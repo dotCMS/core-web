@@ -34,7 +34,7 @@ describe('ResetPasswordComponent', () => {
         de = fixture.debugElement;
 
         this.loginService = de.injector.get(LoginService);
-        spyOn(component, 'ok').and.callThrough();
+        spyOn(component, 'submitResetForm').and.callThrough();
         spyOn(component.changePassword, 'emit');
         fixture.detectChanges();
 
@@ -42,7 +42,12 @@ describe('ResetPasswordComponent', () => {
     });
 
     it('should focus the new password input on load', function() {
-        expect(component.newPasswordInput.nativeElement).toBe(document.activeElement);
+        const newPasswordInput = de.query(By.css('input[dotAutofocus]')).nativeElement;
+        spyOn(newPasswordInput.nativeElement, 'focus');
+
+        fixture.whenStable().then(() => {
+            expect(newPasswordInput.nativeElement.focus).toHaveBeenCalledTimes(1);
+        });
     });
 
     it('should keep change password button disabled until the form is valid', () => {
@@ -59,7 +64,7 @@ describe('ResetPasswordComponent', () => {
         const erroresMessages = de.queryAll(By.css('.error-message'));
 
         expect(erroresMessages.length).toBe(1);
-        expect(component.ok).toHaveBeenCalledTimes(1);
+        expect(component.submitResetForm).toHaveBeenCalledTimes(1);
         expect(component.changePassword.emit).not.toHaveBeenCalled();
     });
 
@@ -70,7 +75,7 @@ describe('ResetPasswordComponent', () => {
         });
         this.changePasswordButton.triggerEventHandler('click', {});
 
-        expect(component.ok).toHaveBeenCalledTimes(1);
+        expect(component.submitResetForm).toHaveBeenCalledTimes(1);
         expect(component.changePassword.emit).toHaveBeenCalledTimes(1);
     });
 
@@ -79,7 +84,7 @@ describe('ResetPasswordComponent', () => {
         component.resetPasswordForm.get('confirmPassword').markAsDirty();
         fixture.detectChanges();
 
-        const erroreMessages = de.queryAll(By.css('.ui-messages-error'));
-        expect(erroreMessages.length).toBe(2);
+        const errorMessages = de.queryAll(By.css('.ui-messages-error'));
+        expect(errorMessages.length).toBe(2);
     });
 });

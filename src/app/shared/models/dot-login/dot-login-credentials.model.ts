@@ -3,7 +3,7 @@
  *
  * @interface
  */
-export interface DotLoginData {
+export interface DotLoginCredentials {
     login: string;
     password: string;
     rememberMe: boolean;

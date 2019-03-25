@@ -1,16 +1,10 @@
-import {
-    Component,
-    ViewEncapsulation,
-    Input,
-    Output,
-    EventEmitter,
-    OnInit,
-    AfterViewInit,
-    ViewChild, ElementRef
-} from '@angular/core';
-import { LoginService, LoggerService } from 'dotcms-js';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ChangePasswordData } from './reset-password-container.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { DotLoginInformation } from '@models/dot-login';
+import { pluck, take, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -19,40 +13,25 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     styleUrls: ['./reset-password.component.scss'],
     templateUrl: 'reset-password.component.html'
 })
-export class ResetPasswordComponent implements OnInit, AfterViewInit {
+export class ResetPasswordComponent implements OnInit {
     @Input() token = '';
     @Input() message = '';
     @Output() changePassword = new EventEmitter<ChangePasswordData>();
-    @ViewChild('newPasswordInput') newPasswordInput: ElementRef;
-
 
     resetPasswordForm: FormGroup;
-    dataI18n: { [key: string]: string } = {};
+    loginInfo$: Observable<DotLoginInformation>;
+    private passwordDontMatchMessage = '';
 
-    private i18nMessages: Array<string> = [
-        'error.form.mandatory',
-        'reset-password',
-        'enter-password',
-        're-enter-password',
-        'change-password',
-        'reset-password-success',
-        'reset-password-confirmation-do-not-match'
-    ];
-
-    constructor(
-        private loginService: LoginService,
-        private loggerService: LoggerService,
-        private fb: FormBuilder
-    ) {}
+    constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        this.loginService.getLoginFormInfo('', this.i18nMessages).subscribe(
-            data => {
-                this.dataI18n = data.i18nMessagesMap;
-            },
-            error => {
-                this.loggerService.error(error);
-            }
+        this.loginInfo$ = this.route.data.pipe(
+            take(1),
+            pluck('loginFormInfo'),
+            tap((loginInfo: DotLoginInformation) => {
+                this.passwordDontMatchMessage =
+                    loginInfo.i18nMessagesMap['reset-password-confirmation-do-not-match'];
+            })
         );
 
         this.resetPasswordForm = this.fb.group({
@@ -61,16 +40,16 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit(): void {
-        this.newPasswordInput.nativeElement.focus();
-    }
-
     cleanConfirmPassword(): void {
-        this.clean();
+        this.cleanMessage();
         this.resetPasswordForm.get('confirmPassword').setValue('');
     }
 
-    ok(): void {
+    cleanMessage(): void {
+        this.message = '';
+    }
+
+    submitResetForm(): void {
         if (
             this.resetPasswordForm.valid &&
             this.resetPasswordForm.get('password').value ===
@@ -81,11 +60,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit {
                 token: this.token
             });
         } else {
-            this.message = this.dataI18n['reset-password-confirmation-do-not-match'];
+            this.message = this.passwordDontMatchMessage;
         }
-    }
-
-    clean(): void {
-        this.message = '';
     }
 }

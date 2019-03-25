@@ -3,7 +3,6 @@ import { DotAlertConfirmComponent } from './view/components/_common/dot-alert-co
 import { GlobalSearchComponent } from './view/components/global-search/global-search';
 import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
 import { LoginAsComponent } from '@components/login-as/login-as';
-import { LoginPageComponent } from '@components/login/login-page-component';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
 import { MyAccountComponent } from '@components/my-account/dot-my-account-component';
@@ -27,7 +26,6 @@ export const COMPONENTS = [
     MyAccountComponent,
     MainCoreLegacyComponent,
     MainComponentLegacyComponent,
-    LoginPageComponent,
     LoginAsComponent,
     DotLogOutContainerComponent,
     GlobalSearchComponent,

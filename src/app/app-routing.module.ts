@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
-import { LoginPageComponent } from '@components/login/login-page-component';
+
 import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
 import { IframePortletLegacyComponent } from '@components/_common/iframe/iframe-porlet-legacy/index';
 import { AuthGuardService } from '@services/guards/auth-guard.service';
@@ -10,27 +10,6 @@ import { ContentletGuardService } from '@services/guards/contentlet-guard.servic
 import { DefaultGuardService } from '@services/guards/default-guard.service';
 import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
-
-const AUTH_MODULES: Routes = [
-    {
-        path: 'forgotPassword',
-        loadChildren:
-            '@components/login/forgot-password-component/forgot-password.module#ForgotPasswordModule'
-    },
-    {
-        path: 'login',
-        loadChildren: '@components/login/dot-login-component/dot-login.module#DotLoginModule'
-    },
-    {
-        path: 'resetPassword/:token',
-        loadChildren:
-            '@components/login/reset-password-component/reset-password.module#ResetPasswordModule'
-    },
-    {
-        path: '',
-        children: []
-    }
-];
 
 const PORTLETS_ANGULAR = [
     {
@@ -111,9 +90,8 @@ const PORTLETS_IFRAME = [
 const appRoutes: Routes = [
     {
         canActivate: [PublicAuthGuardService],
-        children: AUTH_MODULES,
-        component: LoginPageComponent,
-        path: 'public'
+        path: 'public',
+        loadChildren: '@components/login/login-page.module#LoginPageModule'
     },
     {
         canActivate: [AuthGuardService],

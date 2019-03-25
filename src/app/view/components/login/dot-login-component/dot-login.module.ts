@@ -12,6 +12,7 @@ import { SharedModule } from '@shared/shared.module';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 
 const routes: Routes = [
     {
@@ -34,7 +35,8 @@ const routes: Routes = [
         MdInputTextModule,
         DotDirectivesModule,
         ReactiveFormsModule,
-        DotFieldValidationMessageModule
+        DotFieldValidationMessageModule,
+        DotAutofocusModule
     ],
     declarations: [LoginContainerComponent, DotLoginComponent]
 })
