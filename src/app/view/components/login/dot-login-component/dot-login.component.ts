@@ -34,7 +34,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     @Input() resetEmail = '';
     @Input()
     set isLoginInProgress(value: boolean) {
-        this.disableFormFields(value);
+        this.setFormState(value);
     }
     @Output() login = new EventEmitter<DotLoginCredentials>();
 
@@ -56,12 +56,6 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.loginService.setAuth({
-            loginAsUser: null,
-            user: null,
-            isLoginAs: false
-        });
-
         this.loginForm = this.fb.group({
             login: ['', [Validators.required]],
             language: [''],
@@ -76,11 +70,13 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                 switchMap((event: any) =>
                     this.loginService
                         .getLoginFormInfo(event, LOGIN_LABELS)
-                        .pipe(map(loginInfo => ({ loginFormInfo: loginInfo })))
+                        .pipe(
+                            map((loginInfo: DotLoginInformation) => ({ loginFormInfo: loginInfo }))
+                        )
                 )
             );
 
-        this.loginInfo$ = merge(this.route.data, onLanguageChange).pipe(
+        this.loginInfo$ = merge(this.route.parent.parent.data, onLanguageChange).pipe(
             takeUntil(this.destroy$),
             pluck('loginFormInfo'),
             map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
@@ -98,9 +94,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
      *  Executes the logIn service
      */
     logInUser(): void {
-        if (this.loginForm.valid) {
-            this.login.emit(this.loginForm.value);
-        }
+        this.login.emit(this.loginForm.value);
     }
 
     /**
@@ -113,12 +107,12 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     private setInitialFormValues(loginInfo: DotLoginInformation): void {
         this.loginForm
             .get('language')
-            .setValue(this.setLanguageFormat(loginInfo.entity.currentLanguage));
-        this.setLanguageItems(loginInfo);
-        this.checkMessages(loginInfo);
+            .setValue(this.getLanguageFormatted(loginInfo.entity.currentLanguage));
+        this.setLanguageItems(loginInfo.entity.languages);
+        this.setMessage(loginInfo);
     }
 
-    private checkMessages(loginInfo: DotLoginInformation): void {
+    private setMessage(loginInfo: DotLoginInformation): void {
         if (this.passwordChanged) {
             this.message = loginInfo.i18nMessagesMap['reset-password-success'];
         }
@@ -130,21 +124,21 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setLanguageItems(loginInfo: DotLoginInformation): void {
+    private setLanguageItems(languages: DotLoginLanguage[]): void {
         this.languages =
             this.languages.length === 0
-                ? (this.languages = loginInfo.entity.languages.map((lang: DotLoginLanguage) => ({
+                ? (this.languages = languages.map((lang: DotLoginLanguage) => ({
                       label: lang.displayName,
-                      value: this.setLanguageFormat(lang)
+                      value: this.getLanguageFormatted(lang)
                   })))
                 : this.languages;
     }
 
-    private setLanguageFormat(lang: DotLoginLanguage): string {
+    private getLanguageFormatted(lang: DotLoginLanguage): string {
         return lang.language + '_' + lang.country;
     }
 
-    private disableFormFields(disable: boolean): void {
+    private setFormState(disable: boolean): void {
         if (this.loginForm) {
             if (disable) {
                 this.loginForm.disable();

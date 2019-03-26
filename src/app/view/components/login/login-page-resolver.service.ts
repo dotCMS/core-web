@@ -2,8 +2,8 @@ import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { LoginService } from 'dotcms-js';
 import { Observable } from 'rxjs';
-import { DotLoginInformation, DotSystemInformation } from '@models/dot-login';
-import { pluck, tap } from 'rxjs/operators';
+import { DotLoginInformation } from '@models/dot-login';
+import { pluck } from 'rxjs/operators';
 
 export const LOGIN_LABELS = [
     'email-address',
@@ -41,26 +41,6 @@ export class LoginPageResolver implements Resolve<DotLoginInformation> {
     constructor(private loginService: LoginService) {}
 
     resolve(): Observable<DotLoginInformation> {
-        return this.loginService.getLoginFormInfo('', LOGIN_LABELS).pipe(
-            pluck('bodyJsonObject'),
-            tap((loginInfo: DotLoginInformation) => {
-                document.body.style.backgroundColor = this.setBackgroundColor(loginInfo.entity);
-                document.body.style.backgroundImage = this.setBackgroundImage(loginInfo.entity);
-            })
-        );
-    }
-
-    private setBackgroundColor(systemInformation: DotSystemInformation): string {
-        return systemInformation.backgroundColor !== 'undefined' &&
-            systemInformation.backgroundColor !== ''
-            ? systemInformation.backgroundColor
-            : '';
-    }
-
-    private setBackgroundImage(systemInformation: DotSystemInformation): string {
-        return systemInformation.backgroundPicture !== 'undefined' &&
-            systemInformation.backgroundPicture !== ''
-            ? 'url(' + systemInformation.backgroundPicture + ')'
-            : '';
+        return this.loginService.getLoginFormInfo('', LOGIN_LABELS).pipe(pluck('bodyJsonObject'));
     }
 }

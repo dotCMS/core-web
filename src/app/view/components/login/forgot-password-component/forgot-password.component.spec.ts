@@ -51,6 +51,16 @@ describe('ForgotPasswordComponent', () => {
         this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
     });
 
+    it('should load form labels correctly', () => {
+        const header: DebugElement = de.query(By.css('h3'));
+        const cancelButton: DebugElement = de.query(By.css('button'));
+        const submitButton: DebugElement = de.query(By.css('button[type="submit"]'));
+
+        expect(header.nativeElement.innerHTML).toEqual('Forgot Password');
+        expect(cancelButton.nativeElement.innerHTML).toContain('Cancel');
+        expect(submitButton.nativeElement.innerHTML).toContain('Recover Password');
+    });
+
     it('should keep recover password button disabled until the form is valid', () => {
         expect(this.requestPasswordButton.nativeElement.disabled).toBe(true);
     });
@@ -58,7 +68,6 @@ describe('ForgotPasswordComponent', () => {
     it('should emit the request password correctly', () => {
         component.forgotPasswordForm.setValue({ login: 'test' });
         spyOn(window, 'confirm').and.returnValue(true);
-        spyOn(component, 'submitForgotPassword').and.callThrough();
         spyOn(component.recoverPassword, 'emit');
         fixture.detectChanges();
 
@@ -66,7 +75,6 @@ describe('ForgotPasswordComponent', () => {
 
         this.requestPasswordButton.triggerEventHandler('click', {});
 
-        expect(component.submitForgotPassword).toHaveBeenCalled();
         expect(component.recoverPassword.emit).toHaveBeenCalledWith('test');
     });
 

@@ -3,13 +3,15 @@ import { NgModule } from '@angular/core';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
 
-import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
+import { DotLogOutContainerComponent } from '@components/login/dot-logout-container-component/dot-log-out-container';
 import { IframePortletLegacyComponent } from '@components/_common/iframe/iframe-porlet-legacy/index';
 import { AuthGuardService } from '@services/guards/auth-guard.service';
 import { ContentletGuardService } from '@services/guards/contentlet-guard.service';
 import { DefaultGuardService } from '@services/guards/default-guard.service';
 import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
+import { LoginPageComponent } from '@components/login/main/login-page.component';
+import { LoginPageResolver } from '@components/login/login-page-resolver.service';
 
 const PORTLETS_ANGULAR = [
     {
@@ -91,6 +93,10 @@ const appRoutes: Routes = [
     {
         canActivate: [PublicAuthGuardService],
         path: 'public',
+        component: LoginPageComponent,
+        resolve: {
+            loginFormInfo: LoginPageResolver
+        },
         loadChildren: '@components/login/login-page.module#LoginPageModule'
     },
     {

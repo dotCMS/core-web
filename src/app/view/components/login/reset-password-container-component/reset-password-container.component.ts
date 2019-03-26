@@ -1,10 +1,9 @@
 import { pluck } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginService, LoggerService } from 'dotcms-js';
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
     providers: [LoginService],
     selector: 'dot-reset-password-container',
     styleUrls: [],
@@ -28,19 +27,19 @@ export class ResetPasswordContainerComponent {
         private route: ActivatedRoute,
         private loggerService: LoggerService
     ) {
-        this.route.params.pipe(pluck('token')).subscribe((token) => {
+        this.route.params.pipe(pluck('token')).subscribe(token => {
             this.token = <string>token;
         });
 
         this.loginService
             .getLoginFormInfo('', ['message.forgot.password.password.updated'])
             .subscribe(
-                (data) => {
+                data => {
                     const dataI18n = data.i18nMessagesMap;
                     this.changePasswordSuccessfully =
                         dataI18n['message.forgot.password.password.updated'];
                 },
-                (error) => {
+                error => {
                     this.loggerService.info(error);
                 }
             );
@@ -55,7 +54,7 @@ export class ResetPasswordContainerComponent {
                     alert(this.changePasswordSuccessfully);
                     this.goToLogin();
                 },
-                (error) => {
+                error => {
                     this.message = error.errorsMessages;
                 }
             );

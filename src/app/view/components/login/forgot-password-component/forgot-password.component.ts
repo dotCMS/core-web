@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
     constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        this.loginInfo$ = this.route.data.pipe(
+        this.loginInfo$ = this.route.parent.parent.data.pipe(
             take(1),
             pluck('loginFormInfo'),
             tap((loginInfo: DotLoginInformation) => {
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     /**
      * Executes the recover password service
      */
-    submitForgotPassword(): void {
+    submit(): void {
         if (confirm(this.forgotPasswordConfirmationMessage)) {
             this.recoverPassword.emit(this.forgotPasswordForm.get('login').value);
         }

@@ -27,6 +27,7 @@ import { StringPixels } from './api/util/string-pixels-util';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { InjectionToken } from '@angular/core';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
+import { LoginPageResolver } from '@components/login/login-page-resolver.service';
 
 export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
 
@@ -60,7 +61,8 @@ const PROVIDERS: any[] = [
     PaginatorService,
     PublicAuthGuardService,
     StringFormat,
-    StringPixels
+    StringPixels,
+    LoginPageResolver
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

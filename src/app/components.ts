@@ -1,7 +1,7 @@
-import { CustomTimeComponent } from './view/components/_common/custom-time/custom-time';
-import { DotAlertConfirmComponent } from './view/components/_common/dot-alert-confirm/dot-alert-confirm';
-import { GlobalSearchComponent } from './view/components/global-search/global-search';
-import { DotLogOutContainerComponent } from '@components/login/dot-login-component/dot-log-out-container';
+import { CustomTimeComponent } from '@components/_common/custom-time/custom-time';
+import { DotAlertConfirmComponent } from '@components/_common/dot-alert-confirm/dot-alert-confirm';
+import { GlobalSearchComponent } from '@components/global-search/global-search';
+import { DotLogOutContainerComponent } from '@components/login/dot-logout-container-component/dot-log-out-container';
 import { LoginAsComponent } from '@components/login-as/login-as';
 import { MainCoreLegacyComponent } from '@components/main-core-legacy/main-core-legacy-component';
 import { MainComponentLegacyComponent } from '@components/main-legacy/main-legacy.component';
@@ -16,6 +16,7 @@ import { ToolbarUserComponent } from '@components/toolbar-user/toolbar-user';
 
 // CUSTOM PIPES
 import { CapitalizePipe, SafePipe } from '@pipes/index';
+import {LoginPageComponent} from '@components/login/main/login-page.component';
 
 export const COMPONENTS = [
     ToolbarUserComponent,
@@ -26,6 +27,7 @@ export const COMPONENTS = [
     MyAccountComponent,
     MainCoreLegacyComponent,
     MainComponentLegacyComponent,
+    LoginPageComponent,
     LoginAsComponent,
     DotLogOutContainerComponent,
     GlobalSearchComponent,

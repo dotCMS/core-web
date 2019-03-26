@@ -22,7 +22,7 @@ import { of } from 'rxjs';
 import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
 import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
@@ -68,6 +68,27 @@ describe('DotLoginComponent', () => {
         spyOn(loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
         fixture.detectChanges();
         this.signInButton = de.query(By.css('button[pButton]'));
+    });
+
+    it('should load form labels correctly', () => {
+        const header: DebugElement = de.query(By.css('h3'));
+        const inputLabels: DebugElement[] = de.queryAll(By.css('span[dotmdinputtext] label'));
+        const recoverPasswordLink: DebugElement = de.query(By.css('a[actionlink]'));
+        const rememberMe: DebugElement = de.query(By.css('p-checkbox label'));
+        const submitButton: DebugElement = de.query(By.css('.login__button'));
+        const productInformation: DebugElement[] = de.queryAll(By.css('.login__footer span'));
+
+        expect(header.nativeElement.innerHTML).toEqual('Welcome Back!');
+        expect(inputLabels[0].nativeElement.innerHTML).toEqual('Email Address');
+        expect(inputLabels[1].nativeElement.innerHTML).toEqual('Password');
+        expect(recoverPasswordLink.nativeElement.innerHTML).toEqual('Recover Password');
+        expect(rememberMe.nativeElement.innerHTML).toEqual('Remember Me');
+        expect(submitButton.nativeElement.innerHTML).toContain('Sign In');
+        expect(productInformation[0].nativeElement.innerHTML).toEqual('Server: 860173b0');
+        expect(productInformation[1].nativeElement.innerHTML).toEqual('COMMUNITY EDITION: 5.0.0');
+        expect(productInformation[2].nativeElement.innerHTML).toEqual(
+            ' - <a href="https://dotcms.com/features" target="_blank">upgrade</a>'
+        );
     });
 
     it('should call service on language change', () => {
@@ -133,8 +154,8 @@ describe('DotLoginComponent', () => {
     it('should show messages', () => {
         component.message = 'Authentication failed. Please try again.';
         fixture.detectChanges();
-        const messageElemnt = de.query(By.css('.error-message'));
-        expect(messageElemnt).not.toBeNull();
+        const messageElemement = de.query(By.css('.error-message'));
+        expect(messageElemement).not.toBeNull();
     });
 
     it('should disable fields while waiting login response', () => {

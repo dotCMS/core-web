@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpRequestUtils, LoginService, LoggerService, HttpCode, User } from 'dotcms-js';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotLoginCredentials } from '@models/dot-login/dot-login-credentials.model';
+import { DotLoginCredentials } from '../../../../shared/models/dot-login/dot-login-credentials.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { take } from 'rxjs/operators';
 

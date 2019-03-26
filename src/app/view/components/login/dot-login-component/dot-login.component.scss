@@ -2,10 +2,6 @@
 @import "mixins";
 @import "../styles/primeng-theme/utils/theme-variables";
 
-:host{
-    @include login;
-}
-
 .login__header {
     display: flex;
 }
@@ -22,8 +18,6 @@
 }
 
 .login__title {
-    color: $black;
-    font-size: rem-cal(34px);
     margin: $basic-padding * 9 0 $basic-padding * 6 0;
 }
 

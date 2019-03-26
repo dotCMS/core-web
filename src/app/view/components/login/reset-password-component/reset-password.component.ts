@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ChangePasswordData } from './reset-password-container.component';
+import { ChangePasswordData } from '../reset-password-container-component/reset-password-container.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DotLoginInformation } from '@models/dot-login';
@@ -25,7 +25,7 @@ export class ResetPasswordComponent implements OnInit {
     constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        this.loginInfo$ = this.route.data.pipe(
+        this.loginInfo$ = this.route.parent.parent.data.pipe(
             take(1),
             pluck('loginFormInfo'),
             tap((loginInfo: DotLoginInformation) => {
@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit {
         this.message = '';
     }
 
-    submitResetForm(): void {
+    submit(): void {
         if (
             this.resetPasswordForm.valid &&
             this.resetPasswordForm.get('password').value ===

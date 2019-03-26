@@ -13,7 +13,7 @@ export const mockLoginFormResponse = {
     errors: [],
     entity: {
         serverId: '860173b0',
-        levelName: 'PRIME EDITION',
+        levelName: 'COMMUNITY EDITION',
         version: '5.0.0',
         buildDateString: 'March 13, 2019',
         languages: [
@@ -36,20 +36,25 @@ export const mockLoginFormResponse = {
     },
     messages: [],
     i18nMessagesMap: {
-        cancel: 'Cancel',
+        'cancel': 'Cancel',
         'sign-in': 'Sign In',
         'angular.login.component.community.licence.message':
             '<a href="https://dotcms.com/features" target="_blank">upgrade</a>',
         'email-address': 'Email Address',
-        Server: 'Server',
+        'Server': 'Server',
         'a-new-password-has-been-sent-to-x': 'An Email with instructions has been sent to {0}.',
         'user-id': 'User ID',
         'remember-me': 'Remember Me',
-        password: 'Password',
+        'password': 'Password',
         'get-new-password': 'Recover Password',
         'error.form.mandatory': 'The field {0} is required',
         'reset-password-success': 'Your password has been successfully changed',
-        'welcome-back': 'Welcome Back!'
+        'welcome-back': 'Welcome Back!',
+        'forgot-password': 'Forgot Password',
+        'reset-password': 'Password Reset',
+        'enter-password': 'Enter Password',
+        're-enter-password': 'Confirm Password',
+        'change-password': 'Change Password'
     },
     permissions: []
 };

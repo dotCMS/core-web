@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotLoadingIndicatorService } from '../../_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotRouterService } from '../../../../api/services/dot-router/dot-router.service';
 import { MdInputTextModule } from '../../../directives/md-inputtext/md-input-text.module';
 import { LoginContainerComponent } from './login-container.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -11,7 +11,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { LoginService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../../test/login-service.mock';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DotLoginCredentials } from '@models/dot-login';
+import { DotLoginCredentials } from '../../../../shared/models/dot-login';
 
 @Component({
     selector: 'dot-login-component',
