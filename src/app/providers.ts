@@ -28,9 +28,9 @@ import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.servic
 import { InjectionToken } from '@angular/core';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 import { LoginPageResolver } from '@components/login/login-page-resolver.service';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
 export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
-
 
 const PROVIDERS: any[] = [
     { provide: LOCATION_TOKEN, useValue: window.location },
@@ -62,7 +62,8 @@ const PROVIDERS: any[] = [
     PublicAuthGuardService,
     StringFormat,
     StringPixels,
-    LoginPageResolver
+    LoginPageResolver,
+    LoginPageStateService
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

@@ -4,6 +4,7 @@ import { LoginPageRoutingModule } from '@components/login/login-page-routing.mod
 
 import { LoginPageResolver } from '@components/login/login-page-resolver.service';
 
+
 @NgModule({
     declarations: [],
     imports: [CommonModule, LoginPageRoutingModule],

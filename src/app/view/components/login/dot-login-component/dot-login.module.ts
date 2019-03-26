@@ -38,6 +38,6 @@ const routes: Routes = [
         DotFieldValidationMessageModule,
         DotAutofocusModule
     ],
-    declarations: [LoginContainerComponent, DotLoginComponent]
+    declarations: [LoginContainerComponent, DotLoginComponent],
 })
 export class DotLoginModule {}

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DotLoginInformation, DotSystemInformation } from '@models/dot-login';
 import { pluck, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -11,15 +12,21 @@ import { Subject } from 'rxjs';
     templateUrl: 'login-page.component.html'
 })
 /**
- * The login component allows the user to fill all
- * the info required to log in the dotCMS angular backend
+ * The login component allows set the background image and background color.
  */
 export class LoginPageComponent implements OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private route: ActivatedRoute) {
-        this.route.data
-            .pipe(pluck('loginFormInfo'), takeUntil(this.destroy$))
+    constructor(
+        private route: ActivatedRoute,
+        public loginPageStateService: LoginPageStateService
+    ) {
+        this.loginPageStateService.dotLoginInformation = this.route.data.pipe(
+            pluck('loginFormInfo')
+        );
+
+        this.loginPageStateService.dotLoginInformation
+            .pipe(takeUntil(this.destroy$))
             .subscribe((loginInfo: DotLoginInformation) => {
                 document.body.style.backgroundColor = this.setBackgroundColor(loginInfo.entity);
                 document.body.style.backgroundImage = this.setBackgroundImage(loginInfo.entity);

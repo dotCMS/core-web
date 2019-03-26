@@ -3,8 +3,8 @@ import { ChangePasswordData } from '../reset-password-container-component/reset-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DotLoginInformation } from '@models/dot-login';
-import { pluck, take, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { take, tap } from 'rxjs/operators';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
@@ -22,12 +22,11 @@ export class ResetPasswordComponent implements OnInit {
     loginInfo$: Observable<DotLoginInformation>;
     private passwordDontMatchMessage = '';
 
-    constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
+    constructor(private fb: FormBuilder, public loginPageStateService: LoginPageStateService) {}
 
     ngOnInit(): void {
-        this.loginInfo$ = this.route.parent.parent.data.pipe(
+        this.loginInfo$ = this.loginPageStateService.dotLoginInformation.pipe(
             take(1),
-            pluck('loginFormInfo'),
             tap((loginInfo: DotLoginInformation) => {
                 this.passwordDontMatchMessage =
                     loginInfo.i18nMessagesMap['reset-password-confirmation-do-not-match'];

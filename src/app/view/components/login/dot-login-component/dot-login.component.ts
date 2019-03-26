@@ -11,12 +11,12 @@ import { LoginService } from 'dotcms-js';
 import { DotLoginCredentials, DotLoginInformation, DotLoginLanguage } from '@models/dot-login';
 import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { merge, Observable, Subject } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { merge, Observable, of, Subject } from 'rxjs';
 import { Dropdown } from 'primeng/primeng';
 import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
 @Component({
     selector: 'dot-login-component',
@@ -51,8 +51,8 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     constructor(
         private loginService: LoginService,
         private fb: FormBuilder,
-        private route: ActivatedRoute,
-        private dotRouterService: DotRouterService
+        private dotRouterService: DotRouterService,
+        public loginPageStateService: LoginPageStateService
     ) {}
 
     ngOnInit() {
@@ -71,14 +71,20 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                     this.loginService
                         .getLoginFormInfo(event, LOGIN_LABELS)
                         .pipe(
-                            map((loginInfo: DotLoginInformation) => ({ loginFormInfo: loginInfo }))
+                            map((loginInfo: DotLoginInformation) => loginInfo),
+                            tap(
+                                (loginInfo: DotLoginInformation) =>
+                                    (this.loginPageStateService.dotLoginInformation = of(loginInfo))
+                            )
                         )
                 )
             );
-
-        this.loginInfo$ = merge(this.route.parent.parent.data, onLanguageChange).pipe(
+        debugger;
+        this.loginInfo$ = merge(
+            this.loginPageStateService.dotLoginInformation,
+            onLanguageChange
+        ).pipe(
             takeUntil(this.destroy$),
-            pluck('loginFormInfo'),
             map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
             tap((loginInfo: DotLoginInformation) => {
                 this.setInitialFormValues(loginInfo);
