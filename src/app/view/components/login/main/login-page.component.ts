@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotLoginInformation, DotSystemInformation } from '@models/dot-login';
 import { pluck, takeUntil } from 'rxjs/operators';
@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-login-page-component',
     styleUrls: ['./login-page.component.scss'],
     templateUrl: 'login-page.component.html'
@@ -14,13 +13,15 @@ import { LoginPageStateService } from '@components/login/shared/services/login-p
 /**
  * The login component allows set the background image and background color.
  */
-export class LoginPageComponent implements OnDestroy {
+export class LoginPageComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private route: ActivatedRoute,
         public loginPageStateService: LoginPageStateService
-    ) {
+    ) {}
+
+    ngOnInit(): void {
         this.loginPageStateService.dotLoginInformation = this.route.data.pipe(
             pluck('loginFormInfo')
         );

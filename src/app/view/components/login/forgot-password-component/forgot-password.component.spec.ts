@@ -12,12 +12,16 @@ import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { of } from 'rxjs';
 import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
-fdescribe('ForgotPasswordComponent', () => {
+describe('ForgotPasswordComponent', () => {
     let component: ForgotPasswordComponent;
     let fixture: ComponentFixture<ForgotPasswordComponent>;
     let de: DebugElement;
     let loginPageStateService: LoginPageStateService;
+    let dotRouterService: DotRouterService;
+    let loginService: LoginService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -27,7 +31,8 @@ fdescribe('ForgotPasswordComponent', () => {
                 FormsModule,
                 ButtonModule,
                 InputTextModule,
-                DotFieldValidationMessageModule
+                DotFieldValidationMessageModule,
+                RouterTestingModule
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
@@ -39,6 +44,10 @@ fdescribe('ForgotPasswordComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         loginPageStateService = de.injector.get(LoginPageStateService);
+        loginService = de.injector.get(LoginService);
+        dotRouterService = de.injector.get(DotRouterService);
+        spyOn(loginService, 'recoverPassword').and.returnValue(of({}));
+        spyOn(dotRouterService, 'goToLogin');
         spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
             of(mockLoginFormResponse)
         );
@@ -61,17 +70,19 @@ fdescribe('ForgotPasswordComponent', () => {
         expect(this.requestPasswordButton.nativeElement.disabled).toBe(true);
     });
 
-    it('should emit the request password correctly', () => {
+    it('should do the request password correctly and redirect to login', () => {
         component.forgotPasswordForm.setValue({ login: 'test' });
         spyOn(window, 'confirm').and.returnValue(true);
-        spyOn(component.recoverPassword, 'emit');
         fixture.detectChanges();
 
         expect(this.requestPasswordButton.nativeElement.disabled).toBeFalsy();
-
         this.requestPasswordButton.triggerEventHandler('click', {});
 
-        expect(component.recoverPassword.emit).toHaveBeenCalledWith('test');
+        expect(loginService.recoverPassword).toHaveBeenCalledWith('test');
+        expect(dotRouterService.goToLogin).toHaveBeenCalledWith({
+            resetEmailSent: true,
+            resetEmail: 'test'
+        });
     });
 
     it('should show error message for required form fields', () => {
@@ -90,10 +101,12 @@ fdescribe('ForgotPasswordComponent', () => {
     });
 
     it('should emit cancel when cancel button is clicked', () => {
-        spyOn(component.cancel, 'emit');
         const cancelButton = de.query(By.css('button[secondary]'));
         cancelButton.triggerEventHandler('click', {});
 
-        expect(component.cancel.emit).toHaveBeenCalled();
+        expect(dotRouterService.goToLogin).toHaveBeenCalledWith({
+            resetEmailSent: true,
+            resetEmail: ''
+        });
     });
 });

@@ -88,7 +88,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
      *  Executes the logIn service
      */
     logInUser(): void {
-        this.disableForm(true);
+        this.setFromState(true);
         this.dotLoadingIndicatorService.show();
         this.message = '';
 
@@ -112,7 +112,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                     } else {
                         this.loggerService.debug(error);
                     }
-                    this.disableForm(false);
+                    this.setFromState(false);
                     this.dotLoadingIndicatorService.hide();
                 }
             );
@@ -159,7 +159,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         return lang.language + '_' + lang.country;
     }
 
-    private disableForm(disable: boolean): void {
+    private setFromState(disable: boolean): void {
         if (disable) {
             this.loginForm.disable();
         } else {

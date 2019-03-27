@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DotLoginInformation } from '@models/dot-login';
@@ -9,7 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 @Component({
-    encapsulation: ViewEncapsulation.Emulated,
     providers: [],
     selector: 'dot-reset-password-component',
     styleUrls: ['./reset-password.component.scss'],

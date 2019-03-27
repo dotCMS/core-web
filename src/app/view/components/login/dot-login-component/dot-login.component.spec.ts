@@ -1,5 +1,5 @@
 import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,16 +23,22 @@ import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
-import {LoginContainerComponent} from '@components/login/dot-login-container-component/login-container.component';
-import {DotLoadingIndicatorService} from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
-fdescribe('DotLoginComponent', () => {
+describe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
     let loginPageStateService: LoginPageStateService;
+    let signInButton: DebugElement;
+    const credentials = {
+        login: 'admin@dotcms.com',
+        language: 'en_US',
+        password: 'admin',
+        rememberMe: false
+    };
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -51,7 +57,8 @@ fdescribe('DotLoginComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                LoginPageStateService
+                LoginPageStateService,
+                DotLoadingIndicatorService
             ]
         });
 
@@ -67,7 +74,7 @@ fdescribe('DotLoginComponent', () => {
             of(mockLoginFormResponse)
         );
         fixture.detectChanges();
-        this.signInButton = de.query(By.css('button[pButton]'));
+        signInButton = de.query(By.css('button[pButton]'));
     });
 
     it('should load form labels correctly', () => {
@@ -116,29 +123,43 @@ fdescribe('DotLoginComponent', () => {
         });
     });
 
-    it('should emit login request correctly', () => {
-        const credentials = {
-            login: 'admin@dotcms.com',
-            language: 'en_US',
-            password: 'admin',
-            rememberMe: false
-        };
-
+    it('should make a login request correctly and redirect after login', () => {
         component.loginForm.setValue(credentials);
-        spyOn(component, 'logInUser').and.callThrough();
-        spyOn(component.login, 'emit');
+        spyOn(loginService, 'loginUser').and.callThrough();
+        spyOn(dotRouterService, 'goToMain');
         fixture.detectChanges();
 
-        expect(this.signInButton.nativeElement.disabled).toBeFalsy();
+        expect(signInButton.nativeElement.disabled).toBeFalsy();
+        signInButton.triggerEventHandler('click', {});
+        expect(loginService.loginUser).toHaveBeenCalledWith(
+            credentials.login,
+            credentials.password,
+            credentials.rememberMe,
+            credentials.language
+        );
+        expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
+    });
 
-        this.signInButton.triggerEventHandler('click', {});
+    it('should disable fields while waiting login response', () => {
+        component.loginForm.setValue(credentials);
+        spyOn(loginService, 'loginUser');
+        signInButton.triggerEventHandler('click', {});
 
-        expect(component.logInUser).toHaveBeenCalled();
-        expect(component.login.emit).toHaveBeenCalledWith(credentials);
+        const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
+        const emailInput = de.query(By.css('input[pInputText][type="text"]'));
+        const passwordInput = de.query(By.css('input[type="password"]'));
+        const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
+
+        fixture.detectChanges();
+
+        expect(languageDropdown.disabled).toBeTruthy();
+        expect(emailInput.nativeElement.disabled).toBeTruthy();
+        expect(passwordInput.nativeElement.disabled).toBeTruthy();
+        expect(rememberCheckBox.disabled).toBeTruthy();
     });
 
     it('should keep submit button disabled until the form is valid', () => {
-        expect(this.signInButton.nativeElement.disabled).toBeTruthy();
+        expect(signInButton.nativeElement.disabled).toBeTruthy();
     });
 
     it('should show error message for required form fields', () => {
@@ -157,95 +178,4 @@ fdescribe('DotLoginComponent', () => {
         const messageElemement = de.query(By.css('.error-message'));
         expect(messageElemement).not.toBeNull();
     });
-
-    it('should disable fields while waiting login response', () => {
-        component.isLoginInProgress = true;
-        const languageDropdown: Dropdown = de.query(By.css('p-dropdown')).componentInstance;
-        const emailInput = de.query(By.css('input[pInputText][type="text"]'));
-        const passwordInput = de.query(By.css('input[type="password"]'));
-        const rememberCheckBox: Checkbox = de.query(By.css(' p-checkbox')).componentInstance;
-
-        fixture.detectChanges();
-
-        expect(languageDropdown.disabled).toBeTruthy();
-        expect(emailInput.nativeElement.disabled).toBeTruthy();
-        expect(passwordInput.nativeElement.disabled).toBeTruthy();
-        expect(rememberCheckBox.disabled).toBeTruthy();
-    });
 });
-
-
-
-/*
-
-fdescribe('LoginContainerComponent', () => {
-    let component: LoginContainerComponent;
-    let loginService: LoginService;
-    let dotRouterService: DotRouterService;
-    let fixture: ComponentFixture<LoginContainerComponent>;
-
-    beforeEach(
-        async(() => {
-            DOTTestBed.configureTestingModule({
-                imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
-                declarations: [LoginContainerComponent, TestDotLoginComponent],
-                providers: [
-                    DotLoadingIndicatorService,
-                    { provide: LoginService, useClass: LoginServiceMock }
-                ]
-            }).compileComponents();
-        })
-    );
-
-    beforeEach(() => {
-        fixture = TestBed.createComponent(LoginContainerComponent);
-        component = fixture.componentInstance;
-        loginService = fixture.componentRef.injector.get(LoginService);
-        dotRouterService = fixture.componentRef.injector.get(DotRouterService);
-        fixture.detectChanges();
-    });
-
-    it('should have dot-login-component', () => {
-        expect(fixture.debugElement.query(By.css('dot-login-component'))).not.toBeNull();
-    });
-
-    describe('loginUser()', () => {
-        beforeEach(() => {
-            spyOn(loginService, 'loginUser').and.callThrough();
-            spyOn(component, 'logInUser').and.callThrough();
-            spyOn(dotRouterService, 'goToMain');
-            const loginComponent: TestDotLoginComponent = fixture.debugElement.query(
-                By.css('dot-login-component')
-            ).componentInstance;
-
-            loginComponent.login.emit({
-                login: 'admin@dotcms.com',
-                password: 'admin',
-                rememberMe: false,
-                language: 'en'
-            });
-        });
-
-        it('should call login user method on login component emit', () => {
-            expect(component.logInUser).toHaveBeenCalledWith({
-                login: 'admin@dotcms.com',
-                password: 'admin',
-                rememberMe: false,
-                language: 'en'
-            });
-        });
-
-        it('should call login service correctly', () => {
-            expect(loginService.loginUser).toHaveBeenCalledWith(
-                'admin@dotcms.com',
-                'admin',
-                false,
-                'en'
-            );
-        });
-
-        it('should redirect correctly after login', () => {
-            expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
-        });
-    });
-});*/

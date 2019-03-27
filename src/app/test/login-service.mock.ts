@@ -127,4 +127,12 @@ export class LoginServiceMock {
             }
         });
     }
+
+    recoverPassword(): Observable<any> {
+        return observableOf({});
+    }
+
+    changePassword(): Observable<any> {
+        return observableOf({});
+    }
 }

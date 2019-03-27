@@ -12,12 +12,18 @@ import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { of } from 'rxjs';
 import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
-fdescribe('ResetPasswordComponent', () => {
+describe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
     let fixture: ComponentFixture<ResetPasswordComponent>;
     let de: DebugElement;
     let loginPageStateService: LoginPageStateService;
+    let loginService: LoginService;
+    let activatedRoute: ActivatedRoute;
+    let dotRouterService: DotRouterService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -27,7 +33,8 @@ fdescribe('ResetPasswordComponent', () => {
                 FormsModule,
                 ButtonModule,
                 InputTextModule,
-                DotFieldValidationMessageModule
+                DotFieldValidationMessageModule,
+                RouterTestingModule
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
@@ -39,7 +46,12 @@ fdescribe('ResetPasswordComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         loginPageStateService = de.injector.get(LoginPageStateService);
-        spyOn(component.changePassword, 'emit');
+        activatedRoute = de.injector.get(ActivatedRoute);
+        loginService = de.injector.get(LoginService);
+        dotRouterService = de.injector.get(DotRouterService);
+        spyOn(activatedRoute.snapshot.paramMap, 'get').and.returnValue('test@test.com');
+        spyOn(loginService, 'changePassword').and.callThrough();
+        spyOn(dotRouterService, 'goToLogin');
         spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
             of(mockLoginFormResponse)
         );
@@ -73,17 +85,17 @@ fdescribe('ResetPasswordComponent', () => {
         const errorMessage = de.queryAll(By.css('.error-message'));
 
         expect(errorMessage.length).toBe(1);
-        expect(component.changePassword.emit).not.toHaveBeenCalled();
+        expect(loginService.changePassword).not.toHaveBeenCalled();
     });
 
-    it('should emit the change password correctly', () => {
+    it('should call the change password service and redirect to loging page', () => {
         component.resetPasswordForm.setValue({
             password: 'test',
             confirmPassword: 'test'
         });
         this.changePasswordButton.triggerEventHandler('click', {});
-
-        expect(component.changePassword.emit).toHaveBeenCalledTimes(1);
+        expect(loginService.changePassword).toHaveBeenCalledWith('test', 'test@test.com');
+        expect(dotRouterService.goToLogin).toHaveBeenCalledWith({ changedPassword: true });
     });
 
     it('should show error message for required form fields', () => {
