@@ -27,7 +27,8 @@ export const LOGIN_LABELS = [
     'enter-password',
     're-enter-password',
     'change-password',
-    'reset-password-confirmation-do-not-match'
+    'reset-password-confirmation-do-not-match',
+    'message.forgot.password.password.updated'
 ];
 
 /**

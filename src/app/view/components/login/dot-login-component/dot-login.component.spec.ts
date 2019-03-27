@@ -1,5 +1,5 @@
 import { DotLoginComponent } from '@components/login/dot-login-component/dot-login.component';
-import { ComponentFixture } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,16 +20,19 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { of } from 'rxjs';
 import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
-import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import {LoginContainerComponent} from '@components/login/dot-login-container-component/login-container.component';
+import {DotLoadingIndicatorService} from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
-describe('DotLoginComponent', () => {
+fdescribe('DotLoginComponent', () => {
     let component: DotLoginComponent;
     let fixture: ComponentFixture<DotLoginComponent>;
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
+    let loginPageStateService: LoginPageStateService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -48,14 +51,7 @@ describe('DotLoginComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        data: of({
-                            loginFormInfo: mockLoginFormResponse
-                        })
-                    }
-                }
+                LoginPageStateService
             ]
         });
 
@@ -65,7 +61,11 @@ describe('DotLoginComponent', () => {
 
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
+        loginPageStateService = de.injector.get(LoginPageStateService);
         spyOn(loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
+        spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
+            of(mockLoginFormResponse)
+        );
         fixture.detectChanges();
         this.signInButton = de.query(By.css('button[pButton]'));
     });
@@ -173,3 +173,79 @@ describe('DotLoginComponent', () => {
         expect(rememberCheckBox.disabled).toBeTruthy();
     });
 });
+
+
+
+/*
+
+fdescribe('LoginContainerComponent', () => {
+    let component: LoginContainerComponent;
+    let loginService: LoginService;
+    let dotRouterService: DotRouterService;
+    let fixture: ComponentFixture<LoginContainerComponent>;
+
+    beforeEach(
+        async(() => {
+            DOTTestBed.configureTestingModule({
+                imports: [MdInputTextModule, RouterTestingModule, BrowserAnimationsModule],
+                declarations: [LoginContainerComponent, TestDotLoginComponent],
+                providers: [
+                    DotLoadingIndicatorService,
+                    { provide: LoginService, useClass: LoginServiceMock }
+                ]
+            }).compileComponents();
+        })
+    );
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LoginContainerComponent);
+        component = fixture.componentInstance;
+        loginService = fixture.componentRef.injector.get(LoginService);
+        dotRouterService = fixture.componentRef.injector.get(DotRouterService);
+        fixture.detectChanges();
+    });
+
+    it('should have dot-login-component', () => {
+        expect(fixture.debugElement.query(By.css('dot-login-component'))).not.toBeNull();
+    });
+
+    describe('loginUser()', () => {
+        beforeEach(() => {
+            spyOn(loginService, 'loginUser').and.callThrough();
+            spyOn(component, 'logInUser').and.callThrough();
+            spyOn(dotRouterService, 'goToMain');
+            const loginComponent: TestDotLoginComponent = fixture.debugElement.query(
+                By.css('dot-login-component')
+            ).componentInstance;
+
+            loginComponent.login.emit({
+                login: 'admin@dotcms.com',
+                password: 'admin',
+                rememberMe: false,
+                language: 'en'
+            });
+        });
+
+        it('should call login user method on login component emit', () => {
+            expect(component.logInUser).toHaveBeenCalledWith({
+                login: 'admin@dotcms.com',
+                password: 'admin',
+                rememberMe: false,
+                language: 'en'
+            });
+        });
+
+        it('should call login service correctly', () => {
+            expect(loginService.loginUser).toHaveBeenCalledWith(
+                'admin@dotcms.com',
+                'admin',
+                false,
+                'en'
+            );
+        });
+
+        it('should redirect correctly after login', () => {
+            expect(dotRouterService.goToMain).toHaveBeenCalledWith('redirect/to');
+        });
+    });
+});*/

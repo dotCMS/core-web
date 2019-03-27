@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
 
-describe('ForgotPasswordComponent', () => {
+fdescribe('ForgotPasswordComponent', () => {
     let component: ForgotPasswordComponent;
     let fixture: ComponentFixture<ForgotPasswordComponent>;
     let de: DebugElement;
+    let loginPageStateService: LoginPageStateService;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -30,24 +31,19 @@ describe('ForgotPasswordComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        data: of({
-                            loginFormInfo: mockLoginFormResponse
-                        })
-                    }
-                }
+                LoginPageStateService
             ]
         });
 
         fixture = DOTTestBed.createComponent(ForgotPasswordComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
+        loginPageStateService = de.injector.get(LoginPageStateService);
+        spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
+            of(mockLoginFormResponse)
+        );
 
-        this.loginService = de.injector.get(LoginService);
         fixture.detectChanges();
-
         this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
     });
 

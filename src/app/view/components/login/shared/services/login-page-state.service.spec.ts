@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { LoginPageStateService } from './login-page-state.service';
 
-describe('LoginPAgeStateServiceService', () => {
+fdescribe('LoginPAgeStateServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {

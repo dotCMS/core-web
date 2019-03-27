@@ -1,22 +1,16 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-    OnInit,
-    ViewChild,
-    OnDestroy
-} from '@angular/core';
-import { LoginService } from 'dotcms-js';
-import { DotLoginCredentials, DotLoginInformation, DotLoginLanguage } from '@models/dot-login';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { HttpCode, LoggerService, LoginService, User } from 'dotcms-js';
+import { DotLoginInformation, DotLoginLanguage } from '@models/dot-login';
 import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { Dropdown } from 'primeng/primeng';
 import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'dot-login-component',
@@ -28,15 +22,7 @@ import { LoginPageStateService } from '@components/login/shared/services/login-p
  * the info required to log in the dotCMS angular backend
  */
 export class DotLoginComponent implements OnInit, OnDestroy {
-    @Input() message = '';
-    @Input() passwordChanged = false;
-    @Input() resetEmailSent = false;
-    @Input() resetEmail = '';
-    @Input()
-    set isLoginInProgress(value: boolean) {
-        this.setFormState(value);
-    }
-    @Output() login = new EventEmitter<DotLoginCredentials>();
+    message = '';
 
     @ViewChild('languageDropdown') languageDropdown: Dropdown;
 
@@ -52,6 +38,9 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         private loginService: LoginService,
         private fb: FormBuilder,
         private dotRouterService: DotRouterService,
+        private dotLoadingIndicatorService: DotLoadingIndicatorService,
+        private loggerService: LoggerService,
+        private route: ActivatedRoute,
         public loginPageStateService: LoginPageStateService
     ) {}
 
@@ -79,7 +68,6 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                         )
                 )
             );
-        debugger;
         this.loginInfo$ = merge(
             this.loginPageStateService.dotLoginInformation,
             onLanguageChange
@@ -100,7 +88,34 @@ export class DotLoginComponent implements OnInit, OnDestroy {
      *  Executes the logIn service
      */
     logInUser(): void {
-        this.login.emit(this.loginForm.value);
+        this.disableForm(true);
+        this.dotLoadingIndicatorService.show();
+        this.message = '';
+
+        this.loginService
+            .loginUser(
+                this.loginForm.get('login').value,
+                this.loginForm.get('password').value,
+                this.loginForm.get('rememberMe').value,
+                this.loginForm.get('language').value
+            )
+            .pipe(take(1))
+            .subscribe(
+                (user: User) => {
+                    this.message = '';
+                    this.dotLoadingIndicatorService.hide();
+                    this.dotRouterService.goToMain(user['editModeUrl']);
+                },
+                (error: any) => {
+                    if (this.isBadRequestOrUnathorized(error.status)) {
+                        this.message = error.bodyJsonObject.errors[0].message;
+                    } else {
+                        this.loggerService.debug(error);
+                    }
+                    this.disableForm(false);
+                    this.dotLoadingIndicatorService.hide();
+                }
+            );
     }
 
     /**
@@ -115,19 +130,19 @@ export class DotLoginComponent implements OnInit, OnDestroy {
             .get('language')
             .setValue(this.getLanguageFormatted(loginInfo.entity.currentLanguage));
         this.setLanguageItems(loginInfo.entity.languages);
-        this.setMessage(loginInfo);
+        this.setInitialMessage(loginInfo);
     }
 
-    private setMessage(loginInfo: DotLoginInformation): void {
-        if (this.passwordChanged) {
-            this.message = loginInfo.i18nMessagesMap['reset-password-success'];
-        }
-        if (this.resetEmailSent) {
-            this.message = loginInfo.i18nMessagesMap['a-new-password-has-been-sent-to-x'].replace(
-                '{0}',
-                this.resetEmail
-            );
-        }
+    private setInitialMessage(loginInfo: DotLoginInformation): void {
+        this.route.queryParams.pipe(take(1)).subscribe((params: Params) => {
+            if (params['changedPassword']) {
+                this.message = loginInfo.i18nMessagesMap['reset-password-success'];
+            } else if (params['resetEmailSent']) {
+                this.message = loginInfo.i18nMessagesMap[
+                    'a-new-password-has-been-sent-to-x'
+                ].replace('{0}', params['resetEmail']);
+            }
+        });
     }
 
     private setLanguageItems(languages: DotLoginLanguage[]): void {
@@ -144,13 +159,11 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         return lang.language + '_' + lang.country;
     }
 
-    private setFormState(disable: boolean): void {
-        if (this.loginForm) {
-            if (disable) {
-                this.loginForm.disable();
-            } else {
-                this.loginForm.enable();
-            }
+    private disableForm(disable: boolean): void {
+        if (disable) {
+            this.loginForm.disable();
+        } else {
+            this.loginForm.enable();
         }
     }
 
@@ -160,5 +173,9 @@ export class DotLoginComponent implements OnInit, OnDestroy {
                 ? loginInfo.i18nMessagesMap['email-address']
                 : loginInfo.i18nMessagesMap['user-id'];
         return loginInfo;
+    }
+
+    private isBadRequestOrUnathorized(status: number) {
+        return status === HttpCode.BAD_REQUEST || status === HttpCode.UNAUTHORIZED;
     }
 }
