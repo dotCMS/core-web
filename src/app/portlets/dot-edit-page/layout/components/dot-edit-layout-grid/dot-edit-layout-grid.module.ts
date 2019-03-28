@@ -7,6 +7,7 @@ import { DotContainerSelectorModule } from '@components/dot-container-selector/d
 import { ButtonModule, InputTextModule } from 'primeng/primeng';
 import { NgGridModule } from 'dot-layout-grid';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [DotEditLayoutGridComponent],
@@ -18,7 +19,9 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
         ButtonModule,
         DotDialogModule,
         DotIconButtonModule,
-        InputTextModule
+        InputTextModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     exports: [DotEditLayoutGridComponent],
     providers: []

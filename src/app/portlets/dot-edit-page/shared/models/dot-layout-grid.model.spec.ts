@@ -98,7 +98,6 @@ describe('DotLayoutGridRow', () => {
     });
 
     it('should get default grid layout object', () => {
-        console.log('DotLayoutGrid.getDefaultGrid()', DotLayoutGrid.getDefaultGrid());
         const defaultGrid = DotLayoutGrid.getDefaultGrid();
 
         expect(defaultGrid.boxes).toEqual([

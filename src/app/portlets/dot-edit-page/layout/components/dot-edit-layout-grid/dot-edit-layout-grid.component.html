@@ -33,10 +33,10 @@
     [actions]="dialogActions"
     header="Add Class"
     [(visible)]="showAddClassDialog"
-    [width]="300px"
+    [width]="300"
 >
-    <div class="form__group">
+    <form [formGroup]="form" novalidate>
         <label for="content-type-form-workflow" class="form__label">Class Names</label>
-        <input pInputText #classToAddInput type="text" />
-    </div>
+        <input pInputText formControlName="classToAdd" type="text" required xc/>
+    </form>
 </dot-dialog>

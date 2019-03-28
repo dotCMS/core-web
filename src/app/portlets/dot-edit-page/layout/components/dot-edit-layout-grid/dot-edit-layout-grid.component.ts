@@ -1,10 +1,10 @@
-import { Component, OnInit, forwardRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormBuilder } from '@angular/forms';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { NgGrid, NgGridConfig } from 'dot-layout-grid';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
@@ -31,8 +31,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     @ViewChild(NgGrid)
     ngGrid: NgGrid;
 
-    @ViewChild('classToAddInput')
-    classToAddInput: ElementRef;
+    form: FormGroup;
     value: DotLayoutBody;
     grid: DotLayoutGrid;
 
@@ -66,7 +65,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
         public dotMessageService: DotMessageService,
-        private dotEventsService: DotEventsService
+        private dotEventsService: DotEventsService,
+        public fb: FormBuilder,
     ) {}
 
     ngOnInit() {
@@ -77,7 +77,9 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
                 'editpage.confirm.message.delete.warning',
                 'editpage.action.cancel',
                 'editpage.action.delete',
-                'editpage.action.save'
+                'editpage.action.save',
+                'dot.common.dialog.accept',
+                'dot.common.dialog.reject'
             ])
             .subscribe();
 
@@ -91,6 +93,22 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
 
         // needed it because the transition between content & layout.
         this.resizeGrid();
+
+        this.form = this.fb.group({
+            classToAdd: ''
+        });
+
+        this.form.valueChanges.subscribe(() => {
+            this.dialogActions = {
+                cancel: {
+                    ...this.dialogActions.cancel
+                },
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.form.valid
+                }
+            };
+        });
     }
 
     /**
@@ -195,9 +213,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     addColumnClass(index: number): void {
         this.addClass(
             () => this.grid.boxes[index].config.payload ? this.grid.boxes[index].config.payload.styleClass || null : null,
-            () => {
-                const value = this.classToAddInput.nativeElement.value;
-
+            (value: string) => {
                 if (!this.grid.boxes[index].config.payload) {
                     this.grid.boxes[index].config.payload = {
                         styleClass: value
@@ -216,26 +232,35 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     addRowClass(index: number): void {
         this.addClass(
             () => this.grid.getRowClass(index) || '',
-            () => this.grid.setRowClass(this.classToAddInput.nativeElement.value, index)
+            (value) => this.grid.setRowClass(value, index)
         );
     }
 
-    private addClass(getterFunc: () => string, setterFunc): void {
+    private addClass(getterFunc: () => string, setterFunc: (value: string) => void): void {
+        this.form.setValue(
+            {
+                classToAdd: getterFunc.bind(this)()
+            },
+            {
+                emitEvent: false
+            }
+        );
+
         this.dialogActions = {
             accept: {
                 action: (dialog?: any) => {
-                    setterFunc.bind(this)();
+                    setterFunc.bind(this)(this.form.get('classToAdd').value);
                     this.propagateGridLayoutChange();
                     dialog.close();
                 },
-                label: 'Ok'
+                label: 'Ok',
+                disabled: true
             },
             cancel: {
                 label: 'Cancel'
             }
         };
 
-        this.classToAddInput.nativeElement.value = getterFunc.bind(this)();
         this.showAddClassDialog = true;
     }
 
@@ -243,7 +268,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
             : DotLayoutGrid.getDefaultGrid();
-        console.log(this.grid);
     }
 
     private removeContainer(index: number): void {
