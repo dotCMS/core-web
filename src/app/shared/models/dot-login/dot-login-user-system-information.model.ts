@@ -5,7 +5,7 @@ import { DotLoginLanguage } from '@models/dot-login/dot-login-language.model';
  *
  * @interface
  */
-export interface DotSystemInformation {
+export interface DotLoginUserSystemInformation {
     authorizationType: string;
     backgroundColor: string;
     backgroundPicture: string;

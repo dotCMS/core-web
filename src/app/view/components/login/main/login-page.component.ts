@@ -1,9 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DotLoginInformation, DotSystemInformation } from '@models/dot-login';
-import { pluck, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { Component, OnInit } from '@angular/core';
+import { DotLoginUserSystemInformation } from '@models/dot-login';
+import { pluck, take } from 'rxjs/operators';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 
 @Component({
     selector: 'dot-login-page-component',
@@ -13,42 +11,20 @@ import { LoginPageStateService } from '@components/login/shared/services/login-p
 /**
  * The login component allows set the background image and background color.
  */
-export class LoginPageComponent implements OnInit, OnDestroy {
-    private destroy$: Subject<boolean> = new Subject<boolean>();
-
+export class LoginPageComponent implements OnInit {
     constructor(
-        private route: ActivatedRoute,
-        public loginPageStateService: LoginPageStateService
+        public loginPageStateService: DotLoginPageStateService
     ) {}
 
     ngOnInit(): void {
-        this.loginPageStateService.dotLoginInformation = this.route.data.pipe(
-            pluck('loginFormInfo')
-        );
-
-        this.loginPageStateService.dotLoginInformation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((loginInfo: DotLoginInformation) => {
-                document.body.style.backgroundColor = this.setBackgroundColor(loginInfo.entity);
-                document.body.style.backgroundImage = this.setBackgroundImage(loginInfo.entity);
+        this.loginPageStateService
+            .get()
+            .pipe(take(1), pluck('entity'))
+            .subscribe((dotLoginUserSystemInformation: DotLoginUserSystemInformation) => {
+                document.body.style.backgroundColor = dotLoginUserSystemInformation.backgroundColor || '';
+                document.body.style.backgroundImage = dotLoginUserSystemInformation.backgroundPicture
+                    ? `url('${dotLoginUserSystemInformation.backgroundPicture}')`
+                    : '';
             });
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
-    }
-
-    private setBackgroundColor(systemInformation: DotSystemInformation): string {
-        return systemInformation.backgroundColor !== 'undefined'
-            ? systemInformation.backgroundColor
-            : '';
-    }
-
-    private setBackgroundImage(systemInformation: DotSystemInformation): string {
-        return systemInformation.backgroundPicture !== 'undefined' &&
-            systemInformation.backgroundPicture !== ''
-            ? 'url(' + systemInformation.backgroundPicture + ')'
-            : '';
     }
 }

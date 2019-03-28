@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpCode, LoggerService, LoginService, User } from 'dotcms-js';
 import { DotLoginInformation, DotLoginLanguage } from '@models/dot-login';
 import { SelectItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { merge, Observable, of, Subject } from 'rxjs';
-import { Dropdown } from 'primeng/primeng';
-import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
+import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
@@ -23,15 +21,10 @@ import { ActivatedRoute, Params } from '@angular/router';
  */
 export class DotLoginComponent implements OnInit, OnDestroy {
     message = '';
-
-    @ViewChild('languageDropdown') languageDropdown: Dropdown;
-
     loginForm: FormGroup;
     languages: SelectItem[] = [];
-
     loginInfo$: Observable<DotLoginInformation>;
 
-    private languageChange$: Subject<DotLoginInformation> = new Subject<DotLoginInformation>();
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -41,7 +34,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         private dotLoadingIndicatorService: DotLoadingIndicatorService,
         private loggerService: LoggerService,
         private route: ActivatedRoute,
-        public loginPageStateService: LoginPageStateService
+        public loginPageStateService: DotLoginPageStateService
     ) {}
 
     ngOnInit() {
@@ -52,26 +45,7 @@ export class DotLoginComponent implements OnInit, OnDestroy {
             rememberMe: false
         });
 
-        const onLanguageChange = this.languageChange$
-            .asObservable()
-            .pipe(
-                takeUntil(this.destroy$),
-                switchMap((event: any) =>
-                    this.loginService
-                        .getLoginFormInfo(event, LOGIN_LABELS)
-                        .pipe(
-                            map((loginInfo: DotLoginInformation) => loginInfo),
-                            tap(
-                                (loginInfo: DotLoginInformation) =>
-                                    (this.loginPageStateService.dotLoginInformation = of(loginInfo))
-                            )
-                        )
-                )
-            );
-        this.loginInfo$ = merge(
-            this.loginPageStateService.dotLoginInformation,
-            onLanguageChange
-        ).pipe(
+        this.loginInfo$ = this.loginPageStateService.get().pipe(
             takeUntil(this.destroy$),
             map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
             tap((loginInfo: DotLoginInformation) => {
@@ -86,6 +60,8 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     }
     /**
      *  Executes the logIn service
+     *
+     *  @memberof DotLoginComponent
      */
     logInUser(): void {
         this.setFromState(true);
@@ -119,9 +95,20 @@ export class DotLoginComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Display the forgot password card
+     * Call the service to update the language
+     *
+     * @memberof DotLoginComponent
      */
-    showForgotPassword(): void {
+    onLanguageChange(lang: string): void {
+        this.loginPageStateService.update(lang);
+    }
+
+    /**
+     * Display the forgot password card
+     *
+     * @memberof DotLoginComponent
+     */
+    goToForgotPassword(): void {
         this.dotRouterService.goToForgotPassword();
     }
 

@@ -27,8 +27,8 @@ import { StringPixels } from './api/util/string-pixels-util';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { InjectionToken } from '@angular/core';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
-import { LoginPageResolver } from '@components/login/login-page-resolver.service';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 
 export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
 
@@ -62,8 +62,8 @@ const PROVIDERS: any[] = [
     PublicAuthGuardService,
     StringFormat,
     StringPixels,
-    LoginPageResolver,
-    LoginPageStateService
+    DotLoginPageResolver,
+    DotLoginPageStateService
 ];
 
 export const ENV_PROVIDERS = [...PROVIDERS];

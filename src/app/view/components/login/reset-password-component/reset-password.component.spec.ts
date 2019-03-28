@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { of } from 'rxjs';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -20,7 +20,7 @@ describe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
     let fixture: ComponentFixture<ResetPasswordComponent>;
     let de: DebugElement;
-    let loginPageStateService: LoginPageStateService;
+    let dotLoginPageStateService: DotLoginPageStateService;
     let loginService: LoginService;
     let activatedRoute: ActivatedRoute;
     let dotRouterService: DotRouterService;
@@ -38,21 +38,21 @@ describe('ResetPasswordComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                LoginPageStateService
+                DotLoginPageStateService
             ]
         });
 
         fixture = DOTTestBed.createComponent(ResetPasswordComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        loginPageStateService = de.injector.get(LoginPageStateService);
+        dotLoginPageStateService = de.injector.get(DotLoginPageStateService);
         activatedRoute = de.injector.get(ActivatedRoute);
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
         spyOn(activatedRoute.snapshot.paramMap, 'get').and.returnValue('test@test.com');
         spyOn(loginService, 'changePassword').and.callThrough();
         spyOn(dotRouterService, 'goToLogin');
-        spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
+        spyOn(dotLoginPageStateService, 'get').and.returnValue(
             of(mockLoginFormResponse)
         );
         fixture.detectChanges();

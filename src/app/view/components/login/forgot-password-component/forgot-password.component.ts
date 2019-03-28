@@ -3,7 +3,7 @@ import { DotLoginInformation } from '@models/dot-login';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { LoginService, ResponseView } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
@@ -23,13 +23,13 @@ export class ForgotPasswordComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        public loginPageStateService: LoginPageStateService,
+        public loginPageStateService: DotLoginPageStateService,
         private dotRouterService: DotRouterService,
         private loginService: LoginService
     ) {}
 
     ngOnInit(): void {
-        this.loginInfo$ = this.loginPageStateService.dotLoginInformation.pipe(
+        this.loginInfo$ = this.loginPageStateService.get().pipe(
             take(1),
             tap((loginInfo: DotLoginInformation) => {
                 this.forgotPasswordConfirmationMessage =
@@ -43,6 +43,8 @@ export class ForgotPasswordComponent implements OnInit {
 
     /**
      * Executes the recover password service
+     *
+     * @memberof ForgotPasswordComponent
      */
     submit(): void {
         if (confirm(this.forgotPasswordConfirmationMessage)) {
@@ -67,6 +69,8 @@ export class ForgotPasswordComponent implements OnInit {
 
     /**
      * Executes the recover password service
+     *
+     * @memberof ForgotPasswordComponent
      */
     goToLogin(): void {
         this.dotRouterService.goToLogin({

@@ -2,16 +2,20 @@ import { LoginPageComponent } from '@components/login/main/login-page.component'
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LoginService } from 'dotcms-js';
-import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mock';
+import { mockLoginFormResponse } from '@tests/login-service.mock';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { of } from 'rxjs';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute } from '@angular/router';
+import { Injectable } from '@angular/core';
+
+@Injectable()
+class MockLoginPageStateService {
+    get = jasmine.createSpy('get').and.returnValue(of(mockLoginFormResponse));
+}
 
 describe('LoginPageComponent', () => {
     let fixture: ComponentFixture<LoginPageComponent>;
@@ -28,11 +32,9 @@ describe('LoginPageComponent', () => {
                 RouterTestingModule
             ],
             providers: [
-                { provide: LoginService, useClass: LoginServiceMock },
-                LoginPageStateService,
                 {
-                    provide: ActivatedRoute,
-                    useValue: { data: of({ loginFormInfo: mockLoginFormResponse }) }
+                    provide: DotLoginPageStateService,
+                    useClass: MockLoginPageStateService
                 }
             ]
         });

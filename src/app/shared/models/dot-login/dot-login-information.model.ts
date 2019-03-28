@@ -1,4 +1,4 @@
-import { DotSystemInformation } from '@models/dot-login/dot-system-information.model';
+import { DotLoginUserSystemInformation } from '@models/dot-login/dot-login-user-system-information.model';
 
 /**
  * Interface that wrap all data needed to display the login page.
@@ -7,5 +7,5 @@ import { DotSystemInformation } from '@models/dot-login/dot-system-information.m
  */
 export interface DotLoginInformation {
     i18nMessagesMap: { [key: string]: string };
-    entity: DotSystemInformation;
+    entity: DotLoginUserSystemInformation;
 }

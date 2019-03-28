@@ -19,10 +19,9 @@ import { DotFieldValidationMessageModule } from '@components/_common/dot-field-v
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { of } from 'rxjs';
-import { LOGIN_LABELS } from '@components/login/login-page-resolver.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
 describe('DotLoginComponent', () => {
@@ -31,7 +30,7 @@ describe('DotLoginComponent', () => {
     let de: DebugElement;
     let loginService: LoginService;
     let dotRouterService: DotRouterService;
-    let loginPageStateService: LoginPageStateService;
+    let loginPageStateService: DotLoginPageStateService;
     let signInButton: DebugElement;
     const credentials = {
         login: 'admin@dotcms.com',
@@ -57,7 +56,7 @@ describe('DotLoginComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                LoginPageStateService,
+                DotLoginPageStateService,
                 DotLoadingIndicatorService
             ]
         });
@@ -68,11 +67,9 @@ describe('DotLoginComponent', () => {
 
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
-        loginPageStateService = de.injector.get(LoginPageStateService);
-        spyOn(loginService, 'getLoginFormInfo').and.returnValue(of(mockLoginFormResponse));
-        spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
-            of(mockLoginFormResponse)
-        );
+        loginPageStateService = de.injector.get(DotLoginPageStateService);
+        spyOn(loginPageStateService, 'get').and.returnValue(of(mockLoginFormResponse));
+        spyOn(loginPageStateService, 'update');
         fixture.detectChanges();
         signInButton = de.query(By.css('button[pButton]'));
     });
@@ -102,7 +99,7 @@ describe('DotLoginComponent', () => {
         const pDropDown: DebugElement = de.query(By.css('p-dropdown'));
         pDropDown.triggerEventHandler('onChange', { value: 'es_ES' });
 
-        expect(loginService.getLoginFormInfo).toHaveBeenCalledWith('es_ES', LOGIN_LABELS);
+        expect(loginPageStateService.update).toHaveBeenCalledWith('es_ES');
     });
 
     it('should navigate to the recover password screen', () => {

@@ -9,7 +9,7 @@
                             formControlName="language"
                             #languageDropdown
                             [style]="{'width':'auto'}"
-                            (onChange)="languageChange$.next($event.value)">
+                            (onChange)="onLanguageChange($event.value)">
                 </p-dropdown>
             </div>
 
@@ -40,7 +40,7 @@
             </div>
             <div class="form__group login__password-settings">
                 <p-checkbox  formControlName="rememberMe" binary="true" [label]="loginInfo.i18nMessagesMap['remember-me']"></p-checkbox>
-                <a actionLink *ngIf="!isLoginInProgress" (click)="showForgotPassword()" >{{ loginInfo.i18nMessagesMap['get-new-password'] }}</a>
+                <a actionLink *ngIf="!isLoginInProgress" (click)="goToForgotPassword()" >{{ loginInfo.i18nMessagesMap['get-new-password'] }}</a>
             </div>
             <div class="form__group">
                 <dot-loading-indicator></dot-loading-indicator>

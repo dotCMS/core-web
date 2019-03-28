@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DotLoginInformation } from '@models/dot-login';
 import { take, tap } from 'rxjs/operators';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { LoginService } from 'dotcms-js';
 import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -24,13 +24,13 @@ export class ResetPasswordComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private loginService: LoginService,
-        public loginPageStateService: LoginPageStateService,
+        public loginPageStateService: DotLoginPageStateService,
         private dotRouterService: DotRouterService,
         private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
-        this.loginInfo$ = this.loginPageStateService.dotLoginInformation.pipe(
+        this.loginInfo$ = this.loginPageStateService.get().pipe(
             take(1),
             tap((loginInfo: DotLoginInformation) => {
                 this.passwordDontMatchMessage =
@@ -46,15 +46,30 @@ export class ResetPasswordComponent implements OnInit {
         });
     }
 
+    /**
+     * Clean confirm password field value.
+     *
+     * @memberof ResetPasswordComponent
+     */
     cleanConfirmPassword(): void {
         this.cleanMessage();
         this.resetPasswordForm.get('confirmPassword').setValue('');
     }
 
+    /**
+     * Clean the error message
+     *
+     * @memberof ResetPasswordComponent
+     */
     cleanMessage(): void {
         this.message = '';
     }
 
+    /**
+     * Validate password change and make the request.
+     *
+     * @memberof ResetPasswordComponent
+     */
     submit(): void {
         if (
             this.resetPasswordForm.valid &&

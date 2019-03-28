@@ -11,7 +11,7 @@ import { DefaultGuardService } from '@services/guards/default-guard.service';
 import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
 import { LoginPageComponent } from '@components/login/main/login-page.component';
-import { LoginPageResolver } from '@components/login/login-page-resolver.service';
+import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
 
 const PORTLETS_ANGULAR = [
     {
@@ -95,9 +95,9 @@ const appRoutes: Routes = [
         path: 'public',
         component: LoginPageComponent,
         resolve: {
-            loginFormInfo: LoginPageResolver
+            loginFormInfo: DotLoginPageResolver
         },
-        loadChildren: '@components/login/login-page.module#LoginPageModule'
+        loadChildren: '@components/login/dot-login-page.module#DotLoginPageModule'
     },
     {
         canActivate: [AuthGuardService],

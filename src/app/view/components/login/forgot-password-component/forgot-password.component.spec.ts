@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { of } from 'rxjs';
-import { LoginPageStateService } from '@components/login/shared/services/login-page-state.service';
+import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
@@ -19,7 +19,7 @@ describe('ForgotPasswordComponent', () => {
     let component: ForgotPasswordComponent;
     let fixture: ComponentFixture<ForgotPasswordComponent>;
     let de: DebugElement;
-    let loginPageStateService: LoginPageStateService;
+    let loginPageStateService: DotLoginPageStateService;
     let dotRouterService: DotRouterService;
     let loginService: LoginService;
 
@@ -36,21 +36,19 @@ describe('ForgotPasswordComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                LoginPageStateService
+                DotLoginPageStateService
             ]
         });
 
         fixture = DOTTestBed.createComponent(ForgotPasswordComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        loginPageStateService = de.injector.get(LoginPageStateService);
+        loginPageStateService = de.injector.get(DotLoginPageStateService);
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
         spyOn(loginService, 'recoverPassword').and.returnValue(of({}));
         spyOn(dotRouterService, 'goToLogin');
-        spyOnProperty(loginPageStateService, 'dotLoginInformation', 'get').and.returnValue(
-            of(mockLoginFormResponse)
-        );
+        spyOn(loginPageStateService, 'get').and.returnValue(of(mockLoginFormResponse));
 
         fixture.detectChanges();
         this.requestPasswordButton = de.query(By.css('button[type="submit"]'));
