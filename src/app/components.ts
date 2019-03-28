@@ -13,10 +13,11 @@ import {
 import { ToolbarComponent } from '@components/dot-toolbar/dot-toolbar.component';
 import { ToolbarNotificationsComponent } from '@components/toolbar-notifications/toolbar-notifications';
 import { ToolbarUserComponent } from '@components/toolbar-user/toolbar-user';
+import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 
 // CUSTOM PIPES
 import { CapitalizePipe, SafePipe } from '@pipes/index';
-import {LoginPageComponent} from '@components/login/main/login-page.component';
+
 
 export const COMPONENTS = [
     ToolbarUserComponent,
@@ -27,7 +28,7 @@ export const COMPONENTS = [
     MyAccountComponent,
     MainCoreLegacyComponent,
     MainComponentLegacyComponent,
-    LoginPageComponent,
+    DotLoginPageComponent,
     LoginAsComponent,
     DotLogOutContainerComponent,
     GlobalSearchComponent,

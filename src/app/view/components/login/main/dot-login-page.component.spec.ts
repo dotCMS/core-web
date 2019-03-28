@@ -1,4 +1,4 @@
-import { LoginPageComponent } from '@components/login/main/login-page.component';
+import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,12 +17,12 @@ class MockLoginPageStateService {
     get = jasmine.createSpy('get').and.returnValue(of(mockLoginFormResponse));
 }
 
-describe('LoginPageComponent', () => {
-    let fixture: ComponentFixture<LoginPageComponent>;
+describe('DotLoginPageComponent', () => {
+    let fixture: ComponentFixture<DotLoginPageComponent>;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [LoginPageComponent],
+            declarations: [DotLoginPageComponent],
             imports: [
                 BrowserAnimationsModule,
                 FormsModule,
@@ -39,7 +39,7 @@ describe('LoginPageComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(LoginPageComponent);
+        fixture = DOTTestBed.createComponent(DotLoginPageComponent);
         fixture.detectChanges();
     });
 

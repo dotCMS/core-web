@@ -47,7 +47,15 @@ export class DotLoginComponent implements OnInit, OnDestroy {
 
         this.loginInfo$ = this.loginPageStateService.get().pipe(
             takeUntil(this.destroy$),
-            map((loginInfo: DotLoginInformation) => this.setUserNameLabel(loginInfo)),
+            map((loginInfo: DotLoginInformation) => {
+                return {
+                    ...loginInfo,
+                    i18nMessagesMap: {
+                        ...loginInfo.i18nMessagesMap,
+                        emailAddressLabel: this.getUserNameLabel(loginInfo)
+                    }
+                };
+            }),
             tap((loginInfo: DotLoginInformation) => {
                 this.setInitialFormValues(loginInfo);
             })
@@ -154,12 +162,10 @@ export class DotLoginComponent implements OnInit, OnDestroy {
         }
     }
 
-    private setUserNameLabel(loginInfo: DotLoginInformation): DotLoginInformation {
-        loginInfo.i18nMessagesMap['emailAddressLabel'] =
-            'emailAddress' === loginInfo.entity.authorizationType
-                ? loginInfo.i18nMessagesMap['email-address']
-                : loginInfo.i18nMessagesMap['user-id'];
-        return loginInfo;
+    private getUserNameLabel(loginInfo: DotLoginInformation): string {
+        return loginInfo.entity.authorizationType === 'emailAddress'
+            ? loginInfo.i18nMessagesMap['email-address']
+            : loginInfo.i18nMessagesMap['user-id'];
     }
 
     private isBadRequestOrUnathorized(status: number) {

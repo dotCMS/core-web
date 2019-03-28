@@ -5,13 +5,13 @@ import { DotLoginPageStateService } from '@components/login/shared/services/dot-
 
 @Component({
     selector: 'dot-login-page-component',
-    styleUrls: ['./login-page.component.scss'],
-    templateUrl: 'login-page.component.html'
+    styleUrls: ['./dot-login-page.component.scss'],
+    templateUrl: 'dot-login-page.component.html'
 })
 /**
  * The login component allows set the background image and background color.
  */
-export class LoginPageComponent implements OnInit {
+export class DotLoginPageComponent implements OnInit {
     constructor(
         public loginPageStateService: DotLoginPageStateService
     ) {}

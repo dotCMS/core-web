@@ -10,7 +10,7 @@ import { ContentletGuardService } from '@services/guards/contentlet-guard.servic
 import { DefaultGuardService } from '@services/guards/default-guard.service';
 import { MenuGuardService } from '@services/guards/menu-guard.service';
 import { PublicAuthGuardService } from '@services/guards/public-auth-guard.service';
-import { LoginPageComponent } from '@components/login/main/login-page.component';
+import { DotLoginPageComponent } from '@components/login/main/dot-login-page.component';
 import { DotLoginPageResolver } from '@components/login/dot-login-page-resolver.service';
 
 const PORTLETS_ANGULAR = [
@@ -93,7 +93,7 @@ const appRoutes: Routes = [
     {
         canActivate: [PublicAuthGuardService],
         path: 'public',
-        component: LoginPageComponent,
+        component: DotLoginPageComponent,
         resolve: {
             loginFormInfo: DotLoginPageResolver
         },
