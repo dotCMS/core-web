@@ -1,5 +1,5 @@
 import { DotCMSHttpClient } from '../utils/DotCMSHttpClient';
-import { DotCMSContentType, DotCMSContent, DotCMSContentTypeField, DotCMSError } from '../models';
+import { DotCMSContentType, DotCMSContentTypeField, DotCMSError } from '../models';
 
 /**
  * Get the information of DotCMS contentTypes
@@ -36,41 +36,4 @@ export class DotApiContentType {
         });
     }
 
-    save<Content extends DotCMSContent>(params: Content): Promise<Response> {
-        return this.dotCMSHttpClient
-            .request({
-                url: `/api/content/save/1`,
-                method: 'POST',
-                body: JSON.stringify(params)
-            })
-            .then(async (response: Response) => {
-                if (response.status === 200) {
-                    return null;
-                }
-
-                throw <DotCMSError>{
-                    message: await response.text(),
-                    status: response.status
-                };
-            });
-    }
-
-    publish<Content extends DotCMSContent>(params: Content): Promise<Response> {
-        return this.dotCMSHttpClient
-            .request({
-                url: `/api/content/publish/1`,
-                method: 'POST',
-                body: JSON.stringify(params)
-            })
-            .then(async (response: Response) => {
-                if (response.status === 200) {
-                    return null;
-                }
-
-                throw <DotCMSError>{
-                    message: await response.text(),
-                    status: response.status
-                };
-            });
-    }
 }
