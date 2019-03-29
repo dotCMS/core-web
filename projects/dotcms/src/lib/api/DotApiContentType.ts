@@ -17,15 +17,15 @@ export class DotApiContentType {
             url: `/api/v1/contenttype/id/${contentTypeId}`
         });
 
-        if (response.status === 200) {
-            const data = await response.json();
-            return data.entity;
+        if (response.status !== 200) {
+            throw <DotCMSError>{
+                message: await response.text(),
+                status: response.status
+            };
         }
 
-        throw <DotCMSError>{
-            message: await response.text(),
-            status: response.status
-        };
+        const data = await response.json();
+        return data.entity;
     }
 
     getFields(contentTypeId): Promise<DotCMSContentTypeField[]> {

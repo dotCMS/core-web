@@ -28,13 +28,13 @@ export class DotApiContent {
                 body: JSON.stringify(params)
             });
 
-        if (response.status === 200) {
-            return null;
+        if (response.status !== 200) {
+            throw <DotCMSError>{
+                message: await response.text(),
+                status: response.status
+            };
         }
 
-        throw <DotCMSError>{
-            message: await response.text(),
-            status: response.status
-        };
+        return null;
     }
 }
