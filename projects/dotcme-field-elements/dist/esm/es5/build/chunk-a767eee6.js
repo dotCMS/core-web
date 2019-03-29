@@ -1,0 +1,1 @@
+function generateId(){return Date.now().valueOf()}function getItemsFromString(e){return e.replace(/(\\r\\n|\\n|\\r)/gi,"~").split("~").filter(function(e){return e.length>0}).map(function(e){var t=e.split("|");return{label:t[0],value:t[1]}})}var Fragment=function(e,t){return t.slice()};export{getItemsFromString as a,generateId as b,Fragment as c};
