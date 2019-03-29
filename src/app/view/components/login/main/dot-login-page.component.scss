@@ -5,6 +5,22 @@
     width: 100%;
     display: flex;
     justify-content: center;
+
+    ::ng-deep {
+        .error-message {
+            min-height: $line-height;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        //these styles will need to be removed after a global solution.
+
+        span[dotmdinputtext] {
+            min-height: 79px;
+
+        }
+    }
 }
 
 .login {

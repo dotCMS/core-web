@@ -14,7 +14,7 @@
 
         <h3 class="login__title" >{{ loginInfo.i18nMessagesMap['welcome-back'] }}</h3>
 
-        <div class="error-message" [innerHTML]="message" *ngIf="message"></div>
+        <div class="error-message" [innerHTML]="message"></div>
         <div class="form__group">
         <span dotMdInputtext label="{{ loginInfo.i18nMessagesMap['emailAddressLabel'] }}">
             <input pInputText type="text" dotAutofocus

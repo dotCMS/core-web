@@ -4,23 +4,22 @@ import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from 'dotcms-js';
-import { LoginServiceMock, mockLoginFormResponse } from '@tests/login-service.mock';
+import { LoginServiceMock } from '@tests/login-service.mock';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/primeng';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-import { of } from 'rxjs';
 import { DotLoginPageStateService } from '@components/login/shared/services/dot-login-page-state.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import {MockDotLoginPageStateService} from '@components/login/dot-login-page-resolver.service.spec';
 
 describe('ResetPasswordComponent', () => {
     let component: ResetPasswordComponent;
     let fixture: ComponentFixture<ResetPasswordComponent>;
     let de: DebugElement;
-    let dotLoginPageStateService: DotLoginPageStateService;
     let loginService: LoginService;
     let activatedRoute: ActivatedRoute;
     let dotRouterService: DotRouterService;
@@ -38,23 +37,19 @@ describe('ResetPasswordComponent', () => {
             ],
             providers: [
                 { provide: LoginService, useClass: LoginServiceMock },
-                DotLoginPageStateService
+                { provide: DotLoginPageStateService, useClass: MockDotLoginPageStateService }
             ]
         });
 
         fixture = DOTTestBed.createComponent(ResetPasswordComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
-        dotLoginPageStateService = de.injector.get(DotLoginPageStateService);
         activatedRoute = de.injector.get(ActivatedRoute);
         loginService = de.injector.get(LoginService);
         dotRouterService = de.injector.get(DotRouterService);
         spyOn(activatedRoute.snapshot.paramMap, 'get').and.returnValue('test@test.com');
         spyOn(loginService, 'changePassword').and.callThrough();
         spyOn(dotRouterService, 'goToLogin');
-        spyOn(dotLoginPageStateService, 'get').and.returnValue(
-            of(mockLoginFormResponse)
-        );
         fixture.detectChanges();
 
         this.changePasswordButton = de.query(By.css('button[type="submit"]'));
