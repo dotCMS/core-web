@@ -35,6 +35,6 @@ export class DotApiContent {
             };
         }
 
-        return null;
+        return response.text();
     }
 }

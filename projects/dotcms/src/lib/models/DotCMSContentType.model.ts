@@ -38,7 +38,3 @@ export interface DotCMSContentType {
     variable?: string;
     workflow?: string;
 }
-
-export interface DotCMSContent {
-    stName: string;
-}

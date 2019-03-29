@@ -37,7 +37,7 @@ describe('DotApiContent', () => {
                     body: JSON.stringify(contentParams)
                 };
                 dotApiContent.save(contentParams).then((data) => {
-                    expect(data).toEqual(null);
+                    expect(data).toEqual('');
                 });
                 expect(httpClient.request).toHaveBeenCalledWith(requestParams);
             });
@@ -49,7 +49,7 @@ describe('DotApiContent', () => {
                     body: JSON.stringify(contentParams)
                 };
                 dotApiContent.publish(contentParams).then((data) => {
-                    expect(data).toEqual(null);
+                    expect(data).toEqual('');
                 });
                 expect(httpClient.request).toHaveBeenCalledWith(requestParams);
             });
