@@ -2,7 +2,7 @@ import { DotCMSHttpClient } from '../utils/DotCMSHttpClient';
 import { DotCMSContent, DotCMSError } from '../models';
 
 /**
- * Get the information of DotCMS Content
+ * Save/Publish the information of DotCMS Content
  *
  */
 export class DotApiContent {
@@ -35,6 +35,6 @@ export class DotApiContent {
             };
         }
 
-        return response.text();
+        return response;
     }
 }

@@ -20,39 +20,41 @@ describe('DotApiContent', () => {
     });
 
     describe('Requests', () => {
+        const responseExpected = {
+            status: 200,
+            statusText: ''
+        };
+
         beforeEach(() => {
             spyOn(httpClient, 'request').and.returnValue(
                 new Promise((resolve) =>
-                    resolve({
-                        status: 200,
-                        json: () => null
-                    })
+                    resolve(responseExpected)
                 )
             );
+        });
 
-            it('should save a content type', () => {
-                const requestParams = {
-                    url: '/api/content/save/1',
-                    method: 'POST',
-                    body: JSON.stringify(contentParams)
-                };
-                dotApiContent.save(contentParams).then((data) => {
-                    expect(data).toEqual('');
-                });
-                expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+        it('should save a content type', () => {
+            const requestParams = {
+                url: '/api/content/save/1',
+                method: 'POST',
+                body: JSON.stringify(contentParams)
+            };
+            dotApiContent.save(contentParams).then((data) => {
+                expect(data).toEqual(responseExpected);
             });
+            expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+        });
 
-            it('should publish a content type', () => {
-                const requestParams = {
-                    url: '/api/content/publish/1',
-                    method: 'POST',
-                    body: JSON.stringify(contentParams)
-                };
-                dotApiContent.publish(contentParams).then((data) => {
-                    expect(data).toEqual('');
-                });
-                expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+        it('should publish a content type', () => {
+            const requestParams = {
+                url: '/api/content/publish/1',
+                method: 'POST',
+                body: JSON.stringify(contentParams)
+            };
+            dotApiContent.publish(contentParams).then((data) => {
+                expect(data).toEqual(responseExpected);
             });
+            expect(httpClient.request).toHaveBeenCalledWith(requestParams);
         });
     });
 
