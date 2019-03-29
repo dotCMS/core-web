@@ -22,6 +22,11 @@ describe('DotApiContentType', () => {
         }
     };
 
+    const contentParams = {
+        stName: 'webContent',
+        body: 'Test'
+    };
+
     beforeEach(() => {
         httpClient = new DotCMSHttpClient({
             token: '',
@@ -58,6 +63,46 @@ describe('DotApiContentType', () => {
             expect(data).toEqual(expectedMsg.entity.fields);
         });
         expect(httpClient.request).toHaveBeenCalledWith({ url: '/api/v1/contenttype/id/123' });
+    });
+
+    it('should save a content type', () => {
+        spyOn(httpClient, 'request').and.returnValue(
+            new Promise((resolve) =>
+                resolve({
+                    status: 200,
+                    json: () => null
+                })
+            )
+        );
+        const requestParams = {
+            url: '/api/content/save/1',
+            method: 'POST',
+            body: JSON.stringify(contentParams)
+        };
+        dotApiContentType.save(contentParams).then((data) => {
+            expect(data).toEqual(null);
+        });
+        expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+    });
+
+    it('should publish a content type', () => {
+        spyOn(httpClient, 'request').and.returnValue(
+            new Promise((resolve) =>
+                resolve({
+                    status: 200,
+                    json: () => null
+                })
+            )
+        );
+        const requestParams = {
+            url: '/api/content/publish/1',
+            method: 'POST',
+            body: JSON.stringify(contentParams)
+        };
+        dotApiContentType.publish(contentParams).then((data) => {
+            expect(data).toEqual(null);
+        });
+        expect(httpClient.request).toHaveBeenCalledWith(requestParams);
     });
 
     it('should throw error', () => {
