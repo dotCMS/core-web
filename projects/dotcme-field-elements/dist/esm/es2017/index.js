@@ -1,1 +1,0 @@
-// mycomponent: ES Module

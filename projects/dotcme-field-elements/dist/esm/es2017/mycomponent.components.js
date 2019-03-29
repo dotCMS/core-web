@@ -1,2 +1,0 @@
-// mycomponent: Host Data, ES Module/es2017 Target
-export const COMPONENTS = [["dot-checkbox","yz5hibts",1,[["_options",16],["_value",16],["hint",1,0,1,2],["label",1,0,1,2],["options",1,0,1,2],["value",1,0,1,2]]],["dot-dropdown","xpquxoc2",1,[["_options",16],["_value",16],["hint",1,0,1,2],["label",1,0,1,2],["options",1,0,1,2],["value",1,0,1,2]]],["dot-textfield","kbsprwtm",1,[["_error",16],["_value",16],["hint",1,0,1,2],["label",1,0,1,2],["placeholder",1,0,1,2],["readOnly",1,0,"read-only",2],["regexcheck",1,0,1,2],["required",1,0,1,4],["value",1,0,1,2]]]]

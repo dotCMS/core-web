@@ -1,1 +1,0 @@
-function n(){return Date.now().valueOf()}function e(n){return n.replace(/(\\r\\n|\\n|\\r)/gi,"~").split("~").filter(n=>n.length>0).map(n=>{const e=n.split("|");return{label:e[0],value:e[1]}})}window;var r=(n,e)=>[...e];export{e as a,n as b,r as c};
