@@ -211,7 +211,6 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @param index column index into {@link DotLayoutGrid#boxes}
      */
     addColumnClass(index: number): void {
-        console.log('addColumnClass');
         this.addClass(
             () => this.grid.boxes[index].config.payload ? this.grid.boxes[index].config.payload.styleClass || null : null,
             (value: string) => {
