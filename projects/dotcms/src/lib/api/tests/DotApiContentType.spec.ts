@@ -79,7 +79,7 @@ describe('DotApiContentType', () => {
         });
 
         it('should throw error GetFields()', () => {
-            dotApiContentType.get('123').catch((err: DotCMSError) => {
+            dotApiContentType.getFields('123').catch((err: DotCMSError) => {
                 expect(err).toEqual({
                     status: 500,
                     message: 'Error'
