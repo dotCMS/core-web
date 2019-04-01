@@ -7,7 +7,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { FormGroup, FormControl, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DotTextareaContentModule } from '@components/_common/dot-textarea-content/dot-textarea-content.module';
-import {DotFieldHelperModule} from '@components/dot-field-helper/dot-field-helper.module';
+import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 
 @Component({
     selector: 'dot-field-validation-message',

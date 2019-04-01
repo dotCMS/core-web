@@ -45,7 +45,7 @@ class TestViewContainerRef {
     ): any {}
 }
 
-fdescribe('Directive: DynamicFieldPropertyDirective', () => {
+describe('Directive: DynamicFieldPropertyDirective', () => {
     beforeEach(() => {
         this.component = new TestComponent();
 
