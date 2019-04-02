@@ -30,7 +30,6 @@ export class ValuesPropertyComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        console.log(this.validTextHelperClazz);
         this.dotMessageService
             .getMessages(['contenttypes.field.properties.value.label'])
             .pipe(take(1))
@@ -39,6 +38,12 @@ export class ValuesPropertyComponent implements OnInit {
             });
     }
 
+    /**
+     * Checks if helper should show, based on the clazz property.
+     *
+     * @returns {Boolean}
+     * @memberof ValuesPropertyComponent
+     */
     isValidHelperClass(): boolean {
         return this.validTextHelperClazz.includes(this.property.field.clazz);
     }
