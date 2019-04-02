@@ -1,5 +1,4 @@
 @import "variables";
-@import "mixins";
 
 :host {
     ::ng-deep {
@@ -10,14 +9,13 @@
         .ui-autocomplete-list-item {
             white-space: nowrap;
         }
-
-        .autocomplete-input {
-            padding-right: $basic-padding * 4;
-        }
     }
 
     dot-field-helper {
-        @include dot-field-helper-on-input;
+        position: absolute;
+        right: 0;
+        top: $basic-padding * 3;
+        z-index: 1;
     }
 }
 
@@ -32,8 +30,7 @@
         text-align: left;
     }
 
-    &-host,
-    &-url {
+    &-host, &-url {
         flex-basis: 50%;
     }
 
@@ -41,3 +38,5 @@
         padding-left: $basic-padding / 2;
     }
 }
+
+
