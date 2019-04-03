@@ -11,8 +11,8 @@
             white-space: nowrap;
         }
 
-        .autocomplete-input {
-            padding-right: $basic-padding * 4;
+        .ui-autocomplete-input {
+            padding-right: $basic-padding * 4 !important;
         }
     }
 
