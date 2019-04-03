@@ -12,6 +12,7 @@
         }
 
         .ui-autocomplete-input {
+            // important because p-autocomplete can add inline styles.
             padding-right: $basic-padding * 4 !important;
         }
     }
