@@ -118,16 +118,16 @@ export class DotTextfieldComponent {
                 <input
                     class={this._error ? 'dot-textfield__input--error' : ''}
                     name={this._label}
-                    type="text"
+                    type='text'
                     value={this._value}
                     placeholder={this.placeholder}
                     required={this.required ? true : null}
                     onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.setTouched()}
                 />
-                {this.hint ? <span class="dot-textfield__hint">{this.hint}</span> : ''}
+                {this.hint ? <span class='dot-textfield__hint'>{this.hint}</span> : ''}
                 {this.errorMessage() ? (
-                    <span class="dot-textfield__error-meessage">{this.errorMessage()}</span>
+                    <span class='dot-textfield__error-meessage'>{this.errorMessage()}</span>
                 ) : (
                     ''
                 )}
