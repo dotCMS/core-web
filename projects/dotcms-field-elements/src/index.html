@@ -26,7 +26,6 @@
             };
 
             function resetFrom() {
-                console.log('resetFrom');
                 let inputTxt = document.querySelector('dot-textfield');
                 inputTxt.reset();
             }
@@ -38,7 +37,7 @@
         <hr />
         <dot-textfield
             label='Name:'
-            value=''
+            value='John'
             hint='this is a hint'
             placeholder='Enter Name'
             regexcheck='^[A-Za-z ]+$'
@@ -67,6 +66,5 @@
         ></dot-checkbox>
 
         <button onclick="resetFrom()">Reset</button>
-
     </body>
 </html>

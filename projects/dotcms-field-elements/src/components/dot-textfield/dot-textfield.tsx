@@ -23,17 +23,13 @@ export class DotTextfieldComponent {
 
     @State() _value: string;
     @State() _error = false;
-    _label: string;
-
     @State() _dotTouched = false;
     _dotPristine = true;
 
+    _label: string;
+
     // tslint:disable-next-line:cyclomatic-complexity
     isValid(): boolean {
-        // return this.isRequired();
-        //
-        // if (this.)
-
         if (this.required && this._value.length === 0) {
             return false;
         }
@@ -46,16 +42,6 @@ export class DotTextfieldComponent {
         return true;
     }
 
-
-
-
-    isRequired(): boolean {
-        if (this.required && this._value.length === 0) {
-            return true;
-        }
-        return false;
-    }
-
     setTouched(): void {
         if (!this._dotTouched) {
             this._dotTouched = true;
@@ -65,14 +51,14 @@ export class DotTextfieldComponent {
     @Method()
     reset(): void {
         this._dotPristine = true;
+        this._dotTouched = false;
         this._value = '';
-        this._dotTouched = false
+        this._error = false;
         this.emitStatusChange();
     }
 
     // Todo: find how to set proper TYPE in TS
     setValue(event): void {
-        console.log('set value');
         this._value = event.target.value.toString();
         this._error = !this.isValid();
         this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
@@ -93,16 +79,16 @@ export class DotTextfieldComponent {
         });
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     errorMessage(): string {
-        console.log(this.isValid());
-        console.log(this._dotPristine);
         return this.isValid()
             ? ''
-            : this._dotPristine ? this.requiredmessage : this.regexcheckmessage;
+            : this._dotPristine
+              ? ''
+              : this._value.length ? this.regexcheckmessage : this.requiredmessage;
     }
 
     componentWillLoad(): void {
-        console.log('componentWillLoad');
         this._label = `dotTextfield_${generateId()}`;
         this._value = this._value && this._value.length > -1 ? this._value : this.value;
         this.emitStatusChange();
@@ -110,7 +96,6 @@ export class DotTextfieldComponent {
 
     hostData() {
         this.emitStatusChange();
-        console.log('hostData');
         return {
             class: {
                 'dot-valid': this.isValid(),
@@ -125,7 +110,6 @@ export class DotTextfieldComponent {
 
     // tslint:disable-next-line:cyclomatic-complexity
     render() {
-        console.log('render');
         return (
             <Fragment>
                 <label htmlFor={this._label}>{this.label}</label>
