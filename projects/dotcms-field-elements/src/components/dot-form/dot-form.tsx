@@ -63,8 +63,12 @@ export class DotFormComponent {
         this._formValues = {};
         const elementsCount = this.el.children[0].children.length;
         for (let i = 0, total = elementsCount; i < total - 2; i++) {
-            const element: any = this.el.children[0].children[i];
-            element.reset();
+            try {
+                const element: any = this.el.children[0].children[i];
+                element.reset();
+            } catch (error) {
+                console.log('Error:', error);
+            }
         }
     }
 

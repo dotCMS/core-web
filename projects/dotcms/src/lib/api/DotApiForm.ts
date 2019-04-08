@@ -54,17 +54,28 @@ export class DotApiForm {
         container.append(importScript, formTag);
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
+    private shouldSetFormLabel(label: string, labelConfig: {submit?: string, reset?: string}): boolean {
+        return !!(labelConfig && labelConfig[label]);
+    }
+
     private createForm(fieldScript: string): HTMLElement {
         const formTag = document.createElement('dot-form');
 
-        formTag.setAttribute('submit-label',
-            (this.formConfig.labels && this.formConfig.labels.submit ? this.formConfig.labels.submit : 'Submit'));
-        formTag.setAttribute('reset-label',
-            (this.formConfig.labels && this.formConfig.labels.reset ? this.formConfig.labels.reset : 'Reset'));
+        formTag.setAttribute(
+            'submit-label',
+            this.shouldSetFormLabel('submit', this.formConfig.labels)
+                ? this.formConfig.labels.submit
+                : 'Submit'
+        );
+        formTag.setAttribute(
+            'reset-label',
+            this.shouldSetFormLabel('reset', this.formConfig.labels)
+                ? this.formConfig.labels.reset
+                : 'Reset'
+        );
         formTag.innerHTML = fieldScript;
 
-        formTag.addEventListener('formSubmit', (e: any) => {
+        formTag.addEventListener('formSubmit', (e: CustomEvent) => {
             e.preventDefault();
             this.content
                 .save({
@@ -87,11 +98,18 @@ export class DotApiForm {
         return formTag;
     }
 
+    private shouldCreateSpecificTags(fields: string[]): boolean {
+        return fields && fields.length > 0;
+    }
+
     private createFieldTags(fields: DotCMSContentTypeField[]): string {
         const fieldTags = fields
-            .map((field: DotCMSContentTypeField) =>
-                this.formConfig.fields.includes(field.variable) ? this.createField(field) : ''
-            )
+            .map((field: DotCMSContentTypeField) => {
+                if (this.shouldCreateSpecificTags(this.formConfig.fields)) {
+                    return this.formConfig.fields.includes(field.variable) ? this.createField(field) : '';
+                }
+                return this.createField(field);
+            })
             .join('');
         return fieldTags;
     }
