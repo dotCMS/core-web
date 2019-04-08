@@ -1,5 +1,11 @@
-import { DotCMSFormConfig, DotCMSContentTypeField } from '../models';
+import {
+    DotCMSFormConfig,
+    DotCMSContentTypeField,
+    DotCMSContentType,
+    DotCMSError
+} from '../models';
 import { DotApiContentType } from './DotApiContentType';
+import { DotApiContent } from './DotApiContent';
 
 enum FieldElementsTags {
     Text = 'dot-textfield',
@@ -13,10 +19,15 @@ enum FieldElementsTags {
  */
 export class DotApiForm {
     private formConfig: DotCMSFormConfig;
+    private contentType: DotCMSContentType;
     private fields: DotCMSContentTypeField[];
     private dotApiContentType: DotApiContentType;
 
-    constructor(dotApiContentType: DotApiContentType, config: DotCMSFormConfig) {
+    constructor(
+        dotApiContentType: DotApiContentType,
+        config: DotCMSFormConfig,
+        private content: DotApiContent
+    ) {
         this.dotApiContentType = dotApiContentType;
         this.formConfig = config;
     }
@@ -27,25 +38,53 @@ export class DotApiForm {
      * @memberof DotApiForm
      */
     async render(container: HTMLElement) {
-        this.fields =
-            this.fields || (await this.dotApiContentType.getFields(this.formConfig.identifier));
+        this.contentType =
+            this.contentType || (await this.dotApiContentType.get(this.formConfig.identifier));
+        this.fields = this.contentType.fields;
 
-        const fieldScript = this.createFieldTags(this.fields);
-        const formScript = this.createForm(fieldScript);
         const importScript = document.createElement('script');
-        const formTag = document.createElement('div');
-
         importScript.type = 'module';
         importScript.text = `
-            import { defineCustomElements } from "https://unpkg.com/dotcms-field-elements@0.0.2/dist/loader";
+            import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
+            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@0.0.2/dist/loader';
             defineCustomElements(window);`;
-        formTag.innerHTML = formScript;
 
+        const fieldScript = this.createFieldTags(this.fields);
+        const formTag = this.createForm(fieldScript);
         container.append(importScript, formTag);
     }
 
-    private createForm(fieldTags: string): string {
-        return `<form>${fieldTags}</form>`;
+    // tslint:disable-next-line:cyclomatic-complexity
+    private createForm(fieldScript: string): HTMLElement {
+        const formTag = document.createElement('dot-form');
+
+        formTag.setAttribute('submit-label',
+            (this.formConfig.labels && this.formConfig.labels.submit ? this.formConfig.labels.submit : 'Submit'));
+        formTag.setAttribute('reset-label',
+            (this.formConfig.labels && this.formConfig.labels.reset ? this.formConfig.labels.reset : 'Reset'));
+        formTag.innerHTML = fieldScript;
+
+        formTag.addEventListener('formSubmit', (e: any) => {
+            e.preventDefault();
+            this.content
+                .save({
+                    contentHost: this.formConfig.contentHost,
+                    stName: this.contentType.variable,
+                    ...e.detail
+                })
+                .then((data: Response) => {
+                    if (this.formConfig.onSuccess) {
+                        this.formConfig.onSuccess(data);
+                    }
+                })
+                .catch((error: DotCMSError) => {
+                    if (this.formConfig.onError) {
+                        this.formConfig.onError(error);
+                    }
+                });
+        });
+
+        return formTag;
     }
 
     private createFieldTags(fields: DotCMSContentTypeField[]): string {
@@ -78,14 +117,15 @@ export class DotApiForm {
         return fieldTag
             ? `
             <${fieldTag}
-                ${field.name ? `label="${field.name}"` : ''}
-                ${field.defaultValue ? `value="${field.defaultValue}"` : ''}
+                ${field.variable ? `name='${field.variable}'` : ''}
+                ${field.name ? `label='${field.name}'` : ''}
+                ${field.defaultValue ? `value='${field.defaultValue}'` : ''}
                 ${
                     field.values
-                        ? `options="${this.formatValuesAttribute(field.values, fieldTag)}"`
+                        ? `options='${this.formatValuesAttribute(field.values, fieldTag)}'`
                         : ''
                 }
-                ${field.hint ? `hint="${field.hint}"` : ''}
+                ${field.hint ? `hint='${field.hint}'` : ''}
                 ${field.required ? 'required' : ''}
             ></${fieldTag}>`
             : '';
