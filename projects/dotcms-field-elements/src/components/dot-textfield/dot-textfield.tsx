@@ -45,6 +45,7 @@ export class DotTextfieldComponent {
     setTouched(): void {
         if (!this._dotTouched) {
             this._dotTouched = true;
+            this.emitStatusChange();
         }
     }
 
@@ -61,11 +62,12 @@ export class DotTextfieldComponent {
     setValue(event): void {
         this._value = event.target.value.toString();
         this._error = !this.isValid();
-        this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
         if (this._dotPristine) {
             this._dotPristine = false;
             this._dotTouched = true;
         }
+        this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
+        this.emitStatusChange();
     }
 
     emitStatusChange(): void {
