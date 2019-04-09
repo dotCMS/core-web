@@ -14,7 +14,6 @@ export class DotFormComponent {
     @Listen('valueChanges')
     onValueChanges(event: any): void {
         this._formValues[event.detail.name] = event.detail.value;
-        console.log('--this._formValues', this._formValues);
     }
 
     @Listen('stateChanges')
@@ -24,6 +23,7 @@ export class DotFormComponent {
     }
 
     hostData() {
+        // TODO: do validation here
         console.log('---hostdata');
         return {
           'class': { 'is-open': this._formValues },
@@ -33,29 +33,6 @@ export class DotFormComponent {
 
     handleSubmit(e): void {
         e.preventDefault();
-
-// TODO:
-// - Implement RESET
-// - Unit Test
-
-// TODO Next Task:
-// - Implement Form STATUS -> funcion y mapa de estados de elementos
-// - Implement Validation
-
-
-        // this.hostData();
-
-        // Set value on child
-        // this.el.children[0].children[0].attributes['value'].value = 'kk';
-
-
-        // console.log('--handleSubmit', e, 'STATE:', this._formValues);
-        // console.log('--Element', this.el.children[0].children[0].attributes['value'].value);
-
-        // Reset call to element
-        // const kk: any = this.el.children[0].children[0];
-        // kk.reset();
-        console.log('--this._formValues', this._formValues);
         this.formSubmit.emit(this._formValues);
     }
 
