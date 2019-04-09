@@ -9,10 +9,10 @@ export class DotFormComponent {
     @Prop() submitLabel: string;
     @Prop() resetLabel: string;
 
-    _formValues = {};
+    @Prop({ mutable: true }) _formValues = {};
 
     @Listen('valueChanges')
-    onValueChanges(event: any): void {
+    onValueChanges(event: CustomEvent): void {
         this._formValues[event.detail.name] = event.detail.value;
     }
 
@@ -24,15 +24,14 @@ export class DotFormComponent {
 
     hostData() {
         // TODO: do validation here
-        console.log('---hostdata');
         return {
           'class': { 'is-open': this._formValues },
           'aria-hidden': this._formValues ? 'false' : 'true'
         };
       }
 
-    handleSubmit(e): void {
-        e.preventDefault();
+    handleSubmit(evt: Event): void {
+        evt.preventDefault();
         this.formSubmit.emit(this._formValues);
     }
 
@@ -51,7 +50,7 @@ export class DotFormComponent {
 
     render() {
         return (
-            <form onSubmit={(e) => this.handleSubmit(e)}>
+            <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
                 <slot />
                 <input type='submit' value={this.submitLabel} />
                 <input type='button' value={this.resetLabel} onClick={() => this.resetForm()} />

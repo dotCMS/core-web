@@ -9,6 +9,7 @@
 
 | Property      | Attribute      | Description | Type     | Default     |
 | ------------- | -------------- | ----------- | -------- | ----------- |
+| `_formValues` | --             |             | `{}`     | `{}`        |
 | `resetLabel`  | `reset-label`  |             | `string` | `undefined` |
 | `submitLabel` | `submit-label` |             | `string` | `undefined` |
 

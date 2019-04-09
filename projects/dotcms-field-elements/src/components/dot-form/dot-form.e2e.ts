@@ -1,7 +1,6 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
-import { DotFormComponent } from './dot-form';
 
-fdescribe('dot-form', () => {
+describe('dot-form', () => {
     let page: E2EPage;
     let element: E2EElement;
 
@@ -26,16 +25,21 @@ fdescribe('dot-form', () => {
         expect(spy).toHaveReceivedEvent();
     });
 
-    it('should send reset form', async () => {
-        // page.
-        const formObj = new DotFormComponent();
-        // formObj.el.appendChild(new HTMLElement);
-        formObj.el = {};
-        formObj._formValues = { name: 'test' };
-        formObj.resetForm();
-        // const resetBtn = await element.find('input[type="button"]');
-        // resetBtn.click();
-        // await page.waitForChanges();
-        console.log(formObj);
+    it('should listen for valueChanges', async () => {
+        const formTag = await page.find('h1');
+
+        formTag.triggerEvent('valueChanges', {
+            bubbles: true,
+            cancelable: false,
+            detail: {
+                name: 'header',
+                value: 'test2'
+            }
+        });
+
+        await page.waitForChanges();
+        element.getProperty('_formValues').then((data) => {
+            expect(data).toEqual({ header: 'test2' });
+        });
     });
 });
