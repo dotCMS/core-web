@@ -30,6 +30,10 @@
                 inputTxt.reset();
             }
 
+            document.addEventListener('statusChanges', function(event){
+                console.log('statusChanges', event.detail);
+            });
+
         </script>
     </head>
     <body>
@@ -37,6 +41,7 @@
         <hr />
         <dot-textfield
             label='Name:'
+            name='fullName'
             value='John'
             hint='this is a hint'
             placeholder='Enter Name'
@@ -45,6 +50,14 @@
             readOnly='false'
             required
             requiredmessage="Required Name"
+        ></dot-textfield>
+        <br />
+        <dot-textfield
+            label='Last Name:'
+            name='lastName'
+            value='Morera'
+            hint='Hint: Disabled field'
+            disabled
         ></dot-textfield>
 
         <hr />
@@ -64,6 +77,9 @@
             options='a1|1,b1|2,c1|3,d1|4'
             value='3'
         ></dot-checkbox>
+
+        <input id="test">
+
 
         <button onclick="resetFrom()">Reset</button>
     </body>
