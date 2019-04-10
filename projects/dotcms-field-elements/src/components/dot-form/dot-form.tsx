@@ -6,14 +6,14 @@ import { Component, Element, Event, EventEmitter, Listen, Prop } from '@stencil/
 export class DotFormComponent {
     @Element() el: HTMLElement;
     @Event() formSubmit: EventEmitter;
-    @Prop() submitLabel: string;
-    @Prop() resetLabel: string;
+    @Prop() submitLabel = 'Submit';
+    @Prop() resetLabel = 'Reset';
 
     @Prop({ mutable: true }) _formValues = {};
 
     @Listen('valueChanges')
     onValueChanges(event: CustomEvent): void {
-        this._formValues[event.detail.name] = event.detail.value;
+        this._formValues[event.detail.target.name] = event.detail.target.value;
     }
 
     @Listen('stateChanges')
@@ -32,20 +32,22 @@ export class DotFormComponent {
 
     handleSubmit(evt: Event): void {
         evt.preventDefault();
-        this.formSubmit.emit(this._formValues);
+        this.formSubmit.emit({
+            target: this.el,
+            status: { dirty: true }}
+        );
     }
 
     resetForm(): void {
         this._formValues = {};
-        const elementsCount = this.el.children[0].children.length;
-        for (let i = 0, total = elementsCount; i < total - 2; i++) {
+        const elements = Array.from(this.el.querySelector('form').children);
+        elements.forEach((element: any) => {
             try {
-                const element: any = this.el.children[0].children[i];
                 element.reset();
             } catch (error) {
-                console.log('Error:', error);
+                console.error('Error:', error);
             }
-        }
+        });
     }
 
     render() {

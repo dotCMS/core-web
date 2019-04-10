@@ -1,4 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter, Method } from '@stencil/core';
+import { Component, Prop, State, Element, Event, EventEmitter, Method } from '@stencil/core';
 import { generateId } from '../../utils';
 import Fragment from 'stencil-fragment';
 
@@ -7,8 +7,9 @@ import Fragment from 'stencil-fragment';
     styleUrl: 'dot-textfield.scss'
 })
 export class DotTextfieldComponent {
+    @Element() el: HTMLElement;
     @Prop() name: string;
-    @Prop() value: string;
+    @Prop({ mutable: true }) value: string;
     @Prop() regexcheck: string;
     @Prop() readOnly: string;
     @Prop() label: string;
@@ -39,7 +40,10 @@ export class DotTextfieldComponent {
     setValue(event): void {
         this._value = event.target.value.toString();
         this._error = this.validate(this._value);
-        this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
+        this.value = event.target.value.toString();
+        // this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
+        this.valueChanges.emit({target: this.el,
+            status: { dirty: true }});
     }
 
     @Method()

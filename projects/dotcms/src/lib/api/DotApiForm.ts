@@ -18,19 +18,14 @@ enum FieldElementsTags {
  *
  */
 export class DotApiForm {
-    private formConfig: DotCMSFormConfig;
     private contentType: DotCMSContentType;
     private fields: DotCMSContentTypeField[];
-    private dotApiContentType: DotApiContentType;
 
     constructor(
-        dotApiContentType: DotApiContentType,
-        config: DotCMSFormConfig,
+        private dotApiContentType: DotApiContentType,
+        private formConfig: DotCMSFormConfig,
         private content: DotApiContent
-    ) {
-        this.dotApiContentType = dotApiContentType;
-        this.formConfig = config;
-    }
+    ) {}
 
     /**
      * Render form on provided html element
@@ -46,7 +41,7 @@ export class DotApiForm {
         importScript.type = 'module';
         importScript.text = `
             import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
-            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@0.0.2/dist/loader';
+            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@latest/dist/loader';
             defineCustomElements(window);`;
 
         const fieldScript = this.createFieldTags(this.fields);
@@ -59,29 +54,23 @@ export class DotApiForm {
     }
 
     private createForm(fieldScript: string): HTMLElement {
-        const formTag = document.createElement('dot-form');
+        const dotFormEl = document.createElement('dot-form');
 
-        formTag.setAttribute(
-            'submit-label',
-            this.shouldSetFormLabel('submit', this.formConfig.labels)
-                ? this.formConfig.labels.submit
-                : 'Submit'
-        );
-        formTag.setAttribute(
-            'reset-label',
-            this.shouldSetFormLabel('reset', this.formConfig.labels)
-                ? this.formConfig.labels.reset
-                : 'Reset'
-        );
-        formTag.innerHTML = fieldScript;
+        ['submit', 'reset'].forEach((label: string) => {
+            if (this.shouldSetFormLabel(label, this.formConfig.labels)) {
+                dotFormEl.setAttribute(`${label}-label`, this.formConfig.labels[label]);
+            }
+        });
 
-        formTag.addEventListener('formSubmit', (e: CustomEvent) => {
+        dotFormEl.innerHTML = fieldScript;
+
+        dotFormEl.addEventListener('formSubmit', (e: CustomEvent) => {
             e.preventDefault();
             this.content
                 .save({
                     contentHost: this.formConfig.contentHost,
                     stName: this.contentType.variable,
-                    ...e.detail
+                    ...e.detail.target._formValues
                 })
                 .then((data: Response) => {
                     if (this.formConfig.onSuccess) {
@@ -95,7 +84,7 @@ export class DotApiForm {
                 });
         });
 
-        return formTag;
+        return dotFormEl;
     }
 
     private shouldCreateSpecificTags(fields: string[]): boolean {
