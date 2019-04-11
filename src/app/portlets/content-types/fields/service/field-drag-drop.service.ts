@@ -70,12 +70,12 @@ export class FieldDragDropService {
 
         this._fieldDropFromTarget = dragulaService.dropModel().pipe(
             filter((data: DragulaDropModel) => this.isDraggingExistingField(data)),
-            map((data: DragulaDropModel) => this.getDroppedFieldData(data))
+            map((data: DragulaDropModel) => this.getDroppedFieldData(data)),
         );
 
         this._fieldDropFromSource = dragulaService.dropModel().pipe(
             filter((data: DragulaDropModel) => this.isDraggingNewField(data)),
-            map((data: DragulaDropModel) => this.getDroppedFieldData(data))
+            map((data: DragulaDropModel) => this.getDroppedFieldData(data)),
         );
     }
 

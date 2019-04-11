@@ -1,4 +1,4 @@
-import { ContentTypeField } from '../fields/index';
+import { ContentTypeField, FieldDivider } from '../fields/index';
 
 export interface ContentType {
     baseType?: string;
@@ -21,4 +21,5 @@ export interface ContentType {
     urlMapPattern?: string;
     variable?: string;
     workflow?: string;
+    layout?: FieldDivider[];
 }

@@ -1,4 +1,5 @@
-import { ContentTypeField } from '../';
+import { ContentTypeField, FieldDivider } from '../';
+import { FieldColumn } from '../shared';
 
 const COLUMN_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
@@ -13,8 +14,7 @@ export const TAB_FIELD = {
 };
 
 export class FieldUtil {
-    private static NG_ID_SEQUENCER = new Date().getTime();
-    private static NG_ID__PREFIX = 'ng-';
+    // private static NG_ID_SEQUENCER = new Date().getTime();
     /**
      * Verify if the Field already exist
      * @param ContentTypeField field
@@ -22,7 +22,7 @@ export class FieldUtil {
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     static isNewField(field: ContentTypeField): Boolean {
-        return !field.id || field.id.startsWith(FieldUtil.NG_ID__PREFIX);
+        return !field.id;
     }
 
     static isRowOrColumn(field: ContentTypeField) {
@@ -59,16 +59,25 @@ export class FieldUtil {
         return field.clazz === TAB_FIELD.clazz;
     }
 
-    static createFieldRow(): ContentTypeField {
-        return Object.assign({}, ROW_FIELD);
+    static createFieldRow(nColumns: number): FieldDivider {
+        console.log();
+        return {
+            divider: Object.assign({}, ROW_FIELD),
+            columns: new Array(nColumns).fill(null).map(() => FieldUtil.createFieldColumn())
+        };
     }
 
-    static createFieldColumn(): ContentTypeField {
-        return Object.assign({}, COLUMN_FIELD);
+    static createFieldColumn(): FieldColumn {
+        return {
+            columnDivider: Object.assign({}, COLUMN_FIELD),
+            fields: []
+        };
     }
 
-    static createFieldTabDivider(): ContentTypeField {
-        return Object.assign({}, TAB_FIELD);
+    static createFieldTabDivider(): FieldDivider {
+        return {
+            divider: Object.assign({}, TAB_FIELD)
+        };
     }
 
     static splitFieldsByRows(fields: ContentTypeField[]): ContentTypeField[][] {
@@ -103,9 +112,5 @@ export class FieldUtil {
         });
 
         return result;
-    }
-
-    static createNGID(): string {
-        return `${FieldUtil.NG_ID__PREFIX}${FieldUtil.NG_ID_SEQUENCER++}`;
     }
 }
