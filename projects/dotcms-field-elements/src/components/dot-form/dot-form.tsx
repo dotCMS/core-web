@@ -13,12 +13,12 @@ const fieldMap = {
 })
 export class DotFormComponent {
     @Element() el: HTMLElement;
-    @Event() formSubmit: EventEmitter;
+    @Event() onSubmit: EventEmitter;
     @Prop() fields: DotCMSContentTypeField[] = [];
     @Prop() fieldsToShow: string[] = [];
     @Prop() resetLabel = 'Reset';
     @Prop() submitLabel = 'Submit';
-    @Prop({ mutable: true }) values = {};
+    @Prop({ mutable: true }) value = {};
 
     /**
      * Listen for "valueChanges" and updates the form value with new value.
@@ -28,7 +28,7 @@ export class DotFormComponent {
      */
     @Listen('valueChanges')
     onValueChanges(event: any): void {
-        this.values[event.detail.name] = event.detail.value;
+        this.value[event.detail.name] = event.detail.value;
     }
 
     /**
@@ -45,15 +45,15 @@ export class DotFormComponent {
     hostData() {
         // TODO: do validation here
         return {
-          'class': { 'is-open': this.values },
-          'aria-hidden': this.values ? 'false' : 'true'
+          'class': { 'is-open': this.value },
+          'aria-hidden': this.value ? 'false' : 'true'
         };
       }
 
     componentWillLoad() {
         this.fields.forEach((field: DotCMSContentTypeField) => {
             if (this.getFieldTag(field)) {
-                this.values[field.variable] = field.defaultValue || '';
+                this.value[field.variable] = field.defaultValue || '';
             }
         });
     }
@@ -71,8 +71,8 @@ export class DotFormComponent {
 
     private handleSubmit(evt: Event): void {
         evt.preventDefault();
-        this.formSubmit.emit({
-            ...this.values
+        this.onSubmit.emit({
+            ...this.value
         });
     }
 

@@ -59,7 +59,7 @@ export class DotApiForm {
         dotFormEl.fields = fields;
         dotFormEl.fieldsToShow = this.formConfig.fields;
 
-        dotFormEl.addEventListener('formSubmit', (e: CustomEvent) => {
+        dotFormEl.addEventListener('onSubmit', (e: CustomEvent) => {
             e.preventDefault();
             this.content
                 .save({

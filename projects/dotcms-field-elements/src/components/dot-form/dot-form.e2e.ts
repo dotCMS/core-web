@@ -46,7 +46,7 @@ describe('dot-form', () => {
             });
         });
         await page.waitForChanges();
-        element.getProperty('values').then((data) => { formStatus = data; });
+        element.getProperty('value').then((data) => { formStatus = data; });
     });
 
     it('should renders', async () => {
@@ -57,7 +57,7 @@ describe('dot-form', () => {
 
     it('should send "submit" event', async () => {
         const expectedSubmit = {};
-        const spy = await page.spyOnEvent('formSubmit');
+        const spy = await page.spyOnEvent('onSubmit');
         const saveBtn = await element.find('button[type="submit"]');
 
         fields.forEach((field) => {
@@ -85,7 +85,7 @@ describe('dot-form', () => {
         formStatus = {...formStatus, field1: 'test2' };
 
         await page.waitForChanges();
-        element.getProperty('values').then((data) => {
+        element.getProperty('value').then((data) => {
             expect(data).toEqual(formStatus);
         });
     });
@@ -99,7 +99,7 @@ describe('dot-form', () => {
 
         await page.waitForChanges();
 
-        const data = await element.getProperty('values');
+        const data = await element.getProperty('value');
         expect(data).toEqual(expectedStatus);
     });
 });

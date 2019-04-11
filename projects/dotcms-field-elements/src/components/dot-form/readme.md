@@ -13,14 +13,14 @@
 | `fieldsToShow` | --             |             | `string[]`                 | `[]`       |
 | `resetLabel`   | `reset-label`  |             | `string`                   | `'Reset'`  |
 | `submitLabel`  | `submit-label` |             | `string`                   | `'Submit'` |
-| `values`       | --             |             | `{}`                       | `{}`       |
+| `value`        | --             |             | `{}`                       | `{}`       |
 
 
 ## Events
 
-| Event        | Description | Type                |
-| ------------ | ----------- | ------------------- |
-| `formSubmit` |             | `CustomEvent<void>` |
+| Event      | Description | Type                |
+| ---------- | ----------- | ------------------- |
+| `onSubmit` |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

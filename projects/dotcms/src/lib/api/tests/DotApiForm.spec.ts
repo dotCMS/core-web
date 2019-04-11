@@ -95,7 +95,7 @@ describe('DotApiForm', () => {
 
             const formTag = container.querySelector('dot-form');
             const customEvent = document.createEvent('CustomEvent');
-            customEvent.initCustomEvent('formSubmit', true, false, {});
+            customEvent.initCustomEvent('onSubmit', true, false, {});
             formTag.dispatchEvent(customEvent);
         });
     });
