@@ -1,4 +1,4 @@
-import { Component, Prop, State, Event, EventEmitter, Method, Element } from '@stencil/core';
+import { Component, Prop, State, Event, EventEmitter, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 
 @Component({
@@ -24,8 +24,14 @@ export class DotTextfieldComponent {
     @State() _dotTouched = false;
     _dotPristine = true;
 
-
-    @Element() el: HTMLElement;
+    @Method()
+    reset(): void {
+        this._dotPristine = true;
+        this._dotTouched = false;
+        this.value = '';
+        this._valid = true;
+        this.emitStatusChange();
+    }
 
     isValid(): boolean {
         return !this.isValueRequired() && this.isRegexValid();
@@ -46,20 +52,17 @@ export class DotTextfieldComponent {
         return true;
     }
 
+    errorMessage(): string {
+        return this.isRegexValid()
+            ? this.isValid() ? '' : this.requiredmessage
+            : this.regexcheckmessage;
+    }
+
     blurHandler(): void {
         if (!this._dotTouched) {
             this._dotTouched = true;
             this.emitStatusChange();
         }
-    }
-
-    @Method()
-    reset(): void {
-        this._dotPristine = true;
-        this._dotTouched = false;
-        this.value = '';
-        this._valid = true;
-        this.emitStatusChange();
     }
 
     // Todo: find how to set proper TYPE in TS
@@ -68,17 +71,14 @@ export class DotTextfieldComponent {
         this._dotTouched = true;
         this.value = event.target.value.toString();
         this._valid = this.isValid();
-        this.valueChanges.emit({
-            target: this.el,
-            status: this.getStatus()
-        });
+        this.valueChanges.emit({ name: this.name, value: this.value });
         this.emitStatusChange();
     }
 
     emitStatusChange(): void {
         this.statusChanges.emit({
-            target: this.el,
-            status: this.getStatus()
+            name: this.name,
+            ...this.getStatus()
         });
     }
 
@@ -88,12 +88,6 @@ export class DotTextfieldComponent {
             dotValid: this.isValid(),
             dotPristine: this._dotPristine
         };
-    }
-
-    errorMessage(): string {
-        return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredmessage
-            : this.regexcheckmessage;
     }
 
     componentWillLoad(): void {
@@ -121,7 +115,7 @@ export class DotTextfieldComponent {
                 <input
                     class={this._valid ? '' : 'dot-textfield__input--error'}
                     name={this.name}
-                    type='text'
+                    type="text"
                     value={this.value}
                     placeholder={this.placeholder}
                     required={this.required ? true : null}
@@ -129,9 +123,9 @@ export class DotTextfieldComponent {
                     onBlur={() => this.blurHandler()}
                     disabled={this.disabled ? true : null}
                 />
-                {this.hint ? <span class='dot-textfield__hint'>{this.hint}</span> : ''}
+                {this.hint ? <span class="dot-textfield__hint">{this.hint}</span> : ''}
                 {this.errorMessage() && !this._dotPristine ? (
-                    <span class='dot-textfield__error-meessage'>{this.errorMessage()}</span>
+                    <span class="dot-textfield__error-meessage">{this.errorMessage()}</span>
                 ) : (
                     ''
                 )}
