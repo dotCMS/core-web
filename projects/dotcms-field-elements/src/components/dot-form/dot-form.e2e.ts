@@ -29,7 +29,7 @@ describe('dot-form', () => {
     beforeEach(async () => {
         page = await newE2EPage();
         await page.setContent(
-            `<dot-form submit-label="Save" reset-label="Reset"></dot-form>`
+            `<dot-form submit-label="Saved" reset-label="Reseted"></dot-form>`
         );
         element = await page.find('dot-form');
         element.setProperty('fields', fields);
@@ -46,16 +46,16 @@ describe('dot-form', () => {
             });
         });
         await page.waitForChanges();
-        element.getProperty('_formValues').then((data) => { formStatus = data; });
+        element.getProperty('values').then((data) => { formStatus = data; });
     });
 
     it('should renders', async () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<form><dot-textfield class="hydrated"><label for="field1">field1</label><input name="field1" type="text" required=""><span class="dot-textfield__hint">hint1</span></dot-textfield><dot-textfield class="hydrated"><label for="field2">field2</label><input name="field2" type="text" required=""><span class="dot-textfield__hint">hint2</span></dot-textfield><button type="submit">Save</button><button type="button">Reset</button></form>`;
+        const tagsRenderExpected = `<form><dot-textfield class="hydrated"><label for="field1">field1</label><input name="field1" type="text" required=""><span class="dot-textfield__hint">hint1</span></dot-textfield><dot-textfield class="hydrated"><label for="field2">field2</label><input name="field2" type="text" required=""><span class="dot-textfield__hint">hint2</span></dot-textfield><button type="submit">Saved</button><button type="button">Reseted</button></form>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
-    it('should send "formSubmit" event', async () => {
+    it('should send "submit" event', async () => {
         const expectedSubmit = {};
         const spy = await page.spyOnEvent('formSubmit');
         const saveBtn = await element.find('button[type="submit"]');
@@ -85,7 +85,7 @@ describe('dot-form', () => {
         formStatus = {...formStatus, field1: 'test2' };
 
         await page.waitForChanges();
-        element.getProperty('_formValues').then((data) => {
+        element.getProperty('values').then((data) => {
             expect(data).toEqual(formStatus);
         });
     });
@@ -99,8 +99,7 @@ describe('dot-form', () => {
 
         await page.waitForChanges();
 
-        element.getProperty('_formValues').then((data) => {
-            expect(data).toEqual(expectedStatus);
-        });
+        const data = await element.getProperty('values');
+        expect(data).toEqual(expectedStatus);
     });
 });
