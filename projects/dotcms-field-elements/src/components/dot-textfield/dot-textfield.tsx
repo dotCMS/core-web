@@ -1,5 +1,6 @@
 import { Component, Prop, State, Event, EventEmitter, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
+import { DotFieldStatus } from '../../models/dot-field-status.model';
 
 @Component({
     tag: 'dot-textfield',
@@ -59,7 +60,7 @@ export class DotTextfieldComponent {
                 <input
                     class={this._valid ? '' : 'dot-textfield__input--error'}
                     name={this.name}
-                    type="text"
+                    type='text'
                     value={this.value}
                     placeholder={this.placeholder}
                     required={this.required ? true : null}
@@ -67,9 +68,9 @@ export class DotTextfieldComponent {
                     onBlur={() => this.blurHandler()}
                     disabled={this.disabled ? true : null}
                 />
-                {this.hint ? <span class="dot-textfield__hint">{this.hint}</span> : ''}
+                {this.hint ? <span class='dot-textfield__hint'>{this.hint}</span> : ''}
                 {this.errorMessage() && !this._dotPristine ? (
-                    <span class="dot-textfield__error-meessage">{this.errorMessage()}</span>
+                    <span class='dot-textfield__error-meessage'>{this.errorMessage()}</span>
                 ) : (
                     ''
                 )}
@@ -100,7 +101,6 @@ export class DotTextfieldComponent {
     }
 
     private blurHandler(): void {
-        console.log('--------------blurHandler------------');
         if (!this._dotTouched) {
             this._dotTouched = true;
             this.emitStatusChange();
@@ -127,7 +127,7 @@ export class DotTextfieldComponent {
         this.valueChanges.emit({ name: this.name, value: this.value });
     }
 
-    private getStatus() {
+    private getStatus(): DotFieldStatus {
         return {
             dotTouched: this._dotTouched,
             dotValid: this.isValid(),
