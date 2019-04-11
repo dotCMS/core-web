@@ -3,43 +3,104 @@ import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 describe('dot-form', () => {
     let page: E2EPage;
     let element: E2EElement;
+    let formStatus = {};
+
+    const fields = [
+        {
+            fieldType: 'Text',
+            defaultValue: 'defaultValue1',
+            hint: 'hint1',
+            name: 'field1',
+            required: true,
+            value: 'value1',
+            variable: 'field1'
+        },
+        {
+            fieldType: 'Text',
+            defaultValue: 'defaultValue',
+            hint: 'hint2',
+            name: 'field2',
+            required: true,
+            value: 'value2',
+            variable: 'field2'
+        }
+    ];
 
     beforeEach(async () => {
         page = await newE2EPage();
         await page.setContent(
-            '<dot-form submit-label="Save" reset-label="Reset"><h1>Test</h1></dot-form>'
+            `<dot-form submit-label="Save" reset-label="Reset"></dot-form>`
         );
         element = await page.find('dot-form');
+        element.setProperty('fields', fields);
+        await page.waitForChanges();
+        const txtFields = await element.findAll('dot-textfield');
+        txtFields.forEach((field, index) => {
+            field.triggerEvent('valueChanges', {
+                bubbles: true,
+                cancelable: false,
+                detail: {
+                    name: fields[index].name,
+                    value: fields[index].value
+                }
+            });
+        });
+        await page.waitForChanges();
+        element.getProperty('_formValues').then((data) => { formStatus = data; });
     });
 
     it('should renders', async () => {
-        const tagsRenderExpected = `<form><h1>Test</h1><input type="submit" value="Save"><input type="button" value="Reset"></form>`;
+        // tslint:disable-next-line:max-line-length
+        const tagsRenderExpected = `<form><dot-textfield class="hydrated"><label for="field1">field1</label><input name="field1" type="text" required=""><span class="dot-textfield__hint">hint1</span></dot-textfield><dot-textfield class="hydrated"><label for="field2">field2</label><input name="field2" type="text" required=""><span class="dot-textfield__hint">hint2</span></dot-textfield><button type="submit">Save</button><button type="button">Reset</button></form>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
     it('should send "formSubmit" event', async () => {
+        const expectedSubmit = {};
         const spy = await page.spyOnEvent('formSubmit');
-        const saveBtn = await element.find('input[type="submit"]');
+        const saveBtn = await element.find('button[type="submit"]');
+
+        fields.forEach((field) => {
+            expectedSubmit[field.name] = field.value;
+        });
+
         saveBtn.click();
         await page.waitForChanges();
-        expect(spy).toHaveReceivedEvent();
+        expect(spy).toHaveReceivedEventDetail(expectedSubmit);
     });
 
     it('should listen for valueChanges', async () => {
-        const formTag = await page.find('h1');
+        const textField = await page.find('dot-textfield');
+        const newValue = {
+            name: 'field1',
+            value: 'test2'
+        };
 
-        formTag.triggerEvent('valueChanges', {
+        textField.triggerEvent('valueChanges', {
             bubbles: true,
             cancelable: false,
-            detail: {
-                name: 'header',
-                value: 'test2'
-            }
+            detail: newValue
         });
+
+        formStatus = {...formStatus, field1: 'test2' };
 
         await page.waitForChanges();
         element.getProperty('_formValues').then((data) => {
-            expect(data).toEqual({ header: 'test2' });
+            expect(data).toEqual(formStatus);
+        });
+    });
+
+    it('should reset event', async () => {
+        const resetBtn = await element.find('button[type="button"]');
+        const expectedStatus = Object.assign({}, formStatus);
+        Object.keys(expectedStatus).forEach(e => expectedStatus[e] = '');
+
+        resetBtn.click();
+
+        await page.waitForChanges();
+
+        element.getProperty('_formValues').then((data) => {
+            expect(data).toEqual(expectedStatus);
         });
     });
 });

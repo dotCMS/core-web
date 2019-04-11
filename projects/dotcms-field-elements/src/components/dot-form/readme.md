@@ -7,11 +7,13 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type     | Default     |
-| ------------- | -------------- | ----------- | -------- | ----------- |
-| `_formValues` | --             |             | `{}`     | `{}`        |
-| `resetLabel`  | `reset-label`  |             | `string` | `undefined` |
-| `submitLabel` | `submit-label` |             | `string` | `undefined` |
+| Property       | Attribute      | Description | Type     | Default    |
+| -------------- | -------------- | ----------- | -------- | ---------- |
+| `_formValues`  | --             |             | `{}`     | `{}`       |
+| `fields`       | --             |             | `any[]`  | `[]`       |
+| `fieldsToShow` | --             |             | `any[]`  | `[]`       |
+| `resetLabel`   | `reset-label`  |             | `string` | `'Reset'`  |
+| `submitLabel`  | `submit-label` |             | `string` | `'Submit'` |
 
 
 ## Events

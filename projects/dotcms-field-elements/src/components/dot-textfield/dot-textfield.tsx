@@ -18,7 +18,6 @@ export class DotTextfieldComponent {
     @Prop() required: boolean;
     @Event() valueChanges: EventEmitter;
 
-    @State() _value: string;
     @State() _error = false;
     _label: string;
 
@@ -38,34 +37,34 @@ export class DotTextfieldComponent {
 
     // Todo: find how to set proper TYPE in TS
     setValue(event): void {
-        this._value = event.target.value.toString();
-        this._error = this.validate(this._value);
+        this.value = event.target.value.toString();
+        this._error = this.validate(this.value);
         this.value = event.target.value.toString();
         // this.valueChanges.emit({ error: this._error, value: this._value, name: this.name });
-        this.valueChanges.emit({target: this.el,
-            status: { dirty: true }});
+        this.valueChanges.emit({ name: this.name, value: this.value});
     }
 
     @Method()
     reset() {
-        console.log('---reset', this._label);
+        this.valueChanges.emit({ name: this.name, value: ''});
+        this.value = '';
     }
 
     componentWillLoad() {
         this._label = `dotTextfield_${generateId()}`;
-        this._value = this._value && this._value.length > -1 ? this._value : this.value;
+        // this._value = this._value && this._value.length > -1 ? this._value : this.value;
     }
 
     // tslint:disable-next-line:cyclomatic-complexity
     render() {
         return (
             <Fragment>
-                <label htmlFor={this._label}>{this.label}</label>
+                <label htmlFor={this.name}>{this.label}</label>
                 <input
                     class={this._error ? 'dot-textfield__input--error' : ''}
-                    name={this._label}
+                    name={this.name}
                     type='text'
-                    value={this._value}
+                    value={this.value}
                     placeholder={this.placeholder}
                     required={this.required ? true : null}
                     onInput={(event: Event) => this.setValue(event)}

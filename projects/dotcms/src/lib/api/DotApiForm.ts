@@ -35,8 +35,8 @@ export class DotApiForm {
         const importScript = document.createElement('script');
         importScript.type = 'module';
         importScript.text = `
-            // import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
-            import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@latest/dist/loader';
+            import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
+            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@latest/dist/loader';
             defineCustomElements(window);`;
 
         const formTag = this.createForm(this.fields);
@@ -57,6 +57,7 @@ export class DotApiForm {
         });
 
         dotFormEl.fields = fields;
+        dotFormEl.fieldsToShow = this.formConfig.fields;
 
         dotFormEl.addEventListener('formSubmit', (e: CustomEvent) => {
             e.preventDefault();

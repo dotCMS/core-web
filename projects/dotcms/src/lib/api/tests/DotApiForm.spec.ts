@@ -47,8 +47,7 @@ class DotApiContentMock {
     save(): Promise<any> {
         return new Promise((resolve) => {
             resolve({
-                status: 200,
-                text: () => '<h1>Hello Widget</h1>'
+                status: 200
             });
         });
     }
@@ -64,13 +63,11 @@ describe('DotApiForm', () => {
         dotApiContentType = new DotApiContentTypeMock();
     });
 
-    it('should render a Form and execute "onSucess" function on submit', async () => {
+    it('should render a Form and execute "onSucess" function on submit', (done) => {
         const expectedForm = `<script type="module">
             import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
-            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@0.0.2/dist/loader';
-            defineCustomElements(window);</script><dot-form submit-label="Save" reset-label="Clear">
-            <dot-textfield name="field1" label="field1" value="defaultValue1" hint="hint1" required=""></dot-textfield>
-            <dot-textfield name="field2" label="field2" value="defaultValue" hint="hint2" required=""></dot-textfield></dot-form>`;
+            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@latest/dist/loader';
+            defineCustomElements(window);</script><dot-form submit-label="Save" reset-label="Clear"></dot-form>`;
 
         const config = {
             identifier: '321',
@@ -78,45 +75,28 @@ describe('DotApiForm', () => {
                 submit: 'Save',
                 reset: 'Clear'
             },
-            onSuccess: function(data: any) {
-                console.log('*** onSuccess data', data);
-            },
+            onSuccess: jasmine.createSpy().and.callFake((data) => {
+                expect(data).toEqual({
+                    status: 200
+                });
+                done();
+            }),
             onError: function(error: any) {
                 console.log('*** onError data', error);
             }
         };
         const container = document.createElement('div');
         spyOn(container, 'append').and.callThrough();
-        spyOn(config, 'onSuccess').and.callThrough();
         dotApiForm = new DotApiForm(dotApiContentType, config, dotApiContent);
 
         dotApiForm.render(container).then(() => {
             expect(container.append).toHaveBeenCalled();
             expect(container.innerHTML).toBe(expectedForm);
 
-            const formTag = container.getElementsByTagName('dot-textfield')[0];
+            const formTag = container.querySelector('dot-form');
             const customEvent = document.createEvent('CustomEvent');
             customEvent.initCustomEvent('formSubmit', true, false, {});
             formTag.dispatchEvent(customEvent);
-            expect('config.onSuccess').toHaveBeenCalled();
-        });
-    });
-
-    it('should render a Form with 1 field', async () => {
-        const expectedForm = `<script type="module">
-            import { defineCustomElements } from 'http://localhost:8080/fieldElements/loader/index.js';
-            //import { defineCustomElements } from 'https://unpkg.com/dotcms-field-elements@0.0.2/dist/loader';
-            defineCustomElements(window);</script><dot-form submit-label="Submit" reset-label="Reset">
-            <dot-textfield name="field1" label="field1" value="defaultValue1" hint="hint1" required=""></dot-textfield></dot-form>`;
-
-        const config = { identifier: '321', fields: ['field1'] };
-        const container = document.createElement('div');
-        spyOn(container, 'append').and.callThrough();
-        dotApiForm = new DotApiForm(dotApiContentType, config, dotApiContent);
-
-        dotApiForm.render(container).then(() => {
-            expect(container.append).toHaveBeenCalled();
-            expect(container.innerHTML).toBe(expectedForm);
         });
     });
 });
