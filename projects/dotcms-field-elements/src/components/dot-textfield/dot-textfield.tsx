@@ -31,63 +31,7 @@ export class DotTextfieldComponent {
         this.value = '';
         this._valid = true;
         this.emitStatusChange();
-    }
-
-    isValid(): boolean {
-        return !this.isValueRequired() && this.isRegexValid();
-    }
-
-    isValueRequired(): boolean {
-        return this.required && !this.value.length;
-    }
-
-    /**
-     * Check if there is Regular Expresion to validate, otherwise return true.
-     */
-    isRegexValid(): boolean {
-        if (this.regexcheck && this.value.length) {
-            const regex = new RegExp(this.regexcheck, 'ig');
-            return regex.test(this.value);
-        }
-        return true;
-    }
-
-    errorMessage(): string {
-        return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredmessage
-            : this.regexcheckmessage;
-    }
-
-    blurHandler(): void {
-        if (!this._dotTouched) {
-            this._dotTouched = true;
-            this.emitStatusChange();
-        }
-    }
-
-    // Todo: find how to set proper TYPE in TS
-    setValue(event): void {
-        this._dotPristine = false;
-        this._dotTouched = true;
-        this.value = event.target.value.toString();
-        this._valid = this.isValid();
-        this.valueChanges.emit({ name: this.name, value: this.value });
-        this.emitStatusChange();
-    }
-
-    emitStatusChange(): void {
-        this.statusChanges.emit({
-            name: this.name,
-            ...this.getStatus()
-        });
-    }
-
-    getStatus() {
-        return {
-            dotTouched: this._dotTouched,
-            dotValid: this.isValid(),
-            dotPristine: this._dotPristine
-        };
+        this.emitValueChange();
     }
 
     componentWillLoad(): void {
@@ -131,5 +75,63 @@ export class DotTextfieldComponent {
                 )}
             </Fragment>
         );
+    }
+
+    private isValid(): boolean {
+        return !this.isValueRequired() && this.isRegexValid();
+    }
+
+    private isValueRequired(): boolean {
+        return this.required && !this.value.length;
+    }
+
+    private isRegexValid(): boolean {
+        if (this.regexcheck && this.value.length) {
+            const regex = new RegExp(this.regexcheck, 'ig');
+            return regex.test(this.value);
+        }
+        return true;
+    }
+
+    private errorMessage(): string {
+        return this.isRegexValid()
+            ? this.isValid() ? '' : this.requiredmessage
+            : this.regexcheckmessage;
+    }
+
+    private blurHandler(): void {
+        console.log('--------------blurHandler------------');
+        if (!this._dotTouched) {
+            this._dotTouched = true;
+            this.emitStatusChange();
+        }
+    }
+
+    private setValue(event): void {
+        this._dotPristine = false;
+        this._dotTouched = true;
+        this.value = event.target.value.toString();
+        this._valid = this.isValid();
+        this.emitValueChange();
+        this.emitStatusChange();
+    }
+
+    private emitStatusChange(): void {
+        this.statusChanges.emit({
+            name: this.name,
+            ...this.getStatus()
+        });
+    }
+
+    private emitValueChange(): void {
+        this.valueChanges.emit({ name: this.name, value: this.value });
+    }
+
+    private getStatus() {
+        return {
+            dotTouched: this._dotTouched,
+            dotValid: this.isValid(),
+            dotPristine: this._dotPristine
+        };
     }
 }

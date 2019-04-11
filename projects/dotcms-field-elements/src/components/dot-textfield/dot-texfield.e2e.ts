@@ -29,7 +29,7 @@ describe('dot-textfield', () => {
         input = await page.find('input');
     });
 
-    it('should render', async () => {
+    it('should render', () => {
         const tagsRenderExpected = `<label>Name:</label><input name="fullName" type="text" placeholder="Enter Name" required=""><span class="dot-textfield__hint">this is a hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
@@ -41,17 +41,54 @@ describe('dot-textfield', () => {
         expect(errorMessage.innerHTML).toBe('Invalid Name');
     });
 
-    describe('emit statusChanges', () => {
-        //TODO: In progress...
-        it('should send status onBlur', async () => {
-            await page.$eval('input', (e: HTMLElement) => e.blur());
-            await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                dotPristine: false,
-                dotTouched: true,
-                dotValid: true
-            });
+    it('should load as pristine and untouched', () => {
+        expect(element.classList.contains('dot-pristine')).toBe(true);
+        expect(element.classList.contains('dot-untouched')).toBe(true);
+    });
+
+    xit('should mark as touched when onblur', () => {
+        // TODO: Need to find the way to test the blur event.
+    });
+
+    it('should mark as dirty and touched when type', async () => {
+        input.press('a');
+        await page.waitForChanges();
+        expect(element.classList.contains('dot-dirty')).toBe(true);
+        expect(element.classList.contains('dot-touched')).toBe(true);
+    });
+
+    it('should mark as invalid when value dont match REgex', async () => {
+        input.press('@');
+        await page.waitForChanges();
+        expect(element.classList.contains('dot-invalid')).toBe(true);
+    });
+
+    it('should clear value, set pristine and untouched  when input set reset', async () => {
+        element.callMethod('reset');
+        await page.waitForChanges();
+
+        expect(element.classList.contains('dot-pristine')).toBe(true);
+        expect(element.classList.contains('dot-untouched')).toBe(true);
+        expect(element.classList.contains('dot-invalid')).toBe(true);
+        expect(await input.getProperty('value')).toBe('');
+    });
+
+    it('should mark as disabled when prop is present', async () => {
+        element.setProperty('disabled', true);
+        await page.waitForChanges();
+        expect(await input.getProperty('disabled')).toBe(true);
+    });
+
+    it('should mark as required when prop is present', async () => {
+        expect(await input.getProperty('required')).toBe(true);
+    });
+
+    describe('emit events', () => {
+        xit('should send status onBlur', async () => {
+            // TODO: Need to find the way to test the blur event.
+            // await page.$eval('input', (e: HTMLInputElement) => {
+            //     e.blur();
+            // });
         });
 
         it('should send status value change', async () => {
@@ -65,7 +102,7 @@ describe('dot-textfield', () => {
             });
         });
 
-        it('should send status on Reset', async () => {
+        it('should emit status and value on Reset', async () => {
             element.callMethod('reset');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -74,57 +111,13 @@ describe('dot-textfield', () => {
                 dotTouched: false,
                 dotValid: false
             });
+            expect(spyValueChanges).toHaveReceivedEventDetail({ name: 'fullName', value: '' });
         });
-    });
 
-    it('should emit change value', async () => {
-        input.press('a');
-        await page.waitForChanges();
-        expect(spyValueChanges).toHaveReceivedEventDetail({ name: 'fullName', value: 'Johna' });
-    });
-
-    it('should load as pristine and untouched', async () => {
-        expect(element.classList.contains('dot-pristine')).toBeTruthy();
-        expect(element.classList.contains('dot-untouched')).toBeTruthy();
-    });
-
-    //TODO: In progress...
-    it('should mark as touched when onblur', async () => {
-        // input.press('@');
-        await page.waitForChanges();
-        expect(element.classList.contains('dot-touched')).toBeTruthy();
-    });
-
-    it('should mark as dirty and touched when type', async () => {
-        input.press('a');
-        await page.waitForChanges();
-        expect(element.classList.contains('dot-dirty')).toBeTruthy();
-        expect(element.classList.contains('dot-touched')).toBeTruthy();
-    });
-
-    it('should mark as invalid when value dont match REgex', async () => {
-        input.press('@');
-        await page.waitForChanges();
-        expect(element.classList.contains('dot-invalid')).toBeTruthy();
-    });
-
-    it('should clear value, set pristine and untouched  when input set reset', async () => {
-        element.callMethod('reset');
-        await page.waitForChanges();
-
-        expect(element.classList.contains('dot-pristine')).toBeTruthy();
-        expect(element.classList.contains('dot-untouched')).toBeTruthy();
-        expect(element.classList.contains('dot-invalid')).toBeTruthy();
-        expect(await input.getProperty('value')).toBe('');
-    });
-
-    it('should mark as disabled when prop is present', async () => {
-        element.setProperty('disabled', true);
-        await page.waitForChanges();
-        expect(await input.getProperty('disabled')).toBeTruthy();
-    });
-
-    it('should mark as required when prop is present', async () => {
-        expect(await input.getProperty('required')).toBeTruthy();
+        it('should emit change value', async () => {
+            input.press('a');
+            await page.waitForChanges();
+            expect(spyValueChanges).toHaveReceivedEventDetail({ name: 'fullName', value: 'Johna' });
+        });
     });
 });
