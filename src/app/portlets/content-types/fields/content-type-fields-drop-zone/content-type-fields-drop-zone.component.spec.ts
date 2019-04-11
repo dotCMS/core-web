@@ -312,7 +312,7 @@ const removeSortOrder = (fieldRows: FieldRow[]) => {
     });
 };
 
-fdescribe('Load fields and drag and drop', () => {
+describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
@@ -344,27 +344,6 @@ fdescribe('Load fields and drag and drop', () => {
             target: {
                 columnId: fieldsMoved[0].columns[1].columnDivider.id,
                 model: fieldsMoved[0].columns[1].fields
-            }
-        });
-
-        return fieldsMoved;
-    };
-
-    const moveFromFirstRowToSecondRowAndEmitEvent = () => {
-        const fieldsMoved = _.cloneDeep(comp.fieldRows);
-        const fieldToMove = fieldsMoved[0].columns[1].fields[0];
-        fieldsMoved[0].columns[1].fields = [];
-        fieldsMoved[2].columns[0].fields.unshift(fieldToMove);
-
-        this.testFieldDragDropService._fieldDropFromTarget.next({
-            item: fieldToMove,
-            source: {
-                columnId: fieldsMoved[0].columns[1].columnDivider.id,
-                model: fieldsMoved[0].columns[1].fields
-            },
-            target: {
-                columnId: fieldsMoved[2].columns[0].columnDivider.id,
-                model: fieldsMoved[2].columns[0].fields
             }
         });
 
@@ -584,27 +563,6 @@ fdescribe('Load fields and drag and drop', () => {
         let expectedIndex = 4;
 
         const expected = [fakeFields[8], fakeFields[4], fakeFields[5], fakeFields[6], fakeFields[7]].map(
-            (fakeField) => {
-                fakeField.sortOrder = expectedIndex++;
-                return fakeField;
-            }
-        );
-
-        expect(comp.saveFields.emit).toHaveBeenCalledWith(expected);
-        expect(removeSortOrder(<FieldRow[]>  comp.fieldRows)).toEqual(removeSortOrder(fieldsMoved));
-    });
-
-    fit('should save all the fields (moving just a field in the first row to the second)', () => {
-        spyOn(comp.saveFields, 'emit');
-
-        fixture.detectChanges();
-        const fieldsMoved = moveFromFirstRowToSecondRowAndEmitEvent();
-        console.log('fieldsMoved', fieldsMoved);
-        fixture.detectChanges();
-
-        let expectedIndex = 4;
-
-        const expected = [fakeFields[5], fakeFields[6], fakeFields[7], fakeFields[4]].map(
             (fakeField) => {
                 fakeField.sortOrder = expectedIndex++;
                 return fakeField;
