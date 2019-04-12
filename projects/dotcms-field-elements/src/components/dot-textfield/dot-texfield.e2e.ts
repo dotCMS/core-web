@@ -30,14 +30,14 @@ describe('dot-textfield', () => {
     });
 
     it('should render', () => {
-        const tagsRenderExpected = `<label>Name:</label><input name="fullName" type="text" placeholder="Enter Name" required=""><span class="dot-textfield__hint">this is a hint</span>`;
+        const tagsRenderExpected = `<label>Name:</label><input name="fullName" type="text" placeholder="Enter Name" required=""><span class="dot-field__hint">this is a hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
     it('should show Regex validation message', async () => {
         await input.press('@');
         await page.waitForChanges();
-        const errorMessage = await page.find('.dot-textfield__error-meessage');
+        const errorMessage = await page.find('.dot-field__error-meessage');
         expect(errorMessage.innerHTML).toBe('Invalid Name');
     });
 

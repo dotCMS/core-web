@@ -25,6 +25,9 @@ export class DotTextfieldComponent {
     @State() _dotTouched = false;
     _dotPristine = true;
 
+    /**
+     * Reset properties of the filed, clear value and emit events.
+     */
     @Method()
     reset(): void {
         this._dotPristine = true;
@@ -58,9 +61,9 @@ export class DotTextfieldComponent {
             <Fragment>
                 <label>{this.label}</label>
                 <input
-                    class={this._valid ? '' : 'dot-textfield__input--error'}
+                    class={this._valid ? '' : 'dot-field__input--error'}
                     name={this.name}
-                    type='text'
+                    type="text"
                     value={this.value}
                     placeholder={this.placeholder}
                     required={this.required ? true : null}
@@ -68,9 +71,9 @@ export class DotTextfieldComponent {
                     onBlur={() => this.blurHandler()}
                     disabled={this.disabled ? true : null}
                 />
-                {this.hint ? <span class='dot-textfield__hint'>{this.hint}</span> : ''}
-                {this.errorMessage() && !this._dotPristine ? (
-                    <span class='dot-textfield__error-meessage'>{this.errorMessage()}</span>
+                {this.hint ? <span class="dot-field__hint">{this.hint}</span> : ''}
+                {this.showErrorMessage() ? (
+                    <span class="dot-field__error-meessage">{this.getErrorMessage()}</span>
                 ) : (
                     ''
                 )}
@@ -94,7 +97,11 @@ export class DotTextfieldComponent {
         return true;
     }
 
-    private errorMessage(): string {
+    private showErrorMessage(): boolean {
+        return this.getErrorMessage() && !this._dotPristine;
+    }
+
+    private getErrorMessage(): string {
         return this.isRegexValid()
             ? this.isValid() ? '' : this.requiredmessage
             : this.regexcheckmessage;
