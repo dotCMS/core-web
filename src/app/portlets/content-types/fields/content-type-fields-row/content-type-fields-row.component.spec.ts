@@ -4,7 +4,7 @@ import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/c
 import { ContentTypeFieldsRowComponent } from './';
 import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
-import { ContentTypeField } from '../';
+import { DotContentTypeField } from '../';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -41,11 +41,11 @@ const mockFieldRowFieldEmpty: FieldDivider = FieldUtil.createFieldRow(2);
 })
 class TestContentTypeFieldDraggableItemComponent {
     @Input()
-    field: ContentTypeField;
+    field: DotContentTypeField;
     @Output()
-    remove: EventEmitter<ContentTypeField> = new EventEmitter();
+    remove: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    edit: EventEmitter<ContentTypeField> = new EventEmitter();
+    edit: EventEmitter<DotContentTypeField> = new EventEmitter();
 }
 
 @Component({

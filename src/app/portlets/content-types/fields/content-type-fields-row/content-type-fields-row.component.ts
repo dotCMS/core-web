@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { ContentTypeField, FieldDivider } from '../shared';
+import { DotContentTypeField, FieldDivider } from '../shared';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { FieldColumn } from '..';
@@ -22,9 +22,9 @@ export class ContentTypeFieldsRowComponent implements OnInit {
     fieldRow: FieldDivider;
 
     @Output()
-    editField: EventEmitter<ContentTypeField> = new EventEmitter();
+    editField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    removeField: EventEmitter<ContentTypeField> = new EventEmitter();
+    removeField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
     removeRow: EventEmitter<FieldDivider> = new EventEmitter();
 
@@ -64,7 +64,7 @@ export class ContentTypeFieldsRowComponent implements OnInit {
      * @param ContentTypeField field
      * @memberof ContentTypeFieldsRowComponent
      */
-    onRemoveField(field: ContentTypeField): void {
+    onRemoveField(field: DotContentTypeField): void {
         this.dotDialogService.confirm({
             accept: () => {
                 this.removeField.emit(field);

@@ -1,6 +1,6 @@
-import { ContentTypeField } from './field.model';
+import { DotContentTypeField } from './dot-content-type-field.model';
 
 export interface FieldColumn {
-    fields: ContentTypeField[];
-    columnDivider: ContentTypeField;
+    fields: DotContentTypeField[];
+    columnDivider: DotContentTypeField;
 }

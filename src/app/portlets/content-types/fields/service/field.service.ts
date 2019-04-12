@@ -1,7 +1,7 @@
 import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ContentTypeField, FieldType, FieldDivider } from '../shared';
+import { DotContentTypeField, FieldType, DotFieldDivider } from '../shared';
 import { CoreWebService } from 'dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { FieldUtil } from '../util/field-util';
@@ -30,7 +30,7 @@ export class FieldService {
      * @returns Observable<any>
      * @memberof FieldService
      */
-    saveFields(contentTypeId: string, fields: ContentTypeField[]): Observable<FieldDivider[]> {
+    saveFields(contentTypeId: string, fields: DotContentTypeField[]): Observable<DotFieldDivider[]> {
         fields.forEach((field, index) => {
             field.contentTypeId = contentTypeId;
 
@@ -61,8 +61,8 @@ export class FieldService {
      */
     deleteFields(
         contentTypeId: string,
-        fields: ContentTypeField[]
-    ): Observable<{ fields: FieldDivider[]; deletedIds: string[] }> {
+        fields: DotContentTypeField[]
+    ): Observable<{ fields: DotFieldDivider[]; deletedIds: string[] }> {
         return this.coreWebService
             .requestView({
                 body: {

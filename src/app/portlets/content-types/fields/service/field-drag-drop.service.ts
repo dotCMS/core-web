@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map } from 'rxjs/operators';
-import { FieldDivider, ContentTypeField } from '@portlets/content-types/fields/shared';
+import { FieldDivider, DotContentTypeField } from '@portlets/content-types/fields/shared';
 import * as _ from 'lodash';
 
 /**
@@ -70,12 +70,12 @@ export class FieldDragDropService {
 
         this._fieldDropFromTarget = dragulaService.dropModel().pipe(
             filter((data: DragulaDropModel) => this.isDraggingExistingField(data)),
-            map((data: DragulaDropModel) => this.getDroppedFieldData(data)),
+            map((data: DragulaDropModel) => this.getDroppedFieldData(data))
         );
 
         this._fieldDropFromSource = dragulaService.dropModel().pipe(
             filter((data: DragulaDropModel) => this.isDraggingNewField(data)),
-            map((data: DragulaDropModel) => this.getDroppedFieldData(data)),
+            map((data: DragulaDropModel) => this.getDroppedFieldData(data))
         );
     }
 
@@ -238,13 +238,13 @@ interface DragulaDropModel {
 }
 
 export interface DropFieldData {
-    item: ContentTypeField;
+    item: DotContentTypeField;
     source?: {
         columnId: string;
-        model: ContentTypeField[];
+        model: DotContentTypeField[];
     };
     target: {
         columnId: string;
-        model: ContentTypeField[];
+        model: DotContentTypeField[];
     };
 }

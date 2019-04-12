@@ -10,14 +10,14 @@ import {
     OnDestroy
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
-import { ContentTypeField, FieldType } from '../shared';
+import { DotContentTypeField, FieldType, DotFieldDivider } from '../shared';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.model';
+import { FieldDivider } from '@portlets/content-types/fields/shared/dot-field-divider.model';
 import { takeUntil, take  } from 'rxjs/operators';
 import { Subject, merge } from 'rxjs';
 import { DotFieldVariableParams } from '../dot-content-type-fields-variables/models/dot-field-variable-params.interface';
@@ -39,7 +39,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     dialogActiveTab: number;
     displayDialog = false;
-    formData: ContentTypeField;
+    formData: DotContentTypeField;
     currentFieldType: FieldType;
     currentField: DotFieldVariableParams;
     dialogActions: DotDialogActions;
@@ -52,9 +52,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     layout: FieldDivider[];
 
     @Output()
-    saveFields = new EventEmitter<ContentTypeField[]>();
+    saveFields = new EventEmitter<DotContentTypeField[]>();
     @Output()
-    removeFields = new EventEmitter<ContentTypeField[]>();
+    removeFields = new EventEmitter<DotContentTypeField[]>();
 
     hideButtons = false;
 
@@ -111,9 +111,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             });
 
         merge(
-            this.fieldDragDropService.fieldRowDropFromTarget$.pipe(takeUntil(this.destroy$)),
-            this.fieldDragDropService.fieldDropFromTarget$.pipe(takeUntil(this.destroy$))
-        ).subscribe(() => {
+            this.fieldDragDropService.fieldRowDropFromTarget$,
+            this.fieldDragDropService.fieldDropFromTarget$
+        ).pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
             setTimeout(this.moveFields.bind(this), 0);
         });
 
@@ -170,7 +171,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      */
     addRow(columns: number): void {
         const newRow = FieldUtil.createFieldRow(columns);
-        console.log('newRow', newRow);
         this.fieldRows.push(newRow);
     }
 
@@ -179,8 +179,8 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param ContentTypeField fieldToSave
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    saveFieldsHandler(fieldToSave: ContentTypeField): void {
-        let fields: ContentTypeField[];
+    saveFieldsHandler(fieldToSave: DotContentTypeField): void {
+        let fields: DotContentTypeField[];
 
         if (fieldToSave.id) {
             fields = [fieldToSave];
@@ -197,7 +197,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param ContentTypeField fieldToEdit
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    editField(fieldToEdit: ContentTypeField): void {
+    editField(fieldToEdit: DotContentTypeField): void {
         const fields = this.getFields();
         this.formData = fields.filter((field) => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
@@ -239,10 +239,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with fieldToDelete
-     * @param {ContentTypeField} fieldToDelete
+     * @param {DotContentTypeField} fieldToDelete
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeField(fieldToDelete: ContentTypeField): void {
+    removeField(fieldToDelete: DotContentTypeField): void {
         this.removeFields.emit([fieldToDelete]);
     }
 
@@ -253,7 +253,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      */
     removeFieldRow(fieldRow: FieldDivider): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
-        const fieldsToDelete: ContentTypeField[] = [];
+        const fieldsToDelete: DotContentTypeField[] = [];
 
         if (!FieldUtil.isNewField(fieldRow.divider)) {
             fieldsToDelete.push(fieldRow.divider);
@@ -267,7 +267,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with the tab to be removed
-     * @param {FieldTab} fieldTab
+     * @param {DotFieldDivider} fieldTab
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeTab(fieldTab: FieldDivider): void {
@@ -307,7 +307,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
-    private setDroppedField(droppedField: ContentTypeField): void {
+    private setDroppedField(droppedField: DotContentTypeField): void {
         this.formData = droppedField;
 
         if (this.formData) {
@@ -332,15 +332,15 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         }
     }
 
-    private getFieldsToSave(fieldToSave: ContentTypeField): ContentTypeField[] {
+    private getFieldsToSave(fieldToSave: DotContentTypeField): DotContentTypeField[] {
         return this.formData.id
             ? [this.getUpdatedField(fieldToSave)]
             : this.getUpdatedFields(fieldToSave);
     }
 
-    private getUpdatedField(fieldToSave: ContentTypeField): ContentTypeField {
+    private getUpdatedField(fieldToSave: DotContentTypeField): DotContentTypeField {
         const fields = this.getFields();
-        let result: ContentTypeField;
+        let result: DotContentTypeField;
 
         for (let i = 0; i < fields.length; i++) {
             const field = fields[i];
@@ -354,9 +354,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         return result;
     }
 
-    private getUpdatedFields(newField: ContentTypeField): ContentTypeField[] {
+    private getUpdatedFields(newField: DotContentTypeField): DotContentTypeField[] {
         const fields = this.getFields();
-        const result: ContentTypeField[] = [];
+        const result: DotContentTypeField[] = [];
 
         fields.forEach((field, index) => {
             if (field.sortOrder !== index) {
@@ -367,11 +367,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                 result.push(fieldToPush);
             }
         });
-        console.log('result', result);
+
         return result;
     }
 
-    private isNewOrLayoutFiled(field: ContentTypeField): boolean {
+    private isNewOrLayoutFiled(field: DotContentTypeField): boolean {
         return FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field);
     }
 
@@ -384,11 +384,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         }
     }
 
-    private getFields(): ContentTypeField[] {
-        const fields: ContentTypeField[] = [];
+    private getFields(): DotContentTypeField[] {
+        const fields: DotContentTypeField[] = [];
 
         this.fieldRows.forEach((fieldDivider: FieldDivider) => {
-            const divider: ContentTypeField = fieldDivider.divider;
+            const divider: DotContentTypeField = fieldDivider.divider;
 
             fields.push(divider);
 

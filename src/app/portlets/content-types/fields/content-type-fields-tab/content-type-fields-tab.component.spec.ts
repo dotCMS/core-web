@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component} from '@angular/core';
 import { ContentTypeFieldsTabComponent } from './';
 import { By } from '@angular/platform-browser';
-import { ContentTypeField } from '../';
+import { DotContentTypeField } from '../';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
@@ -11,7 +11,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { FieldDivider } from '../shared';
 
 
-const tabField: ContentTypeField = {
+const tabField: DotContentTypeField = {
     clazz: 'tab',
     name: 'fieldTab-1'
 };

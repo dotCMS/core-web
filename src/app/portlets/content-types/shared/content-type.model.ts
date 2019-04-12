@@ -1,4 +1,4 @@
-import { ContentTypeField, FieldDivider } from '../fields/index';
+import { DotContentTypeField, FieldDivider } from '../fields/index';
 
 export interface ContentType {
     baseType?: string;
@@ -7,7 +7,7 @@ export interface ContentType {
     description?: string;
     detailPage?: string;
     expireDateVar?: string;
-    fields?: Array<ContentTypeField>;
+    fields?: Array<DotContentTypeField>;
     fixed: boolean;
     folder: string;
     host: string;

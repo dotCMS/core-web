@@ -5,7 +5,7 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
-import { ContentTypeField, ContentTypeFieldsDropZoneComponent, FieldDivider } from '../fields/index';
+import { DotContentTypeField, ContentTypeFieldsDropZoneComponent, FieldDivider } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -223,7 +223,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param fieldsToDelete Fields to be removed
      * @memberof ContentTypesEditComponent
      */
-    removeFields(fieldsToDelete: ContentTypeField[]): void {
+    removeFields(fieldsToDelete: DotContentTypeField[]): void {
         this.fieldService
             .deleteFields(this.data.id, fieldsToDelete)
             .pipe(pluck('fields'), take(1))
@@ -242,7 +242,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param fieldsToSave Fields to be save
      * @memberof ContentTypesEditComponent
      */
-    saveFields(fieldsToSave: ContentTypeField[]): void {
+    saveFields(fieldsToSave: DotContentTypeField[]): void {
         console.log('fieldsToSave', fieldsToSave);
         this.loadingFields = true;
         this.fieldService.saveFields(this.data.id, fieldsToSave).pipe(take(1)).subscribe(
@@ -288,11 +288,11 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         };
     }
 
-    private isUpdatingField(fieldsToSave: ContentTypeField[]): boolean {
+    private isUpdatingField(fieldsToSave: DotContentTypeField[]): boolean {
         return fieldsToSave[0].id && fieldsToSave.length === 1;
     }
 
-    private isAnyNewField(fieldsToSave: ContentTypeField[]): boolean {
+    private isAnyNewField(fieldsToSave: DotContentTypeField[]): boolean {
         return fieldsToSave.some(field => !field.id);
     }
 

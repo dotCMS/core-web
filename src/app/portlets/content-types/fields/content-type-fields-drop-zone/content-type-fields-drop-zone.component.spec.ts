@@ -4,7 +4,7 @@ import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
 import {
-    ContentTypeField,
+    DotContentTypeField,
     ContentTypeFieldsAddRowModule,
     FieldDivider
 } from '../';
@@ -42,9 +42,9 @@ class TestContentTypeFieldsRowComponent {
     @Input()
     fieldRow: FieldDivider;
     @Output()
-    editField: EventEmitter<ContentTypeField> = new EventEmitter();
+    editField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    removeField: EventEmitter<ContentTypeField> = new EventEmitter();
+    removeField: EventEmitter<DotContentTypeField> = new EventEmitter();
 }
 
 @Component({
@@ -55,7 +55,7 @@ class TestContentTypeFieldsPropertiesFormComponent {
     @Output()
     saveField: EventEmitter<any> = new EventEmitter();
     @Input()
-    formFieldData: ContentTypeField;
+    formFieldData: DotContentTypeField;
 
     public destroy(): void {}
 }
@@ -69,7 +69,7 @@ class TestDotContentTypeFieldsTabComponent {
     fieldTab: FieldDivider;
 
     @Output()
-    editTab: EventEmitter<ContentTypeField> = new EventEmitter();
+    editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
     removeTab: EventEmitter<FieldDivider> = new EventEmitter();
 }
@@ -233,7 +233,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should emit removeFields event when a Row is removed', () => {
-        let fieldsToRemove: ContentTypeField[];
+        let fieldsToRemove: DotContentTypeField[];
 
         const fieldRow: FieldDivider = FieldUtil.createFieldRow(1);
         const field = {

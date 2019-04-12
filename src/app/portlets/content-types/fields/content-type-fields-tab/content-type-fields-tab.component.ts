@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ContentTypeField } from '../shared';
+import { DotContentTypeField } from '../shared';
 import { DotMessageService } from '@services/dot-messages-service';
-import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.model';
+import { FieldDivider } from '@portlets/content-types/fields/shared/dot-field-divider.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { take } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ export class ContentTypeFieldsTabComponent implements OnInit {
     fieldTab: FieldDivider;
 
     @Output()
-    editTab: EventEmitter<ContentTypeField> = new EventEmitter();
+    editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
 
     @Output()
     removeTab: EventEmitter<FieldDivider> = new EventEmitter();
