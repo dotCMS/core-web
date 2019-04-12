@@ -22,7 +22,18 @@
                 checkboxElem.addEventListener('onChange', function(event) {
                     console.log('--checkboxElem onChange', event.detail);
                 });
+
             };
+
+            function resetFrom() {
+                let inputTxt = document.querySelector('dot-textfield');
+                inputTxt.reset();
+            }
+
+            document.addEventListener('statusChanges', function(event){
+                console.log('statusChanges', event.detail);
+            });
+
         </script>
     </head>
     <body>
@@ -31,12 +42,22 @@
         <dot-form>
         <dot-textfield
             label='Name:'
+            name='fullName'
             value='John'
             hint='this is a hint'
             placeholder='Enter Name'
             regexcheck='^[A-Za-z ]+$'
-            readOnly='false'
+            regexcheckmessage="Invalid Name"
             required
+            requiredmessage="Required Name"
+        ></dot-textfield>
+        <br />
+        <dot-textfield
+            label='Last Name:'
+            name='lastName'
+            value='Morera'
+            hint='Hint: Disabled field'
+            disabled
         ></dot-textfield>
 
         <hr />
@@ -58,5 +79,9 @@
         ></dot-checkbox>
     </dot-form>
 
+        <input id="test">
+
+
+        <button onclick="resetFrom()">Reset</button>
     </body>
 </html>
