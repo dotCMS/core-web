@@ -13,7 +13,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotFieldDivider } from '../shared';
 import { FieldUtil } from '../util/field-util';
 
-const mockFieldRow: FieldDivider = FieldUtil.createFieldRow(2);
+const mockFieldRow: DotFieldDivider = FieldUtil.createFieldRow(2);
 
 mockFieldRow.columns[0].fields = [
     {
