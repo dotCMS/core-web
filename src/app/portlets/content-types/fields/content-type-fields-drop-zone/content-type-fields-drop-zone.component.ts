@@ -18,7 +18,7 @@ import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { FieldDivider } from '@portlets/content-types/fields/shared/field-divider.model';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take  } from 'rxjs/operators';
 import { Subject, merge } from 'rxjs';
 import { DotFieldVariableParams } from '../dot-content-type-fields-variables/models/dot-field-variable-params.interface';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
@@ -110,10 +110,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                 this.toggleDialog();
             });
 
-        merge([
+        merge(
             this.fieldDragDropService.fieldRowDropFromTarget$.pipe(takeUntil(this.destroy$)),
             this.fieldDragDropService.fieldDropFromTarget$.pipe(takeUntil(this.destroy$))
-        ]).subscribe(() => {
+        ).subscribe(() => {
             setTimeout(this.moveFields.bind(this), 0);
         });
 
@@ -326,8 +326,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                 return false;
             }
         });
-
-        console.log('fields', fields);
 
         if (fields && fields.length) {
             this.saveFields.emit(fields);

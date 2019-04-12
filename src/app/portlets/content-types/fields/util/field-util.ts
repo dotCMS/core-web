@@ -60,7 +60,6 @@ export class FieldUtil {
     }
 
     static createFieldRow(nColumns: number): FieldDivider {
-        console.log();
         return {
             divider: Object.assign({}, ROW_FIELD),
             columns: new Array(nColumns).fill(null).map(() => FieldUtil.createFieldColumn())
