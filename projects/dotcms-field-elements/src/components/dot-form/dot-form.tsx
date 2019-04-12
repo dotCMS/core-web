@@ -23,22 +23,22 @@ export class DotFormComponent {
     /**
      * Listen for "valueChanges" and updates the form value with new value.
      *
-     * @param any event
+     * @param CustomEvent event
      * @memberof DotFormComponent
      */
     @Listen('valueChanges')
-    onValueChanges(event: any): void {
+    onValueChanges(event: CustomEvent): void {
         this.value[event.detail.name] = event.detail.value;
     }
 
     /**
      * Listen for "stateChanges" and updates the form status with new value.
      *
-     * @param any event
+     * @param CustomEvent event
      * @memberof DotFormComponent
      */
     @Listen('stateChanges')
-    onStateChanges(event: any): void {
+    onStateChanges(event: CustomEvent): void {
         // refresh variables from hostData
     }
 
