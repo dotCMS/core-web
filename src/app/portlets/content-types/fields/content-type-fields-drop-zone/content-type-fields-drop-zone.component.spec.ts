@@ -303,7 +303,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-fdescribe('Load fields and drag and drop', () => {
+describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
@@ -664,7 +664,7 @@ fdescribe('Load fields and drag and drop', () => {
         });
     });
 
-   fit('should handler removeField event', () => {
+   it('should handler removeField event', () => {
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -762,7 +762,7 @@ fdescribe('Load fields and drag and drop', () => {
             expect(dotLoadingIndicatorServiceMock.show).toHaveBeenCalled();
         });
 
-        fit('Should hide dot-loading-indicator when loading is set to true', () => {
+        it('Should hide dot-loading-indicator when loading is set to true', () => {
             hostComp.loading = false;
             spyOn(dotLoadingIndicatorServiceMock, 'hide');
             fixture.detectChanges();
