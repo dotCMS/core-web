@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { DotContentTypeField, FieldDivider } from '../shared';
+import { DotContentTypeField, DotFieldDivider } from '../shared';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { FieldColumn } from '..';
@@ -19,14 +19,14 @@ import { take } from 'rxjs/operators';
 })
 export class ContentTypeFieldsRowComponent implements OnInit {
     @Input()
-    fieldRow: FieldDivider;
+    fieldRow: DotFieldDivider;
 
     @Output()
     editField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
     removeField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    removeRow: EventEmitter<FieldDivider> = new EventEmitter();
+    removeRow: EventEmitter<DotFieldDivider> = new EventEmitter();
 
     i18nMessages: any = {};
 
@@ -110,7 +110,7 @@ export class ContentTypeFieldsRowComponent implements OnInit {
      * @returns boolean
      * @memberof ContentTypeFieldsRowComponent
      */
-    rowHaveFields(row: FieldDivider): boolean {
+    rowHaveFields(row: DotFieldDivider): boolean {
         return row.columns
             .map((column: FieldColumn) => column.fields.length)
             .every((fieldsNumber: number) => fieldsNumber === 0);

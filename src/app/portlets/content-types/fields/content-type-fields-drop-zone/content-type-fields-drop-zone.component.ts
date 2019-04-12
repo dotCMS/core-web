@@ -6,8 +6,8 @@ import {
     EventEmitter,
     OnInit,
     OnChanges,
-    ViewChild,
-    OnDestroy
+    OnDestroy,
+    ViewChild
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
 import { DotContentTypeField, FieldType, DotFieldDivider } from '../shared';
@@ -17,7 +17,6 @@ import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { FieldDivider } from '@portlets/content-types/fields/shared/dot-field-divider.model';
 import { takeUntil, take  } from 'rxjs/operators';
 import { Subject, merge } from 'rxjs';
 import { DotFieldVariableParams } from '../dot-content-type-fields-variables/models/dot-field-variable-params.interface';
@@ -43,13 +42,13 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     currentFieldType: FieldType;
     currentField: DotFieldVariableParams;
     dialogActions: DotDialogActions;
-    fieldRows: FieldDivider[];
+    fieldRows: DotFieldDivider[];
 
     @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
     @Input()
-    layout: FieldDivider[];
+    layout: DotFieldDivider[];
 
     @Output()
     saveFields = new EventEmitter<DotContentTypeField[]>();
@@ -131,7 +130,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .listen('add-tab-divider')
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                const fieldTab: FieldDivider = FieldUtil.createFieldTabDivider();
+                const fieldTab: DotFieldDivider = FieldUtil.createFieldTabDivider();
                 this.fieldRows.push();
                 this.setDroppedField(fieldTab.divider);
                 this.toggleDialog();
@@ -251,7 +250,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param {FieldRow} fieldRow
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeFieldRow(fieldRow: FieldDivider): void {
+    removeFieldRow(fieldRow: DotFieldDivider): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
         const fieldsToDelete: DotContentTypeField[] = [];
 
@@ -270,7 +269,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param {DotFieldDivider} fieldTab
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeTab(fieldTab: FieldDivider): void {
+    removeTab(fieldTab: DotFieldDivider): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
         this.removeFields.emit([fieldTab.divider]);
     }
@@ -387,7 +386,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     private getFields(): DotContentTypeField[] {
         const fields: DotContentTypeField[] = [];
 
-        this.fieldRows.forEach((fieldDivider: FieldDivider) => {
+        this.fieldRows.forEach((fieldDivider: DotFieldDivider) => {
             const divider: DotContentTypeField = fieldDivider.divider;
 
             fields.push(divider);

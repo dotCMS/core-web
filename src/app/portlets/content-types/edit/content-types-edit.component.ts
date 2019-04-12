@@ -5,7 +5,7 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ContentType } from '../shared/content-type.model';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
-import { DotContentTypeField, ContentTypeFieldsDropZoneComponent, FieldDivider } from '../fields/index';
+import { DotContentTypeField, ContentTypeFieldsDropZoneComponent, DotFieldDivider } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -46,7 +46,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     data: ContentType;
     dialogActions: DotDialogActions;
     editButtonLbl: string;
-    fields: FieldDivider[];
+    fields: DotFieldDivider[];
     messagesKey: { [key: string]: string } = {};
     show: boolean;
     templateInfo = {
@@ -228,7 +228,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
             .deleteFields(this.data.id, fieldsToDelete)
             .pipe(pluck('fields'), take(1))
             .subscribe(
-                (fields: FieldDivider[]) => {
+                (fields: DotFieldDivider[]) => {
                     this.fields = fields;
                 },
                 (err: ResponseView) => {
@@ -246,7 +246,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         console.log('fieldsToSave', fieldsToSave);
         this.loadingFields = true;
         this.fieldService.saveFields(this.data.id, fieldsToSave).pipe(take(1)).subscribe(
-            (fields: FieldDivider[]) => {
+            (fields: DotFieldDivider[]) => {
 
                 if (this.isAnyNewField(fieldsToSave) || this.isUpdatingField(fieldsToSave)) {
                     this.fields = fields;

@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import {
     DotContentTypeField,
     ContentTypeFieldsAddRowModule,
-    FieldDivider
+    DotFieldDivider
 } from '../';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
@@ -40,7 +40,7 @@ import { FieldUtil } from '../util/field-util';
 })
 class TestContentTypeFieldsRowComponent {
     @Input()
-    fieldRow: FieldDivider;
+    fieldRow: DotFieldDivider;
     @Output()
     editField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
@@ -66,12 +66,12 @@ class TestContentTypeFieldsPropertiesFormComponent {
 })
 class TestDotContentTypeFieldsTabComponent {
     @Input()
-    fieldTab: FieldDivider;
+    fieldTab: DotFieldDivider;
 
     @Output()
     editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    removeTab: EventEmitter<FieldDivider> = new EventEmitter();
+    removeTab: EventEmitter<DotFieldDivider> = new EventEmitter();
 }
 
 @Component({
@@ -201,7 +201,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should reset values when close dialog', () => {
-        const fieldRow: FieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotFieldDivider = FieldUtil.createFieldRow(1);
         comp.fieldRows = [fieldRow];
 
         comp.displayDialog = true;
@@ -235,7 +235,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     it('should emit removeFields event when a Row is removed', () => {
         let fieldsToRemove: DotContentTypeField[];
 
-        const fieldRow: FieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotFieldDivider = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -269,7 +269,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     it('should cancel last drag and drop operation fields', () => {
 
-        const fieldRow1: FieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow1: DotFieldDivider = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -289,7 +289,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 });
 
-let fakeFields: FieldDivider[];
+let fakeFields: DotFieldDivider[];
 
 @Component({
     selector: 'dot-test-host-component',
@@ -297,7 +297,7 @@ let fakeFields: FieldDivider[];
         '<dot-content-type-fields-drop-zone [layout]="layout" [loading]="loading"></dot-content-type-fields-drop-zone>'
 })
 class TestHostComponent {
-    layout: FieldDivider[];
+    layout: DotFieldDivider[];
     loading: boolean;
 
     constructor() {}

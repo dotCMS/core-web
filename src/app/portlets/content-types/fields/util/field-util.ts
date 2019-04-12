@@ -1,4 +1,4 @@
-import { DotContentTypeField, FieldDivider } from '../';
+import { DotContentTypeField, DotFieldDivider } from '../';
 import { FieldColumn } from '../shared';
 
 const COLUMN_FIELD = {
@@ -59,7 +59,7 @@ export class FieldUtil {
         return field.clazz === TAB_FIELD.clazz;
     }
 
-    static createFieldRow(nColumns: number): FieldDivider {
+    static createFieldRow(nColumns: number): DotFieldDivider {
         return {
             divider: {...ROW_FIELD},
             columns: new Array(nColumns).fill(null).map(() => FieldUtil.createFieldColumn())
@@ -73,7 +73,7 @@ export class FieldUtil {
         };
     }
 
-    static createFieldTabDivider(): FieldDivider {
+    static createFieldTabDivider(): DotFieldDivider {
         return {
             divider: Object.assign({}, TAB_FIELD)
         };

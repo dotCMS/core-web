@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map } from 'rxjs/operators';
-import { FieldDivider, DotContentTypeField } from '@portlets/content-types/fields/shared';
+import { DotFieldDivider, DotContentTypeField } from '@portlets/content-types/fields/shared';
 import * as _ from 'lodash';
 
 /**
@@ -16,7 +16,7 @@ export class FieldDragDropService {
 
     private _fieldDropFromSource: Observable<DropFieldData>;
     private _fieldDropFromTarget: Observable<DropFieldData>;
-    private _fieldRowDropFromTarget: Observable<FieldDivider[]>;
+    private _fieldRowDropFromTarget: Observable<DotFieldDivider[]>;
 
     private currentColumnOvered: Element;
 

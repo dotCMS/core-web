@@ -6,7 +6,7 @@ import { ContentTypesEditComponent } from './content-types-edit.component';
 import { CrudService } from '@services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField, FieldDivider } from '../fields';
+import { DotContentTypeField, DotFieldDivider } from '../fields';
 import { FieldService } from '../fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -41,7 +41,7 @@ import * as _ from 'lodash';
 })
 class TestContentTypeFieldsDropZoneComponent {
     @Input()
-    layout: FieldDivider[];
+    layout: DotFieldDivider[];
     @Input()
     loading: boolean;
     @Output()

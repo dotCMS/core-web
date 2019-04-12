@@ -10,7 +10,7 @@ import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { FieldDivider } from '../shared';
+import { DotFieldDivider } from '../shared';
 import { FieldUtil } from '../util/field-util';
 
 const mockFieldRow: FieldDivider = FieldUtil.createFieldRow(2);
@@ -33,7 +33,7 @@ mockFieldRow.columns[1].fields = [
     }
 ];
 
-const mockFieldRowFieldEmpty: FieldDivider = FieldUtil.createFieldRow(2);
+const mockFieldRowFieldEmpty: DotFieldDivider = FieldUtil.createFieldRow(2);
 
 @Component({
     selector: 'dot-content-type-field-dragabble-item',
@@ -53,9 +53,9 @@ class TestContentTypeFieldDraggableItemComponent {
     template: '<dot-content-type-fields-row [fieldRow]="data"></dot-content-type-fields-row>'
 })
 class DotTestHostComponent {
-    data: FieldDivider;
+    data: DotFieldDivider;
 
-    setData(data: FieldDivider): void {
+    setData(data: DotFieldDivider): void {
         this.data = data;
     }
 }
@@ -165,7 +165,7 @@ describe('ContentTypeFieldsRowComponent', () => {
             spyOn(dotDialogService, 'confirm');
 
             let result;
-            comp.removeRow.subscribe((rowToRemove: FieldDivider) => {
+            comp.removeRow.subscribe((rowToRemove: DotFieldDivider) => {
                 result = rowToRemove;
             });
 
