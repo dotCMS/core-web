@@ -38,3 +38,9 @@ yarn-error.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#STENCIL.JS
+.stencil/
+projects/dotcms-field-elements/dist/
+projects/dotcms-field-elements/www/
+projects/dotcms-field-elements/src/components.d.ts

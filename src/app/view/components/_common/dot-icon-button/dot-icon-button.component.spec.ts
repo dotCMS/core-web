@@ -36,6 +36,11 @@ describe('DotIconButtonComponent', () => {
         expect(comp.buttonOnClick).toHaveBeenCalled();
     });
 
+    it('should have type button', () => {
+        const button = fixture.debugElement.query(By.css('button'));
+        expect(button.attributes.type).toBe('button');
+    });
+
     it('should stop propagation if disabled', () => {
         comp.icon = 'test';
         comp.element.nativeElement.setAttribute('disabled', '');
@@ -45,5 +50,15 @@ describe('DotIconButtonComponent', () => {
 
         comp.buttonOnClick(event);
         expect(event.stopPropagation).toHaveBeenCalled();
+    });
+
+    it('should set size', () => {
+        comp.size = 32;
+        fixture.detectChanges();
+        const button = fixture.debugElement.query(By.css('button'));
+        expect(button.styles).toEqual({
+            width: '32px',
+            height: '32px'
+        });
     });
 });

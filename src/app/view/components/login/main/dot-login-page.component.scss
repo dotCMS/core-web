@@ -1,0 +1,29 @@
+@import "mixins";
+
+:host {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    ::ng-deep {
+        .error-message {
+            min-height: $line-height;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
+.login {
+    @include box_shadow(5);
+    background-color: $white;
+    border-radius: $border-radius * 3;
+    align-self: center;
+    max-width: 520px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    padding: $basic-padding * 10 0 $basic-padding * 8;
+}

@@ -1,18 +1,25 @@
-import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
+import { Component, OnInit, forwardRef, ViewChild, OnDestroy } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormGroup, FormBuilder } from '@angular/forms';
+
 import * as _ from 'lodash';
+import { NgGrid, NgGridConfig } from 'dot-layout-grid';
+
+import { DOT_LAYOUT_GRID_MAX_COLUMNS } from './../../../shared/models/dot-layout-grid.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { DotMessageService } from '@services/dot-messages-service';
-import { DotLayoutGridBox } from '../../../shared/models/dot-layout-grid-box.model';
-import {
-    DOT_LAYOUT_GRID_MAX_COLUMNS,
-    DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE,
-    DOT_LAYOUT_DEFAULT_GRID
-} from '../../../shared/models/dot-layout.const';
-import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEditLayoutService } from '../../../shared/services/dot-edit-layout.service';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { NgGrid, NgGridConfig, NgGridItemConfig } from 'dot-layout-grid';
+import { DotLayoutBody } from '../../../shared/models/dot-layout-body.model';
+import { DotLayoutGrid } from '@portlets/dot-edit-page/shared/models/dot-layout-grid.model';
+import { DotMessageService } from '@services/dot-messages-service';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+
+interface DotAddClass {
+    setter: (string) => void;
+    getter: () => void;
+    title: string;
+}
 
 /**
  * Component in charge of update the model that will be used be the NgGrid to display containers
@@ -31,12 +38,19 @@ import { NgGrid, NgGridConfig, NgGridItemConfig } from 'dot-layout-grid';
         }
     ]
 })
-export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor {
+export class DotEditLayoutGridComponent implements OnInit, OnDestroy, ControlValueAccessor {
     @ViewChild(NgGrid)
     ngGrid: NgGrid;
 
+    form: FormGroup;
     value: DotLayoutBody;
-    grid: DotLayoutGridBox[];
+    grid: DotLayoutGrid;
+
+    addClassDialogShow = false;
+    addClassDialogActions: DotDialogActions;
+    addClassDialogHeader: string;
+
+    messages: { [key: string]: string } = {};
 
     gridConfig: NgGridConfig = <NgGridConfig>{
         margins: [0, 8, 8, 0],
@@ -61,35 +75,80 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         limit_to_screen: true
     };
 
+    private destroy$: Subject<boolean> = new Subject<boolean>();
+
     constructor(
         private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
         public dotMessageService: DotMessageService,
-        private dotEventsService: DotEventsService
+        private dotEventsService: DotEventsService,
+        public fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages([
+                'dot.common.dialog.accept',
+                'dot.common.dialog.reject',
+                'editpage.action.cancel',
+                'editpage.action.delete',
+                'editpage.action.save',
                 'editpage.confirm.header',
                 'editpage.confirm.message.delete',
                 'editpage.confirm.message.delete.warning',
-                'editpage.action.cancel',
-                'editpage.action.delete',
-                'editpage.action.save'
+                'editpage.layout.css.class.add.to.box',
+                'editpage.layout.css.class.add.to.row',
+                'editpage.layout.css.class.names'
             ])
-            .subscribe();
+            .pipe(take(1))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messages = messages;
+            });
 
-        this.dotEventsService.listen('dot-side-nav-toggle').subscribe(() => {
-            this.resizeGrid(200);
-        });
+        this.dotEventsService
+            .listen('dot-side-nav-toggle')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.resizeGrid(200);
+            });
 
-        this.dotEventsService.listen('layout-sidebar-change').subscribe(() => {
-            this.resizeGrid();
-        });
+        this.dotEventsService
+            .listen('layout-sidebar-change')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.resizeGrid();
+            });
 
         // needed it because the transition between content & layout.
         this.resizeGrid();
+
+        this.form = this.fb.group({
+            classToAdd: ''
+        });
+
+        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.addClassDialogActions = {
+                cancel: {
+                    ...this.addClassDialogActions.cancel
+                },
+                accept: {
+                    ...this.addClassDialogActions.accept,
+                    disabled: !this.form.valid
+                }
+            };
+        });
+
+        this.dotEditLayoutService
+            .getBoxes()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.addBox();
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
@@ -98,9 +157,8 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     addBox(): void {
-        const conf: NgGridItemConfig = this.setConfigOfNewContainer();
-        this.grid.push({ config: conf, containers: [] });
-        this.propagateChange(this.getModel());
+        this.grid.addBox();
+        this.propagateGridLayoutChange();
     }
 
     /**
@@ -120,7 +178,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      */
     updateModel(): void {
         this.deleteEmptyRows();
-        this.propagateChange(this.getModel());
+        this.propagateGridLayoutChange();
     }
 
     /**
@@ -130,7 +188,7 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
      * @memberof DotEditLayoutGridComponent
      */
     onRemoveContainer(index: number): void {
-        if (this.grid[index].containers.length) {
+        if (this.grid.boxes[index].containers.length) {
             this.dotDialogService.confirm({
                 accept: () => {
                     this.removeContainer(index);
@@ -167,11 +225,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     registerOnTouched(): void {}
 
     /**
-     * Update the model when a container is added to a box
+     * Update the model when the grid is changed
      *
      * @memberof DotEditLayoutGridComponent
      */
-    updateContainers(): void {
+    propagateGridLayoutChange(): void {
         this.propagateChange(this.getModel());
     }
 
@@ -188,68 +246,107 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
         }
     }
 
+    /**
+     * Add style class to a column
+     *
+     * @param {number} index
+     * @param {string} title
+     * @memberof DotEditLayoutGridComponent
+     */
+    addColumnClass(index: number, title: string): void {
+        this.addClass({
+            getter: () => {
+                return this.grid.boxes[index].config.payload
+                    ? this.grid.boxes[index].config.payload.styleClass || null
+                    : null;
+            },
+            setter: (value: string) => {
+                if (!this.grid.boxes[index].config.payload) {
+                    this.grid.boxes[index].config.payload = {
+                        styleClass: value
+                    };
+                } else {
+                    this.grid.boxes[index].config.payload.styleClass = value;
+                }
+            },
+            title
+        });
+    }
+
+
+    /**
+     * Add style class to a row
+     *
+     * @param {number} index
+     * @param {string} title
+     * @memberof DotEditLayoutGridComponent
+     */
+    addRowClass(index: number, title: string): void {
+        this.addClass({
+            getter: () => this.grid.getRowClass(index) || '',
+            setter: (value) => this.grid.setRowClass(value, index),
+            title
+        });
+    }
+
+    /**
+     * Handle hide event from add class dialog
+     *
+     * @memberof DotEditLayoutGridComponent
+     */
+    onAddClassDialogHide(): void {
+        this.addClassDialogActions = null;
+        this.addClassDialogShow = false;
+        this.addClassDialogHeader = '';
+    }
+
+    private addClass(params: DotAddClass): void {
+        this.form.setValue(
+            {
+                classToAdd: params.getter.bind(this)()
+            },
+            {
+                emitEvent: false
+            }
+        );
+
+        this.addClassDialogActions = {
+            accept: {
+                action: (dialog?: any) => {
+                    params.setter.bind(this)(this.form.get('classToAdd').value);
+                    this.propagateGridLayoutChange();
+                    dialog.close();
+                },
+                label: 'Ok',
+                disabled: true
+            },
+            cancel: {
+                label: 'Cancel'
+            }
+        };
+
+        this.addClassDialogShow = true;
+        this.addClassDialogHeader = params.title;
+    }
+
     private setGridValue(): void {
         this.grid = this.isHaveRows()
             ? this.dotEditLayoutService.getDotLayoutGridBox(this.value)
-            : [...DOT_LAYOUT_DEFAULT_GRID];
+            : DotLayoutGrid.getDefaultGrid();
     }
 
     private removeContainer(index: number): void {
-        if (this.grid[index]) {
-            this.grid.splice(index, 1);
-            this.deleteEmptyRows();
-            this.propagateChange(this.getModel());
+        if (this.grid.boxes[index]) {
+            this.grid.removeContainer(index);
+            this.propagateGridLayoutChange();
         }
-    }
-
-    private setConfigOfNewContainer(): any {
-        const newRow: any = Object.assign({}, DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE);
-
-        if (this.grid.length) {
-            const lastContainer = _.chain(this.grid)
-                .groupBy('config.row')
-                .values()
-                .last()
-                .maxBy('config.col')
-                .value();
-
-            let busyColumns: number = DOT_LAYOUT_GRID_NEW_ROW_TEMPLATE.sizex;
-
-            busyColumns += lastContainer.config.col - 1 + lastContainer.config.sizex;
-
-            if (busyColumns <= DOT_LAYOUT_GRID_MAX_COLUMNS) {
-                newRow.row = lastContainer.config.row;
-                newRow.col = lastContainer.config.col + lastContainer.config.sizex;
-            } else {
-                newRow.row = lastContainer.config.row + 1;
-                newRow.col = 1;
-            }
-        }
-
-        return newRow;
     }
 
     private deleteEmptyRows(): void {
         // TODO: Find a solution to remove setTimeout
         setTimeout(() => {
-            this.grid = _.chain(this.grid)
-                .sortBy('config.row')
-                .groupBy('config.row')
-                .values()
-                .map(this.updateContainerIndex)
-                .flatten()
-                .value();
+            this.grid.deleteEmptyRows();
         }, 0);
-    }
-
-    private updateContainerIndex(rowArray, index) {
-        if (rowArray[0].row !== index + 1) {
-            return rowArray.map((container) => {
-                container.config.row = index + 1;
-                return container;
-            });
-        }
-        return rowArray;
     }
 
     private isHaveRows(): boolean {
@@ -257,8 +354,11 @@ export class DotEditLayoutGridComponent implements OnInit, ControlValueAccessor 
     }
 
     private resizeGrid(timeOut?): void {
-        setTimeout(() => {
-            this.ngGrid.triggerResize();
-        }, timeOut ? timeOut : 0);
+        setTimeout(
+            () => {
+                this.ngGrid.triggerResize();
+            },
+            timeOut ? timeOut : 0
+        );
     }
 }
