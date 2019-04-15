@@ -247,7 +247,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with all the fields in fieldRow
-     * @param {FieldRow} fieldRow
+     * @param {DotFieldDivider} fieldRow
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeFieldRow(fieldRow: DotFieldDivider): void {
@@ -299,9 +299,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         };
     }
 
-    /**
-     * Hide or show the 'save' and 'hide' buttons according to the field tab selected
-     */
+     /**
+      * Hide or show the 'save' and 'hide' buttons according to the field tab selected
+      * 
+      * @param index
+      */
     handleTabChange(index: number): void {
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
