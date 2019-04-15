@@ -104,7 +104,6 @@ export class Dropdown implements ControlValueAccessor, OnChanges {
     onTouched: Function = () => {};
 
     writeValue(value: any): void {
-        console.log('write value:', value);
         this.modelValue = _.isEmpty(value) ? '' : value;
     }
 
