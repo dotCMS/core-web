@@ -171,7 +171,7 @@ let dotHttpErrorManagerService: DotHttpErrorManagerService;
 let testHotKeysMock: TestHotkeysMock;
 let dialog: DebugElement;
 
-describe('ContentTypesEditComponent', () => {
+fdescribe('ContentTypesEditComponent', () => {
     describe('create mode', () => {
         beforeEach(async(() => {
             testHotKeysMock = new TestHotkeysMock();
@@ -269,9 +269,30 @@ describe('ContentTypesEditComponent', () => {
             it('should create content type', () => {
                 spyOn(dotRouterService, 'goToEditContentType');
 
-                const responseContentType = Object.assign({}, { id: '123' }, mockContentType, {
-                    fields: [{ hello: 'world' }]
-                });
+                const responseContentType: ContentType = {
+                    ...mockContentType,
+                    ...{ id: '123' },
+                    ...{
+                        fields: [
+                            {
+                                name: 'hello world'
+                          }
+                        ],
+                        layout: [
+                            {
+                                divider: {},
+                                columns: [
+                                    {
+                                        columnDivider: {},
+                                        fields: [
+                                            { name: 'hello world' }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                };
 
                 spyOn(crudService, 'postData').and.returnValue(observableOf([responseContentType]));
                 spyOn(location, 'replaceState').and.returnValue(
@@ -285,7 +306,7 @@ describe('ContentTypesEditComponent', () => {
                     mockContentType
                 );
                 expect(comp.data).toEqual(responseContentType, 'set data with response');
-                // expect(comp.fields).toEqual(responseContentType.fields, 'ser fields with response');
+                expect(comp.fields).toEqual(responseContentType.layout, 'ser fields with response');
                 expect(dotRouterService.goToEditContentType).toHaveBeenCalledWith('123');
             });
 
@@ -339,11 +360,24 @@ describe('ContentTypesEditComponent', () => {
         }
     ];
 
+    const currentLayoutInServer: DotFieldDivider[] = [
+        {
+            divider: {},
+            columns: [
+                {
+                    columnDivider: {},
+                    fields: currentFieldsInServer
+                }
+            ]
+        }
+    ];
+
     const fakeContentType: ContentType = {
         baseType: 'CONTENT',
         id: '1234567890',
         clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
         fields: currentFieldsInServer,
+        layout: currentLayoutInServer,
         defaultType: true,
         fixed: true,
         folder: 'folder',
@@ -402,7 +436,7 @@ describe('ContentTypesEditComponent', () => {
 
         it('should set data, fields and cache', () => {
             expect(comp.data).toBe(fakeContentType);
-            // expect(comp.fields).toBe(fakeContentType.fields);
+            expect(comp.fields).toBe(fakeContentType.layout);
 
             const dotEditContentTypeCacheService = de.injector.get(DotEditContentTypeCacheService);
             expect(dotEditContentTypeCacheService.get()).toEqual(fakeContentType);
@@ -464,17 +498,18 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields attribute when a field is edit', () => {
-            const fields: DotContentTypeField[] = _.cloneDeep(currentFieldsInServer);
-            fields[0].name = 'Updated field';
+            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            const fieldToUpdate: DotContentTypeField =  layout[0].columns[0].fields[0];
+            fieldToUpdate.name = 'Updated field';
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fields));
+            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(layout));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
-            contentTypeFieldsDropZone.componentInstance.saveFields.emit([fields[0]]);
+            contentTypeFieldsDropZone.componentInstance.saveFields.emit([fieldToUpdate]);
 
-            expect(fieldService.saveFields).toHaveBeenCalledWith('1234567890', [fields[0]]);
-            // expect(comp.fields).toEqual(fields);
+            expect(fieldService.saveFields).toHaveBeenCalledWith('1234567890', [fieldToUpdate]);
+            expect(comp.fields).toEqual(layout);
         });
 
         it('should save fields on dropzone event', () => {
@@ -549,9 +584,10 @@ describe('ContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotContentTypeField[] = newFieldsAdded.concat(
-                currentFieldsInServer
-            );
+            const fieldsReturnByServer: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
+            fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
+
             const fieldService = fixture.debugElement.injector.get(FieldService);
             spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
 
@@ -560,20 +596,11 @@ describe('ContentTypesEditComponent', () => {
             // when: the saveFields event is tiggered in content-type-fields-drop-zone
             contentTypeFieldsDropZone.componentInstance.saveFields.emit(newFieldsAdded);
             // ...and the comp.data.fields has to be set to the fields return by the service
-            // expect(comp.fields).toEqual(fieldsReturnByServer);
+            expect(comp.fields).toEqual(fieldsReturnByServer);
         });
 
         it('should update fields on dropzone event when creating a new row and move a existing field', () => {
-            const newRow: DotContentTypeField = {
-                name: 'field 1',
-                clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                sortOrder: 1
-            };
-
-            const fieldsToSave = [currentFieldsInServer[1], newRow, currentFieldsInServer[0]];
-
-
-            const fieldsReturnByServer: DotContentTypeField[] = fieldsToSave.map(field => {
+            const fieldsReturnByServer: DotContentTypeField[] = currentFieldsInServer.map(field => {
                 const newfield = Object.assign({}, field);
 
                 if (!newfield.id) {
@@ -583,15 +610,30 @@ describe('ContentTypesEditComponent', () => {
                 return newfield;
             });
 
+            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            layout[0].columns[0].fields = fieldsReturnByServer;
+            layout[0].divider.id = new Date().getMilliseconds().toString();
+            layout[0].columns[0].columnDivider.id = new Date().getMilliseconds().toString();
+
+            const newRow: DotFieldDivider = {
+                divider: {
+                    name: 'field 1',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
+                    sortOrder: 1
+                }
+            };
+
+            layout.push(newRow);
+
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
+            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(layout));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
             // when: the saveFields event is tiggered in content-type-fields-drop-zone
-            contentTypeFieldsDropZone.componentInstance.saveFields.emit(fieldsToSave);
+            contentTypeFieldsDropZone.componentInstance.saveFields.emit(layout);
             // ...and the comp.data.fields has to be set to the fields return by the service
-            // expect(comp.fields).toEqual(fieldsReturnByServer);
+            expect(comp.fields).toEqual(layout);
         });
 
         it('should handle 403 when user doesn\'t have permission to save feld', () => {

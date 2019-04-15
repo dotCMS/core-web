@@ -82,7 +82,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 this.data = contentType;
                 this.dotEditContentTypeCacheService.set(contentType);
 
-                if (contentType.fields) {
+                if (contentType.layout) {
                     this.fields = contentType.layout;
                 }
             });
@@ -243,7 +243,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @memberof ContentTypesEditComponent
      */
     saveFields(fieldsToSave: DotContentTypeField[]): void {
-        console.log('fieldsToSave', fieldsToSave);
         this.loadingFields = true;
         this.fieldService.saveFields(this.data.id, fieldsToSave).pipe(take(1)).subscribe(
             (fields: DotFieldDivider[]) => {
