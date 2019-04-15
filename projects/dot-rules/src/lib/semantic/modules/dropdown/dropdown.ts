@@ -29,7 +29,7 @@ import { map, mergeMap, toArray } from 'rxjs/operators';
             [required]="minSelections > 0"
             [placeholder]="placeholder"
             [options]="dropdownOptions | async"
-            [editable]="allowAdditions"
+            [filter]="allowAdditions"
             [(ngModel)]="modelValue"
             *ngIf="maxSelections <= 1"
             (onChange)="fireChange($event.value)"
@@ -104,6 +104,7 @@ export class Dropdown implements ControlValueAccessor, OnChanges {
     onTouched: Function = () => {};
 
     writeValue(value: any): void {
+        console.log('write value:', value);
         this.modelValue = _.isEmpty(value) ? '' : value;
     }
 
