@@ -90,6 +90,38 @@ describe('DotContentletEditorService', () => {
         });
     });
 
+    it('should set data to edit when current portlet is edit-page', () => {
+        spyOnProperty(dotRouterService, 'currentPortlet').and.returnValue({
+            url: '/#/edit-page/content?url=%2Fabout-us%2Findex&language_id=1',
+            id: 'edit-page'
+        });
+        service.editUrl$.subscribe((url: string) => {
+            expect(url).toEqual(
+                [
+                    `/c/portal/layout`,
+                    `?p_l_id=456`,
+                    `&p_p_id=content`,
+                    `&p_p_action=1`,
+                    `&p_p_state=maximized`,
+                    `&p_p_mode=view`,
+                    `&_content_struts_action=%2Fext%2Fcontentlet%2Fedit_contentlet`,
+                    `&_content_cmd=edit&inode=999`
+                ].join('')
+            );
+        });
+
+        service.header$.subscribe((header: string) => {
+            expect(header).toEqual('This is a header for edit');
+        });
+
+        service.edit({
+            header: 'This is a header for edit',
+            data: {
+                inode: '999'
+            }
+        });
+    });
+
     it('should set url to create a contentlet', () => {
         service.createUrl$.subscribe((url: string) => {
             expect(url).toEqual('hello.world.com');

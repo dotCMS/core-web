@@ -158,7 +158,10 @@ export class DotContentletEditorService {
     }
 
     private getEditUrl(action: DotEditorAction): Observable<string> {
-        const name = this.dotRouterService.currentPortlet.url.split('/')[2];
+        const name = this.dotRouterService.isEditPage()
+            ? 'content'
+            : this.dotRouterService.currentPortlet.url.split('/')[2];
+
         return action === null
             ? of('')
             : this.dotMenuService.getDotMenuId(name).pipe(
