@@ -26,7 +26,7 @@ export class DotFormComponent {
     @State() _pristine = true;
     @State() _valid = true;
 
-    fieldsStatus = {};
+    fieldsStatus: {[key: string]: string} = {};
 
     /**
      * Listen for "valueChanges" and updates the form value with new value.
