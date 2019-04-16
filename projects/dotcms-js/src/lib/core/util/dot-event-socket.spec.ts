@@ -3,11 +3,14 @@ import { StringUtils } from '../string-utils.service';
 import { LoggerService } from '../logger.service';
 import { DotEventsSocket } from './dot-event-socket';
 import { DotEventsSocketURL } from './models/dot-event-socket-url';
-import { ConfigParams } from '../dotcms-config.service';
+import { ConfigParams, DotcmsConfig } from '../dotcms-config.service';
 import { CoreWebService } from '../core-web.service';
 import { Server } from 'mock-socket';
 import { RequestMethod } from '@angular/http';
 import { DotEventMessage } from './models/dot-event-message';
+import { ReflectiveInjector, Injectable } from '@angular/core';
+
+@Injectable()
 class CoreWebServiceMock  extends CoreWebService {
 
     constructor() {
@@ -19,41 +22,57 @@ class CoreWebServiceMock  extends CoreWebService {
     }
 }
 
-xdescribe('DotEventsSocket', () => {
-    let coreWebServiceMock;
+
+@Injectable()
+class DotcmsConfigMock {
+    getConfig(): Observable<ConfigParams> {
+        return of(
+            {
+                colors: {},
+                emailRegex: '',
+                license: {},
+                menu: [],
+                paginatorLinks: 1,
+                paginatorRows: 2,
+                websocket: {
+                    websocketReconnectTime: 0,
+                    disabledWebsockets: '',
+                }
+            }
+        );
+    }
+}
+
+fdescribe('DotEventsSocket', () => {
+    const coreWebServiceMock = new CoreWebServiceMock();
+    const dotcmsConfig: DotcmsConfigMock = new DotcmsConfigMock();
     let dotEventsSocket: DotEventsSocket;
     const url = new DotEventsSocketURL('localhost', false);
 
     beforeEach(() => {
-        coreWebServiceMock = new CoreWebServiceMock();
 
-        const configParamsMock: ConfigParams = {
-            colors: {},
-            emailRegex: '',
-            license: {},
-            menu: [],
-            paginatorLinks: 1,
-            paginatorRows: 2,
-            websocket: {
-                websocketReconnectTime: 0,
-                disabledWebsockets: '',
-            }
-        };
+        const injector = ReflectiveInjector.resolveAndCreate([
+            { provide: CoreWebService, useValue: coreWebServiceMock },
+            { provide: DotcmsConfig, useValue: dotcmsConfig },
+            { provide: DotEventsSocketURL, useValue: url },
+            StringUtils,
+            LoggerService,
+            DotEventsSocket
+        ]);
 
-        const loggerService = new LoggerService(new StringUtils());
-
-        dotEventsSocket = new DotEventsSocket(url, configParamsMock, loggerService, coreWebServiceMock);
+        dotEventsSocket = injector.get(DotEventsSocket);
     });
 
     describe('WebSocket', () => {
-        let mockServer: Server;
+        let mockwebSocketServer: Server;
 
         beforeEach(() => {
-            mockServer = new Server(url.url);
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+            mockwebSocketServer = new Server(url.getWebSocketURL());
         });
 
         it('should connect', (done) => {
-            mockServer.on('connection', () => {
+            mockwebSocketServer.on('connection', () => {
                 done();
             });
 
@@ -66,7 +85,7 @@ xdescribe('DotEventsSocket', () => {
                 payload: 'message'
             };
 
-            mockServer.on('connection', socket => {
+            mockwebSocketServer.on('connection', socket => {
                 socket.send(
                     JSON.stringify(expectedMessage)
                 );
@@ -80,7 +99,7 @@ xdescribe('DotEventsSocket', () => {
         });
 
         afterEach(() => {
-            mockServer.close();
+            mockwebSocketServer.close();
         });
     });
 
