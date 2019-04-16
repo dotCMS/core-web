@@ -93,16 +93,15 @@ export class DotFormComponent {
     }
 
     private getStatusValue(statusName: string): boolean {
-        const entries = Object.entries(this.fieldsStatus);
         let value;
-        for (const [_name, status] of entries) {
-            if (!status[statusName]) {
-                value = status[statusName];
+        const fields = Object.keys(this.fieldsStatus);
+        for (const field of fields) {
+            if (!this.fieldsStatus[field][statusName]) {
+                value = this.fieldsStatus[field][statusName];
                 break;
             }
-            value = status[statusName];
+            value = this.fieldsStatus[field][statusName];
         }
-
         return value;
     }
 
