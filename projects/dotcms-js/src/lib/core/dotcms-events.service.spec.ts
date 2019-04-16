@@ -7,7 +7,6 @@ import { LoggerService } from './logger.service';
 import { DotEventTypeWrapper } from './models';
 import { DotEventMessage } from './util/models/dot-event-message';
 import { DotEventsSocket } from './util/dot-event-socket';
-import { doesNotThrow } from 'assert';
 
 class DotEventsSocketMock {
     _messages: Subject<any> = new Subject();
@@ -37,7 +36,7 @@ class DotEventsSocketMock {
 }
 
 
-fdescribe('DotcmsEventsService', () => {
+describe('DotcmsEventsService', () => {
 
     let socket: DotEventsSocketMock;
     let dotcmsEventsService: DotcmsEventsService;

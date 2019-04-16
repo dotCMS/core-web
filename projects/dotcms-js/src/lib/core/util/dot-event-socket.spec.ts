@@ -43,14 +43,13 @@ class DotcmsConfigMock {
     }
 }
 
-fdescribe('DotEventsSocket', () => {
+describe('DotEventsSocket', () => {
     const coreWebServiceMock = new CoreWebServiceMock();
     const dotcmsConfig: DotcmsConfigMock = new DotcmsConfigMock();
     let dotEventsSocket: DotEventsSocket;
-    const url = new DotEventsSocketURL('localhost', false);
+    const url = new DotEventsSocketURL('localhost/testing', false);
 
     beforeEach(() => {
-
         const injector = ReflectiveInjector.resolveAndCreate([
             { provide: CoreWebService, useValue: coreWebServiceMock },
             { provide: DotcmsConfig, useValue: dotcmsConfig },
@@ -67,7 +66,6 @@ fdescribe('DotEventsSocket', () => {
         let mockwebSocketServer: Server;
 
         beforeEach(() => {
-            jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
             mockwebSocketServer = new Server(url.getWebSocketURL());
         });
 
@@ -76,7 +74,7 @@ fdescribe('DotEventsSocket', () => {
                 done();
             });
 
-            dotEventsSocket.connect();
+            dotEventsSocket.connect().subscribe(() => {});
         });
 
         it('should catch a message', (done) => {
@@ -95,7 +93,7 @@ fdescribe('DotEventsSocket', () => {
             dotEventsSocket.messages().subscribe((message) => {
                 expect(message).toEqual(expectedMessage);
             });
-            dotEventsSocket.connect();
+            dotEventsSocket.connect().subscribe(() => {});
         });
 
         afterEach(() => {
@@ -122,7 +120,7 @@ fdescribe('DotEventsSocket', () => {
                 });
             });
 
-            dotEventsSocket.connect();
+            dotEventsSocket.connect().subscribe(() => {});
 
             dotEventsSocket.open().subscribe(() => {
                 expect(coreWebServiceMock.requestView).toHaveBeenCalledWith(requestOpts);
@@ -140,7 +138,7 @@ fdescribe('DotEventsSocket', () => {
                 });
             });
 
-            dotEventsSocket.connect();
+            dotEventsSocket.connect().subscribe(() => {});
 
             dotEventsSocket.messages().subscribe((message) => {
                 dotEventsSocket.destroy();
@@ -170,7 +168,7 @@ fdescribe('DotEventsSocket', () => {
                 }
             });
 
-            dotEventsSocket.connect();
+            dotEventsSocket.connect().subscribe(() => {});
 
             dotEventsSocket.messages().subscribe((message) => {
                 dotEventsSocket.destroy();
