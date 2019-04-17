@@ -158,10 +158,23 @@ export class DotRouterService {
         return this.currentPortlet.url.startsWith('/public');
     }
 
+    /**
+     * Return true if the current portlet is a custom portlet
+     *
+     * @returns {boolean}
+     * @memberof DotRouterService
+     */
     isCurrentPortletCustom(): boolean {
         return this.isCustomPortlet(this.currentPortlet.id);
     }
 
+    /**
+     * Return true if potlrtId represent a custom portlet
+     *
+     * @param {string} portletId
+     * @returns {boolean}
+     * @memberof DotRouterService
+     */
     isCustomPortlet(portletId: string): boolean {
         return portletId.startsWith(this.CUSTOM_PORTLET_ID_PREFIX);
     }
