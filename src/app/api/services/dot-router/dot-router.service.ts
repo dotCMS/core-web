@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 export class DotRouterService {
     portletReload$ = new Subject();
     private _previousSavedURL: string;
-    private CUSTOM_PORTLET_ID_PREFIX = 'c_';
+    private CUSTOM_PORTLET_ID_PREFIX = 'c-';
 
     constructor(private router: Router) {}
 
