@@ -15,6 +15,8 @@ export class DotcmsEventsService {
 
     /**
      * Close the socket
+     *
+     * @memberof DotcmsEventsService
      */
     destroy(): void {
         this.dotEventsSocket.destroy();
@@ -23,6 +25,8 @@ export class DotcmsEventsService {
 
     /**
      * Start the socket
+     *
+     * @memberof DotcmsEventsService
      */
     start(): void {
         this.loggerService.debug('start DotcmsEventsService', this.dotEventsSocket.isConnected());
@@ -86,6 +90,9 @@ export class DotcmsEventsService {
 
     /**
      * Listen  when the socket is opened
+     *
+     * @returns {Observable<boolean>}
+     * @memberof DotcmsEventsService
      */
     open(): Observable<boolean> {
         return this.dotEventsSocket.open();
