@@ -73,7 +73,7 @@ export class DotTextareaComponent {
                     required={this.getRequiredAttr()}
                     onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.getDisanledAtt()}
+                    disabled={this.getDisabledAtt()}
                 />
                 {this.hint ? <span class='dot-field__hint'>{this.hint}</span> : ''}
                 {this.shouldShowErrorMessage() ? (
@@ -89,7 +89,7 @@ export class DotTextareaComponent {
         return this._valid ? '' : 'dot-field__input--error';
     }
 
-    private getDisanledAtt(): boolean {
+    private getDisabledAtt(): boolean {
         return this.disabled ? true : null;
     }
 
