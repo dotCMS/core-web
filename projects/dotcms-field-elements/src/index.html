@@ -14,7 +14,6 @@
         </style>
         <script src='/build/dotcmsfields.js'></script>
         <script>
-
             const fieldsConfig = [
             {
                     defaultValue: 'Hello World',
@@ -33,6 +32,14 @@
                     requiredmessage: 'this field is required',
                     values: '|,labelA|1,labelB|2,labelC|3',
                     variable: 'dropdown2'
+                },{
+                    label: 'Address:',
+                    fieldType: 'TextArea',
+                    name: 'Address',
+                    value: 'Address',
+                    hint: 'this is a hint',
+                    required: true,
+                    requiredmessage: 'Required Name'
                 },
             ];
 
@@ -47,10 +54,20 @@
                 let container = document.querySelector('#container');
                 container.append(dotFormEl);
             };
-
         </script>
     </head>
     <body>
         <div id="container"></div>
+
+        <dot-textarea
+                label='Address:'
+                name='Address'
+                value='Address'
+                hint='this is a hint'
+                regexcheck='^[A-Za-z ]+$'
+                regexcheckmessage="Invalid Name"
+                required
+                requiredmessage="Required Name"
+            ></dot-textarea>
     </body>
 </html>
