@@ -2,10 +2,8 @@ import { Component, Prop, State, Event, EventEmitter, Method } from '@stencil/co
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus } from '../../models/dot-field-status.model';
 
-
-
 /**
- * Represent 
+ * Represent a dotcms textarea control.
  *
  * @export
  * @class DotTextareaComponent
@@ -122,7 +120,6 @@ export class DotTextareaComponent {
     }
 
     private setValue(event): void {
-        console.log('setValue');
         this._dotPristine = false;
         this._dotTouched = true;
         this.value = event.target.value.toString();

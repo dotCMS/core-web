@@ -7,6 +7,7 @@ describe('dot-textfield', () => {
     let input: E2EElement;
     let spyStatusChangeEvent: EventSpy;
     let spyValueChange: EventSpy;
+
     beforeEach(async () => {
         page = await newE2EPage({
             html: `
