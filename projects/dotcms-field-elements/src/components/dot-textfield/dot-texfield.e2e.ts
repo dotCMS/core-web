@@ -52,16 +52,15 @@ describe('dot-textfield', () => {
     });
 
     it('should mark as dirty and touched when type', async () => {
-        input.press('a');
+        await input.press('a');
         await page.waitForChanges();
-        expect(element.classList.contains('dot-dirty')).toBe(true);
-        expect(element.classList.contains('dot-touched')).toBe(true);
+        expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
     });
 
     it('should mark as invalid when value dont match REgex', async () => {
-        input.press('@');
+        await input.press('@');
         await page.waitForChanges();
-        expect(element.classList.contains('dot-invalid')).toBe(true);
+        expect(element).toHaveClasses(['dot-invalid']);
     });
 
     it('should clear value, set pristine and untouched  when input set reset', async () => {
