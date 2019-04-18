@@ -20,10 +20,14 @@ export const DotFormFields = {
     ),
 
     Select: (field: DotCMSContentTypeField) => (
-        <dot-checkbox
+        <dot-select
             label={field.name}
+            name={field.variable}
             hint={field.hint}
+            options={field.values}
+            required={field.required}
             value={field.defaultValue}
+            type={field.dataType}
         />
     )
 };
