@@ -47,10 +47,6 @@ describe('dot-textfield', () => {
         expect(element.classList.contains('dot-untouched')).toBe(true);
     });
 
-    xit('should mark as touched when onblur', () => {
-        // TODO: Need to find the way to test the blur event.
-    });
-
     it('should mark as dirty and touched when type', async () => {
         await input.press('a');
         await page.waitForChanges();
@@ -84,11 +80,33 @@ describe('dot-textfield', () => {
     });
 
     describe('emit events', () => {
-        xit('should send status onBlur', async () => {
-            // TODO: Need to find the way to test the blur event.
-            // await page.$eval('input', (e: HTMLInputElement) => {
-            //     e.blur();
-            // });
+        it('should send status onBlur', async () => {
+            await input.triggerEvent('blur');
+            await page.waitForChanges();
+
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'fullName',
+                status: {
+                    dotPristine: true,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
+        });
+
+        it('should mark as touched when onblur', async() => {
+            await input.press('a');
+            await input.triggerEvent('blur');
+            await page.waitForChanges();
+
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'fullName',
+                status: {
+                    dotPristine: false,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
         });
 
         it('should send status value change', async () => {

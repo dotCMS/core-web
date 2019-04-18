@@ -3,161 +3,158 @@ import { EventSpy } from '@stencil/core/dist/declarations';
 
 describe('dot-textarea', () => {
     let page: E2EPage;
+    let element: E2EElement;
+    let input: E2EElement;
 
-    describe('render', () => {
-        let element: E2EElement;
-        let input: E2EElement;
+    beforeEach(async () => {
+        page = await newE2EPage({
+            html: `
+            <dot-textarea
+                label='Address:'
+                name='Address'
+                value='Address'>
+            </dot-textarea>`
+        });
+
+        element = await page.find('dot-textarea');
+        input = await page.find('textarea');
+    });
+
+    it('should render', async () => {
+        const tagsRenderExpected = `<label>Address:</label><textarea name="Address"></textarea>`;
+        expect(element.innerHTML).toBe(tagsRenderExpected);
+    });
+
+    it('should show Regex validation message', async () => {
+        element.setProperty('regexcheck', '^[A-Za-z ]+$');
+        element.setProperty('regexcheckmessage', 'Invalid Address');
+
+        await input.press('@');
+        await page.waitForChanges();
+        const errorMessage = await page.find('.dot-field__error-meessage');
+        expect(errorMessage.innerHTML).toBe('Invalid Address');
+    });
+
+    it('should load as pristine and untouched', () => {
+        expect(element.classList.contains('dot-pristine')).toBe(true);
+        expect(element.classList.contains('dot-untouched')).toBe(true);
+    });
+
+    it('should mark as dirty and touched when type', async () => {
+        await input.press('a');
+        await page.waitForChanges();
+
+        expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
+    });
+
+    it('should mark as invalid when value dont match REgex', async () => {
+        element.setProperty('regexcheck', '^[A-Za-z ]+$');
+
+        await input.press('@');
+        await page.waitForChanges();
+
+        expect(element).toHaveClasses(['dot-invalid']);
+    });
+
+    it('should clear value, set pristine and untouched  when input set reset', async () => {
+        await input.press('A');
+        element.callMethod('reset');
+        await page.waitForChanges();
+
+        expect(element).toHaveClasses(['dot-pristine', 'dot-untouched', 'dot-valid']);
+        expect(await input.getProperty('value')).toBe('');
+    });
+
+    it('should mark as disabled when prop is present', async () => {
+        element.setProperty('disabled', true);
+        await page.waitForChanges();
+        expect(await input.getProperty('disabled')).toBe(true);
+    });
+
+    it('should mark as required when prop is present', async () => {
+        element.setProperty('required', 'true');
+        element.setProperty('requiredmessage', 'Invalid Address');
+        await page.waitForChanges();
+        expect(await input.getProperty('required')).toBe(true);
+    });
+
+    describe('emit events', () => {
+        let spyStatusChangeEvent: EventSpy;
+        let spyValueChange: EventSpy;
 
         beforeEach(async () => {
-            page = await newE2EPage({
-                html: `
-                <dot-textarea
-                    label='Address:'
-                    name='Address'
-                    value='Address'
-                    regexcheck='^[A-Za-z ]+$'
-                    regexcheckmessage="Invalid Address"
-                    required
-                    requiredmessage="Required Address">
-                </dot-textarea>`
+            spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+            spyValueChange = await page.spyOnEvent('valueChange');
+        });
+
+        it('should send status onBlur', async () => {
+            await input.triggerEvent('blur');
+            await page.waitForChanges();
+
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'Address',
+                status: {
+                    dotPristine: true,
+                    dotTouched: true,
+                    dotValid: true
+                }
             });
-
-            element = await page.find('dot-textarea');
-            input = await page.find('textarea');
         });
 
-        it('should render', async () => {
-            const tagsRenderExpected = `<label>Address:</label><textarea name="Address" required=""></textarea>`;
-            expect(element.innerHTML).toBe(tagsRenderExpected);
-        });
-
-        it('should show Regex validation message', async () => {
-            await input.press('@');
-            await page.waitForChanges();
-            const errorMessage = await page.find('.dot-field__error-meessage');
-            expect(errorMessage.innerHTML).toBe('Invalid Address');
-        });
-
-        it('should load as pristine and untouched', () => {
-            expect(element.classList.contains('dot-pristine')).toBe(true);
-            expect(element.classList.contains('dot-untouched')).toBe(true);
-        });
-
-        it('should mark as dirty and touched when type', async () => {
+        it('should mark as touched when onblur', async() => {
             await input.press('a');
+            await input.triggerEvent('blur');
             await page.waitForChanges();
 
-            expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'Address',
+                status: {
+                    dotPristine: false,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
         });
 
-        it('should mark as invalid when value dont match REgex', async () => {
-            await input.press('@');
+        it('should send status value change', async () => {
+            input.press('a');
             await page.waitForChanges();
-
-            expect(element).toHaveClasses(['dot-invalid']);
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'Address',
+                status: {
+                    dotPristine: false,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
         });
 
-        it('should clear value, set pristine and untouched  when input set reset', async () => {
+        it('should emit status and value on Reset', async () => {
             element.callMethod('reset');
             await page.waitForChanges();
-
-            expect(element.classList.contains('dot-pristine')).toBe(true);
-            expect(element.classList.contains('dot-untouched')).toBe(true);
-            expect(element.classList.contains('dot-invalid')).toBe(true);
-            expect(await input.getProperty('value')).toBe('');
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'Address',
+                status: {
+                    dotPristine: true,
+                    dotTouched: false,
+                    dotValid: true
+                }
+            });
+            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: '' });
         });
 
-        it('should mark as disabled when prop is present', async () => {
-            element.setProperty('disabled', true);
+        it('should emit change value', async () => {
+            input.press('a');
             await page.waitForChanges();
-            expect(await input.getProperty('disabled')).toBe(true);
-        });
-
-        it('should mark as required when prop is present', async () => {
-            expect(await input.getProperty('required')).toBe(true);
-        });
-
-        describe('emit events', () => {
-            let spyStatusChangeEvent: EventSpy;
-            let spyValueChange: EventSpy;
-
-            beforeEach(async () => {
-                spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-                spyValueChange = await page.spyOnEvent('valueChange');
-            });
-
-            xit('should send status onBlur', async () => {
-                // TODO: Need to find the way to test the blur event.
-            });
-
-            it('should send status value change', async () => {
-                input.press('a');
-                await page.waitForChanges();
-                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                    name: 'Address',
-                    status: {
-                        dotPristine: false,
-                        dotTouched: true,
-                        dotValid: true
-                    }
-                });
-            });
-
-            it('should emit status and value on Reset', async () => {
-                element.callMethod('reset');
-                await page.waitForChanges();
-                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                    name: 'Address',
-                    status: {
-                        dotPristine: true,
-                        dotTouched: false,
-                        dotValid: false
-                    }
-                });
-                expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: '' });
-            });
-
-            it('should emit change value', async () => {
-                input.press('a');
-                await page.waitForChanges();
-                expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: 'Addressa' });
-            });
-
-             xit('should mark as touched when onblur', () => {
-                // TODO: Need to find the way to test the blur event.
-            });
+            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: 'Addressa' });
         });
     });
 
     it('should render with hint', async () => {
-        page = await newE2EPage({
-            html: `
-              <dot-textarea
-                label='Address:'
-                name='Address'
-                hint="this is a hint">
-              </dot-textarea>`
-        });
-
-        const element = await page.find('dot-textarea');
-
+        element.setProperty('hint', 'this is a hint');
+        await page.waitForChanges();
         // tslint:disable-next-line:max-line-length
         const tagsRenderExpected = `<label>Address:</label><textarea name="Address"></textarea><span class="dot-field__hint">this is a hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
-    });
-
-    it('should disabled', async () => {
-        page = await newE2EPage({
-            html: `
-              <dot-textarea
-                label='Address:'
-                name='Address'
-                disabled>
-              </dot-textarea>`
-        });
-
-        const input = await page.find('textarea');
-
-        expect(input.getAttribute('disabled')).toBe('');
     });
 });
