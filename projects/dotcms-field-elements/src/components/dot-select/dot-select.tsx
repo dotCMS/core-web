@@ -24,7 +24,6 @@ export class DotSelectComponent {
     @Prop() options: string;
     @Prop() required: boolean;
     @Prop() requiredmessage: string;
-    @Prop() type: string;
     @Prop({ mutable: true }) value: string;
 
     @Event() valueChange: EventEmitter;
@@ -32,7 +31,7 @@ export class DotSelectComponent {
 
     @State() _options: DotOption[];
     @State() _valid = true;
-    @State() _dotTouched = false;
+    _dotTouched = false;
     _dotPristine = true;
 
     componentWillLoad() {
@@ -76,7 +75,7 @@ export class DotSelectComponent {
                 <select
                     class={this.getClassName()}
                     id={this.name}
-                    disabled={this.disabled ? true : null}
+                    disabled={this.shouldBeDisabled()}
                     onChange={(event: Event) => this.setValue(event)}>
 
                     {this._options.map((item: DotOption) => {
@@ -92,17 +91,17 @@ export class DotSelectComponent {
 
                 </select>
                 {this.hint ? <span class='dot-field__hint'>{this.hint}</span> : ''}
-                {this.shouldShowErrorMessage()}
+                {!this.isValid() ? <span class='dot-field__error-message'>{this.requiredmessage}</span> : ''}
             </Fragment>
         );
     }
 
     private getClassName(): string {
-        return this._valid ? '' : 'dot-field__select--error';
+        return this.isValid() ? '' : 'dot-field__select--error';
     }
 
-    private shouldShowErrorMessage(): string {
-        return !this.isValid() ? `<span class='dot-field__error-message'>${this.requiredmessage}</span>` : '';
+    private shouldBeDisabled(): boolean {
+        return this.disabled ? true : null;
     }
 
      // Todo: find how to set proper TYPE in TS

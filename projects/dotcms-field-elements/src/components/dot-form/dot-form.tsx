@@ -78,7 +78,6 @@ export class DotFormComponent {
     render() {
         return (
             <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
-                <slot />
                 {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
                 <button type='submit' disabled={this._valid ? null : true }>{this.submitLabel}</button>
                 <button type='button' onClick={() => this.resetForm()} >{this.resetLabel}</button>

@@ -62,7 +62,7 @@ describe('dot-select', () => {
         await page.select('select', '');
         await page.waitForChanges();
         // tslint:disable-next-line:max-line-length
-        expect(element.outerHTML).toBe(`<dot-select name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"|,valueA|1,valueB|2\" value=\"2\" requiredmessage=\"testErrorMsg\" required=\"\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><select id=\"testName\"><option value=\"\"></option><option value=\"1\">valueA</option><option value=\"2\">valueB</option></select><span class=\"dot-field__hint\">testHint</span>&lt;span class='dot-field__error-message'&gt;testErrorMsg&lt;/span&gt;</dot-select>`);
+        expect(element.outerHTML).toBe(`<dot-select name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"|,valueA|1,valueB|2\" value=\"2\" requiredmessage=\"testErrorMsg\" required=\"\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><select class=\"dot-field__select--error\" id=\"testName\"><option value=\"\"></option><option value=\"1\">valueA</option><option value=\"2\">valueB</option></select><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-message\">testErrorMsg</span></dot-select>`);
     });
 
     it('should emit status and value on Reset', async () => {

@@ -27,7 +27,6 @@ export const DotFormFields = {
             options={field.values}
             required={field.required}
             value={field.defaultValue}
-            type={field.dataType}
         />
     )
 };
