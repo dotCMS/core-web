@@ -31,7 +31,7 @@ export class DotTextareaComponent {
     _dotPristine = true;
 
     /**
-     * Reset properties of the filed, clear value and emit events.
+     * Reset properties of the field, clear value and emit events.
      *
      * @memberof DotTextareaComponent
      */
@@ -62,28 +62,39 @@ export class DotTextareaComponent {
         };
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
     render() {
         return (
             <Fragment>
                 <label>{this.label}</label>
                 <textarea
-                    class={this._valid ? '' : 'dot-field__input--error'}
+                    class={this.getInputClassName()}
                     name={this.name}
                     value={this.value}
-                    required={this.required ? true : null}
+                    required={this.getRequiredAttr()}
                     onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.disabled ? true : null}
+                    disabled={this.getDisanledAtt()}
                 />
                 {this.hint ? <span class='dot-field__hint'>{this.hint}</span> : ''}
-                {this.showErrorMessage() ? (
+                {this.shouldShowErrorMessage() ? (
                     <span class='dot-field__error-meessage'>{this.getErrorMessage()}</span>
                 ) : (
                     ''
                 )}
             </Fragment>
         );
+    }
+
+    private getInputClassName(): string {
+        return this._valid ? '' : 'dot-field__input--error';
+    }
+
+    private getDisanledAtt(): boolean {
+        return this.disabled ? true : null;
+    }
+
+    private getRequiredAttr(): boolean {
+        return this.required ? true : null;
     }
 
     private isValid(): boolean {
@@ -102,7 +113,7 @@ export class DotTextareaComponent {
         return true;
     }
 
-    private showErrorMessage(): boolean {
+    private shouldShowErrorMessage(): boolean {
         return this.getErrorMessage() && !this._dotPristine;
     }
 
