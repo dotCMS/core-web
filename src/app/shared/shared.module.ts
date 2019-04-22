@@ -22,12 +22,12 @@ import { MainNavigationModule } from '@components/dot-navigation/dot-navigation.
 import { DotEventsService } from '../api/services/dot-events/dot-events.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
-export function dotEventSocketURLFactory() {
+const dotEventSocketURLFactory = () => {
     return new DotEventsSocketURL(
         `${window.location.hostname}:${window.location.port}/api/ws/v1/system/events`,
         window.location.protocol === 'https'
     );
-  }
+  };
 
 @NgModule({
     declarations: [],
