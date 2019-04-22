@@ -220,7 +220,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
     /**
      * Remove fields from the content type
-     * @param fieldsToDelete Fields to be removed
+     * @param DotContentTypeField fieldsToDelete Fields to be removed
      * @memberof ContentTypesEditComponent
      */
     removeFields(fieldsToDelete: DotContentTypeField[]): void {
@@ -246,7 +246,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         this.loadingFields = true;
         this.fieldService.saveFields(this.data.id, fieldsToSave).pipe(take(1)).subscribe(
             (fields: DotFieldDivider[]) => {
-
                 if (this.isAnyNewField(fieldsToSave) || this.isUpdatingField(fieldsToSave)) {
                     this.fields = fields;
                 }

@@ -131,7 +131,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 const fieldTab: DotFieldDivider = FieldUtil.createFieldTabDivider();
-                this.fieldRows.push();
+                this.fieldRows.push(fieldTab);
                 this.setDroppedField(fieldTab.divider);
                 this.toggleDialog();
             });
@@ -164,8 +164,8 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     /**
-     * Adds columns to the layout of content type
-     * @param number columns
+     * Adds row to the layout of content type
+     * @param number columns new row's number of columns
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     addRow(columns: number): void {
@@ -175,7 +175,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Emit the saveField event
-     * @param ContentTypeField fieldToSave
+     * @param DotContentTypeField fieldToSave
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: DotContentTypeField): void {
@@ -193,7 +193,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Get the field to be edited
-     * @param ContentTypeField fieldToEdit
+     * @param DotContentTypeField fieldToEdit
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editField(fieldToEdit: DotContentTypeField): void {

@@ -33,6 +33,7 @@ import { TableModule } from 'primeng/table';
 import { DotContentTypeFieldsVariablesModule } from '../dot-content-type-fields-variables/dot-content-type-fields-variables.module';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { FieldUtil } from '../util/field-util';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -303,7 +304,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-describe('Load fields and drag and drop', () => {
+fdescribe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
@@ -498,6 +499,17 @@ describe('Load fields and drag and drop', () => {
         expect(comp.fieldRows[0].columns.length).toBe(2);
     });
 
+    it('should emit and create tab divider', () => {
+        const dotEventsService: DotEventsService = de.injector.get(DotEventsService);
+
+        fixture.detectChanges();
+        dotEventsService.notify('add-tab-divider', {});
+
+        expect(comp.fieldRows.length).toBe(4);
+        expect(comp.fieldRows[comp.fieldRows.length - 1].divider.clazz)
+            .toBe('com.dotcms.contenttype.model.field.ImmutableTabDividerField');
+    });
+
     it('should have FieldRow and FieldColumn', () => {
         fixture.detectChanges();
 
@@ -679,19 +691,6 @@ describe('Load fields and drag and drop', () => {
         fieldRows[0].componentInstance.removeField.emit(field);
 
         expect(spy).toHaveBeenCalledWith(field);
-    });
-
-    it('should create empty row and column when no fields present', () => {
-        hostComp.layout = [];
-        fixture.detectChanges();
-
-        expect(comp.fieldRows[0].columns[0].fields.length).toEqual(0);
-        expect(comp.fieldRows[0].columns[0].columnDivider.clazz).toEqual(
-            'com.dotcms.contenttype.model.field.ImmutableColumnField'
-        );
-        expect(comp.fieldRows[0].divider.clazz).toEqual(
-            'com.dotcms.contenttype.model.field.ImmutableRowField'
-        );
     });
 
     it('should disable field variable tab', () => {

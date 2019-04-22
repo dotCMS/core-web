@@ -26,7 +26,7 @@ export class FieldService {
     /**
      * Save fields.
      * @param string contentTypeId Content Type'id
-     * @param ContentTypeField[] fields fields to add
+     * @param DotContentTypeField[] fields fields to add
      * @returns Observable<any>
      * @memberof FieldService
      */

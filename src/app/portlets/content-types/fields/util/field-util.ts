@@ -17,7 +17,7 @@ export class FieldUtil {
     // private static NG_ID_SEQUENCER = new Date().getTime();
     /**
      * Verify if the Field already exist
-     * @param ContentTypeField field
+     * @param DotContentTypeField field
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
@@ -31,7 +31,7 @@ export class FieldUtil {
 
     /**
      * Verify if the Field is a row
-     * @param ContentTypeField field
+     * @param DotContentTypeField field
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
@@ -41,7 +41,7 @@ export class FieldUtil {
 
     /**
      * Verify if the Field is a column
-     * @param ContentTypeField field
+     * @param DotContentTypeField field
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */

@@ -61,7 +61,7 @@ export class ContentTypeFieldsRowComponent implements OnInit {
     /**
      * Remove a field
      *
-     * @param ContentTypeField field
+     * @param DotContentTypeField field
      * @memberof ContentTypeFieldsRowComponent
      */
     onRemoveField(field: DotContentTypeField): void {

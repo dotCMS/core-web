@@ -670,10 +670,12 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should remove fields on dropzone event', () => {
-            const fieldsReturnByServer: DotContentTypeField[] = currentFieldsInServer.slice(-1);
+            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
+
             const fieldService = fixture.debugElement.injector.get(FieldService);
             spyOn(fieldService, 'deleteFields').and.returnValue(
-                observableOf({ fields: fieldsReturnByServer })
+                observableOf({ fields: layout })
             );
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
@@ -691,7 +693,7 @@ describe('ContentTypesEditComponent', () => {
             // then: the saveFields method has to be called in FileService ...
             expect(fieldService.deleteFields).toHaveBeenCalledWith('1234567890', fieldToRemove);
             // ...and the comp.data.fields has to be set to the fields return by the service
-            // expect(comp.fields).toEqual(fieldsReturnByServer);
+            expect(comp.fields).toEqual(layout);
         });
 
         it('should handle remove field error', () => {
