@@ -10,38 +10,46 @@
         <style>
             form > * {
                 display: block;
+                margin-bottom: 16px;
             }
         </style>
         <script src='/build/dotcmsfields.js'></script>
         <script>
             const fieldsConfig = [
             {
-                    defaultValue: 'Hello World',
-                    fieldType: 'Text',
-                    hint: 'This is a Hint',
-                    name: 'Texto',
-                    required: true,
-                    requiredmessage: 'this field is required',
-                    variable: 'text1'
-                },{
-                    defaultValue: '2',
-                    fieldType: 'Select',
-                    hint: 'dropdown hint',
-                    name: 'dropdown',
-                    required: true,
-                    requiredmessage: 'this field is required',
-                    values: '|,labelA|1,labelB|2,labelC|3',
-                    variable: 'dropdown2'
-                },{
-                    label: 'Address:',
-                    fieldType: 'TextArea',
-                    name: 'Address',
-                    value: 'Address',
-                    hint: 'this is a hint',
-                    required: true,
-                    requiredmessage: 'Required Name'
-                },
-            ];
+                fieldType: 'Text',
+                label: 'Name:',
+                name: 'fullName',
+                defaultValue: 'John',
+                hint: 'this is a hint',
+                placeholder: 'Enter Name',
+                regexCheck: '^[A-Za-z ]+$',
+                regexCheckMessage: 'Invalid Name',
+                required: true,
+                requiredMessage: 'Required Name',
+                variable: 'text1'
+            }, {
+                defaultValue: '2',
+                fieldType: 'Select',
+                hint: 'dropdown hint',
+                name: 'dropdown',
+                required: true,
+                requiredMessage: 'this field is required',
+                values: '|,labelA|1,labelB|2,labelC|3',
+                variable: 'dropdown2'
+            }, {
+                fieldType: 'Textarea',
+                label: 'Address:',
+                name: 'Address',
+                defaultValue: 'Address',
+                hint: 'this is a hint',
+                placeholder: 'Enter Name',
+                regexCheck: '^[A-Za-z ]+$',
+                regexCheckMessage: 'Invalid Name',
+                required: true,
+                requiredMessage: 'Required Address',
+                variable: 'textarea3'
+            }];
 
             window.onload = function() {
                 const dotFormEl = document.createElement('dot-form');
@@ -58,16 +66,5 @@
     </head>
     <body>
         <div id="container"></div>
-
-        <dot-textarea
-                label='Address:'
-                name='Address'
-                value='Address'
-                hint='this is a hint'
-                regexcheck='^[A-Za-z ]+$'
-                regexcheckmessage="Invalid Name"
-                required
-                requiredmessage="Required Name"
-            ></dot-textarea>
     </body>
 </html>

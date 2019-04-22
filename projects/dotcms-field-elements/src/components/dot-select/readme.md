@@ -1,4 +1,4 @@
-# dot-dropdown
+# dot-select
 
 
 
@@ -16,7 +16,6 @@
 | `options`         | `options`         |             | `string`  | `undefined` |
 | `required`        | `required`        |             | `boolean` | `undefined` |
 | `requiredmessage` | `requiredmessage` |             | `string`  | `undefined` |
-| `type`            | `type`            |             | `string`  | `undefined` |
 | `value`           | `value`           |             | `string`  | `undefined` |
 
 
