@@ -304,7 +304,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-fdescribe('Load fields and drag and drop', () => {
+describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
