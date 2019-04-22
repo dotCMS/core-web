@@ -32,10 +32,10 @@ const updateStatus = (
     };
 };
 
-const getClassNames = (status: DotFieldStatus, isValid: () => boolean) => {
+const getClassNames = (status: DotFieldStatus, isValid: boolean) => {
     return {
-        'dot-valid': isValid(),
-        'dot-invalid': !isValid(),
+        'dot-valid': isValid,
+        'dot-invalid': !isValid,
         'dot-pristine': status.dotPristine,
         'dot-dirty': !status.dotPristine,
         'dot-touched': status.dotTouched,
@@ -97,7 +97,7 @@ export class DotTextfieldComponent {
 
     hostData() {
         return {
-            class: getClassNames(this.status, this.isValid)
+            class: getClassNames(this.status, this.isValid())
         };
     }
 
