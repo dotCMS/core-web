@@ -72,7 +72,7 @@ export class DotCheckboxComponent {
                                 type='checkbox'
                                 disabled={this.shouldBeDisabled()}
                                 id={this.value}
-                                checked={this.value.indexOf(trimmedValue) >= 0 ? true : null}
+                                checked={this.value.indexOf(trimmedValue) >= 0 || null}
                                 onInput={(event: Event) => this.setValue(event)}
                                 value={trimmedValue}
                             />
