@@ -26,6 +26,17 @@ export class DotLargeMessageDisplayService {
         });
     }
 
+    next() {
+        this._messages.next({
+            title: 'Heading',
+            body: '<div style="border: solid 1px red">hello world</div>',
+            code: {
+                lang: 'javascript',
+                content: 'var a = "hello"'
+            }
+        });
+    }
+
     /**
      * Clear service's Observable content
      *

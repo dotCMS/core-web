@@ -19,6 +19,10 @@ export class DotLargeMessageDisplayComponent implements OnInit {
         this.data$ = this.dotLargeMessageDisplayService.sub();
     }
 
+    next() {
+        this.dotLargeMessageDisplayService.next();
+    }
+
     /**
      * Close dialog's component by clearing messages from service
      *
