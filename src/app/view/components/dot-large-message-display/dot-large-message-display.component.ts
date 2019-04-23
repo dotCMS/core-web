@@ -56,10 +56,6 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
         this.destroy$.complete();
     }
 
-    next() {
-        this.dotLargeMessageDisplayService.next();
-    }
-
     /**
      * Close dialog's component by clearing messages from service
      *

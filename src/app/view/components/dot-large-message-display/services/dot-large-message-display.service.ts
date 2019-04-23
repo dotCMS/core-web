@@ -27,29 +27,6 @@ export class DotLargeMessageDisplayService {
         });
     }
 
-    next() {
-        this._messages.next({
-            title: 'Heading',
-            script: 'console.log("script tah")',
-            body: `
-                <div style="border: solid 1px red">hello world</div>
-                <button class="this_button">click</button>;
-                <script type="javascript/text">
-                    const button = document.querySelector(".this_button");
-                    console.log(button);
-                    button.addEventListener('click', () => {
-                        alert('Hello');
-                    })
-                </script>
-                `
-                ,
-            code: {
-                lang: 'javascript',
-                content: 'var a = "hello"'
-            }
-        });
-    }
-
     /**
      * Clear service's Observable content
      *
