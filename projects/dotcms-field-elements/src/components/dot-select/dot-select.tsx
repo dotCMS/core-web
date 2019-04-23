@@ -97,7 +97,7 @@ export class DotSelectComponent {
     }
 
     private getClassName(): string {
-        return this.isValid() ? '' : 'dot-field__select--error';
+        return this.isValid() ? '' : 'dot-field__error';
     }
 
     private shouldBeDisabled(): boolean {
