@@ -6,7 +6,6 @@
     [height]="data.height || '400px'"
     (hide)="close()"
 >
-    <!-- <div #body class="dialog-message__body" [innerHTML]="data.body | keepHtml" *ngIf="data.body"></div> -->
     <div #body class="dialog-message__body" *ngIf="data.body"></div>
     <div *ngIf="data.code">
         <pre class="dialog-message__code">
