@@ -3,10 +3,10 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus } from '../../models/dot-field-status.model';
 
 @Component({
-    tag: 'dot-textfield',
+    tag: 'dot-textfield-old',
     styleUrl: 'dot-textfield.scss'
 })
-export class DotTextfieldComponent {
+export class DotTextfield2Component {
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
     @Prop() regexcheck: string;
