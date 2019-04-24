@@ -44,7 +44,7 @@ class FakeFormComponent {
     }
 }
 
-describe('DotWorkflowsSelectorFieldComponent', () => {
+fdescribe('DotWorkflowsSelectorFieldComponent', () => {
     let component: DotWorkflowsSelectorFieldComponent;
     let fixture: ComponentFixture<DotWorkflowsSelectorFieldComponent>;
     let de: DebugElement;
@@ -93,6 +93,10 @@ describe('DotWorkflowsSelectorFieldComponent', () => {
 
             it('should have default label', () => {
                 expect(multiselect.defaultLabel).toEqual('Pick it up');
+            });
+
+            it('should have append to bobdy', () => {
+                expect(multiselect.appendTo).toEqual('body');
             });
 
             it('should get workflow list from server', () => {
