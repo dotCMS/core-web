@@ -32,20 +32,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
 
                 if (content) {
                     setTimeout(() => {
-                        const placeholder = document.createElement('div');
-                        placeholder.innerHTML = content.body;
-
-                        Array.from(placeholder.children).forEach((el: HTMLElement) => {
-                            this.renderer.appendChild(this.bodyEl.nativeElement, this.getEl(el));
-                        });
-
-
-                        if (content.script) {
-                            this.renderer.appendChild(
-                                this.bodyEl.nativeElement,
-                                this.createScriptEl(content.script)
-                            );
-                        }
+                        this.createContent(content);
                     }, 0);
                 }
             });
@@ -65,8 +52,27 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
         this.dotLargeMessageDisplayService.clear();
     }
 
-    private getEl(el: HTMLElement): HTMLElement {
-        return el.tagName === 'SCRIPT' ? this.createScriptEl(el.innerHTML) : el;
+    private createContent(content: DotLargeMessageDisplayParams): void {
+        const placeholder = document.createElement('div');
+        placeholder.innerHTML = content.body;
+
+        Array.from(placeholder.children).forEach((el: HTMLElement) => {
+            const parsedEl = this.isScriptElement(el.tagName)
+                ? this.createScriptEl(el.innerHTML)
+                : el;
+            this.renderer.appendChild(this.bodyEl.nativeElement, parsedEl);
+        });
+
+        if (content.script) {
+            this.renderer.appendChild(
+                this.bodyEl.nativeElement,
+                this.createScriptEl(content.script)
+            );
+        }
+    }
+
+    private isScriptElement(tag: string): boolean {
+        return tag === 'SCRIPT';
     }
 
     private createScriptEl(content: string): HTMLScriptElement {
