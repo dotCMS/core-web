@@ -64,7 +64,7 @@ export class DotTextfieldComponent {
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.placeholder}
                     required={this.required || null}
-                    type="text"
+                    type='text'
                     value={this.value}
                 />
                 {getTagHint(this.hint)}
@@ -111,13 +111,12 @@ export class DotTextfieldComponent {
     }
 
     private setValue(event): void {
-        updateStatus(this.status, {
+        this.value = event.target.value.toString();
+        this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
             dotValid: this.isValid()
         });
-
-        this.value = event.target.value.toString();
         this.emitValueChange();
         this.emitStatusChange();
     }

@@ -66,7 +66,7 @@ export class DotFormComponent {
                 'dot-untouched': !this._touched
             }
         };
-      }
+    }
 
     componentWillLoad() {
         this.fields.forEach((field: DotCMSContentTypeField) => {

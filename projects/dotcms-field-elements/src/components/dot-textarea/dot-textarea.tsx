@@ -87,7 +87,7 @@ export class DotTextareaComponent {
     }
 
     private getInputClassName(): string {
-        return this._valid ? '' : 'dot-field__input--error';
+        return this._valid ? '' : 'dot-field__error';
     }
 
     private getDisabledAtt(): boolean {

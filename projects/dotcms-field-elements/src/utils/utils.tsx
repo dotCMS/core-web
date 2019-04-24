@@ -1,9 +1,4 @@
-import { DotOption } from '../models/dot-option.model';
-import { DotFieldStatus } from '../models/dot-field-status.model';
-
-export function generateId(): number {
-    return Date.now().valueOf();
-}
+import { DotOption, DotFieldEvent, DotFieldStatus, DotFieldClass } from '../models';
 
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
     const items = rawString
@@ -24,17 +19,14 @@ export function getOriginalStatus(): DotFieldStatus {
     };
 }
 
-export function updateStatus(
-    state: DotFieldStatus,
-    change: { [key: string]: boolean }
-): DotFieldStatus {
+export function updateStatus(state: DotFieldStatus, change: { [key: string]: boolean }): DotFieldStatus {
     return {
         ...state,
         ...change
     };
 }
 
-export function getClassNames(status: DotFieldStatus, isValid: boolean) {
+export function getClassNames(status: DotFieldStatus, isValid: boolean): DotFieldClass {
     return {
         'dot-valid': isValid,
         'dot-invalid': !isValid,
@@ -45,15 +37,15 @@ export function getClassNames(status: DotFieldStatus, isValid: boolean) {
     };
 }
 
-export function getTagHint(hint: string) {
-    return hint ? <span class="dot-field__hint">{hint}</span> : '';
+export function getTagHint(hint: string): JSX.Element {
+    return hint ? <span class='dot-field__hint'>{hint}</span> : '';
 }
 
-export function getTagError(show: boolean, message: string) {
-    return show ? <span class="dot-field__error-meessage">{message}</span> : '';
+export function getTagError(show: boolean, message: string): JSX.Element {
+    return show ? <span class='dot-field__error-meessage'>{message}</span> : '';
 }
 
-export function getTagLabel(name: string, label: string) {
+export function getTagLabel(name: string, label: string): JSX.Element {
     return <label htmlFor={name}>{label}</label>;
 }
 
@@ -61,7 +53,7 @@ export function getErrorClass(valid: boolean): string {
     return valid ? '' : 'dot-field__input--error';
 }
 
-export function emitEvent(eventName: string, content: any, elem): void {
+export function emitEvent<T extends DotFieldEvent>(eventName: string, content: T, elem: Element): void {
     elem.dispatchEvent(
         new CustomEvent(eventName, {
             bubbles: true,
