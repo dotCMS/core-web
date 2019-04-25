@@ -18,7 +18,7 @@ import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { takeUntil, take  } from 'rxjs/operators';
-import { Subject, merge } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DotFieldVariableParams } from '../dot-content-type-fields-variables/models/dot-field-variable-params.interface';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 
@@ -109,13 +109,18 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                 this.toggleDialog();
             });
 
-        merge(
-            this.fieldDragDropService.fieldRowDropFromTarget$,
-            this.fieldDragDropService.fieldDropFromTarget$
-        ).pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-            setTimeout(this.moveFields.bind(this), 0);
-        });
+        this.fieldDragDropService.fieldDropFromTarget$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => setTimeout(() => {
+                this.emitSaveEventIfNecessary(this.getFieldsFromLayout());
+            }, 0));
+
+        this.fieldDragDropService.fieldRowDropFromTarget$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((fieldRows: DotFieldDivider[]) => {
+                this.fieldRows = fieldRows;
+                this.emitSaveEventIfNecessary(this.getFieldsFromLayout());
+            });
 
         this.dotEventsService
             .listen('add-row')
@@ -179,16 +184,15 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: DotContentTypeField): void {
-        let fields: DotContentTypeField[];
+        const fields: DotContentTypeField[] = this.getFieldsFromLayout().map(field =>
+            fieldToSave.id === field.id && !FieldUtil.isRowOrColumn(field) ?
+                this.mergeFields(field, fieldToSave) : field);
 
-        if (fieldToSave.id) {
-            fields = [fieldToSave];
-        } else {
-            fields = this.getFieldsToSave(fieldToSave);
+        if (!fieldToSave.id) {
             this.toggleDialog();
         }
 
-        this.saveFields.emit(fields);
+        this.emitSaveEventIfNecessary(fields);
     }
 
     /**
@@ -197,7 +201,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editField(fieldToEdit: DotContentTypeField): void {
-        const fields = this.getFields();
+        const fields = this.getFieldsFromLayout();
         this.formData = fields.filter((field) => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         this.currentField = {
@@ -308,6 +312,13 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
+    private mergeFields(field: DotContentTypeField, fieldToSave: DotContentTypeField): DotContentTypeField {
+        return {
+            ...field,
+            ...fieldToSave
+        };
+    }
+
     private setDroppedField(droppedField: DotContentTypeField): void {
         this.formData = droppedField;
 
@@ -316,64 +327,24 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         }
     }
 
-    private moveFields(): void {
-        const fields = this.getFields().filter((field, index) => {
+    private emitSaveEventIfNecessary(currentFields: DotContentTypeField[]): void {
+        console.log('emitSaveEventIfNecessary');
+        const fields = currentFields.filter((field, index) => {
             const currentSortOrder = index;
-
-            if (field.sortOrder !== currentSortOrder) {
+            console.log('field.name', field.name);
+            console.log('field.sortOrder', field.sortOrder);
+            console.log('currentSortOrder', currentSortOrder);
+            if (!field.id || field.sortOrder !== currentSortOrder) {
                 field.sortOrder = currentSortOrder;
                 return true;
             } else {
                 return false;
             }
         });
-
+;
         if (fields && fields.length) {
             this.saveFields.emit(fields);
         }
-    }
-
-    private getFieldsToSave(fieldToSave: DotContentTypeField): DotContentTypeField[] {
-        return this.formData.id
-            ? [this.getUpdatedField(fieldToSave)]
-            : this.getUpdatedFields(fieldToSave);
-    }
-
-    private getUpdatedField(fieldToSave: DotContentTypeField): DotContentTypeField {
-        const fields = this.getFields();
-        let result: DotContentTypeField;
-
-        for (let i = 0; i < fields.length; i++) {
-            const field = fields[i];
-
-            if (this.formData.id === field.id) {
-                result = Object.assign({}, field, fieldToSave);
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    private getUpdatedFields(newField: DotContentTypeField): DotContentTypeField[] {
-        const fields = this.getFields();
-        const result: DotContentTypeField[] = [];
-
-        fields.forEach((field, index) => {
-            if (field.sortOrder !== index) {
-                field.sortOrder = index;
-                const fieldToPush = this.isNewOrLayoutFiled(field)
-                    ? Object.assign(field, newField)
-                    : field;
-                result.push(fieldToPush);
-            }
-        });
-
-        return result;
-    }
-
-    private isNewOrLayoutFiled(field: DotContentTypeField): boolean {
-        return FieldUtil.isNewField(field) && !FieldUtil.isRowOrColumn(field);
     }
 
     private toggleDialog(): void {
@@ -385,7 +356,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         }
     }
 
-    private getFields(): DotContentTypeField[] {
+    private getFieldsFromLayout(): DotContentTypeField[] {
         const fields: DotContentTypeField[] = [];
 
         this.fieldRows.forEach((fieldDivider: DotFieldDivider) => {
