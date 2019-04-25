@@ -1,8 +1,7 @@
-import { Component, Prop, State, Element, Method } from '@stencil/core';
+import { Component, Prop, State, Element, Method, Event, EventEmitter } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotOption, DotFieldStatus } from '../../models';
+import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
-    emitEvent,
     getClassNames,
     getOriginalStatus,
     getTagHint,
@@ -38,6 +37,10 @@ export class DotSelectComponent {
     @State() _options: DotOption[];
     @State() _valid = true;
     @State() status: DotFieldStatus = getOriginalStatus();
+
+    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
+    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+
     _dotTouched = false;
     _dotPristine = true;
 
@@ -119,10 +122,10 @@ export class DotSelectComponent {
     }
 
     private emitStatusChange(): void {
-        emitEvent('statusChange', {
+        this.statusChange.emit({
             name: this.name,
             status: this.status
-        }, this.el);
+        });
     }
 
     private isValid(): boolean {
@@ -130,9 +133,9 @@ export class DotSelectComponent {
     }
 
     private emitValueChange(): void {
-        emitEvent('valueChange', {
+        this.valueChange.emit({
             name: this.name,
             value: this.value
-        }, this.el);
+        });
     }
 }

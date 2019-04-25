@@ -6,8 +6,7 @@ import {
     getTagHint,
     getTagError,
     getTagLabel,
-    getErrorClass,
-    emitEvent
+    getErrorClass
 } from './utils';
 
 describe('getDotOptionsFromFieldValue', () => {
@@ -100,14 +99,5 @@ describe('getErrorClass', () => {
     it('should Not returns Error CSS', () => {
         const cssClass = getErrorClass(true);
         expect(cssClass).toEqual('');
-    });
-});
-
-describe('emitEvent', () => {
-    it('should emitEvent', () => {
-        const element = document.createElement('div');
-        spyOn(element, 'dispatchEvent');
-        emitEvent('eventName', { name: 'test', value: 'true' }, element);
-        expect(element.dispatchEvent).toHaveBeenCalledTimes(1);
     });
 });

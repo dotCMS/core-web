@@ -1,8 +1,7 @@
-import { Component, Prop, State, Method, Element } from '@stencil/core';
+import { Component, Prop, State, Method, Element, Event, EventEmitter } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus } from '../../models';
+import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
-    emitEvent,
     getClassNames,
     getOriginalStatus,
     getTagHint,
@@ -35,6 +34,9 @@ export class DotTextareaComponent {
     @Prop() disabled = false;
 
     @State() status: DotFieldStatus = getOriginalStatus();
+
+    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
+    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -134,17 +136,17 @@ export class DotTextareaComponent {
     }
 
     private emitStatusChange(): void {
-        emitEvent('statusChange', {
+        this.statusChange.emit({
             name: this.name,
             status: this.status
-        }, this.el);
+        });
     }
 
     private emitValueChange(): void {
-        emitEvent('valueChange', {
+        this.valueChange.emit({
             name: this.name,
             value: this.value
-        }, this.el);
+        });
     }
 
 }

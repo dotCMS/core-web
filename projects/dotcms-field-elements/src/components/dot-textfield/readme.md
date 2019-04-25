@@ -21,6 +21,14 @@
 | `value`             | `value`             |             | `string`  | `undefined` |
 
 
+## Events
+
+| Event          | Description | Type                               |
+| -------------- | ----------- | ---------------------------------- |
+| `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
+| `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
+
+
 ## Methods
 
 ### `reset() => void`

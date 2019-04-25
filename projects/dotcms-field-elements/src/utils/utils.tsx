@@ -1,4 +1,4 @@
-import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotFieldStatusEvent, DotFieldValueEvent } from '../models';
+import { DotOption, DotFieldStatus, DotFieldStatusClasses } from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -103,19 +103,4 @@ export function getTagLabel(name: string, label: string): JSX.Element {
  */
 export function getErrorClass(valid: boolean): string {
     return valid ? '' : 'dot-field__error';
-}
-
-/**
- * Emits a Custom Event for status & value changes
- *
- * @param string eventName
- * @param (DotFieldValueEvent|DotFieldStatusEvent) content
- * @param Element elem
- */
-export function emitEvent<T extends DotFieldValueEvent|DotFieldStatusEvent>(eventName: string, content: T, elem: Element): void {
-    elem.dispatchEvent(
-        new CustomEvent(eventName, {
-            bubbles: true,
-            detail: content})
-    );
 }
