@@ -1,12 +1,23 @@
-import { Component, Prop, State, Event, EventEmitter, Method } from '@stencil/core';
+import { Component, Prop, State, Element, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus } from '../../models/dot-field-status.model';
+import { DotFieldStatus } from '../../models';
+import {
+    emitEvent,
+    getClassNames,
+    getOriginalStatus,
+    getTagHint,
+    getTagError,
+    getTagLabel,
+    getErrorClass,
+    updateStatus
+} from '../../utils';
 
 @Component({
-    tag: 'dot-textfield-old',
+    tag: 'dot-textfield',
     styleUrl: 'dot-textfield.scss'
 })
-export class DotTextfield2Component {
+export class DotTextfieldComponent {
+    @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
     @Prop() regexcheck: string;
@@ -18,22 +29,15 @@ export class DotTextfield2Component {
     @Prop() requiredmessage: string;
     @Prop() disabled = false;
 
-    @Event() valueChange: EventEmitter;
-    @Event() statusChange: EventEmitter;
-
-    @State() _valid = true;
-    @State() _dotTouched = false;
-    _dotPristine = true;
+    @State() status: DotFieldStatus = getOriginalStatus();
 
     /**
      * Reset properties of the filed, clear value and emit events.
      */
     @Method()
     reset(): void {
-        this._dotPristine = true;
-        this._dotTouched = false;
         this.value = '';
-        this._valid = true;
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
     }
@@ -44,39 +48,27 @@ export class DotTextfield2Component {
 
     hostData() {
         return {
-            class: {
-                'dot-valid': this.isValid(),
-                'dot-invalid': !this.isValid(),
-                'dot-pristine': this._dotPristine,
-                'dot-dirty': !this._dotPristine,
-                'dot-touched': this._dotTouched,
-                'dot-untouched': !this._dotTouched
-            }
+            class: getClassNames(this.status, this.isValid())
         };
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
     render() {
         return (
             <Fragment>
-                <label htmlFor={this.name}>{this.label}</label>
+                {getTagLabel(this.name, this.label)}
                 <input
-                    class={this._valid ? '' : 'dot-field__error'}
+                    class={getErrorClass(this.status.dotValid)}
+                    disabled={this.disabled || null}
                     id={this.name}
-                    type="text"
-                    value={this.value}
-                    placeholder={this.placeholder}
-                    required={this.required ? true : null}
-                    onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.disabled ? true : null}
+                    onInput={(event: Event) => this.setValue(event)}
+                    placeholder={this.placeholder}
+                    required={this.required || null}
+                    type='text'
+                    value={this.value}
                 />
-                {this.hint ? <span class="dot-field__hint">{this.hint}</span> : ''}
-                {this.showErrorMessage() ? (
-                    <span class="dot-field__error-meessage">{this.getErrorMessage()}</span>
-                ) : (
-                    ''
-                )}
+                {getTagHint(this.hint)}
+                {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
@@ -98,47 +90,48 @@ export class DotTextfield2Component {
     }
 
     private showErrorMessage(): boolean {
-        return this.getErrorMessage() && !this._dotPristine;
+        return this.getErrorMessage() && !this.status.dotPristine;
     }
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredmessage
+            ? this.isValid()
+                ? ''
+                : this.requiredmessage
             : this.regexcheckmessage;
     }
 
     private blurHandler(): void {
-        if (!this._dotTouched) {
-            this._dotTouched = true;
+        if (!this.status.dotTouched) {
+            this.status = updateStatus(this.status, {
+                dotTouched: true
+            });
             this.emitStatusChange();
         }
     }
 
     private setValue(event): void {
-        this._dotPristine = false;
-        this._dotTouched = true;
         this.value = event.target.value.toString();
-        this._valid = this.isValid();
+        this.status = updateStatus(this.status, {
+            dotTouched: true,
+            dotPristine: false,
+            dotValid: this.isValid()
+        });
         this.emitValueChange();
         this.emitStatusChange();
     }
 
     private emitStatusChange(): void {
-        this.statusChange.emit({
+        emitEvent('statusChange', {
             name: this.name,
-            status: this.getStatus()
-        });
+            status: this.status
+        }, this.el);
     }
 
     private emitValueChange(): void {
-        this.valueChange.emit({ name: this.name, value: this.value });
-    }
-
-    private getStatus(): DotFieldStatus {
-        return {
-            dotTouched: this._dotTouched,
-            dotValid: this.isValid(),
-            dotPristine: this._dotPristine
-        };
+        emitEvent('valueChange', {
+            name: this.name,
+            value: this.value
+        }, this.el);
     }
 }

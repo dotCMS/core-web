@@ -20,14 +20,6 @@
 | `value`             | `value`             |             | `string`  | `undefined` |
 
 
-## Events
-
-| Event          | Description | Type                |
-| -------------- | ----------- | ------------------- |
-| `statusChange` |             | `CustomEvent<void>` |
-| `valueChange`  |             | `CustomEvent<void>` |
-
-
 ## Methods
 
 ### `reset() => void`

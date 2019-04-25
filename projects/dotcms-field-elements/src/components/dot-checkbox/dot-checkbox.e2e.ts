@@ -51,7 +51,7 @@ describe('dot-checkbox', () => {
         await page.click('input');
         await page.waitForChanges();
         // tslint:disable-next-line:max-line-length
-        expect(element.outerHTML).toBe(`<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><div class=\"dot-field__checkbox--error\"><input type=\"checkbox\" value=\"1\"><label for=\"1\">valueA</label></div><div class=\"dot-field__checkbox--error\"><input type=\"checkbox\" value=\"2\"><label for=\"2\">valueB</label></div><div class=\"dot-field__checkbox--error\"><input type=\"checkbox\" value=\"3\"><label for=\"3\">valueC</label></div><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-message\">testErrorMsg</span></dot-checkbox>`);
+        expect(element.outerHTML).toBe(`<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"1\"><label for=\"1\">valueA</label></div><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"2\"><label for=\"2\">valueB</label></div><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"3\"><label for=\"3\">valueC</label></div><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-meessage\">testErrorMsg</span></dot-checkbox>`);
     });
 
     describe('Events', () => {

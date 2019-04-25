@@ -1,8 +1,17 @@
-import { Component, Prop, State, Event, Element, EventEmitter, Method } from '@stencil/core';
-import { getDotOptionsFromFieldValue } from '../../utils';
-import { DotOption } from '../../models/dot-option.model';
+import { Component, Prop, State, Element, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus } from '../../models/dot-field-status.model';
+import { DotOption, DotFieldStatus } from '../../models';
+import {
+    emitEvent,
+    getClassNames,
+    getOriginalStatus,
+    getTagHint,
+    getTagError,
+    getTagLabel,
+    getErrorClass,
+    getDotOptionsFromFieldValue,
+    updateStatus
+} from '../../utils';
 
 @Component({
     tag: 'dot-checkbox',
@@ -20,28 +29,21 @@ export class DotCheckboxComponent {
     @Prop() requiredmessage: string;
     @Prop({ mutable: true }) value: string;
 
-    @Event() valueChange: EventEmitter;
-    @Event() statusChange: EventEmitter;
-
     @State() _options: DotOption[];
     @State() _valid = true;
+    @State() status: DotFieldStatus = getOriginalStatus();
     _dotTouched = false;
     _dotPristine = true;
 
     componentWillLoad() {
         this._options = getDotOptionsFromFieldValue(this.options);
+        this.emitValueChange();
+        this.emitStatusChange();
     }
 
     hostData() {
         return {
-            class: {
-                'dot-valid': this.isValid(),
-                'dot-invalid': !this.isValid(),
-                'dot-pristine': this._dotPristine,
-                'dot-dirty': !this._dotPristine,
-                'dot-touched': this._dotTouched,
-                'dot-untouched': !this._dotTouched
-            }
+            class: getClassNames(this.status, this.isValid())
         };
     }
 
@@ -52,10 +54,8 @@ export class DotCheckboxComponent {
      */
     @Method()
     reset(): void {
-        this._dotPristine = true;
-        this._dotTouched = false;
-        this._valid = true;
         this.value = '';
+        this.status = getOriginalStatus(this.isValid());
         this.emitValueChange();
         this.emitStatusChange();
     }
@@ -63,11 +63,11 @@ export class DotCheckboxComponent {
     render() {
         return (
             <Fragment>
-                <label htmlFor={this.name}>{this.label}</label>
+                {getTagLabel(this.name, this.label)}
                 {this._options.map((item: DotOption) => {
                     const trimmedValue = item.value.trim();
                     return (
-                        <div class={this.getClassName()}>
+                        <div class={getErrorClass(this.isValid())}>
                             <input
                                 type='checkbox'
                                 disabled={this.shouldBeDisabled()}
@@ -80,17 +80,20 @@ export class DotCheckboxComponent {
                         </div>
                     );
                 })}
-                {this.hint ? <span class='dot-field__hint'>{this.hint}</span> : ''}
-                {!this.isValid() ? <span class='dot-field__error-message'>{this.requiredmessage}</span> : ''}
+                {getTagHint(this.hint)}
+                {getTagError(!this.isValid(), this.requiredmessage)}
             </Fragment>
         );
     }
 
     // Todo: find how to set proper TYPE in TS
     private setValue(event): void {
-        this._dotPristine = false;
-        this._dotTouched = true;
         this.value = this.getValueFromCheckInputs(event.target.value.trim(), event.target.checked);
+        this.status = updateStatus(this.status, {
+            dotTouched: true,
+            dotPristine: false,
+            dotValid: this.isValid()
+        });
         this.emitValueChange();
         this.emitStatusChange();
     }
@@ -106,27 +109,15 @@ export class DotCheckboxComponent {
         return Array.from(valuesSet).join(',');
     }
 
-    private getClassName(): string {
-        return this.isValid() ? '' : 'dot-field__error';
-    }
-
     private shouldBeDisabled(): boolean {
         return this.disabled ? true : null;
     }
 
     private emitStatusChange(): void {
-        this.statusChange.emit({
+        emitEvent('statusChange', {
             name: this.name,
-            status: this.getStatus()
-        });
-    }
-
-    private getStatus(): DotFieldStatus {
-        return {
-            dotTouched: this._dotTouched,
-            dotValid: this.isValid(),
-            dotPristine: this._dotPristine
-        };
+            status: this.status
+        }, this.el);
     }
 
     private isValid(): boolean {
@@ -134,6 +125,9 @@ export class DotCheckboxComponent {
     }
 
     private emitValueChange(): void {
-        this.valueChange.emit({ name: this.name, value: this.value });
+        emitEvent('valueChange', {
+            name: this.name,
+            value: this.value
+        }, this.el);
     }
 }

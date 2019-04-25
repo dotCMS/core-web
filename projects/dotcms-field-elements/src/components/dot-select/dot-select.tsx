@@ -1,8 +1,17 @@
-import { Component, Prop, State, Event, EventEmitter, Element, Method } from '@stencil/core';
-import { getDotOptionsFromFieldValue } from '../../utils';
+import { Component, Prop, State, Element, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotOption } from '../../models/dot-option.model';
-import { DotFieldStatus } from '../../models/dot-field-status.model';
+import { DotOption, DotFieldStatus } from '../../models';
+import {
+    emitEvent,
+    getClassNames,
+    getOriginalStatus,
+    getTagHint,
+    getTagError,
+    getTagLabel,
+    getErrorClass,
+    getDotOptionsFromFieldValue,
+    updateStatus
+} from '../../utils';
 
 /**
  * Represent a dotcms select control.
@@ -26,11 +35,9 @@ export class DotSelectComponent {
     @Prop() requiredmessage: string;
     @Prop({ mutable: true }) value: string;
 
-    @Event() valueChange: EventEmitter;
-    @Event() statusChange: EventEmitter;
-
     @State() _options: DotOption[];
     @State() _valid = true;
+    @State() status: DotFieldStatus = getOriginalStatus();
     _dotTouched = false;
     _dotPristine = true;
 
@@ -42,14 +49,7 @@ export class DotSelectComponent {
 
     hostData() {
         return {
-            class: {
-                'dot-valid': this.isValid(),
-                'dot-invalid': !this.isValid(),
-                'dot-pristine': this._dotPristine,
-                'dot-dirty': !this._dotPristine,
-                'dot-touched': this._dotTouched,
-                'dot-untouched': !this._dotTouched
-            }
+            class: getClassNames(this.status, this.isValid())
         };
     }
 
@@ -60,10 +60,8 @@ export class DotSelectComponent {
      */
     @Method()
     reset(): void {
-        this._dotPristine = true;
-        this._dotTouched = false;
-        this._valid = true;
         this.value = '';
+        this.status = getOriginalStatus(this.isValid());
         this.emitInitialValue();
         this.emitStatusChange();
     }
@@ -71,9 +69,9 @@ export class DotSelectComponent {
     render() {
         return (
             <Fragment>
-                <label htmlFor={this.name}>{this.label}</label>
+                {getTagLabel(this.name, this.label)}
                 <select
-                    class={this.getClassName()}
+                    class={getErrorClass(this.status.dotValid)}
                     id={this.name}
                     disabled={this.shouldBeDisabled()}
                     onChange={(event: Event) => this.setValue(event)}>
@@ -90,14 +88,10 @@ export class DotSelectComponent {
                     })}
 
                 </select>
-                {this.hint ? <span class='dot-field__hint'>{this.hint}</span> : ''}
-                {!this.isValid() ? <span class='dot-field__error-message'>{this.requiredmessage}</span> : ''}
+                {getTagHint(this.hint)}
+                {getTagError(!this.isValid(), this.requiredmessage)}
             </Fragment>
         );
-    }
-
-    private getClassName(): string {
-        return this.isValid() ? '' : 'dot-field__error';
     }
 
     private shouldBeDisabled(): boolean {
@@ -106,9 +100,12 @@ export class DotSelectComponent {
 
      // Todo: find how to set proper TYPE in TS
     private setValue(event): void {
-        this._dotPristine = false;
-        this._dotTouched = true;
         this.value = event.target.value;
+        this.status = updateStatus(this.status, {
+            dotTouched: true,
+            dotPristine: false,
+            dotValid: this.isValid()
+        });
         this.emitValueChange();
         this.emitStatusChange();
     }
@@ -121,18 +118,10 @@ export class DotSelectComponent {
     }
 
     private emitStatusChange(): void {
-        this.statusChange.emit({
+        emitEvent('statusChange', {
             name: this.name,
-            status: this.getStatus()
-        });
-    }
-
-    private getStatus(): DotFieldStatus {
-        return {
-            dotTouched: this._dotTouched,
-            dotValid: this.isValid(),
-            dotPristine: this._dotPristine
-        };
+            status: this.status
+        }, this.el);
     }
 
     private isValid(): boolean {
@@ -140,6 +129,9 @@ export class DotSelectComponent {
     }
 
     private emitValueChange(): void {
-        this.valueChange.emit({ name: this.name, value: this.value });
+        emitEvent('valueChange', {
+            name: this.name,
+            value: this.value
+        }, this.el);
     }
 }
