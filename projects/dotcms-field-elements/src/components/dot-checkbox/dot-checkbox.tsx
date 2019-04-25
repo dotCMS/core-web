@@ -67,17 +67,18 @@ export class DotCheckboxComponent {
                 {this._options.map((item: DotOption) => {
                     const trimmedValue = item.value.trim();
                     return (
-                        <div class={getErrorClass(this.isValid())}>
+                        <Fragment>
                             <input
+                                class={getErrorClass(this.isValid())}
                                 type='checkbox'
-                                disabled={this.shouldBeDisabled()}
+                                disabled={this.disabled || null}
                                 id={this.value}
                                 checked={this.value.indexOf(trimmedValue) >= 0 || null}
                                 onInput={(event: Event) => this.setValue(event)}
                                 value={trimmedValue}
                             />
                             <label htmlFor={trimmedValue}>{item.label}</label>
-                        </div>
+                        </Fragment>
                     );
                 })}
                 {getTagHint(this.hint)}
@@ -107,10 +108,6 @@ export class DotCheckboxComponent {
             valuesSet.delete(value);
         }
         return Array.from(valuesSet).join(',');
-    }
-
-    private shouldBeDisabled(): boolean {
-        return this.disabled ? true : null;
     }
 
     private emitStatusChange(): void {

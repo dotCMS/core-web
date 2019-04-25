@@ -4,10 +4,10 @@ import { DotFormFields } from './dot-form-fields';
 import { getClassNames, getOriginalStatus } from '../../utils';
 
 const fieldMap = {
-    Text: (fieldParam: DotCMSContentTypeField) => DotFormFields.Text(fieldParam),
-    Textarea: (fieldParam: DotCMSContentTypeField) => DotFormFields.Textarea(fieldParam),
-    Checkbox: (fieldParam: DotCMSContentTypeField) => DotFormFields.Checkbox(fieldParam),
-    Select: (fieldParam: DotCMSContentTypeField) => DotFormFields.Select(fieldParam)
+    Text: DotFormFields.Text,
+    Textarea: DotFormFields.Textarea,
+    Checkbox: DotFormFields.Checkbox,
+    Select: DotFormFields.Select
 };
 
 @Component({
@@ -72,7 +72,7 @@ export class DotFormComponent {
         return (
             <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
                 {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
-                <button type='submit' disabled={this.status.dotValid ? null : true}>
+                <button type='submit' disabled={!this.status.dotValid || null}>
                     {this.submitLabel}
                 </button>
                 <button type='button' onClick={() => this.resetForm()}>
@@ -115,11 +115,11 @@ export class DotFormComponent {
     }
 
     private areFieldsToShowDefined(field: DotCMSContentTypeField): boolean {
-        return this.fieldsToShow.length > 0 && this.fieldsToShow.includes(field.variable);
+        return this.fieldsToShow.length === 0 || this.fieldsToShow.includes(field.variable);
     }
 
     private getField(field: DotCMSContentTypeField): any {
-        return this.areFieldsToShowDefined(field) || this.fieldsToShow.length === 0
+        return this.areFieldsToShowDefined(field)
             ? this.getFieldTag(field)
             : '';
     }

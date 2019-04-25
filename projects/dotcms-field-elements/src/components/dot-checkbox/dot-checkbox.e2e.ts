@@ -27,7 +27,7 @@ describe('dot-checkbox', () => {
 
     it('renders', async () => {
         // tslint:disable-next-line:max-line-length
-        const expectedMarkup = `<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"dot-valid dot-pristine dot-untouched hydrated\"><label for=\"testName\">testLabel</label><div><input type=\"checkbox\" id=\"1\" value=\"1\"><label for=\"1\">valueA</label></div><div><input type=\"checkbox\" id=\"1\" value=\"2\"><label for=\"2\">valueB</label></div><div><input type=\"checkbox\" id=\"1\" value=\"3\"><label for=\"3\">valueC</label></div><span class=\"dot-field__hint\">testHint</span></dot-checkbox>`;
+        const expectedMarkup = `<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"dot-valid dot-pristine dot-untouched hydrated\"><label for=\"testName\">testLabel</label><input type=\"checkbox\" id=\"1\" value=\"1\"><label for=\"1\">valueA</label><input type=\"checkbox\" id=\"1\" value=\"2\"><label for=\"2\">valueB</label><input type=\"checkbox\" id=\"1\" value=\"3\"><label for=\"3\">valueC</label><span class=\"dot-field__hint\">testHint</span></dot-checkbox>`;
         const hint = await element.find('.dot-field__hint');
         expect(element.outerHTML).toBe(expectedMarkup);
         expect(hint).toBeTruthy();
@@ -51,7 +51,10 @@ describe('dot-checkbox', () => {
         await page.click('input');
         await page.waitForChanges();
         // tslint:disable-next-line:max-line-length
-        expect(element.outerHTML).toBe(`<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"1\"><label for=\"1\">valueA</label></div><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"2\"><label for=\"2\">valueB</label></div><div class=\"dot-field__error\"><input type=\"checkbox\" value=\"3\"><label for=\"3\">valueC</label></div><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-meessage\">testErrorMsg</span></dot-checkbox>`);
+        expect(element.outerHTML).toBe(`<dot-checkbox name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"valueA|1,valueB|2,valueC|3\" value=\"1\" requiredmessage=\"testErrorMsg\" required=\"true\" class=\"hydrated dot-invalid dot-dirty dot-touched\"><label for=\"testName\">testLabel</label><input class=\"dot-field__error\" type=\"checkbox\" value=\"1\"><label for=\"1\">valueA</label><input class=\"dot-field__error\" type=\"checkbox\" value=\"2\"><label for=\"2\">valueB</label><input class=\"dot-field__error\" type=\"checkbox\" value=\"3\"><label for=\"3\">valueC</label><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-meessage\">testErrorMsg</span></dot-checkbox>`);
+        expect(element.classList.contains('dot-invalid')).toBe(true);
+        expect(element.classList.contains('dot-dirty')).toBe(true);
+        expect(element.classList.contains('dot-touched')).toBe(true);
     });
 
     describe('Events', () => {

@@ -1,4 +1,4 @@
-import { DotOption, DotFieldStatus, DotFieldClass, DotFieldStatusEvent, DotFieldValueEvent } from '../models';
+import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotFieldStatusEvent, DotFieldValueEvent } from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -52,7 +52,7 @@ export function updateStatus(state: DotFieldStatus, change: { [key: string]: boo
  * @param boolean isValid
  * @returns DotFieldClass
  */
-export function getClassNames(status: DotFieldStatus, isValid: boolean): DotFieldClass {
+export function getClassNames(status: DotFieldStatus, isValid: boolean): DotFieldStatusClasses {
     return {
         'dot-valid': isValid,
         'dot-invalid': !isValid,

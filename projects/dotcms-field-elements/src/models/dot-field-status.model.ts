@@ -4,7 +4,7 @@ export interface DotFieldStatus {
     dotPristine: boolean;
 }
 
-export interface DotFieldClass {
+export interface DotFieldStatusClasses {
     'dot-valid': boolean;
     'dot-invalid': boolean;
     'dot-pristine': boolean;

@@ -57,6 +57,7 @@ export class DotSelectComponent {
      * Reset properties of the field, clear value and emit events.
      *
      * @memberof DotSelectComponent
+     *
      */
     @Method()
     reset(): void {
