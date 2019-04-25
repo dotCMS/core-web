@@ -21,7 +21,7 @@ export class FieldUtil {
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isNewField(field: DotContentTypeField): Boolean {
+    static isNewField(field: DotContentTypeField): boolean {
         return !field.id;
     }
 

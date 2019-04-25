@@ -184,14 +184,16 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: DotContentTypeField): void {
+        console.log('fieldToSave', fieldToSave);
+        console.log('this.formData', this.formData);
+
         const fields: DotContentTypeField[] = this.getFieldsFromLayout().map(field =>
             fieldToSave.id === field.id && !FieldUtil.isRowOrColumn(field) ?
                 this.mergeFields(field, fieldToSave) : field);
 
-        if (!fieldToSave.id) {
-            this.toggleDialog();
-        }
+        console.log('fields', fields);
 
+        this.toggleDialog();
         this.emitSaveEventIfNecessary(fields);
     }
 
@@ -201,8 +203,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editField(fieldToEdit: DotContentTypeField): void {
-        const fields = this.getFieldsFromLayout();
-        this.formData = fields.filter((field) => fieldToEdit.id === field.id)[0];
+        this.formData = this.getFieldsFromLayout().filter((field) => fieldToEdit.id === field.id)[0];
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.formData.clazz);
         this.currentField = {
             fieldId: this.formData.id,
@@ -216,6 +217,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeFieldsWithoutId(): void {
+        console.log('removeFieldsWithoutId');
         const fieldRows: any = this.fieldRows;
 
         // TODO needs an improvement for performance reasons
@@ -313,9 +315,13 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     private mergeFields(field: DotContentTypeField, fieldToSave: DotContentTypeField): DotContentTypeField {
+        console.log('mergeFields');
         return {
             ...field,
-            ...fieldToSave
+            ...fieldToSave,
+            ...{
+                sortOrder: -1
+            }
         };
     }
 
@@ -328,23 +334,25 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     private emitSaveEventIfNecessary(currentFields: DotContentTypeField[]): void {
-        console.log('emitSaveEventIfNecessary');
+
         const fields = currentFields.filter((field, index) => {
             const currentSortOrder = index;
-            console.log('field.name', field.name);
-            console.log('field.sortOrder', field.sortOrder);
-            console.log('currentSortOrder', currentSortOrder);
-            if (!field.id || field.sortOrder !== currentSortOrder) {
+
+            if (this.isFieldChanged(field, currentSortOrder)) {
                 field.sortOrder = currentSortOrder;
                 return true;
             } else {
                 return false;
             }
         });
-;
+
         if (fields && fields.length) {
             this.saveFields.emit(fields);
         }
+    }
+
+    private isFieldChanged(field: DotContentTypeField, currentSortOrder: number): boolean {
+        return FieldUtil.isNewField(field) || field.sortOrder !== currentSortOrder;
     }
 
     private toggleDialog(): void {
