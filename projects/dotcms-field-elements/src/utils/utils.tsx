@@ -69,7 +69,7 @@ export function getClassNames(status: DotFieldStatus, isValid: boolean): DotFiel
  * @param string hint
  * @returns JSX.Element
  */
-export function getTagHint(hint: string): JSX.Element {
+export function getTagHint(hint: string) {
     return hint ? <span class='dot-field__hint'>{hint}</span> : '';
 }
 
