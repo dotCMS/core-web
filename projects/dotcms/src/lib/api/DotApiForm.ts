@@ -24,6 +24,7 @@ export class DotApiForm {
         private content: DotApiContent,
         defineCustomElements: (win: any, opt?: any) => Promise<void>
     ) {
+        console.log('calling defineCustomElements');
         defineCustomElements(window);
     }
 
@@ -36,6 +37,8 @@ export class DotApiForm {
         this.contentType =
             this.contentType || (await this.dotApiContentType.get(this.formConfig.identifier));
         this.fields = this.contentType.fields;
+
+        console.log(this.fields);
 
         const formTag = this.createForm(this.fields);
         container.append(formTag);

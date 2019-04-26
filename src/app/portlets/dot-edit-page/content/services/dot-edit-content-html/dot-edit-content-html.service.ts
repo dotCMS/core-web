@@ -1,3 +1,4 @@
+import { initDotCMS } from './../../../../../../../projects/dotcms/src/public_api';
 import {
     fromEvent as observableFromEvent,
     of as observableOf,
@@ -6,7 +7,7 @@ import {
     Subscription
 } from 'rxjs';
 
-import { map, take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { Injectable, ElementRef } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -242,7 +243,7 @@ export class DotEditContentHtmlService {
                 'div[data-dot-object="container"]',
                 `[data-dot-identifier="${this.currentContainer.identifier}"]`,
                 `[data-dot-uuid="${this.currentContainer.uuid}"]`
-            ].join()
+            ].join('')
         );
 
         if (this.isFormExistInContainer(form, containerEl)) {
@@ -252,9 +253,36 @@ export class DotEditContentHtmlService {
             return this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
-                    map((response) => {
-                        const containers: DotPageContainer[] = this.getContentModel();
+                    tap((response: { render: string; content: { [key: string]: any } }) => {
+                        const { identifier, inode } = response.content;
 
+                        const contentlet = this.createNewContentlet(
+                            {
+                                identifier,
+                                inode,
+                                baseType: 'FORM',
+                                type: 'forms'
+                            },
+                            false
+                        );
+
+                        const dotcms = initDotCMS({
+                            token:
+                                // tslint:disable-next-line:max-line-length
+                                'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGlkYjUzYWJiOC0yOTExLTQ0MjMtYWE3OS02MmRlZjdhZTg4ODIiLCJ4bW9kIjoxNTU2MzA0MTE0MDAwLCJuYmYiOjE1NTYzMDQxMTQsImlzcyI6IjEwOWVjOTcwLWY3MGYtNDZiNi04NzY3LTNlNDk3ODU1N2E1YiIsImV4cCI6MTU1NzE2ODExNCwiaWF0IjoxNTU2MzA0MTE0LCJqdGkiOiI2Y2JkNDk0OS0wZmI4LTRiMzgtYTE5NC01ZTRmYzYxNTgxMzIifQ.63kJdQNHzeRj6MJ61X_OgaK-82kA6WSpcYQSEuBgDtw'
+                        });
+
+                        const formLib = dotcms.form.get({
+                            contentType: form.variable,
+                            identifier: form.id
+                        });
+
+                        formLib.render(contentlet);
+
+                        containerEl.appendChild(contentlet);
+                    }),
+                    map((response: { render: string; content: { [key: string]: any } }) => {
+                        const containers: DotPageContainer[] = this.getContentModel();
                         containers
                             .filter(
                                 (container) =>
@@ -322,7 +350,8 @@ export class DotEditContentHtmlService {
                 if (containerRow.length > 1) {
                     let maxHeight = 0;
                     containerRow.forEach((container: HTMLElement) => {
-                        maxHeight = maxHeight < container.offsetHeight ? container.offsetHeight : maxHeight;
+                        maxHeight =
+                            maxHeight < container.offsetHeight ? container.offsetHeight : maxHeight;
                     });
                     containerRow.forEach((container: HTMLElement) => {
                         container.style.height = `${maxHeight}px`;
@@ -592,7 +621,7 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createNewContentlet(dotPageContent: DotPageContent): HTMLElement {
+    private createNewContentlet(dotPageContent: DotPageContent, loader = true): HTMLElement {
         const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
@@ -610,9 +639,7 @@ export class DotEditContentHtmlService {
             <div class="dotedit-contentlet__toolbar">
                 ${contenToolbarButtons}
             </div>
-            <div class="loader__overlay">
-                <div class="loader"></div>
-            </div>
+            ${loader ? '<div class="loader__overlay"><div class="loader"></div></div>' : ''}
         `;
 
         return dotEditContentletEl;

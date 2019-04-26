@@ -46,6 +46,7 @@ export const initDotCMS = (config: DotCMSConfigurationParams): DotCMSApp => {
         event: new DotApiEvent(),
         form: {
             get: (formConfig: DotCMSFormConfig) => {
+                console.log(formConfig);
                 const dotApiContentType = new DotApiContentType(httpClient);
                 return new DotApiForm(dotApiContentType, formConfig, content, defineCustomElements);
             }

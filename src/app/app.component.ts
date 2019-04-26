@@ -4,7 +4,7 @@ import { DotcmsConfig } from 'dotcms-js';
 import { DotUiColors, DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { take, pluck } from 'rxjs/operators';
 
-import { initDotCMS } from './../../projects/dotcms/src/public_api';
+// import { initDotCMS } from './../../projects/dotcms/src/public_api';
 
 @Component({
     selector: 'dot-root',
@@ -23,17 +23,17 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const dotcms = initDotCMS({
-            token:
-                'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGkzYjFjMDhhZi1mMTE3LTQyNmYtYmJiOS05MGUyYzM4YjQ4YzYiLCJ4bW9kIjoxNTU2MjE0Nzc2MDAwLCJuYmYiOjE1NTYyMTQ3NzYsImlzcyI6IjUwNzMwZjhmLTlhOWItNGIyNS05ZDNlLTNkNTUwYjFiNGU3ZiIsImV4cCI6MTU1NzA3ODc3NiwiaWF0IjoxNTU2MjE0Nzc2LCJqdGkiOiJhOTdhZDEzYy1hMDE3LTQ4MGYtYmZlYS0yNzNkYzU2MzkwNzYifQ._4X8sUtnqJ819ur7z3VeiNlhrYhkEh8trkksvYMOzXE'
-        });
+        // const dotcms = initDotCMS({
+        //     token:
+        //     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGlkYjUzYWJiOC0yOTExLTQ0MjMtYWE3OS02MmRlZjdhZTg4ODIiLCJ4bW9kIjoxNTU2MzA0MTE0MDAwLCJuYmYiOjE1NTYzMDQxMTQsImlzcyI6IjEwOWVjOTcwLWY3MGYtNDZiNi04NzY3LTNlNDk3ODU1N2E1YiIsImV4cCI6MTU1NzE2ODExNCwiaWF0IjoxNTU2MzA0MTE0LCJqdGkiOiI2Y2JkNDk0OS0wZmI4LTRiMzgtYTE5NC01ZTRmYzYxNTgxMzIifQ.63kJdQNHzeRj6MJ61X_OgaK-82kA6WSpcYQSEuBgDtw'
+        // });
 
-        const form = dotcms.form.get({
-            contentType: 'TestForm',
-            identifier: 'e8a51516-f80d-468f-a38b-618ef2020eff'
-        });
+        // const form = dotcms.form.get({
+        //     contentType: 'TestForm',
+        //     identifier: '27768b2c-5dd2-4f7e-92e6-048d5ecd33bb'
+        // });
 
-        form.render(this.div.nativeElement);
+        // form.render(this.div.nativeElement);
 
         this.dotCmsConfig
             .getConfig()
