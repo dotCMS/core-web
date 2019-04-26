@@ -29,7 +29,6 @@ export class DotCheckboxComponent {
     @Prop({ mutable: true }) value: string;
 
     @State() _options: DotOption[];
-    @State() _valid = true;
     @State() status: DotFieldStatus = getOriginalStatus();
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
@@ -72,12 +71,12 @@ export class DotCheckboxComponent {
                                 class={getErrorClass(this.isValid())}
                                 type='checkbox'
                                 disabled={this.disabled || null}
-                                id={this.value}
+                                id={trimmedValue}
                                 checked={this.value.indexOf(trimmedValue) >= 0 || null}
                                 onInput={(event: Event) => this.setValue(event)}
                                 value={trimmedValue}
                             />
-                            <label htmlFor={trimmedValue}>{item.label}</label>
+                            {getTagLabel(trimmedValue, item.label)}
                         </Fragment>
                     );
                 })}
