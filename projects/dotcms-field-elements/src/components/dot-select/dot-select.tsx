@@ -35,7 +35,6 @@ export class DotSelectComponent {
     @Prop({ mutable: true }) value: string;
 
     @State() _options: DotOption[];
-    @State() _valid = true;
     @State() status: DotFieldStatus = getOriginalStatus();
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
