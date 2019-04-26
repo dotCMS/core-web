@@ -11,8 +11,8 @@ export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
         .split(',')
         .filter((item) => item.length > 0)
         .map((item) => {
-            const splittedItem = item.split('|');
-            return { label: splittedItem[0], value: splittedItem[1] };
+            const [label, value] = item.split('|');
+            return { label, value };
         });
     return items;
 }
@@ -25,7 +25,7 @@ export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
  */
 export function getOriginalStatus(isValid?: boolean): DotFieldStatus {
     return {
-        dotValid: typeof isValid !== 'undefined' ? isValid : true,
+        dotValid: typeof isValid === 'undefined' ? true : isValid,
         dotTouched: false,
         dotPristine: true
     };
@@ -69,12 +69,12 @@ export function getClassNames(status: DotFieldStatus, isValid: boolean): DotFiel
  * @param string hint
  * @returns JSX.Element
  */
-export function getTagHint(hint: string) {
+export function getTagHint(hint: string): JSX.Element {
     return hint ? <span class='dot-field__hint'>{hint}</span> : '';
 }
 
 /**
- * Returns Error tag if "show" value equals truth
+ * Returns Error tag if "show" value equals true
  *
  * @param boolean show
  * @param string message

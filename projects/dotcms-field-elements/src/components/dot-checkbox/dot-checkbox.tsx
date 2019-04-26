@@ -35,9 +35,6 @@ export class DotCheckboxComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    _dotTouched = false;
-    _dotPristine = true;
-
     componentWillLoad() {
         this._options = getDotOptionsFromFieldValue(this.options);
         this.emitValueChange();
@@ -103,7 +100,7 @@ export class DotCheckboxComponent {
     }
 
     private getValueFromCheckInputs(value: string, checked: boolean): string {
-        const valueArray = this.value.trim().length > 0 ? this.value.split(',') : [];
+        const valueArray = this.value.trim().length ? this.value.split(',') : [];
         const valuesSet = new Set(valueArray);
         if (checked) {
             valuesSet.add(value);
