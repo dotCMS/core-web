@@ -10,7 +10,6 @@ import { take, pluck } from 'rxjs/operators';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
     constructor(
         notLicensedService: NotLicensedService,
         private dotCmsConfig: DotcmsConfig,
