@@ -7,8 +7,7 @@ const fieldMap = {
     Text: DotFormFields.Text,
     Textarea: DotFormFields.Textarea,
     Checkbox: DotFormFields.Checkbox,
-    Select: DotFormFields.Select,
-    Radio: DotFormFields.Radio
+    Select: DotFormFields.Select
 };
 
 @Component({
