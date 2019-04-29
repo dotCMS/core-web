@@ -22,10 +22,10 @@ export class DotApiForm {
         private dotApiContentType: DotApiContentType,
         private formConfig: DotCMSFormConfig,
         private content: DotApiContent,
-        defineCustomElements: (win: any, opt?: any) => Promise<void>
+        defineCustomElements: (win: Window, opt?: any) => Promise<void>
     ) {
         console.log('calling defineCustomElements');
-        defineCustomElements(window);
+        defineCustomElements(formConfig.win || window);
     }
 
     /**
@@ -44,7 +44,10 @@ export class DotApiForm {
         container.append(formTag);
     }
 
-    private shouldSetFormLabel(label: string, labelConfig: {submit?: string, reset?: string}): boolean {
+    private shouldSetFormLabel(
+        label: string,
+        labelConfig: { submit?: string; reset?: string }
+    ): boolean {
         return !!(labelConfig && labelConfig[label]);
     }
 
@@ -82,5 +85,4 @@ export class DotApiForm {
 
         return dotFormEl;
     }
-
 }

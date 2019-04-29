@@ -274,7 +274,8 @@ export class DotEditContentHtmlService {
 
                         const formLib = dotcms.form.get({
                             contentType: form.variable,
-                            identifier: form.id
+                            identifier: form.id,
+                            win: this.getEditPageWindow()
                         });
 
                         formLib.render(contentlet);
@@ -654,6 +655,10 @@ export class DotEditContentHtmlService {
             this.getEditPageIframe().contentDocument ||
             this.getEditPageIframe().contentWindow.document
         );
+    }
+
+    private getEditPageWindow(): Window {
+        return this.getEditPageIframe().contentWindow;
     }
 
     private handlerContentletEvents(event: string): (contentletEvent: any) => void {

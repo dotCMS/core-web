@@ -14,7 +14,6 @@ import { DotApiContentType } from './lib/api/DotApiContentType';
 import { DotApiForm } from './lib/api/DotApiForm';
 import { defineCustomElements } from 'projects/dotcms-field-elements/dist/loader';
 
-
 export interface DotCMSApp {
     auth: DotApiAuthorization;
     content: DotApiContent;
@@ -24,7 +23,7 @@ export interface DotCMSApp {
     nav: DotApiNavigation;
     page: DotApiPage;
     site: DotApiSite;
-    form: { get: (formConfig: DotCMSFormConfig) => DotApiForm };
+    form: { get: (formConfig: DotCMSFormConfig, win?: Window) => DotApiForm };
     widget: DotApiWidget;
     config: DotApiConfiguration;
     language: DotApiLanguage;
@@ -46,9 +45,13 @@ export const initDotCMS = (config: DotCMSConfigurationParams): DotCMSApp => {
         event: new DotApiEvent(),
         form: {
             get: (formConfig: DotCMSFormConfig) => {
-                console.log(formConfig);
                 const dotApiContentType = new DotApiContentType(httpClient);
-                return new DotApiForm(dotApiContentType, formConfig, content, defineCustomElements);
+                return new DotApiForm(
+                    dotApiContentType,
+                    formConfig,
+                    content,
+                    defineCustomElements,
+                );
             }
         },
         language: apiLanguage,
