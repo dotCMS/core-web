@@ -104,7 +104,7 @@ export class DotRadioComponent {
     }
 
     private setValue(event): void {
-        this.value = this.getValueFromCheckInputs(event.target.value.trim(), event.target.checked);
+        this.value = event.target.value.trim();
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
@@ -112,17 +112,6 @@ export class DotRadioComponent {
         });
         this.emitValueChange();
         this.emitStatusChange();
-    }
-
-    private getValueFromCheckInputs(value: string, checked: boolean): string {
-        const valueArray = this.value.trim().length ? this.value.split(',') : [];
-        const valuesSet = new Set(valueArray);
-        if (checked) {
-            valuesSet.add(value);
-        } else {
-            valuesSet.delete(value);
-        }
-        return Array.from(valuesSet).join(',');
     }
 
     private emitStatusChange(): void {
