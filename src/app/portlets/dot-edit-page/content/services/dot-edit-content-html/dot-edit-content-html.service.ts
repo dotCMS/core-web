@@ -41,6 +41,17 @@ export enum DotContentletAction {
     ADD
 }
 
+function getCookie(name) {
+    const value = '; ' + document.cookie;
+    const parts = value.split('; ' + name + '=');
+    if (parts.length === 2) {
+        return parts
+            .pop()
+            .split(';')
+            .shift();
+    }
+}
+
 interface RenderAddedItemParams {
     event: PageModelChangeEventType;
     item: DotPageContent | ContentType | DotRelocatePayload;
@@ -254,43 +265,17 @@ export class DotEditContentHtmlService {
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
                     tap((response: { render: string; content: { [key: string]: any } }) => {
-                        const { identifier, inode } = response.content;
-
-                        const contentlet = this.createNewContentlet(
-                            {
-                                identifier,
-                                inode,
-                                baseType: 'FORM',
-                                type: 'forms'
-                            },
-                            false
-                        );
-
-                        const dotcms = initDotCMS({
-                            token:
-                                // tslint:disable-next-line:max-line-length
-                                'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcGlkYjUzYWJiOC0yOTExLTQ0MjMtYWE3OS02MmRlZjdhZTg4ODIiLCJ4bW9kIjoxNTU2MzA0MTE0MDAwLCJuYmYiOjE1NTYzMDQxMTQsImlzcyI6IjEwOWVjOTcwLWY3MGYtNDZiNi04NzY3LTNlNDk3ODU1N2E1YiIsImV4cCI6MTU1NzE2ODExNCwiaWF0IjoxNTU2MzA0MTE0LCJqdGkiOiI2Y2JkNDk0OS0wZmI4LTRiMzgtYTE5NC01ZTRmYzYxNTgxMzIifQ.63kJdQNHzeRj6MJ61X_OgaK-82kA6WSpcYQSEuBgDtw'
-                        });
-
-                        const formLib = dotcms.form.get({
-                            contentType: form.variable,
-                            identifier: form.id,
-                            win: this.getEditPageWindow()
-                        });
-
-                        formLib.render(contentlet);
-
-                        containerEl.appendChild(contentlet);
+                        containerEl.appendChild(this.renderForm(response, form));
                     }),
                     map((response: { render: string; content: { [key: string]: any } }) => {
                         const containers: DotPageContainer[] = this.getContentModel();
                         containers
                             .filter(
-                                (container) =>
+                                (container: DotPageContainer) =>
                                     container.identifier === this.currentContainer.identifier &&
                                     container.uuid === this.currentContainer.uuid
                             )
-                            .forEach((container) => {
+                            .forEach((container: DotPageContainer) => {
                                 if (!container.contentletsId) {
                                     container.contentletsId = [];
                                 }
@@ -376,6 +361,37 @@ export class DotEditContentHtmlService {
      */
     getContentModel(): DotPageContainer[] {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
+    }
+
+    private renderForm(
+        response: { render: string; content: { [key: string]: any } },
+        form: ContentType
+    ): HTMLElement {
+        const { identifier, inode } = response.content;
+
+        const contentlet = this.createNewContentlet(
+            {
+                identifier,
+                inode,
+                baseType: 'FORM',
+                type: 'forms'
+            },
+            false
+        );
+
+        const dotcms = initDotCMS({
+            token: getCookie('access_token')
+        });
+
+        const formLib = dotcms.form.get({
+            contentType: form.variable,
+            identifier: form.id,
+            win: this.getEditPageWindow()
+        });
+
+        formLib.render(contentlet);
+
+        return contentlet;
     }
 
     private renderAddedItem(params: RenderAddedItemParams): void {
@@ -623,6 +639,7 @@ export class DotEditContentHtmlService {
     }
 
     private createNewContentlet(dotPageContent: DotPageContent, loader = true): HTMLElement {
+        console.log('createNewContentlet', dotPageContent);
         const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');

@@ -30,7 +30,7 @@ class MockDotLicenseService {
     }
 }
 
-describe('DotEditContentHtmlService', () => {
+fdescribe('DotEditContentHtmlService', () => {
     let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
 
@@ -599,7 +599,6 @@ describe('DotEditContentHtmlService', () => {
         });
 
         this.dotEditContentHtmlService.renderEditedContentlet(contentlet);
-
     });
 
     describe('document click', () => {
@@ -822,7 +821,8 @@ describe('DotEditContentHtmlService', () => {
             owner: 'owner',
             system: false,
             baseType: 'form',
-            id: '2'
+            id: '2',
+            variable: 'test123'
         };
 
         const currentContainer = {
@@ -836,6 +836,8 @@ describe('DotEditContentHtmlService', () => {
             this.dotEditContentHtmlService.currentContainer = currentContainer;
         });
 
+        // this tests is incomplete, can't find a way to test the form rendering in the contentlet
+        // because I can't moch the node-fecth in the DorFormApi
         it('should render added form', () => {
             const modelExpected = [
                 {
@@ -855,7 +857,8 @@ describe('DotEditContentHtmlService', () => {
                 observableOf({
                     render: '<i>testing</i>',
                     content: {
-                        identifier: '4'
+                        identifier: '4',
+                        inode: '123'
                     }
                 })
             );
