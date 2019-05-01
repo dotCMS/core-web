@@ -12,10 +12,10 @@ import {
 } from '../../utils';
 
 @Component({
-    tag: 'dot-date',
-    styleUrl: 'dot-date.scss'
+    tag: 'dot-time',
+    styleUrl: 'dot-time.scss'
 })
-export class DotDateComponent {
+export class DotTimeComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true })
     value: string;
@@ -71,7 +71,7 @@ export class DotDateComponent {
                     onBlur={() => this.blurHandler()}
                     onInput={(event: Event) => this.setValue(event)}
                     required={this.required || null}
-                    type="date"
+                    type="time"
                     value={this.value}
                     min={this.min}
                     max={this.max}

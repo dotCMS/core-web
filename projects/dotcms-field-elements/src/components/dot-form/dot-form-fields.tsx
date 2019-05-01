@@ -97,5 +97,21 @@ export const DotFormFields = {
             max={field.max}
             step={field.step}
         />
+    ),
+
+    Time: (field: DotCMSContentTypeField) => (
+        <dot-time
+            disabled={field.disabled}
+            label={field.name}
+            name={field.variable}
+            hint={field.hint}
+            value={field.defaultValue}
+            required={field.required}
+            required-message={field.requiredMessage}
+            validation-message={field.validationMessage}
+            min={field.min}
+            max={field.max}
+            step={field.step}
+        />
     )
 };

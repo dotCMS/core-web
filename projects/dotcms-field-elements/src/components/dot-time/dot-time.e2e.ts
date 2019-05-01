@@ -1,7 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 
-describe('dot-date', () => {
+describe('dot-time', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
@@ -11,29 +11,29 @@ describe('dot-date', () => {
     beforeEach(async () => {
         page = await newE2EPage({
             html: `
-              <dot-date
-                    label="Date:"
-                    name="date01"
-                    value="2019-01-20"
-                    hint="date hint"
+              <dot-time
+                    label="Time:"
+                    name="time01"
+                    value="18:30:30"
+                    hint="Time hint"
                     required
-                    required-message="Required Date"
-                    validation-message="Invalid Date Range"
-                    min="2019-01-01"
-                    max="2019-10-30"
-                    step="2"
-                ></dot-date>`
+                    required-message="Required Time"
+                    validation-message="Time out of range"
+                    min="06:00:00"
+                    max="22:00:00"
+                    step="10"
+                ></dot-time>`
         });
 
         spyStatusChangeEvent = await page.spyOnEvent('statusChange');
         spyValueChange = await page.spyOnEvent('valueChange');
-        element = await page.find('dot-date');
+        element = await page.find('dot-time');
         input = await page.find('input');
     });
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"><span class=\"dot-field__hint\">date hint</span>`;
+        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"time01\">Time:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"time01\" required=\"\" type=\"time\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\"><span class=\"dot-field__hint\">Time hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
@@ -43,7 +43,7 @@ describe('dot-date', () => {
         expect(element.classList.contains('dot-valid')).toBe(true);
     });
 
-    it('should be valid, touched & dirty ', async () => {
+    it('should be valid, touched and dirty ', async () => {
         await input.press('2');
         await page.waitForChanges();
         expect(element.classList.contains('dot-valid')).toBe(true);
@@ -66,11 +66,11 @@ describe('dot-date', () => {
     });
 
     it('should show invalid range validation message', async () => {
-        element.setProperty('value', '2015-10-01');
+        element.setProperty('value', '01:00:00');
         await input.press('2');
         await page.waitForChanges();
         const errorMessage = await page.find('.dot-field__error-meessage');
-        expect(errorMessage.innerHTML).toBe('Invalid Date Range');
+        expect(errorMessage.innerHTML).toBe('Time out of range');
     });
 
     describe('emit events', () => {
@@ -79,7 +79,7 @@ describe('dot-date', () => {
             await page.waitForChanges();
 
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'date01',
+                name: 'time01',
                 status: {
                     dotPristine: true,
                     dotTouched: true,
@@ -92,7 +92,7 @@ describe('dot-date', () => {
             await input.press('2');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'date01',
+                name: 'time01',
                 status: {
                     dotPristine: false,
                     dotTouched: true,
@@ -100,8 +100,8 @@ describe('dot-date', () => {
                 }
             });
             expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'date01',
-                value: '2019-02-20'
+                name: 'time01',
+                value: '14:30:30'
             });
         });
 
@@ -109,14 +109,14 @@ describe('dot-date', () => {
             element.callMethod('reset');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'date01',
+                name: 'time01',
                 status: {
                     dotPristine: true,
                     dotTouched: false,
                     dotValid: false
                 }
             });
-            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'date01', value: '' });
+            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'time01', value: '' });
         });
     });
 });
