@@ -180,7 +180,6 @@ export class CoreWebService {
 
         options.headers = headers;
 
-        console.log('options.url.indexOf', options.url.indexOf('://'));
         if (options.url.startsWith('/api')) {
             options.url = `${this._apiRoot.baseUrl}${options.url.substr(1)}`;
         } else {
