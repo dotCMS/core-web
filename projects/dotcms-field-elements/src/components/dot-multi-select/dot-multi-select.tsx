@@ -12,11 +12,17 @@ import {
     updateStatus
 } from '../../utils';
 
+/**
+ * Represent a dotcms multi select control.
+ *
+ * @export
+ * @class DotSelectComponent
+ */
 @Component({
-    tag: 'dot-checkbox',
-    styleUrl: 'dot-checkbox.scss'
+    tag: 'dot-multi-select',
+    styleUrl: 'dot-multi-select.scss'
 })
-export class DotCheckboxComponent {
+export class DotMultiSelectComponent {
     @Element() el: HTMLElement;
 
     @Prop() disabled = false;
@@ -26,6 +32,7 @@ export class DotCheckboxComponent {
     @Prop() options: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
+    @Prop() size: number;
     @Prop({ mutable: true }) value: string;
 
     @State() _options: DotOption[];
@@ -34,9 +41,12 @@ export class DotCheckboxComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
+    _dotTouched = false;
+    _dotPristine = true;
+
     componentWillLoad() {
         this._options = getDotOptionsFromFieldValue(this.options);
-        this.emitValueChange();
+        this.emitInitialValue();
         this.emitStatusChange();
     }
 
@@ -50,47 +60,54 @@ export class DotCheckboxComponent {
      * Reset properties of the field, clear value and emit events.
      *
      * @memberof DotSelectComponent
+     *
      */
     @Method()
     reset(): void {
         this.value = '';
         this.status = getOriginalStatus(this.isValid());
-        this.emitValueChange();
+        this.emitInitialValue();
         this.emitStatusChange();
     }
 
     render() {
-        let labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                {this._options.map((item: DotOption) => {
-                    const trimmedValue = item.value.trim();
-                    labelTagParams = {name: trimmedValue, label: item.label};
-                    return (
-                        <Fragment>
-                            <input
-                                class={getErrorClass(this.isValid())}
-                                type='checkbox'
-                                disabled={this.disabled || null}
-                                id={trimmedValue}
-                                checked={this.value.indexOf(trimmedValue) >= 0 || null}
-                                onInput={(event: Event) => this.setValue(event)}
-                                value={trimmedValue}
-                            />
-                            {getTagLabel(labelTagParams)}
-                        </Fragment>
-                    );
-                })}
+                <select
+                    multiple
+                    size={+this.size || 0}
+                    class={getErrorClass(this.status.dotValid)}
+                    id={this.name}
+                    disabled={this.shouldBeDisabled()}
+                    onChange={() => this.setValue()}>
+
+                    {this._options.map((item: DotOption) => {
+                        return (
+                            <option
+                                selected={this.value === item.value ? true : null}
+                                value={item.value}
+                            >
+                                {item.label}
+                            </option>
+                        );
+                    })}
+
+                </select>
                 {getTagHint(this.hint)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
     }
 
-    // Todo: find how to set proper TYPE in TS
-    private setValue(event): void {
-        this.value = this.getValueFromCheckInputs(event.target.value.trim(), event.target.checked);
+    private shouldBeDisabled(): boolean {
+        return this.disabled ? true : null;
+    }
+
+     // Todo: find how to set proper TYPE in TS
+    private setValue(): void {
+        this.value = this.getValueFromMultiSelect();
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
@@ -100,15 +117,17 @@ export class DotCheckboxComponent {
         this.emitStatusChange();
     }
 
-    private getValueFromCheckInputs(value: string, checked: boolean): string {
-        const valueArray = this.value.trim().length ? this.value.split(',') : [];
-        const valuesSet = new Set(valueArray);
-        if (checked) {
-            valuesSet.add(value);
-        } else {
-            valuesSet.delete(value);
+    private getValueFromMultiSelect(): string {
+        const selected = this.el.querySelectorAll('option:checked');
+        const values = Array.from(selected).map((el: any) => el.value);
+        return Array.from(values).join(',');
+    }
+
+    private emitInitialValue() {
+        if (!this.value) {
+            this.value = this._options[0].value;
+            this.emitValueChange();
         }
-        return Array.from(valuesSet).join(',');
     }
 
     private emitStatusChange(): void {

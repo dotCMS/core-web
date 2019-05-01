@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
+import {DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent, DotLabel} from '../../models';
 import {
     getClassNames,
     getErrorClass,
@@ -56,9 +56,10 @@ export class DotDateComponent {
     }
 
     render() {
+        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
         return (
             <Fragment>
-                {getTagLabel(this.name, this.label)}
+                {getTagLabel(labelTagParams)}
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}

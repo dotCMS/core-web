@@ -11,6 +11,7 @@ export interface DotCMSContentTypeField {
     validationMessage?: string;
     required?: boolean;
     requiredMessage?: string;
+    size?: string;
     values?: string;
     variable?: string;
     min?: string;

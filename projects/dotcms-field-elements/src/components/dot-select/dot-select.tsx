@@ -1,6 +1,6 @@
 import { Component, Prop, State, Element, Method, Event, EventEmitter } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
+import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
     getClassNames,
     getOriginalStatus,
@@ -51,7 +51,7 @@ export class DotSelectComponent {
 
     hostData() {
         return {
-            class: getClassNames(this.status, this.isValid())
+            class: getClassNames(this.status, this.isValid(), this.required)
         };
     }
 
@@ -70,9 +70,10 @@ export class DotSelectComponent {
     }
 
     render() {
+        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
         return (
             <Fragment>
-                {getTagLabel(this.name, this.label)}
+                {getTagLabel(labelTagParams)}
                 <select
                     class={getErrorClass(this.status.dotValid)}
                     id={this.name}

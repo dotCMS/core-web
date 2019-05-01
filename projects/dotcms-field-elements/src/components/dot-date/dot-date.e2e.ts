@@ -33,7 +33,7 @@ describe('dot-date', () => {
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<label for=\"date01\">Date:</label><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"><span class=\"dot-field__hint\">date hint</span>`;
+        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"><span class=\"dot-field__hint\">date hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
@@ -72,7 +72,6 @@ describe('dot-date', () => {
         expect(errorMessage.innerHTML).toBe('Invalid Date Range');
     });
 
-
     describe('emit events', () => {
         it('should send status onBlur', async () => {
             await input.triggerEvent('blur');
@@ -88,7 +87,7 @@ describe('dot-date', () => {
             });
         });
 
-        it('should mark as touched when onblur', async() => {
+        it('should mark as touched when onblur', async () => {
             await input.press('2');
             await input.triggerEvent('blur');
             await page.waitForChanges();
@@ -133,9 +132,10 @@ describe('dot-date', () => {
         it('should emit change value', async () => {
             await input.press('2');
             await page.waitForChanges();
-            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'date01', value: '2019-02-20' });
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'date01',
+                value: '2019-02-20'
+            });
         });
     });
-
-
 });
