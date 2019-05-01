@@ -25,6 +25,7 @@ enum ConnectionStatus {
  * If the connection is lost in any point the it try to reconnect automaticatly after a time set by configuration parameters.
  *
  * @export
+ * @class DotEventsSocket
  */
 @Injectable()
 export class DotEventsSocket {
@@ -55,7 +56,7 @@ export class DotEventsSocket {
      * Connect to a Event socket using  Web Socket protocol,
      * if a Web Socket connection can be stablish then try again with a Long Polling connection.
      *
-     * @returns Observable<ConfigParams>
+     * @returns {Observable<ConfigParams>}
      * @memberof DotEventsSocket
      */
     connect(): Observable<ConfigParams> {
@@ -84,7 +85,7 @@ export class DotEventsSocket {
     /**
      * Trigger when a message is received
      *
-     * @returns Observable<DotEventMessage>
+     * @returns {Observable<DotEventMessage>}
      * @memberof DotEventsSocket
      */
     messages(): Observable<DotEventMessage> {
@@ -94,7 +95,7 @@ export class DotEventsSocket {
     /**
      * Trigger when a connect is open
      *
-     * @returns Observable<boolean>
+     * @returns {Observable<boolean>}
      * @memberof DotEventsSocket
      */
     open(): Observable<boolean> {
@@ -104,7 +105,7 @@ export class DotEventsSocket {
     /**
      * Return true if the socket is connected otherwise return false
      *
-     * @returns boolean
+     * @returns {boolean}
      * @memberof DotEventsSocket
      */
     isConnected(): boolean {
