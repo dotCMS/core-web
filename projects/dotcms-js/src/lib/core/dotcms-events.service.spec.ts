@@ -1,26 +1,17 @@
 
-import { ReflectiveInjector } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
+import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
 import { DotcmsEventsService } from './dotcms-events.service';
+import { DotEventsSocketFactoryService } from './dot-events-socket-factory.service';
 import { StringUtils } from './string-utils.service';
 import { LoggerService } from './logger.service';
 import { DotEventTypeWrapper } from './models';
 import { DotEventMessage } from './util/models/dot-event-message';
-import { DotEventsSocket } from './util/dot-event-socket';
 
 class DotEventsSocketMock {
     _messages: Subject<any> = new Subject();
-    _open: Subject<any> = new Subject();
-    private connected = false;
 
-    connect(): Observable<any> {
-        this.connected = true;
-        return of(true);
-    }
-
-    open(): Observable<any> {
-        return this._open.asObservable();
-    }
+    connect(): void {}
 
     messages(): Observable<any> {
         return this._messages.asObservable();
@@ -29,25 +20,30 @@ class DotEventsSocketMock {
     public sendMessage(message: DotEventMessage) {
         this._messages.next(message);
     }
+}
 
-    isConnected(): boolean {
-        return this.connected;
+@Injectable()
+class DotEventsSocketFactoryServiceMock  {
+    socket = new DotEventsSocketMock();
+
+    public createSocket(): Observable<any> {
+        return of(this.socket);
     }
 }
 
 
 describe('DotcmsEventsService', () => {
 
-    let socket: DotEventsSocketMock;
+    let socketFactory: DotEventsSocketFactoryServiceMock;
     let dotcmsEventsService: DotcmsEventsService;
 
     let injector: ReflectiveInjector;
 
     beforeEach(() => {
-        socket = new DotEventsSocketMock();
+        socketFactory = new DotEventsSocketFactoryServiceMock();
 
         injector = ReflectiveInjector.resolveAndCreate([
-            { provide: DotEventsSocket, useValue: socket },
+            { provide: DotEventsSocketFactoryService, useValue: socketFactory },
             StringUtils,
             LoggerService,
             DotcmsEventsService
@@ -57,28 +53,21 @@ describe('DotcmsEventsService', () => {
     });
 
     it('should create and connect a new socket', () => {
-        spyOn(socket, 'connect').and.callThrough();
+        spyOn(socketFactory.socket, 'connect');
 
         dotcmsEventsService.start();
 
-        expect(socket.connect).toHaveBeenCalled();
+        expect(socketFactory.socket.connect).toHaveBeenCalled();
     });
 
     it('should reuse socket', () => {
-        spyOn(socket, 'connect').and.callThrough();
+        const dotEventsSocketFactoryService = injector.get(DotEventsSocketFactoryService);
+        spyOn(dotEventsSocketFactoryService, 'createSocket').and.callThrough();
 
         dotcmsEventsService.start();
         dotcmsEventsService.start();
 
-        expect(socket.connect).toHaveBeenCalledTimes(1);
-    });
-
-    it('should trigger open event', (done) => {
-        dotcmsEventsService.open().subscribe(() => {
-            done();
-        });
-
-        socket._open.next(true);
+        expect(dotEventsSocketFactoryService.createSocket).toHaveBeenCalledTimes(1);
     });
 
     it('should subscribe to a event', (done) => {
@@ -89,7 +78,7 @@ describe('DotcmsEventsService', () => {
             done();
         });
 
-        socket.sendMessage({
+        socketFactory.socket.sendMessage({
             event: 'test_event',
             payload: 'test payload'
         });
@@ -113,12 +102,12 @@ describe('DotcmsEventsService', () => {
                 count++;
             });
 
-        socket.sendMessage({
+        socketFactory.socket.sendMessage({
             event: 'test_event_1',
             payload: 'test payload_1'
         });
 
-        socket.sendMessage({
+        socketFactory.socket.sendMessage({
             event: 'test_event_2',
             payload: 'test payload_2'
         });

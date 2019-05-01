@@ -14,6 +14,10 @@ import { Menu } from './routing.service';
  *
  */
 const DOTCMS_WEBSOCKET_RECONNECT_TIME = 'dotcms.websocket.reconnect.time';
+const DOTCMS_WEBSOCKET_ENDPOINTS = 'dotcms.websocket.endpoints';
+const WEBSOCKET_SYSTEMEVENTS_ENDPOINT = 'websocket.systemevents.endpoint';
+const DOTCMS_WEBSOCKET_BASEURL = 'dotcms.websocket.baseurl';
+const DOTCMS_WEBSOCKET_PROTOCOL = 'dotcms.websocket.protocol';
 const DOTCMS_DISABLE_WEBSOCKET_PROTOCOL = 'dotcms.websocket.disable';
 const DOTCMS_PAGINATOR_ROWS = 'dotcms.paginator.rows';
 const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';
@@ -21,18 +25,19 @@ const EMAIL_REGEX = 'emailRegex';
 
 export interface ConfigParams {
     colors: object;
+    disabledWebsockets: string;
     emailRegex: string;
     license: object;
     menu: Menu[];
     paginatorLinks: number;
     paginatorRows: number;
-    websocket: WebSocketConfigParams;
+    websocketBaseURL: string;
+    websocketEndpoints: string;
+    websocketProtocol: string;
+    websocketReconnectTime: number;
+    websocketsSystemEventsEndpoint: string;
 }
 
-export interface WebSocketConfigParams {
-    disabledWebsockets: string;
-    websocketReconnectTime: number;
-}
 @Injectable()
 export class DotcmsConfig {
     private waiting: Observer<any>[] = [];
@@ -73,15 +78,18 @@ export class DotcmsConfig {
 
                 this.configParams = {
                     colors: res.config.colors,
+                    disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
                     emailRegex: res.config[EMAIL_REGEX],
                     license: res.config.license,
                     menu: res.menu,
                     paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                     paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
-                    websocket: {
-                        websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
-                        disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
-                    }
+                    websocketBaseURL: res.config[DOTCMS_WEBSOCKET_BASEURL],
+                    websocketEndpoints: res.config[DOTCMS_WEBSOCKET_ENDPOINTS],
+                    websocketProtocol: res.config[DOTCMS_WEBSOCKET_PROTOCOL],
+                    websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
+                    websocketsSystemEventsEndpoint:
+                        res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT]
                 };
 
                 this.loggerService.debug('this.configParams', this.configParams);

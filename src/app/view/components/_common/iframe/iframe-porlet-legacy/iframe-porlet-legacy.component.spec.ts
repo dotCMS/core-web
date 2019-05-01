@@ -8,7 +8,7 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { IFrameModule } from '../index';
 import { IframePortletLegacyComponent } from './iframe-porlet-legacy.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SiteService, LoginService } from 'dotcms-js';
+import { DotEventsSocketFactoryService, SiteService, LoginService } from 'dotcms-js';
 import { DotIframeEventsHandler } from './services/iframe-events-handler.service';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
 
@@ -31,6 +31,7 @@ describe('IframePortletLegacyComponent', () => {
                 DotMenuService,
                 LoginService,
                 SiteService,
+                DotEventsSocketFactoryService,
                 {
                     provide: ActivatedRoute,
                     useValue: {
