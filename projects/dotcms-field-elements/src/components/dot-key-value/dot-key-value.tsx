@@ -40,7 +40,7 @@ export class DotKeyValueComponent {
     @Prop() keyPlaceholder: string;
     @Prop() valuePlaceholder: string;
     @Prop() required: boolean;
-    @Prop() requiredmessage: string;
+    @Prop() requiredMessage: string;
     @Prop() saveBtnLabel = 'Add';
     @Prop() disabled = false;
 
@@ -154,7 +154,7 @@ export class DotKeyValueComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isValid() ? '' : this.requiredmessage;
+        return this.isValid() ? '' : this.requiredMessage;
     }
 
     private setValue(event): void {

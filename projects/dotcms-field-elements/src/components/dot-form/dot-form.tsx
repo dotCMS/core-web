@@ -16,7 +16,8 @@ const fieldMap = {
     },
     'Multi-Select': DotFormFields['Multi-Select'],
     Select: DotFormFields.Select,
-    Radio: DotFormFields.Radio
+    Radio: DotFormFields.Radio,
+    Date: DotFormFields.Date
 };
 
 const fieldParamsConversionToBE = {
