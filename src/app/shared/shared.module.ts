@@ -22,13 +22,6 @@ import { MainNavigationModule } from '@components/dot-navigation/dot-navigation.
 import { DotEventsService } from '../api/services/dot-events/dot-events.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
-const dotEventSocketURLFactory = () => {
-    return new DotEventsSocketURL(
-        `${window.location.hostname}:${window.location.port}/api/ws/v1/system/events`,
-        window.location.protocol === 'https:'
-    );
-  };
-
 @NgModule({
     declarations: [],
     imports: [CommonModule, DotDropdownModule, GravatarModule, MainNavigationModule],
@@ -41,6 +34,12 @@ const dotEventSocketURLFactory = () => {
     ]
 })
 export class SharedModule {
+
+    private static readonly dotEventSocketURL =
+        new DotEventsSocketURL(
+            `${window.location.hostname}:${window.location.port}/api/ws/v1/system/events`,
+            window.location.protocol === 'https'
+        );
 
     static forRoot(): ModuleWithProviders {
         return {
@@ -56,7 +55,7 @@ export class SharedModule {
                 LoggerService,
                 LoginService,
                 SiteService,
-                { provide: DotEventsSocketURL, useFactory: dotEventSocketURLFactory},
+                { provide: DotEventsSocketURL, useValue: SharedModule.dotEventSocketURL},
                 DotEventsSocket,
                 StringUtils,
                 UserModel
