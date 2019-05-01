@@ -180,12 +180,13 @@ export class CoreWebService {
 
         options.headers = headers;
 
-        if (options.url.startsWith('/api')) {
-            options.url = `${this._apiRoot.baseUrl}${options.url.substr(1)}`;
-        } else {
-            options.url = `${this._apiRoot.baseUrl}api/${options.url}`;
+        if (options.url.indexOf('://') === -1) {
+            if (options.url.startsWith('/api')) {
+                options.url = `${this._apiRoot.baseUrl}${options.url.substr(1)}`;
+            } else {
+                options.url = `${this._apiRoot.baseUrl}api/${options.url}`;
+            }
         }
-
 
         if (this.browserUtil.isIE11()) {
             options = options || {};
