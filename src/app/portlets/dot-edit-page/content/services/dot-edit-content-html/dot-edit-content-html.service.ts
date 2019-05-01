@@ -7,7 +7,7 @@ import {
     Subscription
 } from 'rxjs';
 
-import { map, take, tap } from 'rxjs/operators';
+import { map, take, tap, delay } from 'rxjs/operators';
 import { Injectable, ElementRef } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -749,8 +749,12 @@ export class DotEditContentHtmlService {
 
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
+            .pipe(delay(2000))
             .subscribe((contentletHtml: string) => {
-                this.generateNewContentlet(contentletHtml);
+                const newContentletEl: HTMLElement = this.generateNewContentlet(
+                    contentletHtml
+                );
+                container.replaceChild(newContentletEl, contenletEl);
             });
     }
 
