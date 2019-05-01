@@ -23,7 +23,7 @@ export class DotDateComponent {
     @Prop() label: string;
     @Prop() hint: string;
     @Prop() required: boolean;
-    @Prop() requiredmessage: string;
+    @Prop() requiredMessage: string;
     @Prop() validationMessage: string
     @Prop() disabled = false;
     @Prop() min: string;
@@ -99,7 +99,7 @@ export class DotDateComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isDateInRange() ? this.isValid() ? '' : this.requiredmessage :  this.validationMessage;
+        return this.isDateInRange() ? this.isValid() ? '' : this.requiredMessage :  this.validationMessage;
     }
 
     private blurHandler(): void {

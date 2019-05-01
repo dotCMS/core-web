@@ -73,7 +73,7 @@ describe('dot-textarea', () => {
 
     it('should mark as required when prop is present', async () => {
         element.setProperty('required', 'true');
-        element.setProperty('requiredmessage', 'Invalid Address');
+        element.setProperty('requiredMessage', 'Invalid Address');
         await page.waitForChanges();
         expect(await input.getProperty('required')).toBe(true);
     });

@@ -26,7 +26,7 @@ export class DotRadioComponent {
     @Prop() hint: string;
     @Prop() required: boolean;
     @Prop() disabled = false;
-    @Prop() requiredmessage: string;
+    @Prop() requiredMessage: string;
     @Prop() options: string;
 
     @State() _options: DotOption[];
@@ -100,7 +100,7 @@ export class DotRadioComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isValid() ? '' : this.requiredmessage;
+        return this.isValid() ? '' : this.requiredMessage;
     }
 
     private setValue(event): void {

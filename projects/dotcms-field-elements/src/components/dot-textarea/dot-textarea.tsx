@@ -30,7 +30,7 @@ export class DotTextareaComponent {
     @Prop() label: string;
     @Prop() hint: string;
     @Prop() required: boolean;
-    @Prop() requiredmessage: string;
+    @Prop() requiredMessage: string;
     @Prop() disabled = false;
 
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -111,7 +111,7 @@ export class DotTextareaComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredmessage
+            ? this.isValid() ? '' : this.requiredMessage
             : this.validationMessage;
     }
 

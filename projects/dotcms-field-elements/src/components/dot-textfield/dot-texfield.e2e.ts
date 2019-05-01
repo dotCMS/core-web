@@ -18,9 +18,9 @@ describe('dot-textfield', () => {
                     hint='this is a hint'
                     placeholder='Enter Name'
                     regexcheck='^[A-Za-z ]+$'
-                    validationMessage="Invalid Name"
+                    validation-message="Invalid Name"
                     required
-                    requiredmessage="Required Name"
+                    required-message="Required Name"
                 ></dot-textfield>`
         });
 

@@ -7,12 +7,12 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             regexcheck={field.regexCheck}
-            validationMessage={field.validationMessage}
+            validation-message={field.validationMessage}
             placeholder={field.placeholder}
             hint={field.hint}
             value={field.defaultValue}
             required={field.required}
-            requiredmessage={field.requiredMessage}
+            required-message={field.requiredMessage}
         />
     ),
 
@@ -22,11 +22,11 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             regexcheck={field.regexCheck}
-            validationMessage={field.validationMessage}
+            validation-message={field.validationMessage}
             hint={field.hint}
             value={field.defaultValue}
             required={field.required}
-            requiredmessage={field.requiredMessage}
+            required-message={field.requiredMessage}
         />
     ),
 
@@ -38,7 +38,7 @@ export const DotFormFields = {
             name={field.variable}
             options={field.values}
             required={field.required}
-            requiredmessage={field.requiredMessage}
+            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
@@ -51,7 +51,7 @@ export const DotFormFields = {
             name={field.variable}
             options={field.values}
             required={field.required}
-            requiredmessage={field.requiredMessage}
+            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
@@ -64,7 +64,7 @@ export const DotFormFields = {
             name={field.variable}
             options={field.values}
             required={field.required}
-            requiredmessage={field.requiredMessage}
+            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
@@ -77,8 +77,8 @@ export const DotFormFields = {
             hint={field.hint}
             value={field.defaultValue}
             required={field.required}
-            requiredmessage={field.requiredMessage}
-            validationMessage={field.validationMessage}
+            required-message={field.requiredMessage}
+            validation-message={field.validationMessage}
             min={field.min}
             max={field.max}
             step={field.step}

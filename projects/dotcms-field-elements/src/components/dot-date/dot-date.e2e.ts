@@ -17,8 +17,8 @@ describe('dot-date', () => {
                     value="2019-01-20"
                     hint="date hint"
                     required
-                    requiredmessage="Required Date"
-                    validationMessage="Invalid Date Range"
+                    required-message="Required Date"
+                    validation-message="Invalid Date Range"
                     min="2019-01-01"
                     max="2019-10-30"
                     step="2"
@@ -66,12 +66,11 @@ describe('dot-date', () => {
 
     it('should show invalid range validation message', async () => {
         element.setProperty('value', '2015-10-01');
-        await page.click('input');
+        await input.press('2');
         await page.waitForChanges();
         const errorMessage = await page.find('.dot-field__error-meessage');
         expect(errorMessage.innerHTML).toBe('Invalid Date Range');
     });
-
 
 
     describe('emit events', () => {

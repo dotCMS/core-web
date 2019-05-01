@@ -25,7 +25,7 @@ export class DotTextfieldComponent {
     @Prop() hint: string;
     @Prop() placeholder: string;
     @Prop() required: boolean;
-    @Prop() requiredmessage: string;
+    @Prop() requiredMessage: string;
     @Prop() disabled = false;
 
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -99,7 +99,7 @@ export class DotTextfieldComponent {
         return this.isRegexValid()
             ? this.isValid()
                 ? ''
-                : this.requiredmessage
+                : this.requiredMessage
             : this.validationMessage;
     }
 
