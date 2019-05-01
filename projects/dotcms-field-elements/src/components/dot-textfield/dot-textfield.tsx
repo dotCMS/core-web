@@ -20,7 +20,7 @@ export class DotTextfieldComponent {
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
     @Prop() regexcheck: string;
-    @Prop() regexcheckmessage: string;
+    @Prop() validationMessage: string;
     @Prop() label: string;
     @Prop() hint: string;
     @Prop() placeholder: string;
@@ -100,7 +100,7 @@ export class DotTextfieldComponent {
             ? this.isValid()
                 ? ''
                 : this.requiredmessage
-            : this.regexcheckmessage;
+            : this.validationMessage;
     }
 
     private blurHandler(): void {

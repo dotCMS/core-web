@@ -7,7 +7,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             regexcheck={field.regexCheck}
-            regexcheckmessage={field.regexCheckMessage}
+            validationMessage={field.validationMessage}
             placeholder={field.placeholder}
             hint={field.hint}
             value={field.defaultValue}
@@ -22,7 +22,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             regexcheck={field.regexCheck}
-            regexcheckmessage={field.regexCheckMessage}
+            validationMessage={field.validationMessage}
             hint={field.hint}
             value={field.defaultValue}
             required={field.required}
@@ -66,6 +66,22 @@ export const DotFormFields = {
             required={field.required}
             requiredmessage={field.requiredMessage}
             value={field.defaultValue}
+        />
+    ),
+
+    Date: (field: DotCMSContentTypeField) => (
+        <dot-date
+            disabled={field.disabled}
+            label={field.name}
+            name={field.variable}
+            hint={field.hint}
+            value={field.defaultValue}
+            required={field.required}
+            requiredmessage={field.requiredMessage}
+            validationMessage={field.validationMessage}
+            min={field.min}
+            max={field.max}
+            step={field.step}
         />
     )
 };

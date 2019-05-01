@@ -27,7 +27,7 @@ describe('dot-textarea', () => {
 
     it('should show Regex validation message', async () => {
         element.setProperty('regexcheck', '^[A-Za-z ]+$');
-        element.setProperty('regexcheckmessage', 'Invalid Address');
+        element.setProperty('validationMessage', 'Invalid Address');
 
         await input.press('@');
         await page.waitForChanges();

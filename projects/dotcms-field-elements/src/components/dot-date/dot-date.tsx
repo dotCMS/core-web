@@ -1,47 +1,41 @@
-import { Component, Prop, State, Method, Element, Event, EventEmitter } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
+import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
 import {
     getClassNames,
-    getOriginalStatus,
-    getTagHint,
-    getTagError,
-    getTagLabel,
     getErrorClass,
+    getOriginalStatus,
+    getTagError,
+    getTagHint,
+    getTagLabel,
     updateStatus
 } from '../../utils';
 
-/**
- * Represent a dotcms textarea control.
- *
- * @export
- * @class DotTextareaComponent
- */
 @Component({
-    tag: 'dot-textarea',
-    styleUrl: 'dot-textarea.scss'
+    tag: 'dot-date',
+    styleUrl: 'dot-date.scss'
 })
-export class DotTextareaComponent {
+export class DotDateComponent {
     @Element() el: HTMLElement;
-    @Prop({ mutable: true }) value: string;
+    @Prop({ mutable: true })
+    value: string;
     @Prop() name: string;
-    @Prop() regexcheck: string;
-    @Prop() validationMessage: string;
     @Prop() label: string;
     @Prop() hint: string;
     @Prop() required: boolean;
     @Prop() requiredmessage: string;
+    @Prop() validationMessage: string
     @Prop() disabled = false;
-
+    @Prop() min: string;
+    @Prop() max: string;
+    @Prop() step: string;
     @State() status: DotFieldStatus = getOriginalStatus();
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     /**
-     * Reset properties of the field, clear value and emit events.
-     *
-     * @memberof DotTextareaComponent
+     * Reset properties of the filed, clear value and emit events.
      */
     @Method()
     reset(): void {
@@ -65,54 +59,47 @@ export class DotTextareaComponent {
         return (
             <Fragment>
                 {getTagLabel(this.name, this.label)}
-                <textarea
+                <input
                     class={getErrorClass(this.status.dotValid)}
+                    disabled={this.disabled || null}
                     id={this.name}
-                    name={this.name}
-                    value={this.value}
-                    required={this.getRequiredAttr()}
-                    onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.getDisabledAtt()}
+                    onInput={(event: Event) => this.setValue(event)}
+                    required={this.required || null}
+                    type="date"
+                    value={this.value}
+                    min={this.min}
+                    max={this.max}
+                    step={this.step}
                 />
                 {getTagHint(this.hint)}
-                {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
+                {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
 
-    private getDisabledAtt(): boolean {
-        return this.disabled || null;
-    }
-
-    private getRequiredAttr(): boolean {
-        return this.required ? true : null;
-    }
-
     private isValid(): boolean {
-        return !this.isValueRequired() && this.isRegexValid();
+        return this.required ? !!this.value && this.isDateInRange() : true;
     }
 
-    private isValueRequired(): boolean {
-        return this.required && !this.value.length;
+    private isDateInRange(): boolean {
+        return this.isInMaxRange() && this.isInMinRange();
     }
 
-    private isRegexValid(): boolean {
-        if (this.regexcheck && this.value.length) {
-            const regex = new RegExp(this.regexcheck, 'ig');
-            return regex.test(this.value);
-        }
-        return true;
+    private isInMinRange(): boolean {
+        return !!this.min ? this.value >= this.min : true;
     }
 
-    private shouldShowErrorMessage(): boolean {
+    private isInMaxRange(): boolean {
+        return !!this.max ? this.value <= this.max : true;
+    }
+
+    private showErrorMessage(): boolean {
         return this.getErrorMessage() && !this.status.dotPristine;
     }
 
     private getErrorMessage(): string {
-        return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredmessage
-            : this.validationMessage;
+        return this.isDateInRange() ? this.isValid() ? '' : this.requiredmessage :  this.validationMessage;
     }
 
     private blurHandler(): void {
@@ -148,5 +135,4 @@ export class DotTextareaComponent {
             value: this.value
         });
     }
-
 }

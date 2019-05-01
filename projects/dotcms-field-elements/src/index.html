@@ -24,7 +24,7 @@
                 hint: 'this is a hint',
                 placeholder: 'Enter Name',
                 regexCheck: '^[A-Za-z ]+$',
-                regexCheckMessage: 'Invalid Name',
+                validationMessage: 'Invalid Name',
                 required: true,
                 requiredMessage: 'Required Name',
                 variable: 'text1'
@@ -45,7 +45,7 @@
                 hint: 'this is a hint',
                 placeholder: 'Enter Name',
                 regexCheck: '^[A-Za-z ]+$',
-                regexCheckMessage: 'Invalid Name',
+                validationMessage: 'Invalid Address',
                 required: true,
                 requiredMessage: 'Required Address',
                 variable: 'textarea3'
@@ -67,6 +67,20 @@
                 requiredMessage: 'this radio field is required',
                 values: 'Radio A |1, Radio B|2, Radio C |3',
                 variable: 'radio5'
+            },
+            {
+                fieldType: 'Date',
+                label: 'Enter Date:',
+                name: 'date',
+                defaultValue: '2015-10-25',
+                hint: 'date hint',
+                required: true,
+                requiredMessage: 'Required Date',
+                validationMessage: 'Date out of range',
+                variable: 'date01',
+                step: '2',
+                min: '2019-01-01',
+                max: '2019-12-30'
             }];
 
             window.onload = function() {

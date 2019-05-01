@@ -8,9 +8,12 @@ export interface DotCMSContentTypeField {
     placeholder?: string;
     readOnly?: boolean;
     regexCheck?: string;
-    regexCheckMessage?: string;
+    validationMessage?: string;
     required?: boolean;
     requiredMessage?: string;
     values?: string;
     variable?: string;
+    min?: string;
+    max?: string;
+    step?: string;
 }
