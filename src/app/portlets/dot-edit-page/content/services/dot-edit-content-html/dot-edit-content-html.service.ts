@@ -52,19 +52,6 @@ function getCookie(name) {
     }
 }
 
-interface RenderAddedItemParams {
-    event: PageModelChangeEventType;
-    item: DotPageContent | ContentType | DotRelocatePayload;
-    checkExistFunc: (
-        item: DotPageContent | ContentType | DotRelocatePayload,
-        containerEL: HTMLElement
-    ) => boolean;
-    getContent: (
-        container: DotPageContainer,
-        form: DotPageContent | ContentType | DotRelocatePayload
-    ) => Observable<string>;
-}
-
 @Injectable()
 export class DotEditContentHtmlService {
     contentletEvents$: Subject<
@@ -227,18 +214,34 @@ export class DotEditContentHtmlService {
      * @param * contentlet
      * @memberof DotEditContentHtmlService
      */
-    renderAddedContentlet(
-        contentlet: DotPageContent | DotRelocatePayload,
-        eventType: PageModelChangeEventType
-    ): void {
-        this.renderAddedItem({
-            event: eventType,
-            item: contentlet,
-            checkExistFunc: this.isContentExistInContainer.bind(this),
-            getContent: this.dotContainerContentletService.getContentletToContainer.bind(
-                this.dotContainerContentletService
-            )
-        });
+    renderAddedContentlet(contentlet: DotPageContent, eventType: PageModelChangeEventType): void {
+        const doc = this.getEditPageDocument();
+        const containerEl: HTMLElement = doc.querySelector(
+            `div[data-dot-object="container"][data-dot-identifier="${
+                this.currentContainer.identifier
+            }"][data-dot-uuid="${this.currentContainer.uuid}"]`
+        );
+
+        if (this.isContentExistInContainer(contentlet, containerEl)) {
+            this.showContentAlreadyAddedError();
+        } else {
+            this.dotContainerContentletService
+                .getContentletToContainer(this.currentContainer, contentlet)
+                .subscribe((contentletHtml: string) => {
+                    const contentletEl: HTMLElement = this.createNewContentletFromString(
+                        contentletHtml
+                    );
+                    containerEl.insertAdjacentElement('beforeend', contentletEl);
+
+                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
+                    // Update the model with the recently added contentlet
+                    this.pageModel$.next({
+                        model: this.getContentModel(),
+                        type: eventType
+                    });
+                    this.currentAction = DotContentletAction.EDIT;
+                });
+        }
     }
 
     /**
@@ -392,36 +395,6 @@ export class DotEditContentHtmlService {
         formLib.render(contentlet);
 
         return contentlet;
-    }
-
-    private renderAddedItem(params: RenderAddedItemParams): void {
-        const doc = this.getEditPageDocument();
-        const containerEl: HTMLElement = doc.querySelector(
-            `div[data-dot-object="container"][data-dot-identifier="${
-                this.currentContainer.identifier
-            }"][data-dot-uuid="${this.currentContainer.uuid}"]`
-        );
-
-        if (params.checkExistFunc(params.item, containerEl)) {
-            this.showContentAlreadyAddedError();
-        } else {
-            params
-                .getContent(this.currentContainer, params.item)
-                .subscribe((contentletHtml: string) => {
-                    const contentletEl: HTMLElement = this.createNewContentletFromString(
-                        contentletHtml
-                    );
-                    containerEl.insertAdjacentElement('beforeend', contentletEl);
-
-                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
-                    // Update the model with the recently added contentlet
-                    this.pageModel$.next({
-                        model: this.getContentModel(),
-                        type: params.event
-                    });
-                    this.currentAction = DotContentletAction.EDIT;
-                });
-        }
     }
 
     private bindGlobalEvents(): void {
