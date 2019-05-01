@@ -87,7 +87,7 @@ export class DotEditContentHtmlService {
                     | DotContentletEventSelect
                     | DotContentletEventSave
             ) => {
-                this.handlerContentletEvents(contentletEvent.name)(contentletEvent);
+                this.handlerContentletEvents(contentletEvent.name)(contentletEvent.data);
             }
         );
 
@@ -651,36 +651,35 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow;
     }
 
-    private handlerContentletEvents(event: string): (contentletEvent: any) => void {
+    private handlerContentletEvents(
+        event: string
+    ): (contentletEvent: DotPageContent | DotRelocatePayload) => void {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
-            save: (contentletEvent: DotContentletEventSave) => {
+            save: (contentlet: DotPageContent) => {
+                console.log('save', contentlet);
                 if (this.currentAction === DotContentletAction.ADD) {
-                    this.renderAddedContentlet(
-                        contentletEvent.data,
-                        PageModelChangeEventType.ADD_CONTENT
-                    );
+                    this.renderAddedContentlet(contentlet, PageModelChangeEventType.ADD_CONTENT);
                 } else {
                     if (this.updateContentletInode) {
-                        this.currentContentlet.inode = contentletEvent.data.inode;
+                        this.currentContentlet.inode = contentlet.inode;
                     }
                     this.renderEditedContentlet(this.currentContentlet);
                 }
             },
             // When a user select a content from the search jsp
-            select: (contentletEvent: DotContentletEventSelect) => {
-                this.renderAddedContentlet(
-                    contentletEvent.data,
-                    PageModelChangeEventType.EDIT_CONTENT
-                );
+            select: (contentlet: DotPageContent) => {
+                console.log('select', contentlet);
+                this.renderAddedContentlet(contentlet, PageModelChangeEventType.EDIT_CONTENT);
                 this.iframeActions$.next({
                     name: 'select'
                 });
             },
             // When a user drag and drop a contentlet in the iframe
-            relocate: (contentletEvent: DotContentletEventRelocate) => {
+            relocate: (relocateInfo: DotRelocatePayload) => {
+                console.log('relocate', relocateInfo);
                 if (!this.remoteRendered) {
-                    this.renderRelocatedContentlet(contentletEvent.data);
+                    this.renderRelocatedContentlet(relocateInfo);
                 }
             },
             'deleted-contenlet': () => {
