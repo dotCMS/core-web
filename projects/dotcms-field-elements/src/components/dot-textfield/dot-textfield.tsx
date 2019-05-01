@@ -19,7 +19,7 @@ export class DotTextfieldComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
-    @Prop() regexcheck: string;
+    @Prop() regexCheck: string;
     @Prop() validationMessage: string;
     @Prop() label: string;
     @Prop() hint: string;
@@ -85,8 +85,8 @@ export class DotTextfieldComponent {
     }
 
     private isRegexValid(): boolean {
-        if (this.regexcheck && this.value.length) {
-            const regex = new RegExp(this.regexcheck, 'ig');
+        if (this.regexCheck && this.value.length) {
+            const regex = new RegExp(this.regexCheck, 'ig');
             return regex.test(this.value);
         }
         return true;
