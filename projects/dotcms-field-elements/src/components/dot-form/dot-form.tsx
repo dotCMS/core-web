@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State } from '@stencil/core';
-import { DotCMSContentTypeField, DotFieldStatus } from '../../models';
+import { DotCMSContentTypeField, DotFieldStatus, DotCMSKeyValueField } from '../../models';
 import { DotFormFields } from './dot-form-fields';
 import { getClassNames, getOriginalStatus } from '../../utils';
 
@@ -7,9 +7,38 @@ const fieldMap = {
     Text: DotFormFields.Text,
     Textarea: DotFormFields.Textarea,
     Checkbox: DotFormFields.Checkbox,
+    'Key-Value': (field: DotCMSKeyValueField) => {
+        field.defaultValue =
+            field.defaultValue && typeof field.defaultValue !== 'string'
+                ? fieldParamsConversionFromBE[field.fieldType](field.defaultValue)
+                : field.defaultValue;
+        return DotFormFields['Key-Value'](field);
+    },
     'Multi-Select': DotFormFields['Multi-Select'],
     Select: DotFormFields.Select,
     Radio: DotFormFields.Radio
+};
+
+const fieldParamsConversionToBE = {
+    'Key-Value': (values: string) => {
+        const returnValue = {};
+        values.split(',').forEach((item: string) => {
+            const [key, value] = item.split('|');
+            returnValue[key] = value;
+        });
+        return returnValue;
+    }
+};
+
+const fieldParamsConversionFromBE = {
+    'Key-Value': (values) => {
+        const returnedValue = Object.keys(values)
+            .map((e) => {
+                return `${e}|${values[e]}`;
+            })
+            .join(',');
+        return returnedValue;
+    }
 };
 
 @Component({
@@ -38,7 +67,8 @@ export class DotFormComponent {
      */
     @Listen('valueChange')
     onValueChange(event: CustomEvent): void {
-        this.value[event.detail.name] = event.detail.value;
+        const { name, value, fieldType } = event.detail;
+        this.value[name] = fieldType ? fieldParamsConversionToBE[fieldType](value) : value;
         this.updateFieldsValues();
     }
 
@@ -74,10 +104,10 @@ export class DotFormComponent {
         return (
             <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
                 {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
-                <button type='submit' disabled={!this.status.dotValid || null}>
+                <button type="submit" disabled={!this.status.dotValid || null}>
                     {this.submitLabel}
                 </button>
-                <button type='button' onClick={() => this.resetForm()}>
+                <button type="button" onClick={() => this.resetForm()}>
                     {this.resetLabel}
                 </button>
             </form>
@@ -121,9 +151,7 @@ export class DotFormComponent {
     }
 
     private getField(field: DotCMSContentTypeField): any {
-        return this.areFieldsToShowDefined(field)
-            ? this.getFieldTag(field)
-            : '';
+        return this.areFieldsToShowDefined(field) ? this.getFieldTag(field) : '';
     }
 
     private resetForm(): void {

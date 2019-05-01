@@ -1,6 +1,6 @@
 export interface DotCMSContentTypeField {
     dataType?: string;
-    defaultValue?: string;
+    defaultValue?: string | any;
     disabled?: boolean;
     fieldType?: string;
     hint?: string;
@@ -14,4 +14,10 @@ export interface DotCMSContentTypeField {
     size?: string;
     values?: string;
     variable?: string;
+}
+
+export interface DotCMSKeyValueField extends DotCMSContentTypeField {
+    keyPlaceholder?: string;
+    valuePlaceholder?: string;
+    saveBtnLabel?: string;
 }

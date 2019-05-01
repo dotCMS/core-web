@@ -1,4 +1,4 @@
-import { DotCMSContentTypeField } from '../../models';
+import { DotCMSContentTypeField, DotCMSKeyValueField } from '../../models';
 
 export const DotFormFields = {
     Text: (field: DotCMSContentTypeField) => (
@@ -40,6 +40,22 @@ export const DotFormFields = {
             required={field.required}
             requiredmessage={field.requiredMessage}
             value={field.defaultValue}
+        />
+    ),
+
+    'Key-Value': (field: DotCMSKeyValueField) => (
+        <dot-key-value
+            disabled={field.disabled}
+            label={field.name}
+            fieldType={field.fieldType}
+            saveBtnLabel={field.saveBtnLabel}
+            name={field.variable}
+            keyPlaceholder={field.keyPlaceholder}
+            valuePlaceholder={field.valuePlaceholder}
+            hint={field.hint}
+            value={field.defaultValue}
+            required={field.required}
+            requiredmessage={field.requiredMessage}
         />
     ),
 
