@@ -198,11 +198,10 @@ export class DotEditContentHtmlService {
                     .getContentletToContainer(container, contentlet)
                     .pipe(take(1))
                     .subscribe((contentletHtml: string) => {
-                        const contentletEl: HTMLElement = this.createNewContentletFromString(
+                        const contentletEl: HTMLElement = this.generateNewContentlet(
                             contentletHtml
                         );
                         containerEl.replaceChild(contentletEl, currentContentlet);
-                        this.renderHTMLToContentlet(contentletEl, contentletHtml);
                     });
             });
         }
@@ -228,12 +227,9 @@ export class DotEditContentHtmlService {
             this.dotContainerContentletService
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
-                    const contentletEl: HTMLElement = this.createNewContentletFromString(
-                        contentletHtml
-                    );
+                    const contentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
                     containerEl.insertAdjacentElement('beforeend', contentletEl);
 
-                    this.renderHTMLToContentlet(contentletEl, contentletHtml);
                     // Update the model with the recently added contentlet
                     this.pageModel$.next({
                         model: this.getContentModel(),
@@ -372,7 +368,7 @@ export class DotEditContentHtmlService {
     ): HTMLElement {
         const { identifier, inode } = response.content;
 
-        const contentlet = this.createNewContentlet(
+        const contentlet = this.createEmptyContentletElement(
             {
                 identifier,
                 inode,
@@ -560,9 +556,7 @@ export class DotEditContentHtmlService {
         return <HTMLElement>div.children[0];
     }
 
-    private appendNewContentlets(contentletEl: HTMLElement, html: string): void {
-        this.removeLoadingIndicator(contentletEl);
-
+    private generateNewContentlet(html: string): HTMLElement {
         const newContentlet = this.getNewContentlet(html);
 
         this.dotEditContentToolbarHtmlService.addToolbarToContentlet(newContentlet);
@@ -574,7 +568,7 @@ export class DotEditContentHtmlService {
             newContentlet.appendChild(script);
         });
 
-        contentletEl.parentNode.replaceChild(newContentlet, contentletEl);
+        return newContentlet;
     }
 
     private buttonClickHandler(target: HTMLElement, type: string) {
@@ -599,39 +593,21 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createNewContentletFromString(contentletHTML: string): HTMLElement {
-        const newContentlet = this.getNewContentlet(contentletHTML);
-        const { identifier, inode, type, baseType } = newContentlet.dataset;
-
-        return this.createNewContentlet({
-            identifier,
-            inode,
-            type,
-            baseType
-        });
-    }
-
-    private createNewContentlet(dotPageContent: DotPageContent, loader = true): HTMLElement {
-        console.log('createNewContentlet', dotPageContent);
+    private createEmptyContentletElement(
+        dotPageContent: DotPageContent,
+        loader = true
+    ): HTMLElement {
+        console.log('createEmptyContentletElement', dotPageContent);
         const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
         Object.assign(dotEditContentletEl.dataset, dotPageContent);
 
-        /*
-            TODO: we have the method: DotEditContentToolbarHtmlService.addContentletMarkup that does this, we need
-            to consolidate this.
-        */
-        const contenToolbarButtons = this.dotEditContentToolbarHtmlService.getContentButton(
-            dotPageContent
-        );
-
         dotEditContentletEl.innerHTML = `
-            <div class="dotedit-contentlet__toolbar">
-                ${contenToolbarButtons}
-            </div>
             ${loader ? '<div class="loader__overlay"><div class="loader"></div></div>' : ''}
         `;
+
+        console.log(dotEditContentletEl);
 
         return dotEditContentletEl;
     }
@@ -745,21 +721,6 @@ export class DotEditContentHtmlService {
         this.setEditContentletStyles();
     }
 
-    private addVtlEditMenu(contentletEl: HTMLElement): void {
-        const contentletToolbarEl = contentletEl.querySelector('.dotedit-contentlet__toolbar');
-
-        const vtls: HTMLElement[] = Array.from(
-            contentletEl.querySelectorAll('div[data-dot-object="vtl-file"]')
-        );
-
-        if (vtls.length) {
-            contentletToolbarEl.innerHTML = `
-                ${this.dotEditContentToolbarHtmlService.getEditVtlButtons(vtls)}
-                ${contentletToolbarEl.innerHTML}
-            `;
-        }
-    }
-
     private removeCurrentContentlet(): void {
         const doc = this.getEditPageDocument();
         const contentlets = doc.querySelectorAll(
@@ -769,12 +730,6 @@ export class DotEditContentHtmlService {
         contentlets.forEach((contentlet) => {
             contentlet.remove();
         });
-    }
-
-    private renderHTMLToContentlet(contentletEl: HTMLElement, contentletHtml: string): void {
-        this.appendNewContentlets(contentletEl, contentletHtml);
-
-        this.addVtlEditMenu(contentletEl);
     }
 
     private renderRelocatedContentlet(relocateInfo: DotRelocatePayload): void {
@@ -795,7 +750,7 @@ export class DotEditContentHtmlService {
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
             .subscribe((contentletHtml: string) => {
-                this.appendNewContentlets(contenletEl, contentletHtml);
+                this.generateNewContentlet(contentletHtml);
             });
     }
 
@@ -812,9 +767,5 @@ export class DotEditContentHtmlService {
         `;
 
         return div;
-    }
-
-    private removeLoadingIndicator(contentlet: HTMLElement): void {
-        contentlet.querySelector('.loader__overlay').remove();
     }
 }
