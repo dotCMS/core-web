@@ -1,11 +1,11 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
-// import { EventSpy } from '@stencil/core/dist/declarations';
+import { EventSpy } from '@stencil/core/dist/declarations';
 
 describe('dot-key-value', () => {
     let page: E2EPage;
     let element: E2EElement;
-    // let spyStatusChangeEvent: EventSpy;
-    // let spyValueChangeEvent: EventSpy;
+    let spyStatusChangeEvent: EventSpy;
+    let spyValueChangeEvent: EventSpy;
 
     describe('With data', () => {
         beforeEach(async () => {
@@ -19,7 +19,7 @@ describe('dot-key-value', () => {
                 hint="testHint"
                 key-placeholder="Enter Key"
                 value-placeholder="Enter Value"
-                value="valueA|1,valueB|2"
+                value="valueA|1"
                 required-message="testErrorMsg"
                 required="true"
                 save-btn-label="Save"
@@ -30,7 +30,7 @@ describe('dot-key-value', () => {
 
         it('renders', async () => {
             // tslint:disable-next-line:max-line-length
-            const expectedMarkup = `<dot-key-value name=\"testName\" label=\"testLabel\" field-type=\"Key-Value\" hint=\"testHint\" key-placeholder=\"Enter Key\" value-placeholder=\"Enter Value\" value=\"valueA|1,valueB|2\" required-message=\"testErrorMsg\" required=\"true\" save-btn-label=\"Save\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"testName\">testLabel</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"testName\" name=\"key\" placeholder=\"Enter Key\" type=\"text\"><input name=\"value\" placeholder=\"Enter Value\" type=\"text\"><button type=\"button\">Save</button><key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"valueA_1_0\" class=\"dot-key-value__delete__button\"><label for=\"valueA_1_0\">Delete</label></button></td><td>valueA</td><td>1</td></tr><tr><td><button type=\"button\" id=\"valueB_2_1\" class=\"dot-key-value__delete__button\"><label for=\"valueB_2_1\">Delete</label></button></td><td>valueB</td><td>2</td></tr></tbody></table></key-value-table><span class=\"dot-field__hint\">testHint</span></dot-key-value>`;
+            const expectedMarkup = `<dot-key-value name=\"testName\" label=\"testLabel\" field-type=\"Key-Value\" hint=\"testHint\" key-placeholder=\"Enter Key\" value-placeholder=\"Enter Value\" value=\"valueA|1\" required-message=\"testErrorMsg\" required=\"true\" save-btn-label=\"Save\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"testName\">testLabel</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"testName\" name=\"key\" placeholder=\"Enter Key\" type=\"text\"><input name=\"value\" placeholder=\"Enter Value\" type=\"text\"><button class=\"dot-key-value__save__button\" type=\"button\">Save</button><key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"valueA_1_0\" class=\"dot-key-value__delete__button\"><label for=\"valueA_1_0\">Delete</label></button></td><td>valueA</td><td>1</td></tr></tbody></table></key-value-table><span class=\"dot-field__hint\">testHint</span></dot-key-value>`;
             const hint = await element.find('.dot-field__hint');
             const table = await element.find('table');
             expect(element.outerHTML).toBe(expectedMarkup);
@@ -56,49 +56,74 @@ describe('dot-key-value', () => {
             expect(required).toBeFalsy();
         });
 
-        // it('should be invalid, touched & dirty and the error msg should display', async () => {
-        //     await page.select('select', '');
-        //     await page.waitForChanges();
-        //     // tslint:disable-next-line:max-line-length
-        //     expect(element.outerHTML).toBe(`<dot-multi-select name=\"testName\" label=\"testLabel\" hint=\"testHint\" options=\"|,valueA|1,valueB|2\" value=\"2\" required-message=\"testErrorMsg\" required=\"true\" size=\"3\" class=\"dot-required hydrated dot-invalid dot-dirty dot-touched\"><div class=\"dot-field__label\"><label for=\"testName\">testLabel</label><span class=\"dot-field__required-mark\">*</span></div><select multiple=\"\" size=\"3\" class=\"dot-field__error\" id=\"testName\"><option value=\"\"></option><option value=\"1\">valueA</option><option value=\"2\">valueB</option></select><span class=\"dot-field__hint\">testHint</span><span class=\"dot-field__error-meessage\">testErrorMsg</span></dot-multi-select>`);
-        // });
+        describe('Events', () => {
+            beforeEach(async () => {
+                spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+                spyValueChangeEvent = await page.spyOnEvent('valueChange');
+            });
 
-        // describe('Events', () => {
-        //     beforeEach(async () => {
-        //         spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-        //         spyValueChangeEvent = await page.spyOnEvent('valueChange');
-        //     });
+            it('should emit "statusChange" & "valueChange" when saving an item', async () => {
+                const inputs = await page.findAll('input');
+                const saveBtn = await page.find('.dot-key-value__save__button');
+                await inputs[0].press('k');
+                await inputs[1].press('2');
+                saveBtn.click();
+                await page.waitForChanges();
+                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    status: {
+                        dotPristine: false,
+                        dotTouched: true,
+                        dotValid: true
+                    }
+                });
+                expect(spyValueChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    fieldType: 'Key-Value',
+                    value: 'valueA|1,k|2'
+                });
+            });
 
-        //     it('should emit "statusChange" & "valueChange"', async () => {
-        //         await page.select('select', '1', '2');
-        //         expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-        //             name: 'testName',
-        //             status: {
-        //                 dotPristine: false,
-        //                 dotTouched: true,
-        //                 dotValid: true
-        //             }
-        //         });
-        //         expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-        //             name: 'testName',
-        //             value: '1,2'
-        //         });
-        //     });
+            it('should emit status and value on Reset', async () => {
+                element.callMethod('reset');
+                await page.waitForChanges();
+                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    status: {
+                        dotPristine: true,
+                        dotTouched: false,
+                        dotValid: false
+                    }
+                });
+                expect(spyValueChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    fieldType: 'Key-Value',
+                    value: ''
+                });
+            });
 
-        //     it('should emit status and value on Reset', async () => {
-        //         element.callMethod('reset');
-        //         await page.waitForChanges();
-        //         expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-        //             name: 'testName',
-        //             status: {
-        //                 dotPristine: true,
-        //                 dotTouched: false,
-        //                 dotValid: false
-        //             }
-        //         });
-        //         expect(spyValueChangeEvent).toHaveReceivedEventDetail({ name: 'testName', value: '' });
-        //     });
-        // });
+            it('should emit status and value on "deleteItemEvt" event', async () => {
+                await element.triggerEvent('deleteItemEvt', {
+                    bubbles: true,
+                    cancelable: false,
+                    detail: 0
+                });
+                await page.waitForChanges();
+                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    status: {
+                        dotPristine: false,
+                        dotTouched: true,
+                        dotValid: false
+                    }
+                });
+                expect(spyValueChangeEvent).toHaveReceivedEventDetail({
+                    name: 'testName',
+                    fieldType: 'Key-Value',
+                    value: ''
+                });
+            });
+        });
     });
 
     describe('Without data', () => {

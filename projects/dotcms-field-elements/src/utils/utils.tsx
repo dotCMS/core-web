@@ -82,7 +82,7 @@ export function getTagHint(hint: string): JSX.Element {
  * @returns JSX.Element
  */
 export function getTagError(show: boolean, message: string): JSX.Element {
-    return show ? <span class='dot-field__error-meessage'>{message}</span> : '';
+    return show ? <span class='dot-field__error-message'>{message}</span> : '';
 }
 
 /**

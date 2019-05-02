@@ -63,7 +63,7 @@ export class DotKeyValueComponent {
         this.emitValueChange();
     }
 
-    @Listen('deleteItem')
+    @Listen('deleteItemEvt')
     deleteItemHandler(event: CustomEvent) {
         this.values = this.values.filter((_item, internalIndex) => {
             return internalIndex !== event.detail;
@@ -113,6 +113,7 @@ export class DotKeyValueComponent {
                     value={this.fieldInput.value}
                 />
                 <button
+                    class="dot-key-value__save__button"
                     type="button"
                     disabled={this.disabled || null}
                     onClick={() => this.addKey()}

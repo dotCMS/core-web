@@ -10,7 +10,7 @@ export class DotTextfieldComponent {
     }[] = [];
     @Prop() disabled = false;
 
-    @Event() deleteItem: EventEmitter;
+    @Event() deleteItemEvt: EventEmitter;
 
     render() {
         return (
@@ -24,10 +24,12 @@ export class DotTextfieldComponent {
                                         type="button"
                                         id={`${item.key}_${item.value}_${index}`}
                                         disabled={this.disabled || null}
-                                        onClick={() => this.deleteKey(index)}
+                                        onClick={() => this.deleteItem(index)}
                                         class="dot-key-value__delete__button"
                                     >
-                                        <label htmlFor={`${item.key}_${item.value}_${index}`}>Delete</label>
+                                        <label htmlFor={`${item.key}_${item.value}_${index}`}>
+                                            Delete
+                                        </label>
                                     </button>
                                 </td>
                                 <td>{item.key}</td>
@@ -40,7 +42,7 @@ export class DotTextfieldComponent {
         );
     }
 
-    private deleteKey(index: number): void {
-        this.deleteItem.emit(index);
+    private deleteItem(index: number): void {
+        this.deleteItemEvt.emit(index);
     }
 }
