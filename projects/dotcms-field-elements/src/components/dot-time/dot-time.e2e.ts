@@ -37,10 +37,11 @@ describe('dot-time', () => {
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
-    it('should load as pristine, untouched and valid', () => {
+    it('should load with class, pristine, untouched, valid, and required', () => {
         expect(element.classList.contains('dot-pristine')).toBe(true);
         expect(element.classList.contains('dot-untouched')).toBe(true);
         expect(element.classList.contains('dot-valid')).toBe(true);
+        expect(element.classList.contains('dot-required')).toBe(true);
     });
 
     it('should be valid, touched and dirty ', async () => {

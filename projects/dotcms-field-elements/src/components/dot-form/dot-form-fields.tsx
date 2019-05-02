@@ -1,4 +1,4 @@
-import { DotCMSContentTypeField } from '../../models';
+import { DotCMSContentTypeField, DotCMSDateField } from '../../models';
 
 export const DotFormFields = {
     Text: (field: DotCMSContentTypeField) => (
@@ -83,7 +83,7 @@ export const DotFormFields = {
         />
     ),
 
-    Date: (field: DotCMSContentTypeField) => (
+    Date: (field: DotCMSDateField) => (
         <dot-date
             disabled={field.disabled}
             label={field.name}
@@ -99,7 +99,7 @@ export const DotFormFields = {
         />
     ),
 
-    Time: (field: DotCMSContentTypeField) => (
+    Time: (field: DotCMSDateField) => (
         <dot-time
             disabled={field.disabled}
             label={field.name}

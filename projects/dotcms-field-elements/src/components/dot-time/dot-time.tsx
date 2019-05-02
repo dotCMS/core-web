@@ -51,7 +51,7 @@ export class DotTimeComponent {
 
     hostData() {
         return {
-            class: getClassNames(this.status, this.isValid())
+            class: getClassNames(this.status, this.isValid(), this.required)
         };
     }
 
@@ -84,10 +84,14 @@ export class DotTimeComponent {
     }
 
     private isValid(): boolean {
-        return this.required ? !!this.value && this.isDateInRange() : true;
+        return this.isTimeInRange() && this.isRequired();
     }
 
-    private isDateInRange(): boolean {
+    private isRequired(): boolean {
+        return this.required ? !!this.value : true ;
+    }
+
+    private isTimeInRange(): boolean {
         return this.isInMaxRange() && this.isInMinRange();
     }
 
@@ -104,7 +108,7 @@ export class DotTimeComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isDateInRange()
+        return this.isTimeInRange()
             ? this.isValid() ? '' : this.requiredMessage
             : this.validationMessage;
     }

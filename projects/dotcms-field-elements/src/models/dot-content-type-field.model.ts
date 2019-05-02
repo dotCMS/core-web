@@ -14,6 +14,9 @@ export interface DotCMSContentTypeField {
     size?: string;
     values?: string;
     variable?: string;
+}
+
+export interface DotCMSDateField extends DotCMSContentTypeField {
     min?: string;
     max?: string;
     step?: string;

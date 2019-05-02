@@ -51,7 +51,7 @@ export class DotDateComponent {
 
     hostData() {
         return {
-            class: getClassNames(this.status, this.isValid())
+            class: getClassNames(this.status, this.isValid(), this.required)
         };
     }
 
@@ -84,7 +84,11 @@ export class DotDateComponent {
     }
 
     private isValid(): boolean {
-        return this.required ? !!this.value && this.isDateInRange() : true;
+        return this.isDateInRange() && this.isRequired();
+    }
+
+    private isRequired(): boolean {
+        return this.required ? !!this.value : true ;
     }
 
     private isDateInRange(): boolean {
@@ -105,7 +109,7 @@ export class DotDateComponent {
 
     private getErrorMessage(): string {
         return this.isDateInRange()
-            ? this.isValid() ? '' : this.requiredMessage
+            ? this.isRequired() ? '' : this.requiredMessage
             : this.validationMessage;
     }
 
