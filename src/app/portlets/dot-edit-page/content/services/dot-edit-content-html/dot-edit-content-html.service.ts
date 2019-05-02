@@ -7,7 +7,7 @@ import {
     Subscription
 } from 'rxjs';
 
-import { map, take, tap } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Injectable, ElementRef } from '@angular/core';
 
 import * as _ from 'lodash';
@@ -263,26 +263,9 @@ export class DotEditContentHtmlService {
             return this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
-                    tap((response: { render: string; content: { [key: string]: any } }) => {
-                        containerEl.appendChild(this.renderForm(response, form));
-                    }),
                     map((response: { render: string; content: { [key: string]: any } }) => {
-                        const containers: DotPageContainer[] = this.getContentModel();
-                        containers
-                            .filter(
-                                (container: DotPageContainer) =>
-                                    container.identifier === this.currentContainer.identifier &&
-                                    container.uuid === this.currentContainer.uuid
-                            )
-                            .forEach((container: DotPageContainer) => {
-                                if (!container.contentletsId) {
-                                    container.contentletsId = [];
-                                }
-
-                                container.contentletsId.push(response.content.identifier);
-                            });
-
-                        return containers;
+                        containerEl.appendChild(this.renderForm(response, form));
+                        return this.getContentModel();
                     })
                 );
         }
@@ -368,15 +351,12 @@ export class DotEditContentHtmlService {
     ): HTMLElement {
         const { identifier, inode } = response.content;
 
-        const contentlet = this.createEmptyContentletElement(
-            {
-                identifier,
-                inode,
-                baseType: 'FORM',
-                type: 'forms'
-            },
-            false
-        );
+        const contentlet = this.createEmptyContentletElement({
+            identifier,
+            inode,
+            baseType: 'FORM',
+            type: 'forms'
+        });
 
         const dotcms = initDotCMS({
             token: getCookie('access_token')
@@ -547,7 +527,7 @@ export class DotEditContentHtmlService {
         return scriptTags;
     }
 
-    private getNewContentlet(html: string): HTMLElement {
+    private getContentletElementFromHtml(html: string): HTMLElement {
         const doc = this.getEditPageDocument();
         // Add innerHTML to a plain so we can get the HTML nodes later
         const div = doc.createElement('div');
@@ -557,7 +537,7 @@ export class DotEditContentHtmlService {
     }
 
     private generateNewContentlet(html: string): HTMLElement {
-        const newContentlet = this.getNewContentlet(html);
+        const newContentlet = this.getContentletElementFromHtml(html);
 
         this.dotEditContentToolbarHtmlService.addToolbarToContentlet(newContentlet);
 
@@ -593,21 +573,19 @@ export class DotEditContentHtmlService {
         });
     }
 
-    private createEmptyContentletElement(
-        dotPageContent: DotPageContent,
-        loader = true
-    ): HTMLElement {
-        console.log('createEmptyContentletElement', dotPageContent);
+    private createEmptyContentletElement(dotPageContent: DotPageContent): HTMLElement {
         const doc = this.getEditPageDocument();
 
         const dotEditContentletEl: HTMLElement = doc.createElement('div');
-        Object.assign(dotEditContentletEl.dataset, dotPageContent);
+        dotEditContentletEl.setAttribute('data-dot-object', 'contentlet');
 
-        dotEditContentletEl.innerHTML = `
-            ${loader ? '<div class="loader__overlay"><div class="loader"></div></div>' : ''}
-        `;
+        for (const attr in dotPageContent) {
+            if (dotPageContent.hasOwnProperty(attr)) {
+                dotEditContentletEl.setAttribute(`data-dot-${attr}`, dotPageContent[attr]);
+            }
+        }
 
-        console.log(dotEditContentletEl);
+        this.dotEditContentToolbarHtmlService.addToolbarToContentlet(dotEditContentletEl);
 
         return dotEditContentletEl;
     }
@@ -633,7 +611,6 @@ export class DotEditContentHtmlService {
         const contentletEventsMap = {
             // When an user create or edit a contentlet from the jsp
             save: (contentlet: DotPageContent) => {
-                console.log('save', contentlet);
                 if (this.currentAction === DotContentletAction.ADD) {
                     this.renderAddedContentlet(contentlet, PageModelChangeEventType.ADD_CONTENT);
                 } else {
@@ -645,7 +622,6 @@ export class DotEditContentHtmlService {
             },
             // When a user select a content from the search jsp
             select: (contentlet: DotPageContent) => {
-                console.log('select', contentlet);
                 this.renderAddedContentlet(contentlet, PageModelChangeEventType.EDIT_CONTENT);
                 this.iframeActions$.next({
                     name: 'select'
@@ -653,7 +629,6 @@ export class DotEditContentHtmlService {
             },
             // When a user drag and drop a contentlet in the iframe
             relocate: (relocateInfo: DotRelocatePayload) => {
-                console.log('relocate', relocateInfo);
                 if (!this.remoteRendered) {
                     this.renderRelocatedContentlet(relocateInfo);
                 }
@@ -750,9 +725,7 @@ export class DotEditContentHtmlService {
         this.dotContainerContentletService
             .getContentletToContainer(relocateInfo.container, relocateInfo.contentlet)
             .subscribe((contentletHtml: string) => {
-                const newContentletEl: HTMLElement = this.generateNewContentlet(
-                    contentletHtml
-                );
+                const newContentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
                 container.replaceChild(newContentletEl, contenletEl);
             });
     }
