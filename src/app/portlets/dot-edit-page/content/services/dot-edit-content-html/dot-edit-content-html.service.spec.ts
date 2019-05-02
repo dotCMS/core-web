@@ -30,7 +30,7 @@ class MockDotLicenseService {
     }
 }
 
-fdescribe('DotEditContentHtmlService', () => {
+describe('DotEditContentHtmlService', () => {
     let dotLicenseService: DotLicenseService;
     let fakeDocument: Document;
 
