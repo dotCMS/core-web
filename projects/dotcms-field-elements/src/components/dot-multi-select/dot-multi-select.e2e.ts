@@ -22,7 +22,7 @@ describe('dot-multi-select', () => {
             required="true"
             size=3
             >
-        </dot-select>`);
+        </dot-multi-select>`);
         element = await page.find('dot-multi-select');
     });
 

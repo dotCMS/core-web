@@ -1,30 +1,33 @@
 import { Component, Prop, Event, EventEmitter } from '@stencil/core';
-import { KeyValue } from '../../../models';
 
 @Component({
     tag: 'key-value-table'
 })
 export class DotTextfieldComponent {
-    @Prop() keyValues: KeyValue[] = [];
+    @Prop() values: {
+        key: string;
+        value: string;
+    }[] = [];
     @Prop() disabled = false;
 
-    @Event() deleteKeyValue: EventEmitter;
+    @Event() deleteItem: EventEmitter;
 
     render() {
         return (
             <table>
                 <tbody>
-                    {this.keyValues.map((item, index) => {
+                    {this.values.map((item, index) => {
                         return (
                             <tr>
                                 <td>
                                     <button
                                         type="button"
+                                        id={`${item.key}_${item.value}_${index}`}
                                         disabled={this.disabled || null}
                                         onClick={() => this.deleteKey(index)}
                                         class="dot-key-value__delete__button"
                                     >
-                                        <i class="dot-key-value__delete-button__icon" />
+                                        <label htmlFor={`${item.key}_${item.value}_${index}`}>Delete</label>
                                     </button>
                                 </td>
                                 <td>{item.key}</td>
@@ -38,6 +41,6 @@ export class DotTextfieldComponent {
     }
 
     private deleteKey(index: number): void {
-        this.deleteKeyValue.emit(index);
+        this.deleteItem.emit(index);
     }
 }

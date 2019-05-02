@@ -1,6 +1,6 @@
 export interface DotCMSContentTypeField {
     dataType?: string;
-    defaultValue?: string | any;
+    defaultValue?: string;
     disabled?: boolean;
     fieldType?: string;
     hint?: string;
@@ -11,12 +11,15 @@ export interface DotCMSContentTypeField {
     validationMessage?: string;
     required?: boolean;
     requiredMessage?: string;
-    size?: string;
     values?: string;
     variable?: string;
     min?: string;
     max?: string;
     step?: string;
+}
+
+export interface DotCMSMultiSelectField extends DotCMSContentTypeField {
+    size?: string;
 }
 
 export interface DotCMSKeyValueField extends DotCMSContentTypeField {

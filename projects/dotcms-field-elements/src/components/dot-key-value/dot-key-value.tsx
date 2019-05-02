@@ -9,13 +9,7 @@ import {
     Listen
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import {
-    DotFieldStatus,
-    DotFieldValueEvent,
-    DotFieldStatusEvent,
-    DotLabel,
-    KeyValue
-} from '../../models';
+import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
     getClassNames,
     getOriginalStatus,
@@ -25,6 +19,11 @@ import {
     getErrorClass,
     updateStatus
 } from '../../utils';
+
+interface DotKeyValue {
+    key: string;
+    value: string;
+}
 
 @Component({
     tag: 'dot-key-value',
@@ -45,12 +44,12 @@ export class DotKeyValueComponent {
     @Prop() disabled = false;
 
     @State() status: DotFieldStatus;
-    @State() keyValues: KeyValue[] = [];
+    @State() values: DotKeyValue[] = [];
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    fieldInput: KeyValue = { key: '', value: '' };
+    fieldInput: DotKeyValue = { key: '', value: '' };
 
     /**
      * Reset properties of the filed, clear value and emit events.
@@ -58,15 +57,15 @@ export class DotKeyValueComponent {
     @Method()
     reset(): void {
         this.fieldInput = { key: '', value: '' };
-        this.keyValues = [];
+        this.values = [];
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
     }
 
-    @Listen('deleteKeyValue')
-    deleteKeyHandler(event: CustomEvent) {
-        this.keyValues = this.keyValues.filter((_item, internalIndex) => {
+    @Listen('deleteItem')
+    deleteItemHandler(event: CustomEvent) {
+        this.values = this.values.filter((_item, internalIndex) => {
             return internalIndex !== event.detail;
         });
         this.refreshStatus();
@@ -85,7 +84,6 @@ export class DotKeyValueComponent {
         };
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
     render() {
         const labelTagParams: DotLabel = {
             name: this.name,
@@ -97,7 +95,7 @@ export class DotKeyValueComponent {
                 {getTagLabel(labelTagParams)}
                 <input
                     class={getErrorClass(this.status.dotValid)}
-                    disabled={this.disabled || null}
+                    disabled={this.isDisabled()}
                     id={this.name}
                     name="key"
                     onInput={(event: Event) => this.setValue(event)}
@@ -107,7 +105,7 @@ export class DotKeyValueComponent {
                 />
                 <input
                     class={getErrorClass(this.status.dotValid)}
-                    disabled={this.disabled || null}
+                    disabled={this.isDisabled()}
                     name="value"
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.valuePlaceholder}
@@ -121,19 +119,27 @@ export class DotKeyValueComponent {
                 >
                     {this.saveBtnLabel}
                 </button>
-                {this.keyValues.length ? (
-                    <key-value-table keyValues={this.keyValues} disabled={this.disabled} />
-                ) : (
-                    ''
-                )}
+                {this.getTagTable()}
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
 
+    private isDisabled(): boolean {
+        return this.disabled || null;
+    }
+
+    private getTagTable(): JSX.Element {
+        return this.values.length ? (
+            <key-value-table values={this.values} disabled={this.disabled} />
+        ) : (
+            ''
+        );
+    }
+
     private setInitialValue(): void {
-        this.keyValues = this.value
+        this.values = this.value
             ? this.value
                   .split(',')
                   .filter((item) => item.length > 0)
@@ -146,7 +152,7 @@ export class DotKeyValueComponent {
     }
 
     private isValid(): boolean {
-        return !(this.required && !this.keyValues.length);
+        return !(this.required && !this.values.length);
     }
 
     private showErrorMessage(): boolean {
@@ -177,8 +183,8 @@ export class DotKeyValueComponent {
     }
 
     private emitValueChange(): void {
-        const returnedValue = this.keyValues
-            .map((item: KeyValue) => {
+        const returnedValue = this.values
+            .map((item: DotKeyValue) => {
                 return `${item.key}|${item.value}`;
             })
             .join(',');
@@ -192,8 +198,8 @@ export class DotKeyValueComponent {
 
     private addKey(): void {
         if (this.fieldInput.key && this.fieldInput.value) {
-            this.keyValues = [
-                ...this.keyValues,
+            this.values = [
+                ...this.values,
                 {
                     key: this.fieldInput.key,
                     value: this.fieldInput.value

@@ -3,25 +3,8 @@ import { DotCMSContentTypeField, DotFieldStatus, DotCMSKeyValueField } from '../
 import { DotFormFields } from './dot-form-fields';
 import { getClassNames, getOriginalStatus } from '../../utils';
 
-const fieldMap = {
-    Text: DotFormFields.Text,
-    Textarea: DotFormFields.Textarea,
-    Checkbox: DotFormFields.Checkbox,
-    'Key-Value': (field: DotCMSKeyValueField) => {
-        field.defaultValue =
-            field.defaultValue && typeof field.defaultValue !== 'string'
-                ? fieldParamsConversionFromBE[field.fieldType](field.defaultValue)
-                : field.defaultValue;
-        return DotFormFields['Key-Value'](field);
-    },
-    'Multi-Select': DotFormFields['Multi-Select'],
-    Select: DotFormFields.Select,
-    Radio: DotFormFields.Radio,
-    Date: DotFormFields.Date
-};
-
 const fieldParamsConversionToBE = {
-    'Key-Value': (values: string) => {
+    'Key-Value': (values: string): { [key: string]: string } => {
         const returnValue = {};
         values.split(',').forEach((item: string) => {
             const [key, value] = item.split('|');
@@ -32,14 +15,27 @@ const fieldParamsConversionToBE = {
 };
 
 const fieldParamsConversionFromBE = {
-    'Key-Value': (values) => {
-        const returnedValue = Object.keys(values)
-            .map((e) => {
-                return `${e}|${values[e]}`;
-            })
-            .join(',');
-        return returnedValue;
+    'Key-Value': (field: DotCMSKeyValueField) => {
+        if (field.defaultValue && typeof field.defaultValue !== 'string') {
+            field.defaultValue = Object.keys(field.defaultValue)
+                .map((e) => {
+                    return `${e}|${field.defaultValue[e]}`;
+                })
+                .join(',');
+        }
+        return DotFormFields['Key-Value'](field);
     }
+};
+
+const fieldMap = {
+    Text: DotFormFields.Text,
+    Textarea: DotFormFields.Textarea,
+    Checkbox: DotFormFields.Checkbox,
+    'Key-Value': fieldParamsConversionFromBE['Key-Value'],
+    'Multi-Select': DotFormFields['Multi-Select'],
+    Select: DotFormFields.Select,
+    Radio: DotFormFields.Radio,
+    Date: DotFormFields.Date
 };
 
 @Component({
