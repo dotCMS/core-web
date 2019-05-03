@@ -117,7 +117,7 @@ export class DotKeyValueComponent {
                 >
                     {this.saveBtnLabel}
                 </button>
-                {this.tagTable()}
+                {this.getKeyValueList()}
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
@@ -128,7 +128,7 @@ export class DotKeyValueComponent {
         return this.disabled || null;
     }
 
-    private tagTable(): JSX.Element {
+    private getKeyValueList(): JSX.Element {
         return this.values.length ? (
             <key-value-table items={this.values} disabled={this.disabled} />
         ) : (
