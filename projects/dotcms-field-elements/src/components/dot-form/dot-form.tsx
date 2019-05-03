@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State } from '@stencil/core';
 import { DotCMSContentTypeField, DotFieldStatus, DotCMSKeyValueField } from '../../models';
 import { DotFormFields } from './dot-form-fields';
-import { getClassNames, getOriginalStatus } from '../../utils';
+import { getClassNames, getOriginalStatus, getStringFromDotKeyArray } from '../../utils';
 
 const fieldParamsConversionToBE = {
     'Key-Value': (values: string): { [key: string]: string } => {
@@ -17,11 +17,10 @@ const fieldParamsConversionToBE = {
 const fieldParamsConversionFromBE = {
     'Key-Value': (field: DotCMSKeyValueField) => {
         if (field.defaultValue && typeof field.defaultValue !== 'string') {
-            field.defaultValue = Object.keys(field.defaultValue)
-                .map((e) => {
-                    return `${e}|${field.defaultValue[e]}`;
-                })
-                .join(',');
+            const valuesArray = Object.keys(field.defaultValue).map((key: string) => {
+                return {key: key, value: field.defaultValue[key]};
+            });
+            field.defaultValue = getStringFromDotKeyArray(valuesArray);
         }
         return DotFormFields['Key-Value'](field);
     }

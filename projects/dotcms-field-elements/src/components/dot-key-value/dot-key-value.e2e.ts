@@ -30,7 +30,7 @@ describe('dot-key-value', () => {
 
         it('renders', async () => {
             // tslint:disable-next-line:max-line-length
-            const expectedMarkup = `<dot-key-value name=\"testName\" label=\"testLabel\" field-type=\"Key-Value\" hint=\"testHint\" key-placeholder=\"Enter Key\" value-placeholder=\"Enter Value\" value=\"valueA|1\" required-message=\"testErrorMsg\" required=\"true\" save-btn-label=\"Save\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"testName\">testLabel</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"testName\" name=\"key\" placeholder=\"Enter Key\" type=\"text\"><input name=\"value\" placeholder=\"Enter Value\" type=\"text\"><button class=\"dot-key-value__save__button\" type=\"button\">Save</button><key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"valueA_1_0\" class=\"dot-key-value__delete__button\"><label for=\"valueA_1_0\">Delete</label></button></td><td>valueA</td><td>1</td></tr></tbody></table></key-value-table><span class=\"dot-field__hint\">testHint</span></dot-key-value>`;
+            const expectedMarkup = `<dot-key-value name=\"testName\" label=\"testLabel\" field-type=\"Key-Value\" hint=\"testHint\" key-placeholder=\"Enter Key\" value-placeholder=\"Enter Value\" value=\"valueA|1\" required-message=\"testErrorMsg\" required=\"true\" save-btn-label=\"Save\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"testName\">testLabel</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"testName\" name=\"key\" placeholder=\"Enter Key\" type=\"text\"><input name=\"value\" placeholder=\"Enter Value\" type=\"text\"><button class=\"dot-key-value__save__button\" type=\"button\">Save</button><key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"valueA_1_0\" class=\"dot-key-value__delete__button\"><div class=\"dot-field__label\"><label for=\"valueA_1_0\">Delete</label></div></button></td><td>valueA</td><td>1</td></tr></tbody></table></key-value-table><span class=\"dot-field__hint\">testHint</span></dot-key-value>`;
             const hint = await element.find('.dot-field__hint');
             const table = await element.find('table');
             expect(element.outerHTML).toBe(expectedMarkup);
@@ -53,7 +53,9 @@ describe('dot-key-value', () => {
             element.setProperty('required', 'false');
             await page.waitForChanges();
             const required = await element.getProperty('required');
+            const label = await element.find('.dot-field__label label');
             expect(required).toBeFalsy();
+            expect(label.innerHTML.indexOf('*')).toBe(-1);
         });
 
         describe('Events', () => {
@@ -62,13 +64,16 @@ describe('dot-key-value', () => {
                 spyValueChangeEvent = await page.spyOnEvent('valueChange');
             });
 
-            it('should emit "statusChange" & "valueChange" when saving an item', async () => {
+            it('should emit "statusChange" & "valueChange" and add the new row in "Key-Value-Table" when saving an item', async () => {
                 const inputs = await page.findAll('input');
                 const saveBtn = await page.find('.dot-key-value__save__button');
                 await inputs[0].press('k');
                 await inputs[1].press('2');
                 saveBtn.click();
                 await page.waitForChanges();
+
+                const tableRows = await page.findAll('table tr');
+                expect(tableRows.length).toBe(2);
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'testName',
                     status: {
@@ -102,13 +107,16 @@ describe('dot-key-value', () => {
                 });
             });
 
-            it('should emit status and value on "deleteItemEvt" event', async () => {
+            it('should emit status and value on "deleteItemEvt" and remove the row in "Key-Value-Table" event', async () => {
                 await element.triggerEvent('deleteItemEvt', {
                     bubbles: true,
                     cancelable: false,
                     detail: 0
                 });
                 await page.waitForChanges();
+
+                const tableRows = await page.findAll('table tr');
+                expect(tableRows.length).toBeFalsy();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'testName',
                     status: {

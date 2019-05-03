@@ -9,7 +9,7 @@ import {
     Listen
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
+import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel, DotKeyValueField } from '../../models';
 import {
     getClassNames,
     getOriginalStatus,
@@ -17,13 +17,9 @@ import {
     getTagError,
     getTagLabel,
     getErrorClass,
-    updateStatus
+    updateStatus,
+    getStringFromDotKeyArray
 } from '../../utils';
-
-interface DotKeyValue {
-    key: string;
-    value: string;
-}
 
 @Component({
     tag: 'dot-key-value',
@@ -44,12 +40,12 @@ export class DotKeyValueComponent {
     @Prop() disabled = false;
 
     @State() status: DotFieldStatus;
-    @State() values: DotKeyValue[] = [];
+    @State() values: DotKeyValueField[] = [];
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    fieldInput: DotKeyValue = { key: '', value: '' };
+    fieldInput: DotKeyValueField = { key: '', value: '' };
 
     /**
      * Reset properties of the filed, clear value and emit events.
@@ -65,6 +61,7 @@ export class DotKeyValueComponent {
 
     @Listen('deleteItemEvt')
     deleteItemHandler(event: CustomEvent) {
+        event.stopImmediatePropagation();
         this.values = this.values.filter((_item, internalIndex) => {
             return internalIndex !== event.detail;
         });
@@ -120,7 +117,7 @@ export class DotKeyValueComponent {
                 >
                     {this.saveBtnLabel}
                 </button>
-                {this.getTagTable()}
+                {this.tagTable()}
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
@@ -131,9 +128,9 @@ export class DotKeyValueComponent {
         return this.disabled || null;
     }
 
-    private getTagTable(): JSX.Element {
+    private tagTable(): JSX.Element {
         return this.values.length ? (
-            <key-value-table values={this.values} disabled={this.disabled} />
+            <key-value-table items={this.values} disabled={this.disabled} />
         ) : (
             ''
         );
@@ -184,12 +181,7 @@ export class DotKeyValueComponent {
     }
 
     private emitValueChange(): void {
-        const returnedValue = this.values
-            .map((item: DotKeyValue) => {
-                return `${item.key}|${item.value}`;
-            })
-            .join(',');
-
+        const returnedValue = getStringFromDotKeyArray(this.values);
         this.valueChange.emit({
             name: this.name,
             value: returnedValue,

@@ -10,13 +10,13 @@ describe('key-value-table', () => {
         page = await newE2EPage();
         await page.setContent(`<key-value-table />`);
         element = await page.find('key-value-table');
-        element.setProperty('values', [{ keyA: '1', keyB: '2' }]);
+        element.setProperty('items', [{ keyA: '1', keyB: '2' }]);
         await page.waitForChanges();
     });
 
     it('renders', async () => {
         // tslint:disable-next-line:max-line-length
-        const expectedMarkup = `<key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"undefined_undefined_0\" class=\"dot-key-value__delete__button\"><label for=\"undefined_undefined_0\">Delete</label></button></td><td></td><td></td></tr></tbody></table></key-value-table>`;
+        const expectedMarkup = `<key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"undefined_undefined_0\" class=\"dot-key-value__delete__button\"><div class=\"dot-field__label\"><label for=\"undefined_undefined_0\">Delete</label></div></button></td><td></td><td></td></tr></tbody></table></key-value-table>`;
         expect(element.outerHTML).toBe(expectedMarkup);
     });
 

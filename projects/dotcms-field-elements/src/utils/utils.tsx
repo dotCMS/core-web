@@ -1,4 +1,4 @@
-import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotLabel } from '../models';
+import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotLabel, DotKeyValueField } from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -107,4 +107,18 @@ export function getTagLabel(params: DotLabel): JSX.Element {
  */
 export function getErrorClass(valid: boolean): string {
     return valid ? '' : 'dot-field__error';
+}
+
+/**
+ * Returns a single string formatted as "Key|Value" separated with commas from a DotKeyValueField array
+ *
+ * @param DotKeyValueField[] values
+ * @returns string
+ */
+export function getStringFromDotKeyArray(values: DotKeyValueField[]): string {
+    return values
+        .map((item: DotKeyValueField) => {
+            return `${item.key}|${item.value}`;
+        })
+        .join(',');
 }
