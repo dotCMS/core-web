@@ -1,15 +1,7 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
+import { Component, Element, Listen, Method, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent, DotLabel } from '../../models';
-import {
-    getClassNames,
-    getErrorClass,
-    getOriginalStatus,
-    getTagError,
-    getTagHint,
-    getTagLabel,
-    updateStatus
-} from '../../utils';
+import { DotFieldStatus, DotFieldStatusClasses, DotLabel } from '../../models';
+import { getOriginalStatus, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -29,29 +21,35 @@ export class DotDateComponent {
     @Prop() min: string;
     @Prop() max: string;
     @Prop() step: string;
-    @State() status: DotFieldStatus = getOriginalStatus();
 
-    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() classNames: DotFieldStatusClasses;
+    @State() errorMessageElement: JSX.Element;
 
     /**
      * Reset properties of the filed, clear value and emit events.
      */
     @Method()
     reset(): void {
-        this.value = '';
-        this.status = getOriginalStatus(this.isValid());
-        this.emitStatusChange();
-        this.emitValueChange();
+        const input = this.el.querySelector('dot-input-calendar');
+        input.reset();
     }
 
-    componentWillLoad(): void {
-        this.emitStatusChange();
+    @Listen('updateClassEvt')
+    setclassNames(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        this.classNames = event.detail;
+    }
+
+    @Listen('errorElementEvt')
+    setErrorElement(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        this.errorMessageElement = event.detail;
     }
 
     hostData() {
         return {
-            class: getClassNames(this.status, this.isValid(), this.required)
+            class: this.classNames
         };
     }
 
@@ -64,86 +62,23 @@ export class DotDateComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.disabled || null}
-                    id={this.name}
-                    onBlur={() => this.blurHandler()}
-                    onInput={(event: Event) => this.setValue(event)}
-                    required={this.required || null}
+                <dot-input-calendar
+                    disabled={this.disabled}
                     type="date"
+                    label={this.label}
+                    name={this.name}
+                    hint={this.hint}
                     value={this.value}
+                    required={this.required}
+                    required-message={this.requiredMessage}
+                    validation-message={this.validationMessage}
                     min={this.min}
                     max={this.max}
                     step={this.step}
                 />
                 {getTagHint(this.hint)}
-                {getTagError(this.showErrorMessage(), this.getErrorMessage())}
+                {this.errorMessageElement}
             </Fragment>
         );
-    }
-
-    private isValid(): boolean {
-        return this.isDateInRange() && this.isRequired();
-    }
-
-    private isRequired(): boolean {
-        return this.required ? !!this.value : true ;
-    }
-
-    private isDateInRange(): boolean {
-        return this.isInMaxRange() && this.isInMinRange();
-    }
-
-    private isInMinRange(): boolean {
-        return !!this.min ? this.value >= this.min : true;
-    }
-
-    private isInMaxRange(): boolean {
-        return !!this.max ? this.value <= this.max : true;
-    }
-
-    private showErrorMessage(): boolean {
-        return this.getErrorMessage() && !this.status.dotPristine;
-    }
-
-    private getErrorMessage(): string {
-        return this.isDateInRange()
-            ? this.isRequired() ? '' : this.requiredMessage
-            : this.validationMessage;
-    }
-
-    private blurHandler(): void {
-        if (!this.status.dotTouched) {
-            this.status = updateStatus(this.status, {
-                dotTouched: true
-            });
-            this.emitStatusChange();
-        }
-    }
-
-    private setValue(event): void {
-        this.value = event.target.value.toString();
-        this.status = updateStatus(this.status, {
-            dotTouched: true,
-            dotPristine: false,
-            dotValid: this.isValid()
-        });
-        this.emitValueChange();
-        this.emitStatusChange();
-    }
-
-    private emitStatusChange(): void {
-        this.statusChange.emit({
-            name: this.name,
-            status: this.status
-        });
-    }
-
-    private emitValueChange(): void {
-        this.valueChange.emit({
-            name: this.name,
-            value: this.value
-        });
     }
 }
