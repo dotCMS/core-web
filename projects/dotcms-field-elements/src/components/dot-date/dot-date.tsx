@@ -1,7 +1,21 @@
-import { Component, Element, Listen, Method, Prop, State } from '@stencil/core';
+import {
+    Component,
+    Element,
+    Event,
+    EventEmitter,
+    Listen,
+    Method,
+    Prop,
+    State
+} from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldStatusClasses, DotLabel } from '../../models';
-import { getOriginalStatus, getTagHint, getTagLabel } from '../../utils';
+import {
+    DotFieldStatusClasses,
+    DotFieldStatusEvent,
+    DotFieldValueEvent,
+    DotLabel
+} from '../../models';
+import { getTagError, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -22,9 +36,11 @@ export class DotDateComponent {
     @Prop() max: string;
     @Prop() step: string;
 
-    @State() status: DotFieldStatus = getOriginalStatus();
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
+
+    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
+    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     /**
      * Reset properties of the filed, clear value and emit events.
@@ -35,16 +51,28 @@ export class DotDateComponent {
         input.reset();
     }
 
-    @Listen('updateClassEvt')
+    @Listen('_valueChange')
+    emitValueChange(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        this.valueChange.emit(event.detail);
+    }
+
+    @Listen('_statusChange')
+    emitStatusChange(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        this.statusChange.emit(event.detail);
+    }
+
+    @Listen('_updateClassEvt')
     setclassNames(event: CustomEvent) {
         event.stopImmediatePropagation();
         this.classNames = event.detail;
     }
 
-    @Listen('errorElementEvt')
-    setErrorElement(event: CustomEvent) {
+    @Listen('_showErrorMessageEvt')
+    showErrorElement(event: CustomEvent) {
         event.stopImmediatePropagation();
-        this.errorMessageElement = event.detail;
+        this.errorMessageElement = getTagError(event.detail.show, event.detail.message);
     }
 
     hostData() {

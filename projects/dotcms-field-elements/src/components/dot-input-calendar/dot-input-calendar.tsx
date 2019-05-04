@@ -10,7 +10,6 @@ import {
     getClassNames,
     getErrorClass,
     getOriginalStatus,
-    getTagError,
     updateStatus
 } from '../../utils';
 
@@ -35,10 +34,10 @@ export class DotTimeComponent {
     @Prop() type: string;
 
     @State() status: DotFieldStatus = getOriginalStatus();
-    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
-    @Event() updateClassEvt: EventEmitter<DotFieldStatusClasses>;
-    @Event() errorElementEvt: EventEmitter;
+    @Event() _valueChange: EventEmitter<DotFieldValueEvent>;
+    @Event() _statusChange: EventEmitter<DotFieldStatusEvent>;
+    @Event() _updateClassEvt: EventEmitter<DotFieldStatusClasses>;
+    @Event() _showErrorMessageEvt: EventEmitter;
     /**
      * Reset properties of the filed, clear value and emit events.
      */
@@ -79,11 +78,6 @@ export class DotTimeComponent {
         );
     }
 
-    private emitMarkupEvents(): void {
-        this.updateClassEvt.emit(getClassNames(this.status, this.isValid(), this.required));
-        this.errorElementEvt.emit(getTagError(this.showErrorMessage(), this.getErrorMessage()));
-    }
-
     private isValid(): boolean {
         return this.isValueInRange() && this.isRequired();
     }
@@ -105,7 +99,7 @@ export class DotTimeComponent {
     }
 
     private showErrorMessage(): boolean {
-        return this.getErrorMessage() && !this.status.dotPristine;
+        return !this.status.dotPristine && !!this.getErrorMessage();
     }
 
     private getErrorMessage(): string {
@@ -134,15 +128,23 @@ export class DotTimeComponent {
         this.emitStatusChange();
     }
 
+    private emitMarkupEvents(): void {
+        this._updateClassEvt.emit(getClassNames(this.status, this.isValid(), this.required));
+        this._showErrorMessageEvt.emit({
+            show: this.showErrorMessage(),
+            message: this.getErrorMessage()
+        });
+    }
+
     private emitStatusChange(): void {
-        this.statusChange.emit({
+        this._statusChange.emit({
             name: this.name,
             status: this.status
         });
     }
 
     private emitValueChange(): void {
-        this.valueChange.emit({
+        this._valueChange.emit({
             name: this.name,
             value: this.value
         });

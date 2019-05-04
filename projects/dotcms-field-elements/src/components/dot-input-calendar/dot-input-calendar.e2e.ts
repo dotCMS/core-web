@@ -1,6 +1,5 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
-import {getClassNames, getTagError} from '../../utils';
 
 describe('dot-input-calendar', () => {
     let page: E2EPage;
@@ -9,7 +8,7 @@ describe('dot-input-calendar', () => {
     let spyStatusChangeEvent: EventSpy;
     let spyValueChange: EventSpy;
     let spyUpdateClassEvt: EventSpy;
-    let spyErrorElementEvt: EventSpy;
+    let spyShowErrorMessageEvt: EventSpy;
 
     beforeEach(async () => {
         page = await newE2EPage({
@@ -25,71 +24,24 @@ describe('dot-input-calendar', () => {
                     min="06:00:00"
                     max="22:00:00"
                     step="10"
+                    type="time"
                 ></dot-input-calendar>`
         });
 
-        spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-        spyValueChange = await page.spyOnEvent('valueChange');
-        spyErrorElementEvt = await page.spyOnEvent('errorElementEvt');
-        spyUpdateClassEvt = await page.spyOnEvent('updateClassEvt');
+        spyValueChange = await page.spyOnEvent('_valueChange');
+        spyStatusChangeEvent = await page.spyOnEvent('_statusChange');
+        spyUpdateClassEvt = await page.spyOnEvent('_updateClassEvt');
+        spyShowErrorMessageEvt = await page.spyOnEvent('_showErrorMessageEvt');
         element = await page.find('dot-input-calendar');
         input = await page.find('input');
     });
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<input id=\"time01\" required=\"\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\">`;
+        const tagsRenderExpected = `<input id=\"time01\" required=\"\" type=\"time\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\">`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
-
-    //
-    // it('should be valid, touched and dirty ', async () => {
-    //     await input.press('2');
-    //     await page.waitForChanges();
-    //     expect(element.classList.contains('dot-valid')).toBe(true);
-    //     expect(element.classList.contains('dot-dirty')).toBe(true);
-    //     expect(element.classList.contains('dot-touched')).toBe(true);
-    // });
-
-
-    // it('it should have required as false', async () => {
-    //     element.setProperty('required', 'false');
-    //     await page.waitForChanges();
-    //     const required = await element.getProperty('required');
-    //     expect(required).toBeFalsy();
-    // });
-
-    // it('should show invalid range validation message', async () => {
-    //     element.setProperty('value', '01:00:00');
-    //     await input.press('2');
-    //     await page.waitForChanges();
-    //     const errorMessage = await page.find('.dot-field__error-meessage');
-    //     expect(errorMessage.innerHTML).toBe('Time out of range');
-    // });
-
     describe('emit events', () => {
-
-        it('should emit initial event on load', async () => {
-            expect(spyErrorElementEvt).toHaveReceivedEventDetail('');
-            expect(spyUpdateClassEvt).toHaveReceivedEventDetail({
-                'dot-valid': true,
-                'dot-invalid': false,
-                'dot-pristine': true,
-                'dot-dirty': false,
-                'dot-touched': false,
-                'dot-untouched': true,
-                'dot-required': true
-            });
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'time01',
-                status: {
-                    dotPristine: true,
-                    dotTouched: false,
-                    dotValid: true
-                }
-            });
-        });
-
         it('should mark as touched when onblur', async () => {
             await input.triggerEvent('blur');
             await page.waitForChanges();
@@ -104,7 +56,43 @@ describe('dot-input-calendar', () => {
             });
         });
 
-        it('should send status and value change', async () => {
+        it('should emit error tag when value is not in valid range', async () => {
+            await input.press('0');
+            await page.waitForChanges();
+            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+                show: true,
+                message: 'Time out of range'
+            });
+        });
+
+        it('should emit status and value errorElement and class events on Reset', async () => {
+            element.callMethod('reset');
+            await page.waitForChanges();
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'time01',
+                status: {
+                    dotPristine: true,
+                    dotTouched: false,
+                    dotValid: false
+                }
+            });
+            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'time01', value: '' });
+            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+                message: 'Time out of range',
+                show: false
+            });
+            expect(spyUpdateClassEvt).toHaveReceivedEventDetail({
+                'dot-dirty': false,
+                'dot-invalid': true,
+                'dot-pristine': true,
+                'dot-required': true,
+                'dot-touched': false,
+                'dot-untouched': true,
+                'dot-valid': false
+            });
+        });
+
+        it('should emit status, value, errorElement and class events on changes', async () => {
             await input.press('2');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -119,24 +107,19 @@ describe('dot-input-calendar', () => {
                 name: 'time01',
                 value: '14:30:30'
             });
-        });
-
-        it('should emit status and value on Reset', async () => {
-            element.callMethod('reset');
-            await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'time01',
-                status: {
-                    dotPristine: true,
-                    dotTouched: false,
-                    dotValid: false
-                }
+            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+                show: false,
+                message: ''
             });
-            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'time01', value: '' });
+            expect(spyUpdateClassEvt).toHaveReceivedEventDetail({
+                'dot-dirty': true,
+                'dot-invalid': false,
+                'dot-pristine': false,
+                'dot-required': true,
+                'dot-touched': true,
+                'dot-untouched': false,
+                'dot-valid': true
+            });
         });
-
-
-
-
     });
 });
