@@ -1,8 +1,7 @@
-/*
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 
-fdescribe('dot-date', () => {
+describe('dot-date', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
@@ -34,18 +33,11 @@ fdescribe('dot-date', () => {
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"><span class=\"dot-field__hint\">date hint</span>`;
-        expect(element.innerHTML).toBe(tagsRenderExpected);
+        const tagsRenderExpected = `<dot-date label=\"Date:\" name=\"date01\" value=\"2019-01-20\" hint=\"date hint\" required=\"\" required-message=\"Required Date\" validation-message=\"Invalid Date Range\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><dot-input-calendar type=\"date\" required-message=\"Required Date\" validation-message=\"Invalid Date Range\" class=\"hydrated\"><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"></dot-input-calendar><span class=\"dot-field__hint\">date hint</span></dot-date>`;
+        expect(element.outerHTML).toBe(tagsRenderExpected);
     });
 
-    it('should load with class, pristine, untouched, valid, and required', () => {
-        expect(element.classList.contains('dot-pristine')).toBe(true);
-        expect(element.classList.contains('dot-untouched')).toBe(true);
-        expect(element.classList.contains('dot-valid')).toBe(true);
-        expect(element.classList.contains('dot-required')).toBe(true);
-    });
-
-    it('should be valid, touched & dirty ', async () => {
+    it('should be valid, touched & dirty on value change', async () => {
         await input.press('2');
         await page.waitForChanges();
         expect(element.classList.contains('dot-valid')).toBe(true);
@@ -122,4 +114,3 @@ fdescribe('dot-date', () => {
         });
     });
 });
-*/
