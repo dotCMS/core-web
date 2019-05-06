@@ -82,7 +82,9 @@ describe('dot-date', () => {
             });
         });
 
-        it('should send status and value change', async () => {
+        it('should send status and value change and stop dot-input-calendar events', async () => {
+            const evt_statusChange = await page.spyOnEvent('_statusChange');
+            const evt_valueChange = await page.spyOnEvent('_valueChange');
             await input.press('2');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -97,6 +99,8 @@ describe('dot-date', () => {
                 name: 'date01',
                 value: '2019-02-20'
             });
+            expect(evt_statusChange.events).toEqual([]);
+            expect(evt_valueChange.events).toEqual([]);
         });
 
         it('should emit status and value on Reset', async () => {
