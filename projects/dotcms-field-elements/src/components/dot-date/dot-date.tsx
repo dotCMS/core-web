@@ -66,7 +66,6 @@ export class DotDateComponent {
             statusEvent.status.dotValid,
             this.required
         );
-        debugger;
         this.statusChange.emit(event.detail);
     }
 
