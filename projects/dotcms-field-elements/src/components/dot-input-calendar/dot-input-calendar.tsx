@@ -1,23 +1,13 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import {
-    DotFieldStatus,
-    DotFieldStatusClasses,
-    DotFieldStatusEvent,
-    DotFieldValueEvent
-} from '../../models';
-import {
-    getClassNames,
-    getErrorClass,
-    getOriginalStatus,
-    updateStatus
-} from '../../utils';
+import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
+import { getErrorClass, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
     tag: 'dot-input-calendar',
     styleUrl: 'dot-input-calendar.scss'
 })
-export class DotTimeComponent {
+export class DotInputCalendarComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true })
     value: string;
@@ -33,11 +23,10 @@ export class DotTimeComponent {
     @Prop() step: string;
     @Prop() type: string;
 
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
     @Event() _valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() _statusChange: EventEmitter<DotFieldStatusEvent>;
-    @Event() _updateClassEvt: EventEmitter<DotFieldStatusClasses>;
-    @Event() _showErrorMessageEvt: EventEmitter;
+    @Event() _errorMessage: EventEmitter;
     /**
      * Reset properties of the filed, clear value and emit events.
      */
@@ -50,12 +39,13 @@ export class DotTimeComponent {
     }
 
     componentWillLoad(): void {
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
-        this.emitMarkupEvents();
+        this.emitErrorMessage();
     }
 
     componentWillUpdate(): void {
-        this.emitMarkupEvents();
+        this.emitErrorMessage();
     }
 
     render() {
@@ -128,9 +118,8 @@ export class DotTimeComponent {
         this.emitStatusChange();
     }
 
-    private emitMarkupEvents(): void {
-        this._updateClassEvt.emit(getClassNames(this.status, this.isValid(), this.required));
-        this._showErrorMessageEvt.emit({
+    private emitErrorMessage(): void {
+        this._errorMessage.emit({
             show: this.showErrorMessage(),
             message: this.getErrorMessage()
         });

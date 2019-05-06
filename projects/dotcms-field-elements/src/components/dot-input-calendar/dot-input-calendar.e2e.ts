@@ -7,8 +7,7 @@ describe('dot-input-calendar', () => {
     let input: E2EElement;
     let spyStatusChangeEvent: EventSpy;
     let spyValueChange: EventSpy;
-    let spyUpdateClassEvt: EventSpy;
-    let spyShowErrorMessageEvt: EventSpy;
+    let spyErrorMessageEvt: EventSpy;
 
     beforeEach(async () => {
         page = await newE2EPage({
@@ -30,8 +29,7 @@ describe('dot-input-calendar', () => {
 
         spyValueChange = await page.spyOnEvent('_valueChange');
         spyStatusChangeEvent = await page.spyOnEvent('_statusChange');
-        spyUpdateClassEvt = await page.spyOnEvent('_updateClassEvt');
-        spyShowErrorMessageEvt = await page.spyOnEvent('_showErrorMessageEvt');
+        spyErrorMessageEvt = await page.spyOnEvent('_errorMessage');
         element = await page.find('dot-input-calendar');
         input = await page.find('input');
     });
@@ -41,6 +39,7 @@ describe('dot-input-calendar', () => {
         const tagsRenderExpected = `<input id=\"time01\" required=\"\" type=\"time\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\">`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
+
     describe('emit events', () => {
         it('should mark as touched when onblur', async () => {
             await input.triggerEvent('blur');
@@ -59,13 +58,13 @@ describe('dot-input-calendar', () => {
         it('should emit error tag when value is not in valid range', async () => {
             await input.press('0');
             await page.waitForChanges();
-            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+            expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
                 show: true,
                 message: 'Time out of range'
             });
         });
 
-        it('should emit status and value errorElement and class events on Reset', async () => {
+        it('should emit status and value and errorElement events on Reset', async () => {
             element.callMethod('reset');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -77,22 +76,13 @@ describe('dot-input-calendar', () => {
                 }
             });
             expect(spyValueChange).toHaveReceivedEventDetail({ name: 'time01', value: '' });
-            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+            expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
                 message: 'Time out of range',
                 show: false
             });
-            expect(spyUpdateClassEvt).toHaveReceivedEventDetail({
-                'dot-dirty': false,
-                'dot-invalid': true,
-                'dot-pristine': true,
-                'dot-required': true,
-                'dot-touched': false,
-                'dot-untouched': true,
-                'dot-valid': false
-            });
         });
 
-        it('should emit status, value, errorElement and class events on changes', async () => {
+        it('should emit status, value and errorElement events on changes', async () => {
             await input.press('2');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -107,18 +97,9 @@ describe('dot-input-calendar', () => {
                 name: 'time01',
                 value: '14:30:30'
             });
-            expect(spyShowErrorMessageEvt).toHaveReceivedEventDetail({
+            expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
                 show: false,
                 message: ''
-            });
-            expect(spyUpdateClassEvt).toHaveReceivedEventDetail({
-                'dot-dirty': true,
-                'dot-invalid': false,
-                'dot-pristine': false,
-                'dot-required': true,
-                'dot-touched': true,
-                'dot-untouched': false,
-                'dot-valid': true
             });
         });
     });

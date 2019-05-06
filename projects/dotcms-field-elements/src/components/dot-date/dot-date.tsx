@@ -15,7 +15,7 @@ import {
     DotFieldValueEvent,
     DotLabel
 } from '../../models';
-import { getTagError, getTagHint, getTagLabel } from '../../utils';
+import { getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -60,16 +60,17 @@ export class DotDateComponent {
     @Listen('_statusChange')
     emitStatusChange(event: CustomEvent) {
         event.stopImmediatePropagation();
+        const statusEvent: DotFieldStatusEvent = event.detail;
+        this.classNames = getClassNames(
+            statusEvent.status,
+            statusEvent.status.dotValid,
+            this.required
+        );
+        debugger;
         this.statusChange.emit(event.detail);
     }
 
-    @Listen('_updateClassEvt')
-    setClassNames(event: CustomEvent) {
-        event.stopImmediatePropagation();
-        this.classNames = event.detail;
-    }
-
-    @Listen('_showErrorMessageEvt')
+    @Listen('_errorMessage')
     showErrorElement(event: CustomEvent) {
         event.stopImmediatePropagation();
         this.errorMessageElement = getTagError(event.detail.show, event.detail.message);
