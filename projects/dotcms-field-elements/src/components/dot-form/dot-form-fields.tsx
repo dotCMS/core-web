@@ -104,7 +104,7 @@ export const DotFormFields = {
         />
     ),
 
-    Date: (field: DotCMSContentTypeField) => (
+    Date: (field: DotCMSDateField) => (
         <dot-date
             disabled={field.disabled}
             label={field.name}

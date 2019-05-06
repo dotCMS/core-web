@@ -63,7 +63,7 @@ describe('dot-time', () => {
         element.setProperty('value', '01:00:00');
         await input.press('2');
         await page.waitForChanges();
-        const errorMessage = await page.find('.dot-field__error-meessage');
+        const errorMessage = await page.find('.dot-field__error-message');
         expect(errorMessage.innerHTML).toBe('Time out of range');
     });
 
