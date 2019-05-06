@@ -49,12 +49,10 @@ describe('dot-key-value', () => {
             expect(hint).toBeNull();
         });
 
-        it('should have required as false', async () => {
+        it('should not render "*" on label when required is false', async () => {
             element.setProperty('required', 'false');
             await page.waitForChanges();
-            const required = await element.getProperty('required');
             const label = await element.find('.dot-field__label label');
-            expect(required).toBeFalsy();
             expect(label.innerHTML.indexOf('*')).toBe(-1);
         });
 
@@ -92,6 +90,8 @@ describe('dot-key-value', () => {
             it('should emit status and value on Reset', async () => {
                 element.callMethod('reset');
                 await page.waitForChanges();
+                const tableRows = await page.findAll('table tr');
+                expect(tableRows.length).toBeFalsy();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'testName',
                     status: {
