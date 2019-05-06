@@ -47,6 +47,18 @@
                 values: '|,labelA|1,labelB|2,labelC|3',
                 variable: 'multiSelect5'
             }, {
+                fieldType: 'Key-Value',
+                label: 'Name:',
+                saveBtnLabel: 'Save',
+                name: 'Key Value:',
+                defaultValue: { a:1, b:2, c:3 },
+                hint: 'this is a hint',
+                keyPlaceholder: 'Enter Key',
+                valuePlaceholder: 'Enter Value',
+                required: true,
+                requiredMessage: 'Required Name',
+                variable: 'keyvalue6'
+            }, {
                 fieldType: 'Textarea',
                 name: 'Address:',
                 defaultValue: 'Address',
@@ -78,7 +90,7 @@
             },
             {
                 fieldType: 'Date',
-                name: 'Enter Date:',
+                name: 'Set Date:',
                 defaultValue: '2015-10-25',
                 hint: 'date hint',
                 required: true,
@@ -88,6 +100,19 @@
                 step: '2',
                 min: '2019-01-01',
                 max: '2019-12-30'
+            },
+            {
+                fieldType: 'Time',
+                name: 'Set Time:',
+                defaultValue: '20:30:30',
+                hint: 'time hint',
+                required: true,
+                requiredMessage: 'Required Time',
+                validationMessage: 'Time out of range',
+                variable: 'time01',
+                step: '10',
+                min: '08:00:00',
+                max: '22:00:00'
             }];
 
             window.onload = function() {

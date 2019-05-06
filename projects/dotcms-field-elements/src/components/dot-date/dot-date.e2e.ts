@@ -33,16 +33,11 @@ describe('dot-date', () => {
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"><span class=\"dot-field__hint\">date hint</span>`;
-        expect(element.innerHTML).toBe(tagsRenderExpected);
+        const tagsRenderExpected = `<dot-date label=\"Date:\" name=\"date01\" value=\"2019-01-20\" hint=\"date hint\" required=\"\" required-message=\"Required Date\" validation-message=\"Invalid Date Range\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\" class=\"dot-valid dot-pristine dot-untouched dot-required hydrated\"><div class=\"dot-field__label\"><label for=\"date01\">Date:</label><span class=\"dot-field__required-mark\">*</span></div><dot-input-calendar type=\"date\" required-message=\"Required Date\" validation-message=\"Invalid Date Range\" class=\"hydrated\"><input id=\"date01\" required=\"\" type=\"date\" min=\"2019-01-01\" max=\"2019-10-30\" step=\"2\"></dot-input-calendar><span class=\"dot-field__hint\">date hint</span></dot-date>`;
+        expect(element.outerHTML).toBe(tagsRenderExpected);
     });
 
-    it('should load as pristine and untouched', () => {
-        expect(element.classList.contains('dot-pristine')).toBe(true);
-        expect(element.classList.contains('dot-untouched')).toBe(true);
-    });
-
-    it('should be valid, touched & dirty ', async () => {
+    it('should be valid, touched & dirty on value change', async () => {
         await input.press('2');
         await page.waitForChanges();
         expect(element.classList.contains('dot-valid')).toBe(true);
@@ -68,12 +63,12 @@ describe('dot-date', () => {
         element.setProperty('value', '2015-10-01');
         await input.press('2');
         await page.waitForChanges();
-        const errorMessage = await page.find('.dot-field__error-meessage');
+        const errorMessage = await page.find('.dot-field__error-message');
         expect(errorMessage.innerHTML).toBe('Invalid Date Range');
     });
 
     describe('emit events', () => {
-        it('should send status onBlur', async () => {
+        it('should mark as touched when onblur', async () => {
             await input.triggerEvent('blur');
             await page.waitForChanges();
 
@@ -87,22 +82,9 @@ describe('dot-date', () => {
             });
         });
 
-        it('should mark as touched when onblur', async () => {
-            await input.press('2');
-            await input.triggerEvent('blur');
-            await page.waitForChanges();
-
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'date01',
-                status: {
-                    dotPristine: false,
-                    dotTouched: true,
-                    dotValid: true
-                }
-            });
-        });
-
-        it('should send status value change', async () => {
+        it('should send status and value change and stop dot-input-calendar events', async () => {
+            const evt_statusChange = await page.spyOnEvent('_statusChange');
+            const evt_valueChange = await page.spyOnEvent('_valueChange');
             await input.press('2');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -113,6 +95,12 @@ describe('dot-date', () => {
                     dotValid: true
                 }
             });
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'date01',
+                value: '2019-02-20'
+            });
+            expect(evt_statusChange.events).toEqual([]);
+            expect(evt_valueChange.events).toEqual([]);
         });
 
         it('should emit status and value on Reset', async () => {
@@ -127,15 +115,6 @@ describe('dot-date', () => {
                 }
             });
             expect(spyValueChange).toHaveReceivedEventDetail({ name: 'date01', value: '' });
-        });
-
-        it('should emit change value', async () => {
-            await input.press('2');
-            await page.waitForChanges();
-            expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'date01',
-                value: '2019-02-20'
-            });
         });
     });
 });
