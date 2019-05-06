@@ -64,7 +64,7 @@ export class DotDateComponent {
     }
 
     @Listen('_updateClassEvt')
-    setclassNames(event: CustomEvent) {
+    setClassNames(event: CustomEvent) {
         event.stopImmediatePropagation();
         this.classNames = event.detail;
     }
