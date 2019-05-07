@@ -35,7 +35,8 @@ const fieldMap = {
     Select: DotFormFields.Select,
     Radio: DotFormFields.Radio,
     Date: DotFormFields.Date,
-    Time: DotFormFields.Time
+    Time: DotFormFields.Time,
+    'Date-and-Time': DotFormFields['Date-and-Time']
 };
 
 @Component({

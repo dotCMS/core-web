@@ -113,8 +113,20 @@
                 step: '10',
                 min: '08:00:00',
                 max: '22:00:00'
+            },
+            {
+                fieldType: 'Date-and-Time',
+                name: 'Set Date and Time:',
+                defaultValue: '2010-12-25 23:35:50',
+                hint: 'date & time hint',
+                required: true,
+                requiredMessage: 'Required Time',
+                validationMessage: 'Value out of range',
+                variable: 'dt01',
+                step: '2 10',
+                min: '2009-01-01',
+                max: '22:00:00'
             }];
-
             window.onload = function() {
                 const dotFormEl = document.createElement('dot-form');
                 dotFormEl.fields = fieldsConfig;

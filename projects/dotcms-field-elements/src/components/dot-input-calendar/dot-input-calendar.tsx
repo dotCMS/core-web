@@ -12,7 +12,6 @@ export class DotInputCalendarComponent {
     @Prop({ mutable: true })
     value: string;
     @Prop() name: string;
-    @Prop() label: string;
     @Prop() hint: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
