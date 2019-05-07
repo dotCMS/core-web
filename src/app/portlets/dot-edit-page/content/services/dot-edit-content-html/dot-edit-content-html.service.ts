@@ -209,6 +209,9 @@ export class DotEditContentHtmlService {
             }"][data-dot-uuid="${this.currentContainer.uuid}"]`
         );
 
+        const contentletPlaceholder = this.getContentletPlaceholder();
+        containerEl.appendChild(contentletPlaceholder);
+
         if (this.isContentExistInContainer(contentlet, containerEl)) {
             this.showContentAlreadyAddedError();
         } else {
@@ -216,7 +219,7 @@ export class DotEditContentHtmlService {
                 .getContentletToContainer(this.currentContainer, contentlet)
                 .subscribe((contentletHtml: string) => {
                     const contentletEl: HTMLElement = this.generateNewContentlet(contentletHtml);
-                    containerEl.insertAdjacentElement('beforeend', contentletEl);
+                    containerEl.replaceChild(contentletEl, contentletPlaceholder);
 
                     // Update the model with the recently added contentlet
                     this.pageModel$.next({
@@ -244,6 +247,9 @@ export class DotEditContentHtmlService {
             ].join('')
         );
 
+        const contentletPlaceholder = this.getContentletPlaceholder();
+        containerEl.appendChild(contentletPlaceholder);
+
         if (this.isFormExistInContainer(form, containerEl)) {
             this.showContentAlreadyAddedError();
             return observableOf(null);
@@ -251,8 +257,13 @@ export class DotEditContentHtmlService {
             return this.dotContainerContentletService
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
-                    map((response: { render: string; content: { [key: string]: any } }) => {
-                        containerEl.appendChild(this.renderFormContentlet(response));
+                    map(({ content }: { [key: string]: any }) => {
+                        const { identifier, inode } = content;
+
+                        containerEl.replaceChild(
+                            this.renderFormContentlet(identifier, inode),
+                            contentletPlaceholder
+                        );
                         return this.getContentModel();
                     })
                 );
@@ -333,19 +344,21 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
-    private renderFormContentlet(
-        response: { render: string; content: { [key: string]: any } }
-    ): HTMLElement {
-        const { identifier, inode } = response.content;
+    private getContentletPlaceholder(): HTMLDivElement {
+        const doc = this.getEditPageDocument();
+        const placeholder = doc.querySelector('div');
+        placeholder.setAttribute('data-dot-object', 'contentlet');
+        placeholder.appendChild(this.getLoadingIndicator());
+        return placeholder;
+    }
 
-        const contentlet = this.createEmptyContentletElement({
+    private renderFormContentlet(identifier: string, inode: string): HTMLElement {
+        return this.createEmptyContentletElement({
             identifier,
             inode,
             baseType: 'FORM',
             type: 'forms'
         });
-
-        return contentlet;
     }
 
     private bindGlobalEvents(): void {
@@ -684,7 +697,7 @@ export class DotEditContentHtmlService {
             `div[data-dot-object="contentlet"][data-dot-inode="${relocateInfo.contentlet.inode}"]`
         );
 
-        this.addLoadingIndicator(contenletEl);
+        contenletEl.insertAdjacentElement('afterbegin', this.getLoadingIndicator());
 
         const container: HTMLElement = <HTMLElement>contenletEl.parentNode;
 
@@ -701,10 +714,6 @@ export class DotEditContentHtmlService {
             });
     }
 
-    private addLoadingIndicator(contentlet: HTMLElement): void {
-        contentlet.insertAdjacentElement('afterbegin', this.getLoadingIndicator());
-    }
-
     private getLoadingIndicator(): HTMLElement {
         const div = document.createElement('div');
         div.innerHTML = `
@@ -713,6 +722,6 @@ export class DotEditContentHtmlService {
             </div>
         `;
 
-        return div;
+        return <HTMLElement>div.children[0];
     }
 }
