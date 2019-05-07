@@ -346,7 +346,7 @@ export class DotEditContentHtmlService {
 
     private getContentletPlaceholder(): HTMLDivElement {
         const doc = this.getEditPageDocument();
-        const placeholder = doc.querySelector('div');
+        const placeholder = doc.createElement('div');
         placeholder.setAttribute('data-dot-object', 'contentlet');
         placeholder.appendChild(this.getLoadingIndicator());
         return placeholder;
