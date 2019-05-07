@@ -1,4 +1,3 @@
-import { initDotCMS } from './../../../../../../../projects/dotcms/src/public_api';
 import {
     fromEvent as observableFromEvent,
     of as observableOf,
@@ -39,17 +38,6 @@ import {
 export enum DotContentletAction {
     EDIT,
     ADD
-}
-
-function getCookie(name) {
-    const value = '; ' + document.cookie;
-    const parts = value.split('; ' + name + '=');
-    if (parts.length === 2) {
-        return parts
-            .pop()
-            .split(';')
-            .shift();
-    }
 }
 
 @Injectable()
@@ -264,7 +252,7 @@ export class DotEditContentHtmlService {
                 .getFormToContainer(this.currentContainer, form)
                 .pipe(
                     map((response: { render: string; content: { [key: string]: any } }) => {
-                        containerEl.appendChild(this.renderForm(response, form));
+                        containerEl.appendChild(this.renderFormContentlet(response));
                         return this.getContentModel();
                     })
                 );
@@ -345,9 +333,8 @@ export class DotEditContentHtmlService {
         return this.getEditPageIframe().contentWindow['getDotNgModel']();
     }
 
-    private renderForm(
-        response: { render: string; content: { [key: string]: any } },
-        form: ContentType
+    private renderFormContentlet(
+        response: { render: string; content: { [key: string]: any } }
     ): HTMLElement {
         const { identifier, inode } = response.content;
 
@@ -357,18 +344,6 @@ export class DotEditContentHtmlService {
             baseType: 'FORM',
             type: 'forms'
         });
-
-        const dotcms = initDotCMS({
-            token: getCookie('access_token')
-        });
-
-        const formLib = dotcms.form.get({
-            contentType: form.variable,
-            identifier: form.id,
-            win: this.getEditPageWindow()
-        });
-
-        formLib.render(contentlet);
 
         return contentlet;
     }
@@ -599,10 +574,6 @@ export class DotEditContentHtmlService {
             this.getEditPageIframe().contentDocument ||
             this.getEditPageIframe().contentWindow.document
         );
-    }
-
-    private getEditPageWindow(): Window {
-        return this.getEditPageIframe().contentWindow;
     }
 
     private handlerContentletEvents(
