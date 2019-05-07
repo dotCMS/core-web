@@ -233,6 +233,11 @@ describe('DotEditContentComponent', () => {
         toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
         toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
+
+        spyOnProperty(dotRouterService, 'currentPortlet').and.returnValue({
+            url: 'this/is/an/url',
+            id: '123-567'
+        });
     });
 
     it('should have a toolbar', () => {
