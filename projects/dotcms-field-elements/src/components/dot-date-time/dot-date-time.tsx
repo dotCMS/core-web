@@ -21,7 +21,7 @@ import DotInputCalendar = Components.DotInputCalendar;
 import { getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
 
 const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
-const TIME_REGEX = new RegExp('^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$');
+const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
 
 interface FormattedDate {
     date: string;
@@ -62,6 +62,8 @@ export class DotDateTimeComponent {
     private _value: FormattedDate;
     private _dateStatus: DotFieldStatus;
     private _timeStatus: DotFieldStatus;
+    private _dateStep: string;
+    private _timeStep: string;
 
     /**
      * Reset properties of the filed, clear value and emit events.
@@ -74,6 +76,7 @@ export class DotDateTimeComponent {
         inputs.forEach((input: DotInputCalendar) => {
             input.reset();
         });
+        this.valueChange.emit({ name: this.name, value: '' });
     }
 
     @Listen('_valueChange')
@@ -86,7 +89,8 @@ export class DotDateTimeComponent {
         } else {
             this._value.time = valueEvent.value;
         }
-        if (this._dateStatus || this._timeStatus) {
+        if (!!this._value.time && !!this._value.date) {
+
             this.valueChange.emit({ name: this.name, value: this.getValue() });
         }
     }
@@ -117,6 +121,7 @@ export class DotDateTimeComponent {
 
     componentWillLoad() {
         this.setDatesFormat();
+        [this._dateStep, this._timeStep] = this.step.split(' ');
     }
 
     hostData() {
@@ -145,7 +150,7 @@ export class DotDateTimeComponent {
                     validation-message={this.validationMessage}
                     min={this._minDateTime.date}
                     max={this._maxDateTime.date}
-                    step={this.parseStep[0]}
+                    step={this._dateStep}
                 />
                 <dot-input-calendar
                     disabled={this.disabled}
@@ -158,7 +163,7 @@ export class DotDateTimeComponent {
                     validation-message={this.validationMessage}
                     min={this._minDateTime.time}
                     max={this._maxDateTime.time}
-                    step={this.parseStep[1]}
+                    step={this._timeStep}
                 />
                 {getTagHint(this.hint)}
                 {this.errorMessageElement}
@@ -180,10 +185,6 @@ export class DotDateTimeComponent {
         };
     }
 
-    private parseStep(): string[] {
-        return this.step.split(' ');
-    }
-
     private validateDate(date: string): string {
         return DATE_REGEX.test(date) ? date : null;
     }
@@ -201,6 +202,8 @@ export class DotDateTimeComponent {
     }
 
     private getValue(): string {
-        return `${this._value.date} ${this._value.time}`;
+        return this._value.date && this._value.time
+            ? `${this._value.date} ${this._value.time}`
+            : '';
     }
 }
