@@ -19,14 +19,7 @@ export class DotDateRangeComponent {
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
     @Prop() disabled = false;
-
-    @State() status: DotFieldStatus;
-
-    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
-
-    fp: any;
-    presets = [
+    @Prop() presets = [
         {
             label: 'Date Presets',
             time: 0
@@ -44,6 +37,13 @@ export class DotDateRangeComponent {
             time: 30
         }
     ];
+
+    @State() status: DotFieldStatus;
+
+    @Event() valueChange: EventEmitter<DotFieldValueEvent>;
+    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+
+    fp: any;
 
     /**
      * Reset properties of the filed, clear value and emit events.
