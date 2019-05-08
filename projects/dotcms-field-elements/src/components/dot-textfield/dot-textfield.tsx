@@ -28,7 +28,7 @@ export class DotTextfieldComponent {
     @Prop() requiredMessage: string;
     @Prop() disabled = false;
 
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -45,6 +45,7 @@ export class DotTextfieldComponent {
     }
 
     componentWillLoad(): void {
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
     }
 
