@@ -137,6 +137,18 @@
 
                 let container = document.querySelector('#container');
                 container.append(dotFormEl);
+
+                window.addEventListener('valueChange', (e) => {
+                    e.preventDefault();
+                    console.log('valueChange: ', e.detail);
+                })
+
+                window.addEventListener('statusChange', (e) => {
+                    e.preventDefault();
+                    console.log('statusChange: ', e.detail);
+                })
+
+
             };
         </script>
     </head>

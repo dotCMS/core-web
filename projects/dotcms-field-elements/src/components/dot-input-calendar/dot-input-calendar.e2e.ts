@@ -102,5 +102,27 @@ describe('dot-input-calendar', () => {
                 message: ''
             });
         });
+
+        it('should emit time value correctly with 0 seconds', async () => {
+            await input.press('2');
+            await page.waitForChanges();
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'time01',
+                status: {
+                    dotPristine: false,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'time01',
+                value: '14:30:30'
+            });
+            expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
+                show: false,
+                message: ''
+            });
+        });
+
     });
 });

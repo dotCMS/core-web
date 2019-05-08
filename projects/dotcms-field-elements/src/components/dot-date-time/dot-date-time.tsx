@@ -10,6 +10,7 @@ import {
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import {
+    DotFieldStatus,
     DotFieldStatusClasses,
     DotFieldStatusEvent,
     DotFieldValueEvent,
@@ -33,6 +34,7 @@ interface FormattedDate {
 })
 export class DotDateTimeComponent {
     @Element() el: HTMLElement;
+    /** format should be year-month-day hour:minute:second e.g., 2005-12-01 15:22:00 */
     @Prop({ mutable: true })
     value: string;
     @Prop() name: string;
@@ -42,8 +44,11 @@ export class DotDateTimeComponent {
     @Prop() requiredMessage: string;
     @Prop() validationMessage: string;
     @Prop() disabled = false;
+    /** format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
     @Prop() min: string;
+    /** format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
     @Prop() max: string;
+    /** two values separates by a space, first goes to date, second to time */
     @Prop() step: string;
 
     @State() classNames: DotFieldStatusClasses;
@@ -55,12 +60,16 @@ export class DotDateTimeComponent {
     private _minDateTime: FormattedDate;
     private _maxDateTime: FormattedDate;
     private _value: FormattedDate;
+    private _dateStatus: DotFieldStatus;
+    private _timeStatus: DotFieldStatus;
 
     /**
      * Reset properties of the filed, clear value and emit events.
      */
     @Method()
     reset(): void {
+        this._dateStatus = null;
+        this._timeStatus = null;
         const inputs = this.el.querySelectorAll('dot-input-calendar');
         inputs.forEach((input: DotInputCalendar) => {
             input.reset();
@@ -69,27 +78,35 @@ export class DotDateTimeComponent {
 
     @Listen('_valueChange')
     emitValueChange(event: CustomEvent) {
-        const statusEvent: DotFieldValueEvent = event.detail;
+        const valueEvent: DotFieldValueEvent = event.detail;
         event.stopImmediatePropagation();
-        if (statusEvent.name.indexOf('-date') > 0) {
-            this._value.date = statusEvent.value;
+
+        if (valueEvent.name.indexOf('-date') > 0) {
+            this._value.date = valueEvent.value;
         } else {
-            this._value.time = statusEvent.value;
+            this._value.time = valueEvent.value;
         }
-        debugger;
-        this.valueChange.emit({ name: this.name, value: this.getValue() });
+        if (this._dateStatus || this._timeStatus) {
+            this.valueChange.emit({ name: this.name, value: this.getValue() });
+        }
     }
 
     @Listen('_statusChange')
     emitStatusChange(event: CustomEvent) {
-        event.stopImmediatePropagation();
         const statusEvent: DotFieldStatusEvent = event.detail;
-        this.classNames = getClassNames(
-            statusEvent.status,
-            statusEvent.status.dotValid,
-            this.required
-        );
-        this.statusChange.emit(event.detail);
+        let status: DotFieldStatus;
+        event.stopImmediatePropagation();
+
+        if (statusEvent.name.indexOf('-date') > 0) {
+            this._dateStatus = statusEvent.status;
+        } else {
+            this._timeStatus = statusEvent.status;
+        }
+        if (this._dateStatus && this._timeStatus) {
+            status = this.statusHandler();
+            this.classNames = getClassNames(status, status.dotValid, this.required);
+            this.statusChange.emit({ name: this.name, status: status });
+        }
     }
 
     @Listen('_errorMessage')
@@ -156,21 +173,11 @@ export class DotDateTimeComponent {
     }
 
     private parseDate(data: string): FormattedDate {
-        const value: FormattedDate = {
-            date: null,
-            time: null
+        const [dateOrTime, time] = data.split(' ');
+        return {
+            date: this.validateDate(dateOrTime),
+            time: this.validateTime(time) || this.validateTime(dateOrTime)
         };
-        if (data.length) {
-            const date = data.split(' ');
-            if (date.length > 1) {
-                value.date = this.validateDate(date[0]);
-                value.time = this.validateTime(date[1]);
-            } else {
-                value.date = this.validateDate(date[0]);
-                value.time = this.validateTime(date[0]);
-            }
-        }
-        return value;
     }
 
     private parseStep(): string[] {
@@ -185,7 +192,15 @@ export class DotDateTimeComponent {
         return TIME_REGEX.test(time) ? time : null;
     }
 
+    private statusHandler(): DotFieldStatus {
+        return {
+            dotTouched: this._dateStatus.dotTouched || this._timeStatus.dotTouched,
+            dotValid: this._dateStatus.dotValid && this._timeStatus.dotValid,
+            dotPristine: this._dateStatus.dotPristine && this._timeStatus.dotPristine
+        };
+    }
+
     private getValue(): string {
-        return this._value.date + ' ' + this._value.time;
+        return `${this._value.date} ${this._value.time}`;
     }
 }
