@@ -104,23 +104,14 @@ describe('dot-input-calendar', () => {
         });
 
         it('should emit time value correctly with 0 seconds', async () => {
-            await input.press('2');
+            await input.press('Tab');
+            await input.press('Tab');
+            await input.press('0');
             await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'time01',
-                status: {
-                    dotPristine: false,
-                    dotTouched: true,
-                    dotValid: true
-                }
-            });
+
             expect(spyValueChange).toHaveReceivedEventDetail({
                 name: 'time01',
-                value: '14:30:30'
-            });
-            expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
-                show: false,
-                message: ''
+                value: '18:30:00'
             });
         });
 
