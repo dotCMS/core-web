@@ -121,7 +121,7 @@ export class DotDateTimeComponent {
 
     componentWillLoad() {
         this.setDatesFormat();
-        [this._dateStep, this._timeStep] = this.step.split(' ');
+        [this._dateStep, this._timeStep] = this.step.split(',');
     }
 
     hostData() {
