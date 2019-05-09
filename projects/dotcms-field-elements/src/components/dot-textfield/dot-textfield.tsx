@@ -3,11 +3,12 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
     getClassNames,
-    getOriginalStatus,
-    getTagHint,
-    getTagError,
-    getTagLabel,
     getErrorClass,
+    getId,
+    getOriginalStatus,
+    getTagError,
+    getTagHint,
+    getTagLabel,
     updateStatus
 } from '../../utils';
 
@@ -67,7 +68,7 @@ export class DotTextfieldComponent {
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
-                    id={this.name}
+                    id={getId(this.name)}
                     onBlur={() => this.blurHandler()}
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.placeholder}

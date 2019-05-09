@@ -94,7 +94,7 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  */
 export function getTagLabel(params: DotLabel): JSX.Element {
     return <div class='dot-field__label'>
-                <label htmlFor={params.name}>{params.label}</label>
+                <label htmlFor={getId(params.name)}>{params.label}</label>
                 { params.required ? <span class='dot-field__required-mark'>*</span> : ''}
             </div>;
 }
@@ -121,4 +121,8 @@ export function getStringFromDotKeyArray(values: DotKeyValueField[]): string {
             return `${item.key}|${item.value}`;
         })
         .join(',');
+}
+
+export function getId(name: string): string {
+    return `dot-${name}`;
 }

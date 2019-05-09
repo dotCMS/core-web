@@ -12,13 +12,14 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel, DotKeyValueField } from '../../models';
 import {
     getClassNames,
-    getOriginalStatus,
-    getTagHint,
-    getTagError,
-    getTagLabel,
     getErrorClass,
-    updateStatus,
-    getStringFromDotKeyArray
+    getId,
+    getOriginalStatus,
+    getStringFromDotKeyArray,
+    getTagError,
+    getTagHint,
+    getTagLabel,
+    updateStatus
 } from '../../utils';
 
 @Component({
@@ -93,25 +94,25 @@ export class DotKeyValueComponent {
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.isDisabled()}
-                    id={this.name}
-                    name="key"
+                    id={getId(this.name)}
+                    name='key'
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.keyPlaceholder}
-                    type="text"
+                    type='text'
                     value={this.fieldInput.key}
                 />
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.isDisabled()}
-                    name="value"
+                    name='value'
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.valuePlaceholder}
-                    type="text"
+                    type='text'
                     value={this.fieldInput.value}
                 />
                 <button
-                    class="dot-key-value__save__button"
-                    type="button"
+                    class='dot-key-value__save__button'
+                    type='button'
                     disabled={this.disabled || null}
                     onClick={() => this.addKey()}
                 >

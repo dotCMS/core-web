@@ -3,11 +3,12 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
     getClassNames,
-    getOriginalStatus,
-    getTagHint,
-    getTagError,
-    getTagLabel,
     getErrorClass,
+    getId,
+    getOriginalStatus,
+    getTagError,
+    getTagHint,
+    getTagLabel,
     updateStatus
 } from '../../utils';
 
@@ -72,7 +73,7 @@ export class DotTextareaComponent {
                 {getTagLabel(labelTagParams)}
                 <textarea
                     class={getErrorClass(this.status.dotValid)}
-                    id={this.name}
+                    id={getId(this.name)}
                     name={this.name}
                     value={this.value}
                     required={this.disabled || null}
