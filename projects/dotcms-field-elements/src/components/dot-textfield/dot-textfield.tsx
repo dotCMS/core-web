@@ -56,7 +56,11 @@ export class DotTextfieldComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        const labelTagParams: DotLabel = {
+            name: this.name,
+            label: this.label,
+            required: this.required
+        };
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
@@ -72,7 +76,7 @@ export class DotTextfieldComponent {
                     value={this.value}
                 />
                 {getTagHint(this.hint)}
-                {getTagError(this.showErrorMessage(), this.getErrorMessage())}
+                {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
@@ -82,18 +86,18 @@ export class DotTextfieldComponent {
     }
 
     private isValueRequired(): boolean {
-        return this.required && !this.value.length;
+        return this.required && !this.value;
     }
 
     private isRegexValid(): boolean {
-        if (this.regexCheck && this.value.length) {
+        if (this.regexCheck && this.value) {
             const regex = new RegExp(this.regexCheck, 'ig');
             return regex.test(this.value);
         }
         return true;
     }
 
-    private showErrorMessage(): boolean {
+    private shouldShowErrorMessage(): boolean {
         return this.getErrorMessage() && !this.status.dotPristine;
     }
 

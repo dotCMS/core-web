@@ -62,7 +62,11 @@ export class DotTextareaComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        const labelTagParams: DotLabel = {
+            name: this.name,
+            label: this.label,
+            required: this.required
+        };
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
@@ -71,10 +75,10 @@ export class DotTextareaComponent {
                     id={this.name}
                     name={this.name}
                     value={this.value}
-                    required={this.getRequiredAttr()}
+                    required={this.disabled || null}
                     onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.getDisabledAtt()}
+                    disabled={this.required || null}
                 />
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -82,24 +86,16 @@ export class DotTextareaComponent {
         );
     }
 
-    private getDisabledAtt(): boolean {
-        return this.disabled || null;
-    }
-
-    private getRequiredAttr(): boolean {
-        return this.required ? true : null;
-    }
-
     private isValid(): boolean {
         return !this.isValueRequired() && this.isRegexValid();
     }
 
     private isValueRequired(): boolean {
-        return this.required && !this.value.length;
+        return this.required && !this.value;
     }
 
     private isRegexValid(): boolean {
-        if (this.regexCheck && this.value.length) {
+        if (this.regexCheck && this.value) {
             const regex = new RegExp(this.regexCheck, 'ig');
             return regex.test(this.value);
         }
@@ -112,7 +108,9 @@ export class DotTextareaComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredMessage
+            ? this.isValid()
+                ? ''
+                : this.requiredMessage
             : this.validationMessage;
     }
 
@@ -149,5 +147,4 @@ export class DotTextareaComponent {
             value: this.value
         });
     }
-
 }
