@@ -31,10 +31,10 @@ export class DotDateRangeComponent {
     /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint: string;
 
-    /** (optional) Max value the field will allow to set */
+    /** (optional) Max value that the field will allow to set */
     @Prop() max: string;
 
-    /** (optional) Min value the field will allow to set */
+    /** (optional) Min value that the field will allow to set */
     @Prop() min: string;
 
     /** (optional) Determine if it is needed */
@@ -81,7 +81,7 @@ export class DotDateRangeComponent {
     fp: any;
 
     /**
-     * Reset properties of the filed, clear value and emit events.
+     * Reset properties of the field, clear value and emit events.
      */
     @Method()
     reset(): void {
