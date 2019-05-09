@@ -115,20 +115,21 @@
                 max: '22:00:00'
             }];
 
-            window.onload = function() {
-                const dotFormEl = document.createElement('dot-form');
-                dotFormEl.fields = fieldsConfig;
-                dotFormEl.addEventListener('onSubmit', (e) => {
-                    e.preventDefault();
-                    console.log(e)
-                });
+            // window.onload = function() {
+            //     const dotFormEl = document.createElement('dot-form');
+            //     dotFormEl.fields = fieldsConfig;
+            //     dotFormEl.addEventListener('onSubmit', (e) => {
+            //         e.preventDefault();
+            //         console.log(e)
+            //     });
 
-                let container = document.querySelector('#container');
-                container.append(dotFormEl);
-            };
+            //     let container = document.querySelector('#container');
+            //     container.append(dotFormEl);
+            // };
         </script>
     </head>
     <body>
+        <dot-tags label="Hello"></dot-tags>
         <div id="container"></div>
     </body>
 </html>

@@ -322,7 +322,8 @@ export class DotEditContentHtmlService {
                 if (containerRow.length > 1) {
                     let maxHeight = 0;
                     containerRow.forEach((container: HTMLElement) => {
-                        maxHeight = maxHeight < container.offsetHeight ? container.offsetHeight : maxHeight;
+                        maxHeight =
+                            maxHeight < container.offsetHeight ? container.offsetHeight : maxHeight;
                     });
                     containerRow.forEach((container: HTMLElement) => {
                         container.style.height = `${maxHeight}px`;
