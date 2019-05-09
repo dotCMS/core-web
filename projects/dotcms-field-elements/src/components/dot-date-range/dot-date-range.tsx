@@ -1,7 +1,15 @@
 import { Component, Prop, State, Element, Event, EventEmitter, Method } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
-import { getClassNames, getOriginalStatus, updateStatus, getTagLabel, getTagHint, getErrorClass, getTagError } from '../../utils';
+import {
+    getClassNames,
+    getOriginalStatus,
+    updateStatus,
+    getTagLabel,
+    getTagHint,
+    getErrorClass,
+    getTagError
+} from '../../utils';
 import flatpickr from 'flatpickr';
 
 @Component({
@@ -10,31 +18,58 @@ import flatpickr from 'flatpickr';
 })
 export class DotDateRangeComponent {
     @Element() el: HTMLElement;
+
+    /** Value formatted with start and end date splitted with a comma */
     @Prop({ mutable: true }) value = '';
+
+    /** Name that will be used as ID */
     @Prop() name: string;
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label: string;
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint: string;
+
+    /** (optional) Max value the field will allow to set */
     @Prop() max: string;
+
+    /** (optional) Min value the field will allow to set */
     @Prop() min: string;
+
+    /** (optional) Determine if it is needed */
     @Prop() required: boolean;
+
+    /** (optional) Text that be shown when required is set and condition not met */
     @Prop() requiredMessage: string;
+
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** (optional) Date format used by the field on every operation */
+    @Prop() dateFormat = 'Y-m-d';
+
+    /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
     @Prop() presets = [
         {
             label: 'Date Presets',
-            time: 0
-        }, {
+            days: 0
+        },
+        {
             label: 'Last Week',
-            time: -7
-        }, {
+            days: -7
+        },
+        {
             label: 'Next Week',
-            time: 7
-        }, {
+            days: 7
+        },
+        {
             label: 'Last Month',
-            time: -30
-        }, {
+            days: -30
+        },
+        {
             label: 'Next Month',
-            time: 30
+            days: 30
         }
     ];
 
@@ -64,11 +99,11 @@ export class DotDateRangeComponent {
     componentDidLoad(): void {
         this.fp = flatpickr(`#${this.name}`, {
             mode: 'range',
-            dateFormat: 'Y-m-d',
+            dateFormat: this.dateFormat,
             defaultDate: this.value ? this.value.split(',') : '',
             maxDate: this.max,
             minDate: this.min,
-            onChange: this.setValue.bind(this),
+            onChange: this.setValue.bind(this)
         });
     }
 
@@ -79,31 +114,35 @@ export class DotDateRangeComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        const labelTagParams: DotLabel = {
+            name: this.name,
+            label: this.label,
+            required: this.required
+        };
         return (
             <Fragment>
-                <link
-                    rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-                />
                 {getTagLabel(labelTagParams)}
                 <input
                     class={getErrorClass(this.status.dotValid)}
-                    disabled={this.disabled || null}
+                    disabled={this.isDisabled()}
                     id={this.name}
                     required={this.required || null}
-                    type='text'
+                    type="text"
                     value={this.value}
                 />
-                <select onChange={this.setPreset.bind(this)}>
+                <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
                     {this.presets.map((item) => {
-                        return (<option value={item.time}>{item.label}</option>);
+                        return <option value={item.days}>{item.label}</option>;
                     })}
                 </select>
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private isDisabled(): boolean {
+        return this.disabled || null;
     }
 
     private setPreset(event) {
@@ -126,13 +165,16 @@ export class DotDateRangeComponent {
         return !(this.required && !(this.value && this.value.length));
     }
 
-    private setValue(selectedDates, _dateStr, _instance): void {
-        this.value =
-            selectedDates && selectedDates.length === 2
-                ? `${selectedDates[0].toISOString().split('T')[0]},${
-                      selectedDates[1].toISOString().split('T')[0]
-                  }`
-                : '';
+    private isDateRangeValid(selectedDates: Date[]): boolean {
+        return selectedDates && selectedDates.length === 2;
+    }
+
+    private setValue(selectedDates: Date[], _dateStr: string, _instance): void {
+        this.value = this.isDateRangeValid(selectedDates)
+            ? `${selectedDates[0].toISOString().split('T')[0]},${
+                  selectedDates[1].toISOString().split('T')[0]
+              }`
+            : '';
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
@@ -147,9 +189,7 @@ export class DotDateRangeComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isValid()
-                ? ''
-                : this.requiredMessage;
+        return this.isValid() ? '' : this.requiredMessage;
     }
 
     private emitStatusChange(): void {
