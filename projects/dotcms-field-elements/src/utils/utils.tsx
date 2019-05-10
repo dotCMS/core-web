@@ -1,4 +1,10 @@
-import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotLabel, DotKeyValueField } from '../models';
+import {
+    DotOption,
+    DotFieldStatus,
+    DotFieldStatusClasses,
+    DotLabel,
+    DotKeyValueField
+} from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -9,8 +15,8 @@ import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotLabel, DotKeyValue
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
     const items = rawString
         .split(',')
-        .filter((item) => item.length > 0)
-        .map((item) => {
+        .filter(item => item.length > 0)
+        .map(item => {
             const [label, value] = item.split('|');
             return { label, value };
         });
@@ -38,7 +44,10 @@ export function getOriginalStatus(isValid?: boolean): DotFieldStatus {
  * @param { [key: string]: boolean } change
  * @returns DotFieldStatus
  */
-export function updateStatus(state: DotFieldStatus, change: { [key: string]: boolean }): DotFieldStatus {
+export function updateStatus(
+    state: DotFieldStatus,
+    change: { [key: string]: boolean }
+): DotFieldStatus {
     return {
         ...state,
         ...change
@@ -52,7 +61,11 @@ export function updateStatus(state: DotFieldStatus, change: { [key: string]: boo
  * @param boolean isValid
  * @returns DotFieldClass
  */
-export function getClassNames(status: DotFieldStatus, isValid: boolean, required?: boolean): DotFieldStatusClasses {
+export function getClassNames(
+    status: DotFieldStatus,
+    isValid: boolean,
+    required?: boolean
+): DotFieldStatusClasses {
     return {
         'dot-valid': isValid,
         'dot-invalid': !isValid,
@@ -88,15 +101,16 @@ export function getTagError(show: boolean, message: string): JSX.Element {
 /**
  * Returns Label tag
  *
- * @param string name
- * @param string label
+ * @param DotLabel params
  * @returns JSX.Element
  */
 export function getTagLabel(params: DotLabel): JSX.Element {
-    return <div class="dot-field__label">
-                <label htmlFor={getId(params.name)}>{params.label}</label>
-                { params.required ? <span class="dot-field__required-mark">*</span> : ''}
-            </div>;
+    return (
+        <div class="dot-field__label">
+            <label htmlFor={getId(params.name)}>{params.label}</label>
+            {params.required ? <span class="dot-field__required-mark">*</span> : ''}
+        </div>
+    );
 }
 
 /**
@@ -123,6 +137,29 @@ export function getStringFromDotKeyArray(values: DotKeyValueField[]): string {
         .join(',');
 }
 
+/**
+ * Returns prepend the 'dot-' string to names.
+ *
+ * @param string name
+ * @returns string
+ */
 export function getId(name: string): string {
     return `dot-${name}`;
+}
+
+/**
+ * Returns the regular expresion if valid otherwise null.
+ *
+ * @param string regex
+ * @param string fieldName
+ * @returns string
+ */
+export function isValidRegex(regex: string, fieldName: string): string {
+    try {
+        RegExp(regex);
+        return regex;
+    } catch (e) {
+        console.error(`Invalid Regular Expression for field: ${fieldName}`);
+        return null;
+    }
 }

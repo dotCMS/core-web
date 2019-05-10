@@ -8,7 +8,7 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
-    getTagLabel,
+    getTagLabel, isValidRegex,
     updateStatus
 } from '../../utils';
 
@@ -23,7 +23,7 @@ export class DotTextfieldComponent {
     @Prop() label: string;
     @Prop() name: string;
     @Prop() placeholder: string;
-    @Prop() regexCheck: string;
+    @Prop({ mutable: true }) regexCheck: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
     @Prop() type = 'text';
@@ -49,6 +49,7 @@ export class DotTextfieldComponent {
     componentWillLoad(): void {
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
+        this.regexCheck =  isValidRegex(this.regexCheck, this.name);
     }
 
     hostData() {
@@ -84,18 +85,16 @@ export class DotTextfieldComponent {
     }
 
     private isValid(): boolean {
-        return !this.isValueRequired() && this.isRegexValid();
+        return !this.isValueRequired() && this.isValueValid();
     }
 
     private isValueRequired(): boolean {
         return this.required && !this.value;
     }
 
-    private isRegexValid(): boolean {
-        console.log(this.name, this.regexCheck);
+    private isValueValid(): boolean {
         if (this.regexCheck && this.value) {
             const regex = new RegExp(this.regexCheck);
-            console.log(regex);
             return regex.test(this.value);
         }
         return true;
@@ -106,7 +105,7 @@ export class DotTextfieldComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isRegexValid()
+        return this.isValueValid()
             ? this.isValid()
                 ? ''
                 : this.requiredMessage
