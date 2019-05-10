@@ -1,7 +1,7 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 
-fdescribe('dot-select', () => {
+describe('dot-select', () => {
 
     let page: E2EPage;
     let element: E2EElement;

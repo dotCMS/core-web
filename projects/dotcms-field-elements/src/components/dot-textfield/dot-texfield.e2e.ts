@@ -36,6 +36,12 @@ describe('dot-textfield', () => {
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
+    it('should set type', async () => {
+        element.setProperty('type', 'email');
+        await page.waitForChanges();
+        expect(await input.getProperty('type')).toBe('email');
+    });
+
     it('should show Regex validation message', async () => {
         await input.press('@');
         await page.waitForChanges();

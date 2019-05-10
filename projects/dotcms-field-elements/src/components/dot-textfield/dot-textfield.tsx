@@ -18,16 +18,17 @@ import {
 })
 export class DotTextfieldComponent {
     @Element() el: HTMLElement;
-    @Prop({ mutable: true }) value: string;
-    @Prop() name: string;
-    @Prop() regexCheck: string;
-    @Prop() validationMessage: string;
-    @Prop() label: string;
+    @Prop() disabled = false;
     @Prop() hint: string;
+    @Prop() label: string;
+    @Prop() name: string;
     @Prop() placeholder: string;
+    @Prop() regexCheck: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
-    @Prop() disabled = false;
+    @Prop() type = 'text';
+    @Prop() validationMessage: string;
+    @Prop({ mutable: true }) value: string;
 
     @State() status: DotFieldStatus;
 
@@ -73,7 +74,7 @@ export class DotTextfieldComponent {
                     onInput={(event: Event) => this.setValue(event)}
                     placeholder={this.placeholder}
                     required={this.required || null}
-                    type='text'
+                    type={this.type}
                     value={this.value}
                 />
                 {getTagHint(this.hint)}

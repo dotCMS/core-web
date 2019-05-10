@@ -106,11 +106,11 @@ export class DotFormComponent {
         return (
             <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
                 {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
-                <div class='form__buttons'>
-                    <button type='button' onClick={() => this.resetForm()}>
+                <div class="form__buttons">
+                    <button type="button" onClick={() => this.resetForm()}>
                         {this.resetLabel}
                     </button>
-                    <button type='submit' disabled={!this.status.dotValid || null}>
+                    <button type="submit" disabled={!this.status.dotValid || null}>
                         {this.submitLabel}
                     </button>
                 </div>
