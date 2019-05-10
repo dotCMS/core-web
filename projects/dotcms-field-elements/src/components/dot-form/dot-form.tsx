@@ -27,15 +27,15 @@ const fieldParamsConversionFromBE = {
 };
 
 const fieldMap = {
-    Text: DotFormFields.Text,
-    Textarea: DotFormFields.Textarea,
-    Checkbox: DotFormFields.Checkbox,
+    'Text': DotFormFields.Text,
+    'Textarea': DotFormFields.Textarea,
+    'Checkbox': DotFormFields.Checkbox,
     'Key-Value': fieldParamsConversionFromBE['Key-Value'],
     'Multi-Select': DotFormFields['Multi-Select'],
-    Select: DotFormFields.Select,
-    Radio: DotFormFields.Radio,
-    Date: DotFormFields.Date,
-    Time: DotFormFields.Time,
+    'Select': DotFormFields.Select,
+    'Radio': DotFormFields.Radio,
+    'Date': DotFormFields.Date,
+    'Time': DotFormFields.Time,
     'Date-and-Time': DotFormFields['Date-and-Time'],
     'Date-Range': DotFormFields['Date-Range']
 };
