@@ -3,12 +3,11 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
     getClassNames,
-    getErrorClass,
-    getId,
     getOriginalStatus,
-    getTagError,
     getTagHint,
+    getTagError,
     getTagLabel,
+    getErrorClass,
     updateStatus
 } from '../../utils';
 
@@ -63,23 +62,19 @@ export class DotTextareaComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {
-            name: this.name,
-            label: this.label,
-            required: this.required
-        };
+        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
                 <textarea
                     class={getErrorClass(this.status.dotValid)}
-                    id={getId(this.name)}
+                    id={this.name}
                     name={this.name}
                     value={this.value}
-                    required={this.disabled || null}
+                    required={this.getRequiredAttr()}
                     onInput={(event: Event) => this.setValue(event)}
                     onBlur={() => this.blurHandler()}
-                    disabled={this.required || null}
+                    disabled={this.getDisabledAtt()}
                 />
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -87,16 +82,24 @@ export class DotTextareaComponent {
         );
     }
 
+    private getDisabledAtt(): boolean {
+        return this.disabled || null;
+    }
+
+    private getRequiredAttr(): boolean {
+        return this.required ? true : null;
+    }
+
     private isValid(): boolean {
         return !this.isValueRequired() && this.isRegexValid();
     }
 
     private isValueRequired(): boolean {
-        return this.required && !this.value;
+        return this.required && !this.value.length;
     }
 
     private isRegexValid(): boolean {
-        if (this.regexCheck && this.value) {
+        if (this.regexCheck && this.value.length) {
             const regex = new RegExp(this.regexCheck, 'ig');
             return regex.test(this.value);
         }
@@ -109,9 +112,7 @@ export class DotTextareaComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid()
-                ? ''
-                : this.requiredMessage
+            ? this.isValid() ? '' : this.requiredMessage
             : this.validationMessage;
     }
 
@@ -148,4 +149,5 @@ export class DotTextareaComponent {
             value: this.value
         });
     }
+
 }
