@@ -8,8 +8,7 @@ import {
     getTagLabel,
     getTagHint,
     getErrorClass,
-    getTagError,
-    getId
+    getTagError
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -126,7 +125,7 @@ export class DotDateRangeComponent {
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.isDisabled()}
-                    id={getId(this.name)}
+                    id={this.name}
                     required={this.required || null}
                     type="text"
                     value={this.value}
