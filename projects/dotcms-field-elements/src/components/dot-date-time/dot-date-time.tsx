@@ -34,21 +34,39 @@ interface FormattedDate {
 })
 export class DotDateTimeComponent {
     @Element() el: HTMLElement;
-    /** format should be year-month-day hour:minute:second e.g., 2005-12-01 15:22:00 */
+
+    /** Value should be year-month-day hour:minute:second e.g., 2005-12-01 15:22:00 */
     @Prop({ mutable: true })
-    value: string;
+    value = '';
+
+    /** Name that will be used as ID */
     @Prop() name: string;
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label: string;
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint: string;
+
+    /** (optional) Determine if it is needed */
     @Prop() required: boolean;
+
+    /** (optional) Text that be shown when required is set and condition not met */
     @Prop() requiredMessage: string;
+
+    /** (optional) Text that be shown when min or max are set and condition not met */
     @Prop() validationMessage: string;
+
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
-    /** format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
+
+    /** (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
     @Prop() min: string;
-    /** format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
+
+    /** (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
     @Prop() max: string;
-    /** two values separates by a space, first goes to date, second to time */
+
+    /** (optional) Step that are indicated for the date and time input's separates by a comma (2,10) */
     @Prop() step: string;
 
     @State() classNames: DotFieldStatusClasses;
@@ -90,7 +108,6 @@ export class DotDateTimeComponent {
             this._value.time = valueEvent.value;
         }
         if (!!this._value.time && !!this._value.date) {
-
             this.valueChange.emit({ name: this.name, value: this.getValue() });
         }
     }
