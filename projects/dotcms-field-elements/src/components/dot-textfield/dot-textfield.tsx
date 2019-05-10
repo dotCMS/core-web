@@ -47,9 +47,9 @@ export class DotTextfieldComponent {
     }
 
     componentWillLoad(): void {
+        this.regexCheck =  isValidRegex(this.regexCheck, this.name);
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
-        this.regexCheck =  isValidRegex(this.regexCheck, this.name);
     }
 
     hostData() {

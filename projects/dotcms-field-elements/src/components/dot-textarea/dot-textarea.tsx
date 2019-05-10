@@ -9,7 +9,7 @@ import {
     getTagLabel,
     getErrorClass,
     updateStatus,
-    getId
+    getId, isValidRegex
 } from '../../utils';
 
 /**
@@ -53,6 +53,7 @@ export class DotTextareaComponent {
     }
 
     componentWillLoad(): void {
+        this.regexCheck =  isValidRegex(this.regexCheck, this.name);
         this.emitStatusChange();
     }
 
