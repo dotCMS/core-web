@@ -238,7 +238,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         this.reload();
                     });
             }
-            this.reload();
         });
 
         this.editForm = false;
