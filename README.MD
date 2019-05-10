@@ -176,4 +176,4 @@ index c3cba78b..a2476cbc 100644
 2. Go to `/projects/dotcms-field-elements/`
 3. Run `npm run build`
 
-Commit and push the files in DotCMS core repo. *DONT commit the changes in stencil.config.ts*.
+Commit and push the files in DotCMS core repo. **DONT commit the changes in stencil.config.ts**.
