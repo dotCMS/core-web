@@ -28,7 +28,7 @@ export class DotTextareaComponent {
     @Prop() hint: string;
     @Prop() label: string;
     @Prop() name: string;
-    @Prop() regexCheck: string;
+    @Prop({ mutable: true }) regexCheck: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
     @Prop() validationMessage: string;
