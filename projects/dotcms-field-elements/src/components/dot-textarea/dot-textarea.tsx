@@ -96,11 +96,11 @@ export class DotTextareaComponent {
     }
 
     private isValueRequired(): boolean {
-        return this.required && !this.value.length;
+        return this.required && !this.value;
     }
 
     private isRegexValid(): boolean {
-        if (this.regexCheck && this.value.length) {
+        if (this.regexCheck && this.value) {
             const regex = new RegExp(this.regexCheck, 'ig');
             return regex.test(this.value);
         }

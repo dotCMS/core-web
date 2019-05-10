@@ -92,8 +92,10 @@ export class DotTextfieldComponent {
     }
 
     private isRegexValid(): boolean {
+        console.log(this.name, this.regexCheck);
         if (this.regexCheck && this.value) {
-            const regex = new RegExp(this.regexCheck, 'ig');
+            const regex = new RegExp(this.regexCheck);
+            console.log(regex);
             return regex.test(this.value);
         }
         return true;
@@ -125,7 +127,7 @@ export class DotTextfieldComponent {
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
-            dotValid: this.isValid()
+            // dotValid: this.isValid()
         });
         this.emitValueChange();
         this.emitStatusChange();

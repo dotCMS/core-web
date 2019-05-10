@@ -162,7 +162,7 @@ export class DotDateRangeComponent {
     }
 
     private isValid(): boolean {
-        return !(this.required && !(this.value && this.value.length));
+        return !(this.required && !(this.value));
     }
 
     private isDateRangeValid(selectedDates: Date[]): boolean {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html dir='ltr' lang='en'>
+<html dir="ltr" lang="en">
     <head>
-        <meta charset='utf-8' />
+        <meta charset="utf-8" />
         <meta
-            name='viewport'
-            content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0'
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
         />
         <title>Dot-Fields</title>
         <style>
@@ -13,145 +13,433 @@
                 margin-bottom: 16px;
             }
         </style>
-        <script src='/build/dotcmsfields.js'></script>
-        <script>
-            const fieldsConfig = [
-            {
-                fieldType: 'Date-Range',
-                name: 'Enter Date:',
-                defaultValue: '2019-11-25,2019-11-27',
-                hint: 'date hint',
-                required: true,
-                requiredMessage: 'Required Date range',
-                variable: 'daterange01',
-                min: '2019-01-01',
-                max: '2019-12-30'
-           }, {
-                fieldType: 'Text',
-                name: 'Name:',
-                defaultValue: 'John',
-                hint: 'this is a hint',
-                placeholder: 'Enter Name',
-                regexCheck: '^[A-Za-z ]+$',
-                validationMessage: 'Invalid Name',
-                required: true,
-                requiredMessage: 'Required Name',
-                variable: 'text1'
-            }, {
-                defaultValue: '2',
-                fieldType: 'Select',
-                hint: 'dropdown hint',
-                name: 'dropdown',
-                required: true,
-                requiredMessage: 'this field is required',
-                values: '|,labelA|1,labelB|2,labelC|3',
-                variable: 'dropdown2'
-            }, {
-                defaultValue: '2',
-                fieldType: 'Multi-Select',
-                hint: 'multi select hint',
-                name: 'multi select',
-                required: true,
-                requiredMessage: 'this field is required',
-                size: 0,
-                values: '|,labelA|1,labelB|2,labelC|3',
-                variable: 'multiSelect5'
-            }, {
-                fieldType: 'Key-Value',
-                label: 'Name:',
-                saveBtnLabel: 'Save',
-                name: 'Key Value:',
-                defaultValue: { a:1, b:2, c:3 },
-                hint: 'this is a hint',
-                keyPlaceholder: 'Enter Key',
-                valuePlaceholder: 'Enter Value',
-                required: true,
-                requiredMessage: 'Required Name',
-                variable: 'keyvalue6'
-            }, {
-                fieldType: 'Textarea',
-                name: 'Address:',
-                defaultValue: 'Address',
-                hint: 'this is a hint',
-                placeholder: 'Enter Name',
-                regexCheck: '^[A-Za-z ]+$',
-                validationMessage: 'Invalid Address',
-                required: true,
-                requiredMessage: 'Required Address',
-                variable: 'textarea3'
-            }, {
-                fieldType: 'Checkbox',
-                defaultValue: '2,1',
-                hint: 'Checkbox hint',
-                name: 'checkbox',
-                required: true,
-                requiredMessage: 'this field is required',
-                values: 'labelA|1 ,labelB|2,labelC|3',
-                variable: 'checkbox4'
-            }, {
-                fieldType: 'Radio',
-                defaultValue: '2',
-                hint: 'Radio hint',
-                name: 'radio',
-                required: true,
-                requiredMessage: 'this radio field is required',
-                values: 'Radio A |1, Radio B|2, Radio C |3',
-                variable: 'radio5'
-            },
-            {
-                fieldType: 'Date',
-                name: 'Set Date:',
-                defaultValue: '2015-10-25',
-                hint: 'date hint',
-                required: true,
-                requiredMessage: 'Required Date',
-                validationMessage: 'Date out of range',
-                variable: 'date01',
-                step: '2',
-                min: '2019-01-01',
-                max: '2019-12-30'
-            },
-            {
-                fieldType: 'Time',
-                name: 'Set Time:',
-                defaultValue: '20:30:30',
-                hint: 'time hint',
-                required: true,
-                requiredMessage: 'Required Time',
-                validationMessage: 'Time out of range',
-                variable: 'time01',
-                step: '10',
-                min: '08:00:00',
-                max: '22:00:00'
-            },
-            {
-                fieldType: 'Date-and-Time',
-                name: 'Set Date and Time:',
-                defaultValue: '2019-01-20 11:10:00',
-                hint: 'date & time hint',
-                required: true,
-                requiredMessage: 'Required Time',
-                validationMessage: 'Value out of range',
-                variable: 'dt01',
-                step: '2,10',
-                min: '2000-01-01 1:00:00',
-                max: '2020-10-30 23:59:59'
-            }];
-
-            window.onload = function() {
-                const dotFormEl = document.createElement('dot-form');
-                dotFormEl.fields = fieldsConfig;
-                dotFormEl.addEventListener('onSubmit', (e) => {
-                    e.preventDefault();
-                    console.log(e)
-                });
-
-                let container = document.querySelector('#container');
-                container.append(dotFormEl);
-            };
-        </script>
     </head>
     <body>
-        <div id="container"></div>
+        <dot-form></dot-form>
+        <script src="/build/dotcmsfields.js"></script>
+        <script type="text/javascript">
+            function submitContent(event) {
+                event.preventDefault();
+                console.log('submitContent', {
+                    stName: 'Contact Us',
+                    ...event.detail
+                });
+
+                fetch('/api/content/save/1', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        stName: 'Contact Us',
+                        ...event.detail
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                    });
+            }
+
+            const fieldsConfig = [
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'SYSTEM',
+                    values: 'Contact Us',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: true,
+                    searchable: true,
+                    required: false,
+                    fieldTypeLabel: 'Constant Field',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 1,
+                    name: 'Form Title',
+                    variable: 'formTitle',
+                    fieldVariables: [],
+                    fixed: true,
+                    id: '019e7bfe-704a-4ad4-a0e9-2d4fe6252840',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableConstantField',
+                    fieldType: 'Constant-Field',
+                    iDate: 1310142227000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'SYSTEM',
+                    values: 'noreply@dotcms.com',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: true,
+                    searchable: true,
+                    required: false,
+                    fieldTypeLabel: 'Constant Field',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 2,
+                    name: 'Form Email',
+                    variable: 'formEmail',
+                    fieldVariables: [],
+                    fixed: true,
+                    id: '495df20b-2652-4023-8acd-e96a1ceca344',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableConstantField',
+                    fieldType: 'Constant-Field',
+                    iDate: 1310142227000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'SYSTEM',
+                    values: '/contact-us/thank-you',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: true,
+                    searchable: true,
+                    required: false,
+                    fieldTypeLabel: 'Constant Field',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 3,
+                    name: 'Form Return Page',
+                    variable: 'formReturnPage',
+                    fieldVariables: [],
+                    fixed: true,
+                    id: 'b920c6df-5d8d-4f8f-8aae-c908e9dc0682',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableConstantField',
+                    fieldType: 'Constant-Field',
+                    iDate: 1310142227000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'TEXT',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: true,
+                    searchable: true,
+                    required: false,
+                    fieldTypeLabel: 'Site or Folder',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 4,
+                    name: 'Form Host',
+                    variable: 'formHost',
+                    fieldVariables: [],
+                    fixed: true,
+                    id: '0be0f496-3931-4929-8f6a-ae95df3f3758',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableHostFolderField',
+                    fieldType: 'Host-Folder',
+                    iDate: 1310142227000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'SYSTEM',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Line Divider',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 5,
+                    name: 'Contact Information',
+                    variable: 'contactInformation',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'b35c04d9-0364-4a81-8c3a-a94a75c2c51a',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableLineDividerField',
+                    fieldType: 'Line_divider',
+                    iDate: 1311100123000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: true,
+                    required: true,
+                    fieldTypeLabel: 'Text',
+                    listed: true,
+                    unique: false,
+                    sortOrder: 6,
+                    name: 'First Name',
+                    variable: 'firstName',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '4444d981-b40c-4402-9fd5-158a398a7821',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024414000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 7,
+                    name: 'Middle Name',
+                    variable: 'middleName',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'fed2241c-952a-41b1-bc6a-c627e1f3c9ca',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1352920655000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: true,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: true,
+                    required: true,
+                    fieldTypeLabel: 'Text',
+                    listed: true,
+                    unique: false,
+                    sortOrder: 8,
+                    name: 'Last Name',
+                    variable: 'lastName',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'a15a32e4-1410-4741-975c-fda8cb01cf02',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024430000
+                },
+                {
+                    modDate: 1557516047000,
+                    indexed: true,
+                    dataType: 'TEXT',
+                    regexCheck:
+                        '^([a-zA-Z0-9]+[a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,4})$',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: true,
+                    required: true,
+                    fieldTypeLabel: 'Text',
+                    listed: true,
+                    unique: false,
+                    sortOrder: 9,
+                    name: 'Email',
+                    variable: 'email',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'ba0a1f2b-89ab-4c17-9322-dca8e0d1b669',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024593000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 10,
+                    hint: '555-555-5555',
+                    name: 'Phone',
+                    variable: 'phone',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '50cbadf9-b99e-4513-b86c-0c054812688f',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024571000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'SYSTEM',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Line Divider',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 11,
+                    name: 'Mailing Address',
+                    variable: 'mailingAddress',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'ca84ec39-e497-4b20-9978-dd449a6a9f5a',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableLineDividerField',
+                    fieldType: 'Line_divider',
+                    iDate: 1311024636000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 12,
+                    name: 'Address',
+                    variable: 'address1',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'c01de0bc-9c43-45b2-b94c-d930e3fdaf3c',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024516000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 13,
+                    name: 'Address 2',
+                    variable: 'address2',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '4ec0da65-3966-417c-997a-3bd3e3508676',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024493000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 14,
+                    name: 'City',
+                    variable: 'city',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '815c2ba4-a399-4372-a006-ef0e92f58165',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024552000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 15,
+                    name: 'State',
+                    variable: 'state',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '777eee43-58ad-45ea-aeb2-6a5b1ae1c801',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024668000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '(^\\d{5}$)|(^\\d{5}-\\d{4}$)',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 16,
+                    name: 'Zip',
+                    variable: 'zip',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: 'bcb8d719-f2dd-449e-89ec-d86b61df8e3d',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024695000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Text',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 17,
+                    name: 'Country',
+                    variable: 'country',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '68989b2c-7bb4-4a53-8292-21544bfe1592',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextField',
+                    fieldType: 'Text',
+                    iDate: 1311024723000
+                },
+                {
+                    modDate: 1557515447000,
+                    indexed: false,
+                    dataType: 'LONG_TEXT',
+                    regexCheck: '[^(<[.\\n]+>)]*',
+                    contentTypeId: 'cb1f21c7-7d98-4ea3-903f-c5de10e41700',
+                    readOnly: false,
+                    searchable: false,
+                    required: false,
+                    fieldTypeLabel: 'Textarea',
+                    listed: false,
+                    unique: false,
+                    sortOrder: 18,
+                    name: 'Comments',
+                    variable: 'comments',
+                    fieldVariables: [],
+                    fixed: false,
+                    id: '88c9266b-9f09-4bdc-a5ba-50cad347a33c',
+                    clazz: 'com.dotcms.contenttype.model.field.ImmutableTextAreaField',
+                    fieldType: 'Textarea',
+                    iDate: 1311024762000
+                }
+            ];
+            const dotFormEl = document.querySelector('dot-form');
+            dotFormEl.fields = fieldsConfig;
+            dotFormEl.addEventListener('onSubmit', submitContent);
+        </script>
     </body>
 </html>
