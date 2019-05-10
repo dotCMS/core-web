@@ -42,7 +42,7 @@ describe('dot-date-time', () => {
     it('should be valid, touched & dirty on date change', async () => {
         await dateInput.press('2');
         await page.waitForChanges();
-        expect(element.className).toBe('dot-valid dot-required hydrated dot-dirty dot-touched');
+        expect(element).toHaveClasses(['dot-valid', 'dot-dirty', 'dot-touched']);
     });
 
     it('it should not render hint', async () => {
