@@ -21,7 +21,7 @@ describe('AppComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [AppComponent],
             imports: [RouterTestingModule],
-            providers: [NotLicensedService]
+            providers: []
         });
 
         fixture = DOTTestBed.createComponent(AppComponent);
