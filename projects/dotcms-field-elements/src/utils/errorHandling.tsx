@@ -28,7 +28,8 @@ export interface PropValidationInfo {
 
 function getError(propInfo: PropValidationInfo, expectedType: string): Error {
     throw new Error(
-        `Warning: Invalid prop "${propInfo.name}" of type "${typeof propInfo.value}" supplied to "${propInfo.fieldType}" with the name "${propInfo.fieldName}", expected "${expectedType}"`
+        `Warning: Invalid prop "${propInfo.name}" of type "${typeof propInfo.value}" supplied to "${propInfo.fieldType}" with the name "${propInfo.fieldName}", expected "${expectedType}".
+        Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${propInfo.fieldType}/readme.md`
     );
 }
 

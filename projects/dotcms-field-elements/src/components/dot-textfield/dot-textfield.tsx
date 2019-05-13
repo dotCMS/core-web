@@ -60,7 +60,7 @@ export class DotTextfieldComponent {
     disabledWatch(_newValue, oldValue): void {
         this.disabled = dotPropValidator(
             {
-                fieldType: 'dot-textField',
+                fieldType: 'dot-textfield',
                 fieldName: this.name,
                 name: 'disabled',
                 value: this.disabled
@@ -73,7 +73,7 @@ export class DotTextfieldComponent {
     labelWatch(_newValue, oldValue): void {
         this.label = dotPropValidator(
             {
-                fieldType: 'dot-textField',
+                fieldType: 'dot-textfield',
                 fieldName: this.name,
                 name: 'label',
                 value: this.label
