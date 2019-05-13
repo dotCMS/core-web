@@ -6,7 +6,7 @@ import {
     getTagHint,
     getTagError,
     getTagLabel,
-    getErrorClass
+    getErrorClass, isValidRegex
 } from './utils';
 
 describe('getDotOptionsFromFieldValue', () => {
@@ -101,5 +101,17 @@ describe('getErrorClass', () => {
     it('should Not returns Error CSS', () => {
         const cssClass = getErrorClass(true);
         expect(cssClass).toEqual('');
+    });
+});
+
+
+describe('isValidRegex', () => {
+    it('should return null when Regular Expression is invalid', () => {
+        const invalidRegularExp = isValidRegex('[^(<[.\\n]+>)]*', 'field');
+        expect(invalidRegularExp).toBeNull();
+    });
+    it('should return the Regular Expression when is valid', () => {
+        const validRegularExp = isValidRegex('[A-Z]', 'field');
+        expect(validRegularExp).toEqual('[A-Z]');
     });
 });
