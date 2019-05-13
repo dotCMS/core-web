@@ -6,7 +6,8 @@ import {
     getTagHint,
     getTagError,
     getTagLabel,
-    getErrorClass, isValidRegex
+    getErrorClass,
+    isValidRegex
 } from './utils';
 
 describe('getDotOptionsFromFieldValue', () => {
@@ -88,7 +89,7 @@ describe('getTagLabel', () => {
         expect(jsxTag.vattrs).toEqual({ class: 'dot-field__label' });
         expect(jsxTag.vchildren[0].vattrs).toEqual({ htmlFor: 'dot-Label' });
         expect(jsxTag.vchildren[0].vchildren).toEqual([{ vtext: 'Msg' }]);
-        expect(jsxTag.vchildren[1].vattrs).toEqual({'class': 'dot-field__required-mark'});
+        expect(jsxTag.vchildren[1].vattrs).toEqual({ class: 'dot-field__required-mark' });
         expect(jsxTag.vchildren[1].vchildren).toEqual([{ vtext: '*' }]);
     });
 });
@@ -103,7 +104,6 @@ describe('getErrorClass', () => {
         expect(cssClass).toEqual('');
     });
 });
-
 
 describe('isValidRegex', () => {
     it('should return null when Regular Expression is invalid', () => {

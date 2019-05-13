@@ -126,7 +126,7 @@ export class DotTextfieldComponent {
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
-            // dotValid: this.isValid()
+            dotValid: this.isValid()
         });
         this.emitValueChange();
         this.emitStatusChange();
