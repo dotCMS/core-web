@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Event, EventEmitter, Method } from '@stencil/core';
+import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
@@ -11,6 +11,7 @@ import {
     getTagLabel,
     updateStatus
 } from '../../utils';
+import { dotPropValidator } from '../../utils/errorHandling';
 
 @Component({
     tag: 'dot-textfield',
@@ -18,17 +19,20 @@ import {
 })
 export class DotTextfieldComponent {
     @Element() el: HTMLElement;
-    @Prop() disabled = false;
-    @Prop() hint: string;
-    @Prop() label: string;
-    @Prop() name: string;
-    @Prop() placeholder: string;
-    @Prop() regexCheck: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
+    @Prop({ mutable: true })
+    disabled = false;
+    @Prop() hint = '';
+    @Prop({ mutable: true })
+    label = '';
+    @Prop() name = '';
+    @Prop() placeholder = '';
+    @Prop() regexCheck = null;
+    @Prop() required = false;
+    @Prop() requiredMessage = '';
     @Prop() type = 'text';
-    @Prop() validationMessage: string;
-    @Prop({ mutable: true }) value: string;
+    @Prop() validationMessage = '';
+    @Prop({ mutable: true })
+    value = '';
 
     @State() status: DotFieldStatus;
 
@@ -49,6 +53,33 @@ export class DotTextfieldComponent {
     componentWillLoad(): void {
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
+        this.validateProps();
+    }
+
+    @Watch('disabled')
+    disabledWatch(_newValue, oldValue): void {
+        this.disabled = dotPropValidator(
+            {
+                fieldType: 'dot-textField',
+                fieldName: this.name,
+                name: 'disabled',
+                value: this.disabled
+            },
+            oldValue
+        );
+    }
+
+    @Watch('label')
+    labelWatch(_newValue, oldValue): void {
+        this.label = dotPropValidator(
+            {
+                fieldType: 'dot-textField',
+                fieldName: this.name,
+                name: 'label',
+                value: this.label
+            },
+            oldValue
+        );
     }
 
     hostData() {
@@ -83,6 +114,11 @@ export class DotTextfieldComponent {
         );
     }
 
+    private validateProps(): void {
+        this.disabledWatch(null, this.disabled);
+        this.labelWatch(null, this.label);
+    }
+
     private isValid(): boolean {
         return !this.isValueRequired() && this.isRegexValid();
     }
@@ -105,9 +141,7 @@ export class DotTextfieldComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid()
-                ? ''
-                : this.requiredMessage
+            ? this.isValid() ? '' : this.requiredMessage
             : this.validationMessage;
     }
 
