@@ -106,7 +106,6 @@ const testConfigObject = {
         DotIconButtonModule
     ],
     providers: [
-        DotRouterService,
         DotAlertConfirmService,
         LoginService,
         PageViewService,

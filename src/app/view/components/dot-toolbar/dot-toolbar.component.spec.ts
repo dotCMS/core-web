@@ -130,6 +130,7 @@ describe('ToolbarComponent', () => {
     });
 
     it(`should NOT go to site browser when site change in any portlet but edit page`, () => {
+        spyOn(dotRouterService, 'isEditPage').and.returnValue(false);
         const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
         fixture.detectChanges();
         siteSelector.triggerEventHandler('change', { value: siteMock });
@@ -143,6 +144,7 @@ describe('ToolbarComponent', () => {
             id: 'edit-page',
             url: ''
         });
+        spyOn(dotRouterService, 'isEditPage').and.returnValue(true);
         siteSelector.triggerEventHandler('change', { value: siteMock });
 
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalled();
