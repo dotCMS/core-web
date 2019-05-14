@@ -19,6 +19,7 @@ export class DotAutocompleteComponent {
     @Prop() data: () => Promise<string[]>;
 
     @Event() selection: EventEmitter<string>;
+    @Event() onBlur: EventEmitter<FocusEvent>;
 
     private readonly id = `autoComplete${new Date().getTime()}`;;
 
@@ -71,7 +72,6 @@ export class DotAutocompleteComponent {
     }
 
     render() {
-        console.log('render');
         return (
             <Fragment>
                 <input
@@ -79,19 +79,24 @@ export class DotAutocompleteComponent {
                     id ={this.id}
                     placeholder={this.placeholder}
                     value={this.value}
-                    onBlur={() => this.clean()}
-                    onKeyDown={
-                        (event: KeyboardEvent) => {
-                            const value = document.getElementById(this.id)['value'];
-
-                            if (value && this.keyEvent[event.key]) {
-                                this.keyEvent[event.key](value);
-                            }
-                        }
-                    }
+                    onBlur={this.handleBlur.bind(this)}
+                    onKeyDown={this.handleKeyDown.bind(this)}
                 />
             </Fragment>
         );
+    }
+
+    private handleKeyDown(event: KeyboardEvent): void {
+        const value = document.getElementById(this.id)['value'];
+
+        if (value && this.keyEvent[event.key]) {
+            this.keyEvent[event.key](value);
+        }
+    }
+
+    private handleBlur(event: FocusEvent): void {
+        this.onBlur.emit(event);
+        this.clean();
     }
 
     private clean(): void {

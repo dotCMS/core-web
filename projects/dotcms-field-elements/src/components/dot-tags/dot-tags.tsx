@@ -19,7 +19,6 @@ export class DotTagsComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
-    @Prop() regexCheck: string;
     @Prop() validationMessage: string;
     @Prop() label: string;
     @Prop() hint: string;
@@ -84,7 +83,7 @@ export class DotTagsComponent {
                     threshold={this.threshold}
                     debounce={this.debounce}
                     data={this.getData.bind(this)}
-                    onBlur={() => this.blurHandler()}
+                    onOnBlur={() => this.blurHandler()}
                     onSelection={(event) => this.createTag(event.detail)}
                 >
                 </dot-autocomplete>
@@ -98,7 +97,7 @@ export class DotTagsComponent {
     private createTag(label: string): void {
         if (!this.getTags().includes(label)){
             this.addTagElement(label);
-            this.emitValueChange();
+            this.setValue();
             this.selected.emit(label);
         }
     }
@@ -108,7 +107,7 @@ export class DotTagsComponent {
         tag.label = label;
 
         tag.addEventListener('remove', (event: CustomEvent) => {
-            this.emitValueChange();
+            this.setValue();
             this.removed.emit(event.detail);
         });
 
@@ -116,19 +115,7 @@ export class DotTagsComponent {
     }
 
     private isValid(): boolean {
-        return !this.isValueRequired() && this.isRegexValid();
-    }
-
-    private isValueRequired(): boolean {
-        return this.required && !this.value.length;
-    }
-
-    private isRegexValid(): boolean {
-        if (this.regexCheck && this.value.length) {
-            const regex = new RegExp(this.regexCheck, 'ig');
-            return regex.test(this.value);
-        }
-        return true;
+        return !this.required || (this.required && !this.value.length);
     }
 
     private showErrorMessage(): boolean {
@@ -136,11 +123,9 @@ export class DotTagsComponent {
     }
 
     private getErrorMessage(): string {
-        return this.isRegexValid()
-            ? this.isValid()
+        return this.isValid()
                 ? ''
-                : this.requiredMessage
-            : this.validationMessage;
+                : this.requiredMessage;
     }
 
     private blurHandler(): void {
@@ -166,9 +151,18 @@ export class DotTagsComponent {
         });
     }
 
-    private emitValueChange(): void {
+    private setValue(): void {
         this.value = this.getTags().join(',');
+        this.status = updateStatus(this.status, {
+            dotTouched: true,
+            dotPristine: false,
+            dotValid: this.isValid()
+        });
+        this.emitValueChange();
+        this.emitStatusChange();
+    }
 
+    private emitValueChange(): void {
         this.valueChange.emit({
             name: this.name,
             value: this.value
