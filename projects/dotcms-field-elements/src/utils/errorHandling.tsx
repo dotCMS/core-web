@@ -1,11 +1,5 @@
 const fieldValidationMap = {
-    disabled: booleanValidator,
-    required: booleanValidator,
-    hint: stringValidator,
-    label: stringValidator,
-    name: stringValidator,
-    requiredMessage: stringValidator,
-    validationMessage: stringValidator
+    regexCheck: regexValidator
 };
 
 export interface PropValidationInfo<T> {
@@ -35,24 +29,32 @@ export class DotFieldParamError<T> extends Error {
     }
 }
 
-function booleanValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (typeof propInfo.value !== 'boolean') {
-        throw new DotFieldParamError(propInfo, 'boolean');
+// function booleanValidator<T>(propInfo: PropValidationInfo<T>): void {
+//     if (typeof propInfo.value !== 'boolean') {
+//         throw new DotFieldParamError(propInfo, 'boolean');
+//     }
+// }
+//
+// function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
+//     if (typeof propInfo.value !== 'string') {
+//         throw new DotFieldParamError(propInfo, 'string');
+//     }
+// }
+
+function regexValidator(propInfo: PropValidationInfo<string>): void {
+    try {
+        RegExp(propInfo.value);
+    } catch (e) {
+        throw new DotFieldParamError(propInfo, 'regular expression');
     }
 }
 
-function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (typeof propInfo.value !== 'string') {
-        throw new DotFieldParamError(propInfo, 'string');
-    }
-}
-
-export function dotPropValidator<T>(propInfo: PropValidationInfo<T>, oldValue: any): any {
+export function dotPropValidator<T>(propInfo: PropValidationInfo<T>): any {
     try {
         fieldValidationMap[propInfo.name](propInfo);
         return propInfo.value;
     } catch (error) {
         console.warn(error.message);
-        return oldValue;
+        return null;
     }
 }

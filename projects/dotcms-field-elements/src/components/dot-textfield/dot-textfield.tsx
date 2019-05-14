@@ -26,7 +26,8 @@ export class DotTextfieldComponent {
     label = '';
     @Prop() name = '';
     @Prop() placeholder = '';
-    @Prop() regexCheck = null;
+    @Prop({ mutable: true })
+    regexCheck = '';
     @Prop() required = false;
     @Prop() requiredMessage = '';
     @Prop() type = 'text';
@@ -36,7 +37,7 @@ export class DotTextfieldComponent {
 
     fieldAttr = {
         type: 'dot-textfield',
-        name: this.name
+        name: ''
     };
 
     @State() status: DotFieldStatus;
@@ -56,33 +57,20 @@ export class DotTextfieldComponent {
     }
 
     componentWillLoad(): void {
+        this.fieldAttr.name = this.name;
+        this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
-        this.validateProps();
     }
 
-    @Watch('disabled')
-    disabledWatch(_newValue: boolean, oldValue: boolean): void {
-        this.disabled = dotPropValidator(
-            {
+    @Watch('regexCheck')
+    regexCheckWatch(): void {
+        this.regexCheck =
+            dotPropValidator({
                 field: { ...this.fieldAttr },
-                name: 'disabled',
-                value: this.disabled
-            },
-            oldValue
-        );
-    }
-
-    @Watch('label')
-    labelWatch(_newValue: string, oldValue: string): void {
-        this.label = dotPropValidator(
-            {
-                field: { ...this.fieldAttr },
-                name: 'label',
-                value: this.label
-            },
-            oldValue
-        );
+                name: 'regexCheck',
+                value: this.regexCheck
+            }) || '';
     }
 
     hostData() {
@@ -118,8 +106,7 @@ export class DotTextfieldComponent {
     }
 
     private validateProps(): void {
-        this.disabledWatch(null, this.disabled);
-        this.labelWatch(null, this.label);
+        this.regexCheckWatch();
     }
 
     private isValid(): boolean {

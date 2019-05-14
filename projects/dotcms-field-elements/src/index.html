@@ -39,7 +39,7 @@
             defaultValue: 'John',
             hint: 'this is a hint',
             placeholder: 'Enter Name',
-            regexCheck: '^[A-Za-z ]+$',
+            regexCheck: '[^(<[.\\n]+>)]*',
             validationMessage: 'Invalid Name',
             required: true,
             requiredMessage: 'Required Name',

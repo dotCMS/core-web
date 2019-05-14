@@ -14,7 +14,7 @@
 | `label`             | `label`              |             | `string`  | `''`     |
 | `name`              | `name`               |             | `string`  | `''`     |
 | `placeholder`       | `placeholder`        |             | `string`  | `''`     |
-| `regexCheck`        | `regex-check`        |             | `any`     | `null`   |
+| `regexCheck`        | `regex-check`        |             | `string`  | `''`     |
 | `required`          | `required`           |             | `boolean` | `false`  |
 | `requiredMessage`   | `required-message`   |             | `string`  | `''`     |
 | `type`              | `type`               |             | `string`  | `'text'` |
