@@ -107,7 +107,7 @@ function waitForDetectChanges(fixture) {
     tick(10);
 }
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -233,11 +233,6 @@ describe('DotEditContentComponent', () => {
         toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
         toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
-
-        spyOnProperty(dotRouterService, 'currentPortlet').and.returnValue({
-            url: 'this/is/an/url',
-            id: '123-567'
-        });
     });
 
     it('should have a toolbar', () => {
@@ -266,7 +261,6 @@ describe('DotEditContentComponent', () => {
     );
 
     it('should redirect to site browser on toolbar cancel', () => {
-        spyOn(dotRouterService, 'goToSiteBrowser');
         toolbarElement.triggerEventHandler('cancel', {});
 
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
@@ -398,7 +392,6 @@ describe('DotEditContentComponent', () => {
                 observableThrowError(fake500Response)
             );
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-            spyOn(dotRouterService, 'goToSiteBrowser');
 
             component.reload();
 
@@ -978,7 +971,6 @@ describe('DotEditContentComponent', () => {
                     content: new DotRenderedPageState(mockUser, mockDotRenderedPage)
                 });
 
-                spyOn(dotRouterService, 'goToEditPage');
                 spyOn(dotEditPageDataService, 'set');
                 spyOn(dotEditContentHtmlService, 'renderPage');
             });

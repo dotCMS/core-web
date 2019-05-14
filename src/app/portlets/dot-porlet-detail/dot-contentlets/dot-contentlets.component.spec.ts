@@ -60,11 +60,6 @@ describe('DotContentletsComponent', () => {
         dotIframeService = de.injector.get(DotIframeService);
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
 
-        spyOn(dotRouterService, 'gotoPortlet');
-        spyOnProperty(dotRouterService, 'currentPortlet', 'get').and.returnValue({
-            id: 'current-portlet'
-        });
-
         spyOn(dotIframeService, 'reloadData');
         fixture.detectChanges();
     });

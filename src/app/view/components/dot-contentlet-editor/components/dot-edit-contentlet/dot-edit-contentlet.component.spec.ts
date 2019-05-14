@@ -1,4 +1,3 @@
-import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { of as observableOf } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
@@ -22,13 +21,11 @@ describe('DotEditContentletComponent', () => {
     let dotEditContentletWrapper: DebugElement;
     let dotEditContentletWrapperComponent: DotContentletWrapperComponent;
     let dotContentletEditorService: DotContentletEditorService;
-    let dotRouterService: DotRouterService;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotEditContentletComponent, DotContentletWrapperComponent],
             providers: [
-                DotRouterService,
                 DotContentletEditorService,
                 {
                     provide: DotMenuService,
@@ -52,7 +49,6 @@ describe('DotEditContentletComponent', () => {
         de = fixture.debugElement;
         component = de.componentInstance;
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
-        dotRouterService = de.injector.get(DotRouterService);
 
         spyOn(component.close, 'emit');
 
@@ -60,11 +56,6 @@ describe('DotEditContentletComponent', () => {
 
         dotEditContentletWrapper = de.query(By.css('dot-contentlet-wrapper'));
         dotEditContentletWrapperComponent = dotEditContentletWrapper.componentInstance;
-
-        spyOnProperty(dotRouterService, 'currentPortlet').and.returnValue({
-            url: 'this/is/an/url',
-            id: '123-567'
-        });
     });
 
     describe('default', () => {

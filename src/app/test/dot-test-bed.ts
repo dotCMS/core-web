@@ -1,3 +1,4 @@
+import { MockDotRouterService } from '@tests/dot-router-service.mock';
 import { NotLicensedService } from './../api/services/not-licensed-service';
 import { DotHttpErrorManagerService } from './../api/services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotIframeService } from './../view/components/_common/iframe/service/dot-iframe/dot-iframe.service';
@@ -53,6 +54,7 @@ export class DOTTestBed {
             { provide: LOCALE_ID, useValue: {} },
             { provide: CoreWebService, useClass: CoreWebServiceMock },
             { provide: NotLicensedService, useValue: { init() {} } },
+            { provide: DotRouterService, useClass: MockDotRouterService },
             ApiRoot,
             BrowserUtil,
             ConfirmationService,

@@ -120,7 +120,6 @@ describe('ToolbarComponent', () => {
         dotRouterService = de.injector.get(DotRouterService);
         dotNavigationService = de.injector.get(DotNavigationService);
         spyOn(comp, 'siteChange').and.callThrough();
-        spyOn(dotRouterService, 'goToSiteBrowser');
     }));
 
     it(`should has a crumbtrail`, () => {
