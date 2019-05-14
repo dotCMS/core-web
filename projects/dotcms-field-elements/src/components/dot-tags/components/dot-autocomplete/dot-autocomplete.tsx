@@ -32,13 +32,13 @@ export class DotAutocompleteComponent {
         new autoComplete({
             data: {
                 src: async () => {
+                    console.log('data')
                     const autocomplete = document.querySelector(`#${this.id}`);
                     autocomplete.setAttribute('placeholder', 'Loading...');
                     const data = await this.data();
                     autocomplete.setAttribute('placeholder', this.placeholder || '');
                     return data;
-                },
-                keys: ['food']
+                }
             },
             sort: (a, b) => {
                 if (a.match < b.match) {
@@ -71,6 +71,7 @@ export class DotAutocompleteComponent {
     }
 
     render() {
+        console.log('render');
         return (
             <Fragment>
                 <input
@@ -78,6 +79,7 @@ export class DotAutocompleteComponent {
                     id ={this.id}
                     placeholder={this.placeholder}
                     value={this.value}
+                    onBlur={() => this.clean()}
                     onKeyDown={
                         (event: KeyboardEvent) => {
                             const value = document.getElementById(this.id)['value'];
@@ -93,7 +95,12 @@ export class DotAutocompleteComponent {
     }
 
     private clean(): void {
-        this.value = '';
+        document.getElementById(this.id)['value'] = '';
+        Array.from(document.getElementById( `${this.id}_results_list`).querySelectorAll('li'))
+            .forEach(child => {
+                child.remove();
+            }
+        );
     }
 
     private emitSelection(selection: string): void {

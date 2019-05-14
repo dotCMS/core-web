@@ -96,9 +96,11 @@ export class DotTagsComponent {
     }
 
     private createTag(label: string): void {
-        this.addTagElement(label);
-        this.emitValueChange();
-        this.selected.emit(label);
+        if (!this.getTags().includes(label)){
+            this.addTagElement(label);
+            this.emitValueChange();
+            this.selected.emit(label);
+        }
     }
 
     private addTagElement(label: string): void {
@@ -165,14 +167,17 @@ export class DotTagsComponent {
     }
 
     private emitValueChange(): void {
-        this.value = Array.from(this.el.querySelectorAll('dot-tag'))
-            .map(tag => tag.label)
-            .join(',');
+        this.value = this.getTags().join(',');
 
         this.valueChange.emit({
             name: this.name,
             value: this.value
         });
+    }
+
+    private getTags(): string[] {
+        return Array.from(this.el.querySelectorAll('dot-tag'))
+            .map(tag => tag.label);
     }
 
     private async getData(): Promise<String[]> {
