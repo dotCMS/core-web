@@ -17,7 +17,7 @@ export class DotTagComponent {
                 <span>
                     {this.label}
                 </span>
-                <button onClick={() => this.removeTag()}>x</button>
+                <button type='button' onClick={() => this.removeTag()}>x</button>
             </Fragment>
         );
     }

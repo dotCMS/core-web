@@ -114,7 +114,7 @@ export class DotTagsComponent {
     }
 
     private isValid(): boolean {
-        return !this.required || (this.required && !this.value.length);
+        return !this.required || (this.required && !!this.value.length);
     }
 
     private showErrorMessage(): boolean {
@@ -137,6 +137,10 @@ export class DotTagsComponent {
     }
 
     private setDefaultValue(value: string): void {
+        console.log('setDefaultValue  ' + this.value);
+        Array.from(this.el.querySelectorAll('dot-tag'))
+            .forEach(tag => tag.remove());
+
         value.split(',').forEach((tagLabel) => {
             this.addTagElement(tagLabel.trim());
         });
@@ -151,11 +155,13 @@ export class DotTagsComponent {
 
     private setValue(): void {
         this.value = this.getTags().join(',');
+
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
             dotValid: this.isValid()
         });
+
         this.emitValueChange();
         this.emitStatusChange();
     }
@@ -176,9 +182,6 @@ export class DotTagsComponent {
         const source = await fetch(
             'https://tarekraafat.github.io/autoComplete.js/demo/db/generic.json'
         );
-        const data = await source.json();
-        console.log('data', data);
-        // Returns Fetched data
-        return data.map(item => item.food);
+        return (await source.json()).map(item => item.food);
     }
 }
