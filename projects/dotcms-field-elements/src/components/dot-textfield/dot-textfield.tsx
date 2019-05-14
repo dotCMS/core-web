@@ -34,6 +34,11 @@ export class DotTextfieldComponent {
     @Prop({ mutable: true })
     value = '';
 
+    fieldAttr = {
+        type: 'dot-textfield',
+        name: this.name
+    };
+
     @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
@@ -57,11 +62,10 @@ export class DotTextfieldComponent {
     }
 
     @Watch('disabled')
-    disabledWatch(_newValue, oldValue): void {
+    disabledWatch(_newValue: boolean, oldValue: boolean): void {
         this.disabled = dotPropValidator(
             {
-                fieldType: 'dot-textfield',
-                fieldName: this.name,
+                field: { ...this.fieldAttr },
                 name: 'disabled',
                 value: this.disabled
             },
@@ -70,11 +74,10 @@ export class DotTextfieldComponent {
     }
 
     @Watch('label')
-    labelWatch(_newValue, oldValue): void {
+    labelWatch(_newValue: string, oldValue: string): void {
         this.label = dotPropValidator(
             {
-                fieldType: 'dot-textfield',
-                fieldName: this.name,
+                field: { ...this.fieldAttr },
                 name: 'label',
                 value: this.label
             },
