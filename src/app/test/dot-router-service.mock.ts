@@ -27,6 +27,7 @@ export class MockDotRouterService {
         .and.callFake(() => new Promise((resolve) => resolve(true)));
     goToSiteBrowser = jasmine.createSpy('goToSiteBrowser');
     isCurrentPortletCustom = jasmine.createSpy('isCurrentPortletCustom');
+    isJSPPortlet = jasmine.createSpy('isJSPPortlet');
     reloadCurrentPortlet = jasmine.createSpy('reloadCurrentPortlet');
     isEditPage() {}
 }
