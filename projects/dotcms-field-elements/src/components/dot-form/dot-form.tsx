@@ -35,6 +35,7 @@ const fieldMap = {
     Select: DotFormFields.Select,
     Radio: DotFormFields.Radio,
     Date: DotFormFields.Date,
+    Tag: DotFormFields.Tag,
     Time: DotFormFields.Time
 };
 

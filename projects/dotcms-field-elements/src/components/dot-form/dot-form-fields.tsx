@@ -141,7 +141,6 @@ export const DotFormFields = {
             disabled={field.disabled}
             label={field.name}
             name={field.variable}
-            validation-message={field.validationMessage}
             placeholder={field.placeholder}
             hint={field.hint}
             value={field.defaultValue}

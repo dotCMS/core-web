@@ -19,7 +19,7 @@ export class DotAutocompleteComponent {
     @Prop() data: () => Promise<string[]>;
 
     @Event() selection: EventEmitter<string>;
-    @Event() onBlur: EventEmitter<FocusEvent>;
+    @Event() lostFocus: EventEmitter<FocusEvent>;
 
     private readonly id = `autoComplete${new Date().getTime()}`;;
 
@@ -95,7 +95,7 @@ export class DotAutocompleteComponent {
     }
 
     private handleBlur(event: FocusEvent): void {
-        this.onBlur.emit(event);
+        this.lostFocus.emit(event);
         this.clean();
     }
 

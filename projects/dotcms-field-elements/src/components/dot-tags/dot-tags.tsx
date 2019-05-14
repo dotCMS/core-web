@@ -19,7 +19,6 @@ export class DotTagsComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
-    @Prop() validationMessage: string;
     @Prop() label: string;
     @Prop() hint: string;
     @Prop() placeholder: string;
@@ -83,7 +82,7 @@ export class DotTagsComponent {
                     threshold={this.threshold}
                     debounce={this.debounce}
                     data={this.getData.bind(this)}
-                    onOnBlur={() => this.blurHandler()}
+                    onLostFocus={() => this.blurHandler()}
                     onSelection={(event) => this.createTag(event.detail)}
                 >
                 </dot-autocomplete>
@@ -129,7 +128,6 @@ export class DotTagsComponent {
     }
 
     private blurHandler(): void {
-        console.log('blurHandler 2');
         if (!this.status.dotTouched) {
             this.status = updateStatus(this.status, {
                 dotTouched: true
