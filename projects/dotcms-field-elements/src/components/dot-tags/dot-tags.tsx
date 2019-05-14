@@ -11,13 +11,11 @@ import {
     updateStatus
 } from '../../utils';
 
-import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
-
 @Component({
     tag: 'dot-tags',
     styleUrl: 'dot-tags.scss'
 })
-export class DotTextfieldComponent {
+export class DotTagsComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
     @Prop() name: string;
@@ -29,11 +27,15 @@ export class DotTextfieldComponent {
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
     @Prop() disabled = false;
+    @Prop() threshold = 0;
+    @Prop() debounce = 300;
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+    @Event() selected: EventEmitter<String>;
+    @Event() removed: EventEmitter<String>;
 
     /**
      * Reset properties of the filed, clear value and emit events.
@@ -51,63 +53,11 @@ export class DotTextfieldComponent {
     }
 
     componentDidLoad(): void {
-        console.log('DONE');
-        let resultsListID;
-        const autoCompletejs = new autoComplete({
-            data: {
-                src: async () => {
-                    // Loading placeholder text
-                    document
-                        .querySelector('#autoComplete')
-                        .setAttribute('placeholder', 'Loading...');
-                    // Fetch External Data Source
-                    const source = await fetch(
-                        'https://tarekraafat.github.io/autoComplete.js/demo/db/generic.json'
-                    );
-                    const data = await source.json();
-                    // Returns Fetched data
-                    return data;
-                },
-                key: ['food', 'cities', 'animals']
-            },
-            sort: (a, b) => {
-                if (a.match < b.match) {
-                    return -1;
-                }
-                if (a.match > b.match) {
-                    return 1;
-                }
-                return 0;
-            },
-            placeHolder: 'Food & Drinks',
-            selector: '#autoComplete',
-            threshold: 0,
-            searchEngine: 'strict',
-            highlight: true,
-            maxResults: 10,
-            resultsList: {
-                container: (source) => {
-                    resultsListID = 'autoComplete_results_list';
-                    return resultsListID;
-                },
-                destination: this.el.querySelector('#autoComplete'),
-                position: 'afterend'
-            },
-            resultItem: (data, source) => {
-                return `${data.match}`;
-            },
-            onSelection: (feedback) => {
-                const selection = feedback.selection.value.food;
-                // Render selected choice to selection div
-                this.el.querySelector('.selection').innerHTML = selection;
-                // Clear Input
-                this.el.querySelector('#autoComplete').value = '';
-                // Change placeholder with the selected value
-                this.el.querySelector('#autoComplete').setAttribute('placeholder', selection);
-                // Concole log autoComplete data feedback
-                console.log(feedback);
-            }
-        });
+        if (this.value) {
+            this.setDefaultValue(this.value);
+        }
+
+        this.el.querySelector('dot-autocomplete').blur();
     }
 
     hostData() {
@@ -125,27 +75,43 @@ export class DotTextfieldComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <input
+                <div class='tag_container'></div>
+
+                <dot-autocomplete
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
-                    id={this.name}
-                    onBlur={() => this.blurHandler()}
-                    id='autoComplete'
-                    // onInput={this.inputHandler}
                     placeholder={this.placeholder}
-                    required={this.required || null}
-                    type='text'
-                    value={this.value}
-                />
+                    threshold={this.threshold}
+                    debounce={this.debounce}
+                    data={this.getData.bind(this)}
+                    onBlur={() => this.blurHandler()}
+                    onSelection={(event) => this.createTag(event.detail)}
+                >
+                </dot-autocomplete>
+
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
 
-    // private inputHandler(e) {
-    //     console.log(e.target.value);
-    // }
+    private createTag(label: string): void {
+        this.addTagElement(label);
+        this.emitValueChange();
+        this.selected.emit(label);
+    }
+
+    private addTagElement(label: string): void {
+        const tag = document.createElement('dot-tag');
+        tag.label = label;
+
+        tag.addEventListener('remove', (event: CustomEvent) => {
+            this.emitValueChange();
+            this.removed.emit(event.detail);
+        });
+
+        this.el.querySelector('.tag_container').append(tag);
+    }
 
     private isValid(): boolean {
         return !this.isValueRequired() && this.isRegexValid();
@@ -176,6 +142,7 @@ export class DotTextfieldComponent {
     }
 
     private blurHandler(): void {
+        console.log('blurHandler 2');
         if (!this.status.dotTouched) {
             this.status = updateStatus(this.status, {
                 dotTouched: true
@@ -184,16 +151,11 @@ export class DotTextfieldComponent {
         }
     }
 
-    // private setValue(event): void {
-    //     this.value = event.target.value.toString();
-    //     this.status = updateStatus(this.status, {
-    //         dotTouched: true,
-    //         dotPristine: false,
-    //         dotValid: this.isValid()
-    //     });
-    //     this.emitValueChange();
-    //     this.emitStatusChange();
-    // }
+    private setDefaultValue(value: string): void {
+        value.split(',').forEach((tagLabel) => {
+            this.addTagElement(tagLabel.trim());
+        });
+    }
 
     private emitStatusChange(): void {
         this.statusChange.emit({
@@ -203,9 +165,23 @@ export class DotTextfieldComponent {
     }
 
     private emitValueChange(): void {
+        this.value = Array.from(this.el.querySelectorAll('dot-tag'))
+            .map(tag => tag.label)
+            .join(',');
+
         this.valueChange.emit({
             name: this.name,
             value: this.value
         });
+    }
+
+    private async getData(): Promise<String[]> {
+        const source = await fetch(
+            'https://tarekraafat.github.io/autoComplete.js/demo/db/generic.json'
+        );
+        const data = await source.json();
+        console.log('data', data);
+        // Returns Fetched data
+        return data.map(item => item.food);
     }
 }

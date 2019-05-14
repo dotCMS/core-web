@@ -134,5 +134,19 @@ export const DotFormFields = {
             max={field.max}
             step={field.step}
         />
-    )
+    ),
+
+    Tag: (field: DotCMSContentTypeField) => (
+        <dot-tags
+            disabled={field.disabled}
+            label={field.name}
+            name={field.variable}
+            validation-message={field.validationMessage}
+            placeholder={field.placeholder}
+            hint={field.hint}
+            value={field.defaultValue}
+            required={field.required}
+            required-message={field.requiredMessage}
+        />
+    ),
 };
