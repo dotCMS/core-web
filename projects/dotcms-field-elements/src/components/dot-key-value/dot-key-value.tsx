@@ -9,7 +9,13 @@ import {
     Listen
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel, DotKeyValueField } from '../../models';
+import {
+    DotFieldStatus,
+    DotFieldValueEvent,
+    DotFieldStatusEvent,
+    DotLabel,
+    DotKeyValueField
+} from '../../models';
 import {
     getClassNames,
     getErrorClass,
@@ -91,33 +97,41 @@ export class DotKeyValueComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    id={getId(this.name)}
-                    name="key"
-                    onInput={(event: Event) => this.setValue(event)}
-                    placeholder={this.keyPlaceholder}
-                    type="text"
-                    value={this.fieldInput.key}
-                />
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    name="value"
-                    onInput={(event: Event) => this.setValue(event)}
-                    placeholder={this.valuePlaceholder}
-                    type="text"
-                    value={this.fieldInput.value}
-                />
-                <button
-                    class="dot-key-value__save__button"
-                    type="button"
-                    disabled={this.disabled || null}
-                    onClick={() => this.addKey()}
-                >
-                    {this.saveBtnLabel}
-                </button>
+                <div class="dot-key-value__form">
+                    <label>
+                        Key:
+                        <input
+                            class={getErrorClass(this.status.dotValid)}
+                            disabled={this.isDisabled()}
+                            id={getId(this.name)}
+                            name="key"
+                            onInput={(event: Event) => this.setValue(event)}
+                            placeholder={this.keyPlaceholder}
+                            type="text"
+                            value={this.fieldInput.key}
+                        />
+                    </label>
+                    <label>
+                        Value:
+                        <input
+                            class={getErrorClass(this.status.dotValid)}
+                            disabled={this.isDisabled()}
+                            name="value"
+                            onInput={(event: Event) => this.setValue(event)}
+                            placeholder={this.valuePlaceholder}
+                            type="text"
+                            value={this.fieldInput.value}
+                        />
+                    </label>
+                    <button
+                        class="dot-key-value__save__button"
+                        type="button"
+                        disabled={this.disabled || null}
+                        onClick={() => this.addKey()}
+                    >
+                        {this.saveBtnLabel}
+                    </button>
+                </div>
                 {this.getKeyValueList()}
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}

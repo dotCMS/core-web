@@ -1,4 +1,10 @@
-import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotLabel, DotKeyValueField } from '../models';
+import {
+    DotOption,
+    DotFieldStatus,
+    DotFieldStatusClasses,
+    DotLabel,
+    DotKeyValueField
+} from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -38,7 +44,10 @@ export function getOriginalStatus(isValid?: boolean): DotFieldStatus {
  * @param { [key: string]: boolean } change
  * @returns DotFieldStatus
  */
-export function updateStatus(state: DotFieldStatus, change: { [key: string]: boolean }): DotFieldStatus {
+export function updateStatus(
+    state: DotFieldStatus,
+    change: { [key: string]: boolean }
+): DotFieldStatus {
     return {
         ...state,
         ...change
@@ -52,7 +61,11 @@ export function updateStatus(state: DotFieldStatus, change: { [key: string]: boo
  * @param boolean isValid
  * @returns DotFieldClass
  */
-export function getClassNames(status: DotFieldStatus, isValid: boolean, required?: boolean): DotFieldStatusClasses {
+export function getClassNames(
+    status: DotFieldStatus,
+    isValid: boolean,
+    required?: boolean
+): DotFieldStatusClasses {
     return {
         'dot-valid': isValid,
         'dot-invalid': !isValid,
@@ -93,10 +106,14 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  * @returns JSX.Element
  */
 export function getTagLabel(params: DotLabel): JSX.Element {
-    return <div class="dot-field__label">
-                <label htmlFor={getId(params.name)}>{params.label}</label>
-                { params.required ? <span class="dot-field__required-mark">*</span> : ''}
-            </div>;
+    return params.required ? (
+        <div class="dot-field__label">
+            <label htmlFor={getId(params.name)}>{params.label}</label>
+            {params.required ? <span class="dot-field__required-mark">*</span> : ''}
+        </div>
+    ) : (
+        <label htmlFor={getId(params.name)}>{params.label}</label>
+    );
 }
 
 /**

@@ -156,32 +156,39 @@ export class DotDateTimeComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <dot-input-calendar
-                    disabled={this.disabled}
-                    type="date"
-                    name={this.name + '-date'}
-                    hint={this.hint}
-                    value={this._value.date}
-                    required={this.required}
-                    required-message={this.requiredMessage}
-                    validation-message={this.validationMessage}
-                    min={this._minDateTime.date}
-                    max={this._maxDateTime.date}
-                    step={this._dateStep}
-                />
-                <dot-input-calendar
-                    disabled={this.disabled}
-                    type="time"
-                    name={this.name + '-time'}
-                    hint={this.hint}
-                    value={this._value.time}
-                    required={this.required}
-                    required-message={this.requiredMessage}
-                    validation-message={this.validationMessage}
-                    min={this._minDateTime.time}
-                    max={this._maxDateTime.time}
-                    step={this._timeStep}
-                />
+
+                <label>
+                    Date:
+                    <dot-input-calendar
+                        disabled={this.disabled}
+                        type="date"
+                        name={this.name + '-date'}
+                        hint={this.hint}
+                        value={this._value.date}
+                        required={this.required}
+                        required-message={this.requiredMessage}
+                        validation-message={this.validationMessage}
+                        min={this._minDateTime.date}
+                        max={this._maxDateTime.date}
+                        step={this._dateStep}
+                    />
+                </label>
+                <label>
+                    Time:
+                    <dot-input-calendar
+                        disabled={this.disabled}
+                        type="time"
+                        name={this.name + '-time'}
+                        hint={this.hint}
+                        value={this._value.time}
+                        required={this.required}
+                        required-message={this.requiredMessage}
+                        validation-message={this.validationMessage}
+                        min={this._minDateTime.time}
+                        max={this._maxDateTime.time}
+                        step={this._timeStep}
+                    />
+                </label>
                 {getTagHint(this.hint)}
                 {this.errorMessageElement}
             </Fragment>

@@ -8,7 +8,8 @@ import {
     getTagLabel,
     getTagHint,
     getErrorClass,
-    getTagError
+    getTagError,
+    getId
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -97,7 +98,7 @@ export class DotDateRangeComponent {
     }
 
     componentDidLoad(): void {
-        this.fp = flatpickr(`#${this.name}`, {
+        this.fp = flatpickr(`#${getId(this.name)}`, {
             mode: 'range',
             dateFormat: this.dateFormat,
             maxDate: this.max,
@@ -122,19 +123,24 @@ export class DotDateRangeComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    id={this.name}
-                    required={this.required || null}
-                    type="text"
-                    value={this.value}
-                />
-                <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
-                    {this.presets.map((item) => {
-                        return <option value={item.days}>{item.label}</option>;
-                    })}
-                </select>
+                <div>
+                    <input
+                        class={getErrorClass(this.status.dotValid)}
+                        disabled={this.isDisabled()}
+                        id={getId(this.name)}
+                        required={this.required || null}
+                        type="text"
+                        value={this.value}
+                    />
+                    <label>
+                        Presets:
+                        <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
+                            {this.presets.map((item) => {
+                                return <option value={item.days}>{item.label}</option>;
+                            })}
+                        </select>
+                    </label>
+                </div>
                 {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
@@ -146,7 +152,7 @@ export class DotDateRangeComponent {
             try {
                 const dates = this.value.split(',');
                 this.fp.setDate([new Date(dates[0]), new Date(dates[1])], true);
-            } catch(e) {
+            } catch (e) {
                 console.error('Bad date format');
             }
         }
