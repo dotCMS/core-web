@@ -49,6 +49,8 @@ export class DotKeyValueComponent {
     @Prop() fieldKeyLabel = 'Key';
     /** (optional) The string to use in the value label of the add form */
     @Prop() fieldValueLabel = 'Value';
+    /** (optional) The string to use in the delete button of a key/value item */
+    @Prop() buttonDeleteLabel = null;
 
     @State() status: DotFieldStatus;
     @State() values: DotKeyValueField[] = [];
@@ -149,7 +151,11 @@ export class DotKeyValueComponent {
 
     private getKeyValueList(): JSX.Element {
         return this.values.length ? (
-            <key-value-table items={this.values} disabled={this.disabled} />
+            <key-value-table
+                buttonDeleteLabel={this.buttonDeleteLabel || undefined}
+                items={this.values}
+                disabled={this.disabled}
+            />
         ) : (
             ''
         );
