@@ -45,6 +45,10 @@ export class DotKeyValueComponent {
     @Prop() requiredMessage: string;
     @Prop() saveBtnLabel = 'Add';
     @Prop() disabled = false;
+    /** (optional) The string to use in the key label of the add form */
+    @Prop() fieldKeyLabel = 'Key';
+    /** (optional) The string to use in the value label of the add form */
+    @Prop() fieldValueLabel = 'Value';
 
     @State() status: DotFieldStatus;
     @State() values: DotKeyValueField[] = [];
@@ -99,7 +103,7 @@ export class DotKeyValueComponent {
                 {getTagLabel(labelTagParams)}
                 <div class="dot-key-value__form">
                     <label>
-                        Key:
+                        {this.fieldKeyLabel}
                         <input
                             class={getErrorClass(this.status.dotValid)}
                             disabled={this.isDisabled()}
@@ -112,7 +116,7 @@ export class DotKeyValueComponent {
                         />
                     </label>
                     <label>
-                        Value:
+                        {this.fieldValueLabel}
                         <input
                             class={getErrorClass(this.status.dotValid)}
                             disabled={this.isDisabled()}
