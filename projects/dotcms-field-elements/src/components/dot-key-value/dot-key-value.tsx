@@ -27,6 +27,8 @@ import {
     updateStatus
 } from '../../utils';
 
+const DEFAULT_VALUE = { key: '', value: '' };
+
 @Component({
     tag: 'dot-key-value',
     styleUrl: 'dot-key-value.scss'
@@ -57,18 +59,17 @@ export class DotKeyValueComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    @State() fieldInput: DotKeyValueField = { key: '', value: '' };
+    @State() fieldInput: DotKeyValueField = { ...DEFAULT_VALUE };
 
     /**
      * Reset properties of the field, clear value and emit events.
      */
     @Method()
     reset(): void {
-        this.clearForm();
         this.values = [];
         this.status = getOriginalStatus(this.isValid());
-        this.emitStatusChange();
-        this.emitValueChange();
+        this.emitChanges();
+        this.clearForm();
     }
 
     @Listen('deleteItemEvt')
@@ -78,8 +79,7 @@ export class DotKeyValueComponent {
             return internalIndex !== event.detail;
         });
         this.refreshStatus();
-        this.emitStatusChange();
-        this.emitValueChange();
+        this.emitChanges();
     }
 
     componentWillLoad(): void {
@@ -106,7 +106,7 @@ export class DotKeyValueComponent {
                     <label>
                         {this.fieldKeyLabel}
                         <input
-                            id="key-input"
+                            id="dotkeyvalue-key-input"
                             class={getErrorClass(this.status.dotValid)}
                             disabled={this.isDisabled()}
                             name="key"
@@ -160,12 +160,12 @@ export class DotKeyValueComponent {
     private setInitialValue(): void {
         this.values = this.value
             ? this.value
-                    .split(',')
-                    .filter((item) => !!item.length)
-                    .map((item) => {
-                        const [key, value] = item.split('|');
-                        return { key, value };
-                    })
+                  .split(',')
+                  .filter((item) => !!item.length)
+                  .map((item) => {
+                      const [key, value] = item.split('|');
+                      return { key, value };
+                  })
             : [];
         this.status = getOriginalStatus(this.isValid());
     }
@@ -214,12 +214,13 @@ export class DotKeyValueComponent {
     }
 
     private focusFirstField(): void {
-        const input: HTMLInputElement = this.el.querySelector('#key-input');
+        const input: HTMLInputElement = this.el.querySelector('#dotkeyvalue-key-input');
         input.focus();
     }
 
     private addKey(e: Event): void {
         e.preventDefault();
+
         if (this.fieldInput.key && this.fieldInput.value) {
             this.values = [
                 ...this.values,
@@ -229,14 +230,18 @@ export class DotKeyValueComponent {
                 }
             ];
             this.refreshStatus();
-            this.emitStatusChange();
-            this.emitValueChange();
+            this.emitChanges();
             this.clearForm();
             this.focusFirstField();
         }
     }
 
     private clearForm(): void {
-        this.fieldInput = { key: '', value: '' };
+        this.fieldInput = { ...DEFAULT_VALUE };
+    }
+
+    private emitChanges(): void {
+        this.emitStatusChange();
+        this.emitValueChange();
     }
 }
