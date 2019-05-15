@@ -16,7 +16,7 @@ describe('key-value-table', () => {
 
     it('renders', async () => {
         // tslint:disable-next-line:max-line-length
-        const expectedMarkup = `<key-value-table class=\"hydrated\"><table><tbody><tr><td><button type=\"button\" id=\"keyA_1_0\" class=\"dot-key-value__delete__button\"><div class=\"dot-field__label\"><label for=\"dot-keyA_1_0\">Delete</label></div></button></td><td>keyA</td><td>1</td></tr><tr><td><button type=\"button\" id=\"keyB_2_1\" class=\"dot-key-value__delete__button\"><div class=\"dot-field__label\"><label for=\"dot-keyB_2_1\">Delete</label></div></button></td><td>keyB</td><td>2</td></tr></tbody></table></key-value-table>`;
+        const expectedMarkup = `<key-value-table class=\"hydrated\"><table><tbody><tr><td><button aria-label=\"Delete keyA, 1\" type=\"button\" class=\"dot-key-value__delete__button\">Delete</button></td><td>keyA</td><td>1</td></tr><tr><td><button aria-label=\"Delete keyB, 2\" type=\"button\" class=\"dot-key-value__delete__button\">Delete</button></td><td>keyB</td><td>2</td></tr></tbody></table></key-value-table>`;
         expect(element.outerHTML).toBe(expectedMarkup);
     });
 

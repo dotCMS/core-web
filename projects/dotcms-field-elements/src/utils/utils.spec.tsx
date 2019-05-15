@@ -56,8 +56,8 @@ describe('getClassNames', () => {
 describe('getTagHint', () => {
     it('should returns Hint tag', () => {
         const hint = 'Hint';
-        const jsxTag: any = getTagHint(hint);
-        expect(jsxTag.vattrs).toEqual({ class: 'dot-field__hint' });
+        const jsxTag: any = getTagHint(hint, 'someName');
+        expect(jsxTag.vattrs).toEqual({class: 'dot-field__hint', id: 'hint-someName'});
         expect(jsxTag.vchildren).toEqual([{ vtext: 'Hint' }]);
     });
     it('should Not returns Hint tag', () => {
@@ -86,9 +86,9 @@ describe('getTagLabel', () => {
         const param = { name: 'Label', label: 'Msg', required: true };
         const jsxTag: any = getTagLabel(param);
         expect(jsxTag.vattrs).toEqual({ class: 'dot-field__label' });
-        expect(jsxTag.vchildren[0].vattrs).toEqual({ htmlFor: 'dot-Label' });
+        expect(jsxTag.vchildren[0].vattrs).toEqual({htmlFor: 'dot-Label', id: 'label-Label'});
         expect(jsxTag.vchildren[0].vchildren).toEqual([{ vtext: 'Msg' }]);
-        expect(jsxTag.vchildren[1].vattrs).toEqual({'class': 'dot-field__required-mark'});
+        expect(jsxTag.vchildren[1].vattrs).toEqual({class: 'dot-field__required-mark'});
         expect(jsxTag.vchildren[1].vchildren).toEqual([{ vtext: '*' }]);
     });
 });
@@ -100,6 +100,6 @@ describe('getErrorClass', () => {
     });
     it('should Not returns Error CSS', () => {
         const cssClass = getErrorClass(true);
-        expect(cssClass).toEqual('');
+        expect(cssClass).toEqual(null);
     });
 });

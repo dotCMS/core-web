@@ -32,7 +32,7 @@ describe('dot-textfield', () => {
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"dot-fullName\">Name:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"dot-fullName\" placeholder=\"Enter Name\" required=\"\" type=\"text\"><span class=\"dot-field__hint\">this is a hint</span>`;
+        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"dot-fullName\" id=\"label-fullName\">Name:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"dot-fullName\" placeholder=\"Enter Name\" required=\"\" type=\"text\"><span class=\"dot-field__hint\" id=\"hint-\">this is a hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
