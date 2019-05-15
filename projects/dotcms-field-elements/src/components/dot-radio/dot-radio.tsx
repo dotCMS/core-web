@@ -72,31 +72,35 @@ export class DotRadioComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <div class="dot-radio__items">
+                <div
+                    tabIndex={0}
+                    class="dot-radio__items"
+                    role="radiogroup"
+                    aria-labelledby={`label-${labelTagParams.name}`}
+                    aria-describedby={`hint-${this.name}`}
+                >
                     {this._options.map((item: DotOption) => {
                         labelTagParams = {
                             name: 'dot-radio-' + item.label.toLocaleLowerCase(),
                             label: item.label
                         };
                         return (
-                            <div class="dot-radio__item">
-                                <label>
-                                    <input
-                                        checked={this.value.indexOf(item.value) >= 0 || null}
-                                        class={getErrorClass(this.isValid())}
-                                        disabled={this.disabled || null}
-                                        name={this.name.toLocaleLowerCase()}
-                                        onInput={(event: Event) => this.setValue(event)}
-                                        type="radio"
-                                        value={item.value}
-                                    />
-                                    {item.label}
-                                </label>
-                            </div>
+                            <label>
+                                <input
+                                    checked={this.value.indexOf(item.value) >= 0 || null}
+                                    class={getErrorClass(this.isValid())}
+                                    disabled={this.disabled || null}
+                                    name={this.name.toLocaleLowerCase()}
+                                    onInput={(event: Event) => this.setValue(event)}
+                                    type="radio"
+                                    value={item.value}
+                                />
+                                {item.label}
+                            </label>
                         );
                     })}
                 </div>
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

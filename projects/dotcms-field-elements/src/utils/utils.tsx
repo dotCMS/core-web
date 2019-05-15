@@ -83,8 +83,15 @@ export function getClassNames(
  * @param string hint
  * @returns JSX.Element
  */
-export function getTagHint(hint: string): JSX.Element {
-    return hint ? <span class="dot-field__hint">{hint}</span> : '';
+// TODO: remove the ? from name
+export function getTagHint(hint: string, name?: string): JSX.Element {
+    return hint ? (
+        <span class="dot-field__hint" id={`hint-${name || ''}`}>
+            {hint}
+        </span>
+    ) : (
+        ''
+    );
 }
 
 /**
@@ -106,13 +113,19 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  * @returns JSX.Element
  */
 export function getTagLabel(params: DotLabel): JSX.Element {
+    const Label = () => (
+        <label htmlFor={getId(params.name)} id={`label-${params.name}`}>
+            {params.label}
+        </label>
+    );
+
     return params.required ? (
         <div class="dot-field__label">
-            <label htmlFor={getId(params.name)}>{params.label}</label>
+            <Label />
             {params.required ? <span class="dot-field__required-mark">*</span> : ''}
         </div>
     ) : (
-        <label htmlFor={getId(params.name)}>{params.label}</label>
+        <Label />
     );
 }
 
@@ -123,7 +136,7 @@ export function getTagLabel(params: DotLabel): JSX.Element {
  * @returns string
  */
 export function getErrorClass(valid: boolean): string {
-    return valid ? '' : 'dot-field__error';
+    return valid ? null : 'dot-field__error';
 }
 
 /**

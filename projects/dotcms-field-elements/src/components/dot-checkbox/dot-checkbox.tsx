@@ -71,11 +71,15 @@ export class DotCheckboxComponent {
             label: this.label,
             required: this.required
         };
-        console.log(this.value);
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <div class="dot-checkbox__items">
+                <div
+                    tabIndex={0}
+                    class="dot-checkbox__items"
+                    aria-labelledby={`label-${labelTagParams.name}`}
+                    aria-describedby={`hint-${this.name}`}
+                >
                     {this._options.map((item: DotOption) => {
                         const trimmedValue = item.value.trim();
                         return (
@@ -93,7 +97,7 @@ export class DotCheckboxComponent {
                         );
                     })}
                 </div>
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
