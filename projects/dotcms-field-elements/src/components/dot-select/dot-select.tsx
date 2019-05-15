@@ -1,7 +1,8 @@
-import { Component, Prop, State, Element, Method, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
+    dotPropValidator,
     getClassNames,
     getDotOptionsFromFieldValue,
     getErrorClass,
@@ -27,13 +28,13 @@ export class DotSelectComponent {
     @Element() el: HTMLElement;
 
     @Prop() disabled = false;
-    @Prop() name: string;
-    @Prop() label: string;
-    @Prop() hint: string;
-    @Prop() options: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
-    @Prop({ mutable: true }) value: string;
+    @Prop() name = '';
+    @Prop() label = '';
+    @Prop() hint = '';
+    @Prop() options = '';
+    @Prop() required = false;
+    @Prop() requiredMessage = '';
+    @Prop({ mutable: true }) value = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -44,10 +45,26 @@ export class DotSelectComponent {
     _dotTouched = false;
     _dotPristine = true;
 
+    private fieldAttr = {
+        type: 'dot-select',
+        name: this.name
+    };
+
     componentWillLoad() {
-        this._options = getDotOptionsFromFieldValue(this.options);
+        this.fieldAttr.name = this.name;
+        this.validateProps();
         this.emitInitialValue();
         this.emitStatusChange();
+    }
+
+    @Watch('options')
+    optionsWatch(): void {
+        const validOptions = dotPropValidator({
+            field: { ...this.fieldAttr },
+            name: 'options',
+            value: this.options
+        }) || '';
+        this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
     hostData() {
@@ -97,6 +114,10 @@ export class DotSelectComponent {
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.optionsWatch();
     }
 
     private shouldBeDisabled(): boolean {

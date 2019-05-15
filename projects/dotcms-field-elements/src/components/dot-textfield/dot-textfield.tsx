@@ -2,6 +2,7 @@ import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } f
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
+    dotPropValidator,
     getClassNames,
     getErrorClass,
     getId,
@@ -11,7 +12,6 @@ import {
     getTagLabel,
     updateStatus
 } from '../../utils';
-import { dotPropValidator } from '../../utils/errorHandling';
 
 const REGEX_DEFAULT_VALUE = '';
 
