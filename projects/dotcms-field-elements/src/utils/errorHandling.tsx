@@ -1,6 +1,13 @@
-const propValidationHandling = {
+export const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
+export const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
+
+const PROP_VALIDATION_HANDLING = {
     options: stringValidator,
     regexCheck: regexValidator
+};
+
+const FIELDS_DEFAULT_VALUE = {
+    regexCheck: ''
 };
 
 interface PropValidationInfo<T> {
@@ -20,7 +27,7 @@ class DotFieldPropError<T> extends Error {
             `Warning: Invalid prop "${propInfo.name}" of type "${typeof propInfo.value}" supplied to "${propInfo
                 .field.type}" with the name "${propInfo.field.name}", expected "${expectedType}".
 Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${propInfo
-            .field.type}/readme.md`
+                .field.type}/readme.md`
         );
         this.propInfo = propInfo;
     }
@@ -51,13 +58,24 @@ function regexValidator<T>(propInfo: PropValidationInfo<T>): void {
     }
 }
 
+function dateValidator<T>(propInfo: PropValidationInfo<T>): void {}
 
-export function dotPropValidator<T>(propInfo: PropValidationInfo<T>): any {
+function timeValidator<T>(propInfo: PropValidationInfo<T>): void {}
+
+export function dotPropValidator<T>(element: T, propertyName: string): any {
+    const proInfo = {
+        value: element[propertyName],
+        name: propertyName,
+        field: {
+            name: element['name'],
+            type: element['el'].tagName.toLocaleLowerCase()
+        }
+    };
     try {
-        propValidationHandling[propInfo.name](propInfo);
-        return propInfo.value;
+        PROP_VALIDATION_HANDLING[propertyName](proInfo);
+        return element[propertyName];
     } catch (error) {
         console.warn(error.message);
-        return null;
+        return FIELDS_DEFAULT_VALUE[propertyName];
     }
 }

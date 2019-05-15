@@ -1,4 +1,4 @@
-import {Component, Prop, State, Method, Element, Event, EventEmitter, Watch} from '@stencil/core';
+import { Component, Prop, State, Method, Element, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
@@ -9,10 +9,9 @@ import {
     getTagLabel,
     getErrorClass,
     updateStatus,
-    getId, dotPropValidator
+    getId,
+    dotPropValidator
 } from '../../utils';
-
-const REGEX_DEFAULT_VALUE = '';
 
 /**
  * Represent a dotcms textarea control.
@@ -43,11 +42,6 @@ export class DotTextareaComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private fieldAttr = {
-        type: 'dot-textarea',
-        name: ''
-    };
-
     /**
      * Reset properties of the field, clear value and emit events.
      *
@@ -62,19 +56,13 @@ export class DotTextareaComponent {
     }
 
     componentWillLoad(): void {
-        this.fieldAttr.name = this.name;
         this.validateProps();
         this.emitStatusChange();
     }
 
     @Watch('regexCheck')
     regexCheckWatch(): void {
-        this.regexCheck =
-            dotPropValidator({
-                field: { ...this.fieldAttr },
-                name: 'regexCheck',
-                value: this.regexCheck
-            }) || REGEX_DEFAULT_VALUE;
+        this.regexCheck = dotPropValidator(this, 'regexCheck');
     }
 
     hostData() {

@@ -18,12 +18,16 @@ import {
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
-import { getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
+import {
+    DATE_REGEX,
+    getClassNames,
+    getTagError,
+    getTagHint,
+    getTagLabel,
+    TIME_REGEX
+} from '../../utils';
 
-const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
-const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
-
-interface FormattedDate {
+interface DateSlots {
     date: string;
     time: string;
 }
@@ -40,34 +44,34 @@ export class DotDateTimeComponent {
     value = '';
 
     /** Name that will be used as ID */
-    @Prop() name: string;
+    @Prop() name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label: string;
+    @Prop() label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint: string;
+    @Prop() hint = '';
 
     /** (optional) Determine if it is needed */
-    @Prop() required: boolean;
+    @Prop() required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop() requiredMessage: string;
+    @Prop() requiredMessage = '';
 
     /** (optional) Text that be shown when min or max are set and condition not met */
-    @Prop() validationMessage: string;
+    @Prop() validationMessage = '';
 
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
 
     /** (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop() min: string;
+    @Prop() min = '';
 
     /** (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop() max: string;
+    @Prop() max = '';
 
     /** (optional) Step that are indicated for the date and time input's separates by a comma (2,10) */
-    @Prop() step: string;
+    @Prop() step = '';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -75,21 +79,22 @@ export class DotDateTimeComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private _minDateTime: FormattedDate;
-    private _maxDateTime: FormattedDate;
-    private _value: FormattedDate;
-    private _dateStatus: DotFieldStatus;
-    private _timeStatus: DotFieldStatus;
-    private _dateStep: string;
-    private _timeStep: string;
+    private _minDateTime: DateSlots;
+    private _maxDateTime: DateSlots;
+    private _value: DateSlots;
+    private _step: DateSlots;
+    private _status = {
+        date: null,
+        time: null
+    };
 
     /**
      * Reset properties of the filed, clear value and emit events.
      */
     @Method()
     reset(): void {
-        this._dateStatus = null;
-        this._timeStatus = null;
+        this._status.date = null;
+        this._status.time = null;
         const inputs = this.el.querySelectorAll('dot-input-calendar');
         inputs.forEach((input: DotInputCalendar) => {
             input.reset();
@@ -101,12 +106,7 @@ export class DotDateTimeComponent {
     emitValueChange(event: CustomEvent) {
         const valueEvent: DotFieldValueEvent = event.detail;
         event.stopImmediatePropagation();
-
-        if (valueEvent.name.indexOf('-date') > 0) {
-            this._value.date = valueEvent.value;
-        } else {
-            this._value.time = valueEvent.value;
-        }
+        this.setValue(valueEvent);
         if (!!this._value.time && !!this._value.date) {
             this.valueChange.emit({ name: this.name, value: this.getValue() });
         }
@@ -117,13 +117,8 @@ export class DotDateTimeComponent {
         const statusEvent: DotFieldStatusEvent = event.detail;
         let status: DotFieldStatus;
         event.stopImmediatePropagation();
-
-        if (statusEvent.name.indexOf('-date') > 0) {
-            this._dateStatus = statusEvent.status;
-        } else {
-            this._timeStatus = statusEvent.status;
-        }
-        if (this._dateStatus && this._timeStatus) {
+        this.setStatus(statusEvent);
+        if (this._status.date && this._status.time) {
             status = this.statusHandler();
             this.classNames = getClassNames(status, status.dotValid, this.required);
             this.statusChange.emit({ name: this.name, status: status });
@@ -138,7 +133,7 @@ export class DotDateTimeComponent {
 
     componentWillLoad() {
         this.setDatesFormat();
-        [this._dateStep, this._timeStep] = this.step.split(',');
+        [this._step.date, this._step.time] = this.step.split(',');
     }
 
     hostData() {
@@ -167,7 +162,7 @@ export class DotDateTimeComponent {
                     validation-message={this.validationMessage}
                     min={this._minDateTime.date}
                     max={this._maxDateTime.date}
-                    step={this._dateStep}
+                    step={this._step.date}
                 />
                 <dot-input-calendar
                     disabled={this.disabled}
@@ -180,7 +175,7 @@ export class DotDateTimeComponent {
                     validation-message={this.validationMessage}
                     min={this._minDateTime.time}
                     max={this._maxDateTime.time}
-                    step={this._timeStep}
+                    step={this._step.time}
                 />
                 {getTagHint(this.hint)}
                 {this.errorMessageElement}
@@ -194,7 +189,7 @@ export class DotDateTimeComponent {
         this._value = this.parseDate(this.value);
     }
 
-    private parseDate(data: string): FormattedDate {
+    private parseDate(data: string): DateSlots {
         const [dateOrTime, time] = data.split(' ');
         return {
             date: this.validateDate(dateOrTime),
@@ -210,11 +205,12 @@ export class DotDateTimeComponent {
         return TIME_REGEX.test(time) ? time : null;
     }
 
+    // tslint:disable-next-line:cyclomatic-complexity
     private statusHandler(): DotFieldStatus {
         return {
-            dotTouched: this._dateStatus.dotTouched || this._timeStatus.dotTouched,
-            dotValid: this._dateStatus.dotValid && this._timeStatus.dotValid,
-            dotPristine: this._dateStatus.dotPristine && this._timeStatus.dotPristine
+            dotTouched: this._status.date.dotTouched || this._status.time.dotTouched,
+            dotValid: this._status.date.dotValid && this._status.time.dotValid,
+            dotPristine: this._status.date.dotPristine && this._status.time.dotPristine
         };
     }
 
@@ -222,5 +218,21 @@ export class DotDateTimeComponent {
         return this._value.date && this._value.time
             ? `${this._value.date} ${this._value.time}`
             : '';
+    }
+
+    private setValue(event: DotFieldValueEvent) {
+        if (event.name.indexOf('-date') > 0) {
+            this._value.date = event.value;
+        } else {
+            this._value.time = event.value;
+        }
+    }
+
+    private setStatus(event: DotFieldStatusEvent) {
+        if (event.name.indexOf('-date') > 0) {
+            this._status.date = event.status;
+        } else {
+            this._status.time = event.status;
+        }
     }
 }

@@ -7,19 +7,19 @@
 
 ## Properties
 
-| Property            | Attribute            | Description | Type      | Default               |
-| ------------------- | -------------------- | ----------- | --------- | --------------------- |
-| `disabled`          | `disabled`           |             | `boolean` | `false`               |
-| `hint`              | `hint`               |             | `string`  | `''`                  |
-| `label`             | `label`              |             | `string`  | `''`                  |
-| `name`              | `name`               |             | `string`  | `''`                  |
-| `placeholder`       | `placeholder`        |             | `string`  | `''`                  |
-| `regexCheck`        | `regex-check`        |             | `string`  | `REGEX_DEFAULT_VALUE` |
-| `required`          | `required`           |             | `boolean` | `false`               |
-| `requiredMessage`   | `required-message`   |             | `string`  | `''`                  |
-| `type`              | `type`               |             | `string`  | `'text'`              |
-| `validationMessage` | `validation-message` |             | `string`  | `''`                  |
-| `value`             | `value`              |             | `string`  | `''`                  |
+| Property            | Attribute            | Description | Type      | Default  |
+| ------------------- | -------------------- | ----------- | --------- | -------- |
+| `disabled`          | `disabled`           |             | `boolean` | `false`  |
+| `hint`              | `hint`               |             | `string`  | `''`     |
+| `label`             | `label`              |             | `string`  | `''`     |
+| `name`              | `name`               |             | `string`  | `''`     |
+| `placeholder`       | `placeholder`        |             | `string`  | `''`     |
+| `regexCheck`        | `regex-check`        |             | `string`  | `''`     |
+| `required`          | `required`           |             | `boolean` | `false`  |
+| `requiredMessage`   | `required-message`   |             | `string`  | `''`     |
+| `type`              | `type`               |             | `string`  | `'text'` |
+| `validationMessage` | `validation-message` |             | `string`  | `''`     |
+| `value`             | `value`              |             | `string`  | `''`     |
 
 
 ## Events

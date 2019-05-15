@@ -13,8 +13,6 @@ import {
     updateStatus
 } from '../../utils';
 
-const REGEX_DEFAULT_VALUE = '';
-
 /**
  * Represent a dotcms input control.
  *
@@ -33,7 +31,7 @@ export class DotTextfieldComponent {
     @Prop() name = '';
     @Prop() placeholder = '';
     @Prop({ mutable: true })
-    regexCheck = REGEX_DEFAULT_VALUE;
+    regexCheck = '';
     @Prop() required = false;
     @Prop() requiredMessage = '';
     @Prop() type = 'text';
@@ -45,11 +43,6 @@ export class DotTextfieldComponent {
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
-
-    private fieldAttr = {
-        type: 'dot-textfield',
-        name: ''
-    };
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -63,7 +56,6 @@ export class DotTextfieldComponent {
     }
 
     componentWillLoad(): void {
-        this.fieldAttr.name = this.name;
         this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
@@ -71,12 +63,7 @@ export class DotTextfieldComponent {
 
     @Watch('regexCheck')
     regexCheckWatch(): void {
-        this.regexCheck =
-            dotPropValidator({
-                field: { ...this.fieldAttr },
-                name: 'regexCheck',
-                value: this.regexCheck
-            }) || REGEX_DEFAULT_VALUE;
+        this.regexCheck = dotPropValidator(this, 'regexCheck');
     }
 
     hostData() {
@@ -125,7 +112,7 @@ export class DotTextfieldComponent {
 
     private isRegexValid(): boolean {
         if (this.regexCheck && this.value) {
-            const regex = new RegExp(this.regexCheck, 'ig');
+            const regex = new RegExp(this.regexCheck);
             return regex.test(this.value);
         }
         return true;
