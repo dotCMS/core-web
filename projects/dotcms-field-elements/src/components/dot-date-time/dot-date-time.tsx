@@ -85,7 +85,10 @@ export class DotDateTimeComponent {
     private _minDateTime: DateSlots;
     private _maxDateTime: DateSlots;
     private _value: DateSlots;
-    private _step: DateSlots;
+    private _step = {
+        date: null,
+        time: null
+    };
     private _status = {
         date: null,
         time: null

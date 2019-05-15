@@ -82,7 +82,7 @@ describe('dot-textarea', () => {
     it('should set the default value of regexCheck when the Regular Expression is not valid', async () => {
         element.setProperty('regexCheck', '[^(<[.\\n]+>)]*l');
         await page.waitForChanges();
-        expect(await input.getProperty('regexCheck')).toBe('');
+        expect(await input.getProperty('regexCheck')).toBeUndefined();
     });
 
     describe('emit events', () => {

@@ -16,14 +16,7 @@ import {
     DotFieldValueEvent,
     DotLabel
 } from '../../models';
-import {
-    dotPropValidator,
-    getClassNames,
-    getOriginalStatus,
-    getTagError,
-    getTagHint,
-    getTagLabel
-} from '../../utils';
+import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -44,8 +37,7 @@ export class DotDateComponent {
     min: string;
     @Prop({ mutable: true })
     max: string;
-    @Prop({ mutable: true })
-    step: string;
+    @Prop() step: string;
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -66,24 +58,14 @@ export class DotDateComponent {
         this.validateProps();
     }
 
-    @Watch('value')
-    valueWatch(): void {
-        this.value = dotPropValidator(this, 'value', 'date');
-    }
-
     @Watch('min')
     minWatch(): void {
-        this.value = dotPropValidator(this, 'min', 'date');
+        this.min = dotPropValidator(this, 'min', 'date');
     }
 
     @Watch('max')
     maxWatch(): void {
-        this.value = dotPropValidator(this, 'max', 'date');
-    }
-
-    @Watch('step')
-    stepWatch(): void {
-        this.value = dotPropValidator(this, 'step', 'number');
+        this.max = dotPropValidator(this, 'max', 'date');
     }
 
     @Listen('_valueChange')
@@ -145,9 +127,7 @@ export class DotDateComponent {
     }
 
     private validateProps(): void {
-        this.valueWatch();
         this.minWatch();
         this.maxWatch();
-        this.stepWatch();
     }
 }

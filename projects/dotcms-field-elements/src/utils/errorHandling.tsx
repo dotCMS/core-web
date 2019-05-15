@@ -11,7 +11,11 @@ const PROP_VALIDATION_HANDLING = {
 
 const FIELDS_DEFAULT_VALUE = {
     options: '',
-    regexCheck: ''
+    regexCheck: '',
+    value: '',
+    min: '',
+    max: '',
+    step: ''
 };
 
 interface PropValidationInfo<T> {
@@ -58,7 +62,7 @@ function regexValidator<T>(propInfo: PropValidationInfo<T>): void {
     try {
         RegExp(propInfo.value.toString());
     } catch (e) {
-        throw new DotFieldPropError(propInfo, 'regular expression');
+        throw new DotFieldPropError(propInfo, 'valid regular expression');
     }
 }
 
@@ -69,13 +73,13 @@ function numberValidator<T>(propInfo: PropValidationInfo<T>): void {
 }
 
 function dateValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (!DATE_REGEX.test(propInfo.value.toString())) {
+    if (propInfo.value && !DATE_REGEX.test(propInfo.value.toString())) {
         throw new DotFieldPropError(propInfo, 'Date');
     }
 }
 
 function timeValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (!TIME_REGEX.test(propInfo.value.toString())) {
+    if (propInfo.value && !TIME_REGEX.test(propInfo.value.toString())) {
         throw new DotFieldPropError(propInfo, 'Time');
     }
 }
@@ -89,6 +93,7 @@ export function dotPropValidator<T>(element: T, propertyName: string, validatorT
             type: element['el'].tagName.toLocaleLowerCase()
         }
     };
+
     try {
         PROP_VALIDATION_HANDLING[validatorType || propertyName](proInfo);
         return element[propertyName];

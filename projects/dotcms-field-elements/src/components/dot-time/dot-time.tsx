@@ -6,7 +6,8 @@ import {
     Listen,
     Method,
     Prop,
-    State
+    State,
+    Watch
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import {
@@ -15,7 +16,7 @@ import {
     DotFieldValueEvent,
     DotLabel
 } from '../../models';
-import { getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
+import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-time',
@@ -32,8 +33,10 @@ export class DotTimeComponent {
     @Prop() requiredMessage: string;
     @Prop() validationMessage: string;
     @Prop() disabled = false;
-    @Prop() min: string;
-    @Prop() max: string;
+    @Prop({ mutable: true })
+    min: string;
+    @Prop({ mutable: true })
+    max: string;
     @Prop() step: string;
 
     @State() classNames: DotFieldStatusClasses;
@@ -49,6 +52,20 @@ export class DotTimeComponent {
     reset(): void {
         const input = this.el.querySelector('dot-input-calendar');
         input.reset();
+    }
+
+    componentWillLoad(): void {
+        this.validateProps();
+    }
+
+    @Watch('min')
+    minWatch(): void {
+        this.min = dotPropValidator(this, 'min', 'time');
+    }
+
+    @Watch('max')
+    maxWatch(): void {
+        this.max = dotPropValidator(this, 'max', 'time');
     }
 
     @Listen('_valueChange')
@@ -107,5 +124,10 @@ export class DotTimeComponent {
                 {this.errorMessageElement}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.minWatch();
+        this.maxWatch();
     }
 }
