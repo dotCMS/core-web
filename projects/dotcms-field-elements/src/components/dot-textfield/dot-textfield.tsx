@@ -77,7 +77,7 @@ export class DotTextfieldComponent {
                     type={this.type}
                     value={this.value}
                 />
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

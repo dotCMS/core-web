@@ -141,7 +141,7 @@ export class DotDateRangeComponent {
                         </select>
                     </label>
                 </div>
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

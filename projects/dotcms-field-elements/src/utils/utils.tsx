@@ -83,10 +83,9 @@ export function getClassNames(
  * @param string hint
  * @returns JSX.Element
  */
-// TODO: remove the ? from name
-export function getTagHint(hint: string, name?: string): JSX.Element {
+export function getTagHint(hint: string, name: string): JSX.Element {
     return hint ? (
-        <span class="dot-field__hint" id={`hint-${name || ''}`}>
+        <span class="dot-field__hint" id={`hint-${name}`}>
             {hint}
         </span>
     ) : (

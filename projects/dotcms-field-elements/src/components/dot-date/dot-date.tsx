@@ -103,7 +103,7 @@ export class DotDateComponent {
                     max={this.max}
                     step={this.step}
                 />
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {this.errorMessageElement}
             </Fragment>
         );

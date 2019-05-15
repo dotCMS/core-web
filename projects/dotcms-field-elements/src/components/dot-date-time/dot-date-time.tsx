@@ -189,7 +189,7 @@ export class DotDateTimeComponent {
                         step={this._timeStep}
                     />
                 </label>
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {this.errorMessageElement}
             </Fragment>
         );

@@ -96,7 +96,7 @@ export class DotMultiSelectComponent {
                     })}
 
                 </select>
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
