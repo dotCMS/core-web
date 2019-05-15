@@ -1,0 +1,15 @@
+.dot-key-value__form {
+    display: inline-flex;
+
+    label {
+        align-items: center;
+        display: inline-flex;
+        flex-direction: row;
+        margin-right: 1rem;
+
+        input {
+            margin-left: 0.5rem;
+        }
+    }
+}
+
