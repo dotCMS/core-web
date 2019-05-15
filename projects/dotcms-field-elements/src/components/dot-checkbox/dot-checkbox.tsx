@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Method, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
@@ -9,7 +9,8 @@ import {
     getTagLabel,
     getErrorClass,
     getDotOptionsFromFieldValue,
-    updateStatus
+    updateStatus,
+    dotPropValidator
 } from '../../utils';
 
 @Component({
@@ -35,9 +36,15 @@ export class DotCheckboxComponent {
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     componentWillLoad() {
-        this._options = getDotOptionsFromFieldValue(this.options);
+        this.validateProps();
         this.emitValueChange();
         this.emitStatusChange();
+    }
+
+    @Watch('options')
+    optionsWatch(): void {
+        const validOptions = dotPropValidator(this, 'options');
+        this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
     hostData() {
@@ -86,6 +93,10 @@ export class DotCheckboxComponent {
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.optionsWatch();
     }
 
     // Todo: find how to set proper TYPE in TS

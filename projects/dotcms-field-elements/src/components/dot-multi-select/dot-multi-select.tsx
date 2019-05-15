@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Method, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
@@ -10,7 +10,8 @@ import {
     getTagError,
     getTagHint,
     getTagLabel,
-    updateStatus
+    updateStatus,
+    dotPropValidator
 } from '../../utils';
 
 /**
@@ -46,9 +47,15 @@ export class DotMultiSelectComponent {
     _dotPristine = true;
 
     componentWillLoad() {
-        this._options = getDotOptionsFromFieldValue(this.options);
+        this.validateProps();
         this.emitInitialValue();
         this.emitStatusChange();
+    }
+
+    @Watch('options')
+    optionsWatch(): void {
+        const validOptions = dotPropValidator(this, 'options');
+        this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
     hostData() {
@@ -100,6 +107,10 @@ export class DotMultiSelectComponent {
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.optionsWatch();
     }
 
     private shouldBeDisabled(): boolean {
