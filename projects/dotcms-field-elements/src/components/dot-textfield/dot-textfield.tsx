@@ -15,6 +15,12 @@ import {
 
 const REGEX_DEFAULT_VALUE = '';
 
+/**
+ * Represent a dotcms input control.
+ *
+ * @export
+ * @class DotTextfieldComponent
+ */
 @Component({
     tag: 'dot-textfield',
     styleUrl: 'dot-textfield.scss'
@@ -35,16 +41,15 @@ export class DotTextfieldComponent {
     @Prop({ mutable: true })
     value = '';
 
-    private fieldAttr = {
-        type: 'dot-textfield',
-        name: ''
-    };
-
-
     @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+
+    private fieldAttr = {
+        type: 'dot-textfield',
+        name: ''
+    };
 
     /**
      * Reset properties of the field, clear value and emit events.
