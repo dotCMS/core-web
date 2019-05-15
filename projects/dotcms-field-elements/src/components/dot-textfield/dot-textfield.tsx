@@ -13,21 +13,21 @@ import {
 } from '../../utils';
 import { dotPropValidator } from '../../utils/errorHandling';
 
+const REGEX_DEFAULT_VALUE = '';
+
 @Component({
     tag: 'dot-textfield',
     styleUrl: 'dot-textfield.scss'
 })
 export class DotTextfieldComponent {
     @Element() el: HTMLElement;
-    @Prop({ mutable: true })
-    disabled = false;
+    @Prop() disabled = false;
     @Prop() hint = '';
-    @Prop({ mutable: true })
-    label = '';
+    @Prop() label = '';
     @Prop() name = '';
     @Prop() placeholder = '';
     @Prop({ mutable: true })
-    regexCheck = '';
+    regexCheck = REGEX_DEFAULT_VALUE;
     @Prop() required = false;
     @Prop() requiredMessage = '';
     @Prop() type = 'text';
@@ -35,10 +35,11 @@ export class DotTextfieldComponent {
     @Prop({ mutable: true })
     value = '';
 
-    fieldAttr = {
+    private fieldAttr = {
         type: 'dot-textfield',
         name: ''
     };
+
 
     @State() status: DotFieldStatus;
 
@@ -70,7 +71,7 @@ export class DotTextfieldComponent {
                 field: { ...this.fieldAttr },
                 name: 'regexCheck',
                 value: this.regexCheck
-            }) || '';
+            }) || REGEX_DEFAULT_VALUE;
     }
 
     hostData() {

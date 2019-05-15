@@ -143,16 +143,16 @@
             step: '2,10',
             min: '2000-01-01 1:00:00',
             max: '2020-10-30 23:59:59'
-        }];
+        }
+    ];
 
-    window.onload = function() {
-        const dotFormEl = document.querySelector('dot-form')
-        dotFormEl.fields = fieldsConfig;
-        dotFormEl.addEventListener('onSubmit', (e) => {
-            e.preventDefault();
-            console.log(e)
-        });
-    };
+    const dotFormEl = document.querySelector('dot-form')
+    dotFormEl.fields = fieldsConfig;
+    dotFormEl.addEventListener('onSubmit', (e) => {
+        e.preventDefault();
+        console.log(e)
+    });
+
 </script>
 </body>
 </html>

@@ -86,6 +86,13 @@ describe('dot-textfield', () => {
         expect(await input.getProperty('required')).toBe(true);
     });
 
+    it('should set the default value of regexCheck when the Regular Expression is not valid', async () => {
+        element.setProperty('regexCheck', '[^(<[.\\n]+>)]*l');
+        await page.waitForChanges();
+        expect(await input.getProperty('regexCheck')).toBe('');
+    });
+
+
     describe('emit events', () => {
         it('should mark as touched when onblur', async () => {
             await input.triggerEvent('blur');

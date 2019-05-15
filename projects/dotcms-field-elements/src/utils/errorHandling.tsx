@@ -49,6 +49,7 @@ function regexValidator(propInfo: PropValidationInfo<string>): void {
     }
 }
 
+
 export function dotPropValidator<T>(propInfo: PropValidationInfo<T>): any {
     try {
         fieldValidationMap[propInfo.name](propInfo);
