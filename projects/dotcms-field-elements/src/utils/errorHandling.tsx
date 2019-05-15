@@ -7,6 +7,7 @@ const PROP_VALIDATION_HANDLING = {
 };
 
 const FIELDS_DEFAULT_VALUE = {
+    options: '',
     regexCheck: ''
 };
 

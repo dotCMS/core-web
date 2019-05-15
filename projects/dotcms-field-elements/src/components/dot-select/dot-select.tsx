@@ -45,13 +45,7 @@ export class DotSelectComponent {
     _dotTouched = false;
     _dotPristine = true;
 
-    private fieldAttr = {
-        type: 'dot-select',
-        name: this.name
-    };
-
     componentWillLoad() {
-        this.fieldAttr.name = this.name;
         this.validateProps();
         this.emitInitialValue();
         this.emitStatusChange();
@@ -59,11 +53,7 @@ export class DotSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator({
-            field: { ...this.fieldAttr },
-            name: 'options',
-            value: this.options
-        }) || '';
+        const validOptions = dotPropValidator(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

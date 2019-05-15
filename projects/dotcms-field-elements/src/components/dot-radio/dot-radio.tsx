@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent, DotOption, DotLabel } from '../../models';
 import {
@@ -9,9 +9,16 @@ import {
     getTagError,
     getTagHint,
     getTagLabel,
-    updateStatus
+    updateStatus,
+    dotPropValidator
 } from '../../utils';
 
+/**
+ * Represent a dotcms radio control.
+ *
+ * @export
+ * @class DotRadioComponent
+ */
 @Component({
     tag: 'dot-radio',
     styleUrl: 'dot-radio.scss'
@@ -19,8 +26,7 @@ import {
 export class DotRadioComponent {
     @Element() el: HTMLElement;
 
-    @Prop({ mutable: true })
-    value: string;
+    @Prop({ mutable: true }) value: string;
     @Prop() name: string;
     @Prop() label: string;
     @Prop() hint: string;
@@ -47,8 +53,14 @@ export class DotRadioComponent {
     }
 
     componentWillLoad(): void {
-        this._options = getDotOptionsFromFieldValue(this.options);
+        this.validateProps();
         this.emitStatusChange();
+    }
+
+    @Watch('options')
+    optionsWatch(): void {
+        const validOptions = dotPropValidator(this, 'options');
+        this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
     hostData() {
@@ -88,6 +100,10 @@ export class DotRadioComponent {
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.optionsWatch();
     }
 
     private isValid(): boolean {

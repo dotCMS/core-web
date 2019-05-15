@@ -16,10 +16,8 @@
 
 </head>
 <body>
-<div id="container"></div>
-
+<button type="button" onclick="cambio()">setProp</button>
 <dot-form></dot-form>
-
 <script src='/build/dotcmsfields.js'></script>
 <script>
     const fieldsConfig = [
@@ -152,6 +150,12 @@
         e.preventDefault();
         console.log(e)
     });
+
+    function cambio() {
+        const select = document.querySelector('dot-multi-select');
+        select.options = 'a|2,b|4';
+        console.log('---cambio done')
+    };
 
 </script>
 </body>
