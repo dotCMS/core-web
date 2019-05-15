@@ -27,6 +27,9 @@ import {
     TIME_REGEX
 } from '../../utils';
 
+const DATE_SUFFIX = '-date';
+const TIME_SUFFIX = '-time';
+
 interface DateSlots {
     date: string;
     time: string;
@@ -107,7 +110,7 @@ export class DotDateTimeComponent {
         const valueEvent: DotFieldValueEvent = event.detail;
         event.stopImmediatePropagation();
         this.setValue(valueEvent);
-        if (!!this._value.time && !!this._value.date) {
+        if (this.isValueComplete()) {
             this.valueChange.emit({ name: this.name, value: this.getValue() });
         }
     }
@@ -118,7 +121,7 @@ export class DotDateTimeComponent {
         let status: DotFieldStatus;
         event.stopImmediatePropagation();
         this.setStatus(statusEvent);
-        if (this._status.date && this._status.time) {
+        if (this.isStatusComplete()) {
             status = this.statusHandler();
             this.classNames = getClassNames(status, status.dotValid, this.required);
             this.statusChange.emit({ name: this.name, status: status });
@@ -154,7 +157,7 @@ export class DotDateTimeComponent {
                 <dot-input-calendar
                     disabled={this.disabled}
                     type="date"
-                    name={this.name + '-date'}
+                    name={this.name + DATE_SUFFIX}
                     hint={this.hint}
                     value={this._value.date}
                     required={this.required}
@@ -167,7 +170,7 @@ export class DotDateTimeComponent {
                 <dot-input-calendar
                     disabled={this.disabled}
                     type="time"
-                    name={this.name + '-time'}
+                    name={this.name + TIME_SUFFIX}
                     hint={this.hint}
                     value={this._value.time}
                     required={this.required}
@@ -221,7 +224,7 @@ export class DotDateTimeComponent {
     }
 
     private setValue(event: DotFieldValueEvent) {
-        if (event.name.indexOf('-date') > 0) {
+        if (event.name.indexOf(DATE_SUFFIX) > 0) {
             this._value.date = event.value;
         } else {
             this._value.time = event.value;
@@ -229,10 +232,18 @@ export class DotDateTimeComponent {
     }
 
     private setStatus(event: DotFieldStatusEvent) {
-        if (event.name.indexOf('-date') > 0) {
+        if (event.name.indexOf(DATE_SUFFIX) > 0) {
             this._status.date = event.status;
         } else {
             this._status.time = event.status;
         }
+    }
+
+    private isValueComplete(): boolean {
+        return !!this._value.time && !!this._value.date;
+    }
+
+    private isStatusComplete(): boolean {
+        return this._status.date && this._status.time;
     }
 }

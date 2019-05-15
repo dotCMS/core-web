@@ -3,7 +3,10 @@ export const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-
 
 const PROP_VALIDATION_HANDLING = {
     options: stringValidator,
-    regexCheck: regexValidator
+    regexCheck: regexValidator,
+    number: numberValidator,
+    time: timeValidator,
+    date: dateValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
@@ -58,11 +61,25 @@ function regexValidator<T>(propInfo: PropValidationInfo<T>): void {
     }
 }
 
-function dateValidator<T>(propInfo: PropValidationInfo<T>): void {}
+function numberValidator<T>(propInfo: PropValidationInfo<T>): void {
+    if (isNaN(Number(propInfo.value))) {
+        throw new DotFieldPropError(propInfo, 'Number');
+    }
+}
 
-function timeValidator<T>(propInfo: PropValidationInfo<T>): void {}
+function dateValidator<T>(propInfo: PropValidationInfo<T>): void {
+    if (!DATE_REGEX.test(propInfo.value.toString())) {
+        throw new DotFieldPropError(propInfo, 'Date');
+    }
+}
 
-export function dotPropValidator<T>(element: T, propertyName: string): any {
+function timeValidator<T>(propInfo: PropValidationInfo<T>): void {
+    if (!TIME_REGEX.test(propInfo.value.toString())) {
+        throw new DotFieldPropError(propInfo, 'Time');
+    }
+}
+
+export function dotPropValidator<T>(element: T, propertyName: string, validatorType?: string): any {
     const proInfo = {
         value: element[propertyName],
         name: propertyName,
@@ -72,7 +89,7 @@ export function dotPropValidator<T>(element: T, propertyName: string): any {
         }
     };
     try {
-        PROP_VALIDATION_HANDLING[propertyName](proInfo);
+        PROP_VALIDATION_HANDLING[validatorType || propertyName](proInfo);
         return element[propertyName];
     } catch (error) {
         console.warn(error.message);
