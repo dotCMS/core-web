@@ -43,9 +43,9 @@ function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
     }
 }
 
-function regexValidator(propInfo: PropValidationInfo<string>): void {
+function regexValidator<T>(propInfo: PropValidationInfo<T>): void {
     try {
-        RegExp(propInfo.value);
+        RegExp(propInfo.value.toString());
     } catch (e) {
         throw new DotFieldPropError(propInfo, 'regular expression');
     }
