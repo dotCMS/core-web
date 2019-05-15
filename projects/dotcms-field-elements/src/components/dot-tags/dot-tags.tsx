@@ -1,4 +1,4 @@
-import { Component, Prop, State, Element, Event, EventEmitter, Method } from '@stencil/core';
+import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
@@ -18,12 +18,12 @@ import {
 export class DotTagsComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true }) value: string;
-    @Prop() name: string;
-    @Prop() label: string;
-    @Prop() hint: string;
-    @Prop() placeholder: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
+    @Prop() name = '';
+    @Prop() label = '';
+    @Prop() hint= '';
+    @Prop() placeholder= '';
+    @Prop() required =  false;
+    @Prop() requiredMessage = '';
     @Prop() disabled = false;
     @Prop() threshold = 0;
     @Prop() debounce = 300;
@@ -59,6 +59,7 @@ export class DotTagsComponent {
     }
 
     hostData() {
+        console.log('hostData', JSON.stringify(getClassNames(this.status, this.isValid(), this.required)));
         return {
             class: getClassNames(this.status, this.isValid(), this.required)
         };
@@ -76,6 +77,7 @@ export class DotTagsComponent {
                 <div class='tag_container'></div>
 
                 <dot-autocomplete
+                    id={this.name}
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
                     placeholder={this.placeholder}
@@ -94,7 +96,7 @@ export class DotTagsComponent {
     }
 
     private createTag(label: string): void {
-        if (!this.getTags().includes(label)){
+        if (!this.getTags().includes(label)) {
             this.addTagElement(label);
             this.setValue();
             this.selected.emit(label);
@@ -109,6 +111,8 @@ export class DotTagsComponent {
             this.setValue();
             this.removed.emit(event.detail);
         });
+
+        tag.setAttribute('disabled', this.disabled.toString());
 
         this.el.querySelector('.tag_container').append(tag);
     }
@@ -136,8 +140,8 @@ export class DotTagsComponent {
         }
     }
 
+    @Watch('value')
     private setDefaultValue(value: string): void {
-        console.log('setDefaultValue  ' + this.value);
         Array.from(this.el.querySelectorAll('dot-tag'))
             .forEach(tag => tag.remove());
 

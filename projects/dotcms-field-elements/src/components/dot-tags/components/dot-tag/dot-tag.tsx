@@ -8,6 +8,7 @@ import Fragment from 'stencil-fragment';
 export class DotTagComponent {
     @Element() el: HTMLElement;
     @Prop() label: string;
+    @Prop() disabled: boolean;
 
     @Event() remove: EventEmitter<String>;
 
@@ -17,7 +18,11 @@ export class DotTagComponent {
                 <span>
                     {this.label}
                 </span>
-                <button type='button' onClick={() => this.removeTag()}>x</button>
+                <button type='button'
+                    disabled={this.disabled}
+                    onClick={() => this.removeTag()}>
+                    x
+                </button>
             </Fragment>
         );
     }

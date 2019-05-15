@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter, Element } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Element, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
 
@@ -12,7 +12,6 @@ export class DotAutocompleteComponent {
 
     @Prop() disabled = false;
     @Prop() placeholder: string;
-    @Prop({ mutable: true }) value: string;
     @Prop() threshold = 0;
     @Prop() maxResults = 0;
     @Prop() debounce = 300;
@@ -21,7 +20,8 @@ export class DotAutocompleteComponent {
     @Event() selection: EventEmitter<string>;
     @Event() lostFocus: EventEmitter<FocusEvent>;
 
-    private readonly id = `autoComplete${new Date().getTime()}`;;
+    private readonly id = `autoComplete${new Date().getTime()}`;
+    private autocomplete;
 
     private keyEvent = {
         'Enter': this.emitSelection.bind(this),
@@ -29,17 +29,78 @@ export class DotAutocompleteComponent {
     };
 
     componentDidLoad(): void {
+        if (this.data) {
+            this.initAutocomplete();
+        }
+    }
+
+    render() {
+        return (
+            <Fragment>
+                <input
+                    disabled={this.disabled || null}
+                    id ={this.id}
+                    placeholder={this.placeholder}
+                    onBlur={(event: FocusEvent) => this.handleBlur(event)}
+                    onKeyDown={(event: KeyboardEvent) => this.handleKeyDown(event)}
+                />
+            </Fragment>
+        );
+    }
+
+    @Watch('data')
+    watchData(): void {
+        if (!this.autocomplete) {
+            this.initAutocomplete();
+        }
+    }
+
+    private handleKeyDown(event: KeyboardEvent): void {
+        const value = this.getInputElement()['value'];
+
+        if (value && this.keyEvent[event.key]) {
+            this.keyEvent[event.key](value);
+        }
+    }
+
+    private handleBlur(event: FocusEvent): void {
+        setTimeout(() => {
+            if (document.activeElement.parentElement !== this.getResultList()) {
+                this.clean();
+                this.lostFocus.emit(event);
+            }
+        }, 0);
+    }
+
+    private clean(): void {
+        this.getInputElement()['value'] = '';
+        this.cleanOptions();
+    }
+
+    private cleanOptions(): void {
+        const resultList = this.getResultList();
+
+        if (resultList) {
+            Array.from(resultList.querySelectorAll('li'))
+                .forEach(child => child.remove()
+            );
+        }
+    }
+
+    private emitSelection(selection: string): void {
+        this.clean();
+        this.selection.emit(selection);
+    }
+
+    private getInputElement(): HTMLElement {
+        return this.el.querySelector(`#${this.id}`);
+    }
+
+    private initAutocomplete(): void {
         // tslint:disable-next-line: no-unused-expression
-        new autoComplete({
+        this.autocomplete = new autoComplete({
             data: {
-                src: async () => {
-                    console.log('data')
-                    const autocomplete = document.querySelector(`#${this.id}`);
-                    autocomplete.setAttribute('placeholder', 'Loading...');
-                    const data = await this.data();
-                    autocomplete.setAttribute('placeholder', this.placeholder || '');
-                    return data;
-                }
+                src: async () => this.getData()
             },
             sort: (a, b) => {
                 if (a.match < b.match) {
@@ -59,9 +120,9 @@ export class DotAutocompleteComponent {
             debounce: this.debounce,
             resultsList: {
                 container: () => {
-                    return `${this.id}_results_list`;
+                    return this.getResultListId();
                 },
-                destination: this.el.querySelector(`#${this.id}`),
+                destination: this.getInputElement(),
                 position: 'afterend'
             },
             resultItem: (data) => {
@@ -71,45 +132,19 @@ export class DotAutocompleteComponent {
         });
     }
 
-    render() {
-        return (
-            <Fragment>
-                <input
-                    disabled={this.disabled || null}
-                    id ={this.id}
-                    placeholder={this.placeholder}
-                    value={this.value}
-                    onBlur={this.handleBlur.bind(this)}
-                    onKeyDown={this.handleKeyDown.bind(this)}
-                />
-            </Fragment>
-        );
+    private getResultList(): HTMLElement {
+        return this.el.querySelector(`#${this.getResultListId()}`);
     }
 
-    private handleKeyDown(event: KeyboardEvent): void {
-        const value = document.getElementById(this.id)['value'];
-
-        if (value && this.keyEvent[event.key]) {
-            this.keyEvent[event.key](value);
-        }
+    private getResultListId(): string {
+        return `${this.id}_results_list`;
     }
 
-    private handleBlur(event: FocusEvent): void {
-        this.lostFocus.emit(event);
-        this.clean();
-    }
-
-    private clean(): void {
-        document.getElementById(this.id)['value'] = '';
-        Array.from(document.getElementById( `${this.id}_results_list`).querySelectorAll('li'))
-            .forEach(child => {
-                child.remove();
-            }
-        );
-    }
-
-    private emitSelection(selection: string): void {
-        this.clean();
-        this.selection.emit(selection);
+    private async getData(): Promise<string[]> {
+        const autocomplete = this.getInputElement();
+        autocomplete.setAttribute('placeholder', 'Loading...');
+        const data = !!this.data ? await this.data() : [];
+        autocomplete.setAttribute('placeholder', this.placeholder || '');
+        return data;
     }
 }
