@@ -1,8 +1,9 @@
 const fieldValidationMap = {
+    options: stringValidator,
     regexCheck: regexValidator
 };
 
-export interface PropValidationInfo<T> {
+interface PropValidationInfo<T> {
     field: {
         type: string;
         name: string;
@@ -11,7 +12,7 @@ export interface PropValidationInfo<T> {
     value: T;
 }
 
-export class DotFieldParamError<T> extends Error {
+class DotFieldParamError<T> extends Error {
     private readonly propInfo: PropValidationInfo<T>;
 
     constructor(propInfo: PropValidationInfo<T>, expectedType: string) {
@@ -35,11 +36,12 @@ export class DotFieldParamError<T> extends Error {
 //     }
 // }
 //
-// function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
-//     if (typeof propInfo.value !== 'string') {
-//         throw new DotFieldParamError(propInfo, 'string');
-//     }
-// }
+
+function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
+    if (typeof propInfo.value !== 'string') {
+        throw new DotFieldParamError(propInfo, 'string');
+    }
+}
 
 function regexValidator(propInfo: PropValidationInfo<string>): void {
     try {
