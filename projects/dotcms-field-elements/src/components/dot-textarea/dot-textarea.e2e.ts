@@ -155,7 +155,7 @@ describe('dot-textarea', () => {
         element.setProperty('hint', 'this is a hint');
         await page.waitForChanges();
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<label for=\"dot-Address\" id=\"label-Address\">Address:</label><textarea id=\"dot-Address\" name=\"Address\"></textarea><span class=\"dot-field__hint\" id=\"hint-\">this is a hint</span>`;
+        const tagsRenderExpected = `<label for=\"dot-Address\" id=\"label-Address\">Address:</label><textarea id=\"dot-Address\" name=\"Address\"></textarea><span class=\"dot-field__hint\" id=\"hint-Address\">this is a hint</span>`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 });
