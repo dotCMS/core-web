@@ -45,14 +45,14 @@ export class DotSelectComponent {
     _dotTouched = false;
     _dotPristine = true;
 
-    fieldAttr = {
+    private fieldAttr = {
         type: 'dot-select',
         name: this.name
     };
 
     componentWillLoad() {
         this.fieldAttr.name = this.name;
-        this.optionsWatch();
+        this.validateProps();
         this.emitInitialValue();
         this.emitStatusChange();
     }
@@ -114,6 +114,10 @@ export class DotSelectComponent {
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
+    }
+
+    private validateProps(): void {
+        this.optionsWatch();
     }
 
     private shouldBeDisabled(): boolean {
