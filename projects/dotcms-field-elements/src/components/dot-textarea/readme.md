@@ -7,17 +7,17 @@
 
 ## Properties
 
-| Property            | Attribute            | Description | Type      | Default     |
-| ------------------- | -------------------- | ----------- | --------- | ----------- |
-| `disabled`          | `disabled`           |             | `boolean` | `false`     |
-| `hint`              | `hint`               |             | `string`  | `undefined` |
-| `label`             | `label`              |             | `string`  | `undefined` |
-| `name`              | `name`               |             | `string`  | `undefined` |
-| `regexCheck`        | `regex-check`        |             | `string`  | `undefined` |
-| `required`          | `required`           |             | `boolean` | `undefined` |
-| `requiredMessage`   | `required-message`   |             | `string`  | `undefined` |
-| `validationMessage` | `validation-message` |             | `string`  | `undefined` |
-| `value`             | `value`              |             | `string`  | `undefined` |
+| Property            | Attribute            | Description | Type      | Default |
+| ------------------- | -------------------- | ----------- | --------- | ------- |
+| `disabled`          | `disabled`           |             | `boolean` | `false` |
+| `hint`              | `hint`               |             | `string`  | `''`    |
+| `label`             | `label`              |             | `string`  | `''`    |
+| `name`              | `name`               |             | `string`  | `''`    |
+| `regexCheck`        | `regex-check`        |             | `string`  | `''`    |
+| `required`          | `required`           |             | `boolean` | `false` |
+| `requiredMessage`   | `required-message`   |             | `string`  | `''`    |
+| `validationMessage` | `validation-message` |             | `string`  | `''`    |
+| `value`             | `value`              |             | `string`  | `''`    |
 
 
 ## Events

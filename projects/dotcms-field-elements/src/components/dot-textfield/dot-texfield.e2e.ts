@@ -92,7 +92,6 @@ describe('dot-textfield', () => {
         expect(await input.getProperty('regexCheck')).toBe('');
     });
 
-
     describe('emit events', () => {
         it('should mark as touched when onblur', async () => {
             await input.triggerEvent('blur');
