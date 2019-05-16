@@ -59,7 +59,7 @@ describe('dot-textarea', () => {
 
     it('should clear value, set pristine and untouched  when input set reset', async () => {
         await input.press('A');
-        element.callMethod('reset');
+        await element.callMethod('reset');
         await page.waitForChanges();
 
         expect(element).toHaveClasses(['dot-pristine', 'dot-untouched', 'dot-valid']);
@@ -124,7 +124,7 @@ describe('dot-textarea', () => {
         });
 
         it('should send status value change', async () => {
-            input.press('a');
+            await input.press('a');
             await page.waitForChanges();
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                 name: 'Address',
@@ -137,8 +137,7 @@ describe('dot-textarea', () => {
         });
 
         it('should emit status and value on Reset', async () => {
-            element.callMethod('reset');
-            await page.waitForChanges();
+            await element.callMethod('reset');
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                 name: 'Address',
                 status: {
@@ -151,7 +150,7 @@ describe('dot-textarea', () => {
         });
 
         it('should emit change value', async () => {
-            input.press('a');
+            await input.press('a');
             await page.waitForChanges();
             expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: 'Addressa' });
         });

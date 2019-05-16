@@ -2,11 +2,12 @@ export const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12]
 export const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
 
 const PROP_VALIDATION_HANDLING = {
-    options: stringValidator,
-    regexCheck: regexValidator,
+    date: dateValidator,
     number: numberValidator,
+    options: stringValidator,
     time: timeValidator,
-    date: dateValidator
+    regexCheck: regexValidator,
+    value: stringValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
