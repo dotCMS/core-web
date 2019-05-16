@@ -52,7 +52,7 @@ export class DotTagsComponent {
 
     componentDidLoad(): void {
         if (this.value) {
-            this.setDefaultValue(this.value);
+            this.createTags();
         }
 
         this.el.querySelector('dot-autocomplete').blur();
@@ -84,7 +84,7 @@ export class DotTagsComponent {
                     debounce={this.debounce}
                     data={this.getData.bind(this)}
                     onLostFocus={() => this.blurHandler()}
-                    onSelection={(event) => this.createTag(event.detail)}
+                    onSelection={(event) => this.addTag(event.detail)}
                 >
                 </dot-autocomplete>
 
@@ -94,10 +94,35 @@ export class DotTagsComponent {
         );
     }
 
-    private createTag(label: string): void {
-        if (!this.getTags().includes(label)) {
-            this.addTagElement(label);
-            this.setValue();
+    @Watch('value')
+    setValue(): void {
+        this.createTags();
+
+        this.status = updateStatus(this.status, {
+            dotTouched: true,
+            dotPristine: false,
+            dotValid: this.isValid()
+        });
+
+        this.emitValueChange();
+        this.emitStatusChange();
+    }
+
+    private createTags(): void {
+        Array.from(this.el.querySelectorAll('dot-chip'))
+        .forEach(tag => tag.remove());
+
+        this.value.split(',').forEach((tagLabel) => {
+            this.addTagElement(tagLabel.trim());
+        });
+    }
+
+    private addTag(label: string): void {
+        const values = this.value ? this.value.split(',') : [];
+
+        if (!values.includes(label)) {
+            values.push(label);
+            this.value = values.join(',');
             this.selected.emit(label);
         }
     }
@@ -107,7 +132,8 @@ export class DotTagsComponent {
         tag.label = label;
 
         tag.addEventListener('remove', (event: CustomEvent) => {
-            this.setValue();
+            const values = this.value.split(',').filter(item => item !== event.detail);
+            this.value = values.join(',');
             this.removed.emit(event.detail);
         });
 
@@ -139,16 +165,6 @@ export class DotTagsComponent {
         }
     }
 
-    @Watch('value')
-    private setDefaultValue(value: string): void {
-        Array.from(this.el.querySelectorAll('dot-tag'))
-            .forEach(tag => tag.remove());
-
-        value.split(',').forEach((tagLabel) => {
-            this.addTagElement(tagLabel.trim());
-        });
-    }
-
     private emitStatusChange(): void {
         this.statusChange.emit({
             name: this.name,
@@ -156,29 +172,11 @@ export class DotTagsComponent {
         });
     }
 
-    private setValue(): void {
-        this.value = this.getTags().join(',');
-
-        this.status = updateStatus(this.status, {
-            dotTouched: true,
-            dotPristine: false,
-            dotValid: this.isValid()
-        });
-
-        this.emitValueChange();
-        this.emitStatusChange();
-    }
-
     private emitValueChange(): void {
         this.valueChange.emit({
             name: this.name,
             value: this.value
         });
-    }
-
-    private getTags(): string[] {
-        return Array.from(this.el.querySelectorAll('dot-chip'))
-            .map(tag => tag.label);
     }
 
     private async getData(): Promise<String[]> {

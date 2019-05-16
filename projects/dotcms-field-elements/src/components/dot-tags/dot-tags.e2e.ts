@@ -189,7 +189,7 @@ describe('dot-tags', () => {
             });
             expect(spyValueChange).toHaveReceivedEventDetail({
                 name: 'tag',
-                value: 'tag-1'
+                value: ''
             });
         });
 
