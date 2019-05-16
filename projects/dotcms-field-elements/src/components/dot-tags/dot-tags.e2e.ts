@@ -90,12 +90,11 @@ describe('dot-tags', () => {
             element = await page.find('dot-tags');
         });
 
-
         it('should load as pristine and untouched', () => {
             expect(element).toHaveClasses(['dot-pristine', 'dot-untouched']);
         });
 
-        xit('should mark as dirty and touched when select a tag', async () => {
+        it('should mark as dirty and touched when select a tag', async () => {
             const autocomplete = await page.find('dot-tags dot-autocomplete');
             await autocomplete.triggerEvent('selection', {detail: 'tag-1'});
             await page.waitForChanges();
@@ -103,8 +102,15 @@ describe('dot-tags', () => {
             expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
         });
 
-        xit('should mark as dirty and touched when remove a tag', async () => {
+        it('should mark as dirty and touched when remove a tag', async () => {
+            element.setAttribute('value', 'tag-1');
+            await page.waitForChanges();
 
+            const dotChip = await page.find('dot-tags dot-chip');
+            await dotChip.triggerEvent('remove', {detail: 'tag-1'});
+            await page.waitForChanges();
+
+            expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
         });
 
         it('should clear value, set pristine and untouched  when input set reset', async () => {
@@ -131,7 +137,7 @@ describe('dot-tags', () => {
             element = await page.find('dot-tags');
         });
 
-        xit('should emit status event when blur', async () => {
+        it('should emit status event when blur', async () => {
             const autocomplete = await page.find('dot-autocomplete');
             await autocomplete.triggerEvent('lostFocus');
             await page.waitForChanges();
@@ -146,14 +152,13 @@ describe('dot-tags', () => {
             });
         });
 
-        xit('should send status when autocomplete value is selection', async () => {
+        it('should send status when autocomplete value is selection', async () => {
             const autocomplete = await page.find('dot-tags dot-autocomplete');
             await autocomplete.triggerEvent('selection', {detail: 'tag-1'});
-
             await page.waitForChanges();
 
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
+                name: 'tag',
                 status: {
                     dotPristine: false,
                     dotTouched: true,
@@ -161,13 +166,31 @@ describe('dot-tags', () => {
                 }
             });
             expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'fullName',
-                value: 'Johna'
+                name: 'tag',
+                value: 'tag-1'
             });
         });
 
-        xit('should send status when a tag is remove', async () => {
+        it('should send status when a tag is remove', async () => {
+            element.setAttribute('value', 'tag-1');
+            await page.waitForChanges();
 
+            const dotChip = await page.find('dot-tags dot-chip');
+            await dotChip.triggerEvent('remove', {detail: 'tag-1'});
+            await page.waitForChanges();
+
+            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                name: 'tag',
+                status: {
+                    dotPristine: false,
+                    dotTouched: true,
+                    dotValid: true
+                }
+            });
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'tag',
+                value: 'tag-1'
+            });
         });
 
         it('should emit status and value on Reset', async () => {

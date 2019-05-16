@@ -7,24 +7,26 @@
 
 ## Properties
 
-| Property            | Attribute            | Description | Type      | Default     |
-| ------------------- | -------------------- | ----------- | --------- | ----------- |
-| `disabled`          | `disabled`           |             | `boolean` | `false`     |
-| `hint`              | `hint`               |             | `string`  | `undefined` |
-| `label`             | `label`              |             | `string`  | `undefined` |
-| `name`              | `name`               |             | `string`  | `undefined` |
-| `placeholder`       | `placeholder`        |             | `string`  | `undefined` |
-| `regexCheck`        | `regex-check`        |             | `string`  | `undefined` |
-| `required`          | `required`           |             | `boolean` | `undefined` |
-| `requiredMessage`   | `required-message`   |             | `string`  | `undefined` |
-| `validationMessage` | `validation-message` |             | `string`  | `undefined` |
-| `value`             | `value`              |             | `string`  | `undefined` |
+| Property          | Attribute          | Description | Type      | Default     |
+| ----------------- | ------------------ | ----------- | --------- | ----------- |
+| `debounce`        | `debounce`         |             | `number`  | `300`       |
+| `disabled`        | `disabled`         |             | `boolean` | `false`     |
+| `hint`            | `hint`             |             | `string`  | `''`        |
+| `label`           | `label`            |             | `string`  | `''`        |
+| `name`            | `name`             |             | `string`  | `''`        |
+| `placeholder`     | `placeholder`      |             | `string`  | `''`        |
+| `required`        | `required`         |             | `boolean` | `false`     |
+| `requiredMessage` | `required-message` |             | `string`  | `''`        |
+| `threshold`       | `threshold`        |             | `number`  | `0`         |
+| `value`           | `value`            |             | `string`  | `undefined` |
 
 
 ## Events
 
 | Event          | Description | Type                               |
 | -------------- | ----------- | ---------------------------------- |
+| `removed`      |             | `CustomEvent<String>`              |
+| `selected`     |             | `CustomEvent<String>`              |
 | `statusChange` |             | `CustomEvent<DotFieldStatusEvent>` |
 | `valueChange`  |             | `CustomEvent<DotFieldValueEvent>`  |
 
