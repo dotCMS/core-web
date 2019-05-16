@@ -63,7 +63,7 @@ describe('dot-tags', () => {
             const autocomplete = await page.find('dot-tags dot-autocomplete');
             expect(await autocomplete.getProperty('disabled')).toBe(true);
 
-            const tag = await page.find('dot-tags dot-tag');
+            const tag = await page.find('dot-tags dot-chip');
             expect(await tag.getProperty('disabled')).toBe(true);
         });
 
@@ -74,7 +74,7 @@ describe('dot-tags', () => {
             element.setProperty('value', 'tag-1');
             await page.waitForChanges();
 
-            const tag = await page.find('dot-tags dot-tag');
+            const tag = await page.find('dot-tags dot-chip');
             expect(await tag.getProperty('disabled')).toBe(true);
         });
     });

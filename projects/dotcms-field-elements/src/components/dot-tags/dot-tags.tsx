@@ -73,7 +73,7 @@ export class DotTagsComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <div class='tag_container'></div>
+                <div class="tag_container"></div>
 
                 <dot-autocomplete
                     id={this.name}
@@ -103,7 +103,7 @@ export class DotTagsComponent {
     }
 
     private addTagElement(label: string): void {
-        const tag = document.createElement('dot-tag');
+        const tag = document.createElement('dot-chip');
         tag.label = label;
 
         tag.addEventListener('remove', (event: CustomEvent) => {
@@ -177,7 +177,7 @@ export class DotTagsComponent {
     }
 
     private getTags(): string[] {
-        return Array.from(this.el.querySelectorAll('dot-tag'))
+        return Array.from(this.el.querySelectorAll('dot-chip'))
             .map(tag => tag.label);
     }
 

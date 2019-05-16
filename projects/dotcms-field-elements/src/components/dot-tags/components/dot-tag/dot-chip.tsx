@@ -2,12 +2,13 @@ import { Component, Prop, Element, Event, EventEmitter } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 
 @Component({
-    tag: 'dot-tag',
-    styleUrl: 'dot-tags.scss'
+    tag: 'dot-chip',
+    styleUrl: 'dot-chip.scss'
 })
-export class DotTagComponent {
+export class DotChipComponent {
     @Element() el: HTMLElement;
     @Prop() label: string;
+    @Prop() deleteLabel = 'delete';
     @Prop() disabled: boolean;
 
     @Event() remove: EventEmitter<String>;
@@ -18,10 +19,10 @@ export class DotTagComponent {
                 <span>
                     {this.label}
                 </span>
-                <button type='button'
+                <button type="button"
                     disabled={this.disabled}
                     onClick={() => this.removeTag()}>
-                    x
+                    {this.deleteLabel}
                 </button>
             </Fragment>
         );
