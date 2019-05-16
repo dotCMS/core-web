@@ -117,7 +117,7 @@ export class DotTagsComponent {
     }
 
     private isValid(): boolean {
-        return !this.required || (this.required && !!this.value.length);
+        return !this.required || (this.required && !!this.value);
     }
 
     private showErrorMessage(): boolean {
