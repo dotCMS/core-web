@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
-import { getErrorClass, getOriginalStatus, updateStatus } from '../../utils';
+import { getErrorClass, getId, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
     tag: 'dot-input-calendar',
@@ -12,7 +12,6 @@ export class DotInputCalendarComponent {
     @Prop({ mutable: true })
     value: string;
     @Prop() name: string;
-    @Prop() label: string;
     @Prop() hint: string;
     @Prop() required: boolean;
     @Prop() requiredMessage: string;
@@ -28,14 +27,14 @@ export class DotInputCalendarComponent {
     @Event() _statusChange: EventEmitter<DotFieldStatusEvent>;
     @Event() _errorMessage: EventEmitter;
     /**
-     * Reset properties of the filed, clear value and emit events.
+     * Reset properties of the field, clear value and emit events.
      */
     @Method()
     reset(): void {
         this.value = '';
         this.status = getOriginalStatus(this.isValid());
-        this.emitStatusChange();
         this.emitValueChange();
+        this.emitStatusChange();
     }
 
     componentWillLoad(): void {
@@ -54,7 +53,7 @@ export class DotInputCalendarComponent {
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
-                    id={this.name}
+                    id={getId(this.name)}
                     onBlur={() => this.blurHandler()}
                     onInput={(event: Event) => this.setValue(event)}
                     required={this.required || null}
@@ -135,7 +134,11 @@ export class DotInputCalendarComponent {
     private emitValueChange(): void {
         this._valueChange.emit({
             name: this.name,
-            value: this.value
+            value: this.formattedValue()
         });
+    }
+
+    private formattedValue(): string {
+        return this.value.length === 5 ? `${this.value}:00` : this.value;
     }
 }

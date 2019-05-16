@@ -36,7 +36,7 @@ describe('dot-input-calendar', () => {
 
     it('should render', () => {
         // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<input id=\"time01\" required=\"\" type=\"time\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\">`;
+        const tagsRenderExpected = `<input id=\"dot-time01\" required=\"\" type=\"time\" min=\"06:00:00\" max=\"22:00:00\" step=\"10\">`;
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
 
@@ -102,5 +102,18 @@ describe('dot-input-calendar', () => {
                 message: ''
             });
         });
+
+        it('should emit time value correctly with 0 seconds', async () => {
+            await input.press('Tab');
+            await input.press('Tab');
+            await input.press('0');
+            await page.waitForChanges();
+
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'time01',
+                value: '18:30:00'
+            });
+        });
+
     });
 });

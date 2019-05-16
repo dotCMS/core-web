@@ -17,6 +17,7 @@
 | `regexCheck`        | `regex-check`        |             | `string`  | `undefined` |
 | `required`          | `required`           |             | `boolean` | `undefined` |
 | `requiredMessage`   | `required-message`   |             | `string`  | `undefined` |
+| `type`              | `type`               |             | `string`  | `'text'`    |
 | `validationMessage` | `validation-message` |             | `string`  | `undefined` |
 | `value`             | `value`              |             | `string`  | `undefined` |
 
@@ -33,7 +34,7 @@
 
 ### `reset() => void`
 
-Reset properties of the filed, clear value and emit events.
+Reset properties of the field, clear value and emit events.
 
 #### Returns
 

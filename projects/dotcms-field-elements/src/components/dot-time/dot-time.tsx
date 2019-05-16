@@ -43,7 +43,7 @@ export class DotTimeComponent {
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     /**
-     * Reset properties of the filed, clear value and emit events.
+     * Reset properties of the field, clear value and emit events.
      */
     @Method()
     reset(): void {
@@ -93,7 +93,6 @@ export class DotTimeComponent {
                 <dot-input-calendar
                     disabled={this.disabled}
                     type="time"
-                    label={this.label}
                     name={this.name}
                     hint={this.hint}
                     value={this.value}
