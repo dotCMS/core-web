@@ -31,7 +31,7 @@ describe('dot-tag', () => {
     it('should be disabled', async () => {
         element.setAttribute('disabled', true);
         await page.waitForChanges();
-        console.log('element.innerHTML', element.innerHTML);
+
         const tagsRenderExpected = '<span>test-tag</span><button type=\"button\" disabled=\"\">x</button>';
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });

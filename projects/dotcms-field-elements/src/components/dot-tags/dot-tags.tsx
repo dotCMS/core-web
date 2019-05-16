@@ -59,7 +59,6 @@ export class DotTagsComponent {
     }
 
     hostData() {
-        console.log('hostData', JSON.stringify(getClassNames(this.status, this.isValid(), this.required)));
         return {
             class: getClassNames(this.status, this.isValid(), this.required)
         };

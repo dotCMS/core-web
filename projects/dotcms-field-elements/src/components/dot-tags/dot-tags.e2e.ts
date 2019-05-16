@@ -1,23 +1,17 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
-// import { EventSpy } from '@stencil/core/dist/declarations';
+import { EventSpy } from '@stencil/core/dist/declarations';
 
 describe('dot-tags', () => {
     let page: E2EPage;
     let element: E2EElement;
-    /*let input: E2EElement;
-    let spyStatusChangeEvent: EventSpy;
-    let spyValueChange: EventSpy;*/
 
-    xdescribe('render and props', () => {
+    describe('render and props', () => {
         beforeEach(async () => {
             page = await newE2EPage({
                 html: `<dot-tags></dot-tags>`
             });
 
-            /*spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-            spyValueChange = await page.spyOnEvent('valueChange');*/
             element = await page.find('dot-tags');
-            //input = await page.find('input');
         });
 
         it('should render', () => {
@@ -97,42 +91,53 @@ describe('dot-tags', () => {
         });
 
 
-        xit('should load as pristine and untouched', () => {
+        it('should load as pristine and untouched', () => {
             expect(element).toHaveClasses(['dot-pristine', 'dot-untouched']);
         });
 
-        it('should mark as dirty and touched when select a tag', async () => {
-            console.log('AAAAA');
+        xit('should mark as dirty and touched when select a tag', async () => {
             const autocomplete = await page.find('dot-tags dot-autocomplete');
             await autocomplete.triggerEvent('selection', {detail: 'tag-1'});
-            element.setProperty('value', 'tag-1');
             await page.waitForChanges();
+
             expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
         });
 
         xit('should mark as dirty and touched when remove a tag', async () => {
 
         });
-    });
 
-    /*
-    it('should clear value, set pristine and untouched  when input set reset', async () => {
-        element.callMethod('reset');
-        await page.waitForChanges();
+        it('should clear value, set pristine and untouched  when input set reset', async () => {
+            element.callMethod('reset');
+            await page.waitForChanges();
 
-        expect(element.classList.contains('dot-pristine')).toBe(true);
-        expect(element.classList.contains('dot-untouched')).toBe(true);
-        expect(element.classList.contains('dot-invalid')).toBe(true);
-        expect(await input.getProperty('value')).toBe('');
+            expect(element).toHaveClasses(['dot-pristine', 'dot-untouched', 'dot-valid']);
+        });
     });
 
     describe('emit events', () => {
-        it('should mark as touched when onblur', async () => {
-            await input.triggerEvent('blur');
+        let spyStatusChangeEvent: EventSpy;
+        let spyValueChange: EventSpy;
+
+        beforeEach(async () => {
+            page = await newE2EPage({
+                html: `<dot-tags name='tag'
+                                 label='tag'>
+                       </dot-tags>`
+            });
+
+            spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+            spyValueChange = await page.spyOnEvent('valueChange');
+            element = await page.find('dot-tags');
+        });
+
+        it('should emit status event when blur', async () => {
+            const autocomplete = await page.find('dot-autocomplete');
+            await autocomplete.triggerEvent('lostFocus');
             await page.waitForChanges();
 
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
+                name: 'tag',
                 status: {
                     dotPristine: true,
                     dotTouched: true,
@@ -141,9 +146,12 @@ describe('dot-tags', () => {
             });
         });
 
-        it('should send status when autocomplete value is selection', async () => {
-            await input.press('a');
+        xit('should send status when autocomplete value is selection', async () => {
+            const autocomplete = await page.find('dot-tags dot-autocomplete');
+            await autocomplete.triggerEvent('selection', {detail: 'tag-1'});
+
             await page.waitForChanges();
+
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                 name: 'fullName',
                 status: {
@@ -158,9 +166,9 @@ describe('dot-tags', () => {
             });
         });
 
-        it('should send status when a tag is remove', async () => {
-            await input.press('a');
+        xit('should send status when a tag is remove', async () => {
             await page.waitForChanges();
+
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                 name: 'fullName',
                 status: {
@@ -175,40 +183,7 @@ describe('dot-tags', () => {
             });
         });
 
-        it('should emit changeValue when autocomplete value is selection', async () => {
-            await input.press('a');
-            await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                status: {
-                    dotPristine: false,
-                    dotTouched: true,
-                    dotValid: true
-                }
-            });
-            expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'fullName',
-                value: 'Johna'
-            });
-        });
-
-        it('should emit changeValue when a tag is remove', async () => {
-            await input.press('a');
-            await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                status: {
-                    dotPristine: false,
-                    dotTouched: true,
-                    dotValid: true
-                }
-            });
-            expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'fullName',
-                value: 'Johna'
-            });
-        });
-
+        /*
         it('should emit status and value on Reset', async () => {
             element.callMethod('reset');
             await page.waitForChanges();
@@ -227,10 +202,10 @@ describe('dot-tags', () => {
         });
 
         it('should be valid when not have any value and is not mark as required', async () => {
-        });
+        });*/
     });
 
-    describe('unvalid inputs', () => {
+    /*describe('unvalid inputs', () => {
         it('should not broke when value does'nt have comma, async () => {
         });
 
