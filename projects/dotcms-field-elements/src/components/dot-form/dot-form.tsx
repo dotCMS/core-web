@@ -35,7 +35,8 @@ const fieldMap = {
     'Tag': DotFormFields.Tag,
     'Time': DotFormFields.Time,
     'Date-and-Time': DotFormFields['Date-and-Time'],
-    'Date-Range': DotFormFields['Date-Range']
+    'Date-Range': DotFormFields['Date-Range'],
+    'Select': DotFormFields.Select,
 };
 
 @Component({

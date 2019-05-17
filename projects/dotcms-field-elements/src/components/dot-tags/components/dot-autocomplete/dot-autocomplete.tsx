@@ -9,12 +9,23 @@ export class DotAutocompleteComponent {
 
     @Element() el: HTMLElement;
 
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** (optional) text to show when no value is set */
     @Prop() placeholder = '';
+
+    /** Min characters to start search in the autocomplete input */
     @Prop() threshold = 0;
+
+    /** Max results to show after a autocomplete search */
     @Prop() maxResults = 0;
+
+    /** Duraction in ms to start search into the autocomplete */
     @Prop() debounce = 300;
-    @Prop() data: () => Promise<string[]>;
+
+    /** Function to get the data to use for the autocomplete search */
+    @Prop() data: () => Promise<string[]> = null;
 
     @Event() selection: EventEmitter<string>;
     @Event() lostFocus: EventEmitter<FocusEvent>;

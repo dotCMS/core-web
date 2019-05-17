@@ -60,7 +60,7 @@ describe('dot-autocomplete', () => {
             expect(await input.getProperty('placeholder')).toBe('placeholder');
         });
 
-        describe('unvalid inputs', () => {
+        describe('invalid inputs', () => {
             it('should not broke when disabled is not a boolean', async () => {
                 element.setAttribute('disabled', {});
                 await page.waitForChanges();
