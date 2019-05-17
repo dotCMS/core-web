@@ -7,13 +7,12 @@ describe('dot-autocomplete', () => {
     describe('render all attributes', () => {
         beforeEach(async () => {
             page = await newE2EPage({
-                html: `<dot-autocomplete \
-                            disabled='true'
+                html: `<dot-autocomplete
                             placeholder='placeholder'
                             threshold='3'
                             maxResults='5'
                             debounce='100'
-                            data=${() => {}}
+                            disabled
                         >
                         </dot-autocomplete>`
             });
@@ -24,9 +23,9 @@ describe('dot-autocomplete', () => {
         it('should render', async () => {
             const input = await element.find('input');
 
-            expect((await input.getProperty('id')).startsWith('autoComplete')).toBe(true);
-            expect(await input.getProperty('disabled')).toBeTruthy();
-            expect(await input.getProperty('placeholder')).toBe('placeholder');
+            expect(input.getAttribute('id').startsWith('autoComplete')).toBe(true);
+            expect(input.getAttribute('disabled')).not.toBeNull();
+            expect(input.getAttribute('placeholder')).toBe('placeholder');
         });
     });
 
@@ -41,7 +40,7 @@ describe('dot-autocomplete', () => {
 
         it('should render', async () => {
             const input = await element.find('input');
-            expect((await input.getProperty('id')).startsWith('autoComplete')).toBe(true);
+            expect(input.getAttribute('id').startsWith('autoComplete')).toBe(true);
         });
 
         it('should disabled', async () => {
@@ -49,7 +48,7 @@ describe('dot-autocomplete', () => {
             await page.waitForChanges();
 
             const input = await element.find('input');
-            expect(await input.getProperty('disabled')).toBe(true);
+            expect(input.getAttribute('disabled')).not.toBeNull();
         });
 
         it('should put a placeholder', async () => {
@@ -57,7 +56,7 @@ describe('dot-autocomplete', () => {
             await page.waitForChanges();
 
             const input = await element.find('input');
-            expect(await input.getProperty('placeholder')).toBe('placeholder');
+            expect(input.getAttribute('placeholder')).toBe('placeholder');
         });
 
         describe('invalid inputs', () => {
@@ -66,7 +65,7 @@ describe('dot-autocomplete', () => {
                 await page.waitForChanges();
 
                 const input = await element.find('input');
-                expect(await input.getProperty('disabled')).toBeTruthy();
+                expect(input.getAttribute('disabled')).toBeTruthy();
             });
 
             it('should not broke when placeholder is not a string', async () => {
@@ -74,7 +73,7 @@ describe('dot-autocomplete', () => {
                 await page.waitForChanges();
 
                 const input = await element.find('input');
-                expect(await input.getProperty('placeholder')).toBe('[object Object]');
+                expect(input.getAttribute('placeholder')).toBe('[object Object]');
             });
 
             it('should not broke when threshold is not a number', async () => {
@@ -142,8 +141,8 @@ describe('dot-autocomplete', () => {
         it('should clean options when lost focus', async (done) => {
             element.spyOnEvent('lostFocus').then(async () => {
                 await page.waitForChanges();
-                const options = await page.find('li');
-                expect(options).toBeNull();
+                const options = await page.findAll('li');
+                expect(options.length).toBe(0);
                 done();
             });
 

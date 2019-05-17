@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type      | Default    |
-| ------------- | -------------- | ----------- | --------- | ---------- |
-| `deleteLabel` | `delete-label` |             | `string`  | `'delete'` |
-| `disabled`    | `disabled`     |             | `boolean` | `false`    |
-| `label`       | `label`        |             | `string`  | `''`       |
+| Property      | Attribute      | Description                                      | Type      | Default    |
+| ------------- | -------------- | ------------------------------------------------ | --------- | ---------- |
+| `deleteLabel` | `delete-label` | (optional) Delete button's label                 | `string`  | `'delete'` |
+| `disabled`    | `disabled`     | (optional) If is true disabled the delete button | `boolean` | `false`    |
+| `label`       | `label`        | Chip's label                                     | `string`  | `''`       |
 
 
 ## Events

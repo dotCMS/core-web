@@ -35,7 +35,6 @@ export class DotChipComponent {
     }
 
     private removeTag(): void {
-        this.el.remove();
         this.remove.emit(this.label);
     }
 }

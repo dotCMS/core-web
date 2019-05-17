@@ -61,7 +61,7 @@ describe('dot-chip', () => {
             await page.waitForChanges();
 
             const button = await element.find('button');
-            expect(button.getProperty('disabled')).toBeTruthy();
+            expect(button.getAttribute('disabled')).not.toBeNull();
         });
 
         describe('render with invalid attributes', () => {
@@ -78,7 +78,7 @@ describe('dot-chip', () => {
                 await page.waitForChanges();
 
                 const button = await element.find('button');
-                expect(button.getProperty('disabled')).toBeTruthy();
+                expect(button.getAttribute('disabled')).not.toBeNull();
             });
         });
     });
