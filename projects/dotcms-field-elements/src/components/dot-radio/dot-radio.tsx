@@ -59,7 +59,7 @@ export class DotRadioComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = checkProp<DotRadioComponent, string>(this, 'options');
+        const validOptions = checkProp<DotRadioComponent, string>(this, 'options', 'string');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
