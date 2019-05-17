@@ -30,25 +30,25 @@ export class DotCheckboxComponent {
     @Prop() disabled = false;
 
     /** Name that will be used as ID */
-    @Prop() name: string;
+    @Prop() name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label: string;
+    @Prop() label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint: string;
+    @Prop() hint = '';
 
     /** Value/Label checkbox options separated by comma, to be formatted as: Value|Label */
-    @Prop() options: string;
+    @Prop() options = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required: boolean;
+    @Prop() required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop() requiredMessage: string;
+    @Prop() requiredMessage = '';
 
      /** Value set from the checkbox option */
-    @Prop({ mutable: true }) value: string;
+    @Prop({ mutable: true }) value = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus = getOriginalStatus();
