@@ -17,15 +17,35 @@ import {
 })
 export class DotTagsComponent {
     @Element() el: HTMLElement;
+
+     /** Value formatted splitted with a comma, for example: tag-1,tag-2 */
     @Prop({ mutable: true }) value = '';
+
+    /** Name that will be used as ID */
     @Prop() name = '';
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint= '';
+
+    /** (optional) text to show when no value is set */
     @Prop() placeholder= '';
+
+     /** (optional) Determine if it is mandatory */
     @Prop() required =  false;
+
+    /** (optional) Text that be shown when required is set and value is not set */
     @Prop() requiredMessage = '';
+
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** Min characters to start search in the autocomplete input */
     @Prop() threshold = 0;
+
+    /** Duraction in ms to start search into the autocomplete */
     @Prop() debounce = 300;
 
     @State() status: DotFieldStatus = getOriginalStatus();
