@@ -24,6 +24,8 @@ import {
     getTagError,
     getTagHint,
     getTagLabel,
+    getHintId,
+    getLabelId,
     updateStatus
 } from '../../utils';
 
@@ -102,41 +104,47 @@ export class DotKeyValueComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <form onSubmit={this.addKey.bind(this)} class="dot-key-value__form">
-                    <label>
-                        {this.fieldKeyLabel}
-                        <input
-                            id="dotkeyvalue-key-input"
-                            class={getErrorClass(this.status.dotValid)}
-                            disabled={this.isDisabled()}
-                            name="key"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.keyPlaceholder}
-                            type="text"
-                            value={this.fieldInput.key}
-                        />
-                    </label>
-                    <label>
-                        {this.fieldValueLabel}
-                        <input
-                            class={getErrorClass(this.status.dotValid)}
-                            disabled={this.isDisabled()}
-                            name="value"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.valuePlaceholder}
-                            type="text"
-                            value={this.fieldInput.value}
-                        />
-                    </label>
-                    <button
-                        class="dot-key-value__save__button"
-                        type="submit"
-                        disabled={!(this.fieldInput.key && this.fieldInput.value)}
-                    >
-                        {this.saveBtnLabel}
-                    </button>
-                </form>
-                {this.getKeyValueList()}
+                <div
+                    tabIndex={0}
+                    aria-labelledby={getLabelId(labelTagParams.name)}
+                    aria-describedby={getHintId(this.name)}
+                >
+                    <form onSubmit={this.addKey.bind(this)} class="dot-key-value__form">
+                        <label>
+                            {this.fieldKeyLabel}
+                            <input
+                                id="dotkeyvalue-key-input"
+                                class={getErrorClass(this.status.dotValid)}
+                                disabled={this.isDisabled()}
+                                name="key"
+                                onInput={(event: Event) => this.setValue(event)}
+                                placeholder={this.keyPlaceholder}
+                                type="text"
+                                value={this.fieldInput.key}
+                            />
+                        </label>
+                        <label>
+                            {this.fieldValueLabel}
+                            <input
+                                class={getErrorClass(this.status.dotValid)}
+                                disabled={this.isDisabled()}
+                                name="value"
+                                onInput={(event: Event) => this.setValue(event)}
+                                placeholder={this.valuePlaceholder}
+                                type="text"
+                                value={this.fieldInput.value}
+                            />
+                        </label>
+                        <button
+                            class="dot-key-value__save__button"
+                            type="submit"
+                            disabled={!(this.fieldInput.key && this.fieldInput.value)}
+                        >
+                            {this.saveBtnLabel}
+                        </button>
+                    </form>
+                    {this.getKeyValueList()}
+                </div>
                 {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>

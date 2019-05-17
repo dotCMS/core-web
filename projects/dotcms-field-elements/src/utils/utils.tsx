@@ -103,6 +103,10 @@ export function getHintId(name: string): string {
     return `hint-${name}`;
 }
 
+export function getLabelId(name: string): string {
+    return `label-${name}`;
+}
+
 /**
  * Returns Error tag if "show" value equals true
  *
@@ -123,7 +127,7 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  */
 export function getTagLabel(params: DotLabel): JSX.Element {
     const Label = () => (
-        <label htmlFor={getId(params.name)} id={`label-${params.name}`}>
+        <label htmlFor={getId(params.name)} id={getLabelId(params.name)}>
             {params.label}
         </label>
     );

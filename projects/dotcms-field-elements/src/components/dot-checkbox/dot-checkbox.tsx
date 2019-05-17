@@ -16,6 +16,7 @@ import {
     getErrorClass,
     getDotOptionsFromFieldValue,
     getHintId,
+    getLabelId,
     updateStatus
 } from '../../utils';
 
@@ -78,7 +79,7 @@ export class DotCheckboxComponent {
                 <div
                     tabIndex={0}
                     class="dot-checkbox__items"
-                    aria-labelledby={`label-${labelTagParams.name}`}
+                    aria-labelledby={getLabelId(labelTagParams.name)}
                     aria-describedby={getHintId(this.name)}
                 >
                     {this._options.map((item: DotOption) => {

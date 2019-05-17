@@ -16,6 +16,7 @@ import {
     getTagHint,
     getHintId,
     getTagLabel,
+    getLabelId,
     updateStatus
 } from '../../utils';
 
@@ -77,7 +78,7 @@ export class DotRadioComponent {
                     tabIndex={0}
                     class="dot-radio__items"
                     role="radiogroup"
-                    aria-labelledby={`label-${labelTagParams.name}`}
+                    aria-labelledby={getLabelId(labelTagParams.name)}
                     aria-describedby={getHintId(this.name)}
                 >
                     {this._options.map((item: DotOption) => {
