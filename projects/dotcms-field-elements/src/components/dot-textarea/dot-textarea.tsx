@@ -62,7 +62,7 @@ export class DotTextareaComponent {
 
     @Watch('regexCheck')
     regexCheckWatch(): void {
-        this.regexCheck = dotPropValidator(this, 'regexCheck');
+        this.regexCheck = dotPropValidator<DotTextareaComponent, string>(this, 'regexCheck');
     }
 
     hostData() {

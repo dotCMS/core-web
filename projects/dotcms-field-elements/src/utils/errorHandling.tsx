@@ -7,7 +7,7 @@ const PROP_VALIDATION_HANDLING = {
     options: stringValidator,
     time: timeValidator,
     regexCheck: regexValidator,
-    value: stringValidator
+    string: stringValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
@@ -32,11 +32,16 @@ class DotFieldPropError<T> extends Error {
     private readonly propInfo: PropValidationInfo<T>;
 
     constructor(propInfo: PropValidationInfo<T>, expectedType: string) {
+        console.log(propInfo);
         super(
-            `Warning: Invalid prop "${propInfo.name}" of type "${typeof propInfo.value}" supplied to "${propInfo
-                .field.type}" with the name "${propInfo.field.name}", expected "${expectedType}".
-Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${propInfo
-                .field.type}/readme.md`
+            `Warning: Invalid prop "${
+                propInfo.name
+            }" of type "${typeof propInfo.value}" supplied to "${
+                propInfo.field.type
+            }" with the name "${propInfo.field.name}", expected "${expectedType}".
+Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${
+                propInfo.field.type
+            }/readme.md`
         );
         this.propInfo = propInfo;
     }
@@ -85,19 +90,23 @@ function timeValidator<T>(propInfo: PropValidationInfo<T>): void {
     }
 }
 
-export function dotPropValidator<T>(element: T, propertyName: string, validatorType?: string): any {
-    const proInfo = {
-        value: element[propertyName],
-        name: propertyName,
+export function dotPropValidator<ComponentClass, PropType>(
+    component: ComponentClass,
+    propertyName: string,
+    validatorType?: string
+): string {
+    const proInfo: PropValidationInfo<PropType> = {
         field: {
-            name: element['name'],
-            type: element['el'].tagName.toLocaleLowerCase()
-        }
+            name: component['name'],
+            type: component['el'].tagName.toLocaleLowerCase()
+        },
+        name: propertyName,
+        value: component[propertyName]
     };
 
     try {
-        PROP_VALIDATION_HANDLING[validatorType || propertyName](proInfo);
-        return element[propertyName];
+        PROP_VALIDATION_HANDLING[validatorType || propertyName]<PropType>(proInfo);
+        return component[propertyName];
     } catch (error) {
         console.warn(error.message);
         return FIELDS_DEFAULT_VALUE[propertyName];
