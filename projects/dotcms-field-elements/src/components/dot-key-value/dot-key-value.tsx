@@ -37,17 +37,37 @@ import {
 export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
-    @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint = '';
+
+    /** (optional) Placeholder for the key input text in the add form */
     @Prop() keyPlaceholder = '';
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label = '';
+
+    /** Name that will be used as ID */
     @Prop() name = '';
+
+    /** (optional) Determine if it is mandatory */
     @Prop() required = false;
+
+    /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage = '';
+
+    /** (optional) Label for the add item button */
     @Prop() saveBtnLabel = 'Add';
+
+    /** (optional) Placeholder for the value input text in the add form */
     @Prop() valuePlaceholder: string;
+
+    /** Value of the field */
     @Prop({ mutable: true }) value = '';
+
+    @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueItem[] = [];
