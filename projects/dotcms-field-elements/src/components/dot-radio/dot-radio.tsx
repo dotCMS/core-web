@@ -26,13 +26,28 @@ import {
 export class DotRadioComponent {
     @Element() el: HTMLElement;
 
+    /** Value set from the ratio option */
     @Prop({ mutable: true }) value: string;
+
+    /** Name that will be used as ID */
     @Prop() name: string;
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label: string;
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint: string;
+
+    /** (optional) Determine if it is mandatory */
     @Prop() required: boolean;
+
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage: string;
+
+    /** Value/Label ratio options separated by comma, to be formatted as: Value|Label */
     @Prop() options: string;
 
     @State() _options: DotOption[];

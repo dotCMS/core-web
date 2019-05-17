@@ -27,13 +27,28 @@ import {
 export class DotSelectComponent {
     @Element() el: HTMLElement;
 
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** Name that will be used as ID */
     @Prop() name = '';
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint = '';
+
+    /** Value/Label dropdown options separated by comma, to be formatted as: Value|Label */
     @Prop() options = '';
+
+    /** (optional) Determine if it is mandatory */
     @Prop() required = false;
+
+    /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage = '';
+
+    /** Value set from the dropdown option */
     @Prop({ mutable: true }) value = '';
 
     @State() _options: DotOption[];
@@ -128,7 +143,7 @@ export class DotSelectComponent {
 
     private emitInitialValue() {
         if (!this.value) {
-            this.value = this._options[0].value;
+            this.value = this._options.length ? this._options[0].value : '';
             this.emitValueChange();
         }
     }

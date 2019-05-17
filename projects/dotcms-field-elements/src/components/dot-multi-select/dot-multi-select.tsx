@@ -33,14 +33,31 @@ import {
 export class DotMultiSelectComponent {
     @Element() el: HTMLElement;
 
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
-    @Prop() name: string;
-    @Prop() label: string;
-    @Prop() hint: string;
-    @Prop() options: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
-    @Prop() size: number;
+
+    /** Name that will be used as ID */
+    @Prop() name = '';
+
+    /** (optional) Text to be rendered next to input field */
+    @Prop() label = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
+    @Prop() hint = '';
+
+    /** Value/Label dropdown options separated by comma, to be formatted as: Value|Label */
+    @Prop() options = '';
+
+    /** (optional) Determine if it is mandatory */
+    @Prop() required = false;
+
+    /** (optional) Text that will be shown when required is set and condition is not met */
+    @Prop() requiredMessage = '';
+
+    /** (optional) Size number of the multi-select dropdown (default=3) */
+    @Prop() size = 3;
+
+    /** Value set from the dropdown option */
     @Prop({ mutable: true }) value: string;
 
     @State() _options: DotOption[];
@@ -98,7 +115,7 @@ export class DotMultiSelectComponent {
                 {getTagLabel(labelTagParams)}
                 <select
                     multiple
-                    size={+this.size || 0}
+                    size={+this.size}
                     class={getErrorClass(this.status.dotValid)}
                     id={getId(this.name)}
                     disabled={this.shouldBeDisabled()}
@@ -149,7 +166,7 @@ export class DotMultiSelectComponent {
 
     private emitInitialValue() {
         if (!this.value) {
-            this.value = this._options[0].value;
+            this.value = this._options.length ? this._options[0].value : '';
             this.emitValueChange();
         }
     }

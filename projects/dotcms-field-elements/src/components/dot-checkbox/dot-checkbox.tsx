@@ -26,13 +26,28 @@ import {
 export class DotCheckboxComponent {
     @Element() el: HTMLElement;
 
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** Name that will be used as ID */
     @Prop() name: string;
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label: string;
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint: string;
+
+    /** Value/Label checkbox options separated by comma, to be formatted as: Value|Label */
     @Prop() options: string;
+
+    /** (optional) Determine if it is mandatory */
     @Prop() required: boolean;
+
+    /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage: string;
+
+     /** Value set from the checkbox option */
     @Prop({ mutable: true }) value: string;
 
     @State() _options: DotOption[];

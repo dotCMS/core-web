@@ -15,10 +15,10 @@
 | `max`               | `max`                | (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second \| year-month-day \| hour:minute:second | `string`  | `''`    |
 | `min`               | `min`                | (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second \| year-month-day \| hour:minute:second | `string`  | `''`    |
 | `name`              | `name`               | Name that will be used as ID                                                                                                                      | `string`  | `''`    |
-| `required`          | `required`           | (optional) Determine if it is needed                                                                                                              | `boolean` | `false` |
-| `requiredMessage`   | `required-message`   | (optional) Text that be shown when required is set and condition not met                                                                          | `string`  | `''`    |
+| `required`          | `required`           | (optional) Determine if it is mandatory                                                                                                           | `boolean` | `false` |
+| `requiredMessage`   | `required-message`   | (optional) Text that will be shown when required is set and condition is not met                                                                  | `string`  | `''`    |
 | `step`              | `step`               | (optional) Step that are indicated for the date and time input's separates by a comma (2,10)                                                      | `string`  | `''`    |
-| `validationMessage` | `validation-message` | (optional) Text that be shown when min or max are set and condition not met                                                                       | `string`  | `''`    |
+| `validationMessage` | `validation-message` | (optional) Text that will be shown when min or max are set and condition is not met                                                               | `string`  | `''`    |
 | `value`             | `value`              | Value should be year-month-day hour:minute:second e.g., 2005-12-01 15:22:00                                                                       | `string`  | `''`    |
 
 
