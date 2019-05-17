@@ -7,19 +7,19 @@
 
 ## Properties
 
-| Property            | Attribute            | Description | Type      | Default     |
-| ------------------- | -------------------- | ----------- | --------- | ----------- |
-| `disabled`          | `disabled`           |             | `boolean` | `false`     |
-| `hint`              | `hint`               |             | `string`  | `undefined` |
-| `label`             | `label`              |             | `string`  | `undefined` |
-| `max`               | `max`                |             | `string`  | `undefined` |
-| `min`               | `min`                |             | `string`  | `undefined` |
-| `name`              | `name`               |             | `string`  | `undefined` |
-| `required`          | `required`           |             | `boolean` | `undefined` |
-| `requiredMessage`   | `required-message`   |             | `string`  | `undefined` |
-| `step`              | `step`               |             | `string`  | `undefined` |
-| `validationMessage` | `validation-message` |             | `string`  | `undefined` |
-| `value`             | `value`              |             | `string`  | `undefined` |
+| Property            | Attribute            | Description | Type      | Default |
+| ------------------- | -------------------- | ----------- | --------- | ------- |
+| `disabled`          | `disabled`           |             | `boolean` | `false` |
+| `hint`              | `hint`               |             | `string`  | `''`    |
+| `label`             | `label`              |             | `string`  | `''`    |
+| `max`               | `max`                |             | `string`  | `''`    |
+| `min`               | `min`                |             | `string`  | `''`    |
+| `name`              | `name`               |             | `string`  | `''`    |
+| `required`          | `required`           |             | `boolean` | `false` |
+| `requiredMessage`   | `required-message`   |             | `string`  | `''`    |
+| `step`              | `step`               |             | `string`  | `''`    |
+| `validationMessage` | `validation-message` |             | `string`  | `''`    |
+| `value`             | `value`              |             | `string`  | `''`    |
 
 
 ## Events

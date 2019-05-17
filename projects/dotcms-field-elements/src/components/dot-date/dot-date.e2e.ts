@@ -76,7 +76,7 @@ describe('dot-date', () => {
     it('should set the default value of "max" when is not valid', async () => {
         element.setProperty('max', [1, 6, 7]);
         await page.waitForChanges();
-        expect(await input.getProperty('max')).toBe('');
+       expect(await input.getProperty('max')).toBe('');
     });
 
     describe('emit events', () => {

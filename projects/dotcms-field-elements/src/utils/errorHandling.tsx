@@ -1,12 +1,14 @@
-export const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
-export const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
+import { dotParseDate, dotValidateDate, dotValidateTime, isValidDateSlot } from './dateUtils';
 
 const PROP_VALIDATION_HANDLING = {
     options: stringValidator,
     regexCheck: regexValidator,
+    string: stringValidator,
     number: numberValidator,
     time: timeValidator,
-    date: dateValidator
+    date: dateValidator,
+    dateTime: dateTimeValidator,
+    step: stringValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
@@ -73,19 +75,47 @@ function numberValidator<T>(propInfo: PropValidationInfo<T>): void {
 }
 
 function dateValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (propInfo.value && !DATE_REGEX.test(propInfo.value.toString())) {
+    if (!dotValidateDate(propInfo.value.toString())) {
         throw new DotFieldPropError(propInfo, 'Date');
     }
 }
 
 function timeValidator<T>(propInfo: PropValidationInfo<T>): void {
-    if (propInfo.value && !TIME_REGEX.test(propInfo.value.toString())) {
+    if (!dotValidateTime(propInfo.value.toString())) {
         throw new DotFieldPropError(propInfo, 'Time');
     }
 }
 
+function dateTimeValidator<T>(propInfo: PropValidationInfo<T>): void {
+    if (typeof propInfo.value === 'string') {
+        const dateSlot = dotParseDate(propInfo.value.toString());
+        if (!isValidDateSlot(dateSlot)) {
+            throw new DotFieldPropError(propInfo, 'Date/Time');
+        }
+    } else {
+        throw new DotFieldPropError(propInfo, 'Date/Time');
+    }
+}
+
 export function dotPropValidator<T>(element: T, propertyName: string, validatorType?: string): any {
-    const proInfo = {
+    const proInfo = getPropInfo<T>(element, propertyName);
+    try {
+        validateProp<T>(proInfo, validatorType);
+        return element[propertyName];
+    } catch (error) {
+        console.warn(error.message);
+        return FIELDS_DEFAULT_VALUE[propertyName];
+    }
+}
+
+function validateProp<T>(proInfo: PropValidationInfo<T>, validatorType?: string): void {
+    if (!!proInfo.value) {
+        PROP_VALIDATION_HANDLING[validatorType || proInfo.name](proInfo);
+    }
+}
+
+function getPropInfo<T>(element: T, propertyName: string): PropValidationInfo<T> {
+    return {
         value: element[propertyName],
         name: propertyName,
         field: {
@@ -93,12 +123,4 @@ export function dotPropValidator<T>(element: T, propertyName: string, validatorT
             type: element['el'].tagName.toLocaleLowerCase()
         }
     };
-
-    try {
-        PROP_VALIDATION_HANDLING[validatorType || propertyName](proInfo);
-        return element[propertyName];
-    } catch (error) {
-        console.warn(error.message);
-        return FIELDS_DEFAULT_VALUE[propertyName];
-    }
 }

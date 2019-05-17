@@ -6,7 +6,8 @@ import {
     Listen,
     Method,
     Prop,
-    State
+    State,
+    Watch
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import {
@@ -18,22 +19,11 @@ import {
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
-import {
-    DATE_REGEX,
-    getClassNames,
-    getTagError,
-    getTagHint,
-    getTagLabel,
-    TIME_REGEX
-} from '../../utils';
+import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
+import { DateSlot, dotParseDate } from '../../utils/dateUtils';
 
 const DATE_SUFFIX = '-date';
 const TIME_SUFFIX = '-time';
-
-interface DateSlots {
-    date: string;
-    time: string;
-}
 
 @Component({
     tag: 'dot-date-time',
@@ -68,13 +58,16 @@ export class DotDateTimeComponent {
     @Prop() disabled = false;
 
     /** (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop() min = '';
+    @Prop({ mutable: true })
+    min = '';
 
     /** (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop() max = '';
+    @Prop({ mutable: true })
+    max = '';
 
     /** (optional) Step that are indicated for the date and time input's separates by a comma (2,10) */
-    @Prop() step = '';
+    @Prop({ mutable: true })
+    step = '';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -82,9 +75,9 @@ export class DotDateTimeComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private _minDateTime: DateSlots;
-    private _maxDateTime: DateSlots;
-    private _value: DateSlots;
+    private _minDateTime: DateSlot;
+    private _maxDateTime: DateSlot;
+    private _value: DateSlot;
     private _step = {
         date: null,
         time: null
@@ -106,6 +99,32 @@ export class DotDateTimeComponent {
             input.reset();
         });
         this.valueChange.emit({ name: this.name, value: '' });
+    }
+
+    componentWillLoad(): void {
+        this.validateProps();
+        this.setDatesFormat();
+        [this._step.date, this._step.time] = this.step.split(',');
+    }
+
+    @Watch('value')
+    valueWatch(): void {
+        this.value = dotPropValidator(this, 'value', 'dateTime');
+    }
+
+    @Watch('min')
+    minWatch(): void {
+        this.min = dotPropValidator(this, 'min', 'dateTime');
+    }
+
+    @Watch('max')
+    maxWatch(): void {
+        this.max = dotPropValidator(this, 'max', 'dateTime');
+    }
+
+    @Watch('step')
+    stepWatch(): void {
+        this.step = dotPropValidator(this, 'step');
     }
 
     @Listen('_valueChange')
@@ -135,11 +154,6 @@ export class DotDateTimeComponent {
     showErrorElement(event: CustomEvent) {
         event.stopImmediatePropagation();
         this.errorMessageElement = getTagError(event.detail.show, this.validationMessage);
-    }
-
-    componentWillLoad() {
-        this.setDatesFormat();
-        [this._step.date, this._step.time] = this.step.split(',');
     }
 
     hostData() {
@@ -189,26 +203,17 @@ export class DotDateTimeComponent {
         );
     }
 
+    private validateProps(): void {
+        this.minWatch();
+        this.maxWatch();
+        this.stepWatch();
+        this.valueWatch();
+    }
+
     private setDatesFormat(): void {
-        this._minDateTime = this.parseDate(this.min);
-        this._maxDateTime = this.parseDate(this.max);
-        this._value = this.parseDate(this.value);
-    }
-
-    private parseDate(data: string): DateSlots {
-        const [dateOrTime, time] = data.split(' ');
-        return {
-            date: this.validateDate(dateOrTime),
-            time: this.validateTime(time) || this.validateTime(dateOrTime)
-        };
-    }
-
-    private validateDate(date: string): string {
-        return DATE_REGEX.test(date) ? date : null;
-    }
-
-    private validateTime(time: string): string {
-        return TIME_REGEX.test(time) ? time : null;
+        this._minDateTime = dotParseDate(this.min);
+        this._maxDateTime = dotParseDate(this.max);
+        this._value = dotParseDate(this.value);
     }
 
     // tslint:disable-next-line:cyclomatic-complexity

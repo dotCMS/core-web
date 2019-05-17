@@ -25,19 +25,19 @@ import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel }
 export class DotDateComponent {
     @Element() el: HTMLElement;
     @Prop({ mutable: true })
-    value: string;
-    @Prop() name: string;
-    @Prop() label: string;
-    @Prop() hint: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
-    @Prop() validationMessage: string;
+    value = '';
+    @Prop() name = '';
+    @Prop() label = '';
+    @Prop() hint = '';
+    @Prop() required = false;
+    @Prop() requiredMessage = '';
+    @Prop() validationMessage = '';
     @Prop() disabled = false;
     @Prop({ mutable: true })
-    min: string;
+    min = '';
     @Prop({ mutable: true })
-    max: string;
-    @Prop() step: string;
+    max = '';
+    @Prop() step = '';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
