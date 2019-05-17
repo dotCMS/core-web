@@ -12,6 +12,7 @@ const PROP_VALIDATION_HANDLING = {
     date: dateValidator,
     dateTime: dateTimeValidator,
     number: numberValidator,
+    options: stringValidator,
     regexCheck: regexValidator,
     step: stringValidator,
     string: stringValidator,

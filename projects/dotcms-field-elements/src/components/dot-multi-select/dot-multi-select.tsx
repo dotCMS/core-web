@@ -62,8 +62,7 @@ export class DotMultiSelectComponent {
     optionsWatch(): void {
         const validOptions = checkProp<DotMultiSelectComponent, string>(
             this,
-            'options',
-            'string'
+            'options'
         );
         this._options = getDotOptionsFromFieldValue(validOptions);
     }

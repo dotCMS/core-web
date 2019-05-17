@@ -53,7 +53,7 @@ export class DotSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = checkProp<DotSelectComponent, string>(this, 'options', 'string');
+        const validOptions = checkProp<DotSelectComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
