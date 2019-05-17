@@ -32,8 +32,8 @@ const fieldMap = {
     'Checkbox': DotFormFields.Checkbox,
     'Key-Value': fieldParamsConversionFromBE['Key-Value'],
     'Multi-Select': DotFormFields['Multi-Select'],
-    Tag: DotFormFields.Tag,
-    Time: DotFormFields.Time,
+    'Tag': DotFormFields.Tag,
+    'Time': DotFormFields.Time,
     'Date-and-Time': DotFormFields['Date-and-Time'],
     'Date-Range': DotFormFields['Date-Range']
 };

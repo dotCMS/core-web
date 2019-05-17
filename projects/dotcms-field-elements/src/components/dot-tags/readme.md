@@ -7,18 +7,18 @@
 
 ## Properties
 
-| Property          | Attribute          | Description | Type      | Default     |
-| ----------------- | ------------------ | ----------- | --------- | ----------- |
-| `debounce`        | `debounce`         |             | `number`  | `300`       |
-| `disabled`        | `disabled`         |             | `boolean` | `false`     |
-| `hint`            | `hint`             |             | `string`  | `''`        |
-| `label`           | `label`            |             | `string`  | `''`        |
-| `name`            | `name`             |             | `string`  | `''`        |
-| `placeholder`     | `placeholder`      |             | `string`  | `''`        |
-| `required`        | `required`         |             | `boolean` | `false`     |
-| `requiredMessage` | `required-message` |             | `string`  | `''`        |
-| `threshold`       | `threshold`        |             | `number`  | `0`         |
-| `value`           | `value`            |             | `string`  | `undefined` |
+| Property          | Attribute          | Description | Type      | Default |
+| ----------------- | ------------------ | ----------- | --------- | ------- |
+| `debounce`        | `debounce`         |             | `number`  | `300`   |
+| `disabled`        | `disabled`         |             | `boolean` | `false` |
+| `hint`            | `hint`             |             | `string`  | `''`    |
+| `label`           | `label`            |             | `string`  | `''`    |
+| `name`            | `name`             |             | `string`  | `''`    |
+| `placeholder`     | `placeholder`      |             | `string`  | `''`    |
+| `required`        | `required`         |             | `boolean` | `false` |
+| `requiredMessage` | `required-message` |             | `string`  | `''`    |
+| `threshold`       | `threshold`        |             | `number`  | `0`     |
+| `value`           | `value`            |             | `string`  | `''`    |
 
 
 ## Events

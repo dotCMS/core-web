@@ -13,7 +13,7 @@
 | `debounce`    | `debounce`    |             | `number`                  | `300`       |
 | `disabled`    | `disabled`    |             | `boolean`                 | `false`     |
 | `maxResults`  | `max-results` |             | `number`                  | `0`         |
-| `placeholder` | `placeholder` |             | `string`                  | `undefined` |
+| `placeholder` | `placeholder` |             | `string`                  | `''`        |
 | `threshold`   | `threshold`   |             | `number`                  | `0`         |
 
 

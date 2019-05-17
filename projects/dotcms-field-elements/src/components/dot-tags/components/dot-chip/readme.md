@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type      | Default     |
-| ------------- | -------------- | ----------- | --------- | ----------- |
-| `deleteLabel` | `delete-label` |             | `string`  | `'delete'`  |
-| `disabled`    | `disabled`     |             | `boolean` | `undefined` |
-| `label`       | `label`        |             | `string`  | `undefined` |
+| Property      | Attribute      | Description | Type      | Default    |
+| ------------- | -------------- | ----------- | --------- | ---------- |
+| `deleteLabel` | `delete-label` |             | `string`  | `'delete'` |
+| `disabled`    | `disabled`     |             | `boolean` | `false`    |
+| `label`       | `label`        |             | `string`  | `''`       |
 
 
 ## Events

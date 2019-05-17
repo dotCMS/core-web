@@ -13,7 +13,6 @@ describe('dot-chip', () => {
     });
 
     it('should render', () => {
-        // tslint:disable-next-line:max-line-length
         const tagsRenderExpected = '<span>test-tag</span><button type=\"button\">delete</button>';
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });
@@ -22,7 +21,6 @@ describe('dot-chip', () => {
         element.setAttribute('delete-label', 'x');
         await page.waitForChanges();
 
-        // tslint:disable-next-line:max-line-length
         const tagsRenderExpected = '<span>test-tag</span><button type=\"button\">x</button>';
         expect(element.innerHTML).toBe(tagsRenderExpected);
     });

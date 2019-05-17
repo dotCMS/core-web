@@ -7,9 +7,9 @@ import Fragment from 'stencil-fragment';
 })
 export class DotChipComponent {
     @Element() el: HTMLElement;
-    @Prop() label: string;
+    @Prop() label = '';
     @Prop() deleteLabel = 'delete';
-    @Prop() disabled: boolean;
+    @Prop() disabled = false;
 
     @Event() remove: EventEmitter<String>;
 

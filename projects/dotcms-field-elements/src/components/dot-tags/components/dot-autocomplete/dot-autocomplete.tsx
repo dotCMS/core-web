@@ -1,5 +1,4 @@
 import { Component, Prop, Event, EventEmitter, Element, Watch } from '@stencil/core';
-import Fragment from 'stencil-fragment';
 import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
 
 @Component({
@@ -11,7 +10,7 @@ export class DotAutocompleteComponent {
     @Element() el: HTMLElement;
 
     @Prop() disabled = false;
-    @Prop() placeholder: string;
+    @Prop() placeholder = '';
     @Prop() threshold = 0;
     @Prop() maxResults = 0;
     @Prop() debounce = 300;
@@ -21,7 +20,7 @@ export class DotAutocompleteComponent {
     @Event() lostFocus: EventEmitter<FocusEvent>;
 
     private readonly id = `autoComplete${new Date().getTime()}`;
-    private autocomplete;
+    private autocomplete: autoComplete;
 
     private keyEvent = {
         'Enter': this.emitSelection.bind(this),
@@ -36,15 +35,13 @@ export class DotAutocompleteComponent {
 
     render() {
         return (
-            <Fragment>
-                <input
-                    disabled={this.disabled || null}
-                    id ={this.id}
-                    placeholder={this.placeholder}
-                    onBlur={(event: FocusEvent) => this.handleBlur(event)}
-                    onKeyDown={(event: KeyboardEvent) => this.handleKeyDown(event)}
-                />
-            </Fragment>
+            <input
+                disabled={this.disabled || null}
+                id ={this.id}
+                placeholder={this.placeholder || null}
+                onBlur={(event: FocusEvent) => this.handleBlur(event)}
+                onKeyDown={(event: KeyboardEvent) => this.handleKeyDown(event)}
+            />
         );
     }
 
@@ -78,13 +75,7 @@ export class DotAutocompleteComponent {
     }
 
     private cleanOptions(): void {
-        const resultList = this.getResultList();
-
-        if (resultList) {
-            Array.from(resultList.querySelectorAll('li'))
-                .forEach(child => child.remove()
-            );
-        }
+        this.getResultList().innerHTML = '';
     }
 
     private emitSelection(selection: string): void {
@@ -97,7 +88,6 @@ export class DotAutocompleteComponent {
     }
 
     private initAutocomplete(): void {
-        // tslint:disable-next-line: no-unused-expression
         this.autocomplete = new autoComplete({
             data: {
                 src: async () => this.getData()

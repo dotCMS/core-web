@@ -80,7 +80,7 @@ export class DotTagsComponent {
                     id={this.name}
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.disabled || null}
-                    placeholder={this.placeholder}
+                    placeholder={this.placeholder || null}
                     threshold={this.threshold}
                     debounce={this.debounce}
                     data={this.getData.bind(this)}

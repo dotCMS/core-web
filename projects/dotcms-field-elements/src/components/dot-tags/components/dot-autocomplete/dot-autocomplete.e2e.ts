@@ -13,7 +13,6 @@ describe('dot-autocomplete', () => {
     });
 
     it('should render', () => {
-        // tslint:disable-next-line:max-line-length
         const renderExpected = '<input id=\"autoComplete\\d+\">';
 
         expect(element.innerHTML).toMatch(new RegExp(renderExpected));
@@ -22,16 +21,15 @@ describe('dot-autocomplete', () => {
     it('should disabled', async () => {
         element.setAttribute('disabled', true);
         await page.waitForChanges();
-        // tslint:disable-next-line:max-line-length
-        const renderExpected = '<input id=\"autoComplete\\d+\" disabled=\"\">';
 
+        const renderExpected = '<input id=\"autoComplete\\d+\" disabled=\"\">';
         expect(element.innerHTML).toMatch(new RegExp(renderExpected));
     });
 
     it('should put a placeholder', async () => {
         element.setAttribute('placeholder', 'placeholder');
         await page.waitForChanges();
-        // tslint:disable-next-line:max-line-length
+
         const renderExpected = '<input id=\"autoComplete\\d+\" placeholder=\"placeholder\">';
         expect(element.innerHTML).toMatch(new RegExp(renderExpected));
     });
