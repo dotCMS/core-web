@@ -4,34 +4,107 @@ describe('dot-autocomplete', () => {
     let page: E2EPage;
     let element: E2EElement;
 
-    beforeEach(async () => {
-        page = await newE2EPage({
-            html: `<dot-autocomplete></dot-autocomplete>`
+    describe('render all attributes', () => {
+        beforeEach(async () => {
+            page = await newE2EPage({
+                html: `<dot-autocomplete \
+                            disabled='true'
+                            placeholder='placeholder'
+                            threshold='3'
+                            maxResults='5'
+                            debounce='100'
+                            data=${() => {}}
+                        >
+                        </dot-autocomplete>`
+            });
+
+            element = await page.find('dot-autocomplete');
         });
 
-        element = await page.find('dot-autocomplete');
+        it('should render', async () => {
+            const input = await element.find('input');
+
+            expect((await input.getProperty('id')).startsWith('autoComplete')).toBe(true);
+            expect(await input.getProperty('disabled')).toBeTruthy();
+            expect(await input.getProperty('placeholder')).toBe('placeholder');
+        });
     });
 
-    it('should render', () => {
-        const renderExpected = '<input id=\"autoComplete\\d+\">';
+    describe('render each attributes', () => {
+        beforeEach(async () => {
+            page = await newE2EPage({
+                html: `<dot-autocomplete></dot-autocomplete>`
+            });
 
-        expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-    });
+            element = await page.find('dot-autocomplete');
+        });
 
-    it('should disabled', async () => {
-        element.setAttribute('disabled', true);
-        await page.waitForChanges();
+        it('should render', async () => {
+            const input = await element.find('input');
+            expect((await input.getProperty('id')).startsWith('autoComplete')).toBe(true);
+        });
 
-        const renderExpected = '<input id=\"autoComplete\\d+\" disabled=\"\">';
-        expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-    });
+        it('should disabled', async () => {
+            element.setAttribute('disabled', true);
+            await page.waitForChanges();
 
-    it('should put a placeholder', async () => {
-        element.setAttribute('placeholder', 'placeholder');
-        await page.waitForChanges();
+            const input = await element.find('input');
+            expect(await input.getProperty('disabled')).toBe(true);
+        });
 
-        const renderExpected = '<input id=\"autoComplete\\d+\" placeholder=\"placeholder\">';
-        expect(element.innerHTML).toMatch(new RegExp(renderExpected));
+        it('should put a placeholder', async () => {
+            element.setAttribute('placeholder', 'placeholder');
+            await page.waitForChanges();
+
+            const input = await element.find('input');
+            expect(await input.getProperty('placeholder')).toBe('placeholder');
+        });
+
+        describe('unvalid inputs', () => {
+            it('should not broke when disabled is not a boolean', async () => {
+                element.setAttribute('disabled', {});
+                await page.waitForChanges();
+
+                const input = await element.find('input');
+                expect(await input.getProperty('disabled')).toBeTruthy();
+            });
+
+            it('should not broke when placeholder is not a string', async () => {
+                element.setAttribute('placeholder', {});
+                await page.waitForChanges();
+
+                const input = await element.find('input');
+                expect(await input.getProperty('placeholder')).toBe('[object Object]');
+            });
+
+            it('should not broke when threshold is not a number', async () => {
+                element.setAttribute('threshold', {});
+                await page.waitForChanges();
+
+                expect(await element.find('input')).toBeDefined();
+            });
+
+            it('should not broke when debounce is not a number', async () => {
+                element.setAttribute('debounce', {});
+                await page.waitForChanges();
+
+                expect(await element.find('input')).toBeDefined();
+            });
+
+            it('should not broke when maxResults is not a number', async () => {
+                element.setAttribute('maxResults', {});
+                await page.waitForChanges();
+
+                expect(await element.find('input')).toBeDefined();
+            });
+
+            it('should not broke when data does is not a function', async () => {
+                element.setAttribute('data', {});
+                await page.waitForChanges();
+
+                expect(await element.find('input')).toBeDefined();
+            });
+        });
     });
 
     describe('show options', () => {
@@ -50,18 +123,20 @@ describe('dot-autocomplete', () => {
         });
 
         it('should put get data', async () => {
-            // tslint:disable-next-line:max-line-length
-            const renderExpected = '<input id=\"autoComplete\\d+\" placeholder=\"\"><ul id=\"autoComplete\\d+_results_list\"><li data-result=\"tag-1\" class=\"autoComplete_result\" tabindex=\"1\"><span class=\"autoComplete_highlighted\">t</span>ag-1</li></ul>';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
+            const ul = await element.find('ul');
+            expect(ul.innerHTML).toEqualHtml(`
+                <li data-result="tag-1" class="autoComplete_result" tabindex="1">
+                    <span class="autoComplete_highlighted">t</span>ag-1
+                </li>
+            `);
         });
 
         it('should clean value and hide options when press esc', async () => {
             await input.press('Escape');
             await page.waitForChanges();
 
-            // tslint:disable-next-line:max-line-length
-            const renderExpected = '<input id=\"autoComplete\\d+\" placeholder=\"\"><ul id=\"autoComplete\\d+_results_list\"></ul>';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
+            const ul = await element.find('ul');
+            expect(ul.innerHTML).toEqualHtml('');
         });
 
         it('should clean options when lost focus', async (done) => {
@@ -121,55 +196,6 @@ describe('dot-autocomplete', () => {
             });
 
             await input.triggerEvent('blur');
-        });
-    });
-
-    describe('unvalid inputs', () => {
-        it('should not broke when disabled is not a boolean', async () => {
-            element.setAttribute('disabled', {});
-            await page.waitForChanges();
-            const renderExpected = '<input id=\"autoComplete\\d+\" disabled=\"\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-        });
-
-        it('should not broke when placeholder is not a string', async () => {
-            element.setAttribute('placeholder', {});
-            await page.waitForChanges();
-
-            const renderExpected = '<input id=\"autoComplete\\d+\" placeholder=\"\\[object Object\\]\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-        });
-
-        it('should not broke when threshold is not a number', async () => {
-            element.setAttribute('threshold', {});
-            await page.waitForChanges();
-
-            const renderExpected = '<input id=\"autoComplete\\d+\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-        });
-
-        it('should not broke when debounce is not a number', async () => {
-            element.setAttribute('debounce', {});
-            await page.waitForChanges();
-
-            const renderExpected = '<input id=\"autoComplete\\d+\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-        });
-
-        it('should not broke when maxResults is not a number', async () => {
-            element.setAttribute('maxResults', {});
-            await page.waitForChanges();
-
-            const renderExpected = '<input id=\"autoComplete\\d+\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
-        });
-
-        it('should not broke when data does is not a function', async () => {
-            element.setAttribute('data', {});
-            await page.waitForChanges();
-
-            const renderExpected = '<input id=\"autoComplete\\d+\">';
-            expect(element.innerHTML).toMatch(new RegExp(renderExpected));
         });
     });
 });
