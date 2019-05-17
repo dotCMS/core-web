@@ -62,7 +62,7 @@ export class DotKeyValueComponent {
     @Prop() saveBtnLabel = 'Add';
 
     /** (optional) Placeholder for the value input text in the add form */
-    @Prop() valuePlaceholder: string;
+    @Prop() valuePlaceholder = '';
 
     /** Value of the field */
     @Prop({ mutable: true }) value = '';
