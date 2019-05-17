@@ -164,7 +164,7 @@ export class DotFormComponent {
             try {
                 element.reset();
             } catch (error) {
-                console.error('Error:', error);
+                console.warn('Log:', error);
             }
         });
     }

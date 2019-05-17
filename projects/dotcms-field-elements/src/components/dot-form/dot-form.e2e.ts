@@ -46,7 +46,7 @@ describe('dot-form', () => {
             });
         });
         await page.waitForChanges();
-        element.getProperty('value').then((data) => { formStatus = data; });
+        formStatus = await element.getProperty('value');
     });
 
     it('should renders', async () => {
@@ -113,13 +113,12 @@ describe('dot-form', () => {
         expect(element.outerHTML).toBe(formStatusExpectedMarkup);
     });
 
-    xit('should reset event', async () => {
+    it('should reset event', async () => {
         const resetBtn = await element.find('button[type="button"]');
         const expectedStatus = Object.assign({}, formStatus);
         Object.keys(expectedStatus).forEach(e => expectedStatus[e] = '');
 
         resetBtn.click();
-
         await page.waitForChanges();
 
         const data = await element.getProperty('value');

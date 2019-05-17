@@ -67,7 +67,7 @@ describe('dot-textfield', () => {
     });
 
     it('should clear value, set pristine and untouched  when input set reset', async () => {
-        element.callMethod('reset');
+        await element.callMethod('reset');
         await page.waitForChanges();
 
         expect(element.classList.contains('dot-pristine')).toBe(true);
@@ -125,8 +125,7 @@ describe('dot-textfield', () => {
         });
 
         it('should emit status and value on Reset', async () => {
-            element.callMethod('reset');
-            await page.waitForChanges();
+            await element.callMethod('reset');
             expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                 name: 'fullName',
                 status: {

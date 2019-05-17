@@ -8,7 +8,8 @@ const PROP_VALIDATION_HANDLING = {
     time: timeValidator,
     date: dateValidator,
     dateTime: dateTimeValidator,
-    step: stringValidator
+    step: stringValidator,
+    value: stringValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
@@ -46,13 +47,6 @@ Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-fi
         return { ...this.propInfo };
     }
 }
-
-// function booleanValidator<T>(propInfo: PropValidationInfo<T>): void {
-//     if (typeof propInfo.value !== 'boolean') {
-//         throw new DotFieldPropError(propInfo, 'boolean');
-//     }
-// }
-//
 
 function stringValidator<T>(propInfo: PropValidationInfo<T>): void {
     if (typeof propInfo.value !== 'string') {
