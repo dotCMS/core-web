@@ -15,13 +15,13 @@ export class DotAutocompleteComponent {
     /** (optional) text to show when no value is set */
     @Prop() placeholder = '';
 
-    /** Min characters to start search in the autocomplete input */
+    /** (optional)  Min characters to start search in the autocomplete input */
     @Prop() threshold = 0;
 
-    /** Max results to show after a autocomplete search */
+    /** (optional)  Max results to show after a autocomplete search */
     @Prop() maxResults = 0;
 
-    /** Duraction in ms to start search into the autocomplete */
+    /** (optional) Duraction in ms to start search into the autocomplete */
     @Prop() debounce = 300;
 
     /** Function to get the data to use for the autocomplete search */

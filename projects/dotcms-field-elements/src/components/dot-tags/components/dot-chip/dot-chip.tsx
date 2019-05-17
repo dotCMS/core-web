@@ -11,10 +11,10 @@ export class DotChipComponent {
     /** Chip's label */
     @Prop() label = '';
 
-    /** Delete button's label */
+    /** (optional) Delete button's label */
     @Prop() deleteLabel = 'delete';
 
-    /** If is true disabled the delete button */
+    /** (optional) If is true disabled the delete button */
     @Prop() disabled = false;
 
     @Event() remove: EventEmitter<String>;
