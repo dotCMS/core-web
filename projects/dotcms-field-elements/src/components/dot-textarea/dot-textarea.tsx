@@ -25,17 +25,35 @@ import {
 })
 export class DotTextareaComponent {
     @Element() el: HTMLElement;
-    @Prop() disabled = false;
-    @Prop() hint = '';
-    @Prop() label = '';
-    @Prop() name = '';
-    @Prop({ mutable: true })
-    regexCheck = '';
-    @Prop() required = false;
-    @Prop() requiredMessage = '';
-    @Prop() validationMessage = '';
+
+    /** Value specifies the value of the <textarea> element */
     @Prop({ mutable: true })
     value = '';
+
+    /** Name that will be used as ID */
+    @Prop() name = '';
+
+    /** (optional) Text to be rendered next to <textarea> element */
+    @Prop() label = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
+    @Prop() hint = '';
+
+    /** (optional) Determine if it is mandatory */
+    @Prop() required = false;
+
+    /** (optional) Text that be shown when required is set and condition not met */
+    @Prop() requiredMessage = '';
+
+    /** (optional) Text that be shown when the Regular Expression condition not met */
+    @Prop() validationMessage = '';
+
+    /** (optional) Disables field's interaction */
+    @Prop() disabled = false;
+
+    /** (optional) Regular expresion that is checked against the value to determine if is valid  */
+    @Prop({ mutable: true })
+    regexCheck = '';
 
     @State() status: DotFieldStatus = getOriginalStatus();
 

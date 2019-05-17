@@ -24,20 +24,42 @@ import { checkProp, getClassNames, getTagError, getTagHint, getTagLabel } from '
 })
 export class DotTimeComponent {
     @Element() el: HTMLElement;
+
+    /** Value format hh:mm:ss e.g., 15:22:00 */
     @Prop({ mutable: true })
     value = '';
+
+    /** Name that will be used as ID */
     @Prop() name = '';
+
+    /** (optional) Text to be rendered next to input field */
     @Prop() label = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint = '';
+
+    /** (optional) Determine if it is mandatory */
     @Prop() required = false;
+
+    /** (optional) Text that be shown when required is set and condition not met */
     @Prop() requiredMessage = '';
+
+    /** (optional) Text that be shown when min or max are set and condition not met */
     @Prop() validationMessage = '';
+
+    /** (optional) Disables field's interaction */
     @Prop() disabled = false;
+
+    /** (optional) Min, minimum value that the field will allow to set. Format should be hh:mm:ss */
     @Prop({ mutable: true })
     min = '';
+
+    /** (optional) Max, maximum value that the field will allow to set. Format should be  hh:mm:ss */
     @Prop({ mutable: true })
     max = '';
-    @Prop() step = '';
+
+    /** (optional) Step specifies the legal number intervals for the input field */
+    @Prop() step = '1';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -111,7 +133,6 @@ export class DotTimeComponent {
                     disabled={this.disabled}
                     type="time"
                     name={this.name}
-                    hint={this.hint}
                     value={this.value}
                     required={this.required}
                     required-message={this.requiredMessage}

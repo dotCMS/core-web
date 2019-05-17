@@ -33,7 +33,7 @@ const TIME_SUFFIX = '-time';
 export class DotDateTimeComponent {
     @Element() el: HTMLElement;
 
-    /** Value should be year-month-day hour:minute:second e.g., 2005-12-01 15:22:00 */
+    /** Value format yyyy-mm-dd hh:mm:ss e.g., 2005-12-01 15:22:00 */
     @Prop({ mutable: true })
     value = '';
 
@@ -46,7 +46,7 @@ export class DotDateTimeComponent {
     /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint = '';
 
-    /** (optional) Determine if it is needed */
+    /** (optional) Determine if it is mandatory */
     @Prop() required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
@@ -58,17 +58,17 @@ export class DotDateTimeComponent {
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
 
-    /** (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
+    /** (optional) Min, minimum value that the field will allow to set. Format should be yyyy-mm-dd hh:mm:ss | yyyy-mm-dd | hh:mm:ss */
     @Prop({ mutable: true })
     min = '';
 
-    /** (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
+    /** (optional) Max, maximum value that the field will allow to set. Format should be yyyy-mm-dd hh:mm:ss | yyyy-mm-dd | hh:mm:ss */
     @Prop({ mutable: true })
     max = '';
 
-    /** (optional) Step that are indicated for the date and time input's separates by a comma (2,10) */
+    /** (optional) Step specifies the legal number intervals for the input fields date && time e.g., 2,10 */
     @Prop({ mutable: true })
-    step = '';
+    step = '1,1';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -176,7 +176,6 @@ export class DotDateTimeComponent {
                     disabled={this.disabled}
                     type="date"
                     name={this.name + DATE_SUFFIX}
-                    hint={this.hint}
                     value={this._value.date}
                     required={this.required}
                     required-message={this.requiredMessage}
@@ -189,7 +188,6 @@ export class DotDateTimeComponent {
                     disabled={this.disabled}
                     type="time"
                     name={this.name + TIME_SUFFIX}
-                    hint={this.hint}
                     value={this._value.time}
                     required={this.required}
                     required-message={this.requiredMessage}

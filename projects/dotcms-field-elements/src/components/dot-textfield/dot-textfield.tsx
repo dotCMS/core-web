@@ -25,19 +25,41 @@ import {
 })
 export class DotTextfieldComponent {
     @Element() el: HTMLElement;
-    @Prop() disabled = false;
-    @Prop() hint = '';
-    @Prop() label = '';
-    @Prop() name = '';
-    @Prop() placeholder = '';
-    @Prop({ mutable: true })
-    regexCheck = '';
-    @Prop() required = false;
-    @Prop() requiredMessage = '';
-    @Prop() type = 'text';
-    @Prop() validationMessage = '';
+
+    /** Value specifies the value of the <input> element */
     @Prop({ mutable: true })
     value = '';
+
+    /** Name that will be used as ID */
+    @Prop() name = '';
+
+    /** (optional) Text to be rendered next to input field */
+    @Prop() label = '';
+
+    /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
+    @Prop() placeholder = '';
+
+    /** (optional) Hint text that suggest a clue of the field */
+    @Prop() hint = '';
+
+    /** (optional) Determine if it is mandatory */
+    @Prop() required = false;
+
+    /** (optional) Text that be shown when required is set and condition not met */
+    @Prop() requiredMessage = '';
+
+    /** (optional) Text that be shown when the Regular Expression condition not met */
+    @Prop() validationMessage = '';
+
+    /** (optional) Disables field's interaction */
+    @Prop() disabled = false;
+
+    /** (optional) Regular expresion that is checked against the value to determine if is valid  */
+    @Prop({ mutable: true })
+    regexCheck = '';
+
+    /** type specifies the type of <input> element to display */
+    @Prop() type = 'text';
 
     @State() status: DotFieldStatus;
 
