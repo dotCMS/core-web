@@ -10,15 +10,15 @@
 | Property           | Attribute           | Description | Type      | Default     |
 | ------------------ | ------------------- | ----------- | --------- | ----------- |
 | `disabled`         | `disabled`          |             | `boolean` | `false`     |
-| `fieldType`        | `field-type`        |             | `string`  | `undefined` |
-| `hint`             | `hint`              |             | `string`  | `undefined` |
-| `keyPlaceholder`   | `key-placeholder`   |             | `string`  | `undefined` |
-| `label`            | `label`             |             | `string`  | `undefined` |
-| `name`             | `name`              |             | `string`  | `undefined` |
-| `required`         | `required`          |             | `boolean` | `undefined` |
-| `requiredMessage`  | `required-message`  |             | `string`  | `undefined` |
+| `fieldType`        | `field-type`        |             | `string`  | `''`        |
+| `hint`             | `hint`              |             | `string`  | `''`        |
+| `keyPlaceholder`   | `key-placeholder`   |             | `string`  | `''`        |
+| `label`            | `label`             |             | `string`  | `''`        |
+| `name`             | `name`              |             | `string`  | `''`        |
+| `required`         | `required`          |             | `boolean` | `false`     |
+| `requiredMessage`  | `required-message`  |             | `string`  | `''`        |
 | `saveBtnLabel`     | `save-btn-label`    |             | `string`  | `'Add'`     |
-| `value`            | `value`             |             | `string`  | `undefined` |
+| `value`            | `value`             |             | `string`  | `''`        |
 | `valuePlaceholder` | `value-placeholder` |             | `string`  | `undefined` |
 
 

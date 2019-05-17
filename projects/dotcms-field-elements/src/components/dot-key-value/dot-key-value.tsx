@@ -38,16 +38,16 @@ export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
     @Prop() disabled = false;
-    @Prop() fieldType: string;
-    @Prop() hint: string;
-    @Prop() keyPlaceholder: string;
-    @Prop() label: string;
-    @Prop() name: string;
-    @Prop() required: boolean;
-    @Prop() requiredMessage: string;
+    @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
+    @Prop() hint = '';
+    @Prop() keyPlaceholder = '';
+    @Prop() label = '';
+    @Prop() name = '';
+    @Prop() required = false;
+    @Prop() requiredMessage = '';
     @Prop() saveBtnLabel = 'Add';
     @Prop() valuePlaceholder: string;
-    @Prop({ mutable: true }) value: string;
+    @Prop({ mutable: true }) value = '';
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueItem[] = [];
