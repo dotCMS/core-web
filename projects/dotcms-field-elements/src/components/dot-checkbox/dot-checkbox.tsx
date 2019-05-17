@@ -49,7 +49,7 @@ export class DotCheckboxComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator<DotCheckboxComponent, DotOption[]>(this, 'options');
+        const validOptions = dotPropValidator<DotCheckboxComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

@@ -60,7 +60,7 @@ export class DotMultiSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator<DotMultiSelectComponent, DotOption[]>(
+        const validOptions = dotPropValidator<DotMultiSelectComponent, string>(
             this,
             'options'
         );
