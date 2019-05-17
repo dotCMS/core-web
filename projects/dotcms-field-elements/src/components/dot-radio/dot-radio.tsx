@@ -59,7 +59,7 @@ export class DotRadioComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator(this, 'options');
+        const validOptions = dotPropValidator<DotRadioComponent, DotOption[]>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

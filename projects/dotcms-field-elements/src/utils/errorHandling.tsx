@@ -1,15 +1,14 @@
 import { dotParseDate, dotValidateDate, dotValidateTime, isValidDateSlot } from './dateUtils';
 
 const PROP_VALIDATION_HANDLING = {
-    options: stringValidator,
-    regexCheck: regexValidator,
-    string: stringValidator,
-    number: numberValidator,
-    time: timeValidator,
     date: dateValidator,
     dateTime: dateTimeValidator,
+    number: numberValidator,
+    options: stringValidator,
+    regexCheck: regexValidator,
     step: stringValidator,
-    value: stringValidator
+    string: stringValidator,
+    time: timeValidator
 };
 
 const FIELDS_DEFAULT_VALUE = {
@@ -34,11 +33,16 @@ class DotFieldPropError<T> extends Error {
     private readonly propInfo: PropValidationInfo<T>;
 
     constructor(propInfo: PropValidationInfo<T>, expectedType: string) {
+        console.log(propInfo);
         super(
-            `Warning: Invalid prop "${propInfo.name}" of type "${typeof propInfo.value}" supplied to "${propInfo
-                .field.type}" with the name "${propInfo.field.name}", expected "${expectedType}".
-Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${propInfo
-                .field.type}/readme.md`
+            `Warning: Invalid prop "${
+                propInfo.name
+            }" of type "${typeof propInfo.value}" supplied to "${
+                propInfo.field.type
+            }" with the name "${propInfo.field.name}", expected "${expectedType}".
+Doc Reference: https://github.com/dotCMS/core-web/blob/master/projects/dotcms-field-elements/src/components/${
+                propInfo.field.type
+            }/readme.md`
         );
         this.propInfo = propInfo;
     }
@@ -91,24 +95,35 @@ function dateTimeValidator<T>(propInfo: PropValidationInfo<T>): void {
     }
 }
 
-export function dotPropValidator<T>(element: T, propertyName: string, validatorType?: string): any {
-    const proInfo = getPropInfo<T>(element, propertyName);
+export function dotPropValidator<ComponentClass, PropType>(
+    component: ComponentClass,
+    propertyName: string,
+    validatorType?: string
+): string {
+    const proInfo = getPropInfo<ComponentClass, PropType>(component, propertyName);
+
     try {
-        validateProp<T>(proInfo, validatorType);
-        return element[propertyName];
+        validateProp<PropType>(proInfo, validatorType);
+        return component[propertyName];
     } catch (error) {
         console.warn(error.message);
         return FIELDS_DEFAULT_VALUE[propertyName];
     }
 }
 
-function validateProp<T>(proInfo: PropValidationInfo<T>, validatorType?: string): void {
-    if (!!proInfo.value) {
-        PROP_VALIDATION_HANDLING[validatorType || proInfo.name](proInfo);
+function validateProp<PropType>(
+    propInfo: PropValidationInfo<PropType>,
+    validatorType?: string
+): void {
+    if (!!propInfo.value) {
+        PROP_VALIDATION_HANDLING[validatorType || propInfo.name](propInfo);
     }
 }
 
-function getPropInfo<T>(element: T, propertyName: string): PropValidationInfo<T> {
+function getPropInfo<ComponentClass, PropType>(
+    element: ComponentClass,
+    propertyName: string
+): PropValidationInfo<PropType> {
     return {
         value: element[propertyName],
         name: propertyName,

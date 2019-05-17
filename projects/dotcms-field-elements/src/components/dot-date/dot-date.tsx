@@ -60,12 +60,12 @@ export class DotDateComponent {
 
     @Watch('min')
     minWatch(): void {
-        this.min = dotPropValidator(this, 'min', 'date');
+        this.min = dotPropValidator<DotDateComponent, string>(this, 'min', 'date');
     }
 
     @Watch('max')
     maxWatch(): void {
-        this.max = dotPropValidator(this, 'max', 'date');
+        this.max = dotPropValidator<DotDateComponent, string>(this, 'max', 'date');
     }
 
     @Listen('_valueChange')
