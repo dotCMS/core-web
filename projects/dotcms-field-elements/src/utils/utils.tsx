@@ -89,7 +89,7 @@ export function getTagHint(hint: string, name: string): JSX.Element {
             {hint}
         </span>
     ) : (
-        ''
+        null
     );
 }
 
