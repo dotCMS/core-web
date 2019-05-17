@@ -46,25 +46,23 @@ export class DotDateTimeComponent {
     /** (optional) Hint text that suggest a clue of the field */
     @Prop() hint = '';
 
-    /** (optional) Determine if it is needed */
+    /** (optional) Determine if it is mandatory */
     @Prop() required = false;
 
-    /** (optional) Text that be shown when required is set and condition not met */
+    /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage = '';
 
-    /** (optional) Text that be shown when min or max are set and condition not met */
+    /** (optional) Text that will be shown when min or max are set and condition is not met */
     @Prop() validationMessage = '';
 
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
 
     /** (optional) Min value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop({ mutable: true })
-    min = '';
+    @Prop({ mutable: true }) min = '';
 
     /** (optional) Max value that the field will allow to set. Format should be year-month-day hour:minute:second | year-month-day | hour:minute:second */
-    @Prop({ mutable: true })
-    max = '';
+    @Prop({ mutable: true }) max = '';
 
     /** (optional) Step that are indicated for the date and time input's separates by a comma (2,10) */
     @Prop({ mutable: true })
