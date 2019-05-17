@@ -85,12 +85,22 @@ export function getClassNames(
  */
 export function getTagHint(hint: string, name: string): JSX.Element {
     return hint ? (
-        <span class="dot-field__hint" id={`hint-${name}`}>
+        <span class="dot-field__hint" id={getHintId(name)}>
             {hint}
         </span>
     ) : (
         ''
     );
+}
+
+/**
+ * Prefix the hint for the id param
+ *
+ * @param {string} name
+ * @returns {string}
+ */
+export function getHintId(name: string): string {
+    return `hint-${name}`;
 }
 
 /**

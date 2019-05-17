@@ -15,6 +15,7 @@ import {
     getTagLabel,
     getErrorClass,
     getDotOptionsFromFieldValue,
+    getHintId,
     updateStatus
 } from '../../utils';
 
@@ -78,7 +79,7 @@ export class DotCheckboxComponent {
                     tabIndex={0}
                     class="dot-checkbox__items"
                     aria-labelledby={`label-${labelTagParams.name}`}
-                    aria-describedby={`hint-${this.name}`}
+                    aria-describedby={getHintId(this.name)}
                 >
                     {this._options.map((item: DotOption) => {
                         const trimmedValue = item.value.trim();
