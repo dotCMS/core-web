@@ -58,7 +58,7 @@ export class DotMultiSelectComponent {
     @Prop() size = 3;
 
     /** Value set from the dropdown option */
-    @Prop({ mutable: true }) value: string;
+    @Prop({ mutable: true }) value = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus = getOriginalStatus();
