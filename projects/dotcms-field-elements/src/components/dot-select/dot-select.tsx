@@ -2,7 +2,7 @@ import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } f
 import Fragment from 'stencil-fragment';
 import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
-    dotPropValidator,
+    checkProp,
     getClassNames,
     getDotOptionsFromFieldValue,
     getErrorClass,
@@ -53,7 +53,7 @@ export class DotSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator(this, 'options');
+        const validOptions = checkProp<DotSelectComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

@@ -15,12 +15,13 @@ import {
     DotFieldStatusClasses,
     DotFieldStatusEvent,
     DotFieldValueEvent,
-    DotLabel
+    DotLabel,
+    DotDateSlot
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
-import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
-import { DateSlot, dotParseDate } from '../../utils/dateUtils';
+import { checkProp, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
+import { dotParseDate } from '../../utils/props/validators';
 
 const DATE_SUFFIX = '-date';
 const TIME_SUFFIX = '-time';
@@ -75,9 +76,9 @@ export class DotDateTimeComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private _minDateTime: DateSlot;
-    private _maxDateTime: DateSlot;
-    private _value: DateSlot;
+    private _minDateTime: DotDateSlot;
+    private _maxDateTime: DotDateSlot;
+    private _value: DotDateSlot;
     private _step = {
         date: null,
         time: null
@@ -109,22 +110,22 @@ export class DotDateTimeComponent {
 
     @Watch('value')
     valueWatch(): void {
-        this.value = dotPropValidator(this, 'value', 'dateTime');
+        this.value = checkProp(this, 'value', 'dateTime');
     }
 
     @Watch('min')
     minWatch(): void {
-        this.min = dotPropValidator(this, 'min', 'dateTime');
+        this.min = checkProp(this, 'min', 'dateTime');
     }
 
     @Watch('max')
     maxWatch(): void {
-        this.max = dotPropValidator(this, 'max', 'dateTime');
+        this.max = checkProp(this, 'max', 'dateTime');
     }
 
     @Watch('step')
     stepWatch(): void {
-        this.step = dotPropValidator(this, 'step');
+        this.step = checkProp(this, 'step');
     }
 
     @Listen('_valueChange')

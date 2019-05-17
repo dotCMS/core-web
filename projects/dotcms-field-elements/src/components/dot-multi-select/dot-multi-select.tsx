@@ -1,6 +1,12 @@
 import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
+import {
+    DotOption,
+    DotFieldStatus,
+    DotFieldValueEvent,
+    DotFieldStatusEvent,
+    DotLabel
+} from '../../models';
 import {
     getClassNames,
     getDotOptionsFromFieldValue,
@@ -11,7 +17,7 @@ import {
     getTagHint,
     getTagLabel,
     updateStatus,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 /**
@@ -54,7 +60,10 @@ export class DotMultiSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator(this, 'options');
+        const validOptions = checkProp<DotMultiSelectComponent, string>(
+            this,
+            'options'
+        );
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
@@ -79,7 +88,11 @@ export class DotMultiSelectComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        const labelTagParams: DotLabel = {
+            name: this.name,
+            label: this.label,
+            required: this.required
+        };
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
@@ -89,8 +102,8 @@ export class DotMultiSelectComponent {
                     class={getErrorClass(this.status.dotValid)}
                     id={getId(this.name)}
                     disabled={this.shouldBeDisabled()}
-                    onChange={() => this.setValue()}>
-
+                    onChange={() => this.setValue()}
+                >
                     {this._options.map((item: DotOption) => {
                         return (
                             <option
@@ -101,7 +114,6 @@ export class DotMultiSelectComponent {
                             </option>
                         );
                     })}
-
                 </select>
                 {getTagHint(this.hint)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
@@ -117,7 +129,7 @@ export class DotMultiSelectComponent {
         return this.disabled ? true : null;
     }
 
-     // Todo: find how to set proper TYPE in TS
+    // Todo: find how to set proper TYPE in TS
     private setValue(): void {
         this.value = this.getValueFromMultiSelect();
         this.status = updateStatus(this.status, {

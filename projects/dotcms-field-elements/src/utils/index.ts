@@ -1,2 +1,2 @@
 export * from './utils';
-export * from './errorHandling';
+export * from './checkProp';

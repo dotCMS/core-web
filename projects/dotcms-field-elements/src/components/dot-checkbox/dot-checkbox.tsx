@@ -1,6 +1,12 @@
 import { Component, Prop, State, Element, Method, Event, EventEmitter, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotOption, DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
+import {
+    DotOption,
+    DotFieldStatus,
+    DotFieldValueEvent,
+    DotFieldStatusEvent,
+    DotLabel
+} from '../../models';
 import {
     getClassNames,
     getOriginalStatus,
@@ -10,7 +16,7 @@ import {
     getErrorClass,
     getDotOptionsFromFieldValue,
     updateStatus,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 @Component({
@@ -43,7 +49,7 @@ export class DotCheckboxComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator(this, 'options');
+        const validOptions = checkProp<DotCheckboxComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 
@@ -67,13 +73,17 @@ export class DotCheckboxComponent {
     }
 
     render() {
-        let labelTagParams: DotLabel = {name: this.name, label: this.label, required: this.required};
+        let labelTagParams: DotLabel = {
+            name: this.name,
+            label: this.label,
+            required: this.required
+        };
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
                 {this._options.map((item: DotOption) => {
                     const trimmedValue = item.value.trim();
-                    labelTagParams = {name: trimmedValue, label: item.label};
+                    labelTagParams = { name: trimmedValue, label: item.label };
                     return (
                         <Fragment>
                             <input

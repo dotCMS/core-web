@@ -2,7 +2,7 @@ import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } f
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
-    dotPropValidator,
+    checkProp,
     getClassNames,
     getErrorClass,
     getId,
@@ -63,7 +63,7 @@ export class DotTextfieldComponent {
 
     @Watch('regexCheck')
     regexCheckWatch(): void {
-        this.regexCheck = dotPropValidator(this, 'regexCheck');
+        this.regexCheck = checkProp<DotTextfieldComponent, string>(this, 'regexCheck');
     }
 
     hostData() {

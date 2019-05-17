@@ -10,7 +10,7 @@ import {
     getTagHint,
     getTagLabel,
     updateStatus,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 /**
@@ -59,7 +59,7 @@ export class DotRadioComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator(this, 'options');
+        const validOptions = checkProp<DotRadioComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

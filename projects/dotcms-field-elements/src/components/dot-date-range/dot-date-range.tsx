@@ -9,7 +9,7 @@ import {
     getTagHint,
     getErrorClass,
     getTagError,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -79,7 +79,7 @@ export class DotDateRangeComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    fp: any;
+    private fp: any;
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -95,9 +95,13 @@ export class DotDateRangeComponent {
     @Watch('value')
     valueWatch(): void {
         if (this.value) {
-            let dates = dotPropValidator(this, 'value');
-            dates = dates.split(',');
-            this.fp.setDate([new Date(dates[0]), new Date(dates[1])], true);
+            const dates = checkProp<DotDateRangeComponent, string>(
+                this,
+                'value',
+                'string'
+            );
+            const [startDate, endDate] = dates.split(',');
+            this.fp.setDate([new Date(startDate), new Date(endDate)], true);
         }
     }
 
