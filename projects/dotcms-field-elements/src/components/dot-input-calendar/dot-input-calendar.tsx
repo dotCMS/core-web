@@ -12,34 +12,34 @@ export class DotInputCalendarComponent {
 
     /** Value specifies the value of the <input> element */
     @Prop({ mutable: true })
-    value: '';
+    value = '';
 
     /** Name that will be used as ID */
-    @Prop() name: '';
+    @Prop() name = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required: false;
+    @Prop() required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop() requiredMessage: '';
+    @Prop() requiredMessage = '';
 
     /** (optional) Text that be shown when min or max are set and condition not met */
-    @Prop() validationMessage: '';
+    @Prop() validationMessage = '';
 
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
 
     /** (optional) Min, minimum value that the field will allow to set, expect a Date Format. */
-    @Prop() min: '';
+    @Prop() min = '';
 
     /** (optional) Max, maximum value that the field will allow to set, expect a Date Format */
-    @Prop() max: '';
+    @Prop() max = '';
 
     /** (optional) Step specifies the legal number intervals for the input field */
-    @Prop() step: '';
+    @Prop() step = '';
 
     /** type specifies the type of <input> element to display */
-    @Prop() type: '';
+    @Prop() type = '';
 
     @State() status: DotFieldStatus;
     @Event() _valueChange: EventEmitter<DotFieldValueEvent>;
