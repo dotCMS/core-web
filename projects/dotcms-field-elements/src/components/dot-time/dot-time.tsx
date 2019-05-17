@@ -16,7 +16,7 @@ import {
     DotFieldValueEvent,
     DotLabel
 } from '../../models';
-import { dotPropValidator, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
+import { checkProp, getClassNames, getTagError, getTagHint, getTagLabel } from '../../utils';
 
 @Component({
     tag: 'dot-time',
@@ -60,12 +60,12 @@ export class DotTimeComponent {
 
     @Watch('min')
     minWatch(): void {
-        this.min = dotPropValidator<DotTimeComponent, string>(this, 'min', 'time');
+        this.min = checkProp<DotTimeComponent, string>(this, 'min', 'time');
     }
 
     @Watch('max')
     maxWatch(): void {
-        this.max = dotPropValidator<DotTimeComponent, string>(this, 'max', 'time');
+        this.max = checkProp<DotTimeComponent, string>(this, 'max', 'time');
     }
 
     @Listen('_valueChange')

@@ -10,7 +10,7 @@ import {
     getErrorClass,
     updateStatus,
     getId,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 /**
@@ -62,7 +62,7 @@ export class DotTextareaComponent {
 
     @Watch('regexCheck')
     regexCheckWatch(): void {
-        this.regexCheck = dotPropValidator<DotTextareaComponent, string>(this, 'regexCheck');
+        this.regexCheck = checkProp<DotTextareaComponent, string>(this, 'regexCheck');
     }
 
     hostData() {

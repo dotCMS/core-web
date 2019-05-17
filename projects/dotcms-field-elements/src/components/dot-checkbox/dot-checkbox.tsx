@@ -16,7 +16,7 @@ import {
     getErrorClass,
     getDotOptionsFromFieldValue,
     updateStatus,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 @Component({
@@ -49,7 +49,7 @@ export class DotCheckboxComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator<DotCheckboxComponent, string>(this, 'options');
+        const validOptions = checkProp<DotCheckboxComponent, string>(this, 'options');
         this._options = getDotOptionsFromFieldValue(validOptions);
     }
 

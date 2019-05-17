@@ -17,7 +17,7 @@ import {
     getTagHint,
     getTagLabel,
     updateStatus,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 
 /**
@@ -60,7 +60,7 @@ export class DotMultiSelectComponent {
 
     @Watch('options')
     optionsWatch(): void {
-        const validOptions = dotPropValidator<DotMultiSelectComponent, string>(
+        const validOptions = checkProp<DotMultiSelectComponent, string>(
             this,
             'options'
         );

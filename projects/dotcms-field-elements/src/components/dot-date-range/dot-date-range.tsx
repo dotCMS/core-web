@@ -9,7 +9,7 @@ import {
     getTagHint,
     getErrorClass,
     getTagError,
-    dotPropValidator
+    checkProp
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -95,7 +95,7 @@ export class DotDateRangeComponent {
     @Watch('value')
     valueWatch(): void {
         if (this.value) {
-            const dates = dotPropValidator<DotDateRangeComponent, string>(
+            const dates = checkProp<DotDateRangeComponent, string>(
                 this,
                 'value',
                 'string'
