@@ -2,14 +2,15 @@ import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } f
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
 import {
+    checkProp,
     getClassNames,
-    getOriginalStatus,
-    updateStatus,
-    getTagLabel,
-    getTagHint,
     getErrorClass,
+    getId,
+    getOriginalStatus,
     getTagError,
-    checkProp
+    getTagHint,
+    getTagLabel,
+    updateStatus
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -73,6 +74,8 @@ export class DotDateRangeComponent {
             days: 30
         }
     ];
+
+    @Prop() presetLabel = 'Presets';
 
     @State() status: DotFieldStatus;
 
@@ -139,17 +142,20 @@ export class DotDateRangeComponent {
                 <input
                     class={getErrorClass(this.status.dotValid)}
                     disabled={this.isDisabled()}
-                    id={this.name}
+                    id={getId(this.name)}
                     required={this.required || null}
                     type="text"
                     value={this.value}
                 />
-                <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
-                    {this.presets.map((item) => {
-                        return <option value={item.days}>{item.label}</option>;
-                    })}
-                </select>
-                {getTagHint(this.hint)}
+                <label>
+                    {this.presetLabel}
+                    <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
+                        {this.presets.map((item) => {
+                            return <option value={item.days}>{item.label}</option>;
+                        })}
+                    </select>
+                </label>
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

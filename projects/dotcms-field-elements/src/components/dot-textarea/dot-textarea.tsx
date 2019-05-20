@@ -108,7 +108,7 @@ export class DotTextareaComponent {
                     onBlur={() => this.blurHandler()}
                     disabled={this.getDisabledAtt()}
                 />
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

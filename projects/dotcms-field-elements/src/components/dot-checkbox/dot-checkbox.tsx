@@ -47,7 +47,7 @@ export class DotCheckboxComponent {
     /** (optional) Text that will be shown when required is set and condition is not met */
     @Prop() requiredMessage = '';
 
-     /** Value set from the checkbox option */
+    /** Value set from the checkbox option */
     @Prop({ mutable: true }) value = '';
 
     @State() _options: DotOption[];
@@ -100,21 +100,20 @@ export class DotCheckboxComponent {
                     const trimmedValue = item.value.trim();
                     labelTagParams = { name: trimmedValue, label: item.label };
                     return (
-                        <Fragment>
+                        <label>
                             <input
                                 class={getErrorClass(this.isValid())}
                                 type="checkbox"
                                 disabled={this.disabled || null}
-                                id={trimmedValue}
                                 checked={this.value.indexOf(trimmedValue) >= 0 || null}
                                 onInput={(event: Event) => this.setValue(event)}
                                 value={trimmedValue}
                             />
-                            {getTagLabel(labelTagParams)}
-                        </Fragment>
+                            {item.label}
+                        </label>
                     );
                 })}
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );

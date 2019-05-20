@@ -69,6 +69,15 @@ export class DotKeyValueComponent {
 
     @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
 
+    /** (optional) The string to use in the key label of the add form */
+    @Prop() fieldKeyLabel = 'Key';
+
+    /** (optional) The string to use in the value label of the add form */
+    @Prop() fieldValueLabel = 'Value';
+
+    /** (optional) The string to use in the delete button of a key/value item */
+    @Prop() buttonDeleteLabel = null;
+
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueItem[] = [];
 
@@ -127,25 +136,32 @@ export class DotKeyValueComponent {
         return (
             <Fragment>
                 {getTagLabel(labelTagParams)}
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    id={getId(this.name)}
-                    name="key"
-                    onInput={(event: Event) => this.setValue(event)}
-                    placeholder={this.keyPlaceholder}
-                    type="text"
-                    value={this.fieldInput.key}
-                />
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    name="value"
-                    onInput={(event: Event) => this.setValue(event)}
-                    placeholder={this.valuePlaceholder}
-                    type="text"
-                    value={this.fieldInput.value}
-                />
+
+                <label>
+                    {this.fieldKeyLabel}
+                    <input
+                        class={getErrorClass(this.status.dotValid)}
+                        disabled={this.isDisabled()}
+                        id={getId(this.name)}
+                        name="key"
+                        onInput={(event: Event) => this.setValue(event)}
+                        placeholder={this.keyPlaceholder}
+                        type="text"
+                        value={this.fieldInput.key}
+                    />
+                </label>
+                <label>
+                    {this.fieldValueLabel}
+                    <input
+                        class={getErrorClass(this.status.dotValid)}
+                        disabled={this.isDisabled()}
+                        name="value"
+                        onInput={(event: Event) => this.setValue(event)}
+                        placeholder={this.valuePlaceholder}
+                        type="text"
+                        value={this.fieldInput.value}
+                    />
+                </label>
                 <button
                     class="dot-key-value__save__button"
                     type="button"
@@ -155,7 +171,7 @@ export class DotKeyValueComponent {
                     {this.saveBtnLabel}
                 </button>
                 {this.getKeyValueList()}
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

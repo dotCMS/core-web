@@ -109,7 +109,7 @@ export class DotTagsComponent {
                 >
                 </dot-autocomplete>
 
-                {getTagHint(this.hint)}
+                {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
