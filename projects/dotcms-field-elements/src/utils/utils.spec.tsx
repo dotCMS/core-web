@@ -1,54 +1,21 @@
 import {
-    getDotOptionsFromFieldValue,
-    getOriginalStatus,
-    updateStatus,
     getClassNames,
-    getTagHint,
-    getTagError,
+    getDotOptionsFromFieldValue,
     getErrorClass,
-    getLabelId
+    getHintId,
+    getId,
+    getLabelId,
+    getOriginalStatus,
+    getStringFromDotKeyArray,
+    getTagError,
+    getTagHint,
+    updateStatus
 } from './utils';
-
-describe('getLabelId', () => {
-    it('should', () => {
-        console.log('getLabelId some', getLabelId(1));
-    });
-});
-
-describe('getDotOptionsFromFieldValue', () => {
-    it('should return label/value', () => {
-        const rawItems = 'key1|A,key2|B';
-        const items = getDotOptionsFromFieldValue(rawItems);
-        expect(items.length).toBe(2);
-        expect(items).toEqual([{ label: 'key1', value: 'A' }, { label: 'key2', value: 'B' }]);
-    });
-});
-
-describe('getOriginalStatus', () => {
-    it('should returns initial field Status', () => {
-        const status = getOriginalStatus();
-        expect(status).toEqual({ dotValid: true, dotTouched: false, dotPristine: true });
-    });
-    it('should returns field Status with overwrite dotValid equal false', async () => {
-        const status = getOriginalStatus(false);
-        expect(status).toEqual({ dotValid: false, dotTouched: false, dotPristine: true });
-    });
-});
-
-describe('updateStatus', () => {
-    it('should returns updated field Status', () => {
-        const status = { dotValid: false, dotTouched: false, dotPristine: true };
-        const changedStatus = { dotValid: true, dotTouched: true, dotPristine: false };
-        const newStatus = updateStatus(status, changedStatus);
-        expect(newStatus).toEqual(changedStatus);
-    });
-});
 
 describe('getClassNames', () => {
     it('should returns field CSS classes', () => {
         const status = { dotValid: false, dotTouched: false, dotPristine: true };
-        const cssClasses = getClassNames(status, true);
-        expect(cssClasses).toEqual({
+        expect(getClassNames(status, true)).toEqual({
             'dot-valid': true,
             'dot-invalid': false,
             'dot-pristine': true,
@@ -59,17 +26,82 @@ describe('getClassNames', () => {
     });
 });
 
-describe('getTagHint', () => {
-    it('should returns Hint tag', () => {
-        const hint = 'Hint';
-        const jsxTag: any = getTagHint(hint);
-        expect(jsxTag.vattrs).toEqual({ class: 'dot-field__hint' });
-        expect(jsxTag.vchildren).toEqual([{ vtext: 'Hint' }]);
+describe('getDotOptionsFromFieldValue', () => {
+    it('should return label/value', () => {
+        const items = getDotOptionsFromFieldValue('key1|A,key2|B');
+        expect(items.length).toBe(2);
+        expect(items).toEqual([{ label: 'key1', value: 'A' }, { label: 'key2', value: 'B' }]);
     });
-    it('should Not returns Hint tag', () => {
-        const hint = '';
-        const jsxTag: any = getTagHint(hint);
-        expect(jsxTag).toEqual('');
+});
+
+describe('getErrorClass', () => {
+    it('should returns Error CSS', () => {
+        expect(getErrorClass(false)).toEqual('dot-field__error');
+    });
+    it('should Not returns Error CSS', () => {
+        expect(getErrorClass(true)).toBeUndefined();
+    });
+});
+
+describe('getHintId', () => {
+    it('should return hint id correctly', () => {
+        expect(getHintId('***^^^HelloWorld123$$$###')).toEqual('hint-helloworld123');
+    });
+
+    it('should return undefined', () => {
+        expect(getHintId('')).toBeUndefined();
+    });
+});
+
+describe('getId', () => {
+    it('should return id', () => {
+        expect(
+            getId('some123Name#$%^&')
+        ).toBe('dot-some123name');
+    });
+});
+
+describe('getLabelId', () => {
+    it('should return label id correctly', () => {
+        expect(getLabelId('***^^^HelloWorld123$$$###')).toEqual('label-helloworld123');
+    });
+
+    it('should return undefined', () => {
+        expect(getLabelId('')).toBeUndefined();
+    });
+});
+
+describe('getOriginalStatus', () => {
+    it('should returns initial field Status', () => {
+        expect(getOriginalStatus()).toEqual({
+            dotValid: true,
+            dotTouched: false,
+            dotPristine: true
+        });
+    });
+    it('should returns field Status with overwrite dotValid equal false', async () => {
+        expect(getOriginalStatus(false)).toEqual({
+            dotValid: false,
+            dotTouched: false,
+            dotPristine: true
+        });
+    });
+});
+
+describe('getStringFromDotKeyArray', () => {
+    it('should transform to string', () => {
+        expect(
+            getStringFromDotKeyArray([
+                {
+                    key: 'some1',
+                    value: 'val1'
+                },
+                {
+                    key: 'some45',
+                    value: 'val99'
+                }
+            ])
+        ).toBe('some1|val1,some45|val99');
     });
 });
 
@@ -81,19 +113,28 @@ describe('getTagError', () => {
         expect(jsxTag.vchildren).toEqual([{ vtext: message }]);
     });
     it('should Not returns Error tag', () => {
-        const message = 'Error Msg';
-        const jsxTag: any = getTagError(false, message);
-        expect(jsxTag).toEqual('');
+        expect(getTagError(false, 'Error Msg')).toEqual(null);
     });
 });
 
-describe('getErrorClass', () => {
-    it('should returns Error CSS', () => {
-        const cssClass = getErrorClass(false);
-        expect(cssClass).toEqual('dot-field__error');
+describe('getTagHint', () => {
+    it('should returns Hint tag', () => {
+        const jsxTag: any = getTagHint('Hint', '@@some***Name##123');
+        expect(jsxTag.vattrs).toEqual({ class: 'dot-field__hint', id: 'hint-somename123' });
+        expect(jsxTag.vchildren).toEqual([{ vtext: 'Hint' }]);
     });
-    it('should Not returns Error CSS', () => {
-        const cssClass = getErrorClass(true);
-        expect(cssClass).toEqual('');
+    it('should Not returns Hint tag', () => {
+        expect(getTagHint('', 'someName')).toBeNull();
+    });
+});
+
+describe('updateStatus', () => {
+    it('should returns updated field Status', () => {
+        const status = { dotValid: false, dotTouched: false, dotPristine: true };
+        expect(updateStatus(status, { dotTouched: true })).toEqual({
+            dotValid: false,
+            dotTouched: true,
+            dotPristine: true
+        });
     });
 });
