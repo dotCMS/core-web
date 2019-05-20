@@ -38,7 +38,7 @@ class DotEventsSocketMock {
 }
 
 
-fdescribe('DotcmsEventsService', () => {
+describe('DotcmsEventsService', () => {
 
     let socket: DotEventsSocketMock;
     let dotcmsEventsService: DotcmsEventsService;
