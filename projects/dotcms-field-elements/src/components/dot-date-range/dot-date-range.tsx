@@ -109,7 +109,7 @@ export class DotDateRangeComponent {
     }
 
     componentDidLoad(): void {
-        this.fp = flatpickr(`#${this.name}`, {
+        this.fp = flatpickr(`#${getId(this.name)}`, {
             mode: 'range',
             dateFormat: this.dateFormat,
             maxDate: this.max,
