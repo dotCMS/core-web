@@ -5,8 +5,15 @@ import {
     getClassNames,
     getTagHint,
     getTagError,
-    getErrorClass
+    getErrorClass,
+    getLabelId
 } from './utils';
+
+describe('getLabelId', () => {
+    it('should', () => {
+        console.log('getLabelId some', getLabelId(1));
+    });
+});
 
 describe('getDotOptionsFromFieldValue', () => {
     it('should return label/value', () => {

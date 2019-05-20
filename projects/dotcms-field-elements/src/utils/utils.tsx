@@ -1,9 +1,4 @@
-import {
-    DotOption,
-    DotFieldStatus,
-    DotFieldStatusClasses,
-    DotKeyValueField
-} from '../models';
+import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
 
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
@@ -14,7 +9,7 @@ import {
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
     const items = rawString
         .split(',')
-        .filter((item) => item.length > 0)
+        .filter((item) => !!item.length)
         .map((item) => {
             const [label, value] = item.split('|');
             return { label, value };
@@ -85,7 +80,7 @@ export function getClassNames(
  */
 export function getLabelId(name: string): string {
     const value = slugify(name);
-    return value ? `label-${value}` : null;
+    return value ? `label-${value}` : undefined;
 }
 
 /**
@@ -96,7 +91,7 @@ export function getLabelId(name: string): string {
  */
 export function getHintId(name: string): string {
     const value = slugify(name);
-    return value ? `hint-${value}` : null;
+    return value ? `hint-${value}` : undefined;
 }
 
 /**
@@ -131,7 +126,7 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  * @returns string
  */
 export function getErrorClass(valid: boolean): string {
-    return valid ? '' : 'dot-field__error';
+    return valid ? undefined : 'dot-field__error';
 }
 
 /**
@@ -149,16 +144,19 @@ export function getStringFromDotKeyArray(values: DotKeyValueField[]): string {
 }
 
 export function getId(name: string): string {
-    return name ? `dot-${slugify(name)}` : null;
+    const value = slugify(name);
+    return name ? `dot-${slugify(value)}` : undefined;
 }
 
-function slugify(text) {
+function slugify(text: string): string {
     return text
-        .toString()
-        .toLowerCase()
-        .replace(/\s+/g, '-') // Replace spaces with -
-        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-        .replace(/\-\-+/g, '-') // Replace multiple - with single -
-        .replace(/^-+/, '') // Trim - from start of text
-        .replace(/-+$/, ''); // Trim - from end of text
+        ? text
+              .toString()
+              .toLowerCase()
+              .replace(/\s+/g, '-') // Replace spaces with -
+              .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+              .replace(/\-\-+/g, '-') // Replace multiple - with single -
+              .replace(/^-+/, '') // Trim - from start of text
+              .replace(/-+$/, '') // Trim - from end of text
+        : null;
 }
