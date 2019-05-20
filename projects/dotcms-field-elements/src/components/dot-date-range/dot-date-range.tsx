@@ -1,6 +1,6 @@
 import { Component, Prop, State, Element, Event, EventEmitter, Method, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent, DotLabel } from '../../models';
+import { DotFieldStatus, DotFieldValueEvent, DotFieldStatusEvent } from '../../models';
 import {
     checkProp,
     getClassNames,
@@ -9,7 +9,6 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
-    getTagLabel,
     updateStatus
 } from '../../utils';
 import flatpickr from 'flatpickr';
@@ -98,11 +97,7 @@ export class DotDateRangeComponent {
     @Watch('value')
     valueWatch(): void {
         if (this.value) {
-            const dates = checkProp<DotDateRangeComponent, string>(
-                this,
-                'value',
-                'string'
-            );
+            const dates = checkProp<DotDateRangeComponent, string>(this, 'value', 'string');
             const [startDate, endDate] = dates.split(',');
             this.fp.setDate([new Date(startDate), new Date(endDate)], true);
         }
@@ -131,30 +126,26 @@ export class DotDateRangeComponent {
     }
 
     render() {
-        const labelTagParams: DotLabel = {
-            name: this.name,
-            label: this.label,
-            required: this.required
-        };
         return (
             <Fragment>
-                {getTagLabel(labelTagParams)}
-                <input
-                    class={getErrorClass(this.status.dotValid)}
-                    disabled={this.isDisabled()}
-                    id={getId(this.name)}
-                    required={this.required || null}
-                    type="text"
-                    value={this.value}
-                />
-                <label>
-                    {this.presetLabel}
-                    <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
-                        {this.presets.map((item) => {
-                            return <option value={item.days}>{item.label}</option>;
-                        })}
-                    </select>
-                </label>
+                <dot-label label={this.label} required={this.required} name={this.name}>
+                    <input
+                        class={getErrorClass(this.status.dotValid)}
+                        disabled={this.isDisabled()}
+                        id={getId(this.name)}
+                        required={this.required || null}
+                        type="text"
+                        value={this.value}
+                    />
+                    <label>
+                        {this.presetLabel}
+                        <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
+                            {this.presets.map((item) => {
+                                return <option value={item.days}>{item.label}</option>;
+                            })}
+                        </select>
+                    </label>
+                </dot-label>
                 {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>

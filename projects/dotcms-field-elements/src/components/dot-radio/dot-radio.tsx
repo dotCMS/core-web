@@ -1,12 +1,6 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import {
-    DotFieldStatus,
-    DotFieldStatusEvent,
-    DotFieldValueEvent,
-    DotOption,
-    DotLabel
-} from '../../models';
+import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent, DotOption } from '../../models';
 import {
     getClassNames,
     getDotOptionsFromFieldValue,
@@ -14,7 +8,6 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
-    getTagLabel,
     updateStatus,
     checkProp
 } from '../../utils';
@@ -91,36 +84,28 @@ export class DotRadioComponent {
     }
 
     render() {
-        let labelTagParams: DotLabel = {
-            name: this.name,
-            label: this.label,
-            required: this.required
-        };
         return (
             <Fragment>
-                {getTagLabel(labelTagParams)}
-                <div class="dot-radio__items">
-                    {this._options.map((item: DotOption) => {
-                        labelTagParams = {
-                            name: 'dot-radio-' + item.label.toLocaleLowerCase(),
-                            label: item.label
-                        };
-                        return (
-                            <label>
-                                <input
-                                    checked={this.value.indexOf(item.value) >= 0 || null}
-                                    class={getErrorClass(this.isValid())}
-                                    disabled={this.disabled || null}
-                                    name={this.name.toLocaleLowerCase()}
-                                    onInput={(event: Event) => this.setValue(event)}
-                                    type="radio"
-                                    value={item.value}
-                                />
-                                {item.label}
-                            </label>
-                        );
-                    })}
-                </div>
+                <dot-label label={this.label} required={this.required} name={this.name}>
+                    <div class="dot-radio__items">
+                        {this._options.map((item: DotOption) => {
+                            return (
+                                <label>
+                                    <input
+                                        checked={this.value.indexOf(item.value) >= 0 || null}
+                                        class={getErrorClass(this.isValid())}
+                                        disabled={this.disabled || null}
+                                        name={this.name.toLocaleLowerCase()}
+                                        onInput={(event: Event) => this.setValue(event)}
+                                        type="radio"
+                                        value={item.value}
+                                    />
+                                    {item.label}
+                                </label>
+                            );
+                        })}
+                    </div>
+                </dot-label>
                 {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>

@@ -2,7 +2,6 @@ import {
     DotOption,
     DotFieldStatus,
     DotFieldStatusClasses,
-    DotLabel,
     DotKeyValueField
 } from '../models';
 
@@ -85,7 +84,8 @@ export function getClassNames(
  * @returns {string}
  */
 export function getLabelId(name: string): string {
-    return `label-${name}`;
+    const value = slugify(name);
+    return value ? `label-${value}` : null;
 }
 
 /**
@@ -95,7 +95,8 @@ export function getLabelId(name: string): string {
  * @returns {string}
  */
 export function getHintId(name: string): string {
-    return `hint-${name}`;
+    const value = slugify(name);
+    return value ? `hint-${value}` : null;
 }
 
 /**
@@ -120,31 +121,7 @@ export function getTagHint(hint: string, name: string): JSX.Element {
  * @returns JSX.Element
  */
 export function getTagError(show: boolean, message: string): JSX.Element {
-    return show ? <span class="dot-field__error-message">{message}</span> : '';
-}
-
-/**
- * Returns Label tag
- *
- * @param string name
- * @param string label
- * @returns JSX.Element
- */
-export function getTagLabel(params: DotLabel): JSX.Element {
-    const Label = () => (
-        <label htmlFor={getId(params.name)} id={getLabelId(params.name)}>
-            {params.label}
-        </label>
-    );
-
-    return params.required ? (
-        <div class="dot-field__label">
-            <Label />
-            {params.required ? <span class="dot-field__required-mark">*</span> : ''}
-        </div>
-    ) : (
-        <Label />
-    );
+    return show ? <span class="dot-field__error-message">{message}</span> : null;
 }
 
 /**
@@ -172,5 +149,16 @@ export function getStringFromDotKeyArray(values: DotKeyValueField[]): string {
 }
 
 export function getId(name: string): string {
-    return `dot-${name}`;
+    return name ? `dot-${slugify(name)}` : null;
+}
+
+function slugify(text) {
+    return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, ''); // Trim - from end of text
 }
