@@ -19,7 +19,6 @@ export class DotcmsEventsService {
      * @memberof DotcmsEventsService
      */
     destroy(): void {
-        console.log('destropy 2222');
         this.dotEventsSocket.destroy();
     }
 
