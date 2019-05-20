@@ -74,7 +74,7 @@ export class DotKeyValueComponent {
     @Prop() fieldValueLabel = 'Value';
 
     /** (optional) The string to use in the delete button of a key/value item */
-    @Prop() buttonDeleteLabel: string;
+    @Prop() buttonDeleteLabel = 'Delete';
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueItem[] = [];
