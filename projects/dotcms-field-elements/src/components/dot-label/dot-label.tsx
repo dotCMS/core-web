@@ -22,17 +22,12 @@ export class DotLabelComponent {
     @Prop() required = false;
 
     render() {
-        return this.required ? (
+        return (
             <label class="dot-label" id={getLabelId(this.name)}>
                 <span class="dot-label__text">
                     {this.label}
-                    <span class="dot-label__required-mark">*</span>
+                    {this.required ? <span class="dot-label__required-mark">*</span> : null}
                 </span>
-                <slot />
-            </label>
-        ) : (
-            <label class="dot-label" id={getLabelId(this.name)}>
-                <span class="dot-label__text">{this.label}</span>
                 <slot />
             </label>
         );
