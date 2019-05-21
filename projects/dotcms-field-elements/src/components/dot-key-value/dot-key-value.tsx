@@ -35,19 +35,19 @@ const DEFAULT_VALUE = { key: '', value: '' };
 export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
-    /** (optional) Placeholder for the key input text in the <dot-key-form> */
+    /** (optional) Placeholder for the key input text in the <key-value-form> */
     @Prop() formKeyPlaceholder: string;
 
-    /** (optional) Placeholder for the value input text in the <dot-key-form> */
+    /** (optional) Placeholder for the value input text in the <key-value-form> */
     @Prop() formValuePlaceholder: string;
 
-    /** (optional) The string to use in the key label in the <dot-key-form> */
+    /** (optional) The string to use in the key label in the <key-value-form> */
     @Prop() formKeyLabel: string;
 
-    /** (optional) The string to use in the value label in the <dot-key-form> */
+    /** (optional) The string to use in the value label in the <key-value-form> */
     @Prop() formValueLabel: string;
 
-    /** (optional) Label for the add button in the <dot-key-form> */
+    /** (optional) Label for the add button in the <key-value-form> */
     @Prop() formAddButtonLabel: string;
 
     /** (optional) Disables field's interaction */
@@ -134,7 +134,7 @@ export class DotKeyValueComponent {
         return (
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
-                    <dot-key-form
+                    <key-value-form
                         add-button-label={this.formAddButtonLabel}
                         disabled={this.isDisabled()}
                         key-label={this.formKeyLabel}

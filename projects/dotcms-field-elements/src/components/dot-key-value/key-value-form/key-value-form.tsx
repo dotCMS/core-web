@@ -5,8 +5,8 @@ import { DotKeyValueField } from '../../../models';
 const DEFAULT_VALUE = { key: '', value: '' };
 
 @Component({
-    tag: 'dot-key-form',
-    styleUrl: 'dot-key-form.scss'
+    tag: 'key-value-form',
+    styleUrl: 'key-value-form.scss'
 })
 export class DotKeyValueComponent {
     @Element() el: HTMLElement;
@@ -62,7 +62,7 @@ export class DotKeyValueComponent {
                         />
                     </label>
                     <button
-                        class="dot-key-form__save__button"
+                        class="key-value-form__save__button"
                         type="submit"
                         disabled={buttonDisabled}
                     >
@@ -111,7 +111,7 @@ export class DotKeyValueComponent {
     }
 
     private focusFirstField(): void {
-        const input: HTMLInputElement = this.el.querySelector('input[type="text"]');
+        const input: HTMLInputElement = this.el.querySelector('input[name="key"]');
         input.focus();
     }
 }
