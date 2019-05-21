@@ -14,12 +14,11 @@ import {
     DotFieldStatus,
     DotFieldValueEvent,
     DotFieldStatusEvent,
-    DotKeyValueField as DotKeyValueItem
+    DotKeyValueField
 } from '../../models';
 import {
     getClassNames,
     getErrorClass,
-    getId,
     getOriginalStatus,
     getStringFromDotKeyArray,
     getTagError,
@@ -27,6 +26,8 @@ import {
     updateStatus,
     checkProp
 } from '../../utils';
+
+const DEFAULT_VALUE = { key: '', value: '' };
 
 @Component({
     tag: 'dot-key-value',
@@ -77,12 +78,12 @@ export class DotKeyValueComponent {
     @Prop() buttonDeleteLabel = 'Delete';
 
     @State() status: DotFieldStatus;
-    @State() items: DotKeyValueItem[] = [];
+    @State() items: DotKeyValueField[] = [];
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    fieldInput: DotKeyValueItem = { key: '', value: '' };
+    @State() fieldInput: DotKeyValueField = { ...DEFAULT_VALUE };
 
     @Watch('value')
     valueWatch(): void {
@@ -98,8 +99,8 @@ export class DotKeyValueComponent {
         this.fieldInput = { key: '', value: '' };
         this.items = [];
         this.status = getOriginalStatus(this.isValid());
-        this.emitStatusChange();
-        this.emitValueChange();
+        this.emitChanges();
+        this.clearForm();
     }
 
     @Listen('deleteItemEvt')
@@ -109,8 +110,7 @@ export class DotKeyValueComponent {
             return internalIndex !== event.detail;
         });
         this.refreshStatus();
-        this.emitStatusChange();
-        this.emitValueChange();
+        this.emitChanges();
     }
 
     componentWillLoad(): void {
@@ -126,48 +126,58 @@ export class DotKeyValueComponent {
     }
 
     render() {
+        const buttonDisabled = this.isButtonDisabled();
         return (
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
-                    <label>
-                        {this.fieldKeyLabel}
-                        <input
-                            class={getErrorClass(this.status.dotValid)}
-                            disabled={this.isDisabled()}
-                            id={getId(this.name)}
-                            name="key"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.keyPlaceholder}
-                            type="text"
-                            value={this.fieldInput.key}
-                        />
-                    </label>
-                    <label>
-                        {this.fieldValueLabel}
-                        <input
-                            class={getErrorClass(this.status.dotValid)}
-                            disabled={this.isDisabled()}
-                            name="value"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.valuePlaceholder}
-                            type="text"
-                            value={this.fieldInput.value}
-                        />
-                    </label>
-                    <button
-                        class="dot-key-value__save__button"
-                        type="button"
-                        disabled={this.disabled || null}
-                        onClick={() => this.addKey()}
-                    >
-                        {this.saveBtnLabel}
-                    </button>
+                    <form onSubmit={this.addKey.bind(this)}>
+                        <label>
+                            {this.fieldKeyLabel}
+                            <input
+                                class={getErrorClass(this.status.dotValid)}
+                                disabled={this.isDisabled()}
+                                id="dotkeyvalue-key-input"
+                                name="key"
+                                onInput={(event: Event) => this.setValue(event)}
+                                placeholder={this.keyPlaceholder}
+                                type="text"
+                                value={this.fieldInput.key}
+                            />
+                        </label>
+                        <label>
+                            {this.fieldValueLabel}
+                            <input
+                                class={getErrorClass(this.status.dotValid)}
+                                disabled={this.isDisabled()}
+                                name="value"
+                                onInput={(event: Event) => this.setValue(event)}
+                                placeholder={this.valuePlaceholder}
+                                type="text"
+                                value={this.fieldInput.value}
+                            />
+                        </label>
+                        <button
+                            class="dot-key-value__save__button"
+                            type="submit"
+                            disabled={buttonDisabled}
+                        >
+                            {this.saveBtnLabel}
+                        </button>
+                    </form>
                     {this.getKeyValueList()}
                 </dot-label>
                 {getTagHint(this.hint, this.name)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private isButtonDisabled(): boolean {
+        return !this.isFormValid() || (this.disabled || null);
+    }
+
+    private isFormValid(): boolean {
+        return !!this.fieldInput.key && !!this.fieldInput.value;
     }
 
     private validateProps(): void {
@@ -216,8 +226,12 @@ export class DotKeyValueComponent {
         return this.isValid() ? '' : this.requiredMessage;
     }
 
-    private setValue(event): void {
-        this.fieldInput[event.target.name] = event.target.value.toString();
+    private setValue(event: Event): void {
+        const target = event.target as HTMLInputElement;
+        this.fieldInput = {
+            ...this.fieldInput,
+            [target.name]: target.value.toString()
+        };
     }
 
     private refreshStatus(): void {
@@ -244,7 +258,9 @@ export class DotKeyValueComponent {
         });
     }
 
-    private addKey(): void {
+    private addKey(e: Event): void {
+        e.preventDefault();
+
         if (this.fieldInput.key && this.fieldInput.value) {
             this.items = [
                 ...this.items,
@@ -254,8 +270,23 @@ export class DotKeyValueComponent {
                 }
             ];
             this.refreshStatus();
-            this.emitStatusChange();
-            this.emitValueChange();
+            this.emitChanges();
+            this.clearForm();
+            this.focusFirstField();
         }
+    }
+
+    private emitChanges(): void {
+        this.emitStatusChange();
+        this.emitValueChange();
+    }
+
+    private clearForm(): void {
+        this.fieldInput = { ...DEFAULT_VALUE };
+    }
+
+    private focusFirstField(): void {
+        const input: HTMLInputElement = this.el.querySelector('#dotkeyvalue-key-input');
+        input.focus();
     }
 }
