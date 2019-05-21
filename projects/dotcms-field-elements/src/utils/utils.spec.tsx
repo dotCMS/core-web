@@ -46,7 +46,7 @@ describe('getDotOptionsFromFieldValue', () => {
 });
 
 describe('getErrorClass', () => {
-    it('should return rrror CSS', () => {
+    it('should return error CSS', () => {
         expect(getErrorClass(false)).toEqual('dot-field__error');
     });
     it('should not return error CSS', () => {
@@ -88,7 +88,7 @@ describe('getOriginalStatus', () => {
             dotPristine: true
         });
     });
-    it('should return field Status with overwrite dotValid equal false', async () => {
+    it('should return field Status with overwrite dotValid equal false', () => {
         expect(getOriginalStatus(false)).toEqual({
             dotValid: false,
             dotTouched: false,

@@ -7,6 +7,7 @@ describe('dot-label', () => {
     const getLabel = async () => await page.find('label');
     const getText = async () => await page.find('.dot-label__text');
     const getMark = async () => await page.find('.dot-label__required-mark');
+    const getHost = async () => await page.find('dot-label');
 
     describe('<slot />', () => {
         beforeEach(async () => {
@@ -16,7 +17,7 @@ describe('dot-label', () => {
                     <h1>into the slot</h1>
                 </dot-label>`
             });
-            element = await page.find('dot-label');
+            element = await getHost();
         });
 
         it('should render after label', async () => {
@@ -33,7 +34,7 @@ describe('dot-label', () => {
                     <h1>into the slot</h1>
                 </dot-label>`
             });
-            element = await page.find('dot-label');
+            element = await getHost();
         });
 
         describe('label', () => {
@@ -59,7 +60,7 @@ describe('dot-label', () => {
             });
         });
 
-        describe('required', async () => {
+        describe('required', () => {
             it('should show mark on true', async () => {
                 element.setProperty('required', true);
                 await page.waitForChanges();
