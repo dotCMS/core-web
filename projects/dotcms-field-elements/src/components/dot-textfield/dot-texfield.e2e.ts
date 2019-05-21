@@ -1,37 +1,16 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
-import { Prop } from '@stencil/core';
 
 describe('dot-textfield', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
     let spyStatusChangeEvent: EventSpy;
-    let spyValueChange: EventSpy;
-
-    //     /** Value specifies the value of the <input> element */
-
-    // @Prop() hint
-    // @Prop() required
-    // @Prop() requiredMessage
-    // @Prop() validationMessage
-    // @Prop() disabled = false;
-    // @Prop regexCheck = '';
-    // @Prop() type = 'text';
-
-    // beforeEach(async () => {
-    //     page = await newE2EPage({
-    //         html: `<dot-textfield></dot-textfield>`
-    //     });
-    //
-    //     spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-    //     spyValueChange = await page.spyOnEvent('valueChange');
-    //     element = await page.find('dot-textfield');
-    //     input = await page.find('input');
-    // });
+    let spyValueChangeEvent: EventSpy;
 
     const getLabel = async () => await page.find('dot-label');
     const getHint = async () => await page.find('.dot-field__hint');
+    const getErrorMessage = async () => await page.find('.dot-field__error-message');
 
     describe('@Props', () => {
         beforeEach(async () => {
@@ -50,7 +29,7 @@ describe('dot-textfield', () => {
 
                 expect(await input.getProperty('value')).toBe('test');
             });
-            it('should render when is a unexpected value', async () => {
+            it('should render and not break when is a unexpected value', async () => {
                 element.setProperty('value', { test: true });
                 await page.waitForChanges();
 
@@ -117,155 +96,192 @@ describe('dot-textfield', () => {
                 expect(await getHint()).toBeNull();
             });
 
-            it('should set hint correctly with invalid value', async () => {
+            it('should not render  hint with invalid value', async () => {
                 element.setProperty('hint', { test: 'hint' });
                 await page.waitForChanges();
-                console.log('element.outerHTML: ', element.outerHTML);
-                expect((await getHint()).innerHTML).toBe('Test');
+                expect(await getHint()).toBeNull();
             });
         });
 
-        //console.log('element.outerHTML: ', element.outerHTML);
+        describe('required', () => {
+            it('should render required attribute', async () => {
+                element.setProperty('required', 'true');
+                await page.waitForChanges();
+                expect(await input.getProperty('required')).toBe(true);
+            });
 
-        // describe('propety name 2', () => {
-        //     xxit('') {}
-        //
-        // })
-    });
+            it('should not render required attribute', async () => {
+                element.setProperty('required', 'false');
+                await page.waitForChanges();
+                expect(await input.getProperty('required')).toBe(false);
+            });
 
-    // describe('@Events', () => {
-    //     describe('status and value change', () => {
-    //         xxit('') {}
-    //         xxit('') {}
-    //         xxit('') {}
-    //     })
-    //
-    //     describe('status change', () => {
-    //         xxit('') {}
-    //     })
-    //
-    //     describe('value change', () => {
-    //         xxit('') {}
-    //     })
-    // })
-    //
-    // describe('@Method', () => {
-    //     describe('method name', () => {
-    //         xxit('') {}
-    //         xxit('') {}
-    //         xxit('') {}
-    //     })
-    //
-    //     describe('method name 2', () => {
-    //         xxit('') {}
-    //     })
-    // })
-
-    /*xxit('should render', () => {
-        // tslint:disable-next-line:max-line-length
-        const tagsRenderExpected = `<div class=\"dot-field__label\"><label for=\"dot-fullName\">Name:</label><span class=\"dot-field__required-mark\">*</span></div><input id=\"dot-fullName\" placeholder=\"Enter Name\" required=\"\" type=\"text\"><span class=\"dot-field__hint\">this is a hint</span>`;
-        expect(element.innerHTML).toBe(tagsRenderExpected);
-    });
-
-    xxit('should set type', async () => {
-        element.setProperty('type', 'email');
-        await page.waitForChanges();
-        expect(await input.getProperty('type')).toBe('email');
-    });
-
-    xxit('should show Regex validation message', async () => {
-        await input.press('@');
-        await page.waitForChanges();
-        const errorMessage = await page.find('.dot-field__error-message');
-        expect(errorMessage.innerHTML).toBe('Invalid Name');
-    });
-
-    xxit('should load as pristine and untouched', () => {
-        expect(element.classList.contains('dot-pristine')).toBe(true);
-        expect(element.classList.contains('dot-untouched')).toBe(true);
-    });
-
-    xxit('should mark as dirty and touched when type', async () => {
-        await input.press('a');
-        await page.waitForChanges();
-        expect(element).toHaveClasses(['dot-dirty', 'dot-touched']);
-    });
-
-    xxit('should mark as invalid when value dont match REgex', async () => {
-        await input.press('@');
-        await page.waitForChanges();
-        expect(element).toHaveClasses(['dot-invalid']);
-    });
-
-    xxit('should clear value, set pristine and untouched  when input set reset', async () => {
-        await element.callMethod('reset');
-        await page.waitForChanges();
-
-        expect(element.classList.contains('dot-pristine')).toBe(true);
-        expect(element.classList.contains('dot-untouched')).toBe(true);
-        expect(element.classList.contains('dot-invalid')).toBe(true);
-        expect(await input.getProperty('value')).toBe('');
-    });
-
-    xxit('should mark as disabled when prop is present', async () => {
-        element.setProperty('disabled', true);
-        await page.waitForChanges();
-        expect(await input.getProperty('disabled')).toBe(true);
-    });
-
-    xxit('should mark as required when prop is present', async () => {
-        expect(await input.getProperty('required')).toBe(true);
-    });
-
-    xxit('should set the default value of regexCheck when the Regular Expression is not valid', async () => {
-        element.setProperty('regexCheck', '[^(<[.\\n]+>)]*l');
-        await page.waitForChanges();
-        expect(await input.getProperty('regexCheck')).toBeUndefined();
-    });
-
-    describe('emit events', () => {
-        xxit('should mark as touched when onblur', async () => {
-            await input.triggerEvent('blur');
-            await page.waitForChanges();
-
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                status: {
-                    dotPristine: true,
-                    dotTouched: true,
-                    dotValid: true
-                }
+            it('should render required attribute with invalid value', async () => {
+                element.setProperty('required', { test: 'test' });
+                await page.waitForChanges();
+                expect(await input.getProperty('required')).toBe(true);
             });
         });
 
-        xxit('should send status and value change', async () => {
-            await input.press('a');
-            await page.waitForChanges();
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                status: {
-                    dotPristine: false,
-                    dotTouched: true,
-                    dotValid: true
-                }
+        describe('requiredMessage', () => {
+            it('should render requiredMessage', async () => {
+                element.setProperty('required', 'true');
+                element.setProperty('requiredMessage', 'Test');
+                await input.press('a');
+                await input.press('Backspace');
+                await page.waitForChanges();
+                expect((await getErrorMessage()).innerHTML).toBe('Test');
             });
-            expect(spyValueChange).toHaveReceivedEventDetail({
-                name: 'fullName',
-                value: 'Johna'
+
+            it('should not render requiredMessage', async () => {
+                await page.waitForChanges();
+                expect(await getErrorMessage()).toBe(null);
+            });
+
+            it('should not render and not break with with invalid value', async () => {
+                element.setProperty('required', 'true');
+                element.setProperty('requiredMessage', { test: 'hi' });
+                await input.press('a');
+                await input.press('Backspace');
+                await page.waitForChanges();
+                expect(await getErrorMessage()).toBeNull();
             });
         });
 
-        xxit('should emit status and value on Reset', async () => {
-            await element.callMethod('reset');
-            expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                name: 'fullName',
-                status: {
-                    dotPristine: true,
-                    dotTouched: false,
-                    dotValid: false
-                }
+        describe('regexCheck && validationMessage', () => {
+            it('should render validationMessage', async () => {
+                element.setProperty('regexCheck', '[0-9]');
+                element.setProperty('validationMessage', 'Test');
+                await input.press('a');
+                await page.waitForChanges();
+                expect((await getErrorMessage()).innerHTML).toBe('Test');
             });
-            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'fullName', value: '' });
+
+            it('should not render validationMessage', async () => {
+                await page.waitForChanges();
+                expect(await getErrorMessage()).toBeNull();
+            });
+
+            it('should not render and not break with with invalid regexCheck', async () => {
+                element.setProperty('regexCheck', '[*');
+                await page.waitForChanges();
+                expect(await element.getProperty('regexCheck')).toBe('');
+                expect(await getErrorMessage()).toBeNull();
+            });
         });
-    });*/
+
+        describe('disabled', () => {
+            it('should render disabled attribute', async () => {
+                element.setProperty('disabled', 'true');
+                await page.waitForChanges();
+                expect(await input.getProperty('disabled')).toBe(true);
+            });
+
+            it('should not render disabled attribute', async () => {
+                element.setProperty('disabled', 'false');
+                await page.waitForChanges();
+                expect(await input.getProperty('disabled')).toBe(false);
+            });
+
+            it('should render disabled attribute with invalid value', async () => {
+                element.setProperty('disabled', { test: 'test' });
+                await page.waitForChanges();
+                expect(await input.getProperty('disabled')).toBe(true);
+            });
+        });
+
+        describe('type', () => {
+            it('should set value to text on default correctly', async () => {
+                await page.waitForChanges();
+                expect(await input.getProperty('type')).toBe('text');
+            });
+
+            it('should set value correctly', async () => {
+                element.setProperty('type', 'email');
+                await page.waitForChanges();
+                expect(await input.getProperty('type')).toBe('email');
+            });
+
+            it('should render and not break when is a unexpected value', async () => {
+                element.setProperty('type', { test: true });
+                await page.waitForChanges();
+                expect(await input.getProperty('type')).toBe('text');
+            });
+        });
+
+        describe('@Events', () => {
+            beforeEach(async () => {
+                page = await newE2EPage();
+                await page.setContent(`
+                <dot-textfield
+                    label='Name:'
+                    name='fullName'
+                    value='John'
+                    hint='this is a hint'
+                    placeholder='Enter Name'
+                    regex-check='^[A-Za-z]+$'
+                    validation-message="Invalid Name"
+                    required
+                    required-message="Required Name">
+                </dot-textfield>`);
+
+                spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+                spyValueChangeEvent = await page.spyOnEvent('valueChange');
+
+                element = await page.find('dot-textfield');
+                input = await page.find('input');
+            });
+
+            describe('status and value change', () => {
+                it('should send status and value change', async () => {
+                    await input.press('a');
+                    await page.waitForChanges();
+                    expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                        name: 'fullName',
+                        status: {
+                            dotPristine: false,
+                            dotTouched: true,
+                            dotValid: true
+                        }
+                    });
+                    expect(spyValueChangeEvent).toHaveReceivedEventDetail({
+                        name: 'fullName',
+                        value: 'Johna'
+                    });
+                });
+
+                it('should emit status and value on Reset', async () => {
+                    await element.callMethod('reset');
+                    expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                        name: 'fullName',
+                        status: {
+                            dotPristine: true,
+                            dotTouched: false,
+                            dotValid: false
+                        }
+                    });
+                    expect(spyValueChangeEvent).toHaveReceivedEventDetail({
+                        name: 'fullName',
+                        value: ''
+                    });
+                });
+            });
+
+            describe('status change', () => {
+                it('should mark as touched when onblur', async () => {
+                    await input.triggerEvent('blur');
+                    await page.waitForChanges();
+
+                    expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                        name: 'fullName',
+                        status: {
+                            dotPristine: true,
+                            dotTouched: true,
+                            dotValid: true
+                        }
+                    });
+                });
+            });
+        });
+    });
 });
