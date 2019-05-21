@@ -36,19 +36,19 @@ export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Placeholder for the key input text in the <dot-key-form> */
-    @Prop() formKeyPlaceholder = undefined;
+    @Prop() formKeyPlaceholder: string;
 
     /** (optional) Placeholder for the value input text in the <dot-key-form> */
-    @Prop() formValuePlaceholder = undefined;
+    @Prop() formValuePlaceholder: string;
 
     /** (optional) The string to use in the key label in the <dot-key-form> */
-    @Prop() formKeyLabel = undefined;
+    @Prop() formKeyLabel: string;
 
     /** (optional) The string to use in the value label in the <dot-key-form> */
-    @Prop() formValueLabel = undefined;
+    @Prop() formValueLabel: string;
 
     /** (optional) Label for the add button in the <dot-key-form> */
-    @Prop() formAddButtonLabel = undefined;
+    @Prop() formAddButtonLabel: string;
 
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
@@ -72,7 +72,7 @@ export class DotKeyValueComponent {
     @Prop({ mutable: true }) value = '';
 
     /** (optional) The string to use in the delete button of a key/value item */
-    @Prop() buttonDeleteLabel = undefined;
+    @Prop() buttonDeleteLabel: string;
 
     @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
 
@@ -105,11 +105,17 @@ export class DotKeyValueComponent {
     @Listen('deleteItemEvt')
     deleteItemHandler(event: CustomEvent) {
         event.stopImmediatePropagation();
+
         this.items = this.items.filter((_item, internalIndex) => {
             return internalIndex !== event.detail;
         });
         this.refreshStatus();
         this.emitChanges();
+    }
+
+    @Listen('add')
+    addItemHandler(event: CustomEvent<DotKeyValueField>): void {
+        this.items = [...this.items, event.detail];
     }
 
     componentWillLoad(): void {
@@ -133,7 +139,6 @@ export class DotKeyValueComponent {
                         disabled={this.isDisabled()}
                         key-label={this.formKeyLabel}
                         key-placeholder={this.formKeyPlaceholder}
-                        onAdd={this.onAddItem.bind(this)}
                         value-label={this.formValueLabel}
                         value-placeholder={this.formValuePlaceholder}
                     />
@@ -143,10 +148,6 @@ export class DotKeyValueComponent {
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
-    }
-
-    private onAddItem(event: CustomEvent<DotKeyValueField>): void {
-        this.items = [...this.items, event.detail];
     }
 
     private validateProps(): void {
