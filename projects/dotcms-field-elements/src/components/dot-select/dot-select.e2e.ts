@@ -45,7 +45,6 @@ describe('dot-select', () => {
                     'dot-pristine',
                     'dot-untouched',
                     'dot-valid',
-                    'hydrated'
                 ]);
             });
         });
@@ -61,21 +60,28 @@ describe('dot-select', () => {
         describe('disabled', () => {
             it('should not render attribute', async () => {
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getAttribute('disabled')).toBe(null);
+                expect(await htmlElement.getAttribute('disabled')).toBeNull();
             });
 
             it('should render attribute', async () => {
                 element.setProperty('disabled', true);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getAttribute('disabled')).toBe('');
+                expect(await htmlElement.getAttribute('disabled')).toBeDefined();
             });
 
-            it('should not break with invalid data', async () => {
+            it('should not break with invalid data --> truthy', async () => {
                 element.setProperty('disabled', ['a', 'b']);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getAttribute('disabled')).toBe('');
+                expect(await htmlElement.getProperty('disabled')).toBe(true);
+            });
+
+            it('should not break with invalid data --> falsy', async () => {
+                element.setProperty('disabled', 0);
+                await page.waitForChanges();
+                const htmlElement = await getSelect(page);
+                expect(await htmlElement.getProperty('disabled')).toBe(false);
             });
         });
 
@@ -87,7 +93,7 @@ describe('dot-select', () => {
                 await page.waitForChanges();
 
                 const selectElement = await getSelect(page);
-                const idValue = await selectElement.getProperty('id');
+                const idValue = selectElement.getAttribute('id');
                 expect(idValue.indexOf(value)).toBeGreaterThan(-1);
 
                 const labelElement = await getDotLabel(page);
@@ -96,21 +102,21 @@ describe('dot-select', () => {
 
             it('should not render attribute in label and select', async () => {
                 const selectElement = await getSelect(page);
-                const idValue = await selectElement.getProperty('id');
-                expect(idValue.indexOf(value)).toBe(-1);
+                const idValue = selectElement.getAttribute('id');
+                expect(idValue).toBeNull();
 
                 const labelElement = await getDotLabel(page);
                 expect(await labelElement.getProperty('name')).toBe('');
             });
 
             it('should not break with invalid data', async () => {
-                const wrongValue = { a: 1 };
+                const wrongValue = [1, 2, 3];
                 element.setProperty('name', wrongValue);
                 await page.waitForChanges();
 
                 const selectElement = await getSelect(page);
-                const idValue = await selectElement.getProperty('id');
-                expect(idValue.indexOf(wrongValue)).toBe(-1);
+                const idValue = selectElement.getAttribute('id');
+                expect(idValue.indexOf(wrongValue.toString())).toBe(-1);
             });
         });
 
@@ -125,12 +131,12 @@ describe('dot-select', () => {
             });
 
             it('should not break with invalid data', async () => {
-                const wrongValue = { a: 1 };
+                const wrongValue = [1, 2, '3'];
                 element.setProperty('label', wrongValue);
                 await page.waitForChanges();
 
                 const labelElement = await getDotLabel(page);
-                expect(labelElement).toBeTruthy();
+                expect(await labelElement.getProperty('label')).toEqual([1, 2, '3']);
             });
         });
 
@@ -149,13 +155,13 @@ describe('dot-select', () => {
                 expect(hintElement).toBeNull();
             });
 
-            it('should not break with invalid data', async () => {
+            it('should not break and not render with invalid data', async () => {
                 const wrongValue = [{ a: 1 }];
                 element.setProperty('hint', wrongValue);
                 await page.waitForChanges();
 
                 const hintElement = await getHint(page);
-                expect(hintElement.innerHTML).toBe('<undefined></undefined>');
+                expect(hintElement).toBeFalsy();
             });
         });
 
@@ -202,10 +208,10 @@ describe('dot-select', () => {
 
             it('should not render required error msg', async () => {
                 const errorElement = await getError(page);
-                expect(errorElement).toBe(null);
+                expect(errorElement).toBeNull();
             });
 
-            it('should not break with invalid data', async () => {
+            it('should not break and not render with invalid data', async () => {
                 const wrongValue = [{ a: 1 }];
                 element.setProperty('required', wrongValue);
                 element.setProperty('requiredMessage', wrongValue);
@@ -213,8 +219,7 @@ describe('dot-select', () => {
                 await page.waitForChanges();
 
                 const errorElement = await getError(page);
-                expect(errorElement).toBeTruthy();
-                expect(errorElement.innerHTML).toBe('<undefined></undefined>');
+                expect(errorElement).toBeFalsy();
             });
         });
 
@@ -228,13 +233,14 @@ describe('dot-select', () => {
                 expect(await optionElements[1].getProperty('selected')).toBe(true);
             });
 
-            it('should render no selected option', async () => {
+            it('should render options with the first option selected (component\'s default behaviour)', async () => {
                 element.setProperty('options', 'a|1,b|2,c|3');
                 await page.waitForChanges();
 
                 const optionElements = await getOptions(page);
                 expect(await optionElements[0].getProperty('selected')).toBe(true);
                 expect(await optionElements[1].getProperty('selected')).toBe(false);
+                expect(await optionElements[2].getProperty('selected')).toBe(false);
             });
 
             it('should not break with invalid data', async () => {
@@ -246,6 +252,7 @@ describe('dot-select', () => {
                 const optionElements = await getOptions(page);
                 expect(await optionElements[0].getProperty('selected')).toBe(true);
                 expect(await optionElements[1].getProperty('selected')).toBe(false);
+                expect(await optionElements[2].getProperty('selected')).toBe(false);
             });
         });
     });
