@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DotWorkflowTaskDetailService } from './dot-workflow-task-detail.service';
 import { DotMenuService } from '@services/dot-menu.service';
 
-fdescribe('DotWorkflowTaskDetailService', () => {
+describe('DotWorkflowTaskDetailService', () => {
     let service: DotWorkflowTaskDetailService;
     let dotMenuService: DotMenuService;
     let injector;
