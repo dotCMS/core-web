@@ -81,7 +81,7 @@ describe('dot-multi-select', () => {
                 element.setProperty('disabled', ['a', 'b']);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(htmlElement.getAttribute('disabled')).toBe('');
+                expect(htmlElement.getAttribute('disabled')).toBeDefined();
             });
 
             it('should not break with invalid data --> falsy', async () => {
@@ -198,10 +198,11 @@ describe('dot-multi-select', () => {
         });
 
         describe('required & requiredMessage', () => {
-            it('should render required attribute in label', async () => {
+            it('should render required attribute in label and dot-required css class', async () => {
                 element.setProperty('required', true);
                 await page.waitForChanges();
                 const labelElement = await dotTestUtil.getDotLabel(page);
+                expect(element).toHaveClasses(['dot-required']);
                 expect(await labelElement.getProperty('required')).toBe(true);
             });
 
