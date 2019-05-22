@@ -1,11 +1,9 @@
 import { newE2EPage, E2EElement, E2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
+import { dotTestUtil } from '../../utils';
 
 const getSelect = (page: E2EPage) => page.find('select');
-const getDotLabel = (page: E2EPage) => page.find('dot-label');
-const getHint = (page: E2EPage) => page.find('.dot-field__hint');
 const getOptions = (page: E2EPage) => page.findAll('option');
-const getError = (page: E2EPage) => page.find('.dot-field__error-message');
 
 describe('dot-select', () => {
     let page: E2EPage;
@@ -33,7 +31,7 @@ describe('dot-select', () => {
                 element = await page.find('dot-select');
                 await page.select('select', '');
                 await page.waitForChanges();
-                expect(element).toHaveClasses(['dot-invalid', 'dot-touched', 'dot-dirty']);
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
             });
         });
 
@@ -41,11 +39,7 @@ describe('dot-select', () => {
             it('should be pristine, untouched & valid', async () => {
                 await page.setContent(`<dot-select></dot-select>`);
                 element = await page.find('dot-select');
-                expect(element).toHaveClasses([
-                    'dot-pristine',
-                    'dot-untouched',
-                    'dot-valid',
-                ]);
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
         });
     });
@@ -60,28 +54,28 @@ describe('dot-select', () => {
         describe('disabled', () => {
             it('should not render attribute', async () => {
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getAttribute('disabled')).toBeNull();
+                expect(htmlElement.getAttribute('disabled')).toBeNull();
             });
 
             it('should render attribute', async () => {
                 element.setProperty('disabled', true);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getAttribute('disabled')).toBeDefined();
+                expect(htmlElement.getAttribute('disabled')).toBeDefined();
             });
 
             it('should not break with invalid data --> truthy', async () => {
                 element.setProperty('disabled', ['a', 'b']);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getProperty('disabled')).toBe(true);
+                expect(htmlElement.getAttribute('disabled')).toBe('');
             });
 
             it('should not break with invalid data --> falsy', async () => {
                 element.setProperty('disabled', 0);
                 await page.waitForChanges();
                 const htmlElement = await getSelect(page);
-                expect(await htmlElement.getProperty('disabled')).toBe(false);
+                expect(htmlElement.getAttribute('disabled')).toBeNull();
             });
         });
 
@@ -96,7 +90,7 @@ describe('dot-select', () => {
                 const idValue = selectElement.getAttribute('id');
                 expect(idValue.indexOf(value)).toBeGreaterThan(-1);
 
-                const labelElement = await getDotLabel(page);
+                const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(await labelElement.getProperty('name')).toBe(value);
             });
 
@@ -105,7 +99,7 @@ describe('dot-select', () => {
                 const idValue = selectElement.getAttribute('id');
                 expect(idValue).toBeNull();
 
-                const labelElement = await getDotLabel(page);
+                const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(await labelElement.getProperty('name')).toBe('');
             });
 
@@ -126,7 +120,7 @@ describe('dot-select', () => {
                 element.setProperty('label', value);
                 await page.waitForChanges();
 
-                const labelElement = await getDotLabel(page);
+                const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(await labelElement.getProperty('label')).toBe(value);
             });
 
@@ -135,7 +129,7 @@ describe('dot-select', () => {
                 element.setProperty('label', wrongValue);
                 await page.waitForChanges();
 
-                const labelElement = await getDotLabel(page);
+                const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(await labelElement.getProperty('label')).toEqual([1, 2, '3']);
             });
         });
@@ -146,12 +140,12 @@ describe('dot-select', () => {
                 element.setProperty('hint', value);
                 await page.waitForChanges();
 
-                const hintElement = await getHint(page);
+                const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement.innerHTML).toBe(value);
             });
 
             it('should not render hint', async () => {
-                const hintElement = await getHint(page);
+                const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement).toBeNull();
             });
 
@@ -160,7 +154,7 @@ describe('dot-select', () => {
                 element.setProperty('hint', wrongValue);
                 await page.waitForChanges();
 
-                const hintElement = await getHint(page);
+                const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement).toBeFalsy();
             });
         });
@@ -194,7 +188,7 @@ describe('dot-select', () => {
             it('should render required attribute in label', async () => {
                 element.setProperty('required', true);
                 await page.waitForChanges();
-                const labelElement = await getDotLabel(page);
+                const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(await labelElement.getProperty('required')).toBe(true);
             });
 
@@ -202,12 +196,12 @@ describe('dot-select', () => {
                 element.setProperty('required', true);
                 element.setProperty('requiredMessage', 'test');
                 await page.waitForChanges();
-                const errorElement = await getError(page);
+                const errorElement = await dotTestUtil.getErrorMessage(page);
                 expect(errorElement.innerHTML).toBe('test');
             });
 
             it('should not render required error msg', async () => {
-                const errorElement = await getError(page);
+                const errorElement = await dotTestUtil.getErrorMessage(page);
                 expect(errorElement).toBeNull();
             });
 
@@ -218,7 +212,7 @@ describe('dot-select', () => {
 
                 await page.waitForChanges();
 
-                const errorElement = await getError(page);
+                const errorElement = await dotTestUtil.getErrorMessage(page);
                 expect(errorElement).toBeFalsy();
             });
         });
