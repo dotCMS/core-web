@@ -1,5 +1,4 @@
 import { Component, Prop, State, Element, Event, EventEmitter } from '@stencil/core';
-import Fragment from 'stencil-fragment';
 import { DotKeyValueField } from '../../../models';
 
 const DEFAULT_VALUE = { key: '', value: '' };
@@ -32,44 +31,42 @@ export class DotKeyValueComponent {
     /** Emit the added value, key/value pair */
     @Event() add: EventEmitter<DotKeyValueField>;
 
-    @State() value: DotKeyValueField = { ...DEFAULT_VALUE };
+    @State() inputs: DotKeyValueField = { ...DEFAULT_VALUE };
 
     render() {
         const buttonDisabled = this.isButtonDisabled();
         return (
-            <Fragment>
-                <form onSubmit={this.addKey.bind(this)}>
-                    <label>
-                        {this.keyLabel}
-                        <input
-                            disabled={this.isDisabled()}
-                            name="key"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.keyPlaceholder}
-                            type="text"
-                            value={this.value.key}
-                        />
-                    </label>
-                    <label>
-                        {this.valueLabel}
-                        <input
-                            disabled={this.isDisabled()}
-                            name="value"
-                            onInput={(event: Event) => this.setValue(event)}
-                            placeholder={this.valuePlaceholder}
-                            type="text"
-                            value={this.value.value}
-                        />
-                    </label>
-                    <button
-                        class="key-value-form__save__button"
-                        type="submit"
-                        disabled={buttonDisabled}
-                    >
-                        {this.addButtonLabel}
-                    </button>
-                </form>
-            </Fragment>
+            <form onSubmit={this.addKey.bind(this)}>
+                <label>
+                    {this.keyLabel}
+                    <input
+                        disabled={this.disabled}
+                        name="key"
+                        onInput={(event: Event) => this.setValue(event)}
+                        placeholder={this.keyPlaceholder}
+                        type="text"
+                        value={this.inputs.key}
+                    />
+                </label>
+                <label>
+                    {this.valueLabel}
+                    <input
+                        disabled={this.disabled}
+                        name="value"
+                        onInput={(event: Event) => this.setValue(event)}
+                        placeholder={this.valuePlaceholder}
+                        type="text"
+                        value={this.inputs.value}
+                    />
+                </label>
+                <button
+                    class="key-value-form__save__button"
+                    type="submit"
+                    disabled={buttonDisabled}
+                >
+                    {this.addButtonLabel}
+                </button>
+            </form>
         );
     }
 
@@ -78,19 +75,15 @@ export class DotKeyValueComponent {
     }
 
     private isFormValid(): boolean {
-        return !!this.value.key && !!this.value.value;
-    }
-
-    private isDisabled(): boolean {
-        return this.disabled || null;
+        return !!(this.inputs.key.length && this.inputs.value.length);
     }
 
     private setValue(event: Event): void {
         event.stopImmediatePropagation();
 
         const target = event.target as HTMLInputElement;
-        this.value = {
-            ...this.value,
+        this.inputs = {
+            ...this.inputs,
             [target.name]: target.value.toString()
         };
     }
@@ -99,18 +92,18 @@ export class DotKeyValueComponent {
         event.preventDefault();
         event.stopImmediatePropagation();
 
-        if (this.value.key && this.value.value) {
-            this.add.emit(this.value);
+        if (this.inputs.key && this.inputs.value) {
+            this.add.emit(this.inputs);
             this.clearForm();
-            this.focusFirstField();
+            this.focusKeyInputField();
         }
     }
 
     private clearForm(): void {
-        this.value = { ...DEFAULT_VALUE };
+        this.inputs = { ...DEFAULT_VALUE };
     }
 
-    private focusFirstField(): void {
+    private focusKeyInputField(): void {
         const input: HTMLInputElement = this.el.querySelector('input[name="key"]');
         input.focus();
     }
