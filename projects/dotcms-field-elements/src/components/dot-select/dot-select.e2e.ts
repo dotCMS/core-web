@@ -31,7 +31,7 @@ describe('dot-select', () => {
                 element = await page.find('dot-select');
                 await page.select('select', '');
                 await page.waitForChanges();
-                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
+                expect(element).toHaveClasses([...dotTestUtil.class.emptyRequired, 'dot-required']);
             });
         });
 
