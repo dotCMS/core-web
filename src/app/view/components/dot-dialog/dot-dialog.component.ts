@@ -85,6 +85,7 @@ export class DotDialogComponent implements OnChanges, AfterViewChecked {
         if (this.emitShowEvent) {
             this.emitShowEvent = false;
             this.show.emit(this);
+            this.visibleChange.emit(true);
         }
     }
 

@@ -2,7 +2,7 @@ import {
     DotLargeMessageDisplayService,
     DotLargeMessageDisplayParams
 } from './services/dot-large-message-display.service';
-import { Component, OnInit,  Renderer2, OnDestroy/*, ElementRef*/ } from '@angular/core';
+import { Component, OnInit,  Renderer2, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
@@ -50,10 +50,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
        this.messages.splice(this.messages.indexOf(messageToRemove), 1);
     }
 
-    createContent(dialogComponent: DotDialogComponent, content: DotLargeMessageDisplayParams, event): void {
-        console.log('createContent', dialogComponent, content, event);
-        console.log('this.renderer', this.renderer, dialogComponent);
-
+    createContent(dialogComponent: DotDialogComponent, content: DotLargeMessageDisplayParams): void {
         setTimeout( () => {
             const placeholder = document.createElement('div');
             placeholder.innerHTML = content.body;

@@ -117,9 +117,19 @@ describe('DotLargeMessageDisplayComponent', () => {
         }, 0);
     });
 
-    it('should clear the DotLargeMessageDisplayService on dialog hide', () => {
+    it('should remove dialog when it is close', () => {
+        dotLargeMessageDisplayServiceMock.push({
+            title: 'title Test',
+            body: '<h1>Hello World</h1><script>console.log("abc")</script>',
+            script: 'console.log("script from prop")'
+        });
+        fixture.detectChanges();
+
+        dialog = fixture.debugElement.query(By.css('dot-dialog'));
         dialog.triggerEventHandler('hide', {});
-        expect(dotLargeMessageDisplayServiceMock.clear).toHaveBeenCalled();
+
+        fixture.detectChanges();
+        expect(fixture.debugElement.query(By.css('dot-dialog'))).toBeNull();
     });
 
     it('should set default height and width', () => {
@@ -133,5 +143,25 @@ describe('DotLargeMessageDisplayComponent', () => {
 
         expect(dialog.componentInstance.width).toBe('500px');
         expect(dialog.componentInstance.height).toBe('400px');
+    });
+
+    it('should show two dialogs', () => {
+        dotLargeMessageDisplayServiceMock.push({
+            title: 'title Test',
+            body: 'bodyTest',
+            code: { lang: 'eng', content: 'codeTest' }
+        });
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.queryAll(By.css('dot-dialog')).length).toBe(1);
+
+        dotLargeMessageDisplayServiceMock.push({
+            title: 'title Test 2',
+            body: 'bodyTest 2',
+            code: { lang: 'eng', content: 'codeTest 2' }
+        });
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.queryAll(By.css('dot-dialog')).length).toBe(2);
     });
 });

@@ -126,9 +126,18 @@ describe('DotDialogComponent', () => {
                 };
                 hostComponent.show = true;
 
-                hostFixture.detectChanges();
                 de = hostDe.query(By.css('dot-dialog'));
                 component = de.componentInstance;
+
+                spyOn(component.visibleChange, 'emit').and.callThrough();
+                spyOn(component.show, 'emit').and.callThrough();
+
+                hostFixture.detectChanges();
+            });
+
+            it('should emit show events', () => {
+                expect(component.show.emit).toHaveBeenCalledWith(component);
+                expect(component.visibleChange.emit).toHaveBeenCalledWith(true);
             });
 
             it('should show dialog', () => {
@@ -191,7 +200,6 @@ describe('DotDialogComponent', () => {
             describe('events', () => {
                 beforeEach(() => {
                     spyOn(component.hide, 'emit').and.callThrough();
-                    spyOn(component.visibleChange, 'emit').and.callThrough();
                 });
 
                 it('should close dialog and emit close', () => {
@@ -205,7 +213,9 @@ describe('DotDialogComponent', () => {
                         });
 
                         hostFixture.detectChanges();
-                        expect(component.visibleChange.emit).toHaveBeenCalledTimes(1);
+                        expect(component.visibleChange.emit).toHaveBeenCalledWith(true);
+                        expect(component.visibleChange.emit).toHaveBeenCalledWith(false);
+
                         expect(component.visible).toBe(false);
                         expect(component.hide.emit).toHaveBeenCalledTimes(1);
                     });
@@ -362,7 +372,6 @@ describe('DotDialogComponent', () => {
             de = hostDe.query(By.css('dot-dialog'));
             component = de.componentInstance;
 
-            spyOn(component.visibleChange, 'emit').and.callThrough();
             spyOn(component.beforeClose, 'emit').and.callThrough();
         });
 
