@@ -21,38 +21,32 @@ describe('dot-textfield', () => {
     let spyStatusChangeEvent: EventSpy;
     let spyValueChangeEvent: EventSpy;
 
-    // const getLabel = async () => await page.find('dot-label');
-    // const getHint = async () => await page.find('.dot-field__hint');
-    // const getErrorMessage = async () => await page.find('.dot-field__error-message');
+    describe('render CSS classes', () => {
+        beforeEach(async () => {
+            page = await newE2EPage();
+        });
 
-    describe('with params', () => {
-        describe('render CSS classes', () => {
+        describe('with data', () => {
             beforeEach(async () => {
-                page = await newE2EPage();
+                await page.setContent(TEXTFIELD_WITH_DATA);
+                element = await page.find('dot-textfield');
+                input = await page.find('input');
             });
 
-            describe('with data', () => {
-                beforeEach(async () => {
-                    await page.setContent(TEXTFIELD_WITH_DATA);
-                    element = await page.find('dot-textfield');
-                    input = await page.find('input');
-                });
+            it('should be valid, untouched & pristine on load', async () => {
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
+            });
 
-                it('should be valid, untouched & pristine on load', async () => {
-                    await page.waitForChanges();
-                    expect(element).toHaveClasses(dotTestUtil.class.empty);
-                });
-
-                it('should be invalid, untouched & pristine on load', async () => {
-                    element.setProperty('value', '');
-                    await page.waitForChanges();
-                    expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
-                });
-                it('should be valid, touched & dirty when filled', async () => {
-                    input.press('A');
-                    await page.waitForChanges();
-                    expect(element).toHaveClasses(dotTestUtil.class.filled);
-                });
+            it('should be invalid, untouched & pristine on load', async () => {
+                element.setProperty('value', '');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
+            });
+            it('should be valid, touched & dirty when filled', async () => {
+                await input.press('a');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.filled);
             });
         });
 
@@ -60,7 +54,7 @@ describe('dot-textfield', () => {
             it('should be pristine, untouched & valid', async () => {
                 await page.setContent(`<dot-textfield></dot-textfield>`);
                 element = await page.find('dot-textfield');
-                expect(element).toHaveClasses(['dot-pristine', 'dot-untouched', 'dot-valid']);
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
         });
     });
@@ -79,12 +73,12 @@ describe('dot-textfield', () => {
             it('should set value correctly', async () => {
                 element.setProperty('value', 'test');
                 await page.waitForChanges();
-                expect( await input.getProperty('value')).toBe('test');
+                expect(await input.getProperty('value')).toBe('test');
             });
             it('should render and not break when is a unexpected value', async () => {
                 element.setProperty('value', { test: true });
                 await page.waitForChanges();
-                expect( await input.getProperty('value')).toBe('[object Object]');
+                expect(await input.getProperty('value')).toBe('[object Object]');
             });
         });
 
@@ -92,7 +86,7 @@ describe('dot-textfield', () => {
             it('should render with valid name', async () => {
                 element.setProperty('name', 'text01');
                 await page.waitForChanges();
-                console.log('element.outerHTML', element.outerHTML);
+
                 expect(input.getAttribute('id')).toBe('dot-text01');
             });
 
@@ -114,13 +108,13 @@ describe('dot-textfield', () => {
                 element.setProperty('label', 'Name:');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect( await label.getProperty('label')).toBe('Name:');
+                expect(await label.getProperty('label')).toBe('Name:');
             });
             it('should set label prop in dot-label when is a unexpected value', async () => {
                 element.setProperty('label', [1, 2, 'test']);
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect( await label.getProperty('label')).toEqual([1, 2, 'test']);
+                expect(await label.getProperty('label')).toEqual([1, 2, 'test']);
             });
         });
 
