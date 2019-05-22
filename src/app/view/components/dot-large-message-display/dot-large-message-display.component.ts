@@ -2,9 +2,10 @@ import {
     DotLargeMessageDisplayService,
     DotLargeMessageDisplayParams
 } from './services/dot-large-message-display.service';
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Component, OnInit,  Renderer2, OnDestroy/*, ElementRef*/ } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
     selector: 'dot-large-message-display',
@@ -12,9 +13,8 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./dot-large-message-display.component.scss']
 })
 export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
-    @ViewChild('body') bodyEl: ElementRef;
-
     data: DotLargeMessageDisplayParams;
+    messages: DotLargeMessageDisplayParams[] = [];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -31,9 +31,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
                 this.data = content;
 
                 if (content) {
-                    setTimeout(() => {
-                        this.createContent(content);
-                    }, 0);
+                    this.messages.push(content);
                 }
             });
     }
@@ -48,27 +46,33 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy {
      *
      * @memberof DotLargeMessageDisplayComponent
      */
-    close() {
-        this.dotLargeMessageDisplayService.clear();
+    close(messageToRemove: DotLargeMessageDisplayParams) {
+       this.messages.splice(this.messages.indexOf(messageToRemove), 1);
     }
 
-    private createContent(content: DotLargeMessageDisplayParams): void {
-        const placeholder = document.createElement('div');
-        placeholder.innerHTML = content.body;
+    createContent(dialogComponent: DotDialogComponent, content: DotLargeMessageDisplayParams, event): void {
+        console.log('createContent', dialogComponent, content, event);
+        console.log('this.renderer', this.renderer, dialogComponent);
 
-        Array.from(placeholder.children).forEach((el: HTMLElement) => {
-            const parsedEl = this.isScriptElement(el.tagName)
-                ? this.createScriptEl(el.innerHTML)
-                : el;
-            this.renderer.appendChild(this.bodyEl.nativeElement, parsedEl);
-        });
+        setTimeout( () => {
+            const placeholder = document.createElement('div');
+            placeholder.innerHTML = content.body;
 
-        if (content.script) {
-            this.renderer.appendChild(
-                this.bodyEl.nativeElement,
-                this.createScriptEl(content.script)
-            );
-        }
+            const body = dialogComponent.dialog.nativeElement.querySelector('.dialog-message__body');
+            Array.from(placeholder.children).forEach((el: HTMLElement) => {
+                const parsedEl = this.isScriptElement(el.tagName)
+                    ? this.createScriptEl(el.innerHTML)
+                    : el;
+                this.renderer.appendChild(body, parsedEl);
+            });
+
+            if (content.script) {
+                this.renderer.appendChild(
+                    body,
+                    this.createScriptEl(content.script)
+                );
+            }
+        }, 0);
     }
 
     private isScriptElement(tag: string): boolean {

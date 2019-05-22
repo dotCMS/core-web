@@ -7,7 +7,8 @@ import {
     ViewChild,
     ElementRef,
     OnChanges,
-    SimpleChanges
+    SimpleChanges,
+    AfterViewChecked
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -17,7 +18,7 @@ import { filter } from 'rxjs/operators';
     templateUrl: './dot-dialog.component.html',
     styleUrls: ['./dot-dialog.component.scss']
 })
-export class DotDialogComponent implements OnChanges {
+export class DotDialogComponent implements OnChanges, AfterViewChecked {
     @ViewChild('dialog')
     dialog: ElementRef;
 
@@ -63,16 +64,27 @@ export class DotDialogComponent implements OnChanges {
 
     @Output()
     visibleChange: EventEmitter<any> = new EventEmitter();
+    @Output()
+    show: EventEmitter<any> = new EventEmitter();
 
     isContentScrolled: boolean;
 
     private subscription: Subscription[] = [];
+    private emitShowEvent = false;
 
     constructor(private el: ElementRef) {}
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.visible && changes.visible.currentValue) {
+            this.emitShowEvent = true;
             this.bindEvents();
+        }
+    }
+
+    ngAfterViewChecked() {
+        if (this.emitShowEvent) {
+            this.emitShowEvent = false;
+            this.show.emit(this);
         }
     }
 
