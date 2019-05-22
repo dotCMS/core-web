@@ -16,9 +16,9 @@
 
 ## Events
 
-| Event           | Description | Type                |
-| --------------- | ----------- | ------------------- |
-| `deleteItemEvt` |             | `CustomEvent<void>` |
+| Event    | Description | Type                |
+| -------- | ----------- | ------------------- |
+| `delete` |             | `CustomEvent<void>` |
 
 
 ----------------------------------------------

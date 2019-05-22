@@ -7,39 +7,54 @@ import { DotKeyValueField } from '../../../models';
 export class KeyValueTableComponent {
     @Prop() items: DotKeyValueField[] = [];
     @Prop() disabled = false;
-    @Prop() buttonDeleteLabel = 'Delete';
+    @Prop() buttonLabel = 'Delete';
+    @Prop() emptyMessage = 'No values';
 
-    @Event() deleteItemEvt: EventEmitter;
+    @Event() delete: EventEmitter;
 
     render() {
         return (
             <table>
-                <tbody>
-                    {this.items.map((item: DotKeyValueField, index: number) => {
-                        return (
-                            <tr>
-                                <td>
-                                    <button
-                                        type="button"
-                                        id={`${item.key}_${item.value}_${index}`}
-                                        disabled={this.disabled || null}
-                                        onClick={() => this.deleteItem(index)}
-                                        class="dot-key-value__delete-button"
-                                    >
-                                        {this.buttonDeleteLabel}
-                                    </button>
-                                </td>
-                                <td>{item.key}</td>
-                                <td>{item.value}</td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
+                <tbody>{this.renderRows(this.items)}</tbody>
             </table>
         );
     }
 
-    private deleteItem(index: number): void {
-        this.deleteItemEvt.emit(index);
+    private onDelete(index: number): void {
+        this.delete.emit(index);
+    }
+
+    private getRow(item: DotKeyValueField, index: number): JSX.Element {
+        return (
+            <tr>
+                <td>
+                    <button
+                        disabled={this.disabled || null}
+                        onClick={() => this.onDelete(index)}
+                        class="dot-key-value__delete-button"
+                    >
+                        {this.buttonLabel}
+                    </button>
+                </td>
+                <td>{item.key}</td>
+                <td>{item.value}</td>
+            </tr>
+        );
+    }
+
+    private renderRows(items: DotKeyValueField[]): JSX.Element {
+        return this.isValidItems(items) ? items.map(this.getRow.bind(this)) : this.getEmptyRow();
+    }
+
+    private getEmptyRow(): JSX.Element {
+        return (
+            <tr>
+                <td>{this.emptyMessage}</td>
+            </tr>
+        );
+    }
+
+    private isValidItems(items: DotKeyValueField[]): boolean {
+        return Array.isArray(items) && !!items.length;
     }
 }
