@@ -178,7 +178,7 @@ describe('dot-select', () => {
                 element.setProperty('options', wrongValue);
                 await page.waitForChanges();
                 const optionElements = await getOptions(page);
-                expect(optionElements.length).toBe(1);
+                expect(optionElements.length).toBe(0);
             });
         });
 

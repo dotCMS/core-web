@@ -112,7 +112,7 @@ describe('dot-multi-select', () => {
                 await page.waitForChanges();
                 const selectElement = await getSelect(page);
                 const idValue = selectElement.getAttribute('id');
-                expect(idValue.indexOf(value)).toBeGreaterThan(-1);
+                expect(idValue).toBe('dot-test');
                 const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(labelElement.getAttribute('name')).toBe(value);
             });
@@ -187,7 +187,7 @@ describe('dot-multi-select', () => {
 
             it('should not render options', async () => {
                 const optionElements = await getOptions(page);
-                expect(optionElements).toEqual([]);
+                expect(optionElements.length).toBe(0);
             });
 
             it('should not break with invalid data', async () => {
@@ -195,7 +195,7 @@ describe('dot-multi-select', () => {
                 element.setProperty('options', wrongValue);
                 await page.waitForChanges();
                 const optionElements = await getOptions(page);
-                expect(optionElements.length).toBe(1);
+                expect(optionElements.length).toBe(0);
             });
         });
 
