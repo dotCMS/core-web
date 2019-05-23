@@ -2,18 +2,6 @@ import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
 
-const TEXTFIELD_WITH_DATA = `<dot-textfield
-                    label='Name:'
-                    name='fullName'
-                    value='John'
-                    hint='this is a hint'
-                    placeholder='Enter Name'
-                    regex-check='^[A-Za-z]+$'
-                    validation-message="Invalid Name"
-                    required
-                    required-message="Required Name">
-                </dot-textfield>`;
-
 describe('dot-textfield', () => {
     let page: E2EPage;
     let element: E2EElement;
@@ -28,7 +16,7 @@ describe('dot-textfield', () => {
 
         describe('with data', () => {
             beforeEach(async () => {
-                await page.setContent(TEXTFIELD_WITH_DATA);
+                await page.setContent(`<dot-textfield value='John' required></dot-textfield>`);
                 element = await page.find('dot-textfield');
                 input = await page.find('input');
             });
@@ -38,7 +26,15 @@ describe('dot-textfield', () => {
                 expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
 
-            it('should be invalid, untouched & pristine on load', async () => {
+            it('should be invalid, touched & dirty when valued is cleared and is required', async () => {
+                element.setProperty('value', 'a');
+                await page.waitForChanges();
+                await input.press('Backspace');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
+            });
+
+            it('should be invalid, untouched & pristine when empty on load  but required', async () => {
                 element.setProperty('value', '');
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
@@ -71,9 +67,9 @@ describe('dot-textfield', () => {
 
         describe('value', () => {
             it('should set value correctly', async () => {
-                element.setProperty('value', 'test');
+                await input.press('a');
                 await page.waitForChanges();
-                expect(await input.getProperty('value')).toBe('test');
+                expect(await input.getProperty('value')).toBe('a');
             });
             it('should render and not break when is a unexpected value', async () => {
                 element.setProperty('value', { test: true });
@@ -94,8 +90,16 @@ describe('dot-textfield', () => {
                 element.setProperty('name', 'text01');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getProperty('name')).toBe('text01');
+                expect(await label.getAttribute('name')).toBe('text01');
             });
+
+            it('should set name prop in dot-label with invalid value', async () => {
+                element.setProperty('name', { test: 'hi' });
+                await page.waitForChanges();
+                const label = await dotTestUtil.getDotLabel(page);
+                expect(await label.getAttribute('name')).toBe('[object Object]');
+            });
+
             it('should render when is a unexpected value', async () => {
                 element.setProperty('name', { input: 'text01' });
                 await page.waitForChanges();
@@ -108,13 +112,13 @@ describe('dot-textfield', () => {
                 element.setProperty('label', 'Name:');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getProperty('label')).toBe('Name:');
+                expect(await label.getAttribute('label')).toBe('Name:');
             });
             it('should set label prop in dot-label when is a unexpected value', async () => {
                 element.setProperty('label', [1, 2, 'test']);
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getProperty('label')).toEqual([1, 2, 'test']);
+                expect(await label.getAttribute('label')).toEqual('1,2,test');
             });
         });
 
@@ -135,7 +139,7 @@ describe('dot-textfield', () => {
             it('should set hint correctly', async () => {
                 element.setProperty('hint', 'Test');
                 await page.waitForChanges();
-                expect((await dotTestUtil.getHint(page)).innerHTML).toBe('Test');
+                expect((await dotTestUtil.getHint(page)).innerText).toBe('Test');
             });
 
             it('should not render hint', async () => {
@@ -177,7 +181,7 @@ describe('dot-textfield', () => {
                 await input.press('a');
                 await input.press('Backspace');
                 await page.waitForChanges();
-                expect((await dotTestUtil.getErrorMessage(page)).innerHTML).toBe('Test');
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('Test');
             });
 
             it('should not render requiredMessage', async () => {
@@ -195,24 +199,27 @@ describe('dot-textfield', () => {
             });
         });
 
-        describe('regexCheck && validationMessage', () => {
+        describe('regexCheck', () => {
+            it('should set empty value when invalid regexCheck', async () => {
+                element.setProperty('regexCheck', '[*');
+                await page.waitForChanges();
+                expect(await element.getProperty('regexCheck')).toBe('');
+                expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
+            });
+        });
+
+        describe('validationMessage', () => {
             it('should render validationMessage', async () => {
                 element.setProperty('regexCheck', '[0-9]');
                 element.setProperty('validationMessage', 'Test');
                 await input.press('a');
                 await page.waitForChanges();
-                expect((await dotTestUtil.getErrorMessage(page)).innerHTML).toBe('Test');
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('Test');
             });
 
             it('should not render validationMessage', async () => {
+                await input.press('a');
                 await page.waitForChanges();
-                expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
-            });
-
-            it('should not render and not break with with invalid regexCheck', async () => {
-                element.setProperty('regexCheck', '[*');
-                await page.waitForChanges();
-                expect(await element.getProperty('regexCheck')).toBe('');
                 expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
             });
         });
@@ -259,7 +266,7 @@ describe('dot-textfield', () => {
         describe('@Events', () => {
             beforeEach(async () => {
                 page = await newE2EPage();
-                await page.setContent(TEXTFIELD_WITH_DATA);
+                await page.setContent(`<dot-textfield></dot-textfield>`);
 
                 spyStatusChangeEvent = await page.spyOnEvent('statusChange');
                 spyValueChangeEvent = await page.spyOnEvent('valueChange');
@@ -273,7 +280,7 @@ describe('dot-textfield', () => {
                     await input.press('a');
                     await page.waitForChanges();
                     expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                        name: 'fullName',
+                        name: '',
                         status: {
                             dotPristine: false,
                             dotTouched: true,
@@ -281,23 +288,23 @@ describe('dot-textfield', () => {
                         }
                     });
                     expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                        name: 'fullName',
-                        value: 'Johna'
+                        name: '',
+                        value: 'a'
                     });
                 });
 
                 it('should emit status and value on Reset', async () => {
                     await element.callMethod('reset');
                     expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                        name: 'fullName',
+                        name: '',
                         status: {
                             dotPristine: true,
                             dotTouched: false,
-                            dotValid: false
+                            dotValid: true
                         }
                     });
                     expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                        name: 'fullName',
+                        name: '',
                         value: ''
                     });
                 });
@@ -309,7 +316,7 @@ describe('dot-textfield', () => {
                     await page.waitForChanges();
 
                     expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                        name: 'fullName',
+                        name: '',
                         status: {
                             dotPristine: true,
                             dotTouched: true,

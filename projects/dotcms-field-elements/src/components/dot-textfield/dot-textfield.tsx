@@ -26,23 +26,28 @@ export class DotTextfieldComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({ reflectToAttr: true })
+    name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label = '';
+    @Prop({ reflectToAttr: true })
+    label = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop() placeholder = '';
+    @Prop({ reflectToAttr: true })
+    placeholder = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint = '';
+    @Prop({ reflectToAttr: true })
+    hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required = false;
+    @Prop({ reflectToAttr: true })
+    required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
     @Prop() requiredMessage = '';
@@ -51,7 +56,8 @@ export class DotTextfieldComponent {
     @Prop() validationMessage = '';
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true })
+    disabled = false;
 
     /** (optional) Regular expresion that is checked against the value to determine if is valid  */
     @Prop({ mutable: true })
@@ -141,9 +147,7 @@ export class DotTextfieldComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid()
-                ? ''
-                : this.requiredMessage
+            ? this.isValid() ? '' : this.requiredMessage
             : this.validationMessage;
     }
 
