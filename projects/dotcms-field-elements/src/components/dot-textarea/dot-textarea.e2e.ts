@@ -1,10 +1,49 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
+import {dotTestUtil} from '../../utils';
 
 describe('dot-textarea', () => {
     let page: E2EPage;
     let element: E2EElement;
-    let input: E2EElement;
+    let textarea: E2EElement;
+
+    describe('render CSS classes', () => {
+        beforeEach(async () => {
+            page = await newE2EPage();
+        });
+
+        describe('with data', () => {
+            beforeEach(async () => {
+                await page.setContent(`<dot-textarea value='Address' required ></dot-textarea>`);
+                element = await page.find('dot-textarea');
+                textarea = await page.find('textarea');
+            });
+
+            it('should be valid, untouched & pristine on load', async () => {
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
+            });
+
+            it('should be invalid, untouched & pristine on load', async () => {
+                element.setProperty('value', '');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
+            });
+            it('should be valid, touched & dirty when filled', async () => {
+                await textarea.press('a');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.filled);
+            });
+        });
+
+        describe('without data', () => {
+            it('should be pristine, untouched & valid', async () => {
+                await page.setContent(`<dot-textarea></dot-textarea>`);
+                element = await page.find('dot-textarea');
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
+            });
+        });
+    });
 
     beforeEach(async () => {
         page = await newE2EPage({
@@ -108,7 +147,7 @@ describe('dot-textarea', () => {
             });
         });
 
-        it('should mark as touched when onblur', async() => {
+        it('should mark as touched when onblur', async () => {
             await input.press('a');
             await input.triggerEvent('blur');
             await page.waitForChanges();
@@ -152,7 +191,10 @@ describe('dot-textarea', () => {
         it('should emit change value', async () => {
             await input.press('a');
             await page.waitForChanges();
-            expect(spyValueChange).toHaveReceivedEventDetail({ name: 'Address', value: 'Addressa' });
+            expect(spyValueChange).toHaveReceivedEventDetail({
+                name: 'Address',
+                value: 'Addressa'
+            });
         });
     });
 
