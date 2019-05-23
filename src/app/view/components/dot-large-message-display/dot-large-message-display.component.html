@@ -8,7 +8,6 @@
         [width]="message.width || '500px'"
         [height]="message.height || '400px'"
         (hide)="close(message)"
-        (show)="createContent($event, message)"
     >
             <div class="dialog-message__body" *ngIf="message.body"></div>
 

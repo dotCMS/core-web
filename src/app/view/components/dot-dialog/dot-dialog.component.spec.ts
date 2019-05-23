@@ -29,8 +29,7 @@ const dispatchKeydownEvent = (key: string) => {
             [contentStyle]="{'padding': '0'}"
             [header]="header"
             [(visible)]="show"
-            [closeable]="closeable"
-            [hideButtons]="hideButtons">
+            [closeable]="closeable">
             <b>Dialog content</b>
         </dot-dialog>
     `
@@ -40,7 +39,6 @@ class TestHostComponent {
     show = false;
     closeable = false;
     actions: DotDialogActions;
-    hideButtons =  false;
 }
 
 @Component({
@@ -58,7 +56,7 @@ class TestHost2Component {
     beforeClose(): void {}
 }
 
-describe('DotDialogComponent', () => {
+fdescribe('DotDialogComponent', () => {
     describe('regular close', () => {
         let component: DotDialogComponent;
         let de: DebugElement;
@@ -126,18 +124,9 @@ describe('DotDialogComponent', () => {
                 };
                 hostComponent.show = true;
 
+                hostFixture.detectChanges();
                 de = hostDe.query(By.css('dot-dialog'));
                 component = de.componentInstance;
-
-                spyOn(component.visibleChange, 'emit').and.callThrough();
-                spyOn(component.show, 'emit').and.callThrough();
-
-                hostFixture.detectChanges();
-            });
-
-            it('should emit show events', () => {
-                expect(component.show.emit).toHaveBeenCalledWith(component);
-                expect(component.visibleChange.emit).toHaveBeenCalledWith(true);
             });
 
             it('should show dialog', () => {
@@ -213,9 +202,6 @@ describe('DotDialogComponent', () => {
                         });
 
                         hostFixture.detectChanges();
-                        expect(component.visibleChange.emit).toHaveBeenCalledWith(true);
-                        expect(component.visibleChange.emit).toHaveBeenCalledWith(false);
-
                         expect(component.visible).toBe(false);
                         expect(component.hide.emit).toHaveBeenCalledTimes(1);
                     });
@@ -336,14 +322,6 @@ describe('DotDialogComponent', () => {
                     });
                 });
             });
-
-            it('should not show buttons when hideButtons is true', () => {
-                hostComponent.hideButtons = true;
-                hostFixture.detectChanges();
-
-                expect(hostDe.query(By.css('.dialog__button-cancel')).styles.display).toBe('none');
-                expect(hostDe.query(By.css('.dialog__button-accept')).styles.display).toBe('none');
-            });
         });
     });
 
@@ -387,7 +365,6 @@ describe('DotDialogComponent', () => {
 
                 hostFixture.detectChanges();
                 expect(component.beforeClose.emit).toHaveBeenCalledTimes(1);
-                expect(component.visibleChange.emit).not.toHaveBeenCalled();
                 expect(component.visible).toBe(true);
             });
         });
