@@ -61,9 +61,9 @@ export class DotDialogComponent implements OnChanges {
         close: () => void;
     }> = new EventEmitter();
 
-
     @Output()
     visibleChange: EventEmitter<any> = new EventEmitter();
+
     isContentScrolled: boolean;
 
     private subscription: Subscription[] = [];
@@ -72,7 +72,6 @@ export class DotDialogComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.visible && changes.visible.currentValue) {
-
             this.bindEvents();
         }
     }

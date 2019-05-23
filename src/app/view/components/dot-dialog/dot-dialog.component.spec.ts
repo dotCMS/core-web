@@ -29,7 +29,8 @@ const dispatchKeydownEvent = (key: string) => {
             [contentStyle]="{'padding': '0'}"
             [header]="header"
             [(visible)]="show"
-            [closeable]="closeable">
+            [closeable]="closeable"
+            [hideButtons]="hideButtons">
             <b>Dialog content</b>
         </dot-dialog>
     `
@@ -39,6 +40,7 @@ class TestHostComponent {
     show = false;
     closeable = false;
     actions: DotDialogActions;
+    hideButtons =  false;
 }
 
 @Component({
@@ -56,7 +58,7 @@ class TestHost2Component {
     beforeClose(): void {}
 }
 
-fdescribe('DotDialogComponent', () => {
+describe('DotDialogComponent', () => {
     describe('regular close', () => {
         let component: DotDialogComponent;
         let de: DebugElement;
@@ -189,6 +191,7 @@ fdescribe('DotDialogComponent', () => {
             describe('events', () => {
                 beforeEach(() => {
                     spyOn(component.hide, 'emit').and.callThrough();
+                    spyOn(component.visibleChange, 'emit').and.callThrough();
                 });
 
                 it('should close dialog and emit close', () => {
@@ -202,6 +205,7 @@ fdescribe('DotDialogComponent', () => {
                         });
 
                         hostFixture.detectChanges();
+                        expect(component.visibleChange.emit).toHaveBeenCalledTimes(1);
                         expect(component.visible).toBe(false);
                         expect(component.hide.emit).toHaveBeenCalledTimes(1);
                     });
@@ -322,6 +326,14 @@ fdescribe('DotDialogComponent', () => {
                     });
                 });
             });
+
+            it('should not show buttons when hideButtons is true', () => {
+                hostComponent.hideButtons = true;
+                hostFixture.detectChanges();
+
+                expect(hostDe.query(By.css('.dialog__button-cancel')).styles.display).toBe('none');
+                expect(hostDe.query(By.css('.dialog__button-accept')).styles.display).toBe('none');
+            });
         });
     });
 
@@ -350,6 +362,7 @@ fdescribe('DotDialogComponent', () => {
             de = hostDe.query(By.css('dot-dialog'));
             component = de.componentInstance;
 
+            spyOn(component.visibleChange, 'emit').and.callThrough();
             spyOn(component.beforeClose, 'emit').and.callThrough();
         });
 
@@ -365,6 +378,7 @@ fdescribe('DotDialogComponent', () => {
 
                 hostFixture.detectChanges();
                 expect(component.beforeClose.emit).toHaveBeenCalledTimes(1);
+                expect(component.visibleChange.emit).not.toHaveBeenCalled();
                 expect(component.visible).toBe(true);
             });
         });
