@@ -26,8 +26,6 @@ import {
     checkProp
 } from '../../utils';
 
-const DEFAULT_VALUE = { key: '', value: '' };
-
 @Component({
     tag: 'dot-key-value',
     styleUrl: 'dot-key-value.scss'
@@ -50,6 +48,9 @@ export class DotKeyValueComponent {
     /** (optional) Label for the add button in the <key-value-form> */
     @Prop() formAddButtonLabel: string;
 
+    /** (optional) The string to use in the delete button of a key/value item */
+    @Prop() listDeleteLabel: string;
+
     /** (optional) Disables field's interaction */
     @Prop() disabled = false;
 
@@ -66,13 +67,10 @@ export class DotKeyValueComponent {
     @Prop() required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop() requiredMessage = '';
+    @Prop() requiredMessage = 'This field is required';
 
     /** Value of the field */
     @Prop({ mutable: true }) value = '';
-
-    /** (optional) The string to use in the delete button of a key/value item */
-    @Prop() buttonDeleteLabel: string;
 
     @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
 
@@ -81,8 +79,6 @@ export class DotKeyValueComponent {
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
-
-    @State() fieldInput: DotKeyValueField = { ...DEFAULT_VALUE };
 
     @Watch('value')
     valueWatch(): void {
@@ -95,27 +91,25 @@ export class DotKeyValueComponent {
      */
     @Method()
     reset(): void {
-        this.fieldInput = { key: '', value: '' };
         this.items = [];
         this.status = getOriginalStatus(this.isValid());
         this.emitChanges();
-        this.clearForm();
     }
 
-    @Listen('deleteItemEvt')
-    deleteItemHandler(event: CustomEvent) {
+    @Listen('delete')
+    deleteItemHandler(event: CustomEvent<number>) {
         event.stopImmediatePropagation();
 
-        this.items = this.items.filter((_item, internalIndex) => {
-            return internalIndex !== event.detail;
-        });
-        this.refreshStatus();
+        this.items = this.items.filter(
+            (_item: DotKeyValueField, index: number) => index !== event.detail
+        );
         this.emitChanges();
     }
 
     @Listen('add')
-    addItemHandler(event: CustomEvent<DotKeyValueField>): void {
-        this.items = [...this.items, event.detail];
+    addItemHandler({ detail }: CustomEvent<DotKeyValueField>): void {
+        this.items = [...this.items, detail];
+        this.emitChanges();
     }
 
     componentWillLoad(): void {
@@ -136,15 +130,20 @@ export class DotKeyValueComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <key-value-form
                         add-button-label={this.formAddButtonLabel}
-                        disabled={this.isDisabled()}
+                        disabled={this.disabled || null}
                         key-label={this.formKeyLabel}
                         key-placeholder={this.formKeyPlaceholder}
                         value-label={this.formValueLabel}
                         value-placeholder={this.formValuePlaceholder}
                     />
-                    {this.getKeyValueList()}
+                    <key-value-table
+                        onClick={(e: MouseEvent) => {e.preventDefault()}}
+                        button-label={this.listDeleteLabel}
+                        disabled={this.disabled || null}
+                        items={this.items}
+                    />
                 </dot-label>
-                {getTagHint(this.hint, this.name)}
+                {getTagHint(this.hint)}
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
@@ -152,20 +151,6 @@ export class DotKeyValueComponent {
 
     private validateProps(): void {
         this.valueWatch();
-    }
-
-    private isDisabled(): boolean {
-        return this.disabled || null;
-    }
-
-    private getKeyValueList(): JSX.Element {
-        return this.items.length ? (
-            <key-value-table
-                items={this.items}
-                disabled={this.disabled}
-                buttonDeleteLabel={this.buttonDeleteLabel}
-            />
-        ) : null;
     }
 
     private setItems(): void {
@@ -221,11 +206,8 @@ export class DotKeyValueComponent {
     }
 
     private emitChanges(): void {
+        this.refreshStatus();
         this.emitStatusChange();
         this.emitValueChange();
-    }
-
-    private clearForm(): void {
-        this.fieldInput = { ...DEFAULT_VALUE };
     }
 }

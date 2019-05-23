@@ -11,7 +11,7 @@ export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables all form interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
 
     /** (optional) Label for the add item button */
     @Prop() addButtonLabel = 'Add';

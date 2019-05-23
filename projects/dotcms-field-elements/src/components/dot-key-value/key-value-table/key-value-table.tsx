@@ -6,7 +6,7 @@ import { DotKeyValueField } from '../../../models';
 })
 export class KeyValueTableComponent {
     @Prop() items: DotKeyValueField[] = [];
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
     @Prop() buttonLabel = 'Delete';
     @Prop() emptyMessage = 'No values';
 

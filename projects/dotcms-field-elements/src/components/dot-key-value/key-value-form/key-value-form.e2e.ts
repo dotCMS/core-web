@@ -217,6 +217,7 @@ describe('key-value-form', () => {
     describe('@Behaviour', () => {
         it('should clear the form after submit', async () => {
             await submitValidForm();
+            await page.waitForChanges();
 
             const keyInput = await getKeyInput();
             const valueInput = await getValueInput();
