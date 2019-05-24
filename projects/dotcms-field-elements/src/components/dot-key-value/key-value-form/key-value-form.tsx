@@ -17,10 +17,10 @@ export class DotKeyValueComponent {
     @Prop() addButtonLabel = 'Add';
 
     /** (optional) Placeholder for the key input text */
-    @Prop() keyPlaceholder = null;
+    @Prop() keyPlaceholder = '';
 
     /** (optional) Placeholder for the value input text */
-    @Prop() valuePlaceholder = null;
+    @Prop() valuePlaceholder = '';
 
     /** (optional) The string to use in the key input label */
     @Prop() keyLabel = 'Key';

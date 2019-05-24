@@ -8,8 +8,8 @@ describe('dot-key-value', () => {
     let spyStatusChangeEvent: EventSpy;
     let spyValueChangeEvent: EventSpy;
 
-    const getForm = async () => await page.find('key-value-form');
-    const getList = async () => await page.find('key-value-table');
+    const getForm = () => page.find('key-value-form');
+    const getList = () => page.find('key-value-table');
 
     beforeEach(async () => {
         page = await newE2EPage();

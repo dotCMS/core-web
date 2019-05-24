@@ -5,9 +5,9 @@ describe('key-value-form', () => {
     let page: E2EPage;
     let element: E2EElement;
 
-    const getButton = async () => await page.find('button[type="submit"]');
-    const getKeyInput = async () => await page.find('input[name="key"]');
-    const getValueInput = async () => await page.find('input[name="value"]');
+    const getButton = () => page.find('button[type="submit"]');
+    const getKeyInput = () => page.find('input[name="key"]');
+    const getValueInput = () => page.find('input[name="value"]');
     const getLabel = async (name: string) => {
         const [key, value] = await page.findAll('label');
 
@@ -61,9 +61,9 @@ describe('key-value-form', () => {
                 const value = await getValueInput();
                 const button = await getButton();
 
-                expect(await key.getAttribute('disabled')).not.toBeNull();
-                expect(await value.getAttribute('disabled')).not.toBeNull();
-                expect(await button.getAttribute('disabled')).not.toBeNull();
+                expect(key.getAttribute('disabled')).not.toBeNull();
+                expect(value.getAttribute('disabled')).not.toBeNull();
+                expect(button.getAttribute('disabled')).not.toBeNull();
             });
 
             it('should not set disabled in fields but no in button', async () => {
@@ -74,9 +74,9 @@ describe('key-value-form', () => {
                 const value = await getValueInput();
                 const button = await getButton();
 
-                expect(await key.getAttribute('disabled')).toBeNull();
-                expect(await value.getAttribute('disabled')).toBeNull();
-                expect(await button.getAttribute('disabled')).not.toBeNull(); // also depends on form valid
+                expect(key.getAttribute('disabled')).toBeNull();
+                expect(value.getAttribute('disabled')).toBeNull();
+                expect(button.getAttribute('disabled')).not.toBeNull(); // also depends on form valid
             });
         });
 

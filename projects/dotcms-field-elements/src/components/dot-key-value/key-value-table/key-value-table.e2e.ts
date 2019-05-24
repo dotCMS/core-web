@@ -13,7 +13,7 @@ describe('key-value-table', () => {
         await page.waitForChanges();
     });
 
-    const getButton = async () => await page.find('.dot-key-value__delete-button');
+    const getButton = () => page.find('.dot-key-value__delete-button');
 
     describe('@Props', () => {
         describe('items', () => {
@@ -82,7 +82,7 @@ describe('key-value-table', () => {
                 await page.waitForChanges();
 
                 const button = await getButton();
-                expect(await button.getAttribute('disabled')).not.toBeNull();
+                expect(button.getAttribute('disabled')).not.toBeNull();
             });
 
             it('should not set disabled button', async () => {
@@ -90,7 +90,7 @@ describe('key-value-table', () => {
                 await page.waitForChanges();
 
                 const button = await getButton();
-                expect(await button.getAttribute('disabled')).toBeNull();
+                expect(button.getAttribute('disabled')).toBeNull();
             });
         });
 

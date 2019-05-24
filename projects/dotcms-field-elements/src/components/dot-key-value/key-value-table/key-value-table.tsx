@@ -5,12 +5,20 @@ import { DotKeyValueField } from '../../../models';
     tag: 'key-value-table'
 })
 export class KeyValueTableComponent {
+    /** (optional) Items to render in the list of key value */
     @Prop() items: DotKeyValueField[] = [];
+
+    /** (optional) Disables all form interaction */
     @Prop({ reflectToAttr: true }) disabled = false;
+
+    /** (optional) Label for the delete button in each item list */
     @Prop() buttonLabel = 'Delete';
+
+    /** (optional) Message to show when the list of items is empty */
     @Prop() emptyMessage = 'No values';
 
-    @Event() delete: EventEmitter;
+    /** Emit the index of the item deleted from the list */
+    @Event() delete: EventEmitter<number>;
 
     render() {
         return (
