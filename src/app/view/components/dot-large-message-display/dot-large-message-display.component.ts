@@ -13,7 +13,7 @@ import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component'
     styleUrls: ['./dot-large-message-display.component.scss']
 })
 export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChildren(DotDialogComponent) dialogs !: QueryList<DotDialogComponent>;
+    @ViewChildren(DotDialogComponent) dialogs: QueryList<DotDialogComponent>;
 
     messages: DotLargeMessageDisplayParams[] = [];
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -25,11 +25,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
     ) {}
 
     ngAfterViewInit() {
-        console.log('ngAfterViewInit');
-        this.dialogs.changes.subscribe((dialogs) => {
-            console.log('changes', this.recentlyDialogAdded, dialogs);
-            console.log('messages', this.messages.length);
-            console.log('dialogs', this.dialogs.length);
+        this.dialogs.changes.subscribe((dialogs: QueryList<DotDialogComponent>) => {
             if (this.recentlyDialogAdded) {
                 this.createContent(dialogs.last, this.messages[this.messages.length - 1]);
                 this.recentlyDialogAdded = false;
@@ -42,7 +38,6 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
             .sub()
             .pipe(takeUntil(this.destroy$))
             .subscribe((content: DotLargeMessageDisplayParams) => {
-                console.log('dotLargeMessageDisplayService');
                 if (content) {
                     this.recentlyDialogAdded = true;
                     this.messages.push(content);
@@ -51,7 +46,6 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
     }
 
     ngOnDestroy(): void {
-        console.log('ngOnDestroy');
         this.dialogs.destroy();
         this.destroy$.next(true);
         this.destroy$.complete();
