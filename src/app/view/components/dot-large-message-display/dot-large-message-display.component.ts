@@ -4,7 +4,7 @@ import {
 } from './services/dot-large-message-display.service';
 import { Component, OnInit,  Renderer2, OnDestroy, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
@@ -26,12 +26,13 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
 
     ngAfterViewInit() {
         this.dialogs.changes
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                filter(() => this.recentlyDialogAdded)
+            )
             .subscribe((dialogs: QueryList<DotDialogComponent>) => {
-                if (this.recentlyDialogAdded) {
-                    this.createContent(dialogs.last, this.messages[this.messages.length - 1]);
-                    this.recentlyDialogAdded = false;
-                }
+                this.createContent(dialogs.last, this.messages[this.messages.length - 1]);
+                this.recentlyDialogAdded = false;
             });
     }
 
