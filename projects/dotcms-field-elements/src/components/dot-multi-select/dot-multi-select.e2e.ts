@@ -218,7 +218,7 @@ describe('dot-multi-select', () => {
                 element.setProperty('required', wrongValue);
                 await page.waitForChanges();
                 const errorElement = await dotTestUtil.getErrorMessage(page);
-                expect(errorElement).toBeDefined();
+                expect(errorElement.innerText).toBe('This field is required');
             });
         });
 
@@ -269,7 +269,14 @@ describe('dot-multi-select', () => {
                 expect(await optionElements[2].getProperty('selected')).toBe(false);
             });
 
-            it('should not break with invalid data', async () => {
+            it('should not break with wrong data format', async () => {
+                element.setProperty('options', 'a1,2,c|3');
+                await page.waitForChanges();
+                const optionElements = await getOptions(page);
+                expect(optionElements.length).toBe(0);
+            });
+
+            it('should not break with wrong data type', async () => {
                 const wrongValue = [{ a: 1 }];
                 element.setProperty('options', 'a|1,b|2,c|3');
                 element.setProperty('value', wrongValue);
@@ -329,8 +336,26 @@ describe('dot-multi-select', () => {
                     value: '1,2'
                 });
             });
+        });
+    });
 
-            it('should emit on Reset', async () => {
+    describe('@Methods', () => {
+        beforeEach(async () => {
+            page = await newE2EPage();
+            await page.setContent(`
+            <dot-multi-select
+                name="testName"
+                options="|,valueA|1,valueB|2"
+                value="2">
+            </dot-multi-select>`);
+            spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+            spyValueChangeEvent = await page.spyOnEvent('valueChange');
+
+            element = await page.find('dot-multi-select');
+        });
+
+        describe('Reset', () => {
+            it('should emit StatusChange & ValueChange Events', async () => {
                 await element.callMethod('reset');
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'testName',
@@ -344,6 +369,14 @@ describe('dot-multi-select', () => {
                     name: 'testName',
                     value: ''
                 });
+            });
+
+            it('should set first select value', async () => {
+                await element.callMethod('reset');
+                const optionElements = await getOptions(page);
+                expect(await optionElements[0].getProperty('selected')).toBe(true);
+                expect(await optionElements[1].getProperty('selected')).toBe(false);
+                expect(await optionElements[2].getProperty('selected')).toBe(false);
             });
         });
     });
