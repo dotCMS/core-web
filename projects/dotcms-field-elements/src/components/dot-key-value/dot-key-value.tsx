@@ -138,9 +138,6 @@ export class DotKeyValueComponent {
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <key-value-form
-                        onInput={() => {
-                            console.log('input');
-                        }}
                         add-button-label={this.formAddButtonLabel}
                         disabled={this.disabled || null}
                         key-label={this.formKeyLabel}
