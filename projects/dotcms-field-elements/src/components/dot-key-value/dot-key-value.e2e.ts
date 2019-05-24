@@ -29,16 +29,11 @@ describe('dot-key-value', () => {
             expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
         });
 
-        it('should have empty required touched', async () => {
+        it('should have empty required touched when all items is removed', async () => {
+            element.setProperty('value', 'key|value,llave|valor');
             element.setProperty('required', true);
-            const form = await getForm();
-            form.triggerEvent('add', {
-                detail: {
-                    key: 'some',
-                    value: 'test'
-                }
-            });
             const list = await getList();
+            list.triggerEvent('delete', { detail: 0 });
             list.triggerEvent('delete', { detail: 0 });
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
@@ -77,6 +72,28 @@ describe('dot-key-value', () => {
 
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
+        });
+
+        it('should have filled required touched when item is added', async () => {
+            element.setProperty('required', true);
+            const form = await getForm();
+            form.triggerEvent('add', {
+                detail: {
+                    key: 'some',
+                    value: 'test'
+                }
+            });
+            await page.waitForChanges();
+            expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
+        });
+
+        it('should have filled required touched when one item is removed', async () => {
+            element.setProperty('value', 'key|value,llave|valor');
+            element.setProperty('required', true);
+            const list = await getList();
+            list.triggerEvent('delete', { detail: 0 });
+            await page.waitForChanges();
+            expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
         });
     });
 

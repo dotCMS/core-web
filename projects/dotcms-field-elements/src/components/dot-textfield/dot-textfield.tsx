@@ -26,11 +26,11 @@ export class DotTextfieldComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({reflectToAttr: true}) name = '';
+    @Prop() name = '';
 
     /** (optional) Text to be rendered next to input field */
     @Prop({ reflectToAttr: true })
