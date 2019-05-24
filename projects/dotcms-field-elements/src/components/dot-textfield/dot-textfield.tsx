@@ -53,7 +53,7 @@ export class DotTextfieldComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = '';
+    @Prop() validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
@@ -64,7 +64,7 @@ export class DotTextfieldComponent {
     regexCheck = '';
 
     /** type specifies the type of <input> element to display */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     type = 'text';
 
     @State() status: DotFieldStatus;
@@ -92,6 +92,11 @@ export class DotTextfieldComponent {
     @Watch('regexCheck')
     regexCheckWatch(): void {
         this.regexCheck = checkProp<DotTextfieldComponent, string>(this, 'regexCheck');
+    }
+
+    @Watch('type')
+    typeWatch(): void {
+        this.type = checkProp<DotTextfieldComponent, string>(this, 'type');
     }
 
     hostData() {
@@ -124,6 +129,7 @@ export class DotTextfieldComponent {
 
     private validateProps(): void {
         this.regexCheckWatch();
+        this.typeWatch();
     }
 
     private isValid(): boolean {

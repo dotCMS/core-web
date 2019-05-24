@@ -16,7 +16,7 @@ describe('dot-textfield', () => {
 
         describe('with data', () => {
             beforeEach(async () => {
-                await page.setContent(`<dot-textfield value='John' required></dot-textfield>`);
+                await page.setContent(`<dot-textfield value='John'></dot-textfield>`);
                 element = await page.find('dot-textfield');
                 input = await page.find('input');
             });
@@ -26,23 +26,42 @@ describe('dot-textfield', () => {
                 expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
 
-            it('should be invalid, touched & dirty when valued is cleared and is required', async () => {
-                element.setProperty('value', 'a');
-                await page.waitForChanges();
-                await input.press('Backspace');
-                await page.waitForChanges();
-                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
-            });
-
-            it('should be invalid, untouched & pristine when empty on load  but required', async () => {
-                element.setProperty('value', '');
-                await page.waitForChanges();
-                expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
-            });
             it('should be valid, touched & dirty when filled', async () => {
                 await input.press('a');
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.filled);
+            });
+
+            describe('required', () => {
+                beforeEach(async () => {
+                    element.setProperty('required', 'true');
+                });
+
+                it('should be valid, untouched & pristine and required when filled on load', async () => {
+                    element.setProperty('value', 'ab');
+                    await page.waitForChanges();
+                    expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
+                });
+
+                it('should be valid, touched & dirty and required when filled', async () => {
+                    await input.press('a');
+                    await page.waitForChanges();
+                    expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
+                });
+
+                it('should be invalid, untouched, pristine and required when empty on load', async () => {
+                    element.setProperty('value', '');
+                    await page.waitForChanges();
+                    expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
+                });
+
+                it('should be invalid, touched, dirty and required when valued is cleared', async () => {
+                    element.setProperty('value', 'a');
+                    await page.waitForChanges();
+                    await input.press('Backspace');
+                    await page.waitForChanges();
+                    expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
+                });
             });
         });
 
@@ -67,9 +86,9 @@ describe('dot-textfield', () => {
 
         describe('value', () => {
             it('should set value correctly', async () => {
-                await input.press('a');
+                element.setProperty('value', 'hi');
                 await page.waitForChanges();
-                expect(await input.getProperty('value')).toBe('a');
+                expect(await input.getProperty('value')).toBe('hi');
             });
             it('should render and not break when is a unexpected value', async () => {
                 element.setProperty('value', { test: true });
@@ -79,11 +98,16 @@ describe('dot-textfield', () => {
         });
 
         describe('name', () => {
-            it('should render with valid name', async () => {
+            it('should render with valid id name', async () => {
                 element.setProperty('name', 'text01');
                 await page.waitForChanges();
-
                 expect(input.getAttribute('id')).toBe('dot-text01');
+            });
+
+            it('should render when is a unexpected value', async () => {
+                element.setProperty('name', { input: 'text01' });
+                await page.waitForChanges();
+                expect(input.getAttribute('id')).toBe('dot-object-object');
             });
 
             it('should set name prop in dot-label', async () => {
@@ -98,12 +122,6 @@ describe('dot-textfield', () => {
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
                 expect(label.getAttribute('name')).toBe('[object Object]');
-            });
-
-            it('should render when is a unexpected value', async () => {
-                element.setProperty('name', { input: 'text01' });
-                await page.waitForChanges();
-                expect(input.getAttribute('id')).toBe('dot-object-object');
             });
         });
 
@@ -154,11 +172,10 @@ describe('dot-textfield', () => {
         });
 
         describe('required', () => {
-            it('should render required attribute and dot-required class', async () => {
-                element.setProperty('required', 'true');
+            it('should render required attribute with invalid value', async () => {
+                element.setProperty('required', { test: 'test' });
                 await page.waitForChanges();
                 expect(input.getAttribute('required')).toBeDefined();
-                expect(element).toHaveClasses(['dot-required']);
             });
 
             it('should not render required attribute', async () => {
@@ -167,10 +184,11 @@ describe('dot-textfield', () => {
                 expect(input.getAttribute('required')).toBeNull();
             });
 
-            it('should render required attribute with invalid value', async () => {
-                element.setProperty('required', { test: 'test' });
+            it('should render required attribute for the do-tlabel', async () => {
+                element.setProperty('required', 'true');
                 await page.waitForChanges();
-                expect(input.getAttribute('required')).toBeDefined();
+                const label = await dotTestUtil.getDotLabel(page);
+                expect(label.getAttribute('label')).toBeDefined();
             });
         });
 
@@ -224,6 +242,15 @@ describe('dot-textfield', () => {
         });
 
         describe('validationMessage', () => {
+            it('should show default value of validationMessage', async () => {
+                element.setProperty('regexCheck', '[0-9]');
+                await input.press('a');
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
+                    'The field doesn\'t comply with the specified format'
+                );
+            });
+
             it('should render validationMessage', async () => {
                 element.setProperty('regexCheck', '[0-9]');
                 element.setProperty('validationMessage', 'Test');
@@ -232,7 +259,7 @@ describe('dot-textfield', () => {
                 expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('Test');
             });
 
-            it('should not render validationMessage', async () => {
+            it('should not render validationMessage whe value is valid', async () => {
                 await input.press('a');
                 await page.waitForChanges();
                 expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
@@ -271,10 +298,10 @@ describe('dot-textfield', () => {
                 expect(input.getAttribute('type')).toBe('email');
             });
 
-            it('should render and not break when is a unexpected value', async () => {
+            it('should render and not break when is a unexpected value and set default(text)', async () => {
                 element.setProperty('type', { test: true });
                 await page.waitForChanges();
-                expect(input.getAttribute('type')).toBe('[object Object]');
+                expect(input.getAttribute('type')).toBe('text');
             });
         });
 
