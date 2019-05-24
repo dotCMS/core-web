@@ -90,14 +90,14 @@ describe('dot-textfield', () => {
                 element.setProperty('name', 'text01');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getAttribute('name')).toBe('text01');
+                expect(label.getAttribute('name')).toBe('text01');
             });
 
             it('should set name prop in dot-label with invalid value', async () => {
                 element.setProperty('name', { test: 'hi' });
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getAttribute('name')).toBe('[object Object]');
+                expect(label.getAttribute('name')).toBe('[object Object]');
             });
 
             it('should render when is a unexpected value', async () => {
@@ -112,13 +112,13 @@ describe('dot-textfield', () => {
                 element.setProperty('label', 'Name:');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getAttribute('label')).toBe('Name:');
+                expect(label.getAttribute('label')).toBe('Name:');
             });
             it('should set label prop in dot-label when is a unexpected value', async () => {
                 element.setProperty('label', [1, 2, 'test']);
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(await label.getAttribute('label')).toEqual('1,2,test');
+                expect(label.getAttribute('label')).toEqual('1,2,test');
             });
         });
 
@@ -146,10 +146,10 @@ describe('dot-textfield', () => {
                 expect(await dotTestUtil.getHint(page)).toBeNull();
             });
 
-            it('should not render  hint with invalid value', async () => {
+            it('should not break hint with invalid value', async () => {
                 element.setProperty('hint', { test: 'hint' });
                 await page.waitForChanges();
-                expect(await dotTestUtil.getHint(page)).toBeNull();
+                expect((await dotTestUtil.getHint(page)).innerText).toBe('[object Object]');
             });
         });
 
@@ -175,7 +175,17 @@ describe('dot-textfield', () => {
         });
 
         describe('requiredMessage', () => {
-            it('should render requiredMessage', async () => {
+            it('should show default value of requiredMessage', async () => {
+                element.setProperty('required', 'true');
+                await input.press('a');
+                await input.press('Backspace');
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
+                    'This field is required'
+                );
+            });
+
+            it('should show requiredMessage', async () => {
                 element.setProperty('required', 'true');
                 element.setProperty('requiredMessage', 'Test');
                 await input.press('a');
@@ -200,11 +210,16 @@ describe('dot-textfield', () => {
         });
 
         describe('regexCheck', () => {
+            it('should set correct value when valid regexCheck', async () => {
+                element.setAttribute('regex-check', '[0-9]*');
+                await page.waitForChanges();
+                expect(await element.getProperty('regexCheck')).toBe('[0-9]*');
+            });
+
             it('should set empty value when invalid regexCheck', async () => {
-                element.setProperty('regexCheck', '[*');
+                element.setAttribute('regex-check', '[*');
                 await page.waitForChanges();
                 expect(await element.getProperty('regexCheck')).toBe('');
-                expect(await dotTestUtil.getErrorMessage(page)).toBeNull();
             });
         });
 

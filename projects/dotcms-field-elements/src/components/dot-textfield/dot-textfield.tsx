@@ -50,7 +50,7 @@ export class DotTextfieldComponent {
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop() requiredMessage = '';
+    @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
     @Prop() validationMessage = '';
@@ -64,7 +64,8 @@ export class DotTextfieldComponent {
     regexCheck = '';
 
     /** type specifies the type of <input> element to display */
-    @Prop() type = 'text';
+    @Prop({ reflectToAttr: true })
+    type = 'text';
 
     @State() status: DotFieldStatus;
 
