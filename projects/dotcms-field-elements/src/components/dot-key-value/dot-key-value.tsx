@@ -14,17 +14,26 @@ import {
     DotFieldStatus,
     DotFieldValueEvent,
     DotFieldStatusEvent,
-    DotKeyValueField
+    DotKeyValueField,
+    DotOption
 } from '../../models';
 import {
+    checkProp,
     getClassNames,
+    getDotOptionsFromFieldValue,
     getOriginalStatus,
     getStringFromDotKeyArray,
     getTagError,
     getTagHint,
-    updateStatus,
-    checkProp
+    updateStatus
 } from '../../utils';
+
+const mapToKeyValue = ({ label, value }: DotOption) => {
+    return {
+        key: label,
+        value
+    };
+};
 
 @Component({
     tag: 'dot-key-value',
@@ -83,7 +92,7 @@ export class DotKeyValueComponent {
     @Watch('value')
     valueWatch(): void {
         this.value = checkProp<DotKeyValueComponent, string>(this, 'value', 'string');
-        this.setItems();
+        this.items = getDotOptionsFromFieldValue(this.value).map(mapToKeyValue);
     }
 
     /**
@@ -129,7 +138,9 @@ export class DotKeyValueComponent {
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <key-value-form
-                        onInput={() => {console.log('input')}}
+                        onInput={() => {
+                            console.log('input');
+                        }}
                         add-button-label={this.formAddButtonLabel}
                         disabled={this.disabled || null}
                         key-label={this.formKeyLabel}
@@ -138,7 +149,9 @@ export class DotKeyValueComponent {
                         value-placeholder={this.formValuePlaceholder}
                     />
                     <key-value-table
-                        onClick={(e: MouseEvent) => {e.preventDefault()}}
+                        onClick={(e: MouseEvent) => {
+                            e.preventDefault();
+                        }}
                         button-label={this.listDeleteLabel}
                         disabled={this.disabled || null}
                         items={this.items}
@@ -152,18 +165,6 @@ export class DotKeyValueComponent {
 
     private validateProps(): void {
         this.valueWatch();
-    }
-
-    private setItems(): void {
-        this.items = this.value
-            ? this.value
-                  .split(',')
-                  .filter((item) => item.length > 0)
-                  .map((item) => {
-                      const [key, value] = item.split('|');
-                      return { key, value };
-                  })
-            : [];
     }
 
     private setOriginalStatus(): void {

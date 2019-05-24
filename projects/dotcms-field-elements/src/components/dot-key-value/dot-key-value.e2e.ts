@@ -322,7 +322,7 @@ describe('dot-key-value', () => {
                 ]);
             });
 
-            xit('should handle invalid format', async () => {
+            it('should handle invalid format', async () => {
                 element.setProperty('value', 'hello/world*hola,mundo');
                 await page.waitForChanges();
                 const list = await getList();
