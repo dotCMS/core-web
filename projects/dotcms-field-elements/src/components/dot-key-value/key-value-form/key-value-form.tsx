@@ -14,19 +14,34 @@ export class DotKeyValueComponent {
     @Prop({ reflectToAttr: true }) disabled = false;
 
     /** (optional) Label for the add item button */
-    @Prop() addButtonLabel = 'Add';
+    @Prop({
+        reflectToAttr: true
+    })
+    addButtonLabel = 'Add';
 
     /** (optional) Placeholder for the key input text */
-    @Prop() keyPlaceholder = '';
+    @Prop({
+        reflectToAttr: true
+    })
+    keyPlaceholder = '';
 
     /** (optional) Placeholder for the value input text */
-    @Prop() valuePlaceholder = '';
+    @Prop({
+        reflectToAttr: true
+    })
+    valuePlaceholder = '';
 
     /** (optional) The string to use in the key input label */
-    @Prop() keyLabel = 'Key';
+    @Prop({
+        reflectToAttr: true
+    })
+    keyLabel = 'Key';
 
     /** (optional) The string to use in the value input label */
-    @Prop() valueLabel = 'Value';
+    @Prop({
+        reflectToAttr: true
+    })
+    valueLabel = 'Value';
 
     /** Emit the added value, key/value pair */
     @Event() add: EventEmitter<DotKeyValueField>;

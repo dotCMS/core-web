@@ -119,11 +119,12 @@ describe('dot-key-value', () => {
             it('should pass down empty props', async () => {
                 await page.waitForChanges();
                 const form = await getForm();
-                expect(form.getAttribute('add-button-label')).toBeNull();
-                expect(form.getAttribute('key-placeholder')).toBeNull();
-                expect(form.getAttribute('value-placeholder')).toBeNull();
-                expect(form.getAttribute('key-label')).toBeNull();
-                expect(form.getAttribute('value-label')).toBeNull();
+                // internal default
+                expect(form.getAttribute('add-button-label')).toBe('Add');
+                expect(form.getAttribute('key-placeholder')).toBe('');
+                expect(form.getAttribute('value-placeholder')).toBe('');
+                expect(form.getAttribute('key-label')).toBe('Key');
+                expect(form.getAttribute('value-label')).toBe('Value');
             });
         });
 
@@ -141,7 +142,7 @@ describe('dot-key-value', () => {
                     await page.waitForChanges();
 
                     const list = await getList();
-                    expect(list.getAttribute('button-label')).toBeNull();
+                    expect(list.getAttribute('button-label')).toBe('Delete'); // internal default
                 });
             });
         });
@@ -187,7 +188,7 @@ describe('dot-key-value', () => {
                 await page.waitForChanges();
 
                 const hint = await dotTestUtil.getHint(page);
-                expect(hint).toBeNull();
+                expect(hint.innerText).toBe('[object Object]');
             });
         });
 

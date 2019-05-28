@@ -12,10 +12,16 @@ export class KeyValueTableComponent {
     @Prop({ reflectToAttr: true }) disabled = false;
 
     /** (optional) Label for the delete button in each item list */
-    @Prop() buttonLabel = 'Delete';
+    @Prop({
+        reflectToAttr: true
+    })
+    buttonLabel = 'Delete';
 
     /** (optional) Message to show when the list of items is empty */
-    @Prop() emptyMessage = 'No values';
+    @Prop({
+        reflectToAttr: true
+    })
+    emptyMessage = 'No values';
 
     /** Emit the index of the item deleted from the list */
     @Event() delete: EventEmitter<number>;

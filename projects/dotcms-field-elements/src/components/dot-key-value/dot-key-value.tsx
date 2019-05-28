@@ -43,45 +43,84 @@ export class DotKeyValueComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Placeholder for the key input text in the <key-value-form> */
-    @Prop() formKeyPlaceholder: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    formKeyPlaceholder: string;
 
     /** (optional) Placeholder for the value input text in the <key-value-form> */
-    @Prop() formValuePlaceholder: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    formValuePlaceholder: string;
 
     /** (optional) The string to use in the key label in the <key-value-form> */
-    @Prop() formKeyLabel: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    formKeyLabel: string;
 
     /** (optional) The string to use in the value label in the <key-value-form> */
-    @Prop() formValueLabel: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    formValueLabel: string;
 
     /** (optional) Label for the add button in the <key-value-form> */
-    @Prop() formAddButtonLabel: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    formAddButtonLabel: string;
 
     /** (optional) The string to use in the delete button of a key/value item */
-    @Prop() listDeleteLabel: string;
+    @Prop({
+        reflectToAttr: true
+    })
+    listDeleteLabel: string;
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({
+        reflectToAttr: true
+    })
+    disabled = false;
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint = '';
+    @Prop({
+        reflectToAttr: true
+    })
+    hint = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label = '';
+    @Prop({
+        reflectToAttr: true
+    })
+    label = '';
 
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({
+        reflectToAttr: true
+    })
+    name = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required = false;
+    @Prop({
+        reflectToAttr: true
+    })
+    required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop() requiredMessage = 'This field is required';
+    @Prop({
+        reflectToAttr: true
+    })
+    requiredMessage = 'This field is required';
 
     /** Value of the field */
     @Prop({ mutable: true }) value = '';
 
-    @Prop() fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
+    @Prop({
+        reflectToAttr: true
+    })
+    fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueField[] = [];
