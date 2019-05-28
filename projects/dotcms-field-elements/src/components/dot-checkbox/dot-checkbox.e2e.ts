@@ -29,7 +29,32 @@ describe('dot-checkbox', () => {
                 expect(element).toHaveClasses(dotTestUtil.class.filled);
             });
 
-            it('should be invalid, touched & dirty when no option set', async () => {
+            it('should be valid, touched, dirty & required when picked an option', async () => {
+                await page.setContent(`
+                    <dot-checkbox
+                        options="|,valueA|1,valueB|2"
+                        required
+                        value="2">
+                    </dot-checkbox>`);
+                const options = await getOptions(page);
+                await options[0].click();
+                await page.waitForChanges();
+                element = await page.find('dot-checkbox');
+                expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
+            });
+
+            it('should be valid, untouched, pristine & required when loaded', async () => {
+                await page.setContent(`
+                    <dot-checkbox
+                        options="|,valueA|1,valueB|2"
+                        required
+                        value="2">
+                    </dot-checkbox>`);
+                element = await page.find('dot-checkbox');
+                expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
+            });
+
+            it('should be required, invalid, touched & dirty when no option set', async () => {
                 await page.setContent(`
                     <dot-checkbox
                         options="|,valueA|1,valueB|2"
@@ -40,7 +65,18 @@ describe('dot-checkbox', () => {
                 const options = await getOptions(page);
                 await options[2].click();
                 await page.waitForChanges();
-                expect(element).toHaveClasses([...dotTestUtil.class.emptyRequired, 'dot-required']);
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
+            });
+
+            it('should be invalid, untouched, pristine & required when no option set on load', async () => {
+                await page.setContent(`
+                    <dot-checkbox
+                        options="|,valueA|1,valueB|2"
+                        required="true">
+                    </dot-checkbox>`);
+                element = await page.find('dot-checkbox');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
             });
 
             it('should be pristine, untouched & valid when loaded with no options', async () => {
@@ -335,8 +371,7 @@ describe('dot-checkbox', () => {
             await page.setContent(`
             <dot-checkbox
                 name="testName"
-                options="|,valueA|1,valueB|2"
-                value="2">
+                options="value|0,valueA|1,valueB|2">
             </dot-checkbox>`);
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
@@ -361,10 +396,11 @@ describe('dot-checkbox', () => {
                 });
             });
 
-            it('should set first select value', async () => {
+            it('should select no value', async () => {
                 await element.callMethod('reset');
+                await page.waitForChanges();
                 const optionElements = await getOptions(page);
-                expect(await optionElements[0].getProperty('checked')).toBe(true);
+                expect(await optionElements[0].getProperty('checked')).toBe(false);
                 expect(await optionElements[1].getProperty('checked')).toBe(false);
                 expect(await optionElements[2].getProperty('checked')).toBe(false);
             });
