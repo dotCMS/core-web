@@ -116,13 +116,6 @@ describe('dot-textfield', () => {
                 const label = await dotTestUtil.getDotLabel(page);
                 expect(label.getAttribute('name')).toBe('text01');
             });
-
-            it('should set name prop in dot-label with invalid value', async () => {
-                element.setProperty('name', { test: 'hi' });
-                await page.waitForChanges();
-                const label = await dotTestUtil.getDotLabel(page);
-                expect(label.getAttribute('name')).toBe('[object Object]');
-            });
         });
 
         describe('label', () => {
@@ -132,12 +125,6 @@ describe('dot-textfield', () => {
                 const label = await dotTestUtil.getDotLabel(page);
                 expect(label.getAttribute('label')).toBe('Name:');
             });
-            it('should set label prop in dot-label when is a unexpected value', async () => {
-                element.setProperty('label', [1, 2, 'test']);
-                await page.waitForChanges();
-                const label = await dotTestUtil.getDotLabel(page);
-                expect(label.getAttribute('label')).toEqual('1,2,test');
-            });
         });
 
         describe('placeholder', () => {
@@ -145,11 +132,6 @@ describe('dot-textfield', () => {
                 element.setProperty('placeholder', 'Test');
                 await page.waitForChanges();
                 expect(input.getAttribute('placeholder')).toBe('Test');
-            });
-            it('should set placeholder correctly with invalid value', async () => {
-                element.setProperty('placeholder', { test: 'hi' });
-                await page.waitForChanges();
-                expect(input.getAttribute('placeholder')).toBe('[object Object]');
             });
         });
 
