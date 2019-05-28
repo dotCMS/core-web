@@ -116,40 +116,33 @@ describe('dot-key-value', () => {
                 expect(form.getAttribute('value-label')).toBe('Value Label');
             });
 
-            it('should handle invalid props', async () => {
-                element.setProperty('formAddButtonLabel', []);
-                element.setProperty('formKeyPlaceholder', {});
-                element.setProperty('formValuePlaceholder', 0);
-                element.setProperty('formKeyLabel', NaN);
-                element.setProperty('formValueLabel', true);
+            it('should pass down empty props', async () => {
                 await page.waitForChanges();
-
                 const form = await getForm();
                 expect(form.getAttribute('add-button-label')).toBeNull();
                 expect(form.getAttribute('key-placeholder')).toBeNull();
-                expect(form.getAttribute('value-placeholder')).toBe('0');
+                expect(form.getAttribute('value-placeholder')).toBeNull();
                 expect(form.getAttribute('key-label')).toBeNull();
-                expect(form.getAttribute('value-label')).toBe('true');
+                expect(form.getAttribute('value-label')).toBeNull();
             });
         });
 
         describe('key-value-table attr', () => {
-            it('should pass down valid props', async () => {
-                element.setProperty('value', 'key|value,key2|value2');
-                element.setAttribute('list-delete-label', 'Delete this item');
-                await page.waitForChanges();
+            describe('button-label', () => {
+                it('should pass down valid', async () => {
+                    element.setAttribute('list-delete-label', 'Delete this item');
+                    await page.waitForChanges();
 
-                const list = await getList();
-                expect(list.getAttribute('button-label')).toBe('Delete this item');
-            });
+                    const list = await getList();
+                    expect(list.getAttribute('button-label')).toBe('Delete this item');
+                });
 
-            it('should handle invalid props', async () => {
-                element.setProperty('value', 'key|value,key2|value2');
-                element.setAttribute('list-delete-label', []);
-                await page.waitForChanges();
+                it('should pass down empty', async () => {
+                    await page.waitForChanges();
 
-                const list = await getList();
-                expect(list.getAttribute('button-label')).toBe('');
+                    const list = await getList();
+                    expect(list.getAttribute('button-label')).toBeNull();
+                });
             });
         });
 
@@ -401,7 +394,7 @@ describe('dot-key-value', () => {
         });
 
         describe('reset', () => {
-            it('should clear the field and emit', async() => {
+            it('should clear the field and emit', async () => {
                 element.setAttribute('value', 'first key|first value,second key|second value');
                 await page.waitForChanges();
 
