@@ -46,10 +46,12 @@ export class DotTextareaComponent {
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = 'This field is required';
+    @Prop({ reflectToAttr: true })
+    requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop({ reflectToAttr: true }) validationMessage = "The field doesn't comply with the specified format";
+    @Prop({ reflectToAttr: true })
+    validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
