@@ -1,7 +1,26 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
+import {dotTestUtil} from '../../utils';
 
-describe('dot-time', () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*describe('dot-time', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
@@ -128,4 +147,4 @@ describe('dot-time', () => {
             expect(spyValueChange).toHaveReceivedEventDetail({ name: 'time01', value: '' });
         });
     });
-});
+});*/
