@@ -1,0 +1,13 @@
+.dot-date-time__body {
+    display: flex;
+
+    label {
+        align-items: center;
+        display: flex;
+        margin-right: 1rem;
+
+        input {
+            margin-left: 0.5rem;
+        }
+    }
+}
