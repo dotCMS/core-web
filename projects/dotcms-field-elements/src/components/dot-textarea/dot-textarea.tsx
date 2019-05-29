@@ -58,7 +58,7 @@ export class DotTextareaComponent {
     disabled = false;
 
     /** (optional) Regular expresion that is checked against the value to determine if is valid  */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     regexCheck = '';
 
     @State() status: DotFieldStatus = getOriginalStatus();
