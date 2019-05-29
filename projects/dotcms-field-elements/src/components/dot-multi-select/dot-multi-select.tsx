@@ -45,10 +45,10 @@ export class DotMultiSelectComponent {
     @Prop({ reflectToAttr: true }) required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop() requiredMessage = `This field is required`;
+    @Prop({ reflectToAttr: true }) requiredMessage = `This field is required`;
 
     /** (optional) Size number of the multi-select dropdown (default=3) */
-    @Prop({ reflectToAttr: true }) size = 3;
+    @Prop({ reflectToAttr: true }) size = '3';
 
     /** Value set from the dropdown option */
     @Prop({ mutable: true, reflectToAttr: true }) value = '';
@@ -118,7 +118,7 @@ export class DotMultiSelectComponent {
                         })}
                     </select>
                 </dot-label>
-                {getTagHint(this.hint, this.name)}
+                {getTagHint(this.hint)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );

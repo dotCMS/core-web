@@ -26,12 +26,11 @@ export class DotTextfieldComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true, reflectToAttr: true })
+    @Prop({ mutable: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
-    name = '';
+    @Prop() name = '';
 
     /** (optional) Text to be rendered next to input field */
     @Prop({ reflectToAttr: true })
@@ -50,10 +49,10 @@ export class DotTextfieldComponent {
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = 'This field is required';
+    @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop({ reflectToAttr: true }) validationMessage = "The field doesn't comply with the specified format";
+    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
@@ -121,7 +120,7 @@ export class DotTextfieldComponent {
                         value={this.value}
                     />
                 </dot-label>
-                {getTagHint(this.hint, this.name)}
+                {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );

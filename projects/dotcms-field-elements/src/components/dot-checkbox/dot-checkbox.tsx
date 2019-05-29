@@ -9,7 +9,8 @@ import {
     getErrorClass,
     getDotOptionsFromFieldValue,
     updateStatus,
-    checkProp
+    checkProp,
+    getId
 } from '../../utils';
 
 @Component({
@@ -20,28 +21,28 @@ export class DotCheckboxComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
 
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({ reflectToAttr: true }) name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label = '';
+    @Prop({ reflectToAttr: true }) label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint = '';
+    @Prop({ reflectToAttr: true }) hint = '';
 
     /** Value/Label checkbox options separated by comma, to be formatted as: Value|Label */
-    @Prop() options = '';
+    @Prop({ reflectToAttr: true }) options = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required = false;
+    @Prop({ reflectToAttr: true }) required = false;
 
     /** (optional) Text that will be shown when required is set and condition is not met */
-    @Prop() requiredMessage = '';
+    @Prop({ reflectToAttr: true }) requiredMessage = `This field is required`;
 
     /** Value set from the checkbox option */
-    @Prop({ mutable: true }) value = '';
+    @Prop({ mutable: true, reflectToAttr: true }) value = '';
 
     @State() _options: DotOption[];
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -91,6 +92,7 @@ export class DotCheckboxComponent {
                                 <label>
                                     <input
                                         class={getErrorClass(this.isValid())}
+                                        id={getId(this.name)}
                                         type="checkbox"
                                         disabled={this.disabled || null}
                                         checked={this.value.indexOf(trimmedValue) >= 0 || null}
@@ -103,7 +105,7 @@ export class DotCheckboxComponent {
                         })}
                     </div>
                 </dot-label>
-                {getTagHint(this.hint, this.name)}
+                {getTagHint(this.hint)}
                 {getTagError(!this.isValid(), this.requiredMessage)}
             </Fragment>
         );
