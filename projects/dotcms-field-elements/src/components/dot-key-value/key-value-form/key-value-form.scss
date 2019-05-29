@@ -9,4 +9,13 @@ key-value-form form {
     input {
         margin: 0 1rem 0 0.5rem;
     }
+
+    label {
+        flex-grow: 1;
+        display: flex;
+
+        input {
+            flex-grow: 1;
+        }
+    }
 }
