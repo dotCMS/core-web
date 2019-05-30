@@ -54,7 +54,6 @@ describe('dot-input-calendar', () => {
 
         describe('disabled', () => {
             it('should not render disabled attribute by default', async () => {
-                await page.waitForChanges();
                 expect(input.getAttribute('disabled')).toBeNull();
             });
 
@@ -85,7 +84,6 @@ describe('dot-input-calendar', () => {
 
         describe('max', () => {
             it('should not render  attribute by default', async () => {
-                await page.waitForChanges();
                 expect(input.getAttribute('max')).toBe('');
             });
 
@@ -98,7 +96,6 @@ describe('dot-input-calendar', () => {
 
         describe('step', () => {
             it('should set value default value correctly', async () => {
-                await page.waitForChanges();
                 expect(await input.getAttribute('step')).toBe('1');
             });
             it('should set value correctly', async () => {
@@ -110,7 +107,6 @@ describe('dot-input-calendar', () => {
 
         describe('type', () => {
             it('should not render empty by default', async () => {
-                await page.waitForChanges();
                 expect(input.getAttribute('type')).toBe('');
             });
 
