@@ -18,28 +18,6 @@ import flatpickr from 'flatpickr';
     styleUrl: 'dot-date-range.scss'
 })
 export class DotDateRangeComponent {
-
-    defaultPresets = [{
-        label: 'Date Presets',
-        days: 0
-    },
-    {
-        label: 'Last Week',
-        days: -7
-    },
-    {
-        label: 'Next Week',
-        days: 7
-    },
-    {
-        label: 'Last Month',
-        days: -30
-    },
-    {
-        label: 'Next Month',
-        days: 30
-    }];
-
     @Element() el: HTMLElement;
 
     /** (optional) Value formatted with start and end date splitted with a comma */
@@ -73,7 +51,28 @@ export class DotDateRangeComponent {
     @Prop({ reflectToAttr: true }) dateFormat = 'Y-m-d';
 
     /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
-    @Prop({ mutable: true, reflectToAttr: true }) presets = this.defaultPresets;
+    @Prop({ mutable: true, reflectToAttr: true }) presets = [
+        {
+            label: 'Date Presets',
+            days: 0
+        },
+        {
+            label: 'Last Week',
+            days: -7
+        },
+        {
+            label: 'Next Week',
+            days: 7
+        },
+        {
+            label: 'Last Month',
+            days: -30
+        },
+        {
+            label: 'Next Month',
+            days: 30
+        }
+    ];
 
     /** (optional) Text to be rendered next to presets field */
     @Prop({ reflectToAttr: true }) presetLabel = 'Presets';
@@ -84,6 +83,28 @@ export class DotDateRangeComponent {
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     private fp: any;
+    private defaultPresets = [
+        {
+            label: 'Date Presets',
+            days: 0
+        },
+        {
+            label: 'Last Week',
+            days: -7
+        },
+        {
+            label: 'Next Week',
+            days: 7
+        },
+        {
+            label: 'Last Month',
+            days: -30
+        },
+        {
+            label: 'Next Month',
+            days: 30
+        }
+    ];
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -148,7 +169,10 @@ export class DotDateRangeComponent {
                         />
                         <label>
                             {this.presetLabel}
-                            <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
+                            <select
+                                disabled={this.isDisabled()}
+                                onChange={this.setPreset.bind(this)}
+                            >
                                 {this.presets.map((item) => {
                                     return <option value={item.days}>{item.label}</option>;
                                 })}
