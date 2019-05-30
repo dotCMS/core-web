@@ -22,11 +22,6 @@ describe('dot-input-calendar', () => {
                 await page.waitForChanges();
                 expect(await input.getProperty('value')).toBe('text');
             });
-            it('should render and not break when is a unexpected value', async () => {
-                element.setProperty('value', { test: true });
-                await page.waitForChanges();
-                expect(await input.getProperty('value')).toBe('[object Object]');
-            });
         });
 
         describe('name', () => {
@@ -74,37 +69,31 @@ describe('dot-input-calendar', () => {
                 await page.waitForChanges();
                 expect(input.getAttribute('disabled')).toBeNull();
             });
-
-            it('should render disabled attribute with invalid value', async () => {
-                element.setProperty('disabled', { test: 'test' });
-                await page.waitForChanges();
-                expect(input.getAttribute('disabled')).toBeDefined();
-            });
         });
 
         describe('min', () => {
+            it('should not render  attribute by default', async () => {
+                await page.waitForChanges();
+                expect(input.getAttribute('min')).toBe('');
+            });
+
             it('should set value correctly', async () => {
                 element.setProperty('min', '111');
                 await page.waitForChanges();
                 expect(await input.getAttribute('min')).toBe('111');
             });
-            it('should render and not break when is a unexpected value', async () => {
-                element.setProperty('min', { test: true });
-                await page.waitForChanges();
-                expect(await input.getAttribute('min')).toBe('[object Object]');
-            });
         });
 
         describe('max', () => {
+            it('should not render  attribute by default', async () => {
+                await page.waitForChanges();
+                expect(input.getAttribute('max')).toBe('');
+            });
+
             it('should set value correctly', async () => {
                 element.setProperty('max', '9');
                 await page.waitForChanges();
                 expect(await input.getAttribute('max')).toBe('9');
-            });
-            it('should render and not break when is a unexpected value', async () => {
-                element.setProperty('max', { test: true });
-                await page.waitForChanges();
-                expect(await input.getAttribute('max')).toBe('[object Object]');
             });
         });
 
@@ -118,24 +107,18 @@ describe('dot-input-calendar', () => {
                 await page.waitForChanges();
                 expect(await input.getAttribute('step')).toBe('2');
             });
-            it('should render and not break when is a unexpected value', async () => {
-                element.setProperty('step', { test: true });
-                await page.waitForChanges();
-                expect(await input.getAttribute('step')).toBe('[object Object]');
-            });
         });
 
         describe('type', () => {
+            it('should not render empty by default', async () => {
+                await page.waitForChanges();
+                expect(input.getAttribute('type')).toBe('');
+            });
+
             it('should set value correctly', async () => {
                 element.setProperty('type', 'time');
                 await page.waitForChanges();
                 expect(input.getAttribute('type')).toBe('time');
-            });
-
-            it('should render and not break when is a unexpected value and set default(text)', async () => {
-                element.setProperty('type', { test: true });
-                await page.waitForChanges();
-                expect(input.getAttribute('type')).toBe('[object Object]');
             });
         });
     });
@@ -212,26 +195,54 @@ describe('dot-input-calendar', () => {
         });
 
         describe('error event change', () => {
-            beforeEach(async () => {
-                element.setProperty('min', '06:00:00');
-                element.setProperty('max', '22:00:00');
-                await input.press('0');
-            });
+            describe('validationMessage', () => {
+                beforeEach(async () => {
+                    element.setProperty('min', '06:00:00');
+                    element.setProperty('max', '22:00:00');
+                    await input.press('0');
+                });
 
-            it('should emit default message when value is not in valid range', async () => {
-                await page.waitForChanges();
-                expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
-                    show: true,
-                    message: "The field doesn't comply with the specified format"
+                it('should emit default validationMessage message when value is not in valid range', async () => {
+                    await page.waitForChanges();
+                    expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
+                        show: true,
+                        message: "The field doesn't comply with the specified format"
+                    });
+                });
+
+                it('should emit validationMessage message when value is not in valid range', async () => {
+                    element.setProperty('validationMessage', 'Test');
+                    await page.waitForChanges();
+                    expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
+                        show: true,
+                        message: 'Test'
+                    });
                 });
             });
 
-            it('should emit message when value is not in valid range', async () => {
-                element.setProperty('validationMessage', 'Test');
-                await page.waitForChanges();
-                expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
-                    show: true,
-                    message: 'Test'
+            describe('requiredMessage', () => {
+                beforeEach(async () => {
+                    element.setProperty('required', true);
+                    await input.press('1');
+                    await input.press('Backspace');
+                });
+
+                it('should emit default required message when value is not in valid range', async () => {
+                    await page.waitForChanges();
+                    console.log('value: ', await input.getProperty('value'));
+                    expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
+                        show: true,
+                        message: 'This field is required'
+                    });
+                });
+
+                it('should emit required message when value is not in valid range', async () => {
+                    element.setProperty('requiredMessage', 'Test');
+                    await page.waitForChanges();
+                    expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
+                        show: true,
+                        message: 'Test'
+                    });
                 });
             });
         });
