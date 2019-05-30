@@ -42,7 +42,7 @@ export class DotDateRangeComponent {
     @Prop({ reflectToAttr: true }) required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop({ reflectToAttr: true }) requiredMessage = '';
+    @Prop({ reflectToAttr: true }) requiredMessage = 'This field is required';
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true }) disabled = false;

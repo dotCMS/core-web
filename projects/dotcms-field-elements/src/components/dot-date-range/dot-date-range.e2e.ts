@@ -71,15 +71,7 @@ describe('dot-date-range', () => {
                 expect(input.getAttribute('disabled')).toBeDefined();
             });
 
-            it('should not break with invalid data --> truthy', async () => {
-                element.setProperty('disabled', ['a', 'b']);
-                await page.waitForChanges();
-                expect(input.getAttribute('disabled')).toBeDefined();
-            });
-
-            it('should not break with invalid data --> falsy', async () => {
-                element.setProperty('disabled', 0);
-                await page.waitForChanges();
+            it('should not set attribute', async () => {
                 expect(input.getAttribute('disabled')).toBeNull();
             });
         });
@@ -121,12 +113,9 @@ describe('dot-date-range', () => {
                 expect(labelElement.getAttribute('label')).toBe(value);
             });
 
-            it('should not break with invalid data', async () => {
-                const wrongValue = [1, 2, '3'];
-                element.setProperty('label', wrongValue);
-                await page.waitForChanges();
+            it('should not set attribute', async () => {
                 const labelElement = await dotTestUtil.getDotLabel(page);
-                expect(labelElement.getAttribute('label')).toEqual('1,2,3');
+                expect(labelElement.getAttribute('label')).toBe('');
             });
         });
 
@@ -135,12 +124,12 @@ describe('dot-date-range', () => {
                 const value = 'test';
                 element.setProperty('presetLabel', value);
                 await page.waitForChanges();
-                const presetLabel = await page.find('label');
+                const presetLabel = await page.find('label:not(.dot-label)');
                 expect(presetLabel.innerText.indexOf(value)).not.toBe(-1);
             });
 
             it('should render default value in preset label', async () => {
-                const presetLabel = await page.find('label');
+                const presetLabel = await page.find('label:not(.dot-label)');
                 expect(presetLabel.innerText.indexOf('Presets')).not.toBe(-1);
             });
         });
@@ -182,24 +171,9 @@ describe('dot-date-range', () => {
                 const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement).toBeNull();
             });
-
-            it('should not break and not render with invalid data', async () => {
-                const wrongValue = [1, 2, 3];
-                element.setProperty('hint', wrongValue);
-                const hintElement = await dotTestUtil.getHint(page);
-                expect(hintElement).toBeNull();
-            });
         });
 
         describe('required', () => {
-            it('should render required attribute in label and dot-required css class', async () => {
-                element.setProperty('required', true);
-                await page.waitForChanges();
-                const labelElement = await dotTestUtil.getDotLabel(page);
-                expect(element).toHaveClasses(['dot-required']);
-                expect(labelElement.getAttribute('required')).toBeDefined();
-            });
-
             it('should not render required error msg', async () => {
                 const errorElement = await dotTestUtil.getErrorMessage(page);
                 expect(errorElement).toBeNull();
