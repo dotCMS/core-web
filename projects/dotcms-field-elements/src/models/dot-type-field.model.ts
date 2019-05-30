@@ -21,6 +21,11 @@ export interface DotCMSDateField extends DotCMSContentTypeField {
     step?: string;
 }
 
+export interface DotCMSDateRangeField extends DotCMSDateField {
+    presets?: [{label: string, days: number}];
+    presetLabel?: string;
+}
+
 export interface DotCMSMultiSelectField extends DotCMSContentTypeField {
     size?: string;
 }

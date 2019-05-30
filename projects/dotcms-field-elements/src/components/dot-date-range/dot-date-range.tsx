@@ -18,63 +18,65 @@ import flatpickr from 'flatpickr';
     styleUrl: 'dot-date-range.scss'
 })
 export class DotDateRangeComponent {
+
+    defaultPresets = [{
+        label: 'Date Presets',
+        days: 0
+    },
+    {
+        label: 'Last Week',
+        days: -7
+    },
+    {
+        label: 'Next Week',
+        days: 7
+    },
+    {
+        label: 'Last Month',
+        days: -30
+    },
+    {
+        label: 'Next Month',
+        days: 30
+    }];
+
     @Element() el: HTMLElement;
 
-    /** Value formatted with start and end date splitted with a comma */
-    @Prop({ mutable: true }) value = '';
+    /** (optional) Value formatted with start and end date splitted with a comma */
+    @Prop({ mutable: true, reflectToAttr: true }) value = '';
 
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({ reflectToAttr: true }) name = 'daterange';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label = '';
+    @Prop({ reflectToAttr: true }) label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint = '';
+    @Prop({ reflectToAttr: true }) hint = '';
 
     /** (optional) Max value that the field will allow to set */
-    @Prop() max = '';
+    @Prop({ reflectToAttr: true }) max = '';
 
     /** (optional) Min value that the field will allow to set */
-    @Prop() min = '';
+    @Prop({ reflectToAttr: true }) min = '';
 
     /** (optional) Determine if it is needed */
-    @Prop() required = false;
+    @Prop({ reflectToAttr: true }) required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop() requiredMessage = '';
+    @Prop({ reflectToAttr: true }) requiredMessage = '';
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
 
     /** (optional) Date format used by the field on every operation */
-    @Prop() dateFormat = 'Y-m-d';
+    @Prop({ reflectToAttr: true }) dateFormat = 'Y-m-d';
 
     /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
-    @Prop() presets = [
-        {
-            label: 'Date Presets',
-            days: 0
-        },
-        {
-            label: 'Last Week',
-            days: -7
-        },
-        {
-            label: 'Next Week',
-            days: 7
-        },
-        {
-            label: 'Last Month',
-            days: -30
-        },
-        {
-            label: 'Next Month',
-            days: 30
-        }
-    ];
+    @Prop({ mutable: true, reflectToAttr: true }) presets = this.defaultPresets;
 
-    @Prop() presetLabel = 'Presets';
+    /** (optional) Text to be rendered next to presets field */
+    @Prop({ reflectToAttr: true }) presetLabel = 'Presets';
 
     @State() status: DotFieldStatus;
 
@@ -103,8 +105,14 @@ export class DotDateRangeComponent {
         }
     }
 
+    @Watch('presets')
+    presetsWatch(): void {
+        this.presets = Array.isArray(this.presets) ? this.presets : this.defaultPresets;
+    }
+
     componentWillLoad(): void {
         this.status = getOriginalStatus(this.isValid());
+        this.presets = Array.isArray(this.presets) ? this.presets : this.defaultPresets;
         this.emitStatusChange();
     }
 
