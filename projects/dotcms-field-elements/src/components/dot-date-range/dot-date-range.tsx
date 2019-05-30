@@ -112,8 +112,8 @@ export class DotDateRangeComponent {
 
     componentWillLoad(): void {
         this.status = getOriginalStatus(this.isValid());
-        this.presets = Array.isArray(this.presets) ? this.presets : this.defaultPresets;
         this.emitStatusChange();
+        this.presetsWatch();
     }
 
     componentDidLoad(): void {
