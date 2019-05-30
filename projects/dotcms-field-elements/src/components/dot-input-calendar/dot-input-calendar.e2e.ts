@@ -73,7 +73,6 @@ describe('dot-input-calendar', () => {
 
         describe('min', () => {
             it('should not render  attribute by default', async () => {
-                await page.waitForChanges();
                 expect(input.getAttribute('min')).toBe('');
             });
 
@@ -229,7 +228,6 @@ describe('dot-input-calendar', () => {
 
                 it('should emit default required message when value is not in valid range', async () => {
                     await page.waitForChanges();
-                    console.log('value: ', await input.getProperty('value'));
                     expect(spyErrorMessageEvt).toHaveReceivedEventDetail({
                         show: true,
                         message: 'This field is required'
