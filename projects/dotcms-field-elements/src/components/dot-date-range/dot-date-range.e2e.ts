@@ -143,14 +143,6 @@ describe('dot-date-range', () => {
                 const presetLabel = await page.find('label');
                 expect(presetLabel.innerText.indexOf('Presets')).not.toBe(-1);
             });
-
-            it('should not break with invalid data', async () => {
-                const wrongValue = [1, 2, '3'];
-                element.setProperty('presetLabel', wrongValue);
-                await page.waitForChanges();
-                const presetLabel = await page.find('label');
-                expect(presetLabel.innerText.indexOf('Presets')).not.toBe(-1);
-            });
         });
 
         describe('presets', () => {
