@@ -6,7 +6,6 @@ import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
     styleUrl: 'dot-autocomplete.scss'
 })
 export class DotAutocompleteComponent {
-
     @Element() el: HTMLElement;
 
     /** (optional) Disables field's interaction */
@@ -19,7 +18,7 @@ export class DotAutocompleteComponent {
     @Prop() threshold = 0;
 
     /** (optional)  Max results to show after a autocomplete search */
-    @Prop() maxResults = 0;
+    @Prop() maxResults = 5;
 
     /** (optional) Duraction in ms to start search into the autocomplete */
     @Prop() debounce = 300;
@@ -34,8 +33,8 @@ export class DotAutocompleteComponent {
     private autocomplete: autoComplete;
 
     private keyEvent = {
-        'Enter': this.emitSelection.bind(this),
-        'Escape': this.clean.bind(this)
+        Enter: this.emitSelection.bind(this),
+        Escape: this.clean.bind(this)
     };
 
     componentDidLoad(): void {
@@ -56,11 +55,19 @@ export class DotAutocompleteComponent {
         );
     }
 
+    @Watch('threshold')
+    watchThreshold(): void {
+        this.initAutocomplete();
+    }
+
     @Watch('data')
     watchData(): void {
-        if (!this.autocomplete) {
-            this.initAutocomplete();
-        }
+        this.initAutocomplete();
+    }
+
+    @Watch('maxResults')
+    watchMaxResults(): void {
+        this.initAutocomplete();
     }
 
     private handleKeyDown(event: KeyboardEvent): void {
@@ -120,9 +127,7 @@ export class DotAutocompleteComponent {
             maxResults: this.maxResults,
             debounce: this.debounce,
             resultsList: {
-                container: () => {
-                    return this.getResultListId();
-                },
+                container: () => this.getResultListId(),
                 destination: this.getInputElement(),
                 position: 'afterend'
             },
