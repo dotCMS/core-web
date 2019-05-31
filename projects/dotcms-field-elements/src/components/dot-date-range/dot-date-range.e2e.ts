@@ -158,6 +158,51 @@ describe('dot-date-range', () => {
             });
         });
 
+        describe('min', () => {
+            it('should disabled prev month button', async () => {
+                const today = new Date().toISOString().split('T')[0];
+                page = await newE2EPage();
+                await page.setContent(`<dot-date-range min=${today}></dot-date-range>`);
+                input = await page.find('input');
+                await input.click();
+                const prevMonthBtn =  await page.find('.flatpickr-prev-month');
+                expect(prevMonthBtn).toHaveClasses(['flatpickr-prev-month', 'disabled']);
+            });
+
+            it('should not disabled prev month button', async () => {
+                await input.click();
+                const prevMonthBtn =  await page.find('.flatpickr-prev-month');
+                expect(prevMonthBtn).not.toHaveClasses(['disabled']);
+            });
+        });
+
+        describe('max', () => {
+            it('should disabled next month button', async () => {
+                const today = new Date().toISOString().split('T')[0];
+                page = await newE2EPage();
+                await page.setContent(`<dot-date-range max=${today}></dot-date-range>`);
+                input = await page.find('input');
+                await input.click();
+                const prevMonthBtn =  await page.find('.flatpickr-next-month');
+                expect(prevMonthBtn).toHaveClasses(['flatpickr-next-month', 'disabled']);
+            });
+
+            it('should not disabled next month button', async () => {
+                await input.click();
+                const prevMonthBtn =  await page.find('.flatpickr-next-month');
+                expect(prevMonthBtn).not.toHaveClasses(['disabled']);
+            });
+        });
+
+        describe('rangeMode', () => {
+            it('should have "rangeMode" set', async () => {
+                input = await page.find('input');
+                await input.click();
+                const calendarModal =  await page.find('.flatpickr-calendar');
+                expect(calendarModal).toHaveClasses(['rangeMode']);
+            });
+        });
+
         describe('hint', () => {
             it('should render hint', async () => {
                 const value = 'test';

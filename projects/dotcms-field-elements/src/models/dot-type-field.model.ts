@@ -22,6 +22,7 @@ export interface DotCMSDateField extends DotCMSContentTypeField {
 }
 
 export interface DotCMSDateRangeField extends DotCMSDateField {
+    dateFormat: string;
     presets?: [{label: string, days: number}];
     presetLabel?: string;
 }

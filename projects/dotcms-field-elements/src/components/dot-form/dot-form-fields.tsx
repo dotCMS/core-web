@@ -163,6 +163,7 @@ export const DotFormFields = {
             min={field.min}
             name={field.variable}
             hint={field.hint}
+            dateFormat={field.dateFormat}
             presets={field.presets}
             presetLabel={field.presetLabel}
             value={field.defaultValue}
