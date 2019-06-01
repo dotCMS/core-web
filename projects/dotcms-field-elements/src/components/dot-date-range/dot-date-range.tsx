@@ -47,8 +47,8 @@ export class DotDateRangeComponent {
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true }) disabled = false;
 
-    /** (optional) Date format used by the field on every operation */
-    @Prop({ reflectToAttr: true }) dateFormat = 'Y-m-d';
+    /** (optional) Date format used by the field when displayed */
+    @Prop({ reflectToAttr: true }) displayFormat = 'Y-m-d';
 
     /** (optional) Array of date presets formatted as [{ label: 'PRESET_LABEL', days: NUMBER }] */
     @Prop({ mutable: true, reflectToAttr: true }) presets = [
@@ -122,7 +122,7 @@ export class DotDateRangeComponent {
         if (this.value) {
             const dates = checkProp<DotDateRangeComponent, string>(this, 'value', 'string');
             const [startDate, endDate] = dates.split(',');
-            this.fp.setDate([new Date(startDate), new Date(endDate)], true);
+            this.fp.setDate([this.parseDate(startDate), this.parseDate(endDate)], true);
         }
     }
 
@@ -140,9 +140,10 @@ export class DotDateRangeComponent {
     componentDidLoad(): void {
         this.fp = flatpickr(`#${getId(this.name)}`, {
             mode: 'range',
-            dateFormat: this.dateFormat,
-            maxDate: this.max,
-            minDate: this.min,
+            altFormat: this.displayFormat,
+            altInput: true,
+            maxDate: this.parseDate(this.max),
+            minDate: this.parseDate(this.min),
             onChange: this.setValue.bind(this)
         });
         this.validateProps();
@@ -184,6 +185,12 @@ export class DotDateRangeComponent {
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private parseDate(strDate: string): Date {
+        const parts = strDate.split('-');
+        const newDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        return newDate;
     }
 
     private validateProps(): void {

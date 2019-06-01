@@ -3,6 +3,7 @@ import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
 
 const getDays = (page: E2EPage) => page.findAll('.flatpickr-day');
+const getInput = (page: E2EPage) => page.find('input.flatpickr-input.form-control');
 
 describe('dot-date-range', () => {
     let page: E2EPage;
@@ -19,7 +20,7 @@ describe('dot-date-range', () => {
         describe('CSS classes', () => {
             it('should be valid, touched & dirty when picked an option', async () => {
                 await page.setContent(`<dot-date-range name='dateRange'></dot-date-range>`);
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const days = await getDays(page);
                 days[5].click();
@@ -31,7 +32,7 @@ describe('dot-date-range', () => {
 
             it('should be valid, touched, dirty & required when picked an option', async () => {
                 await page.setContent(`<dot-date-range name='dateRange' required="true"></dot-date-range>`);
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const days = await getDays(page);
                 days[5].click();
@@ -61,7 +62,7 @@ describe('dot-date-range', () => {
             page = await newE2EPage();
             await page.setContent(`<dot-date-range></dot-date-range>`);
             element = await page.find('dot-date-range');
-            input = await page.find('input');
+            input = await getInput(page);
         });
 
         describe('disabled', () => {
@@ -82,6 +83,7 @@ describe('dot-date-range', () => {
             it('should render attribute in label and select', async () => {
                 element.setProperty('name', value);
                 await page.waitForChanges();
+                input = await page.find('input.flatpickr-input');
                 const idValue = input.getAttribute('id');
                 expect(idValue).toBe('dot-test');
                 const labelElement = await dotTestUtil.getDotLabel(page);
@@ -89,6 +91,7 @@ describe('dot-date-range', () => {
             });
 
             it('should not render attribute in label and select', async () => {
+                input = await page.find('input.flatpickr-input');
                 const idValue = input.getAttribute('id');
                 expect(idValue).toBe('dot-daterange');
                 const labelElement = await dotTestUtil.getDotLabel(page);
@@ -99,6 +102,7 @@ describe('dot-date-range', () => {
                 const wrongValue = [1, 2, '3'];
                 element.setProperty('name', wrongValue);
                 await page.waitForChanges();
+                input = await page.find('input.flatpickr-input');
                 const idValue = input.getAttribute('id');
                 expect(idValue).toBe('dot-123');
             });
@@ -158,12 +162,30 @@ describe('dot-date-range', () => {
             });
         });
 
+        describe('displayFormat', () => {
+            it('should display right date format', async () => {
+                page = await newE2EPage();
+                await page.setContent(`<dot-date-range display-format="d-m-Y" value="2019-11-25,2019-11-27"></dot-date-range>`);
+                await page.waitForChanges();
+                input = await getInput(page);
+                expect(await input.getProperty('value')).toBe('25-11-2019 to 27-11-2019');
+            });
+
+            it('should display default date format when displayFormat not set', async () => {
+                page = await newE2EPage();
+                await page.setContent(`<dot-date-range value="2019-11-25,2019-11-27"></dot-date-range>`);
+                await page.waitForChanges();
+                input = await getInput(page);
+                expect(await input.getProperty('value')).toBe('2019-11-25 to 2019-11-27');
+            });
+        });
+
         describe('min', () => {
             it('should disabled prev month button', async () => {
                 const today = new Date().toISOString().split('T')[0];
                 page = await newE2EPage();
                 await page.setContent(`<dot-date-range min=${today}></dot-date-range>`);
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const prevMonthBtn =  await page.find('.flatpickr-prev-month');
                 expect(prevMonthBtn).toHaveClasses(['flatpickr-prev-month', 'disabled']);
@@ -181,7 +203,7 @@ describe('dot-date-range', () => {
                 const today = new Date().toISOString().split('T')[0];
                 page = await newE2EPage();
                 await page.setContent(`<dot-date-range max=${today}></dot-date-range>`);
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const prevMonthBtn =  await page.find('.flatpickr-next-month');
                 expect(prevMonthBtn).toHaveClasses(['flatpickr-next-month', 'disabled']);
@@ -196,7 +218,7 @@ describe('dot-date-range', () => {
 
         describe('rangeMode', () => {
             it('should have "rangeMode" set', async () => {
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const calendarModal =  await page.find('.flatpickr-calendar');
                 expect(calendarModal).toHaveClasses(['rangeMode']);
@@ -258,7 +280,7 @@ describe('dot-date-range', () => {
             it('should render with default value', async () => {
                 element.setProperty('value', '2019-11-25,2019-11-27');
                 await page.waitForChanges();
-                expect(await input.getProperty('value')).toBe('2019-11-25,2019-11-27');
+                expect(await input.getProperty('value')).toBe('2019-11-25 to 2019-11-27');
             });
 
             it('should render options with no data', async () => {
@@ -272,7 +294,7 @@ describe('dot-date-range', () => {
             });
 
             it('should not break with wrong data type', async () => {
-                element.setProperty('value', [{ a: 1 }]);
+                element.setProperty('value', {});
                 await page.waitForChanges();
                 expect(await input.getProperty('value')).toBe('');
             });
@@ -295,7 +317,7 @@ describe('dot-date-range', () => {
 
         describe('status and value change', () => {
             it('should emit when option selected', async () => {
-                input = await page.find('input');
+                input = await getInput(page);
                 await input.click();
                 const days = await getDays(page);
                 days[5].click();
