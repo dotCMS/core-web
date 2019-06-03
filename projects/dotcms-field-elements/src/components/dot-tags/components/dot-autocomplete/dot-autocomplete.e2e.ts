@@ -192,18 +192,18 @@ describe('dot-autocomplete', () => {
         });
     });
 
-    describe('Keyboard', () => {
-        let input;
+    describe('Behaviour', () => {
+        let input: E2EElement;
+        let lis: E2EElement[];
 
         beforeEach(async () => {
             input = await page.find('input');
-        });
-
-        it('should clear on esc', async () => {
             input.type('res');
             await page.waitForChanges();
-            let lis = await element.findAll('ul li');
+            lis = await element.findAll('ul li');
+        });
 
+        it('should clear the result list on esc key', async () => {
             expect(await input.getProperty('value')).toBe('res');
             expect(lis.length).toBe(5);
 
@@ -213,6 +213,17 @@ describe('dot-autocomplete', () => {
 
             expect(await input.getProperty('value')).toBe('');
             expect(lis.length).toBe(0);
+        });
+
+        it('should focus on the input after item selection', async () => {
+            element.press('ArrowDown');
+            element.press('ArrowDown');
+            element.press('ArrowDown');
+            element.press('Enter');
+            await page.waitForChanges();
+            const focus = await element.find('*:focus');
+
+            expect(/autoComplete[0-9]{13}/gm.test(focus.getAttribute('id'))).toBe(true);
         });
     });
 });

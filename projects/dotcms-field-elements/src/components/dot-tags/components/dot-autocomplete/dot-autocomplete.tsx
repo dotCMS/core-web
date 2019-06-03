@@ -30,7 +30,6 @@ export class DotAutocompleteComponent {
     @Event() lostFocus: EventEmitter<FocusEvent>;
 
     private readonly id = `autoComplete${new Date().getTime()}`;
-    private autocomplete: autoComplete;
 
     private keyEvent = {
         Enter: this.emitSelection.bind(this),
@@ -106,7 +105,8 @@ export class DotAutocompleteComponent {
     }
 
     private initAutocomplete(): void {
-        this.autocomplete = new autoComplete({
+        // tslint:disable-next-line:no-unused-expression
+        new autoComplete({
             data: {
                 src: async () => this.getData()
             },
@@ -134,8 +134,15 @@ export class DotAutocompleteComponent {
             resultItem: (data) => {
                 return `${data.match}`;
             },
-            onSelection: (feedback) => this.emitSelection(feedback.selection.value)
+            onSelection: (feedback) => {
+                this.focusOnInput();
+                this.emitSelection(feedback.selection.value);
+            }
         });
+    }
+
+    private focusOnInput(): void {
+        this.getInputElement().focus();
     }
 
     private getResultList(): HTMLElement {
