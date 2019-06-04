@@ -82,7 +82,7 @@ export class DotDateRangeComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private fp: any;
+    private flatpickr: any;
     private defaultPresets = [
         {
             label: 'Date Presets',
@@ -122,7 +122,7 @@ export class DotDateRangeComponent {
         if (this.value) {
             const dates = checkProp<DotDateRangeComponent, string>(this, 'value', 'string');
             const [startDate, endDate] = dates.split(',');
-            this.fp.setDate([this.parseDate(startDate), this.parseDate(endDate)], true);
+            this.flatpickr.setDate([this.parseDate(startDate), this.parseDate(endDate)], true);
         }
     }
 
@@ -138,7 +138,7 @@ export class DotDateRangeComponent {
     }
 
     componentDidLoad(): void {
-        this.fp = flatpickr(`#${getId(this.name)}`, {
+        this.flatpickr = flatpickr(`#${getId(this.name)}`, {
             mode: 'range',
             altFormat: this.displayFormat,
             altInput: true,
@@ -214,7 +214,7 @@ export class DotDateRangeComponent {
             dateRange.push(dt);
         }
 
-        this.fp.setDate(dateRange, true);
+        this.flatpickr.setDate(dateRange, true);
     }
 
     private isValid(): boolean {
