@@ -7,21 +7,21 @@ describe('dot-time', () => {
     let element: E2EElement;
     let inputCalendar: E2EElement;
 
-    describe('render CSS classes', () => {
-        beforeEach(async () => {
-            page = await newE2EPage({
-                html: `<dot-time value='10:10:00' ></dot-time>`
-            });
-            element = await page.find('dot-time');
-            inputCalendar = await page.find('dot-input-calendar ');
+    beforeEach(async () => {
+        page = await newE2EPage({
+            html: `<dot-time></dot-time>`
         });
+        element = await page.find('dot-time');
+        inputCalendar = await page.find('dot-input-calendar ');
+    });
 
+    describe('render CSS classes', () => {
         it('should be valid, untouched & pristine on load', () => {
             expect(element).toHaveClasses(dotTestUtil.class.empty);
         });
 
         it('should be valid, touched & dirty when filled', async () => {
-            await inputCalendar.triggerEvent('_statusChange', {
+            inputCalendar.triggerEvent('_statusChange', {
                 detail: {
                     name: '',
                     status: {
@@ -41,7 +41,7 @@ describe('dot-time', () => {
             });
 
             it('should be valid, untouched & pristine and required when filled on load', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -56,7 +56,7 @@ describe('dot-time', () => {
             });
 
             it('should be valid, touched & dirty and required when filled', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -71,7 +71,7 @@ describe('dot-time', () => {
             });
 
             it('should be invalid, untouched, pristine and required when empty on load', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -86,7 +86,7 @@ describe('dot-time', () => {
             });
 
             it('should be invalid, touched, dirty and required when valued is cleared', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -101,7 +101,7 @@ describe('dot-time', () => {
             });
 
             it('should have touched but pristine', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -119,14 +119,6 @@ describe('dot-time', () => {
     });
 
     describe('@Props', () => {
-        beforeEach(async () => {
-            page = await newE2EPage({
-                html: `<dot-time></dot-time>`
-            });
-            element = await page.find('dot-time');
-            inputCalendar = await page.find('dot-input-calendar');
-        });
-
         describe('value', () => {
             it('should render default value', () => {
                 expect(inputCalendar.getAttribute('value')).toBe('');
@@ -293,18 +285,13 @@ describe('dot-time', () => {
         let spyValueChangeEvent: EventSpy;
 
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-time></dot-time>`);
-
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
-
-            inputCalendar = await page.find('dot-input-calendar');
         });
 
         describe('value and status changes', () => {
             it('should send value when dot-input-calendar send it', async () => {
-                await inputCalendar.triggerEvent('_valueChange', {
+                inputCalendar.triggerEvent('_valueChange', {
                     detail: {
                         name: '',
                         value: '21:30:30'
@@ -338,13 +325,13 @@ describe('dot-time', () => {
                 const evt_statusChange = await page.spyOnEvent('_statusChange');
                 const evt_valueChange = await page.spyOnEvent('_valueChange');
 
-                await inputCalendar.triggerEvent('_valueChange', {
+                inputCalendar.triggerEvent('_valueChange', {
                     detail: {
                         name: '',
                         value: '21:30:30'
                     }
                 });
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
@@ -374,7 +361,7 @@ describe('dot-time', () => {
 
         describe('status change', () => {
             it('should send status when dot-input-calendar send it', async () => {
-                await inputCalendar.triggerEvent('_statusChange', {
+                inputCalendar.triggerEvent('_statusChange', {
                     detail: {
                         name: '',
                         status: {
