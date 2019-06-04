@@ -42,6 +42,13 @@ describe('dot-date-range', () => {
                 expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
             });
 
+            it('should be valid, untouched, pristine & required when loaded with default value', async () => {
+                await page.setContent(`<dot-date-range name='dateRange' value="2019-11-25,2019-11-27" required="true"></dot-date-range>`);
+                await page.waitForChanges();
+                element = await page.find('dot-date-range');
+                expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
+            });
+
             it('should be invalid, untouched, pristine & required when no option set on load', async () => {
                 await page.setContent(`<dot-date-range name='dateRange' required="true"></dot-date-range>`);
                 element = await page.find('dot-date-range');

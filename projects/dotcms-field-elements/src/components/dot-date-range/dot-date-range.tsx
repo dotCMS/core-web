@@ -122,7 +122,7 @@ export class DotDateRangeComponent {
         if (this.value) {
             const dates = checkProp<DotDateRangeComponent, string>(this, 'value', 'string');
             const [startDate, endDate] = dates.split(',');
-            this.flatpickr.setDate([this.parseDate(startDate), this.parseDate(endDate)], true);
+            this.flatpickr.setDate([this.parseDate(startDate), this.parseDate(endDate)], false);
         }
     }
 
