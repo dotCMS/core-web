@@ -151,20 +151,20 @@ describe('dot-autocomplete', () => {
 
     describe('@Events', () => {
         let input;
-        let spySelectionEvent;
+        let spySelectEvent;
 
         beforeEach(async () => {
             input = await page.find('input');
-            spySelectionEvent = await element.spyOnEvent('selection');
+            spySelectEvent = await element.spyOnEvent('select');
         });
 
-        describe('selection', () => {
+        describe('select', () => {
             it('should trigger when press enter', async () => {
                 await input.type('test');
                 input.press('Enter');
                 await page.waitForChanges();
 
-                expect(spySelectionEvent).toHaveReceivedEventDetail('test');
+                expect(spySelectEvent).toHaveReceivedEventDetail('test');
             });
 
             it('should trigger when keyboard select a option', async () => {
@@ -177,7 +177,7 @@ describe('dot-autocomplete', () => {
                 element.press('Enter');
                 await page.waitForChanges();
 
-                expect(spySelectionEvent).toHaveReceivedEventDetail('result-3');
+                expect(spySelectEvent).toHaveReceivedEventDetail('result-3');
             });
         });
 
@@ -215,7 +215,7 @@ describe('dot-autocomplete', () => {
             expect(lis.length).toBe(0);
         });
 
-        it('should focus on the input after item selection', async () => {
+        it('should focus on the input after item select', async () => {
             element.press('ArrowDown');
             element.press('ArrowDown');
             element.press('ArrowDown');
@@ -224,6 +224,16 @@ describe('dot-autocomplete', () => {
             const focus = await element.find('*:focus');
 
             expect(/autoComplete[0-9]{13}/gm.test(focus.getAttribute('id'))).toBe(true);
+        });
+
+        it('should not create a second result list after prop is updated', async () => {
+            element.setProperty('threshold', 3);
+            element.setProperty('data', async () => {});
+            element.setProperty('maxResults', 20);
+            await page.waitForChanges();
+
+            const lists = await element.findAll('ul');
+            expect(lists.length).toBe(1);
         });
     });
 });

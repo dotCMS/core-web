@@ -9,30 +9,30 @@ export class DotAutocompleteComponent {
     @Element() el: HTMLElement;
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
 
     /** (optional) text to show when no value is set */
-    @Prop() placeholder = '';
+    @Prop({ reflectToAttr: true }) placeholder = '';
 
     /** (optional)  Min characters to start search in the autocomplete input */
-    @Prop() threshold = 0;
+    @Prop({ reflectToAttr: true }) threshold = 0;
 
     /** (optional)  Max results to show after a autocomplete search */
-    @Prop() maxResults = 5;
+    @Prop({ reflectToAttr: true }) maxResults = 0;
 
     /** (optional) Duraction in ms to start search into the autocomplete */
-    @Prop() debounce = 300;
+    @Prop({ reflectToAttr: true }) debounce = 300;
 
     /** Function to get the data to use for the autocomplete search */
-    @Prop() data: () => Promise<string[]> = null;
+    @Prop({ reflectToAttr: true }) data: () => Promise<string[]> = null;
 
-    @Event() selection: EventEmitter<string>;
+    @Event() select: EventEmitter<string>;
     @Event() lostFocus: EventEmitter<FocusEvent>;
 
     private readonly id = `autoComplete${new Date().getTime()}`;
 
     private keyEvent = {
-        Enter: this.emitSelection.bind(this),
+        Enter: this.emitselect.bind(this),
         Escape: this.clean.bind(this)
     };
 
@@ -70,7 +70,7 @@ export class DotAutocompleteComponent {
     }
 
     private handleKeyDown(event: KeyboardEvent): void {
-        const value = this.getInputElement()['value'];
+        const { value } = this.getInputElement();
 
         if (value && this.keyEvent[event.key]) {
             this.keyEvent[event.key](value);
@@ -87,7 +87,7 @@ export class DotAutocompleteComponent {
     }
 
     private clean(): void {
-        this.getInputElement()['value'] = '';
+        this.getInputElement().value = '';
         this.cleanOptions();
     }
 
@@ -95,16 +95,17 @@ export class DotAutocompleteComponent {
         this.getResultList().innerHTML = '';
     }
 
-    private emitSelection(selection: string): void {
+    private emitselect(select: string): void {
         this.clean();
-        this.selection.emit(selection);
+        this.select.emit(select);
     }
 
-    private getInputElement(): HTMLElement {
+    private getInputElement(): HTMLInputElement {
         return this.el.querySelector(`#${this.id}`);
     }
 
     private initAutocomplete(): void {
+        this.clearList();
         // tslint:disable-next-line:no-unused-expression
         new autoComplete({
             data: {
@@ -136,9 +137,17 @@ export class DotAutocompleteComponent {
             },
             onSelection: (feedback) => {
                 this.focusOnInput();
-                this.emitSelection(feedback.selection.value);
+                this.emitselect(feedback.selection.value);
             }
+
         });
+    }
+
+    private clearList(): void {
+        const list = this.getResultList();
+        if (list) {
+            list.remove();
+        }
     }
 
     private focusOnInput(): void {
