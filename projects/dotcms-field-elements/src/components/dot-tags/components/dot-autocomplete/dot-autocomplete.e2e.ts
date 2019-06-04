@@ -144,9 +144,9 @@ describe('dot-autocomplete', () => {
             });
         });
 
-        describe('debounce', () => {});
+        xdescribe('debounce', () => {});
 
-        describe('data', () => {});
+        xdescribe('data', () => {});
     });
 
     describe('@Events', () => {
