@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { DotContentTypeField, FieldType, DotFieldDivider } from '../shared';
 import { CoreWebService } from 'dotcms-js';
 import { RequestMethod } from '@angular/http';
-import { FieldUtil } from '../util/field-util';
 import { FIELD_ICONS } from '../content-types-fields-list/content-types-fields-icon-map';
 
 /**
@@ -30,26 +29,15 @@ export class FieldService {
      * @returns Observable<any>
      * @memberof FieldService
      */
-    saveFields(contentTypeId: string, fields: DotContentTypeField[]): Observable<DotFieldDivider[]> {
-        fields.forEach((field, index) => {
-            field.contentTypeId = contentTypeId;
-
-            if (FieldUtil.isRowOrColumn(field)) {
-                field.name = `fields-${index}`;
-            }
-
-            if (field.dataType === '') {
-                delete field.dataType;
-            }
-        });
+    saveFields(contentTypeId: string, fields: DotFieldDivider[]): Observable<DotFieldDivider[]> {
 
         return this.coreWebService
             .requestView({
                 body: {
-                    fields: fields
+                    layout: fields
                 },
                 method: RequestMethod.Put,
-                url: `v3/contenttype/${contentTypeId}/fields`
+                url: `v3/contenttype/${contentTypeId}/fields/move`
             })
             .pipe(pluck('entity'));
     }
@@ -80,5 +68,17 @@ export class FieldService {
      */
     getIcon(fieldClazz: string): string {
         return FIELD_ICONS[fieldClazz];
+    }
+
+    updateField(contentTypeId: string, field: DotContentTypeField): Observable<DotFieldDivider[]> {
+        return this.coreWebService
+            .requestView({
+                body: {
+                    field: field
+                },
+                method: RequestMethod.Put,
+                url: `v3/contenttype/${contentTypeId}/fields/${field.id}`
+            })
+            .pipe(pluck('entity'));
     }
 }

@@ -242,13 +242,26 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param fieldsToSave Fields to be save
      * @memberof ContentTypesEditComponent
      */
-    saveFields(fieldsToSave: DotContentTypeField[]): void {
+    saveFields(fieldsToSave: DotFieldDivider[]): void {
         this.loadingFields = true;
         this.fieldService.saveFields(this.data.id, fieldsToSave).pipe(take(1)).subscribe(
             (fields: DotFieldDivider[]) => {
-                if (this.isAnyNewField(fieldsToSave) || this.isUpdatingField(fieldsToSave)) {
-                    this.fields = fields;
-                }
+                this.fields = fields;
+                this.loadingFields = false;
+            },
+            (err: ResponseView) => {
+                this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe(() => {
+                    this.fieldsDropZone.cancelLastDragAndDrop();
+                    this.loadingFields = false;
+                });
+            }
+        );
+    }
+
+    editField(fieldsToEdit: DotContentTypeField): void {
+        this.loadingFields = true;
+        this.fieldService.updateField(this.data.id, fieldsToEdit).pipe(take(1)).subscribe(
+            () => {
                 this.loadingFields = false;
             },
             (err: ResponseView) => {
@@ -284,14 +297,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 label: 'Cancel'
             }
         };
-    }
-
-    private isUpdatingField(fieldsToSave: DotContentTypeField[]): boolean {
-        return fieldsToSave[0].id && fieldsToSave.length === 1;
-    }
-
-    private isAnyNewField(fieldsToSave: DotContentTypeField[]): boolean {
-        return fieldsToSave.some(field => !field.id);
     }
 
     private createContentType(value: ContentType): void {

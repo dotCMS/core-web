@@ -4,7 +4,7 @@ import { CoreWebService } from 'dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { pluck } from 'rxjs/operators';
 import { DotFieldVariable } from '../models/dot-field-variable.interface';
-import { DotFieldVariableParams } from '../models/dot-field-variable-params.interface';
+import { DotContentTypeField } from '../../shared';
 
 /**
  * Provide method to handle with the Field Variables
@@ -19,11 +19,11 @@ export class DotFieldVariablesService {
      * @returns {Observable<DotFieldVariable[]>}
      * @memberof FieldVariablesService
      */
-    load(params: DotFieldVariableParams): Observable<DotFieldVariable[]> {
+    load(field: DotContentTypeField): Observable<DotFieldVariable[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables`
+                url: `v1/contenttype/${field.contentTypeId}/fields/id/${field.id}/variables`
             })
             .pipe(pluck('entity'));
     }
@@ -34,17 +34,17 @@ export class DotFieldVariablesService {
      * @returns {Observable<DotFieldVariable>}
      * @memberof FieldVariablesService
      */
-    save(params: DotFieldVariableParams): Observable<DotFieldVariable> {
+    save(field: DotContentTypeField, variable: DotFieldVariable): Observable<DotFieldVariable> {
         return this.coreWebService
             .requestView({
                 body: {
-                    'key': params.variable.key,
-                    'value': params.variable.value,
+                    'key': variable.key,
+                    'value': variable.value,
                     'clazz': 'com.dotcms.contenttype.model.field.FieldVariable',
-                    'fieldId': params.fieldId
+                    'fieldId': field.id
                 },
                 method: RequestMethod.Post,
-                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables`
+                url: `v1/contenttype/${field.contentTypeId}/fields/id/${field.id}/variables`
             })
             .pipe(pluck('entity'));
     }
@@ -55,11 +55,11 @@ export class DotFieldVariablesService {
      * @returns {Observable<DotFieldVariable>}
      * @memberof FieldVariablesService
      */
-    delete(params: DotFieldVariableParams): Observable<DotFieldVariable> {
+    delete(field: DotContentTypeField, variable: DotFieldVariable): Observable<DotFieldVariable> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Delete,
-                url: `v1/contenttype/${params.contentTypeId}/fields/id/${params.fieldId}/variables/id/${params.variable.id}`
+                url: `v1/contenttype/${field.contentTypeId}/fields/id/${field.id}/variables/id/${variable.id}`
             })
             .pipe(pluck('entity'));
     }
