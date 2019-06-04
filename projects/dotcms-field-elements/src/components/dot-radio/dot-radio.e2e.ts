@@ -184,6 +184,17 @@ describe('dot-radio', () => {
             });
         });
 
+        describe('hint & options', () => {
+            it('should render aria attribute in options', async () => {
+                element.setProperty('hint', 'test');
+                element.setProperty('options', 'a|1,b|2');
+                await page.waitForChanges();
+                const options = await getOptions(page);
+                expect(options[0].getAttribute('aria-describedby')).toBe('hint-test');
+                expect(options[1].getAttribute('aria-describedby')).toBe('hint-test');
+            });
+        });
+
         describe('options', () => {
             it('should render options', async () => {
                 const value = 'a|1,b|2,c|3';

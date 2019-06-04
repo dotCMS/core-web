@@ -10,7 +10,8 @@ import {
     getDotOptionsFromFieldValue,
     updateStatus,
     checkProp,
-    getId
+    getId,
+    getHintId
 } from '../../utils';
 
 @Component({
@@ -91,6 +92,7 @@ export class DotCheckboxComponent {
                             return (
                                 <label>
                                     <input
+                                        aria-describedby={getHintId(this.hint)}
                                         class={getErrorClass(this.isValid())}
                                         id={getId(this.name)}
                                         type="checkbox"

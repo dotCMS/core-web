@@ -20,12 +20,14 @@ export class DotChipComponent {
     @Event() remove: EventEmitter<String>;
 
     render() {
+        const label = `Delete ${this.label} tag`;
         return (
             <Fragment>
                 <span>
                     {this.label}
                 </span>
                 <button type="button"
+                    aria-label={label}
                     disabled={this.disabled}
                     onClick={() => this.removeTag()}>
                     {this.deleteLabel}

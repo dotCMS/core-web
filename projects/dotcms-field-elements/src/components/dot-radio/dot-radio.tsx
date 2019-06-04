@@ -10,7 +10,8 @@ import {
     getTagHint,
     updateStatus,
     checkProp,
-    getId
+    getId,
+    getHintId
 } from '../../utils';
 
 /**
@@ -93,6 +94,7 @@ export class DotRadioComponent {
                             return (
                                 <label>
                                     <input
+                                        aria-describedby={getHintId(this.hint)}
                                         checked={this.value.indexOf(item.value) >= 0 || null}
                                         class={getErrorClass(this.isValid())}
                                         id={getId(this.name)}

@@ -11,7 +11,7 @@ import {
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatusClasses, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
-import { checkProp, getClassNames, getTagError, getTagHint } from '../../utils';
+import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -120,6 +120,8 @@ export class DotDateComponent {
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <dot-input-calendar
+                        aria-describedby={getHintId(this.hint)}
+                        tabIndex={0}
                         disabled={this.disabled}
                         type="date"
                         name={this.name}

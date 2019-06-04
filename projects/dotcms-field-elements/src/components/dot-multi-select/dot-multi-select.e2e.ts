@@ -212,6 +212,17 @@ describe('dot-multi-select', () => {
             });
         });
 
+        describe('hint & options', () => {
+            it('should render aria attribute in options', async () => {
+                element.setProperty('hint', 'test');
+                element.setProperty('options', 'a|1,b|2');
+                await page.waitForChanges();
+                const options = await getOptions(page);
+                expect(options[0].getAttribute('aria-describedby')).toBe('hint-test');
+                expect(options[1].getAttribute('aria-describedby')).toBe('hint-test');
+            });
+        });
+
         describe('options', () => {
             it('should render options', async () => {
                 const value = 'a|1,b|2,c|3';
@@ -278,12 +289,12 @@ describe('dot-multi-select', () => {
             });
 
             it('should not break and not render with invalid data', async () => {
-                const wrongValue = [{ a: 1 }];
+                const wrongValue = [1, 2, '3'];
                 element.setProperty('required', wrongValue);
                 element.setProperty('requiredMessage', wrongValue);
                 await page.waitForChanges();
                 const errorElement = await dotTestUtil.getErrorMessage(page);
-                expect(errorElement).toBeNull();
+                expect(errorElement.innerText).toBe('1,2,3');
             });
         });
 

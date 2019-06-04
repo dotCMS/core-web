@@ -19,7 +19,7 @@ import {
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
-import { checkProp, getClassNames, getTagError, getTagHint } from '../../utils';
+import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
 import { dotParseDate } from '../../utils/props/validators';
 
 const DATE_SUFFIX = '-date';
@@ -176,6 +176,8 @@ export class DotDateTimeComponent {
                         <label>
                             {this.dateLabel}
                             <dot-input-calendar
+                                aria-describedby={getHintId(this.hint)}
+                                tabIndex={0}
                                 disabled={this.disabled}
                                 type="date"
                                 name={this.name + DATE_SUFFIX}
@@ -191,6 +193,8 @@ export class DotDateTimeComponent {
                         <label>
                             {this.timeLabel}
                             <dot-input-calendar
+                                aria-describedby={getHintId(this.hint)}
+                                tabIndex={0}
                                 disabled={this.disabled}
                                 type="time"
                                 name={this.name + TIME_SUFFIX}

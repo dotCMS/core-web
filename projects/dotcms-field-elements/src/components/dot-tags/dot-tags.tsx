@@ -7,7 +7,8 @@ import {
     getTagHint,
     getTagError,
     getErrorClass,
-    updateStatus
+    updateStatus,
+    getHintId
 } from '../../utils';
 
 @Component({
@@ -80,6 +81,8 @@ export class DotTagsComponent {
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <dot-autocomplete
+                        aria-describedby={getHintId(this.hint)}
+                        tabIndex={0}
                         class={getErrorClass(this.status.dotValid)}
                         data={this.getData.bind(this)}
                         debounce={this.debounce}

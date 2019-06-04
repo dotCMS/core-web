@@ -173,17 +173,21 @@ describe('dot-select', () => {
         });
 
         describe('hint', () => {
-            it('should render hint', async () => {
+            it('should set hint correctly and set aria attribute', async () => {
                 const value = 'test';
                 element.setProperty('hint', value);
                 await page.waitForChanges();
                 const hintElement = await dotTestUtil.getHint(page);
+                const selectElement = await getSelect(page);
                 expect(hintElement.innerText).toBe(value);
+                expect(selectElement.getAttribute('aria-describedby')).toBe('hint-test');
             });
 
-            it('should not render hint', async () => {
+            it('should not render hint and does not set aria attribute', async () => {
                 const hintElement = await dotTestUtil.getHint(page);
+                const selectElement = await getSelect(page);
                 expect(hintElement).toBeNull();
+                expect(selectElement.getAttribute('aria-describedby')).toBeNull();
             });
 
             it('should not break and not render with invalid data', async () => {
@@ -261,12 +265,12 @@ describe('dot-select', () => {
             });
 
             it('should not break and not render with invalid data', async () => {
-                const wrongValue = [{ a: 1 }];
+                const wrongValue = [ 1, 2, '3'];
                 element.setProperty('required', wrongValue);
                 element.setProperty('requiredMessage', wrongValue);
                 await page.waitForChanges();
                 const errorElement = await dotTestUtil.getErrorMessage(page);
-                expect(errorElement).toBeNull();
+                expect(errorElement.innerText).toBe('1,2,3');
             });
         });
 

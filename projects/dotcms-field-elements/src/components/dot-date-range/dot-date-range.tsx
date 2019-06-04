@@ -9,7 +9,8 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
-    updateStatus
+    updateStatus,
+    getHintId
 } from '../../utils';
 import flatpickr from 'flatpickr';
 
@@ -131,6 +132,7 @@ export class DotDateRangeComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <div class="dot-range__body">
                         <input
+                            aria-describedby={getHintId(this.hint)}
                             class={getErrorClass(this.status.dotValid)}
                             disabled={this.isDisabled()}
                             id={getId(this.name)}
@@ -140,10 +142,13 @@ export class DotDateRangeComponent {
                         />
                         <label>
                             {this.presetLabel}
-                            <select disabled={this.isDisabled()} onChange={this.setPreset.bind(this)}>
-                                {this.presets.map((item) => {
-                                    return <option value={item.days}>{item.label}</option>;
-                                })}
+                            <select
+                                aria-describedby={getHintId(this.hint)}
+                                disabled={this.isDisabled()}
+                                onChange={this.setPreset.bind(this)}>
+                                    {this.presets.map((item) => {
+                                        return <option value={item.days}>{item.label}</option>;
+                                    })}
                             </select>
                         </label>
                     </div>

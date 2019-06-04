@@ -10,7 +10,8 @@ import {
     getTagError,
     getTagHint,
     updateStatus,
-    checkProp
+    checkProp,
+    getHintId
 } from '../../utils';
 
 /**
@@ -109,6 +110,7 @@ export class DotMultiSelectComponent {
                         {this._options.map((item: DotOption) => {
                             return (
                                 <option
+                                    aria-describedby={getHintId(this.hint)}
                                     selected={this.value === item.value ? true : null}
                                     value={item.value}
                                 >
