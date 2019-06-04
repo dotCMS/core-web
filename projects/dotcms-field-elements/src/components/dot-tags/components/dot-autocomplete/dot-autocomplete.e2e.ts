@@ -120,7 +120,7 @@ describe('dot-autocomplete', () => {
         });
 
         describe('maxResults', () => {
-            let input;
+            let input: E2EElement;
 
             it('should show 5 (default) results', async () => {
                 input = await page.find('input');
@@ -143,10 +143,6 @@ describe('dot-autocomplete', () => {
                 expect(lis.length).toBe(3);
             });
         });
-
-        xdescribe('debounce', () => {});
-
-        xdescribe('data', () => {});
     });
 
     describe('@Events', () => {
