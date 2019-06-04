@@ -161,7 +161,7 @@ describe('dot-autocomplete', () => {
         describe('select', () => {
             it('should trigger when press enter', async () => {
                 await input.type('test');
-                input.press('Enter');
+                await input.press('Enter');
                 await page.waitForChanges();
 
                 expect(spySelectEvent).toHaveReceivedEventDetail('test');
@@ -171,10 +171,10 @@ describe('dot-autocomplete', () => {
                 input.type('res');
                 await page.waitForChanges();
 
-                element.press('ArrowDown');
-                element.press('ArrowDown');
-                element.press('ArrowDown');
-                element.press('Enter');
+                await element.press('ArrowDown');
+                await element.press('ArrowDown');
+                await element.press('ArrowDown');
+                await element.press('Enter');
                 await page.waitForChanges();
 
                 expect(spySelectEvent).toHaveReceivedEventDetail('result-3');
@@ -192,7 +192,7 @@ describe('dot-autocomplete', () => {
 
         beforeEach(async () => {
             input = await page.find('input');
-            input.type('res');
+            await input.type('res');
             await page.waitForChanges();
             lis = await element.findAll('ul li');
         });
@@ -201,7 +201,7 @@ describe('dot-autocomplete', () => {
             expect(await input.getProperty('value')).toBe('res');
             expect(lis.length).toBe(5);
 
-            input.press('Escape');
+            await input.press('Escape');
             await page.waitForChanges();
             lis = await element.findAll('ul li');
 
@@ -210,10 +210,10 @@ describe('dot-autocomplete', () => {
         });
 
         it('should focus on the input after item select', async () => {
-            element.press('ArrowDown');
-            element.press('ArrowDown');
-            element.press('ArrowDown');
-            element.press('Enter');
+            await element.press('ArrowDown');
+            await element.press('ArrowDown');
+            await element.press('ArrowDown');
+            await element.press('Enter');
             await page.waitForChanges();
             const focus = await element.find('*:focus');
 

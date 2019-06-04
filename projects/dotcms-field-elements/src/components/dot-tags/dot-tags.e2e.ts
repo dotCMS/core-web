@@ -103,7 +103,6 @@ describe('dot-tags', () => {
             autocomplete.triggerEvent('lostFocus', {});
             await page.waitForChanges();
 
-            await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
         });
     });

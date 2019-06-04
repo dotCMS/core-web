@@ -84,7 +84,7 @@ describe('dot-chip', () => {
         describe('remove', () => {
             it('should trigger', async () => {
                 const button = await getButton();
-                button.triggerEvent('click');
+                await button.click();
                 await page.waitForChanges();
 
                 expect(spyRemoveEvent).toHaveReceivedEventDetail('test-tag');
@@ -95,7 +95,7 @@ describe('dot-chip', () => {
                 await page.waitForChanges();
 
                 const button = await getButton();
-                button.triggerEvent('click');
+                await button.click();
 
                 expect(spyRemoveEvent).not.toHaveReceivedEvent();
             });
