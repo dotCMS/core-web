@@ -188,8 +188,8 @@ export class DotDateRangeComponent {
     }
 
     private parseDate(strDate: string): Date {
-        const parts = strDate.split('-');
-        const newDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        const [year, month, day] = strDate.split('-');
+        const newDate = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
         return newDate;
     }
 

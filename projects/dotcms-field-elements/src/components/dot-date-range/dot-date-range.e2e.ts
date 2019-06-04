@@ -54,6 +54,16 @@ describe('dot-date-range', () => {
                 element = await page.find('dot-date-range');
                 expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
+
+            it('should be dot-required, dot-invalid, dot-touched & dot-dirty when deleted value', async() => {
+                await page.setContent(`<dot-date-range name='dateRange' required="true"></dot-date-range>`);
+                element = await page.find('dot-date-range');
+                input = await getInput(page);
+                await input.click();
+                await input.press('Backspace');
+                await page.waitForChanges();
+                expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
+            });
         });
     });
 
@@ -129,12 +139,12 @@ describe('dot-date-range', () => {
                 element.setProperty('presetLabel', value);
                 await page.waitForChanges();
                 const presetLabel = await page.find('label:not(.dot-label)');
-                expect(presetLabel.innerText.indexOf(value)).not.toBe(-1);
+                expect(presetLabel.innerText.indexOf(value)).toBe(0);
             });
 
             it('should render default value in preset label', async () => {
                 const presetLabel = await page.find('label:not(.dot-label)');
-                expect(presetLabel.innerText.indexOf('Presets')).not.toBe(-1);
+                expect(presetLabel.innerText.indexOf('Presets')).toBe(0);
             });
         });
 
