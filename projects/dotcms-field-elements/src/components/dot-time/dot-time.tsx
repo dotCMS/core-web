@@ -94,7 +94,7 @@ export class DotTimeComponent {
     }
 
     @Listen('_valueChange')
-    emitValueChange(event: ) {
+    emitValueChange(event: CustomEvent) {
         event.stopImmediatePropagation();
         this.valueChange.emit(event.detail);
     }
@@ -104,7 +104,7 @@ export class DotTimeComponent {
         event.stopImmediatePropagation();
         const statusEvent: DotFieldStatusEvent = event.detail;
         this.classNames = getClassNames(
-                statusEvent.status,
+            statusEvent.status,
             statusEvent.status.dotValid,
             this.required
         );
