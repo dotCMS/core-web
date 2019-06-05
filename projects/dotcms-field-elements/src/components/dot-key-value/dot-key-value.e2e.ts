@@ -95,6 +95,15 @@ describe('dot-key-value', () => {
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
         });
+
+        it('should have touched but pristine', async () => {
+            const form = await getForm();
+            form.triggerEvent('lostFocus', {});
+            await page.waitForChanges();
+
+            await page.waitForChanges();
+            expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
+        });
     });
 
     describe('@Props', () => {
@@ -169,18 +178,23 @@ describe('dot-key-value', () => {
         });
 
         describe('hint', () => {
-            it('should render', async () => {
+            it('should render and set aria attribute', async () => {
                 element.setProperty('hint', 'Some hint');
                 await page.waitForChanges();
-
+                const form = await getForm();
                 const hint = await dotTestUtil.getHint(page);
                 expect(hint.innerText).toBe('Some hint');
                 expect(hint.getAttribute('id')).toBe('hint-some-hint');
+                expect(form.getAttribute('aria-describedby')).toBe('hint-some-hint');
+                expect(form.getAttribute('tabIndex')).toBe('0');
             });
 
             it('should not render', async () => {
                 const hint = await dotTestUtil.getHint(page);
+                const form = await getForm();
                 expect(hint).toBeNull();
+                expect(form.getAttribute('aria-describedby')).toBeNull();
+                expect(form.getAttribute('tabIndex')).toBeNull();
             });
 
             it('should handle invalid', async () => {
@@ -381,6 +395,19 @@ describe('dot-key-value', () => {
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'fieldName',
                     status: { dotPristine: false, dotTouched: true, dotValid: true }
+                });
+            });
+        });
+
+        describe('statusChange', () => {
+            it('should emit on lost focus in autocomplete', async () => {
+                const form = await getForm();
+                form.triggerEvent('lostFocus', {});
+                await page.waitForChanges();
+
+                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
+                    name: 'fieldName',
+                    status: { dotPristine: true, dotTouched: true, dotValid: true }
                 });
             });
         });

@@ -179,9 +179,10 @@ export class DotKeyValueComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <key-value-form
                         aria-describedby={getHintId(this.hint)}
-                        tabIndex={0}
+                        tabIndex={this.hint ? 0 : null}
+                        onLostFocus={this.blurHandler.bind(this)}
                         add-button-label={this.formAddButtonLabel}
-                        disabled={this.disabled || null}
+                        disabled={this.isDisabled()}
                         key-label={this.formKeyLabel}
                         key-placeholder={this.formKeyPlaceholder}
                         value-label={this.formValueLabel}
@@ -192,7 +193,7 @@ export class DotKeyValueComponent {
                             e.preventDefault();
                         }}
                         button-label={this.listDeleteLabel}
-                        disabled={this.disabled || null}
+                        disabled={this.isDisabled()}
                         items={this.items}
                     />
                 </dot-label>
@@ -200,6 +201,19 @@ export class DotKeyValueComponent {
                 {getTagError(this.showErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private isDisabled(): boolean {
+        return this.disabled || null;
+    }
+
+    private blurHandler(): void {
+        if (!this.status.dotTouched) {
+            this.status = updateStatus(this.status, {
+                dotTouched: true
+            });
+            this.emitStatusChange();
+        }
     }
 
     private validateProps(): void {

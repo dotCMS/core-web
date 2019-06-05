@@ -82,11 +82,11 @@ export class DotTagsComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <dot-autocomplete
                         aria-describedby={getHintId(this.hint)}
-                        tabIndex={0}
+                        tabIndex={this.hint ? 0 : null}
                         class={getErrorClass(this.status.dotValid)}
                         data={this.getData.bind(this)}
                         debounce={this.debounce}
-                        disabled={this.disabled || null}
+                        disabled={this.isDisabled()}
                         onLostFocus={() => this.blurHandler()}
                         onSelection={(event) => this.addTag(event.detail)}
                         placeholder={this.placeholder || null}
@@ -96,7 +96,7 @@ export class DotTagsComponent {
                 <div class="dot-tags__container">
                     {this.getValues().map((tagLab: string) => (
                         <dot-chip
-                            disabled={this.disabled}
+                            disabled={this.isDisabled()}
                             label={tagLab}
                             onRemove={this.removeTag.bind(this)}
                         />
@@ -119,6 +119,10 @@ export class DotTagsComponent {
 
         this.emitValueChange();
         this.emitStatusChange();
+    }
+
+    private isDisabled(): boolean {
+        return this.disabled || null;
     }
 
     private addTag(label: string): void {

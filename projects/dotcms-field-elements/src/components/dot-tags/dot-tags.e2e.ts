@@ -16,7 +16,6 @@ describe('dot-tags', () => {
                             placeholder='placeholder'
                             required="true"
                             requiredMessage="requiredMessage"
-                            disabled="true"
                             threshold="3"
                             debounce="100"
                        >
@@ -28,6 +27,7 @@ describe('dot-tags', () => {
 
         it('should has a label', async () => {
             const label = await element.find('.dot-field__label label');
+            console.log(element.outerHTML)
             expect(label.innerHTML).toEqualHtml('label');
         });
 
@@ -97,15 +97,18 @@ describe('dot-tags', () => {
             expect(label.innerHTML).toBe('testing');
         });
 
-        it('should render with hint', async () => {
+        it('should render with hint and set aria attribute', async () => {
             element.setAttribute('hint', 'hint');
             await page.waitForChanges();
 
             const hint = await element.find('.dot-field__hint');
+            const autocomplete = await element.find('dot-autocomplete');
             expect(await hint.innerHTML).toBe('hint');
-        });
+            expect(autocomplete.getAttribute('aria-describedby')).toBe('hint-hint');
+            expect(autocomplete.getAttribute('tabIndex')).toBe('0');
+    });
 
-        it('should render with paceholder', async () => {
+        it('should render with placeholder', async () => {
             element.setAttribute('placeholder', 'placeholder');
             await page.waitForChanges();
 
