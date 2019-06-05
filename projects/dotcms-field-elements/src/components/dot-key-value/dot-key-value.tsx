@@ -117,11 +117,6 @@ export class DotKeyValueComponent {
     /** Value of the field */
     @Prop({ mutable: true }) value = '';
 
-    @Prop({
-        reflectToAttr: true
-    })
-    fieldType = ''; // TODO: remove this prop and fix dot-form to use tagName
-
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueField[] = [];
 
@@ -249,7 +244,6 @@ export class DotKeyValueComponent {
         this.valueChange.emit({
             name: this.name,
             value: returnedValue,
-            fieldType: this.fieldType
         });
     }
 

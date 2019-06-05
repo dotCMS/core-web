@@ -1,187 +1,130 @@
-import {
-    DotCMSContentTypeField,
-    DotCMSDateField,
-    DotCMSKeyValueField,
-    DotCMSMultiSelectField,
-    DotCMSTextFieldField,
-    DotCMSDateRangeField
-} from '../../models';
+import { DotCMSContentTypeField } from '../../models';
 
 export const DotFormFields = {
-    Text: (field: DotCMSTextFieldField) => (
+    Text: (field: DotCMSContentTypeField) => (
         <dot-textfield
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
             regex-check={field.regexCheck}
-            validation-message={field.validationMessage}
-            placeholder={field.placeholder}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
-            type={field.type}
+            value={field.defaultValue}
         />
     ),
 
     Textarea: (field: DotCMSContentTypeField) => (
         <dot-textarea
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
             regex-check={field.regexCheck}
-            validation-message={field.validationMessage}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
+            value={field.defaultValue}
         />
     ),
 
     Checkbox: (field: DotCMSContentTypeField) => (
         <dot-checkbox
-            disabled={field.disabled}
             hint={field.hint}
             label={field.name}
             name={field.variable}
             options={field.values}
             required={field.required}
-            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
 
-    'Multi-Select': (field: DotCMSMultiSelectField) => (
+    'Multi-Select': (field: DotCMSContentTypeField) => (
         <dot-multi-select
-            disabled={field.disabled}
             hint={field.hint}
             label={field.name}
             name={field.variable}
             options={field.values}
             required={field.required}
-            required-message={field.requiredMessage}
-            size={field.size}
             value={field.defaultValue}
         />
     ),
 
-    'Key-Value': (field: DotCMSKeyValueField) => (
+    'Key-Value': (field: DotCMSContentTypeField) => (
         <dot-key-value
-            disabled={field.disabled}
-            label={field.name}
             field-type={field.fieldType}
-            save-btn-label={field.saveBtnLabel}
-            name={field.variable}
-            key-placeholder={field.keyPlaceholder}
-            value-placeholder={field.valuePlaceholder}
             hint={field.hint}
-            value={field.defaultValue}
+            label={field.name}
+            name={field.variable}
             required={field.required}
-            required-message={field.requiredMessage}
+            value={field.defaultValue}
         />
     ),
 
     Select: (field: DotCMSContentTypeField) => (
         <dot-select
-            disabled={field.disabled}
             hint={field.hint}
             label={field.name}
             name={field.variable}
             options={field.values}
             required={field.required}
-            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
 
     Radio: (field: DotCMSContentTypeField) => (
         <dot-radio
-            disabled={field.disabled}
             hint={field.hint}
             label={field.name}
             name={field.variable}
             options={field.values}
             required={field.required}
-            required-message={field.requiredMessage}
             value={field.defaultValue}
         />
     ),
 
-    Date: (field: DotCMSDateField) => (
+    Date: (field: DotCMSContentTypeField) => (
         <dot-date
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
-            validation-message={field.validationMessage}
-            min={field.min}
-            max={field.max}
-            step={field.step}
+            value={field.defaultValue}
         />
     ),
 
-    Time: (field: DotCMSDateField) => (
+    Time: (field: DotCMSContentTypeField) => (
         <dot-time
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
-            validation-message={field.validationMessage}
-            min={field.min}
-            max={field.max}
-            step={field.step}
+            value={field.defaultValue}
         />
     ),
 
-    'Date-and-Time': (field: DotCMSDateField) => (
+    'Date-and-Time': (field: DotCMSContentTypeField) => (
         <dot-date-time
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
-            validation-message={field.validationMessage}
-            min={field.min}
-            max={field.max}
-            step={field.step}
+            value={field.defaultValue}
         />
     ),
 
-    'Date-Range': (field: DotCMSDateRangeField) => (
+    'Date-Range': (field: DotCMSContentTypeField) => (
         <dot-date-range
-            disabled={field.disabled}
-            label={field.name}
-            max={field.max}
-            min={field.min}
-            name={field.variable}
             hint={field.hint}
-            displayFormat={field.displayFormat}
-            presets={field.presets}
-            presetLabel={field.presetLabel}
-            value={field.defaultValue}
+            label={field.name}
+            name={field.variable}
             required={field.required}
-            required-message={field.requiredMessage}
+            value={field.defaultValue}
         />
     ),
 
     Tag: (field: DotCMSContentTypeField) => (
         <dot-tags
-            disabled={field.disabled}
+            hint={field.hint}
             label={field.name}
             name={field.variable}
-            placeholder={field.placeholder}
-            hint={field.hint}
-            value={field.defaultValue}
             required={field.required}
-            required-message={field.requiredMessage}
+            value={field.defaultValue}
         />
     )
 };

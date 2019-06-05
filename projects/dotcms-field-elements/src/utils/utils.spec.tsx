@@ -64,6 +64,11 @@ describe('getDotOptionsFromFieldValue', () => {
         const items = getDotOptionsFromFieldValue('key1A, key2/B, @');
         expect(items.length).toBe(0);
     });
+
+    it('shold handle empty', () => {
+        const items = getDotOptionsFromFieldValue('');
+        expect(items.length).toBe(0);
+    });
 });
 
 describe('getErrorClass', () => {

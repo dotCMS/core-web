@@ -24,6 +24,10 @@ export function getClassNames(
     };
 }
 
+function isStringValid(string: string): boolean {
+    return !string || typeof string  !== 'string';
+}
+
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
  *
@@ -31,6 +35,10 @@ export function getClassNames(
  * @returns {DotOption[]}
  */
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
+    if (isStringValid(rawString)) {
+        return [];
+    }
+
     rawString = rawString.replace(/(?:\\[rn]|[\r\n]+)+/g, ',');
 
     const items = isKeyPipeValueFormatValid(rawString) ? rawString

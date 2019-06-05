@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State } from '@stencil/core';
-import { DotCMSContentTypeField, DotFieldStatus, DotCMSKeyValueField } from '../../models';
+import { DotCMSContentTypeField, DotFieldStatus } from '../../models';
 import { DotFormFields } from './dot-form-fields';
 import {
     getClassNames,
@@ -8,22 +8,24 @@ import {
     updateStatus
 } from '../../utils';
 
-const fieldParamsConversionToBE = {
-    'Key-Value': (values: string): { [key: string]: string } => {
-        const returnValue = {};
+const pipedValuesToObject = (values: string): { [key: string]: string } => {
+    return values && typeof values === 'string'
+        ? values.split(',').reduce((acc, item) => {
+              const [key, value] = item.split('|');
+              return {
+                  ...acc,
+                  [key]: value
+              };
+          }, {})
+        : null;
+};
 
-        if (typeof values === 'string' && values) {
-            values.split(',').forEach((item: string) => {
-                const [key, value] = item.split('|');
-                returnValue[key] = value;
-            });
-        }
-        return returnValue;
-    }
+const fieldParamsConversionToBE = {
+    'DOT-KEY-VALUE': pipedValuesToObject
 };
 
 const fieldParamsConversionFromBE = {
-    'Key-Value': (field: DotCMSKeyValueField) => {
+    'Key-Value': (field: DotCMSContentTypeField) => {
         if (field.defaultValue && typeof field.defaultValue !== 'string') {
             const valuesArray = Object.keys(field.defaultValue).map((key: string) => {
                 return { key: key, value: field.defaultValue[key] };
@@ -35,18 +37,18 @@ const fieldParamsConversionFromBE = {
 };
 
 const fieldMap = {
-    'Checkbox': DotFormFields.Checkbox,
-    'Date': DotFormFields.Date,
-    'Date-Range': DotFormFields['Date-Range'],
-    'Date-and-Time': DotFormFields['Date-and-Time'],
-    'Key-Value': fieldParamsConversionFromBE['Key-Value'],
+    Time: DotFormFields.Time,
+    Textarea: DotFormFields.Textarea,
+    Text: DotFormFields.Text,
+    Tag: DotFormFields.Tag,
+    Select: DotFormFields.Select,
+    Radio: DotFormFields.Radio,
     'Multi-Select': DotFormFields['Multi-Select'],
-    'Radio': DotFormFields.Radio,
-    'Select': DotFormFields.Select,
-    'Tag': DotFormFields.Tag,
-    'Text': DotFormFields.Text,
-    'Textarea': DotFormFields.Textarea,
-    'Time': DotFormFields.Time
+    'Key-Value': fieldParamsConversionFromBE['Key-Value'],
+    'Date-and-Time': DotFormFields['Date-and-Time'],
+    'Date-Range': DotFormFields['Date-Range'],
+    Date: DotFormFields.Date,
+    Checkbox: DotFormFields.Checkbox
 };
 
 @Component({
@@ -69,20 +71,22 @@ export class DotFormComponent {
     fieldsStatus: { [key: string]: string } = {};
 
     /**
-     * Listen for "valueChanges" and updates the form value with new value.
+     * Update the form value when valueChange in any of the child fields.
      *
      * @param CustomEvent event
      * @memberof DotFormComponent
      */
     @Listen('valueChange')
     onValueChange(event: CustomEvent): void {
-        const { name, value, fieldType } = event.detail;
-        this.value[name] = fieldType ? fieldParamsConversionToBE[fieldType](value) : value;
-        this.updateFieldsValues();
+        const { tagName } = event.target as HTMLElement;
+        const { name, value } = event.detail;
+
+        this.value[name] = fieldParamsConversionToBE[tagName](value) || value;
+        this.fields = this.getUpdateFieldsValues();
     }
 
     /**
-     * Listen for "statusChange" and updates the form status with new value.
+     * Update the form status when statusChange in any of the child fields
      *
      * @param CustomEvent event
      * @memberof DotFormComponent
@@ -113,12 +117,11 @@ export class DotFormComponent {
 
     render() {
         return (
-            <form onSubmit={(evt: Event) => this.handleSubmit(evt)}>
+            <form onSubmit={this.handleSubmit.bind(this)}>
                 {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
+
                 <div class="form__buttons">
-                    <button type="button" onClick={() => this.resetForm()}>
-                        {this.resetLabel}
-                    </button>
+                    <button onClick={() => this.resetForm()}>{this.resetLabel}</button>
                     <button type="submit" disabled={!this.status.dotValid || null}>
                         {this.submitLabel}
                     </button>
@@ -127,8 +130,8 @@ export class DotFormComponent {
         );
     }
 
-    private updateFieldsValues() {
-        this.fields = this.fields.map((field: DotCMSContentTypeField) => {
+    private getUpdateFieldsValues(): DotCMSContentTypeField[] {
+        return this.fields.map((field: DotCMSContentTypeField) => {
             return typeof this.value[field.variable] !== 'undefined'
                 ? { ...field, defaultValue: this.value[field.variable] }
                 : field;
@@ -138,6 +141,7 @@ export class DotFormComponent {
     private getStatusValue(statusName: string): boolean {
         let value;
         const fields = Object.keys(this.fieldsStatus);
+
         for (const field of fields) {
             if (!this.fieldsStatus[field][statusName]) {
                 value = this.fieldsStatus[field][statusName];
@@ -148,8 +152,8 @@ export class DotFormComponent {
         return value;
     }
 
-    private handleSubmit(evt: Event): void {
-        evt.preventDefault();
+    private handleSubmit(event: Event): void {
+        event.preventDefault();
         this.onSubmit.emit({
             ...this.value
         });
@@ -159,12 +163,12 @@ export class DotFormComponent {
         return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
     }
 
-    private areFieldsToShowDefined(field: DotCMSContentTypeField): boolean {
-        return this.fieldsToShow.length === 0 || this.fieldsToShow.includes(field.variable);
+    private shouldAddField(field: DotCMSContentTypeField): boolean {
+        return !this.fieldsToShow.length || this.fieldsToShow.includes(field.variable);
     }
 
     private getField(field: DotCMSContentTypeField): any {
-        return this.areFieldsToShowDefined(field) ? this.getFieldTag(field) : '';
+        return this.shouldAddField(field) ? this.getFieldTag(field) : '';
     }
 
     private resetForm(): void {
