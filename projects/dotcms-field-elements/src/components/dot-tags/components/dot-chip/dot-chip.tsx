@@ -9,13 +9,13 @@ export class DotChipComponent {
     @Element() el: HTMLElement;
 
     /** Chip's label */
-    @Prop() label = '';
+    @Prop({ reflectToAttr: true }) label = '';
 
     /** (optional) Delete button's label */
-    @Prop() deleteLabel = 'delete';
+    @Prop({ reflectToAttr: true }) deleteLabel = 'Delete';
 
     /** (optional) If is true disabled the delete button */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true }) disabled = false;
 
     @Event() remove: EventEmitter<String>;
 
@@ -29,14 +29,11 @@ export class DotChipComponent {
                 <button type="button"
                     aria-label={label}
                     disabled={this.disabled}
-                    onClick={() => this.removeTag()}>
+                    onClick={() => this.remove.emit(this.label)}
+                >
                     {this.deleteLabel}
                 </button>
             </Fragment>
         );
-    }
-
-    private removeTag(): void {
-        this.remove.emit(this.label);
     }
 }
