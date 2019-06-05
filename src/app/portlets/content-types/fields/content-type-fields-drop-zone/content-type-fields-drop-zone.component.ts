@@ -235,7 +235,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.displayDialog = false;
         this.currentField = null;
         this.dialogActiveTab = null;
-        this.propertiesForm.destroy();
         this.setDialogOkButtonState(false);
     }
 

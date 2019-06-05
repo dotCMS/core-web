@@ -50,12 +50,9 @@ export class ContentTypeFieldsPropertiesFormComponent implements OnChanges, OnIn
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.formFieldData.currentValue && this.formFieldData) {
-            this.updateFormFieldData();
-            const properties: string[] = this.fieldPropertyService.getProperties(
-                this.formFieldData.clazz
-            );
-            this.initFormGroup(properties);
-            this.sortProperties(properties);
+            this.destroy();
+
+            setTimeout(this.init.bind(this), 0);
         }
     }
 
@@ -124,12 +121,26 @@ export class ContentTypeFieldsPropertiesFormComponent implements OnChanges, OnIn
 
     destroy(): void {
         this.fieldProperties = [];
-        const propertiesContainer = this.propertiesContainer.nativeElement;
-        propertiesContainer.childNodes.forEach(child => {
-            if (child.tagName) {
-                propertiesContainer.removeChild(child);
-            }
-        });
+
+        if (this.propertiesContainer) {
+            const propertiesContainer = this.propertiesContainer.nativeElement;
+            propertiesContainer.childNodes.forEach(child => {
+                if (child.tagName) {
+                    propertiesContainer.removeChild(child);
+                }
+            });
+        }
+    }
+
+    private init(): void {
+        this.updateFormFieldData();
+
+        const properties: string[] = this.fieldPropertyService.getProperties(
+            this.formFieldData.clazz
+        );
+
+        this.initFormGroup(properties);
+        this.sortProperties(properties);
     }
 
     private initFormGroup(properties?: string[]): void {
