@@ -206,7 +206,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     editFieldHandler(fieldToEdit: DotContentTypeField): void {
         const fields = this.getFieldsWithoutLayout();
         this.currentField = fields.find((field) => fieldToEdit.id === field.id);
-        console.log('this.currentField', this.currentField );
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
         this.toggleDialog();
     }
@@ -319,6 +318,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     private getFieldsWithoutLayout(): DotContentTypeField[] {
         return this.fieldRows
             .map(row => row.columns)
+            .filter(columns => !!columns)
             .reduce((accumulator, currentValue) => accumulator.concat(currentValue), [])
             .map(fieldColumn => fieldColumn.fields)
             .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);

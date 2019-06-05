@@ -304,7 +304,7 @@ class TestHostComponent {
     constructor() {}
 }
 
-fdescribe('Load fields and drag and drop', () => {
+describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
     let hostDe: DebugElement;
@@ -481,6 +481,26 @@ fdescribe('Load fields and drag and drop', () => {
         expect(spy).toHaveBeenCalledWith(field);
     });
 
+    it('should save all updated fields', () => {
+        const updatedField = fakeFields[2].columns[0].fields[0];
+
+        fixture.detectChanges();
+        comp.editFieldHandler(updatedField);
+
+        spyOn(comp.editField, 'emit');
+
+        const fieldUpdated = {
+            id: '1',
+            fixed: true,
+            indexed: true
+        };
+
+        comp.displayDialog = false;
+        comp.saveFieldsHandler(fieldUpdated);
+
+        expect(comp.editField.emit).toHaveBeenCalledWith(Object.assign({}, updatedField, fieldUpdated));
+    });
+
     it('should emit and create 2 columns', () => {
         spyOn(comp, 'addRow');
         fixture.detectChanges();
@@ -581,30 +601,6 @@ fdescribe('Load fields and drag and drop', () => {
             done();
         });
         comp.saveFieldsHandler(newlyField);
-    });
-
-    it('should save all updated fields', () => {
-        const updatedField = fakeFields[2].columns[0].fields[0];
-
-        fixture.detectChanges();
-        comp.editFieldHandler(updatedField);
-
-        comp.saveFields.subscribe((fields) => {
-            const fieldUpdated = {
-                fixed: true,
-                indexed: true
-            };
-
-            comp.displayDialog = false;
-            comp.saveFieldsHandler(fieldUpdated);
-
-            const { fixed, indexed, ...original } = fields[0];
-
-            expect(original).toEqual(fakeFields[8]);
-            expect(fields[0].fixed).toEqual(true);
-            expect(fields[0].indexed).toEqual(true);
-            expect(comp.currentField).toEqual(updatedField);
-        });
     });
 
    it('should handler removeField event', () => {
