@@ -267,8 +267,6 @@ describe('ContentTypesEditComponent', () => {
 
             it('should create content type', () => {
 
-                spyOn(dotRouterService, 'goToEditContentType');
-
                 const responseContentType: ContentType = {
                     ...mockContentType,
                     ...{ id: '123' },
