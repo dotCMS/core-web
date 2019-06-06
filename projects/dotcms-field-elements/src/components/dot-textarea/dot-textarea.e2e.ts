@@ -145,7 +145,7 @@ describe('dot-textarea', () => {
                 element.setProperty('required', 'true');
                 await page.waitForChanges();
                 const label = await dotTestUtil.getDotLabel(page);
-                expect(label.getAttribute('label')).toBeDefined();
+                expect(label.getAttribute('required')).toBeDefined();
             });
         });
 
