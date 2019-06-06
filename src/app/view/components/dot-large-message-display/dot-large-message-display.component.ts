@@ -41,6 +41,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
             .sub()
             .pipe(takeUntil(this.destroy$))
             .subscribe((content: DotLargeMessageDisplayParams) => {
+                console.log('content', content);
                 if (content) {
                     this.recentlyDialogAdded = true;
                     this.messages.push(content);
@@ -49,7 +50,6 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
     }
 
     ngOnDestroy(): void {
-        this.dialogs.destroy();
         this.destroy$.next(true);
         this.destroy$.complete();
     }
