@@ -1,5 +1,5 @@
 import { DotCMSContentTypeField } from '../../../models';
-import { DotFormFields } from '../dot-form-fields';
+import { DotFormFields } from './fields';
 import { getStringFromDotKeyArray } from '../../../utils';
 
 const pipedValuesToObject = (values: string): { [key: string]: string } => {

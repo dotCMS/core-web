@@ -1,7 +1,8 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
-import { DotCMSContentTypeField, DotFieldStatus } from '../../models';
-import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
+import { DotCMSContentTypeField } from './models';
+import { DotFieldStatus } from '../../models';
 import { fieldParamsConversionToBE, fieldMap } from './utils';
+import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
     tag: 'dot-form',
