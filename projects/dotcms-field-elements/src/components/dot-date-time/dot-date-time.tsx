@@ -21,6 +21,7 @@ import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
 import { checkProp, getClassNames, getTagError, getTagHint } from '../../utils';
 import { dotParseDate } from '../../utils/props/validators';
+import { stringify } from 'querystring';
 
 const DATE_SUFFIX = '-date';
 const TIME_SUFFIX = '-time';
@@ -33,47 +34,56 @@ export class DotDateTimeComponent {
     @Element() el: HTMLElement;
 
     /** Value format yyyy-mm-dd hh:mm:ss e.g., 2005-12-01 15:22:00 */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     value = '';
 
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({ reflectToAttr: true })
+    name = '';
 
     /** (optional) Text to be rendered next to input field */
-    @Prop() label = '';
+    @Prop({ reflectToAttr: true })
+    label = '';
 
     /** (optional) Hint text that suggest a clue of the field */
-    @Prop() hint = '';
+    @Prop({ reflectToAttr: true })
+    hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop() required = false;
+    @Prop({ reflectToAttr: true })
+    required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
-    @Prop() requiredMessage = '';
+    @Prop({ reflectToAttr: true })
+    requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when min or max are set and condition not met */
-    @Prop() validationMessage = '';
+    @Prop({ reflectToAttr: true })
+    validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop() disabled = false;
+    @Prop({ reflectToAttr: true })
+    disabled = false;
 
     /** (optional) Min, minimum value that the field will allow to set. Format should be yyyy-mm-dd hh:mm:ss | yyyy-mm-dd | hh:mm:ss */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     min = '';
 
     /** (optional) Max, maximum value that the field will allow to set. Format should be yyyy-mm-dd hh:mm:ss | yyyy-mm-dd | hh:mm:ss */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     max = '';
 
     /** (optional) Step specifies the legal number intervals for the input fields date && time e.g., 2,10 */
-    @Prop({ mutable: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     step = '1,1';
 
     /** (optional) The string to use in the date label field */
-    @Prop() dateLabel = 'Date';
+    @Prop({ reflectToAttr: true })
+    dateLabel = 'Date';
 
     /** (optional) The string to use in the time label field */
-    @Prop() timeLabel = 'Time';
+    @Prop({ reflectToAttr: true })
+    timeLabel = 'Time';
 
     @State() classNames: DotFieldStatusClasses;
     @State() errorMessageElement: JSX.Element;
@@ -109,28 +119,30 @@ export class DotDateTimeComponent {
 
     componentWillLoad(): void {
         this.validateProps();
-        this.setDatesFormat();
-        [this._step.date, this._step.time] = this.step.split(',');
     }
 
     @Watch('value')
     valueWatch(): void {
         this.value = checkProp(this, 'value', 'dateTime');
+        this._value = dotParseDate(this.value);
     }
 
     @Watch('min')
     minWatch(): void {
         this.min = checkProp(this, 'min', 'dateTime');
+        this._minDateTime = dotParseDate(this.min);
     }
 
     @Watch('max')
     maxWatch(): void {
         this.max = checkProp(this, 'max', 'dateTime');
+        this._maxDateTime = dotParseDate(this.max);
     }
 
     @Watch('step')
     stepWatch(): void {
-        this.step = checkProp(this, 'step');
+        this.step = checkProp(this, 'step') || '1,1';
+        [this._step.date, this._step.time] = this.step.split(',');
     }
 
     @Listen('_valueChange')
@@ -218,12 +230,6 @@ export class DotDateTimeComponent {
         this.valueWatch();
     }
 
-    private setDatesFormat(): void {
-        this._minDateTime = dotParseDate(this.min);
-        this._maxDateTime = dotParseDate(this.max);
-        this._value = dotParseDate(this.value);
-    }
-
     // tslint:disable-next-line:cyclomatic-complexity
     private statusHandler(): DotFieldStatus {
         return {
@@ -240,7 +246,7 @@ export class DotDateTimeComponent {
     }
 
     private setValue(event: DotFieldValueEvent) {
-        if (event.name.indexOf(DATE_SUFFIX) > 0) {
+        if (event.name.indexOf(DATE_SUFFIX) >= 0) {
             this._value.date = event.value;
         } else {
             this._value.time = event.value;
@@ -248,7 +254,7 @@ export class DotDateTimeComponent {
     }
 
     private setStatus(event: DotFieldStatusEvent) {
-        if (event.name.indexOf(DATE_SUFFIX) > 0) {
+        if (event.name.indexOf(DATE_SUFFIX) >= 0) {
             this._status.date = event.status;
         } else {
             this._status.time = event.status;
