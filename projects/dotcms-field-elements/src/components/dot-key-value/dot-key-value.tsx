@@ -146,12 +146,14 @@ export class DotKeyValueComponent {
         this.items = this.items.filter(
             (_item: DotKeyValueField, index: number) => index !== event.detail
         );
+        this.refreshStatus();
         this.emitChanges();
     }
 
     @Listen('add')
     addItemHandler({ detail }: CustomEvent<DotKeyValueField>): void {
         this.items = [...this.items, detail];
+        this.refreshStatus();
         this.emitChanges();
     }
 
@@ -248,7 +250,6 @@ export class DotKeyValueComponent {
     }
 
     private emitChanges(): void {
-        this.refreshStatus();
         this.emitStatusChange();
         this.emitValueChange();
     }

@@ -20,7 +20,7 @@ export class DotFormComponent {
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
-    private fieldsStatus: { [key: string]: string } = {};
+    private fieldsStatus: { [key: string]: { [key: string]: boolean } } = {};
     private value = {};
 
     /**
@@ -46,12 +46,13 @@ export class DotFormComponent {
      * @memberof DotFormComponent
      */
     @Listen('statusChange')
-    onStatusChange(event: CustomEvent): void {
-        this.fieldsStatus[event.detail.name] = event.detail.status;
+    onStatusChange({ detail }: CustomEvent): void {
+        this.fieldsStatus[detail.name] = detail.status;
+
         this.status = updateStatus(this.status, {
-            dotTouched: this.getStatusValue('dotTouched'),
-            dotPristine: this.getStatusValue('dotPristine'),
-            dotValid: this.getStatusValue('dotValid')
+            dotTouched: this.getTouched(),
+            dotPristine: this.getStatusValueByName('dotPristine'),
+            dotValid: this.getStatusValueByName('dotValid')
         });
     }
 
@@ -83,7 +84,9 @@ export class DotFormComponent {
                 </div>
 
                 <div class="form__buttons">
-                    <button type="reset" onClick={() => this.resetForm()}>{this.resetLabel}</button>
+                    <button type="reset" onClick={() => this.resetForm()}>
+                        {this.resetLabel}
+                    </button>
                     <button type="submit" disabled={!this.status.dotValid}>
                         {this.submitLabel}
                     </button>
@@ -110,18 +113,16 @@ export class DotFormComponent {
         });
     }
 
-    private getStatusValue(name: string): boolean {
-        let value;
-        const fields = Object.keys(this.fieldsStatus);
+    private getTouched(): boolean {
+        return Object.values(this.fieldsStatus)
+            .map((field) => field.dotTouched)
+            .includes(true);
+    }
 
-        for (const field of fields) {
-            if (!this.fieldsStatus[field][name]) {
-                value = this.fieldsStatus[field][name];
-                break;
-            }
-            value = this.fieldsStatus[field][name];
-        }
-        return value;
+    private getStatusValueByName(name: string): boolean {
+        return Object.values(this.fieldsStatus)
+            .map((field) => field[name])
+            .every((item) => item === true);
     }
 
     private handleSubmit(event: Event): void {

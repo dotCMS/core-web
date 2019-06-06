@@ -2,6 +2,7 @@ import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 import { DotCMSContentTypeField } from './../../models/dot-type-field.model';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { type } from 'os';
+import { dotTestUtil } from '../../utils';
 
 const basicField: DotCMSContentTypeField = {
     clazz: '',
@@ -57,7 +58,17 @@ const fieldsMock: DotCMSContentTypeField[] = [
     }
 ];
 
-xdescribe('dot-form', () => {
+
+const fieldMockNotRequired = [
+    {
+        ...fieldsMock[0],
+        required: false
+    },
+    fieldsMock[1],
+    fieldsMock[2]
+];
+
+describe('dot-form', () => {
     let page: E2EPage;
     let element: E2EElement;
     let submitSpy: EventSpy;
@@ -65,9 +76,9 @@ xdescribe('dot-form', () => {
     const getFields = () => page.findAll('form .form__fields > *');
 
     const getResetButton = () =>
-        page.find('dot-form > form .form__buttons button:not([type="submit"])');
+        page.find('.form__buttons button:not([type="submit"])');
 
-    const getSubmitButton = () => page.find('dot-form > form .form__buttons button[type="submit"]');
+    const getSubmitButton = () => page.find('.form__buttons button[type="submit"]');
 
     const fillTextfield = async (text?: string) => {
         const textfield = await element.find('input');
@@ -89,6 +100,60 @@ xdescribe('dot-form', () => {
         await page.setContent(`<dot-form></dot-form>`);
         element = await page.find('dot-form');
         submitSpy = await element.spyOnEvent('onSubmit');
+    });
+
+    describe('css class', () => {
+        beforeEach(() => {
+            element.setProperty('fields', fieldMockNotRequired);
+        });
+
+        it('should have empty', async () => {
+            await page.waitForChanges();
+            expect(element).toHaveClasses(dotTestUtil.class.empty);
+        });
+
+        it('should have filled', async () => {
+            await page.waitForChanges();
+
+            const keyValue = await element.find('dot-key-value');
+            keyValue.triggerEvent('statusChange', {
+                detail: {
+                    name: 'keyvalue2',
+                    status: {
+                        dotValid: true,
+                        dotTouched: true,
+                        dotPristine: false
+                    }
+                }
+            });
+            keyValue.triggerEvent('valueChange', {
+                detail: {
+                    name: 'keyvalue2',
+                    value: 'key|value,llave|valor'
+                }
+            });
+
+            await page.waitForChanges();
+            expect(element).toHaveClasses(dotTestUtil.class.filled);
+        });
+
+        it('should have touched pristine', async () => {
+            await page.waitForChanges();
+            const keyValue = await element.find('dot-key-value');
+            keyValue.triggerEvent('statusChange', {
+                detail: {
+                    name: 'keyvalue2',
+                    status: {
+                        dotValid: true,
+                        dotTouched: true,
+                        dotPristine: true
+                    }
+                }
+            });
+            await page.waitForChanges();
+
+            expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
+        });
     });
 
     describe('@Props', () => {
@@ -216,7 +281,7 @@ xdescribe('dot-form', () => {
 
     describe('actions', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldsMock);
+            element.setProperty('fields', fieldMockNotRequired);
             await page.waitForChanges();
         });
 
@@ -224,18 +289,18 @@ xdescribe('dot-form', () => {
             it('should empty values', async () => {
                 await fillTextfield('hello world');
                 await page.waitForChanges();
+                const [textfield, keyvalue, select] = await getFields();
 
-                resetForm();
+                expect(await textfield.getProperty('value')).toBe('hello world');
+
+                await resetForm();
                 await page.waitForChanges();
 
-                const [text, keyvalue, select] = await getFields();
-                await page.waitForChanges();
-
-                expect(await text.getProperty('value')).toBe('');
+                expect(await textfield.getProperty('value')).toBe('');
                 expect(await keyvalue.getProperty('value')).toBe('');
                 expect(await select.getProperty('value')).toBe('');
+                expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
         });
     });
-
 });
