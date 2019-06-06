@@ -24,8 +24,8 @@ export function getClassNames(
     };
 }
 
-function isStringValid(string: string): boolean {
-    return !string || typeof string  !== 'string';
+function isStringValid(val: string): boolean {
+    return typeof val === 'string' && !!val;
 }
 
 /**
@@ -35,7 +35,7 @@ function isStringValid(string: string): boolean {
  * @returns {DotOption[]}
  */
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
-    if (isStringValid(rawString)) {
+    if (!isStringValid(rawString)) {
         return [];
     }
 

@@ -65,8 +65,8 @@ describe('getDotOptionsFromFieldValue', () => {
         expect(items.length).toBe(0);
     });
 
-    it('shold handle empty', () => {
-        const items = getDotOptionsFromFieldValue('');
+    it('shold handle other type', () => {
+        const items = getDotOptionsFromFieldValue(null);
         expect(items.length).toBe(0);
     });
 });
