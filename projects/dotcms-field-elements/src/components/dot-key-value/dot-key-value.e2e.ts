@@ -364,7 +364,6 @@ describe('dot-key-value', () => {
                 });
                 await page.waitForChanges();
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                    fieldType: '',
                     name: 'fieldName',
                     value: 'some key|hello world'
                 });
@@ -383,7 +382,6 @@ describe('dot-key-value', () => {
                 await page.waitForChanges();
 
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                    fieldType: '',
                     name: 'fieldName',
                     value: 'first key|first value'
                 });
@@ -425,7 +423,6 @@ describe('dot-key-value', () => {
                 await page.waitForChanges();
 
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                    fieldType: '',
                     name: 'fieldName',
                     value: ''
                 });
