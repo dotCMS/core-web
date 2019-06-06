@@ -24,7 +24,7 @@ export function getClassNames(
     };
 }
 
-function isStringValid(val: string): boolean {
+export function isStringValid(val: string): boolean {
     return typeof val === 'string' && !!val;
 }
 
@@ -143,7 +143,7 @@ export function updateStatus(
  * @returns {JSX.Element}
  */
 export function getTagError(show: boolean, message: string): JSX.Element {
-    return show && typeof message === 'string' ? <span class="dot-field__error-message">{message}</span> : null;
+    return show && isStringValid(message) ? <span class="dot-field__error-message">{message}</span> : null;
 }
 
 /**
@@ -154,7 +154,7 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  * @returns {JSX.Element}
  */
 export function getTagHint(hint: string): JSX.Element {
-    return hint && typeof hint === 'string' ? (
+    return isStringValid(hint) ? (
         <span class="dot-field__hint" id={getHintId(hint)}>
             {hint}
         </span>

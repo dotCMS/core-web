@@ -1,9 +1,9 @@
-import { DotCMSContentTypeField } from '../../../models';
+import { DotCMSContentTypeField } from '../models';
 import { DotFormFields } from './fields';
-import { getStringFromDotKeyArray } from '../../../utils';
+import { getStringFromDotKeyArray, isStringValid } from '../../../utils';
 
 const pipedValuesToObject = (values: string): { [key: string]: string } => {
-    return values && typeof values === 'string'
+    return isStringValid(values)
         ? values.split(',').reduce((acc, item) => {
               const [key, value] = item.split('|');
               return {

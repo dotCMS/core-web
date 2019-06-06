@@ -8,7 +8,8 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
-    updateStatus
+    updateStatus,
+    isStringValid
 } from '../../utils';
 
 const getData = async (): Promise<string[]> => {
@@ -163,7 +164,7 @@ export class DotTagsComponent {
     }
 
     private getValues(): string[] {
-        return typeof this.value === 'string' && this.value ? this.value.split(',') : [];
+        return isStringValid(this.value) ? this.value.split(',') : [];
     }
 
     private isValid(): boolean {
