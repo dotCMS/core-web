@@ -95,14 +95,24 @@ export class DotFormComponent {
         );
     }
 
-    private updateValue(): void {
-        this.value = {};
+    private getField(field: DotCMSContentTypeField): any {
+        return this.shouldShowField(field) ? this.getFieldTag(field) : '';
+    }
 
-        this.fields.forEach((field: DotCMSContentTypeField) => {
-            if (this.shouldShowField(field)) {
-                this.value[field.variable] = field.defaultValue || '';
-            }
-        });
+    private getFieldTag(field: DotCMSContentTypeField): any {
+        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
+    }
+
+    private getStatusValueByName(name: string): boolean {
+        return Object.values(this.fieldsStatus)
+            .map((field) => field[name])
+            .every((item) => item === true);
+    }
+
+    private getTouched(): boolean {
+        return Object.values(this.fieldsStatus)
+            .map((field) => field.dotTouched)
+            .includes(true);
     }
 
     private getUpdateFieldsValues(): DotCMSContentTypeField[] {
@@ -113,35 +123,11 @@ export class DotFormComponent {
         });
     }
 
-    private getTouched(): boolean {
-        return Object.values(this.fieldsStatus)
-            .map((field) => field.dotTouched)
-            .includes(true);
-    }
-
-    private getStatusValueByName(name: string): boolean {
-        return Object.values(this.fieldsStatus)
-            .map((field) => field[name])
-            .every((item) => item === true);
-    }
-
     private handleSubmit(event: Event): void {
         event.preventDefault();
         this.onSubmit.emit({
             ...this.value
         });
-    }
-
-    private getFieldTag(field: DotCMSContentTypeField): any {
-        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
-    }
-
-    private shouldShowField(field: DotCMSContentTypeField): boolean {
-        return !this.fieldsToShow.length || this.fieldsToShow.includes(field.variable);
-    }
-
-    private getField(field: DotCMSContentTypeField): any {
-        return this.shouldShowField(field) ? this.getFieldTag(field) : '';
     }
 
     private resetForm(): void {
@@ -152,6 +138,20 @@ export class DotFormComponent {
                 element.reset();
             } catch (error) {
                 console.warn(`${element.tagName}`, error);
+            }
+        });
+    }
+
+    private shouldShowField(field: DotCMSContentTypeField): boolean {
+        return !this.fieldsToShow.length || this.fieldsToShow.includes(field.variable);
+    }
+
+    private updateValue(): void {
+        this.value = {};
+
+        this.fields.forEach((field: DotCMSContentTypeField) => {
+            if (this.shouldShowField(field)) {
+                this.value[field.variable] = field.defaultValue || '';
             }
         });
     }
