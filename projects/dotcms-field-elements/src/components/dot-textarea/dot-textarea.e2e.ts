@@ -251,6 +251,8 @@ describe('dot-textarea', () => {
         beforeEach(async () => {
             page = await newE2EPage();
             await page.setContent(`<dot-form><dot-textarea required="true"></dot-textarea></dot-form>`);
+            element = await page.find('dot-textarea');
+            textarea = await page.find('textarea');
 
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
