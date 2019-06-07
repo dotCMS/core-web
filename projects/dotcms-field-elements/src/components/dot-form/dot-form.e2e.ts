@@ -106,10 +106,9 @@ describe('dot-form', () => {
         beforeEach(async () => {
             element.setProperty('fields', fieldMockNotRequired);
             await page.waitForChanges();
-
         });
 
-        it('should have empty', async () => {
+        it('should have empty', () => {
             expect(element).toHaveClasses(dotTestUtil.class.empty);
         });
 
@@ -241,7 +240,7 @@ describe('dot-form', () => {
                 await fillTextfield('hello world');
                 await page.waitForChanges();
 
-                submitForm();
+                await submitForm();
                 await page.waitForChanges();
 
                 expect(submitSpy).toHaveReceivedEventDetail({
@@ -252,8 +251,7 @@ describe('dot-form', () => {
             });
 
             it('should not emit when form is invalid', async () => {
-
-                submitForm();
+                await submitForm();
                 await page.waitForChanges();
 
                 expect(submitSpy).not.toHaveReceivedEvent();

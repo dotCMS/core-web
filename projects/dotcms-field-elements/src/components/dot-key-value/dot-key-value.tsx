@@ -115,7 +115,7 @@ export class DotKeyValueComponent {
     requiredMessage = 'This field is required';
 
     /** Value of the field */
-    @Prop({ mutable: true }) value = '';
+    @Prop({ reflectToAttr: true, mutable: true }) value = '';
 
     @State() status: DotFieldStatus;
     @State() items: DotKeyValueField[] = [];
@@ -204,7 +204,7 @@ export class DotKeyValueComponent {
             });
             this.emitStatusChange();
         }
-}
+    }
 
     private validateProps(): void {
         this.valueWatch();
@@ -245,7 +245,7 @@ export class DotKeyValueComponent {
         const returnedValue = getStringFromDotKeyArray(this.items);
         this.valueChange.emit({
             name: this.name,
-            value: returnedValue,
+            value: returnedValue
         });
     }
 
