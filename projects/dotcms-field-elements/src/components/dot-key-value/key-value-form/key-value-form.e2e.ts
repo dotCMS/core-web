@@ -199,7 +199,7 @@ describe('key-value-form', () => {
             });
         });
 
-        xdescribe('lostFocus', () => {
+        describe('lostFocus', () => {
             it('should emit when input gets blur', async () => {});
         });
     });
