@@ -1,9 +1,13 @@
 import { DotCMSContentTypeField } from '../models';
 import { DotFormFields } from './fields';
-import { getStringFromDotKeyArray, isStringValid } from '../../../utils';
+import { getStringFromDotKeyArray, isStringType } from '../../../utils';
 
+/**
+ * Given a string formatted value "key|value,llave|valor" return an object.
+ * @param values
+ */
 const pipedValuesToObject = (values: string): { [key: string]: string } => {
-    return isStringValid(values)
+    return isStringType(values)
         ? values.split(',').reduce((acc, item) => {
               const [key, value] = item.split('|');
               return {

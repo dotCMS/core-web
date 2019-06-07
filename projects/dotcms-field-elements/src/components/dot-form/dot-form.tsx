@@ -14,8 +14,8 @@ export class DotFormComponent {
     @Event() onSubmit: EventEmitter;
 
     @Prop() fieldsToShow: string[] = [];
-    @Prop() resetLabel = 'Reset';
-    @Prop() submitLabel = 'Submit';
+    @Prop({ reflectToAttr: true }) resetLabel = 'Reset';
+    @Prop({ reflectToAttr: true }) submitLabel = 'Submit';
     @Prop({ mutable: true }) fields: DotCMSContentTypeField[] = [];
 
     @State() status: DotFieldStatus = getOriginalStatus();
@@ -106,13 +106,13 @@ export class DotFormComponent {
 
     private getStatusValueByName(name: string): boolean {
         return Object.values(this.fieldsStatus)
-            .map((field) => field[name])
-            .every((item) => item === true);
+            .map((field: { [key: string]: boolean }) => field[name])
+            .every((item: boolean) => item === true);
     }
 
     private getTouched(): boolean {
         return Object.values(this.fieldsStatus)
-            .map((field) => field.dotTouched)
+            .map((field: { [key: string]: boolean }) => field.dotTouched)
             .includes(true);
     }
 

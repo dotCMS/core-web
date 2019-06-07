@@ -103,17 +103,17 @@ describe('dot-form', () => {
     });
 
     describe('css class', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             element.setProperty('fields', fieldMockNotRequired);
+            await page.waitForChanges();
+
         });
 
         it('should have empty', async () => {
-            await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.empty);
         });
 
         it('should have filled', async () => {
-            await page.waitForChanges();
 
             const keyValue = await element.find('dot-key-value');
             keyValue.triggerEvent('statusChange', {
@@ -231,14 +231,13 @@ describe('dot-form', () => {
     });
 
     describe('@Events', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             element.setProperty('fields', fieldsMock);
+            await page.waitForChanges();
         });
 
         describe('onSubmit', () => {
             it('should emit when form is valid', async () => {
-                await page.waitForChanges();
-
                 await fillTextfield('hello world');
                 await page.waitForChanges();
 
@@ -253,7 +252,6 @@ describe('dot-form', () => {
             });
 
             it('should not emit when form is invalid', async () => {
-                await page.waitForChanges();
 
                 submitForm();
                 await page.waitForChanges();

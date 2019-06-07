@@ -9,7 +9,7 @@ import {
     getTagError,
     getTagHint,
     updateStatus,
-    isStringValid
+    isStringType
 } from '../../utils';
 
 const getData = async (): Promise<string[]> => {
@@ -164,7 +164,7 @@ export class DotTagsComponent {
     }
 
     private getValues(): string[] {
-        return isStringValid(this.value) ? this.value.split(',') : [];
+        return isStringType(this.value) ? this.value.split(',') : [];
     }
 
     private isValid(): boolean {

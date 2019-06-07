@@ -24,7 +24,7 @@ export function getClassNames(
     };
 }
 
-export function isStringValid(val: string): boolean {
+export function isStringType(val: string): boolean {
     return typeof val === 'string' && !!val;
 }
 
@@ -35,7 +35,7 @@ export function isStringValid(val: string): boolean {
  * @returns {DotOption[]}
  */
 export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
-    if (!isStringValid(rawString)) {
+    if (!isStringType(rawString)) {
         return [];
     }
 
@@ -143,7 +143,7 @@ export function updateStatus(
  * @returns {JSX.Element}
  */
 export function getTagError(show: boolean, message: string): JSX.Element {
-    return show && isStringValid(message) ? <span class="dot-field__error-message">{message}</span> : null;
+    return show && isStringType(message) ? <span class="dot-field__error-message">{message}</span> : null;
 }
 
 /**
@@ -154,7 +154,7 @@ export function getTagError(show: boolean, message: string): JSX.Element {
  * @returns {JSX.Element}
  */
 export function getTagHint(hint: string): JSX.Element {
-    return isStringValid(hint) ? (
+    return isStringType(hint) ? (
         <span class="dot-field__hint" id={getHintId(hint)}>
             {hint}
         </span>
