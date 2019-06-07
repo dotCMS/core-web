@@ -126,7 +126,7 @@ export class DotInputCalendarComponent {
         this._statusChange.emit({
             name: this.name,
             status: this.status,
-            inValidRange: this.isValueInRange()
+            isValidRange: this.isValueInRange()
         });
     }
 

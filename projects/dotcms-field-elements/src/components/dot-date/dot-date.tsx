@@ -12,6 +12,7 @@ import {
 import Fragment from 'stencil-fragment';
 import {
     DotFieldStatusClasses,
+    DotFieldStatusEvent,
     DotFieldValueEvent,
     DotInputCalendarStatusEvent
 } from '../../models';
@@ -72,7 +73,7 @@ export class DotDateComponent {
     @State() errorMessageElement: JSX.Element;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() statusChange: EventEmitter<DotInputCalendarStatusEvent>;
+    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -108,14 +109,17 @@ export class DotDateComponent {
     @Listen('_statusChange')
     emitStatusChange(event: CustomEvent) {
         event.stopImmediatePropagation();
-        const statusEvent: DotInputCalendarStatusEvent = event.detail;
+        const inputCalendarStatus: DotInputCalendarStatusEvent = event.detail;
         this.classNames = getClassNames(
-            statusEvent.status,
-            statusEvent.status.dotValid,
+            inputCalendarStatus.status,
+            inputCalendarStatus.status.dotValid,
             this.required
         );
-        this.setErrorMessageElement(statusEvent);
-        this.statusChange.emit(event.detail);
+        this.setErrorMessageElement(inputCalendarStatus);
+        this.statusChange.emit({
+            name: inputCalendarStatus.name,
+            status: inputCalendarStatus.status
+        });
     }
 
     hostData() {
@@ -159,7 +163,7 @@ export class DotDateComponent {
 
     private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
         return !!this.value
-            ? statusEvent.inValidRange ? '' : this.validationMessage
+            ? statusEvent.isValidRange ? '' : this.validationMessage
             : this.requiredMessage;
     }
 }

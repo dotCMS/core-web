@@ -21,7 +21,7 @@ describe('dot-time', () => {
         });
 
         it('should be valid, touched & dirty when filled', async () => {
-            dotTestUtil.triggerStatusChange(false, true, true, inputCalendar);
+            dotTestUtil.triggerStatusChange({false, true, true, inputCalendar});
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.filled);
         });
@@ -271,7 +271,7 @@ describe('dot-time', () => {
                         dotTouched: false,
                         dotValid: true
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -298,7 +298,7 @@ describe('dot-time', () => {
                         dotTouched: true,
                         dotValid: true
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -320,7 +320,7 @@ describe('dot-time', () => {
                         dotTouched: false,
                         dotValid: false
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
             });
         });

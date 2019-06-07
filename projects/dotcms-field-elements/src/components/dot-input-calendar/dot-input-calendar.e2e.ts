@@ -145,7 +145,7 @@ describe('dot-input-calendar', () => {
                         dotTouched: false,
                         dotValid: true
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
                 expect(spyValueChange).toHaveReceivedEventDetail({ name: '', value: '' });
             });
@@ -163,11 +163,11 @@ describe('dot-input-calendar', () => {
                         dotTouched: true,
                         dotValid: true
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
             });
 
-            it('should send valid and inValidRange when value is empty', async () => {
+            it('should send valid and isValidRange when value is empty', async () => {
                 await input.press('1');
                 await input.press('Backspace');
                 await page.waitForChanges();
@@ -178,7 +178,7 @@ describe('dot-input-calendar', () => {
                         dotTouched: true,
                         dotValid: true
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
             });
 
@@ -194,11 +194,11 @@ describe('dot-input-calendar', () => {
                         dotTouched: true,
                         dotValid: false
                     },
-                    inValidRange: true
+                    isValidRange: true
                 });
             });
 
-            it('should send inValidRange and valid false when value is out of range', async () => {
+            it('should send isValidRange and valid false when value is out of range', async () => {
                 element.setProperty('min', '06:00:00');
                 element.setProperty('max', '22:00:00');
                 await input.press('2');
@@ -211,7 +211,7 @@ describe('dot-input-calendar', () => {
                         dotTouched: true,
                         dotValid: false
                     },
-                    inValidRange: false
+                    isValidRange: false
                 });
             });
         });
