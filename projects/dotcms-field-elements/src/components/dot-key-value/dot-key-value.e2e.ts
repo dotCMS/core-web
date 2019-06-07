@@ -418,8 +418,6 @@ describe('dot-key-value', () => {
         describe('reset', () => {
             it('should clear the field and emit invalid (field required)', async () => {
                 element.setAttribute('required', true);
-                await page.waitForChanges();
-
                 element.callMethod('reset');
                 await page.waitForChanges();
 
