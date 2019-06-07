@@ -265,7 +265,7 @@ describe('dot-select', () => {
             });
 
             it('should not break and not render with invalid data', async () => {
-                const wrongValue = [ 1, 2, '3'];
+                const wrongValue = [1, 2, '3'];
                 element.setProperty('required', wrongValue);
                 element.setProperty('requiredMessage', wrongValue);
                 await page.waitForChanges();
