@@ -15,13 +15,12 @@ import {
     DotFieldStatusClasses,
     DotFieldStatusEvent,
     DotFieldValueEvent,
-    DotDateSlot
+    DotDateSlot, DotInputCalendarStatusEvent
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
 import { checkProp, getClassNames, getTagError, getTagHint } from '../../utils';
 import { dotParseDate } from '../../utils/props/validators';
-import { stringify } from 'querystring';
 
 const DATE_SUFFIX = '-date';
 const TIME_SUFFIX = '-time';
@@ -151,16 +150,18 @@ export class DotDateTimeComponent {
         event.stopImmediatePropagation();
         this.setValue(valueEvent);
         if (this.isValueComplete()) {
-            this.valueChange.emit({ name: this.name, value: this.getValue() });
+            // this.value = this.getValue();
+            this.valueChange.emit({ name: this.name, value: this.value });
         }
     }
 
     @Listen('_statusChange')
     emitStatusChange(event: CustomEvent) {
-        const statusEvent: DotFieldStatusEvent = event.detail;
+        const inputCalendarStatus: DotInputCalendarStatusEvent = event.detail;
         let status: DotFieldStatus;
         event.stopImmediatePropagation();
-        this.setStatus(statusEvent);
+        this.setStatus(inputCalendarStatus);
+        this.setErrorMessageElement(inputCalendarStatus);
         if (this.isStatusComplete()) {
             status = this.statusHandler();
             this.classNames = getClassNames(status, status.dotValid, this.required);
@@ -168,11 +169,11 @@ export class DotDateTimeComponent {
         }
     }
 
-    @Listen('_errorMessage')
-    showErrorElement(event: CustomEvent) {
-        event.stopImmediatePropagation();
-        this.errorMessageElement = getTagError(event.detail.show, this.validationMessage);
-    }
+    // @Listen('_errorMessage')
+    // showErrorElement(event: CustomEvent) {
+    //     event.stopImmediatePropagation();
+    //     this.errorMessageElement = getTagError(event.detail.show, this.validationMessage);
+    // }
 
     hostData() {
         return {
@@ -193,8 +194,6 @@ export class DotDateTimeComponent {
                                 name={this.name + DATE_SUFFIX}
                                 value={this._value.date}
                                 required={this.required}
-                                required-message={this.requiredMessage}
-                                validation-message={this.validationMessage}
                                 min={this._minDateTime.date}
                                 max={this._maxDateTime.date}
                                 step={this._step.date}
@@ -208,8 +207,6 @@ export class DotDateTimeComponent {
                                 name={this.name + TIME_SUFFIX}
                                 value={this._value.time}
                                 required={this.required}
-                                required-message={this.requiredMessage}
-                                validation-message={this.validationMessage}
                                 min={this._minDateTime.time}
                                 max={this._maxDateTime.time}
                                 step={this._step.time}
@@ -253,7 +250,7 @@ export class DotDateTimeComponent {
         }
     }
 
-    private setStatus(event: DotFieldStatusEvent) {
+    private setStatus(event: DotInputCalendarStatusEvent) {
         if (event.name.indexOf(DATE_SUFFIX) >= 0) {
             this._status.date = event.status;
         } else {
@@ -267,5 +264,18 @@ export class DotDateTimeComponent {
 
     private isStatusComplete(): boolean {
         return this._status.date && this._status.time;
+    }
+
+    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent) {
+        this.errorMessageElement = getTagError(
+            !statusEvent.status.dotValid && !statusEvent.status.dotPristine,
+            this.getErrorMessage(statusEvent)
+        );
+    }
+
+    private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
+        return !!this.value
+            ? statusEvent.isValidRange ? '' : this.validationMessage
+            : this.requiredMessage;
     }
 }

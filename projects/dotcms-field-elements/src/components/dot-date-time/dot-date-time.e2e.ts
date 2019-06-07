@@ -2,26 +2,7 @@ import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
 
-function triggerStatusChange(
-    pristine: boolean,
-    touched: boolean,
-    valid: boolean,
-    input: E2EElement,
-    name?: string
-) {
-    input.triggerEvent('_statusChange', {
-        detail: {
-            name: name || '',
-            status: {
-                dotPristine: pristine,
-                dotTouched: touched,
-                dotValid: valid
-            }
-        }
-    });
-}
-
-xdescribe('dot-date-time', () => {
+describe('dot-date-time', () => {
     let page: E2EPage;
     let element: E2EElement;
     let dateInput: E2EElement;
@@ -42,7 +23,7 @@ xdescribe('dot-date-time', () => {
         });
 
         it('should be valid, touched & dirty when filled', async () => {
-            triggerStatusChange(false, true, true, timeInput, '-time');
+            dotTestUtil.triggerStatusChange(false, true, true, timeInput);
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.filled);
         });
@@ -53,31 +34,31 @@ xdescribe('dot-date-time', () => {
             });
 
             it('should be valid, untouched & pristine and required when filled on load', async () => {
-                triggerStatusChange(true, false, true, timeInput);
+                dotTestUtil.triggerStatusChange(true, false, true, timeInput);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
             });
 
             it('should be valid, touched & dirty and required when filled', async () => {
-                triggerStatusChange(false, true, true, timeInput);
+                dotTestUtil.triggerStatusChange(false, true, true, timeInput);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
             });
 
             it('should be invalid, untouched, pristine and required when empty on load', async () => {
-                triggerStatusChange(true, false, false, timeInput);
+                dotTestUtil.triggerStatusChange(true, false, false, timeInput);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
             });
 
             it('should be invalid, touched, dirty and required when valued is cleared', async () => {
-                triggerStatusChange(false, true, false, timeInput);
+                dotTestUtil.triggerStatusChange(false, true, false, timeInput);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
             });
 
             it('should have touched but pristine on blur', async () => {
-                triggerStatusChange(true, true, true, timeInput);
+                dotTestUtil.triggerStatusChange(true, true, true, timeInput);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
             });
@@ -191,34 +172,42 @@ xdescribe('dot-date-time', () => {
         });
 
         describe('requiredMessage', () => {
-            it('should render default value', () => {
-                const defaultMessage = 'This field is required';
-                expect(dateInput.getAttribute('required-message')).toBe(defaultMessage);
-                expect(timeInput.getAttribute('required-message')).toBe(defaultMessage);
+            beforeEach(() => {
+                element.setProperty('required', 'true');
+                dotTestUtil.triggerStatusChange(false, true, false, timeInput, false);
             });
 
-            it('should pass correctly to dot-input-calendar', async () => {
-                const customMessage = 'Test';
-                element.setProperty('requiredMessage', customMessage);
+            it('should render default value', async () => {
                 await page.waitForChanges();
-                expect(dateInput.getAttribute('required-message')).toBe(customMessage);
-                expect(timeInput.getAttribute('required-message')).toBe(customMessage);
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
+                    'This field is required'
+                );
+            });
+
+            it('should render custom message', async () => {
+                element.setProperty('requiredMessage', 'test');
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('test');
             });
         });
 
         describe('validationMessage', () => {
-            it('should render default value', () => {
-                const defaultMessage = "The field doesn't comply with the specified format";
-                expect(dateInput.getAttribute('validation-message')).toBe(defaultMessage);
-                expect(timeInput.getAttribute('validation-message')).toBe(defaultMessage);
+            beforeEach(() => {
+                element.setProperty('value', '2010-10-10');
+                dotTestUtil.triggerStatusChange(false, true, false, timeInput);
             });
 
-            it('should pass correctly to dot-input-calendar', async () => {
-                const customMessage = 'Test';
-                element.setProperty('validationMessage', customMessage);
+            it('should render default value', async () => {
                 await page.waitForChanges();
-                expect(dateInput.getAttribute('validation-message')).toBe(customMessage);
-                expect(timeInput.getAttribute('validation-message')).toBe(customMessage);
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
+                    "The field doesn't comply with the specified format"
+                );
+            });
+
+            it('should render custom message', async () => {
+                element.setProperty('validationMessage', 'validation');
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('validation');
             });
         });
 
@@ -418,7 +407,7 @@ xdescribe('dot-date-time', () => {
                         value: '10:10:10'
                     }
                 });
-                triggerStatusChange(false, true, true, timeInput);
+                dotTestUtil.triggerStatusChange(false, true, true, timeInput);
 
                 await page.waitForChanges();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -441,7 +430,7 @@ xdescribe('dot-date-time', () => {
 
         describe('status change', () => {
             it('should send status when dot-input-calendar send it', async () => {
-                triggerStatusChange(false, true, false, timeInput);
+                dotTestUtil.triggerStatusChange(false, true, false, timeInput);
                 await page.waitForChanges();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: '',
