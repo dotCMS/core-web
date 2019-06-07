@@ -21,7 +21,7 @@ function triggerStatusChange(
     });
 }
 
-describe('dot-date-time', () => {
+xdescribe('dot-date-time', () => {
     let page: E2EPage;
     let element: E2EElement;
     let dateInput: E2EElement;
