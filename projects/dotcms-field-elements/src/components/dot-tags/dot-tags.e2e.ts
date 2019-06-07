@@ -10,15 +10,16 @@ describe('dot-tags', () => {
 
     const getAutoComplete = () => page.find('dot-autocomplete');
     const getChips = () => page.findAll('dot-chip');
-
-    beforeEach(async () => {
+    const createEmptyDotTags = async () => {
         page = await newE2EPage();
         await page.setContent(`<dot-tags></dot-tags>`);
         element = await page.find('dot-tags');
         await page.waitForChanges();
-    });
+    };
 
     describe('css classes', () => {
+        beforeEach(async () => await createEmptyDotTags());
+
         it('should have empty', () => {
             expect(element).toHaveClasses(dotTestUtil.class.empty);
         });
@@ -108,6 +109,8 @@ describe('dot-tags', () => {
     });
 
     describe('@Props', () => {
+        beforeEach(async () => await createEmptyDotTags());
+
         describe('value', () => {
             it('should render chips', async () => {
                 element.setProperty('value', 'give,me,tags');
@@ -303,13 +306,34 @@ describe('dot-tags', () => {
     });
 
     describe('@Events', () => {
-        beforeEach(async () => {
-            element.setAttribute('name', 'fieldName');
-            spyValueChangeEvent = await page.spyOnEvent('valueChange');
-            spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+        describe('Events trigger when the component is created', () => {
+            beforeEach(async () => {
+                page = await newE2EPage();
+
+                await page.setContent(`
+                    <dot-form>
+                        <dot-tags required></dot-tags>
+                    </dot-form>
+                `);
+
+                await page.waitForChanges();
+            });
+
+            it('should emit status changed', async () => {
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(['dot-invalid', 'dot-untouched', 'dot-pristine']);
+            });
         });
 
         describe('valueChange and statusChange', () => {
+            beforeEach(async () => await createEmptyDotTags());
+
+            beforeEach(async () => {
+                element.setAttribute('name', 'fieldName');
+                spyValueChangeEvent = await page.spyOnEvent('valueChange');
+                spyStatusChangeEvent = await page.spyOnEvent('statusChange');
+            });
+
             it('should emit on add', async () => {
                 const autocomplete = await getAutoComplete();
                 autocomplete.triggerEvent('select', {
@@ -349,6 +373,8 @@ describe('dot-tags', () => {
         });
 
         describe('statusChange', () => {
+            beforeEach(async () => await createEmptyDotTags());
+
             it('should emit on lost focus in autocomplete', async () => {
                 const autocomplete = await getAutoComplete();
                 autocomplete.triggerEvent('lostFocus', {});
@@ -356,13 +382,16 @@ describe('dot-tags', () => {
 
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'fieldName',
-                    status: { dotPristine: true, dotTouched: true, dotValid: true }
+                    status: { dotPristine: false, dotTouched: true, dotValid: true }
                 });
             });
         });
     });
 
     describe('@Methods', () => {
+
+        beforeEach(async () => await createEmptyDotTags());
+
         beforeEach(async () => {
             element.setAttribute('name', 'fieldName');
             element.setAttribute('value', 'some,tag');
