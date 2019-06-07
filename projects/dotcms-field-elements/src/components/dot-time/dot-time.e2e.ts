@@ -7,6 +7,25 @@ describe('dot-time', () => {
     let element: E2EElement;
     let inputCalendar: E2EElement;
 
+    const triggerStatusChange = (
+        pristine: boolean,
+        touched: boolean,
+        valid: boolean,
+        inValidRange?: boolean
+    ) => {
+        inputCalendar.triggerEvent('_statusChange', {
+            detail: {
+                name: '',
+                status: {
+                    dotPristine: pristine,
+                    dotTouched: touched,
+                    dotValid: valid
+                },
+                inValidRange: inValidRange
+            }
+        });
+    };
+
     beforeEach(async () => {
         page = await newE2EPage({
             html: `<dot-time></dot-time>`
@@ -21,16 +40,7 @@ describe('dot-time', () => {
         });
 
         it('should be valid, touched & dirty when filled', async () => {
-            inputCalendar.triggerEvent('_statusChange', {
-                detail: {
-                    name: '',
-                    status: {
-                        dotPristine: false,
-                        dotTouched: true,
-                        dotValid: true
-                    }
-                }
-            });
+            triggerStatusChange(false, true, true);
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.filled);
         });
@@ -41,77 +51,31 @@ describe('dot-time', () => {
             });
 
             it('should be valid, untouched & pristine and required when filled on load', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: true,
-                            dotTouched: false,
-                            dotValid: true
-                        }
-                    }
-                });
+                triggerStatusChange(true, false, true);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
             });
 
             it('should be valid, touched & dirty and required when filled', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: false,
-                            dotTouched: true,
-                            dotValid: true
-                        }
-                    }
-                });
+                triggerStatusChange(false, true, true);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
             });
 
             it('should be invalid, untouched, pristine and required when empty on load', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: true,
-                            dotTouched: false,
-                            dotValid: false
-                        }
-                    }
-                });
+                triggerStatusChange(true, false, false);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
             });
 
             it('should be invalid, touched, dirty and required when valued is cleared', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: false,
-                            dotTouched: true,
-                            dotValid: false
-                        }
-                    }
-                });
+                triggerStatusChange(false, true, false);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
             });
 
             it('should have touched but pristine', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: true,
-                            dotTouched: true,
-                            dotValid: true
-                        }
-                    }
-                });
-
+                triggerStatusChange(true, true, true);
                 await page.waitForChanges();
                 expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
             });
@@ -198,30 +162,42 @@ describe('dot-time', () => {
         });
 
         describe('requiredMessage', () => {
-            it('should render default value', () => {
-                expect(inputCalendar.getAttribute('required-message')).toBe(
+            beforeEach(() => {
+                element.setProperty('required', 'true');
+                triggerStatusChange(false, true, false, true);
+            });
+
+            it('should render default value', async () => {
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
                     'This field is required'
                 );
             });
 
-            it('should pass correctly to dot-input-calendar', async () => {
+            it('should render custom message', async () => {
                 element.setProperty('requiredMessage', 'test');
                 await page.waitForChanges();
-                expect(inputCalendar.getAttribute('required-message')).toBe('test');
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('test');
             });
         });
 
         describe('validationMessage', () => {
-            it('should render default value', () => {
-                expect(inputCalendar.getAttribute('validation-message')).toBe(
+            beforeEach(() => {
+                element.setProperty('value', '2010-10-10');
+                triggerStatusChange(false, true, false, false);
+            });
+
+            it('should render default value', async () => {
+                await page.waitForChanges();
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
                     "The field doesn't comply with the specified format"
                 );
             });
 
-            it('should pass correctly to dot-input-calendar', async () => {
-                element.setProperty('validationMessage', 'test');
+            it('should render custom message', async () => {
+                element.setProperty('validationMessage', 'validation');
                 await page.waitForChanges();
-                expect(inputCalendar.getAttribute('validation-message')).toBe('test');
+                expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe('validation');
             });
         });
 
@@ -268,7 +244,7 @@ describe('dot-time', () => {
         });
 
         describe('step', () => {
-            it('should set default value', async () => {
+            it('should set default value', () => {
                 expect(inputCalendar.getAttribute('step')).toBe('1');
             });
 
@@ -313,7 +289,8 @@ describe('dot-time', () => {
                         dotPristine: true,
                         dotTouched: false,
                         dotValid: true
-                    }
+                    },
+                    inValidRange: true
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -331,16 +308,7 @@ describe('dot-time', () => {
                         value: '21:30:30'
                     }
                 });
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: false,
-                            dotTouched: true,
-                            dotValid: true
-                        }
-                    }
-                });
+                triggerStatusChange(false, true, true, true);
                 await page.waitForChanges();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -348,7 +316,8 @@ describe('dot-time', () => {
                         dotPristine: false,
                         dotTouched: true,
                         dotValid: true
-                    }
+                    },
+                    inValidRange: true
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -361,16 +330,7 @@ describe('dot-time', () => {
 
         describe('status change', () => {
             it('should send status when dot-input-calendar send it', async () => {
-                inputCalendar.triggerEvent('_statusChange', {
-                    detail: {
-                        name: '',
-                        status: {
-                            dotPristine: true,
-                            dotTouched: false,
-                            dotValid: false
-                        }
-                    }
-                });
+                triggerStatusChange(true, false, false, true);
                 await page.waitForChanges();
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -378,7 +338,8 @@ describe('dot-time', () => {
                         dotPristine: true,
                         dotTouched: false,
                         dotValid: false
-                    }
+                    },
+                    inValidRange: true
                 });
             });
         });

@@ -10,7 +10,11 @@ import {
     Watch
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatusClasses, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
+import {
+    DotFieldStatusClasses,
+    DotFieldValueEvent,
+    DotInputCalendarStatusEvent
+} from '../../models';
 import { checkProp, getClassNames, getTagError, getTagHint } from '../../utils';
 
 @Component({
@@ -68,7 +72,7 @@ export class DotTimeComponent {
     @State() errorMessageElement: JSX.Element;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
+    @Event() statusChange: EventEmitter<DotInputCalendarStatusEvent>;
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -102,19 +106,14 @@ export class DotTimeComponent {
     @Listen('_statusChange')
     emitStatusChange(event: CustomEvent) {
         event.stopImmediatePropagation();
-        const statusEvent: DotFieldStatusEvent = event.detail;
+        const statusEvent: DotInputCalendarStatusEvent = event.detail;
         this.classNames = getClassNames(
             statusEvent.status,
             statusEvent.status.dotValid,
             this.required
         );
+        this.setErrorMessageElement(statusEvent);
         this.statusChange.emit(event.detail);
-    }
-
-    @Listen('_errorMessage')
-    setErrorElement(event: CustomEvent) {
-        event.stopImmediatePropagation();
-        this.errorMessageElement = getTagError(event.detail.show, event.detail.message);
     }
 
     hostData() {
@@ -133,8 +132,6 @@ export class DotTimeComponent {
                         name={this.name}
                         value={this.value}
                         required={this.required}
-                        required-message={this.requiredMessage}
-                        validation-message={this.validationMessage}
                         min={this.min}
                         max={this.max}
                         step={this.step}
@@ -149,5 +146,18 @@ export class DotTimeComponent {
     private validateProps(): void {
         this.minWatch();
         this.maxWatch();
+    }
+
+    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent) {
+        this.errorMessageElement = getTagError(
+            !statusEvent.status.dotValid && !statusEvent.status.dotPristine,
+            this.getErrorMessage(statusEvent)
+        );
+    }
+
+    private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
+        return !!this.value
+            ? statusEvent.inValidRange ? '' : this.validationMessage
+            : this.requiredMessage;
     }
 }
