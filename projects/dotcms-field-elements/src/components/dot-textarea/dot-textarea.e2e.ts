@@ -264,7 +264,7 @@ describe('dot-textarea', () => {
 
         beforeEach(async () => {
             page = await newE2EPage();
-            await page.setContent(`<dot-textarea></dot-textarea>`);
+            await page.setContent(`<dot-form><dot-textarea required="true"></dot-textarea></dot-form>`);
 
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
@@ -274,6 +274,11 @@ describe('dot-textarea', () => {
         });
 
         describe('status and value change', () => {
+            it('should display on wrapper not valid css classes when loaded, required and no value set', async () => {
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(dotTestUtil.class.emptyRequiredPristine.slice(1));
+            });
+
             it('should send status and value change', async () => {
                 await textarea.press('a');
                 await page.waitForChanges();
@@ -298,7 +303,7 @@ describe('dot-textarea', () => {
                     status: {
                         dotPristine: true,
                         dotTouched: false,
-                        dotValid: true
+                        dotValid: false
                     }
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
@@ -318,7 +323,7 @@ describe('dot-textarea', () => {
                     status: {
                         dotPristine: true,
                         dotTouched: true,
-                        dotValid: true
+                        dotValid: false
                     }
                 });
             });

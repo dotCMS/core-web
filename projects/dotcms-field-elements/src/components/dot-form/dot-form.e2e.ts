@@ -1,6 +1,6 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 
-xdescribe('dot-form', () => {
+describe('dot-form', () => {
     let page: E2EPage;
     let element: E2EElement;
     let formStatus = {};
