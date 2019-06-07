@@ -81,6 +81,7 @@ export class DotFormComponent {
             <form onSubmit={this.handleSubmit.bind(this)}>
                 <div class="form__fields">
                     {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
+                    <slot />
                 </div>
 
                 <div class="form__buttons">

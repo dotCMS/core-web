@@ -1,8 +1,7 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
-import { DotCMSContentTypeField } from './../../models/dot-type-field.model';
 import { EventSpy } from '@stencil/core/dist/declarations';
-import { type } from 'os';
 import { dotTestUtil } from '../../utils';
+import { DotCMSContentTypeField } from './models';
 
 const basicField: DotCMSContentTypeField = {
     clazz: '',
@@ -94,6 +93,7 @@ describe('dot-form', () => {
         const button = await getResetButton();
         await button.click();
     };
+
 
     beforeEach(async () => {
         page = await newE2EPage();
@@ -301,6 +301,23 @@ describe('dot-form', () => {
                 expect(await select.getProperty('value')).toBe('');
                 expect(element).toHaveClasses(dotTestUtil.class.empty);
             });
+        });
+    });
+
+    describe('<slot />', () => {
+        beforeEach(async () => {
+            page = await newE2EPage();
+            await page.setContent(`
+                <dot-form>
+                    <dot-textfield label="Hello World" />
+                </dot-form>
+            `);
+            element = await page.find('dot-form');
+        });
+
+        it('should render ast first child', async () => {
+            const slot = await element.find('.form__fields *:nth-child(1n)');
+            expect(slot.tagName).toBe('DOT-TEXTFIELD');
         });
     });
 });
