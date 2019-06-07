@@ -145,7 +145,7 @@ describe('dot-time', () => {
         describe('requiredMessage', () => {
             beforeEach(() => {
                 element.setProperty('required', 'true');
-                dotTestUtil.triggerStatusChange(false, true, false, inputCalendar, true);
+                dotTestUtil.triggerStatusChange(false, true, false, inputCalendar, false);
             });
 
             it('should render default value', async () => {
