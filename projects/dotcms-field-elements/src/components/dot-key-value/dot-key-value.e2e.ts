@@ -393,6 +393,20 @@ describe('dot-key-value', () => {
         });
 
         describe('statusChange', () => {
+            it('should emit default valueChange', async () => {
+                page = await newE2EPage({
+                    html: `
+                        <dot-form>
+                            <dot-key-value name="fieldName" required="true" />
+                        </dot-form>
+                    `
+                });
+                await page.waitForChanges();
+
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
+            });
+
             it('should emit on lost focus in autocomplete', async () => {
                 const form = await getForm();
                 form.triggerEvent('lostFocus', {});
