@@ -54,7 +54,7 @@ export class DotTagsComponent {
     /** Duraction in ms to start search into the autocomplete */
     @Prop({ reflectToAttr: true }) debounce = 300;
 
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -75,6 +75,7 @@ export class DotTagsComponent {
     }
 
     componentWillLoad(): void {
+        this.status = getOriginalStatus(this.isValid());
         this.validateProps();
         this.emitStatusChange();
     }
