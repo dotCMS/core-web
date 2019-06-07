@@ -78,7 +78,6 @@ export class DotTagsComponent {
     componentWillLoad(): void {
         this.status = getOriginalStatus(this.isValid());
         this.validateProps();
-        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
     }
 

@@ -321,7 +321,7 @@ describe('dot-tags', () => {
 
             it('should emit status changed', async () => {
                 const form = await page.find('dot-form');
-                expect(form).toHaveClasses(['dot-invalid', 'dot-untouched', 'dot-pristine']);
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
         });
 

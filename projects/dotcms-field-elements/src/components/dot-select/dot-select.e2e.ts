@@ -328,7 +328,7 @@ describe('dot-select', () => {
         describe('status and value change', () => {
             it('should display on wrapper not valid css classes when loaded, required and no value set', async () => {
                 const form = await page.find('dot-form');
-                expect(form).toHaveClasses(dotTestUtil.class.emptyRequiredPristine.slice(1));
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
 
             it('should emit when option selected', async () => {
