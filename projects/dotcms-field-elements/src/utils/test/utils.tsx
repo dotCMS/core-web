@@ -18,7 +18,7 @@ export const dotTestUtil = {
         touched: boolean,
         valid: boolean,
         element: E2EElement,
-        inValidRange?: boolean
+        isValidRange?: boolean
     ) => {
         element.triggerEvent('_statusChange', {
             detail: {
@@ -28,7 +28,7 @@ export const dotTestUtil = {
                     dotTouched: touched,
                     dotValid: valid
                 },
-                inValidRange: inValidRange
+                isValidRange: isValidRange
             }
         });
     }

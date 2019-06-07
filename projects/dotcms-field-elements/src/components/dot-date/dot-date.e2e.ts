@@ -269,8 +269,7 @@ describe('dot-date', () => {
                         dotPristine: true,
                         dotTouched: false,
                         dotValid: true
-                    },
-                    isValidRange: true
+                    }
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -296,8 +295,7 @@ describe('dot-date', () => {
                         dotPristine: false,
                         dotTouched: true,
                         dotValid: true
-                    },
-                    isValidRange: true
+                    }
                 });
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: '',
@@ -318,8 +316,7 @@ describe('dot-date', () => {
                         dotPristine: true,
                         dotTouched: false,
                         dotValid: false
-                    },
-                    isValidRange: true
+                    }
                 });
             });
         });
