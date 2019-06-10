@@ -204,7 +204,7 @@ describe('dot-textarea', () => {
                 await textarea.press('a');
                 await page.waitForChanges();
                 expect((await dotTestUtil.getErrorMessage(page)).innerText).toBe(
-                    "The field doesn't comply with the specified format"
+                    'The field doesn\'t comply with the specified format'
                 );
             });
 
@@ -249,8 +249,9 @@ describe('dot-textarea', () => {
         let spyValueChangeEvent: EventSpy;
 
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-form><dot-textarea required="true"></dot-textarea></dot-form>`);
+            page = await newE2EPage({
+                html: `<dot-form><dot-textarea required="true"></dot-textarea></dot-form>`
+            });
             element = await page.find('dot-textarea');
             textarea = await page.find('textarea');
 

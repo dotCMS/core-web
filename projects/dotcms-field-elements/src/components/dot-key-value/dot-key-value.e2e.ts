@@ -12,8 +12,9 @@ describe('dot-key-value', () => {
     const getList = () => page.find('key-value-table');
 
     beforeEach(async () => {
-        page = await newE2EPage();
-        await page.setContent(`<dot-key-value></dot-key-value>`);
+        page = await newE2EPage({
+            html: `<dot-key-value></dot-key-value>`
+        });
         element = await page.find('dot-key-value');
         await page.waitForChanges();
     });

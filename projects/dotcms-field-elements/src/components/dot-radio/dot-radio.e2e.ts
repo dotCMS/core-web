@@ -75,8 +75,9 @@ describe('dot-radio', () => {
 
     describe('@Props', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-radio></dot-radio>`);
+            page = await newE2EPage({
+                html: `<dot-radio></dot-radio>`
+            });
             element = await page.find('dot-radio');
         });
 
@@ -292,15 +293,16 @@ describe('dot-radio', () => {
 
     describe('@Events', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-form>
-                <dot-radio
-                    name="testName"
-                    options="|,valueA|1,valueB|2"
-                    required="true">
-                </dot-radio>
-            </dot-form>`);
+            page = await newE2EPage({
+                html: `
+                <dot-form>
+                    <dot-radio
+                        name="testName"
+                        options="|,valueA|1,valueB|2"
+                        required="true">
+                    </dot-radio>
+                </dot-form>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 
@@ -334,12 +336,13 @@ describe('dot-radio', () => {
 
     describe('@Methods', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-radio
-                name="testName"
-                options="value|0,valueA|1,valueB|2">
-            </dot-radio>`);
+            page = await newE2EPage({
+                html: `
+                <dot-radio
+                    name="testName"
+                    options="value|0,valueA|1,valueB|2">
+                </dot-radio>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 

@@ -11,8 +11,9 @@ describe('dot-tags', () => {
     const getAutoComplete = () => page.find('dot-autocomplete');
     const getChips = () => page.findAll('dot-chip');
     const createEmptyDotTags = async () => {
-        page = await newE2EPage();
-        await page.setContent(`<dot-tags></dot-tags>`);
+        page = await newE2EPage({
+            html: `<dot-tags></dot-tags>`
+        });
         element = await page.find('dot-tags');
         await page.waitForChanges();
     };

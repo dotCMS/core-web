@@ -89,8 +89,9 @@ describe('dot-checkbox', () => {
 
     describe('@Props', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-checkbox></dot-checkbox>`);
+            page = await newE2EPage({
+                html: `<dot-checkbox></dot-checkbox>`
+            });
             element = await page.find('dot-checkbox');
         });
 
@@ -315,15 +316,16 @@ describe('dot-checkbox', () => {
 
     describe('@Events', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-form>
-                <dot-checkbox
-                    name="testName"
-                    options="|,valueA|1,valueB|2"
-                    required="true">
-                </dot-checkbox>
-            </dot-form>`);
+            page = await newE2EPage({
+                html: `
+                <dot-form>
+                    <dot-checkbox
+                        name="testName"
+                        options="|,valueA|1,valueB|2"
+                        required="true">
+                    </dot-checkbox>
+                </dot-form>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 
@@ -331,7 +333,7 @@ describe('dot-checkbox', () => {
         });
 
         describe('status and value change', () => {
-            it('should display on wrapper not valid css classes when loaded, required and no value set', async () => {
+            it('should emit default valueChange', async () => {
                 const form = await page.find('dot-form');
                 expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
@@ -357,12 +359,13 @@ describe('dot-checkbox', () => {
 
     describe('@Methods', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-checkbox
-                name="testName"
-                options="value|0,valueA|1,valueB|2">
-            </dot-checkbox>`);
+            page = await newE2EPage({
+                html: `
+                <dot-checkbox
+                    name="testName"
+                    options="value|0,valueA|1,valueB|2">
+                </dot-checkbox>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 

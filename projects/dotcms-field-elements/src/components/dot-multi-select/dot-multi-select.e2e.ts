@@ -101,14 +101,14 @@ describe('dot-multi-select', () => {
                 const htmlElement = await getSelect(page);
                 expect(htmlElement.getAttribute('size')).toBe('3');
             });
-
         });
     });
 
     describe('@Props', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-multi-select></dot-multi-select>`);
+            page = await newE2EPage({
+                html: `<dot-multi-select></dot-multi-select>`
+            });
             element = await page.find('dot-multi-select');
         });
 
@@ -327,15 +327,16 @@ describe('dot-multi-select', () => {
 
     describe('@Events', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-form>
-                <dot-multi-select
-                    name="testName"
-                    options="|,valueA|1,valueB|2"
-                    required="true">
-                </dot-multi-select>
-            </dot-form>`);
+            page = await newE2EPage({
+                html: `
+                <dot-form>
+                    <dot-multi-select
+                        name="testName"
+                        options="|,valueA|1,valueB|2"
+                        required="true">
+                    </dot-multi-select>
+                </dot-form>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 
@@ -384,13 +385,14 @@ describe('dot-multi-select', () => {
 
     describe('@Methods', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-multi-select
-                name="testName"
-                options="|,valueA|1,valueB|2"
-                value="2">
-            </dot-multi-select>`);
+            page = await newE2EPage({
+                html: `
+                <dot-multi-select
+                    name="testName"
+                    options="|,valueA|1,valueB|2"
+                    value="2">
+                </dot-multi-select>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 
