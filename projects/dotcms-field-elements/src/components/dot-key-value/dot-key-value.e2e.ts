@@ -189,7 +189,7 @@ describe('dot-key-value', () => {
                 expect(form.getAttribute('tabIndex')).toBe('0');
             });
 
-            it('should not render', async () => {
+            it('should not render and not set aria attribute', async () => {
                 const hint = await dotTestUtil.getHint(page);
                 const form = await getForm();
                 expect(hint).toBeNull();

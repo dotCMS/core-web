@@ -149,18 +149,23 @@ describe('dot-tags', () => {
         });
 
         describe('hint', () => {
-            it('should render', async () => {
+            it('should render and set aria attribute', async () => {
                 element.setProperty('hint', 'Some hint');
                 await page.waitForChanges();
-
+                const autocomplete = await getAutoComplete();
                 const hint = await dotTestUtil.getHint(page);
                 expect(hint.innerText).toBe('Some hint');
                 expect(hint.getAttribute('id')).toBe('hint-some-hint');
+                expect(autocomplete.getAttribute('aria-describedby')).toBe('hint-some-hint');
+                expect(autocomplete.getAttribute('tabIndex')).toBe('0');
             });
 
-            it('should not render', async () => {
+            it('should not render and not set aria attribute', async () => {
                 const hint = await dotTestUtil.getHint(page);
+                const autocomplete = await getAutoComplete();
                 expect(hint).toBeNull();
+                expect(autocomplete.getAttribute('aria-describedby')).toBeNull();
+                expect(autocomplete.getAttribute('tabIndex')).toBeNull();
             });
         });
 

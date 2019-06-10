@@ -2,7 +2,7 @@ import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
 
-xdescribe('dot-input-calendar', () => {
+describe('dot-input-calendar', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
