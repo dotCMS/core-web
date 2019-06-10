@@ -152,7 +152,6 @@ export class DotDateTimeComponent {
         this.formatValue(valueEvent);
         if (this.isValueComplete()) {
             this.value = this.getValue();
-            console.log('value: ', this.value);
             this.valueChange.emit({ name: this.name, value: this.value });
         }
     }
@@ -170,12 +169,6 @@ export class DotDateTimeComponent {
             this.statusChange.emit({ name: this.name, status: status });
         }
     }
-
-    // @Listen('_errorMessage')
-    // showErrorElement(event: CustomEvent) {
-    //     event.stopImmediatePropagation();
-    //     this.errorMessageElement = getTagError(event.detail.show, this.validationMessage);
-    // }
 
     hostData() {
         return {
