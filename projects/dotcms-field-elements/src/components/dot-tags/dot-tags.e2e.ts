@@ -18,7 +18,9 @@ describe('dot-tags', () => {
     };
 
     describe('css classes', () => {
-        beforeEach(async () => await createEmptyDotTags());
+        beforeEach(async () => {
+            await createEmptyDotTags();
+        });
 
         it('should have empty', () => {
             expect(element).toHaveClasses(dotTestUtil.class.empty);
@@ -109,7 +111,9 @@ describe('dot-tags', () => {
     });
 
     describe('@Props', () => {
-        beforeEach(async () => await createEmptyDotTags());
+        beforeEach(async () => {
+            await createEmptyDotTags();
+        });
 
         describe('value', () => {
             it('should render chips', async () => {
@@ -318,15 +322,12 @@ describe('dot-tags', () => {
 
                 await page.waitForChanges();
             });
-
-            it('should emit status changed', async () => {
-                const form = await page.find('dot-form');
-                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
-            });
         });
 
         describe('valueChange and statusChange', () => {
-            beforeEach(async () => await createEmptyDotTags());
+            beforeEach(async () => {
+                await createEmptyDotTags();
+            });
 
             beforeEach(async () => {
                 element.setAttribute('name', 'fieldName');
@@ -373,7 +374,9 @@ describe('dot-tags', () => {
         });
 
         describe('statusChange', () => {
-            beforeEach(async () => await createEmptyDotTags());
+            beforeEach(async () => {
+                await createEmptyDotTags();
+            });
 
             it('should emit on lost focus in autocomplete', async () => {
                 const autocomplete = await getAutoComplete();
@@ -385,12 +388,18 @@ describe('dot-tags', () => {
                     status: { dotPristine: false, dotTouched: true, dotValid: true }
                 });
             });
+
+            it('should emit status changed', async () => {
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
+            });
         });
     });
 
     describe('@Methods', () => {
-
-        beforeEach(async () => await createEmptyDotTags());
+        beforeEach(async () => {
+            await createEmptyDotTags();
+        });
 
         beforeEach(async () => {
             element.setAttribute('name', 'fieldName');

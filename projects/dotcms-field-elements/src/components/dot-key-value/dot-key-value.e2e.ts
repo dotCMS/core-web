@@ -96,12 +96,6 @@ describe('dot-key-value', () => {
             expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
         });
 
-        it('should have invalid and be pristine', async () => {
-            element.setProperty('required', true);
-            await page.waitForChanges();
-            expect(element).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
-        });
-
         it('should have touched but pristine', async () => {
             const form = await getForm();
             form.triggerEvent('lostFocus', {});
