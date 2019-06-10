@@ -193,7 +193,7 @@ describe('dot-date-time', () => {
 
         describe('validationMessage', () => {
             beforeEach(() => {
-                element.setProperty('value', '2010-10-10');
+                element.setProperty('value', '2010-10-10 10:10:10');
                 dotTestUtil.triggerStatusChange(false, true, false, timeInput);
             });
 

@@ -1,6 +1,6 @@
 import { DotDateSlot } from '../../../models';
 
-const DATE_REGEX = new RegExp('(19|20)\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
+const DATE_REGEX = new RegExp('\\d\\d\\d\\d-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])');
 const TIME_REGEX = new RegExp('^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$');
 
 /**
@@ -24,7 +24,7 @@ export function dotValidateTime(time: string): string {
 }
 
 /**
- * Parse a data-time string that can contains only 'date time' | date | time.
+ * Parse a data-time string that can contains 'date time' | date | time.
  *
  * @param string data
  * @returns DotDateSlot
@@ -38,11 +38,33 @@ export function dotParseDate(data: string): DotDateSlot {
 }
 
 /**
- * Check is there as least one valid value in teh DotDateSlot
+ * Check if DotDateSlot is valid based on the raw data.
  *
  * @param DotDateSlot data
  * @returns boolean
  */
-export function isValidDateSlot(data: DotDateSlot): boolean {
-    return !!data.date || !!data.time;
+export function isValidDateSlot(dateSlot: DotDateSlot, rawData: string): boolean {
+    return rawData.split(' ').length === 2
+        ? isValidFullDateSlot(dateSlot)
+        : isValidPartialDateSlot(dateSlot);
+}
+
+/**
+ * Check if a DotDateSlot have date and time set
+ *
+ * @param isFullDateSlot dateSlot
+ * @returns boolean
+ */
+function isValidFullDateSlot(dateSlot: DotDateSlot): boolean {
+    return !!dateSlot.date && !!dateSlot.time;
+}
+
+/**
+ * Check is there as least one valid value in the DotDateSlot
+ *
+ * @param isPartialDateSlot dateSlot
+ * @returns boolean
+ */
+function isValidPartialDateSlot(dateSlot: DotDateSlot): boolean {
+    return !!dateSlot.date || !!dateSlot.time;
 }

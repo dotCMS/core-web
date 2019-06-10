@@ -15,7 +15,8 @@ import {
     DotFieldStatusClasses,
     DotFieldStatusEvent,
     DotFieldValueEvent,
-    DotDateSlot, DotInputCalendarStatusEvent
+    DotDateSlot,
+    DotInputCalendarStatusEvent
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
@@ -148,9 +149,10 @@ export class DotDateTimeComponent {
     emitValueChange(event: CustomEvent) {
         const valueEvent: DotFieldValueEvent = event.detail;
         event.stopImmediatePropagation();
-        this.setValue(valueEvent);
+        this.formatValue(valueEvent);
         if (this.isValueComplete()) {
-            // this.value = this.getValue();
+            this.value = this.getValue();
+            console.log('value: ', this.value);
             this.valueChange.emit({ name: this.name, value: this.value });
         }
     }
@@ -236,13 +238,7 @@ export class DotDateTimeComponent {
         };
     }
 
-    private getValue(): string {
-        return this._value.date && this._value.time
-            ? `${this._value.date} ${this._value.time}`
-            : '';
-    }
-
-    private setValue(event: DotFieldValueEvent) {
+    private formatValue(event: DotFieldValueEvent) {
         if (event.name.indexOf(DATE_SUFFIX) >= 0) {
             this._value.date = event.value;
         } else {
@@ -250,6 +246,11 @@ export class DotDateTimeComponent {
         }
     }
 
+    private getValue(): string {
+        return !!this._value.date && !!this._value.time
+            ? `${this._value.date} ${this._value.time}`
+            : '';
+    }
     private setStatus(event: DotInputCalendarStatusEvent) {
         if (event.name.indexOf(DATE_SUFFIX) >= 0) {
             this._status.date = event.status;
@@ -266,16 +267,31 @@ export class DotDateTimeComponent {
         return this._status.date && this._status.time;
     }
 
-    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent) {
-        this.errorMessageElement = getTagError(
-            !statusEvent.status.dotValid && !statusEvent.status.dotPristine,
-            this.getErrorMessage(statusEvent)
-        );
+    private isValid(): boolean {
+        return this.isStatusComplete() ? (this.isStatusInRange() ? true : false) : true;
     }
 
-    private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
-        return !!this.value
-            ? statusEvent.isValidRange ? '' : this.validationMessage
+    private isStatusInRange(): boolean {
+        return this._status.time.isValidRange && this._status.date.isValidRange;
+    }
+
+    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent) {
+        if (this.isStatusComplete()) {
+            this.errorMessageElement = getTagError(
+                !this.statusHandler().dotValid && !this.statusHandler().dotPristine,
+                this.getErrorMessage()
+            );
+        } else {
+            this.errorMessageElement = getTagError(
+                !statusEvent.status.dotPristine,
+                this.getErrorMessage()
+            );
+        }
+    }
+
+    private getErrorMessage(): string {
+        return !!this.getValue()
+            ? this.isValid() ? '' : this.validationMessage
             : this.requiredMessage;
     }
 }
