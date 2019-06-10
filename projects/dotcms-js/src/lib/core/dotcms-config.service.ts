@@ -79,11 +79,12 @@ export class DotcmsConfig {
                     paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
                     paginatorRows: res.config[DOTCMS_PAGINATOR_ROWS],
                     websocket: {
-                        websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
-                        disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
+                        websocketReconnectTime: res.config.websocket[DOTCMS_WEBSOCKET_RECONNECT_TIME],
+                        disabledWebsockets: res.config.websocket[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
                     }
                 };
 
+                console.log('this.configParams', this.configParams);
                 this.loggerService.debug('this.configParams', this.configParams);
 
                 this.waiting.forEach((obs) => obs.next(this.configParams));
