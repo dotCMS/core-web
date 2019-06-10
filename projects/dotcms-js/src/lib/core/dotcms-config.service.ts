@@ -84,7 +84,6 @@ export class DotcmsConfig {
                     }
                 };
 
-                console.log('this.configParams', this.configParams);
                 this.loggerService.debug('this.configParams', this.configParams);
 
                 this.waiting.forEach((obs) => obs.next(this.configParams));
