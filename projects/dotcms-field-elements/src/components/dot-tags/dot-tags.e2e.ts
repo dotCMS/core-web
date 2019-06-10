@@ -16,6 +16,20 @@ describe('dot-tags', () => {
         element = await page.find('dot-tags');
         await page.waitForChanges();
     };
+    const autocompleteSelect = async (tag?: string) => {
+        const autocomplete = await getAutoComplete();
+        autocomplete.triggerEvent('select', {
+            detail: tag || 'sometag'
+        });
+        await page.waitForChanges();
+    };
+    const autocompleteEnter = async (tag?: string) => {
+        const autocomplete = await getAutoComplete();
+        autocomplete.triggerEvent('enter', {
+            detail: tag || 'sometag'
+        });
+        await page.waitForChanges();
+    };
 
     describe('css classes', () => {
         beforeEach(async () => {
@@ -50,22 +64,13 @@ describe('dot-tags', () => {
         });
 
         it('should have filled', async () => {
-            const autocomplete = await getAutoComplete();
-            autocomplete.triggerEvent('select', {
-                detail: 'a tag'
-            });
-            await page.waitForChanges();
-
+            await autocompleteSelect();
             expect(element).toHaveClasses(dotTestUtil.class.filled);
         });
 
         it('should have filled required', async () => {
             element.setProperty('required', true);
-            const autocomplete = await getAutoComplete();
-            autocomplete.triggerEvent('select', {
-                detail: 'a tag'
-            });
-            await page.waitForChanges();
+            await autocompleteSelect();
 
             expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
         });
@@ -80,11 +85,7 @@ describe('dot-tags', () => {
 
         it('should have filled required touched when item is added', async () => {
             element.setProperty('required', true);
-            const autocomplete = await getAutoComplete();
-            autocomplete.triggerEvent('select', {
-                detail: 'a tag'
-            });
-            await page.waitForChanges();
+            await autocompleteSelect();
 
             expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
         });
@@ -310,20 +311,6 @@ describe('dot-tags', () => {
     });
 
     describe('@Events', () => {
-        describe('Events trigger when the component is created', () => {
-            beforeEach(async () => {
-                page = await newE2EPage();
-
-                await page.setContent(`
-                    <dot-form>
-                        <dot-tags required></dot-tags>
-                    </dot-form>
-                `);
-
-                await page.waitForChanges();
-            });
-        });
-
         describe('valueChange and statusChange', () => {
             beforeEach(async () => {
                 await createEmptyDotTags();
@@ -336,11 +323,7 @@ describe('dot-tags', () => {
             });
 
             it('should emit on add', async () => {
-                const autocomplete = await getAutoComplete();
-                autocomplete.triggerEvent('select', {
-                    detail: 'sometag'
-                });
-                await page.waitForChanges();
+                await autocompleteSelect();
 
                 expect(spyValueChangeEvent).toHaveReceivedEventDetail({
                     name: 'fieldName',
@@ -374,11 +357,8 @@ describe('dot-tags', () => {
         });
 
         describe('statusChange', () => {
-            beforeEach(async () => {
-                await createEmptyDotTags();
-            });
-
             it('should emit on lost focus in autocomplete', async () => {
+                await createEmptyDotTags();
                 const autocomplete = await getAutoComplete();
                 autocomplete.triggerEvent('lostFocus', {});
                 await page.waitForChanges();
@@ -390,6 +370,14 @@ describe('dot-tags', () => {
             });
 
             it('should emit status changed', async () => {
+                page = await newE2EPage({
+                    html: `
+                        <dot-form>
+                            <dot-tags required></dot-tags>
+                        </dot-form>
+                    `
+                });
+                await page.waitForChanges();
                 const form = await page.find('dot-form');
                 expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
@@ -420,6 +408,49 @@ describe('dot-tags', () => {
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
                     name: 'fieldName',
                     status: { dotPristine: true, dotTouched: false, dotValid: true }
+                });
+            });
+        });
+    });
+
+    describe('chips', () => {
+        beforeEach(async () => {
+            await createEmptyDotTags();
+        });
+
+        describe('autocomplete', () => {
+            describe('select event', () => {
+                it('should add chip', async () => {
+                    await autocompleteSelect();
+                    const chips = await getChips();
+                    expect(chips.length).toBe(1);
+                });
+
+                it('should clean tag when have semicolon', async () => {
+                    await autocompleteSelect('hello, world');
+                    const chips = await getChips();
+                    const text = await chips[0].find('span');
+                    expect(chips.length).toBe(1);
+                    expect(text.innerText).toBe('hello world');
+                });
+            });
+
+            describe('enter event', () => {
+                it('should add chip', async () => {
+                    await autocompleteEnter();
+                    const chips = await getChips();
+                    expect(chips.length).toBe(1);
+                });
+
+                it('should clean tag when have semicolon', async () => {
+                    await autocompleteEnter('hello, world');
+                    const chips = await getChips();
+                    expect(chips.length).toBe(2);
+
+                    const text1 = await chips[0].find('span');
+                    expect(text1.innerText).toBe('hello');
+                    const text2 = await chips[1].find('span');
+                    expect(text2.innerText).toBe('world');
                 });
             });
         });
