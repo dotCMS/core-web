@@ -134,7 +134,7 @@ export class DotTimeComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <dot-input-calendar
                         aria-describedby={getHintId(this.hint)}
-                        tabIndex={0}
+                        tabIndex={this.hint ? 0 : null}
                         disabled={this.disabled}
                         type="time"
                         name={this.name}
