@@ -268,7 +268,7 @@ export class DotDateTimeComponent {
         return this._status.time.isValidRange && this._status.date.isValidRange;
     }
 
-    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent) {
+    private setErrorMessageElement(statusEvent: DotInputCalendarStatusEvent): void {
         if (this.isStatusComplete()) {
             this.errorMessageElement = getTagError(
                 !this.statusHandler().dotValid && !this.statusHandler().dotPristine,
