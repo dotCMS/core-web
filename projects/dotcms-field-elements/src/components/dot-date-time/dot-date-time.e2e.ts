@@ -353,6 +353,17 @@ describe('dot-date-time', () => {
         });
 
         describe('value and status changes', () => {
+            it('should display on wrapper not valid css classes when loaded when required and no value set', async () => {
+                page = await newE2EPage({
+                    html: `
+                <dot-form>
+                    <dot-date-time required="true" ></dot-date-time>
+                </dot-form>`
+                });
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
+            });
+
             it('should send value when both date and time are set', async () => {
                 dateInput.triggerEvent('_valueChange', {
                     detail: {
