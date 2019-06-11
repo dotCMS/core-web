@@ -40,8 +40,8 @@ export function dotParseDate(data: string): DotDateSlot {
 /**
  * Check if DotDateSlot is valid based on the raw data.
  *
- * @param DotDateSlot data
- * @returns boolean
+ * @param DotDateSlot dateSlot
+ * @param string rawData
  */
 export function isValidDateSlot(dateSlot: DotDateSlot, rawData: string): boolean {
     return rawData.split(' ').length === 2
@@ -52,7 +52,7 @@ export function isValidDateSlot(dateSlot: DotDateSlot, rawData: string): boolean
 /**
  * Check if a DotDateSlot have date and time set
  *
- * @param isFullDateSlot dateSlot
+ * @param DotDateSlot dateSlot
  * @returns boolean
  */
 function isValidFullDateSlot(dateSlot: DotDateSlot): boolean {
@@ -62,7 +62,7 @@ function isValidFullDateSlot(dateSlot: DotDateSlot): boolean {
 /**
  * Check is there as least one valid value in the DotDateSlot
  *
- * @param isPartialDateSlot dateSlot
+ * @param DotDateSlot dateSlot
  * @returns boolean
  */
 function isValidPartialDateSlot(dateSlot: DotDateSlot): boolean {
