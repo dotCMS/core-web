@@ -117,8 +117,8 @@ describe('dot-radio', () => {
                 element.setProperty('name', value);
                 await page.waitForChanges();
                 const option = await getOptions(page);
-                const idValue = option[0].getAttribute('id');
-                expect(idValue).toBe('dot-test');
+                const nameValue = option[0].getAttribute('name');
+                expect(nameValue).toBe('dot-test');
                 const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(labelElement.getAttribute('name')).toBe(value);
             });
@@ -127,8 +127,8 @@ describe('dot-radio', () => {
                 element.setProperty('options', 'valueA|1');
                 await page.waitForChanges();
                 const option = await getOptions(page);
-                const idValue = option[0].getAttribute('id');
-                expect(idValue).toBeNull();
+                const nameValue = option[0].getAttribute('name');
+                expect(nameValue).toBeNull();
                 const labelElement = await dotTestUtil.getDotLabel(page);
                 expect(labelElement.getAttribute('name')).toBe('');
             });
@@ -139,8 +139,8 @@ describe('dot-radio', () => {
                 element.setProperty('name', wrongValue);
                 await page.waitForChanges();
                 const option = await getOptions(page);
-                const idValue = option[0].getAttribute('id');
-                expect(idValue).toBe('dot-123');
+                const nameValue = option[0].getAttribute('name');
+                expect(nameValue).toBe('dot-123');
             });
         });
 
@@ -163,17 +163,24 @@ describe('dot-radio', () => {
         });
 
         describe('hint', () => {
-            it('should render hint', async () => {
+            it('should render hint and aria attr', async () => {
                 const value = 'test';
                 element.setProperty('hint', value);
                 await page.waitForChanges();
                 const hintElement = await dotTestUtil.getHint(page);
+                const radioContainer = await page.find('.dot-radio__items');
                 expect(hintElement.innerText).toBe(value);
+                expect(radioContainer.getAttribute('aria-describedby')).toBe('hint-test');
+                expect(radioContainer.getAttribute('tabIndex')).toBe('0');
+                expect(radioContainer.getAttribute('role')).toBe('radiogroup');
             });
 
-            it('should not render hint', async () => {
+            it('should not render hint and aria attr', async () => {
                 const hintElement = await dotTestUtil.getHint(page);
+                const radioContainer = await page.find('.dot-radio__items');
                 expect(hintElement).toBeNull();
+                expect(radioContainer.getAttribute('aria-describedby')).toBeNull();
+                expect(radioContainer.getAttribute('tabIndex')).toBeNull();
             });
 
             it('should not break and not render with invalid data', async () => {
@@ -181,17 +188,6 @@ describe('dot-radio', () => {
                 element.setProperty('hint', wrongValue);
                 const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement).toBeNull();
-            });
-        });
-
-        describe('hint & options', () => {
-            it('should render aria attribute in options', async () => {
-                element.setProperty('hint', 'test');
-                element.setProperty('options', 'a|1,b|2');
-                await page.waitForChanges();
-                const options = await getOptions(page);
-                expect(options[0].getAttribute('aria-describedby')).toBe('hint-test');
-                expect(options[1].getAttribute('aria-describedby')).toBe('hint-test');
             });
         });
 

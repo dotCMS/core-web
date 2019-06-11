@@ -101,6 +101,7 @@ export class DotMultiSelectComponent {
                 <dot-label label={this.label} required={this.required} name={this.name}>
                     <select
                         multiple
+                        aria-describedby={getHintId(this.hint)}
                         size={+this.size}
                         class={getErrorClass(this.status.dotValid)}
                         id={getId(this.name)}
@@ -110,7 +111,6 @@ export class DotMultiSelectComponent {
                         {this._options.map((item: DotOption) => {
                             return (
                                 <option
-                                    aria-describedby={getHintId(this.hint)}
                                     selected={this.value === item.value ? true : null}
                                     value={item.value}
                                 >

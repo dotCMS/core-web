@@ -152,20 +152,20 @@ describe('dot-tags', () => {
             it('should render and set aria attribute', async () => {
                 element.setProperty('hint', 'Some hint');
                 await page.waitForChanges();
-                const autocomplete = await getAutoComplete();
+                const tagsContainer = await page.find('.dot-tags__container');
                 const hint = await dotTestUtil.getHint(page);
                 expect(hint.innerText).toBe('Some hint');
                 expect(hint.getAttribute('id')).toBe('hint-some-hint');
-                expect(autocomplete.getAttribute('aria-describedby')).toBe('hint-some-hint');
-                expect(autocomplete.getAttribute('tabIndex')).toBe('0');
+                expect(tagsContainer.getAttribute('aria-describedby')).toBe('hint-some-hint');
+                expect(tagsContainer.getAttribute('tabIndex')).toBe('0');
             });
 
             it('should not render and not set aria attribute', async () => {
                 const hint = await dotTestUtil.getHint(page);
-                const autocomplete = await getAutoComplete();
+                const tagsContainer = await page.find('.dot-tags__container');
                 expect(hint).toBeNull();
-                expect(autocomplete.getAttribute('aria-describedby')).toBeNull();
-                expect(autocomplete.getAttribute('tabIndex')).toBeNull();
+                expect(tagsContainer.getAttribute('aria-describedby')).toBeNull();
+                expect(tagsContainer.getAttribute('tabIndex')).toBeNull();
             });
         });
 

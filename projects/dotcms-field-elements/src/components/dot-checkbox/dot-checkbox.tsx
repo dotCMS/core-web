@@ -86,15 +86,18 @@ export class DotCheckboxComponent {
         return (
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
-                    <div class="dot-checkbox__items">
+                    <div
+                        aria-describedby={getHintId(this.hint)}
+                        tabIndex={this.hint ? 0 : null}
+                        role="checkbox"
+                        class="dot-checkbox__items">
                         {this._options.map((item: DotOption) => {
                             const trimmedValue = item.value.trim();
                             return (
                                 <label>
                                     <input
-                                        aria-describedby={getHintId(this.hint)}
                                         class={getErrorClass(this.isValid())}
-                                        id={getId(this.name)}
+                                        name={getId(this.name)}
                                         type="checkbox"
                                         disabled={this.disabled || null}
                                         checked={this.value.indexOf(trimmedValue) >= 0 || null}

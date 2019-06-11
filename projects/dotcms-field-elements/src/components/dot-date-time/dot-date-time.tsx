@@ -172,12 +172,13 @@ export class DotDateTimeComponent {
         return (
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
-                    <div class="dot-date-time__body">
+                    <div
+                        class="dot-date-time__body"
+                        aria-describedby={getHintId(this.hint)}
+                        tabIndex={0}>
                         <label>
                             {this.dateLabel}
                             <dot-input-calendar
-                                aria-describedby={getHintId(this.hint)}
-                                tabIndex={0}
                                 disabled={this.disabled}
                                 type="date"
                                 name={this.name + DATE_SUFFIX}
@@ -193,8 +194,6 @@ export class DotDateTimeComponent {
                         <label>
                             {this.timeLabel}
                             <dot-input-calendar
-                                aria-describedby={getHintId(this.hint)}
-                                tabIndex={0}
                                 disabled={this.disabled}
                                 type="time"
                                 name={this.name + TIME_SUFFIX}

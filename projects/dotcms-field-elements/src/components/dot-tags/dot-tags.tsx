@@ -91,10 +91,11 @@ export class DotTagsComponent {
         return (
             <Fragment>
                 <dot-label label={this.label} required={this.required} name={this.name}>
-                    <div class="dot-tags__container">
+                    <div
+                        aria-describedby={getHintId(this.hint)}
+                        tabIndex={this.hint ? 0 : null}
+                        class="dot-tags__container">
                         <dot-autocomplete
-                            aria-describedby={getHintId(this.hint)}
-                            tabIndex={this.hint ? 0 : null}
                             class={getErrorClass(this.status.dotValid)}
                             data={getData}
                             debounce={this.debounce}

@@ -190,17 +190,21 @@ describe('dot-multi-select', () => {
         });
 
         describe('hint', () => {
-            it('should render hint', async () => {
+            it('should render hint and set aria attr', async () => {
                 const value = 'test';
                 element.setProperty('hint', value);
                 await page.waitForChanges();
                 const hintElement = await dotTestUtil.getHint(page);
+                const selectElem = await getSelect(page);
                 expect(hintElement.innerText).toBe(value);
+                expect(selectElem.getAttribute('aria-describedby')).toBe('hint-test');
             });
 
             it('should not render hint', async () => {
                 const hintElement = await dotTestUtil.getHint(page);
+                const selectElem = await getSelect(page);
                 expect(hintElement).toBeNull();
+                expect(selectElem.getAttribute('aria-describedby')).toBeNull();
             });
 
             it('should not break and not render with invalid data', async () => {
@@ -209,17 +213,6 @@ describe('dot-multi-select', () => {
                 await page.waitForChanges();
                 const hintElement = await dotTestUtil.getHint(page);
                 expect(hintElement.innerText).toBe('1,2,3');
-            });
-        });
-
-        describe('hint & options', () => {
-            it('should render aria attribute in options', async () => {
-                element.setProperty('hint', 'test');
-                element.setProperty('options', 'a|1,b|2');
-                await page.waitForChanges();
-                const options = await getOptions(page);
-                expect(options[0].getAttribute('aria-describedby')).toBe('hint-test');
-                expect(options[1].getAttribute('aria-describedby')).toBe('hint-test');
             });
         });
 

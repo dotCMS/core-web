@@ -173,10 +173,13 @@ export class DotKeyValueComponent {
     render() {
         return (
             <Fragment>
-                <dot-label label={this.label} required={this.required} name={this.name}>
+                <dot-label
+                    aria-describedby={getHintId(this.hint)}
+                    tabIndex={this.hint ? 0 : null}
+                    label={this.label}
+                    required={this.required}
+                    name={this.name}>
                     <key-value-form
-                        aria-describedby={getHintId(this.hint)}
-                        tabIndex={this.hint ? 0 : null}
                         onLostFocus={this.blurHandler.bind(this)}
                         add-button-label={this.formAddButtonLabel}
                         disabled={this.isDisabled()}
