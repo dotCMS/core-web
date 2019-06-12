@@ -101,13 +101,11 @@ describe('DotWorkflowTaskComponent', () => {
     });
 
     it('should redirect to /workflow when close event is triggered', () => {
-        spyOn(component, 'onCloseWorkflowTaskEditor').and.callThrough();
         taskDetail.triggerEventHandler('custom', {
             detail: {
                 name: 'close'
             }
         });
-        expect(component.onCloseWorkflowTaskEditor).toHaveBeenCalledTimes(1);
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/c/workflow');
         expect(dotIframeService.reloadData).toHaveBeenCalledWith('workflow');
     });
