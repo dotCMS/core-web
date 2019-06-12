@@ -31,7 +31,7 @@ describe('key-value-table', () => {
                     <tr>
                         <td>
                             <button
-                                aria-label="Delete key keyA, value 1"
+                                aria-label="Delete keyA, 1"
                                 class="dot-key-value__delete-button">
                                     Delete
                              </button>
@@ -44,7 +44,7 @@ describe('key-value-table', () => {
                     <tr>
                         <td>
                             <button
-                                aria-label="Delete key keyB, value 2"
+                                aria-label="Delete keyB, 2"
                                 class="dot-key-value__delete-button">
                                     Delete
                                 </button>
