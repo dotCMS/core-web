@@ -186,7 +186,6 @@ describe('dot-checkbox', () => {
                 expect(hintElement.innerText).toBe(value);
                 expect(checkboxContainer.getAttribute('aria-describedby')).toBe('hint-test');
                 expect(checkboxContainer.getAttribute('tabIndex')).toBe('0');
-                expect(checkboxContainer.getAttribute('role')).toBe('checkbox');
             });
 
             it('should not render hint', async () => {

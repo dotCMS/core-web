@@ -39,7 +39,7 @@ export class KeyValueTableComponent {
     }
 
     private getRow(item: DotKeyValueField, index: number): JSX.Element {
-        const label = `Delete key ${item.key}, value ${item.value}`;
+        const label = `${this.buttonLabel} ${item.key}, ${item.value}`;
         return (
             <tr>
                 <td>

@@ -20,7 +20,7 @@ export class DotChipComponent {
     @Event() remove: EventEmitter<String>;
 
     render() {
-        const label = this.label ? `Delete ${this.label} tag` : null;
+        const label = this.label ? `${this.deleteLabel} ${this.label}` : null;
         return (
             <Fragment>
                 <span>
