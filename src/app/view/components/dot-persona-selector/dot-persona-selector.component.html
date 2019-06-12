@@ -1,10 +1,32 @@
 <p-dropdown
+    *ngIf="options$ | async as options"
     tiny
     (onChange)="change($event.value)"
     [(ngModel)]="value"
     [options]="options"
-    [style]="{'width': '100px'}"
+    [style]="{ width: '170px' }"
     dataKey="identifier"
     optionLabel="name"
-    [disabled]="!options || options.length === 1">
+    [disabled]="!options || options.length === 1"
+>
+    <ng-template let-item pTemplate="selectedItem">
+        <span
+            [ngStyle]="{
+                'font-weight': item.value.personalized ? 'bold' : 'normal',
+                display: 'flex',
+                'justify-content': 'space-between'
+            }"
+            >{{ item.label }}<span *ngIf="item.value.personalized">•</span></span
+        >
+    </ng-template>
+    <ng-template let-item pTemplate="item">
+        <span
+            [ngStyle]="{
+                'font-weight': item.value.personalized ? 'bold' : 'normal',
+                display: 'flex',
+                'justify-content': 'space-between'
+            }"
+            >{{ item.label }}<span *ngIf="item.value.personalized">•</span></span
+        >
+    </ng-template>
 </p-dropdown>

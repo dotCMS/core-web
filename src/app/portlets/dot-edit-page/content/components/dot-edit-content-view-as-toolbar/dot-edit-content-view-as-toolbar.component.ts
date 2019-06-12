@@ -16,6 +16,8 @@ import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
@@ -23,10 +25,8 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
     styleUrls: ['./dot-edit-content-view-as-toolbar.component.scss']
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
-    @Output()
-    changeViewAs = new EventEmitter<DotEditPageViewAs>();
-    @Output()
-    whatschange = new EventEmitter<boolean>();
+    @Output() changeViewAs = new EventEmitter<DotEditPageViewAs>();
+    @Output() whatschange = new EventEmitter<boolean>();
 
     isEnterpriseLicense$: Observable<boolean>;
     isPreview: boolean;
@@ -37,7 +37,8 @@ export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
 
     constructor(
         private dotMessageService: DotMessageService,
-        private dotLicenseService: DotLicenseService
+        private dotLicenseService: DotLicenseService,
+        private dotPersonaService: DotPersonasService
     ) {}
 
     ngOnInit(): void {
@@ -62,6 +63,20 @@ export class DotEditContentViewAsToolbarComponent implements OnInit, OnChanges {
 
     get pageState(): DotRenderedPageState {
         return this._pageState;
+    }
+
+    personalize(keyTag: string, pageIdentifier: string): void {
+        this.dotPersonaService.personalized(pageIdentifier, keyTag).pipe(take(1)).subscribe((res) => {
+            console.log(res);
+            this.changeViewAs.emit(this.value);
+        });
+    }
+
+    despersonalize(keyTag: string, pageIdentifier: string): void {
+        this.dotPersonaService.despersonalized(pageIdentifier, keyTag).pipe(take(1)).subscribe((res) => {
+            console.log(res);
+            this.changeViewAs.emit(this.value);
+        });
     }
 
     /**

@@ -16,4 +16,6 @@ export interface DotPersona {
     tags?: string;
     photo?: string;
     photoContentAsset?: string;
+    pageId?: string;
+    personalized?: boolean;
 }

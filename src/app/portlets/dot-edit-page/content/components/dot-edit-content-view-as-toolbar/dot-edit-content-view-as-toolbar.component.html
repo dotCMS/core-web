@@ -2,15 +2,33 @@
     <div class="device-info" *ngIf="pageState.viewAs.device">
         <span class="device-info__label">{{ messages['editpage.viewas.previewing'] }}:</span>
         <span class="device-info__content">
-            {{ pageState.viewAs.device.name }} - {{ pageState.viewAs.device.cssWidth }} x {{ pageState.viewAs.device.cssHeight }}
+            {{ pageState.viewAs.device.name }} - {{ pageState.viewAs.device.cssWidth }} x
+            {{ pageState.viewAs.device.cssHeight }}
         </span>
     </div>
 </ng-template>
 
-<dot-language-selector (selected)="changeLanguageHandler($event)"  [value]="pageState.viewAs.language" [contentInode]="pageState.page.inode"></dot-language-selector>
+<dot-language-selector
+    (selected)="changeLanguageHandler($event)"
+    [value]="pageState.viewAs.language"
+    [contentInode]="pageState.page.inode"
+></dot-language-selector>
 
 <ng-template [ngIf]="isEnterpriseLicense$ | async">
-    <dot-device-selector (selected)="changeDeviceHandler($event)" [value]="pageState.viewAs.device"></dot-device-selector>
-    <dot-persona-selector (selected)="changePersonaHandler($event)" [value]="pageState.viewAs.persona"></dot-persona-selector>
-    <p-checkbox [label]="messages['dot.common.whats.changed']" *ngIf="isPreview" (onChange)="whatschange.emit($event)"></p-checkbox>
+    <dot-device-selector
+        (selected)="changeDeviceHandler($event)"
+        [value]="pageState.viewAs.device"
+    ></dot-device-selector>
+    <dot-persona-selector
+        [pageIdentifier]="pageState.page.identifier"
+        (selected)="changePersonaHandler($event)"
+        [value]="pageState.viewAs.persona"
+    ></dot-persona-selector>
+    <button tiny pButton (click)="personalize(pageState.viewAs.persona.keyTag, pageState.page.identifier)" label="Personalize"></button>
+    <button tiny pButton (click)="despersonalize(pageState.viewAs.persona.keyTag, pageState.page.identifier)" label="Despersonalize"></button>
+    <p-checkbox
+        [label]="messages['dot.common.whats.changed']"
+        *ngIf="isPreview"
+        (onChange)="whatschange.emit($event)"
+    ></p-checkbox>
 </ng-template>
