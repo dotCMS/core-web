@@ -3,7 +3,7 @@ import { PropValidationInfo } from './models';
 import DotFieldPropError from './DotFieldPropError';
 
 describe('DotFieldPropError', () => {
-    const propInfo: PropValidationInfo<any> = {
+    const propInfo: PropValidationInfo<string> = {
         field: { type: 'test-type', name: 'field-name' },
         name: 'test-name',
         value: 'test-value'
