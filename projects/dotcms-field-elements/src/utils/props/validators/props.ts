@@ -34,6 +34,10 @@ const areRangeDatesValid = <T>(start: Date, end: Date, propInfo: PropValidationI
     }
 };
 
+/**
+ *
+ * @param propInfo
+ */
 export function dateRangeValidator<T>(propInfo: PropValidationInfo<T>): void {
     const [start, end] = propInfo.value.toString().split(',');
     if (!dotValidateDate(start) || !dotValidateDate(end)) {
