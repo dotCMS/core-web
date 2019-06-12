@@ -3,7 +3,7 @@ import DotFieldPropError from '../DotFieldPropError';
 import { dotValidateDate, dotValidateTime, dotParseDate, isValidDateSlot } from './date';
 
 /**
- * Check if the value of PropValidationInfo is a valid string.
+ * Check if the value of PropValidationInfo is a string.
  *
  * @param PropValidationInfo propInfo
  */
@@ -27,7 +27,7 @@ export function regexValidator<T>(propInfo: PropValidationInfo<T>): void {
 }
 
 /**
- * Check if the value of PropValidationInfo is a valid Number.
+ * Check if the value of PropValidationInfo is a Number.
  *
  * @param PropValidationInfo propInfo
  */
@@ -38,7 +38,7 @@ export function numberValidator<T>(propInfo: PropValidationInfo<T>): void {
 }
 
 /**
- * Check if the value of PropValidationInfo is a valid Date.
+ * Check if the value of PropValidationInfo is a valid Date, eg. yyyy-mm-dd.
  *
  * @param PropValidationInfo propInfo
  */
@@ -55,7 +55,7 @@ const areRangeDatesValid = <T>(start: Date, end: Date, propInfo: PropValidationI
 };
 
 /**
- * Check if the value of PropValidationInfo has two valid dates and the first one is higher than the second one.
+ * Check if the value of PropValidationInfo has two valid dates (eg. yyyy-mm-dd) and the first one should higher than the second one.
  *
  * @param PropValidationInfo propInfo
  */
@@ -68,7 +68,7 @@ export function dateRangeValidator<T>(propInfo: PropValidationInfo<T>): void {
 }
 
 /**
- * Check if the value of PropValidationInfo is a valid Time.
+ * Check if the value of PropValidationInfo is a valid Time, eg. hh:mm:ss.
  *
  * @param PropValidationInfo propInfo
  */
@@ -80,6 +80,7 @@ export function timeValidator<T>(propInfo: PropValidationInfo<T>): void {
 
 /**
  * Check if the value of PropValidationInfo has a valid date and time | date | time.
+ * eg. 'yyyy-mm-dd hh:mm:ss' | 'yyyy-mm-dd' | 'hh:mm:ss'
  *
  * @param PropValidationInfo propInfo
  */
