@@ -38,7 +38,7 @@ describe('Date Validators', () => {
 
     describe('dotParseDate', () => {
         it('should return DateSlot with date and time when value is valid', () => {
-            expect(dotParseDate(`${dateSlot.date} ${dateSlot.time}`)).toEqual(dateSlot);
+            expect(dotParseDate(`${dateSlot.date}  ${dateSlot.time}`)).toEqual(dateSlot);
         });
 
         it('should return DateSlot with date  when value is valid', () => {
@@ -56,16 +56,16 @@ describe('Date Validators', () => {
 
     describe('isValidDateSlot', () => {
         it('should return true if date and time are valid', () => {
-            expect(isValidDateSlot(dateSlot, `${dateSlot.date} ${dateSlot.time}`)).toBeTruthy();
+            expect(isValidDateSlot(dateSlot, `${dateSlot.date} ${dateSlot.time}`)).toBe(true);
         });
 
         it('should return true if date or time are valid', () => {
-            expect(isValidDateSlot(onlyDate, dateSlot.date)).toBeTruthy();
-            expect(isValidDateSlot(onlyTime, dateSlot.time)).toBeTruthy();
+            expect(isValidDateSlot(onlyDate, dateSlot.date)).toBe(true);
+            expect(isValidDateSlot(onlyTime, dateSlot.time)).toBe(true);
         });
 
         it('should return false if raw data contains date and time and slot only one of them', () => {
-            expect(isValidDateSlot(onlyDate, `${dateSlot.date} ${dateSlot.time}`)).toBeFalsy();
+            expect(isValidDateSlot(onlyDate, `${dateSlot.date} ${dateSlot.time}`)).toBe(false);
         });
     });
 });
