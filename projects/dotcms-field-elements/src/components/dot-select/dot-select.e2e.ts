@@ -86,8 +86,9 @@ describe('dot-select', () => {
 
     describe('@Props', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`<dot-select></dot-select>`);
+            page = await newE2EPage({
+                html: `<dot-select></dot-select>`
+            });
             element = await page.find('dot-select');
         });
 
@@ -314,13 +315,16 @@ describe('dot-select', () => {
 
     describe('@Events', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-select
-                name="testName"
-                options="|,valueA|1,valueB|2"
-                value="2">
-            </dot-select>`);
+            page = await newE2EPage({
+                html: `
+                <dot-form>
+                    <dot-select
+                        name="testName"
+                        options="|,valueA|1,valueB|2"
+                        required="true">
+                    </dot-select>
+                </dot-form>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 
@@ -328,6 +332,11 @@ describe('dot-select', () => {
         });
 
         describe('status and value change', () => {
+            it('should display on wrapper not valid css classes when loaded, required and no value set', async () => {
+                const form = await page.find('dot-form');
+                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
+            });
+
             it('should emit when option selected', async () => {
                 await page.select('select', '1');
                 expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
@@ -348,13 +357,14 @@ describe('dot-select', () => {
 
     describe('@Methods', () => {
         beforeEach(async () => {
-            page = await newE2EPage();
-            await page.setContent(`
-            <dot-select
-                name="testName"
-                options="|,valueA|1,valueB|2"
-                value="2">
-            </dot-select>`);
+            page = await newE2EPage({
+                html: `
+                <dot-select
+                    name="testName"
+                    options="|,valueA|1,valueB|2"
+                    value="2">
+                </dot-select>`
+            });
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
 

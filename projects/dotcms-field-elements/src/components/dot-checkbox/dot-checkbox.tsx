@@ -46,7 +46,7 @@ export class DotCheckboxComponent {
     @Prop({ mutable: true, reflectToAttr: true }) value = '';
 
     @State() _options: DotOption[];
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -54,6 +54,7 @@ export class DotCheckboxComponent {
     componentWillLoad() {
         this.validateProps();
         this.emitValueChange();
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
     }
 

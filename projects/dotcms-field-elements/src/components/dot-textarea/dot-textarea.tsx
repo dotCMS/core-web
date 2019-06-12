@@ -52,7 +52,7 @@ export class DotTextareaComponent {
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
     @Prop({ reflectToAttr: true })
-    validationMessage = "The field doesn't comply with the specified format";
+    validationMessage = 'The field doesn\'t comply with the specified format';
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
@@ -62,7 +62,7 @@ export class DotTextareaComponent {
     @Prop({ mutable: true, reflectToAttr: true })
     regexCheck = '';
 
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -82,6 +82,7 @@ export class DotTextareaComponent {
 
     componentWillLoad(): void {
         this.validateProps();
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
     }
 

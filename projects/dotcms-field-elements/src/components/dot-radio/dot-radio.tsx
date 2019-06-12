@@ -52,7 +52,7 @@ export class DotRadioComponent {
     @Prop({ reflectToAttr: true }) options = '';
 
     @State() _options: DotOption[];
-    @State() status: DotFieldStatus = getOriginalStatus();
+    @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -70,6 +70,7 @@ export class DotRadioComponent {
 
     componentWillLoad(): void {
         this.validateProps();
+        this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
     }
 
