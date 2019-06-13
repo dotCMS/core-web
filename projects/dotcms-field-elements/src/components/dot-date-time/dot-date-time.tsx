@@ -183,7 +183,7 @@ export class DotDateTimeComponent {
                     <div
                         class="dot-date-time__body"
                         aria-describedby={getHintId(this.hint)}
-                        tabIndex={0}>
+                        tabIndex={this.hint ? 0 : null}>
                         <label>
                             {this.dateLabel}
                             <dot-input-calendar
