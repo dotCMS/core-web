@@ -126,5 +126,15 @@ export const DotFormFields = {
             required={field.required}
             value={field.defaultValue}
         />
+    ),
+
+    Binary: (field: DotCMSContentTypeField) => (
+        <dot-tags
+            hint={field.hint}
+            label={field.name}
+            name={field.variable}
+            required={field.required}
+            value={field.defaultValue}
+        />
     )
 };
