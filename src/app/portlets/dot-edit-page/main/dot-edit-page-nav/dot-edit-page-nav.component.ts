@@ -30,6 +30,9 @@ export class DotEditPageNavComponent implements OnChanges {
 
     isEnterpriseLicense: boolean;
     model: Observable<DotEditPageNavItem[]>;
+    i18nMessages: {
+        [key: string]: string;
+    } = {};
 
     constructor(
         private dotLicenseService: DotLicenseService,
@@ -60,14 +63,17 @@ export class DotEditPageNavComponent implements OnChanges {
             .getMessages([
                 'editpage.toolbar.nav.content',
                 'editpage.toolbar.nav.properties',
-                'rules',
+                'editpage.toolbar.nav.rules',
                 'editpage.toolbar.nav.layout',
                 'editpage.toolbar.nav.code',
                 'editpage.toolbar.nav.license.enterprise.only',
                 'editpage.toolbar.nav.layout.advance.disabled'
             ])
             .pipe(
-                mergeMap(() => this.dotLicenseService.isEnterprise()),
+                mergeMap((messages: { [key: string]: string }) => {
+                    this.i18nMessages = messages;
+                    return this.dotLicenseService.isEnterprise();
+                }),
                 map((isEnterpriseLicense: boolean) => {
                     this.isEnterpriseLicense = isEnterpriseLicense;
                     return this.getNavItems(this.pageState, isEnterpriseLicense);
@@ -90,15 +96,16 @@ export class DotEditPageNavComponent implements OnChanges {
                 needsEntepriseLicense: false,
                 disabled: false,
                 icon: 'description',
-                label: this.dotMessageService.get('editpage.toolbar.nav.content'),
+                label: this.i18nMessages['editpage.toolbar.nav.content'],
                 link: 'content'
             },
             this.getLayoutNavItem(dotRenderedPage, enterpriselicense),
+            this.getRulesNavItem(dotRenderedPage, enterpriselicense),
             {
                 needsEntepriseLicense: false,
                 disabled: false,
                 icon: 'add',
-                label: this.dotMessageService.get('editpage.toolbar.nav.properties'),
+                label: this.i18nMessages['editpage.toolbar.nav.properties'],
                 action: (inode: string) => {
                     this.dotContentletEditorService.edit({
                         data: {
@@ -106,8 +113,7 @@ export class DotEditPageNavComponent implements OnChanges {
                         }
                     });
                 }
-            },
-            this.getRulesNavItem(dotRenderedPage, enterpriselicense)
+            }
         ];
     }
 
@@ -125,7 +131,7 @@ export class DotEditPageNavComponent implements OnChanges {
             link: 'layout',
             tooltip: dotRenderedPage.template.drawed
                 ? null
-                : this.dotMessageService.get('editpage.toolbar.nav.layout.advance.disabled')
+                : this.i18nMessages['editpage.toolbar.nav.layout.advance.disabled']
         };
     }
 
@@ -139,17 +145,17 @@ export class DotEditPageNavComponent implements OnChanges {
             needsEntepriseLicense: !enterpriselicense,
             disabled: !this.canGoToLayout(dotRenderedPage),
             icon: 'tune',
-            label: this.dotMessageService.get('rules'),
+            label: this.i18nMessages['editpage.toolbar.nav.rules'],
             link: `rules/${dotRenderedPage.page.identifier}`,
             tooltip: dotRenderedPage.template.drawed
                 ? null
-                : this.dotMessageService.get('editpage.toolbar.nav.layout.advance.disabled')
+                : this.i18nMessages['editpage.toolbar.nav.layout.advance.disabled']
         };
     }
 
     private getTemplateItemLabel(template: DotTemplate): string {
-        return this.dotMessageService.get(
+        return this.i18nMessages[
             !template ? 'editpage.toolbar.nav.layout' : 'editpage.toolbar.nav.layout'
-        );
+        ];
     }
 }
