@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
-import { DotCMSContentTypeField } from './models';
+import { DotCMSContentTypeField, DotCMSFieldRow, DotCMSFieldColumn } from './models';
 import { DotFieldStatus } from '../../models';
 import { fieldParamsConversionToBE, fieldMap } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
@@ -16,7 +16,7 @@ export class DotFormComponent {
     @Prop() fieldsToShow: string[] = [];
     @Prop({ reflectToAttr: true }) resetLabel = 'Reset';
     @Prop({ reflectToAttr: true }) submitLabel = 'Submit';
-    @Prop({ mutable: true }) fields: DotCMSContentTypeField[] = [];
+    @Prop({ mutable: true, reflectToAttr: true }) fields: DotCMSFieldRow[] = [];
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
@@ -34,9 +34,8 @@ export class DotFormComponent {
         const { tagName } = event.target as HTMLElement;
         const { name, value } = event.detail;
         const transform = fieldParamsConversionToBE[tagName];
-
         this.value[name] = transform ? transform(value) : value;
-        this.fields = this.getUpdateFieldsValues();
+        this.getUpdateFieldsValues();
     }
 
     /**
@@ -79,10 +78,17 @@ export class DotFormComponent {
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-                <div class="form__fields">
-                    {this.fields.map((field: DotCMSContentTypeField) => this.getField(field))}
-                    <slot />
-                </div>
+                {this.fields.map((row: DotCMSFieldRow) => {
+                    return (
+                        <div class="form__row">
+                            {row.columns.map((fieldColumn: DotCMSFieldColumn) => {
+                                return fieldColumn.fields.map((field: DotCMSContentTypeField) => {
+                                    return this.getField(field);
+                                });
+                            })}
+                        </div>
+                    );
+                })}
 
                 <div class="form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
@@ -96,12 +102,16 @@ export class DotFormComponent {
         );
     }
 
-    private getField(field: DotCMSContentTypeField): any {
+    private getField(field: DotCMSContentTypeField): JSX.Element {
         return this.shouldShowField(field) ? this.getFieldTag(field) : '';
     }
 
-    private getFieldTag(field: DotCMSContentTypeField): any {
-        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
+    private getFieldTag(field: DotCMSContentTypeField): JSX.Element {
+        return fieldMap[field.fieldType] ? (
+            <div class="form__column form__fields">{fieldMap[field.fieldType](field)}</div>
+        ) : (
+            ''
+        );
     }
 
     private getStatusValueByName(name: string): boolean {
@@ -116,11 +126,16 @@ export class DotFormComponent {
             .includes(true);
     }
 
-    private getUpdateFieldsValues(): DotCMSContentTypeField[] {
-        return this.fields.map((field: DotCMSContentTypeField) => {
-            return typeof this.value[field.variable] !== 'undefined'
-                ? { ...field, defaultValue: this.value[field.variable] }
-                : field;
+    private getUpdateFieldsValues(): void {
+        this.fields.forEach((row: DotCMSFieldRow, rowIndex: number) => {
+            row.columns.forEach((fieldColumn: DotCMSFieldColumn, columnIndex: number) => {
+                fieldColumn.fields.forEach((field: DotCMSContentTypeField, fieldIndex: number) => {
+                    this.fields[rowIndex].columns[columnIndex].fields[fieldIndex] =
+                        typeof this.value[field.variable] !== 'undefined'
+                            ? { ...field, defaultValue: this.value[field.variable] }
+                            : { ...field };
+                });
+            });
         });
     }
 
@@ -150,10 +165,14 @@ export class DotFormComponent {
     private updateValue(): void {
         this.value = {};
 
-        this.fields.forEach((field: DotCMSContentTypeField) => {
-            if (this.shouldShowField(field)) {
-                this.value[field.variable] = field.defaultValue || '';
-            }
+        this.fields.forEach((row: DotCMSFieldRow) => {
+            row.columns.forEach((fieldColumn: DotCMSFieldColumn) => {
+                fieldColumn.fields.forEach((field: DotCMSContentTypeField) => {
+                    if (this.shouldShowField(field)) {
+                        this.value[field.variable] = field.defaultValue || '';
+                    }
+                });
+            });
         });
     }
 }

@@ -2,7 +2,7 @@ dot-form {
     display: block;
 
     & > form {
-        & > .form__fields > * {
+        .form__fields > * {
             display: block;
             margin: 1rem 0;
 
@@ -13,6 +13,18 @@ dot-form {
             &:last-child {
                 margin-bottom: 0;
             }
+        }
+
+        .form__row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .form__column {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         dot-label > label {
