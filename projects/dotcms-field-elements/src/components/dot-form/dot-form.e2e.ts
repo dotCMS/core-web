@@ -1,7 +1,7 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
-import { DotCMSContentTypeField } from './models';
+import { DotCMSContentTypeField, DotCMSFieldRow } from './models';
 
 const basicField: DotCMSContentTypeField = {
     clazz: '',
@@ -30,41 +30,70 @@ const basicField: DotCMSContentTypeField = {
     variable: ''
 };
 
-const fieldsMock: DotCMSContentTypeField[] = [
+const fieldsMock: DotCMSFieldRow[] = [
     {
-        ...basicField,
-        variable: 'textfield1',
-        required: true,
-        name: 'TexField',
-        fieldType: 'Text'
-    },
-    {
-        ...basicField,
-        defaultValue: 'key|value,llave|valor',
-        fieldType: 'Key-Value',
-        name: 'Key Value:',
-        required: false,
-        variable: 'keyvalue2'
-    },
-    {
-        ...basicField,
-        defaultValue: '2',
-        fieldType: 'Select',
-        name: 'Dropdwon',
-        required: false,
-        values: '|,labelA|1,labelB|2,labelC|3',
-        variable: 'dropdown3'
-    }
-];
-
+        columns: [
+            {
+                columnDivider: {},
+                fields: [
+                    {
+                        ...basicField,
+                        variable: 'textfield1',
+                        required: true,
+                        name: 'TexField',
+                        fieldType: 'Text'
+                    }
+                ]
+            }
+        ],
+        divider: {}
+    }, {
+        columns: [
+            {
+                columnDivider: {},
+                fields: [
+                    {
+                        ...basicField,
+                        defaultValue: 'key|value,llave|valor',
+                        fieldType: 'Key-Value',
+                        name: 'Key Value:',
+                        required: false,
+                        variable: 'keyvalue2'
+                    }
+                ]
+            }, {
+                columnDivider: {},
+                fields: [
+                    {
+                        ...basicField,
+                        defaultValue: '2',
+                        fieldType: 'Select',
+                        name: 'Dropdwon',
+                        required: false,
+                        values: '|,labelA|1,labelB|2,labelC|3',
+                        variable: 'dropdown3'
+                    }
+                ]
+            }
+        ],
+        divider: {}
+    }];
 
 const fieldMockNotRequired = [
     {
-        ...fieldsMock[0],
-        required: false
+        columns: [
+            {
+                fields: [{
+                    ...basicField,
+                    defaultValue: 'key|value,llave|valor',
+                    fieldType: 'Key-Value',
+                    name: 'Key Value:',
+                    required: false,
+                    variable: 'keyvalue2'
+                }]
+            }
+        ]
     },
-    fieldsMock[1],
-    fieldsMock[2]
 ];
 
 describe('dot-form', () => {
@@ -74,8 +103,7 @@ describe('dot-form', () => {
 
     const getFields = () => page.findAll('form .form__fields > *');
 
-    const getResetButton = () =>
-        page.find('.form__buttons button:not([type="submit"])');
+    const getResetButton = () => page.find('.form__buttons button:not([type="submit"])');
 
     const getSubmitButton = () => page.find('.form__buttons button[type="submit"]');
 
@@ -93,7 +121,6 @@ describe('dot-form', () => {
         const button = await getResetButton();
         await button.click();
     };
-
 
     beforeEach(async () => {
         page = await newE2EPage({
@@ -114,7 +141,6 @@ describe('dot-form', () => {
         });
 
         it('should have filled', async () => {
-
             const keyValue = await element.find('dot-key-value');
             keyValue.triggerEvent('statusChange', {
                 detail: {
@@ -153,6 +179,24 @@ describe('dot-form', () => {
             await page.waitForChanges();
 
             expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
+        });
+    });
+
+    describe('rows & columns', () => {
+        beforeEach(async () => {
+            element.setProperty('fields', fieldsMock);
+            await page.waitForChanges();
+        });
+
+        it('should have 2 rows', async () => {
+            const rows = await element.findAll('.form__row');
+            expect(rows.length).toBe(2);
+        });
+
+        it('should have second row with 2 columns', async () => {
+            const secondRow = (await element.findAll('.form__row'))[1];
+            const columns = await secondRow.findAll('.form__column');
+            expect(columns.length).toBe(2);
         });
     });
 
@@ -278,8 +322,9 @@ describe('dot-form', () => {
 
     describe('actions', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldMockNotRequired);
+            element.setProperty('fields', fieldsMock);
             await page.waitForChanges();
+
         });
 
         describe('click reset button', () => {
@@ -294,9 +339,9 @@ describe('dot-form', () => {
                 await page.waitForChanges();
 
                 expect(await textfield.getProperty('value')).toBe('');
-                expect(await keyvalue.getProperty('value')).toBe('');
+                expect(await keyvalue.getProperty('value')).toBe(null);
                 expect(await select.getProperty('value')).toBe('');
-                expect(element).toHaveClasses(dotTestUtil.class.empty);
+                expect(element).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
         });
     });
@@ -314,7 +359,7 @@ describe('dot-form', () => {
         });
 
         it('should render ast first child', async () => {
-            const slot = await element.find('.form__fields *:nth-child(1n)');
+            const slot = await element.find('form *:nth-child(1n)');
             expect(slot.tagName).toBe('DOT-TEXTFIELD');
         });
     });

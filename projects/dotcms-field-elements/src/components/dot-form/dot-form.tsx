@@ -89,7 +89,7 @@ export class DotFormComponent {
                         </div>
                     );
                 })}
-
+                <slot />
                 <div class="form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
                         {this.resetLabel}
