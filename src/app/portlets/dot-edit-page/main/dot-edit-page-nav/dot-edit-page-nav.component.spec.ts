@@ -40,7 +40,7 @@ class TestHostComponent {
     pageState: DotRenderedPageState;
 }
 
-fdescribe('DotEditPageNavComponent', () => {
+describe('DotEditPageNavComponent', () => {
     let dotLicenseService: DotLicenseService;
     let dotContentletEditorService: DotContentletEditorService;
     let component: DotEditPageNavComponent;
