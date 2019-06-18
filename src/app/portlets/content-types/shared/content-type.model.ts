@@ -1,4 +1,4 @@
-import { DotContentTypeField, DotFieldDivider } from '../fields/index';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '../fields/index';
 
 export interface ContentType {
     baseType?: string;
@@ -21,5 +21,5 @@ export interface ContentType {
     urlMapPattern?: string;
     variable?: string;
     workflow?: string;
-    layout?: DotFieldDivider[];
+    layout?: DotContentTypeLayoutDivider[];
 }

@@ -10,7 +10,7 @@ import {
     ViewChild
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
-import { DotContentTypeField, FieldType, DotFieldDivider } from '../shared';
+import { DotContentTypeField, FieldType, DotContentTypeLayoutDivider } from '../models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
@@ -40,16 +40,16 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     currentField: DotContentTypeField;
     currentFieldType: FieldType;
     dialogActions: DotDialogActions;
-    fieldRows: DotFieldDivider[];
+    fieldRows: DotContentTypeLayoutDivider[];
 
     @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
     @Input()
-    layout: DotFieldDivider[];
+    layout: DotContentTypeLayoutDivider[];
 
     @Output()
-    saveFields = new EventEmitter<DotFieldDivider[]>();
+    saveFields = new EventEmitter<DotContentTypeLayoutDivider[]>();
     @Output()
     editField = new EventEmitter<DotContentTypeField>();
     @Output()
@@ -105,6 +105,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.fieldDragDropService.fieldDropFromSource$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DropFieldData) => {
+                console.log('data', data);
                 this.setDroppedField(data.item);
                 this.toggleDialog();
             });
@@ -120,7 +121,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
         this.fieldDragDropService.fieldRowDropFromTarget$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((fieldRows: DotFieldDivider[]) => {
+            .subscribe((fieldRows: DotContentTypeLayoutDivider[]) => {
                 this.fieldRows = fieldRows;
                 this.saveFields.emit(fieldRows);
             });
@@ -138,7 +139,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .listen('add-tab-divider')
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                const fieldTab: DotFieldDivider = FieldUtil.createFieldTabDivider();
+                const fieldTab: DotContentTypeLayoutDivider = FieldUtil.createFieldTabDivider();
                 this.fieldRows.push(fieldTab);
                 this.setDroppedField(fieldTab.divider);
                 this.toggleDialog();
@@ -200,12 +201,12 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Get the field to be edited
-     * @param ContentTypeField fieldToEdit
+     * @param DotContentTypeField fieldToEdit
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editFieldHandler(fieldToEdit: DotContentTypeField): void {
         const fields = this.getFieldsWithoutLayout();
-        this.currentField = fields.find((field) => fieldToEdit.id === field.id);
+        this.currentField = fields.find((field: DotContentTypeField) => fieldToEdit.id === field.id);
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
         this.toggleDialog();
     }
@@ -249,10 +250,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with all the fields in fieldRow
-     * @param {DotFieldDivider} fieldRow
+     * @param {DotContentTypeLayoutDivider} fieldRow
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeFieldRow(fieldRow: DotFieldDivider): void {
+    removeFieldRow(fieldRow: DotContentTypeLayoutDivider): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
         const fieldsToDelete: DotContentTypeField[] = [];
 
@@ -268,10 +269,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with the tab to be removed
-     * @param {DotFieldDivider} fieldTab
+     * @param {DotContentTypeLayoutDivider} fieldTab
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeTab(fieldTab: DotFieldDivider): void {
+    removeTab(fieldTab: DotContentTypeLayoutDivider): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
         this.removeFields.emit([fieldTab.divider]);
     }
@@ -324,11 +325,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     private setDroppedField(droppedField: DotContentTypeField): void {
+        console.log('dasetDroppedFielda', droppedField);
         this.currentField = droppedField;
-
-        if (this.currentField) {
-            this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
-        }
+        this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
     }
 
     private toggleDialog(): void {

@@ -3,7 +3,7 @@ import { MockBackend } from '@angular/http/testing';
 import { DotFieldVariablesService } from './dot-field-variables.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotFieldVariable } from '../models/dot-field-variable.interface';
-import { DotContentTypeField } from '../../shared';
+import { DotContentTypeField } from '../../models';
 
 describe('DotFieldVariablesService', () => {
     beforeEach(() => {

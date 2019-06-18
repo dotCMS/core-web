@@ -8,14 +8,14 @@ import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotFieldDivider } from '../shared';
+import { DotContentTypeLayoutDivider } from '../models';
 
 
 const tabField: DotContentTypeField = {
     clazz: 'tab',
     name: 'fieldTab-1'
 };
-const mockFieldTab: DotFieldDivider = {
+const mockFieldTab: DotContentTypeLayoutDivider = {
     divider: tabField
 };
 
@@ -24,9 +24,9 @@ const mockFieldTab: DotFieldDivider = {
     template: '<dot-content-type-fields-tab [fieldTab]="data"></dot-content-type-fields-tab>'
 })
 class DotTestHostComponent {
-    data: DotFieldDivider;
+    data: DotContentTypeLayoutDivider;
 
-    setData(data: DotFieldDivider): void {
+    setData(data: DotContentTypeLayoutDivider): void {
         this.data = data;
     }
 }

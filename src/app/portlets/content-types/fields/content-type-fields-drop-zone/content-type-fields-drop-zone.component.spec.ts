@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import {
     DotContentTypeField,
     ContentTypeFieldsAddRowModule,
-    DotFieldDivider
+    DotContentTypeLayoutDivider
 } from '../';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
@@ -41,7 +41,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 })
 class TestContentTypeFieldsRowComponent {
     @Input()
-    fieldRow: DotFieldDivider;
+    fieldRow: DotContentTypeLayoutDivider;
     @Output()
     editField: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
@@ -67,12 +67,12 @@ class TestContentTypeFieldsPropertiesFormComponent {
 })
 class TestDotContentTypeFieldsTabComponent {
     @Input()
-    fieldTab: DotFieldDivider;
+    fieldTab: DotContentTypeLayoutDivider;
 
     @Output()
     editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
     @Output()
-    removeTab: EventEmitter<DotFieldDivider> = new EventEmitter();
+    removeTab: EventEmitter<DotContentTypeLayoutDivider> = new EventEmitter();
 }
 
 @Component({
@@ -202,7 +202,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should reset values when close dialog', () => {
-        const fieldRow: DotFieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
         comp.fieldRows = [fieldRow];
 
         comp.displayDialog = true;
@@ -236,7 +236,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     it('should emit removeFields event when a Row is removed', () => {
         let fieldsToRemove: DotContentTypeField[];
 
-        const fieldRow: DotFieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -270,7 +270,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
     it('should cancel last drag and drop operation fields', () => {
 
-        const fieldRow1: DotFieldDivider = FieldUtil.createFieldRow(1);
+        const fieldRow1: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -290,7 +290,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 });
 
-let fakeFields: DotFieldDivider[];
+let fakeFields: DotContentTypeLayoutDivider[];
 
 @Component({
     selector: 'dot-test-host-component',
@@ -298,7 +298,7 @@ let fakeFields: DotFieldDivider[];
         '<dot-content-type-fields-drop-zone [layout]="layout" [loading]="loading"></dot-content-type-fields-drop-zone>'
 })
 class TestHostComponent {
-    layout: DotFieldDivider[];
+    layout: DotContentTypeLayoutDivider[];
     loading: boolean;
 
     constructor() {}
@@ -644,11 +644,12 @@ describe('Load fields and drag and drop', () => {
         beforeEach(async(() => {
             fixture.detectChanges();
 
+            const fieldToEdit: DotContentTypeField = fakeFields[2].columns[0].fields[0];
             this.testFieldDragDropService._fieldDropFromSource.next({
-                item: fakeFields[7],
+                item: fieldToEdit,
                 target: {
                     columnId: '8',
-                    model: [fakeFields[7]]
+                    model: [fieldToEdit]
                 }
             });
 

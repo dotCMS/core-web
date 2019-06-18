@@ -18,7 +18,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { Table } from 'primeng/table';
 import * as _ from 'lodash';
-import { DotContentTypeField } from '../shared';
+import { DotContentTypeField } from '../models';
 
 @Component({
     selector: 'dot-content-type-fields-variables',

@@ -21,8 +21,6 @@ import { SiteSelectorComponent } from '@components/_common/site-selector/site-se
 import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-
-// TODO: move this to models
 import { DotContentTypeField } from '../fields';
 
 /**

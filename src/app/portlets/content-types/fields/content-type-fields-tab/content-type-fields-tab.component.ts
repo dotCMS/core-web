@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField } from '../shared';
+import { DotContentTypeField } from '../models';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotFieldDivider } from '@portlets/content-types/fields/shared/dot-field-divider.model';
+import { DotContentTypeLayoutDivider } from '@portlets/content-types/fields/models/dot-content-type-layout-divider.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { take } from 'rxjs/operators';
 
@@ -18,13 +18,13 @@ import { take } from 'rxjs/operators';
 })
 export class ContentTypeFieldsTabComponent implements OnInit {
     @Input()
-    fieldTab: DotFieldDivider;
+    fieldTab: DotContentTypeLayoutDivider;
 
     @Output()
     editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
 
     @Output()
-    removeTab: EventEmitter<DotFieldDivider> = new EventEmitter();
+    removeTab: EventEmitter<DotContentTypeLayoutDivider> = new EventEmitter();
 
     i18nMessages: any = {};
     label: string;

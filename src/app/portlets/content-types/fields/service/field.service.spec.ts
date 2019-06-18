@@ -3,7 +3,7 @@ import { Response, ResponseOptions, ConnectionBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { FieldService } from './';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
-import { FieldType } from '@portlets/content-types/fields';
+import { FieldType, DotContentTypeField } from '@portlets/content-types/fields';
 
 export const mockFieldType: FieldType = {
     clazz: 'TextField',
@@ -120,6 +120,40 @@ describe('FieldService', () => {
             expect(this.mockData).toEqual(this.response.fields);
             expect(3).toBe(this.lastConnection.request.method); // 3 is DELETE method
             expect(this.lastConnection.request.url).toContain('v3/contenttype/1/fields');
+        });
+    });
+
+    describe('Update Field', () => {
+        beforeEach(() => {
+            const field: DotContentTypeField = {
+                name: 'test field',
+                id: '1',
+                sortOrder: 1
+            };
+
+            this.fieldService
+                .updateField('2', field)
+                .subscribe(res => (this.response = JSON.parse(res)));
+
+            this.lastConnection.mockRespond(
+                new Response(
+                    new ResponseOptions({
+                        body: {
+                            entity: JSON.stringify([field])
+                        }
+                    })
+                )
+            );
+        });
+
+        it('should update field', () => {
+            expect(this.lastConnection.request._body.field).toEqual({
+                name: 'test field',
+                id: '1'
+            });
+
+            expect(this.lastConnection.request.url).toContain('v3/contenttype/2/fields/1');
+            expect(2).toBe(this.lastConnection.request.method); // 2 is PUT method
         });
     });
 });

@@ -6,7 +6,7 @@ import { ContentTypesEditComponent } from './content-types-edit.component';
 import { CrudService } from '@services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField, DotFieldDivider } from '../fields';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '../fields';
 import { FieldService } from '../fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -41,7 +41,7 @@ import * as _ from 'lodash';
 })
 class TestContentTypeFieldsDropZoneComponent {
     @Input()
-    layout: DotFieldDivider[];
+    layout: DotContentTypeLayoutDivider[];
     @Input()
     loading: boolean;
     @Output()
@@ -358,7 +358,7 @@ describe('ContentTypesEditComponent', () => {
         }
     ];
 
-    const currentLayoutInServer: DotFieldDivider[] = [
+    const currentLayoutInServer: DotContentTypeLayoutDivider[] = [
         {
             divider: {},
             columns: [
@@ -495,7 +495,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields attribute when a field is edit', () => {
-            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
             const fieldToUpdate: DotContentTypeField =  layout[0].columns[0].fields[0];
             fieldToUpdate.name = 'Updated field';
 
@@ -581,7 +581,7 @@ describe('ContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            const fieldsReturnByServer: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
             newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
@@ -607,12 +607,12 @@ describe('ContentTypesEditComponent', () => {
                 return newfield;
             });
 
-            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
             layout[0].columns[0].fields = fieldsReturnByServer;
             layout[0].divider.id = new Date().getMilliseconds().toString();
             layout[0].columns[0].columnDivider.id = new Date().getMilliseconds().toString();
 
-            const newRow: DotFieldDivider = {
+            const newRow: DotContentTypeLayoutDivider = {
                 divider: {
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
@@ -667,7 +667,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should remove fields on dropzone event', () => {
-            const layout: DotFieldDivider[] = _.cloneDeep(currentLayoutInServer);
+            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
             layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
