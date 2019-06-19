@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
 import { DotCMSContentTypeField, DotCMSFieldRow, DotCMSFieldColumn } from './models';
 import { DotFieldStatus } from '../../models';
-import { fieldParamsConversionToBE, fieldMap } from './utils';
+import { fieldParamsConversionToBE, shouldShowField } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
@@ -35,7 +35,6 @@ export class DotFormComponent {
         const { name, value } = event.detail;
         const transform = fieldParamsConversionToBE[tagName];
         this.value[name] = transform ? transform(value) : value;
-        this.getUpdateFieldsValues();
     }
 
     /**
@@ -78,19 +77,9 @@ export class DotFormComponent {
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-                {this.fields.map((row: DotCMSFieldRow) => {
-                    return (
-                        <div class="form__row">
-                            {row.columns.map((fieldColumn: DotCMSFieldColumn) => {
-                                return fieldColumn.fields.map((field: DotCMSContentTypeField) => {
-                                    return this.getField(field);
-                                });
-                            })}
-                        </div>
-                    );
-                })}
+                <dot-form-row fields={this.fields} fields-to-show={this.fieldsToShow} />
                 <slot />
-                <div class="form__buttons">
+                <div class="dot-form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
                         {this.resetLabel}
                     </button>
@@ -99,18 +88,6 @@ export class DotFormComponent {
                     </button>
                 </div>
             </form>
-        );
-    }
-
-    private getField(field: DotCMSContentTypeField): JSX.Element {
-        return this.shouldShowField(field) ? this.getFieldTag(field) : '';
-    }
-
-    private getFieldTag(field: DotCMSContentTypeField): JSX.Element {
-        return fieldMap[field.fieldType] ? (
-            <div class="form__column form__fields">{fieldMap[field.fieldType](field)}</div>
-        ) : (
-            ''
         );
     }
 
@@ -126,19 +103,6 @@ export class DotFormComponent {
             .includes(true);
     }
 
-    private getUpdateFieldsValues(): void {
-        this.fields.forEach((row: DotCMSFieldRow, rowIndex: number) => {
-            row.columns.forEach((fieldColumn: DotCMSFieldColumn, columnIndex: number) => {
-                fieldColumn.fields.forEach((field: DotCMSContentTypeField, fieldIndex: number) => {
-                    this.fields[rowIndex].columns[columnIndex].fields[fieldIndex] =
-                        typeof this.value[field.variable] !== 'undefined'
-                            ? { ...field, defaultValue: this.value[field.variable] }
-                            : { ...field };
-                });
-            });
-        });
-    }
-
     private handleSubmit(event: Event): void {
         event.preventDefault();
         this.onSubmit.emit({
@@ -147,7 +111,7 @@ export class DotFormComponent {
     }
 
     private resetForm(): void {
-        const elements = Array.from(this.el.querySelectorAll('form .form__fields > *'));
+        const elements = Array.from(this.el.querySelectorAll('form .dot-form__fields > *'));
 
         elements.forEach((element: any) => {
             try {
@@ -158,17 +122,13 @@ export class DotFormComponent {
         });
     }
 
-    private shouldShowField(field: DotCMSContentTypeField): boolean {
-        return !this.fieldsToShow.length || this.fieldsToShow.includes(field.variable);
-    }
-
     private updateValue(): void {
         this.value = {};
 
         this.fields.forEach((row: DotCMSFieldRow) => {
             row.columns.forEach((fieldColumn: DotCMSFieldColumn) => {
                 fieldColumn.fields.forEach((field: DotCMSContentTypeField) => {
-                    if (this.shouldShowField(field)) {
+                    if (shouldShowField(field, this.fieldsToShow)) {
                         this.value[field.variable] = field.defaultValue || '';
                     }
                 });

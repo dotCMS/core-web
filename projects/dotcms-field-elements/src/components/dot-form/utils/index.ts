@@ -18,6 +18,10 @@ const pipedValuesToObject = (values: string): { [key: string]: string } => {
         : null;
 };
 
+export const shouldShowField = (field: DotCMSContentTypeField, fieldsToShow: string[]): boolean => {
+    return !fieldsToShow.length || fieldsToShow.includes(field.variable);
+};
+
 const fieldParamsConversionFromBE = {
     'Key-Value': (field: DotCMSContentTypeField) => {
         if (field.defaultValue && typeof field.defaultValue !== 'string') {
