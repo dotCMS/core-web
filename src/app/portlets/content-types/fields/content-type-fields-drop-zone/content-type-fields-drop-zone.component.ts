@@ -188,10 +188,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: DotContentTypeField): void {
-        Object.assign(this.currentField, fieldToSave);
+        this.currentField = Object.assign({}, this.currentField, fieldToSave);
 
-        if (this.isEditField()) {
-            this.editField.emit(this.currentField);
+        if (!!fieldToSave.id) {
+            this.editField.emit(fieldToSave);
         } else {
             this.saveFields.emit(this.fieldRows);
         }
@@ -311,10 +311,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
-    private isEditField(): boolean {
-        return !!this.currentField.id;
-    }
-
     private getFieldsWithoutLayout(): DotContentTypeField[] {
         return this.fieldRows
             .map(row => row.columns)
@@ -325,7 +321,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     }
 
     private setDroppedField(droppedField: DotContentTypeField): void {
-        console.log('dasetDroppedFielda', droppedField);
         this.currentField = droppedField;
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
     }
