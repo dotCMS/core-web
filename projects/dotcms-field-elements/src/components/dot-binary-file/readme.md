@@ -19,7 +19,7 @@
 | `required`          | `required`           | (optional) Determine if it is mandatory                                                            | `boolean` | `false`                                                |
 | `requiredMessage`   | `required-message`   | (optional) Text that be shown when required is set and condition not met                           | `string`  | `'This field is required'`                             |
 | `validationMessage` | `validation-message` | (optional) Text that be shown when the Regular Expression condition not met                        | `string`  | `"The field doesn't comply with the specified format"` |
-| `value`             | `value`              | Value specifies the value of the <input> element                                                   | `string`  | `''`                                                   |
+| `value`             | `value`              | Value specifies the value of the <input> element                                                   | `any`     | `null`                                                 |
 
 
 ## Events
