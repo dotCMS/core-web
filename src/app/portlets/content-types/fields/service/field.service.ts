@@ -85,9 +85,6 @@ export class FieldService {
      * @memberof FieldService
      */
     updateField(contentTypeId: string, field: DotContentTypeField): Observable<DotContentTypeLayoutDivider[]> {
-
-        delete field.sortOrder;
-
         return this.coreWebService
             .requestView({
                 body: {
