@@ -14,7 +14,7 @@ export class DotFormComponent {
     @Event() onSubmit: EventEmitter;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
-    @Prop() fieldsToShow: string[] = [];
+    @Prop() fieldsToShow: string;
 
     /** (optional) Text to be rendered on Reset button */
     @Prop({ reflectToAttr: true }) resetLabel = 'Reset';
@@ -22,8 +22,8 @@ export class DotFormComponent {
     /** (optional) Text to be rendered on Submit button */
     @Prop({ reflectToAttr: true }) submitLabel = 'Submit';
 
-    /** Fields metada to be rendered */
-    @Prop({ mutable: true, reflectToAttr: true }) fields: DotCMSContentTypeRow[] = [];
+    /** Layout metada to be rendered */
+    @Prop({ mutable: true, reflectToAttr: true }) layout: DotCMSContentTypeRow[] = [];
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
@@ -61,8 +61,8 @@ export class DotFormComponent {
         });
     }
 
-    @Watch('fields')
-    fieldsWatch() {
+    @Watch('layout')
+    layoutWatch() {
         this.updateValue();
     }
 
@@ -84,7 +84,9 @@ export class DotFormComponent {
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-                <dot-form-row fields={this.fields} fields-to-show={this.fieldsToShow.toString()} />
+                {this.layout.map((row: DotCMSContentTypeRow) => {
+                    return <dot-form-row row={row} fields-to-show={this.fieldsToShow} />;
+                })}
                 <slot />
                 <div class="dot-form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
@@ -129,10 +131,21 @@ export class DotFormComponent {
         });
     }
 
-    private updateValue(): void {
+    private updateValue(): any {
+
+        // return this.layout
+        //     .reduce((acc, { columns }) => [...acc, ...columns.map((col: DotCMSContentTypeColumn) => col.fields)], [])
+        //     .flat()
+        //     .reduce((acc, { variable, defaultValue }) => {
+        //         return {
+        //             ...acc,
+        //             [variable]: defaultValue
+        //         };
+        //     }, {});
+
         this.value = {};
 
-        this.fields.forEach((row: DotCMSContentTypeRow) => {
+        this.layout.forEach((row: DotCMSContentTypeRow) => {
             row.columns.forEach((fieldColumn: DotCMSContentTypeColumn) => {
                 fieldColumn.fields.forEach((field: DotCMSContentTypeField) => {
                     if (shouldShowField(field, this.fieldsToShow)) {

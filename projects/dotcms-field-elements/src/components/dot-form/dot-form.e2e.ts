@@ -129,7 +129,7 @@ describe('dot-form', () => {
 
     describe('css class', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldMockNotRequired);
+            element.setProperty('layout', fieldMockNotRequired);
             await page.waitForChanges();
         });
 
@@ -181,18 +181,18 @@ describe('dot-form', () => {
 
     describe('rows & columns', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldsMock);
+            element.setProperty('layout', fieldsMock);
             await page.waitForChanges();
         });
 
         it('should have 2 rows', async () => {
-            const rows = await element.findAll('.dot-form__row');
+            const rows = await element.findAll('dot-form-row');
             expect(rows.length).toBe(2);
         });
 
         it('should have second row with 2 columns', async () => {
-            const secondRow = (await element.findAll('.dot-form__row'))[1];
-            const columns = await secondRow.findAll('.dot-form__column');
+            const secondRow = (await element.findAll('dot-form-row'))[1];
+            const columns = await secondRow.findAll('dot-form-column');
             expect(columns.length).toBe(2);
         });
     });
@@ -200,11 +200,11 @@ describe('dot-form', () => {
     describe('@Props', () => {
         describe('fieldsToShow', () => {
             beforeEach(() => {
-                element.setProperty('fields', fieldsMock);
+                element.setProperty('layout', fieldsMock);
             });
 
             it('should render specified fields', async () => {
-                element.setProperty('fieldsToShow', ['textfield1', 'dropdown3']);
+                element.setProperty('fieldsToShow', 'textfield1,dropdown3');
                 await page.waitForChanges();
 
                 const fields = await getFields();
@@ -215,7 +215,7 @@ describe('dot-form', () => {
             });
 
             it('should render no fields', async () => {
-                element.setProperty('fieldsToShow', ['no', 'field', 'to', 'render']);
+                element.setProperty('fieldsToShow', 'no,field,to,render');
                 await page.waitForChanges();
 
                 const fields = await getFields();
@@ -255,7 +255,7 @@ describe('dot-form', () => {
 
         describe('fields', () => {
             beforeEach(() => {
-                element.setProperty('fields', fieldsMock);
+                element.setProperty('layout', fieldsMock);
             });
 
             it('should render fields', async () => {
@@ -273,7 +273,7 @@ describe('dot-form', () => {
 
     describe('@Events', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldsMock);
+            element.setProperty('layout', fieldsMock);
             await page.waitForChanges();
         });
 
@@ -319,7 +319,7 @@ describe('dot-form', () => {
 
     describe('actions', () => {
         beforeEach(async () => {
-            element.setProperty('fields', fieldsMock);
+            element.setProperty('layout', fieldsMock);
             await page.waitForChanges();
 
         });
@@ -356,7 +356,7 @@ describe('dot-form', () => {
         });
 
         it('should render ast second child', async () => {
-            const slot = await element.find('form *:nth-child(2n)');
+            const slot = await element.find('form *:nth-child(1n)');
             expect(slot.tagName).toBe('DOT-TEXTFIELD');
         });
     });
