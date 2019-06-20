@@ -188,10 +188,15 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     saveFieldsHandler(fieldToSave: DotContentTypeField): void {
-        this.currentField = Object.assign({}, this.currentField, fieldToSave);
+        if (!this.currentField) {
+            const tabDividerFields = this.getTabDividerFields();
+            this.currentField = tabDividerFields.find((field: DotContentTypeField) => fieldToSave.id === field.id);
+        }
+
+        Object.assign(this.currentField, fieldToSave);
 
         if (!!fieldToSave.id) {
-            this.editField.emit(fieldToSave);
+            this.editField.emit(this.currentField);
         } else {
             this.saveFields.emit(this.fieldRows);
         }
@@ -318,6 +323,12 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .reduce((accumulator, currentValue) => accumulator.concat(currentValue), [])
             .map(fieldColumn => fieldColumn.fields)
             .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+    }
+
+    private getTabDividerFields(): DotContentTypeField[] {
+        return this.fieldRows
+            .map(row => row.divider)
+            .filter(field => FieldUtil.isTabDivider(field));
     }
 
     private setDroppedField(droppedField: DotContentTypeField): void {
