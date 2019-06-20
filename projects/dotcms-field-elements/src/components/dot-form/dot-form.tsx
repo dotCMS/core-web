@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
 import { DotCMSContentTypeField, DotCMSContentTypeRow, DotCMSContentTypeColumn } from './models';
 import { DotFieldStatus } from '../../models';
-import { fieldParamsConversionToBE, shouldShowField } from './utils';
+import { fieldParamsConversionToBE } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
@@ -63,12 +63,12 @@ export class DotFormComponent {
 
     @Watch('layout')
     layoutWatch() {
-        this.updateValue();
+        this.value = this.getUpdateValue();
     }
 
     @Watch('fieldsToShow')
     fieldsToShowWatch() {
-        this.updateValue();
+        this.value = this.getUpdateValue();
     }
 
     hostData() {
@@ -78,7 +78,7 @@ export class DotFormComponent {
     }
 
     componentWillLoad() {
-        this.updateValue();
+        this.value = this.getUpdateValue();
     }
 
     render() {
@@ -131,28 +131,24 @@ export class DotFormComponent {
         });
     }
 
-    private updateValue(): any {
-
-        // return this.layout
-        //     .reduce((acc, { columns }) => [...acc, ...columns.map((col: DotCMSContentTypeColumn) => col.fields)], [])
-        //     .flat()
-        //     .reduce((acc, { variable, defaultValue }) => {
-        //         return {
-        //             ...acc,
-        //             [variable]: defaultValue
-        //         };
-        //     }, {});
-
-        this.value = {};
-
-        this.layout.forEach((row: DotCMSContentTypeRow) => {
-            row.columns.forEach((fieldColumn: DotCMSContentTypeColumn) => {
-                fieldColumn.fields.forEach((field: DotCMSContentTypeField) => {
-                    if (shouldShowField(field, this.fieldsToShow)) {
-                        this.value[field.variable] = field.defaultValue || '';
-                    }
-                });
-            });
-        });
+    private getUpdateValue(): { [key: string]: string } {
+        return this.layout
+            .reduce(
+                (acc: DotCMSContentTypeField[], { columns }: DotCMSContentTypeRow) =>
+                    acc.concat(...columns.map((col: DotCMSContentTypeColumn) => col.fields)),
+                []
+            )
+            .reduce(
+                (
+                    acc: { [key: string]: string },
+                    { variable, defaultValue }: DotCMSContentTypeField
+                ) => {
+                    return {
+                        ...acc,
+                        [variable]: defaultValue
+                    };
+                },
+                {}
+            );
     }
 }
