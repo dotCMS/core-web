@@ -1,7 +1,7 @@
 import { newE2EPage, E2EPage, E2EElement } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
 import { dotTestUtil } from '../../utils';
-import { DotCMSContentTypeField, DotCMSFieldRow } from './models';
+import { DotCMSContentTypeField, DotCMSContentTypeRow } from './models';
 
 const basicField: DotCMSContentTypeField = {
     clazz: '',
@@ -30,11 +30,10 @@ const basicField: DotCMSContentTypeField = {
     variable: ''
 };
 
-const fieldsMock: DotCMSFieldRow[] = [
+const fieldsMock: DotCMSContentTypeRow[] = [
     {
         columns: [
             {
-                columnDivider: {},
                 fields: [
                     {
                         ...basicField,
@@ -46,11 +45,9 @@ const fieldsMock: DotCMSFieldRow[] = [
                 ]
             }
         ],
-        divider: {}
     }, {
         columns: [
             {
-                columnDivider: {},
                 fields: [
                     {
                         ...basicField,
@@ -62,7 +59,6 @@ const fieldsMock: DotCMSFieldRow[] = [
                     }
                 ]
             }, {
-                columnDivider: {},
                 fields: [
                     {
                         ...basicField,
@@ -76,7 +72,6 @@ const fieldsMock: DotCMSFieldRow[] = [
                 ]
             }
         ],
-        divider: {}
     }];
 
 const fieldMockNotRequired = [
@@ -90,9 +85,11 @@ const fieldMockNotRequired = [
                     name: 'Key Value:',
                     required: false,
                     variable: 'keyvalue2'
-                }]
+                }],
+                columnDivider: {}
             }
-        ]
+        ],
+        divider: {}
     },
 ];
 
@@ -101,11 +98,11 @@ describe('dot-form', () => {
     let element: E2EElement;
     let submitSpy: EventSpy;
 
-    const getFields = () => page.findAll('form .form__fields > *');
+    const getFields = () => page.findAll('form .dot-form__fields > *');
 
-    const getResetButton = () => page.find('.form__buttons button:not([type="submit"])');
+    const getResetButton = () => page.find('.dot-form__buttons button:not([type="submit"])');
 
-    const getSubmitButton = () => page.find('.form__buttons button[type="submit"]');
+    const getSubmitButton = () => page.find('.dot-form__buttons button[type="submit"]');
 
     const fillTextfield = async (text?: string) => {
         const textfield = await element.find('input');
@@ -189,13 +186,13 @@ describe('dot-form', () => {
         });
 
         it('should have 2 rows', async () => {
-            const rows = await element.findAll('.form__row');
+            const rows = await element.findAll('.dot-form__row');
             expect(rows.length).toBe(2);
         });
 
         it('should have second row with 2 columns', async () => {
-            const secondRow = (await element.findAll('.form__row'))[1];
-            const columns = await secondRow.findAll('.form__column');
+            const secondRow = (await element.findAll('.dot-form__row'))[1];
+            const columns = await secondRow.findAll('.dot-form__column');
             expect(columns.length).toBe(2);
         });
     });
@@ -339,7 +336,7 @@ describe('dot-form', () => {
                 await page.waitForChanges();
 
                 expect(await textfield.getProperty('value')).toBe('');
-                expect(await keyvalue.getProperty('value')).toBe(null);
+                expect(await keyvalue.getProperty('value')).toBe('');
                 expect(await select.getProperty('value')).toBe('');
                 expect(element).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
@@ -358,8 +355,8 @@ describe('dot-form', () => {
             element = await page.find('dot-form');
         });
 
-        it('should render ast first child', async () => {
-            const slot = await element.find('form *:nth-child(1n)');
+        it('should render ast second child', async () => {
+            const slot = await element.find('form *:nth-child(2n)');
             expect(slot.tagName).toBe('DOT-TEXTFIELD');
         });
     });

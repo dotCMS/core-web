@@ -1,5 +1,5 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
-import { DotCMSContentTypeField, DotCMSFieldRow, DotCMSFieldColumn } from './models';
+import { DotCMSContentTypeField, DotCMSContentTypeRow, DotCMSContentTypeColumn } from './models';
 import { DotFieldStatus } from '../../models';
 import { fieldParamsConversionToBE, shouldShowField } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
@@ -13,10 +13,17 @@ export class DotFormComponent {
 
     @Event() onSubmit: EventEmitter;
 
+    /** (optional) List of fields (variableName) separated by comma, to be shown */
     @Prop() fieldsToShow: string[] = [];
+
+    /** (optional) Text to be rendered on Reset button */
     @Prop({ reflectToAttr: true }) resetLabel = 'Reset';
+
+    /** (optional) Text to be rendered on Submit button */
     @Prop({ reflectToAttr: true }) submitLabel = 'Submit';
-    @Prop({ mutable: true, reflectToAttr: true }) fields: DotCMSFieldRow[] = [];
+
+    /** Fields metada to be rendered */
+    @Prop({ mutable: true, reflectToAttr: true }) fields: DotCMSContentTypeRow[] = [];
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
@@ -77,7 +84,7 @@ export class DotFormComponent {
     render() {
         return (
             <form onSubmit={this.handleSubmit.bind(this)}>
-                <dot-form-row fields={this.fields} fields-to-show={this.fieldsToShow} />
+                <dot-form-row fields={this.fields} fields-to-show={this.fieldsToShow.toString()} />
                 <slot />
                 <div class="dot-form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
@@ -125,8 +132,8 @@ export class DotFormComponent {
     private updateValue(): void {
         this.value = {};
 
-        this.fields.forEach((row: DotCMSFieldRow) => {
-            row.columns.forEach((fieldColumn: DotCMSFieldColumn) => {
+        this.fields.forEach((row: DotCMSContentTypeRow) => {
+            row.columns.forEach((fieldColumn: DotCMSContentTypeColumn) => {
                 fieldColumn.fields.forEach((field: DotCMSContentTypeField) => {
                     if (shouldShowField(field, this.fieldsToShow)) {
                         this.value[field.variable] = field.defaultValue || '';

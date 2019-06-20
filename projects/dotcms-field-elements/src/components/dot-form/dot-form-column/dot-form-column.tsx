@@ -1,5 +1,5 @@
 import { Component, Prop } from '@stencil/core';
-import { DotCMSFieldColumn, DotCMSContentTypeField } from '../models';
+import { DotCMSContentTypeColumn, DotCMSContentTypeField } from '../models';
 import { fieldMap, shouldShowField } from '../utils';
 
 @Component({
@@ -7,8 +7,18 @@ import { fieldMap, shouldShowField } from '../utils';
     styleUrl: 'dot-form-column.scss'
 })
 export class DotFormColumnComponent {
-    @Prop({ mutable: true, reflectToAttr: true }) column: DotCMSFieldColumn;
-    @Prop() fieldsToShow: string[] = [];
+
+    /** Fields metada to be rendered */
+    @Prop({ mutable: true, reflectToAttr: true }) column: DotCMSContentTypeColumn;
+
+    /** (optional) List of fields (variableName) separated by comma, to be shown */
+    @Prop({ mutable: true, reflectToAttr: true }) fieldsToShow: string;
+
+    fields2Show: string[];
+
+    componentWillLoad() {
+        this.fields2Show = this.fieldsToShow ? this.fieldsToShow.split(',') : [];
+    }
 
     render() {
         return this.column.fields.map((field: DotCMSContentTypeField) => {
@@ -17,7 +27,7 @@ export class DotFormColumnComponent {
     }
 
     private getField(field: DotCMSContentTypeField): JSX.Element {
-        return shouldShowField(field, this.fieldsToShow) ? this.getFieldTag(field) : '';
+        return shouldShowField(field, this.fields2Show) ? this.getFieldTag(field) : '';
     }
 
     private getFieldTag(field: DotCMSContentTypeField): JSX.Element {
