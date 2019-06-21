@@ -36,6 +36,7 @@ export class DotHttpErrorManagerService {
             this.errorHandlers[HttpCode.UNAUTHORIZED] = this.handleUnathorized.bind(this);
             this.errorHandlers[HttpCode.FORBIDDEN] = this.handleForbidden.bind(this);
             this.errorHandlers[HttpCode.SERVER_ERROR] = this.handleServerError.bind(this);
+            this.errorHandlers[HttpCode.BAD_REQUEST] = this.handleBadRequestError.bind(this);
         }
     }
 
@@ -79,6 +80,8 @@ export class DotHttpErrorManagerService {
 
     private callErrorHandler(response: Response): boolean {
         const code = response.status;
+        console.log('code', code);
+        console.log('this.errorHandlers', this.errorHandlers);
         return code === HttpCode.FORBIDDEN
             ? this.isLicenseError(response)
                 ? this.handleLicense()
@@ -128,6 +131,14 @@ export class DotHttpErrorManagerService {
         this.dotDialogService.alert({
             message: this.dotMessageService.get('dot.common.http.error.500.message'),
             header: this.dotMessageService.get('dot.common.http.error.500.header')
+        });
+        return false;
+    }
+
+    private handleBadRequestError(): boolean {
+        this.dotDialogService.alert({
+            message: this.dotMessageService.get('dot.common.http.error.400.message'),
+            header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
         return false;
     }

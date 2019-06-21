@@ -9,7 +9,7 @@ import { DotHttpErrorManagerService } from './dot-http-error-manager.service';
 import { mockResponseView } from '../../../test/response-view.mock';
 import { Headers } from '@angular/http';
 
-describe('DotHttpErrorManagerService', () => {
+fdescribe('DotHttpErrorManagerService', () => {
     let service: DotHttpErrorManagerService;
     let dotRouterService: DotRouterService;
     let dotDialogService: DotAlertConfirmService;
@@ -22,7 +22,9 @@ describe('DotHttpErrorManagerService', () => {
         'dot.common.http.error.500.header': '500 Header',
         'dot.common.http.error.500.message': '500 Message',
         'dot.common.http.error.403.license.message': 'license message',
-        'dot.common.http.error.403.license.header': 'license header'
+        'dot.common.http.error.403.license.header': 'license header',
+        'dot.common.http.error.400.header': '400 Header',
+        'dot.common.http.error.400.message': '400 Message',
     });
 
     beforeEach(() => {
@@ -138,6 +140,22 @@ describe('DotHttpErrorManagerService', () => {
         expect(dotDialogService.alert).toHaveBeenCalledWith({
             message: 'license message',
             header: 'license header'
+        });
+    });
+
+    it('should handle 400 error', () => {
+        spyOn(dotDialogService, 'alert');
+
+        service.handle(mockResponseView(400)).subscribe((res) => {
+            result = res;
+        });
+
+        expect(result).toEqual({
+            redirected: false
+        });
+        expect(dotDialogService.alert).toHaveBeenCalledWith({
+            message: '400 Message',
+            header: '400 Header'
         });
     });
 });
