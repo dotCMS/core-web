@@ -7,7 +7,6 @@ import { fieldMap, shouldShowField } from '../utils';
     styleUrl: 'dot-form-column.scss'
 })
 export class DotFormColumnComponent {
-
     /** Fields metada to be rendered */
     @Prop({ reflectToAttr: true }) column: DotCMSContentTypeColumn;
 
@@ -15,9 +14,7 @@ export class DotFormColumnComponent {
     @Prop({ reflectToAttr: true }) fieldsToShow: string;
 
     render() {
-        return this.column.fields.map((field: DotCMSContentTypeField) => {
-            return <div class="dot-form__column">{this.getField(field)}</div>;
-        });
+        return this.column.fields.map((field: DotCMSContentTypeField) => this.getField(field));
     }
 
     private getField(field: DotCMSContentTypeField): JSX.Element {
@@ -25,6 +22,10 @@ export class DotFormColumnComponent {
     }
 
     private getFieldTag(field: DotCMSContentTypeField): JSX.Element {
-        return (<div class="dot-form__fields">{fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : ''}</div>);
+        return (
+            <div class="dot-form__fields">
+                {fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : ''}
+            </div>
+        );
     }
 }

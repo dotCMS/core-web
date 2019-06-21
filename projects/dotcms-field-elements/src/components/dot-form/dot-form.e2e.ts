@@ -179,9 +179,10 @@ describe('dot-form', () => {
         });
     });
 
-    describe('rows & columns', () => {
+    describe('rows', () => {
         beforeEach(async () => {
             element.setProperty('layout', fieldsMock);
+            element.setProperty('fieldsToShow', 'test');
             await page.waitForChanges();
         });
 
@@ -190,10 +191,10 @@ describe('dot-form', () => {
             expect(rows.length).toBe(2);
         });
 
-        it('should have second row with 2 columns', async () => {
-            const secondRow = (await element.findAll('dot-form-row'))[1];
-            const columns = await secondRow.findAll('dot-form-column');
-            expect(columns.length).toBe(2);
+        it('should set values on dot-form-row', async () => {
+            const firstRow = (await element.findAll('dot-form-row'))[0];
+            expect(await firstRow.getProperty('row')).toEqual(fieldsMock[0]);
+            expect(await firstRow.getProperty('fieldsToShow')).toEqual('test');
         });
     });
 
