@@ -129,7 +129,7 @@ export const DotFormFields = {
     ),
 
     Binary: (field: DotCMSContentTypeField) => (
-        <dot-tags
+        <dot-binary-file
             hint={field.hint}
             label={field.name}
             name={field.variable}
