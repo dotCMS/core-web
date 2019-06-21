@@ -1,4 +1,4 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
 import {
@@ -11,7 +11,11 @@ import {
     getTagHint,
     updateStatus
 } from '../../utils';
-import { element } from 'protractor';
+import { watch } from 'fs';
+
+const URL_REGEX = new RegExp(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+);
 
 /**
  * Represent a dotcms binary file control.
@@ -39,7 +43,7 @@ export class DotBinaryFile {
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
-    placeholder = '';
+    placeholder = 'Attach files by dragging & dropping, selecting or pasting them.';
 
     /** (optional) Hint text that suggest a clue of the field */
     @Prop({ reflectToAttr: true })
@@ -63,18 +67,14 @@ export class DotBinaryFile {
     @Prop({ reflectToAttr: true })
     accept = '';
 
-    /** (optional) Describes a type of file that may be selected by the user  */
-    @Prop({ reflectToAttr: true })
-    multiple = false;
-
     @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
     allowedFileTypes = [];
-    fileList: File[] = [];
     allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+    buttonText = 'Browse';
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -95,98 +95,7 @@ export class DotBinaryFile {
     }
 
     componentDidLoad(): void {
-        const uploadButton: HTMLElement = this.el.querySelector('button');
-        const realInput: HTMLInputElement = this.el.querySelector('dot-label input[type="file"]');
-        const dotLabel: HTMLElement = this.el.querySelector('.dot-label');
-        const inputText: HTMLInputElement = this.el.querySelector('dot-label input[type="text"]');
-
-        uploadButton.addEventListener('click', () => {
-            realInput.click();
-        });
-
-        realInput.addEventListener('change', () => {
-            this.fileList = [];
-            for (let i = 0; i < realInput.files.length; i++) {
-                debugger;
-                const file: File = realInput.files[i];
-                if (this.isFileAllowed(file)) {
-                    this.addFile(file);
-                } else {
-                    console.log('One of more have incorrect format');
-                }
-            }
-            this.setInputFileNames(inputText);
-        });
-
-        dotLabel.addEventListener('dragover', evt => {
-            dotLabel.style.backgroundColor = 'green';
-            evt.preventDefault();
-        });
-
-        dotLabel.addEventListener('dragenter', evt => {
-            dotLabel.style.backgroundColor = 'red';
-            evt.preventDefault();
-        });
-
-        dotLabel.addEventListener('drop', (evt: DragEvent) => {
-            evt.preventDefault();
-            this.fileList = [];
-            dotLabel.style.backgroundColor = 'blue';
-            for (let i = 0; i < evt.dataTransfer.files.length; i++) {
-                debugger;
-                const file: File = evt.dataTransfer.files[i];
-                if (this.isFileAllowed(file)) {
-                    this.addFile(file);
-                } else {
-                    console.log('One of more have incorrect format');
-                }
-            }
-            this.setInputFileNames(inputText);
-        });
-
-        dotLabel.addEventListener('paste', evt => {
-            let items;
-            debugger;
-            this.fileList = [];
-            const clipboardData = evt.clipboardData;
-            if (typeof clipboardData === 'object') {
-                items = clipboardData.items || clipboardData.files || [];
-
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-
-                    // maybe is trying to paste a URL.
-                    if (item.type === 'text/html') {
-                        fetch(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoGUmPpB4wrbXA_NeoboVrdzkFA8uXAuLWaNkpJOt8d64YDTWuyQ'
-                        )
-                            .then(res => res.blob()) // Gets the response and returns it as a blob
-                            .then(blob => {
-                                this.addFile(new File([blob], 'testName'));
-                            });
-                    } else if (this.isDataTransferAllowed(item)) {
-                        item.getAsString(this.test);
-                        this.addFile(item.getAsFile());
-                    }
-                }
-            }
-            evt.preventDefault();
-        });
-
-        // realInput.addEventListener('change', () => {
-        //     const name = realInput.value.split(/\\|\//).pop();
-        //     const truncated = name.length > 20 ? name.substr(name.length - 20) : name;
-        //
-        //     fileInfo.innerHTML = truncated;
-        // });
-    }
-
-    addFile(file: File): void {
-        this.fileList.push(file);
-        // this.formData.append(file.name, file);
-        console.log('File added: ', file.name);
-        console.log('file: ', file);
-        console.log('File List Size: ', this.fileList.length);
+        this.eventsHandler();
     }
 
     hostData() {
@@ -204,22 +113,28 @@ export class DotBinaryFile {
                     name={this.name}
                     tabindex="0"
                 >
-                    <input type="text" />
+                    <input
+                        type="text"
+                        onBlur={() => this.blurHandler()}
+                        disabled={this.disabled}
+                        placeholder={this.placeholder}
+                        onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
+                        onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
+                    />
                     <input
                         aria-describedby={getHintId(this.hint)}
                         class={getErrorClass(this.status.dotValid)}
-                        disabled={this.disabled || null}
+                        disabled={this.disabled}
                         id={getId(this.name)}
-                        onblur={() => this.blurHandler()}
-                        oninput={(event: Event) => this.setValue(event)}
-                        placeholder={this.placeholder}
+                        onChange={(event: Event) => this.changeHandler(event)}
                         required={this.required || null}
                         type="file"
                         accept={this.accept}
-                        multiple={this.multiple}
                         value={this.value}
                     />
-                    <button>Browse</button>
+                    <button disabled={this.disabled} onClick={() => this.buttonHandler()}>
+                        {this.buttonText}
+                    </button>
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -227,26 +142,130 @@ export class DotBinaryFile {
         );
     }
 
-    private test(param: any): string {
-        console.log('param: ', param);
-        return param;
+    private eventsHandler(): void {
+        this.dragAndDropHandler();
+        this.pasteHandler();
     }
 
-    private isDataTransferAllowed(data: DataTransferItem): boolean {
-        console.log('file.kind', data.kind);
-        if (data.kind === 'string') {
-            return false;
-        }
-        if (this.allowedTypes.indexOf('*') === 0) {
-            return true;
+    private dragAndDropHandler(): void {
+        this.el.addEventListener('dragenter', evt => {
+            evt.preventDefault();
+        });
+
+        this.el.addEventListener('dragover', evt => {
+            if (!this.disabled) {
+                this.el.classList.add('dot-dragover');
+            }
+            evt.preventDefault();
+        });
+
+        this.el.addEventListener('dragleave', evt => {
+            this.el.classList.remove('dot-dragover');
+            evt.preventDefault();
+        });
+
+        this.el.addEventListener('drop', (evt: DragEvent) => {
+            evt.preventDefault();
+            if (!this.disabled) {
+                this.el.classList.add('dot-dop');
+                this.el.classList.remove('dot-dragover');
+                const file: File = evt.dataTransfer.files[evt.dataTransfer.files.length - 1];
+                if (this.isFileAllowed(file)) {
+                    this.setValue(file);
+                    this.setFileName(file.name);
+                } else {
+                    this.value = null;
+                    console.log('Incorrect format');
+                }
+            }
+        });
+    }
+
+    // only supported in iOS.
+    private pasteHandler(): void {
+        this.el.addEventListener('paste', (evt: ClipboardEvent) => {
+            const clipboardData: DataTransfer = evt.clipboardData;
+            if (this.isPastingFile(clipboardData)) {
+                this.handlePasteFile(clipboardData.items, evt);
+            } else {
+                this.handleURLPaste(clipboardData.items[0], evt);
+            }
+        });
+    }
+
+    private handlePasteFile(items: DataTransferItemList, event: ClipboardEvent) {
+        items[0].getAsString((fileName: string) => {
+            console.log('file name:', fileName);
+        });
+        if (this.isFileAllowed(items[1].getAsFile())) {
+            this.setValue(items[1].getAsFile());
         } else {
-            return this.allowedTypes.indexOf(data.type) >= 0;
+            console.log('invalid file');
+            event.preventDefault();
         }
+    }
+    private handleURLPaste(item: DataTransferItem, event: ClipboardEvent) {
+        item.getAsString((fileURL: string) => {
+            if (this.isValidURL(fileURL)) {
+                this.setValue(fileURL);
+            } else {
+                this.value = null;
+                this.status = updateStatus(this.status, {
+                    dotTouched: true,
+                    dotPristine: false
+                });
+                event.preventDefault();
+                console.log('INVALID URL');
+                // TODO: Invalid file.
+            }
+        });
+    }
+
+    private isValidURL(url: string): boolean {
+        return URL_REGEX.test(url);
+    }
+
+    private isPastingFile(data: DataTransfer): boolean {
+        return !!data.files.length;
+    }
+
+    private changeHandler(event: Event): void {
+        const input: HTMLInputElement = event.srcElement as HTMLInputElement;
+        if (this.isFileAllowed(input.files[0])) {
+            this.setValue(input.files[0]);
+            this.setFileName(input.files[0].name);
+        } else {
+            event.preventDefault();
+            this.value = null;
+            this.status = updateStatus(this.status, {
+                dotTouched: true,
+                dotPristine: false
+            });
+            // TODO: Incorrect format.
+            console.log('File type not supported');
+        }
+    }
+
+    private keyDownHandler(evt: KeyboardEvent): void {
+        const input: HTMLInputElement = evt.srcElement as HTMLInputElement;
+        if (evt.key === 'Backspace' && !!this.value) {
+            input.value = '';
+            this.setValue(null);
+        }
+    }
+
+    private buttonHandler(): void {
+        const fileInput: HTMLInputElement = this.el.querySelector('dot-label input[type="file"]');
+        fileInput.click();
+    }
+
+    private setFileName(name: string): void {
+        const textInput: HTMLInputElement = this.el.querySelector('dot-label input[type="text"]');
+        textInput.value = name;
     }
 
     private isFileAllowed(file: File): boolean {
         const extension = file.name.substring(file.name.indexOf('.'), file.name.length);
-        console.log('file.type', file.type);
         if (this.accept.length === 0 || this.allowedFileTypes.indexOf('*') === 0) {
             return true;
         } else {
@@ -259,30 +278,13 @@ export class DotBinaryFile {
     }
 
     private isValid(): boolean {
-        return this.required && !this.value;
+        return !this.isValueRequired();
         // return !this.isValueRequired() && this.isRegexValid();
     }
 
-    private setInputFileNames(inputText: HTMLInputElement): void {
-        if (this.fileList.length > 1) {
-            inputText.setAttribute('value', `${this.fileList.length} files Selected`);
-        } else if (this.fileList.length === 1) {
-            inputText.setAttribute('value', this.fileList[0].name);
-        }
-        inputText.focus();
+    private isValueRequired(): boolean {
+        return this.required && !this.value;
     }
-
-    // private isValueRequired(): boolean {
-    //     return this.required && !this.value;
-    // }
-
-    // private isRegexValid(): boolean {
-    //     if (this.regexCheck && this.value) {
-    //         const regex = new RegExp(this.regexCheck);
-    //         return regex.test(this.value);
-    //     }
-    //     return true;
-    // }
 
     private shouldShowErrorMessage(): boolean {
         return this.getErrorMessage() && !this.status.dotPristine;
@@ -304,10 +306,17 @@ export class DotBinaryFile {
         }
     }
 
-    private setValue(event): void {
-        const files: FileList = event.target.files;
-        //console.log(input.files);
-        this.value = files;
+    private setSttatus(): void {
+        if (!this.status.dotTouched) {
+            this.status = updateStatus(this.status, {
+                dotTouched: true
+            });
+            this.emitStatusChange();
+        }
+    }
+
+    private setValue(data: File | string): void {
+        this.value = data;
         console.log('value', this.value);
         this.status = updateStatus(this.status, {
             dotTouched: true,

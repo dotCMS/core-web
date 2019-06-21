@@ -1,4 +1,9 @@
 dot-binary-file {
+
+    &.dot-dragover{
+        opacity: 0.5;
+    }
+
     //input {
     //    position: absolute !important;
     //    height: 1px;
@@ -22,37 +27,4 @@ dot-binary-file {
             border: 2px solid red;
         }
     }
-
-    //<input type="file" name="file" id="file" class="file" />
-    //.file {
-    //    width: 400px;
-    //    height: 50px;
-    //    background: #171717;
-    //    padding: 4px;
-    //    border: 1px dashed #333;
-    //    position: relative;
-    //    cursor: pointer;
-    //}
-    //
-    //.file::before {
-    //    content: '';
-    //    position: absolute;
-    //    background: #171717;
-    //    font-size: 20px;
-    //    top: 50%;
-    //    left: 50%;
-    //    transform: translate(-50%, -50%);
-    //    width: 100%;
-    //    height: 100%;
-    //}
-    //
-    //.file::after {
-    //    content: 'Drag & Drop';
-    //    position: absolute;
-    //    color: #808080;
-    //    font-size: 20px;
-    //    top: 50%;
-    //    left: 50%;
-    //    transform: translate(-50%, -50%);
-    //}
 }

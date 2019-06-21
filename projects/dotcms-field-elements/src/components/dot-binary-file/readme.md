@@ -7,19 +7,18 @@
 
 ## Properties
 
-| Property            | Attribute            | Description                                                                                        | Type      | Default                                                |
-| ------------------- | -------------------- | -------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------ |
-| `accept`            | `accept`             | (optional) Describes a type of file that may be selected by the user                               | `string`  | `''`                                                   |
-| `disabled`          | `disabled`           | (optional) Disables field's interaction                                                            | `boolean` | `false`                                                |
-| `hint`              | `hint`               | (optional) Hint text that suggest a clue of the field                                              | `string`  | `''`                                                   |
-| `label`             | `label`              | (optional) Text to be rendered next to input field                                                 | `string`  | `''`                                                   |
-| `multiple`          | `multiple`           | (optional) Describes a type of file that may be selected by the user                               | `boolean` | `false`                                                |
-| `name`              | `name`               | Name that will be used as ID                                                                       | `string`  | `''`                                                   |
-| `placeholder`       | `placeholder`        | (optional) Placeholder specifies a short hint that describes the expected value of the input field | `string`  | `''`                                                   |
-| `required`          | `required`           | (optional) Determine if it is mandatory                                                            | `boolean` | `false`                                                |
-| `requiredMessage`   | `required-message`   | (optional) Text that be shown when required is set and condition not met                           | `string`  | `'This field is required'`                             |
-| `validationMessage` | `validation-message` | (optional) Text that be shown when the Regular Expression condition not met                        | `string`  | `"The field doesn't comply with the specified format"` |
-| `value`             | `value`              | Value specifies the value of the <input> element                                                   | `any`     | `null`                                                 |
+| Property            | Attribute            | Description                                                                                        | Type      | Default                                                             |
+| ------------------- | -------------------- | -------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------- |
+| `accept`            | `accept`             | (optional) Describes a type of file that may be selected by the user                               | `string`  | `''`                                                                |
+| `disabled`          | `disabled`           | (optional) Disables field's interaction                                                            | `boolean` | `false`                                                             |
+| `hint`              | `hint`               | (optional) Hint text that suggest a clue of the field                                              | `string`  | `''`                                                                |
+| `label`             | `label`              | (optional) Text to be rendered next to input field                                                 | `string`  | `''`                                                                |
+| `name`              | `name`               | Name that will be used as ID                                                                       | `string`  | `''`                                                                |
+| `placeholder`       | `placeholder`        | (optional) Placeholder specifies a short hint that describes the expected value of the input field | `string`  | `'Attach files by dragging & dropping, selecting or pasting them.'` |
+| `required`          | `required`           | (optional) Determine if it is mandatory                                                            | `boolean` | `false`                                                             |
+| `requiredMessage`   | `required-message`   | (optional) Text that be shown when required is set and condition not met                           | `string`  | `'This field is required'`                                          |
+| `validationMessage` | `validation-message` | (optional) Text that be shown when the Regular Expression condition not met                        | `string`  | `"The field doesn't comply with the specified format"`              |
+| `value`             | `value`              | Value specifies the value of the <input> element                                                   | `any`     | `null`                                                              |
 
 
 ## Events
