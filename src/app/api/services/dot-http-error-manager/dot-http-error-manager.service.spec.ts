@@ -25,6 +25,8 @@ describe('DotHttpErrorManagerService', () => {
         'dot.common.http.error.403.license.header': 'license header',
         'dot.common.http.error.400.header': '400 Header',
         'dot.common.http.error.400.message': '400 Message',
+        'dot.common.http.error.204.header': '204 Header',
+        'dot.common.http.error.204.message': '204 Message',
     });
 
     beforeEach(() => {
@@ -156,6 +158,22 @@ describe('DotHttpErrorManagerService', () => {
         expect(dotDialogService.alert).toHaveBeenCalledWith({
             message: '400 Message',
             header: '400 Header'
+        });
+    });
+
+    it('should handle 204 error', () => {
+        spyOn(dotDialogService, 'alert');
+
+        service.handle(mockResponseView(204)).subscribe((res) => {
+            result = res;
+        });
+
+        expect(result).toEqual({
+            redirected: false
+        });
+        expect(dotDialogService.alert).toHaveBeenCalledWith({
+            message: '204 Message',
+            header: '204 Header'
         });
     });
 });

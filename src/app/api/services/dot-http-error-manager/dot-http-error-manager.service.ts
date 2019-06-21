@@ -37,6 +37,7 @@ export class DotHttpErrorManagerService {
             this.errorHandlers[HttpCode.FORBIDDEN] = this.handleForbidden.bind(this);
             this.errorHandlers[HttpCode.SERVER_ERROR] = this.handleServerError.bind(this);
             this.errorHandlers[HttpCode.BAD_REQUEST] = this.handleBadRequestError.bind(this);
+            this.errorHandlers[HttpCode.NO_CONTENT] = this.handleNotContentError.bind(this);
         }
     }
 
@@ -73,15 +74,16 @@ export class DotHttpErrorManagerService {
                 'dot.common.http.error.500.header',
                 'dot.common.http.error.500.message',
                 'dot.common.http.error.403.license.message',
-                'dot.common.http.error.403.license.header'
+                'dot.common.http.error.403.license.header',
+                'dot.common.http.error.204.license.message',
+                'dot.common.http.error.204.license.header'
             ])
             .pipe(take(1));
     }
 
     private callErrorHandler(response: Response): boolean {
         const code = response.status;
-        console.log('code', code);
-        console.log('this.errorHandlers', this.errorHandlers);
+
         return code === HttpCode.FORBIDDEN
             ? this.isLicenseError(response)
                 ? this.handleLicense()
@@ -139,6 +141,14 @@ export class DotHttpErrorManagerService {
         this.dotDialogService.alert({
             message: this.dotMessageService.get('dot.common.http.error.400.message'),
             header: this.dotMessageService.get('dot.common.http.error.400.header')
+        });
+        return false;
+    }
+
+    private handleNotContentError(): boolean {
+        this.dotDialogService.alert({
+            message: this.dotMessageService.get('dot.common.http.error.204.message'),
+            header: this.dotMessageService.get('dot.common.http.error.204.header')
         });
         return false;
     }
