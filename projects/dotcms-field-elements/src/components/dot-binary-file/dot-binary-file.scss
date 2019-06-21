@@ -3,19 +3,6 @@ dot-binary-file {
     &.dot-dragover{
         opacity: 0.5;
     }
-
-    //input {
-    //    position: absolute !important;
-    //    height: 1px;
-    //    width: 1px;
-    //    overflow: hidden;
-    //    clip: rect(1px, 1px, 1px, 1px);
-    //}
-    //
-    //input:focus + label {
-    //    outline: thin dotted;
-    //}
-
     input[type="file"] {
         display: none;
     }
@@ -24,7 +11,7 @@ dot-binary-file {
         display: block;
 
         &:focus {
-            border: 2px solid red;
+            border: 1px solid red;
         }
     }
 }
