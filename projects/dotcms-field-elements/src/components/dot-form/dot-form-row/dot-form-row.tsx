@@ -7,7 +7,7 @@ import { DotCMSContentTypeRow, DotCMSContentTypeColumn } from '../models';
 })
 export class DotFormRowComponent {
     /** Fields metada to be rendered */
-    @Prop({ reflectToAttr: true }) row: DotCMSContentTypeRow;
+    @Prop() row: DotCMSContentTypeRow;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
     @Prop({ reflectToAttr: true }) fieldsToShow: string;

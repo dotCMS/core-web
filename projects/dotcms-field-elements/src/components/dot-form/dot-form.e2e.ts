@@ -98,7 +98,7 @@ describe('dot-form', () => {
     let element: E2EElement;
     let submitSpy: EventSpy;
 
-    const getFields = () => page.findAll('form .dot-form__fields > *');
+    const getFields = () => page.findAll('form dot-form-column > *');
 
     const getResetButton = () => page.find('.dot-form__buttons button:not([type="submit"])');
 
@@ -341,24 +341,6 @@ describe('dot-form', () => {
                 expect(await select.getProperty('value')).toBe('');
                 expect(element).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
             });
-        });
-    });
-
-    describe('<slot />', () => {
-        beforeEach(async () => {
-            page = await newE2EPage({
-                html: `
-                <dot-form>
-                    <dot-textfield label="Hello World" />
-                </dot-form>
-            `
-            });
-            element = await page.find('dot-form');
-        });
-
-        it('should render ast second child', async () => {
-            const slot = await element.find('form *:nth-child(1n)');
-            expect(slot.tagName).toBe('DOT-TEXTFIELD');
         });
     });
 });

@@ -15,1024 +15,168 @@
         <style>
             body {
                 font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                margin: 3rem auto;
+                width: 50vw;
             }
 
-            dot-form {
-                width: 80vw;
-                margin: 3rem auto;
+            body > * {
+                display: block;
+                margin-bottom: 1rem;
             }
         </style>
     </head>
     <body>
-        <dot-form>
-            <br /><br />
-            <hr />
-            <br /><br />
-            <dot-textfield
-                disabled="false"
-                hint="This is a hint"
-                label="Name"
-                name="text1"
-                placeholder="Type something"
-                regex-check="^[A-Za-z ]+$"
-                required-message="Please enter something"
-                required="true"
-                type="text"
-                validation-message="Value doesn't match"
-                value="Default value"
-            ></dot-textfield>
+        <dot-textfield
+            disabled="false"
+            hint="This is a hint"
+            label="Name"
+            name="text1"
+            placeholder="Type something"
+            regex-check="^[A-Za-z ]+$"
+            required-message="Please enter something"
+            required="true"
+            type="text"
+            validation-message="Value doesn't match"
+            value="Default value"
+        ></dot-textfield>
 
-            <dot-textarea
-                disabled="false"
-                hint="Enter your address"
-                label="Address"
-                name="textarea3"
-                regex-check="^[A-Za-z ]+$"
-                required-message="This field is required"
-                required="true"
-                validation-message="Value doesn't match format"
-                value=""
-            ></dot-textarea>
+        <dot-textarea
+            disabled="false"
+            hint="Enter your address"
+            label="Address"
+            name="textarea3"
+            regex-check="^[A-Za-z ]+$"
+            required-message="This field is required"
+            required="true"
+            validation-message="Value doesn't match format"
+            value=""
+        ></dot-textarea>
 
-            <dot-checkbox
-                disabled="false"
-                hint="The checkbox hint"
-                label="Favorite food"
-                name="checkbox01"
-                options="Pizza|pizza,Burguer|burguer,Sushi|sushi"
-                required-message="Select a food"
-                required="true"
-                value="pizza"
-            ></dot-checkbox>
+        <dot-checkbox
+            disabled="false"
+            hint="The checkbox hint"
+            label="Favorite food"
+            name="checkbox01"
+            options="Pizza|pizza,Burguer|burguer,Sushi|sushi"
+            required-message="Select a food"
+            required="true"
+            value="pizza"
+        ></dot-checkbox>
 
-            <dot-multi-select
-                disabled="false"
-                hint="Pick favtorite cities"
-                label="City"
-                name="multiSelect5"
-                options="San Jose|sjo,Miami|mia,Madrid|mad"
-                required-message="You have to select a city"
-                required="true"
-                size="2"
-                value="mia"
-            ></dot-multi-select>
+        <dot-multi-select
+            disabled="false"
+            hint="Pick favtorite cities"
+            label="City"
+            name="multiSelect5"
+            options="San Jose|sjo,Miami|mia,Madrid|mad"
+            required-message="You have to select a city"
+            required="true"
+            size="2"
+            value="mia"
+        ></dot-multi-select>
 
-            <dot-key-value
-                disabled="false"
-                hint="Please add stuff"
-                key-placeholder="Llave"
-                label="Add key and value"
-                name="keyvalue6"
-                required-message="This fields is also required"
-                required="true"
-                save-btn-label="Push"
-                value-placeholder="Valor"
-                value="some|value"
-            ></dot-key-value>
+        <dot-key-value
+            disabled="false"
+            hint="Please add stuff"
+            key-placeholder="Llave"
+            label="Add key and value"
+            name="keyvalue6"
+            required-message="This fields is also required"
+            required="true"
+            save-btn-label="Push"
+            value-placeholder="Valor"
+            value="some|value"
+        ></dot-key-value>
 
-            <dot-select
-                disabled="false"
-                hint="This is a hint"
-                label="Select a brand"
-                name="multiSelect5"
-                options="Apple|apple,Google|google,Amazon|amazon"
-                required-message="Select at least one option"
-                required="true"
-                value=""
-            ></dot-select>
+        <dot-select
+            disabled="false"
+            hint="This is a hint"
+            label="Select a brand"
+            name="multiSelect5"
+            options="Apple|apple,Google|google,Amazon|amazon"
+            required-message="Select at least one option"
+            required="true"
+            value=""
+        ></dot-select>
 
-            <dot-radio
-                disabled="false"
-                hint="This is a hint"
-                label="What time is better?"
-                name="radio01"
-                options="Morning|morning,Afternoon|afternoon,Night|night"
-                required-message="Pick one"
-                required="true"
-                value=""
-            ></dot-radio>
+        <dot-radio
+            disabled="false"
+            hint="This is a hint"
+            label="What time is better?"
+            name="radio01"
+            options="Morning|morning,Afternoon|afternoon,Night|night"
+            required-message="Pick one"
+            required="true"
+            value=""
+        ></dot-radio>
 
-            <dot-date
-                disabled="false"
-                hint="This is a hint"
-                label="Pick a date"
-                max="2019-12-30"
-                min="2019-01-01"
-                name="date01"
-                required-message="This date is required"
-                required="true"
-                step="2"
-                validation-message="Hey pick the right date"
-                value="2015-10-25"
-            ></dot-date>
+        <dot-date
+            disabled="false"
+            hint="This is a hint"
+            label="Pick a date"
+            max="2019-12-30"
+            min="2019-01-01"
+            name="date01"
+            required-message="This date is required"
+            required="true"
+            step="2"
+            validation-message="Hey pick the right date"
+            value="2015-10-25"
+        ></dot-date>
 
-            <dot-time
-                disabled="false"
-                hint="This is a hint"
-                label="Pick a time"
-                max="22:00:00"
-                min="08:00:00"
-                name="time01"
-                required-message="Required time"
-                required="true"
-                step="10"
-                validation-message="Time out of range"
-                value="20:30:30"
-            ></dot-time>
+        <dot-time
+            disabled="false"
+            hint="This is a hint"
+            label="Pick a time"
+            max="22:00:00"
+            min="08:00:00"
+            name="time01"
+            required-message="Required time"
+            required="true"
+            step="10"
+            validation-message="Time out of range"
+            value="20:30:30"
+        ></dot-time>
 
-            <dot-date-time
-                disabled="false"
-                hint="This is a hint"
-                label="Pick a date and a time"
-                max="2020-10-30 23:59:59"
-                min="2000-01-01 1:00:00"
-                name="dt01"
-                required-message="Hey pick something"
-                required="true"
-                step="2,10"
-                validation-message="Value out of range"
-                value="2019-01-20 11:10:00"
-            ></dot-date-time>
+        <dot-date-time
+            disabled="false"
+            hint="This is a hint"
+            label="Pick a date and a time"
+            max="2020-10-30 23:59:59"
+            min="2000-01-01 1:00:00"
+            name="dt01"
+            required-message="Hey pick something"
+            required="true"
+            step="2,10"
+            validation-message="Value out of range"
+            value="2019-01-20 11:10:00"
+        ></dot-date-time>
 
-            <dot-date-range
-                disabled="false"
-                displayFormat="d-m-Y"
-                hint="This is a hint"
-                label="Select a date range"
-                max="2019-12-30"
-                min="2019-01-01"
-                name="daterange01"
-                preset-label="Predefined dates"
-                presets=""
-                required-message="Please select a range"
-                required="true"
-                value="2019-11-25,2019-11-27"
-            ></dot-date-range>
+        <dot-date-range
+            disabled="false"
+            displayFormat="d-m-Y"
+            hint="This is a hint"
+            label="Select a date range"
+            max="2019-12-30"
+            min="2019-01-01"
+            name="daterange01"
+            preset-label="Predefined dates"
+            presets=""
+            required-message="Please select a range"
+            required="true"
+            value="2019-11-25,2019-11-27"
+        ></dot-date-range>
 
-            <dot-tags
-                disabled="false"
-                hint="This is a hint"
-                label="Add Tags"
-                name="tags01"
-                placeholder="Start typing"
-                required-message="Please add tags"
-                required="true"
-                value="tag1,tag2"
-            ></dot-tags>
-        </dot-form>
-        <script src="/build/dotcmsfields.js"></script>
-        <script>
-            const dotFormEl = document.querySelector('dot-form');
-            dotFormEl.addEventListener('onSubmit', (e) => {
-                e.preventDefault();
-                console.log(e);
-            });
-
-            // Todo: remove for testing
-            const dataFields = [{
-                    'divider': {
-                        'clazz': 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                        'fieldContentTypeProperties': [],
-                        'dataType': 'SYSTEM',
-                        'searchable': false,
-                        'unique': false,
-                        'indexed': false,
-                        'listed': false,
-                        'readOnly': false,
-                        'owner': null,
-                        'id': 'c6344c58-1e8e-42fd-827f-cc395cf94a4d',
-                        'modDate': 1560465454000,
-                        'name': 'fields-0',
-                        'relationType': null,
-                        'required': false,
-                        'variable': 'fields0',
-                        'sortOrder': 0,
-                        'values': null,
-                        'regexCheck': null,
-                        'hint': null,
-                        'defaultValue': null,
-                        'fixed': false,
-                        'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                        'dbColumn': 'system_field',
-                        'iDate': 1560465454000
-                    },
-                    'columns': [
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableConstantField',
-                                    'dataType': 'SYSTEM',
-                                    'searchable': true,
-                                    'unique': false,
-                                    'indexed': true,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '061e5d66-79d8-43af-8eef-1ca6b834f40c',
-                                    'modDate': 1560465454000,
-                                    'name': 'Form Title',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'formTitle',
-                                    'sortOrder': 2,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': true,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'system_field',
-                                    'iDate': 1560465436000
-                                },
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableConstantField',
-                                    'dataType': 'SYSTEM',
-                                    'searchable': true,
-                                    'unique': false,
-                                    'indexed': true,
-                                    'listed': false,
-                                    'readOnly': true,
-                                    'owner': null,
-                                    'id': '4794070a-af47-4178-85f3-8d522855bee4',
-                                    'modDate': 1560465454000,
-                                    'name': 'Form Email',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'formEmail',
-                                    'sortOrder': 3,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': true,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'system_field',
-                                    'iDate': 1560465436000
-                                },
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableConstantField',
-                                    'dataType': 'SYSTEM',
-                                    'searchable': true,
-                                    'unique': false,
-                                    'indexed': true,
-                                    'listed': false,
-                                    'readOnly': true,
-                                    'owner': null,
-                                    'id': 'c23cd0e1-a050-4035-8f29-ad912706d4a1',
-                                    'modDate': 1560465454000,
-                                    'name': 'Form Return Page',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'formReturnPage',
-                                    'sortOrder': 4,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': true,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'system_field',
-                                    'iDate': 1560465436000
-                                },
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableHostFolderField',
-                                    'indexed': true,
-                                    'dataType': 'SYSTEM',
-                                    'searchable': true,
-                                    'unique': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '4c7648ea-eb2e-4b66-9197-c8dbcadb549e',
-                                    'modDate': 1560465454000,
-                                    'name': 'Form Host',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'formHost',
-                                    'sortOrder': 5,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': true,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'system_field',
-                                    'iDate': 1560465436000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': 'eaf03f0b-4cf4-4e9b-ae07-10cccca9bf4a',
-                                'modDate': 1560465454000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields1',
-                                'sortOrder': 1,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465454000
-                            }
-                        }
-                    ]
-                },
-                {
-                    'divider': {
-                        'clazz': 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                        'fieldContentTypeProperties': [],
-                        'dataType': 'SYSTEM',
-                        'searchable': false,
-                        'unique': false,
-                        'indexed': false,
-                        'listed': false,
-                        'readOnly': false,
-                        'owner': null,
-                        'id': '4925a496-2112-4d98-bb92-d72930182518',
-                        'modDate': 1560465454000,
-                        'name': 'fields-6',
-                        'relationType': null,
-                        'required': false,
-                        'variable': 'fields6',
-                        'sortOrder': 6,
-                        'values': null,
-                        'regexCheck': null,
-                        'hint': null,
-                        'defaultValue': null,
-                        'fixed': false,
-                        'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                        'dbColumn': 'system_field',
-                        'iDate': 1560465454000
-                    },
-                    'columns': [
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextField',
-                                    'fieldType': 'Text',
-                                    'dataType': 'TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': 'c44adf8c-e637-46df-b16f-f235474c0629',
-                                    'modDate': 1560465454000,
-                                    'name': 'Name',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'name',
-                                    'sortOrder': 8,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text1',
-                                    'iDate': 1560465454000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '4b321742-6a29-4eea-945b-54b807d2893d',
-                                'modDate': 1560465454000,
-                                'name': 'fields-7',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields7',
-                                'sortOrder': 7,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465454000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextField',
-                                    'fieldType': 'Text',
-                                    'dataType': 'TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '0d304676-c98b-4c69-8b98-0271313613c9',
-                                    'modDate': 1560465460000,
-                                    'name': 'Last Name',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'lastName',
-                                    'sortOrder': 10,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text2',
-                                    'iDate': 1560465460000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '601b044e-3829-42d3-b925-a90fb0a63dd6',
-                                'modDate': 1560465454000,
-                                'name': 'fields-9',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields9',
-                                'sortOrder': 9,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465454000
-                            }
-                        }
-                    ]
-                },
-                {
-                    'divider': {
-                        'clazz': 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                        'fieldContentTypeProperties': [],
-                        'dataType': 'SYSTEM',
-                        'searchable': false,
-                        'unique': false,
-                        'indexed': false,
-                        'listed': false,
-                        'readOnly': false,
-                        'owner': null,
-                        'id': '0065ebc6-2cd1-4227-ac44-2a68e0696e60',
-                        'modDate': 1560465473000,
-                        'name': 'fields-0',
-                        'relationType': null,
-                        'required': false,
-                        'variable': 'fields01',
-                        'sortOrder': 11,
-                        'values': null,
-                        'regexCheck': null,
-                        'hint': null,
-                        'defaultValue': null,
-                        'fixed': false,
-                        'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                        'dbColumn': 'system_field',
-                        'iDate': 1560465473000
-                    },
-                    'columns': [
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextAreaField',
-                                    'fieldType': 'Textarea',
-                                    'dataType': 'LONG_TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '2ad8b5ef-35e8-4bc3-94da-08403bc8907a',
-                                    'modDate': 1560465473000,
-                                    'name': 'Comments',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'comments',
-                                    'sortOrder': 13,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text_area1',
-                                    'iDate': 1560465473000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '2ac218dd-422a-4c05-b6a5-c7a1889429eb',
-                                'modDate': 1560465473000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields11',
-                                'sortOrder': 12,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465473000
-                            }
-                        }
-                    ]
-                },
-                {
-                    'divider': {
-                        'clazz': 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                        'fieldContentTypeProperties': [],
-                        'dataType': 'SYSTEM',
-                        'searchable': false,
-                        'unique': false,
-                        'indexed': false,
-                        'listed': false,
-                        'readOnly': false,
-                        'owner': null,
-                        'id': 'e1f4e193-f8d5-454e-8f5c-cdffffbde5ae',
-                        'modDate': 1560465555000,
-                        'name': 'fields-0',
-                        'relationType': null,
-                        'required': false,
-                        'variable': 'fields02',
-                        'sortOrder': 14,
-                        'values': null,
-                        'regexCheck': null,
-                        'hint': null,
-                        'defaultValue': null,
-                        'fixed': false,
-                        'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                        'dbColumn': 'system_field',
-                        'iDate': 1560465555000
-                    },
-                    'columns': [
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableRadioField',
-                                    'dataType': 'TEXT',
-                                    'fieldType': 'Radio',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '865bdc9a-5445-4ab0-b0e9-34c4debdffc0',
-                                    'modDate': 1560465555000,
-                                    'name': 'Type of content',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'typeOfContent',
-                                    'sortOrder': 16,
-                                    'values': 'News|news\r\nBlog|blog\r\nVideo|video',
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text3',
-                                    'iDate': 1560465555000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '69a6c6c0-4786-4cfc-b787-d5884b87795d',
-                                'modDate': 1560465555000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields12',
-                                'sortOrder': 15,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465555000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableMultiSelectField',
-                                    'fieldType': 'Multi-Select',
-                                    'dataType': 'LONG_TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '3491281c-12ad-4df8-9a67-d59ca6c56997',
-                                    'modDate': 1560465583000,
-                                    'name': 'Cities',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'cities',
-                                    'sortOrder': 18,
-                                    'values': 'Miami|miami\r\nMadrid|madrid\r\nSan Jose|sjo',
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text_area2',
-                                    'iDate': 1560465583000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '9ed902da-6d2c-451d-9e09-ea849c16ecdd',
-                                'modDate': 1560465555000,
-                                'name': 'fields-3',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields3',
-                                'sortOrder': 17,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465555000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableCheckboxField',
-                                    'dataType': 'TEXT',
-                                    'fieldType': 'Checkbox',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '1605e363-a5c4-4921-8a20-e873c77441dc',
-                                    'modDate': 1560465632000,
-                                    'name': 'Work type',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'workType',
-                                    'sortOrder': 20,
-                                    'values': 'Day|day\r\nNight|night\r\nAfternoon|afternoon',
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text4',
-                                    'iDate': 1560465632000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '8080b441-dd41-4135-8d9a-af7412194d5d',
-                                'modDate': 1560465583000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields4',
-                                'sortOrder': 19,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465555000
-                            }
-                        }
-                    ]
-                },
-                {
-                    'divider': {
-                        'clazz': 'com.dotcms.contenttype.model.field.ImmutableRowField',
-                        'fieldContentTypeProperties': [],
-                        'dataType': 'SYSTEM',
-                        'searchable': false,
-                        'unique': false,
-                        'indexed': false,
-                        'listed': false,
-                        'readOnly': false,
-                        'owner': null,
-                        'id': '7459a1fc-6cb1-4bc3-ab1d-02218028c6f5',
-                        'modDate': 1560465659000,
-                        'name': 'fields-0',
-                        'relationType': null,
-                        'required': false,
-                        'variable': 'fields03',
-                        'sortOrder': 21,
-                        'values': null,
-                        'regexCheck': null,
-                        'hint': null,
-                        'defaultValue': null,
-                        'fixed': false,
-                        'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                        'dbColumn': 'system_field',
-                        'iDate': 1560465659000
-                    },
-                    'columns': [
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableSelectField',
-                                    'fieldType': 'Select',
-                                    'dataType': 'TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': 'fe5f02e3-af12-4767-ab73-3c687c536126',
-                                    'modDate': 1560465659000,
-                                    'name': 'Country',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'country',
-                                    'sortOrder': 23,
-                                    'values': 'USA|usa\r\nSpain|spain\r\nCosta Rica|crd',
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text5',
-                                    'iDate': 1560465659000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '7ec40d0e-b864-4acc-9ff7-96ca0ca254fe',
-                                'modDate': 1560465659000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields13',
-                                'sortOrder': 22,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465659000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextField',
-                                    'fieldType': 'Text',
-                                    'dataType': 'TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': 'adde0904-36cf-4573-b798-8b63105fc726',
-                                    'modDate': 1560465665000,
-                                    'name': 'City',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'city',
-                                    'sortOrder': 25,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text6',
-                                    'iDate': 1560465665000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '16f1df56-b5d8-4c98-bdde-d577c8a7c495',
-                                'modDate': 1560465659000,
-                                'name': 'fields-3',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields31',
-                                'sortOrder': 24,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465659000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextField',
-                                    'fieldType': 'Text',
-                                    'dataType': 'TEXT',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': '3691b9f1-fc06-489a-971b-8f4697153f3b',
-                                    'modDate': 1560465670000,
-                                    'name': 'State',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'state',
-                                    'sortOrder': 27,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'text7',
-                                    'iDate': 1560465670000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '00b20297-e6e9-441f-898a-ec75d97e28c7',
-                                'modDate': 1560465665000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields41',
-                                'sortOrder': 26,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465659000
-                            }
-                        },
-                        {
-                            'fields': [
-                                {
-                                    'clazz': 'com.dotcms.contenttype.model.field.ImmutableTextField',
-                                    'fieldType': 'Text',
-                                    'dataType': 'INTEGER',
-                                    'searchable': false,
-                                    'unique': false,
-                                    'indexed': false,
-                                    'listed': false,
-                                    'readOnly': false,
-                                    'owner': null,
-                                    'id': 'fbe4e9e3-54ab-4369-8a40-42d6d08a25cc',
-                                    'modDate': 1560465678000,
-                                    'name': 'Zip code',
-                                    'relationType': null,
-                                    'required': false,
-                                    'variable': 'zipCode',
-                                    'sortOrder': 29,
-                                    'values': null,
-                                    'regexCheck': null,
-                                    'hint': null,
-                                    'defaultValue': null,
-                                    'fixed': false,
-                                    'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                    'dbColumn': 'integer1',
-                                    'iDate': 1560465678000
-                                }
-                            ],
-                            'columnDivider': {
-                                'clazz': 'com.dotcms.contenttype.model.field.ImmutableColumnField',
-                                'fieldContentTypeProperties': [],
-                                'dataType': 'SYSTEM',
-                                'searchable': false,
-                                'unique': false,
-                                'indexed': false,
-                                'listed': false,
-                                'readOnly': false,
-                                'owner': null,
-                                'id': '4914a669-8875-4e1c-af87-dfe1e8b3d42a',
-                                'modDate': 1560465671000,
-                                'name': 'fields-1',
-                                'relationType': null,
-                                'required': false,
-                                'variable': 'fields5',
-                                'sortOrder': 28,
-                                'values': null,
-                                'regexCheck': null,
-                                'hint': null,
-                                'defaultValue': null,
-                                'fixed': false,
-                                'contentTypeId': 'f1f50c77-273b-4541-9a35-b02b32e656da',
-                                'dbColumn': 'system_field',
-                                'iDate': 1560465659000
-                            }
-                        }
-                    ]
-                }
-            ];
-
-            dotFormEl.layout = dataFields;
-            // dotFormEl.fieldsToShow = 'state,zipCode';
-        </script>
+        <dot-tags
+            disabled="false"
+            hint="This is a hint"
+            label="Add Tags"
+            name="tags01"
+            placeholder="Start typing"
+            required-message="Please add tags"
+            required="true"
+            value="tag1,tag2"
+        ></dot-tags>
+    <script src="/build/dotcmsfields.js"></script>
     </body>
 </html>

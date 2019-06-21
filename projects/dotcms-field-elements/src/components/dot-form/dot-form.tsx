@@ -87,7 +87,6 @@ export class DotFormComponent {
                 {this.layout.map((row: DotCMSContentTypeRow) => {
                     return <dot-form-row row={row} fields-to-show={this.fieldsToShow} />;
                 })}
-                <slot />
                 <div class="dot-form__buttons">
                     <button type="reset" onClick={() => this.resetForm()}>
                         {this.resetLabel}
@@ -120,7 +119,7 @@ export class DotFormComponent {
     }
 
     private resetForm(): void {
-        const elements = Array.from(this.el.querySelectorAll('form .dot-form__fields > *'));
+        const elements = Array.from(this.el.querySelectorAll('form dot-form-column > *'));
 
         elements.forEach((element: any) => {
             try {

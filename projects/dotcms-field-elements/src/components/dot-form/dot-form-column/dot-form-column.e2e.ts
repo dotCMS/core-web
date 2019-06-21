@@ -39,7 +39,14 @@ const fieldsMock: DotCMSContentTypeRow[] = [
                         required: true,
                         name: 'TexField',
                         fieldType: 'Text'
-                    },
+                    }
+                ]
+            }
+        ],
+    }, {
+        columns: [
+            {
+                fields: [
                     {
                         ...basicField,
                         defaultValue: 'key|value,llave|valor',
@@ -71,12 +78,12 @@ describe('dot-form-column', () => {
         });
 
         it('should have 2 fields', async () => {
-            const fields = await element.findAll('.dot-form__fields');
+            const fields = await element.findAll('dot-form-column');
             expect(fields.length).toBe(2);
         });
 
         it('should have CSS class on field', async () => {
-            const firstField = (await element.findAll('.dot-form__fields'))[0];
+            const firstField = await element.find('dot-form-column');
             expect(firstField).toBeDefined();
         });
     });
@@ -117,7 +124,7 @@ describe('dot-form-column', () => {
                 element.setProperty('layout', fieldsMock);
                 await page.waitForChanges();
 
-                const fields = await element.findAll('.dot-form__fields');
+                const fields = await element.findAll('dot-form-column');
                 expect(fields.length).toBe(2);
             });
         });

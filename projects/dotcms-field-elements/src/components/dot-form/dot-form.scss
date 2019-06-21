@@ -2,7 +2,7 @@ dot-form {
     display: block;
 
     & > form {
-        .dot-form__fields > * {
+        dot-form-column > * {
             display: block;
             margin: 1rem 0;
 

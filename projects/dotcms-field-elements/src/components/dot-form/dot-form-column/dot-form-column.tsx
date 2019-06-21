@@ -8,7 +8,7 @@ import { fieldMap, shouldShowField } from '../utils';
 })
 export class DotFormColumnComponent {
     /** Fields metada to be rendered */
-    @Prop({ reflectToAttr: true }) column: DotCMSContentTypeColumn;
+    @Prop() column: DotCMSContentTypeColumn;
 
     /** (optional) List of fields (variableName) separated by comma, to be shown */
     @Prop({ reflectToAttr: true }) fieldsToShow: string;
@@ -22,10 +22,6 @@ export class DotFormColumnComponent {
     }
 
     private getFieldTag(field: DotCMSContentTypeField): JSX.Element {
-        return (
-            <div class="dot-form__fields">
-                {fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : ''}
-            </div>
-        );
+        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
     }
 }
