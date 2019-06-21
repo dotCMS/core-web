@@ -149,7 +149,8 @@ describe('FieldService', () => {
         it('should update field', () => {
             expect(this.lastConnection.request._body.field).toEqual({
                 name: 'test field',
-                id: '1'
+                id: '1',
+                sortOrder: 1
             });
 
             expect(this.lastConnection.request.url).toContain('v3/contenttype/2/fields/1');
