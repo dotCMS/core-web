@@ -3,7 +3,8 @@ import Fragment from 'stencil-fragment';
 import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
 import {
     checkProp,
-    getClassNames, getDotOptionsFromFieldValue,
+    getClassNames,
+    getDotOptionsFromFieldValue,
     getErrorClass,
     getHintId,
     getId,
@@ -105,10 +106,9 @@ export class DotBinaryFileComponent {
 
     @Watch('accept')
     optionsWatch(): void {
-        const validTypes  = checkProp<DotBinaryFileComponent, string>(this, 'accept');
-        this.allowedFileTypes = validTypes.split(',');
+        const validTypes = checkProp<DotBinaryFileComponent, string>(this, 'accept');
+        this.allowedFileTypes = !!validTypes ? validTypes.split(',') : [];
     }
-
 
     hostData() {
         return {
@@ -172,7 +172,7 @@ export class DotBinaryFileComponent {
             if (!this.disabled) {
                 this.el.classList.add('dot-dop');
                 this.el.classList.remove('dot-dragover');
-                const droppedFile: File = evt.dataTransfer.files[evt.dataTransfer.files.length - 1];
+                const droppedFile: File = evt.dataTransfer.files[0];
                 if (this.isFileAllowed(droppedFile.name)) {
                     this.setValue(droppedFile);
                     this.setFileDisplayName(droppedFile.name);
