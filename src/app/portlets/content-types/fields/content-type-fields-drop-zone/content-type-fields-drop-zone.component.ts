@@ -105,7 +105,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.fieldDragDropService.fieldDropFromSource$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DropFieldData) => {
-                console.log('data', data);
                 this.setDroppedField(data.item);
                 this.toggleDialog();
             });
@@ -233,7 +232,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                         }
                     });
                 });
-            } else if (!row.fieldDivider.name) {
+            } else if (!row.divider.name) {
                 this.fieldRows.splice(rowIndex, 1);
             }
         });

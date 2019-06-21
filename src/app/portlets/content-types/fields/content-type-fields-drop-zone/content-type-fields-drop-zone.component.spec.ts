@@ -34,6 +34,7 @@ import { DotContentTypeFieldsVariablesModule } from '../dot-content-type-fields-
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { FieldUtil } from '../util/field-util';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
+import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -116,7 +117,7 @@ function becomeNewField(field) {
     delete field.sortOrder;
 }
 
-describe('ContentTypeFieldsDropZoneComponent', () => {
+fdescribe('ContentTypeFieldsDropZoneComponent', () => {
     const dotLoadingIndicatorServiceMock = new TestDotLoadingIndicatorService();
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
@@ -287,6 +288,23 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
         expect(comp.fieldRows.length).toEqual(1);
         expect(comp.fieldRows[0].columns.length).toEqual(1);
         expect(comp.fieldRows[0].columns[0].fields).toEqual([field]);
+    });
+
+    it('should cancel last tab field drag and drop operation fields', () => {
+        comp.layout = [];
+        comp.fieldRows = [];
+
+        const dotEventsService: DotEventsService = de.injector.get(DotEventsService);
+
+        fixture.detectChanges();
+        dotEventsService.notify('add-tab-divider', {});
+
+        fixture.detectChanges();
+
+        const dialog: DotDialogComponent = de.query(By.css('dot-dialog')).componentInstance;
+        dialog.hide.emit();
+
+        expect(comp.fieldRows.length).toBe(0);
     });
 });
 
