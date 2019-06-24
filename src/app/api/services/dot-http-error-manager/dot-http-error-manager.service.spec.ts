@@ -148,6 +148,27 @@ describe('DotHttpErrorManagerService', () => {
     it('should handle 400 error', () => {
         spyOn(dotDialogService, 'alert');
 
+        let responseView: ResponseView = mockResponseView(400);
+        spyOn(responseView.response, 'json').and.returnValue({
+            message: 'Error'
+        });
+
+        service.handle(responseView).subscribe((res) => {
+            result = res;
+        });
+
+        expect(result).toEqual({
+            redirected: false
+        });
+        expect(dotDialogService.alert).toHaveBeenCalledWith({
+            message: 'Error',
+            header: '400 Header'
+        });
+    });
+
+    it('should handle 400 error and show reponse message', () => {
+        spyOn(dotDialogService, 'alert');
+
         service.handle(mockResponseView(400)).subscribe((res) => {
             result = res;
         });

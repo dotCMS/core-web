@@ -75,6 +75,8 @@ export class DotHttpErrorManagerService {
                 'dot.common.http.error.500.message',
                 'dot.common.http.error.403.license.message',
                 'dot.common.http.error.403.license.header',
+                'dot.common.http.error.400.header',
+                'dot.common.http.error.400.message',
                 'dot.common.http.error.204.license.message',
                 'dot.common.http.error.204.license.header'
             ])
@@ -88,7 +90,7 @@ export class DotHttpErrorManagerService {
             ? this.isLicenseError(response)
                 ? this.handleLicense()
                 : this.handleForbidden()
-            : this.errorHandlers[code]();
+            : this.errorHandlers[code](response);
     }
 
     private contentletIsForbidden(error: string): boolean {
@@ -137,9 +139,10 @@ export class DotHttpErrorManagerService {
         return false;
     }
 
-    private handleBadRequestError(): boolean {
+    private handleBadRequestError(response: Response): boolean {
+
         this.dotDialogService.alert({
-            message: this.dotMessageService.get('dot.common.http.error.400.message'),
+            message: response.json()['message'] || this.dotMessageService.get('dot.common.http.error.400.message'),
             header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
         return false;

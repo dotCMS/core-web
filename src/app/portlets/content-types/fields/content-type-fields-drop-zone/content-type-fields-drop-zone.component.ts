@@ -20,6 +20,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { takeUntil, take  } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import * as _ from 'lodash';
 
 /**
  * Display all the Field Types
@@ -147,7 +148,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.layout && changes.layout.currentValue) {
-            this.fieldRows = changes.layout.currentValue;
+            this.fieldRows = _.cloneDeep(changes.layout.currentValue);
         }
     }
 
@@ -287,7 +288,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     cancelLastDragAndDrop(): void {
-        this.fieldRows = this.layout;
+        this.fieldRows = _.cloneDeep(this.layout);
     }
 
     /**
