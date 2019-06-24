@@ -4,6 +4,7 @@ import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../m
 import {
     checkProp,
     getClassNames,
+    getDotOptionsFromFieldValue,
     getErrorClass,
     getHintId,
     getId,
@@ -18,16 +19,16 @@ const URL_REGEX = new RegExp(
 );
 
 /**
- * Represent a dotcms binary file control.
+ * Represent a dotcms text field for the binary file element.
  *
  * @export
  * @class DotBinaryFile
  */
 @Component({
-    tag: 'dot-binary-file',
-    styleUrl: 'dot-binary-file.scss'
+    tag: 'dot-binary-text-field',
+    styleUrl: 'dot-binary-text-field.scss'
 })
-export class DotBinaryFileComponent {
+export class DotBinaryTextFieldComponent {
     @Element() el: HTMLElement;
 
     /** Value specifies the value of the <input> element */
@@ -92,21 +93,14 @@ export class DotBinaryFileComponent {
         this.emitValueChange();
     }
 
+    @Method()
+    clear(): void {
+        this.value = '';
+    }
+
     componentWillLoad(): void {
-        this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
-    }
-
-    componentDidLoad(): void {
-        this.dragAndDropHandler();
-        this.pasteHandler();
-    }
-
-    @Watch('accept')
-    optionsWatch(): void {
-        const validTypes = checkProp<DotBinaryFileComponent, string>(this, 'accept');
-        this.allowedFileTypes = !!validTypes ? validTypes.split(',') : [];
     }
 
     hostData() {
@@ -118,92 +112,29 @@ export class DotBinaryFileComponent {
     render() {
         return (
             <Fragment>
-                <dot-label
-                    label={this.label}
-                    required={this.required}
-                    name={this.name}
-                    tabindex="0"
-                >
-                    <input
-                        type="text"
-                        onBlur={() => this.blurHandler()}
-                        disabled={this.disabled}
-                        placeholder={this.placeholder}
-                        onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
-                        onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
-                    />
-                    <input
-                        aria-describedby={getHintId(this.hint)}
-                        class={getErrorClass(this.status.dotValid)}
-                        disabled={this.disabled}
-                        id={getId(this.name)}
-                        onChange={(event: Event) => this.changeHandler(event)}
-                        required={this.required || null}
-                        type="file"
-                        accept={this.accept}
-                        value={this.value}
-                    />
-                    <button disabled={this.disabled} onClick={() => this.buttonHandler()}>
-                        {this.buttonLabel}
-                    </button>
-                </dot-label>
-                {getTagHint(this.hint)}
-                {this.errorElement}
+                <input
+                    type="text"
+                    onBlur={() => this.blurHandler()}
+                    disabled={this.disabled}
+                    placeholder={this.placeholder}
+                    value={this.value}
+                    onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
+                    onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
+                    onPaste={(event: ClipboardEvent) => this.pasteHandler(event)}
+                />
             </Fragment>
         );
     }
 
-    private dragAndDropHandler(): void {
-        this.el.addEventListener('dragover', (evt: DragEvent) => {
-            if (!this.disabled) {
-                this.el.classList.add('dot-dragover');
-            }
-            evt.preventDefault();
-        });
-
-        this.el.addEventListener('dragleave', (evt: DragEvent) => {
-            this.el.classList.remove('dot-dragover');
-            evt.preventDefault();
-        });
-
-        this.el.addEventListener('drop', (evt: DragEvent) => {
-            evt.preventDefault();
-            if (!this.disabled) {
-                this.el.classList.add('dot-dop');
-                this.el.classList.remove('dot-dragover');
-                const droppedFile: File = evt.dataTransfer.files[0];
-                if (this.isFileAllowed(droppedFile.name)) {
-                    this.setValue(droppedFile);
-                    this.setFileDisplayName(droppedFile.name);
-                } else {
-                    this.clearField(this.validationMessage);
-                }
-            }
-        });
-    }
-
     // only supported in iOS.
-    private pasteHandler(): void {
-        this.el.addEventListener('paste', (evt: ClipboardEvent) => {
-            const clipboardData: DataTransfer = evt.clipboardData;
-            if (clipboardData.items.length) {
-                if (this.isPastingFile(clipboardData)) {
-                    this.handleFilePaste(clipboardData.items);
-                } else {
-                    this.handleURLPaste(clipboardData.items[0]);
-                }
+    private pasteHandler(event: ClipboardEvent): void {
+        const clipboardData: DataTransfer = event.clipboardData;
+        if (clipboardData.items.length) {
+            if (this.isPastingFile(clipboardData)) {
+                this.handleFilePaste(clipboardData.items);
+            } else {
+                this.handleURLPaste(clipboardData.items[0]);
             }
-        });
-    }
-
-    private changeHandler(event: Event): void {
-        const input: HTMLInputElement = event.srcElement as HTMLInputElement;
-        if (this.isFileAllowed(input.files[0].name)) {
-            this.setValue(input.files[0]);
-            this.setFileDisplayName(input.files[0].name);
-        } else {
-            event.preventDefault();
-            this.clearField(this.validationMessage);
         }
     }
 
@@ -227,6 +158,12 @@ export class DotBinaryFileComponent {
             }
         });
     }
+
+    private clearField(validationMessage: string) {
+        this.setValue(null, validationMessage);
+        this.value = '';
+    }
+
     private isValidURL(url: string): boolean {
         return URL_REGEX.test(url);
     }
@@ -237,23 +174,8 @@ export class DotBinaryFileComponent {
 
     private keyDownHandler(evt: KeyboardEvent): void {
         if (evt.key === 'Backspace') {
-            this.required ? this.clearField(this.requiredMessage) : this.clearField();
+            this.required ? this.setValue(null, this.requiredMessage) : this.setValue(null);
         }
-    }
-
-    private buttonHandler(): void {
-        const fileInput: HTMLInputElement = this.el.querySelector('dot-label input[type="file"]');
-        fileInput.click();
-    }
-
-    private clearField(validationMessage?: string) {
-        this.setValue(null, validationMessage);
-        this.setFileDisplayName('');
-    }
-
-    private setFileDisplayName(name: string): void {
-        const textInput: HTMLInputElement = this.el.querySelector('dot-label input[type="text"]');
-        textInput.value = name;
     }
 
     private isFileAllowed(name: string): boolean {
@@ -263,10 +185,6 @@ export class DotBinaryFileComponent {
         } else {
             return this.allowedFileTypes.indexOf(extension) >= 0;
         }
-    }
-
-    private validateProps(): void {
-        this.optionsWatch();
     }
 
     private isValid(): boolean {
