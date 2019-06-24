@@ -100,11 +100,9 @@ describe('dot-form-column', () => {
                 expect(keyValue).not.toBeNull();
             });
 
-            it('should not render textfield and keyValue fields', async () => {
-                const textfield = await element.find('dot-textfield');
-                const keyValue = await element.find('dot-key-value');
-                expect(textfield).toBeNull();
-                expect(keyValue).toBeNull();
+            it('should not render any fields', async () => {
+                const fields = await element.findAll('dot-form-column');
+                expect(fields.length).toBe(0);
             });
         });
 

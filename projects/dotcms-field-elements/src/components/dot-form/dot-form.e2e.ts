@@ -192,7 +192,7 @@ describe('dot-form', () => {
         });
 
         it('should set values on dot-form-row', async () => {
-            const firstRow = (await element.findAll('dot-form-row'))[0];
+            const firstRow = await element.find('dot-form-row');
             expect(await firstRow.getProperty('row')).toEqual(fieldsMock[0]);
             expect(await firstRow.getProperty('fieldsToShow')).toEqual('test');
         });

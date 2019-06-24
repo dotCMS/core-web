@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
-import { DotCMSContentTypeField, DotCMSContentTypeRow, DotCMSContentTypeColumn } from './models';
+import { DotCMSContentTypeField, DotCMSContentTypeRow } from './models';
 import { DotFieldStatus } from '../../models';
-import { fieldParamsConversionToBE } from './utils';
+import { fieldParamsConversionToBE, getFieldsFromLayout } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 
 @Component({
@@ -131,23 +131,17 @@ export class DotFormComponent {
     }
 
     private getUpdateValue(): { [key: string]: string } {
-        return this.layout
-            .reduce(
-                (acc: DotCMSContentTypeField[], { columns }: DotCMSContentTypeRow) =>
-                    acc.concat(...columns.map((col: DotCMSContentTypeColumn) => col.fields)),
-                []
-            )
-            .reduce(
-                (
-                    acc: { [key: string]: string },
-                    { variable, defaultValue }: DotCMSContentTypeField
-                ) => {
-                    return {
-                        ...acc,
-                        [variable]: defaultValue
-                    };
-                },
-                {}
-            );
+        return getFieldsFromLayout(this.layout).reduce(
+            (
+                acc: { [key: string]: string },
+                { variable, defaultValue }: DotCMSContentTypeField
+            ) => {
+                return {
+                    ...acc,
+                    [variable]: defaultValue
+                };
+            },
+            {}
+        );
     }
 }
