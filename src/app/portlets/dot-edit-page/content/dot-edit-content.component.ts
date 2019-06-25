@@ -1,6 +1,6 @@
 import { empty as observableEmpty, Observable, Subject, fromEvent } from 'rxjs';
 
-import { concatMap, catchError, filter, takeUntil, pluck, take } from 'rxjs/operators';
+import { concatMap, catchError, filter, takeUntil, pluck, take, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ import {
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotPageContainer } from '../shared/models/dot-page-container.model';
+import { DotPageContainer, DotPageContainerPersonalized } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
 import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
@@ -29,7 +29,10 @@ import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolve
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { ContentType } from '../../content-types/shared/content-type.model';
-import { PageModelChangeEvent, PageModelChangeEventType } from './services/dot-edit-content-html/models';
+import {
+    PageModelChangeEvent,
+    PageModelChangeEventType
+} from './services/dot-edit-content-html/models';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -228,13 +231,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     onFormSelected(item: ContentType): void {
         this.dotEditContentHtmlService.renderAddedForm(item).subscribe((model) => {
             if (model) {
-                this.dotEditPageService
-                    .save(this.pageState.page.identifier, model)
+                this.saveToPage(model)
                     .pipe(take(1))
                     .subscribe(() => {
-                        this.dotGlobalMessageService.display(
-                            this.dotMessageService.get('dot.common.message.saved')
-                        );
                         this.reload();
                     });
             }
@@ -266,17 +265,40 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotGlobalMessageService.loading(
             this.dotMessageService.get('dot.common.message.saving')
         );
-        this.dotEditPageService
-            .save(this.pageState.page.identifier, event.model)
-            .pipe(take(1))
+        this.saveToPage(event.model)
+            .pipe(filter(() => this.shouldReload(event.type)))
             .subscribe(() => {
-                this.dotGlobalMessageService.display(
-                    this.dotMessageService.get('dot.common.message.saved')
-                );
-                if (event.type !== PageModelChangeEventType.MOVE_CONTENT && this.pageState.page.remoteRendered) {
-                    this.reload();
-                }
+                this.reload();
             });
+    }
+
+    private shouldReload(type: PageModelChangeEventType): boolean {
+        return type !== PageModelChangeEventType.MOVE_CONTENT && this.pageState.page.remoteRendered;
+    }
+
+    private saveToPage(model: DotPageContainer[]): Observable<string> {
+        const persona = this.pageState.viewAs.persona;
+        let personalizedModel: DotPageContainerPersonalized[] = model;
+
+        if (persona.personalized) {
+            personalizedModel = model.map((con: DotPageContainer) => {
+                return {
+                    ...con,
+                    personaTag: persona.keyTag
+                };
+            });
+        }
+
+        return this.dotEditPageService
+            .save(this.pageState.page.identifier, personalizedModel || model)
+            .pipe(
+                take(1),
+                tap(() => {
+                    this.dotGlobalMessageService.display(
+                        this.dotMessageService.get('dot.common.message.saved')
+                    );
+                })
+            );
     }
 
     private addContentlet($event: any): void {

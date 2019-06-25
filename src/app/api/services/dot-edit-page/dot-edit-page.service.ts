@@ -2,7 +2,10 @@ import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js';
 import { RequestMethod } from '@angular/http';
-import { DotPageContainer } from '@portlets/dot-edit-page/shared/models/dot-page-container.model';
+import {
+    DotPageContainer,
+    DotPageContainerPersonalized
+} from '@portlets/dot-edit-page/shared/models/dot-page-container.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -17,7 +20,10 @@ export class DotEditPageService {
      * @returns Observable<string>
      * @memberof DotContainerContentletService
      */
-    save(pageId: string, content: DotPageContainer[]): Observable<string> {
+    save(
+        pageId: string,
+        content: DotPageContainer[] | DotPageContainerPersonalized[]
+    ): Observable<string> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Post,

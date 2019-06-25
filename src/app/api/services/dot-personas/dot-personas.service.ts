@@ -39,18 +39,12 @@ export class DotPersonasService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `/api/v1/personalization/pagepersonas/${pageId}`
+                url: `/api/v1/page/${pageId}/personas/`
             })
             .pipe(
                 pluck('entity'),
                 flatMap((items: DotPersonalizedPersona[]) => items),
-                map((item: DotPersonalizedPersona) => {
-                    return {
-                        ...item.persona,
-                        pageId: item.pageId,
-                        personalized: item.personalized
-                    };
-                }),
+                map((item: DotPersonalizedPersona) => item.persona),
                 toArray()
             );
     }
