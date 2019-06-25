@@ -1,6 +1,20 @@
 import { Component, Prop, Event, EventEmitter, Element, Watch } from '@stencil/core';
 import autoComplete from '@tarekraafat/autocomplete.js/dist/js/autoComplete';
 
+interface SelectionItem {
+    index: number;
+    value: string;
+    match: string;
+}
+
+interface SelectionFeedback {
+    event: KeyboardEvent | MouseEvent;
+    query: string;
+    matched: number;
+    results: string[];
+    selection: SelectionItem;
+}
+
 @Component({
     tag: 'dot-autocomplete',
     styleUrl: 'dot-autocomplete.scss'
@@ -26,7 +40,7 @@ export class DotAutocompleteComponent {
     /** Function to get the data to use for the autocomplete search */
     @Prop({ reflectToAttr: true }) data: () => Promise<string[]> = null;
 
-    @Event() select: EventEmitter<string>;
+    @Event() selection: EventEmitter<string>;
     @Event() enter: EventEmitter<string>;
     @Event() lostFocus: EventEmitter<FocusEvent>;
 
@@ -74,11 +88,13 @@ export class DotAutocompleteComponent {
         const { value } = this.getInputElement();
 
         if (value && this.keyEvent[event.key]) {
+            event.preventDefault();
             this.keyEvent[event.key](value);
         }
     }
 
     private handleBlur(event: FocusEvent): void {
+        event.preventDefault();
         setTimeout(() => {
             if (document.activeElement.parentElement !== this.getResultList()) {
                 this.clean();
@@ -98,7 +114,7 @@ export class DotAutocompleteComponent {
 
     private emitselect(select: string): void {
         this.clean();
-        this.select.emit(select);
+        this.selection.emit(select);
     }
 
     private emitEnter(select: string): void {
@@ -140,14 +156,12 @@ export class DotAutocompleteComponent {
                 destination: this.getInputElement(),
                 position: 'afterend'
             },
-            resultItem: (data) => {
-                return `${data.match}`;
-            },
-            onSelection: (feedback) => {
+            resultItem: ({ match }: SelectionItem) => match,
+            onSelection: ({ event, selection }: SelectionFeedback) => {
+                event.preventDefault();
                 this.focusOnInput();
-                this.emitselect(feedback.selection.value);
+                this.emitselect(selection.value);
             }
-
         });
     }
 

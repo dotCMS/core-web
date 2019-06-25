@@ -23,7 +23,7 @@
 | ----------- | ----------- | ------------------------- |
 | `enter`     |             | `CustomEvent<string>`     |
 | `lostFocus` |             | `CustomEvent<FocusEvent>` |
-| `select`    |             | `CustomEvent<string>`     |
+| `selection` |             | `CustomEvent<string>`     |
 
 
 ----------------------------------------------
