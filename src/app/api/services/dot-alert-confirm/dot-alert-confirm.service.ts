@@ -14,7 +14,7 @@ import { Observable, Subject } from 'rxjs';
 export class DotAlertConfirmService {
     alertModel: DotAlertConfirm = null;
     confirmModel: DotAlertConfirm = null;
-    private _confirmDialogOpened$: Subject<Boolean> = new Subject<Boolean>();
+    private _confirmDialogOpened$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         public confirmationService: ConfirmationService,
@@ -27,9 +27,9 @@ export class DotAlertConfirmService {
 
     /**
      * Get the confirmDialogOpened notification as an Observable
-     * @returns Observable<Boolean>
+     * @returns Observable<boolean>
      */
-    get confirmDialogOpened$(): Observable<Boolean> {
+    get confirmDialogOpened$(): Observable<boolean> {
         return this._confirmDialogOpened$.asObservable();
     }
 
