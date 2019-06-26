@@ -120,7 +120,7 @@ export const DotFormFields = {
 
     Tag: (field: DotCMSContentTypeField) => (
         <dot-tags
-            data={async (): Promise<string[]> => {
+            data={(): Promise<string[]> => {
                 return fetch('/api/v1/tags')
                     .then((data) => data.json())
                     .then((items) => Object.keys(items))

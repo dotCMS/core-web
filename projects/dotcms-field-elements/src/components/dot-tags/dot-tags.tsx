@@ -23,8 +23,8 @@ export class DotTagsComponent {
     /** Value formatted splitted with a comma, for example: tag-1,tag-2 */
     @Prop({ mutable: true, reflectToAttr: true }) value = '';
 
-    /** Async function that returns the suggestiosn for the autocomplete */
-    @Prop() data: () => Promise<string[]>;
+    /** Function or array of string to get the data to use for the autocomplete search */
+    @Prop() data: () => Promise<string[]> | string[] = null;
 
     /** Name that will be used as ID */
     @Prop({ reflectToAttr: true }) name = '';
@@ -96,7 +96,7 @@ export class DotTagsComponent {
                     >
                         <dot-autocomplete
                             class={getErrorClass(this.status.dotValid)}
-                            data={this.data.bind(this)}
+                            data={this.data}
                             debounce={this.debounce}
                             disabled={this.isDisabled()}
                             onEnter={this.onEnterHandler.bind(this)}
