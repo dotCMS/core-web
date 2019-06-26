@@ -29,7 +29,7 @@ export class DotcmsEventsService {
      */
     start(): void {
         this.loggerService.debug('start DotcmsEventsService', this.dotEventsSocket.isConnected());
-        if (this.dotEventsSocket && !this.dotEventsSocket.isConnected()) {
+        if (!this.dotEventsSocket.isConnected()) {
 
             this.loggerService.debug('Connecting with socket');
 
