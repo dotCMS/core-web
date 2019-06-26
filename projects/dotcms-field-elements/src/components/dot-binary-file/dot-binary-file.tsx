@@ -25,9 +25,9 @@ import {
     getOriginalStatus,
     getTagError,
     getTagHint,
+    isFileAllowed,
     updateStatus
 } from '../../utils';
-import { isFileAllowed } from './dot-binary-helper/dot-binary-helper';
 import { Components } from '../../components';
 import DotBinaryTextField = Components.DotBinaryTextField;
 
@@ -88,7 +88,6 @@ export class DotBinaryFileComponent {
     buttonLabel = 'Browse';
 
     @State() status: DotFieldStatus;
-    @State() errorElement: JSX.Element = null;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
@@ -221,7 +220,7 @@ export class DotBinaryFileComponent {
     }
 
     private fileChangeHandler(event: Event): void {
-        const input: HTMLInputElement = event.srcElement as HTMLInputElement;
+        const input: HTMLInputElement = event.target as HTMLInputElement;
         this.errorMessage = '';
         if (isFileAllowed(input.files[0].name, this.allowedFileTypes)) {
             this.setValue(input.files[0]);

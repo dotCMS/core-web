@@ -1,8 +1,13 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotBinaryTextStatusEvent, DotFieldStatus, DotFieldValueEvent } from '../../../models';
-import { getErrorClass, getOriginalStatus, updateStatus } from '../../../utils';
-import { isFileAllowed, isValidURL } from '../dot-binary-helper/dot-binary-helper';
+import {
+    getErrorClass,
+    getOriginalStatus,
+    isFileAllowed,
+    isValidURL,
+    updateStatus
+} from '../../../utils';
 
 /**
  * Represent a dotcms text field for the binary file element.
