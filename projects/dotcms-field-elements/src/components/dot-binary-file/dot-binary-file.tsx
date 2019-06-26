@@ -1,6 +1,23 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import {
+    Component,
+    Element,
+    Event,
+    EventEmitter,
+    Listen,
+    Method,
+    Prop,
+    State,
+    Watch
+} from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotFieldStatus, DotFieldStatusEvent, DotFieldValueEvent } from '../../models';
+import {
+    DotBinaryFieldValueEvent,
+    DotBinaryTextStatusEvent,
+    DotFieldStatus,
+    DotFieldStatusEvent,
+    DotFieldValueEvent,
+    DotInputCalendarStatusEvent
+} from '../../models';
 import {
     checkProp,
     getClassNames,
@@ -12,10 +29,10 @@ import {
     getTagHint,
     updateStatus
 } from '../../utils';
-
-const URL_REGEX = new RegExp(
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-);
+import { type } from 'os';
+import { isFileAllowed } from './dot-binary-helper/dot-binary-helper';
+import { Components } from '../../components';
+import DotBinaryTextField = Components.DotBinaryTextField;
 
 /**
  * Represent a dotcms binary file control.
@@ -79,7 +96,10 @@ export class DotBinaryFileComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    allowedFileTypes = [];
+    private allowedFileTypes = [];
+    private binaryTextValue = '';
+    private errorMessage = '';
+    private binaryTextField: DotBinaryTextField;
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -87,6 +107,7 @@ export class DotBinaryFileComponent {
     @Method()
     reset(): void {
         this.value = '';
+        this.binaryTextField.reset();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
@@ -99,14 +120,64 @@ export class DotBinaryFileComponent {
     }
 
     componentDidLoad(): void {
-        this.dragAndDropHandler();
-        this.pasteHandler();
+        this.binaryTextField = this.el.querySelector('dot-binary-text-field');
     }
 
     @Watch('accept')
     optionsWatch(): void {
         const validTypes = checkProp<DotBinaryFileComponent, string>(this, 'accept');
         this.allowedFileTypes = !!validTypes ? validTypes.split(',') : [];
+    }
+
+    @Listen('_valueChange')
+    binaryTextValueChange(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        this.setFileDisplayName(this.binaryTextField.value);
+        const eventValue: DotFieldValueEvent = event.detail;
+        this.setValue(eventValue.value);
+    }
+
+    @Listen('_statusChange')
+    binaryTextStatusChange(event: CustomEvent) {
+        event.stopImmediatePropagation();
+        const statusEvent: DotBinaryTextStatusEvent = event.detail;
+        this.errorMessage = statusEvent.errorType;
+        this.status = statusEvent.status;
+        if (this.status.dotPristine && this.status.dotTouched) {
+            this.emitStatusChange();
+        }
+    }
+
+    @Listen('dragover')
+    HandleDragover(): void {
+        if (!this.disabled) {
+            this.el.classList.add('dot-dragover');
+            this.el.classList.remove('dot-dropped');
+        }
+    }
+
+    @Listen('dragleave')
+    HandleDragleave(): void {
+        this.el.classList.remove('dot-dragover');
+        this.el.classList.remove('dot-dropped');
+    }
+
+    @Listen('drop', { passive: false })
+    HandleDrop(evt: DragEvent): void {
+        evt.preventDefault();
+        if (!this.disabled) {
+            this.el.classList.add('dot-dropped');
+            this.el.classList.remove('dot-dragover');
+            this.errorMessage = '';
+            const droppedFile: File = evt.dataTransfer.files[0];
+            if (isFileAllowed(droppedFile.name, this.allowedFileTypes)) {
+                this.setValue(droppedFile);
+                this.setFileDisplayName(droppedFile.name);
+            } else {
+                this.errorMessage = 'validationMessage';
+                this.setValue(null);
+            }
+        }
     }
 
     hostData() {
@@ -124,20 +195,20 @@ export class DotBinaryFileComponent {
                     name={this.name}
                     tabindex="0"
                 >
-                    <input
-                        type="text"
-                        onBlur={() => this.blurHandler()}
-                        disabled={this.disabled}
+                    <dot-binary-text-field
+                        name={this.name}
                         placeholder={this.placeholder}
-                        onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
-                        onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
+                        required={this.required}
+                        disabled={this.disabled}
+                        value={this.binaryTextValue}
+                        accept={this.allowedFileTypes}
                     />
                     <input
                         aria-describedby={getHintId(this.hint)}
                         class={getErrorClass(this.status.dotValid)}
                         disabled={this.disabled}
                         id={getId(this.name)}
-                        onChange={(event: Event) => this.changeHandler(event)}
+                        onChange={(event: Event) => this.fileChangeHandler(event)}
                         required={this.required || null}
                         type="file"
                         accept={this.accept}
@@ -148,96 +219,22 @@ export class DotBinaryFileComponent {
                     </button>
                 </dot-label>
                 {getTagHint(this.hint)}
-                {this.errorElement}
+                {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
     }
 
-    private dragAndDropHandler(): void {
-        this.el.addEventListener('dragover', (evt: DragEvent) => {
-            if (!this.disabled) {
-                this.el.classList.add('dot-dragover');
-            }
-            evt.preventDefault();
-        });
-
-        this.el.addEventListener('dragleave', (evt: DragEvent) => {
-            this.el.classList.remove('dot-dragover');
-            evt.preventDefault();
-        });
-
-        this.el.addEventListener('drop', (evt: DragEvent) => {
-            evt.preventDefault();
-            if (!this.disabled) {
-                this.el.classList.add('dot-dop');
-                this.el.classList.remove('dot-dragover');
-                const droppedFile: File = evt.dataTransfer.files[0];
-                if (this.isFileAllowed(droppedFile.name)) {
-                    this.setValue(droppedFile);
-                    this.setFileDisplayName(droppedFile.name);
-                } else {
-                    this.clearField(this.validationMessage);
-                }
-            }
-        });
-    }
-
-    // only supported in iOS.
-    private pasteHandler(): void {
-        this.el.addEventListener('paste', (evt: ClipboardEvent) => {
-            const clipboardData: DataTransfer = evt.clipboardData;
-            if (clipboardData.items.length) {
-                if (this.isPastingFile(clipboardData)) {
-                    this.handleFilePaste(clipboardData.items);
-                } else {
-                    this.handleURLPaste(clipboardData.items[0]);
-                }
-            }
-        });
-    }
-
-    private changeHandler(event: Event): void {
+    private fileChangeHandler(event: Event): void {
         const input: HTMLInputElement = event.srcElement as HTMLInputElement;
-        if (this.isFileAllowed(input.files[0].name)) {
+        this.errorMessage = '';
+        if (isFileAllowed(input.files[0].name, this.allowedFileTypes)) {
             this.setValue(input.files[0]);
             this.setFileDisplayName(input.files[0].name);
         } else {
             event.preventDefault();
-            this.clearField(this.validationMessage);
-        }
-    }
-
-    private handleFilePaste(items: DataTransferItemList) {
-        const clipBoardFile = items[1].getAsFile();
-        items[0].getAsString((fileName: string) => {
-            if (this.isFileAllowed(fileName)) {
-                this.setValue(clipBoardFile);
-            } else {
-                this.clearField(this.validationMessage);
-            }
-        });
-    }
-
-    private handleURLPaste(item: DataTransferItem) {
-        item.getAsString((fileURL: string) => {
-            if (this.isValidURL(fileURL)) {
-                this.setValue(fileURL);
-            } else {
-                this.clearField(this.URLValidationMessage);
-            }
-        });
-    }
-    private isValidURL(url: string): boolean {
-        return URL_REGEX.test(url);
-    }
-
-    private isPastingFile(data: DataTransfer): boolean {
-        return !!data.files.length;
-    }
-
-    private keyDownHandler(evt: KeyboardEvent): void {
-        if (evt.key === 'Backspace') {
-            this.required ? this.clearField(this.requiredMessage) : this.clearField();
+            this.errorMessage = 'validationMessage';
+            this.setValue(null);
+            this.setFileDisplayName('');
         }
     }
 
@@ -246,50 +243,35 @@ export class DotBinaryFileComponent {
         fileInput.click();
     }
 
-    private clearField(validationMessage?: string) {
-        this.setValue(null, validationMessage);
-        this.setFileDisplayName('');
-    }
-
     private setFileDisplayName(name: string): void {
-        const textInput: HTMLInputElement = this.el.querySelector('dot-label input[type="text"]');
-        textInput.value = name;
-    }
-
-    private isFileAllowed(name: string): boolean {
-        const extension = name.substring(name.indexOf('.'), name.length);
-        if (this.allowedFileTypes.length === 0 || this.allowedFileTypes.indexOf('*') === 0) {
-            return true;
-        } else {
-            return this.allowedFileTypes.indexOf(extension) >= 0;
-        }
+        this.binaryTextValue = name;
     }
 
     private validateProps(): void {
         this.optionsWatch();
     }
 
+    private shouldShowErrorMessage(): boolean {
+        return this.getErrorMessage() && !this.status.dotPristine;
+    }
+
+    private getErrorMessage(): string {
+        return this[this.errorMessage];
+    }
+
     private isValid(): boolean {
         return !(this.required && !this.value);
     }
 
-    private blurHandler(): void {
-        if (!this.status.dotTouched) {
-            this.status = updateStatus(this.status, {
-                dotTouched: true
-            });
-            this.emitStatusChange();
-        }
-    }
-
-    private setValue(data: File | string, errorMessage?: string): void {
+    private setValue(data: File | string): void {
         this.value = data;
-        this.errorElement = getTagError(!!errorMessage, errorMessage);
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
             dotValid: this.isValid()
         });
+        debugger;
+        this.binaryTextValue = data === null ? '' : this.binaryTextValue;
         this.emitValueChange();
         this.emitStatusChange();
     }
