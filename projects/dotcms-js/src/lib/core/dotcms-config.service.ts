@@ -49,7 +49,7 @@ export class DotcmsConfig {
     }
 
     getConfig(): Observable<ConfigParams> {
-        return this.configParamsSubject.asObservable().pipe(filter(config => !!config));
+        return this.configParamsSubject.asObservable().pipe(filter((config: ConfigParams) => !!config));
     }
 
     loadConfig(): void {
