@@ -23,7 +23,7 @@ export class DotTagsComponent {
     /** Value formatted splitted with a comma, for example: tag-1,tag-2 */
     @Prop({ mutable: true, reflectToAttr: true }) value = '';
 
-    /** Name that will be used as ID */
+    /** Async function that returns the suggestiosn for the autocomplete */
     @Prop() data: () => Promise<string[]>;
 
     /** Name that will be used as ID */
