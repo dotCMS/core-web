@@ -56,7 +56,7 @@ describe('dot-binary-text-field', () => {
     //         expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
     //     });
     //
-    //     xdescribe('required', () => {
+    //     describe('required', () => {
     //         beforeEach(async () => {
     //             element.setProperty('required', 'true');
     //         });
@@ -139,7 +139,7 @@ describe('dot-binary-text-field', () => {
             });
         });
 
-        xdescribe('accept', () => {});
+        describe('accept', () => {});
 
         describe('disabled', () => {
             it('should not render disabled attribute by default', () => {
@@ -166,17 +166,17 @@ describe('dot-binary-text-field', () => {
         });
     });
 
-    xdescribe('@Events', () => {
+    describe('@Events', () => {
         beforeEach(async () => {
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
         });
 
-        xdescribe('drag & drop', () => {});
+        describe('drag & drop', () => {});
 
-        xdescribe('paste', () => {});
+        describe('paste', () => {});
 
-        xdescribe('status and value change', () => {
+        describe('status and value change', () => {
             it('should display on wrapper not valid css classes when loaded when required and no value set', async () => {
                 page = await newE2EPage({
                     html: `
@@ -222,7 +222,7 @@ describe('dot-binary-text-field', () => {
             });
         });
 
-        xdescribe('status change', () => {
+        describe('status change', () => {
             it('should mark as touched when onblur', async () => {
                 await input.triggerEvent('blur');
                 await page.waitForChanges();

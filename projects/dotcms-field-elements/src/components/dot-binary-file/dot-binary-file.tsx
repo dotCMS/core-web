@@ -11,25 +11,25 @@ import {
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import {
-    DotBinaryTextStatusEvent,
+    DotBinaryFileEvent,
     DotFieldStatus,
     DotFieldStatusEvent,
     DotFieldValueEvent
 } from '../../models';
 import {
     checkProp,
+    DotBinaryError,
     getClassNames,
-    getErrorClass,
-    getHintId,
-    getId,
     getOriginalStatus,
     getTagError,
     getTagHint,
     isFileAllowed,
     updateStatus
 } from '../../utils';
+
 import { Components } from '../../components';
 import DotBinaryTextField = Components.DotBinaryTextField;
+import DotBinaryUploadButton = Components.DotBinaryUploadButton;
 
 /**
  * Represent a dotcms binary file control.
@@ -44,12 +44,10 @@ import DotBinaryTextField = Components.DotBinaryTextField;
 export class DotBinaryFileComponent {
     @Element() el: HTMLElement;
 
-    /** Value specifies the value of the <input> element */
-    @Prop({ mutable: true })
-    value = null;
-
     /** Name that will be used as ID */
-    @Prop() name = '';
+    @Prop({ reflectToAttr: true })
+    @Prop()
+    name = '';
 
     /** (optional) Text to be rendered next to input field */
     @Prop({ reflectToAttr: true })
@@ -73,6 +71,7 @@ export class DotBinaryFileComponent {
     /** (optional) Text that be shown when the Regular Expression condition not met */
     @Prop() validationMessage = "The field doesn't comply with the specified format";
 
+    /** (optional) Text that be shown when the URL is not valid */
     @Prop() URLValidationMessage = 'The specified URL is not valid';
 
     /** (optional) Disables field's interaction */
@@ -92,8 +91,8 @@ export class DotBinaryFileComponent {
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
+    private value = null;
     private allowedFileTypes = [];
-    private binaryTextValue = '';
     private errorMessage = '';
     private binaryTextField: DotBinaryTextField;
 
@@ -103,7 +102,7 @@ export class DotBinaryFileComponent {
     @Method()
     reset(): void {
         this.value = '';
-        this.binaryTextField.reset();
+        this.binaryTextField.value = true;
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
@@ -125,35 +124,40 @@ export class DotBinaryFileComponent {
         this.allowedFileTypes = !!validTypes ? validTypes.split(',') : [];
     }
 
-    @Listen('_valueChange')
-    binaryTextValueChange(event: CustomEvent) {
+    @Listen('fileChange')
+    fileChangeHandler(event: CustomEvent): void {
         event.stopImmediatePropagation();
-        this.setFileDisplayName(this.binaryTextField.value);
-        const eventValue: DotFieldValueEvent = event.detail;
-        this.setValue(eventValue.value);
+
+        const fileEvent: DotBinaryFileEvent = event.detail;
+        this.errorMessage = fileEvent.errorType;
+        this.setValue(fileEvent.file);
+        if (this.isBinaryUploadButtonEvent(event.target as Element)) {
+            this.binaryTextField.value = (fileEvent.file as File).name;
+        }
     }
 
-    @Listen('_statusChange')
-    binaryTextStatusChange(event: CustomEvent) {
-        event.stopImmediatePropagation();
-        const statusEvent: DotBinaryTextStatusEvent = event.detail;
-        this.errorMessage = statusEvent.errorType;
-        this.status = statusEvent.status;
-        if (this.status.dotPristine && this.status.dotTouched) {
+    @Listen('onBlur')
+    blurHandler(): void {
+        if (!this.status.dotTouched) {
+            this.status = updateStatus(this.status, {
+                dotTouched: true
+            });
             this.emitStatusChange();
         }
     }
 
-    @Listen('dragover')
-    HandleDragover(): void {
+    @Listen('dragover', { passive: false })
+    HandleDragover(evt: DragEvent): void {
+        evt.preventDefault();
         if (!this.disabled) {
             this.el.classList.add('dot-dragover');
             this.el.classList.remove('dot-dropped');
         }
     }
 
-    @Listen('dragleave')
-    HandleDragleave(): void {
+    @Listen('dragleave', { passive: false })
+    HandleDragleave(evt: DragEvent): void {
+        evt.preventDefault();
         this.el.classList.remove('dot-dragover');
         this.el.classList.remove('dot-dropped');
     }
@@ -168,9 +172,9 @@ export class DotBinaryFileComponent {
             const droppedFile: File = evt.dataTransfer.files[0];
             if (isFileAllowed(droppedFile.name, this.allowedFileTypes)) {
                 this.setValue(droppedFile);
-                this.setFileDisplayName(droppedFile.name);
+                this.binaryTextField.value = droppedFile.name;
             } else {
-                this.errorMessage = 'validationMessage';
+                this.errorMessage = DotBinaryError.INVALID;
                 this.setValue(null);
             }
         }
@@ -195,23 +199,15 @@ export class DotBinaryFileComponent {
                         placeholder={this.placeholder}
                         required={this.required}
                         disabled={this.disabled}
-                        value={this.binaryTextValue}
-                        accept={this.allowedFileTypes.join()}
+                        accept={this.allowedFileTypes}
                     />
-                    <input
-                        aria-describedby={getHintId(this.hint)}
-                        class={getErrorClass(this.status.dotValid)}
+                    <dot-binary-upload-button
+                        name={this.name}
+                        accept={this.allowedFileTypes}
                         disabled={this.disabled}
-                        id={getId(this.name)}
-                        onChange={(event: Event) => this.fileChangeHandler(event)}
-                        required={this.required || null}
-                        type="file"
-                        accept={this.accept}
-                        value={this.value}
+                        required={this.required}
+                        buttonLabel={this.buttonLabel}
                     />
-                    <button disabled={this.disabled} onClick={() => this.buttonHandler()}>
-                        {this.buttonLabel}
-                    </button>
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -219,27 +215,8 @@ export class DotBinaryFileComponent {
         );
     }
 
-    private fileChangeHandler(event: Event): void {
-        const input: HTMLInputElement = event.target as HTMLInputElement;
-        this.errorMessage = '';
-        if (isFileAllowed(input.files[0].name, this.allowedFileTypes)) {
-            this.setValue(input.files[0]);
-            this.setFileDisplayName(input.files[0].name);
-        } else {
-            event.preventDefault();
-            this.errorMessage = 'validationMessage';
-            this.setValue(null);
-            this.setFileDisplayName('');
-        }
-    }
-
-    private buttonHandler(): void {
-        const fileInput: HTMLInputElement = this.el.querySelector('dot-label input[type="file"]');
-        fileInput.click();
-    }
-
-    private setFileDisplayName(name: string): void {
-        this.binaryTextValue = name;
+    private isBinaryUploadButtonEvent(element: Element): boolean {
+        return element.localName === 'dot-binary-upload-button';
     }
 
     private validateProps(): void {
@@ -265,7 +242,7 @@ export class DotBinaryFileComponent {
             dotPristine: false,
             dotValid: this.isValid()
         });
-        this.binaryTextValue = data === null ? '' : this.binaryTextValue;
+        this.binaryTextField.value = data === null ? '' : this.binaryTextField.value;
         this.emitValueChange();
         this.emitStatusChange();
     }

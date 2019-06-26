@@ -1,12 +1,12 @@
-import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Prop, State } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotBinaryTextStatusEvent, DotFieldStatus, DotFieldValueEvent } from '../../../models';
+import { DotBinaryFileEvent, DotFieldStatus } from '../../../models';
 import {
+    DotBinaryError,
     getErrorClass,
-    getOriginalStatus,
+    getHintId,
     isFileAllowed,
-    isValidURL,
-    updateStatus
+    isValidURL
 } from '../../../utils';
 
 /**
@@ -26,9 +26,13 @@ export class DotBinaryTextFieldComponent {
     @Prop({ mutable: true, reflectToAttr: true })
     value = null;
 
+    /** (optional) Hint text that suggest a clue of the field */
+    @Prop({ reflectToAttr: true })
+    hint = '';
+
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
-    placeholder = 'Attach files by dragging & dropping, selecting or pasting them.';
+    placeholder = 'Drop or paste a file or url';
 
     /** (optional) Determine if it is mandatory */
     @Prop({ reflectToAttr: true })
@@ -36,7 +40,7 @@ export class DotBinaryTextFieldComponent {
 
     /** (optional) Array that describes a type of file that may be selected by the user, eg: .pdf,.jpg  */
     @Prop({ reflectToAttr: true })
-    accept = '';
+    accept: string[];
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
@@ -44,38 +48,16 @@ export class DotBinaryTextFieldComponent {
 
     @State() status: DotFieldStatus;
 
-    @Event() _valueChange: EventEmitter<DotFieldValueEvent>;
-    @Event() _statusChange: EventEmitter<DotBinaryTextStatusEvent>;
-
-    private errorType = '';
-    private file = null;
-    private allowedFileTypes = [];
-
-    /**
-     * Reset properties of the field, clear value and emit events.
-     */
-    @Method()
-    reset(): void {
-        this.value = '';
-    }
-
-    @Watch('accept')
-    optionsWatch(): void {
-        this.allowedFileTypes = !!this.accept ? this.accept.split(',') : [];
-    }
-
-    componentWillLoad(): void {
-        this.status = getOriginalStatus(this.isValid());
-        this.emitStatusChange();
-    }
+    @Event() fileChange: EventEmitter<DotBinaryFileEvent>;
+    @Event() onBlur: EventEmitter;
 
     render() {
         return (
             <Fragment>
                 <input
                     type="text"
-                    class={getErrorClass(this.status.dotValid)}
-                    onBlur={() => this.blurHandler()}
+                    aria-describedby={getHintId(this.hint)}
+                    class={getErrorClass(this.isValid())}
                     disabled={this.disabled}
                     placeholder={this.placeholder}
                     value={this.value}
@@ -87,15 +69,23 @@ export class DotBinaryTextFieldComponent {
         );
     }
 
+    private keyDownHandler(evt: KeyboardEvent): void {
+        if (evt.key === 'Backspace') {
+            this.value = '';
+            this.emitFile(null, this.required ? DotBinaryError.REQUIRED : '');
+        }
+    }
+
     // only supported in macOS.
     private pasteHandler(event: ClipboardEvent): void {
+        event.preventDefault();
         this.value = '';
         const clipboardData: DataTransfer = event.clipboardData;
         if (clipboardData.items.length) {
-            const clipBoardFileName = clipboardData.items[0];
             if (this.isPastingFile(clipboardData)) {
                 this.handleFilePaste(clipboardData.items);
             } else {
+                const clipBoardFileName = clipboardData.items[0];
                 this.handleURLPaste(clipBoardFileName);
             }
         }
@@ -105,26 +95,22 @@ export class DotBinaryTextFieldComponent {
         const clipBoardFileName = items[0];
         const clipBoardFile = items[1].getAsFile();
         clipBoardFileName.getAsString((fileName: string) => {
-            this.errorType = '';
-            if (isFileAllowed(fileName, this.allowedFileTypes)) {
+            if (isFileAllowed(fileName, this.accept)) {
                 this.value = fileName;
-                this.setFile(clipBoardFile);
+                this.emitFile(clipBoardFile);
             } else {
-                this.errorType = 'validationMessage';
-                this.setFile(null);
+                this.emitFile(null, DotBinaryError.INVALID);
             }
         });
     }
 
     private handleURLPaste(clipBoardFileName: DataTransferItem) {
         clipBoardFileName.getAsString((fileURL: string) => {
-            this.errorType = '';
             if (isValidURL(fileURL)) {
                 this.value = fileURL;
-                this.setFile(fileURL);
+                this.emitFile(fileURL);
             } else {
-                this.errorType = 'URLValidationMessage';
-                this.setFile(null);
+                this.emitFile(null, DotBinaryError.URLINVALID);
             }
         });
     }
@@ -133,50 +119,14 @@ export class DotBinaryTextFieldComponent {
         return !!data.files.length;
     }
 
-    private keyDownHandler(evt: KeyboardEvent): void {
-        if (evt.key === 'Backspace') {
-            this.errorType = this.required ? 'requiredMessage' : '';
-            this.value = '';
-            this.setFile(null);
-        }
-    }
-
     private isValid(): boolean {
-        return !(this.required && !this.file);
+        return !(this.required && !!this.value);
     }
 
-    private blurHandler(): void {
-        if (!this.status.dotTouched) {
-            this.status = updateStatus(this.status, {
-                dotTouched: true
-            });
-            this.emitStatusChange();
-        }
-    }
-
-    private setFile(data: File | string): void {
-        this.file = data;
-        this.status = updateStatus(this.status, {
-            dotTouched: true,
-            dotPristine: false,
-            dotValid: this.isValid()
-        });
-        this.emitStatusChange();
-        this.emitValueChange();
-    }
-
-    private emitStatusChange(): void {
-        this._statusChange.emit({
-            name: null,
-            status: this.status,
-            errorType: this.errorType
-        });
-    }
-
-    private emitValueChange(): void {
-        this._valueChange.emit({
-            name: null,
-            value: this.file
+    private emitFile(file: File | string, errorType?: string): void {
+        this.fileChange.emit({
+            file: file,
+            errorType: errorType
         });
     }
 }

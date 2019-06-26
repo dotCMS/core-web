@@ -11,7 +11,7 @@ const DROP_EVENT = {
     }
 };
 
-xdescribe('dot-binary-file', () => {
+describe('dot-binary-file', () => {
     let page: E2EPage;
     let element: E2EElement;
     let inputText: E2EElement;
@@ -27,7 +27,7 @@ xdescribe('dot-binary-file', () => {
         inputText = await page.find('input[type="text"]');
     });
 
-    xdescribe('render CSS classes', () => {
+    describe('render CSS classes', () => {
         it('should be valid, untouched & pristine on load', async () => {
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.empty);
@@ -45,7 +45,7 @@ xdescribe('dot-binary-file', () => {
             expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
         });
 
-        xdescribe('required', () => {
+        describe('required', () => {
             beforeEach(async () => {
                 element.setProperty('required', 'true');
             });
@@ -78,8 +78,8 @@ xdescribe('dot-binary-file', () => {
         });
     });
 
-    xdescribe('@Props', () => {
-        xdescribe('value', () => {
+    describe('@Props', () => {
+        describe('value', () => {
             it('should set value correctly', async () => {
                 element.setProperty('value', 'hi');
                 await page.waitForChanges();
@@ -92,7 +92,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('name', () => {
+        describe('name', () => {
             it('should render with valid id name', async () => {
                 element.setProperty('name', 'text01');
                 await page.waitForChanges();
@@ -113,7 +113,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('label', () => {
+        describe('label', () => {
             it('should set label prop in dot-label', async () => {
                 element.setProperty('label', 'Name:');
                 await page.waitForChanges();
@@ -122,7 +122,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('placeholder', () => {
+        describe('placeholder', () => {
             it('should set placeholder correctly', async () => {
                 element.setProperty('placeholder', 'Test');
                 await page.waitForChanges();
@@ -130,7 +130,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('hint', () => {
+        describe('hint', () => {
             it('should set hint correctly and set aria attribute', async () => {
                 element.setProperty('hint', 'Test');
                 await page.waitForChanges();
@@ -150,7 +150,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('required', () => {
+        describe('required', () => {
             it('should render required attribute with invalid value', async () => {
                 element.setProperty('required', { test: 'test' });
                 await page.waitForChanges();
@@ -171,7 +171,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('requiredMessage', () => {
+        describe('requiredMessage', () => {
             it('should show default value of requiredMessage', async () => {
                 element.setProperty('required', 'true');
                 await input.press('a');
@@ -206,7 +206,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('regexCheck', () => {
+        describe('regexCheck', () => {
             it('should set correct value when valid regexCheck', async () => {
                 element.setAttribute('regex-check', '[0-9]*');
                 await page.waitForChanges();
@@ -220,7 +220,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('validationMessage', () => {
+        describe('validationMessage', () => {
             it('should show default value of validationMessage', async () => {
                 element.setProperty('regexCheck', '[0-9]');
                 await input.press('a');
@@ -245,7 +245,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('disabled', () => {
+        describe('disabled', () => {
             it('should render disabled attribute', async () => {
                 element.setProperty('disabled', 'true');
                 await page.waitForChanges();
@@ -265,7 +265,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('type', () => {
+        describe('type', () => {
             it('should set value to text on default correctly', async () => {
                 await page.waitForChanges();
                 expect(input.getAttribute('type')).toBe('text');
@@ -285,17 +285,17 @@ xdescribe('dot-binary-file', () => {
         });
     });
 
-    xdescribe('@Events', () => {
+    describe('@Events', () => {
         beforeEach(async () => {
             spyStatusChangeEvent = await page.spyOnEvent('statusChange');
             spyValueChangeEvent = await page.spyOnEvent('valueChange');
         });
 
-        xdescribe('drag & drop', () => {});
+        describe('drag & drop', () => {});
 
-        xdescribe('paste', () => {});
+        describe('paste', () => {});
 
-        xdescribe('status and value change', () => {
+        describe('status and value change', () => {
             it('should display on wrapper not valid css classes when loaded when required and no value set', async () => {
                 page = await newE2EPage({
                     html: `
@@ -341,7 +341,7 @@ xdescribe('dot-binary-file', () => {
             });
         });
 
-        xdescribe('status change', () => {
+        describe('status change', () => {
             it('should mark as touched when onblur', async () => {
                 await input.triggerEvent('blur');
                 await page.waitForChanges();
