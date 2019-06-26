@@ -11,12 +11,10 @@ import {
 } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import {
-    DotBinaryFieldValueEvent,
     DotBinaryTextStatusEvent,
     DotFieldStatus,
     DotFieldStatusEvent,
-    DotFieldValueEvent,
-    DotInputCalendarStatusEvent
+    DotFieldValueEvent
 } from '../../models';
 import {
     checkProp,
@@ -29,7 +27,6 @@ import {
     getTagHint,
     updateStatus
 } from '../../utils';
-import { type } from 'os';
 import { isFileAllowed } from './dot-binary-helper/dot-binary-helper';
 import { Components } from '../../components';
 import DotBinaryTextField = Components.DotBinaryTextField;
@@ -196,12 +193,11 @@ export class DotBinaryFileComponent {
                     tabindex="0"
                 >
                     <dot-binary-text-field
-                        name={this.name}
                         placeholder={this.placeholder}
                         required={this.required}
                         disabled={this.disabled}
                         value={this.binaryTextValue}
-                        accept={this.allowedFileTypes}
+                        accept={this.allowedFileTypes.join()}
                     />
                     <input
                         aria-describedby={getHintId(this.hint)}
@@ -270,7 +266,6 @@ export class DotBinaryFileComponent {
             dotPristine: false,
             dotValid: this.isValid()
         });
-        debugger;
         this.binaryTextValue = data === null ? '' : this.binaryTextValue;
         this.emitValueChange();
         this.emitStatusChange();

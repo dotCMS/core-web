@@ -41,13 +41,15 @@ export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
 
     rawString = rawString.replace(/(?:\\[rn]|[\r\n]+)+/g, ',');
 
-    const items = isKeyPipeValueFormatValid(rawString) ? rawString
-        .split(',')
-        .filter((item) => !!item.length)
-        .map((item) => {
-            const [label, value] = item.split('|');
-            return { label, value };
-        }) : [];
+    const items = isKeyPipeValueFormatValid(rawString)
+        ? rawString
+              .split(',')
+              .filter(item => !!item.length)
+              .map(item => {
+                  const [label, value] = item.split('|');
+                  return { label, value };
+              })
+        : [];
     return items;
 }
 
@@ -143,7 +145,9 @@ export function updateStatus(
  * @returns {JSX.Element}
  */
 export function getTagError(show: boolean, message: string): JSX.Element {
-    return show && isStringType(message) ? <span class="dot-field__error-message">{message}</span> : null;
+    return show && isStringType(message) ? (
+        <span class="dot-field__error-message">{message}</span>
+    ) : null;
 }
 
 /**
@@ -159,6 +163,37 @@ export function getTagHint(hint: string): JSX.Element {
             {hint}
         </span>
     ) : null;
+}
+
+const URL_REGEX = new RegExp(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+);
+
+/**
+ * Check if an URL is valid.
+ * @param {string} url
+ *
+ * @returns {boolean}
+ */
+export function isValidURL(url: string): boolean {
+    return URL_REGEX.test(url);
+}
+
+/**
+ * Check if the fileName extension is part of the allowed extensions
+ *
+ * @param {string} fileName
+ * @param {string[]} allowedExtensions
+ *
+ * @returns {boolean}
+ */
+export function isFileAllowed(fileName: string, allowedExtensions: string[]): boolean {
+    const extension = fileName ? fileName.substring(fileName.indexOf('.'), fileName.length) : '';
+    return allowAnyFile(allowedExtensions) || allowedExtensions.includes(extension);
+}
+
+function allowAnyFile(allowedExtensions: string[]): boolean {
+    return allowedExtensions.length === 0 || allowedExtensions.includes('*');
 }
 
 function slugify(text: string): string {

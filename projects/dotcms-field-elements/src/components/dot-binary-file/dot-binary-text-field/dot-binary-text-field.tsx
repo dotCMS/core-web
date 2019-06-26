@@ -1,17 +1,8 @@
 import { Component, Element, Event, EventEmitter, Method, Prop, State, Watch } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import {
-    DotBinaryTextStatusEvent,
-    DotFieldStatus,
-    DotFieldStatusEvent,
-    DotFieldValueEvent
-} from '../../../models';
-import { checkProp, getId, getOriginalStatus, updateStatus } from '../../../utils';
+import { DotBinaryTextStatusEvent, DotFieldStatus, DotFieldValueEvent } from '../../../models';
+import { getErrorClass, getOriginalStatus, updateStatus } from '../../../utils';
 import { isFileAllowed, isValidURL } from '../dot-binary-helper/dot-binary-helper';
-
-const URL_REGEX = new RegExp(
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
-);
 
 /**
  * Represent a dotcms text field for the binary file element.
@@ -29,10 +20,6 @@ export class DotBinaryTextFieldComponent {
     /** Value specifies the value of the <input> element */
     @Prop({ mutable: true, reflectToAttr: true })
     value = null;
-
-    /** Name that will be used as ID */
-    @Prop({ reflectToAttr: true })
-    name = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
@@ -82,10 +69,10 @@ export class DotBinaryTextFieldComponent {
             <Fragment>
                 <input
                     type="text"
+                    class={getErrorClass(this.status.dotValid)}
                     onBlur={() => this.blurHandler()}
                     disabled={this.disabled}
                     placeholder={this.placeholder}
-                    id={getId(this.name)}
                     value={this.value}
                     onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
                     onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
@@ -95,9 +82,9 @@ export class DotBinaryTextFieldComponent {
         );
     }
 
-    // only supported in iOS.
+    // only supported in macOS.
     private pasteHandler(event: ClipboardEvent): void {
-       this.value = '';
+        this.value = '';
         const clipboardData: DataTransfer = event.clipboardData;
         if (clipboardData.items.length) {
             const clipBoardFileName = clipboardData.items[0];
@@ -150,7 +137,7 @@ export class DotBinaryTextFieldComponent {
     }
 
     private isValid(): boolean {
-        return !(this.required && !this.value);
+        return !(this.required && !this.file);
     }
 
     private blurHandler(): void {
@@ -175,16 +162,15 @@ export class DotBinaryTextFieldComponent {
 
     private emitStatusChange(): void {
         this._statusChange.emit({
-            name: this.name,
+            name: null,
             status: this.status,
             errorType: this.errorType
         });
     }
 
     private emitValueChange(): void {
-        debugger;
         this._valueChange.emit({
-            name: this.name,
+            name: null,
             value: this.file
         });
     }
