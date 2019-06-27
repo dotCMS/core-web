@@ -9,7 +9,6 @@ export const config: Config = {
         { type: 'docs' },
         {
             type: 'www',
-            // buildDir: '/Users/fmontes/dev/dotcms/tomcat8/webapps/ROOT/custom-elements.dot-label__text',
             serviceWorker: null // disable service workers
         }
     ],
