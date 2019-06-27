@@ -184,4 +184,17 @@ export class FieldUtil {
 
         return result;
     }
+
+    static getFieldsWithoutLayout(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
+        return layout.map(row => row.columns)
+            .filter(columns => !!columns)
+            .reduce((accumulator, currentValue) => accumulator.concat(currentValue), [])
+            .map(fieldColumn => fieldColumn.fields)
+            .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+    }
+
+    static getTabDividerFields(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
+        return layout.map(row => row.divider)
+            .filter(field => FieldUtil.isTabDivider(field));
+    }
 }
