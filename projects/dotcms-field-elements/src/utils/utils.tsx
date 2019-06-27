@@ -1,6 +1,15 @@
 import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
 
 /**
+ * Enum to represent possible Errors in the Binary Field.
+ */
+export enum DotBinaryError {
+    REQUIRED = 'requiredMessage',
+    INVALID = 'validationMessage',
+    URLINVALID = 'URLValidationMessage'
+}
+
+/**
  * Returns CSS classes object based on field Status values
  *
  * @param {DotFieldStatus} status

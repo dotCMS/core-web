@@ -17,6 +17,11 @@ export interface DotFieldValueEvent extends DotFieldEvent {
     value: string;
 }
 
+export interface DotBinaryFileEvent {
+    file: string | File;
+    errorType: string;
+}
+
 export interface DotBinaryTextStatusEvent extends DotFieldStatusEvent {
     errorType: string;
 }
