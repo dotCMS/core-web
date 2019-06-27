@@ -42,6 +42,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     currentFieldType: FieldType;
     dialogActions: DotDialogActions;
     fieldRows: DotContentTypeLayoutDivider[];
+    draggedEvent = false;
 
     @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
@@ -114,8 +115,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.fieldDragDropService.fieldDropFromTarget$
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
+                this.draggedEvent = true;
                 setTimeout(() => {
                     this.saveFields.emit(this.fieldRows);
+                    this.draggedEvent = false;
                 }, 0);
             });
 
@@ -210,10 +213,12 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     editFieldHandler(fieldToEdit: DotContentTypeField): void {
-        const fields = FieldUtil.getFieldsWithoutLayout(this.fieldRows);
-        this.currentField = fields.find((field: DotContentTypeField) => fieldToEdit.id === field.id);
-        this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
-        this.toggleDialog();
+        if (!this.draggedEvent) {
+            const fields = FieldUtil.getFieldsWithoutLayout(this.fieldRows);
+            this.currentField = fields.find((field: DotContentTypeField) => fieldToEdit.id === field.id);
+            this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
+            this.toggleDialog();
+        }
     }
 
     /**
