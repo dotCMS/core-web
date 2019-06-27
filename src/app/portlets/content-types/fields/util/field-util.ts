@@ -194,8 +194,8 @@ export class FieldUtil {
      * @memberof FieldUtil
      */
     static getFieldsWithoutLayout(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
-        return layout.map(row => row.columns)
-            .filter(columns => !!columns)
+        return layout.map((row: DotContentTypeLayoutDivider) => row.columns)
+            .filter((columns: DotContentTypeColumn[]) => !!columns)
             .reduce((accumulator: DotContentTypeColumn[], currentValue: DotContentTypeColumn[]) => accumulator.concat(currentValue), [])
             .map(fieldColumn => fieldColumn.fields)
             .reduce((accumulator: DotContentTypeField[], currentValue: DotContentTypeField[]) => accumulator.concat(currentValue), []);
