@@ -1,12 +1,12 @@
 import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
 
 /**
- * Enum to represent possible Errors in the Binary Field.
+ * Enum to represent Errors in the Binary Field.
  */
-export enum DotBinaryError {
-    REQUIRED = 'requiredMessage',
-    INVALID = 'validationMessage',
-    URLINVALID = 'URLValidationMessage'
+export enum DotBinaryMessageError {
+    REQUIRED,
+    INVALID,
+    URLINVALID
 }
 
 /**

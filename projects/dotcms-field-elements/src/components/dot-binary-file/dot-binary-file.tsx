@@ -18,7 +18,7 @@ import {
 } from '../../models';
 import {
     checkProp,
-    DotBinaryError,
+    DotBinaryMessageError,
     getClassNames,
     getOriginalStatus,
     getTagError,
@@ -29,7 +29,6 @@ import {
 
 import { Components } from '../../components';
 import DotBinaryTextField = Components.DotBinaryTextField;
-import DotBinaryUploadButton = Components.DotBinaryUploadButton;
 
 /**
  * Represent a dotcms binary file control.
@@ -93,8 +92,9 @@ export class DotBinaryFileComponent {
 
     private value = null;
     private allowedFileTypes = [];
-    private errorMessage = '';
+    private errorType: DotBinaryMessageError;
     private binaryTextField: DotBinaryTextField;
+    private errorMessageMap = new Map<DotBinaryMessageError, string>();
 
     /**
      * Reset properties of the field, clear value and emit events.
@@ -109,6 +109,7 @@ export class DotBinaryFileComponent {
     }
 
     componentWillLoad(): void {
+        this.setErrorMessageMap();
         this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
@@ -129,7 +130,7 @@ export class DotBinaryFileComponent {
         event.stopImmediatePropagation();
 
         const fileEvent: DotBinaryFileEvent = event.detail;
-        this.errorMessage = fileEvent.errorType;
+        this.errorType = fileEvent.errorType;
         this.setValue(fileEvent.file);
         if (this.isBinaryUploadButtonEvent(event.target as Element)) {
             this.binaryTextField.value = (fileEvent.file as File).name;
@@ -168,13 +169,13 @@ export class DotBinaryFileComponent {
         if (!this.disabled) {
             this.el.classList.add('dot-dropped');
             this.el.classList.remove('dot-dragover');
-            this.errorMessage = '';
+            this.errorType = null;
             const droppedFile: File = evt.dataTransfer.files[0];
             if (isFileAllowed(droppedFile.name, this.allowedFileTypes)) {
                 this.setValue(droppedFile);
                 this.binaryTextField.value = droppedFile.name;
             } else {
-                this.errorMessage = DotBinaryError.INVALID;
+                this.errorType = DotBinaryMessageError.INVALID;
                 this.setValue(null);
             }
         }
@@ -228,11 +229,19 @@ export class DotBinaryFileComponent {
     }
 
     private getErrorMessage(): string {
-        return this[this.errorMessage];
+        return this.errorMessageMap.get(this.errorType);
     }
 
     private isValid(): boolean {
         return !(this.required && !this.value);
+    }
+
+    private setErrorMessageMap(): void {
+        this.errorMessageMap = new Map([
+            [DotBinaryMessageError.REQUIRED, this.requiredMessage],
+            [DotBinaryMessageError.INVALID, this.validationMessage],
+            [DotBinaryMessageError.URLINVALID, this.URLValidationMessage]
+        ]);
     }
 
     private setValue(data: File | string): void {

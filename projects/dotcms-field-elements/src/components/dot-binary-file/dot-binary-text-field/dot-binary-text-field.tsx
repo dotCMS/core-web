@@ -2,7 +2,7 @@ import { Component, Element, Event, EventEmitter, Prop, State } from '@stencil/c
 import Fragment from 'stencil-fragment';
 import { DotBinaryFileEvent, DotFieldStatus } from '../../../models';
 import {
-    DotBinaryError,
+    DotBinaryMessageError,
     getErrorClass,
     getHintId,
     isFileAllowed,
@@ -72,7 +72,7 @@ export class DotBinaryTextFieldComponent {
     private keyDownHandler(evt: KeyboardEvent): void {
         if (evt.key === 'Backspace') {
             this.value = '';
-            this.emitFile(null, this.required ? DotBinaryError.REQUIRED : '');
+            this.emitFile(null, this.required ? DotBinaryMessageError.REQUIRED : null);
         }
     }
 
@@ -99,7 +99,7 @@ export class DotBinaryTextFieldComponent {
                 this.value = fileName;
                 this.emitFile(clipBoardFile);
             } else {
-                this.emitFile(null, DotBinaryError.INVALID);
+                this.emitFile(null, DotBinaryMessageError.INVALID);
             }
         });
     }
@@ -110,7 +110,7 @@ export class DotBinaryTextFieldComponent {
                 this.value = fileURL;
                 this.emitFile(fileURL);
             } else {
-                this.emitFile(null, DotBinaryError.URLINVALID);
+                this.emitFile(null, DotBinaryMessageError.URLINVALID);
             }
         });
     }
@@ -123,7 +123,7 @@ export class DotBinaryTextFieldComponent {
         return !(this.required && !!this.value);
     }
 
-    private emitFile(file: File | string, errorType?: string): void {
+    private emitFile(file: File | string, errorType?: DotBinaryMessageError): void {
         this.fileChange.emit({
             file: file,
             errorType: errorType

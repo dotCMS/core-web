@@ -1,7 +1,7 @@
 import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotBinaryFileEvent } from '../../../models';
-import { getId, isFileAllowed } from '../../../utils';
+import { DotBinaryMessageError, getId, isFileAllowed } from '../../../utils';
 
 /**
  * Represent a dotcms text field for the binary file element.
@@ -68,11 +68,11 @@ export class DotBinaryUploadButtonComponent {
             this.emitFile(file);
         } else {
             event.preventDefault();
-            this.emitFile(null, 'validationMessage');
+            this.emitFile(null, DotBinaryMessageError.INVALID);
         }
     }
 
-    private emitFile(file: File, errorType?: string): void {
+    private emitFile(file: File, errorType?: DotBinaryMessageError): void {
         this.fileChange.emit({
             file: file,
             errorType: errorType
