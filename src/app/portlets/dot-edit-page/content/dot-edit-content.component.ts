@@ -276,18 +276,24 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return type !== PageModelChangeEventType.MOVE_CONTENT && this.pageState.page.remoteRendered;
     }
 
-    private saveToPage(model: DotPageContainer[]): Observable<string> {
+    private getPersonalizedModel(model: DotPageContainer[]): DotPageContainerPersonalized[] {
         const persona = this.pageState.viewAs.persona;
-        let personalizedModel: DotPageContainerPersonalized[] = model;
+        let res: DotPageContainerPersonalized[] = model;
 
-        if (persona.personalized) {
-            personalizedModel = model.map((con: DotPageContainer) => {
+        if (persona && persona.personalized) {
+            res = model.map((con: DotPageContainer) => {
                 return {
                     ...con,
                     personaTag: persona.keyTag
                 };
             });
         }
+
+        return res;
+    }
+
+    private saveToPage(model: DotPageContainer[]): Observable<string> {
+        const personalizedModel = this.getPersonalizedModel(model);
 
         return this.dotEditPageService
             .save(this.pageState.page.identifier, personalizedModel || model)
