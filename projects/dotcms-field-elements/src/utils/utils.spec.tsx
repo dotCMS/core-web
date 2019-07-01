@@ -9,10 +9,12 @@ import {
     getStringFromDotKeyArray,
     getTagError,
     getTagHint,
+    isFileAllowed,
+    isValidURL,
     updateStatus
 } from './utils';
 
-xdescribe('getClassNames', () => {
+describe('getClassNames', () => {
     it('should return field CSS classes', () => {
         let status = { dotValid: false, dotTouched: false, dotPristine: true };
         expect(getClassNames(status, true)).toEqual({
@@ -37,7 +39,7 @@ xdescribe('getClassNames', () => {
     });
 });
 
-xdescribe('getDotOptionsFromFieldValue', () => {
+describe('getDotOptionsFromFieldValue', () => {
     it('should return label/value', () => {
         const items = getDotOptionsFromFieldValue('key1|A,key2|B');
         expect(items.length).toBe(2);
@@ -71,7 +73,7 @@ xdescribe('getDotOptionsFromFieldValue', () => {
     });
 });
 
-xdescribe('getErrorClass', () => {
+describe('getErrorClass', () => {
     it('should return error CSS', () => {
         expect(getErrorClass(false)).toEqual('dot-field__error');
     });
@@ -80,7 +82,7 @@ xdescribe('getErrorClass', () => {
     });
 });
 
-xdescribe('getHintId', () => {
+describe('getHintId', () => {
     it('should return hint id correctly', () => {
         expect(getHintId('***^^^HelloWorld123$$$###')).toEqual('hint-helloworld123');
     });
@@ -90,13 +92,13 @@ xdescribe('getHintId', () => {
     });
 });
 
-xdescribe('getId', () => {
+describe('getId', () => {
     it('should return id', () => {
         expect(getId('some123Name#$%^&')).toBe('dot-some123name');
     });
 });
 
-xdescribe('getLabelId', () => {
+describe('getLabelId', () => {
     it('should return label id correctly', () => {
         expect(getLabelId('***^^^HelloWorld123$$$###')).toEqual('label-helloworld123');
     });
@@ -106,7 +108,7 @@ xdescribe('getLabelId', () => {
     });
 });
 
-xdescribe('getOriginalStatus', () => {
+describe('getOriginalStatus', () => {
     it('should return initial field Status', () => {
         expect(getOriginalStatus()).toEqual({
             dotValid: true,
@@ -123,7 +125,7 @@ xdescribe('getOriginalStatus', () => {
     });
 });
 
-xdescribe('getStringFromDotKeyArray', () => {
+describe('getStringFromDotKeyArray', () => {
     it('should transform to string', () => {
         expect(
             getStringFromDotKeyArray([
@@ -140,7 +142,7 @@ xdescribe('getStringFromDotKeyArray', () => {
     });
 });
 
-xdescribe('getTagError', () => {
+describe('getTagError', () => {
     it('should return error tag', () => {
         const message = 'Error Msg';
         const jsxTag: any = getTagError(true, message);
@@ -152,7 +154,7 @@ xdescribe('getTagError', () => {
     });
 });
 
-xdescribe('getTagHint', () => {
+describe('getTagHint', () => {
     it('should return Hint tag', () => {
         const jsxTag: any = getTagHint('this is a hint');
         expect(jsxTag.vattrs).toEqual({ class: 'dot-field__hint', id: 'hint-this-is-a-hint' });
@@ -163,7 +165,7 @@ xdescribe('getTagHint', () => {
     });
 });
 
-xdescribe('updateStatus', () => {
+describe('updateStatus', () => {
     it('should return updated field Status', () => {
         const status = { dotValid: false, dotTouched: false, dotPristine: true };
         expect(updateStatus(status, { dotTouched: true })).toEqual({
@@ -171,5 +173,33 @@ xdescribe('updateStatus', () => {
             dotTouched: true,
             dotPristine: true
         });
+    });
+});
+
+describe('isValidURL', () => {
+    it('should return true when URL is valid ', () => {
+        expect(isValidURL('http://www.google.com./image.png')).toBe(true);
+    });
+
+    it('should return false when URL is invalid ', () => {
+        expect(isValidURL('google.com./image.png')).toBe(false);
+    });
+});
+
+describe('isFileAllowed', () => {
+    it('should return true when file extension is valid', () => {
+        expect(isFileAllowed('file.pdf', ['.png', '.pdf'])).toBe(true);
+    });
+
+    it('should return true when allowedExtensions are any', () => {
+        expect(isFileAllowed('file.pdf', ['*'])).toBe(true);
+    });
+
+    it('should return true when allowedExtensions are empty', () => {
+        expect(isFileAllowed('file.pdf', [])).toBe(true);
+    });
+
+    it('should return false when file extension is not valid', () => {
+        expect(isFileAllowed('file.pdf', ['.png'])).toBe(false);
     });
 });

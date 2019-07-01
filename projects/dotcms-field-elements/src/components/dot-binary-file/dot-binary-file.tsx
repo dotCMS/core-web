@@ -45,7 +45,6 @@ export class DotBinaryFileComponent {
 
     /** Name that will be used as ID */
     @Prop({ reflectToAttr: true })
-    @Prop()
     name = '';
 
     /** (optional) Text to be rendered next to input field */
@@ -68,7 +67,7 @@ export class DotBinaryFileComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = "The field doesn't comply with the specified format";
+    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
 
     /** (optional) Text that be shown when the URL is not valid */
     @Prop() URLValidationMessage = 'The specified URL is not valid';

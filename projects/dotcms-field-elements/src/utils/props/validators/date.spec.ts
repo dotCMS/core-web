@@ -11,8 +11,8 @@ const onlyDate: DotDateSlot = { time: null, date: dateSlot.date };
 const onlyTime: DotDateSlot = { time: dateSlot.time, date: null };
 const emptySlot: DotDateSlot = { time: null, date: null };
 
-xdescribe('Date Validators', () => {
-    xdescribe('dotValidateDate', () => {
+describe('Date Validators', () => {
+    describe('dotValidateDate', () => {
         it('should return the date when is valid ', () => {
             expect(dotValidateDate(dateSlot.date)).toBe(dateSlot.date);
         });
@@ -22,7 +22,7 @@ xdescribe('Date Validators', () => {
         });
     });
 
-    xdescribe('dotValidateTime', () => {
+    describe('dotValidateTime', () => {
         it('should return the time when is valid', () => {
             expect(dotValidateTime(dateSlot.time)).toBe(dateSlot.time);
         });
@@ -36,7 +36,7 @@ xdescribe('Date Validators', () => {
         });
     });
 
-    xdescribe('dotParseDate', () => {
+    describe('dotParseDate', () => {
         it('should return DateSlot with date and time when value is valid', () => {
             expect(dotParseDate(`${dateSlot.date} ${dateSlot.time}`)).toEqual(dateSlot);
         });
@@ -54,7 +54,7 @@ xdescribe('Date Validators', () => {
         });
     });
 
-    xdescribe('isValidDateSlot', () => {
+    describe('isValidDateSlot', () => {
         it('should return true if date and time are valid', () => {
             expect(isValidDateSlot(dateSlot, `${dateSlot.date} ${dateSlot.time}`)).toBe(true);
         });

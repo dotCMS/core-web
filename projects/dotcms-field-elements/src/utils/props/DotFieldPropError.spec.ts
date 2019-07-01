@@ -2,7 +2,7 @@ import { PropValidationInfo } from './models';
 
 import DotFieldPropError from './DotFieldPropError';
 
-xdescribe('DotFieldPropError', () => {
+describe('DotFieldPropError', () => {
     const propInfo: PropValidationInfo<string> = {
         field: { type: 'test-type', name: 'field-name' },
         name: 'test-name',

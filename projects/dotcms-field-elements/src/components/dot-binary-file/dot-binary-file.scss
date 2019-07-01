@@ -1,20 +1,8 @@
 dot-binary-file {
-
-    background: red;
-    display: block;
-
     &.dot-dragover{
         opacity: 0.5;
     }
     input[type="file"] {
         display: none;
-    }
-
-    dot-label {
-        display: block;
-
-        &:focus {
-            border: 1px solid red;
-        }
     }
 }

@@ -22,7 +22,3 @@ export interface DotBinaryFileEvent {
     file: string | File;
     errorType: DotBinaryMessageError;
 }
-
-export interface DotBinaryTextStatusEvent extends DotFieldStatusEvent {
-    errorType: string;
-}
