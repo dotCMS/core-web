@@ -37,7 +37,6 @@ export class DotGravatarService {
                 pluck('entry'),
                 map((profiles: DotProfile[]) => profiles[0].photos[0].value),
                 catchError(() => {
-                    console.log('ERROR');
                     return of(null);
                 })
             );
