@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GravatarService } from './../../../api/services/gravatar-service';
+import { DotGravatarService } from '../../../api/services/dot-gravatar-service';
 import { IframeOverlayService } from './../_common/iframe/service/iframe-overlay.service';
 import { DataListModule, OverlayPanelModule } from 'primeng/primeng';
 import { MaterialDesignTextfieldDirective } from './../../directives/md-inputtext/md-input-text.directive';
@@ -7,7 +7,7 @@ import { SearchableDropdownComponent } from './../_common/searchable-dropdown/co
 import { DotDropdownComponent } from './../_common/dropdown-component/dot-dropdown.component';
 import { MyAccountComponent } from './../my-account/dot-my-account-component';
 import { LoginAsComponent } from './../login-as/login-as';
-import { GravatarComponent } from './../_common/gravatar/gravatar.component';
+import { DotGravatarComponent } from '../_common/gravatar/dot-gravatar.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -40,7 +40,7 @@ describe('ToolbarUserComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 DotDropdownComponent,
-                GravatarComponent,
+                DotGravatarComponent,
                 LoginAsComponent,
                 MyAccountComponent,
                 SearchableDropdownComponent,
@@ -56,7 +56,7 @@ describe('ToolbarUserComponent', () => {
                 },
                 { provide: LoginService, useClass: LoginServiceMock },
                 IframeOverlayService,
-                GravatarService,
+                DotGravatarService,
                 Jsonp,
                 DotNavigationService,
                 DotMenuService,

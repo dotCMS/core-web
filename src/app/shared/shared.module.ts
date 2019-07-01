@@ -17,7 +17,7 @@ import {
 
 // Common Modules
 import { DotDropdownModule } from '@components/_common/dropdown-component/dot-dropdown.module';
-import { GravatarModule } from '@components/_common/gravatar/gravatar.module';
+import { DotGravatarModule } from '@components/_common/gravatar/dot-gravatar.module';
 import { MainNavigationModule } from '@components/dot-navigation/dot-navigation.module';
 import { DotEventsService } from '../api/services/dot-events/dot-events.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
@@ -31,12 +31,12 @@ const dotEventSocketURLFactory = () => {
 
 @NgModule({
     declarations: [],
-    imports: [CommonModule, DotDropdownModule, GravatarModule, MainNavigationModule],
+    imports: [CommonModule, DotDropdownModule, DotGravatarModule, MainNavigationModule],
     exports: [
         CommonModule,
         // Common Modules
         DotDropdownModule,
-        GravatarModule,
+        DotGravatarModule,
         MainNavigationModule
     ]
 })

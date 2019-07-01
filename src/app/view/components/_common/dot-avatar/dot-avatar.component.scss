@@ -4,16 +4,27 @@
     display: inline-block;
 }
 
-.gravatar__avatar {
+.avatar__img {
     border-radius: 50%;
     display: block;
 }
 
-.gravatar__placeholder {
+.avatar__placeholder {
     border-radius: 50%;
     background-color: $brand-secondary;
     color: $white;
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     line-height: 1.2em;
     text-align: center;
+}
+
+.avatar__dot {
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    bottom: 2px;
+    right: 0px;
+    background-color: blueviolet;
 }
