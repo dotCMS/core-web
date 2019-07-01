@@ -21,9 +21,8 @@ import { SiteSelectorComponent } from '@components/_common/site-selector/site-se
 import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-
-// TODO: move this to models
-import { ContentTypeField } from '../fields';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '../fields';
+import { FieldUtil } from '../fields/util/field-util';
 
 /**
  * Form component to create or edit content types
@@ -46,7 +45,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     data: any;
 
     @Input()
-    fields: ContentTypeField[];
+    layout: DotContentTypeLayoutDivider[];
 
     @Output()
     onSubmit: EventEmitter<any> = new EventEmitter();
@@ -177,7 +176,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.valid.next(this.canSave);
     }
 
-    private getDateVarFieldOption(field: ContentTypeField): SelectItem {
+    private getDateVarFieldOption(field: DotContentTypeField): SelectItem {
         return {
             label: field.name,
             value: field.variable
@@ -185,9 +184,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     }
 
     private getDateVarOptions(): SelectItem[] {
-        const dateVarOptions = this.fields
-            .filter((field: ContentTypeField) => this.isDateVarField(field))
-            .map((field: ContentTypeField) => this.getDateVarFieldOption(field));
+        const dateVarOptions = FieldUtil.getFieldsWithoutLayout(this.layout)
+            .filter((field: DotContentTypeField) => this.isDateVarField(field))
+            .map((field: DotContentTypeField) => this.getDateVarFieldOption(field));
 
         if (dateVarOptions.length) {
             dateVarOptions.unshift({
@@ -229,7 +228,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
             this.originalValue = this.form.value;
         }
 
-        if (this.fields && this.fields.length) {
+        if (this.layout && this.layout.length) {
             this.setDateVarFieldsState();
         }
     }
@@ -244,7 +243,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         return this.data && this.data.baseType === 'CONTENT';
     }
 
-    private isDateVarField(field: ContentTypeField): boolean {
+    private isDateVarField(field: DotContentTypeField): boolean {
         return (
             field.clazz === 'com.dotcms.contenttype.model.field.ImmutableDateTimeField' &&
             field.indexed
