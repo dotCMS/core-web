@@ -31,7 +31,7 @@ const FIELDS_DEFAULT_VALUE = {
     max: '',
     step: '',
     type: 'text',
-    accept: ''
+    accept: null
 };
 
 function validateProp<PropType>(

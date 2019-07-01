@@ -9,7 +9,7 @@ import {
     timeValidator
 } from './props';
 
-describe('Props Validators', () => {
+xdescribe('Props Validators', () => {
     let propInfo: PropValidationInfo<any>;
 
     beforeEach(async () => {
@@ -20,7 +20,7 @@ describe('Props Validators', () => {
         };
     });
 
-    describe('stringValidator', () => {
+    xdescribe('stringValidator', () => {
         it('should not console.warn message when value is a string', () => {
             expect(() => stringValidator(propInfo)).not.toThrowError();
         });
@@ -31,7 +31,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('regexValidator', () => {
+    xdescribe('regexValidator', () => {
         it('should not console.warn message when regular expression is valid', () => {
             propInfo.value = '[0-9]';
             expect(() => regexValidator(propInfo)).not.toThrowError();
@@ -43,7 +43,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('numberValidator', () => {
+    xdescribe('numberValidator', () => {
         it('should not  console.warn message when is a number', () => {
             propInfo.value = 123;
             expect(() => numberValidator(propInfo)).not.toThrowError();
@@ -54,7 +54,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('dateValidator', () => {
+    xdescribe('dateValidator', () => {
         it('should not console.warn message when is a valid date', () => {
             propInfo.value = '2010-10-10';
             expect(() => dateValidator(propInfo)).not.toThrowError();
@@ -65,7 +65,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('dateRangeValidator', () => {
+    xdescribe('dateRangeValidator', () => {
         it('should not console.warn message when dates are valid', () => {
             propInfo.value = '2010-10-10,2010-11-11';
             expect(() => dateRangeValidator(propInfo)).not.toThrowError();
@@ -91,7 +91,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('timeValidator', () => {
+    xdescribe('timeValidator', () => {
         it('should not console.warn message when is a valid time', () => {
             propInfo.value = '10:10:10';
             expect(() => timeValidator(propInfo)).not.toThrowError();
@@ -102,7 +102,7 @@ describe('Props Validators', () => {
         });
     });
 
-    describe('dateTimeValidator', () => {
+    xdescribe('dateTimeValidator', () => {
         it('should not console.warn message when is a valid date and rime', () => {
             propInfo.value = '2010-10-10 10:10:10';
             expect(() => dateTimeValidator(propInfo)).not.toThrowError();

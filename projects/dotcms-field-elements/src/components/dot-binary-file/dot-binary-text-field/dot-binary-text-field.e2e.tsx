@@ -1,93 +1,19 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
-import { dotTestUtil } from '../../../utils';
-
-const CLIPBOARD_URL_EVENT = {
-    clipboardData: {
-        items: [{ getAsString: callback => callback('test.pdf') }]
-    }
-};
-
-const CLIPBOARD_FILE_EVENT = {
-    clipboardData: {
-        items: [
-            { getAsString: callback => callback('test.pdf') },
-            {
-                getAsFile: () => {
-                    return { file: 'test' };
-                }
-            }
-        ],
-        files: [{ file: 'test' }]
-    }
-};
 
 describe('dot-binary-text-field', () => {
     let page: E2EPage;
     let element: E2EElement;
     let input: E2EElement;
-    let spyStatusChangeEvent: EventSpy;
-    let spyValueChangeEvent: EventSpy;
 
     beforeEach(async () => {
         page = await newE2EPage({
-            html: `<dot-binary-file></dot-binary-file>`
+            html: `<dot-binary-text-field></dot-binary-text-field>`
         });
 
         element = await page.find('dot-binary-text-field');
         input = await page.find('input');
     });
-
-    // describe('render CSS classes', () => {
-    //     it('should be valid, untouched & pristine on load', async () => {
-    //         await page.waitForChanges();
-    //         expect(element).toHaveClasses(dotTestUtil.class.empty);
-    //     });
-    //
-    //     it('should be valid, touched & dirty when filled', async () => {
-    //         await inputText.triggerEvent('paste', CLIPBOARD_URL_EVENT);
-    //         await page.waitForChanges();
-    //         expect(element).toHaveClasses(dotTestUtil.class.filled);
-    //     });
-    //
-    //     xit('should have touched but pristine on blur', async () => {
-    //         await input.triggerEvent('blur');
-    //         await page.waitForChanges();
-    //         expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
-    //     });
-    //
-    //     describe('required', () => {
-    //         beforeEach(async () => {
-    //             element.setProperty('required', 'true');
-    //         });
-    //
-    //         it('should be valid, untouched & pristine and required when filled on load', async () => {
-    //             element.setProperty('value', 'ab');
-    //             await page.waitForChanges();
-    //             expect(element).toHaveClasses(dotTestUtil.class.filledRequiredPristine);
-    //         });
-    //
-    //         it('should be valid, touched & dirty and required when filled', async () => {
-    //             await input.press('a');
-    //             await page.waitForChanges();
-    //             expect(element).toHaveClasses(dotTestUtil.class.filledRequired);
-    //         });
-    //
-    //         it('should be invalid, untouched, pristine and required when empty on load', async () => {
-    //             element.setProperty('value', '');
-    //             await page.waitForChanges();
-    //             expect(element).toHaveClasses(dotTestUtil.class.emptyRequiredPristine);
-    //         });
-    //
-    //         it('should be invalid, touched, dirty and required when valued is cleared', async () => {
-    //             element.setProperty('value', 'a');
-    //             await page.waitForChanges();
-    //             await input.press('Backspace');
-    //             await page.waitForChanges();
-    //             expect(element).toHaveClasses(dotTestUtil.class.emptyRequired);
-    //         });
-    //     });
-    // });
 
     describe('@Props', () => {
         describe('value', () => {
@@ -103,11 +29,21 @@ describe('dot-binary-text-field', () => {
             });
         });
 
+        describe('hint', () => {
+            it('should set aria attribute correctly', async () => {
+                element.setProperty('hint', 'Test');
+                await page.waitForChanges();
+                expect(input.getAttribute('aria-describedby')).toBe('hint-test');
+            });
+
+            it('should not set aria attribute', () => {
+                expect(input.getAttribute('aria-describedby')).toBeNull();
+            });
+        });
+
         describe('placeholder', () => {
             it('should render default placeholder correctly', () => {
-                expect(input.getAttribute('placeholder')).toBe(
-                    'Attach files by dragging & dropping, selecting or pasting them.'
-                );
+                expect(input.getAttribute('placeholder')).toBe('Drop or paste a file or url');
             });
             it('should set placeholder correctly', async () => {
                 element.setProperty('placeholder', 'Test');
@@ -139,8 +75,6 @@ describe('dot-binary-text-field', () => {
             });
         });
 
-        describe('accept', () => {});
-
         describe('disabled', () => {
             it('should not render disabled attribute by default', () => {
                 expect(input.getAttribute('disabled')).toBeNull();
@@ -167,75 +101,61 @@ describe('dot-binary-text-field', () => {
     });
 
     describe('@Events', () => {
+        let spyFileChangeEvent: EventSpy;
+        let spyonBlurEvent: EventSpy;
+
         beforeEach(async () => {
-            spyStatusChangeEvent = await page.spyOnEvent('statusChange');
-            spyValueChangeEvent = await page.spyOnEvent('valueChange');
+            spyFileChangeEvent = await page.spyOnEvent('fileChange');
+            spyonBlurEvent = await page.spyOnEvent('onBlur');
         });
 
-        describe('drag & drop', () => {});
+        describe('blur', () => {
+            it('should emit blur event', async () => {
+                input.triggerEvent('onBlur');
+                await page.waitForChanges();
 
-        describe('paste', () => {});
+                expect(spyonBlurEvent).toHaveReceivedEvent();
+            });
+        });
 
-        describe('status and value change', () => {
-            it('should display on wrapper not valid css classes when loaded when required and no value set', async () => {
-                page = await newE2EPage({
-                    html: `
-                <dot-form>
-                    <dot-textfield required="true" ></dot-textfield>
-                </dot-form>`
-                });
-                const form = await page.find('dot-form');
-                expect(form).toHaveClasses(dotTestUtil.class.emptyPristineInvalid);
+        describe('KeyDown', () => {
+            beforeEach(() => {
+                element.setAttribute('value', 'name.pdf');
             });
 
-            it('should send status and value change', async () => {
+            it('should ignore keypress event of any key', async () => {
                 await input.press('a');
                 await page.waitForChanges();
-                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                    name: '',
-                    status: {
-                        dotPristine: false,
-                        dotTouched: true,
-                        dotValid: true
-                    }
-                });
-                expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                    name: '',
-                    value: 'a'
-                });
+
+                expect(await input.getProperty('value')).toBe('name.pdf');
+                expect(spyFileChangeEvent.events.length).toEqual(0);
             });
 
-            it('should emit status and value on Reset', async () => {
-                await element.callMethod('reset');
-                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                    name: '',
-                    status: {
-                        dotPristine: true,
-                        dotTouched: false,
-                        dotValid: true
-                    }
+            it('should clear value and emit fileChange event with null on backSpace key', async () => {
+                await page.waitForChanges();
+                await input.press('Backspace');
+                await page.waitForChanges();
+
+                expect(spyFileChangeEvent).toHaveReceivedEventDetail({
+                    file: null,
+                    errorType: null
                 });
-                expect(spyValueChangeEvent).toHaveReceivedEventDetail({
-                    name: '',
-                    value: ''
-                });
+
+                expect(await input.getProperty('value')).toBe('');
             });
         });
 
-        describe('status change', () => {
-            it('should mark as touched when onblur', async () => {
-                await input.triggerEvent('blur');
-                await page.waitForChanges();
-
-                expect(spyStatusChangeEvent).toHaveReceivedEventDetail({
-                    name: '',
-                    status: {
-                        dotPristine: true,
-                        dotTouched: true,
-                        dotValid: true
-                    }
-                });
+        //TODO: can't mock a ClipboardEvent.
+        xdescribe('paste', () => {
+            beforeEach(async () => {
+                // input.triggerEvent('paste', {  detail: { test: 'TEST' } });
             });
+
+            it('should emit pasted file', async () => {});
+
+            it('should emit pasted URL', async () => {});
+
+            it('should not emit event since file is not supported', async () => {});
         });
     });
 });

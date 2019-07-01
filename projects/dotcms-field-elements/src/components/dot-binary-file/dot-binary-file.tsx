@@ -54,7 +54,7 @@ export class DotBinaryFileComponent {
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
-    placeholder = 'Attach files by dragging & dropping, selecting or pasting them.';
+    placeholder = '';
 
     /** (optional) Hint text that suggest a clue of the field */
     @Prop({ reflectToAttr: true })
@@ -78,7 +78,7 @@ export class DotBinaryFileComponent {
     disabled = false;
 
     /** (optional) Describes a type of file that may be selected by the user, separated by comma  eg: .pdf,.jpg  */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflectToAttr: true, mutable: true })
     accept = '';
 
     /** (optional) Text that be shown in the browse file button */
@@ -102,7 +102,7 @@ export class DotBinaryFileComponent {
     @Method()
     reset(): void {
         this.value = '';
-        this.binaryTextField.value = true;
+        this.binaryTextField.value = '';
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
@@ -119,16 +119,30 @@ export class DotBinaryFileComponent {
         this.binaryTextField = this.el.querySelector('dot-binary-text-field');
     }
 
+    @Watch('requiredMessage')
+    requiredMessageWatch(): void {
+        this.errorMessageMap.set(DotBinaryMessageError.REQUIRED, this.requiredMessage);
+    }
+
+    @Watch('validationMessage')
+    validationMessageWatch(): void {
+        this.errorMessageMap.set(DotBinaryMessageError.INVALID, this.validationMessage);
+    }
+
+    @Watch('URLValidationMessage')
+    URLValidationMessageWatch(): void {
+        this.errorMessageMap.set(DotBinaryMessageError.URLINVALID, this.URLValidationMessage);
+    }
+
     @Watch('accept')
     optionsWatch(): void {
-        const validTypes = checkProp<DotBinaryFileComponent, string>(this, 'accept');
-        this.allowedFileTypes = !!validTypes ? validTypes.split(',') : [];
+        this.accept = checkProp<DotBinaryFileComponent, string>(this, 'accept');
+        this.allowedFileTypes = !!this.accept ? this.accept.split(',') : [];
     }
 
     @Listen('fileChange')
     fileChangeHandler(event: CustomEvent): void {
         event.stopImmediatePropagation();
-
         const fileEvent: DotBinaryFileEvent = event.detail;
         this.errorType = fileEvent.errorType;
         this.setValue(fileEvent.file);
@@ -201,6 +215,7 @@ export class DotBinaryFileComponent {
                         required={this.required}
                         disabled={this.disabled}
                         accept={this.allowedFileTypes}
+                        hint={this.hint}
                     />
                     <dot-binary-upload-button
                         name={this.name}
@@ -237,11 +252,9 @@ export class DotBinaryFileComponent {
     }
 
     private setErrorMessageMap(): void {
-        this.errorMessageMap = new Map([
-            [DotBinaryMessageError.REQUIRED, this.requiredMessage],
-            [DotBinaryMessageError.INVALID, this.validationMessage],
-            [DotBinaryMessageError.URLINVALID, this.URLValidationMessage]
-        ]);
+        this.requiredMessageWatch();
+        this.validationMessageWatch();
+        this.URLValidationMessageWatch();
     }
 
     private setValue(data: File | string): void {

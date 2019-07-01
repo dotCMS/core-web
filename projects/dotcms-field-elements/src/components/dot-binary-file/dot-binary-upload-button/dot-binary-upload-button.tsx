@@ -18,7 +18,6 @@ export class DotBinaryUploadButtonComponent {
 
     /** Name that will be used as ID */
     @Prop({ reflectToAttr: true })
-    @Prop()
     name = '';
 
     /** (optional) Determine if it is mandatory */
