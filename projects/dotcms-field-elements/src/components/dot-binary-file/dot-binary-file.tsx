@@ -53,7 +53,7 @@ export class DotBinaryFileComponent {
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
-    placeholder = '';
+    placeholder = 'Drop or paste a file or url';
 
     /** (optional) Hint text that suggest a clue of the field */
     @Prop({ reflectToAttr: true })
@@ -145,7 +145,7 @@ export class DotBinaryFileComponent {
         const fileEvent: DotBinaryFileEvent = event.detail;
         this.errorType = fileEvent.errorType;
         this.setValue(fileEvent.file);
-        if (this.isBinaryUploadButtonEvent(event.target as Element)) {
+        if (this.isBinaryUploadButtonEvent(event.target as Element) && fileEvent.file) {
             this.binaryTextField.value = (fileEvent.file as File).name;
         }
     }

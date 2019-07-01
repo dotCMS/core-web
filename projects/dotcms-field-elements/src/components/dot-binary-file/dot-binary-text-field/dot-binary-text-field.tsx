@@ -32,7 +32,7 @@ export class DotBinaryTextFieldComponent {
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
     @Prop({ reflectToAttr: true })
-    placeholder = 'Drop or paste a file or url';
+    placeholder = '';
 
     /** (optional) Determine if it is mandatory */
     @Prop({ reflectToAttr: true })

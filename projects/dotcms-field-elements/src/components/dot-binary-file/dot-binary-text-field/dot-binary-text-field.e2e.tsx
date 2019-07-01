@@ -42,9 +42,6 @@ describe('dot-binary-text-field', () => {
         });
 
         describe('placeholder', () => {
-            it('should render default placeholder correctly', () => {
-                expect(input.getAttribute('placeholder')).toBe('Drop or paste a file or url');
-            });
             it('should set placeholder correctly', async () => {
                 element.setProperty('placeholder', 'Test');
                 await page.waitForChanges();
