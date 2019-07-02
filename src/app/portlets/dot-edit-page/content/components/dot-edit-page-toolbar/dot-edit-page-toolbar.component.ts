@@ -17,6 +17,8 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 import { DotEditPageViewAs } from '@shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { Observable } from 'rxjs';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -41,6 +43,7 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     @Output()
     whatschange = new EventEmitter<boolean>();
 
+    isEnterpriseLicense$: Observable<boolean>;
     isPreview: boolean;
     states: SelectItem[] = [];
     lockerModel: boolean;
@@ -54,10 +57,12 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     constructor(
         public dotMessageService: DotMessageService,
-        private dotDialogService: DotAlertConfirmService
+        private dotDialogService: DotAlertConfirmService,
+        private dotLicenseService: DotLicenseService
     ) {}
 
     ngOnInit() {
+        this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
         this.dotMessageService
             .getMessages([
                 'dot.common.whats.changed',

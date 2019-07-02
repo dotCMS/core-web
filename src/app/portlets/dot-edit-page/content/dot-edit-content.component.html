@@ -17,8 +17,6 @@
 
 <dot-edit-page-toolbar
     (changeState)="statePageHandler($event)"
-    (actionFired)="reload()"
-    (cancel)="onCancelToolbar()"
     (changeViewAs)="changeViewAsHandler($event)"
     (whatschange)="showWhatsChanged = $event"
     [pageState]="pageState"
