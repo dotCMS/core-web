@@ -23,7 +23,7 @@ import { StringFormat } from 'src/app/api/util/stringFormat';
     styleUrls: ['./dot-my-account.component.scss'],
     templateUrl: 'dot-my-account.component.html'
 })
-export class MyAccountComponent implements OnInit, OnDestroy {
+export class DotMyAccountComponent implements OnInit, OnDestroy {
     @ViewChild('myAccountForm')
     form: NgForm;
 

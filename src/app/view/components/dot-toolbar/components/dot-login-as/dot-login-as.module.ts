@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
 
-import { LoginAsComponent } from './dot-login-as.component';
+import { DotLoginAsComponent } from './dot-login-as.component';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { PasswordModule } from 'primeng/primeng';
@@ -16,8 +16,8 @@ import { PasswordModule } from 'primeng/primeng';
         ReactiveFormsModule,
         SearchableDropDownModule
     ],
-    exports: [LoginAsComponent],
-    declarations: [LoginAsComponent],
+    exports: [DotLoginAsComponent],
+    declarations: [DotLoginAsComponent],
     providers: []
 })
 export class DotLoginAsModule {}

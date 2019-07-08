@@ -28,7 +28,7 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
     styleUrls: ['./dot-login-as.component.scss'],
     templateUrl: 'dot-login-as.component.html'
 })
-export class LoginAsComponent implements OnInit, OnDestroy {
+export class DotLoginAsComponent implements OnInit, OnDestroy {
     @Output()
     cancel = new EventEmitter<boolean>();
 

@@ -30,7 +30,7 @@ class DotGravatarServiceMock {
     }
 }
 
-describe('GravatarComponent', () => {
+describe('DotGravatarComponent', () => {
     let fixture: ComponentFixture<HostTestComponent>;
     let avatarComponent: DebugElement;
     let dotGravatarService: DotGravatarService;

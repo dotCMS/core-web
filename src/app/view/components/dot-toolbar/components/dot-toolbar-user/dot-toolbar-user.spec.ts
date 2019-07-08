@@ -5,8 +5,8 @@ import { DataListModule, OverlayPanelModule } from 'primeng/primeng';
 import { MaterialDesignTextfieldDirective } from '../../../../directives/md-inputtext/md-input-text.directive';
 import { SearchableDropdownComponent } from '../../../_common/searchable-dropdown/component/searchable-dropdown.component';
 import { DotDropdownComponent } from '../../../_common/dot-dropdown-component/dot-dropdown.component';
-import { MyAccountComponent } from '../dot-my-account/dot-my-account.component';
-import { LoginAsComponent } from '../dot-login-as/dot-login-as.component';
+import { DotMyAccountComponent } from '../dot-my-account/dot-my-account.component';
+import { DotLoginAsComponent } from '../dot-login-as/dot-login-as.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -40,8 +40,8 @@ describe('DotToolbarUserComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 DotDropdownComponent,
-                LoginAsComponent,
-                MyAccountComponent,
+                DotLoginAsComponent,
+                DotMyAccountComponent,
                 SearchableDropdownComponent,
                 DotToolbarUserComponent,
                 MaterialDesignTextfieldDirective

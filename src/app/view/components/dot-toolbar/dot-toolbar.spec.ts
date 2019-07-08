@@ -79,7 +79,7 @@ class MockToolbarAddContentletComponent {}
 })
 class MockDotCrumbtrailComponent {}
 
-describe('ToolbarComponent', () => {
+describe('DotToolbarComponent', () => {
     let dotRouterService: DotRouterService;
     let dotNavigationService: DotNavigationService;
     let comp: DotToolbarComponent;

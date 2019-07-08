@@ -76,7 +76,7 @@ class MockNotificationsService {
 }
 
 
-describe('ToolbarNotificationsComponent', () => {
+describe('DotToolbarNotificationsComponent', () => {
     let fixture: ComponentFixture<DotToolbarNotificationsComponent>;
     const messageServiceMock = new MockDotMessageService({
         'notifications_dismissall': 'Dismiss all',

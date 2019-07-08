@@ -7,7 +7,7 @@ import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mo
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
-import { LoginAsComponent } from './dot-login-as.component';
+import { DotLoginAsComponent } from './dot-login-as.component';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { SEARCHABLE_NGFACES_MODULES } from '../../../_common/searchable-dropdown/searchable-dropdown.module';
@@ -89,9 +89,9 @@ class DotSearchableDropdownMockComponent {
     registerOnTouched(): void {}
 }
 
-describe('LoginAsComponent', () => {
-    let comp: LoginAsComponent;
-    let fixture: ComponentFixture<LoginAsComponent>;
+describe('DotLoginAsComponent', () => {
+    let comp: DotLoginAsComponent;
+    let fixture: ComponentFixture<DotLoginAsComponent>;
     let de: DebugElement;
     let paginatorService: PaginatorService;
     let loginService: LoginService;
@@ -121,7 +121,7 @@ describe('LoginAsComponent', () => {
         });
 
         DOTTestBed.configureTestingModule({
-            declarations: [LoginAsComponent, DotSearchableDropdownMockComponent],
+            declarations: [DotLoginAsComponent, DotSearchableDropdownMockComponent],
             imports: [
                 ...SEARCHABLE_NGFACES_MODULES,
                 BrowserAnimationsModule,
@@ -149,7 +149,7 @@ describe('LoginAsComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(LoginAsComponent);
+        fixture = DOTTestBed.createComponent(DotLoginAsComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 
