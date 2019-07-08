@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Injectable, Component, Input } from '@angular/core';
-import { ToolbarComponent } from './dot-toolbar.component';
+import { DotToolbarComponent } from './dot-toolbar.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SiteService } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -82,8 +82,8 @@ class MockDotCrumbtrailComponent {}
 describe('ToolbarComponent', () => {
     let dotRouterService: DotRouterService;
     let dotNavigationService: DotNavigationService;
-    let comp: ToolbarComponent;
-    let fixture: ComponentFixture<ToolbarComponent>;
+    let comp: DotToolbarComponent;
+    let fixture: ComponentFixture<DotToolbarComponent>;
     let de: DebugElement;
 
     const siteServiceMock = new SiteServiceMock();
@@ -92,7 +92,7 @@ describe('ToolbarComponent', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [
-                ToolbarComponent,
+                DotToolbarComponent,
                 MockSiteSelectorComponent,
                 MockGlobalMessageComponent,
                 MockToolbarNotificationsComponent,
@@ -114,7 +114,7 @@ describe('ToolbarComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(ToolbarComponent);
+        fixture = DOTTestBed.createComponent(DotToolbarComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         dotRouterService = de.injector.get(DotRouterService);

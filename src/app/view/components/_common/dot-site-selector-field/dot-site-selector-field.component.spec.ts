@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input } from '@angular/core';
-import { SiteSelectorFieldComponent } from './site-selector-field.component';
+import { DotSiteSelectorFieldComponent } from './dot-site-selector-field.component';
 import { SiteService } from 'dotcms-js';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -56,7 +56,7 @@ describe('SiteSelectorFieldComponent', () => {
         siteServiceMock.setFakeCurrentSite();
 
         DOTTestBed.configureTestingModule({
-            declarations: [FakeFormComponent, SiteSelectorComponent, SiteSelectorFieldComponent],
+            declarations: [FakeFormComponent, SiteSelectorComponent, DotSiteSelectorFieldComponent],
             imports: [],
             providers: [{ provide: SiteService, useValue: siteServiceMock }]
         });
@@ -120,7 +120,7 @@ describe('SiteSelectorFieldComponent', () => {
     });
 
     it('should bind params correctly', () => {
-        const siteSelectorField: SiteSelectorFieldComponent = de.query(
+        const siteSelectorField: DotSiteSelectorFieldComponent = de.query(
             By.css('dot-site-selector-field')
         ).componentInstance;
 
@@ -141,7 +141,7 @@ describe('SiteSelectorFieldComponent', () => {
         component.form.get('site').setValue('1234');
         fixture.detectChanges();
 
-        const siteSelectorField: SiteSelectorFieldComponent = de.query(
+        const siteSelectorField: DotSiteSelectorFieldComponent = de.query(
             By.css('dot-site-selector-field')
         ).componentInstance;
 
@@ -153,7 +153,7 @@ describe('SiteSelectorFieldComponent', () => {
         component.form.get('site').setValue('1234');
         fixture.detectChanges();
 
-        const siteSelectorField: SiteSelectorFieldComponent = de.query(
+        const siteSelectorField: DotSiteSelectorFieldComponent = de.query(
             By.css('dot-site-selector-field')
         ).componentInstance;
 

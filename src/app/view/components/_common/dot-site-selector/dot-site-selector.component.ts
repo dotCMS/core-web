@@ -20,19 +20,19 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
  * It is dropdown of sites, it handle pagination and global search
  *
  * @export
- * @class SiteSelectorComponent
+ * @class DotSiteSelectorComponent
  * @implements {OnInit}
  * @implements {OnChanges}
  * @implements {OnDestroy}
  */
 @Component({
     encapsulation: ViewEncapsulation.None,
-    providers: [PaginatorService, SearchableDropdownComponent],
+    providers: [],
     selector: 'dot-site-selector',
-    styleUrls: ['./site-selector.component.scss'],
-    templateUrl: 'site-selector.component.html'
+    styleUrls: ['./dot-site-selector.component.scss'],
+    templateUrl: 'dot-site-selector.component.html'
 })
-export class SiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
+export class DotSiteSelectorComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     archive: boolean;
     @Input()

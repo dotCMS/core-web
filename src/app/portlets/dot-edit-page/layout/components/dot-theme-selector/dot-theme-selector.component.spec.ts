@@ -9,7 +9,7 @@ import { MockDotMessageService } from '../../../../../test/dot-message-service.m
 import { By } from '@angular/platform-browser';
 import { mockDotThemes } from '../../../../../test/dot-themes.mock';
 import { DataGridModule } from 'primeng/primeng';
-import { SiteSelectorModule } from '@components/_common/site-selector/site-selector.module';
+import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
 import { mockSites, SiteServiceMock } from '../../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,7 +37,7 @@ describe('DotThemeSelectorComponent', () => {
             declarations: [DotThemeSelectorComponent],
             imports: [
                 DataGridModule,
-                SiteSelectorModule,
+                DotSiteSelectorModule,
                 BrowserAnimationsModule,
                 DotDialogModule,
                 DotIconModule

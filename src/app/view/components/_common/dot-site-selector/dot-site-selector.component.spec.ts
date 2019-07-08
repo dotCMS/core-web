@@ -1,7 +1,7 @@
 import { of as observableOf } from 'rxjs';
 import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { SiteSelectorComponent } from './site-selector.component';
+import { DotSiteSelectorComponent } from './dot-site-selector.component';
 import { By } from '@angular/platform-browser';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { SearchableDropDownModule } from '../searchable-dropdown/searchable-dropdown.module';
@@ -16,8 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 describe('SiteSelectorComponent', () => {
-    let comp: SiteSelectorComponent;
-    let fixture: ComponentFixture<SiteSelectorComponent>;
+    let comp: DotSiteSelectorComponent;
+    let fixture: ComponentFixture<DotSiteSelectorComponent>;
     let de: DebugElement;
     let paginatorService: PaginatorService;
 
@@ -29,7 +29,7 @@ describe('SiteSelectorComponent', () => {
         const siteServiceMock = new SiteServiceMock();
 
         DOTTestBed.configureTestingModule({
-            declarations: [SiteSelectorComponent],
+            declarations: [DotSiteSelectorComponent],
             imports: [SearchableDropDownModule, BrowserAnimationsModule],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
@@ -39,7 +39,7 @@ describe('SiteSelectorComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(SiteSelectorComponent);
+        fixture = DOTTestBed.createComponent(DotSiteSelectorComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         paginatorService = de.injector.get(PaginatorService);

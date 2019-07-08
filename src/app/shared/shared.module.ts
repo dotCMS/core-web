@@ -16,7 +16,7 @@ import {
 } from 'dotcms-js';
 
 // Common Modules
-import { DotDropdownModule } from '@components/_common/dropdown-component/dot-dropdown.module';
+import { DotDropdownModule } from '@components/_common/dot-dropdown-component/dot-dropdown.module';
 import { MainNavigationModule } from '@components/dot-navigation/dot-navigation.module';
 import { DotEventsService } from '../api/services/dot-events/dot-events.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';

@@ -4,10 +4,10 @@ import { IframeOverlayService } from '../../../_common/iframe/service/iframe-ove
 import { DataListModule, OverlayPanelModule } from 'primeng/primeng';
 import { MaterialDesignTextfieldDirective } from '../../../../directives/md-inputtext/md-input-text.directive';
 import { SearchableDropdownComponent } from '../../../_common/searchable-dropdown/component/searchable-dropdown.component';
-import { DotDropdownComponent } from '../../../_common/dropdown-component/dot-dropdown.component';
-import { MyAccountComponent } from '../my-account/dot-my-account-component';
-import { LoginAsComponent } from '../login-as/login-as';
-import { DotGravatarComponent } from '../gravatar/dot-gravatar.component';
+import { DotDropdownComponent } from '../../../_common/dot-dropdown-component/dot-dropdown.component';
+import { MyAccountComponent } from '../dot-my-account/dot-my-account-component';
+import { LoginAsComponent } from '../dot-login-as/dot-login-as';
+import { DotGravatarComponent } from '../dot-gravatar/dot-gravatar.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -17,7 +17,7 @@ import { LoginService } from 'dotcms-js';
 
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { LoginServiceMock, mockAuth } from '../../../../../test/login-service.mock';
-import { ToolbarUserComponent } from './toolbar-user';
+import { DotToolbarUserComponent } from './toolbar-user';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
@@ -28,8 +28,8 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
 
 describe('ToolbarUserComponent', () => {
-    let comp: ToolbarUserComponent;
-    let fixture: ComponentFixture<ToolbarUserComponent>;
+    let comp: DotToolbarUserComponent;
+    let fixture: ComponentFixture<DotToolbarUserComponent>;
     let de: DebugElement;
     let dotDropdownComponent: DotDropdownComponent;
     let loginService: LoginService;
@@ -44,7 +44,7 @@ describe('ToolbarUserComponent', () => {
                 LoginAsComponent,
                 MyAccountComponent,
                 SearchableDropdownComponent,
-                ToolbarUserComponent,
+                DotToolbarUserComponent,
                 MaterialDesignTextfieldDirective
             ],
             providers: [
@@ -72,7 +72,7 @@ describe('ToolbarUserComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(ToolbarUserComponent);
+        fixture = DOTTestBed.createComponent(DotToolbarUserComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 

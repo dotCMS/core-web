@@ -5,15 +5,15 @@ import { INotification } from '@models/notifications';
 import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { NotificationsService } from '@services/notifications-service';
-import { DotDropdownComponent } from '@components/_common/dropdown-component/dot-dropdown.component';
+import { DotDropdownComponent } from '@components/_common/dot-dropdown-component/dot-dropdown.component';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-toolbar-notifications',
-    styleUrls: ['./toolbar-notifications.scss'],
-    templateUrl: 'toolbar-notifications.html'
+    styleUrls: ['./dot-toolbar-notifications.scss'],
+    templateUrl: 'dot-toolbar-notifications.html'
 })
-export class ToolbarNotificationsComponent implements OnInit {
+export class DotToolbarNotificationsComponent implements OnInit {
     @ViewChild(DotDropdownComponent)
     dropdown: DotDropdownComponent;
     existsMoreToLoad = false;

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
-import { DotDropdownComponent } from '@components/_common/dropdown-component/dot-dropdown.component';
+import { DotDropdownComponent } from '@components/_common/dot-dropdown-component/dot-dropdown.component';
 import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { LoginService, Auth, LoggerService } from 'dotcms-js';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -8,10 +8,10 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
 
 @Component({
     selector: 'dot-toolbar-user',
-    styleUrls: ['./toolbar-user.scss'],
-    templateUrl: 'toolbar-user.html'
+    styleUrls: ['./dot-toolbar-user.scss'],
+    templateUrl: 'dot-toolbar-user.html'
 })
-export class ToolbarUserComponent implements OnInit {
+export class DotToolbarUserComponent implements OnInit {
     @ViewChild(DotDropdownComponent)
     dropdown: DotDropdownComponent;
     auth: Auth;

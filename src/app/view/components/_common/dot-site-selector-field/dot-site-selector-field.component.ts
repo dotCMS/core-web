@@ -6,22 +6,22 @@ import { Subscription } from 'rxjs';
  * Form control to select DotCMS instance host identifier.
  *
  * @export
- * @class SiteSelectorFieldComponent
+ * @class DotSiteSelectorFieldComponent
  * @implements {ControlValueAccessor}
  */
 @Component({
     selector: 'dot-site-selector-field',
-    templateUrl: './site-selector-field.component.html',
-    styleUrls: ['./site-selector-field.component.scss'],
+    templateUrl: './dot-site-selector-field.component.html',
+    styleUrls: ['./dot-site-selector-field.component.scss'],
     providers: [
         {
             multi: true,
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => SiteSelectorFieldComponent)
+            useExisting: forwardRef(() => DotSiteSelectorFieldComponent)
         }
     ]
 })
-export class SiteSelectorFieldComponent implements ControlValueAccessor {
+export class DotSiteSelectorFieldComponent implements ControlValueAccessor {
     @Input()
     archive: boolean;
     @Input()

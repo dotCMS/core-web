@@ -2,22 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToolbarModule, ButtonModule } from 'primeng/primeng';
 
-import { ToolbarComponent } from './dot-toolbar.component';
-import { ToolbarNotificationsComponent } from './components/toolbar-notifications/toolbar-notifications';
-import { ToolbarUserComponent } from './components/toolbar-user/toolbar-user';
+import { DotToolbarComponent } from './dot-toolbar.component';
+import { DotToolbarNotificationsComponent } from './components/dot-toolbar-notifications/dot-toolbar-notifications';
+import { DotToolbarUserComponent } from './components/dot-toolbar-user/dot-toolbar-user';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotCrumbtrailModule } from '@components/dot-crumbtrail/dot-crumbtrail.module';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
-import { SiteSelectorModule } from '@components/_common/site-selector/site-selector.module';
-import { DotDropdownModule } from '@components/_common/dropdown-component/dot-dropdown.module';
+import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
+import { DotDropdownModule } from '@components/_common/dot-dropdown-component/dot-dropdown.module';
 import {
-    NotificationsListComponent,
-    NotificationsItemComponent
-} from './components/notifications/notifications';
+    DotNotificationsListComponent,
+    DotNotificationsItemComponent
+} from './components/dot-notifications/dot-notifications.component';
 import { DotCustomTimeModule } from '@components/_common/dot-custom-time.component/dot-custom-time.module';
-import { DotGravatarModule } from './components/gravatar/dot-gravatar.module';
-import { LoginAsModule } from './components/login-as/login-as.module';
-import { DotMyAccountModule } from './components/my-account/dot-my-account.module';
+import { DotGravatarModule } from './components/dot-gravatar/dot-gravatar.module';
+import { DotLoginAsModule } from './components/dot-login-as/dot-login-as.module';
+import { DotMyAccountModule } from './components/dot-my-account/dot-my-account.module';
 
 @NgModule({
     imports: [
@@ -29,18 +29,18 @@ import { DotMyAccountModule } from './components/my-account/dot-my-account.modul
         DotGlobalMessageModule,
         DotGravatarModule,
         DotIconButtonModule,
+        DotLoginAsModule,
         DotMyAccountModule,
-        LoginAsModule,
-        SiteSelectorModule,
+        DotSiteSelectorModule,
         ToolbarModule
     ],
     declarations: [
-        NotificationsItemComponent,
-        NotificationsListComponent,
-        ToolbarComponent,
-        ToolbarNotificationsComponent,
-        ToolbarUserComponent
+        DotToolbarUserComponent,
+        DotToolbarNotificationsComponent,
+        DotToolbarComponent,
+        DotNotificationsListComponent,
+        DotNotificationsItemComponent
     ],
-    exports: [ToolbarComponent]
+    exports: [DotToolbarComponent]
 })
 export class DotToolbarModule {}

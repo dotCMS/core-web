@@ -2,7 +2,7 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { ToolbarNotificationsComponent } from './toolbar-notifications';
+import { DotToolbarNotificationsComponent } from './toolbar-notifications';
 import { INotification } from '@shared/models/notifications';
 import { DotMessageService } from '@services/dot-messages-service';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
@@ -77,7 +77,7 @@ class MockNotificationsService {
 
 
 describe('ToolbarNotificationsComponent', () => {
-    let fixture: ComponentFixture<ToolbarNotificationsComponent>;
+    let fixture: ComponentFixture<DotToolbarNotificationsComponent>;
     const messageServiceMock = new MockDotMessageService({
         'notifications_dismissall': 'Dismiss all',
         'notifications_title': 'Notifications',
@@ -87,7 +87,7 @@ describe('ToolbarNotificationsComponent', () => {
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
             declarations: [
-                ToolbarNotificationsComponent,
+                DotToolbarNotificationsComponent,
                 MockDotDropDownComponent,
                 MockDotNotificationsListComponent
             ],
@@ -100,7 +100,7 @@ describe('ToolbarNotificationsComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(ToolbarNotificationsComponent);
+        fixture = DOTTestBed.createComponent(DotToolbarNotificationsComponent);
     }));
 
     it(`should has a badge`, () => {

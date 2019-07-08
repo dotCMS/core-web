@@ -7,10 +7,10 @@ import { DotMessageService } from '@services/dot-messages-service';
     encapsulation: ViewEncapsulation.Emulated,
     providers: [],
     selector: 'dot-notifications-item',
-    styleUrls: ['./notifications-item.scss'],
-    templateUrl: 'notifications-item.html'
+    styleUrls: ['./dot-notifications-item.scss'],
+    templateUrl: 'dot-notifications-item.html'
 })
-export class NotificationsItemComponent implements OnInit {
+export class DotNotificationsItemComponent implements OnInit {
     @Input()
     data;
     @Output()
@@ -68,10 +68,10 @@ export class NotificationsItemComponent implements OnInit {
     encapsulation: ViewEncapsulation.Emulated,
     providers: [],
     selector: 'dot-notifications-list',
-    styleUrls: ['./notifications-list.scss'],
-    templateUrl: 'notifications-list.html'
+    styleUrls: ['./dot-notifications-list.scss'],
+    templateUrl: 'dot-notifications-list.html'
 })
-export class NotificationsListComponent {
+export class DotNotificationsListComponent {
     @Input()
     notifications: INotification;
     @Output()
