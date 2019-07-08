@@ -25,8 +25,8 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
 
 @Component({
     selector: 'dot-login-as',
-    styleUrls: ['./dot-login-as.scss'],
-    templateUrl: 'dot-login-as.html'
+    styleUrls: ['./dot-login-as.component.scss'],
+    templateUrl: 'dot-login-as.component.html'
 })
 export class LoginAsComponent implements OnInit, OnDestroy {
     @Output()

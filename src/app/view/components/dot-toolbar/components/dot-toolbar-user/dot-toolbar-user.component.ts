@@ -8,8 +8,8 @@ import { DotNavigationService } from '@components/dot-navigation/services/dot-na
 
 @Component({
     selector: 'dot-toolbar-user',
-    styleUrls: ['./dot-toolbar-user.scss'],
-    templateUrl: 'dot-toolbar-user.html'
+    styleUrls: ['./dot-toolbar-user.component.scss'],
+    templateUrl: 'dot-toolbar-user.component.html'
 })
 export class DotToolbarUserComponent implements OnInit {
     @ViewChild(DotDropdownComponent)

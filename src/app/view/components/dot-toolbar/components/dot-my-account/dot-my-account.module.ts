@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { InputTextModule, CheckboxModule, PasswordModule } from 'primeng/primeng';
 
-import { MyAccountComponent } from './dot-my-account-component';
+import { MyAccountComponent } from './dot-my-account.component';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 

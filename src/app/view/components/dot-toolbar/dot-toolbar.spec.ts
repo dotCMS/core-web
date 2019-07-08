@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
 import { DotNavigationService } from '../dot-navigation/services/dot-navigation.service';
 import { SiteServiceMock, mockSites } from '../../../test/site-service.mock';
-import { RouterTestingModule } from '../../../../../node_modules/@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';

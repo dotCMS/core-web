@@ -20,8 +20,8 @@ import { StringFormat } from 'src/app/api/util/stringFormat';
 
 @Component({
     selector: 'dot-my-account',
-    styleUrls: ['./dot-my-account-component.scss'],
-    templateUrl: 'dot-my-account-component.html'
+    styleUrls: ['./dot-my-account.component.scss'],
+    templateUrl: 'dot-my-account.component.html'
 })
 export class MyAccountComponent implements OnInit, OnDestroy {
     @ViewChild('myAccountForm')

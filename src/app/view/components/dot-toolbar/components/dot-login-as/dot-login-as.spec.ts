@@ -7,7 +7,7 @@ import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mo
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
-import { LoginAsComponent } from './dot-login-as';
+import { LoginAsComponent } from './dot-login-as.component';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { SEARCHABLE_NGFACES_MODULES } from '../../../_common/searchable-dropdown/searchable-dropdown.module';

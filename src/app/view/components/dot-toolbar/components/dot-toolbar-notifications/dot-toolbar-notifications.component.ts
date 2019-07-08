@@ -10,8 +10,8 @@ import { DotDropdownComponent } from '@components/_common/dot-dropdown-component
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-toolbar-notifications',
-    styleUrls: ['./dot-toolbar-notifications.scss'],
-    templateUrl: 'dot-toolbar-notifications.html'
+    styleUrls: ['./dot-toolbar-notifications.component.scss'],
+    templateUrl: 'dot-toolbar-notifications.component.html'
 })
 export class DotToolbarNotificationsComponent implements OnInit {
     @ViewChild(DotDropdownComponent)
