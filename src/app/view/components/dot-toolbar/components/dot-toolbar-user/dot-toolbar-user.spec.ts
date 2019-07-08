@@ -7,7 +7,6 @@ import { SearchableDropdownComponent } from '../../../_common/searchable-dropdow
 import { DotDropdownComponent } from '../../../_common/dot-dropdown-component/dot-dropdown.component';
 import { MyAccountComponent } from '../dot-my-account/dot-my-account.component';
 import { LoginAsComponent } from '../dot-login-as/dot-login-as.component';
-import { DotGravatarComponent } from '../dot-gravatar/dot-gravatar.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -26,8 +25,9 @@ import { Jsonp } from '@angular/http';
 import { LOCATION_TOKEN } from 'src/app/providers';
 import { DotMenuService } from '@services/dot-menu.service';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
+import { DotGravatarModule } from '../dot-gravatar/dot-gravatar.module';
 
-describe('ToolbarUserComponent', () => {
+describe('DotToolbarUserComponent', () => {
     let comp: DotToolbarUserComponent;
     let fixture: ComponentFixture<DotToolbarUserComponent>;
     let de: DebugElement;
@@ -40,7 +40,6 @@ describe('ToolbarUserComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [
                 DotDropdownComponent,
-                DotGravatarComponent,
                 LoginAsComponent,
                 MyAccountComponent,
                 SearchableDropdownComponent,
@@ -56,18 +55,18 @@ describe('ToolbarUserComponent', () => {
                 },
                 { provide: LoginService, useClass: LoginServiceMock },
                 IframeOverlayService,
-                DotGravatarService,
                 Jsonp,
                 DotNavigationService,
                 DotMenuService,
             ],
             imports: [
-                DataListModule,
-                OverlayPanelModule,
                 BrowserAnimationsModule,
-                DotIconModule,
-                DotIconButtonModule,
+                DataListModule,
                 DotDialogModule,
+                DotGravatarModule,
+                DotIconButtonModule,
+                DotIconModule,
+                OverlayPanelModule,
                 RouterTestingModule
             ]
         });
