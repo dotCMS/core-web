@@ -60,7 +60,7 @@ describe('DotThemeSelectorComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
         dialog = de.query(By.css('dot-dialog')).componentInstance;
-        component.value = Object.assign({}, mockDotThemes[0]);
+        component.value = { ...mockDotThemes[0] };
         paginatorService = de.injector.get(PaginatorService);
     });
 
@@ -88,11 +88,10 @@ describe('DotThemeSelectorComponent', () => {
     });
 
     describe('On Init', () => {
-        beforeEach(() => {});
-
         it('should set url, the page size and hostid for the pagination service', () => {
             spyOn(paginatorService, 'setExtraParams');
             fixture.detectChanges();
+            console.log('test', paginatorService.url);
             expect(paginatorService.paginationPerPage).toBe(8);
             expect(paginatorService.url).toBe('v1/themes');
             expect(paginatorService.setExtraParams).toHaveBeenCalledWith(
@@ -171,18 +170,15 @@ describe('DotThemeSelectorComponent', () => {
             expect(component.dialogActions.accept.disabled).toBe(false);
         });
 
-        it(
-            'should call theme enpoint on search',
-            fakeAsync(() => {
-                spyOn(component, 'paginate');
-                fixture.detectChanges();
-                component.searchInput.nativeElement.value = 'test';
-                component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
-                tick(550);
+        it('should call theme enpoint on search', fakeAsync(() => {
+            spyOn(component, 'paginate');
+            fixture.detectChanges();
+            component.searchInput.nativeElement.value = 'test';
+            component.searchInput.nativeElement.dispatchEvent(new Event('keyup'));
+            tick(550);
 
-                expect(paginatorService.extraParams.get('searchParam')).toBe('test');
-                expect(component.paginate).toHaveBeenCalled();
-            })
-        );
+            expect(paginatorService.extraParams.get('searchParam')).toBe('test');
+            expect(component.paginate).toHaveBeenCalled();
+        }));
     });
 });

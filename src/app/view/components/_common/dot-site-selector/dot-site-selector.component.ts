@@ -26,8 +26,8 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
  * @implements {OnDestroy}
  */
 @Component({
+    providers: [PaginatorService],
     encapsulation: ViewEncapsulation.None,
-    providers: [],
     selector: 'dot-site-selector',
     styleUrls: ['./dot-site-selector.component.scss'],
     templateUrl: 'dot-site-selector.component.html'

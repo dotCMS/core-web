@@ -25,7 +25,7 @@ class HostTestComponent {
 }
 
 class DotGravatarServiceMock {
-    loadGravatarPhoto(): Observable<string> {
+    getPhoto(): Observable<string> {
         return of('/avatar_url');
     }
 }
@@ -71,7 +71,7 @@ describe('GravatarComponent', () => {
 
     it('should set dot-avatar label', () => {
         fixture.componentInstance.email = 'a@a.com';
-        spyOn(dotGravatarService, 'loadGravatarPhoto').and.callThrough();
+        spyOn(dotGravatarService, 'getPhoto').and.callThrough();
 
         fixture.detectChanges();
         expect(avatarComponent.componentInstance.url).toEqual('/avatar_url');
