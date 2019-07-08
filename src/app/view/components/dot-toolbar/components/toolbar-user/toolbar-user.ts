@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
-import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
-import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
+import { DotDropdownComponent } from '@components/_common/dropdown-component/dot-dropdown.component';
+import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { LoginService, Auth, LoggerService } from 'dotcms-js';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LOCATION_TOKEN } from 'src/app/providers';

@@ -3,7 +3,7 @@ import { Component, Input, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotGravatarComponent } from './dot-gravatar.component';
 import { DotGravatarService } from '@services/dot-gravatar-service';
-import { DotAvatarModule } from '../dot-avatar/dot-avatar.module';
+import { DotAvatarModule } from '../../../_common/dot-avatar/dot-avatar.module';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { DOTTestBed } from '@tests/dot-test-bed';

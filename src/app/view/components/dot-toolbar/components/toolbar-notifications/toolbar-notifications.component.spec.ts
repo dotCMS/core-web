@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable } from '@angular/core';
-import { DOTTestBed } from '../../../test/dot-test-bed';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { ToolbarNotificationsComponent } from './toolbar-notifications';
 import { INotification } from '@shared/models/notifications';
 import { DotMessageService } from '@services/dot-messages-service';

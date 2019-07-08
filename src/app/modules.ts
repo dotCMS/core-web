@@ -6,6 +6,8 @@ import { ListingDataTableModule } from './view/components/listing-data-table/lis
 import { SiteSelectorModule } from './view/components/_common/site-selector/site-selector.module';
 import { SearchableDropDownModule } from './view/components/_common/searchable-dropdown';
 import { IFrameModule } from './view/components/_common/iframe';
+import { DotToolbarModule } from '@components/dot-toolbar/dot-toolbar.module';
+
 
 import {
     AutoCompleteModule,
@@ -35,14 +37,13 @@ import { DotTextareaContentModule } from './view/components/_common/dot-textarea
 import { DotGlobalMessageModule } from './view/components/_common/dot-global-message/dot-global-message.module';
 import { DotContentletEditorModule } from './view/components/dot-contentlet-editor/dot-contentlet-editor.module';
 import { DotWorkflowTaskDetailModule } from './view/components/dot-workflow-task-detail/dot-workflow-task-detail.module';
-import { DotCrumbtrailModule } from './view/components/dot-crumbtrail/dot-crumbtrail.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMessageDisplayModule } from '@components/dot-message-display/dot-message-display.module';
 
 export const CUSTOM_MODULES = [
+    DotToolbarModule,
     DotActionButtonModule,
     DotContentletEditorModule,
-    DotCrumbtrailModule,
     DotDialogModule,
     DotGlobalMessageModule,
     DotIconButtonModule,

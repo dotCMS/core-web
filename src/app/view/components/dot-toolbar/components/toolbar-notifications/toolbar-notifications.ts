@@ -1,11 +1,11 @@
 import { Component, ViewEncapsulation, ViewChild, OnInit } from '@angular/core';
 
-import { DotDropdownComponent } from '../_common/dropdown-component/dot-dropdown.component';
 import { DotcmsEventsService, LoginService } from 'dotcms-js';
 import { INotification } from '@models/notifications';
-import { IframeOverlayService } from '../_common/iframe/service/iframe-overlay.service';
+import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { NotificationsService } from '@services/notifications-service';
+import { DotDropdownComponent } from '@components/_common/dropdown-component/dot-dropdown.component';
 
 @Component({
     encapsulation: ViewEncapsulation.Emulated,

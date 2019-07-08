@@ -1,13 +1,13 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotGravatarService } from '../../../api/services/dot-gravatar-service';
-import { IframeOverlayService } from './../_common/iframe/service/iframe-overlay.service';
+import { DotGravatarService } from '../../../../../api/services/dot-gravatar-service';
+import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DataListModule, OverlayPanelModule } from 'primeng/primeng';
-import { MaterialDesignTextfieldDirective } from './../../directives/md-inputtext/md-input-text.directive';
-import { SearchableDropdownComponent } from './../_common/searchable-dropdown/component/searchable-dropdown.component';
-import { DotDropdownComponent } from './../_common/dropdown-component/dot-dropdown.component';
-import { MyAccountComponent } from './../my-account/dot-my-account-component';
-import { LoginAsComponent } from './../login-as/login-as';
-import { DotGravatarComponent } from '../_common/gravatar/dot-gravatar.component';
+import { MaterialDesignTextfieldDirective } from '../../../../directives/md-inputtext/md-input-text.directive';
+import { SearchableDropdownComponent } from '../../../_common/searchable-dropdown/component/searchable-dropdown.component';
+import { DotDropdownComponent } from '../../../_common/dropdown-component/dot-dropdown.component';
+import { MyAccountComponent } from '../my-account/dot-my-account-component';
+import { LoginAsComponent } from '../login-as/login-as';
+import { DotGravatarComponent } from '../gravatar/dot-gravatar.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -15,8 +15,8 @@ import { async } from '@angular/core/testing';
 
 import { LoginService } from 'dotcms-js';
 
-import { DOTTestBed } from '../../../test/dot-test-bed';
-import { LoginServiceMock, mockAuth } from '../../../test/login-service.mock';
+import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { LoginServiceMock, mockAuth } from '../../../../../test/login-service.mock';
 import { ToolbarUserComponent } from './toolbar-user';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';

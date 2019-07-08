@@ -5,8 +5,8 @@ import { Subject } from 'rxjs';
 @Component({
     encapsulation: ViewEncapsulation.Emulated,
     selector: 'dot-custom-time',
-    styleUrls: ['./custom-time.scss'],
-    templateUrl: 'custom-time.html'
+    styleUrls: ['./dot-custom-time.component.scss'],
+    templateUrl: 'dot-custom-time.component.html'
 })
 export class CustomTimeComponent implements OnInit, AfterViewChecked {
     @Input()
