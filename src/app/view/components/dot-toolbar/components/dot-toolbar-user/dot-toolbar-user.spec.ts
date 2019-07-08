@@ -17,7 +17,7 @@ import { LoginService } from 'dotcms-js';
 
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { LoginServiceMock, mockAuth } from '../../../../../test/login-service.mock';
-import { DotToolbarUserComponent } from './toolbar-user';
+import { DotToolbarUserComponent } from './dot-toolbar-user.component';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
