@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'dot-avatar',
     styleUrls: ['./dot-avatar.component.scss'],
     templateUrl: './dot-avatar.component.html'
 })
-export class DotAvatarComponent implements OnInit {
+export class DotAvatarComponent {
     @Input()
     url: string;
 
@@ -13,21 +13,15 @@ export class DotAvatarComponent implements OnInit {
     showDot = false;
 
     avatarPlaceholder: string;
-    avatarStyles;
+    avatarStyles: { [key: string]: string };
 
     private _label: string;
-    private _size: number;
-
-    ngOnInit(): void {
-        if (!this.size) {
-            this.size = 32;
-        }
-    }
+    private _size = 32;
 
     @Input()
     set label(value: string) {
         this._label = value;
-        this.avatarPlaceholder = this.getDotAvatar(this._label);
+        this.avatarPlaceholder = this.getPlaceholder(this._label);
     }
 
     get label(): string {
@@ -49,7 +43,14 @@ export class DotAvatarComponent implements OnInit {
         return this._size;
     }
 
-    public getDotAvatar(label: string): any {
-        return !!label ? label.substring(0, 1).toUpperCase() : null;
+    /**
+     * Return the avatar url
+     *
+     * @param {string} label
+     * @returns {string}
+     * @memberof DotAvatarComponent
+     */
+    getPlaceholder(label: string): string {
+        return !!label ? label.charAt(0).toUpperCase() : null;
     }
 }

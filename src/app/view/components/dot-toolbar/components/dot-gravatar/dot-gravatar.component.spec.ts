@@ -76,6 +76,6 @@ describe('GravatarComponent', () => {
         fixture.detectChanges();
         expect(avatarComponent.componentInstance.url).toEqual('/avatar_url');
 
-        expect(dotGravatarService.loadGravatarPhoto).toHaveBeenCalledWith(md5(fixture.componentInstance.email));
+        expect(dotGravatarService.getPhoto).toHaveBeenCalledWith(md5(fixture.componentInstance.email));
     });
 });

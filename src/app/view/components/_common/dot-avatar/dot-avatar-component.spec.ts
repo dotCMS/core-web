@@ -48,14 +48,11 @@ describe('DotAvatarComponent', () => {
         component = fixture.debugElement.query(By.css('dot-avatar')).componentInstance;
     }));
 
-    it('should not have a image when url is null', () => {
+    it('should not have a image nor dot when url is null', () => {
         fixture.detectChanges();
         expect(de.query(By.css('img'))).toBeNull();
-    });
-
-    it('should not have a image when url is null', () => {
-        fixture.detectChanges();
         expect(de.query(By.css('.avatar__dot'))).toBeNull();
+
     });
 
     describe('url is set', () => {

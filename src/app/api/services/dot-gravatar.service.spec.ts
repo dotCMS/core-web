@@ -53,7 +53,7 @@ describe('DotGravatarService', () => {
     it('Should return the photos url', (done) => {
         spyOn(mockJsonp, 'get').and.callThrough();
 
-        dotGravatarService.loadGravatarPhoto('1').subscribe((avatarUrl: string) => {
+        dotGravatarService.getPhoto('1').subscribe((avatarUrl: string) => {
             expect(mockJsonp.get).toHaveBeenCalledWith('//www.gravatar.com/1.json?callback=JSONP_CALLBACK');
             expect(avatarUrl).toEqual(mockProfile.photos[0].value);
             done();
@@ -64,7 +64,7 @@ describe('DotGravatarService', () => {
     it('Should return null', (done) => {
         spyOn(mockJsonp, 'get').and.returnValue(throwError('Error'));
 
-        dotGravatarService.loadGravatarPhoto('1').subscribe((avatarUrl: string) => {
+        dotGravatarService.getPhoto('1').subscribe((avatarUrl: string) => {
             expect(mockJsonp.get).toHaveBeenCalledWith('//www.gravatar.com/1.json?callback=JSONP_CALLBACK');
             expect(avatarUrl).toBeNull();
             done();

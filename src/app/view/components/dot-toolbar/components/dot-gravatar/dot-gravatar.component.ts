@@ -23,7 +23,7 @@ export class DotGravatarComponent implements OnChanges {
 
         if (changes.email && changes.email.currentValue) {
             const hash = md5(this.email);
-            this.avatarUrl = this.gravatarService.loadGravatarPhoto(hash);
+            this.avatarUrl = this.gravatarService.getPhoto(hash);
         }
     }
 }

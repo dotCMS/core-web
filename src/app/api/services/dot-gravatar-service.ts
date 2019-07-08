@@ -18,6 +18,13 @@ interface DotProfile {
     thumbnailUrl: string;
     urls: string[];
 }
+
+/**
+ * Connect with Gravatar API
+ *
+ * @export
+ * @class DotGravatarService
+ */
 @Injectable()
 export class DotGravatarService {
     constructor(private jsonp: Jsonp) {}
@@ -26,10 +33,10 @@ export class DotGravatarService {
      * Load the avatar url from a hash
      *
      * @param {string} hash
-     * @returns {Observable<any>}
-     * @memberof GravatarService
+     * @returns {Observable<string>}
+     * @memberof DotGravatarService
      */
-    loadGravatarPhoto(hash: string): Observable<string> {
+    getPhoto(hash: string): Observable<string> {
         return this.jsonp
             .get(`//www.gravatar.com/${hash}.json?callback=JSONP_CALLBACK`)
             .pipe(
