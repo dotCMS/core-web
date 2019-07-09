@@ -38,6 +38,8 @@ export class DotPersonaSelectorComponent implements OnInit {
                         )
                     )
                     .subscribe((personas: DotPersona[]) => {
+                        console.log('---', personas)
+
                         this.options = personas;
                     });
             });

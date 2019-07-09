@@ -1,0 +1,51 @@
+@import "variables";
+
+:host {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+
+    &:hover {
+        background-color: $gray-bg;
+    }
+
+    img {
+        border-radius: 50px;
+        height: 50px;
+    }
+    
+    img, label, button {
+        margin: $basic-padding;
+    }
+
+    label {
+        cursor: pointer;
+        flex:1;
+    }
+    
+    button {
+        align-items: center;
+        background: $white;
+        border: solid 1px var(--color-sec);
+        border-radius: 2px;
+        cursor: pointer;
+        display: flex;
+        font-weight: bold;
+        padding: $basic-padding;
+        text-transform: uppercase;
+
+        &:hover {
+            background: $white;
+            border: solid 1px var(--color-main);
+            color: var(--color-main);
+
+            ::ng-deep i {
+                color: var(--color-main);
+            }
+        }
+
+        ::ng-deep i {
+            margin-left: $basic-padding;
+        }
+    }
+}
