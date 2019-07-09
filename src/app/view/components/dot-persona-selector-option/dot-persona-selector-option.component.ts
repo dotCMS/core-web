@@ -1,13 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, HostListener } from '@angular/core';
-// import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
-
-interface PersonalizationField {
-    keyTag: string;
-    pageId: string;
-}
 
 @Component({
     selector: 'dot-persona-selector-option',
@@ -20,7 +14,7 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     @Output()
     selected = new EventEmitter<DotPersona>();
     @Output()
-    delete = new EventEmitter<PersonalizationField>();
+    delete = new EventEmitter<DotPersona>();
 
     constructor(private dotMessageService: DotMessageService) {}
 
@@ -38,15 +32,12 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     }
 
     /**
-     * Emit the personalized field to be removed
+     * Emit DotPersona field to be deleted
      * @param {MouseEvent} $event
      * @memberof DotPersonaSelectorOptionComponent
      */
     deletePersonalized($event: MouseEvent) {
         $event.stopPropagation();
-        this.delete.emit({
-            keyTag: this.persona.keyTag,
-            pageId: ''
-        });
+        this.delete.emit(this.persona);
     }
 }

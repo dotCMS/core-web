@@ -4,25 +4,28 @@
     align-items: center;
     cursor: pointer;
     display: flex;
+    height: 48px;
 
     &:hover {
         background-color: $gray-bg;
     }
 
-    img {
-        border-radius: 50px;
-        height: 50px;
-    }
-    
-    img, label, button {
-        margin: $basic-padding;
+    dot-avatar {
+        margin-left: $basic-padding * 2;
+        margin-right: $basic-padding;
     }
 
     label {
+        color: $gray-light;
         cursor: pointer;
-        flex:1;
+        flex: 1;
+        font-size: $body-font-size-base;
+
+        &.dot-persona-selector-option__personalized {
+            color: $body-font-color;
+        }
     }
-    
+
     button {
         align-items: center;
         background: $white;
@@ -30,8 +33,11 @@
         border-radius: 2px;
         cursor: pointer;
         display: flex;
+        font-size: 10px;
         font-weight: bold;
-        padding: $basic-padding;
+        height: 20px;
+        line-height: 1rem;
+        margin-right: $basic-padding;
         text-transform: uppercase;
 
         &:hover {
@@ -44,7 +50,7 @@
             }
         }
 
-        ::ng-deep i {
+        ::ng-deep dot-icon {
             margin-left: $basic-padding;
         }
     }

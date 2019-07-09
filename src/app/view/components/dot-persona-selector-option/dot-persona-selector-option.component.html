@@ -1,5 +1,13 @@
-<img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50" />
-<label>{{ persona.name }}</label>
-<button (click)="deletePersonalized($event)">{{ dotMessageService.get('modes.persona.personalized') }}
+<dot-avatar
+    [label]="persona.name"
+    [showDot]="persona.personalized"
+    [size]="24"
+    [url]="persona.photo"
+></dot-avatar>
+<label [ngClass]="{ 'dot-persona-selector-option__personalized': persona.personalized }">{{
+    persona.name
+}}</label>
+<button *ngIf="persona.personalized" (click)="deletePersonalized($event)">
+    {{ dotMessageService.get('modes.persona.personalized') }}
     <dot-icon name="close"></dot-icon>
 </button>

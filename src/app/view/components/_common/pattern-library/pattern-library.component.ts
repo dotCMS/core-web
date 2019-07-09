@@ -109,6 +109,7 @@ export class PatternLibraryComponent implements OnInit {
         modUserName: 'Admin User',
         name: 'Wealthy Prospect',
         owner: 'dotcms.org.1',
+        personalized: true,
         photo: '/dA/d4ffa84f-8746-46f8-ac29-1f8ca2c7eaeb/photo/wealthy-man-with-jet.jpg',
         photoContentAsset: 'd4ffa84f-8746-46f8-ac29-1f8ca2c7eaeb/photo',
         photoVersion: '/dA/d475422a-e9f0-4ef5-8797-147f630df47d/photo/wealthy-man-with-jet.jpg',
