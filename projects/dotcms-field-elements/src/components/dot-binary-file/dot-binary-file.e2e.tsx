@@ -105,6 +105,8 @@ describe('dot-binary-file', () => {
                 await page.waitForChanges();
                 expect(dotBinaryText.getAttribute('placeholder')).toBe('Test');
             });
+
+            xit('should set placeholder correctly in windows', async () => {});
         });
 
         describe('hint', () => {

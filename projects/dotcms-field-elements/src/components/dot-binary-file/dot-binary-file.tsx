@@ -52,7 +52,7 @@ export class DotBinaryFileComponent {
     label = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflectToAttr: true, mutable: true })
     placeholder = 'Drop or paste a file or url';
 
     /** (optional) Hint text that suggest a clue of the field */
@@ -67,7 +67,7 @@ export class DotBinaryFileComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = "The field doesn't comply with the specified format";
+    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
 
     /** (optional) Text that be shown when the URL is not valid */
     @Prop() URLValidationMessage = 'The specified URL is not valid';
@@ -238,6 +238,7 @@ export class DotBinaryFileComponent {
 
     private validateProps(): void {
         this.optionsWatch();
+        this.setPlaceHolder();
     }
 
     private shouldShowErrorMessage(): boolean {
@@ -282,5 +283,14 @@ export class DotBinaryFileComponent {
             name: this.name,
             value: this.value
         });
+    }
+
+    private setPlaceHolder(): void {
+        const DEFAULT_WINDOWS = 'Drop a file or url';
+        this.placeholder = this.isWindowsOS() ? DEFAULT_WINDOWS : this.placeholder;
+    }
+
+    private isWindowsOS(): boolean {
+        return window.navigator.platform.includes('Win');
     }
 }
