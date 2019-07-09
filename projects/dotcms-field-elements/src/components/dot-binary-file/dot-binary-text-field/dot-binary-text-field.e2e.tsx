@@ -99,19 +99,19 @@ describe('dot-binary-text-field', () => {
 
     describe('@Events', () => {
         let spyFileChangeEvent: EventSpy;
-        let spyonBlurEvent: EventSpy;
+        let spyLostFocusEvent: EventSpy;
 
         beforeEach(async () => {
             spyFileChangeEvent = await page.spyOnEvent('fileChange');
-            spyonBlurEvent = await page.spyOnEvent('onBlur');
+            spyLostFocusEvent = await page.spyOnEvent('lostFocus');
         });
 
         describe('blur', () => {
             it('should emit blur event', async () => {
-                input.triggerEvent('onBlur');
+                input.triggerEvent('blur');
                 await page.waitForChanges();
 
-                expect(spyonBlurEvent).toHaveReceivedEvent();
+                expect(spyLostFocusEvent).toHaveReceivedEvent();
             });
         });
 

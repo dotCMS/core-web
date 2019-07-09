@@ -35,7 +35,7 @@ describe('dot-binary-file', () => {
         });
 
         it('should have touched but pristine on blur', async () => {
-            dotBinaryText.triggerEvent('onBlur');
+            dotBinaryText.triggerEvent('lostFocus');
             await page.waitForChanges();
             expect(element).toHaveClasses(dotTestUtil.class.touchedPristine);
         });

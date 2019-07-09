@@ -140,7 +140,6 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             required={field.required}
-            value={field.defaultValue}
         />
     )
 };

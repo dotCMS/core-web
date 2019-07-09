@@ -22,7 +22,7 @@
 | Event        | Description | Type                              |
 | ------------ | ----------- | --------------------------------- |
 | `fileChange` |             | `CustomEvent<DotBinaryFileEvent>` |
-| `onBlur`     |             | `CustomEvent<void>`               |
+| `lostFocus`  |             | `CustomEvent<void>`               |
 
 
 ----------------------------------------------

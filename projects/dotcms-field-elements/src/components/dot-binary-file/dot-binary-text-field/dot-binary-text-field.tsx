@@ -49,7 +49,7 @@ export class DotBinaryTextFieldComponent {
     @State() status: DotFieldStatus;
 
     @Event() fileChange: EventEmitter<DotBinaryFileEvent>;
-    @Event() onBlur: EventEmitter;
+    @Event() lostFocus: EventEmitter;
 
     render() {
         return (
@@ -61,7 +61,7 @@ export class DotBinaryTextFieldComponent {
                     disabled={this.disabled}
                     placeholder={this.placeholder}
                     value={this.value}
-                    onBlur={() => this.onBlur.emit}
+                    onBlur={() => this.lostFocus.emit()}
                     onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
                     onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
                     onPaste={(event: ClipboardEvent) => this.pasteHandler(event)}

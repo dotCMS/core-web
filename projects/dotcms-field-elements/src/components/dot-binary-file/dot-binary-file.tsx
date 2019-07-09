@@ -67,7 +67,7 @@ export class DotBinaryFileComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
+    @Prop() validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Text that be shown when the URL is not valid */
     @Prop() URLValidationMessage = 'The specified URL is not valid';
@@ -150,16 +150,6 @@ export class DotBinaryFileComponent {
         }
     }
 
-    @Listen('onBlur')
-    blurHandler(): void {
-        if (!this.status.dotTouched) {
-            this.status = updateStatus(this.status, {
-                dotTouched: true
-            });
-            this.emitStatusChange();
-        }
-    }
-
     @Listen('dragover', { passive: false })
     HandleDragover(evt: DragEvent): void {
         evt.preventDefault();
@@ -215,6 +205,7 @@ export class DotBinaryFileComponent {
                         disabled={this.disabled}
                         accept={this.allowedFileTypes}
                         hint={this.hint}
+                        onLostFocus={this.lostFocusEventHandler.bind(this)}
                     />
                     <dot-binary-upload-button
                         name={this.name}
@@ -228,6 +219,15 @@ export class DotBinaryFileComponent {
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
             </Fragment>
         );
+    }
+
+    private lostFocusEventHandler(): void {
+        if (!this.status.dotTouched) {
+            this.status = updateStatus(this.status, {
+                dotTouched: true
+            });
+            this.emitStatusChange();
+        }
     }
 
     private isBinaryUploadButtonEvent(element: Element): boolean {
