@@ -1,8 +1,27 @@
-dot-binary-file {
-    &.dot-dragover {
-        opacity: 0.5;
+.dot-binary__container {
+    input,
+    button {
+        display: inline-flex;
+        border: 1px solid lightgray;
+        padding: 15px;
+        border-radius: 0;
     }
+
     input[type="file"] {
         display: none;
+    }
+
+    input {
+        min-width: 245px;
+    }
+
+    button {
+        background-color: lightgray;
+    }
+
+    &.dot-dragover {
+        input {
+            background-color: #f1f1f1;
+        }
     }
 }

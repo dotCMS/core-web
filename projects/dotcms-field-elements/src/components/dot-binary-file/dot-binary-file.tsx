@@ -199,21 +199,23 @@ export class DotBinaryFileComponent {
                     name={this.name}
                     tabindex="0"
                 >
-                    <dot-binary-text-field
-                        placeholder={this.placeholder}
-                        required={this.required}
-                        disabled={this.disabled}
-                        accept={this.allowedFileTypes}
-                        hint={this.hint}
-                        onLostFocus={this.lostFocusEventHandler.bind(this)}
-                    />
-                    <dot-binary-upload-button
-                        name={this.name}
-                        accept={this.allowedFileTypes}
-                        disabled={this.disabled}
-                        required={this.required}
-                        buttonLabel={this.buttonLabel}
-                    />
+                    <div class="dot-binary__container">
+                        <dot-binary-text-field
+                            placeholder={this.placeholder}
+                            required={this.required}
+                            disabled={this.disabled}
+                            accept={this.allowedFileTypes}
+                            hint={this.hint}
+                            onLostFocus={this.lostFocusEventHandler.bind(this)}
+                        />
+                        <dot-binary-upload-button
+                            name={this.name}
+                            accept={this.allowedFileTypes}
+                            disabled={this.disabled}
+                            required={this.required}
+                            buttonLabel={this.buttonLabel}
+                        />
+                    </div>
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
