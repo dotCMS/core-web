@@ -1,5 +1,4 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DotGravatarService } from '../../../../../api/services/dot-gravatar-service';
 import { IframeOverlayService } from '../../../_common/iframe/service/iframe-overlay.service';
 import { DataListModule, OverlayPanelModule } from 'primeng/primeng';
 import { MaterialDesignTextfieldDirective } from '../../../../directives/md-inputtext/md-input-text.directive';
