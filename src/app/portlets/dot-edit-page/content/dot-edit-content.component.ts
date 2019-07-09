@@ -54,6 +54,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     editForm = false;
     showIframe = true;
     reorderMenuUrl = '';
+    messagesKey: { [key: string]: string };
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -332,6 +333,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private getMessages(): void {
         this.dotMessageService
             .getMessages([
+                'dot.common.cancel',
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'dot.common.message.saving',
@@ -342,7 +344,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 'an-unexpected-system-error-occurred'
             ])
             .pipe(take(1))
-            .subscribe();
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+            });
     }
 
     private iframeActionsHandler(event: any): Function {
