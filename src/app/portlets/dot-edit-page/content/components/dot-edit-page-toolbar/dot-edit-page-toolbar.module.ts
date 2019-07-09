@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotEditPageToolbarComponent } from './dot-edit-page-toolbar.component';
 import {
-    ToolbarModule,
     SelectButtonModule,
     InputSwitchModule,
-    CheckboxModule
+    CheckboxModule,
+    ToolbarModule
 } from 'primeng/primeng';
 import { FormsModule } from '@angular/forms';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
