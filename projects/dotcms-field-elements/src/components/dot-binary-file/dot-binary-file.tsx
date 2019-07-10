@@ -12,13 +12,13 @@ import {
 import Fragment from 'stencil-fragment';
 import {
     DotBinaryFileEvent,
+    DotBinaryMessageError,
     DotFieldStatus,
     DotFieldStatusEvent,
     DotFieldValueEvent
 } from '../../models';
 import {
     checkProp,
-    DotBinaryMessageError,
     getClassNames,
     getOriginalStatus,
     getTagError,

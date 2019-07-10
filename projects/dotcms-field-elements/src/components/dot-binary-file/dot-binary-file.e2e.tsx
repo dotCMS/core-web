@@ -1,6 +1,7 @@
 import { E2EElement, E2EPage, newE2EPage } from '@stencil/core/testing';
 import { EventSpy } from '@stencil/core/dist/declarations';
-import { DotBinaryMessageError, dotTestUtil } from '../../utils';
+import { dotTestUtil } from '../../utils';
+import { DotBinaryMessageError } from '../../models';
 
 describe('dot-binary-file', () => {
     let page: E2EPage;
