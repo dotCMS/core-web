@@ -63,11 +63,19 @@ export class DotBinaryTextFieldComponent {
                     value={this.value}
                     onBlur={() => this.lostFocus.emit()}
                     onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
-                    onKeyPress={(event: KeyboardEvent) => event.preventDefault()}
+                    onKeyPress={(event: KeyboardEvent) => this.KeyPressHandler(event)}
                     onPaste={(event: ClipboardEvent) => this.pasteHandler(event)}
                 />
             </Fragment>
         );
+    }
+
+    private KeyPressHandler(evt: KeyboardEvent): void {
+        console.log('event', evt);
+        if (!(evt.ctrlKey || evt.metaKey)) {
+            console.log('event condition meet');
+            evt.preventDefault();
+        }
     }
 
     private keyDownHandler(evt: KeyboardEvent): void {
