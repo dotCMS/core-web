@@ -1,6 +1,6 @@
 import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import {DotBinaryFileEvent, DotBinaryMessageError} from '../../../models';
+import { DotBinaryFileEvent, DotBinaryMessageError } from '../../../models';
 import { getId, isFileAllowed } from '../../../utils';
 
 /**

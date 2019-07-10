@@ -173,7 +173,6 @@ export function getTagHint(hint: string): JSX.Element {
  */
 export function isValidURL(url: string): boolean {
     try {
-        debugger;
         return !!new URL(url);
     } catch (e) {
         return false;

@@ -57,24 +57,27 @@ export class DotBinaryTextFieldComponent {
                     value={this.value}
                     onBlur={() => this.lostFocus.emit()}
                     onKeyDown={(event: KeyboardEvent) => this.keyDownHandler(event)}
-                    onKeyPress={(event: KeyboardEvent) => this.KeyPressHandler(event)}
                     onPaste={(event: ClipboardEvent) => this.pasteHandler(event)}
                 />
             </Fragment>
         );
     }
 
-    private KeyPressHandler(evt: KeyboardEvent): void {
-        if (!(evt.ctrlKey || evt.metaKey)) {
+    private keyDownHandler(evt: KeyboardEvent): void {
+        if (evt.key === 'Backspace') {
+            this.handleBackspace();
+        } else if (this.shouldPreventEvent(evt)) {
             evt.preventDefault();
         }
     }
 
-    private keyDownHandler(evt: KeyboardEvent): void {
-        if (evt.key === 'Backspace') {
-            this.value = '';
-            this.emitFile(null, this.required ? DotBinaryMessageError.REQUIRED : null);
-        }
+    private shouldPreventEvent(evt: KeyboardEvent): boolean {
+        return !(evt.ctrlKey || evt.metaKey);
+    }
+
+    private handleBackspace(): void {
+        this.value = '';
+        this.emitFile(null, this.required ? DotBinaryMessageError.REQUIRED : null);
     }
 
     // only supported in macOS.
