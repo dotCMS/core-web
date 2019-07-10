@@ -15,9 +15,8 @@
         margin-right: $basic-padding;
     }
 
-    label {
+    .dot-persona-selector-option__label {
         color: $gray-light;
-        cursor: pointer;
         flex: 1;
         font-size: $body-font-size-base;
 
@@ -27,31 +26,18 @@
     }
 
     button {
-        align-items: center;
-        background: $white;
-        border: solid 1px var(--color-sec);
-        border-radius: 2px;
-        cursor: pointer;
-        display: flex;
-        font-size: 10px;
-        font-weight: bold;
         height: 20px;
-        line-height: 1rem;
-        margin-right: $basic-padding;
-        text-transform: uppercase;
+        margin-right: $basic-padding * 2;
 
-        &:hover {
-            background: $white;
-            border: solid 1px var(--color-main);
-            color: var(--color-main);
-
-            ::ng-deep i {
-                color: var(--color-main);
+        ::ng-deep {
+            .ui-button-text {
+                font-size: 10px;
+                font-weight: bold;
             }
-        }
 
-        ::ng-deep dot-icon {
-            margin-left: $basic-padding;
+            .ui-button-icon-right {
+                margin-right: $basic-padding;
+            }
         }
     }
 }

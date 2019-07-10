@@ -16,13 +16,17 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     @Output()
     delete = new EventEmitter<DotPersona>();
 
+    messagesKey: { [key: string]: string } = {};
+
     constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
         this.dotMessageService
             .getMessages(['modes.persona.personalized'])
             .pipe(take(1))
-            .subscribe();
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+            });
     }
 
     @HostListener('click', ['$event'])

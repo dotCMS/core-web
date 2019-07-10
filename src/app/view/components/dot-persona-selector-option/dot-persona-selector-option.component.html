@@ -4,10 +4,19 @@
     [size]="24"
     [url]="persona.photo"
 ></dot-avatar>
-<label [ngClass]="{ 'dot-persona-selector-option__personalized': persona.personalized }">{{
-    persona.name
-}}</label>
-<button *ngIf="persona.personalized" (click)="deletePersonalized($event)">
-    {{ dotMessageService.get('modes.persona.personalized') }}
-    <dot-icon name="close"></dot-icon>
-</button>
+
+<span
+    class="dot-persona-selector-option__label"
+    [ngClass]="{ 'dot-persona-selector-option__personalized': persona.personalized }"
+    >{{ persona.name }}
+</span>
+
+<button
+    pButton
+    secondary
+    *ngIf="persona.personalized"
+    (click)="deletePersonalized($event)"
+    label="{{ messagesKey['modes.persona.personalized'] }}"
+    iconPos="right"
+    icon="fa fa-times"
+></button>
