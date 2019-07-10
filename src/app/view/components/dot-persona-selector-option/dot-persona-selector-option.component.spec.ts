@@ -40,15 +40,15 @@ describe('DotPersonaSelectorOptionComponent', () => {
 
     it('should have dot-avatar with right properties', () => {
         const avatar: DebugElement = de.query(By.css('dot-avatar'));
-        expect(avatar.componentInstance.label).toBe('Global Investor');
-        expect(avatar.componentInstance.showDot).toBe(true);
-        expect(avatar.componentInstance.url).toBe('/url');
+        expect(avatar.componentInstance.label).toBe(mockDotPersona.name);
+        expect(avatar.componentInstance.showDot).toBe(mockDotPersona.personalized);
+        expect(avatar.componentInstance.url).toBe(mockDotPersona.photo);
         expect(avatar.componentInstance.size).toBe(24);
     });
 
     it('should label set personalized class', () => {
         const lblElement: DebugElement = de.query(By.css('.dot-persona-selector-option__label'));
-        expect(lblElement.nativeElement.innerText).toBe('Global Investor');
+        expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
         expect(lblElement.nativeElement.classList).toContain('dot-persona-selector-option__personalized');
     });
 
@@ -57,7 +57,7 @@ describe('DotPersonaSelectorOptionComponent', () => {
         fixture.detectChanges();
 
         const lblElement: DebugElement = de.query(By.css('.dot-persona-selector-option__label'));
-        expect(lblElement.nativeElement.innerText).toBe('Global Investor');
+        expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
         expect(lblElement.nativeElement.classList).not.toContain('dot-persona-selector-option__personalized');
     });
 

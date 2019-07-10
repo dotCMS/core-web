@@ -4,7 +4,7 @@
     align-items: center;
     cursor: pointer;
     display: flex;
-    height: 48px;
+    height: $navigation-item-height;
 
     &:hover {
         background-color: $gray-bg;
@@ -28,16 +28,5 @@
     button {
         height: 20px;
         margin-right: $basic-padding * 2;
-
-        ::ng-deep {
-            .ui-button-text {
-                font-size: 10px;
-                font-weight: bold;
-            }
-
-            .ui-button-icon-right {
-                margin-right: $basic-padding;
-            }
-        }
     }
 }
