@@ -71,9 +71,7 @@ export class DotBinaryTextFieldComponent {
     }
 
     private KeyPressHandler(evt: KeyboardEvent): void {
-        console.log('event', evt);
         if (!(evt.ctrlKey || evt.metaKey)) {
-            console.log('event condition meet');
             evt.preventDefault();
         }
     }
