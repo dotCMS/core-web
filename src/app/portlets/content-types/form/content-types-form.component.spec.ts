@@ -41,7 +41,7 @@ import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
-import { DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeLayoutRow } from '@dotcms/models';
 
 @Component({
     selector: 'dot-site-selector-field',
@@ -76,7 +76,7 @@ describe('ContentTypesFormComponent', () => {
     let fixture: ComponentFixture<ContentTypesFormComponent>;
     let de: DebugElement;
     let dotLicenseService: DotLicenseService;
-    const layout: DotContentTypeLayoutDivider[] = [
+    const layout: DotCMSContentTypeLayoutRow[] = [
         {
             divider: {
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',

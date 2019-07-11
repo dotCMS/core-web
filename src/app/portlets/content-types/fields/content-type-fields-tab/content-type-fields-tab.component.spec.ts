@@ -3,18 +3,18 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component} from '@angular/core';
 import { ContentTypeFieldsTabComponent } from './';
 import { By } from '@angular/platform-browser';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 
 
-const tabField: DotContentTypeField = {
+const tabField: DotCMSContentTypeField = {
     clazz: 'tab',
     name: 'fieldTab-1'
 };
-const mockFieldTab: DotContentTypeLayoutDivider = {
+const mockFieldTab: DotCMSContentTypeLayoutRow = {
     divider: tabField
 };
 
@@ -23,9 +23,9 @@ const mockFieldTab: DotContentTypeLayoutDivider = {
     template: '<dot-content-type-fields-tab [fieldTab]="data"></dot-content-type-fields-tab>'
 })
 class DotTestHostComponent {
-    data: DotContentTypeLayoutDivider;
+    data: DotCMSContentTypeLayoutRow;
 
-    setData(data: DotContentTypeLayoutDivider): void {
+    setData(data: DotCMSContentTypeLayoutRow): void {
         this.data = data;
     }
 }

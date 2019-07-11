@@ -1,18 +1,42 @@
 import {
-    DotContentTypeField,
-    DotContentTypeLayoutDivider,
-    DotContentTypeColumn
-} from '@dotcms-models';
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow,
+    DotCMSContentTypeLayoutColumn
+} from '@dotcms/models';
+
+const EMPTY_FIELD = {
+    contentTypeId: null,
+    dataType: null,
+    fieldType: null,
+    fieldTypeLabel: null,
+    fieldVariables: [],
+    fixed: null,
+    iDate: null,
+    id: null,
+    indexed: null,
+    listed: null,
+    modDate: null,
+    name: null,
+    readOnly: null,
+    required: null,
+    searchable: null,
+    sortOrder: null,
+    unique: null,
+    variable: null
+};
 
 const COLUMN_FIELD = {
+    ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
 };
 
 const ROW_FIELD = {
+    ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField'
 };
 
 export const TAB_FIELD = {
+    ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
 };
 
@@ -23,7 +47,7 @@ export class FieldUtil {
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isNewField(field: DotContentTypeField): Boolean {
+    static isNewField(field: DotCMSContentTypeField): Boolean {
         return !field.id;
     }
 
@@ -31,11 +55,11 @@ export class FieldUtil {
      * Return true if the field is a RowField or a ColumnField
      *
      * @static
-     * @param {DotContentTypeField} field
+     * @param {DotCMSContentTypeField} field
      * @returns
      * @memberof FieldUtil
      */
-    static isLayoutField(field: DotContentTypeField): boolean {
+    static isLayoutField(field: DotCMSContentTypeField): boolean {
         return this.isRow(field) || this.isColumn(field);
     }
 
@@ -45,7 +69,7 @@ export class FieldUtil {
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isRow(field: DotContentTypeField): boolean {
+    static isRow(field: DotCMSContentTypeField): boolean {
         return field.clazz === ROW_FIELD.clazz;
     }
 
@@ -55,17 +79,17 @@ export class FieldUtil {
      * @returns Boolean
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isColumn(field: DotContentTypeField): boolean {
+    static isColumn(field: DotCMSContentTypeField): boolean {
         return field.clazz === COLUMN_FIELD.clazz;
     }
 
     /**
      * Verify if the Field is a tab
-     * @param {DotContentTypeField} field
+     * @param {DotCMSContentTypeField} field
      * @returns {Boolean}
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    static isTabDivider(field: DotContentTypeField): boolean {
+    static isTabDivider(field: DotCMSContentTypeField): boolean {
         return field.clazz === TAB_FIELD.clazz;
     }
 
@@ -73,10 +97,10 @@ export class FieldUtil {
      * Create a new row
      * @static
      * @param {number} nColumns
-     * @returns {DotContentTypeLayoutDivider}
+     * @returns {DotCMSContentTypeLayoutRow}
      * @memberof FieldUtil
      */
-    static createFieldRow(nColumns: number): DotContentTypeLayoutDivider {
+    static createFieldRow(nColumns: number): DotCMSContentTypeLayoutRow {
         return {
             divider: { ...ROW_FIELD },
             columns: new Array(nColumns).fill(null).map(() => FieldUtil.createFieldColumn())
@@ -90,7 +114,7 @@ export class FieldUtil {
      * @returns {FieldColumn}
      * @memberof FieldUtil
      */
-    static createFieldColumn(): DotContentTypeColumn {
+    static createFieldColumn(): DotCMSContentTypeLayoutColumn {
         return {
             columnDivider: { ...COLUMN_FIELD },
             fields: []
@@ -101,12 +125,12 @@ export class FieldUtil {
      * Create a new TabField
      *
      * @static
-     * @returns {DotContentTypeLayoutDivider}
+     * @returns {DotCMSContentTypeLayoutRow}
      * @memberof FieldUtil
      */
-    static createFieldTabDivider(): DotContentTypeLayoutDivider {
+    static createFieldTabDivider(): DotCMSContentTypeLayoutRow {
         return {
-            divider: Object.assign({}, TAB_FIELD)
+            divider: { ...TAB_FIELD }
         };
     }
 
@@ -118,11 +142,11 @@ export class FieldUtil {
      * [ROW_FIELD, COLUMN_FIELD,TEXT_FIELD], [TAB_FIELD] , [ROW_FIELD, COLUMN_FIELD, TEXT_FIELD]
      *
      * @static
-     * @param {DotContentTypeField[]} fields
-     * @returns {DotContentTypeField[][]}
+     * @param {DotCMSContentTypeField[]} fields
+     * @returns {DotCMSContentTypeField[][]}
      * @memberof FieldUtil
      */
-    static getRows(fields: DotContentTypeField[]): DotContentTypeField[][] {
+    static getRows(fields: DotCMSContentTypeField[]): DotCMSContentTypeField[][] {
         return FieldUtil.splitFieldsBy(fields, [ROW_FIELD.clazz, TAB_FIELD.clazz]);
     }
 
@@ -134,11 +158,11 @@ export class FieldUtil {
      * [COLUMN_FIELD,TEXT_FIELD], [COLUMN_FIELD,TEXT_FIELD]
      *
      * @static
-     * @param {DotContentTypeField[]} fields
-     * @returns {DotContentTypeField[][]}
+     * @param {DotCMSContentTypeField[]} fields
+     * @returns {DotCMSContentTypeField[][]}
      * @memberof FieldUtil
      */
-    static getColumns(fields: DotContentTypeField[]): DotContentTypeField[][] {
+    static getColumns(fields: DotCMSContentTypeField[]): DotCMSContentTypeField[][] {
         return FieldUtil.splitFieldsBy(fields, [COLUMN_FIELD.clazz]);
     }
 
@@ -150,19 +174,19 @@ export class FieldUtil {
      * [COLUMN_FIELD,TEXT_FIELD], [COLUMN_FIELD,TEXT_FIELD]
      *
      * @static
-     * @param {DotContentTypeField[]} fields
+     * @param {DotCMSContentTypeField[]} fields
      * @param {string[]} fieldClass
-     * @returns {DotContentTypeField[][]}
+     * @returns {DotCMSContentTypeField[][]}
      * @memberof FieldUtil
      */
     static splitFieldsBy(
-        fields: DotContentTypeField[],
+        fields: DotCMSContentTypeField[],
         fieldClass: string[]
-    ): DotContentTypeField[][] {
-        const result: DotContentTypeField[][] = [];
-        let currentFields: DotContentTypeField[];
+    ): DotCMSContentTypeField[][] {
+        const result: DotCMSContentTypeField[][] = [];
+        let currentFields: DotCMSContentTypeField[];
 
-        fields.forEach((field: DotContentTypeField) => {
+        fields.forEach((field: DotCMSContentTypeField) => {
             if (fieldClass.includes(field.clazz)) {
                 currentFields = [];
                 result.push(currentFields);
@@ -188,22 +212,24 @@ export class FieldUtil {
      * Get all the not layout fields from a layout, layout field could be RowField, ColumnFiled and TabField
      *
      * @static
-     * @param {DotContentTypeLayoutDivider[]} layout
-     * @returns {DotContentTypeField[]}
+     * @param {DotCMSContentTypeLayoutRow[]} layout
+     * @returns {DotCMSContentTypeField[]}
      * @memberof FieldUtil
      */
-    static getFieldsWithoutLayout(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
+    static getFieldsWithoutLayout(layout: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeField[] {
         return layout
-            .map((row: DotContentTypeLayoutDivider) => row.columns)
-            .filter((columns: DotContentTypeColumn[]) => !!columns)
+            .map((row: DotCMSContentTypeLayoutRow) => row.columns)
+            .filter((columns: DotCMSContentTypeLayoutColumn[]) => !!columns)
             .reduce(
-                (accumulator: DotContentTypeColumn[], currentValue: DotContentTypeColumn[]) =>
-                    accumulator.concat(currentValue),
+                (
+                    accumulator: DotCMSContentTypeLayoutColumn[],
+                    currentValue: DotCMSContentTypeLayoutColumn[]
+                ) => accumulator.concat(currentValue),
                 []
             )
             .map((fieldColumn) => fieldColumn.fields)
             .reduce(
-                (accumulator: DotContentTypeField[], currentValue: DotContentTypeField[]) =>
+                (accumulator: DotCMSContentTypeField[], currentValue: DotCMSContentTypeField[]) =>
                     accumulator.concat(currentValue),
                 []
             );
@@ -213,13 +239,13 @@ export class FieldUtil {
      * Return just the TabField from a layout
      *
      * @static
-     * @param {DotContentTypeLayoutDivider[]} layout
-     * @returns {DotContentTypeField[]}
+     * @param {DotCMSContentTypeLayoutRow[]} layout
+     * @returns {DotCMSContentTypeField[]}
      * @memberof FieldUtil
      */
-    static getTabDividerFields(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
+    static getTabDividerFields(layout: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeField[] {
         return layout
             .map((row) => row.divider)
-            .filter((field: DotContentTypeField) => FieldUtil.isTabDivider(field));
+            .filter((field: DotCMSContentTypeField) => FieldUtil.isTabDivider(field));
     }
 }

@@ -2,11 +2,11 @@ import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
-import { ContentType } from '@dotcms-models';
+import { DotCMSContentType } from '@dotcms/models';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
 import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -44,10 +44,10 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
     contentTypeActions: MenuItem[];
     dialogCloseable = false;
-    data: ContentType;
+    data: DotCMSContentType;
     dialogActions: DotDialogActions;
     editButtonLbl: string;
-    layout: DotContentTypeLayoutDivider[];
+    layout: DotCMSContentTypeLayoutRow[];
     messagesKey: { [key: string]: string } = {};
     show: boolean;
     templateInfo = {
@@ -78,7 +78,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 pluck('contentType'),
                 takeUntil(this.destroy$)
             )
-            .subscribe((contentType: ContentType) => {
+            .subscribe((contentType: DotCMSContentType) => {
                 this.data = contentType;
                 this.dotEditContentTypeCacheService.set(contentType);
                 this.layout = contentType.layout;
@@ -220,7 +220,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param DotContentTypeField[] fieldsToDelete Fields to be removed
      * @memberof ContentTypesEditComponent
      */
-    removeFields(fieldsToDelete: DotContentTypeField[]): void {
+    removeFields(fieldsToDelete: DotCMSContentTypeField[]): void {
         this.fieldService
             .deleteFields(this.data.id, fieldsToDelete)
             .pipe(
@@ -228,7 +228,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                 take(1)
             )
             .subscribe(
-                (fields: DotContentTypeLayoutDivider[]) => {
+                (fields: DotCMSContentTypeLayoutRow[]) => {
                     this.layout = fields;
                 },
                 (err: ResponseView) => {
@@ -245,13 +245,13 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param layout layout to be save
      * @memberof ContentTypesEditComponent
      */
-    saveFields(layout: DotContentTypeLayoutDivider[]): void {
+    saveFields(layout: DotCMSContentTypeLayoutRow[]): void {
         this.loadingFields = true;
         this.fieldService
             .saveFields(this.data.id, layout)
             .pipe(take(1))
             .subscribe(
-                (fields: DotContentTypeLayoutDivider[]) => {
+                (fields: DotCMSContentTypeLayoutRow[]) => {
                     this.layout = fields;
                     this.loadingFields = false;
                 },
@@ -270,10 +270,10 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Edit the properties of a field
      *
-     * @param {DotContentTypeField} fieldsToEdit field to be edit
+     * @param {DotCMSContentTypeField} fieldsToEdit field to be edit
      * @memberof ContentTypesEditComponent
      */
-    editField(fieldsToEdit: DotContentTypeField): void {
+    editField(fieldsToEdit: DotCMSContentTypeField): void {
         this.loadingFields = true;
         this.fieldService
             .updateField(this.data.id, fieldsToEdit)
@@ -320,15 +320,15 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         };
     }
 
-    private createContentType(value: ContentType): void {
+    private createContentType(value: DotCMSContentType): void {
         this.crudService
             .postData('v1/contenttype', value)
             .pipe(
-                mergeMap((contentTypes: ContentType[]) => contentTypes),
+                mergeMap((contentTypes: DotCMSContentType[]) => contentTypes),
                 take(1)
             )
             .subscribe(
-                (contentType: ContentType) => {
+                (contentType: DotCMSContentType) => {
                     this.data = contentType;
                     this.layout = this.data.layout;
                     this.dotRouterService.goToEditContentType(this.data.id);
@@ -356,7 +356,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
             .putData(`v1/contenttype/id/${this.data.id}`, data)
             .pipe(take(1))
             .subscribe(
-                (contentType: ContentType) => {
+                (contentType: DotCMSContentType) => {
                     this.data = contentType;
                     this.show = false;
                 },

@@ -2,7 +2,7 @@ import { pluck } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldType } from '../models';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { CoreWebService } from 'dotcms-js';
 import { RequestMethod } from '@angular/http';
 import { FIELD_ICONS } from '../content-types-fields-list/content-types-fields-icon-map';
@@ -30,7 +30,7 @@ export class FieldService {
      * @returns Observable<any>
      * @memberof FieldService
      */
-    saveFields(contentTypeId: string, fields: DotContentTypeLayoutDivider[]): Observable<DotContentTypeLayoutDivider[]> {
+    saveFields(contentTypeId: string, fields: DotCMSContentTypeLayoutRow[]): Observable<DotCMSContentTypeLayoutRow[]> {
 
         return this.coreWebService
             .requestView({
@@ -47,18 +47,18 @@ export class FieldService {
      * Delete fields
      *
      * @param {string} contentTypeId content types's id that contains the fields
-     * @param {DotContentTypeField[]} fields Fields to delete
-     * @returns {Observable<{ fields: DotContentTypeLayoutDivider[]; deletedIds: string[] }>}
+     * @param {DotCMSContentTypeField[]} fields Fields to delete
+     * @returns {Observable<{ fields: DotCMSContentTypeLayoutRow[]; deletedIds: string[] }>}
      * @memberof FieldService
      */
     deleteFields(
         contentTypeId: string,
-        fields: DotContentTypeField[]
-    ): Observable<{ fields: DotContentTypeLayoutDivider[]; deletedIds: string[] }> {
+        fields: DotCMSContentTypeField[]
+    ): Observable<{ fields: DotCMSContentTypeLayoutRow[]; deletedIds: string[] }> {
         return this.coreWebService
             .requestView({
                 body: {
-                    fieldsID: fields.map((field: DotContentTypeField) => field.id)
+                    fieldsID: fields.map((field: DotCMSContentTypeField) => field.id)
                 },
                 method: RequestMethod.Delete,
                 url: `v3/contenttype/${contentTypeId}/fields`
@@ -81,11 +81,11 @@ export class FieldService {
      * Update a field
      *
      * @param {string} contentTypeId content type's id
-     * @param {DotContentTypeField} field field to update
-     * @returns {Observable<DotContentTypeLayoutDivider[]>}
+     * @param {DotCMSContentTypeField} field field to update
+     * @returns {Observable<DotCMSContentTypeLayoutRow[]>}
      * @memberof FieldService
      */
-    updateField(contentTypeId: string, field: DotContentTypeField): Observable<DotContentTypeLayoutDivider[]> {
+    updateField(contentTypeId: string, field: DotCMSContentTypeField): Observable<DotCMSContentTypeLayoutRow[]> {
         return this.coreWebService
             .requestView({
                 body: {

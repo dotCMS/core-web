@@ -5,7 +5,7 @@ import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
 import { ContentTypeFieldsAddRowModule } from '../';
 
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
@@ -40,11 +40,11 @@ import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component'
 })
 class TestContentTypeFieldsRowComponent {
     @Input()
-    fieldRow: DotContentTypeLayoutDivider;
+    fieldRow: DotCMSContentTypeLayoutRow;
     @Output()
-    editField: EventEmitter<DotContentTypeField> = new EventEmitter();
+    editField: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
     @Output()
-    removeField: EventEmitter<DotContentTypeField> = new EventEmitter();
+    removeField: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
 }
 
 @Component({
@@ -55,7 +55,7 @@ class TestContentTypeFieldsPropertiesFormComponent {
     @Output()
     saveField: EventEmitter<any> = new EventEmitter();
     @Input()
-    formFieldData: DotContentTypeField;
+    formFieldData: DotCMSContentTypeField;
 
     public destroy(): void {}
 }
@@ -66,12 +66,12 @@ class TestContentTypeFieldsPropertiesFormComponent {
 })
 class TestDotContentTypeFieldsTabComponent {
     @Input()
-    fieldTab: DotContentTypeLayoutDivider;
+    fieldTab: DotCMSContentTypeLayoutRow;
 
     @Output()
-    editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
+    editTab: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
     @Output()
-    removeTab: EventEmitter<DotContentTypeLayoutDivider> = new EventEmitter();
+    removeTab: EventEmitter<DotCMSContentTypeLayoutRow> = new EventEmitter();
 }
 
 @Component({
@@ -199,7 +199,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should reset values when close dialog', () => {
-        const fieldRow: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(1);
         comp.fieldRows = [fieldRow];
 
         comp.displayDialog = true;
@@ -230,9 +230,9 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should emit removeFields event when a Row is removed', () => {
-        let fieldsToRemove: DotContentTypeField[];
+        let fieldsToRemove: DotCMSContentTypeField[];
 
-        const fieldRow: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
+        const fieldRow: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -265,7 +265,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should cancel last drag and drop operation fields', () => {
-        const fieldRow1: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
+        const fieldRow1: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -302,7 +302,7 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 });
 
-let fakeFields: DotContentTypeLayoutDivider[];
+let fakeFields: DotCMSContentTypeLayoutRow[];
 
 @Component({
     selector: 'dot-test-host-component',
@@ -310,7 +310,7 @@ let fakeFields: DotContentTypeLayoutDivider[];
         '<dot-content-type-fields-drop-zone [layout]="layout" [loading]="loading"></dot-content-type-fields-drop-zone>'
 })
 class TestHostComponent {
-    layout: DotContentTypeLayoutDivider[];
+    layout: DotCMSContentTypeLayoutRow[];
     loading: boolean;
 
     constructor() {}
@@ -671,7 +671,7 @@ describe('Load fields and drag and drop', () => {
         beforeEach(async(() => {
             fixture.detectChanges();
 
-            const fieldToEdit: DotContentTypeField = fakeFields[2].columns[0].fields[0];
+            const fieldToEdit: DotCMSContentTypeField = fakeFields[2].columns[0].fields[0];
             this.testFieldDragDropService._fieldDropFromSource.next({
                 item: fieldToEdit,
                 target: {

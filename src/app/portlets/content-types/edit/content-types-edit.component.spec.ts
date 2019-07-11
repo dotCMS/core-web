@@ -6,7 +6,7 @@ import { ContentTypesEditComponent } from './content-types-edit.component';
 import { CrudService } from '@services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField, DotContentTypeLayoutDivider, ContentType } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow, DotCMSContentType } from '@dotcms/models';
 import { FieldService } from '../fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -40,13 +40,13 @@ import * as _ from 'lodash';
 })
 class TestContentTypeFieldsDropZoneComponent {
     @Input()
-    layout: DotContentTypeLayoutDivider[];
+    layout: DotCMSContentTypeLayoutRow[];
     @Input()
     loading: boolean;
     @Output()
-    saveFields = new EventEmitter<DotContentTypeField[]>();
+    saveFields = new EventEmitter<DotCMSContentTypeField[]>();
     @Output()
-    removeFields = new EventEmitter<DotContentTypeField[]>();
+    removeFields = new EventEmitter<DotCMSContentTypeField[]>();
 
     cancelLastDragAndDrop(): void {
     }
@@ -69,7 +69,7 @@ class TestContentTypesFormComponent {
     @Input()
     data: any;
     @Input()
-    layout: DotContentTypeField[];
+    layout: DotCMSContentTypeField[];
     // tslint:disable-next-line:no-output-on-prefix
     @Output()
     onSubmit: EventEmitter<any> = new EventEmitter();
@@ -246,7 +246,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         describe('create', () => {
-            let mockContentType: ContentType;
+            let mockContentType: DotCMSContentType;
             let contentTypeForm: DebugElement;
 
             beforeEach(() => {
@@ -266,7 +266,7 @@ describe('ContentTypesEditComponent', () => {
 
             it('should create content type', () => {
 
-                const responseContentType: ContentType = {
+                const responseContentType: DotCMSContentType = {
                     ...mockContentType,
                     ...{ id: '123' },
                     ...{
@@ -357,7 +357,7 @@ describe('ContentTypesEditComponent', () => {
         }
     ];
 
-    const currentLayoutInServer: DotContentTypeLayoutDivider[] = [
+    const currentLayoutInServer: DotCMSContentTypeLayoutRow[] = [
         {
             divider: {},
             columns: [
@@ -369,7 +369,7 @@ describe('ContentTypesEditComponent', () => {
         }
     ];
 
-    const fakeContentType: ContentType = {
+    const fakeContentType: DotCMSContentType = {
         baseType: 'CONTENT',
         id: '1234567890',
         clazz: 'com.dotcms.contenttype.model.type.ImmutableWidgetContentType',
@@ -494,8 +494,8 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields attribute when a field is edit', () => {
-            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
-            const fieldToUpdate: DotContentTypeField =  layout[0].columns[0].fields[0];
+            const layout: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
+            const fieldToUpdate: DotCMSContentTypeField =  layout[0].columns[0].fields[0];
             fieldToUpdate.name = 'Updated field';
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
@@ -509,7 +509,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should save fields on dropzone event', () => {
-            const newFieldsAdded: DotContentTypeField[] = [
+            const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
@@ -522,7 +522,7 @@ describe('ContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotContentTypeField[] = newFieldsAdded.concat(
+            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
                 currentFieldsInServer
             );
             const fieldService = fixture.debugElement.injector.get(FieldService);
@@ -538,7 +538,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should show loading when saving fields on dropzone', () => {
-            const newFieldsAdded: DotContentTypeField[] = [
+            const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
@@ -551,7 +551,7 @@ describe('ContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotContentTypeField[] = newFieldsAdded.concat(
+            const fieldsReturnByServer: DotCMSContentTypeField[] = newFieldsAdded.concat(
                 currentFieldsInServer
             );
             const fieldService = fixture.debugElement.injector.get(FieldService);
@@ -572,7 +572,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields on dropzone event when creating a new one or update', () => {
-            const newFieldsAdded: DotContentTypeField[] = [
+            const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
@@ -580,7 +580,7 @@ describe('ContentTypesEditComponent', () => {
                 }
             ];
 
-            const fieldsReturnByServer: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
+            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
             newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
@@ -596,7 +596,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields on dropzone event when creating a new row and move a existing field', () => {
-            const fieldsReturnByServer: DotContentTypeField[] = currentFieldsInServer.map(field => {
+            const fieldsReturnByServer: DotCMSContentTypeField[] = currentFieldsInServer.map(field => {
                 const newfield = Object.assign({}, field);
 
                 if (!newfield.id) {
@@ -606,12 +606,12 @@ describe('ContentTypesEditComponent', () => {
                 return newfield;
             });
 
-            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
+            const layout: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
             layout[0].columns[0].fields = fieldsReturnByServer;
             layout[0].divider.id = new Date().getMilliseconds().toString();
             layout[0].columns[0].columnDivider.id = new Date().getMilliseconds().toString();
 
-            const newRow: DotContentTypeLayoutDivider = {
+            const newRow: DotCMSContentTypeLayoutRow = {
                 divider: {
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
@@ -636,7 +636,7 @@ describe('ContentTypesEditComponent', () => {
             const dropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             spyOn(dropZone.componentInstance, 'cancelLastDragAndDrop').and.callThrough();
 
-            const newFieldsAdded: DotContentTypeField[] = [
+            const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
                     name: 'field 1',
                     id: '1',
@@ -666,7 +666,7 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should remove fields on dropzone event', () => {
-            const layout: DotContentTypeLayoutDivider[] = _.cloneDeep(currentLayoutInServer);
+            const layout: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
             layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);

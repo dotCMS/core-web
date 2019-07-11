@@ -1,9 +1,9 @@
-import { ContentType } from '@dotcms-models';
+import { DotCMSContentType } from '@dotcms/models';
 
 export interface DotSite {
     archived?: string;
     categoryId?: string;
-    contentType: ContentType;
+    contentType: DotCMSContentType;
     contentTypeId?: string;
     host?: string;
     hostname: string;

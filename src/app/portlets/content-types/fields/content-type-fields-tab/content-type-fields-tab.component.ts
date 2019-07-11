@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { take } from 'rxjs/operators';
@@ -17,13 +17,13 @@ import { take } from 'rxjs/operators';
 })
 export class ContentTypeFieldsTabComponent implements OnInit {
     @Input()
-    fieldTab: DotContentTypeLayoutDivider;
+    fieldTab: DotCMSContentTypeLayoutRow;
 
     @Output()
-    editTab: EventEmitter<DotContentTypeField> = new EventEmitter();
+    editTab: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
 
     @Output()
-    removeTab: EventEmitter<DotContentTypeLayoutDivider> = new EventEmitter();
+    removeTab: EventEmitter<DotCMSContentTypeLayoutRow> = new EventEmitter();
 
     i18nMessages: any = {};
     label: string;

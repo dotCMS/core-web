@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
 import { FieldType } from '../models';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
+import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from '@dotcms/models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
@@ -39,23 +39,23 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     dialogActiveTab: number;
     displayDialog = false;
-    currentField: DotContentTypeField;
+    currentField: DotCMSContentTypeField;
     currentFieldType: FieldType;
     dialogActions: DotDialogActions;
-    fieldRows: DotContentTypeLayoutDivider[];
+    fieldRows: DotCMSContentTypeLayoutRow[];
 
     @ViewChild('fieldPropertiesForm')
     propertiesForm: ContentTypeFieldsPropertiesFormComponent;
 
     @Input()
-    layout: DotContentTypeLayoutDivider[];
+    layout: DotCMSContentTypeLayoutRow[];
 
     @Output()
-    saveFields = new EventEmitter<DotContentTypeLayoutDivider[]>();
+    saveFields = new EventEmitter<DotCMSContentTypeLayoutRow[]>();
     @Output()
-    editField = new EventEmitter<DotContentTypeField>();
+    editField = new EventEmitter<DotCMSContentTypeField>();
     @Output()
-    removeFields = new EventEmitter<DotContentTypeField[]>();
+    removeFields = new EventEmitter<DotCMSContentTypeField[]>();
 
     hideButtons = false;
 
@@ -123,7 +123,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
         this.fieldDragDropService.fieldRowDropFromTarget$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((fieldRows: DotContentTypeLayoutDivider[]) => {
+            .subscribe((fieldRows: DotCMSContentTypeLayoutRow[]) => {
                 this.fieldRows = fieldRows;
                 this.saveFields.emit(fieldRows);
             });
@@ -141,7 +141,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .listen('add-tab-divider')
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                const fieldTab: DotContentTypeLayoutDivider = FieldUtil.createFieldTabDivider();
+                const fieldTab: DotCMSContentTypeLayoutRow = FieldUtil.createFieldTabDivider();
                 this.fieldRows.push(fieldTab);
                 this.setDroppedField(fieldTab.divider);
                 this.toggleDialog();
@@ -189,10 +189,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param DotContentTypeField fieldToSave
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    saveFieldsHandler(fieldToSave: DotContentTypeField): void {
+    saveFieldsHandler(fieldToSave: DotCMSContentTypeField): void {
         if (!this.currentField) {
             const tabDividerFields = FieldUtil.getTabDividerFields(this.fieldRows);
-            this.currentField = tabDividerFields.find((field: DotContentTypeField) => fieldToSave.id === field.id);
+            this.currentField = tabDividerFields.find((field: DotCMSContentTypeField) => fieldToSave.id === field.id);
         }
 
         Object.assign(this.currentField, fieldToSave);
@@ -211,10 +211,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param DotContentTypeField fieldToEdit
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    editFieldHandler(fieldToEdit: DotContentTypeField): void {
+    editFieldHandler(fieldToEdit: DotCMSContentTypeField): void {
         if (!this.fieldDragDropService.isDraggedEventStarted()) {
             const fields = FieldUtil.getFieldsWithoutLayout(this.fieldRows);
-            this.currentField = fields.find((field: DotContentTypeField) => fieldToEdit.id === field.id);
+            this.currentField = fields.find((field: DotCMSContentTypeField) => fieldToEdit.id === field.id);
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
             this.toggleDialog();
         }
@@ -250,21 +250,21 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with fieldToDelete
-     * @param {DotContentTypeField} fieldToDelete
+     * @param {DotCMSContentTypeField} fieldToDelete
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeField(fieldToDelete: DotContentTypeField): void {
+    removeField(fieldToDelete: DotCMSContentTypeField): void {
         this.removeFields.emit([fieldToDelete]);
     }
 
     /**
      * Trigger the removeFields event with all the fields in fieldRow
-     * @param {DotContentTypeLayoutDivider} fieldRow
+     * @param {DotCMSContentTypeLayoutRow} fieldRow
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeFieldRow(fieldRow: DotContentTypeLayoutDivider): void {
+    removeFieldRow(fieldRow: DotCMSContentTypeLayoutRow): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
-        const fieldsToDelete: DotContentTypeField[] = [];
+        const fieldsToDelete: DotCMSContentTypeField[] = [];
 
         if (!FieldUtil.isNewField(fieldRow.divider)) {
             fieldsToDelete.push(fieldRow.divider);
@@ -278,10 +278,10 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     /**
      * Trigger the removeFields event with the tab to be removed
-     * @param {DotContentTypeLayoutDivider} fieldTab
+     * @param {DotCMSContentTypeLayoutRow} fieldTab
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeTab(fieldTab: DotContentTypeLayoutDivider): void {
+    removeTab(fieldTab: DotCMSContentTypeLayoutRow): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
         this.removeFields.emit([fieldTab.divider]);
     }
@@ -320,7 +320,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }
 
-    private setDroppedField(droppedField: DotContentTypeField): void {
+    private setDroppedField(droppedField: DotCMSContentTypeField): void {
         this.currentField = droppedField;
         this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
     }

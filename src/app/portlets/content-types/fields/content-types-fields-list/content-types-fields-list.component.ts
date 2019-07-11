@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter, flatMap, toArray, take } from 'rxjs/operators';
 
 import { FieldType } from '../';
-import { DotContentTypeField } from '@dotcms-models';
+// import { DotCMSContentTypeField } from '@dotcms/models';
 
 /**
  * Show all the Field Types
@@ -17,25 +17,26 @@ import { DotContentTypeField } from '@dotcms-models';
     templateUrl: './content-types-fields-list.component.html'
 })
 export class ContentTypesFieldsListComponent implements OnInit {
-    fieldTypes: DotContentTypeField[];
+    fieldTypes: any[];
 
     constructor(public fieldService: FieldService) {}
 
     ngOnInit(): void {
-
         this.fieldService
             .loadFieldTypes()
             .pipe(
                 flatMap((fields: FieldType[]) => fields),
                 filter((field: FieldType) => field.id !== 'tab_divider'),
                 toArray(),
-                take(1))
-            .subscribe((fields: FieldType[]) => this.fieldTypes = fields.map(fieldType => {
-                return {
-                    clazz: fieldType.clazz,
-                    name: fieldType.label
-                };
-            }));
+                take(1)
+            )
+            .subscribe((fields: FieldType[]) => {
+                this.fieldTypes = fields.map((fieldType) => {
+                    return {
+                        clazz: fieldType.clazz,
+                        name: fieldType.label
+                    };
+                });
+            });
     }
-
 }
