@@ -45,7 +45,7 @@ const I8N_BASE = 'api.sites.ruleengine';
         (click)="setFieldFilter('enabled',false)">{{rsrc('inputs.filter.status.inactive.label') | async}}</a>
     </div>
   </div>
-  <div class="cw-rule-engine__empty" *ngIf="!!!rules.length">
+  <div class="cw-rule-engine__empty" *ngIf="!rules.length">
       <span>{{rsrc('inputs.want.to.add.rules') | async}}</span>
       <span>{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
       <button pButton label="{{rsrc('inputs.addRule.label') | async}}" (click)="addRule()" icon="fa fa-plus"></button>
