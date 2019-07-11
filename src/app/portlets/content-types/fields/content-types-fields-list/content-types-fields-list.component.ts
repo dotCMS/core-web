@@ -2,7 +2,8 @@ import { FieldService } from '../service';
 import { Component, OnInit } from '@angular/core';
 import { filter, flatMap, toArray, take } from 'rxjs/operators';
 
-import { DotContentTypeField, FieldType } from '../';
+import { FieldType } from '../';
+import { DotContentTypeField } from '@dotcms-models';
 
 /**
  * Show all the Field Types

@@ -4,13 +4,12 @@ import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/c
 import { ContentTypeFieldsRowComponent } from './';
 import { By } from '@angular/platform-browser';
 import { FieldDragDropService } from '../service';
-import { DotContentTypeField } from '../';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotContentTypeLayoutDivider } from '../models';
 import { FieldUtil } from '../util/field-util';
 
 const mockFieldRow: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(2);

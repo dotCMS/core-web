@@ -1,4 +1,4 @@
-import { ContentType } from '@portlets/content-types/shared/content-type.model';
+import { ContentType } from '@dotcms-models';
 
 export interface DotRelationship {
     archived: boolean;

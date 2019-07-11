@@ -3,11 +3,9 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
 import { By } from '@angular/platform-browser';
-import {
-    DotContentTypeField,
-    ContentTypeFieldsAddRowModule,
-    DotContentTypeLayoutDivider
-} from '../';
+import { ContentTypeFieldsAddRowModule } from '../';
+
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotActionButtonModule } from '@components/_common/dot-action-button/dot-action-button.module';
@@ -105,11 +103,9 @@ class TestFieldDragDropService {
 
 @Injectable()
 class TestDotLoadingIndicatorService {
-    show(): void {
-    }
+    show(): void {}
 
-    hide(): void {
-    }
+    hide(): void {}
 }
 
 function becomeNewField(field) {
@@ -229,7 +225,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
 
         comp.removeFields.subscribe((removeFields) => (fieldsToRemove = removeFields));
 
-
         comp.removeField(field);
         expect([field]).toEqual(fieldsToRemove);
     });
@@ -270,7 +265,6 @@ describe('ContentTypeFieldsDropZoneComponent', () => {
     });
 
     it('should cancel last drag and drop operation fields', () => {
-
         const fieldRow1: DotContentTypeLayoutDivider = FieldUtil.createFieldRow(1);
         const field = {
             clazz: 'classField',
@@ -381,7 +375,7 @@ describe('Load fields and drag and drop', () => {
                 { provide: FieldDragDropService, useValue: this.testFieldDragDropService },
                 { provide: HotkeysService, useClass: TestHotkeysMock },
                 { provide: Router, useValue: mockRouter },
-                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock },
+                { provide: DotLoadingIndicatorService, useValue: dotLoadingIndicatorServiceMock }
             ]
         });
 
@@ -418,7 +412,6 @@ describe('Load fields and drag and drop', () => {
                                 contentTypeId: '3b'
                             }
                         ]
-
                     },
                     {
                         columnDivider: {
@@ -437,7 +430,6 @@ describe('Load fields and drag and drop', () => {
                                 contentTypeId: '5b'
                             }
                         ]
-
                     }
                 ]
             },
@@ -460,7 +452,7 @@ describe('Load fields and drag and drop', () => {
                 },
                 columns: [
                     {
-                        columnDivider:             {
+                        columnDivider: {
                             clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                             id: '8',
                             name: 'field 8',
@@ -516,7 +508,9 @@ describe('Load fields and drag and drop', () => {
         comp.displayDialog = false;
         comp.saveFieldsHandler(fieldUpdated);
 
-        expect(comp.editField.emit).toHaveBeenCalledWith(Object.assign({}, updatedField, fieldUpdated));
+        expect(comp.editField.emit).toHaveBeenCalledWith(
+            Object.assign({}, updatedField, fieldUpdated)
+        );
     });
 
     it('should emit and create 2 columns', () => {
@@ -535,8 +529,9 @@ describe('Load fields and drag and drop', () => {
         dotEventsService.notify('add-tab-divider', {});
 
         expect(comp.fieldRows.length).toBe(4);
-        expect(comp.fieldRows[comp.fieldRows.length - 1].divider.clazz)
-            .toBe('com.dotcms.contenttype.model.field.ImmutableTabDividerField');
+        expect(comp.fieldRows[comp.fieldRows.length - 1].divider.clazz).toBe(
+            'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
+        );
     });
 
     it('should have FieldRow and FieldColumn', () => {
@@ -566,7 +561,6 @@ describe('Load fields and drag and drop', () => {
             }
         });
 
-
         expect(dropField).toBe(comp.currentField);
     });
 
@@ -576,7 +570,6 @@ describe('Load fields and drag and drop', () => {
         fixture.detectChanges();
         expect(hostComp.loading).toBe(false);
     });
-
 
     it('should save all the fields (moving the last line to the top)', (done) => {
         fixture.detectChanges();
@@ -614,7 +607,6 @@ describe('Load fields and drag and drop', () => {
     });
 
     it('should save all the new fields', (done) => {
-
         becomeNewField(fakeFields[2].divider);
         becomeNewField(fakeFields[2].columns[0].columnDivider);
         becomeNewField(fakeFields[2].columns[0].fields[0]);
@@ -638,7 +630,7 @@ describe('Load fields and drag and drop', () => {
         comp.saveFieldsHandler(newlyField);
     });
 
-   it('should handler removeField event', () => {
+    it('should handler removeField event', () => {
         const field = {
             clazz: 'classField',
             name: 'nameField'
@@ -692,7 +684,6 @@ describe('Load fields and drag and drop', () => {
         }));
 
         it('should display dialog if a drop event happen from source', () => {
-
             expect(comp.displayDialog).toBe(true);
             const dialog = de.query(By.css('dot-dialog'));
             expect(dialog).not.toBeNull();
@@ -700,7 +691,7 @@ describe('Load fields and drag and drop', () => {
 
         it('should set hideButtons to true when change to variable tab', () => {
             const tabView = de.query(By.css('p-tabView'));
-            tabView.triggerEventHandler('onChange', {index: 1});
+            tabView.triggerEventHandler('onChange', { index: 1 });
 
             fixture.detectChanges();
             expect(de.query(By.css('dot-dialog')).componentInstance.hideButtons).toEqual(true);
@@ -733,4 +724,3 @@ describe('Load fields and drag and drop', () => {
         });
     });
 });
-

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { DotContentTypeField } from '../models';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotContentTypeLayoutDivider } from '@portlets/content-types/fields/models/dot-content-type-layout-divider.model';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { take } from 'rxjs/operators';
 

@@ -1,4 +1,4 @@
-import { ContentType } from '@portlets/content-types/shared/content-type.model';
+import { ContentType } from '@dotcms-models';
 import { DotNewRelationshipsComponent } from './dot-new-relationships.component';
 import { ComponentFixture, async } from '@angular/core/testing';
 import {

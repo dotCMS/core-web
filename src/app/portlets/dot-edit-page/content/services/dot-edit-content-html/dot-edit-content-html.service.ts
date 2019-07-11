@@ -25,7 +25,7 @@ import { DotPageContent } from '../../../shared/models/dot-page-content.model';
 import { getEditPageCss } from '../../shared/iframe-edit-mode.css';
 import { GOOGLE_FONTS } from '../html/iframe-edit-mode.js';
 import { MODEL_VAR_NAME } from '../html/iframe-edit-mode.js';
-import { ContentType } from '../../../../content-types/shared/content-type.model';
+import { ContentType } from '@dotcms-models';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageModelChangeEvent, PageModelChangeEventType } from './models';
 import {

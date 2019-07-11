@@ -1,5 +1,8 @@
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '../';
-import { DotContentTypeColumn } from '../models';
+import {
+    DotContentTypeField,
+    DotContentTypeLayoutDivider,
+    DotContentTypeColumn
+} from '@dotcms-models';
 
 const COLUMN_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
@@ -23,7 +26,6 @@ export class FieldUtil {
     static isNewField(field: DotContentTypeField): Boolean {
         return !field.id;
     }
-
 
     /**
      * Return true if the field is a RowField or a ColumnField
@@ -67,7 +69,6 @@ export class FieldUtil {
         return field.clazz === TAB_FIELD.clazz;
     }
 
-
     /**
      * Create a new row
      * @static
@@ -77,11 +78,10 @@ export class FieldUtil {
      */
     static createFieldRow(nColumns: number): DotContentTypeLayoutDivider {
         return {
-            divider: {...ROW_FIELD},
+            divider: { ...ROW_FIELD },
             columns: new Array(nColumns).fill(null).map(() => FieldUtil.createFieldColumn())
         };
     }
-
 
     /**
      * Create a new column
@@ -92,11 +92,10 @@ export class FieldUtil {
      */
     static createFieldColumn(): DotContentTypeColumn {
         return {
-            columnDivider: {...COLUMN_FIELD},
+            columnDivider: { ...COLUMN_FIELD },
             fields: []
         };
     }
-
 
     /**
      * Create a new TabField
@@ -111,11 +110,10 @@ export class FieldUtil {
         };
     }
 
-
     /**
      * Split the fields array by FieldDivider: for example if we have a field array like:
      * ROW_FIELD, COLUMN_FIELD,TEXT_FIELD,TAB_FIELD,ROW_FIELD,COLUMN_FIELD,TEXT_FIELD
-     * 
+     *
      * then you would get:
      * [ROW_FIELD, COLUMN_FIELD,TEXT_FIELD], [TAB_FIELD] , [ROW_FIELD, COLUMN_FIELD, TEXT_FIELD]
      *
@@ -128,11 +126,10 @@ export class FieldUtil {
         return FieldUtil.splitFieldsBy(fields, [ROW_FIELD.clazz, TAB_FIELD.clazz]);
     }
 
-
     /**
      * Split the fields array by ColumnField: for example if we have a field array like:
      * COLUMN_FIELD,TEXT_FIELD,COLUMN_FIELD,TEXT_FIELD
-     * 
+     *
      * then you would get:
      * [COLUMN_FIELD,TEXT_FIELD], [COLUMN_FIELD,TEXT_FIELD]
      *
@@ -145,11 +142,10 @@ export class FieldUtil {
         return FieldUtil.splitFieldsBy(fields, [COLUMN_FIELD.clazz]);
     }
 
-
     /**
      * Split the fields array by fieldClass: for example if we have a field array like:
      * COLUMN_FIELD,TEXT_FIELD,COLUMN_FIELD,TEXT_FIELD
-     * 
+     *
      * and fieldClass is equal to 'com.dotcms.contenttype.model.field.ImmutableColumnField', then you would get:
      * [COLUMN_FIELD,TEXT_FIELD], [COLUMN_FIELD,TEXT_FIELD]
      *
@@ -159,7 +155,10 @@ export class FieldUtil {
      * @returns {DotContentTypeField[][]}
      * @memberof FieldUtil
      */
-    static splitFieldsBy(fields: DotContentTypeField[], fieldClass: string[]): DotContentTypeField[][] {
+    static splitFieldsBy(
+        fields: DotContentTypeField[],
+        fieldClass: string[]
+    ): DotContentTypeField[][] {
         const result: DotContentTypeField[][] = [];
         let currentFields: DotContentTypeField[];
 
@@ -194,11 +193,20 @@ export class FieldUtil {
      * @memberof FieldUtil
      */
     static getFieldsWithoutLayout(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
-        return layout.map((row: DotContentTypeLayoutDivider) => row.columns)
+        return layout
+            .map((row: DotContentTypeLayoutDivider) => row.columns)
             .filter((columns: DotContentTypeColumn[]) => !!columns)
-            .reduce((accumulator: DotContentTypeColumn[], currentValue: DotContentTypeColumn[]) => accumulator.concat(currentValue), [])
-            .map(fieldColumn => fieldColumn.fields)
-            .reduce((accumulator: DotContentTypeField[], currentValue: DotContentTypeField[]) => accumulator.concat(currentValue), []);
+            .reduce(
+                (accumulator: DotContentTypeColumn[], currentValue: DotContentTypeColumn[]) =>
+                    accumulator.concat(currentValue),
+                []
+            )
+            .map((fieldColumn) => fieldColumn.fields)
+            .reduce(
+                (accumulator: DotContentTypeField[], currentValue: DotContentTypeField[]) =>
+                    accumulator.concat(currentValue),
+                []
+            );
     }
 
     /**
@@ -210,7 +218,8 @@ export class FieldUtil {
      * @memberof FieldUtil
      */
     static getTabDividerFields(layout: DotContentTypeLayoutDivider[]): DotContentTypeField[] {
-        return layout.map(row => row.divider)
+        return layout
+            .map((row) => row.divider)
             .filter((field: DotContentTypeField) => FieldUtil.isTabDivider(field));
     }
 }

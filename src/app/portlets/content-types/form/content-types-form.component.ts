@@ -20,7 +20,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { DotContentTypeField, DotContentTypeLayoutDivider } from '../fields';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
 
 /**

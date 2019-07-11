@@ -68,6 +68,9 @@
       ],
       "dotcms/*": [
         "dist-lib/dotcms/*"
+      ],
+      "@dotcms-models": [
+        "projects/dotcms-models/src/public_api"
       ]
     }
   }

@@ -10,7 +10,8 @@ import {
     ViewChild
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
-import { DotContentTypeField, FieldType, DotContentTypeLayoutDivider } from '../models';
+import { FieldType } from '../models';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
 import { FieldUtil } from '../util/field-util';
@@ -312,7 +313,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
      /**
       * Hide or show the 'save' and 'hide' buttons according to the field tab selected
-      * 
+      *
       * @param index
       */
     handleTabChange(index: number): void {

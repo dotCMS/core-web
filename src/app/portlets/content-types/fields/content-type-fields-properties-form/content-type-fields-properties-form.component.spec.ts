@@ -13,7 +13,7 @@ import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { FieldPropertyService } from '../service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotContentTypeField } from '../index';
+import { DotContentTypeField } from '@dotcms-models';
 import { By } from '@angular/platform-browser';
 
 const mockDFormFieldData = {

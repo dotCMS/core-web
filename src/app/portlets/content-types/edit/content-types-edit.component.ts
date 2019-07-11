@@ -2,10 +2,11 @@ import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
-import { ContentType } from '../shared/content-type.model';
+import { ContentType } from '@dotcms-models';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
-import { DotContentTypeField, ContentTypeFieldsDropZoneComponent, DotContentTypeLayoutDivider } from '../fields/index';
+import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
+import { DotContentTypeField, DotContentTypeLayoutDivider } from '@dotcms-models';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -72,7 +73,6 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-
         this.route.data
             .pipe(
                 pluck('contentType'),
@@ -223,13 +223,19 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     removeFields(fieldsToDelete: DotContentTypeField[]): void {
         this.fieldService
             .deleteFields(this.data.id, fieldsToDelete)
-            .pipe(pluck('fields'), take(1))
+            .pipe(
+                pluck('fields'),
+                take(1)
+            )
             .subscribe(
                 (fields: DotContentTypeLayoutDivider[]) => {
                     this.layout = fields;
                 },
                 (err: ResponseView) => {
-                    this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe(() => {});
+                    this.dotHttpErrorManagerService
+                        .handle(err)
+                        .pipe(take(1))
+                        .subscribe(() => {});
                 }
             );
     }
@@ -241,18 +247,24 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      */
     saveFields(layout: DotContentTypeLayoutDivider[]): void {
         this.loadingFields = true;
-        this.fieldService.saveFields(this.data.id, layout).pipe(take(1)).subscribe(
-            (fields: DotContentTypeLayoutDivider[]) => {
-                this.layout = fields;
-                this.loadingFields = false;
-            },
-            (err: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe(() => {
-                    this.fieldsDropZone.cancelLastDragAndDrop();
+        this.fieldService
+            .saveFields(this.data.id, layout)
+            .pipe(take(1))
+            .subscribe(
+                (fields: DotContentTypeLayoutDivider[]) => {
+                    this.layout = fields;
                     this.loadingFields = false;
-                });
-            }
-        );
+                },
+                (err: ResponseView) => {
+                    this.dotHttpErrorManagerService
+                        .handle(err)
+                        .pipe(take(1))
+                        .subscribe(() => {
+                            this.fieldsDropZone.cancelLastDragAndDrop();
+                            this.loadingFields = false;
+                        });
+                }
+            );
     }
 
     /**
@@ -263,17 +275,23 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      */
     editField(fieldsToEdit: DotContentTypeField): void {
         this.loadingFields = true;
-        this.fieldService.updateField(this.data.id, fieldsToEdit).pipe(take(1)).subscribe(
-            () => {
-                this.loadingFields = false;
-            },
-            (err: ResponseView) => {
-                this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe(() => {
-                    this.fieldsDropZone.cancelLastDragAndDrop();
+        this.fieldService
+            .updateField(this.data.id, fieldsToEdit)
+            .pipe(take(1))
+            .subscribe(
+                () => {
                     this.loadingFields = false;
-                });
-            }
-        );
+                },
+                (err: ResponseView) => {
+                    this.dotHttpErrorManagerService
+                        .handle(err)
+                        .pipe(take(1))
+                        .subscribe(() => {
+                            this.fieldsDropZone.cancelLastDragAndDrop();
+                            this.loadingFields = false;
+                        });
+                }
+            );
     }
 
     /**
@@ -323,22 +341,28 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private handleHttpError(err: ResponseView) {
-        this.dotHttpErrorManagerService.handle(err).pipe(take(1)).subscribe((_handled: DotHttpErrorHandled) => {
-            this.dotRouterService.gotoPortlet('/content-types-angular');
-        });
+        this.dotHttpErrorManagerService
+            .handle(err)
+            .pipe(take(1))
+            .subscribe((_handled: DotHttpErrorHandled) => {
+                this.dotRouterService.gotoPortlet('/content-types-angular');
+            });
     }
 
     private updateContentType(value: any): void {
         const data = Object.assign({}, value, { id: this.data.id });
 
-        this.crudService.putData(`v1/contenttype/id/${this.data.id}`, data).pipe(take(1)).subscribe(
-            (contentType: ContentType) => {
-                this.data = contentType;
-                this.show = false;
-            },
-            (err: ResponseView) => {
-                this.handleHttpError(err);
-            }
-        );
+        this.crudService
+            .putData(`v1/contenttype/id/${this.data.id}`, data)
+            .pipe(take(1))
+            .subscribe(
+                (contentType: ContentType) => {
+                    this.data = contentType;
+                    this.show = false;
+                },
+                (err: ResponseView) => {
+                    this.handleHttpError(err);
+                }
+            );
     }
 }
