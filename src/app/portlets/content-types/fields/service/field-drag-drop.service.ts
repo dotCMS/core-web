@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map, tap } from 'rxjs/operators';
-import {
-    DotContentTypeLayoutDivider,
-    DotContentTypeField
-} from '@portlets/content-types/fields/models';
+import { DotContentTypeLayoutDivider, DotContentTypeField } from '@portlets/content-types/fields/models';
 import * as _ from 'lodash';
 
 /**
