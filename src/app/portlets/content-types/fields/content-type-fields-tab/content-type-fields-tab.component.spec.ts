@@ -8,9 +8,11 @@ import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 
 const tabField: DotCMSContentTypeField = {
+    ...dotcmsContentTypeFieldBasicMock,
     clazz: 'tab',
     name: 'fieldTab-1'
 };

@@ -11,15 +11,18 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { FieldUtil } from '../util/field-util';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 const mockFieldRow: DotCMSContentTypeLayoutRow = FieldUtil.createFieldRow(2);
 
 mockFieldRow.columns[0].fields = [
     {
+        ...dotcmsContentTypeFieldBasicMock,
         clazz: 'text',
         name: 'field-1'
     },
     {
+        ...dotcmsContentTypeFieldBasicMock,
         clazz: 'image',
         name: 'field-1'
     }
@@ -27,6 +30,7 @@ mockFieldRow.columns[0].fields = [
 
 mockFieldRow.columns[1].fields = [
     {
+        ...dotcmsContentTypeFieldBasicMock,
         clazz: 'text',
         name: 'field-1'
     }
@@ -130,6 +134,7 @@ describe('ContentTypeFieldsRowComponent', () => {
             let editField;
 
             const field = {
+                ...dotcmsContentTypeFieldBasicMock,
                 clazz: 'text',
                 name: 'field-1'
             };

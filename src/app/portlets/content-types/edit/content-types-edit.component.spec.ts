@@ -6,7 +6,11 @@ import { ContentTypesEditComponent } from './content-types-edit.component';
 import { CrudService } from '@services/crud/crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
-import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow, DotCMSContentType } from '@dotcms/models';
+import {
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow,
+    DotCMSContentType
+} from '@dotcms/models';
 import { FieldService } from '../fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -33,6 +37,7 @@ import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import * as _ from 'lodash';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -48,8 +53,7 @@ class TestContentTypeFieldsDropZoneComponent {
     @Output()
     removeFields = new EventEmitter<DotCMSContentTypeField[]>();
 
-    cancelLastDragAndDrop(): void {
-    }
+    cancelLastDragAndDrop(): void {}
 }
 
 @Component({
@@ -160,6 +164,7 @@ const getConfig = (route) => {
     };
 };
 
+
 let comp: ContentTypesEditComponent;
 let fixture: ComponentFixture<ContentTypesEditComponent>;
 let de: DebugElement;
@@ -265,24 +270,31 @@ describe('ContentTypesEditComponent', () => {
             });
 
             it('should create content type', () => {
-
                 const responseContentType: DotCMSContentType = {
                     ...mockContentType,
                     ...{ id: '123' },
                     ...{
                         fields: [
                             {
+                                ...dotcmsContentTypeFieldBasicMock,
                                 name: 'hello world'
-                          }
+                            }
                         ],
                         layout: [
                             {
-                                divider: {},
+                                divider: {
+                                    ...dotcmsContentTypeFieldBasicMock
+                                },
                                 columns: [
                                     {
-                                        columnDivider: {},
+                                        columnDivider: {
+                                            ...dotcmsContentTypeFieldBasicMock
+                                        },
                                         fields: [
-                                            { name: 'hello world' }
+                                            {
+                                                ...dotcmsContentTypeFieldBasicMock,
+                                                name: 'hello world'
+                                            }
                                         ]
                                     }
                                 ]
@@ -344,12 +356,14 @@ describe('ContentTypesEditComponent', () => {
 
     const currentFieldsInServer = [
         {
+            ...dotcmsContentTypeFieldBasicMock,
             name: 'fieldName',
             id: '4',
             clazz: 'fieldClass',
             sortOrder: 1
         },
         {
+            ...dotcmsContentTypeFieldBasicMock,
             name: 'field 3',
             id: '3',
             clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
@@ -359,10 +373,14 @@ describe('ContentTypesEditComponent', () => {
 
     const currentLayoutInServer: DotCMSContentTypeLayoutRow[] = [
         {
-            divider: {},
+            divider: {
+                ...dotcmsContentTypeFieldBasicMock
+            },
             columns: [
                 {
-                    columnDivider: {},
+                    columnDivider: {
+                        ...dotcmsContentTypeFieldBasicMock
+                    },
                     fields: currentFieldsInServer
                 }
             ]
@@ -495,7 +513,7 @@ describe('ContentTypesEditComponent', () => {
 
         it('should update fields attribute when a field is edit', () => {
             const layout: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
-            const fieldToUpdate: DotCMSContentTypeField =  layout[0].columns[0].fields[0];
+            const fieldToUpdate: DotCMSContentTypeField = layout[0].columns[0].fields[0];
             fieldToUpdate.name = 'Updated field';
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
@@ -511,11 +529,13 @@ describe('ContentTypesEditComponent', () => {
         it('should save fields on dropzone event', () => {
             const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                     sortOrder: 1
                 },
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 2',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                     sortOrder: 2
@@ -540,11 +560,13 @@ describe('ContentTypesEditComponent', () => {
         it('should show loading when saving fields on dropzone', () => {
             const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                     sortOrder: 1
                 },
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 2',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                     sortOrder: 2
@@ -574,13 +596,16 @@ describe('ContentTypesEditComponent', () => {
         it('should update fields on dropzone event when creating a new one or update', () => {
             const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                     sortOrder: 1
                 }
             ];
 
-            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
+            const fieldsReturnByServer: DotCMSContentTypeLayoutRow[] = _.cloneDeep(
+                currentLayoutInServer
+            );
             newFieldsAdded.concat(fieldsReturnByServer[0].columns[0].fields);
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
@@ -596,15 +621,17 @@ describe('ContentTypesEditComponent', () => {
         });
 
         it('should update fields on dropzone event when creating a new row and move a existing field', () => {
-            const fieldsReturnByServer: DotCMSContentTypeField[] = currentFieldsInServer.map(field => {
-                const newfield = Object.assign({}, field);
+            const fieldsReturnByServer: DotCMSContentTypeField[] = currentFieldsInServer.map(
+                (field) => {
+                    const newfield = Object.assign({}, field);
 
-                if (!newfield.id) {
-                    newfield.id = new Date().getMilliseconds().toString();
+                    if (!newfield.id) {
+                        newfield.id = new Date().getMilliseconds().toString();
+                    }
+
+                    return newfield;
                 }
-
-                return newfield;
-            });
+            );
 
             const layout: DotCMSContentTypeLayoutRow[] = _.cloneDeep(currentLayoutInServer);
             layout[0].columns[0].fields = fieldsReturnByServer;
@@ -613,6 +640,7 @@ describe('ContentTypesEditComponent', () => {
 
             const newRow: DotCMSContentTypeLayoutRow = {
                 divider: {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                     sortOrder: 1
@@ -632,18 +660,20 @@ describe('ContentTypesEditComponent', () => {
             expect(comp.layout).toEqual(layout);
         });
 
-        it('should handle 403 when user doesn\'t have permission to save feld', () => {
+        it("should handle 403 when user doesn't have permission to save feld", () => {
             const dropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             spyOn(dropZone.componentInstance, 'cancelLastDragAndDrop').and.callThrough();
 
             const newFieldsAdded: DotCMSContentTypeField[] = [
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 1',
                     id: '1',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                     sortOrder: 1
                 },
                 {
+                    ...dotcmsContentTypeFieldBasicMock,
                     name: 'field 2',
                     id: '2',
                     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
@@ -670,9 +700,7 @@ describe('ContentTypesEditComponent', () => {
             layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'deleteFields').and.returnValue(
-                observableOf({ fields: layout })
-            );
+            spyOn(fieldService, 'deleteFields').and.returnValue(observableOf({ fields: layout }));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 

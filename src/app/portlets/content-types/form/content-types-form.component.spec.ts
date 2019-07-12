@@ -42,6 +42,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import { DotCMSContentTypeLayoutRow } from '@dotcms/models';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 @Component({
     selector: 'dot-site-selector-field',
@@ -79,23 +80,27 @@ describe('ContentTypesFormComponent', () => {
     const layout: DotCMSContentTypeLayoutRow[] = [
         {
             divider: {
+                ...dotcmsContentTypeFieldBasicMock,
                 clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField',
                 name: 'row_field'
             },
             columns: [
                 {
                     columnDivider: {
+                        ...dotcmsContentTypeFieldBasicMock,
                         clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField',
                         name: 'column_field'
                     },
                     fields: [
                         {
+                            ...dotcmsContentTypeFieldBasicMock,
                             clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                             id: '123',
                             indexed: true,
                             name: 'Date 1'
                         },
                         {
+                            ...dotcmsContentTypeFieldBasicMock,
                             clazz: 'com.dotcms.contenttype.model.field.ImmutableDateTimeField',
                             id: '456',
                             indexed: true,

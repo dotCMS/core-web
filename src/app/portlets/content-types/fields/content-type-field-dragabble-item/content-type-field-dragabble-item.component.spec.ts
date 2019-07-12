@@ -10,6 +10,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { FieldService } from '../service';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 describe('ContentTypesFieldDragabbleItemComponent', () => {
     let comp: ContentTypesFieldDragabbleItemComponent;
@@ -38,6 +39,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should have a name & variable', () => {
         const field = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
@@ -58,6 +60,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should have copy variable button', () => {
         const field = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
@@ -79,6 +82,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should have field attributes label', () => {
         const field = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fieldTypeLabel: 'FieldLabel',
             fixed: true,
@@ -103,6 +107,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should has a remove button', () => {
         const field = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: false,
             indexed: true,
@@ -130,6 +135,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should not has a remove button (Fixed Field)', () => {
         const field = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
@@ -148,6 +154,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should have a edit button', () => {
         const mockField = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
@@ -175,6 +182,7 @@ describe('ContentTypesFieldDragabbleItemComponent', () => {
 
     it('should edit field on host click', () => {
         const mockField = {
+            ...dotcmsContentTypeFieldBasicMock,
             fieldType: 'fieldType',
             fixed: true,
             indexed: true,
