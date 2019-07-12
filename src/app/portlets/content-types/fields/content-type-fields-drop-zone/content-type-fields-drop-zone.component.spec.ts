@@ -327,6 +327,10 @@ class TestHostComponent {
     constructor() {}
 }
 
+// TODO: Upgrade tests to use FieldDragDropService (without mocking) and mocking DragulaService
+// Issue ref: dotCMS/core#16772 When you DnD a field (reorder) in the same column it shows up the edit field dialog
+// https://github.com/dotCMS/core-web/pull/1085
+
 describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
