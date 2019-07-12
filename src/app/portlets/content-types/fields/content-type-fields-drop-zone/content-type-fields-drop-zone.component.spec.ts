@@ -663,7 +663,7 @@ describe('Load fields and drag and drop', () => {
 
     it('should disable field variable tab', () => {
         comp.currentField = {
-            ...dotcmsContentTypeFieldBasicMock,
+            ...dotcmsContentTypeFieldBasicMock
         };
         comp.displayDialog = true;
         fixture.detectChanges();

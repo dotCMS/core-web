@@ -57,10 +57,10 @@ export interface DotCMSContentTypeLayoutColumn {
 
 export interface DotCMSContentTypeFieldCategories {
     categoryName: string;
-    description?: any;
+    description?: string;
     inode: string;
     key: string;
-    keywords?: any;
+    keywords?: string;
     sortOrder: number;
 }
 
@@ -86,6 +86,6 @@ interface Workflow {
     mandatory: boolean;
     defaultScheme: boolean;
     modDate: number;
-    entryActionId?: any;
+    entryActionId?: string;
     system: boolean;
 }
