@@ -1,6 +1,7 @@
 import { SearchableDropdownComponent } from './component';
 import { NgModule } from '@angular/core';
-import { OverlayPanelModule, ButtonModule, InputTextModule, DataListModule } from 'primeng/primeng';
+import { OverlayPanelModule, ButtonModule, InputTextModule } from 'primeng/primeng';
+import { DataViewModule } from 'primeng/dataview';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DotIconModule } from '../dot-icon/dot-icon.module';
@@ -8,7 +9,7 @@ import { DotIconModule } from '../dot-icon/dot-icon.module';
 export const SEARCHABLE_NGFACES_MODULES = [
     ButtonModule,
     CommonModule,
-    DataListModule,
+    DataViewModule,
     FormsModule,
     InputTextModule,
     OverlayPanelModule

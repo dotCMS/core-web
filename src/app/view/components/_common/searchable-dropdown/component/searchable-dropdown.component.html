@@ -7,7 +7,7 @@
         <dot-icon class="searchable-dropdown__search-icon" name="search"></dot-icon>
         <input #searchInput pInputText [placeholder]="i18nMessages['search']" type="text" class="searchable-dropdown__search-field" (click)="$event.stopPropagation()" />
     </header>
-    <p-dataList
+    <p-dataView
         (click)="$event.stopPropagation()"
         (onLazyLoad)="paginate($event)"
         [lazy]="true"
@@ -17,10 +17,10 @@
         [totalRecords]="totalRecords"
         [value]="options"
         class="searchable-dropdown__data-list">
-        <ng-template let-item pTemplate="item">
+        <ng-template let-item pTemplate="listItem">
             <span [class.selected]="item[labelPropertyName] === valueString" (click)="handleClick(item)">{{ item.label }}</span>
         </ng-template>
-    </p-dataList>
+    </p-dataView>
 </p-overlayPanel>
 
 <button #button dotMdRipple pButton

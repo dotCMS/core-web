@@ -41,38 +41,40 @@ dot-searchable-dropdown {
 }
 
 .searchable-dropdown__data-list {
-    .ui-datalist {
+    .ui-dataview {
         min-height: 321px;
     }
 
-    .ui-datalist-content {
+    .ui-dataview-content {
         width: 300px;
-    }
 
-    .ui-datalist-emptymessage {
-        padding: 1em;
-    }
+        .ui-g {
+            margin: 0;
 
-    .ui-datalist-data {
-        margin: $basic-padding 0;
-
-        span {
-            cursor: pointer;
-            display: block;
-            padding: $basic-padding / 2;
-            transition: background-color $basic-speed ease-in;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            &.selected {
-                font-weight: bold;
-            }
-
-            &:hover {
-                background-color: $gray-bg;
+            span.ng-star-inserted {
+                cursor: pointer;
+                display: block;
+                padding: $basic-padding / 2;
+                transition: background-color $basic-speed ease-in;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 100%;
+    
+                &.selected {
+                    font-weight: bold;
+                }
+    
+                &:hover {
+                    background-color: $gray-bg;
+                }
             }
         }
+        
+    }
+
+    .ui-dataview-emptymessage {
+        padding: 1em;
     }
 }
 
