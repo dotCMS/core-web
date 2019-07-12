@@ -1,8 +1,10 @@
 import { DotApiForm } from '../DotApiForm';
-import { DotCMSContentType } from '../../models';
+import { DotCMSContentType } from '@dotcms/models';
+import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 
 const fieldReturned = [
     {
+        ...dotcmsContentTypeFieldBasicMock,
         fieldType: 'Text',
         defaultValue: 'defaultValue1',
         hint: 'hint1',
@@ -12,6 +14,7 @@ const fieldReturned = [
         variable: 'field1'
     },
     {
+        ...dotcmsContentTypeFieldBasicMock,
         fieldType: 'Text',
         defaultValue: 'defaultValue',
         hint: 'hint2',
@@ -65,16 +68,16 @@ describe('DotApiForm', () => {
     let dotApiContent;
     let dotApiContentType;
     let dotApiForm;
-
-    const defineCustomElements = jasmine.createSpy('defineCustomElements');
+    let defineCustomElements;
 
     beforeEach(() => {
         dotApiContentType = new DotApiContentTypeMock();
+        defineCustomElements = jasmine.createSpy('defineCustomElements');
     });
 
     it('should render a dot-form', (done) => {
         dotApiContent = new DotApiContentMock();
-        const expectedForm = `<dot-form submit-label="Save" reset-label="Clear"></dot-form>`;
+        const expectedForm = `<dot-form></dot-form>`;
 
         const config = {
             identifier: '321',
