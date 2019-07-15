@@ -53,10 +53,10 @@ $ npm publish
 ## Internal Libraries
 
 ### [dotcms](https://github.com/dotCMS/core-web/tree/master/projects/dotcms)
-A collection of Angular Services to connect our FE with the DotCMS APIs.
+A collection of Angular Services to connect our FE with the DotCMS APIs. [Full docs](https://dotcms.github.io/core-web/docs/dotcms/globals.html)
 
 ### [dotcms-models](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-models)
-A collection of DotCMS interfaces and types to be reused in all our libraries and main app.
+A collection of DotCMS interfaces and types to be reused in all our libraries and main app. [Full docs](https://dotcms.github.io/core-web/docs/dotcms-models/globals.html)
 
 ### [dotcms-field-elements](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-field-elements)
 A [StencilJS](https://stenciljs.com/) Web Elements library of DotCMS form fields.
@@ -69,7 +69,6 @@ Our DotCMS Rules portlet.
 
 ### [dotcms-js](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-js) _(deprecated)_
 This in a inherit collection of Angular Services.
-
 
 ------------------------
 
