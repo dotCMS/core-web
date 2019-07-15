@@ -1,4 +1,4 @@
-import { async, ComponentFixture } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter, Injectable } from '@angular/core';
 import { ContentTypeFieldsDropZoneComponent } from './';
@@ -88,17 +88,26 @@ class TestFieldDragDropService {
     _fieldDropFromSource: Subject<any> = new Subject();
     _fieldDropFromTarget: Subject<any> = new Subject();
     _fieldRowDropFromTarget: Subject<any> = new Subject();
+    draggedEvent = false;
 
     get fieldDropFromSource$(): Observable<any> {
         return this._fieldDropFromSource.asObservable();
     }
 
     get fieldDropFromTarget$(): Observable<any> {
+        this.draggedEvent = true;
+        setTimeout(() => {
+            this.draggedEvent = false;
+        }, 100);
         return this._fieldDropFromTarget.asObservable();
     }
 
     get fieldRowDropFromTarget$(): Observable<any> {
         return this._fieldRowDropFromTarget.asObservable();
+    }
+
+    isDraggedEventStarted(): boolean {
+        return this.draggedEvent;
     }
 }
 
@@ -320,6 +329,10 @@ class TestHostComponent {
     constructor() {}
 }
 
+// TODO: Upgrade tests to use FieldDragDropService (without mocking) and mocking DragulaService
+// Issue ref: dotCMS/core#16772 When you DnD a field (reorder) in the same column it shows up the edit field dialog
+// https://github.com/dotCMS/core-web/pull/1085
+
 describe('Load fields and drag and drop', () => {
     const dotLoadingIndicatorServiceMock: TestDotLoadingIndicatorService = new TestDotLoadingIndicatorService();
     let hostComp: TestHostComponent;
@@ -504,10 +517,12 @@ describe('Load fields and drag and drop', () => {
         expect(spy).toHaveBeenCalledWith(field);
     });
 
-    it('should save all updated fields', () => {
+    it('should save all updated fields', fakeAsync(() => {
         const updatedField = fakeFields[2].columns[0].fields[0];
 
         fixture.detectChanges();
+
+        tick(100);
         comp.editFieldHandler(updatedField);
 
         spyOn(comp.editField, 'emit');
@@ -525,7 +540,7 @@ describe('Load fields and drag and drop', () => {
         expect(comp.editField.emit).toHaveBeenCalledWith(
             Object.assign({}, updatedField, fieldUpdated)
         );
-    });
+    }));
 
     it('should emit and create 2 columns', () => {
         spyOn(comp, 'addRow');
@@ -620,7 +635,7 @@ describe('Load fields and drag and drop', () => {
         this.testFieldDragDropService._fieldRowDropFromTarget.next(fieldMoved);
     });
 
-    it('should save all the new fields', (done) => {
+    it('should save all the new fields and at the end DraggedStarted event should be false', (done) => {
         becomeNewField(fakeFields[2].divider);
         becomeNewField(fakeFields[2].columns[0].columnDivider);
         becomeNewField(fakeFields[2].columns[0].fields[0]);
@@ -639,6 +654,9 @@ describe('Load fields and drag and drop', () => {
 
         comp.saveFields.subscribe((fields) => {
             expect(fakeFields).toEqual(fields);
+            setTimeout(() => {
+                expect(this.testFieldDragDropService.isDraggedEventStarted()).toBe(false);
+            }, 100);
             done();
         });
         comp.saveFieldsHandler(newlyField);

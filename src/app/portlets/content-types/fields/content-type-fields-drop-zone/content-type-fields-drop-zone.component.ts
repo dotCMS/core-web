@@ -117,7 +117,6 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .subscribe(() => {
                 setTimeout(() => {
                     this.saveFields.emit(this.fieldRows);
-                    this.fieldDragDropService.endDraggedEvent();
                 }, 0);
             });
 
