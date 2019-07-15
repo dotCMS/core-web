@@ -20,6 +20,7 @@ $gray-bg: #f1f3f4;
 $md-shadow-4: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
 $basic-padding: 8px;
+$font-size-xx-large: 24px;
 
 
 // generic transform
@@ -519,7 +520,7 @@ $finder-s-input: '.ui.input input';
         }
 
         h2 {
-            font-size: 22px;
+            font-size: $font-size-xx-large;
             margin: 0;
             color: $gray;
         }
