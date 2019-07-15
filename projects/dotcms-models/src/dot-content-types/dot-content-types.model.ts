@@ -64,11 +64,13 @@ export interface DotCMSContentTypeFieldCategories {
     sortOrder: number;
 }
 
+/** @private */
 interface Relationships {
     cardinality: number;
     velocityVar: string;
 }
 
+/** @private */
 interface FieldVariable {
     clazz: string;
     fieldId: string;
@@ -77,6 +79,7 @@ interface FieldVariable {
     value: string;
 }
 
+/** @private */
 interface Workflow {
     id: string;
     creationDate: number;
