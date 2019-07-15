@@ -11,6 +11,8 @@ import { map, take } from 'rxjs/operators';
 })
 export class DotPersonaSelectorComponent implements OnInit {
     @Input()
+    pageId: string;
+    @Input()
     value: DotPersona;
     @Output()
     selected = new EventEmitter<DotPersona>();

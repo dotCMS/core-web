@@ -9,6 +9,7 @@ import { DotDeviceSelectorModule } from '@components/dot-device-selector/dot-dev
 import { DotPersonasService } from '@services/dot-personas/dot-personas.service';
 import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
 import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
+import { DotPersonaSelector2Module } from '@components/dot-persona-selector2/dot-persona.selector2.module';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
         DropdownModule,
         FormsModule,
         DotPersonaSelectorModule,
+        DotPersonaSelector2Module,
         DotLanguageSelectorModule,
         DotDeviceSelectorModule
     ],

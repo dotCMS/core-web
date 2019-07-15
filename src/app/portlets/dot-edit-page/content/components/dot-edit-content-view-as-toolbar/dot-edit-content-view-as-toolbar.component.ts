@@ -35,6 +35,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        console.log('---pageState.viewAs.persona', this.pageState.viewAs.persona)
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
         this.dotMessageService
             .getMessages(['editpage.viewas.previewing'])
@@ -46,6 +47,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Input()
     set pageState(pageState: DotRenderedPageState) {
         this._pageState = pageState;
+        console.log('---', pageState)
         this.value = pageState.viewAs;
     }
 

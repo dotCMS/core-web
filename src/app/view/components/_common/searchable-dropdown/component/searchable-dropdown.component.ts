@@ -11,7 +11,8 @@ import {
     SimpleChanges,
     OnChanges,
     OnInit,
-    SimpleChange
+    SimpleChange,
+    TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -41,6 +42,8 @@ import * as _ from 'lodash';
 export class SearchableDropdownComponent implements ControlValueAccessor, OnChanges, OnInit {
     @Input()
     data: any[];
+
+    @Input() externalTemplate: TemplateRef<any>;
 
     @Input()
     labelPropertyName: string | string[];
@@ -242,6 +245,7 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
                 item.label = this.getItemLabel(item);
                 return item;
             });
+            console.log('---options', this.options)
         }
     }
 

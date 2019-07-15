@@ -1,3 +1,7 @@
+<ng-template let-item="item" pTemplate="listItem" #defaultTemplate>
+    <span [class.selected]="item[labelPropertyName] === valueString" (click)="handleClick(item)">{{ item.label }}</span>
+</ng-template>
+
 <p-overlayPanel
     #searchPanel
     appendTo="body"
@@ -18,7 +22,7 @@
         [value]="options"
         class="searchable-dropdown__data-list">
         <ng-template let-item pTemplate="listItem">
-            <span [class.selected]="item[labelPropertyName] === valueString" (click)="handleClick(item)">{{ item.label }}</span>
+            <ng-container [ngTemplateOutlet]="externalTemplate || defaultTemplate" [ngTemplateOutletContext]="{item: item}"></ng-container>
         </ng-template>
     </p-dataView>
 </p-overlayPanel>

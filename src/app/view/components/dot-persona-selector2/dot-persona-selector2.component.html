@@ -1,0 +1,18 @@
+<ng-template let-item="item" pTemplate="listItem" #personaTemplate>
+    <p>- {{ item.label }}</p>
+</ng-template>
+
+<dot-searchable-dropdown
+    #searchableDropdown
+    (change)="personaChange($event)"
+    (filterChange)="handleFilterChange($event)"
+    (pageChange)="handlePageChange($event)"
+    [data]="personas"
+    [(ngModel)]="value"
+    [pageLinkSize]="3"
+    [rows]="10"
+    [totalRecords]="paginationService.totalRecords"
+    labelPropertyName="name"
+    [externalTemplate]="personaTemplate"
+    >
+</dot-searchable-dropdown>
