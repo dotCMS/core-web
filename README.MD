@@ -52,20 +52,20 @@ $ npm publish
 
 ## Internal Libraries
 
-### [dot-layout-grid](https://github.com/dotCMS/core-web/tree/master/projects/dot-layout-grid)
-For our page Layout Editor, allow us to create rows and columns on a page layout.
-
-### [dot-rules](https://github.com/dotCMS/core-web/tree/master/projects/dot-rules)
-Our DotCMS Rules portlet.
-
-### [dotcms-field-elements](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-field-elements)
-A [StencilJS](https://stenciljs.com/) Web Elements library of DotCMS form fields.
-
 ### [dotcms](https://github.com/dotCMS/core-web/tree/master/projects/dotcms)
 A collection of Angular Services to connect our FE with the DotCMS APIs.
 
 ### [dotcms-models](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-models)
 A collection of DotCMS interfaces and types to be reused in all our libraries and main app.
+
+### [dotcms-field-elements](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-field-elements)
+A [StencilJS](https://stenciljs.com/) Web Elements library of DotCMS form fields.
+
+### [dot-layout-grid](https://github.com/dotCMS/core-web/tree/master/projects/dot-layout-grid)
+For our page Layout Editor, allow us to create rows and columns on a page layout.
+
+### [dot-rules](https://github.com/dotCMS/core-web/tree/master/projects/dot-rules)
+Our DotCMS Rules portlet.
 
 ### [dotcms-js](https://github.com/dotCMS/core-web/tree/master/projects/dotcms-js) _(deprecated)_
 This in a inherit collection of Angular Services.

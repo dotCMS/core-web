@@ -38,6 +38,7 @@ const contentTypeReturned: DotCMSContentType = {
     variable: 'contentTest1'
 };
 
+/** @hidden */
 class DotApiContentTypeMock {
     get(): Promise<DotCMSContentType> {
         return new Promise((resolve) => {
@@ -46,6 +47,7 @@ class DotApiContentTypeMock {
     }
 }
 
+/** @hidden */
 class DotApiContentMock {
     constructor(private fail = false) {}
 
