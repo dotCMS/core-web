@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { ListingDataTableComponent } from '@components/listing-data-table/listing-data-table.component';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { CrudService } from '@services/crud';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActionHeaderOptions } from '@models/action-header';
@@ -78,10 +78,24 @@ export class ContentTypesPortletComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         public dotMessageService: DotMessageService
-    ) {}
+    ) {
+
+        console.log('ContentTypesPortletComponent');
+
+        this.router.events.subscribe((e: any) => {
+            // If it is a NavigationEnd event re-initalise the component
+            if (e instanceof NavigationEnd) {
+                console.log('this.router.events: ', e);
+                this.ngOnInit();
+            }
+        });
+
+
+    }
 
     ngOnInit() {
 
+        console.log('OnINit ContentTypesPortletComponent');
         observableForkJoin(
             this.dotMessageService.getMessages(this.i18nKeys),
             this.dotContentTypeService.getAllContentTypes(),

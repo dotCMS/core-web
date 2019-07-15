@@ -7,18 +7,21 @@ import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.serv
 const contentTypesRoutes: Routes = [
     {
         component: ContentTypesPortletComponent,
-        path: ''
+        path: '',
+        runGuardsAndResolvers: 'always'
     },
     {
         path: 'create',
-        redirectTo: ''
+        redirectTo: '',
+        runGuardsAndResolvers: 'always'
     },
     {
         component: ContentTypesEditComponent,
         path: 'create/:type',
         resolve: {
             contentType: ContentTypeEditResolver
-        }
+        },
+        runGuardsAndResolvers: 'always'
     },
     {
         path: 'edit',
@@ -29,7 +32,8 @@ const contentTypesRoutes: Routes = [
         path: 'edit/:id',
         resolve: {
             contentType: ContentTypeEditResolver
-        }
+        },
+        runGuardsAndResolvers: 'always'
     }
 ];
 

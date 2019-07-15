@@ -15,6 +15,8 @@ export class AuthGuardService implements CanActivate {
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return this.loginService.isLogin$.pipe(
             map((isLogin) => {
+                console.log('IS LOGIN GuardService');
+                debugger;
                 if (!isLogin) {
                     this.dotRouterService.goToLogin();
                     this.dotRouterService.previousSavedURL = state.url;

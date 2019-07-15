@@ -29,6 +29,15 @@ export class DotRouterService {
         this.portletReload$.next(id);
     }
 
+    reloadAngularPortlet(): void {
+        this.router.navigate([this.router.url]);
+
+        // this.router.navigateByUrl(this.router.url + '?').then(() => {
+        //     this.router.navigated = false;
+        //     this.router.navigate([this.router.url]);
+        // });
+    }
+
     /**
      * Go to edit page
      *
@@ -77,6 +86,7 @@ export class DotRouterService {
     }
 
     goToLogin(parameters?: any): void {
+        debugger;
         this.router.navigate(['/public/login'], parameters);
     }
 
@@ -142,7 +152,7 @@ export class DotRouterService {
 
         const urlSegments = url
             .split('/')
-            .filter((item) => item !== '' && item !== '#' && item !== 'c');
+            .filter(item => item !== '' && item !== '#' && item !== 'c');
         return urlSegments.indexOf('add') > -1 ? urlSegments.splice(-1)[0] : urlSegments[0];
     }
 

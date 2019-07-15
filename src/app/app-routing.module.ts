@@ -119,7 +119,8 @@ const appRoutes: Routes = [
         canActivate: [AuthGuardService],
         component: MainComponentLegacyComponent,
         children: [...PORTLETS_IFRAME, ...PORTLETS_ANGULAR],
-        path: ''
+        path: '',
+        runGuardsAndResolvers: 'always'
     },
     {
         canActivate: [DefaultGuardService],
@@ -132,7 +133,8 @@ const appRoutes: Routes = [
     exports: [RouterModule],
     imports: [
         RouterModule.forRoot(appRoutes, {
-            useHash: true
+            useHash: true,
+            onSameUrlNavigation: 'reload'
         })
     ]
 })
