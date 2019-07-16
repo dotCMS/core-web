@@ -38,8 +38,6 @@ export class DotToolbarComponent implements OnInit {
         this.siteService.switchSite(site);
         if (this.dotRouterService.isEditPage()) {
             this.dotRouterService.goToSiteBrowser();
-        } else {
-            this.dotRouterService.reloadAngularPortlet();
         }
     }
 

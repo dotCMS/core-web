@@ -29,15 +29,6 @@ export class DotRouterService {
         this.portletReload$.next(id);
     }
 
-    reloadAngularPortlet(): void {
-        this.router.navigate([this.router.url]);
-
-        // this.router.navigateByUrl(this.router.url + '?').then(() => {
-        //     this.router.navigated = false;
-        //     this.router.navigate([this.router.url]);
-        // });
-    }
-
     /**
      * Go to edit page
      *
@@ -86,7 +77,6 @@ export class DotRouterService {
     }
 
     goToLogin(parameters?: any): void {
-        debugger;
         this.router.navigate(['/public/login'], parameters);
     }
 

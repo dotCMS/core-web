@@ -81,12 +81,10 @@ export class ContentTypesPortletComponent implements OnInit {
     ) {
 
         console.log('ContentTypesPortletComponent');
-
         this.router.events.subscribe((e: any) => {
-            // If it is a NavigationEnd event re-initalise the component
             if (e instanceof NavigationEnd) {
                 console.log('this.router.events: ', e);
-                this.ngOnInit();
+                // TODO: call function that will reload data
             }
         });
 
@@ -94,7 +92,6 @@ export class ContentTypesPortletComponent implements OnInit {
     }
 
     ngOnInit() {
-
         console.log('OnINit ContentTypesPortletComponent');
         observableForkJoin(
             this.dotMessageService.getMessages(this.i18nKeys),
