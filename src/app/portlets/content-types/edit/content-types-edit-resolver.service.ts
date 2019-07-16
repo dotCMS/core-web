@@ -30,6 +30,7 @@ export class ContentTypeEditResolver implements Resolve<ContentType> {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<ContentType> {
+        console.log('-----ContentTypeEditResolver-----');
         if (route.paramMap.get('id')) {
             return this.getContentType(route.paramMap.get('id'));
         } else {
