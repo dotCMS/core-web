@@ -11,6 +11,9 @@ import {
     ConditionGroupActionEvent
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
+import {map, take} from 'rxjs/operators';
+import {ActivatedRoute, Params} from '@angular/router';
+import {__param} from 'tslib';
 
 const I8N_BASE = 'api.sites.ruleengine';
 
@@ -31,7 +34,9 @@ const I8N_BASE = 'api.sites.ruleengine';
       <input pInputText placeholder="{{rsrc('inputs.filter.placeholder') | async}}"
         [value]="filterText" (keyup)="filterText = $event.target.value"/>
       <div flex="2"></div>
-      <button pButton label="{{rsrc('inputs.addRule.label') | async}}" (click)="addRule()" icon="fa fa-plus"></button>
+      <button class="dot-icon-button" (click)="addRule()" >
+          <i class="material-icons">add</i>
+      </button>
     </div>
     <div class="cw-filter-links">
       <span>{{rsrc('inputs.filter.status.show.label') | async}}:</span>
@@ -47,8 +52,8 @@ const I8N_BASE = 'api.sites.ruleengine';
   </div>
   <div class="cw-rule-engine__empty" *ngIf="!rules.length">
       <i class="material-icons">tune</i>
-      <h2>{{rsrc('inputs.want.to.add.rules') | async}}</h2>
-      <span>{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
+      <h2>{{rsrc('inputs.no.rules') | async }} {{rsrc(realmId ? 'inputs.page' : 'inputs.site') | async)}} {{rsrc('inputs.add.one.now') | async}}</h2>
+      <span *ngIf="realmId">{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
       <button pButton label="{{rsrc('inputs.addRule.label') | async}}" (click)="addRule()" icon="fa fa-plus"></button>
   </div>
   <rule *ngFor="let rule of rules" [rule]="rule" [hidden]="isFiltered(rule) == true"
@@ -119,17 +124,19 @@ export class RuleEngineComponent {
     filterText: string;
     status: string;
     activeRules: number;
+    realmId: string;
 
     private resources: I18nService;
     private _rsrcCache: { [key: string]: Observable<string> };
 
-    constructor(resources: I18nService) {
+    constructor(resources: I18nService, private route: ActivatedRoute) {
         this.resources = resources;
         resources.get(I8N_BASE).subscribe(rsrc => {});
         this.filterText = '';
         this.rules = [];
         this._rsrcCache = {};
         this.status = null;
+        this.getRealmId();
     }
 
     rsrc(subkey: string): Observable<any> {
@@ -183,4 +190,12 @@ export class RuleEngineComponent {
     isFiltered(rule: RuleModel): boolean {
         return CwFilter.isFiltered(rule, this.filterText);
     }
+
+    private getRealmId(): void {
+        this.route.queryParams.pipe(take(1)).subscribe( params => {
+                this.realmId = params.realmId;
+            }
+        );
+    }
 }
+
