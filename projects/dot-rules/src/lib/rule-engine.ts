@@ -52,7 +52,7 @@ const I8N_BASE = 'api.sites.ruleengine';
   </div>
   <div class="cw-rule-engine__empty" *ngIf="!rules.length">
       <i class="material-icons">tune</i>
-      <h2>{{rsrc('inputs.no.rules') | async }} {{rsrc(realmId ? 'inputs.page' : 'inputs.site') | async)}} {{rsrc('inputs.add.one.now') | async}}</h2>
+      <h2>{{rsrc('inputs.no.rules') | async }} {{rsrc(realmId ? 'inputs.page' : 'inputs.site') | async}} {{rsrc('inputs.add.one.now') | async}}</h2>
       <span *ngIf="realmId">{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
       <button pButton label="{{rsrc('inputs.addRule.label') | async}}" (click)="addRule()" icon="fa fa-plus"></button>
   </div>
@@ -124,6 +124,7 @@ export class RuleEngineComponent {
     filterText: string;
     status: string;
     activeRules: number;
+    rulesModeLabel: string;
     realmId: string;
 
     private resources: I18nService;
