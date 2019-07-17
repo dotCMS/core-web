@@ -220,7 +220,7 @@ export class FieldDragDropService {
     private shouldDrag(source: HTMLElement, isDragButton: boolean): boolean {
         return this.isDraggingFromSource(source) || isDragButton;
     }
-    // tslint:disable-next-line: cyclomatic-complexity
+
     private shouldAccepts(
         el: HTMLElement,
         target: HTMLElement,

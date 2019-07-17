@@ -15,7 +15,6 @@ import {
     DotCMSContentTypeField,
     DotCMSContentTypeLayoutRow,
     DotCMSContentTypeLayoutColumn
-    // DotCMSContentTypeLayoutColumn
 } from 'dotcms-models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
