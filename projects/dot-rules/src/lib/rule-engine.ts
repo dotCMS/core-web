@@ -11,9 +11,8 @@ import {
     ConditionGroupActionEvent
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
-import {map, take} from 'rxjs/operators';
-import {ActivatedRoute, Params} from '@angular/router';
-import {__param} from 'tslib';
+import { take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 const I8N_BASE = 'api.sites.ruleengine';
 
