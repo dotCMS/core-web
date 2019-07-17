@@ -11,17 +11,56 @@ import {
 } from '@angular/core';
 import { FieldDragDropService, DropFieldData } from '../service';
 import { FieldType } from '../models';
-import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
+import {
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow,
+    DotCMSContentTypeLayoutColumn
+    // DotCMSContentTypeLayoutColumn
+} from 'dotcms-models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
-import { FieldUtil } from '../util/field-util';
+import { FieldUtil, COLUMN_FIELD, COLUMN_BREAK_FIELD } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { takeUntil, take  } from 'rxjs/operators';
+import { takeUntil, take, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import * as _ from 'lodash';
+
+const splitRows = (fieldRows: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeLayoutRow[] => {
+    return fieldRows.map((row) => {
+        return {
+            ...row,
+            columns: row.columns.reduce(
+                (acc: DotCMSContentTypeLayoutColumn[], current: DotCMSContentTypeLayoutColumn) => {
+                    const indexOfBreak = current.fields.findIndex((item) => {
+                        return item.clazz === COLUMN_BREAK_FIELD.clazz;
+                    });
+                    if (indexOfBreak > -1) {
+                        const first = current.fields.slice(0, indexOfBreak);
+                        const second = current.fields.slice(indexOfBreak + 1);
+
+                        const firstCol = {
+                            ...current,
+                            fields: first
+                        };
+
+                        const secondCol = {
+                            columnDivider: COLUMN_FIELD,
+                            fields: second
+                        };
+
+                        return [...acc, firstCol, secondCol];
+                    } else {
+                        return acc.concat(current);
+                    }
+                },
+                []
+            )
+        };
+    });
+};
 
 /**
  * Display all the Field Types
@@ -105,12 +144,19 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             });
 
         this.fieldDragDropService.fieldDropFromSource$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(
+                takeUntil(this.destroy$),
+                delay(0)
+            )
             .subscribe((data: DropFieldData) => {
-                this.setDroppedField(data.item);
-                this.toggleDialog();
+                if (data.item.clazz !== COLUMN_BREAK_FIELD.clazz) {
+                    this.setDroppedField(data.item);
+                    this.toggleDialog();
+                } else {
+                    const modified = splitRows(this.fieldRows);
+                    this.saveFields.emit(modified);
+                }
             });
-
 
         this.fieldDragDropService.fieldDropFromTarget$
             .pipe(takeUntil(this.destroy$))
@@ -191,7 +237,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     saveFieldsHandler(fieldToSave: DotCMSContentTypeField): void {
         if (!this.currentField) {
             const tabDividerFields = FieldUtil.getTabDividerFields(this.fieldRows);
-            this.currentField = tabDividerFields.find((field: DotCMSContentTypeField) => fieldToSave.id === field.id);
+            this.currentField = tabDividerFields.find(
+                (field: DotCMSContentTypeField) => fieldToSave.id === field.id
+            );
         }
 
         Object.assign(this.currentField, fieldToSave);
@@ -213,7 +261,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     editFieldHandler(fieldToEdit: DotCMSContentTypeField): void {
         if (!this.fieldDragDropService.isDraggedEventStarted()) {
             const fields = FieldUtil.getFieldsWithoutLayout(this.fieldRows);
-            this.currentField = fields.find((field: DotCMSContentTypeField) => fieldToEdit.id === field.id);
+            this.currentField = fields.find(
+                (field: DotCMSContentTypeField) => fieldToEdit.id === field.id
+            );
             this.currentFieldType = this.fieldPropertyService.getFieldType(this.currentField.clazz);
             this.toggleDialog();
         }
@@ -310,11 +360,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         };
     }
 
-     /**
-      * Hide or show the 'save' and 'hide' buttons according to the field tab selected
-      *
-      * @param index
-      */
+    /**
+     * Hide or show the 'save' and 'hide' buttons according to the field tab selected
+     *
+     * @param index
+     */
     handleTabChange(index: number): void {
         this.hideButtons = index !== this.OVERVIEW_TAB_INDEX;
     }

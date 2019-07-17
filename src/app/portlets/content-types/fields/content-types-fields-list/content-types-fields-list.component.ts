@@ -1,9 +1,8 @@
-import { FieldService } from '../service';
 import { Component, OnInit } from '@angular/core';
 import { filter, flatMap, toArray, take } from 'rxjs/operators';
-
 import { FieldType } from '../';
-
+import { FieldService } from '../service';
+import { COLUMN_BREAK_FIELD } from '../util/field-util';
 /**
  * Show all the Field Types
  *
@@ -30,12 +29,25 @@ export class ContentTypesFieldsListComponent implements OnInit {
                 take(1)
             )
             .subscribe((fields: FieldType[]) => {
-                this.fieldTypes = fields.map((fieldType: FieldType) => {
+                const LIVE_DIVIDER_CLAZZ =
+                    'com.dotcms.contenttype.model.field.ImmutableLineDividerField';
+
+                const mappedFields = fields.map((fieldType: FieldType) => {
                     return {
                         clazz: fieldType.clazz,
                         name: fieldType.label
                     };
                 });
+
+                const fieldsFiltered = mappedFields.filter(
+                    (field) => field.clazz !== LIVE_DIVIDER_CLAZZ
+                );
+
+                const LINE_DIVIDER = mappedFields.find(
+                    (field) => field.clazz === LIVE_DIVIDER_CLAZZ
+                );
+
+                this.fieldTypes = [COLUMN_BREAK_FIELD, LINE_DIVIDER, ...fieldsFiltered];
             });
     }
 }

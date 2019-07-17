@@ -25,7 +25,7 @@ const EMPTY_FIELD = {
     variable: null
 };
 
-const COLUMN_FIELD = {
+export const COLUMN_FIELD = {
     ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
 };
@@ -38,6 +38,11 @@ const ROW_FIELD = {
 export const TAB_FIELD = {
     ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
+};
+
+export const COLUMN_BREAK_FIELD = {
+    clazz: 'contenttype.column.break',
+    name: 'Column'
 };
 
 export class FieldUtil {

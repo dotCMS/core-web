@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import { filter, map, tap } from 'rxjs/operators';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
 import * as _ from 'lodash';
+import { COLUMN_BREAK_FIELD } from '../util/field-util';
 
 /**
  * Provide method to handle with the Field Types
@@ -18,12 +19,19 @@ export class FieldDragDropService {
     private _fieldDropFromTarget: Observable<DropFieldData>;
     private _fieldRowDropFromTarget: Observable<DotCMSContentTypeLayoutRow[]>;
     private draggedEvent = false;
+    private currentFullRowEl: HTMLElement = null;
 
     private currentColumnOvered: Element;
 
     constructor(private dragulaService: DragulaService) {
-        dragulaService
-            .over()
+        const dragulaOver$ = dragulaService.over();
+        const dragulaDropModel$ = dragulaService.dropModel();
+
+        merge(dragulaService.drop(), dragulaOver$).subscribe(() => {
+            this.clearCurrentFullRowEl();
+        });
+
+        dragulaOver$
             .pipe(
                 filter(
                     (group: { name: string; el: Element; container: Element; source: Element }) =>
@@ -64,12 +72,12 @@ export class FieldDragDropService {
                 );
             });
 
-        this._fieldRowDropFromTarget = dragulaService.dropModel().pipe(
+        this._fieldRowDropFromTarget = dragulaDropModel$.pipe(
             filter((data: DragulaDropModel) => this.isFieldBeingDragFromColumns(data)),
             map((data: DragulaDropModel) => data.targetModel)
         );
 
-        this._fieldDropFromTarget = dragulaService.dropModel().pipe(
+        this._fieldDropFromTarget = dragulaDropModel$.pipe(
             tap(() => {
                 this.draggedEvent = true;
                 setTimeout(() => {
@@ -80,7 +88,7 @@ export class FieldDragDropService {
             map((data: DragulaDropModel) => this.getDroppedFieldData(data))
         );
 
-        this._fieldDropFromSource = dragulaService.dropModel().pipe(
+        this._fieldDropFromSource = dragulaDropModel$.pipe(
             filter((data: DragulaDropModel) => this.isDraggingNewField(data)),
             map((data: DragulaDropModel) => this.getDroppedFieldData(data))
         );
@@ -115,11 +123,9 @@ export class FieldDragDropService {
         if (!fieldBagOpts) {
             this.dragulaService.createGroup(FieldDragDropService.FIELD_BAG_NAME, {
                 copy: this.shouldCopy.bind(this),
-                accepts: this.shouldAccepts,
+                accepts: this.shouldAccepts.bind(this),
                 moves: this.shouldMovesField,
-                copyItem: (item: any) => {
-                    return _.cloneDeep(item);
-                }
+                copyItem: (item: any) => _.cloneDeep(item)
             });
         }
     }
@@ -214,21 +220,33 @@ export class FieldDragDropService {
     private shouldDrag(source: HTMLElement, isDragButton: boolean): boolean {
         return this.isDraggingFromSource(source) || isDragButton;
     }
-
+    // tslint:disable-next-line: cyclomatic-complexity
     private shouldAccepts(
-        _el: HTMLElement,
-        source: HTMLElement,
-        _handle: HTMLElement,
+        el: HTMLElement,
+        target: HTMLElement,
+        _source: HTMLElement,
         _sibling: HTMLElement
     ): boolean {
-        return source.dataset.dragType !== 'source';
+        const columnsCount = target.parentElement.querySelectorAll('.row-columns__item').length;
+        const isColumnField = el.dataset.clazz === COLUMN_BREAK_FIELD.clazz;
+        const cantAddColumn = isColumnField && columnsCount >= 4;
+
+        if (cantAddColumn) {
+            this.clearCurrentFullRowEl();
+            this.currentFullRowEl = target.parentElement.parentElement;
+            this.currentFullRowEl.style.opacity = '0.4';
+            this.currentFullRowEl.style.cursor = 'not-allowed';
+            return false;
+        }
+
+        return true;
     }
 
     private shouldMovesField(
         el: HTMLElement,
-        _source: HTMLElement,
-        _handle: HTMLElement,
-        _sibling: HTMLElement
+        _container: Element,
+        _handle: Element,
+        _sibling: Element
     ): boolean {
         return el.dataset.dragType !== 'not_field';
     }
@@ -238,6 +256,14 @@ export class FieldDragDropService {
         source: HTMLElement
     ): boolean {
         return this.isANewColumnContainer(container) || this.isDraggingFromSource(source);
+    }
+
+    private clearCurrentFullRowEl() {
+        if (this.currentFullRowEl && this.currentFullRowEl.style.opacity) {
+            this.currentFullRowEl.style.opacity = null;
+            this.currentFullRowEl.style.cursor = null;
+            this.currentFullRowEl = null;
+        }
     }
 }
 
