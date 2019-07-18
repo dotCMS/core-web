@@ -45,6 +45,7 @@ const splitRows = (fieldRows: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeLa
                             fields: first
                         };
 
+
                         const secondCol = {
                             columnDivider: COLUMN_FIELD,
                             fields: second

@@ -227,7 +227,6 @@ export class FieldDragDropService {
         _source: HTMLElement,
         _sibling: HTMLElement
     ): boolean {
-        console.log(el, target);
         const columnsCount = target.parentElement.querySelectorAll('.row-columns__item').length;
         const isColumnField = el.dataset.clazz === COLUMN_BREAK_FIELD.clazz;
         const cantAddColumn = isColumnField && columnsCount >= 4;

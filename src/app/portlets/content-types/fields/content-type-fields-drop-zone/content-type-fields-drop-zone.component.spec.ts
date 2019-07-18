@@ -30,10 +30,10 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { TableModule } from 'primeng/table';
 import { DotContentTypeFieldsVariablesModule } from '../dot-content-type-fields-variables/dot-content-type-fields-variables.module';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { FieldUtil } from '../util/field-util';
+import { FieldUtil, COLUMN_BREAK_FIELD } from '../util/field-util';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
-import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
+import { dotcmsContentTypeFieldBasicMock, fieldsWithBreakColumn, fieldsBrokenWithColumns } from '@tests/dot-content-types.mock';
 
 @Component({
     selector: 'dot-content-type-fields-row',
@@ -616,6 +616,22 @@ describe('Load fields and drag and drop', () => {
         });
 
         this.testFieldDragDropService._fieldRowDropFromTarget.next(fieldMoved);
+    });
+
+    it('should break columns and emit save', (done) => {
+        fixture.detectChanges();
+        comp.fieldRows = fieldsWithBreakColumn;
+
+        comp.saveFields.subscribe((data) => {
+            expect(data).toEqual(fieldsBrokenWithColumns);
+            done();
+        });
+
+        this.testFieldDragDropService._fieldDropFromSource.next({
+            item: {
+                clazz: COLUMN_BREAK_FIELD.clazz
+            }
+        });
     });
 
     it('should not display Edit Dialog when drag & drop event happens', (done) => {

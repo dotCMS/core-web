@@ -4,7 +4,7 @@ import {
     DotCMSContentTypeLayoutColumn
 } from 'dotcms-models';
 
-const EMPTY_FIELD = {
+export const EMPTY_FIELD: DotCMSContentTypeField = {
     contentTypeId: null,
     dataType: null,
     fieldType: null,
@@ -22,7 +22,12 @@ const EMPTY_FIELD = {
     searchable: null,
     sortOrder: null,
     unique: null,
-    variable: null
+    variable: null,
+    clazz: null,
+    defaultValue: null,
+    hint: null,
+    regexCheck: null,
+    values: null
 };
 
 export const COLUMN_FIELD = {
