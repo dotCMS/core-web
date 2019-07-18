@@ -3,6 +3,7 @@ import { FieldDragDropService } from './field-drag-drop.service';
 import { DragulaService } from 'ng2-dragula';
 import { Subject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { COLUMN_BREAK_FIELD } from '../util/field-util';
 
 const by = (opt: string) => (source: Observable<any>) => {
     return source.pipe(
@@ -37,7 +38,7 @@ class MockDragulaService {
     }
 }
 
-describe('FieldDragDropService', () => {
+fdescribe('FieldDragDropService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             FieldDragDropService,
@@ -74,22 +75,103 @@ describe('FieldDragDropService', () => {
             expect(false).toBe(copyFunc(null, source, null, null));
         });
 
-        it('should set shouldAccepts', () => {
-            this.fieldDragDropService.setFieldBagOptions();
+        describe('shouldAccepts', () => {
+            let acceptsFunc;
+            beforeEach(() => {
+                this.fieldDragDropService.setFieldBagOptions();
+                acceptsFunc = this.dragulaService.options.accepts;
+            });
 
-            const acceptsFunc = this.dragulaService.options.accepts;
-            const target = {
-                parentElement: { querySelectorAll: () => [] }
-            };
+            it('should return true for any field', () => {
+                const target = {
+                    parentElement: { querySelectorAll: () => [] }
+                };
 
-            const el = {
-                dataset: {
-                    clazz: 'whats'
-                }
-            };
+                const el = {
+                    dataset: {
+                        clazz: 'whats'
+                    }
+                };
 
-            expect(acceptsFunc(el, target, null, null)).toBe(true);
-            // expect(acceptsFunc(el, target, null, null)).toBe(false);
+                expect(acceptsFunc(el, target, null, null)).toBe(true);
+            });
+
+            it('should return true for break column field', () => {
+                const target = {
+                    parentElement: { querySelectorAll: () => [] }
+                };
+
+                const el = {
+                    dataset: {
+                        clazz: COLUMN_BREAK_FIELD.clazz
+                    }
+                };
+
+                expect(acceptsFunc(el, target, null, null)).toBe(true);
+            });
+
+            it('should return false when for break column when row have 4 colums', () => {
+                const target = {
+                    parentElement: {
+                        querySelectorAll: () => [1, 2, 3, 4],
+                        parentElement: {
+                            style: {}
+                        }
+                    }
+                };
+
+                const el = {
+                    dataset: {
+                        clazz: COLUMN_BREAK_FIELD.clazz
+                    }
+                };
+
+                expect(acceptsFunc(el, target, null, null)).toBe(false);
+            });
+
+            describe('style row', () => {
+                let target;
+                let el;
+
+                beforeEach(() => {
+                    target = {
+                        parentElement: {
+                            querySelectorAll: () => [1, 2, 3, 4],
+                            parentElement: {
+                                style: {}
+                            }
+                        }
+                    };
+
+                    el = {
+                        dataset: {
+                            clazz: COLUMN_BREAK_FIELD.clazz
+                        }
+                    };
+                });
+
+                it('should add custom style to row when cant add column', () => {
+                    acceptsFunc(el, target, null, null);
+
+                    expect(target.parentElement.parentElement.style).toEqual({
+                        opacity: '0.4',
+                        cursor: 'not-allowed'
+                    });
+                });
+
+                it('should remove custom style to row on drop', () => {
+                    acceptsFunc(el, target, null, null);
+
+                    this.dragulaService.emit({
+                        val: 'drop'
+                    });
+
+                    expect(target.parentElement.parentElement.style).toEqual({
+                        opacity: null,
+                        cursor: null
+                    });
+                });
+            });
         });
     });
 
