@@ -58,6 +58,6 @@ export class DotBinaryFilePreviewComponent {
     }
 
     private getExtention(): string {
-        return this.file.fileName.substr(this.file.fileName.indexOf('.'));
+        return this.file.fileName.substr(this.file.fileName.lastIndexOf('.'));
     }
 }

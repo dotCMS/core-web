@@ -17,7 +17,7 @@ const PDF_FILE_MOCK = {
     mimeType: 'image/jpeg',
     referenceUrl: '/dA/temp_09ef3de32b/tmp/002.jpg',
     thumbnailUrl: 'https://upload.002.pdf',
-    fileName: '002.pdf',
+    fileName: '002.test.pdf',
     folder: '',
     image: false,
     length: 1606323
