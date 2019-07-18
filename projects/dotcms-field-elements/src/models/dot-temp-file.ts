@@ -1,4 +1,4 @@
-export interface DotCMSTempFile {
+export interface DotTempFile {
     id: string;
     mimeType: string;
     referenceUrl: string;
