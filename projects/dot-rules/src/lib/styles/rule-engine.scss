@@ -69,6 +69,7 @@ $finder-s-input: '.ui.input input';
 .rules__engine-container{
     background-color: $gray-bg;
     display: flex;
+    flex-grow: 1;
     min-height: 100%;
     padding: $basic-padding * 3;
 

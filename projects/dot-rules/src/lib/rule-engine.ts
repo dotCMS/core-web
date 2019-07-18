@@ -11,8 +11,6 @@ import {
     ConditionGroupActionEvent
 } from './rule-engine.container';
 import { IPublishEnvironment } from './services/bundle-service';
-import { take } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 const I8N_BASE = 'api.sites.ruleengine';
 
@@ -51,8 +49,8 @@ const I8N_BASE = 'api.sites.ruleengine';
   </div>
   <div class="cw-rule-engine__empty" *ngIf="!rules.length">
       <i class="material-icons">tune</i>
-      <h2>{{rsrc('inputs.no.rules') | async }} {{rsrc(realmId ? 'inputs.page' : 'inputs.site') | async}} {{rsrc('inputs.add.one.now') | async}}</h2>
-      <span *ngIf="realmId">{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
+      <h2>{{rsrc('inputs.no.rules') | async }} {{rsrc(pageId ? 'inputs.on.page' : 'inputs.on.site') | async}} {{rsrc('inputs.add.one.now') | async}}</h2>
+      <span *ngIf="pageId">{{rsrc('inputs.page.rules.fired.every.time') | async}}</span>
       <button pButton label="{{rsrc('inputs.addRule.label') | async}}" (click)="addRule()" icon="fa fa-plus"></button>
   </div>
   <rule *ngFor="let rule of rules" [rule]="rule" [hidden]="isFiltered(rule) == true"
@@ -92,6 +90,7 @@ export class RuleEngineComponent {
     @Input() loading: boolean;
     @Input() globalError: string;
     @Input() showRules: boolean;
+    @Input() pageId: string;
     @Input() conditionTypes: { [key: string]: ServerSideTypeModel } = {};
     @Input() environmentStores: IPublishEnvironment[];
 
@@ -123,20 +122,17 @@ export class RuleEngineComponent {
     filterText: string;
     status: string;
     activeRules: number;
-    rulesModeLabel: string;
-    realmId: string;
 
     private resources: I18nService;
     private _rsrcCache: { [key: string]: Observable<string> };
 
-    constructor(resources: I18nService, private route: ActivatedRoute) {
+    constructor(resources: I18nService) {
         this.resources = resources;
         resources.get(I8N_BASE).subscribe(rsrc => {});
         this.filterText = '';
         this.rules = [];
         this._rsrcCache = {};
         this.status = null;
-        this.getRealmId();
     }
 
     rsrc(subkey: string): Observable<any> {
@@ -189,13 +185,6 @@ export class RuleEngineComponent {
 
     isFiltered(rule: RuleModel): boolean {
         return CwFilter.isFiltered(rule, this.filterText);
-    }
-
-    private getRealmId(): void {
-        this.route.queryParams.pipe(take(1)).subscribe( params => {
-                this.realmId = params.realmId;
-            }
-        );
     }
 }
 
