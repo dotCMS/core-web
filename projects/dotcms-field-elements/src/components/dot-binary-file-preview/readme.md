@@ -10,7 +10,7 @@
 | Property      | Attribute      | Description                      | Type             | Default    |
 | ------------- | -------------- | -------------------------------- | ---------------- | ---------- |
 | `deleteLabel` | `delete-label` | (optional) Delete button's label | `string`         | `'Delete'` |
-| `file`        | --             | file to be displayed             | `DotCMSTempFile` | `null`     |
+| `file`        | --             | (optional) file to be displayed  | `DotCMSTempFile` | `null`     |
 
 
 ## Events

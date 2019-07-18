@@ -2,6 +2,12 @@ import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
 import { DotCMSTempFile } from '../../models';
 
+/**
+ * Represent a dotcms text field for the binary file preview.
+ *
+ * @export
+ * @class DotBinaryFilePreviewComponent
+ */
 @Component({
     tag: 'dot-binary-file-preview',
     styleUrl: 'dot-binary-file-preview.scss'
@@ -9,7 +15,7 @@ import { DotCMSTempFile } from '../../models';
 export class DotBinaryFilePreviewComponent {
     @Element() el: HTMLElement;
 
-    /** file to be displayed */
+    /** (optional) file to be displayed */
     @Prop({ reflectToAttr: true, mutable: true })
     file: DotCMSTempFile = null;
 
