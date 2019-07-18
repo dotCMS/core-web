@@ -1,0 +1,46 @@
+dot-binary-file-preview {
+    display: flex;
+
+    img, .dot-file-preview__extention {
+        width: 100px;
+        height: 100px;
+
+        span{
+            overflow: hidden;
+            padding: 0.5rem;
+            text-overflow: ellipsis;
+            font-size: 2rem;
+        }
+    }
+
+    .dot-file-preview__info {
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+        padding-left: 0.5rem;
+
+        span{
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+
+        button{
+            background-color: lightgray;
+            border: 0;
+            padding: 0.3rem 1.5rem;
+            font-size: 0.9rem;
+            max-width: 10rem;
+            cursor: pointer;
+        }
+    }
+
+    .dot-file-preview__extention{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lightgray;
+    }
+
+
+}
