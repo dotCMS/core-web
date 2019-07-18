@@ -15,9 +15,9 @@
 
 ## Events
 
-| Event    | Description   | Type                |
-| -------- | ------------- | ------------------- |
-| `delete` | Emit when the | `CustomEvent<void>` |
+| Event    | Description                   | Type                |
+| -------- | ----------------------------- | ------------------- |
+| `delete` | Emit when the file is deleted | `CustomEvent<void>` |
 
 
 ----------------------------------------------

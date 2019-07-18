@@ -17,7 +17,7 @@ export class DotBinaryFilePreviewComponent {
     @Prop({ reflectToAttr: true })
     deleteLabel = 'Delete';
 
-    /** Emit when the  */
+    /** Emit when the file is deleted */
     @Event() delete: EventEmitter;
 
     render() {
@@ -35,7 +35,7 @@ export class DotBinaryFilePreviewComponent {
     }
 
     private clearFile(): void {
-        this.delete.emit();
+        this.delete.emit(this.file);
         this.file = null;
     }
 
@@ -44,7 +44,7 @@ export class DotBinaryFilePreviewComponent {
             this.file.image ? (
                 <img src={this.file.thumbnailUrl} />
             ) : (
-                <div class="dot-file-preview__extention">
+                <div class="dot-file-preview__extension">
                     <span>{this.getExtention()}</span>
                 </div>
             )
