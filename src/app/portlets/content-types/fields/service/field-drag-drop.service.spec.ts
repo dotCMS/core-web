@@ -4,6 +4,9 @@ import { DragulaService } from 'ng2-dragula';
 import { Subject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DotMessageService } from '@services/dot-messages-service';
 
 const by = (opt: string) => (source: Observable<any>) => {
     return source.pipe(
@@ -38,15 +41,36 @@ class MockDragulaService {
     }
 }
 
-fdescribe('FieldDragDropService', () => {
+describe('FieldDragDropService', () => {
+    let dotAlertConfirmService: DotAlertConfirmService;
+
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([
             FieldDragDropService,
-            { provide: DragulaService, useClass: MockDragulaService }
+            {
+                provide: DragulaService,
+                useClass: MockDragulaService
+            },
+            {
+                provide: DotAlertConfirmService,
+                useValue: {
+                    alert: jasmine.createSpy('alert')
+                }
+            },
+            {
+                provide: DotMessageService,
+                useValue: new MockDotMessageService({
+                    'contenttypes.fullrow.dialog.header': 'This row is full',
+                    'contenttypes.fullrow.dialog.message':
+                        'The maximum number of columns per row is limited to four.',
+                    'contenttypes.fullrow.dialog.accept': 'Dismiss'
+                })
+            }
         ]);
 
         this.fieldDragDropService = this.injector.get(FieldDragDropService);
         this.dragulaService = this.injector.get(DragulaService);
+        dotAlertConfirmService = this.injector.get(DotAlertConfirmService);
     });
 
     describe('Setting FieldBagOptions', () => {
@@ -163,13 +187,37 @@ fdescribe('FieldDragDropService', () => {
                     acceptsFunc(el, target, null, null);
 
                     this.dragulaService.emit({
-                        val: 'drop'
+                        val: 'drop',
+                        payload: {
+                            target: null
+                        }
                     });
 
                     expect(target.parentElement.parentElement.style).toEqual({
                         opacity: null,
                         cursor: null
                     });
+                });
+
+                it('should show alert when cant add column', () => {
+                    acceptsFunc(el, target, null, null);
+                    this.dragulaService.emit({
+                        val: 'drop',
+                        payload: {
+                            target: null
+                        }
+                    });
+
+                    expect(dotAlertConfirmService.alert).toHaveBeenCalledTimes(1);
+                    expect(dotAlertConfirmService.alert).toHaveBeenCalledWith(
+                        jasmine.objectContaining({
+                            header: 'This row is full',
+                            message: 'The maximum number of columns per row is limited to four.',
+                            footerLabel: {
+                                accept: 'Dismiss'
+                            }
+                        })
+                    );
                 });
             });
         });

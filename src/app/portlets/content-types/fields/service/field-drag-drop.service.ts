@@ -1,14 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable, merge } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, tap, take } from 'rxjs/operators';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
 import * as _ from 'lodash';
 import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { DotMessageService } from '@services/dot-messages-service';
 
 /**
  * Provide method to handle with the Field Types
  */
+
+interface DragulaCustomEvent {
+    container?: Element;
+    el: Element;
+    name: string;
+    sibling?: Element;
+    source: Element;
+    target?: Element;
+}
+
 @Injectable()
 export class FieldDragDropService {
     private static readonly FIELD_BAG_NAME = 'fields-bag';
@@ -20,16 +32,46 @@ export class FieldDragDropService {
     private _fieldRowDropFromTarget: Observable<DotCMSContentTypeLayoutRow[]>;
     private draggedEvent = false;
     private currentFullRowEl: HTMLElement = null;
-
     private currentColumnOvered: Element;
+    private i18nMessages: { [key: string]: string } = {};
 
-    constructor(private dragulaService: DragulaService) {
+    constructor(
+        private dragulaService: DragulaService,
+        private dotAlertConfirmService: DotAlertConfirmService,
+        private dotMessageService: DotMessageService
+    ) {
+        this.dotMessageService
+            .getMessages([
+                'contenttypes.fullrow.dialog.header',
+                'contenttypes.fullrow.dialog.message',
+                'contenttypes.fullrow.dialog.accept'
+            ])
+            .pipe(take(1))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.i18nMessages = messages;
+            });
+
         const dragulaOver$ = dragulaService.over();
         const dragulaDropModel$ = dragulaService.dropModel();
 
-        merge(dragulaService.drop(), dragulaOver$).subscribe(() => {
-            this.clearCurrentFullRowEl();
-        });
+        const isRowFull = () => !!this.currentFullRowEl;
+        const wasDrop = (target) => target === null;
+
+        merge(dragulaService.drop(), dragulaOver$)
+            .pipe(filter(isRowFull))
+            .subscribe(({ target }: DragulaCustomEvent) => {
+                this.clearCurrentFullRowEl();
+
+                if (wasDrop(target)) {
+                    this.dotAlertConfirmService.alert({
+                        header: this.i18nMessages['contenttypes.fullrow.dialog.header'],
+                        message: this.i18nMessages['contenttypes.fullrow.dialog.message'],
+                        footerLabel: {
+                            accept: this.i18nMessages['contenttypes.fullrow.dialog.accept']
+                        }
+                    });
+                }
+            });
 
         dragulaOver$
             .pipe(
