@@ -129,7 +129,6 @@ describe('ContentTypeEditResolver', () => {
         contentTypeEditResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((res: DotCMSContentType) => {
-                console.log(res);
                 expect(res).toEqual({
                     baseType: 'content',
                     clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
