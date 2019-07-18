@@ -22,7 +22,7 @@ import { FieldUtil, COLUMN_FIELD, COLUMN_BREAK_FIELD } from '../util/field-util'
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { takeUntil, take, delay } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import * as _ from 'lodash';
@@ -44,7 +44,6 @@ const splitRows = (fieldRows: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeLa
                             ...current,
                             fields: first
                         };
-
 
                         const secondCol = {
                             columnDivider: COLUMN_FIELD,
@@ -144,17 +143,15 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             });
 
         this.fieldDragDropService.fieldDropFromSource$
-            .pipe(
-                takeUntil(this.destroy$),
-                delay(0)
-            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe((data: DropFieldData) => {
-                if (data.item.clazz !== COLUMN_BREAK_FIELD.clazz) {
+                if (data.item.clazz === COLUMN_BREAK_FIELD.clazz) {
+                    setTimeout(() => {
+                        this.saveFields.emit(splitRows(this.fieldRows));
+                    }, 0);
+                } else {
                     this.setDroppedField(data.item);
                     this.toggleDialog();
-                } else {
-                    const modified = splitRows(this.fieldRows);
-                    this.saveFields.emit(modified);
                 }
             });
 
