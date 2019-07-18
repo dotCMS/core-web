@@ -29,20 +29,29 @@ describe('ContentTypesFieldsListComponent', () => {
         const fieldService = de.injector.get(FieldService);
         const itemsData = [
             {
-                label: 'Text'
+                label: 'Text',
+                clazz: 'text'
             },
             {
-                label: 'Date'
+                label: 'Date',
+                clazz: 'date'
             },
             {
-                label: 'Checkbox'
+                label: 'Checkbox',
+                clazz: 'checkbox'
             },
             {
-                label: 'Image'
+                label: 'Image',
+                clazz: 'image'
             },
             {
                 label: 'Tab Divider',
-                id: 'tab_divider'
+                id: 'tab_divider',
+                clazz: 'tab'
+            },
+            {
+                label: 'Line Divider',
+                clazz: 'com.dotcms.contenttype.model.field.ImmutableLineDividerField'
             }
         ];
 
@@ -53,15 +62,20 @@ describe('ContentTypesFieldsListComponent', () => {
 
         fixture.detectChanges();
 
-        const itemsElements = de.queryAll(By.css('li'));
+        const itemsElements = de.queryAll(By.css('li span'));
 
-        expect(itemsElements.length).toEqual((itemsData.length - 1));
-        itemsData.filter(item => item.id !== 'tab_divider').forEach((fieldType, index) =>
-            expect(itemsElements[index].nativeElement.textContent).toContain(fieldType.label)
-        );
+        expect(itemsElements.length).toEqual(6);
+
+        expect(itemsElements[0].nativeElement.textContent).toContain('Column');
+        expect(itemsElements[1].nativeElement.textContent).toContain('Line Divider');
+
+        itemsElements.forEach((el: DebugElement, index) => {
+            if (index > 1) {
+                expect(el.nativeElement.textContent).toContain(itemsData[index - 2].label);
+            }
+        });
 
         const ulElement = de.query(By.css('ul'));
-
         expect('fields-bag').toEqual(ulElement.attributes['ng-reflect-dragula']);
         expect('source').toEqual(ulElement.attributes['data-drag-type']);
     });

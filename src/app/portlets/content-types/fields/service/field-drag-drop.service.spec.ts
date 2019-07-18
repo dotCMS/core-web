@@ -21,6 +21,7 @@ class MockDragulaService {
     removeModel = () => this.mock.asObservable().pipe(by('removeModel'));
     over = () => this.mock.asObservable().pipe(by('over'));
     out = () => this.mock.asObservable().pipe(by('out'));
+    drop = () => this.mock.asObservable().pipe(by('drop'));
 
     find(): any {
         return null;
@@ -77,16 +78,18 @@ describe('FieldDragDropService', () => {
             this.fieldDragDropService.setFieldBagOptions();
 
             const acceptsFunc = this.dragulaService.options.accepts;
-            const source = {
+            const target = {
+                parentElement: { querySelectorAll: () => [] }
+            };
+
+            const el = {
                 dataset: {
-                    dragType: 'source'
+                    clazz: 'whats'
                 }
             };
 
-            expect(false).toBe(acceptsFunc(null, source, null, null));
-
-            source.dataset.dragType = 'target';
-            expect(true).toBe(acceptsFunc(null, source, null, null));
+            expect(acceptsFunc(el, target, null, null)).toBe(true);
+            // expect(acceptsFunc(el, target, null, null)).toBe(false);
         });
     });
 
@@ -227,7 +230,6 @@ describe('FieldDragDropService', () => {
 
         const container2 = document.createElement('div');
         container2.classList.add('row-columns__item');
-
 
         this.dragulaService.emit({
             val: 'over',
