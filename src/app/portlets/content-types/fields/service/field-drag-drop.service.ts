@@ -4,9 +4,11 @@ import { DragulaService } from 'ng2-dragula';
 import { filter, map, tap, take } from 'rxjs/operators';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
 import * as _ from 'lodash';
-import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotMessageService } from '@services/dot-messages-service';
+
+const MAX_COLS_PER_ROW = 4;
 
 /**
  * Provide method to handle with the Field Types
@@ -270,14 +272,12 @@ export class FieldDragDropService {
         _sibling: HTMLElement
     ): boolean {
         const columnsCount = target.parentElement.querySelectorAll('.row-columns__item').length;
-        const isColumnField = el.dataset.clazz === COLUMN_BREAK_FIELD.clazz;
-        const cantAddColumn = isColumnField && columnsCount >= 4;
+        const isColumnField = FieldUtil.isColumnBreak(el.dataset.clazz);
+        const cantAddColumn = isColumnField && columnsCount >= MAX_COLS_PER_ROW;
 
         if (cantAddColumn) {
             this.clearCurrentFullRowEl();
-            this.currentFullRowEl = target.parentElement.parentElement;
-            this.currentFullRowEl.style.opacity = '0.4';
-            this.currentFullRowEl.style.cursor = 'not-allowed';
+            this.disableRowElement(target.parentElement.parentElement);
             return false;
         }
 
@@ -300,7 +300,13 @@ export class FieldDragDropService {
         return this.isANewColumnContainer(container) || this.isDraggingFromSource(source);
     }
 
-    private clearCurrentFullRowEl() {
+    private disableRowElement(el: HTMLElement): void {
+        this.currentFullRowEl = el;
+        this.currentFullRowEl.style.opacity = '0.4';
+        this.currentFullRowEl.style.cursor = 'not-allowed';
+    }
+
+    private clearCurrentFullRowEl(): void {
         if (this.currentFullRowEl && this.currentFullRowEl.style.opacity) {
             this.currentFullRowEl.style.opacity = null;
             this.currentFullRowEl.style.cursor = null;

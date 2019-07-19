@@ -121,13 +121,14 @@ export class FieldUtil {
      * Create a new column
      *
      * @static
-     * @returns {FieldColumn}
+     * @param {DotCMSContentTypeField[]} [fields]
+     * @returns {DotCMSContentTypeLayoutColumn}
      * @memberof FieldUtil
      */
-    static createFieldColumn(): DotCMSContentTypeLayoutColumn {
+    static createFieldColumn(fields?: DotCMSContentTypeField[]): DotCMSContentTypeLayoutColumn {
         return {
             columnDivider: { ...COLUMN_FIELD },
-            fields: []
+            fields: fields || []
         };
     }
 
@@ -257,5 +258,17 @@ export class FieldUtil {
         return layout
             .map((row) => row.divider)
             .filter((field: DotCMSContentTypeField) => FieldUtil.isTabDivider(field));
+    }
+
+    /**
+     * Return true if the clazz is a column break field
+     *
+     * @static
+     * @param {string} clazz
+     * @returns {boolean}
+     * @memberof FieldUtil
+     */
+    static isColumnBreak(clazz: string): boolean {
+        return clazz === COLUMN_BREAK_FIELD.clazz;
     }
 }

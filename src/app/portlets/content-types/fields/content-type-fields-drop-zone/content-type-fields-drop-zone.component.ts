@@ -18,7 +18,7 @@ import {
 } from 'dotcms-models';
 import { ContentTypeFieldsPropertiesFormComponent } from '../content-type-fields-properties-form';
 import { DotMessageService } from '@services/dot-messages-service';
-import { FieldUtil, COLUMN_FIELD, COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
 import { FieldPropertyService } from '../service/field-properties.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
@@ -26,40 +26,6 @@ import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import * as _ from 'lodash';
-
-const splitRows = (fieldRows: DotCMSContentTypeLayoutRow[]): DotCMSContentTypeLayoutRow[] => {
-    return fieldRows.map((row) => {
-        return {
-            ...row,
-            columns: row.columns.reduce(
-                (acc: DotCMSContentTypeLayoutColumn[], current: DotCMSContentTypeLayoutColumn) => {
-                    const indexOfBreak = current.fields.findIndex((item) => {
-                        return item.clazz === COLUMN_BREAK_FIELD.clazz;
-                    });
-                    if (indexOfBreak > -1) {
-                        const first = current.fields.slice(0, indexOfBreak);
-                        const second = current.fields.slice(indexOfBreak + 1);
-
-                        const firstCol = {
-                            ...current,
-                            fields: first
-                        };
-
-                        const secondCol = {
-                            columnDivider: COLUMN_FIELD,
-                            fields: second
-                        };
-
-                        return [...acc, firstCol, secondCol];
-                    } else {
-                        return acc.concat(current);
-                    }
-                },
-                []
-            )
-        };
-    });
-};
 
 /**
  * Display all the Field Types
@@ -112,6 +78,48 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         private dotLoadingIndicatorService: DotLoadingIndicatorService
     ) {}
 
+    private static findColumnBreakIndex(fields: DotCMSContentTypeField[]): number {
+        return fields.findIndex((item) => {
+            return FieldUtil.isColumnBreak(item.clazz);
+        });
+    }
+
+    private static splitColumnsInRows(
+        fieldRows: DotCMSContentTypeLayoutRow[]
+    ): DotCMSContentTypeLayoutRow[] {
+        return fieldRows.map((row) => {
+            return {
+                ...row,
+                columns: row.columns.reduce(
+                    (
+                        acc: DotCMSContentTypeLayoutColumn[],
+                        current: DotCMSContentTypeLayoutColumn
+                    ) => {
+                        const indexOfBreak = ContentTypeFieldsDropZoneComponent.findColumnBreakIndex(
+                            current.fields
+                        );
+                        if (indexOfBreak > -1) {
+                            const firstColFields = current.fields.slice(0, indexOfBreak);
+                            const secondColFields = current.fields.slice(indexOfBreak + 1);
+
+                            const firstCol = {
+                                ...current,
+                                fields: firstColFields
+                            };
+
+                            const secondCol = FieldUtil.createFieldColumn(secondColFields);
+
+                            return [...acc, firstCol, secondCol];
+                        } else {
+                            return acc.concat(current);
+                        }
+                    },
+                    []
+                )
+            };
+        });
+    }
+
     ngOnInit(): void {
         this.dotMessageService
             .getMessages([
@@ -145,9 +153,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         this.fieldDragDropService.fieldDropFromSource$
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: DropFieldData) => {
-                if (data.item.clazz === COLUMN_BREAK_FIELD.clazz) {
+                if (FieldUtil.isColumnBreak(data.item.clazz)) {
                     setTimeout(() => {
-                        this.saveFields.emit(splitRows(this.fieldRows));
+                        this.emitSaveFields(ContentTypeFieldsDropZoneComponent.splitColumnsInRows(this.fieldRows));
                     }, 0);
                 } else {
                     this.setDroppedField(data.item);
@@ -159,7 +167,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 setTimeout(() => {
-                    this.saveFields.emit(this.fieldRows);
+                    this.emitSaveFields(this.fieldRows);
                 }, 0);
             });
 
@@ -167,7 +175,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .pipe(takeUntil(this.destroy$))
             .subscribe((fieldRows: DotCMSContentTypeLayoutRow[]) => {
                 this.fieldRows = fieldRows;
-                this.saveFields.emit(fieldRows);
+                this.emitSaveFields(fieldRows);
             });
 
         this.dotEventsService
@@ -244,7 +252,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
         if (!!fieldToSave.id) {
             this.editField.emit(this.currentField);
         } else {
-            this.saveFields.emit(this.fieldRows);
+            this.emitSaveFields(this.fieldRows);
         }
 
         this.toggleDialog();
@@ -374,5 +382,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     private toggleDialog(): void {
         this.displayDialog = !this.displayDialog;
         this.dialogActiveTab = 0;
+    }
+
+    private emitSaveFields(layout: DotCMSContentTypeLayoutRow[]): void {
+        this.saveFields.emit(layout);
     }
 }
