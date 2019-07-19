@@ -630,6 +630,8 @@ export class RuleEngineContainer {
   private initRules(): void {
     this.state.loading = true;
 
+    this.pageId = '';
+
     const pageIdParams = this.route.params.pipe(map((params: Params) => params.pageId));
     const queryParams = this.route.queryParams.pipe(map((params: Params) => params.realmId));
 
