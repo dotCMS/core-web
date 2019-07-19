@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter, flatMap, toArray, take } from 'rxjs/operators';
 import { FieldType } from '../';
 import { FieldService } from '../service';
-import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
 /**
  * Show all the Field Types
  *
@@ -46,6 +46,8 @@ export class ContentTypesFieldsListComponent implements OnInit {
                 const LINE_DIVIDER = mappedFields.find(
                     (field) => field.clazz === LIVE_DIVIDER_CLAZZ
                 );
+
+                const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
                 this.fieldTypes = [COLUMN_BREAK_FIELD, LINE_DIVIDER, ...fieldsFiltered];
             });

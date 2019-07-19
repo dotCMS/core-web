@@ -30,7 +30,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { TableModule } from 'primeng/table';
 import { DotContentTypeFieldsVariablesModule } from '../dot-content-type-fields-variables/dot-content-type-fields-variables.module';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { FieldUtil, COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 import {
@@ -38,6 +38,8 @@ import {
     fieldsWithBreakColumn,
     fieldsBrokenWithColumns
 } from '@tests/dot-content-types.mock';
+
+const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
 @Component({
     selector: 'dot-content-type-fields-row',

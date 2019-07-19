@@ -1,4 +1,6 @@
-import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
+
+const COLUMN_BREAK = FieldUtil.createColumnBreak();
 
 export const FIELD_ICONS = {
     'com.dotcms.contenttype.model.field.ImmutableBinaryField': 'note',
@@ -26,5 +28,5 @@ export const FIELD_ICONS = {
     'com.dotcms.contenttype.model.field.ImmutableTabDividerField': 'folder',
     'com.dotcms.contenttype.model.field.ImmutableLineDividerField': 'more_horiz',
     'com.dotcms.contenttype.model.field.ImmutableRelationshipField': 'merge_type',
-    [COLUMN_BREAK_FIELD.clazz]: 'view_column'
+    [COLUMN_BREAK.clazz]: 'view_column'
 };

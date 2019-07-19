@@ -30,7 +30,7 @@ export const EMPTY_FIELD: DotCMSContentTypeField = {
     values: null
 };
 
-export const COLUMN_FIELD = {
+const COLUMN_FIELD = {
     ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableColumnField'
 };
@@ -40,12 +40,12 @@ const ROW_FIELD = {
     clazz: 'com.dotcms.contenttype.model.field.ImmutableRowField'
 };
 
-export const TAB_FIELD = {
+const TAB_FIELD = {
     ...EMPTY_FIELD,
     clazz: 'com.dotcms.contenttype.model.field.ImmutableTabDividerField'
 };
 
-export const COLUMN_BREAK_FIELD = {
+const COLUMN_BREAK_FIELD = {
     clazz: 'contenttype.column.break',
     name: 'Column'
 };
@@ -270,5 +270,9 @@ export class FieldUtil {
      */
     static isColumnBreak(clazz: string): boolean {
         return clazz === COLUMN_BREAK_FIELD.clazz;
+    }
+
+    static createColumnBreak(): { clazz: string; name: string } {
+        return { ...COLUMN_BREAK_FIELD };
     }
 }

@@ -3,7 +3,7 @@ import { FieldDragDropService } from './field-drag-drop.service';
 import { DragulaService } from 'ng2-dragula';
 import { Subject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { COLUMN_BREAK_FIELD } from '../util/field-util';
+import { FieldUtil } from '../util/field-util';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -14,6 +14,8 @@ const by = (opt: string) => (source: Observable<any>) => {
         map((data: any) => data.payload)
     );
 };
+
+const COLUMN_BREAK_FIELD = FieldUtil.createColumnBreak();
 
 class MockDragulaService {
     name: string;

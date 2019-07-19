@@ -79,7 +79,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     ) {}
 
     private static findColumnBreakIndex(fields: DotCMSContentTypeField[]): number {
-        return fields.findIndex((item) => {
+        return fields.findIndex((item: DotCMSContentTypeField) => {
             return FieldUtil.isColumnBreak(item.clazz);
         });
     }
@@ -87,7 +87,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     private static splitColumnsInRows(
         fieldRows: DotCMSContentTypeLayoutRow[]
     ): DotCMSContentTypeLayoutRow[] {
-        return fieldRows.map((row) => {
+        return fieldRows.map((row: DotCMSContentTypeLayoutRow) => {
             return {
                 ...row,
                 columns: row.columns.reduce(
@@ -155,7 +155,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
             .subscribe((data: DropFieldData) => {
                 if (FieldUtil.isColumnBreak(data.item.clazz)) {
                     setTimeout(() => {
-                        this.emitSaveFields(ContentTypeFieldsDropZoneComponent.splitColumnsInRows(this.fieldRows));
+                        this.emitSaveFields(
+                            ContentTypeFieldsDropZoneComponent.splitColumnsInRows(this.fieldRows)
+                        );
                     }, 0);
                 } else {
                     this.setDroppedField(data.item);
