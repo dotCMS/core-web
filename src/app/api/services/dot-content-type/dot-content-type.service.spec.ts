@@ -4,7 +4,8 @@ import { MockBackend } from '@angular/http/testing';
 import { mockDotContentlet } from '../../../test/dot-contentlet.mock';
 import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
 import { DotContentTypeService } from './dot-content-type.service';
-import { ContentType } from '@portlets/content-types/shared/content-type.model';
+import { DotCMSContentType } from 'dotcms-models';
+import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 
 let lastConnection: any;
 
@@ -63,7 +64,8 @@ describe('DotContentletService', () => {
 
     it('should get one content type by id or varName', () => {
         const id = '1';
-        const contentTypeExpected = {
+        const contentTypeExpected: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             clazz: 'clazz',
             defaultType: false,
             fixed: false,
@@ -75,7 +77,7 @@ describe('DotContentletService', () => {
             system: false,
         };
 
-        this.dotContentletService.getContentType(id).subscribe((contentType: ContentType) => {
+        this.dotContentletService.getContentType(id).subscribe((contentType: DotCMSContentType) => {
             expect(contentType).toBe(contentTypeExpected);
         });
 

@@ -23,8 +23,9 @@ import {
     DotHttpErrorHandled,
     DotHttpErrorManagerService
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { ContentType } from '@portlets/content-types/shared/content-type.model';
+import { DotCMSContentType } from 'dotcms-models';
 import { DotContentTypeService } from '@services/dot-content-type/dot-content-type.service';
+import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 
 @Injectable()
 class MockDotContentTypeService {
@@ -187,7 +188,8 @@ describe('ContentTypesPortletComponent', () => {
     it('should remove the content type on click command function', () => {
         fixture.detectChanges();
 
-        const mockContentType: ContentType = {
+        const mockContentType: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
             name: 'Nuevo',
@@ -253,7 +255,8 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should open push publish dialog', () => {
         fixture.detectChanges();
-        const mockContentType: ContentType = {
+        const mockContentType: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
             name: 'Nuevo',
@@ -277,7 +280,8 @@ describe('ContentTypesPortletComponent', () => {
 
     it('should open add to bundle dialog', () => {
         fixture.detectChanges();
-        const mockContentType: ContentType = {
+        const mockContentType: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
             name: 'Nuevo',
@@ -330,7 +334,8 @@ describe('ContentTypesPortletComponent', () => {
 
         fixture.detectChanges();
 
-        const mockContentType: ContentType = {
+        const mockContentType: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             clazz: 'com.dotcms.contenttype.model.type.ImmutableSimpleContentType',
             id: '1234567890',
             name: 'Nuevo',

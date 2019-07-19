@@ -1,4 +1,4 @@
-import { ContentType } from '@portlets/content-types/shared/content-type.model';
+import { DotCMSContentType } from 'dotcms-models';
 import { DotNewRelationshipsComponent } from './dot-new-relationships.component';
 import { ComponentFixture, async } from '@angular/core/testing';
 import {
@@ -21,6 +21,7 @@ import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { DotRelationshipCardinality } from '@portlets/content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/model/dot-relationship-cardinality.model';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 
 const cardinalities = [
     {
@@ -35,7 +36,8 @@ const cardinalities = [
     }
 ];
 
-const contentTypeMock: ContentType = {
+const contentTypeMock: DotCMSContentType = {
+    ...dotcmsContentTypeBasicMock,
     clazz: 'clazz',
     defaultType: false,
     fixed: false,
@@ -127,7 +129,7 @@ class MockRelationshipService {
 
 @Injectable()
 class MockDotContentTypeService {
-    getContentType(): Observable<ContentType> {
+    getContentType(): Observable<DotCMSContentType> {
         return of(contentTypeMock);
     }
 }
