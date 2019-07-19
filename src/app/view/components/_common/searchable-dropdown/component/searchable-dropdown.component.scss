@@ -78,12 +78,18 @@ dot-searchable-dropdown {
     }
 }
 
-.searchable-dropdown__search-field {
+.searchable-dropdown__search-section {
+    flex-grow: 1;
+    position: relative;
+}
+
+.searchable-dropdown__search-inputfield {
     padding-right: $basic-padding * 3;
     width: 100%;
 }
 
 .searchable-dropdown__search {
+    display: flex;
     position: relative;
 }
 
@@ -92,4 +98,13 @@ dot-searchable-dropdown {
     position: absolute;
     right: 0;
     top: 9px;
+}
+
+.searchable-dropdown__search-action {
+    margin-left: $basic-padding * 2;
+
+     dot-icon-button[secondary] button {
+        height: 36px;
+        width: 36px;
+    }
 }

@@ -1,4 +1,3 @@
-// import { Observable, of } from 'rxjs';
 import {
     Component,
     ViewEncapsulation,
@@ -7,13 +6,10 @@ import {
     EventEmitter,
     Input,
     OnInit,
-    // SimpleChanges,
-    // OnChanges,
-    // OnDestroy
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
-// import { Site, SiteService } from 'dotcms-js';
 import { PaginatorService } from '@services/paginator';
-// import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -25,8 +21,6 @@ import { take } from 'rxjs/operators';
  * @export
  * @class DotSiteSelectorComponent
  * @implements {OnInit}
- * @implements {OnChanges}
- * @implements {OnDestroy}
  */
 @Component({
     providers: [PaginatorService],
@@ -35,7 +29,7 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./dot-persona-selector2.component.scss'],
     templateUrl: 'dot-persona-selector2.component.html'
 })
-export class DotPersonaSelector2Component implements OnInit {
+export class DotPersonaSelector2Component implements OnInit, OnChanges {
     @Input()
     pageId: string;
     @Input()
@@ -43,104 +37,51 @@ export class DotPersonaSelector2Component implements OnInit {
 
     @Output()
     selected: EventEmitter<DotPersona> = new EventEmitter();
-
-    // @Input()
-    // archive: boolean;
-    // @Input()
-    // id: string;
-    // @Input()
-    // live: boolean;
-    // @Input()
-    // system: boolean;
-
-    // @Output()
-    // hide: EventEmitter<any> = new EventEmitter();
-    // @Output()
-    // show: EventEmitter<any> = new EventEmitter();
+    @Output()
+    removePersonalization: EventEmitter<DotPersona> = new EventEmitter();
 
     @ViewChild('searchableDropdown')
     searchableDropdown: SearchableDropdownComponent;
 
-    // currentSite: Observable<Site>;
-    // sitesCurrentPage: Site[];
     totalRecords: number;
     personas: DotPersona[];
     messagesKey: { [key: string]: string } = {};
-
-    // private refreshSitesSub: Subscription;
+    addAction: (action: any) => void;
 
     constructor(
-        // private siteService: SiteService,
         public paginationService: PaginatorService,
         private dotMessageService: DotMessageService
-        // private dotEventsService: DotEventsService
     ) {}
 
+    // tslint:disable-next-line:cyclomatic-complexity
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.value && !changes.value.currentValue && !changes.value.firstChange) {
+            this.value = {
+                name: this.messagesKey['modes.persona.no.persona'],
+                identifier: '0'
+            };
+        }
+    }
+
     ngOnInit(): void {
+        this.addAction = () => {
+            console.log('--- Clicked + Action');
+        };
+
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
-        console.log('---value', this.value, this.paginationService.url)
 
         this.dotMessageService
             .getMessages(['modes.persona.no.persona'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                this.value = this.value || { name: this.messagesKey['modes.persona.no.persona'], identifier: '0' };
+                this.value = this.value || {
+                    name: this.messagesKey['modes.persona.no.persona'],
+                    identifier: '0'
+                };
                 this.getPersonasList();
             });
-                // this.dotPersonasService
-                //     .get()
-                //     .pipe(
-                //         map((personas: DotPersona[]) =>
-                //             this.setOptions(
-                //                 this.dotMessageService.get('modes.persona.no.persona'),
-                //                 personas
-                //             )
-                //         )
-                //     )
-                //     .subscribe((personas: DotPersona[]) => {
-                //         this.options = personas;
-                //     });
-            // });
-
-        // this.paginationService.setExtraParams('archive', this.archive);
-        // this.paginationService.setExtraParams('live', this.live);
-        // this.paginationService.setExtraParams('system', this.system);
-
-        // this.refreshSitesSub = this.siteService.refreshSites$.subscribe((_site: Site) =>
-        //     this.handleSitesRefresh()
-        // );
-
-
-
-        // ['login-as', 'logout-as'].forEach((event: string) => {
-        //     this.dotEventsService.listen(event).subscribe(() => {
-        //         this.getSitesList();
-        //     });
-        // });
     }
-
-    // ngOnChanges(changes: SimpleChanges): void {
-    //     if (changes.id && changes.id.currentValue) {
-    //         this.selectCurrentSite(changes.id.currentValue);
-    //     }
-    // }
-
-    // ngOnDestroy(): void {
-    //     this.refreshSitesSub.unsubscribe();
-    // }
-
-    /**
-     * Manage the sites refresh when a event happen
-     * @memberof SiteSelectorComponent
-     */
-    // handleSitesRefresh(): void {
-    //     this.paginationService.getCurrentPage().subscribe((items) => {
-    //         this.sitesCurrentPage = [...items];
-    //         this.totalRecords = this.paginationService.totalRecords;
-    //         this.currentSite = of(this.siteService.currentSite);
-    //     });
-    // }
 
     /**
      * Call when the global serach changed
@@ -167,28 +108,18 @@ export class DotPersonaSelector2Component implements OnInit {
      * @memberof SiteSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
-        console.log('---getPersonasList', filter, offset)
+        this.personas = [];
+        if (!filter && offset === 0) {
+            this.personas = [
+                { name: this.messagesKey['modes.persona.no.persona'], identifier: '0' }
+            ];
+        }
+
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
-
-            this.personas = items.reduce(
-                (acc: DotPersona[], currentValue) =>
-                    acc.concat(currentValue.persona),
-                []
-            );
-
-            this.personas = [{ name: this.messagesKey['modes.persona.no.persona'], identifier: '0' }, ...this.personas];
-
-
-            console.log('---page persona', this.personas);
-            // this.sitesCurrentPage = [...items];
+            this.personas = [...this.personas, ...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-            console.log('---page totalRecords', this.totalRecords);
-
-            // if (!this.currentSite) {
-            //     this.setCurrentSiteAsDefault();
-            // }
         });
     }
 
@@ -199,23 +130,17 @@ export class DotPersonaSelector2Component implements OnInit {
      */
     personaChange(persona: DotPersona): void {
         this.selected.emit(persona);
+        this.searchableDropdown.hideOverlayPanel();
     }
 
-    // private getSiteByIdFromCurrentPage(siteId: string): Site {
-    //     return (
-    //         this.sitesCurrentPage &&
-    //         this.sitesCurrentPage.filter((site) => site.identifier === siteId)[0]
-    //     );
-    // }
-
-    // private selectCurrentSite(siteId: string): void {
-    //     const selectedInCurrentPage = this.getSiteByIdFromCurrentPage(siteId);
-    //     this.currentSite = selectedInCurrentPage
-    //         ? of(selectedInCurrentPage)
-    //         : this.siteService.getSiteById(siteId);
-    // }
-
-    // private setCurrentSiteAsDefault() {
-    //     this.currentSite = of(this.siteService.currentSite);
-    // }
+    /**
+     * Call when the selected site changed and the change event is emmited
+     * @param Site site
+     * @memberof SiteSelectorComponent
+     */
+    deletePersonalization(persona: DotPersona): void {
+        console.log('--deletePersonalization', persona)
+        // TODO: Confirm & call service
+        this.searchableDropdown.hideOverlayPanel();
+    }
 }

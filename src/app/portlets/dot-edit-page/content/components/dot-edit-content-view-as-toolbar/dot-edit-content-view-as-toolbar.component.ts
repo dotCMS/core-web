@@ -22,6 +22,8 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Output()
     changeViewAs = new EventEmitter<DotEditPageViewAs>();
+    @Output()
+    deletePersonalization = new EventEmitter<DotPersona>();
 
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
@@ -35,7 +37,6 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log('---pageState.viewAs.persona', this.pageState.viewAs.persona)
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
         this.dotMessageService
             .getMessages(['editpage.viewas.previewing'])
@@ -47,7 +48,6 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Input()
     set pageState(pageState: DotRenderedPageState) {
         this._pageState = pageState;
-        console.log('---', pageState)
         this.value = pageState.viewAs;
     }
 
@@ -64,6 +64,16 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     changePersonaHandler(persona: DotPersona): void {
         this.value.persona = persona;
         this.changeViewAs.emit(this.value);
+    }
+
+    /**
+     * Handle remove Personalization.
+     *
+     * @param DotPersona persona
+     * @memberof DotEditContentViewAsToolbarComponent
+     */
+    removePersonalizationHandler(persona: DotPersona): void {
+        this.deletePersonalization.emit(persona);
     }
 
     /**

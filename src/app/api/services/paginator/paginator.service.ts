@@ -140,11 +140,10 @@ export class PaginatorService {
             params.appendAll(this.extraParams);
         }
 
-        // // REMOVE BEGIN
-        // if (typeof url === 'string') {
-        //     url = url.replace('/api/', '');
-        // }
-        // console.log('---url', url)
+        // REMOVE BEGIN
+        if (typeof url === 'string') {
+            url = url.replace('/api/', '');
+        }
         // REMOVE END
 
         return this.coreWebService

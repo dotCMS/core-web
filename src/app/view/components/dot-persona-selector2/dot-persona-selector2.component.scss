@@ -1,0 +1,26 @@
+@import "variables";
+
+.dot-persona-selector {
+    .ui-dataview-content.ui-widget-content {
+        width: 448px;
+    }
+
+    .ui-overlaypanel-content {
+        padding: $basic-padding * 2 0;
+    
+        .searchable-dropdown__search {
+            margin: 0 $basic-padding * 2;
+    
+            .searchable-dropdown__search-icon {
+                right: $basic-padding;
+            }
+    
+            .searchable-dropdown__search-inputfield {
+                border: 1px solid $gray-light;
+                border-radius: $border-radius;
+                box-shadow: none;
+                padding: 0 $basic-padding * 4 0 $basic-padding * 2;
+            }
+        }
+    }
+}

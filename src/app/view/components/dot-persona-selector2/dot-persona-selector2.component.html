@@ -1,18 +1,25 @@
-<ng-template let-item="item" pTemplate="listItem" #personaTemplate>
-    <p>- {{ item.label }}</p>
+<ng-template let-personaData="item" pTemplate="listItem" #personaItemListTemplate>
+    <dot-persona-selector-option
+        [persona]="personaData"
+        [selected]="value.name === personaData.name"
+        (select)="personaChange($event)"
+        (delete)="deletePersonalization($event)"
+    ></dot-persona-selector-option>
 </ng-template>
 
 <dot-searchable-dropdown
     #searchableDropdown
+    cssClass="dot-persona-selector"
     (change)="personaChange($event)"
     (filterChange)="handleFilterChange($event)"
     (pageChange)="handlePageChange($event)"
+    [action]="addAction"
     [data]="personas"
-    [(ngModel)]="value"
+    [ngModel]="value"
     [pageLinkSize]="3"
     [rows]="10"
     [totalRecords]="paginationService.totalRecords"
+    [externalItemListTemplate]="personaItemListTemplate"
     labelPropertyName="name"
-    [externalTemplate]="personaTemplate"
     >
 </dot-searchable-dropdown>

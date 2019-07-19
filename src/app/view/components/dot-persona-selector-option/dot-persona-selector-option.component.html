@@ -7,7 +7,11 @@
 
 <span
     class="dot-persona-selector-option__label"
-    [ngClass]="{ 'dot-persona-selector-option__personalized': persona.personalized }"
+    style="-webkit-box-orient: vertical;-moz-box-orient: vertical;"
+    [ngClass]="{
+        'dot-persona-selector-option__personalized': persona.personalized,
+        'dot-persona-selector-option__selected': selected
+    }"
     >{{ persona.name }}
 </span>
 
