@@ -28,6 +28,4 @@ export class DotPersonasService {
             })
             .pipe(pluck('contentlets'));
     }
-
-    
 }

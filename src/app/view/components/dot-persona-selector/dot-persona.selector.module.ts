@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
-import { DotPersonaSelector2Component } from './dot-persona-selector2.component';
+import { DotPersonaSelectorComponent } from './dot-persona-selector.component';
 import { DotPersonaSelectorOptionModule } from '@components/dot-persona-selector-option/dot-persona-selector-option.module';
 import { ButtonModule } from 'primeng/primeng';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 
 @NgModule({
-    declarations: [DotPersonaSelector2Component],
-    exports: [DotPersonaSelector2Component],
+    declarations: [DotPersonaSelectorComponent],
+    exports: [DotPersonaSelectorComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -21,4 +21,4 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
         ButtonModule
     ]
 })
-export class DotPersonaSelector2Module {}
+export class DotPersonaSelectorModule {}

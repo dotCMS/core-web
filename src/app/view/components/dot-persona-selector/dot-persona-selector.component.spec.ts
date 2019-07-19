@@ -12,7 +12,7 @@ import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { Dropdown } from 'primeng/primeng';
 import { of } from 'rxjs';
 
-describe('DotPersonaSelectorComponent', () => {
+describe('DotPersonaSelector2Component', () => {
     let dotPersonasService: DotPersonasService;
 
     let component: DotPersonaSelectorComponent;

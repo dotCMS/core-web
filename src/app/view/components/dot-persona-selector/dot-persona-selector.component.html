@@ -1,10 +1,46 @@
-<p-dropdown
-    tiny
-    (onChange)="change($event.value)"
-    [(ngModel)]="value"
-    [options]="options"
-    [style]="{'width': '100px'}"
-    dataKey="identifier"
-    optionLabel="name"
-    [disabled]="!options || options.length === 1">
-</p-dropdown>
+<ng-template let-personaData="item" pTemplate="listItem" #personaItemListTemplate>
+    <dot-persona-selector-option
+        [persona]="personaData"
+        [selected]="value ? value.name === personaData.name : false"
+        (select)="personaChange($event)"
+        (delete)="deletePersonalization($event)"
+    ></dot-persona-selector-option>
+</ng-template>
+
+<ng-template let-persona="item" #personaSelectTemplate>
+    <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toogleOverlayPanel($event)">
+        <dot-avatar
+            [label]="persona.name"
+            [showDot]="persona.personalized"
+            [size]="24"
+            [url]="persona.photo || ''"
+        ></dot-avatar>
+        <div class="dot-persona-selector__label-container">
+            <span class="dot-persona-selector__label"
+                >{{ messagesKey['modes.persona.selector.title'] }}
+            </span>
+            <span class="dot-persona-selector__name">
+                {{ persona.name }}
+            </span>
+        </div>
+        <dot-icon name="arrow_drop_down"></dot-icon>
+    </div>
+</ng-template>
+
+<dot-searchable-dropdown
+    #searchableDropdown
+    cssClass="dot-persona-selector"
+    (change)="personaChange($event)"
+    (filterChange)="handleFilterChange($event)"
+    (pageChange)="handlePageChange($event)"
+    [action]="addAction"
+    [data]="personas"
+    [ngModel]="value"
+    [pageLinkSize]="3"
+    [rows]="10"
+    [totalRecords]="paginationService.totalRecords"
+    [externalSelectTemplate]="personaSelectTemplate"
+    [externalItemListTemplate]="personaItemListTemplate"
+    labelPropertyName="name"
+>
+</dot-searchable-dropdown>
