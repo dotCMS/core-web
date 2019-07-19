@@ -97,6 +97,7 @@ export interface ConditionActionEvent extends RuleActionEvent {
       [loading]="state.loading"
       [showRules]="state.showRules"
       [pageId]="pageId"
+      [isContentletHost]="isContentletHost"
       [globalError]="state.globalError"
       (createRule)="onCreateRule($event)"
       (deleteRule)="onDeleteRule($event)"
@@ -131,6 +132,7 @@ export class RuleEngineContainer {
   conditionGroups$: EventEmitter<ConditionGroupModel[]> = new EventEmitter();
   globalError: string;
   pageId: string;
+  isContentletHost: boolean;
 
   constructor(
     public _ruleService: RuleService,
@@ -628,8 +630,6 @@ export class RuleEngineContainer {
   private initRules(): void {
     this.state.loading = true;
 
-    this.pageId = '';
-
     const pageIdParams = this.route.params.pipe(map((params: Params) => params.pageId));
     const queryParams = this.route.queryParams.pipe(map((params: Params) => params.realmId));
 
@@ -641,6 +641,7 @@ export class RuleEngineContainer {
     this._ruleService.loadRules().pipe(take(1)).subscribe((rules: RuleModel[]) => {
       this.loadRules(rules);
     });
+    this.route.queryParams.pipe(take(1)).subscribe((params: Params) => this.isContentletHost =  (params.isContentletHost === 'true'));
   }
 
   private loadRules(rules: RuleModel[]): void {
