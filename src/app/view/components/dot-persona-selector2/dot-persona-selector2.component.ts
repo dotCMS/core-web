@@ -71,7 +71,7 @@ export class DotPersonaSelector2Component implements OnInit, OnChanges {
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
 
         this.dotMessageService
-            .getMessages(['modes.persona.no.persona'])
+            .getMessages(['modes.persona.no.persona', 'modes.persona.selector.title'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
@@ -108,16 +108,17 @@ export class DotPersonaSelector2Component implements OnInit, OnChanges {
      * @memberof SiteSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
-        this.personas = [];
-        if (!filter && offset === 0) {
-            this.personas = [
-                { name: this.messagesKey['modes.persona.no.persona'], identifier: '0' }
-            ];
-        }
 
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
+
+            this.personas = [];
+            if (this.isFirstPageAndNoFilter(filter, offset)) {
+                this.personas = [
+                    { name: this.messagesKey['modes.persona.no.persona'], identifier: '0' }
+                ];
+            }
             this.personas = [...this.personas, ...items];
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
@@ -130,7 +131,7 @@ export class DotPersonaSelector2Component implements OnInit, OnChanges {
      */
     personaChange(persona: DotPersona): void {
         this.selected.emit(persona);
-        this.searchableDropdown.hideOverlayPanel();
+        this.searchableDropdown.toogleOverlayPanel();
     }
 
     /**
@@ -141,6 +142,10 @@ export class DotPersonaSelector2Component implements OnInit, OnChanges {
     deletePersonalization(persona: DotPersona): void {
         console.log('--deletePersonalization', persona)
         // TODO: Confirm & call service
-        this.searchableDropdown.hideOverlayPanel();
+        this.searchableDropdown.toogleOverlayPanel();
+    }
+
+    private isFirstPageAndNoFilter(filter: string, offset: number): boolean {
+        return !filter && offset === 0;
     }
 }

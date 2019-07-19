@@ -211,18 +211,18 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
      * @param * item
      * @memberof SearchableDropdownComponent
      */
-    handleClick(item: any): void {
+    handleClick($event: MouseEvent, item: any): void {
         if (this.value !== item || this.multiple) {
             this.setValue(item);
             this.propagateChange(this.getValueToPropagate());
             this.change.emit(Object.assign({}, this.value));
         }
 
-        this.hideOverlayPanel();
+        this.toogleOverlayPanel($event);
     }
 
-    hideOverlayPanel(): void {
-        this.searchPanelRef.hide();
+    toogleOverlayPanel($event?: MouseEvent): void {
+        $event ? this.searchPanelRef.toggle($event) : this.searchPanelRef.hide();
     }
 
     /**

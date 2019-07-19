@@ -1,7 +1,9 @@
 <ng-template let-item="item" pTemplate="listItem" #defaultItemListTemplate>
-    <span [class.selected]="item[labelPropertyName] === valueString" (click)="handleClick(item)">{{
-        item.label
-    }}</span>
+    <span
+        [class.selected]="item[labelPropertyName] === valueString"
+        (click)="handleClick(item)"
+        >{{ item.label }}</span
+    >
 </ng-template>
 
 <ng-template let-item="item" #defaultSelectTemplate>
@@ -63,20 +65,7 @@
     </p-dataView>
 </p-overlayPanel>
 
-<!-- <button
-    #button
-    dotMdRipple
-    pButton
-    *ngIf="label"
-    (click)="searchPanel.toggle($event)"
-    [label]="label"
-    icon="fa fa-caret-down"
-    iconPos="right"
-    type="button"
-    [ngStyle]="{ width: width }"
-    [disabled]="disabled"
-></button> -->
 <ng-container
     [ngTemplateOutlet]="externalSelectTemplate || defaultSelectTemplate"
-    [ngTemplateOutletContext]="{ item: item }"
+    [ngTemplateOutletContext]="{ item: value }"
 ></ng-container>

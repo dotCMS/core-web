@@ -24,3 +24,44 @@
         }
     }
 }
+
+.dot-persona-selector__container {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    height: 48px;
+    position: relative;
+    width: 206px;
+
+    dot-avatar {
+        margin-right: $basic-padding * 2;
+    }
+
+    .dot-persona-selector__label-container{
+        flex-grow: 1;
+
+        span {
+            display: block;
+        }
+        .dot-persona-selector__label {
+            color: $gray-light;
+            flex: 1;
+            font-size: $font-size-small;
+        }
+        .dot-persona-selector__name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 150px;
+        }
+    
+    }
+
+    dot-icon {
+        bottom: 8px;
+        position: absolute;
+        right: 0;
+    }
+
+    
+}
