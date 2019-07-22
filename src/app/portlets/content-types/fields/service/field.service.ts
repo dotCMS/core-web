@@ -31,6 +31,7 @@ export class FieldService {
      * @memberof FieldService
      */
     saveFields(contentTypeId: string, fields: DotCMSContentTypeLayoutRow[]): Observable<DotCMSContentTypeLayoutRow[]> {
+
         return this.coreWebService
             .requestView({
                 body: {
