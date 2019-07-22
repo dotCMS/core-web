@@ -220,7 +220,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param DotContentTypeField[] fieldsToDelete Fields to be removed
      * @memberof ContentTypesEditComponent
      */
-    removeFields(fieldsToDelete: string[]): void {
+    removeFields(fieldsToDelete: DotCMSContentTypeField[]): void {
         this.fieldService
             .deleteFields(this.data.id, fieldsToDelete)
             .pipe(

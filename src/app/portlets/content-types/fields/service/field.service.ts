@@ -55,12 +55,12 @@ export class FieldService {
      */
     deleteFields(
         contentTypeId: string,
-        fieldsID: string[]
+        fields: DotCMSContentTypeField[]
     ): Observable<{ fields: DotCMSContentTypeLayoutRow[]; deletedIds: string[] }> {
         return this.coreWebService
             .requestView({
                 body: {
-                    fieldsID
+                    fieldsID: fields.map((field: DotCMSContentTypeField) => field.id)
                 },
                 method: RequestMethod.Delete,
                 url: `v3/contenttype/${contentTypeId}/fields`

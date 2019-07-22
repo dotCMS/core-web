@@ -61,7 +61,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
     editField = new EventEmitter<DotCMSContentTypeField>();
 
     @Output()
-    removeFields = new EventEmitter<string[]>();
+    removeFields = new EventEmitter<DotCMSContentTypeField[]>();
 
     hideButtons = false;
 
@@ -312,7 +312,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeField(fieldToDelete: DotCMSContentTypeField): void {
-        this.removeFields.emit([fieldToDelete.id]);
+        this.removeFields.emit([fieldToDelete]);
     }
 
     /**
@@ -320,8 +320,8 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param {DotCMSContentTypeLayoutRow} fieldRow
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeFieldRow(fieldRow: DotCMSContentTypeLayoutRow): void {
-        this.fieldRows.splice(this.fieldRows.indexOf(fieldRow), 1);
+    removeFieldRow(fieldRow: DotCMSContentTypeLayoutRow, index: number): void {
+        this.fieldRows.splice(index, 1);
         const fieldsToDelete: DotCMSContentTypeField[] = [];
 
         if (!FieldUtil.isNewField(fieldRow.divider)) {
@@ -330,7 +330,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
                 fieldsToDelete.push(fieldColumn.columnDivider);
                 fieldColumn.fields.forEach((field) => fieldsToDelete.push(field));
             });
-            this.removeFields.emit(fieldsToDelete.map((field: DotCMSContentTypeField) => field.id));
+            this.removeFields.emit(fieldsToDelete);
         }
     }
 
@@ -339,9 +339,9 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @param {DotCMSContentTypeLayoutRow} fieldTab
      * @memberof ContentTypeFieldsDropZoneComponent
      */
-    removeTab(fieldTab: DotCMSContentTypeLayoutRow): void {
-        this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
-        this.removeFields.emit([fieldTab.divider.id]);
+    removeTab(fieldTab: DotCMSContentTypeLayoutRow, index: number): void {
+        this.fieldRows.splice(index, 1);
+        this.removeFields.emit([fieldTab.divider]);
     }
 
     /**
