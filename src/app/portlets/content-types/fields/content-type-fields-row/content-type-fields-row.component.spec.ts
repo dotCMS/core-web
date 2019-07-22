@@ -162,10 +162,14 @@ describe('ContentTypeFieldsRowComponent', () => {
 
         it('should show remove row button', () => {
             const removeRowButon = de.query(By.css('.row-header__remove'));
-            expect(removeRowButon !== null).toBe(true);
+            console.log(removeRowButon.nativeElement);
+            expect(removeRowButon).not.toBeNull();
         });
 
         it('should emit row remove event with no confirmation dialog', () => {
+            comp.fieldRow = FieldUtil.createFieldRow(1);
+            hostFixture.detectChanges();
+
             spyOn(dotDialogService, 'confirm');
 
             let result;
@@ -176,7 +180,7 @@ describe('ContentTypeFieldsRowComponent', () => {
             const removeRowButon = de.query(By.css('.row-header__remove'));
             removeRowButon.nativeElement.click();
 
-            expect(comp.fieldRow).toEqual(result);
+            expect(result).toEqual(comp.fieldRow);
             expect(dotDialogService.confirm).not.toHaveBeenCalled();
         });
     });
