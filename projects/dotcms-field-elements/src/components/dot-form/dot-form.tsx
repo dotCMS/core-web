@@ -133,7 +133,7 @@ export class DotFormComponent {
     private handleSubmit(event: Event): void {
         event.preventDefault();
 
-        fetch(`http://localhost:8080${SUBMIT_FORM_API_URL}`, {
+        fetch(SUBMIT_FORM_API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -154,7 +154,7 @@ export class DotFormComponent {
                 return response.text();
             })
             .then((_text: string) => {
-                console.log('Go to success page');
+                // Go to success page
             })
             .catch(({ message, status }: DotCMSFormSubmitError) => {
                 this.errorMessage = message || fallbackErrorMessages[status];
