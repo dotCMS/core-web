@@ -3,7 +3,6 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotCMSContentTypeLayoutColumn } from 'dotcms-models';
 import { take } from 'rxjs/operators';
 import { FieldUtil } from '../util/field-util';
 
@@ -87,43 +86,34 @@ export class ContentTypeFieldsRowComponent implements OnInit {
     }
 
     /**
-     * Return the width for each column
+     * Handle remove row event or remove column
      *
-     * @returns string Return the column's width width '%', for example, '30%'
+     * @param {DotCMSContentTypeLayoutColumn} [column]
      * @memberof ContentTypeFieldsRowComponent
      */
-    getColumnWidth(): string {
-        const nColumns = this.fieldRow.columns.length;
-        return `${100 / nColumns}%`;
+    remove(index: number): void {
+        if (this.hasMoreThanOneColumn()) {
+            this.removeColumn(index);
+        } else {
+            this.removeRow.emit(this.fieldRow);
+        }
     }
 
-    /**
-     * Remove a column from row if new or emit to remove.
-     *
-     * @param {DotCMSContentTypeLayoutColumn} column
-     * @param {number} index
-     * @memberof ContentTypeFieldsRowComponent
-     */
-    removeColumn(column: DotCMSContentTypeLayoutColumn, index: number): void {
-        const field = column.columnDivider;
+    private removeColumn(index: number): void {
+        const field = this.fieldRow.columns[index].columnDivider;
 
         if (FieldUtil.isNewField(field)) {
-            this.fieldRow.columns.splice(index, 1);
+            this.removeLocalColumn(index);
         } else {
             this.removeField.emit(field);
         }
     }
 
-    /**
-     * Check if a given row have fields in any of the columns
-     *
-     * @param DotContentTypeLayoutDivider row
-     * @returns boolean
-     * @memberof ContentTypeFieldsRowComponent
-     */
-    rowHaveFields(row: DotCMSContentTypeLayoutRow): boolean {
-        return row.columns
-            .map((column: DotCMSContentTypeLayoutColumn) => column.fields.length)
-            .every((fieldsNumber: number) => fieldsNumber === 0);
+    private removeLocalColumn(index: number): void {
+        this.fieldRow.columns.splice(index, 1);
+    }
+
+    private hasMoreThanOneColumn(): boolean {
+        return this.fieldRow.columns.length > 1;
     }
 }

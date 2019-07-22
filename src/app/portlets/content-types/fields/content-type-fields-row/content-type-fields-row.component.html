@@ -2,11 +2,10 @@
     <span class="row-header__drag"></span>
 </div>
 <div class="row-columns">
-    <span
+    <div
         *ngFor="let column of fieldRow.columns; let i = index"
         [class.empty]="!column.fields.length"
         [(dragulaModel)]="column.fields"
-        [style.width]="getColumnWidth()"
         class="row-columns__item"
         data-drag-type="target"
         dragula="fields-bag"
@@ -17,9 +16,7 @@
             class="row-header__remove"
             icon="delete"
             [tooltipText]="i18nMessages['contenttypes.action.delete']"
-            (click)="
-                fieldRow.columns.length === 1 ? removeRow.emit(fieldRow) : removeColumn(column, i)
-            "
+            (click)="remove(i)"
         >
         </dot-icon-button-tooltip>
 
@@ -30,5 +27,5 @@
             (edit)="this.editField.emit(field)"
         >
         </dot-content-type-field-dragabble-item>
-    </span>
+    </div>
 </div>
