@@ -30,8 +30,10 @@ export class FieldService {
      * @returns Observable<any>
      * @memberof FieldService
      */
-    saveFields(contentTypeId: string, fields: DotCMSContentTypeLayoutRow[]): Observable<DotCMSContentTypeLayoutRow[]> {
-
+    saveFields(
+        contentTypeId: string,
+        fields: DotCMSContentTypeLayoutRow[]
+    ): Observable<DotCMSContentTypeLayoutRow[]> {
         return this.coreWebService
             .requestView({
                 body: {
@@ -53,12 +55,12 @@ export class FieldService {
      */
     deleteFields(
         contentTypeId: string,
-        fields: DotCMSContentTypeField[]
+        fieldsID: string[]
     ): Observable<{ fields: DotCMSContentTypeLayoutRow[]; deletedIds: string[] }> {
         return this.coreWebService
             .requestView({
                 body: {
-                    fieldsID: fields.map((field: DotCMSContentTypeField) => field.id)
+                    fieldsID
                 },
                 method: RequestMethod.Delete,
                 url: `v3/contenttype/${contentTypeId}/fields`
@@ -85,7 +87,10 @@ export class FieldService {
      * @returns {Observable<DotCMSContentTypeLayoutRow[]>}
      * @memberof FieldService
      */
-    updateField(contentTypeId: string, field: DotCMSContentTypeField): Observable<DotCMSContentTypeLayoutRow[]> {
+    updateField(
+        contentTypeId: string,
+        field: DotCMSContentTypeField
+    ): Observable<DotCMSContentTypeLayoutRow[]> {
         return this.coreWebService
             .requestView({
                 body: {

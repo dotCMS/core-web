@@ -5,6 +5,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotCMSContentTypeLayoutColumn } from 'dotcms-models';
 import { take } from 'rxjs/operators';
+import { FieldUtil } from '../util/field-util';
 
 /**
  * Display all the Field Types
@@ -23,8 +24,10 @@ export class ContentTypeFieldsRowComponent implements OnInit {
 
     @Output()
     editField: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
+
     @Output()
     removeField: EventEmitter<DotCMSContentTypeField> = new EventEmitter();
+
     @Output()
     removeRow: EventEmitter<DotCMSContentTypeLayoutRow> = new EventEmitter();
 
@@ -95,12 +98,20 @@ export class ContentTypeFieldsRowComponent implements OnInit {
     }
 
     /**
-     * Tigger the removeRow event whit the current FieldRow
+     * Remove a column from row if new or emit to remove.
      *
+     * @param {DotCMSContentTypeLayoutColumn} column
+     * @param {number} index
      * @memberof ContentTypeFieldsRowComponent
      */
-    onRemoveFieldRow(): void {
-        this.removeRow.emit(this.fieldRow);
+    removeColumn(column: DotCMSContentTypeLayoutColumn, index: number): void {
+        const field = column.columnDivider;
+
+        if (FieldUtil.isNewField(field)) {
+            this.fieldRow.columns.splice(index, 1);
+        } else {
+            this.removeField.emit(field);
+        }
     }
 
     /**

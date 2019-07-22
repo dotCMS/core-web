@@ -21,6 +21,7 @@
 }
 
 .row-columns__item {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: 0 $basic-padding / 2;
@@ -104,6 +105,6 @@
 .row-header__remove {
     cursor: pointer;
     position: absolute;
-    right: 32px;
-    top: 32px;
+    right: $basic-padding;
+    top: $basic-padding;
 }

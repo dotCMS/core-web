@@ -56,10 +56,12 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
     @Output()
     saveFields = new EventEmitter<DotCMSContentTypeLayoutRow[]>();
+
     @Output()
     editField = new EventEmitter<DotCMSContentTypeField>();
+
     @Output()
-    removeFields = new EventEmitter<DotCMSContentTypeField[]>();
+    removeFields = new EventEmitter<string[]>();
 
     hideButtons = false;
 
@@ -310,7 +312,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      * @memberof ContentTypeFieldsDropZoneComponent
      */
     removeField(fieldToDelete: DotCMSContentTypeField): void {
-        this.removeFields.emit([fieldToDelete]);
+        this.removeFields.emit([fieldToDelete.id]);
     }
 
     /**
@@ -324,11 +326,11 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
 
         if (!FieldUtil.isNewField(fieldRow.divider)) {
             fieldsToDelete.push(fieldRow.divider);
-            fieldRow.columns.forEach((fieldColumn) => {
+            fieldRow.columns.forEach((fieldColumn: DotCMSContentTypeLayoutColumn) => {
                 fieldsToDelete.push(fieldColumn.columnDivider);
                 fieldColumn.fields.forEach((field) => fieldsToDelete.push(field));
             });
-            this.removeFields.emit(fieldsToDelete);
+            this.removeFields.emit(fieldsToDelete.map((field: DotCMSContentTypeField) => field.id));
         }
     }
 
@@ -339,7 +341,7 @@ export class ContentTypeFieldsDropZoneComponent implements OnInit, OnChanges, On
      */
     removeTab(fieldTab: DotCMSContentTypeLayoutRow): void {
         this.fieldRows.splice(this.fieldRows.indexOf(fieldTab), 1);
-        this.removeFields.emit([fieldTab.divider]);
+        this.removeFields.emit([fieldTab.divider.id]);
     }
 
     /**
