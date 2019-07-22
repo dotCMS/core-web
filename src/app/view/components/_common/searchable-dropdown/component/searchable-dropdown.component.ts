@@ -207,21 +207,25 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
     /**
      * Call when a option is clicked, if this option is not the same of the current value then
      * the change events is emitted. If multiple is true allow to emit the same value.
-     * @private
-     * @param * item
+     * @param any item
      * @memberof SearchableDropdownComponent
      */
-    handleClick($event: MouseEvent, item: any): void {
+    handleClick(item: any): void {
         if (this.value !== item || this.multiple) {
             this.setValue(item);
             this.propagateChange(this.getValueToPropagate());
             this.change.emit(Object.assign({}, this.value));
         }
 
-        this.toogleOverlayPanel($event);
+        this.toggleOverlayPanel();
     }
 
-    toogleOverlayPanel($event?: MouseEvent): void {
+    /**
+     * Shows or hide the list of options.
+     * @param MouseEvent event
+     * @memberof SearchableDropdownComponent
+     */
+    toggleOverlayPanel($event?: MouseEvent): void {
         $event ? this.searchPanelRef.toggle($event) : this.searchPanelRef.hide();
     }
 

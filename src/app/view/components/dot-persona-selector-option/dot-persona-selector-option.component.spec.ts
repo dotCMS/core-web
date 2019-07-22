@@ -10,7 +10,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { By } from '@angular/platform-browser';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
-describe('DotPersonaSelectorOptionComponent', () => {
+fdescribe('DotPersonaSelectorOptionComponent', () => {
 
     let component: DotPersonaSelectorOptionComponent;
     let fixture: ComponentFixture<DotPersonaSelectorOptionComponent>;
@@ -88,10 +88,10 @@ describe('DotPersonaSelectorOptionComponent', () => {
     });
 
     it('should emit persona when field clicked', () => {
-        spyOn(component.selected, 'emit');
+        spyOn(component.select, 'emit');
         de.triggerEventHandler('click', {
             stopPropagation: () => {}
         });
-        expect(component.selected.emit).toHaveBeenCalledWith(mockDotPersona);
+        expect(component.select.emit).toHaveBeenCalledWith(mockDotPersona);
     });
 });

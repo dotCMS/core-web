@@ -37,8 +37,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
 
     @Output()
     selected: EventEmitter<DotPersona> = new EventEmitter();
-    @Output()
-    removePersonalization: EventEmitter<DotPersona> = new EventEmitter();
 
     @ViewChild('searchableDropdown')
     searchableDropdown: SearchableDropdownComponent;
@@ -131,7 +129,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      */
     personaChange(persona: DotPersona): void {
         this.selected.emit(persona);
-        this.searchableDropdown.toogleOverlayPanel();
+        this.searchableDropdown.toggleOverlayPanel();
     }
 
     /**
@@ -142,7 +140,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     deletePersonalization(persona: DotPersona): void {
         console.log('--deletePersonalization', persona);
         // TODO: Confirm & call service
-        this.searchableDropdown.toogleOverlayPanel();
+        this.searchableDropdown.toggleOverlayPanel();
     }
 
     private isFirstPageAndNoFilter(filter: string, offset: number): boolean {
