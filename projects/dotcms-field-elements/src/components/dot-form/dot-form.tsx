@@ -139,7 +139,7 @@ export class DotFormComponent {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                stName: this.variable || 'ContactUs',
+                stName: this.variable,
                 ...this.value
             })
         })
