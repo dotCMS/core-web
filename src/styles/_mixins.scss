@@ -108,3 +108,9 @@
     top: 19px;
     z-index: 1;
 }
+
+@mixin form-field-border {
+    border: 1px solid $gray-light;
+    border-radius: $border-radius;
+    box-shadow: none;
+}

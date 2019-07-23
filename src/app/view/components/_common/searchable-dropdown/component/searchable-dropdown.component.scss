@@ -47,12 +47,12 @@ dot-searchable-dropdown {
     }
 
     .ui-dataview-content {
-        width: 300px;
+        min-width: 300px;
 
         .ui-g {
             margin: 0;
 
-            span.ng-star-inserted {
+            span.dot-list-item {
                 cursor: pointer;
                 display: block;
                 padding: $basic-padding / 2;

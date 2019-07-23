@@ -1,12 +1,7 @@
 @import "variables";
+@import "mixins";
 
 .dot-persona-selector {
-    top: 167px!important;
-
-    .ui-dataview-content.ui-widget-content {
-        width: 448px;
-    }
-
     .ui-overlaypanel-content {
         padding: $basic-padding * 2 0;
     
@@ -18,9 +13,7 @@
             }
     
             .searchable-dropdown__search-inputfield {
-                border: 1px solid $gray-light;
-                border-radius: $border-radius;
-                box-shadow: none;
+                @include form-field-border;
                 padding: 0 $basic-padding * 4 0 $basic-padding * 2;
             }
         }
@@ -40,7 +33,9 @@
     }
 
     .dot-persona-selector__label-container{
-        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         span {
             display: block;
@@ -55,10 +50,10 @@
             color: $black;
             font-weight: $semi-bold;
             line-height: $basic-padding * 2;
+            margin-right: $basic-padding * 3;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            width: 150px;
         }
     }
 

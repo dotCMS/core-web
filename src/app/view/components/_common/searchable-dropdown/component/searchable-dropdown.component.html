@@ -1,5 +1,6 @@
 <ng-template let-item="item" pTemplate="listItem" #defaultItemListTemplate>
     <span
+        class="dot-list-item"
         [class.selected]="item[labelPropertyName] === valueString"
         (click)="handleClick(item)"
         >{{ item.label }}</span
@@ -51,6 +52,7 @@
         [pageLinks]="pageLinkSize"
         [paginator]="totalRecords > rows"
         [rows]="rows"
+        [style]="{ 'width': width + 'px' }"
         [totalRecords]="totalRecords"
         [value]="options"
         class="searchable-dropdown__data-list"

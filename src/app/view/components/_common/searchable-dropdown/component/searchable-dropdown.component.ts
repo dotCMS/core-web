@@ -73,7 +73,7 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
     persistentPlaceholder: boolean;
 
     @Input()
-    width: string;
+    width = '300';
 
     @Input()
     multiple: boolean;
