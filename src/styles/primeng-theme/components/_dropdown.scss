@@ -59,14 +59,10 @@
     }
 
     .ui-dropdown-trigger {
-        padding: 0;
-        align-items: center;
-        display: flex;
-        justify-content: flex-end;
-        width: 10px;
+        @extend #ui-trigger;
 
-        .fa {
-            margin: 0;
+        .ui-dropdown-trigger-icon {
+            @extend #ui-trigger-icon;
         }
     }
 

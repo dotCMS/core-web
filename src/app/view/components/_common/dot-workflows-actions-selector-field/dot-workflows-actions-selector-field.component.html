@@ -1,0 +1,10 @@
+<p-dropdown
+    (onChange)="handleChange($event)"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    [filter]="true"
+    [options]="actions$ | async"
+    [style]="{ width: '100%' }"
+    appendTo="body"
+    [placeholder]="placeholder$ | async"
+></p-dropdown>

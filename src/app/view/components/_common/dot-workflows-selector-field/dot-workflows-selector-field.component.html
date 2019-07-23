@@ -1,12 +1,20 @@
 <p-multiSelect
+    appendTo="body"
     [options]="options | async"
-    [defaultLabel]="dotMessageService.get('dot.common.select.workflows')"
     [maxSelectedLabels]="3"
+    [disabled]="disabled"
+    [defaultLabel]="dotMessageService.get('dot.common.select.workflows')"
+    [(ngModel)]="value"
     (onChange)="handleChange($event.value)"
-    [(ngModel)]="value" [disabled]="disabled"
-    appendTo="body">
+>
     <ng-template let-item pTemplate="item">
-        <span class="workflow__label" [class.workflow__archive-label]="isWorkflowArchive(item.value)">{{item.label}}</span>
-        <span *ngIf="isWorkflowArchive(item.value)" class="workflow__archive-message">({{dotMessageService.get('dot.common.archived')}})</span>
+        <span
+            class="workflow__label"
+            [class.workflow__archive-label]="isWorkflowArchive(item.value)"
+            >{{ item.label }}</span
+        >
+        <span *ngIf="isWorkflowArchive(item.value)" class="workflow__archive-message"
+            >({{ dotMessageService.get('dot.common.archived') }})</span
+        >
     </ng-template>
 </p-multiSelect>

@@ -47,3 +47,15 @@
     background: $gray-bg;
     color: $field-hover-color;
 }
+
+#ui-trigger {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+}
+
+#ui-trigger-icon {
+    position: static;
+    margin: 0;
+}

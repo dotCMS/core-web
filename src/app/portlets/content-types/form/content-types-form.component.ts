@@ -101,9 +101,12 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.name.nativeElement.focus();
 
         if (!this.isEditMode()) {
-            this.dotWorkflowService.getSystem().pipe(take(1)).subscribe((workflow: DotWorkflow) => {
-                this.form.get('workflow').setValue([workflow.id]);
-            });
+            this.dotWorkflowService
+                .getSystem()
+                .pipe(take(1))
+                .subscribe((workflow: DotWorkflow) => {
+                    this.form.get('workflow').setValue([workflow.id]);
+                });
         }
     }
 
@@ -213,6 +216,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                     disabled: true
                 }
             ],
+            workflowAction: [{ value: '', disabled: true }],
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -233,9 +237,12 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     }
 
     private initWorkflowField(): void {
-        this.dotLicenseService.isEnterprise().pipe(take(1)).subscribe((isEnterpriseLicense: boolean) => {
-            this.updateWorkflowFormControl(isEnterpriseLicense);
-        });
+        this.dotLicenseService
+            .isEnterprise()
+            .pipe(take(1))
+            .subscribe((isEnterpriseLicense: boolean) => {
+                this.updateWorkflowFormControl(isEnterpriseLicense);
+            });
     }
 
     private isBaseTypeContent(): boolean {
@@ -299,11 +306,14 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     private updateWorkflowFormControl(isEnterpriseLicense: boolean): void {
         if (isEnterpriseLicense) {
             const workflowControl = this.form.get('workflow');
+            const workflowActionControl = this.form.get('workflowAction');
 
             workflowControl.enable();
+            workflowActionControl.enable();
 
             if (this.originalValue) {
                 this.originalValue.workflow = workflowControl.value;
+                this.originalValue.workflowActionControl = workflowActionControl.value;
             }
             this.setSaveState();
         }
