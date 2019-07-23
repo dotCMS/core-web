@@ -11,7 +11,6 @@ import { ListingDataTableModule } from '@components/listing-data-table/listing-d
 import { TableModule } from 'primeng/table';
 import { DotPersonaSelectorOptionModule } from '@components/dot-persona-selector-option/dot-persona-selector-option.module';
 import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-persona.selector.module';
-import { DotAvatarModule } from '../dot-avatar/dot-avatar.module';
 
 const routes: Routes = [
     {
@@ -27,7 +26,6 @@ const routes: Routes = [
         ...NGFACES_MODULES,
         RouterModule.forChild(routes),
         DotIconButtonModule,
-        DotAvatarModule,
         DotDialogModule,
         DotPersonaSelectorModule,
         DotPersonaSelectorOptionModule,

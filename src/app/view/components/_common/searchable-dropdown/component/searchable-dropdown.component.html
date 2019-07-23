@@ -9,7 +9,6 @@
 <ng-template let-item="item" #defaultSelectTemplate>
     <button
         #button
-        dotMdRipple
         pButton
         *ngIf="label"
         (click)="searchPanel.toggle($event)"
@@ -42,7 +41,7 @@
             />
         </div>
         <div *ngIf="action" class="searchable-dropdown__search-action">
-            <dot-icon-button secondary icon="add" big (click)="action()"></dot-icon-button>
+            <dot-icon-button secondary square icon="add" big (click)="action()"></dot-icon-button>
         </div>
     </header>
     <p-dataView

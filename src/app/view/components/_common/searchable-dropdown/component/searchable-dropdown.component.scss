@@ -43,6 +43,7 @@ dot-searchable-dropdown {
 .searchable-dropdown__data-list {
     .ui-dataview {
         min-height: 321px;
+        padding-bottom: $basic-padding * 4;
     }
 
     .ui-dataview-content {
@@ -71,6 +72,12 @@ dot-searchable-dropdown {
             }
         }
         
+    }
+
+    p-paginator {
+        bottom: 0;
+        position: absolute;
+        width: 100%;
     }
 
     .ui-dataview-emptymessage {
@@ -104,7 +111,7 @@ dot-searchable-dropdown {
     margin-left: $basic-padding * 2;
 
      dot-icon-button[secondary] button {
-        height: 36px;
-        width: 36px;
+        height: $field-height;
+        width: $field-height;
     }
 }

@@ -63,8 +63,6 @@
 
     &[secondary] {
         button {
-            border-radius: $border-radius;
-
             @each $label, $props in $button-sec {
                 @include button-properties($label, $props);
             }
@@ -91,6 +89,10 @@
                 }
             }
         }
+    }
+
+    &[square] button { 
+        border-radius: $border-radius;
     }
 
     &[disabled] {

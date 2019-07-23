@@ -2,17 +2,17 @@
     <dot-persona-selector-option
         [persona]="personaData"
         [selected]="value ? value.name === personaData.name : false"
-        (select)="personaChange($event)"
+        (change)="personaChange($event)"
         (delete)="deletePersonalization($event)"
     ></dot-persona-selector-option>
 </ng-template>
 
 <ng-template let-persona="item" #personaSelectTemplate>
-    <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toogleOverlayPanel($event)">
+    <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toggleOverlayPanel($event)">
         <dot-avatar
             [label]="persona.name"
             [showDot]="persona.personalized"
-            [size]="24"
+            [size]="32"
             [url]="persona.photo || ''"
         ></dot-avatar>
         <div class="dot-persona-selector__label-container">
@@ -36,8 +36,7 @@
     [action]="addAction"
     [data]="personas"
     [ngModel]="value"
-    [pageLinkSize]="3"
-    [rows]="10"
+    [rows]="paginationPerPage"
     [totalRecords]="paginationService.totalRecords"
     [externalSelectTemplate]="personaSelectTemplate"
     [externalItemListTemplate]="personaItemListTemplate"

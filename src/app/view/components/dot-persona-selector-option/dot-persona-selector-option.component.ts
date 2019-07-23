@@ -14,7 +14,7 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     @Input()
     selected: boolean;
     @Output()
-    select = new EventEmitter<DotPersona>();
+    change = new EventEmitter<DotPersona>();
     @Output()
     delete = new EventEmitter<DotPersona>();
 
@@ -34,7 +34,7 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     @HostListener('click', ['$event'])
     onClick($event: MouseEvent) {
         $event.stopPropagation();
-        this.select.emit(this.persona);
+        this.change.emit(this.persona);
     }
 
     /**

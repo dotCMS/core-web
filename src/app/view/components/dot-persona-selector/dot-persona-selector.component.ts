@@ -42,6 +42,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     searchableDropdown: SearchableDropdownComponent;
 
     totalRecords: number;
+    paginationPerPage = 10;
     personas: DotPersona[];
     messagesKey: { [key: string]: string } = {};
     addAction: (action: any) => void;
@@ -67,6 +68,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         };
 
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
+        this.paginationService.paginationPerPage = this.paginationPerPage;
 
         this.dotMessageService
             .getMessages(['modes.persona.no.persona', 'modes.persona.selector.title'])

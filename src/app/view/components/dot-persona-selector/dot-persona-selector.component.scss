@@ -1,6 +1,8 @@
 @import "variables";
 
 .dot-persona-selector {
+    top: 167px!important;
+
     .ui-dataview-content.ui-widget-content {
         width: 448px;
     }
@@ -34,7 +36,7 @@
     width: 206px;
 
     dot-avatar {
-        margin-right: $basic-padding * 2;
+        margin-right: $basic-padding;
     }
 
     .dot-persona-selector__label-container{
@@ -44,11 +46,15 @@
             display: block;
         }
         .dot-persona-selector__label {
-            color: $gray-light;
+            color: $gray;
             flex: 1;
             font-size: $font-size-small;
+            line-height: $basic-padding * 2;
         }
         .dot-persona-selector__name {
+            color: $black;
+            font-weight: $semi-bold;
+            line-height: $basic-padding * 2;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -57,8 +63,13 @@
     }
 
     dot-icon {
-        bottom: 6px;
+        bottom: $basic-padding / 2;
         position: absolute;
         right: 0;
+
+        i.material-icons {
+            color: $gray;
+            font-size: 24px;
+        }
     }
 }

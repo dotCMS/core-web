@@ -31,13 +31,12 @@
 
         &.dot-persona-selector-option__selected {
             color: $black;
-            font-weight: bold;
+            font-weight: $semi-bold;
         }
     
     }
 
     button {
-        height: 20px;
         margin-left: $basic-padding * 3;
         margin-right: $basic-padding * 2;
     }
