@@ -67,9 +67,8 @@
     }
 
     .ui-dropdown-label {
-        border: 0;
-        line-height: $dropdown-height;
         @include truncate-text;
+        @extend #ui-field-selectable-label;
     }
 }
 

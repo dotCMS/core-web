@@ -42,13 +42,7 @@
     }
 
     .ui-multiselect-label {
-        border: 0;
-        line-height: $multiselect-height;
-        padding: 0;
-        max-height: $multiselect-height;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @extend #ui-field-selectable-label;
     }
 }
 

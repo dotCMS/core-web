@@ -5,19 +5,19 @@ import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 
 export interface DotWorkflowsAction {
-    id: string;
-    name: string;
-    schemeId: string;
-    condition: string;
-    nextStep: string;
-    nextAssign: string;
-    icon: string;
-    roleHierarchyForAssign: boolean;
     assignable: boolean;
     commentable: boolean;
+    condition: string;
+    icon: string;
+    id: string;
+    name: string;
+    nextAssign: string;
+    nextStep: string;
+    nextStepCurrentStep: boolean;
     order: number;
     owner?: string;
-    nextStepCurrentStep: boolean;
+    roleHierarchyForAssign: boolean;
+    schemeId: string;
     showOn: string[];
 }
 

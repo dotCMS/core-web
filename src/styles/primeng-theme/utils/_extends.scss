@@ -53,9 +53,20 @@
     display: flex;
     justify-content: flex-end;
     padding: 0;
+    width: $ui-trigger-width;
 }
 
 #ui-trigger-icon {
     position: static;
     margin: 0;
+}
+
+#ui-field-selectable-label {
+    border: 0;
+    line-height: $field-height;
+    max-height: $field-height;
+    overflow: hidden;
+    padding: 0 $ui-trigger-width 0 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
