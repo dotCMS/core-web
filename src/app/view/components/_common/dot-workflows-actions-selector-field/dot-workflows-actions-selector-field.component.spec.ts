@@ -5,7 +5,7 @@ import { DebugElement, Component } from '@angular/core';
 
 import { DotWorkflowsActionsSelectorFieldComponent } from './dot-workflows-actions-selector-field.component';
 import { DotWorkflowsActionsService } from './services/dot-workflows-actions.service';
-import { DropdownModule } from 'primeng/primeng';
+import { DropdownModule, Dropdown } from 'primeng/primeng';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
@@ -41,14 +41,14 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.selector.workflow.action': 'Select an action'
 });
 
-fdescribe('DotWorkflowsActionsSelectorFieldComponent', () => {
+describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let fixtureHost: ComponentFixture<FakeFormComponent>;
     let deHost: DebugElement;
     let componentHost: FakeFormComponent;
     let component: DotWorkflowsActionsSelectorFieldComponent;
-    let fixture: ComponentFixture<DotWorkflowsActionsSelectorFieldComponent>;
     let de: DebugElement;
-    let dropdown: DebugElement;
+    let dropdownDe: DebugElement;
+    let dropdown: Dropdown;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
@@ -78,23 +78,24 @@ fdescribe('DotWorkflowsActionsSelectorFieldComponent', () => {
         de = deHost.query(By.css('dot-workflows-actions-selector-field'));
         component = de.componentInstance;
         fixtureHost.detectChanges();
-        dropdown = de.query(By.css('p-dropdown'));
+        dropdownDe = de.query(By.css('p-dropdown'));
+        dropdown = dropdownDe.componentInstance;
     });
 
     describe('p-dropdown', () => {
         it('should be defined', () => {
-            expect(dropdown).toBeDefined();
+            expect(dropdownDe).toBeDefined();
         });
 
         it('should have attr', () => {
-            expect(dropdown.attributes['ng-reflect-append-to']).toBe('body');
-            expect(dropdown.attributes['ng-reflect-disabled']).toBe('false');
-            expect(dropdown.attributes['ng-reflect-filter']).toBe('true');
-            expect(dropdown.attributes['ng-reflect-placeholder']).toBe('Select an action');
+            expect(dropdown.appendTo).toBe('body');
+            expect(dropdown.disabled).toBe(false);
+            expect(dropdown.filter).toBe(true);
+            expect(dropdown.placeholder).toBe('Select an action');
         });
 
         it('should have width 100%', () => {
-            expect(dropdown.query(By.css('.ui-dropdown')).styles.width).toBe('100%');
+            expect(dropdown.style).toEqual({ width: '100%' });
         });
     });
 
@@ -104,7 +105,7 @@ fdescribe('DotWorkflowsActionsSelectorFieldComponent', () => {
         });
 
         it('should propagate changes', () => {
-            dropdown.triggerEventHandler('onChange', {
+            dropdownDe.triggerEventHandler('onChange', {
                 originalEvent: {},
                 value: {
                     id: '123'
@@ -114,6 +115,12 @@ fdescribe('DotWorkflowsActionsSelectorFieldComponent', () => {
             expect(componentHost.form.value).toEqual({
                 action: '123'
             });
+        });
+
+        it('should set disabled', () => {
+            fixtureHost.componentInstance.form.get('action').disable();
+            fixtureHost.detectChanges();
+            expect(dropdown.disabled).toBe(true);
         });
     });
 });
