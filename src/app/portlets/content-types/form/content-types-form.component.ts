@@ -217,7 +217,15 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                     disabled: true
                 }
             ],
-            workflowAction: [{ value: '', disabled: true }],
+            systemActionMap: this.fb.group({
+                systemAction: 'NEW',
+                workflowActionId: {
+                    value: this.data.systemActionMap
+                        ? this.data.systemActionMap.workflowActionId
+                        : '',
+                    disabled: true
+                }
+            }),
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
             folder: this.data.folder,
@@ -307,14 +315,14 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     private updateWorkflowFormControl(isEnterpriseLicense: boolean): void {
         if (isEnterpriseLicense) {
             const workflowControl = this.form.get('workflow');
-            const workflowActionControl = this.form.get('workflowAction');
+            const workflowActionControl = this.form.get('systemActionMap').get('workflowActionId');
 
             workflowControl.enable();
             workflowActionControl.enable();
 
             if (this.originalValue) {
                 this.originalValue.workflow = workflowControl.value;
-                this.originalValue.workflowActionControl = workflowActionControl.value;
+                this.originalValue.systemActionMap.workflowActionId = workflowActionControl.value;
             }
             this.setSaveState();
         }

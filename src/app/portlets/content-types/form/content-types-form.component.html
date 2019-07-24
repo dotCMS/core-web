@@ -51,12 +51,12 @@
             formControlName="workflow"
         ></dot-workflows-selector-field>
     </div>
-    <div class="form__group">
+    <div class="form__group" formGroupName="systemActionMap">
         <label for="content-type-form-workflow" class="form__label">{{
             dotMessageService.get('contenttypes.form.label.workflow.actions')
         }}</label>
         <dot-workflows-actions-selector-field
-            formControlName="workflowAction"
+            formControlName="workflowActionId"
             [workflows]="form.get('workflow').valueChanges | async"
         ></dot-workflows-actions-selector-field>
     </div>

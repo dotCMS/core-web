@@ -43,6 +43,7 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import { DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
+import { DotWorkflowsActionsSelectorFieldModule } from '@components/_common/dot-workflows-actions-selector-field/dot-workflows-actions-selector-field.module';
 
 @Component({
     selector: 'dot-site-selector-field',
@@ -112,81 +113,80 @@ describe('ContentTypesFormComponent', () => {
         }
     ];
 
-    beforeEach(
-        async(() => {
-            const messageServiceMock = new MockDotMessageService({
-                'contenttypes.form.field.detail.page': 'Detail Page',
-                'contenttypes.form.field.expire.date.field': 'Expire Date Field',
-                'contenttypes.form.field.host_folder.label': 'Host or Folder',
-                'contenttypes.form.identifier': 'Identifier',
-                'contenttypes.form.label.publish.date.field': 'Publish Date Field',
-                'contenttypes.hint.URL.map.pattern.hint1': 'Hello World',
-                'contenttypes.form.label.URL.pattern': 'URL Pattern',
-                'contenttypes.content.variable': 'Variable',
-                'contenttypes.form.label.workflow': 'Workflow',
-                'contenttypes.action.cancel': 'Cancel',
-                'contenttypes.form.label.description': 'Description',
-                'contenttypes.form.name': 'Name',
-                'contenttypes.action.save': 'Save',
-                'contenttypes.action.update': 'Update',
-                'contenttypes.action.create': 'Create',
-                'contenttypes.action.edit': 'Edit',
-                'contenttypes.action.delete': 'Delete',
-                'contenttypes.form.name.error.required': 'Error is wrong',
-                'contenttypes.action.form.cancel': 'Cancel',
-                'contenttypes.content.contenttype': 'content type',
-                'contenttypes.content.fileasset': 'fileasset',
-                'contenttypes.content.content': 'Content',
-                'contenttypes.content.form': 'Form',
-                'contenttypes.content.persona': 'Persona',
-                'contenttypes.content.widget': 'Widget',
-                'contenttypes.content.htmlpage': 'Page',
-                'contenttypes.content.key_value': 'Key Value',
-                'contenttypes.content.vanity_url:': 'Vanity Url'
-            });
+    beforeEach(async(() => {
+        const messageServiceMock = new MockDotMessageService({
+            'contenttypes.form.field.detail.page': 'Detail Page',
+            'contenttypes.form.field.expire.date.field': 'Expire Date Field',
+            'contenttypes.form.field.host_folder.label': 'Host or Folder',
+            'contenttypes.form.identifier': 'Identifier',
+            'contenttypes.form.label.publish.date.field': 'Publish Date Field',
+            'contenttypes.hint.URL.map.pattern.hint1': 'Hello World',
+            'contenttypes.form.label.URL.pattern': 'URL Pattern',
+            'contenttypes.content.variable': 'Variable',
+            'contenttypes.form.label.workflow': 'Workflow',
+            'contenttypes.action.cancel': 'Cancel',
+            'contenttypes.form.label.description': 'Description',
+            'contenttypes.form.name': 'Name',
+            'contenttypes.action.save': 'Save',
+            'contenttypes.action.update': 'Update',
+            'contenttypes.action.create': 'Create',
+            'contenttypes.action.edit': 'Edit',
+            'contenttypes.action.delete': 'Delete',
+            'contenttypes.form.name.error.required': 'Error is wrong',
+            'contenttypes.action.form.cancel': 'Cancel',
+            'contenttypes.content.contenttype': 'content type',
+            'contenttypes.content.fileasset': 'fileasset',
+            'contenttypes.content.content': 'Content',
+            'contenttypes.content.form': 'Form',
+            'contenttypes.content.persona': 'Persona',
+            'contenttypes.content.widget': 'Widget',
+            'contenttypes.content.htmlpage': 'Page',
+            'contenttypes.content.key_value': 'Key Value',
+            'contenttypes.content.vanity_url:': 'Vanity Url'
+        });
 
-            const siteServiceMock = new SiteServiceMock();
+        const siteServiceMock = new SiteServiceMock();
 
-            DOTTestBed.configureTestingModule({
-                declarations: [ContentTypesFormComponent, DotSiteSelectorComponent],
-                imports: [
-                    RouterTestingModule.withRoutes([
-                        { component: ContentTypesFormComponent, path: 'test' }
-                    ]),
-                    BrowserAnimationsModule,
-                    ButtonModule,
-                    DropdownModule,
-                    DotFieldValidationMessageModule,
-                    InputTextModule,
-                    OverlayPanelModule,
-                    ReactiveFormsModule,
-                    TabViewModule,
-                    RouterTestingModule,
-                    DotDirectivesModule,
-                    DotPageSelectorModule,
-                    DotWorkflowsSelectorFieldModule,
-                    DotIconModule,
-                    DotIconButtonModule,
-                    MdInputTextModule,
-                    DotFieldHelperModule
-                ],
-                providers: [
-                    { provide: LoginService, useClass: LoginServiceMock },
-                    { provide: DotMessageService, useValue: messageServiceMock },
-                    { provide: SiteService, useValue: siteServiceMock },
-                    { provide: DotWorkflowService, useClass: DotWorkflowServiceMock },
-                    { provide: DotLicenseService, useClass: MockDotLicenseService },
-                    DotcmsConfig,
-                    ContentTypesInfoService
-                ]
-            });
+        DOTTestBed.configureTestingModule({
+            declarations: [ContentTypesFormComponent, DotSiteSelectorComponent],
+            imports: [
+                RouterTestingModule.withRoutes([
+                    { component: ContentTypesFormComponent, path: 'test' }
+                ]),
+                BrowserAnimationsModule,
+                ButtonModule,
+                DotDirectivesModule,
+                DotFieldHelperModule,
+                DotFieldValidationMessageModule,
+                DotIconButtonModule,
+                DotIconModule,
+                DotPageSelectorModule,
+                DotWorkflowsActionsSelectorFieldModule,
+                DotWorkflowsSelectorFieldModule,
+                DropdownModule,
+                InputTextModule,
+                MdInputTextModule,
+                OverlayPanelModule,
+                ReactiveFormsModule,
+                RouterTestingModule,
+                TabViewModule
+            ],
+            providers: [
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: DotMessageService, useValue: messageServiceMock },
+                { provide: SiteService, useValue: siteServiceMock },
+                { provide: DotWorkflowService, useClass: DotWorkflowServiceMock },
+                { provide: DotLicenseService, useClass: MockDotLicenseService },
+                DotcmsConfig,
+                ContentTypesInfoService
+            ]
+        });
 
-            fixture = DOTTestBed.createComponent(ContentTypesFormComponent);
-            comp = fixture.componentInstance;
-            de = fixture.debugElement;
-            dotLicenseService = de.injector.get(DotLicenseService);
-        })
-    );
+        fixture = DOTTestBed.createComponent(ContentTypesFormComponent);
+        comp = fixture.componentInstance;
+        de = fixture.debugElement;
+        dotLicenseService = de.injector.get(DotLicenseService);
+    }));
 
     it('should be invalid by default', () => {
         comp.data = {
@@ -350,7 +350,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        expect(Object.keys(comp.form.controls).length).toBe(11);
+        expect(Object.keys(comp.form.controls).length).toBe(12);
         expect(comp.form.get('clazz')).not.toBeNull();
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
@@ -362,9 +362,12 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('fixed')).not.toBeNull();
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
-
         expect(comp.form.get('detailPage')).toBeNull();
         expect(comp.form.get('urlMapPattern')).toBeNull();
+
+        const workflowAction = comp.form.get('systemActionMap');
+        expect(workflowAction.get('systemAction')).not.toBeNull();
+        expect(workflowAction.get('workflowActionId')).not.toBeNull();
     });
 
     it('should render basic fields for non-content base types', () => {
@@ -382,7 +385,7 @@ describe('ContentTypesFormComponent', () => {
             '#content-type-form-expire-date-field'
         ];
 
-        fields.forEach(field => {
+        fields.forEach((field) => {
             expect(fixture.debugElement.query(By.css(field))).not.toBeNull();
         });
     });
@@ -393,7 +396,7 @@ describe('ContentTypesFormComponent', () => {
         };
         fixture.detectChanges();
 
-        expect(Object.keys(comp.form.controls).length).toBe(13);
+        expect(Object.keys(comp.form.controls).length).toBe(14);
         expect(comp.form.get('clazz')).not.toBeNull();
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
@@ -407,6 +410,10 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('fixed')).not.toBeNull();
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
+
+        const workflowAction = comp.form.get('systemActionMap');
+        expect(workflowAction.get('systemAction')).not.toBeNull();
+        expect(workflowAction.get('workflowActionId')).not.toBeNull();
     });
 
     it('should set value to the form', () => {
@@ -431,7 +438,11 @@ describe('ContentTypesFormComponent', () => {
                 {
                     id: 'workflow-id'
                 }
-            ]
+            ],
+            systemActionMap: {
+                systemAction: 'NEW',
+                workflowActionId: ''
+            }
         };
 
         comp.data = fakeData;
@@ -461,7 +472,7 @@ describe('ContentTypesFormComponent', () => {
             '#content-type-form-url-map-pattern'
         ];
 
-        fields.forEach(field => {
+        fields.forEach((field) => {
             expect(fixture.debugElement.query(By.css(field))).not.toBeNull();
         });
     });
@@ -525,7 +536,7 @@ describe('ContentTypesFormComponent', () => {
         let data = null;
         spyOn(comp, 'submitForm').and.callThrough();
 
-        comp.onSubmit.subscribe(res => (data = res));
+        comp.onSubmit.subscribe((res) => (data = res));
         comp.submitForm();
 
         expect(comp.submitForm).toHaveBeenCalled();
@@ -573,7 +584,7 @@ describe('ContentTypesFormComponent', () => {
             fixture.detectChanges();
             data = null;
             spyOn(comp, 'submitForm').and.callThrough();
-            comp.onSubmit.subscribe(res => (data = res));
+            comp.onSubmit.subscribe((res) => (data = res));
             comp.form.controls.name.setValue('A content type name');
             fixture.detectChanges();
         });
@@ -593,7 +604,8 @@ describe('ContentTypesFormComponent', () => {
                 fixed: null,
                 folder: null,
                 system: null,
-                workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2']
+                workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2'],
+                systemActionMap: { systemAction: 'NEW', workflowActionId: '' }
             });
         });
     });

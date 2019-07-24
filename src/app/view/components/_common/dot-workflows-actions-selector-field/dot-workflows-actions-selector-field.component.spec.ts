@@ -107,9 +107,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         it('should propagate changes', () => {
             dropdownDe.triggerEventHandler('onChange', {
                 originalEvent: {},
-                value: {
-                    id: '123'
-                }
+                value: '123'
             });
 
             expect(componentHost.form.value).toEqual({
