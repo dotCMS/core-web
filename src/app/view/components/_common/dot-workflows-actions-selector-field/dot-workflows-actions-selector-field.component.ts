@@ -41,9 +41,12 @@ export class DotWorkflowsActionsSelectorFieldComponent
 
     ngOnInit() {
         this.placeholder$ = this.dotMessageService
-            .getMessages(['action.selector.placeholder'])
+            .getMessages(['contenttypes.selector.workflow.action'])
             .pipe(
-                map((message: { [key: string]: string }) => message['action.selector.placeholder'])
+                map(
+                    (message: { [key: string]: string }) =>
+                        message['contenttypes.selector.workflow.action']
+                )
             );
     }
 
@@ -62,7 +65,6 @@ export class DotWorkflowsActionsSelectorFieldComponent
      * @memberof DotWorkflowsActionsSelectorFieldComponent
      */
     handleChange({ value }: DropdownEvent): void {
-        console.log('handleChange', value);
         this.propagateChange(value.id);
     }
 

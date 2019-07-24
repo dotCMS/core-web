@@ -83,6 +83,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                 'contenttypes.form.label.description',
                 'contenttypes.form.label.publish.date.field',
                 'contenttypes.form.label.workflow',
+                'contenttypes.form.label.workflow.actions',
                 'contenttypes.form.message.no.date.fields.defined',
                 'contenttypes.form.name',
                 'contenttypes.hint.URL.map.pattern.hint1',
