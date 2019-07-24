@@ -4,12 +4,13 @@ import { of } from 'rxjs';
 import { DebugElement, Component } from '@angular/core';
 
 import { DotWorkflowsActionsSelectorFieldComponent } from './dot-workflows-actions-selector-field.component';
-import { DotWorkflowsActionsService } from './services/dot-workflows-actions.service';
+import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { DropdownModule, Dropdown } from 'primeng/primeng';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
 
 @Component({
     selector: 'dot-fake-form',

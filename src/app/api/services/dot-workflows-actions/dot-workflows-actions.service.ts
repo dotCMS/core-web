@@ -3,23 +3,7 @@ import { CoreWebService } from 'dotcms-js';
 import { pluck } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-
-export interface DotWorkflowsAction {
-    assignable: boolean;
-    commentable: boolean;
-    condition: string;
-    icon: string;
-    id: string;
-    name: string;
-    nextAssign: string;
-    nextStep: string;
-    nextStepCurrentStep: boolean;
-    order: number;
-    owner?: string;
-    roleHierarchyForAssign: boolean;
-    schemeId: string;
-    showOn: string[];
-}
+import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
 
 @Injectable()
 export class DotWorkflowsActionsService {
@@ -29,10 +13,10 @@ export class DotWorkflowsActionsService {
      * Get the actions of the received schemas
      *
      * @param {string[]} [workflows=[]]
-     * @returns {Observable<DotWorkflowsAction>}
+     * @returns {Observable<DotWorkflowAction>}
      * @memberof DotWorkflowsActionsService
      */
-    get(workflows: string[] = []): Observable<DotWorkflowsAction[]> {
+    get(workflows: string[] = []): Observable<DotWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Post,

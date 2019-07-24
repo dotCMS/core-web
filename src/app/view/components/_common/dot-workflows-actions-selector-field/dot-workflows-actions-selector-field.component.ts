@@ -5,7 +5,7 @@ import { flatMap, map, toArray } from 'rxjs/operators';
 import { SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
-import { DotWorkflowsActionsService } from './services/dot-workflows-actions.service';
+import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { DotMessageService } from '@services/dot-messages-service';
 
 interface DropdownEvent {
