@@ -109,7 +109,7 @@
     z-index: 1;
 }
 
-@mixin form-field-border {
+@mixin form-field-secondary {
     border: 1px solid $gray-light;
     border-radius: $border-radius;
     box-shadow: none;

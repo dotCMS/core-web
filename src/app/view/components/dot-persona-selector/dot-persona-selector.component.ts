@@ -1,6 +1,5 @@
 import {
     Component,
-    ViewEncapsulation,
     ViewChild,
     Output,
     EventEmitter,
@@ -24,7 +23,6 @@ import { take } from 'rxjs/operators';
  */
 @Component({
     providers: [PaginatorService],
-    encapsulation: ViewEncapsulation.None,
     selector: 'dot-persona-selector',
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
@@ -42,10 +40,10 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     searchableDropdown: SearchableDropdownComponent;
 
     totalRecords: number;
-    paginationPerPage = 10;
+    paginationPerPage = 5;
     personas: DotPersona[];
     messagesKey: { [key: string]: string } = {};
-    addAction: (action: any) => void;
+    addAction: (item: DotPersona) => void;
 
     constructor(
         public paginationService: PaginatorService,
@@ -64,7 +62,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.addAction = () => {
             // TODO Implement + action
-            console.log('--- Clicked + Action');
         };
 
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
@@ -139,8 +136,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @param DotPersona persona
      * @memberof DotPersonaSelectorComponent
      */
-    deletePersonalization(persona: DotPersona): void {
-        console.log('--deletePersonalization', persona);
+    deletePersonalization(_persona: DotPersona): void {
         // TODO: Confirm & call service
         this.searchableDropdown.toggleOverlayPanel();
     }

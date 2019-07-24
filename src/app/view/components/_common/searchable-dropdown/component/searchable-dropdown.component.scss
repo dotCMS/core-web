@@ -47,12 +47,12 @@ dot-searchable-dropdown {
     }
 
     .ui-dataview-content {
-        min-width: 300px;
+        width: 300px;
 
         .ui-g {
             margin: 0;
 
-            span.dot-list-item {
+            .searchable-dropdown__data-list-item {
                 cursor: pointer;
                 display: block;
                 padding: $basic-padding / 2;
@@ -109,9 +109,4 @@ dot-searchable-dropdown {
 
 .searchable-dropdown__search-action {
     margin-left: $basic-padding * 2;
-
-     dot-icon-button[secondary] button {
-        height: $field-height;
-        width: $field-height;
-    }
 }

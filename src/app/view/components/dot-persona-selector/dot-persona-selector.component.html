@@ -1,32 +1,3 @@
-<ng-template let-personaData="item" pTemplate="listItem" #personaItemListTemplate>
-    <dot-persona-selector-option
-        [persona]="personaData"
-        [selected]="value ? value.name === personaData.name : false"
-        (change)="personaChange($event)"
-        (delete)="deletePersonalization($event)"
-    ></dot-persona-selector-option>
-</ng-template>
-
-<ng-template let-persona="item" #personaSelectTemplate>
-    <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toggleOverlayPanel($event)">
-        <dot-avatar
-            [label]="persona.name"
-            [showDot]="persona.personalized"
-            [size]="32"
-            [url]="persona.photo || ''"
-        ></dot-avatar>
-        <div class="dot-persona-selector__label-container">
-            <span class="dot-persona-selector__label"
-                >{{ messagesKey['modes.persona.selector.title'] }}
-            </span>
-            <span class="dot-persona-selector__name">
-                {{ persona.name }}
-            </span>
-        </div>
-        <dot-icon name="arrow_drop_down"></dot-icon>
-    </div>
-</ng-template>
-
 <dot-searchable-dropdown
     #searchableDropdown
     cssClass="dot-persona-selector"
@@ -39,8 +10,33 @@
     [rows]="paginationPerPage"
     [totalRecords]="paginationService.totalRecords"
     [width]="448"
-    [externalSelectTemplate]="personaSelectTemplate"
-    [externalItemListTemplate]="personaItemListTemplate"
     labelPropertyName="name"
 >
+    <ng-template let-personaData="item" pTemplate="listItem">
+        <dot-persona-selector-option
+            [persona]="personaData"
+            [selected]="value ? value.name === personaData.name : false"
+            (change)="personaChange($event)"
+            (delete)="deletePersonalization($event)"
+        ></dot-persona-selector-option>
+    </ng-template>
+    <ng-template let-persona="item" pTemplate="select">
+        <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toggleOverlayPanel($event)">
+            <dot-avatar
+                [label]="persona.name"
+                [showDot]="persona.personalized"
+                [size]="32"
+                [url]="persona.photo || ''"
+            ></dot-avatar>
+            <div class="dot-persona-selector__label-container">
+                <span class="dot-persona-selector__label"
+                    >{{ messagesKey['modes.persona.selector.title'] }}
+                </span>
+                <span class="dot-persona-selector__name">
+                    {{ persona.name }}
+                </span>
+            </div>
+            <dot-icon name="arrow_drop_down"></dot-icon>
+        </div>
+    </ng-template>
 </dot-searchable-dropdown>

@@ -1,6 +1,6 @@
 <ng-template let-item="item" pTemplate="listItem" #defaultItemListTemplate>
     <span
-        class="dot-list-item"
+        class="searchable-dropdown__data-list-item"
         [class.selected]="item[labelPropertyName] === valueString"
         (click)="handleClick(item)"
         >{{ item.label }}</span
@@ -17,7 +17,6 @@
         icon="fa fa-caret-down"
         iconPos="right"
         type="button"
-        [ngStyle]="{ width: width }"
         [disabled]="disabled"
     ></button>
 </ng-template>
@@ -42,7 +41,7 @@
             />
         </div>
         <div *ngIf="action" class="searchable-dropdown__search-action">
-            <dot-icon-button secondary square icon="add" big (click)="action()"></dot-icon-button>
+            <dot-icon-button secondary size="36" square icon="add" big (click)="action()"></dot-icon-button>
         </div>
     </header>
     <p-dataView

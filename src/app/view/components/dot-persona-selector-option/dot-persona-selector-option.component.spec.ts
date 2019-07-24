@@ -10,7 +10,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { By } from '@angular/platform-browser';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
-fdescribe('DotPersonaSelectorOptionComponent', () => {
+describe('DotPersonaSelectorOptionComponent', () => {
 
     let component: DotPersonaSelectorOptionComponent;
     let fixture: ComponentFixture<DotPersonaSelectorOptionComponent>;
@@ -43,7 +43,7 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
         expect(avatar.componentInstance.label).toBe(mockDotPersona.name);
         expect(avatar.componentInstance.showDot).toBe(mockDotPersona.personalized);
         expect(avatar.componentInstance.url).toBe(mockDotPersona.photo);
-        expect(avatar.componentInstance.size).toBe(24);
+        expect(avatar.componentInstance.size).toBe(32);
     });
 
     it('should label set personalized class', () => {
@@ -88,10 +88,10 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
     });
 
     it('should emit persona when field clicked', () => {
-        spyOn(component.select, 'emit');
+        spyOn(component.change, 'emit');
         de.triggerEventHandler('click', {
             stopPropagation: () => {}
         });
-        expect(component.select.emit).toHaveBeenCalledWith(mockDotPersona);
+        expect(component.change.emit).toHaveBeenCalledWith(mockDotPersona);
     });
 });

@@ -16,22 +16,22 @@
     }
 
     .dot-persona-selector-option__label {
-        color: $gray-light;
+        color: $gray;
+        display: -webkit-box;
+        display: -moz-box;
         flex: 1;
         font-size: $body-font-size-base;
+        max-height: 42px;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
 
         &.dot-persona-selector-option__personalized {
             color: $body-font-color;
-            display: -webkit-box;
-            display: -moz-box;
-            max-height: 42px;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
         }
 
         &.dot-persona-selector-option__selected {
             color: $black;
-            font-weight: $semi-bold;
+            font-weight: $font-weight-semi-bold;
         }
     
     }

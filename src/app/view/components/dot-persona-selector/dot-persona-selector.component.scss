@@ -1,21 +1,27 @@
 @import "variables";
 @import "mixins";
 
-.dot-persona-selector {
+::ng-deep .dot-persona-selector {
+    margin-top: 0;
+
     .ui-overlaypanel-content {
         padding: $basic-padding * 2 0;
-    
+
         .searchable-dropdown__search {
             margin: 0 $basic-padding * 2;
-    
-            .searchable-dropdown__search-icon {
-                right: $basic-padding;
-            }
-    
-            .searchable-dropdown__search-inputfield {
-                @include form-field-border;
-                padding: 0 $basic-padding * 4 0 $basic-padding * 2;
-            }
+        }
+
+        .searchable-dropdown__search-icon {
+            right: $basic-padding;
+        }
+
+        .searchable-dropdown__search-inputfield {
+            @include form-field-secondary;
+            padding: 0 $basic-padding * 4 0 $basic-padding * 2;
+        }
+
+        .ui-dataview-content {
+            width: 100%;
         }
     }
 }
@@ -32,7 +38,7 @@
         margin-right: $basic-padding;
     }
 
-    .dot-persona-selector__label-container{
+    .dot-persona-selector__label-container {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -48,7 +54,7 @@
         }
         .dot-persona-selector__name {
             color: $black;
-            font-weight: $semi-bold;
+            font-weight: $font-weight-semi-bold;
             line-height: $basic-padding * 2;
             margin-right: $basic-padding * 3;
             overflow: hidden;
@@ -64,7 +70,7 @@
 
         i.material-icons {
             color: $gray;
-            font-size: 24px;
+            font-size: $md-icon-size-big;
         }
     }
 }

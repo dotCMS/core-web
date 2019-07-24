@@ -12,12 +12,15 @@ import {
     OnChanges,
     OnInit,
     SimpleChange,
-    TemplateRef
+    TemplateRef,
+    ContentChildren,
+    QueryList,
+    AfterContentInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
 import { fromEvent } from 'rxjs';
-import { OverlayPanel } from 'primeng/primeng';
+import { OverlayPanel, PrimeTemplate } from 'primeng/primeng';
 import * as _ from 'lodash';
 
 /**
@@ -39,12 +42,10 @@ import * as _ from 'lodash';
     styleUrls: ['./searchable-dropdown.component.scss'],
     templateUrl: './searchable-dropdown.component.html'
 })
-export class SearchableDropdownComponent implements ControlValueAccessor, OnChanges, OnInit {
+export class SearchableDropdownComponent
+    implements ControlValueAccessor, OnChanges, OnInit, AfterContentInit {
     @Input()
     data: any[];
-
-    @Input() externalSelectTemplate: TemplateRef<any>;
-    @Input() externalItemListTemplate: TemplateRef<any>;
 
     @Input() action: (action: any) => void;
 
@@ -102,6 +103,11 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
     @ViewChild('button')
     button: ElementRef;
 
+    @ContentChildren(PrimeTemplate) templates: QueryList<any>;
+
+    externalSelectTemplate: TemplateRef<any>;
+    externalItemListTemplate: TemplateRef<any>;
+
     options: any[];
 
     value: any;
@@ -133,6 +139,16 @@ export class SearchableDropdownComponent implements ControlValueAccessor, OnChan
             .subscribe((keyboardEvent: Event) => {
                 this.filterChange.emit(keyboardEvent.target['value']);
             });
+    }
+
+    ngAfterContentInit() {
+        this.templates.forEach((item: PrimeTemplate) => {
+            if (item.getType() === 'listItem') {
+                this.externalItemListTemplate = item.template;
+            } else if (item.getType() === 'select') {
+                this.externalSelectTemplate = item.template;
+            }
+        });
     }
 
     hideDialogHandler(): void {
