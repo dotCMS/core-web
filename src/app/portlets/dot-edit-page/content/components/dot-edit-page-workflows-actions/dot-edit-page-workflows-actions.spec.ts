@@ -6,10 +6,7 @@ import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MenuModule, Menu } from 'primeng/primeng';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import {
-    DotWorkflowServiceMock,
-    mockWorkflowsActions
-} from '../../../../../test/dot-workflow-service.mock';
+import { DotWorkflowServiceMock } from '../../../../../test/dot-workflow-service.mock';
 import { mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { LoginService } from 'dotcms-js';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
@@ -21,10 +18,13 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
 import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `<dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>`
+    template: `
+        <dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>
+    `
 })
 class TestHostComponent {
     @Input()
