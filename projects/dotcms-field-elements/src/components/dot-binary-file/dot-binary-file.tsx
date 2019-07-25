@@ -84,13 +84,13 @@ export class DotBinaryFileComponent {
     @Prop({ reflectToAttr: true })
     buttonLabel = 'Browse';
 
-    /** (optional) URL of the file uploaded */
-    @Prop({ reflectToAttr: true, mutable: true })
-    previewImageURL: string = null;
-
     /** (optional) Name of the file uploaded */
     @Prop({ reflectToAttr: true, mutable: true })
     previewImageName = '';
+
+    /** (optional) URL of the file uploaded */
+    @Prop({ reflectToAttr: true, mutable: true })
+    previewImageURL = '';
 
     @State() status: DotFieldStatus;
 
@@ -330,7 +330,7 @@ export class DotBinaryFileComponent {
     }
 
     private clearPreviewData(): void {
-        this.previewImageURL = null;
-        this.previewImageName = null;
+        this.previewImageURL = '';
+        this.previewImageName = '';
     }
 }

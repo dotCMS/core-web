@@ -66,12 +66,13 @@ describe('dot-binary-file-preview', () => {
         });
 
         describe('deleteLabel', () => {
-            it('should render default value correctly', async () => {
+            it('should render default value correctly with the button type', async () => {
                 element.setProperty('fileName', FILE_MOCK.fileName);
                 await page.waitForChanges();
-                const buttonText = (await page.find('button')).innerText;
+                const button= (await page.find('button'));
 
-                expect(buttonText).toBe('Delete');
+                expect(button.innerText).toBe('Delete');
+                expect(button.getAttribute('type')).toEqual('button');
             });
 
             it('should render value correctly', async () => {

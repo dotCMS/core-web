@@ -35,7 +35,9 @@ export class DotBinaryFilePreviewComponent {
                 {this.getPreviewElement()}
                 <div class="dot-file-preview__info">
                     <span class="dot-file-preview__name">{this.fileName}</span>
-                    <button onClick={() => this.clearFile()}>{this.deleteLabel}</button>
+                    <button type="button" onClick={() => this.clearFile()}>
+                        {this.deleteLabel}
+                    </button>
                 </div>
             </Fragment>
         ) : null;

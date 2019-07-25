@@ -45,10 +45,10 @@ export class DotFormComponent {
 
     @State() status: DotFieldStatus = getOriginalStatus();
     @State() errorMessage = '';
+    @State() uploadFileInProgress = false;
 
     private fieldsStatus: { [key: string]: { [key: string]: boolean } } = {};
     private value = {};
-    private uploadFileInProgress = false;
 
     /**
      * Update the form value when valueChange in any of the child fields.
@@ -142,6 +142,7 @@ export class DotFormComponent {
     }
 
     private handleSubmit(event: Event): void {
+        debugger;
         event.preventDefault();
 
         fetch(SUBMIT_FORM_API_URL, {
@@ -205,10 +206,9 @@ export class DotFormComponent {
         const uploadService = new UploadService();
         const { name, value } = event.detail;
         const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;
-
         if (value) {
-            this.errorMessage = '';
             this.uploadFileInProgress = true;
+            this.errorMessage = '';
             uploadService
                 .uploadFile(value)
                 .then((tempFile: DotTempFile) => {
@@ -219,6 +219,7 @@ export class DotFormComponent {
                 })
                 .catch(({ message, status }: DotHttpErrorResponse) => {
                     binary.clearValue();
+                    this.uploadFileInProgress = false;
                     this.errorMessage = message || fallbackErrorMessages[status];
                 });
         }
