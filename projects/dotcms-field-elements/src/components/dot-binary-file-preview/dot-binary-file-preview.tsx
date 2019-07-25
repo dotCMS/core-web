@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Prop } from '@stencil/core';
 import Fragment from 'stencil-fragment';
-import { DotTempFile } from '../../models';
 
 /**
  * Represent a dotcms text field for the binary file preview.
@@ -15,9 +14,13 @@ import { DotTempFile } from '../../models';
 export class DotBinaryFilePreviewComponent {
     @Element() el: HTMLElement;
 
-    /** (optional) file to be displayed */
+    /** file name to be displayed */
     @Prop({ reflectToAttr: true, mutable: true })
-    file: DotTempFile = null;
+    fileName = '';
+
+    /** (optional) file URL to be displayed */
+    @Prop({ reflectToAttr: true, mutable: true })
+    previewURL = '';
 
     /** (optional) Delete button's label */
     @Prop({ reflectToAttr: true })
@@ -27,13 +30,11 @@ export class DotBinaryFilePreviewComponent {
     @Event() delete: EventEmitter;
 
     render() {
-        return this.file ? (
+        return this.fileName ? (
             <Fragment>
                 {this.getPreviewElement()}
                 <div class="dot-file-preview__info">
-                    <span class="dot-file-preview__name">
-                        {this.file ? this.file.fileName : ''}
-                    </span>
+                    <span class="dot-file-preview__name">{this.fileName}</span>
                     <button onClick={() => this.clearFile()}>{this.deleteLabel}</button>
                 </div>
             </Fragment>
@@ -41,23 +42,22 @@ export class DotBinaryFilePreviewComponent {
     }
 
     private clearFile(): void {
-        this.delete.emit(this.file);
-        this.file = null;
+        this.delete.emit();
+        this.fileName = null;
+        this.previewURL = null;
     }
 
     private getPreviewElement(): JSX.Element {
-        return this.file ? (
-            this.file.image ? (
-                <img src={this.file.thumbnailUrl} />
-            ) : (
-                <div class="dot-file-preview__extension">
-                    <span>{this.getExtention()}</span>
-                </div>
-            )
-        ) : null;
+        return this.previewURL ? (
+            <img src={this.previewURL} />
+        ) : (
+            <div class="dot-file-preview__extension">
+                <span>{this.getExtention()}</span>
+            </div>
+        );
     }
 
     private getExtention(): string {
-        return this.file.fileName.substr(this.file.fileName.lastIndexOf('.'));
+        return this.fileName.substr(this.fileName.lastIndexOf('.'));
     }
 }

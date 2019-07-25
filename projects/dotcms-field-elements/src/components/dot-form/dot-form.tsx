@@ -1,8 +1,11 @@
 import { Component, Element, Event, EventEmitter, Listen, Prop, State, Watch } from '@stencil/core';
-import { DotFieldStatus } from '../../models';
-import { fieldParamsConversionToBE, getFieldsFromLayout } from './utils';
+import { DotFieldStatus, DotTempFile } from '../../models';
+import { fieldCustomProcess, getFieldsFromLayout } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
+import { Components } from '../../components';
+import DotBinaryFile = Components.DotBinaryFile;
+import { UploadService } from './services/upload-service';
 
 @Component({
     tag: 'dot-form',
@@ -17,18 +20,22 @@ export class DotFormComponent {
     @Prop() fieldsToShow: string;
 
     /** (optional) Text to be rendered on Reset button */
-    @Prop({ reflectToAttr: true }) resetLabel = 'Reset';
+    @Prop({ reflectToAttr: true })
+    resetLabel = 'Reset';
 
     /** (optional) Text to be rendered on Submit button */
-    @Prop({ reflectToAttr: true }) submitLabel = 'Submit';
+    @Prop({ reflectToAttr: true })
+    submitLabel = 'Submit';
 
     /** Layout metada to be rendered */
-    @Prop({ mutable: true, reflectToAttr: true }) layout: DotCMSContentTypeLayoutRow[] = [];
+    @Prop({ mutable: true, reflectToAttr: true })
+    layout: DotCMSContentTypeLayoutRow[] = [];
 
     @State() status: DotFieldStatus = getOriginalStatus();
 
     private fieldsStatus: { [key: string]: { [key: string]: boolean } } = {};
     private value = {};
+    private uploadFileInProgress = false;
 
     /**
      * Update the form value when valueChange in any of the child fields.
@@ -40,8 +47,12 @@ export class DotFormComponent {
     onValueChange(event: CustomEvent): void {
         const { tagName } = event.target as HTMLElement;
         const { name, value } = event.detail;
-        const transform = fieldParamsConversionToBE[tagName];
-        this.value[name] = transform ? transform(value) : value;
+        const process = fieldCustomProcess[tagName];
+        if (tagName === 'DOT-BINARY-FILE') {
+            this.uploadFile(event);
+        } else {
+            this.value[name] = process ? process(value) : value;
+        }
     }
 
     /**
@@ -53,7 +64,6 @@ export class DotFormComponent {
     @Listen('statusChange')
     onStatusChange({ detail }: CustomEvent): void {
         this.fieldsStatus[detail.name] = detail.status;
-
         this.status = updateStatus(this.status, {
             dotTouched: this.getTouched(),
             dotPristine: this.getStatusValueByName('dotPristine'),
@@ -91,7 +101,7 @@ export class DotFormComponent {
                     <button type="reset" onClick={() => this.resetForm()}>
                         {this.resetLabel}
                     </button>
-                    <button type="submit" disabled={!this.status.dotValid}>
+                    <button type="submit" disabled={!this.status.dotValid || this.uploadFileInProgress}>
                         {this.submitLabel}
                     </button>
                 </div>
@@ -131,8 +141,13 @@ export class DotFormComponent {
     }
 
     private getUpdateValue(): { [key: string]: string } {
-        return getFieldsFromLayout(this.layout).reduce(
-            (acc: { [key: string]: string }, { variable, defaultValue }: DotCMSContentTypeField) => {
+        return getFieldsFromLayout(
+            this.layout
+        ).reduce(
+            (
+                acc: { [key: string]: string },
+                { variable, defaultValue }: DotCMSContentTypeField
+            ) => {
                 return {
                     ...acc,
                     [variable]: defaultValue
@@ -140,5 +155,24 @@ export class DotFormComponent {
             },
             {}
         );
+    }
+
+    private uploadFile(event: CustomEvent): void {
+        const uploadService = new UploadService();
+        const { name, value } = event.detail;
+        if (value) {
+            this.uploadFileInProgress = true;
+            uploadService.uploadFile(value).then((tempFile: DotTempFile) => {
+                const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;
+                if (tempFile) {
+                    this.value[name] = tempFile.id;
+                    binary.previewImageURL = tempFile.thumbnailUrl;
+                    binary.previewImageName = tempFile.fileName;
+                } else {
+                    // TODO: set the error message
+                }
+                this.uploadFileInProgress = false;
+            });
+        }
     }
 }

@@ -67,7 +67,7 @@ export class DotBinaryFileComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
+    @Prop() validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Text that be shown when the URL is not valid */
     @Prop() URLValidationMessage = 'The specified URL is not valid';
@@ -84,12 +84,20 @@ export class DotBinaryFileComponent {
     @Prop({ reflectToAttr: true })
     buttonLabel = 'Browse';
 
+    /** (optional) URL of the file uploaded */
+    @Prop({ reflectToAttr: true, mutable: true })
+    previewImageURL: string = null;
+
+    /** (optional) Name of the file uploaded */
+    @Prop({ reflectToAttr: true, mutable: true })
+    previewImageName = '';
+
     @State() status: DotFieldStatus;
 
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private value = null;
+    private file = null;
     private allowedFileTypes = [];
     private errorType: DotBinaryMessageError;
     private binaryTextField: DotBinaryTextField;
@@ -100,8 +108,9 @@ export class DotBinaryFileComponent {
      */
     @Method()
     reset(): void {
-        this.value = '';
+        this.file = '';
         this.binaryTextField.value = '';
+        this.clearPreviewData();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
@@ -169,9 +178,9 @@ export class DotBinaryFileComponent {
     @Listen('drop', { passive: false })
     HandleDrop(evt: DragEvent): void {
         evt.preventDefault();
-        if (!this.disabled) {
+        this.el.classList.remove('dot-dragover');
+        if (!this.disabled && !this.previewImageName) {
             this.el.classList.add('dot-dropped');
-            this.el.classList.remove('dot-dragover');
             this.errorType = null;
             const droppedFile: File = evt.dataTransfer.files[0];
             if (isFileAllowed(droppedFile.name, this.allowedFileTypes)) {
@@ -182,6 +191,13 @@ export class DotBinaryFileComponent {
                 this.setValue(null);
             }
         }
+    }
+
+    @Listen('delete', { passive: false })
+    HandleDelete(evt: CustomEvent): void {
+        evt.preventDefault();
+        this.setValue('');
+        this.clearPreviewData();
     }
 
     hostData() {
@@ -199,23 +215,30 @@ export class DotBinaryFileComponent {
                     name={this.name}
                     tabindex="0"
                 >
-                    <div class="dot-binary__container">
-                        <dot-binary-text-field
-                            placeholder={this.placeholder}
-                            required={this.required}
-                            disabled={this.disabled}
-                            accept={this.allowedFileTypes}
-                            hint={this.hint}
-                            onLostFocus={this.lostFocusEventHandler.bind(this)}
+                    {this.previewImageName ? (
+                        <dot-binary-file-preview
+                            fileName={this.previewImageName}
+                            previewURL={this.previewImageURL}
                         />
-                        <dot-binary-upload-button
-                            name={this.name}
-                            accept={this.allowedFileTypes}
-                            disabled={this.disabled}
-                            required={this.required}
-                            buttonLabel={this.buttonLabel}
-                        />
-                    </div>
+                    ) : (
+                        <div class="dot-binary__container">
+                            <dot-binary-text-field
+                                placeholder={this.placeholder}
+                                required={this.required}
+                                disabled={this.disabled}
+                                accept={this.allowedFileTypes}
+                                hint={this.hint}
+                                onLostFocus={this.lostFocusEventHandler.bind(this)}
+                            />
+                            <dot-binary-upload-button
+                                name={this.name}
+                                accept={this.allowedFileTypes}
+                                disabled={this.disabled}
+                                required={this.required}
+                                buttonLabel={this.buttonLabel}
+                            />
+                        </div>
+                    )}
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
@@ -250,7 +273,7 @@ export class DotBinaryFileComponent {
     }
 
     private isValid(): boolean {
-        return !(this.required && !this.value);
+        return !(this.required && !this.file);
     }
 
     private setErrorMessageMap(): void {
@@ -260,7 +283,7 @@ export class DotBinaryFileComponent {
     }
 
     private setValue(data: File | string): void {
-        this.value = data;
+        this.file = data;
         this.status = updateStatus(this.status, {
             dotTouched: true,
             dotPristine: false,
@@ -281,7 +304,7 @@ export class DotBinaryFileComponent {
     private emitValueChange(): void {
         this.valueChange.emit({
             name: this.name,
-            value: this.value
+            value: this.file
         });
     }
 
@@ -293,4 +316,10 @@ export class DotBinaryFileComponent {
     private isWindowsOS(): boolean {
         return window.navigator.platform.includes('Win');
     }
+
+    private clearPreviewData(): void {
+        this.previewImageURL = null;
+        this.previewImageName = null;
+    }
 }
+
