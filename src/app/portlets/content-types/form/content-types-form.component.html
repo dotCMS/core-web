@@ -56,8 +56,8 @@
             dotMessageService.get('contenttypes.form.label.workflow.actions')
         }}</label>
         <dot-workflows-actions-selector-field
-            formControlName="workflowActionId"
-            [workflows]="form.get('workflow').valueChanges | async"
+            formControlName="NEW"
+            [workflows]="workflowsSelected$ | async"
         ></dot-workflows-actions-selector-field>
     </div>
     <span id="field-workflow-hint" class="form__group-hint" *ngIf="form.get('workflow').disabled">{{

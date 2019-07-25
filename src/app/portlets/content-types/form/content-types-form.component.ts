@@ -11,7 +11,7 @@ import {
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil, filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import { SelectItem } from 'primeng/primeng';
@@ -22,6 +22,17 @@ import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service'
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
+
+enum DotSystemAction {
+    NEW = 'NEW',
+    EDIT = 'EDIT',
+    PUBLISH = 'PUBLISH',
+    UNPUBLISH = 'UNPUBLISH',
+    ARCHIVE = 'ARCHIVE',
+    UNARCHIVE = 'UNARCHIVE',
+    DELETE = 'DELETE',
+    DESTROY = 'DESTROY'
+}
 
 /**
  * Form component to create or edit content types
@@ -56,6 +67,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     dateVarOptions: SelectItem[] = [];
     form: FormGroup;
     nameFieldLabel: Observable<string>;
+    workflowsSelected$: Observable<string[]>;
 
     private originalValue: any;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -201,7 +213,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         return dateVarOptions;
     }
 
+    // tslint:disable-next-line: cyclomatic-complexity
     private initFormGroup(): void {
+        const action = this.data.systemActionMappings[DotSystemAction.NEW];
         this.form = this.fb.group({
             clazz: this.data.clazz || '',
             description: this.data.description || '',
@@ -218,13 +232,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                 }
             ],
             systemActionMap: this.fb.group({
-                systemAction: 'NEW',
-                workflowActionId: {
-                    value: this.data.systemActionMap
-                        ? this.data.systemActionMap.workflowActionId
-                        : '',
-                    disabled: true
-                }
+                [DotSystemAction.NEW]: action ? action.workflowAction.id : ''
             }),
             defaultType: this.data.defaultType,
             fixed: this.data.fixed,
@@ -243,14 +251,21 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         if (this.layout && this.layout.length) {
             this.setDateVarFieldsState();
         }
+
+        this.workflowsSelected$ = this.form
+            .get('workflow')
+            .valueChanges.pipe(filter((workflows: string[]) => workflows && !!workflows.length));
     }
 
     private initWorkflowField(): void {
         this.dotLicenseService
             .isEnterprise()
-            .pipe(take(1))
-            .subscribe((isEnterpriseLicense: boolean) => {
-                this.updateWorkflowFormControl(isEnterpriseLicense);
+            .pipe(
+                take(1),
+                filter((isEnterpriseLicense: boolean) => isEnterpriseLicense)
+            )
+            .subscribe(() => {
+                this.updateWorkflowFormControl();
             });
     }
 
@@ -312,20 +327,18 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.setSaveState();
     }
 
-    private updateWorkflowFormControl(isEnterpriseLicense: boolean): void {
-        if (isEnterpriseLicense) {
-            const workflowControl = this.form.get('workflow');
-            const workflowActionControl = this.form.get('systemActionMap').get('workflowActionId');
+    private updateWorkflowFormControl(): void {
+        const workflowControl = this.form.get('workflow');
+        const workflowActionControl = this.form.get('systemActionMap').get(DotSystemAction.NEW);
 
-            workflowControl.enable();
-            workflowActionControl.enable();
+        workflowControl.enable();
+        workflowActionControl.enable();
 
-            if (this.originalValue) {
-                this.originalValue.workflow = workflowControl.value;
-                this.originalValue.systemActionMap.workflowActionId = workflowActionControl.value;
-            }
-            this.setSaveState();
+        if (this.originalValue) {
+            this.originalValue.workflow = workflowControl.value;
+            this.originalValue.systemActionMap[DotSystemAction.NEW] = workflowActionControl.value;
         }
+        this.setSaveState();
     }
 
     private updateExpireDateVar(value: string): void {

@@ -74,7 +74,8 @@ export class ContentTypeEditResolver implements Resolve<DotCMSContentType> {
             system: false,
             variable: null,
             versionable: false,
-            workflows: []
+            workflows: [],
+            systemActionMappings: {}
         });
     }
 }
