@@ -142,7 +142,6 @@ export class DotFormComponent {
     }
 
     private handleSubmit(event: Event): void {
-        debugger;
         event.preventDefault();
 
         fetch(SUBMIT_FORM_API_URL, {

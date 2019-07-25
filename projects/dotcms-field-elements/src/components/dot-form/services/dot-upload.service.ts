@@ -3,7 +3,7 @@ import { DotTempFile } from '../../../models';
 class DotHTTPErrorResponse {
 }
 
-export class UploadService {
+export class DotUploadService {
     constructor() {}
 
     uploadFile(file: string | File): Promise<DotTempFile> {

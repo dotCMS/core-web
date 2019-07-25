@@ -21,7 +21,6 @@ describe('dot-form', () => {
 
     const submitForm = async () => {
         const button = await getSubmitButton();
-        console.log('disabled', await  button.getProperty('disabled'));
         await button.click();
     };
 
