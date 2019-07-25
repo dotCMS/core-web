@@ -101,7 +101,10 @@ export class DotFormComponent {
                     <button type="reset" onClick={() => this.resetForm()}>
                         {this.resetLabel}
                     </button>
-                    <button type="submit" disabled={!this.status.dotValid || this.uploadFileInProgress}>
+                    <button
+                        type="submit"
+                        disabled={!this.status.dotValid || this.uploadFileInProgress}
+                    >
                         {this.submitLabel}
                     </button>
                 </div>
@@ -162,13 +165,14 @@ export class DotFormComponent {
         const { name, value } = event.detail;
         if (value) {
             this.uploadFileInProgress = true;
-            uploadService.uploadFile(value).then((tempFile: DotTempFile) => {
+            uploadService.uploadFile(value).then((response: DotTempFile) => {
                 const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;
-                if (tempFile) {
-                    this.value[name] = tempFile.id;
-                    binary.previewImageURL = tempFile.thumbnailUrl;
-                    binary.previewImageName = tempFile.fileName;
+                if (response) {
+                    this.value[name] = response.id;
+                    binary.previewImageURL = response.thumbnailUrl;
+                    binary.previewImageName = response.fileName;
                 } else {
+                    binary.validationMessage = 'Error with the upload';
                     // TODO: set the error message
                 }
                 this.uploadFileInProgress = false;

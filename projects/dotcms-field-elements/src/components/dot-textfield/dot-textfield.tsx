@@ -187,7 +187,6 @@ export class DotTextfieldComponent {
     }
 
     private emitValueChange(): void {
-        debugger;
         this.valueChange.emit({
             name: this.name,
             value: this.value
