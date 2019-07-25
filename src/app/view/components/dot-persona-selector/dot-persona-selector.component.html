@@ -21,22 +21,10 @@
         ></dot-persona-selector-option>
     </ng-template>
     <ng-template let-persona="item" pTemplate="select">
-        <div *ngIf="persona" class="dot-persona-selector__container" (click)="searchableDropdown.toggleOverlayPanel($event)">
-            <dot-avatar
-                [label]="persona.name"
-                [showDot]="persona.personalized"
-                [size]="32"
-                [url]="persona.photo || ''"
-            ></dot-avatar>
-            <div class="dot-persona-selector__label-container">
-                <span class="dot-persona-selector__label"
-                    >{{ messagesKey['modes.persona.selector.title'] }}
-                </span>
-                <span class="dot-persona-selector__name">
-                    {{ persona.name }}
-                </span>
-            </div>
-            <dot-icon name="arrow_drop_down"></dot-icon>
-        </div>
+        <dot-persona-dropdown-selector  *ngIf="persona"
+            label="{{ messagesKey['modes.persona.selector.title'] }}"
+            [persona]="persona"
+            (selected)="searchableDropdown.toggleOverlayPanel($event)"
+        ></dot-persona-dropdown-selector>
     </ng-template>
 </dot-searchable-dropdown>
