@@ -28,11 +28,6 @@
         <script src="/build/dotcmsfields.js"></script>
         <script>
             const dotFormEl = document.querySelector('dot-form');
-            dotFormEl.addEventListener('onSubmit', (e) => {
-                e.preventDefault();
-                console.log(e);
-            });
-
             const dataFields = [
                 {
                     columns: [
@@ -443,7 +438,7 @@
                                     modDate: 1560465555000,
                                     name: 'Upload File',
                                     relationType: null,
-                                    required: false,
+                                    required: true,
                                     variable: 'binary',
                                     sortOrder: 16,
                                     values: null,
@@ -462,7 +457,6 @@
             ];
 
             dotFormEl.layout = dataFields;
-            // dotFormEl.fieldsToShow = 'state,zipCode';
         </script>
     </body>
 </html>

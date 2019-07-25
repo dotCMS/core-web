@@ -34,6 +34,16 @@
 
 ## Methods
 
+### `clearValue() => void`
+
+Clear value of selected file, when the endpoint fails.
+
+#### Returns
+
+Type: `void`
+
+
+
 ### `reset() => void`
 
 Reset properties of the field, clear value and emit events.

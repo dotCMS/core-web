@@ -94,6 +94,7 @@ export class DotBinaryFileComponent {
 
     @State() status: DotFieldStatus;
 
+
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
@@ -114,6 +115,17 @@ export class DotBinaryFileComponent {
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
         this.emitValueChange();
+    }
+
+    /**
+     * Clear value of selected file, when the endpoint fails.
+     */
+    @Method()
+    clearValue(): void {
+        this.binaryTextField.value = ''
+        this.errorType = this.required ? DotBinaryMessageError.REQUIRED : null;
+        this.setValue('');
+        this.clearPreviewData();
     }
 
     componentWillLoad(): void {
@@ -194,7 +206,7 @@ export class DotBinaryFileComponent {
     }
 
     @Listen('delete', { passive: false })
-    HandleDelete(evt: CustomEvent): void {
+    handleDelete(evt: CustomEvent): void {
         evt.preventDefault();
         this.setValue('');
         this.clearPreviewData();
@@ -322,4 +334,3 @@ export class DotBinaryFileComponent {
         this.previewImageName = null;
     }
 }
-
