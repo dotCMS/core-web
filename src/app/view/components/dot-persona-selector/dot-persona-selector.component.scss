@@ -2,35 +2,13 @@
 @import "mixins";
 
 ::ng-deep .dot-persona-selector {
-    margin-top: 0;
-
-    .ui-overlaypanel-content {
-        padding: $basic-padding * 2 0;
-
-        .searchable-dropdown__search {
-            margin: 0 $basic-padding * 2;
-        }
-
-        .searchable-dropdown__search-icon {
-            right: $basic-padding;
-        }
-
-        .searchable-dropdown__search-inputfield {
-            @include form-field-secondary;
-            padding: 0 $basic-padding * 4 0 $basic-padding * 2;
-        }
-
-        .ui-dataview-content {
-            width: 100%;
-        }
-    }
+    margin-top: $basic-padding;
 }
 
 .dot-persona-selector__container {
     align-items: center;
     cursor: pointer;
     display: flex;
-    height: 48px;
     position: relative;
     width: 206px;
 
@@ -60,7 +38,7 @@
     }
 
     dot-icon {
-        bottom: $basic-padding / 2;
+        bottom: 0;
         position: absolute;
         right: 0;
 

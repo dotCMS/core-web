@@ -50,13 +50,11 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         private dotMessageService: DotMessageService
     ) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (this.isValueChangedAndNotFirstTime(changes)) {
-            this.value = {
-                name: this.messagesKey['modes.persona.no.persona'],
-                identifier: '0'
-            };
-        }
+    ngOnChanges(_changes: SimpleChanges): void {
+        this.value = this.value || {
+            name: this.messagesKey['modes.persona.no.persona'],
+            identifier: '0'
+        };
     }
 
     ngOnInit(): void {
@@ -72,7 +70,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                this.value = this.value || {
+                this.value = {
                     name: this.messagesKey['modes.persona.no.persona'],
                     identifier: '0'
                 };
@@ -105,18 +103,11 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
-
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
-
-            this.personas = [];
-            if (this.isFirstPageAndNoFilter(filter, offset)) {
-                this.personas = [
-                    { name: this.messagesKey['modes.persona.no.persona'], identifier: '0' }
-                ];
-            }
-            this.personas = [...this.personas, ...items];
+            items[0] = items[0].name === 'Default Visitor' ? { ...items[0], identifier: '0' } : items[0];
+            this.personas = items;
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
     }
@@ -139,13 +130,5 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     deletePersonalization(_persona: DotPersona): void {
         // TODO: Confirm & call service
         this.searchableDropdown.toggleOverlayPanel();
-    }
-
-    private isFirstPageAndNoFilter(filter: string, offset: number): boolean {
-        return !filter && offset === 0;
-    }
-
-    private isValueChangedAndNotFirstTime(changes: SimpleChanges): boolean {
-        return changes.value && !changes.value.currentValue && !changes.value.firstChange;
     }
 }

@@ -17,6 +17,7 @@
         icon="fa fa-caret-down"
         iconPos="right"
         type="button"
+        [ngStyle]="{ 'width': width }"
         [disabled]="disabled"
     ></button>
 </ng-template>
@@ -51,7 +52,7 @@
         [pageLinks]="pageLinkSize"
         [paginator]="totalRecords > rows"
         [rows]="rows"
-        [style]="{ 'width': width + 'px' }"
+        [style]="{ 'width': optionsContainerWidth + 'px' }"
         [totalRecords]="totalRecords"
         [value]="options"
         class="searchable-dropdown__data-list"
