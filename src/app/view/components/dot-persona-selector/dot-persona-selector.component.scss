@@ -39,9 +39,7 @@
     }
 
     .dot-persona-selector__label-container {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        @include truncate-text;
 
         span {
             display: block;
@@ -57,9 +55,7 @@
             font-weight: $font-weight-semi-bold;
             line-height: $basic-padding * 2;
             margin-right: $basic-padding * 3;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            @include truncate-text;
         }
     }
 

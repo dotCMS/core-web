@@ -1,7 +1,7 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import { DebugElement, Component, Input, TemplateRef } from '@angular/core';
+import { DebugElement, Component, Input } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { SEARCHABLE_NGFACES_MODULES } from '../searchable-dropdown.module';
@@ -31,9 +31,6 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 class HostTestComponent {
     @Input()
     data: any[];
-
-    @Input() externalSelectTemplate: TemplateRef<any>;
-    @Input() externalItemListTemplate: TemplateRef<any>;
 
     @Input()
     cssClass: string;
@@ -68,7 +65,7 @@ class HostTestComponent {
     multiple: boolean;
 }
 
-describe('SearchableDropdownComponent', () => {
+fdescribe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let hostFixture: ComponentFixture<HostTestComponent>;
@@ -157,7 +154,7 @@ describe('SearchableDropdownComponent', () => {
 
         hostFixture.detectChanges();
 
-        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .dot-list-item'));
+        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .searchable-dropdown__data-list-item'));
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0');
     });
 
@@ -192,7 +189,7 @@ describe('SearchableDropdownComponent', () => {
 
         hostFixture.detectChanges();
 
-        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .dot-list-item'));
+        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .searchable-dropdown__data-list-item'));
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0 - demo.dotcms.com');
     });
 
@@ -243,7 +240,7 @@ describe('SearchableDropdownComponent', () => {
             spyOn(comp.change, 'emit');
 
             hostFixture.detectChanges();
-            items = de.queryAll(By.css('.dot-list-item'));
+            items = de.queryAll(By.css('.searchable-dropdown__data-list-item'));
 
             dataExpected = _.cloneDeep(data[0]);
             dataExpected.label = dataExpected.name;
@@ -280,27 +277,13 @@ describe('SearchableDropdownComponent', () => {
         expect(hostFixture.componentInstance.placeholder ).toEqual(comp.valueString);
     });
 
-    it('should set width', () => {
-        hostFixture.componentInstance.width = '50%';
-        hostFixture.detectChanges();
-
-        const button = de.query(By.css('button'));
-        expect('50%').toEqual(button.styles.width);
-    });
-
-    it('should width undefined', () => {
-        hostFixture.detectChanges();
-
-        const button = de.query(By.css('button'));
-        expect(button.styles.width).toBeNull();
-    });
-
 });
 
 @Component({
     selector: 'dot-host-component',
     template: `
                 <dot-searchable-dropdown
+                    #searchableDropdown
                     [action]="action"
                     [cssClass]="cssClass"
                     [data] = "data"
@@ -314,15 +297,16 @@ describe('SearchableDropdownComponent', () => {
                     [valuePropertyName] = "valuePropertyName"
                     [width] = "width">
                         <ng-template let-data="item" pTemplate="listItem">
-                            <div class="dot-list-item templateTestItem" (click)="handleClick(item)">{{ data.label }}</div>
+                            <div class="searchable-dropdown__data-list-item templateTestItem" (click)="handleClick(item)">{{ data.label }}</div>
+                        </ng-template>
+                        <ng-template let-persona="item" pTemplate="select">
+                            <div class="dot-persona-selector__testContainer"
+                                (click)="searchableDropdown.toggleOverlayPanel($event)">Test</div>
                         </ng-template>
                </dot-searchable-dropdown>`
 })
 class HostTestExternalTemplateComponent {
     @Input() data: any[];
-
-    @Input() externalSelectTemplate: TemplateRef<any>;
-    @Input() externalItemListTemplate: TemplateRef<any>;
 
     @Input()
     cssClass: string;
@@ -362,7 +346,6 @@ fdescribe('SearchableDropdownComponent', () => {
 
     let hostFixture: ComponentFixture<HostTestExternalTemplateComponent>;
     let de: DebugElement;
-    let comp: SearchableDropdownComponent;
     const data = [];
     let rows: number;
     let pageLinkSize: number;
@@ -381,7 +364,6 @@ fdescribe('SearchableDropdownComponent', () => {
 
         hostFixture = DOTTestBed.createComponent(HostTestExternalTemplateComponent);
         de = hostFixture.debugElement.query(By.css('dot-searchable-dropdown'));
-        comp = de.componentInstance;
 
         for (let i = 0; i < NROWS; i++) {
             data[i] = {
@@ -394,7 +376,7 @@ fdescribe('SearchableDropdownComponent', () => {
             };
         }
 
-        rows = NROWS / 3;
+        rows = 10;
         pageLinkSize = 1;
 
         hostFixture.componentInstance.totalRecords = NROWS;
@@ -404,123 +386,22 @@ fdescribe('SearchableDropdownComponent', () => {
 
     beforeEach(() => {
         hostFixture.componentInstance.placeholder = 'placeholder';
+        hostFixture.componentInstance.data = data;
+        hostFixture.componentInstance.labelPropertyName = 'name';
         hostFixture.detectChanges();
 
-        mainButton = de.query(By.css('button'));
+        mainButton = de.query(By.css('.dot-persona-selector__testContainer'));
         mainButton.triggerEventHandler('click', {});
     });
 
-    it('should renderer the pagination links', () => {
+    it('should render external dropdown template', () => {
+        const dropdown = de.query(By.css('.dot-persona-selector__testContainer')).nativeElement;
+        expect(dropdown).not.toBeNull();
+    });
 
+    it('should render external listItem template', () => {
         hostFixture.detectChanges();
-
-        const paginator = de.query(By.css('p-paginator'));
-
-        const componentInstance = paginator.componentInstance;
-        const rowParameter = componentInstance.rows;
-        const totalRecordsParam = componentInstance.totalRecords;
-        const pageLinkSizeParam = componentInstance.pageLinkSize;
-
-        expect(rows).toEqual(rowParameter);
-        expect(NROWS).toEqual(totalRecordsParam);
-        expect(pageLinkSize).toEqual(pageLinkSizeParam);
+        const listItems = de.queryAll(By.css('.searchable-dropdown__data-list-item.templateTestItem'));
+        expect(listItems.length).toBe(6);
     });
-
-    it('should renderer the data', () => {
-        hostFixture.componentInstance.data = data;
-        hostFixture.componentInstance.labelPropertyName = 'name';
-
-        hostFixture.detectChanges();
-
-        const pdataview = de.query(By.css('p-dataview')).componentInstance;
-
-        expect(hostFixture.componentInstance.data.map(item => {
-            item.label = item.name;
-            return item;
-        })).toEqual(pdataview.value);
-    });
-
-    it('should render a string property in p-dataview', () => {
-        hostFixture.componentInstance.data = data;
-        hostFixture.componentInstance.labelPropertyName = 'name';
-
-        hostFixture.detectChanges();
-
-        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .dot-list-item'));
-        expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0');
-    });
-
-    it('should set CSS class & width', () => {
-        hostFixture.componentInstance.data = data;
-        hostFixture.componentInstance.cssClass = 'testClass';
-        hostFixture.componentInstance.width = '650';
-        hostFixture.detectChanges();
-        const overlay = de.query(By.css('.ui-overlaypanel'));
-        const pdataview = de.query(By.css('p-dataview')).componentInstance;
-
-        expect(overlay.componentInstance.styleClass).toBe('testClass');
-        expect(pdataview.style).toEqual({ width: '650px' });
-    });
-
-    it('should display Action button', () => {
-        hostFixture.componentInstance.action = () => {};
-
-        hostFixture.detectChanges();
-        const actionBtn = de.query(By.css('.searchable-dropdown__search-action dot-icon-button')).componentInstance;
-        expect(actionBtn.icon).toBe('add');
-    });
-
-    it('should not display Action button', () => {
-        const actionBtn = de.query(By.css('.searchable-dropdown__search-action dot-icon-button'));
-        expect(actionBtn).toBeNull();
-    });
-
-    it('should render a string array of properties in p-dataview', () => {
-        hostFixture.componentInstance.data = data;
-        hostFixture.componentInstance.labelPropertyName = ['name', 'parentPermissionable.hostname'];
-
-        hostFixture.detectChanges();
-
-        const dataviewDataEl = de.query(By.css('p-dataview .ui-dataview-content .dot-list-item'));
-        expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0 - demo.dotcms.com');
-    });
-
-    it('should the pageChange call the paginate method',
-        fakeAsync(() => {
-            const first = 2;
-            const page = 3;
-            const pageCount = 4;
-            rows = 5;
-            const filter = 'filter';
-            let event;
-
-            comp.pageChange.subscribe((e) => {
-                event = e;
-            });
-
-            hostFixture.detectChanges();
-            const input = hostFixture.debugElement.query(By.css('input[type="text"]'));
-            input.nativeElement.value = filter;
-
-            const dataview = hostFixture.debugElement.query(By.css('p-dataview'));
-            const dataviewComponentInstance = dataview.componentInstance;
-
-            dataviewComponentInstance.onLazyLoad.emit({
-                first: first,
-                page: page,
-                pageCount: pageCount,
-                rows: rows
-            });
-
-            tick();
-
-            expect(first).toEqual(event.first);
-            expect(page).toEqual(event.page);
-            expect(pageCount).toEqual(event.pageCount);
-            expect(rows).toEqual(event.rows);
-            expect(filter).toEqual(event.filter);
-        })
-    );
-
-
 });

@@ -1,4 +1,5 @@
 @import "primeng-theme/utils/extends";
+@import "mixins";
 
 dot-searchable-dropdown {
     .ui-button {
@@ -57,11 +58,9 @@ dot-searchable-dropdown {
                 display: block;
                 padding: $basic-padding / 2;
                 transition: background-color $basic-speed ease-in;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
                 width: 100%;
-    
+                @include truncate-text;
+
                 &.selected {
                     font-weight: bold;
                 }
