@@ -539,7 +539,6 @@ describe('ContentTypesFormComponent', () => {
         comp.onSubmit.subscribe((res) => (data = res));
         comp.submitForm();
 
-        expect(comp.submitForm).toHaveBeenCalled();
         expect(data).toBeNull();
     });
 
@@ -555,7 +554,6 @@ describe('ContentTypesFormComponent', () => {
 
         comp.submitForm();
 
-        expect(comp.submitForm).toHaveBeenCalled();
         expect(comp.onSubmit.emit).not.toHaveBeenCalled();
     });
 
@@ -592,7 +590,6 @@ describe('ContentTypesFormComponent', () => {
         it('should submit form correctly', () => {
             comp.submitForm();
 
-            expect(comp.submitForm).toHaveBeenCalledTimes(1);
             expect(data).toEqual({
                 clazz: '',
                 description: '',
@@ -605,7 +602,9 @@ describe('ContentTypesFormComponent', () => {
                 folder: null,
                 system: null,
                 workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2'],
-                systemActionMap: { systemAction: 'NEW', workflowActionId: '' }
+                systemActionMap: {
+                    NEW: ''
+                }
             });
         });
     });

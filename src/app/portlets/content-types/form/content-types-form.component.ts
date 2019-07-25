@@ -215,7 +215,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
 
     // tslint:disable-next-line: cyclomatic-complexity
     private initFormGroup(): void {
-        const action = this.data.systemActionMappings[DotSystemAction.NEW];
+        const action = this.data.systemActionMappings
+            ? this.data.systemActionMappings[DotSystemAction.NEW]
+            : null;
         this.form = this.fb.group({
             clazz: this.data.clazz || '',
             description: this.data.description || '',
