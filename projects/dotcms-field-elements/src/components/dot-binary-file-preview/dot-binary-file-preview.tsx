@@ -20,7 +20,7 @@ export class DotBinaryFilePreviewComponent {
 
     /** (optional) file URL to be displayed */
     @Prop({ reflectToAttr: true, mutable: true })
-    previewURL = '';
+    previewUrl = '';
 
     /** (optional) Delete button's label */
     @Prop({ reflectToAttr: true })
@@ -46,12 +46,12 @@ export class DotBinaryFilePreviewComponent {
     private clearFile(): void {
         this.delete.emit();
         this.fileName = null;
-        this.previewURL = null;
+        this.previewUrl = null;
     }
 
     private getPreviewElement(): JSX.Element {
-        return this.previewURL ? (
-            <img src={this.previewURL} />
+        return this.previewUrl ? (
+            <img alt={this.fileName} src={this.previewUrl} />
         ) : (
             <div class="dot-file-preview__extension">
                 <span>{this.getExtention()}</span>

@@ -1,7 +1,5 @@
 import { DotTempFile } from '../../../models';
-
-class DotHTTPErrorResponse {
-}
+import { DotHttpErrorResponse } from '../../../models/dot-http-error-response.model';
 
 export class DotUploadService {
     constructor() {}
@@ -16,7 +14,7 @@ export class DotUploadService {
 
     private uploadFileByURL(url: string): Promise<DotTempFile> {
         const UPLOAD_FILE_FROM_URL = 'http://localhost:8080/api/v1/temp/byUrl';
-
+        debugger;
         return fetch(UPLOAD_FILE_FROM_URL, {
             method: 'POST',
             headers: {
@@ -28,9 +26,10 @@ export class DotUploadService {
             })
         }).then(async (response: Response) => {
             if (response.status === 200) {
+                debugger;
                 return (await response.json()).tempFiles[0];
             } else {
-                const error: DotHTTPErrorResponse = {
+                const error: DotHttpErrorResponse = {
                     message: (await response.json()).message,
                     status: response.status
                 };
@@ -54,7 +53,7 @@ export class DotUploadService {
             if (response.status === 200) {
                 return (await response.json()).tempFiles[0];
             } else {
-                const error: DotHTTPErrorResponse = {
+                const error: DotHttpErrorResponse = {
                     message: (await response.json()).message,
                     status: response.status
                 };

@@ -90,7 +90,7 @@ export class DotBinaryFileComponent {
 
     /** (optional) URL of the file uploaded */
     @Prop({ reflectToAttr: true, mutable: true })
-    previewImageURL = '';
+    previewImageUrl = '';
 
     @State() status: DotFieldStatus;
 
@@ -230,7 +230,7 @@ export class DotBinaryFileComponent {
                     {this.previewImageName ? (
                         <dot-binary-file-preview
                             fileName={this.previewImageName}
-                            previewURL={this.previewImageURL}
+                            previewUrl={this.previewImageUrl}
                         />
                     ) : (
                         <div class="dot-binary__container">
@@ -330,7 +330,7 @@ export class DotBinaryFileComponent {
     }
 
     private clearPreviewData(): void {
-        this.previewImageURL = '';
+        this.previewImageUrl = '';
         this.previewImageName = '';
     }
 }

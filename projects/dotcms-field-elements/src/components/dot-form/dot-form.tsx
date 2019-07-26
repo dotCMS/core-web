@@ -7,7 +7,7 @@ import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
 import { Components } from '../../components';
 import DotBinaryFile = Components.DotBinaryFile;
-import { UploadService } from './services/upload-service';
+import { DotUploadService } from './services/dot-upload.service';
 import { DotHttpErrorResponse } from '../../models/dot-http-error-response.model';
 
 const SUBMIT_FORM_API_URL = '/api/content/save/1';
@@ -202,7 +202,8 @@ export class DotFormComponent {
     }
 
     private uploadFile(event: CustomEvent): void {
-        const uploadService = new UploadService();
+        debugger;
+        const uploadService = new DotUploadService();
         const { name, value } = event.detail;
         const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;
         if (value) {
@@ -212,7 +213,7 @@ export class DotFormComponent {
                 .uploadFile(value)
                 .then((tempFile: DotTempFile) => {
                     this.value[name] = tempFile.id;
-                    binary.previewImageURL = tempFile.thumbnailUrl;
+                    binary.previewImageUrl = tempFile.thumbnailUrl;
                     binary.previewImageName = tempFile.fileName;
                     this.uploadFileInProgress = false;
                 })

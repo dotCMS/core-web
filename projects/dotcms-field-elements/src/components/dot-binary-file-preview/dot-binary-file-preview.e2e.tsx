@@ -44,8 +44,8 @@ describe('dot-binary-file-preview', () => {
             });
         });
 
-        describe('previewURL', () => {
-            it('should not display image tag if previewURL is empty', async () => {
+        describe('previewUrl', () => {
+            it('should not display image tag if previewUrl is empty', async () => {
                 element.setProperty('fileName', FILE_MOCK.fileName);
                 await page.waitForChanges();
                 const imageElement = await page.find('img');
@@ -53,9 +53,9 @@ describe('dot-binary-file-preview', () => {
                 expect(imageElement).toBeNull();
             });
 
-            it('should display preview image when previewURL is set', async () => {
+            it('should display preview image when previewUrl is set', async () => {
                 element.setProperty('fileName', FILE_MOCK.fileName);
-                element.setProperty('previewURL', FILE_MOCK.thumbnailUrl);
+                element.setProperty('previewUrl', FILE_MOCK.thumbnailUrl);
                 await page.waitForChanges();
                 const imageSrc = (await page.find('img')).getAttribute('src');
                 const fileName = (await page.find('.dot-file-preview__name')).innerText;
@@ -97,13 +97,13 @@ describe('dot-binary-file-preview', () => {
         describe('delete', () => {
             it('should emit status, value and clear value on Reset', async () => {
                 element.setProperty('fileName', FILE_MOCK.fileName);
-                element.setProperty('previewURL', FILE_MOCK.thumbnailUrl);
+                element.setProperty('previewUrl', FILE_MOCK.thumbnailUrl);
                 const button = await page.find('button');
                 button.click();
                 await page.waitForChanges();
                 expect(spyDeleteEvent).toHaveReceivedEvent();
-                expect(element.getAttribute('fileName')).toBeNull();
-                expect(element.getAttribute('previewURL')).toBeNull();
+                expect(element.getAttribute('file-name')).toBeNull();
+                expect(element.getAttribute('preview-url')).toBeNull();
             });
         });
     });

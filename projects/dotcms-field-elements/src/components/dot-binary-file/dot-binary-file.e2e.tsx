@@ -328,23 +328,19 @@ describe('dot-binary-file', () => {
 
                 expect(dotBinaryButton).toBeNull();
                 expect(dotBinaryText).toBeNull();
-                expect(await dotBinaryPreview.getProperty('fileName')).toEqual(
-                    'image.png'
-                );
+                expect(dotBinaryPreview.getAttribute('file-name')).toEqual('image.png');
             });
         });
 
-        describe('previewImageURL', () => {
+        describe('previewImageUrl', () => {
             it('should set the attribute correctly on DotBinaryPreview', async () => {
                 element.setProperty('previewImageName', 'image.png');
-                element.setProperty('previewImageURL', 'url/image.png');
+                element.setProperty('previewImageUrl', 'url/image.png');
                 await page.waitForChanges();
 
                 dotBinaryPreview = await page.find('dot-binary-file-preview');
 
-                expect(await dotBinaryPreview.getProperty('previewURL')).toEqual(
-                    'url/image.png'
-                );
+                expect(dotBinaryPreview.getAttribute('preview-url')).toEqual('url/image.png');
             });
         });
     });
@@ -474,7 +470,7 @@ describe('dot-binary-file', () => {
         describe('clearValue', () => {
             it('should display required message clear preview data on clearValue', async () => {
                 element.setProperty('previewImageName', 'test.png');
-                element.setProperty('previewImageURL', 'url/test.png');
+                element.setProperty('previewImageUrl', 'url/test.png');
                 element.setProperty('required', true);
                 await element.callMethod('clearValue');
                 await page.waitForChanges();
@@ -483,8 +479,8 @@ describe('dot-binary-file', () => {
                     'This field is required'
                 );
                 expect(await dotBinaryText.getProperty('value')).toEqual('');
-                expect(await element.getProperty('previewImageName')).toEqual('');
-                expect(await element.getProperty('previewImageURL')).toEqual('');
+                expect(element.getAttribute('preview-image-name')).toEqual('');
+                expect(element.getAttribute('preview-image-url')).toEqual('');
             });
         });
     });

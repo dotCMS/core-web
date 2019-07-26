@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute       | Description                         | Type     | Default    |
-| ------------- | --------------- | ----------------------------------- | -------- | ---------- |
-| `deleteLabel` | `delete-label`  | (optional) Delete button's label    | `string` | `'Delete'` |
-| `fileName`    | `file-name`     | file name to be displayed           | `string` | `''`       |
-| `previewURL`  | `preview-u-r-l` | (optional) file URL to be displayed | `string` | `''`       |
+| Property      | Attribute      | Description                         | Type     | Default    |
+| ------------- | -------------- | ----------------------------------- | -------- | ---------- |
+| `deleteLabel` | `delete-label` | (optional) Delete button's label    | `string` | `'Delete'` |
+| `fileName`    | `file-name`    | file name to be displayed           | `string` | `''`       |
+| `previewUrl`  | `preview-url`  | (optional) file URL to be displayed | `string` | `''`       |
 
 
 ## Events
