@@ -171,6 +171,17 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
             });
         });
 
+        it('should propagate empty string', () => {
+            dropdownDe.triggerEventHandler('onChange', {
+                originalEvent: {},
+                value: null
+            });
+
+            expect(componentHost.form.value).toEqual({
+                action: ''
+            });
+        });
+
         it('should set disabled', () => {
             componentHost.form.get('action').disable();
             fixtureHost.detectChanges();

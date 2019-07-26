@@ -55,7 +55,7 @@ export class DotWorkflowsActionsSelectorFieldComponent
      * @memberof DotWorkflowsActionsSelectorFieldComponent
      */
     handleChange({ value }: DropdownEvent): void {
-        this.propagateChange(value);
+        this.propagateChange(value || '');
     }
 
     propagateChange = (_: any) => {};
