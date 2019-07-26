@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, forwardRef, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { flatMap, map, toArray, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
@@ -40,17 +40,12 @@ export class DotWorkflowsActionsSelectorFieldComponent
     ) {}
 
     ngOnInit() {
-        this.placeholder$ = this.getPlaceholder().pipe(
-            tap(() => {
-                this.actions$ = this.getActionsList(this.workflows);
-            })
-        );
+        this.placeholder$ = this.getPlaceholder();
+        this.actions$ = this.getActionsList();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (!changes.workflows.firstChange) {
-            this.actions$ = this.getActionsList(changes.workflows.currentValue);
-        }
+        this.dotWorkflowsActionService.load(changes.workflows.currentValue);
     }
 
     /**
@@ -97,19 +92,17 @@ export class DotWorkflowsActionsSelectorFieldComponent
         this.value = value;
     }
 
-    private getSelectItem(action: DotWorkflowAction): SelectItem {
-        return {
-            label: action.name,
-            value: action.id
-        };
+    private getSelectItems(actions: DotWorkflowAction[]): SelectItem[] {
+        return actions.map((action: DotWorkflowAction) => {
+            return {
+                label: action.name,
+                value: action.id
+            };
+        });
     }
 
-    private getActionsList(workflows: string[]): Observable<SelectItem[]> {
-        return this.dotWorkflowsActionService.get(workflows).pipe(
-            flatMap((actions: DotWorkflowAction[]) => actions),
-            map(this.getSelectItem),
-            toArray()
-        );
+    private getActionsList(): Observable<SelectItem[]> {
+        return this.dotWorkflowsActionService.get().pipe(map(this.getSelectItems));
     }
 
     private getPlaceholder(): Observable<string> {

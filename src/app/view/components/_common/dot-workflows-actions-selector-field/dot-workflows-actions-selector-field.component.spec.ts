@@ -1,16 +1,15 @@
 import { async, ComponentFixture } from '@angular/core/testing';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { of } from 'rxjs';
-import { DebugElement, Component } from '@angular/core';
+import { DebugElement, Component, OnInit } from '@angular/core';
 
 import { DotWorkflowsActionsSelectorFieldComponent } from './dot-workflows-actions-selector-field.component';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
-import { DropdownModule, Dropdown } from 'primeng/primeng';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
+import { Dropdown, DropdownModule } from 'primeng/primeng';
 
 @Component({
     selector: 'dot-fake-form',
@@ -18,20 +17,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
         <form [formGroup]="form">
             <dot-workflows-actions-selector-field
                 formControlName="action"
-                [workflows]="['000', '123', '456']"
+                [workflows]="workfows"
             ></dot-workflows-actions-selector-field>
             {{ form.value | json }}
         </form>
     `
 })
-class FakeFormComponent {
+class FakeFormComponent implements OnInit {
     form: FormGroup;
+    workfows: string[] = [];
 
-    constructor(private fb: FormBuilder) {
-        /*
-            This should go in the ngOnInit but I don't want to detectChanges everytime for
-            this fake test component
-        */
+    constructor(private fb: FormBuilder) {}
+
+    ngOnInit() {
         this.form = this.fb.group({
             action: [{ value: '456', disabled: false }]
         });
@@ -50,11 +48,13 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let de: DebugElement;
     let dropdownDe: DebugElement;
     let dropdown: Dropdown;
+    let dotWorkflowsActionsService: DotWorkflowsActionsService;
+    let getSpy: jasmine.Spy;
+    let loadSpy: jasmine.Spy;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [FakeFormComponent, DotWorkflowsActionsSelectorFieldComponent],
-            imports: [DropdownModule],
+            declarations: [DotWorkflowsActionsSelectorFieldComponent, FakeFormComponent],
             providers: [
                 {
                     provide: DotMessageService,
@@ -65,10 +65,12 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
                     useValue: {
                         get() {
                             return of([]);
-                        }
+                        },
+                        load() {}
                     }
                 }
-            ]
+            ],
+            imports: [DropdownModule]
         }).compileComponents();
     }));
 
@@ -78,29 +80,82 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         componentHost = deHost.componentInstance;
         de = deHost.query(By.css('dot-workflows-actions-selector-field'));
         component = de.componentInstance;
-        fixtureHost.detectChanges();
-        dropdownDe = de.query(By.css('p-dropdown'));
-        dropdown = dropdownDe.componentInstance;
+        dotWorkflowsActionsService = deHost.injector.get(DotWorkflowsActionsService);
+        getSpy = spyOn(dotWorkflowsActionsService, 'get').and.callThrough();
+        loadSpy = spyOn(dotWorkflowsActionsService, 'load');
+    });
+
+    describe('initialization', () => {
+        beforeEach(() => {
+            fixtureHost.detectChanges();
+        });
+
+        it('should load actions', () => {
+            expect(dotWorkflowsActionsService.load).toHaveBeenCalledTimes(1);
+            expect(dotWorkflowsActionsService.load).toHaveBeenCalledWith([]);
+        });
+
+        it('should subscribe to actions', () => {
+            expect(dotWorkflowsActionsService.get).toHaveBeenCalledTimes(1);
+        });
     });
 
     describe('p-dropdown', () => {
-        it('should be defined', () => {
-            expect(dropdownDe).toBeDefined();
+        describe('basic', () => {
+            beforeEach(() => {
+                fixtureHost.detectChanges();
+                dropdown = de.query(By.css('p-dropdown')).componentInstance;
+            });
+
+            it('should be defined', () => {
+                expect(dropdown).toBeDefined();
+            });
+
+            it('should have attr', () => {
+                expect(dropdown.appendTo).toBe('body');
+                expect(dropdown.filter).toBe(true);
+                expect(dropdown.placeholder).toBe('Select an action');
+            });
+
+            it('should have width 100%', () => {
+                expect(dropdown.style).toEqual({ width: '100%' });
+            });
         });
 
-        it('should have attr', () => {
-            expect(dropdown.appendTo).toBe('body');
-            expect(dropdown.disabled).toBe(false);
-            expect(dropdown.filter).toBe(true);
-            expect(dropdown.placeholder).toBe('Select an action');
-        });
+        describe('disable attr', () => {
+            it('should be disable when actions list is empty', () => {
+                fixtureHost.detectChanges();
+                dropdown = de.query(By.css('p-dropdown')).componentInstance;
+                expect(dropdown.disabled).toBe(true);
+            });
 
-        it('should have width 100%', () => {
-            expect(dropdown.style).toEqual({ width: '100%' });
+            it('should be enaled when actions list is filled', () => {
+                getSpy.and.returnValue(
+                    of([
+                        {
+                            name: 'Hello',
+                            id: '123'
+                        },
+                        {
+                            name: 'World',
+                            id: '456'
+                        }
+                    ])
+                );
+                fixtureHost.detectChanges();
+                dropdown = de.query(By.css('p-dropdown')).componentInstance;
+                expect(dropdown.disabled).toBe(false);
+            });
         });
     });
 
     describe('ControlValueAccessor', () => {
+        beforeEach(() => {
+            fixtureHost.detectChanges();
+            dropdownDe = de.query(By.css('p-dropdown'));
+            dropdown = dropdownDe.componentInstance;
+        });
+
         it('should set value', () => {
             expect(component.value).toBe('456');
         });
@@ -117,9 +172,19 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         });
 
         it('should set disabled', () => {
-            fixtureHost.componentInstance.form.get('action').disable();
+            componentHost.form.get('action').disable();
             fixtureHost.detectChanges();
             expect(dropdown.disabled).toBe(true);
+        });
+    });
+
+    describe('@Inputs', () => {
+        describe('workflows', () => {
+            it('should reload actions', () => {
+                componentHost.workfows = ['123', '456'];
+                fixtureHost.detectChanges();
+                expect(dotWorkflowsActionsService.load).toHaveBeenCalledWith(['123', '456']);
+            });
         });
     });
 });

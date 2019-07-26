@@ -1,9 +1,9 @@
-<p-dropdown
+<p-dropdown *ngIf="actions$ | async as actions"
     (onChange)="handleChange($event)"
     [(ngModel)]="value"
-    [disabled]="disabled"
+    [disabled]="disabled || actions.length === 0"
     [filter]="true"
-    [options]="actions$ | async"
+    [options]="actions"
     [style]="{ width: '100%' }"
     appendTo="body"
     [placeholder]="placeholder$ | async"

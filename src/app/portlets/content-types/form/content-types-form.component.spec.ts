@@ -22,7 +22,7 @@ import {
 import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
-import { ContentTypesFormComponent } from './content-types-form.component';
+import { ContentTypesFormComponent, DotSystemAction } from './content-types-form.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
@@ -193,7 +193,7 @@ describe('ContentTypesFormComponent', () => {
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
-        expect(comp.form.valid).toBeFalsy();
+        expect(comp.form.valid).toBe(false);
     });
 
     it('should be valid when name field have value', () => {
@@ -203,7 +203,7 @@ describe('ContentTypesFormComponent', () => {
         fixture.detectChanges();
 
         comp.form.get('name').setValue('content type name');
-        expect(comp.form.valid).toBeTruthy();
+        expect(comp.form.valid).toBe(true);
     });
 
     it('should have name focus by default on create mode', () => {
@@ -362,12 +362,11 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('fixed')).not.toBeNull();
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
+        const workflowAction = comp.form.get('systemActionMap');
+        expect(workflowAction.get(DotSystemAction.NEW)).not.toBeNull();
+
         expect(comp.form.get('detailPage')).toBeNull();
         expect(comp.form.get('urlMapPattern')).toBeNull();
-
-        const workflowAction = comp.form.get('systemActionMap');
-        expect(workflowAction.get('systemAction')).not.toBeNull();
-        expect(workflowAction.get('workflowActionId')).not.toBeNull();
     });
 
     it('should render basic fields for non-content base types', () => {
@@ -412,8 +411,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('folder')).not.toBeNull();
 
         const workflowAction = comp.form.get('systemActionMap');
-        expect(workflowAction.get('systemAction')).not.toBeNull();
-        expect(workflowAction.get('workflowActionId')).not.toBeNull();
+        expect(workflowAction.get(DotSystemAction.NEW)).not.toBeNull();
     });
 
     it('should set value to the form', () => {
@@ -440,8 +438,7 @@ describe('ContentTypesFormComponent', () => {
                 }
             ],
             systemActionMap: {
-                systemAction: 'NEW',
-                workflowActionId: ''
+                [DotSystemAction.NEW]: ''
             }
         };
 
@@ -625,8 +622,11 @@ describe('ContentTypesFormComponent', () => {
 
                 it('should show workflow disabled and with message if the license community its true', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
-                    expect(workflowMsg).toBeTruthy();
-                    expect(comp.form.get('workflow').disabled).toBeTruthy();
+                    expect(workflowMsg).toBeDefined();
+                    expect(comp.form.get('workflow').disabled).toBe(true);
+                    expect(comp.form.get('systemActionMap').get(DotSystemAction.NEW).disabled).toBe(
+                        true
+                    );
                 });
             });
 
@@ -638,8 +638,11 @@ describe('ContentTypesFormComponent', () => {
 
                 it('should show workflow enable and no message if the license community its false', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
-                    expect(workflowMsg).toBeFalsy();
-                    expect(comp.form.get('workflow').disabled).toBeFalsy();
+                    expect(workflowMsg).toBeDefined();
+                    expect(comp.form.get('workflow').disabled).toBe(false);
+                    expect(comp.form.get('systemActionMap').get(DotSystemAction.NEW).disabled).toBe(
+                        false
+                    );
                 });
             });
         });
