@@ -14,11 +14,9 @@ export const mockWorkflowsActions: DotWorkflowAction[] = [
         nextStepCurrentStep: false,
         order: 0,
         owner: null,
-        requiresCheckout: true,
         roleHierarchyForAssign: true,
         schemeId: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
         showOn: ['UNLOCKED', 'LOCKED'],
-        stepId: null
     },
     {
         assignable: false,
@@ -32,11 +30,9 @@ export const mockWorkflowsActions: DotWorkflowAction[] = [
         nextStepCurrentStep: false,
         order: 0,
         owner: null,
-        requiresCheckout: true,
         roleHierarchyForAssign: false,
         schemeId: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
         showOn: ['LOCKED'],
-        stepId: null
     },
     {
         assignable: false,
@@ -50,10 +46,8 @@ export const mockWorkflowsActions: DotWorkflowAction[] = [
         nextStepCurrentStep: false,
         order: 0,
         owner: null,
-        requiresCheckout: false,
         roleHierarchyForAssign: false,
         schemeId: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
         showOn: ['LOCKED'],
-        stepId: null
     }
 ];

@@ -37,7 +37,10 @@ import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import * as _ from 'lodash';
-import { dotcmsContentTypeFieldBasicMock, dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
+import {
+    dotcmsContentTypeFieldBasicMock,
+    dotcmsContentTypeBasicMock
+} from '@tests/dot-content-types.mock';
 
 @Component({
     selector: 'dot-content-type-fields-drop-zone',
@@ -163,7 +166,6 @@ const getConfig = (route) => {
         ]
     };
 };
-
 
 let comp: ContentTypesEditComponent;
 let fixture: ComponentFixture<ContentTypesEditComponent>;

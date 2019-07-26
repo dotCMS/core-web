@@ -65,11 +65,9 @@ describe('DotWorkflowService', () => {
                                 nextStepCurrentStep: false,
                                 order: 0,
                                 owner: null,
-                                requiresCheckout: true,
                                 roleHierarchyForAssign: true,
                                 schemeId: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
                                 showOn: ['UNLOCKED', 'LOCKED'],
-                                stepId: null
                             }
                         ]
                     }
@@ -89,11 +87,9 @@ describe('DotWorkflowService', () => {
                 nextStepCurrentStep: false,
                 order: 0,
                 owner: null,
-                requiresCheckout: true,
                 roleHierarchyForAssign: true,
                 schemeId: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
                 showOn: ['UNLOCKED', 'LOCKED'],
-                stepId: null
             }
         ]);
         expect(this.lastConnection.request.url).toContain(
