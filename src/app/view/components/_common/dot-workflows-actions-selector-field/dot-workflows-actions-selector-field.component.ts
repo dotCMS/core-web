@@ -89,7 +89,9 @@ export class DotWorkflowsActionsSelectorFieldComponent
      * @memberof DotWorkflowsActionsSelectorFieldComponent
      */
     writeValue(value: string): void {
-        this.value = value;
+        if (value) {
+            this.value = value;
+        }
     }
 
     private getSelectItems(actions: DotWorkflowAction[]): SelectItem[] {

@@ -40,6 +40,17 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.selector.workflow.action': 'Select an action'
 });
 
+const mockActions = [
+    {
+        name: 'Hello',
+        id: '123'
+    },
+    {
+        name: 'World',
+        id: '456'
+    }
+];
+
 describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let fixtureHost: ComponentFixture<FakeFormComponent>;
     let deHost: DebugElement;
@@ -51,6 +62,8 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let dotWorkflowsActionsService: DotWorkflowsActionsService;
     let getSpy: jasmine.Spy;
     let loadSpy: jasmine.Spy;
+
+    const getDropdownDebugElement = () => de.query(By.css('p-dropdown'));
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
@@ -101,50 +114,59 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     });
 
     describe('p-dropdown', () => {
-        describe('basic', () => {
-            beforeEach(() => {
-                fixtureHost.detectChanges();
-                dropdown = de.query(By.css('p-dropdown')).componentInstance;
+        describe('attributes', () => {
+            describe('basics', () => {
+                beforeEach(() => {
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownDebugElement().componentInstance;
+                });
+
+                it('should have basics', () => {
+                    expect(dropdown.appendTo).toBe('body');
+                    expect(dropdown.filter).toBe(true);
+                    expect(dropdown.placeholder).toBe('Select an action');
+                    expect(dropdown.style).toEqual({ width: '100%' });
+                    expect(dropdown.autoDisplayFirst).toBe(false);
+                });
             });
 
-            it('should be defined', () => {
-                expect(dropdown).toBeDefined();
+            describe('disable', () => {
+                it('should be disable when actions list is empty', () => {
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownDebugElement().componentInstance;
+                    expect(dropdown.disabled).toBe(true);
+                });
+
+                it('should be enaled when actions list is filled', () => {
+                    getSpy.and.returnValue(of(mockActions));
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownDebugElement().componentInstance;
+                    expect(dropdown.disabled).toBe(false);
+                });
             });
 
-            it('should have attr', () => {
-                expect(dropdown.appendTo).toBe('body');
-                expect(dropdown.filter).toBe(true);
-                expect(dropdown.placeholder).toBe('Select an action');
-            });
+            describe('options', () => {
+                it('should have no options', () => {
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownDebugElement().componentInstance;
+                    expect(dropdown.options).toEqual([]);
+                });
 
-            it('should have width 100%', () => {
-                expect(dropdown.style).toEqual({ width: '100%' });
-            });
-        });
-
-        describe('disable attr', () => {
-            it('should be disable when actions list is empty', () => {
-                fixtureHost.detectChanges();
-                dropdown = de.query(By.css('p-dropdown')).componentInstance;
-                expect(dropdown.disabled).toBe(true);
-            });
-
-            it('should be enaled when actions list is filled', () => {
-                getSpy.and.returnValue(
-                    of([
+                it('should have options', () => {
+                    getSpy.and.returnValue(of(mockActions));
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownDebugElement().componentInstance;
+                    expect(dropdown.options).toEqual([
                         {
-                            name: 'Hello',
-                            id: '123'
+                            label: 'Hello',
+                            value: '123'
                         },
                         {
-                            name: 'World',
-                            id: '456'
+                            label: 'World',
+                            value: '456'
                         }
-                    ])
-                );
-                fixtureHost.detectChanges();
-                dropdown = de.query(By.css('p-dropdown')).componentInstance;
-                expect(dropdown.disabled).toBe(false);
+                    ]);
+                });
             });
         });
     });
@@ -152,7 +174,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     describe('ControlValueAccessor', () => {
         beforeEach(() => {
             fixtureHost.detectChanges();
-            dropdownDe = de.query(By.css('p-dropdown'));
+            dropdownDe = getDropdownDebugElement();
             dropdown = dropdownDe.componentInstance;
         });
 
