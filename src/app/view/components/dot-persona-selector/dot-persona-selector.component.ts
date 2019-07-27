@@ -14,6 +14,33 @@ import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 
+const defaultVisitorPersona = {
+    archived: false,
+    baseType: 'PERSONA',
+    contentType: 'persona',
+    folder: 'SYSTEM_FOLDER',
+    hasTitleImage: false,
+    host: 'SYSTEM_HOST',
+    hostFolder: 'SYSTEM_HOST',
+    hostName: 'System Host',
+    identifier: '0',
+    inode: '',
+    keyTag: 'dot:persona',
+    languageId: 1,
+    live: false,
+    locked: false,
+    modDate: 0,
+    modUser: 'system',
+    modUserName: 'system user system user',
+    name: 'Default Visitor',
+    personalized: false,
+    sortOrder: 0,
+    stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045',
+    title: 'Default Visitor',
+    titleImage: 'TITLE_IMAGE_NOT_FOUND',
+    working: false,
+};
+
 /**
  * It is dropdown of personas, it handle pagination and global search
  *
@@ -51,9 +78,8 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     ) {}
 
     ngOnChanges(_changes: SimpleChanges): void {
-        this.value = this.value || {
-            name: this.messagesKey['modes.persona.no.persona'],
-            identifier: '0'
+        this.value = this.value || { ...defaultVisitorPersona,
+            name: this.messagesKey['modes.persona.no.persona']
         };
     }
 
@@ -70,9 +96,8 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                this.value = {
-                    name: this.messagesKey['modes.persona.no.persona'],
-                    identifier: '0'
+                this.value = { ...defaultVisitorPersona,
+                    name: this.messagesKey['modes.persona.no.persona']
                 };
                 this.getPersonasList();
             });
@@ -106,7 +131,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService.getWithOffset(offset).subscribe((items) => {
-            items[0] = items[0].name === 'Default Visitor' ? { ...items[0], identifier: '0' } : items[0];
             this.personas = items;
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });

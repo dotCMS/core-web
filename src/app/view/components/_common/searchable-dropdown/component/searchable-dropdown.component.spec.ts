@@ -25,6 +25,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
                     [rows] = "rows"
                     [totalRecords] = "totalRecords"
                     [valuePropertyName] = "valuePropertyName"
+                    [optionsWidth] = "optionsWidth"
                     [width] = "width" >
                </dot-searchable-dropdown>`
 })
@@ -60,6 +61,9 @@ class HostTestComponent {
 
     @Input()
     width: string;
+
+    @Input()
+    optionsWidth: string;
 
     @Input()
     multiple: boolean;
@@ -161,10 +165,10 @@ fdescribe('SearchableDropdownComponent', () => {
     it('should set CSS class & width', () => {
         hostFixture.componentInstance.data = data;
         hostFixture.componentInstance.cssClass = 'testClass';
-        hostFixture.componentInstance.width = '650';
+        hostFixture.componentInstance.optionsWidth = '650';
         hostFixture.detectChanges();
         const overlay = de.query(By.css('.ui-overlaypanel'));
-        const pdataview = de.query(By.css('p-dataview')).componentInstance;
+        const pdataview = de.query(By.css('.ui-dataview')).componentInstance;
 
         expect(overlay.componentInstance.styleClass).toBe('testClass');
         expect(pdataview.style).toEqual({ width: '650px' });

@@ -77,7 +77,7 @@ export class SearchableDropdownComponent
     width = '300';
 
     @Input()
-    optionsContainerWidth = '300';
+    optionsWidth = '300';
 
     @Input()
     multiple: boolean;
@@ -108,19 +108,17 @@ export class SearchableDropdownComponent
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
+    disabled = false;
     externalSelectTemplate: TemplateRef<any>;
     externalItemListTemplate: TemplateRef<any>;
-
-    options: any[];
-
-    value: any;
-    valueString = '';
-
-    label: string;
-    disabled = false;
     i18nMessages: {
         [key: string]: string;
     } = {};
+    label: string;
+    overlayPanelMinHeight: string;
+    options: any[];
+    value: any;
+    valueString = '';
 
     constructor(private dotMessageService: DotMessageService) {}
 
@@ -154,12 +152,32 @@ export class SearchableDropdownComponent
         });
     }
 
+    /**
+     * Emits Hide event and clears any value on filter's input
+     * @memberof SearchableDropdownComponent
+     */
     hideDialogHandler(): void {
         if (this.searchInput.nativeElement.value.length) {
             this.searchInput.nativeElement.value = '';
             this.paginate({});
         }
         this.hide.emit();
+    }
+
+    /**
+     * Emits Show event, sets min Height of overlay panel based on content and add css class if paginator present
+     * @memberof SearchableDropdownComponent
+     */
+    showDialogHandler(): void {
+        this.cssClass += this.totalRecords > this.rows ? ' paginator' : '';
+        setTimeout(() => {
+            if (!this.overlayPanelMinHeight) {
+                this.overlayPanelMinHeight = this.searchPanelRef.container
+                    .getBoundingClientRect()
+                    .height.toString();
+            }
+        }, 0);
+        this.show.emit();
     }
 
     /**
@@ -260,7 +278,7 @@ export class SearchableDropdownComponent
     }
 
     /**
-     *Return the component's label
+     * Return the component's label
      *
      * @returns {string} compoenent's label
      * @memberof SearchableDropdownComponent
@@ -271,6 +289,17 @@ export class SearchableDropdownComponent
             : this.placeholder;
         this.label = this.persistentPlaceholder ? this.placeholder : this.valueString;
     }
+
+    /**
+     * Returns overlay panel Css class
+     *
+     * @returns {string} overlay panel's css class
+     * @memberof SearchableDropdownComponent
+     */
+    // public getOverlayPanelClass(): string {
+    //     const paginatorCssClass = this.totalRecords > this.rows ? 'paginator' : '';
+    //     return `${paginatorCssClass} ${this.cssClass}`;
+    // }
 
     private setOptions(change: SimpleChanges): void {
         if (change.data && change.data.currentValue) {

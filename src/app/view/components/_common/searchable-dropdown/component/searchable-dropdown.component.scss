@@ -1,8 +1,23 @@
 @import "primeng-theme/utils/extends";
 @import "mixins";
 
+.ui-overlaypanel {
+    min-height: 300px;
+
+    &.paginator .ui-dataview-content{
+        margin-bottom: $basic-padding * 4;
+    }
+}
+
 .ui-overlaypanel-content {
     padding: $basic-padding * 2 0;
+}
+
+.ui-paginator-bottom {
+    bottom: 0;
+    padding-bottom: $basic-padding * 2;
+    position: absolute;
+    width: 100%;
 }
 
 dot-searchable-dropdown {
@@ -47,13 +62,10 @@ dot-searchable-dropdown {
 
 .searchable-dropdown__data-list {
     .ui-dataview {
-        min-height: 321px;
-        flex-direction: column;
-        display: flex;
+        position: unset;
     }
 
     .ui-dataview-content {
-        flex-grow: 1;
         width: 100%;
 
         .ui-g {
@@ -97,8 +109,6 @@ dot-searchable-dropdown {
         width: 100%;
     }
 }
-
-
 
 .searchable-dropdown__search {
     display: flex;
