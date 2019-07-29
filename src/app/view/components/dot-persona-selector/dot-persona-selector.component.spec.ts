@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { Dropdown } from 'primeng/primeng';
 import { of } from 'rxjs';
+import { mockDotPersona } from '@tests/dot-persona.mock';
 
 describe('DotPersonaSelector2Component', () => {
     let dotPersonasService: DotPersonasService;
@@ -18,7 +19,7 @@ describe('DotPersonaSelector2Component', () => {
     let component: DotPersonaSelectorComponent;
     let fixture: ComponentFixture<DotPersonaSelectorComponent>;
     let de: DebugElement;
-    const defaultPersona: DotPersona = { name: 'Default Persona', identifier: '0' };
+    const defaultPersona: DotPersona = mockDotPersona;
     const messageServiceMock = new MockDotMessageService({
         'modes.persona.no.persona': 'Default Persona'
     });

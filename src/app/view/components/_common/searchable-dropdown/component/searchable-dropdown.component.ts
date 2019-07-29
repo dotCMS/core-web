@@ -290,17 +290,6 @@ export class SearchableDropdownComponent
         this.label = this.persistentPlaceholder ? this.placeholder : this.valueString;
     }
 
-    /**
-     * Returns overlay panel Css class
-     *
-     * @returns {string} overlay panel's css class
-     * @memberof SearchableDropdownComponent
-     */
-    // public getOverlayPanelClass(): string {
-    //     const paginatorCssClass = this.totalRecords > this.rows ? 'paginator' : '';
-    //     return `${paginatorCssClass} ${this.cssClass}`;
-    // }
-
     private setOptions(change: SimpleChanges): void {
         if (change.data && change.data.currentValue) {
             this.options = _.cloneDeep(change.data.currentValue).map((item) => {

@@ -69,7 +69,7 @@ class HostTestComponent {
     multiple: boolean;
 }
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let hostFixture: ComponentFixture<HostTestComponent>;
@@ -162,17 +162,19 @@ fdescribe('SearchableDropdownComponent', () => {
         expect(dataviewDataEl.nativeElement.textContent).toEqual('site-0');
     });
 
-    it('should set CSS class & width', () => {
+    it('should set CSS class, width & min-height', fakeAsync(() => {
         hostFixture.componentInstance.data = data;
         hostFixture.componentInstance.cssClass = 'testClass';
         hostFixture.componentInstance.optionsWidth = '650';
         hostFixture.detectChanges();
         const overlay = de.query(By.css('.ui-overlaypanel'));
         const pdataview = de.query(By.css('.ui-dataview')).componentInstance;
-
+        tick(100);
+        expect(comp.overlayPanelMinHeight).toBe('300');
+        expect(comp.cssClass).toContain('paginator');
         expect(overlay.componentInstance.styleClass).toBe('testClass');
         expect(pdataview.style).toEqual({ width: '650px' });
-    });
+    }));
 
     it('should display Action button', () => {
         hostFixture.componentInstance.action = () => {};
@@ -345,7 +347,7 @@ class HostTestExternalTemplateComponent {
     multiple: boolean;
 }
 
-fdescribe('SearchableDropdownComponent', () => {
+describe('SearchableDropdownComponent', () => {
     const NROWS = 6;
 
     let hostFixture: ComponentFixture<HostTestExternalTemplateComponent>;
