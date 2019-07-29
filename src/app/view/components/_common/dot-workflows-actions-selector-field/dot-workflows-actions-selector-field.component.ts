@@ -2,11 +2,12 @@ import { Component, Input, OnChanges, SimpleChanges, forwardRef, OnInit } from '
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItemGroup, SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { DotMessageService } from '@services/dot-messages-service';
+import { DotWorkflow } from '@shared/models/dot-workflow/dot-workflow.model';
 
 interface DropdownEvent {
     originalEvent: MouseEvent;
@@ -27,9 +28,9 @@ interface DropdownEvent {
 })
 export class DotWorkflowsActionsSelectorFieldComponent
     implements ControlValueAccessor, OnChanges, OnInit {
-    @Input() workflows: string[];
+    @Input() workflows: DotWorkflow[];
 
-    actions$: Observable<SelectItem[]>;
+    actions$: Observable<SelectItemGroup[]>;
     disabled = false;
     placeholder$: Observable<string>;
     value: string;
@@ -41,7 +42,7 @@ export class DotWorkflowsActionsSelectorFieldComponent
 
     ngOnInit() {
         this.placeholder$ = this.getPlaceholder();
-        this.actions$ = this.getActionsList();
+        this.actions$ = this.getActionsGroupedByWorkflows();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -94,17 +95,17 @@ export class DotWorkflowsActionsSelectorFieldComponent
         }
     }
 
-    private getSelectItems(actions: DotWorkflowAction[]): SelectItem[] {
-        return actions.map((action: DotWorkflowAction) => {
-            return {
-                label: action.name,
-                value: action.id
-            };
-        });
+    private getActionsByWorkflowId(
+        { id }: DotWorkflow,
+        actions: DotWorkflowAction[]
+    ): DotWorkflowAction[] {
+        return actions.filter((action: DotWorkflowAction) => action.schemeId === id);
     }
 
-    private getActionsList(): Observable<SelectItem[]> {
-        return this.dotWorkflowsActionService.getByWorkflows().pipe(map(this.getSelectItems));
+    private getActionsGroupedByWorkflows(): Observable<SelectItemGroup[]> {
+        return this.dotWorkflowsActionService
+            .getByWorkflows()
+            .pipe(map(this.getSelectItemGroups.bind(this)));
     }
 
     private getPlaceholder(): Observable<string> {
@@ -116,5 +117,24 @@ export class DotWorkflowsActionsSelectorFieldComponent
                         message['contenttypes.selector.workflow.action']
                 )
             );
+    }
+
+    private getSelectItem({ name, id }: DotWorkflowAction | DotWorkflow): SelectItem {
+        return {
+            label: name,
+            value: id
+        };
+    }
+
+    private getSelectItemGroups(actions: DotWorkflowAction[]): SelectItemGroup[] {
+        return this.workflows.map((workflow: DotWorkflow) => {
+            const { label, value } = this.getSelectItem(workflow);
+
+            return {
+                label,
+                value,
+                items: this.getActionsByWorkflowId(workflow, actions).map(this.getSelectItem)
+            };
+        });
     }
 }

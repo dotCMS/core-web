@@ -162,7 +162,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         if (this.canSave) {
             this.onSubmit.emit({
                 ...this.form.value,
-                workflow: this.form.getRawValue().workflow
+                workflow: this.form
+                    .getRawValue()
+                    .workflow.map((workflow: DotWorkflow) => workflow.id)
             });
         }
     }
@@ -221,15 +223,17 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.form = this.fb.group({
             clazz: this.data.clazz || '',
             description: this.data.description || '',
-            expireDateVar: [{ value: this.data.expireDateVar || '', disabled: true }],
             host: this.data.host || '',
+            defaultType: this.data.defaultType,
+            fixed: this.data.fixed,
+            folder: this.data.folder,
+            system: this.data.system,
+            expireDateVar: [{ value: this.data.expireDateVar || '', disabled: true }],
             name: [this.data.name || '', [Validators.required]],
             publishDateVar: [{ value: this.data.publishDateVar || '', disabled: true }],
             workflow: [
                 {
-                    value: this.data.workflows
-                        ? this.data.workflows.map((workflow) => workflow.id)
-                        : [],
+                    value: this.data.workflows || [],
                     disabled: true
                 }
             ],
@@ -240,11 +244,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                         disabled: true
                     }
                 ]
-            }),
-            defaultType: this.data.defaultType,
-            fixed: this.data.fixed,
-            folder: this.data.folder,
-            system: this.data.system
+            })
         });
 
         if (this.isBaseTypeContent()) {

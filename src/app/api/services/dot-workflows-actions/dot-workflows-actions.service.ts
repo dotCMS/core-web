@@ -4,6 +4,7 @@ import { pluck, take } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflow } from '@shared/models/dot-workflow/dot-workflow.model';
 
 @Injectable()
 export class DotWorkflowsActionsService {
@@ -17,14 +18,14 @@ export class DotWorkflowsActionsService {
      * @param {string[]} workflows
      * @memberof DotWorkflowsActionsService
      */
-    loadByWorkflows(workflows: string[]): void {
+    loadByWorkflows(workflows: DotWorkflow[]): void {
         if (workflows && workflows.length) {
             this.coreWebService
                 .requestView({
                     method: RequestMethod.Post,
                     url: '/api/v1/workflow/schemes/actions/NEW',
                     body: {
-                        schemes: workflows
+                        schemes: workflows.map(this.getWorkFlowId)
                     }
                 })
                 .pipe(
@@ -63,5 +64,9 @@ export class DotWorkflowsActionsService {
                 url: `v1/workflow/contentlet/${inode}/actions`
             })
             .pipe(pluck('entity'));
+    }
+
+    private getWorkFlowId(workflow: DotWorkflow): string {
+        return workflow.id;
     }
 }
