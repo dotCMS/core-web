@@ -5,6 +5,7 @@ import { DotWorkflowsActionsService } from './dot-workflows-actions.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
+import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 
 describe('DotWorkflowsActionsService', () => {
     let TestBed;
@@ -24,11 +25,11 @@ describe('DotWorkflowsActionsService', () => {
     it('should get actions by workflows', () => {
         let result: DotWorkflowAction[];
 
-        dotWorkflowActionsService.getByWorkflows().subscribe((actions: DotWorkflowAction[]) => {
-            result = actions;
-        });
-
-        dotWorkflowActionsService.loadByWorkflows(['123', '456']);
+        dotWorkflowActionsService
+            .getByWorkflows(mockWorkflows)
+            .subscribe((actions: DotWorkflowAction[]) => {
+                result = actions;
+            });
 
         lastConnection.mockRespond(
             new Response(
@@ -42,7 +43,13 @@ describe('DotWorkflowsActionsService', () => {
 
         expect(lastConnection.request.method).toBe(1);
         expect(lastConnection.request.url).toBe('/api/v1/workflow/schemes/actions/NEW');
-        expect(lastConnection.request._body).toEqual({ schemes: ['123', '456'] });
+        expect(lastConnection.request._body).toEqual({
+            schemes: [
+                '85c1515c-c4f3-463c-bac2-860b8fcacc34',
+                '77a9bf3f-a402-4c56-9b1f-1050b9d345dc',
+                'd61a59e1-a49c-46f2-a929-db2b4bfa88b2'
+            ]
+        });
         expect(result).toEqual([...mockWorkflowsActions]);
     });
 
