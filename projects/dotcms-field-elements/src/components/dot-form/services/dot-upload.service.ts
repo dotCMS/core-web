@@ -13,7 +13,7 @@ export class DotUploadService {
     }
 
     private uploadFileByURL(url: string): Promise<DotTempFile> {
-        const UPLOAD_FILE_FROM_URL = 'http://localhost:8080/api/v1/temp/byUrl';
+        const UPLOAD_FILE_FROM_URL = '/api/v1/temp/byUrl';
         debugger;
         return fetch(UPLOAD_FILE_FROM_URL, {
             method: 'POST',

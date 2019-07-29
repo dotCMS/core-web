@@ -1,14 +1,54 @@
 import { DotUploadService } from './dot-upload.service';
 
 describe('DotUploadService', () => {
-    it('should send data to the URL endpoint with the correct information', () => {
-        window.fetch = jest.fn();
+    function FormDataMock() {
+        this.append = jest.fn();
+    }
 
+    const globalAny: any = global;
+    globalAny.FormData = FormDataMock;
+
+    const fetchMock = jest.fn();
+    window.fetch = fetchMock;
+
+    const uploadService = new DotUploadService();
+
+    beforeEach(() => {
+        fetchMock.mockRejectedValueOnce({});
+    });
+
+    it('should send data to the URL endpoint with the correct information', () => {
+        uploadService.uploadFile('test');
+        const params = fetchMock.mock.calls[0];
+
+        expect(fetchMock.mock.calls.length).toBe(1);
+        expect(params[0]).toBe('/api/v1/temp/byUrl');
+
+        // window.fetch = jest.fn();
+
+        // fetchMock.resetMocks();
+        //
+        //
+        //
+        //
+        //
+        // fetchMock.mockImplementationOnce(() =>  new Promise(resolve => {
+        //     resolve({ status: 200, json: () => new Promise(res => res({ tempFiles: [{}] })) });
+        // }));
+        //
+        // const uploadService = new DotUploadService();
+        // uploadService.uploadFile('test');
+        //
+        // expect(fetchMock.mock.calls.length).toEqual(1)
+
+        //  fetch.mockResponse()
+
+        //  global
 
         // window.fetch = jest.fn((url, init) => {
         //     expect(url).toContain('/api/v1/temp/byUrl');
         //     expect(init.body).toEqual(JSON.stringify({ remoteUrl: 'test' }));
-        //     done();
+        //     // done();
         //     return new Promise(resolve => {
         //         resolve({
         //             status: 200,
@@ -41,25 +81,37 @@ describe('DotUploadService', () => {
         //
         // window.fetch.call[0]
 
+        // const fakeRes = new Response();
+        //
+        // console.log(fakeRes);
+        //
+        // const mockFetchPromise = Promise.resolve(new Response());
+        // jest.spyOn(window, 'fetch').mockImplementation(() => mockFetchPromise); // 4
+        //
+        //
+        //
 
-        const fakeRes = new Response();
-
-        console.log(fakeRes);
-
-        const mockFetchPromise = Promise.resolve(new Response());
-        jest.spyOn(window, 'fetch').mockImplementation(() => mockFetchPromise); // 4
-
-
-
-        const uploadService = new DotUploadService();
-        uploadService.uploadFile('test');
-
-        console.log('fetch.mock.calls', window.fetch.mock.calls[0][0]);
-        console.log('fetch.mock.calls.length', fetch.mock.calls.length);
-        console.log('fetch.mock', fetch.mock);
+        //
+        // console.log('fetch.mock.calls', window.fetch.mock.calls[0][0]);
+        // console.log('fetch.mock.calls.length', fetch.mock.calls.length);
+        // console.log('fetch.mock', fetch.mock);
     });
 
     it('should send data to the binary file endpoint with the correct information', done => {
+        const b = jest.fn();
+
+        window.fetch = b; //jest.fn().mockRejectedValueOnce(10);
+
+        b.mockRejectedValueOnce('test');
+
+        window.FormData = {};
+
+        const uploadService = new DotUploadService();
+        uploadService.uploadFile({});
+
+        console.log(b.mock.calls[0]);
+        expect(b.mock.calls.length).toBe(1);
+
         // window.FormData = {};
         //
         // window.fetch = jest.fn((url, init) => {
