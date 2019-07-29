@@ -4,12 +4,12 @@ import { of } from 'rxjs';
 import { DebugElement, Component, OnInit } from '@angular/core';
 
 import { DotWorkflowsActionsSelectorFieldComponent } from './dot-workflows-actions-selector-field.component';
-import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Dropdown, DropdownModule } from 'primeng/primeng';
+import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflows-actions-selector-field.service';
 
 @Component({
     selector: 'dot-fake-form',
@@ -40,14 +40,20 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.selector.workflow.action': 'Select an action'
 });
 
-const mockActions = [
+const mockActionsGrouped = [
     {
-        name: 'Hello',
-        id: '123'
-    },
-    {
-        name: 'World',
-        id: '456'
+        label: 'Workflow 1',
+        value: 'workflow',
+        items: [
+            {
+                name: 'Hello',
+                id: '123'
+            },
+            {
+                name: 'World',
+                id: '456'
+            }
+        ]
     }
 ];
 
@@ -59,9 +65,8 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let de: DebugElement;
     let dropdownDe: DebugElement;
     let dropdown: Dropdown;
-    let dotWorkflowsActionsService: DotWorkflowsActionsService;
+    let dotWorkflowsActionsSelectorFieldService: DotWorkflowsActionsSelectorFieldService;
     let getSpy: jasmine.Spy;
-    let loadSpy: jasmine.Spy;
 
     const getDropdownDebugElement = () => de.query(By.css('p-dropdown'));
 
@@ -74,7 +79,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
                     useValue: messageServiceMock
                 },
                 {
-                    provide: DotWorkflowsActionsService,
+                    provide: DotWorkflowsActionsSelectorFieldService,
                     useValue: {
                         get() {
                             return of([]);
@@ -93,9 +98,11 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         componentHost = deHost.componentInstance;
         de = deHost.query(By.css('dot-workflows-actions-selector-field'));
         component = de.componentInstance;
-        dotWorkflowsActionsService = deHost.injector.get(DotWorkflowsActionsService);
-        getSpy = spyOn(dotWorkflowsActionsService, 'get').and.callThrough();
-        loadSpy = spyOn(dotWorkflowsActionsService, 'load');
+        dotWorkflowsActionsSelectorFieldService = deHost.injector.get(
+            DotWorkflowsActionsSelectorFieldService
+        );
+        getSpy = spyOn(dotWorkflowsActionsSelectorFieldService, 'get').and.callThrough();
+        spyOn(dotWorkflowsActionsSelectorFieldService, 'load');
     });
 
     describe('initialization', () => {
@@ -104,12 +111,12 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         });
 
         it('should load actions', () => {
-            expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledTimes(1);
-            expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledWith([]);
+            expect(dotWorkflowsActionsSelectorFieldService.load).toHaveBeenCalledTimes(1);
+            expect(dotWorkflowsActionsSelectorFieldService.load).toHaveBeenCalledWith([]);
         });
 
         it('should subscribe to actions', () => {
-            expect(dotWorkflowsActionsService.getByWorkflows).toHaveBeenCalledTimes(1);
+            expect(dotWorkflowsActionsSelectorFieldService.get).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -138,7 +145,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
                 });
 
                 it('should be enaled when actions list is filled', () => {
-                    getSpy.and.returnValue(of(mockActions));
+                    getSpy.and.returnValue(of(mockActionsGrouped));
                     fixtureHost.detectChanges();
                     dropdown = getDropdownDebugElement().componentInstance;
                     expect(dropdown.disabled).toBe(false);
@@ -153,17 +160,14 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
                 });
 
                 it('should have options', () => {
-                    getSpy.and.returnValue(of(mockActions));
+                    getSpy.and.returnValue(of(mockActionsGrouped));
                     fixtureHost.detectChanges();
                     dropdown = getDropdownDebugElement().componentInstance;
                     expect(dropdown.options).toEqual([
                         {
-                            label: 'Hello',
-                            value: '123'
-                        },
-                        {
-                            label: 'World',
-                            value: '456'
+                            label: 'Workflow 1',
+                            value: 'workflow',
+                            items: [{ name: 'Hello', id: '123' }, { name: 'World', id: '456' }]
                         }
                     ]);
                 });
@@ -216,7 +220,10 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
             it('should reload actions', () => {
                 componentHost.workfows = ['123', '456'];
                 fixtureHost.detectChanges();
-                expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledWith(['123', '456']);
+                expect(dotWorkflowsActionsSelectorFieldService.load).toHaveBeenCalledWith([
+                    '123',
+                    '456'
+                ]);
             });
         });
     });
