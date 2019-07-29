@@ -94,11 +94,10 @@ export class DotBinaryFileComponent {
 
     @State() status: DotFieldStatus;
 
-
     @Event() valueChange: EventEmitter<DotFieldValueEvent>;
     @Event() statusChange: EventEmitter<DotFieldStatusEvent>;
 
-    private file = null;
+    private file: string | File = null;
     private allowedFileTypes = [];
     private errorType: DotBinaryMessageError;
     private binaryTextField: DotBinaryTextField;
@@ -122,7 +121,7 @@ export class DotBinaryFileComponent {
      */
     @Method()
     clearValue(): void {
-        this.binaryTextField.value = ''
+        this.binaryTextField.value = '';
         this.errorType = this.required ? DotBinaryMessageError.REQUIRED : null;
         this.setValue('');
         this.clearPreviewData();
@@ -195,13 +194,7 @@ export class DotBinaryFileComponent {
             this.el.classList.add('dot-dropped');
             this.errorType = null;
             const droppedFile: File = evt.dataTransfer.files[0];
-            if (isFileAllowed(droppedFile.name, this.allowedFileTypes)) {
-                this.setValue(droppedFile);
-                this.binaryTextField.value = droppedFile.name;
-            } else {
-                this.errorType = DotBinaryMessageError.INVALID;
-                this.setValue(null);
-            }
+            this.handleDroppedFile(droppedFile);
         }
     }
 
@@ -318,6 +311,16 @@ export class DotBinaryFileComponent {
             name: this.name,
             value: this.file
         });
+    }
+
+    private handleDroppedFile(file: File): void {
+        if (isFileAllowed(file.name, this.allowedFileTypes)) {
+            this.setValue(file);
+            this.binaryTextField.value = file.name;
+        } else {
+            this.errorType = DotBinaryMessageError.INVALID;
+            this.setValue(null);
+        }
     }
 
     private setPlaceHolder(): void {

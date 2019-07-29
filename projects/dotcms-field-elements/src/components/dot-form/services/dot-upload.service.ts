@@ -4,6 +4,14 @@ import { DotHttpErrorResponse } from '../../../models/dot-http-error-response.mo
 export class DotUploadService {
     constructor() {}
 
+
+    /**
+     * Will call the corresponding endpoint yo upload a temporary file.
+     * Return the information of tha file in the server
+     * @param file
+     *
+     * @memberof DotUploadService
+     */
     uploadFile(file: string | File): Promise<DotTempFile> {
         if (typeof file === 'string') {
             return this.uploadFileByURL(file);

@@ -5,10 +5,9 @@ import { DotFieldStatus, DotTempFile } from '../../models';
 import { fieldCustomProcess, getFieldsFromLayout } from './utils';
 import { getClassNames, getOriginalStatus, updateStatus } from '../../utils';
 import { DotCMSContentTypeLayoutRow, DotCMSContentTypeField } from 'dotcms-models';
-import { Components } from '../../components';
-import DotBinaryFile = Components.DotBinaryFile;
 import { DotUploadService } from './services/dot-upload.service';
 import { DotHttpErrorResponse } from '../../models/dot-http-error-response.model';
+import { DotBinaryFileComponent } from '../dot-binary-file/dot-binary-file';
 
 const SUBMIT_FORM_API_URL = '/api/content/save/1';
 const fallbackErrorMessages = {
@@ -204,7 +203,7 @@ export class DotFormComponent {
     private uploadFile(event: CustomEvent): void {
         const uploadService = new DotUploadService();
         const { name, value } = event.detail;
-        const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;
+        const binary: DotBinaryFileComponent = (event.target as unknown) as DotBinaryFileComponent;
         if (value) {
             this.uploadFileInProgress = true;
             this.errorMessage = '';
