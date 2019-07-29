@@ -39,7 +39,7 @@ export class DotUploadService {
     }
 
     private uploadBinaryFile(file: File): Promise<DotTempFile> {
-        const UPLOAD_FILE = 'http://localhost:8080/api/v1/temp';
+        const UPLOAD_FILE = '/api/v1/temp';
 
         const formData = new FormData();
         formData.append('file', file);
