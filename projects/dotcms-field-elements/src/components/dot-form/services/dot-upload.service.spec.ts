@@ -33,6 +33,4 @@ describe('DotUploadService', () => {
         expect(fetchMock.mock.calls.length).toBe(1);
         expect(params[0]).toBe('/api/v1/temp');
     });
-
-
 });
