@@ -60,7 +60,7 @@ const fieldParamsConversionFromBE = {
 };
 
 export const fieldCustomProcess = {
-    'DOT-KEY-VALUE': pipedValuesToObject,
+    'DOT-KEY-VALUE': pipedValuesToObject
 };
 
 export const fieldMap = {

@@ -102,8 +102,8 @@ describe('dot-binary-file-preview', () => {
                 button.click();
                 await page.waitForChanges();
                 expect(spyDeleteEvent).toHaveReceivedEvent();
-                expect(element.getAttribute('file-name')).toBeNull();
-                expect(element.getAttribute('preview-url')).toBeNull();
+                expect(await element.getProperty('fileName')).toBeNull();
+                expect(await element.getProperty('previewUrl')).toBeNull();
             });
         });
     });

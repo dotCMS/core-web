@@ -202,7 +202,6 @@ export class DotFormComponent {
     }
 
     private uploadFile(event: CustomEvent): void {
-        debugger;
         const uploadService = new DotUploadService();
         const { name, value } = event.detail;
         const binary: DotBinaryFile = (event.target as unknown) as DotBinaryFile;

@@ -14,7 +14,6 @@ export class DotUploadService {
 
     private uploadFileByURL(url: string): Promise<DotTempFile> {
         const UPLOAD_FILE_FROM_URL = '/api/v1/temp/byUrl';
-        debugger;
         return fetch(UPLOAD_FILE_FROM_URL, {
             method: 'POST',
             headers: {
@@ -26,7 +25,6 @@ export class DotUploadService {
             })
         }).then(async (response: Response) => {
             if (response.status === 200) {
-                debugger;
                 return (await response.json()).tempFiles[0];
             } else {
                 const error: DotHttpErrorResponse = {
