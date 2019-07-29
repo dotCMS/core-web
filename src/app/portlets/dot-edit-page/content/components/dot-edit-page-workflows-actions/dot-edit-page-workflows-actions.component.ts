@@ -17,6 +17,7 @@ import { DotPage } from '../../../shared/models/dot-page.model';
 import { DotMessageService } from '@services/dot-messages-service';
 
 import { tap, map, mergeMap, catchError, pluck } from 'rxjs/operators';
+import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 
 @Component({
     selector: 'dot-edit-page-workflows-actions',
@@ -35,6 +36,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
 
     constructor(
         private workflowsService: DotWorkflowService,
+        private dotWorkflowsActionsService: DotWorkflowsActionsService,
         private dotMessageService: DotMessageService,
         private httpErrorManagerService: DotHttpErrorManagerService,
         private dotGlobalMessageService: DotGlobalMessageService
@@ -51,7 +53,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
     }
 
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
-        return this.workflowsService.getContentWorkflowActions(inode).pipe(
+        return this.dotWorkflowsActionsService.getByInode(inode).pipe(
             tap((workflows: DotWorkflowAction[]) => {
                 this.actionsAvailable = !!workflows.length;
             }),

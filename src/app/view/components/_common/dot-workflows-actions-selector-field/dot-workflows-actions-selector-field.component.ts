@@ -45,7 +45,7 @@ export class DotWorkflowsActionsSelectorFieldComponent
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.dotWorkflowsActionService.load(changes.workflows.currentValue);
+        this.dotWorkflowsActionService.loadByWorkflows(changes.workflows.currentValue);
     }
 
     /**
@@ -104,7 +104,7 @@ export class DotWorkflowsActionsSelectorFieldComponent
     }
 
     private getActionsList(): Observable<SelectItem[]> {
-        return this.dotWorkflowsActionService.get().pipe(map(this.getSelectItems));
+        return this.dotWorkflowsActionService.getByWorkflows().pipe(map(this.getSelectItems));
     }
 
     private getPlaceholder(): Observable<string> {

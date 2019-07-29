@@ -53,10 +53,6 @@ export class DotWorkflowServiceMock {
         return observableOf(_.cloneDeep(systemWorkflow[0]));
     }
 
-    getContentWorkflowActions(_inode: string): Observable<DotWorkflowAction[]> {
-        return observableOf(_.cloneDeep(mockWorkflowsActions));
-    }
-
     fireWorkflowAction(): Observable<any[]> {
         return observableOf([]);
     }

@@ -104,12 +104,12 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
         });
 
         it('should load actions', () => {
-            expect(dotWorkflowsActionsService.load).toHaveBeenCalledTimes(1);
-            expect(dotWorkflowsActionsService.load).toHaveBeenCalledWith([]);
+            expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledTimes(1);
+            expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledWith([]);
         });
 
         it('should subscribe to actions', () => {
-            expect(dotWorkflowsActionsService.get).toHaveBeenCalledTimes(1);
+            expect(dotWorkflowsActionsService.getByWorkflows).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -216,7 +216,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
             it('should reload actions', () => {
                 componentHost.workfows = ['123', '456'];
                 fixtureHost.detectChanges();
-                expect(dotWorkflowsActionsService.load).toHaveBeenCalledWith(['123', '456']);
+                expect(dotWorkflowsActionsService.loadByWorkflows).toHaveBeenCalledWith(['123', '456']);
             });
         });
     });

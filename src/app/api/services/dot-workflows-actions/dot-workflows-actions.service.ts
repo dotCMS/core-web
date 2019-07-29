@@ -17,7 +17,7 @@ export class DotWorkflowsActionsService {
      * @param {string[]} workflows
      * @memberof DotWorkflowsActionsService
      */
-    load(workflows: string[]): void {
+    loadByWorkflows(workflows: string[]): void {
         if (workflows && workflows.length) {
             this.coreWebService
                 .requestView({
@@ -40,12 +40,28 @@ export class DotWorkflowsActionsService {
     }
 
     /**
-     * Return the actions
+     * Return the actions loaded by workflows
      *
      * @returns {Observable<DotWorkflowAction[]>}
      * @memberof DotWorkflowsActionsService
      */
-    get(): Observable<DotWorkflowAction[]> {
+    getByWorkflows(): Observable<DotWorkflowAction[]> {
         return this.data$.asObservable();
+    }
+
+    /**
+     * Returns the workflow actions of the passed inode
+     *
+     * @param {string} inode
+     * @returns {Observable<DotWorkflowAction[]>}
+     * @memberof DotWorkflowsActionsService
+     */
+    getByInode(inode: string): Observable<DotWorkflowAction[]> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Get,
+                url: `v1/workflow/contentlet/${inode}/actions`
+            })
+            .pipe(pluck('entity'));
     }
 }

@@ -8,24 +8,27 @@ import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workfl
 
 describe('DotWorkflowsActionsService', () => {
     let TestBed;
-    let dotWorkflowService;
+    let dotWorkflowActionsService: DotWorkflowsActionsService;
     let backend;
     let lastConnection;
 
     beforeEach(() => {
         TestBed = DOTTestBed.resolveAndCreate([DotWorkflowsActionsService]);
-        dotWorkflowService = TestBed.get(DotWorkflowsActionsService);
+        dotWorkflowActionsService = TestBed.get(DotWorkflowsActionsService);
         backend = TestBed.get(ConnectionBackend) as MockBackend;
         backend.connections.subscribe((connection: any) => {
             lastConnection = connection;
         });
     });
 
-    it('should get actions', () => {
-        let result;
-        dotWorkflowService.get(['123', '456']).subscribe((res: DotWorkflowAction[]) => {
-            result = res;
+    it('should get actions by workflows', () => {
+        let result: DotWorkflowAction[];
+
+        dotWorkflowActionsService.getByWorkflows().subscribe((actions: DotWorkflowAction[]) => {
+            result = actions;
         });
+
+        dotWorkflowActionsService.loadByWorkflows(['123', '456']);
 
         lastConnection.mockRespond(
             new Response(
@@ -41,5 +44,59 @@ describe('DotWorkflowsActionsService', () => {
         expect(lastConnection.request.url).toBe('/api/v1/workflow/schemes/actions/NEW');
         expect(lastConnection.request._body).toEqual({ schemes: ['123', '456'] });
         expect(result).toEqual([...mockWorkflowsActions]);
+    });
+
+    it('should get workflows by inode', () => {
+        let result;
+        const inode = 'cc2cdf9c-a20d-4862-9454-2a76c1132123';
+        dotWorkflowActionsService.getByInode(inode).subscribe((res) => {
+            result = res;
+        });
+
+        lastConnection.mockRespond(
+            new Response(
+                new ResponseOptions({
+                    body: {
+                        entity: [
+                            {
+                                assignable: true,
+                                commentable: true,
+                                condition: '',
+                                icon: 'workflowIcon',
+                                id: '44d4d4cd-c812-49db-adb1-1030be73e69a',
+                                name: 'Assign Workflow',
+                                nextAssign: 'db0d2bca-5da5-4c18-b5d7-87f02ba58eb6',
+                                nextStep: '43e16aac-5799-46d0-945c-83753af39426',
+                                nextStepCurrentStep: false,
+                                order: 0,
+                                owner: null,
+                                roleHierarchyForAssign: true,
+                                schemeId: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
+                                showOn: ['UNLOCKED', 'LOCKED']
+                            }
+                        ]
+                    }
+                })
+            )
+        );
+        expect(result).toEqual([
+            {
+                assignable: true,
+                commentable: true,
+                condition: '',
+                icon: 'workflowIcon',
+                id: '44d4d4cd-c812-49db-adb1-1030be73e69a',
+                name: 'Assign Workflow',
+                nextAssign: 'db0d2bca-5da5-4c18-b5d7-87f02ba58eb6',
+                nextStep: '43e16aac-5799-46d0-945c-83753af39426',
+                nextStepCurrentStep: false,
+                order: 0,
+                owner: null,
+                roleHierarchyForAssign: true,
+                schemeId: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
+                showOn: ['UNLOCKED', 'LOCKED']
+            }
+        ]);
+        expect(lastConnection.request.url).toContain(`v1/workflow/contentlet/${inode}/actions`);
     });
 });
