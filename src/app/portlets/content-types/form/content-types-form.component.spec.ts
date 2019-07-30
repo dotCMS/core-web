@@ -19,22 +19,24 @@ import {
     TabViewModule
 } from 'primeng/primeng';
 
+import { DOTTestBed } from '@tests/dot-test-bed';
+import { LoginServiceMock } from '@tests/login-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { SiteServiceMock } from '@tests/site-service.mock';
+import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
+
 import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
 import { ContentTypesFormComponent } from './content-types-form.component';
 import { DotSystemActionType } from 'dotcms-models';
-import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
-import { LoginServiceMock } from '../../../test/login-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
-import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { ContentTypesInfoService } from '@services/content-types-info';
-import { SiteServiceMock } from '../../../test/site-service.mock';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 // tslint:disable-next-line:max-line-length
 import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflows-selector-field/dot-workflows-selector-field.module';
-import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
+
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot-page-selector.module';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
@@ -625,9 +627,9 @@ describe('ContentTypesFormComponent', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflow').disabled).toBe(true);
-                    expect(comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled).toBe(
-                        true
-                    );
+                    expect(
+                        comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
+                    ).toBe(true);
                 });
             });
 
@@ -641,9 +643,9 @@ describe('ContentTypesFormComponent', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflow').disabled).toBe(false);
-                    expect(comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled).toBe(
-                        false
-                    );
+                    expect(
+                        comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
+                    ).toBe(false);
                 });
             });
         });
@@ -666,7 +668,16 @@ describe('ContentTypesFormComponent', () => {
                 };
                 spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                 fixture.detectChanges();
-                expect(comp.form.get('workflow').value).toEqual(['123', '456']);
+                expect(comp.form.get('workflow').value).toEqual([
+                    {
+                        id: '123',
+                        name: 'Workflow 1'
+                    },
+                    {
+                        id: '456',
+                        name: 'Workflow 2'
+                    }
+                ]);
             });
 
             it('should set empty value', () => {

@@ -23,7 +23,7 @@ import {
     DotCMSContentTypeField,
     DotCMSContentTypeLayoutRow,
     DotSystemActionType,
-    DotWorkflow
+    DotWorkflow,
 } from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
 
@@ -105,15 +105,6 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
 
         this.nameFieldLabel = this.setNameFieldLabel();
         this.name.nativeElement.focus();
-
-        if (!this.isEditMode()) {
-            this.dotWorkflowService
-                .getSystem()
-                .pipe(take(1))
-                .subscribe((workflow: DotWorkflow) => {
-                    this.form.get('workflow').setValue([workflow.id]);
-                });
-        }
     }
 
     ngOnDestroy(): void {
@@ -213,6 +204,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         const action = this.data.systemActionMappings
             ? this.data.systemActionMappings[DotSystemActionType.NEW]
             : null;
+
         this.form = this.fb.group({
             clazz: this.data.clazz || '',
             description: this.data.description || '',
@@ -250,6 +242,15 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
 
         if (this.layout && this.layout.length) {
             this.setDateVarFieldsState();
+        }
+
+        if (!this.isEditMode()) {
+            this.dotWorkflowService
+                .getSystem()
+                .pipe(take(1))
+                .subscribe((workflow: DotWorkflow) => {
+                    this.form.get('workflow').setValue([workflow]);
+                });
         }
 
         this.workflowsSelected$ = this.form.get('workflow').valueChanges;
