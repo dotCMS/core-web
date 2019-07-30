@@ -60,7 +60,7 @@ export class DotFormComponent {
         const { tagName } = event.target as HTMLElement;
         const { name, value } = event.detail;
         const process = fieldCustomProcess[tagName];
-        if (tagName === 'DOT-BINARY-FILE') {
+        if (tagName === 'DOT-BINARY-FILE' && value) {
             this.uploadFile(event);
         } else {
             this.value[name] = process ? process(value) : value;
@@ -204,22 +204,21 @@ export class DotFormComponent {
         const uploadService = new DotUploadService();
         const { name, value } = event.detail;
         const binary: DotBinaryFileComponent = (event.target as unknown) as DotBinaryFileComponent;
-        if (value) {
-            this.uploadFileInProgress = true;
-            this.errorMessage = '';
-            uploadService
-                .uploadFile(value)
-                .then((tempFile: DotTempFile) => {
-                    this.value[name] = tempFile.id;
-                    binary.previewImageUrl = tempFile.thumbnailUrl;
-                    binary.previewImageName = tempFile.fileName;
-                    this.uploadFileInProgress = false;
-                })
-                .catch(({ message, status }: DotHttpErrorResponse) => {
-                    binary.clearValue();
-                    this.uploadFileInProgress = false;
-                    this.errorMessage = message || fallbackErrorMessages[status];
-                });
-        }
+
+        this.uploadFileInProgress = true;
+        this.errorMessage = '';
+        uploadService
+            .uploadFile(value)
+            .then((tempFile: DotTempFile) => {
+                this.value[name] = tempFile.id;
+                binary.previewImageUrl = tempFile.thumbnailUrl;
+                binary.previewImageName = tempFile.fileName;
+                this.uploadFileInProgress = false;
+            })
+            .catch(({ message, status }: DotHttpErrorResponse) => {
+                binary.clearValue();
+                this.uploadFileInProgress = false;
+                this.errorMessage = message || fallbackErrorMessages[status];
+            });
     }
 }
