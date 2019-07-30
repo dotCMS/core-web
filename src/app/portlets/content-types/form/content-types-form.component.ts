@@ -17,10 +17,14 @@ import * as _ from 'lodash';
 import { SelectItem } from 'primeng/primeng';
 
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotWorkflow } from 'dotcms-models';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
-import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow, DotSystemActionType } from 'dotcms-models';
+import {
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow,
+    DotSystemActionType,
+    DotWorkflow
+} from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
 
 /**
@@ -331,7 +335,8 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         if (this.originalValue) {
             this.originalValue.workflow = workflowControl.value;
             this.originalValue.systemActionMap = {};
-            this.originalValue.systemActionMap[DotSystemActionType.NEW] = workflowActionControl.value;
+            this.originalValue.systemActionMap[DotSystemActionType.NEW] =
+                workflowActionControl.value;
         }
         this.setSaveState();
     }

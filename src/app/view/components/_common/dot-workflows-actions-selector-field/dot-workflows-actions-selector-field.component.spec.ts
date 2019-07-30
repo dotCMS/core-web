@@ -10,6 +10,8 @@ import { By } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Dropdown, DropdownModule } from 'primeng/primeng';
 import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflows-actions-selector-field.service';
+import { DotWorkflow } from 'dotcms-models';
+import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 
 @Component({
     selector: 'dot-fake-form',
@@ -25,7 +27,7 @@ import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflow
 })
 class FakeFormComponent implements OnInit {
     form: FormGroup;
-    workfows: string[] = [];
+    workfows: DotWorkflow[] = [];
 
     constructor(private fb: FormBuilder) {}
 
@@ -218,12 +220,12 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     describe('@Inputs', () => {
         describe('workflows', () => {
             it('should reload actions', () => {
-                componentHost.workfows = ['123', '456'];
+                const mock = [mockWorkflows[0], mockWorkflows[1]];
+                componentHost.workfows = mock;
                 fixtureHost.detectChanges();
-                expect(dotWorkflowsActionsSelectorFieldService.load).toHaveBeenCalledWith([
-                    '123',
-                    '456'
-                ]);
+                expect(dotWorkflowsActionsSelectorFieldService.load).toHaveBeenCalledWith(
+                    jasmine.arrayContaining(mock)
+                );
             });
         });
     });

@@ -10,7 +10,7 @@ export class DotWorkflowsActionsService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Load and update actions
+     * Return a list of actions based on the workflows received
      *
      * @param {string[]} workflows
      * @memberof DotWorkflowsActionsService
