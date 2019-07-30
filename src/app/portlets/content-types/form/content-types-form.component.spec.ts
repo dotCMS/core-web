@@ -451,7 +451,9 @@ describe('ContentTypesFormComponent', () => {
         fixture.detectChanges();
 
         const { id, baseType, workflows, ...formValue } = fakeData;
-        formValue['workflow'] = ['workflow-id'];
+        formValue['workflow'] = [{
+            id: 'workflow-id'
+        }];
         expect(comp.form.value).toEqual(formValue);
     });
 
