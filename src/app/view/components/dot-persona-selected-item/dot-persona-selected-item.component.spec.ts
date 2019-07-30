@@ -1,5 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { DotPersonaDropdownSelectorComponent } from './dot-persona-dropdown-selector.component';
+import { DotPersonaSelectedItemComponent } from './dot-persona-selected-item.component';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,19 +8,19 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { By } from '@angular/platform-browser';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
-fdescribe('DotPersonaDropdownSelectorComponent', () => {
+describe('DotPersonaDropdownSelectorComponent', () => {
 
-    let component: DotPersonaDropdownSelectorComponent;
-    let fixture: ComponentFixture<DotPersonaDropdownSelectorComponent>;
+    let component: DotPersonaSelectedItemComponent;
+    let fixture: ComponentFixture<DotPersonaSelectedItemComponent>;
     let de: DebugElement;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [DotPersonaDropdownSelectorComponent],
+            declarations: [DotPersonaSelectedItemComponent],
             imports: [BrowserAnimationsModule, DotIconModule, DotAvatarModule],
         });
 
-        fixture = DOTTestBed.createComponent(DotPersonaDropdownSelectorComponent);
+        fixture = DOTTestBed.createComponent(DotPersonaSelectedItemComponent);
         component = fixture.componentInstance;
         de = fixture.debugElement;
         component.persona = mockDotPersona;

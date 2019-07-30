@@ -2,11 +2,11 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 
 @Component({
-    selector: 'dot-persona-dropdown-selector',
-    templateUrl: './dot-persona-dropdown-selector.component.html',
-    styleUrls: ['./dot-persona-dropdown-selector.component.scss']
+    selector: 'dot-persona-selected-item',
+    templateUrl: './dot-persona-selected-item.component.html',
+    styleUrls: ['./dot-persona-selected-item.component.scss']
 })
-export class DotPersonaDropdownSelectorComponent {
+export class DotPersonaSelectedItemComponent {
     @Input()
     persona: DotPersona;
     @Input()

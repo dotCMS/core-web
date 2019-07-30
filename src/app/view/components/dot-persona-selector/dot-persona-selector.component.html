@@ -6,7 +6,7 @@
     (pageChange)="handlePageChange($event)"
     [action]="addAction"
     [data]="personas"
-    [ngModel]="value"
+    [(ngModel)]="value"
     [rows]="paginationPerPage"
     [totalRecords]="paginationService.totalRecords"
     [optionsWidth]="448"
@@ -21,10 +21,10 @@
         ></dot-persona-selector-option>
     </ng-template>
     <ng-template let-persona="item" pTemplate="select">
-        <dot-persona-dropdown-selector  *ngIf="persona"
-            label="{{ messagesKey['modes.persona.selector.title'] }}"
+        <dot-persona-selected-item
+            [label]="messagesKey['modes.persona.selector.title']"
             [persona]="persona"
             (selected)="searchableDropdown.toggleOverlayPanel($event)"
-        ></dot-persona-dropdown-selector>
+        ></dot-persona-selected-item>
     </ng-template>
 </dot-searchable-dropdown>

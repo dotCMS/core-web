@@ -1,4 +1,4 @@
-<div class="dot-persona-selector__container">
+<div class="dot-persona-selector__container" *ngIf="persona">
     <dot-avatar
         [label]="persona.name"
         [showDot]="persona.personalized"

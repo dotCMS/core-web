@@ -14,7 +14,7 @@ import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 
-const defaultVisitorPersona = {
+export const defaultVisitorPersona = {
     archived: false,
     baseType: 'PERSONA',
     contentType: 'persona',
@@ -49,7 +49,6 @@ const defaultVisitorPersona = {
  * @implements {OnInit}
  */
 @Component({
-    providers: [PaginatorService],
     selector: 'dot-persona-selector',
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
@@ -71,10 +70,11 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     personas: DotPersona[];
     messagesKey: { [key: string]: string } = {};
     addAction: (item: DotPersona) => void;
+    selected2: DotPersona;
 
     constructor(
         public paginationService: PaginatorService,
-        private dotMessageService: DotMessageService
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnChanges(_changes: SimpleChanges): void {
@@ -87,7 +87,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         this.addAction = () => {
             // TODO Implement + action
         };
-
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
 
@@ -124,13 +123,13 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     /**
      * Call to load a new page.
      * @param string [filter='']
-     * @param number [page=1]
+     * @param number [offset=0]
      * @memberof DotPersonaSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
         // Set filter if undefined
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe((items) => {
+        this.paginationService.getWithOffset(offset).subscribe((items: DotPersona[]) => {
             this.personas = items;
             this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
         });
