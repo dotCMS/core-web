@@ -1,10 +1,6 @@
 #dropdown-item {
     margin: 0;
     padding: $basic-padding;
-
-    &:hover {
-        @extend #ui-hover-state;
-    }
 }
 
 .ui-dropdown {
@@ -18,10 +14,6 @@
             font-size: $font-size-medium;
             line-height: $field-tiny-height;
         }
-    }
-
-    [noBorder] & {
-        box-shadow: none;
     }
 
     &.ui-state-focus {
@@ -153,10 +145,16 @@ p-dropdown {
         padding: 0;
     }
 
+    .ui-dropdown-item-group,
     .ui-dropdown-item {
         @extend #dropdown-item;
 
         &.ui-corner-all {
+            border-radius: 0;
         }
+    }
+
+    .ui-dropdown-item:hover {
+        @extend #ui-hover-state;
     }
 }
