@@ -9,7 +9,7 @@ import {
     EventEmitter
 } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { DotWorkflowAction } from '@models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflowAction } from 'dotcms-models';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';

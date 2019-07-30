@@ -1,5 +1,5 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
+import { DotWorkflow } from 'dotcms-models';
 import * as _ from 'lodash';
 
 export const mockWorkflows: DotWorkflow[] = [

@@ -3,8 +3,7 @@ import { CoreWebService } from 'dotcms-js';
 import { pluck } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
-import { DotWorkflow } from '@shared/models/dot-workflow/dot-workflow.model';
+import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
 
 @Injectable()
 export class DotWorkflowsActionsService {

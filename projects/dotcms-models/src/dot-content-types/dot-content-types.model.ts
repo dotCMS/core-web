@@ -1,3 +1,5 @@
+import { DotSystemActionMappings } from '../dot-workflow-action';
+
 export interface DotCMSContentType {
     baseType: string;
     clazz: string;
@@ -23,6 +25,7 @@ export interface DotCMSContentType {
     variable: string;
     versionable: boolean;
     workflows: Workflow[];
+    systemActionMappings?: DotSystemActionMappings;
 }
 export interface DotCMSContentTypeField {
     categories?: DotCMSContentTypeFieldCategories;

@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectItemGroup } from 'primeng/primeng';
 
-import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotWorkflow } from '@shared/models/dot-workflow/dot-workflow.model';
 import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflows-actions-selector-field.service';
 
 interface DropdownEvent {

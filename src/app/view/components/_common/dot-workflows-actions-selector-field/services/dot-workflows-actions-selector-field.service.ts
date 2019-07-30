@@ -5,8 +5,7 @@ import { map, take } from 'rxjs/operators';
 import { SelectItemGroup, SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
-import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
-import { DotWorkflow } from '@shared/models/dot-workflow/dot-workflow.model';
+import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
 
 @Injectable()
 export class DotWorkflowsActionsSelectorFieldService {

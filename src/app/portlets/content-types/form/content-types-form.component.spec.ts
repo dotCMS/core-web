@@ -22,7 +22,8 @@ import {
 import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
-import { ContentTypesFormComponent, DotSystemAction } from './content-types-form.component';
+import { ContentTypesFormComponent } from './content-types-form.component';
+import { DotSystemActionType } from 'dotcms-models';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { LoginServiceMock } from '../../../test/login-service.mock';
@@ -363,7 +364,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
         const workflowAction = comp.form.get('systemActionMap');
-        expect(workflowAction.get(DotSystemAction.NEW)).not.toBeNull();
+        expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
 
         expect(comp.form.get('detailPage')).toBeNull();
         expect(comp.form.get('urlMapPattern')).toBeNull();
@@ -411,7 +412,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('folder')).not.toBeNull();
 
         const workflowAction = comp.form.get('systemActionMap');
-        expect(workflowAction.get(DotSystemAction.NEW)).not.toBeNull();
+        expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
     });
 
     it('should set value to the form', () => {
@@ -438,7 +439,7 @@ describe('ContentTypesFormComponent', () => {
                 }
             ],
             systemActionMap: {
-                [DotSystemAction.NEW]: ''
+                [DotSystemActionType.NEW]: ''
             }
         };
 
@@ -624,7 +625,7 @@ describe('ContentTypesFormComponent', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflow').disabled).toBe(true);
-                    expect(comp.form.get('systemActionMap').get(DotSystemAction.NEW).disabled).toBe(
+                    expect(comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled).toBe(
                         true
                     );
                 });
@@ -640,7 +641,7 @@ describe('ContentTypesFormComponent', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflow').disabled).toBe(false);
-                    expect(comp.form.get('systemActionMap').get(DotSystemAction.NEW).disabled).toBe(
+                    expect(comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled).toBe(
                         false
                     );
                 });

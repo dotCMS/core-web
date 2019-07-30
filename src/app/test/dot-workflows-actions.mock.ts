@@ -1,4 +1,4 @@
-import { DotWorkflowAction } from '@models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflowAction } from 'dotcms-models';
 
 
 export const mockWorkflowsActions: DotWorkflowAction[] = [

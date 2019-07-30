@@ -1,7 +1,7 @@
 import { mergeMap } from 'rxjs/operators';
-import { DotWorkflowService } from './../../../../api/services/dot-workflow/dot-workflow.service';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { Observable } from 'rxjs';
-import { DotWorkflow } from './../../../../shared/models/dot-workflow/dot-workflow.model';
+import { DotWorkflow } from 'dotcms-models';
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';

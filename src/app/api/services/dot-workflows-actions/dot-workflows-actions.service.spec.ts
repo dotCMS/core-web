@@ -4,7 +4,7 @@ import { MockBackend } from '@angular/http/testing';
 import { DotWorkflowsActionsService } from './dot-workflows-actions.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
-import { DotWorkflowAction } from '@shared/models/dot-workflow-action/dot-workflow-action.model';
+import { DotWorkflowAction } from 'dotcms-models';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 
 describe('DotWorkflowsActionsService', () => {

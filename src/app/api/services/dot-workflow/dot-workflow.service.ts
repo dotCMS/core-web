@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotWorkflow } from '@models/dot-workflow/dot-workflow.model';
+import { DotWorkflow } from 'dotcms-models';
 
 /**
  * Provide util methods to get Workflows.
