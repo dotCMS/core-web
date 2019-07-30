@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take, catchError } from 'rxjs/operators';
 
 import { SelectItemGroup, SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
+import { ResponseView } from 'dotcms-js/dotcms-js';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 @Injectable()
 export class DotWorkflowsActionsSelectorFieldService {
     private data$: Subject<SelectItemGroup[]> = new Subject();
 
-    constructor(private dotWorkflowsActionsService: DotWorkflowsActionsService) {}
+    constructor(
+        private dotWorkflowsActionsService: DotWorkflowsActionsService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService
+    ) {}
 
     /**
      * Get actions grouped by workflows
@@ -37,6 +42,9 @@ export class DotWorkflowsActionsSelectorFieldService {
                     take(1),
                     map((actions: DotWorkflowAction[]) =>
                         this.getSelectItemGroups(workflows, actions)
+                    ),
+                    catchError((err: ResponseView) =>
+                        this.dotHttpErrorManagerService.handle(err).pipe(map(() => []))
                     )
                 )
                 .subscribe((actions: SelectItemGroup[]) => {

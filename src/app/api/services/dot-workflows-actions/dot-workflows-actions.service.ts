@@ -15,7 +15,7 @@ export class DotWorkflowsActionsService {
      * @param {string[]} workflows
      * @memberof DotWorkflowsActionsService
      */
-    getByWorkflows(workflows: DotWorkflow[]): Observable<DotWorkflowAction[]> {
+    getByWorkflows(workflows: DotWorkflow[] = []): Observable<DotWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Post,
@@ -44,6 +44,6 @@ export class DotWorkflowsActionsService {
     }
 
     private getWorkFlowId(workflow: DotWorkflow): string {
-        return workflow.id;
+        return workflow && workflow.id;
     }
 }

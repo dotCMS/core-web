@@ -1,15 +1,23 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { Response } from '@angular/http';
+
+import { ResponseView, HttpCode } from 'dotcms-js';
+
 import { SelectItemGroup } from 'primeng/primeng';
 
 import { DotWorkflowsActionsSelectorFieldService } from './dot-workflows-actions-selector-field.service';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
 describe('DotWorkflowsActionsSelectorFieldService', () => {
     let dotWorkflowsActionsService: DotWorkflowsActionsService;
+    let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let service: DotWorkflowsActionsSelectorFieldService;
+    let spy: jasmine.Spy;
+    let result: SelectItemGroup[];
 
     beforeEach(() =>
         TestBed.configureTestingModule({
@@ -22,24 +30,29 @@ describe('DotWorkflowsActionsSelectorFieldService', () => {
                             return of(mockWorkflowsActions);
                         }
                     }
+                },
+                {
+                    provide: DotHttpErrorManagerService,
+                    useValue: {
+                        handle: jasmine.createSpy().and.returnValue(of({}))
+                    }
                 }
             ]
         })
     );
 
     beforeEach(() => {
+        dotHttpErrorManagerService = TestBed.get(DotHttpErrorManagerService);
         dotWorkflowsActionsService = TestBed.get(DotWorkflowsActionsService);
         service = TestBed.get(DotWorkflowsActionsSelectorFieldService);
-        spyOn(dotWorkflowsActionsService, 'getByWorkflows').and.callThrough();
-    });
-
-    it('should be get actions grouped by workflows as SelectItemGroup', () => {
-        let result: SelectItemGroup[];
+        spy = spyOn(dotWorkflowsActionsService, 'getByWorkflows').and.callThrough();
 
         service.get().subscribe((actions: SelectItemGroup[]) => {
             result = actions;
         });
+    });
 
+    it('should be get actions grouped by workflows as SelectItemGroup', () => {
         service.load(mockWorkflows);
 
         expect(dotWorkflowsActionsService.getByWorkflows).toHaveBeenCalledWith(
@@ -66,5 +79,22 @@ describe('DotWorkflowsActionsSelectorFieldService', () => {
                 ]
             }
         ]);
+    });
+
+    it('should handle error', () => {
+        const mock = new ResponseView(
+            new Response({
+                body: {},
+                status: HttpCode.BAD_REQUEST,
+                headers: null,
+                url: '',
+                merge: null
+            })
+        );
+        spy.and.returnValue(throwError(mock));
+        service.load(mockWorkflows);
+
+        expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(mock);
+        expect(result).toEqual([]);
     });
 });
