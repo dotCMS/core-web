@@ -22,6 +22,7 @@ import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
 import { DotEditContentTypeCacheService } from '../fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { DotWorkflow } from 'projects/dotcms-models/src/public_api';
 
 /**
  * Portlet component for edit content types
@@ -201,7 +202,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * @param * value;
      * @memberof ContentTypesEditComponent
      */
-    handleFormSubmit(value: any): void {
+    handleFormSubmit(value: DotCMSContentType): void {
         this.isEditMode() ? this.updateContentType(value) : this.createContentType(value);
     }
 
@@ -321,8 +322,12 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private createContentType(value: DotCMSContentType): void {
+        const createdContentType = this.replaceWorkflowsProp({
+            ...value
+        });
+
         this.crudService
-            .postData('v1/contenttype', value)
+            .postData('v1/contenttype', createdContentType)
             .pipe(
                 mergeMap((contentTypes: DotCMSContentType[]) => contentTypes),
                 take(1)
@@ -349,11 +354,14 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateContentType(value: any): void {
-        const data = Object.assign({}, value, { id: this.data.id });
+    private updateContentType(value: DotCMSContentType): void {
+        const updatedContentType = this.replaceWorkflowsProp({
+            ...value,
+            id: this.data.id
+        });
 
         this.crudService
-            .putData(`v1/contenttype/id/${this.data.id}`, data)
+            .putData(`v1/contenttype/id/${this.data.id}`, updatedContentType)
             .pipe(take(1))
             .subscribe(
                 (contentType: DotCMSContentType) => {
@@ -364,5 +372,12 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
                     this.handleHttpError(err);
                 }
             );
+    }
+
+    // The Content Types endpoint returns workflows (plural) but receive workflow (singular)
+    private replaceWorkflowsProp(value: DotCMSContentType): { [key: string]: any } {
+        value['workflow'] = value.workflows.map((workflow: DotWorkflow) => workflow.id);
+        delete value.workflows;
+        return value;
     }
 }

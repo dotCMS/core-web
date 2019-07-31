@@ -23,7 +23,9 @@ import {
     DotCMSContentTypeField,
     DotCMSContentTypeLayoutRow,
     DotSystemActionType,
-    DotWorkflow
+    DotWorkflow,
+    DotCMSContentType,
+    DotSystemActionMappings
 } from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
 
@@ -45,13 +47,13 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     name: ElementRef;
 
     @Input()
-    data: any;
+    data: DotCMSContentType;
 
     @Input()
     layout: DotCMSContentTypeLayoutRow[];
 
     @Output()
-    onSubmit: EventEmitter<any> = new EventEmitter();
+    onSubmit: EventEmitter<DotCMSContentType> = new EventEmitter();
 
     @Output()
     valid: EventEmitter<boolean> = new EventEmitter();
@@ -62,7 +64,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     nameFieldLabel: Observable<string>;
     workflowsSelected$: Observable<string[]>;
 
-    private originalValue: any;
+    private originalValue: DotCMSContentType;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -144,12 +146,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
      */
     submitForm(): void {
         if (this.canSave) {
-            this.onSubmit.emit({
-                ...this.form.value,
-                workflow: this.form
-                    .getRawValue()
-                    .workflow.map((workflow: DotWorkflow) => workflow.id)
-            });
+            this.onSubmit.emit(this.form.value);
         }
     }
 
@@ -199,9 +196,8 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         return this.isNewDateVarFields(dateVarOptions) ? dateVarOptions : [];
     }
 
+    // tslint:disable-next-line: cyclomatic-complexity
     private initFormGroup(): void {
-        const action = this.getAction(this.data.systemActionMappings);
-
         this.form = this.fb.group({
             clazz: this.getProp(this.data.clazz),
             description: this.getProp(this.data.description),
@@ -213,7 +209,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
             expireDateVar: [{ value: this.getProp(this.data.expireDateVar), disabled: true }],
             name: [this.getProp(this.data.name), [Validators.required]],
             publishDateVar: [{ value: this.getProp(this.data.publishDateVar), disabled: true }],
-            workflow: [
+            workflows: [
                 {
                     value: this.data.workflows || [],
                     disabled: true
@@ -222,7 +218,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
             systemActionMap: this.fb.group({
                 [DotSystemActionType.NEW]: [
                     {
-                        value: action ? action.workflowAction.id : '',
+                        value: this.data.systemActionMappings
+                            ? this.getActionIdentifier(this.data.systemActionMappings)
+                            : '',
                         disabled: true
                     }
                 ]
@@ -233,13 +231,16 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.setOriginalValue();
         this.setDateVarFieldsState();
         this.setSystemWorkflow();
-        this.workflowsSelected$ = this.form.get('workflow').valueChanges;
+        this.workflowsSelected$ = this.form.get('workflows').valueChanges;
     }
 
-    private getAction(systemActionMappings) {
-        return systemActionMappings
-            ? this.data.systemActionMappings[DotSystemActionType.NEW]
-            : null;
+    private getActionIdentifier(actionMap: DotSystemActionMappings): string {
+        if (Object.keys(actionMap).length) {
+            const item = actionMap[DotSystemActionType.NEW];
+            return typeof item !== 'string' ? item.identifier : '';
+        }
+
+        return '';
     }
 
     private getProp(item: string): string {
@@ -252,7 +253,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                 .getSystem()
                 .pipe(take(1))
                 .subscribe((workflow: DotWorkflow) => {
-                    this.form.get('workflow').setValue([workflow]);
+                    this.form.get('workflows').setValue([workflow]);
                 });
         }
     }
@@ -330,16 +331,16 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     }
 
     private enableWorkflowFormControls(): void {
-        const workflowControl = this.form.get('workflow');
+        const workflowControl = this.form.get('workflows');
         const workflowActionControl = this.form.get('systemActionMap').get(DotSystemActionType.NEW);
 
         workflowControl.enable();
         workflowActionControl.enable();
 
         if (this.originalValue) {
-            this.originalValue.workflow = workflowControl.value;
-            this.originalValue.systemActionMap = {};
-            this.originalValue.systemActionMap[DotSystemActionType.NEW] =
+            this.originalValue.workflows = workflowControl.value;
+            this.originalValue.systemActionMappings = {};
+            this.originalValue.systemActionMappings[DotSystemActionType.NEW] =
                 workflowActionControl.value;
         }
         this.setSaveState();

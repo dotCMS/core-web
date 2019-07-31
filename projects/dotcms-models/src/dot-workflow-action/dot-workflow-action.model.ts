@@ -29,10 +29,10 @@ export enum DotSystemActionType {
 }
 
 export interface DotSystemActionMappings {
-    [key: string]: DotSystemAction;
+    [key: string]: DotSystemAction | string;
 }
 
-interface DotSystemAction {
+export interface DotSystemAction {
     identifier: string;
     systemAction: string;
     workflowAction: DotWorkflowAction;

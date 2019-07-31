@@ -312,9 +312,16 @@ describe('ContentTypesEditComponent', () => {
 
                 contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
 
+                const replacedWorkflowsPropContentType = {
+                    ...mockContentType
+                };
+
+                (replacedWorkflowsPropContentType['workflow'] = mockContentType.workflows),
+                    delete replacedWorkflowsPropContentType.workflows;
+
                 expect(crudService.postData).toHaveBeenCalledWith(
                     'v1/contenttype',
-                    mockContentType
+                    replacedWorkflowsPropContentType
                 );
                 expect(comp.data).toEqual(responseContentType, 'set data with response');
                 expect(comp.layout).toEqual(responseContentType.layout, 'ser fields with response');
@@ -762,9 +769,16 @@ describe('ContentTypesEditComponent', () => {
 
                 contentTypeForm.triggerEventHandler('onSubmit', fakeContentType);
 
+                const replacedWorkflowsPropContentType = {
+                    ...fakeContentType
+                };
+
+                (replacedWorkflowsPropContentType['workflow'] = fakeContentType.workflows),
+                    delete replacedWorkflowsPropContentType.workflows;
+
                 expect(crudService.putData).toHaveBeenCalledWith(
                     'v1/contenttype/id/1234567890',
-                    fakeContentType
+                    replacedWorkflowsPropContentType
                 );
                 expect(comp.data).toEqual(responseContentType, 'set data with response');
             });

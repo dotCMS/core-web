@@ -23,13 +23,13 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { SiteServiceMock } from '@tests/site-service.mock';
-import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
+import { DotWorkflowServiceMock, mockWorkflows } from '@tests/dot-workflow-service.mock';
 
 import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
 import { ContentTypesFormComponent } from './content-types-form.component';
-import { DotSystemActionType } from 'dotcms-models';
+import { DotSystemActionType, DotCMSContentType } from 'dotcms-models';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -45,7 +45,10 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import { DotCMSContentTypeLayoutRow } from 'dotcms-models';
-import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
+import {
+    dotcmsContentTypeFieldBasicMock,
+    dotcmsContentTypeBasicMock
+} from '@tests/dot-content-types.mock';
 import { DotWorkflowsActionsSelectorFieldModule } from '@components/_common/dot-workflows-actions-selector-field/dot-workflows-actions-selector-field.module';
 
 @Component({
@@ -193,6 +196,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should be invalid by default', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -201,6 +205,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should be valid when name field have value', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -211,6 +216,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should have name focus by default on create mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -219,6 +225,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should have canSave property false by default (form is invalid)', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -228,6 +235,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property true form is valid', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             name: 'hello',
             baseType: 'CONTENT'
         };
@@ -242,6 +250,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property false when form is invalid in edit mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -256,6 +265,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property true when form is valid and model updated in edit mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -270,6 +280,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property false when form is invalid and model updated in edit mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -288,6 +299,7 @@ describe('ContentTypesFormComponent', () => {
         spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
 
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -309,6 +321,7 @@ describe('ContentTypesFormComponent', () => {
         spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -327,6 +340,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property false when edit a content with fields', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123',
             name: 'Hello World'
@@ -339,6 +353,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should set canSave property false on edit mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123'
         };
@@ -349,6 +364,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should have basic form controls for non-content base types', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'WIDGET'
         };
         fixture.detectChanges();
@@ -358,7 +374,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
         expect(comp.form.get('description')).not.toBeNull();
-        expect(comp.form.get('workflow')).not.toBeNull();
+        expect(comp.form.get('workflows')).not.toBeNull();
         expect(comp.form.get('publishDateVar')).not.toBeNull();
         expect(comp.form.get('expireDateVar')).not.toBeNull();
         expect(comp.form.get('defaultType')).not.toBeNull();
@@ -374,6 +390,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should render basic fields for non-content base types', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'WIDGET'
         };
         fixture.detectChanges();
@@ -394,6 +411,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should have basic form controls for content base type', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -403,7 +421,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('name')).not.toBeNull();
         expect(comp.form.get('host')).not.toBeNull();
         expect(comp.form.get('description')).not.toBeNull();
-        expect(comp.form.get('workflow')).not.toBeNull();
+        expect(comp.form.get('workflows')).not.toBeNull();
         expect(comp.form.get('publishDateVar')).not.toBeNull();
         expect(comp.form.get('expireDateVar')).not.toBeNull();
         expect(comp.form.get('detailPage')).not.toBeNull();
@@ -420,7 +438,8 @@ describe('ContentTypesFormComponent', () => {
     it('should set value to the form', () => {
         spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
-        const fakeData = {
+        const fakeData: DotCMSContentType = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             clazz: 'clazz',
             defaultType: false,
@@ -437,10 +456,11 @@ describe('ContentTypesFormComponent', () => {
             urlMapPattern: '/url/map',
             workflows: [
                 {
+                    ...mockWorkflows[0],
                     id: 'workflow-id'
                 }
             ],
-            systemActionMap: {
+            systemActionMappings: {
                 [DotSystemActionType.NEW]: ''
             }
         };
@@ -451,14 +471,17 @@ describe('ContentTypesFormComponent', () => {
         fixture.detectChanges();
 
         const { id, baseType, workflows, ...formValue } = fakeData;
-        formValue['workflow'] = [{
-            id: 'workflow-id'
-        }];
+        formValue['workflows'] = [
+            {
+                id: 'workflow-id'
+            }
+        ];
         expect(comp.form.value).toEqual(formValue);
     });
 
     it('should render extra fields for content types', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -481,6 +504,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should render disabled dates fields and hint when date fields are not passed', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123'
         };
@@ -496,6 +520,7 @@ describe('ContentTypesFormComponent', () => {
     describe('fields dates enabled', () => {
         beforeEach(() => {
             comp.data = {
+                ...dotcmsContentTypeBasicMock,
                 baseType: 'CONTENT'
             };
             comp.layout = layout;
@@ -531,6 +556,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should not submit form with invalid form', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT'
         };
         fixture.detectChanges();
@@ -546,6 +572,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should not submit a valid form without changes and in Edit mode', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             id: '123'
         };
@@ -561,6 +588,7 @@ describe('ContentTypesFormComponent', () => {
 
     it('should have dot-page-selector component and right attrs', () => {
         comp.data = {
+            ...dotcmsContentTypeBasicMock,
             baseType: 'CONTENT',
             host: '123'
         };
@@ -579,6 +607,7 @@ describe('ContentTypesFormComponent', () => {
         beforeEach(() => {
             spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
             comp.data = {
+                ...dotcmsContentTypeBasicMock,
                 baseType: 'CONTENT'
             };
             fixture.detectChanges();
@@ -595,18 +624,29 @@ describe('ContentTypesFormComponent', () => {
             expect(data).toEqual({
                 clazz: '',
                 description: '',
-                detailPage: '',
                 host: '',
-                name: 'A content type name',
-                urlMapPattern: '',
-                defaultType: null,
-                fixed: null,
+                defaultType: false,
+                fixed: false,
                 folder: null,
-                system: null,
-                workflow: ['d61a59e1-a49c-46f2-a929-db2b4bfa88b2'],
-                systemActionMap: {
-                    NEW: ''
-                }
+                system: false,
+                name: 'A content type name',
+                workflows: [
+                    {
+                        id: 'd61a59e1-a49c-46f2-a929-db2b4bfa88b2',
+                        creationDate: jasmine.any(Date),
+                        name: 'System Workflow',
+                        description: '',
+                        archived: false,
+                        mandatory: false,
+                        defaultScheme: false,
+                        modDate: jasmine.any(Date),
+                        entryActionId: null,
+                        system: true
+                    }
+                ],
+                systemActionMap: { NEW: '' },
+                detailPage: '',
+                urlMapPattern: ''
             });
         });
     });
@@ -615,6 +655,7 @@ describe('ContentTypesFormComponent', () => {
         describe('create', () => {
             beforeEach(() => {
                 comp.data = {
+                    ...dotcmsContentTypeBasicMock,
                     baseType: 'CONTENT'
                 };
             });
@@ -628,7 +669,7 @@ describe('ContentTypesFormComponent', () => {
                 it('should show workflow disabled and with message if the license community its true', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
-                    expect(comp.form.get('workflow').disabled).toBe(true);
+                    expect(comp.form.get('workflows').disabled).toBe(true);
                     expect(
                         comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
                     ).toBe(true);
@@ -644,7 +685,7 @@ describe('ContentTypesFormComponent', () => {
                 it('should show workflow enable and no message if the license community its false', () => {
                     const workflowMsg = de.query(By.css('#field-workflow-hint'));
                     expect(workflowMsg).toBeDefined();
-                    expect(comp.form.get('workflow').disabled).toBe(false);
+                    expect(comp.form.get('workflows').disabled).toBe(false);
                     expect(
                         comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
                     ).toBe(false);
@@ -655,14 +696,17 @@ describe('ContentTypesFormComponent', () => {
         describe('edit', () => {
             it('should set values from the server', () => {
                 comp.data = {
+                    ...dotcmsContentTypeBasicMock,
                     baseType: 'CONTENT',
                     id: '123',
                     workflows: [
                         {
+                            ...mockWorkflows[0],
                             id: '123',
                             name: 'Workflow 1'
                         },
                         {
+                            ...mockWorkflows[1],
                             id: '456',
                             name: 'Workflow 2'
                         }
@@ -670,12 +714,14 @@ describe('ContentTypesFormComponent', () => {
                 };
                 spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                 fixture.detectChanges();
-                expect(comp.form.get('workflow').value).toEqual([
+                expect(comp.form.get('workflows').value).toEqual([
                     {
+                        ...mockWorkflows[0],
                         id: '123',
                         name: 'Workflow 1'
                     },
                     {
+                        ...mockWorkflows[1],
                         id: '456',
                         name: 'Workflow 2'
                     }
@@ -684,12 +730,13 @@ describe('ContentTypesFormComponent', () => {
 
             it('should set empty value', () => {
                 comp.data = {
+                    ...dotcmsContentTypeBasicMock,
                     baseType: 'CONTENT',
                     id: '123'
                 };
                 spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(false));
                 fixture.detectChanges();
-                expect(comp.form.get('workflow').value).toEqual([]);
+                expect(comp.form.get('workflows').value).toEqual([]);
             });
         });
     });

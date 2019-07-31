@@ -48,7 +48,7 @@
         }}</label>
         <dot-workflows-selector-field
             id="content-type-form-workflow"
-            formControlName="workflow"
+            formControlName="workflows"
         ></dot-workflows-selector-field>
     </div>
     <div class="form__group" formGroupName="systemActionMap">
@@ -60,7 +60,7 @@
             [workflows]="workflowsSelected$ | async"
         ></dot-workflows-actions-selector-field>
     </div>
-    <span id="field-workflow-hint" class="form__group-hint" *ngIf="form.get('workflow').disabled">{{
+    <span id="field-workflow-hint" class="form__group-hint" *ngIf="form.get('workflows').disabled">{{
         dotMessageService.get(
             'contenttypes.form.hint.error.only.default.scheme.available.in.Community'
         )

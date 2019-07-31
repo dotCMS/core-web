@@ -1,4 +1,5 @@
 import { DotSystemActionMappings } from '../dot-workflow-action';
+import { DotWorkflow } from '../dot-workflow';
 
 export interface DotCMSContentType {
     baseType: string;
@@ -24,9 +25,10 @@ export interface DotCMSContentType {
     urlMapPattern?: string;
     variable: string;
     versionable: boolean;
-    workflows: Workflow[];
+    workflows: DotWorkflow[];
     systemActionMappings?: DotSystemActionMappings;
 }
+
 export interface DotCMSContentTypeField {
     categories?: DotCMSContentTypeFieldCategories;
     clazz: string;
@@ -87,18 +89,4 @@ interface FieldVariable {
     id: string;
     key: string;
     value: string;
-}
-
-/** @private */
-interface Workflow {
-    id: string;
-    creationDate: number;
-    name: string;
-    description: string;
-    archived: boolean;
-    mandatory: boolean;
-    defaultScheme: boolean;
-    modDate: number;
-    entryActionId?: string;
-    system: boolean;
 }
