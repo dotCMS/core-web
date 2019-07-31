@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { throwError, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
@@ -151,7 +151,7 @@ const getConfig = (route) => {
             },
             {
                 provide: ActivatedRoute,
-                useValue: { data: observableOf(route) }
+                useValue: { data: of(route) }
             },
             {
                 provide: HotkeysService,
@@ -305,10 +305,8 @@ describe('ContentTypesEditComponent', () => {
                     }
                 };
 
-                spyOn(crudService, 'postData').and.returnValue(observableOf([responseContentType]));
-                spyOn(location, 'replaceState').and.returnValue(
-                    observableOf([responseContentType])
-                );
+                spyOn(crudService, 'postData').and.returnValue(of([responseContentType]));
+                spyOn(location, 'replaceState').and.returnValue(of([responseContentType]));
 
                 contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
 
@@ -329,14 +327,45 @@ describe('ContentTypesEditComponent', () => {
             });
 
             it('should handle error', () => {
-                spyOn(crudService, 'postData').and.returnValue(
-                    observableThrowError(mockResponseView(403))
-                );
+                spyOn(crudService, 'postData').and.returnValue(throwError(mockResponseView(403)));
                 spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
                 contentTypeForm.triggerEventHandler('onSubmit', mockContentType);
                 expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular');
                 expect(dotHttpErrorManagerService.handle).toHaveBeenCalledTimes(1);
+            });
+
+            it('should update workflows value', () => {
+                spyOn(crudService, 'postData').and.returnValue(of([]));
+
+                contentTypeForm.triggerEventHandler('onSubmit', {
+                    workflows: [
+                        {
+                            id: '123',
+                            name: 'Hello'
+                        },
+                        {
+                            id: '456',
+                            name: 'Work'
+                        }
+                    ]
+                });
+
+                expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', {
+                    workflow: ['123', '456']
+                });
+            });
+
+            it('should remove systemActionMappings when empty', () => {
+                spyOn(crudService, 'postData').and.returnValue(of([]));
+
+                contentTypeForm.triggerEventHandler('onSubmit', {
+                    systemActionMappings: {
+                        NEW: ''
+                    }
+                });
+
+                expect(crudService.postData).toHaveBeenCalledWith('v1/contenttype', {});
             });
         });
 
@@ -527,7 +556,7 @@ describe('ContentTypesEditComponent', () => {
             fieldToUpdate.name = 'Updated field';
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(layout));
+            spyOn(fieldService, 'saveFields').and.returnValue(of(layout));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             contentTypeFieldsDropZone.componentInstance.saveFields.emit([fieldToUpdate]);
@@ -556,7 +585,7 @@ describe('ContentTypesEditComponent', () => {
                 currentFieldsInServer
             );
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
+            spyOn(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -593,7 +622,7 @@ describe('ContentTypesEditComponent', () => {
             spyOn(fieldService, 'saveFields').and.callFake(() => {
                 fixture.detectChanges();
                 expect(contentTypeFieldsDropZone.componentInstance.loading).toBe(true);
-                return observableOf(fieldsReturnByServer);
+                return of(fieldsReturnByServer);
             });
 
             // when: the saveFields event is tiggered in content-type-fields-drop-zone
@@ -620,7 +649,7 @@ describe('ContentTypesEditComponent', () => {
             fieldsReturnByServer[0].columns[0].fields = newFieldsAdded;
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(fieldsReturnByServer));
+            spyOn(fieldService, 'saveFields').and.returnValue(of(fieldsReturnByServer));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -660,7 +689,7 @@ describe('ContentTypesEditComponent', () => {
             layout.push(newRow);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'saveFields').and.returnValue(observableOf(layout));
+            spyOn(fieldService, 'saveFields').and.returnValue(of(layout));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -692,9 +721,7 @@ describe('ContentTypesEditComponent', () => {
             ];
             const fieldService = fixture.debugElement.injector.get(FieldService);
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-            spyOn(fieldService, 'saveFields').and.returnValue(
-                observableThrowError(mockResponseView(403))
-            );
+            spyOn(fieldService, 'saveFields').and.returnValue(throwError(mockResponseView(403)));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -710,7 +737,7 @@ describe('ContentTypesEditComponent', () => {
             layout[0].columns[0].fields = layout[0].columns[0].fields.slice(-1);
 
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'deleteFields').and.returnValue(observableOf({ fields: layout }));
+            spyOn(fieldService, 'deleteFields').and.returnValue(of({ fields: layout }));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -733,9 +760,7 @@ describe('ContentTypesEditComponent', () => {
         it('should handle remove field error', () => {
             spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
             const fieldService = fixture.debugElement.injector.get(FieldService);
-            spyOn(fieldService, 'deleteFields').and.returnValue(
-                observableThrowError(mockResponseView(403))
-            );
+            spyOn(fieldService, 'deleteFields').and.returnValue(throwError(mockResponseView(403)));
 
             const contentTypeFieldsDropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
 
@@ -765,7 +790,7 @@ describe('ContentTypesEditComponent', () => {
                     fields: [{ hello: 'world' }]
                 });
 
-                spyOn(crudService, 'putData').and.returnValue(observableOf(responseContentType));
+                spyOn(crudService, 'putData').and.returnValue(of(responseContentType));
 
                 contentTypeForm.triggerEventHandler('onSubmit', fakeContentType);
 
@@ -785,9 +810,7 @@ describe('ContentTypesEditComponent', () => {
 
             it('should handle error', () => {
                 spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
-                spyOn(crudService, 'putData').and.returnValue(
-                    observableThrowError(mockResponseView(403))
-                );
+                spyOn(crudService, 'putData').and.returnValue(throwError(mockResponseView(403)));
 
                 contentTypeForm.triggerEventHandler('onSubmit', fakeContentType);
 

@@ -2,7 +2,7 @@ import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
-import { DotCMSContentType } from 'dotcms-models';
+import { DotCMSContentType, DotSystemActionType, DotSystemActionMappings } from 'dotcms-models';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
 import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
@@ -322,7 +322,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private createContentType(value: DotCMSContentType): void {
-        const createdContentType = this.replaceWorkflowsProp({
+        const createdContentType = this.cleanUpFormValue({
             ...value
         });
 
@@ -355,7 +355,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private updateContentType(value: DotCMSContentType): void {
-        const updatedContentType = this.replaceWorkflowsProp({
+        const updatedContentType = this.cleanUpFormValue({
             ...value,
             id: this.data.id
         });
@@ -375,9 +375,24 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     // The Content Types endpoint returns workflows (plural) but receive workflow (singular)
-    private replaceWorkflowsProp(value: DotCMSContentType): { [key: string]: any } {
-        value['workflow'] = value.workflows.map((workflow: DotWorkflow) => workflow.id);
-        delete value.workflows;
+    private cleanUpFormValue(value: DotCMSContentType): { [key: string]: any } {
+        if (value.workflows) {
+            value['workflow'] = this.getWorkflowsIds(value.workflows);
+            delete value.workflows;
+        }
+
+        if (this.isSystemActionsMappingsEmpty(value.systemActionMappings)) {
+            delete value.systemActionMappings;
+        }
+
         return value;
+    }
+
+    private isSystemActionsMappingsEmpty(systemActionMappings: DotSystemActionMappings): boolean {
+        return systemActionMappings && systemActionMappings[DotSystemActionType.NEW] === '';
+    }
+
+    private getWorkflowsIds(workflows: DotWorkflow[]): string[] {
+        return workflows.map((workflow: DotWorkflow) => workflow.id);
     }
 }

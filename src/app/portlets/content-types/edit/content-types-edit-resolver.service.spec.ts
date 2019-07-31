@@ -148,8 +148,7 @@ describe('ContentTypeEditResolver', () => {
                     system: false,
                     variable: null,
                     versionable: false,
-                    workflows: [],
-                    systemActionMappings: {}
+                    workflows: []
                 });
             });
     });

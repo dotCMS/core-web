@@ -29,7 +29,7 @@ import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
 import { ContentTypesFormComponent } from './content-types-form.component';
-import { DotSystemActionType, DotCMSContentType } from 'dotcms-models';
+import { DotSystemActionType } from 'dotcms-models';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -50,6 +50,7 @@ import {
     dotcmsContentTypeBasicMock
 } from '@tests/dot-content-types.mock';
 import { DotWorkflowsActionsSelectorFieldModule } from '@components/_common/dot-workflows-actions-selector-field/dot-workflows-actions-selector-field.module';
+import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
 
 @Component({
     selector: 'dot-site-selector-field',
@@ -381,7 +382,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('fixed')).not.toBeNull();
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
-        const workflowAction = comp.form.get('systemActionMap');
+        const workflowAction = comp.form.get('systemActionMappings');
         expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
 
         expect(comp.form.get('detailPage')).toBeNull();
@@ -431,52 +432,93 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
 
-        const workflowAction = comp.form.get('systemActionMap');
+        const workflowAction = comp.form.get('systemActionMappings');
         expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
     });
 
     it('should set value to the form', () => {
         spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
 
-        const fakeData: DotCMSContentType = {
-            ...dotcmsContentTypeBasicMock,
-            baseType: 'CONTENT',
+        const base = {
             clazz: 'clazz',
             defaultType: false,
             description: 'description',
-            detailPage: 'detail-page',
             expireDateVar: 'expireDateVar',
             fixed: false,
             folder: 'SYSTEM_FOLDER',
             host: 'host-id',
-            id: '123',
             name: 'name',
             publishDateVar: 'publishDateVar',
             system: false,
-            urlMapPattern: '/url/map',
-            workflows: [
-                {
-                    ...mockWorkflows[0],
-                    id: 'workflow-id'
-                }
-            ],
-            systemActionMappings: {
-                [DotSystemActionType.NEW]: ''
-            }
+            detailPage: 'detail-page',
+            urlMapPattern: '/url/map'
         };
 
-        comp.data = fakeData;
+        comp.data = {
+            ...dotcmsContentTypeBasicMock,
+            ...base,
+            baseType: 'CONTENT'
+        };
         comp.layout = layout;
 
         fixture.detectChanges();
 
-        const { id, baseType, workflows, ...formValue } = fakeData;
-        formValue['workflows'] = [
-            {
-                id: 'workflow-id'
-            }
-        ];
-        expect(comp.form.value).toEqual(formValue);
+        expect(comp.form.value).toEqual({
+            ...base,
+            systemActionMappings: {
+                NEW: ''
+            },
+            workflows: [
+                {
+                    ...mockWorkflows[2],
+                    creationDate: jasmine.any(Date),
+                    modDate: jasmine.any(Date)
+                }
+            ]
+        });
+    });
+
+    describe('systemActionMappings', () => {
+        beforeEach(() => {
+            spyOn(dotLicenseService, 'isEnterprise').and.returnValue(observableOf(true));
+        });
+
+        it('should set value to the form with systemActionMappings', () => {
+            comp.data = {
+                ...dotcmsContentTypeBasicMock,
+                baseType: 'CONTENT',
+                systemActionMappings: {
+                    NEW: {
+                        identifier: '',
+                        systemAction: '',
+                        workflowAction: mockWorkflowsActions[0],
+                        owner: null,
+                        ownerContentType: false,
+                        ownerScheme: false
+                    }
+                }
+            };
+
+            fixture.detectChanges();
+
+            expect(comp.form.get('systemActionMappings').value).toEqual({
+                NEW: '44d4d4cd-c812-49db-adb1-1030be73e69a'
+            });
+        });
+
+        it('should set value to the form with systemActionMappings with empty object', () => {
+            comp.data = {
+                ...dotcmsContentTypeBasicMock,
+                baseType: 'CONTENT',
+                systemActionMappings: {}
+            };
+
+            fixture.detectChanges();
+
+            expect(comp.form.get('systemActionMappings').value).toEqual({
+                NEW: ''
+            });
+        });
     });
 
     it('should render extra fields for content types', () => {
@@ -627,7 +669,7 @@ describe('ContentTypesFormComponent', () => {
                 host: '',
                 defaultType: false,
                 fixed: false,
-                folder: null,
+                folder: '',
                 system: false,
                 name: 'A content type name',
                 workflows: [
@@ -644,7 +686,7 @@ describe('ContentTypesFormComponent', () => {
                         system: true
                     }
                 ],
-                systemActionMap: { NEW: '' },
+                systemActionMappings: { NEW: '' },
                 detailPage: '',
                 urlMapPattern: ''
             });
@@ -671,7 +713,7 @@ describe('ContentTypesFormComponent', () => {
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflows').disabled).toBe(true);
                     expect(
-                        comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
+                        comp.form.get('systemActionMappings').get(DotSystemActionType.NEW).disabled
                     ).toBe(true);
                 });
             });
@@ -687,7 +729,7 @@ describe('ContentTypesFormComponent', () => {
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflows').disabled).toBe(false);
                     expect(
-                        comp.form.get('systemActionMap').get(DotSystemActionType.NEW).disabled
+                        comp.form.get('systemActionMappings').get(DotSystemActionType.NEW).disabled
                     ).toBe(false);
                 });
             });

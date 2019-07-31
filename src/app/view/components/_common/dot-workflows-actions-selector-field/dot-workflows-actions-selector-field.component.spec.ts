@@ -132,7 +132,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
 
                 it('should have basics', () => {
                     expect(dropdown.appendTo).toBe('body');
-                    expect(dropdown.filter).toBe(true);
+                    expect(dropdown.group).toBe(true);
                     expect(dropdown.placeholder).toBe('Select an action');
                     expect(dropdown.style).toEqual({ width: '100%' });
                     expect(dropdown.autoDisplayFirst).toBe(false);

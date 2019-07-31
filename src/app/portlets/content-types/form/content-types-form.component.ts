@@ -196,16 +196,15 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         return this.isNewDateVarFields(dateVarOptions) ? dateVarOptions : [];
     }
 
-    // tslint:disable-next-line: cyclomatic-complexity
     private initFormGroup(): void {
         this.form = this.fb.group({
+            defaultType: this.data.defaultType,
+            fixed: this.data.fixed,
+            system: this.data.system,
             clazz: this.getProp(this.data.clazz),
             description: this.getProp(this.data.description),
             host: this.getProp(this.data.host),
-            defaultType: this.data.defaultType,
-            fixed: this.data.fixed,
-            folder: this.data.folder,
-            system: this.data.system,
+            folder: this.getProp(this.data.folder),
             expireDateVar: [{ value: this.getProp(this.data.expireDateVar), disabled: true }],
             name: [this.getProp(this.data.name), [Validators.required]],
             publishDateVar: [{ value: this.getProp(this.data.publishDateVar), disabled: true }],
@@ -215,7 +214,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                     disabled: true
                 }
             ],
-            systemActionMap: this.fb.group({
+            systemActionMappings: this.fb.group({
                 [DotSystemActionType.NEW]: [
                     {
                         value: this.data.systemActionMappings
@@ -237,7 +236,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     private getActionIdentifier(actionMap: DotSystemActionMappings): string {
         if (Object.keys(actionMap).length) {
             const item = actionMap[DotSystemActionType.NEW];
-            return typeof item !== 'string' ? item.identifier : '';
+            return typeof item !== 'string' ? item.workflowAction.id : '';
         }
 
         return '';
@@ -332,7 +331,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
 
     private enableWorkflowFormControls(): void {
         const workflowControl = this.form.get('workflows');
-        const workflowActionControl = this.form.get('systemActionMap').get(DotSystemActionType.NEW);
+        const workflowActionControl = this.form
+            .get('systemActionMappings')
+            .get(DotSystemActionType.NEW);
 
         workflowControl.enable();
         workflowActionControl.enable();
