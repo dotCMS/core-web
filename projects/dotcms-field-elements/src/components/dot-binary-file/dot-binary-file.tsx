@@ -213,7 +213,7 @@ export class DotBinaryFileComponent {
 
     render() {
         return (
-            <Fragment >
+            <Fragment>
                 <dot-label
                     label={this.label}
                     required={this.required}
