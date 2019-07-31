@@ -63,6 +63,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
     form: FormGroup;
     nameFieldLabel: Observable<string>;
     workflowsSelected$: Observable<string[]>;
+    messagesKey: { [key: string]: string } = {};
 
     private originalValue: DotCMSContentType;
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -97,7 +98,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                 'dot.common.message.field.required'
             ])
             .pipe(take(1))
-            .subscribe();
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+            });
     }
 
     ngOnInit(): void {

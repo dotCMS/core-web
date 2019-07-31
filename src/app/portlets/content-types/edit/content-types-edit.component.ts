@@ -204,7 +204,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Check if we need to update or create a content type
      *
-     * @param * value;
+     * @param {DotCMSContentType} value
      * @memberof ContentTypesEditComponent
      */
     handleFormSubmit(value: DotCMSContentType): void {

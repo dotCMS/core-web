@@ -22,6 +22,7 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     options$: Observable<DotCMSWorkflow[]>;
     value: DotCMSWorkflow[] = [];
     disabled = false;
+    messagesKey: { [key: string]: string } = {};
 
     constructor(
         private dotWorkflowService: DotWorkflowService,
@@ -45,7 +46,10 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     ngOnInit() {
         this.options$ = this.dotMessageService
             .getMessages(['dot.common.select.workflows', 'dot.common.archived'])
-            .pipe(mergeMap(() => this.dotWorkflowService.get()));
+            .pipe(mergeMap((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+                return this.dotWorkflowService.get();
+            }));
     }
 
     /**

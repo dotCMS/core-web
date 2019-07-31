@@ -12,7 +12,8 @@ export class DotWorkflowsActionsService {
     /**
      * Return a list of actions based on the workflows received
      *
-     * @param {string[]} workflows
+     * @param {DotCMSWorkflow[]} [workflows=[]]
+     * @returns {Observable<DotCMSWorkflowAction[]>}
      * @memberof DotWorkflowsActionsService
      */
     getByWorkflows(workflows: DotCMSWorkflow[] = []): Observable<DotCMSWorkflowAction[]> {
