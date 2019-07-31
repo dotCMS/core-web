@@ -175,6 +175,8 @@ export class SearchableDropdownComponent
                 this.overlayPanelMinHeight = this.searchPanelRef.container
                     .getBoundingClientRect()
                     .height.toString();
+
+                console.log('this.overlayPanelMinHeight', this.overlayPanelMinHeight);
             }
         }, 0);
         this.show.emit();
