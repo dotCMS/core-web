@@ -3,7 +3,7 @@ import { CoreWebService } from 'dotcms-js';
 import { pluck } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflowAction, DotCMSWorkflow } from 'dotcms-models';
 
 @Injectable()
 export class DotWorkflowsActionsService {
@@ -15,7 +15,7 @@ export class DotWorkflowsActionsService {
      * @param {string[]} workflows
      * @memberof DotWorkflowsActionsService
      */
-    getByWorkflows(workflows: DotWorkflow[] = []): Observable<DotWorkflowAction[]> {
+    getByWorkflows(workflows: DotCMSWorkflow[] = []): Observable<DotCMSWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Post,
@@ -31,10 +31,10 @@ export class DotWorkflowsActionsService {
      * Returns the workflow actions of the passed inode
      *
      * @param {string} inode
-     * @returns {Observable<DotWorkflowAction[]>}
+     * @returns {Observable<DotCMSWorkflowAction[]>}
      * @memberof DotWorkflowsActionsService
      */
-    getByInode(inode: string): Observable<DotWorkflowAction[]> {
+    getByInode(inode: string): Observable<DotCMSWorkflowAction[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -43,7 +43,7 @@ export class DotWorkflowsActionsService {
             .pipe(pluck('entity'));
     }
 
-    private getWorkFlowId(workflow: DotWorkflow): string {
+    private getWorkFlowId(workflow: DotCMSWorkflow): string {
         return workflow && workflow.id;
     }
 }

@@ -2,11 +2,17 @@ import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
-import { DotCMSContentType, DotSystemActionType, DotSystemActionMappings } from 'dotcms-models';
+import {
+    DotCMSContentType,
+    DotCMSSystemActionType,
+    DotCMSSystemActionMappings,
+    DotCMSContentTypeField,
+    DotCMSContentTypeLayoutRow,
+    DotCMSWorkflow
+} from 'dotcms-models';
 import { ContentTypesFormComponent } from '../form';
 import { CrudService } from '@services/crud';
 import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
-import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -22,7 +28,6 @@ import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
 import { DotEditContentTypeCacheService } from '../fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { DotWorkflow } from 'projects/dotcms-models/src/public_api';
 
 /**
  * Portlet component for edit content types
@@ -388,11 +393,13 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
         return value;
     }
 
-    private isSystemActionsMappingsEmpty(systemActionMappings: DotSystemActionMappings): boolean {
-        return systemActionMappings && systemActionMappings[DotSystemActionType.NEW] === '';
+    private isSystemActionsMappingsEmpty(
+        systemActionMappings: DotCMSSystemActionMappings
+    ): boolean {
+        return systemActionMappings && systemActionMappings[DotCMSSystemActionType.NEW] === '';
     }
 
-    private getWorkflowsIds(workflows: DotWorkflow[]): string[] {
-        return workflows.map((workflow: DotWorkflow) => workflow.id);
+    private getWorkflowsIds(workflows: DotCMSWorkflow[]): string[] {
+        return workflows.map((workflow: DotCMSWorkflow) => workflow.id);
     }
 }

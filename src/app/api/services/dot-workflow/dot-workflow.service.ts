@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CoreWebService } from 'dotcms-js';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
-import { DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflow } from 'dotcms-models';
 
 /**
  * Provide util methods to get Workflows.
@@ -20,7 +20,7 @@ export class DotWorkflowService {
      * @returns Observable<SelectItem[]>
      * @memberof DotWorkflowService
      */
-    get(): Observable<DotWorkflow[]> {
+    get(): Observable<DotCMSWorkflow[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
@@ -35,10 +35,10 @@ export class DotWorkflowService {
      * @returns Observable<DotWorkflow>
      * @memberof DotWorkflowService
      */
-    getSystem(): Observable<DotWorkflow> {
+    getSystem(): Observable<DotCMSWorkflow> {
         return this.get().pipe(
-            switchMap((workflows: DotWorkflow[]) =>
-                workflows.filter((workflow: DotWorkflow) => workflow.system)
+            switchMap((workflows: DotCMSWorkflow[]) =>
+                workflows.filter((workflow: DotCMSWorkflow) => workflow.system)
             ),
             take(1)
         );

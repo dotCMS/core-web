@@ -1,5 +1,5 @@
-import { DotSystemActionMappings } from '../dot-workflow-action';
-import { DotWorkflow } from '../dot-workflow';
+import { DotCMSSystemActionMappings } from '../dot-workflow-action';
+import { DotCMSWorkflow } from '../dot-workflow';
 
 export interface DotCMSContentType {
     baseType: string;
@@ -25,8 +25,8 @@ export interface DotCMSContentType {
     urlMapPattern?: string;
     variable: string;
     versionable: boolean;
-    workflows: DotWorkflow[];
-    systemActionMappings?: DotSystemActionMappings;
+    workflows: DotCMSWorkflow[];
+    systemActionMappings?: DotCMSSystemActionMappings;
 }
 
 export interface DotCMSContentTypeField {

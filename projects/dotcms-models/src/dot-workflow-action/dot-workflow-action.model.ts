@@ -1,6 +1,6 @@
 import { DotCMSContentType } from '../dot-content-types';
 
-export interface DotWorkflowAction {
+export interface DotCMSWorkflowAction {
     assignable: boolean;
     commentable: boolean;
     condition: string;
@@ -17,7 +17,7 @@ export interface DotWorkflowAction {
     showOn: string[];
 }
 
-export enum DotSystemActionType {
+export enum DotCMSSystemActionType {
     UNPUBLISH = 'UNPUBLISH',
     UNARCHIVE = 'UNARCHIVE',
     PUBLISH = 'PUBLISH',
@@ -28,14 +28,14 @@ export enum DotSystemActionType {
     ARCHIVE = 'ARCHIVE'
 }
 
-export interface DotSystemActionMappings {
-    [key: string]: DotSystemAction | string;
+export interface DotCMSSystemActionMappings {
+    [key: string]: DotCMSSystemAction | string;
 }
 
-export interface DotSystemAction {
+export interface DotCMSSystemAction {
     identifier: string;
     systemAction: string;
-    workflowAction: DotWorkflowAction;
+    workflowAction: DotCMSWorkflowAction;
     owner: DotCMSContentType;
     ownerContentType: boolean;
     ownerScheme: boolean;

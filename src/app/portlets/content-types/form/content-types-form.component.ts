@@ -20,12 +20,12 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import {
+    DotCMSContentType,
     DotCMSContentTypeField,
     DotCMSContentTypeLayoutRow,
-    DotSystemActionType,
-    DotWorkflow,
-    DotCMSContentType,
-    DotSystemActionMappings
+    DotCMSSystemActionMappings,
+    DotCMSSystemActionType,
+    DotCMSWorkflow
 } from 'dotcms-models';
 import { FieldUtil } from '../fields/util/field-util';
 
@@ -215,7 +215,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
                 }
             ],
             systemActionMappings: this.fb.group({
-                [DotSystemActionType.NEW]: [
+                [DotCMSSystemActionType.NEW]: [
                     {
                         value: this.data.systemActionMappings
                             ? this.getActionIdentifier(this.data.systemActionMappings)
@@ -233,9 +233,9 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         this.workflowsSelected$ = this.form.get('workflows').valueChanges;
     }
 
-    private getActionIdentifier(actionMap: DotSystemActionMappings): string {
+    private getActionIdentifier(actionMap: DotCMSSystemActionMappings): string {
         if (Object.keys(actionMap).length) {
-            const item = actionMap[DotSystemActionType.NEW];
+            const item = actionMap[DotCMSSystemActionType.NEW];
             return typeof item !== 'string' ? item.workflowAction.id : '';
         }
 
@@ -251,7 +251,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
             this.dotWorkflowService
                 .getSystem()
                 .pipe(take(1))
-                .subscribe((workflow: DotWorkflow) => {
+                .subscribe((workflow: DotCMSWorkflow) => {
                     this.form.get('workflows').setValue([workflow]);
                 });
         }
@@ -333,7 +333,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         const workflowControl = this.form.get('workflows');
         const workflowActionControl = this.form
             .get('systemActionMappings')
-            .get(DotSystemActionType.NEW);
+            .get(DotCMSSystemActionType.NEW);
 
         workflowControl.enable();
         workflowActionControl.enable();
@@ -341,7 +341,7 @@ export class ContentTypesFormComponent implements OnInit, OnDestroy {
         if (this.originalValue) {
             this.originalValue.workflows = workflowControl.value;
             this.originalValue.systemActionMappings = {};
-            this.originalValue.systemActionMappings[DotSystemActionType.NEW] =
+            this.originalValue.systemActionMappings[DotCMSSystemActionType.NEW] =
                 workflowActionControl.value;
         }
         this.setSaveState();

@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectItemGroup } from 'primeng/primeng';
 
-import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflowAction, DotCMSWorkflow } from 'dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotWorkflowsActionsSelectorFieldService } from './services/dot-workflows-actions-selector-field.service';
 
 interface DropdownEvent {
     originalEvent: MouseEvent;
-    value: DotWorkflowAction;
+    value: DotCMSWorkflowAction;
 }
 
 @Component({
@@ -27,7 +27,7 @@ interface DropdownEvent {
 })
 export class DotWorkflowsActionsSelectorFieldComponent
     implements ControlValueAccessor, OnChanges, OnInit {
-    @Input() workflows: DotWorkflow[];
+    @Input() workflows: DotCMSWorkflow[];
 
     actions$: Observable<SelectItemGroup[]>;
     disabled = false;

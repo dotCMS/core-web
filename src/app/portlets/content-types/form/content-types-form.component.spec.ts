@@ -29,7 +29,7 @@ import { DotcmsConfig, LoginService } from 'dotcms-js';
 import { SiteService } from 'dotcms-js';
 
 import { ContentTypesFormComponent } from './content-types-form.component';
-import { DotSystemActionType } from 'dotcms-models';
+import { DotCMSSystemActionType, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotMessageService } from '@services/dot-messages-service';
 import { ContentTypesInfoService } from '@services/content-types-info';
@@ -44,7 +44,6 @@ import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
-import { DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import {
     dotcmsContentTypeFieldBasicMock,
     dotcmsContentTypeBasicMock
@@ -383,7 +382,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('system')).not.toBeNull();
         expect(comp.form.get('folder')).not.toBeNull();
         const workflowAction = comp.form.get('systemActionMappings');
-        expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
+        expect(workflowAction.get(DotCMSSystemActionType.NEW)).not.toBeNull();
 
         expect(comp.form.get('detailPage')).toBeNull();
         expect(comp.form.get('urlMapPattern')).toBeNull();
@@ -433,7 +432,7 @@ describe('ContentTypesFormComponent', () => {
         expect(comp.form.get('folder')).not.toBeNull();
 
         const workflowAction = comp.form.get('systemActionMappings');
-        expect(workflowAction.get(DotSystemActionType.NEW)).not.toBeNull();
+        expect(workflowAction.get(DotCMSSystemActionType.NEW)).not.toBeNull();
     });
 
     it('should set value to the form', () => {
@@ -713,7 +712,8 @@ describe('ContentTypesFormComponent', () => {
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflows').disabled).toBe(true);
                     expect(
-                        comp.form.get('systemActionMappings').get(DotSystemActionType.NEW).disabled
+                        comp.form.get('systemActionMappings').get(DotCMSSystemActionType.NEW)
+                            .disabled
                     ).toBe(true);
                 });
             });
@@ -729,7 +729,8 @@ describe('ContentTypesFormComponent', () => {
                     expect(workflowMsg).toBeDefined();
                     expect(comp.form.get('workflows').disabled).toBe(false);
                     expect(
-                        comp.form.get('systemActionMappings').get(DotSystemActionType.NEW).disabled
+                        comp.form.get('systemActionMappings').get(DotCMSSystemActionType.NEW)
+                            .disabled
                     ).toBe(false);
                 });
             });

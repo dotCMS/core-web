@@ -4,7 +4,7 @@ import { MockBackend } from '@angular/http/testing';
 import { DotWorkflowsActionsService } from './dot-workflows-actions.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
-import { DotWorkflowAction } from 'dotcms-models';
+import { DotCMSWorkflowAction } from 'dotcms-models';
 import { mockWorkflows } from '@tests/dot-workflow-service.mock';
 
 describe('DotWorkflowsActionsService', () => {
@@ -23,11 +23,11 @@ describe('DotWorkflowsActionsService', () => {
     });
 
     it('should get actions by workflows', () => {
-        let result: DotWorkflowAction[];
+        let result: DotCMSWorkflowAction[];
 
         dotWorkflowActionsService
             .getByWorkflows(mockWorkflows)
-            .subscribe((actions: DotWorkflowAction[]) => {
+            .subscribe((actions: DotCMSWorkflowAction[]) => {
                 result = actions;
             });
 

@@ -1,7 +1,7 @@
 import { mergeMap } from 'rxjs/operators';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { Observable } from 'rxjs';
-import { DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflow } from 'dotcms-models';
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -19,8 +19,8 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
     ]
 })
 export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor, OnInit {
-    options$: Observable<DotWorkflow[]>;
-    value: DotWorkflow[] = [];
+    options$: Observable<DotCMSWorkflow[]>;
+    value: DotCMSWorkflow[] = [];
     disabled = false;
 
     constructor(
@@ -32,8 +32,9 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
 
     /**
      * Set the function to be called when the control receives a change event.
-     * @param any fn
-     * @memberof SearchableDropdownComponent
+     *
+     * @param {*} fn
+     * @memberof DotWorkflowsSelectorFieldComponent
      */
     registerOnChange(fn): void {
         this.propagateChange = fn;
@@ -50,10 +51,10 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
     /**
      * Update value on change of the multiselect
      *
-     * @param string[] value
+     * @param {DotCMSWorkflow[]} value
      * @memberof DotWorkflowsSelectorFieldComponent
      */
-    handleChange(value: DotWorkflow[]): void {
+    handleChange(value: DotCMSWorkflow[]): void {
         this.propagateChange(value);
     }
 
@@ -69,10 +70,11 @@ export class DotWorkflowsSelectorFieldComponent implements ControlValueAccessor,
 
     /**
      * Write a new value to the element
-     * @param * value
-     * @memberof SearchableDropdownComponent
+     *
+     * @param {DotCMSWorkflow[]} value
+     * @memberof DotWorkflowsSelectorFieldComponent
      */
-    writeValue(value: DotWorkflow[]): void {
+    writeValue(value: DotCMSWorkflow[]): void {
         this.value = value;
     }
 }

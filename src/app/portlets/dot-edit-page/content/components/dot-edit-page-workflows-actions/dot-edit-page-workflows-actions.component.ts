@@ -9,7 +9,7 @@ import {
     EventEmitter
 } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { DotWorkflowAction } from 'dotcms-models';
+import { DotCMSWorkflowAction } from 'dotcms-models';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
@@ -54,17 +54,17 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
 
     private getWorkflowActions(inode: string): Observable<MenuItem[]> {
         return this.dotWorkflowsActionsService.getByInode(inode).pipe(
-            tap((workflows: DotWorkflowAction[]) => {
+            tap((workflows: DotCMSWorkflowAction[]) => {
                 this.actionsAvailable = !!workflows.length;
             }),
-            map((newWorkflows: DotWorkflowAction[]) => {
+            map((newWorkflows: DotCMSWorkflowAction[]) => {
                 return newWorkflows.length !== 0 ? this.getWorkflowOptions(newWorkflows) : [];
             })
         );
     }
 
-    private getWorkflowOptions(workflows: DotWorkflowAction[]): MenuItem[] {
-        return workflows.map((workflow: DotWorkflowAction) => {
+    private getWorkflowOptions(workflows: DotCMSWorkflowAction[]): MenuItem[] {
+        return workflows.map((workflow: DotCMSWorkflowAction) => {
             return {
                 label: workflow.name,
                 command: () => {

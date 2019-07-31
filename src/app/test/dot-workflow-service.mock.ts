@@ -1,8 +1,8 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflow } from 'dotcms-models';
 import * as _ from 'lodash';
 
-export const mockWorkflows: DotWorkflow[] = [
+export const mockWorkflows: DotCMSWorkflow[] = [
     {
         id: '85c1515c-c4f3-463c-bac2-860b8fcacc34',
         creationDate: new Date(1522938093320),
@@ -42,12 +42,12 @@ export const mockWorkflows: DotWorkflow[] = [
 ];
 
 export class DotWorkflowServiceMock {
-    get(): Observable<DotWorkflow[]> {
+    get(): Observable<DotCMSWorkflow[]> {
         return observableOf(_.cloneDeep(mockWorkflows));
     }
 
-    getSystem(): Observable<DotWorkflow> {
-        const systemWorkflow = mockWorkflows.filter((workflow: DotWorkflow) => workflow.system);
+    getSystem(): Observable<DotCMSWorkflow> {
+        const systemWorkflow = mockWorkflows.filter((workflow: DotCMSWorkflow) => workflow.system);
         return observableOf(_.cloneDeep(systemWorkflow[0]));
     }
 

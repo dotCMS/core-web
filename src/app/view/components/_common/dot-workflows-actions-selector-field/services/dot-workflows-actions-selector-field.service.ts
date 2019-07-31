@@ -5,7 +5,7 @@ import { map, take, catchError } from 'rxjs/operators';
 import { SelectItemGroup, SelectItem } from 'primeng/primeng';
 
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
-import { DotWorkflowAction, DotWorkflow } from 'dotcms-models';
+import { DotCMSWorkflowAction, DotCMSWorkflow } from 'dotcms-models';
 import { ResponseView } from 'dotcms-js/dotcms-js';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 
@@ -31,16 +31,16 @@ export class DotWorkflowsActionsSelectorFieldService {
     /**
      * Update the actions with workflows passed
      *
-     * @param {DotWorkflow[]} workflows
+     * @param {DotCMSWorkflow[]} workflows
      * @memberof DotWorkflowsActionsSelectorFieldService
      */
-    load(workflows: DotWorkflow[]): void {
+    load(workflows: DotCMSWorkflow[]): void {
         if (workflows && workflows.length) {
             this.dotWorkflowsActionsService
                 .getByWorkflows(workflows)
                 .pipe(
                     take(1),
-                    map((actions: DotWorkflowAction[]) =>
+                    map((actions: DotCMSWorkflowAction[]) =>
                         this.getSelectItemGroups(workflows, actions)
                     ),
                     catchError((err: ResponseView) =>
@@ -56,10 +56,10 @@ export class DotWorkflowsActionsSelectorFieldService {
     }
 
     private getSelectItemGroups(
-        workflows: DotWorkflow[],
-        actions: DotWorkflowAction[]
+        workflows: DotCMSWorkflow[],
+        actions: DotCMSWorkflowAction[]
     ): SelectItemGroup[] {
-        return workflows.map((workflow: DotWorkflow) => {
+        return workflows.map((workflow: DotCMSWorkflow) => {
             const { label, value } = this.getSelectItem(workflow);
 
             return {
@@ -70,7 +70,7 @@ export class DotWorkflowsActionsSelectorFieldService {
         });
     }
 
-    private getSelectItem({ name, id }: DotWorkflowAction | DotWorkflow): SelectItem {
+    private getSelectItem({ name, id }: DotCMSWorkflowAction | DotCMSWorkflow): SelectItem {
         return {
             label: name,
             value: id
@@ -78,9 +78,9 @@ export class DotWorkflowsActionsSelectorFieldService {
     }
 
     private getActionsByWorkflowId(
-        { id }: DotWorkflow,
-        actions: DotWorkflowAction[]
-    ): DotWorkflowAction[] {
-        return actions.filter((action: DotWorkflowAction) => action.schemeId === id);
+        { id }: DotCMSWorkflow,
+        actions: DotCMSWorkflowAction[]
+    ): DotCMSWorkflowAction[] {
+        return actions.filter((action: DotCMSWorkflowAction) => action.schemeId === id);
     }
 }

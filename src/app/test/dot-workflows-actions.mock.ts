@@ -1,7 +1,7 @@
-import { DotWorkflowAction } from 'dotcms-models';
+import { DotCMSWorkflowAction } from 'dotcms-models';
 
 
-export const mockWorkflowsActions: DotWorkflowAction[] = [
+export const mockWorkflowsActions: DotCMSWorkflowAction[] = [
     {
         assignable: true,
         commentable: true,
