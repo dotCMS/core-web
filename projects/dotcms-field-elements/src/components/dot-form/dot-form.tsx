@@ -45,10 +45,9 @@ export class DotFormComponent {
     @State() status: DotFieldStatus = getOriginalStatus();
     @State() errorMessage = '';
     @State() uploadFileInProgress = false;
-    @State() value = {};
 
     private fieldsStatus: { [key: string]: { [key: string]: boolean } } = {};
-
+    private value = {};
     /**
      * Update the form value when valueChange in any of the child fields.
      *
@@ -109,7 +108,6 @@ export class DotFormComponent {
     render() {
         return (
             <Fragment>
-                VALUE: {this.value}
                 <dot-form-error-message>{this.errorMessage}</dot-form-error-message>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     {this.layout.map((row: DotCMSContentTypeLayoutRow) => (
