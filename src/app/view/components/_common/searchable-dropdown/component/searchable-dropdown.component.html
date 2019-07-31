@@ -27,8 +27,8 @@
     appendTo="body"
     [style]="{ 'min-height': overlayPanelMinHeight + 'px' }"
     [styleClass]="cssClass"
-    (onShow)="showDialogHandler()"
-    (onHide)="hideDialogHandler()"
+    (onShow)="showOverlayHandler()"
+    (onHide)="hideOverlayHandler()"
 >
     <header class="searchable-dropdown__search">
         <div class="searchable-dropdown__search-section">
@@ -36,7 +36,7 @@
             <input
                 #searchInput
                 pInputText
-                [placeholder]="i18nMessages['search']"
+                [placeholder]="searchPlaceholder$ | async"
                 type="text"
                 class="searchable-dropdown__search-inputfield"
                 (click)="$event.stopPropagation()"

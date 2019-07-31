@@ -1,4 +1,4 @@
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import {
     Component,
     ElementRef,
@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import { OverlayPanel, PrimeTemplate } from 'primeng/primeng';
 import * as _ from 'lodash';
 
@@ -109,14 +109,12 @@ export class SearchableDropdownComponent
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
     disabled = false;
-    externalSelectTemplate: TemplateRef<any>;
     externalItemListTemplate: TemplateRef<any>;
-    i18nMessages: {
-        [key: string]: string;
-    } = {};
+    externalSelectTemplate: TemplateRef<any>;
     label: string;
-    overlayPanelMinHeight: string;
     options: any[];
+    overlayPanelMinHeight: string;
+    searchPlaceholder$: Observable<string>;
     value: any;
     valueString = '';
 
@@ -132,9 +130,9 @@ export class SearchableDropdownComponent
     }
 
     ngOnInit(): void {
-        this.dotMessageService.getMessages(['search']).subscribe((res) => {
-            this.i18nMessages = res;
-        });
+        this.searchPlaceholder$ = this.dotMessageService.getMessages(['search']).pipe(
+            map((messages) => messages['search'])
+        );
         fromEvent(this.searchInput.nativeElement, 'keyup')
             .pipe(debounceTime(500))
             .subscribe((keyboardEvent: Event) => {
@@ -153,30 +151,31 @@ export class SearchableDropdownComponent
     }
 
     /**
-     * Emits Hide event and clears any value on filter's input
+     * Emits hide event and clears any value on filter's input
+     *
      * @memberof SearchableDropdownComponent
      */
-    hideDialogHandler(): void {
+    hideOverlayHandler(): void {
         if (this.searchInput.nativeElement.value.length) {
             this.searchInput.nativeElement.value = '';
-            this.paginate({});
+            this.paginate(null);
         }
         this.hide.emit();
     }
 
     /**
-     * Emits Show event, sets min Height of overlay panel based on content and add css class if paginator present
+     * Emits show event, sets height of overlay panel based on content
+     * and add css class if paginator present
+     *
      * @memberof SearchableDropdownComponent
      */
-    showDialogHandler(): void {
+    showOverlayHandler(): void {
         this.cssClass += this.totalRecords > this.rows ? ' paginator' : '';
         setTimeout(() => {
             if (!this.overlayPanelMinHeight) {
                 this.overlayPanelMinHeight = this.searchPanelRef.container
                     .getBoundingClientRect()
                     .height.toString();
-
-                console.log('this.overlayPanelMinHeight', this.overlayPanelMinHeight);
             }
         }, 0);
         this.show.emit();
@@ -184,10 +183,11 @@ export class SearchableDropdownComponent
 
     /**
      * Call when the current page is changed
-     * @param any event
+     *
+     * @param {PaginationEvent} event
      * @memberof SearchableDropdownComponent
      */
-    paginate(event): void {
+    paginate(event: PaginationEvent): void {
         const paginationEvent = Object.assign({}, event);
         paginationEvent.filter = this.searchInput.nativeElement.value;
         this.pageChange.emit(paginationEvent);
@@ -204,7 +204,8 @@ export class SearchableDropdownComponent
 
     /**
      * Set the function to be called when the control receives a change event.
-     * @param any fn
+     *
+     * @param {*} fn
      * @memberof SearchableDropdownComponent
      */
     registerOnChange(fn): void {
@@ -216,8 +217,9 @@ export class SearchableDropdownComponent
     /**
      * Get labels from container, if labelPropertyName is an array then loop through it and returns
      * a string containing the labels joining by "-" if is not just returns a label
-     * @param DotContainer container
-     * @returns string
+     *
+     * @param {*} dropDownItem
+     * @returns {string}
      * @memberof SearchableDropdownComponent
      */
     getItemLabel(dropDownItem: any): string {
@@ -244,9 +246,10 @@ export class SearchableDropdownComponent
     }
 
     /**
-     * Call when a option is clicked, if this option is not the same of the current value then
-     * the change events is emitted. If multiple is true allow to emit the same value.
-     * @param any item
+     * Call when a option is clicked, if this option is not the same of the current value then the
+     * change events is emitted. If multiple is true allow to emit the same value.
+     *
+     * @param {*} item
      * @memberof SearchableDropdownComponent
      */
     handleClick(item: any): void {
@@ -261,7 +264,8 @@ export class SearchableDropdownComponent
 
     /**
      * Shows or hide the list of options.
-     * @param MouseEvent event
+     *
+     * @param {MouseEvent} [$event]
      * @memberof SearchableDropdownComponent
      */
     toggleOverlayPanel($event?: MouseEvent): void {
@@ -279,13 +283,7 @@ export class SearchableDropdownComponent
         this.disabled = isDisabled;
     }
 
-    /**
-     * Return the component's label
-     *
-     * @returns {string} compoenent's label
-     * @memberof SearchableDropdownComponent
-     */
-    setLabel(): void {
+    private setLabel(): void {
         this.valueString = this.value
             ? this.value[this.getValueLabelPropertyName()]
             : this.placeholder;
