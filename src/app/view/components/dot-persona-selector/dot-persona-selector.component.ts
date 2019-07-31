@@ -95,9 +95,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                this.value = { ...defaultVisitorPersona,
-                    name: this.messagesKey['modes.persona.no.persona']
-                };
                 this.getPersonasList();
             });
     }
