@@ -213,7 +213,7 @@ export class DotBinaryFileComponent {
 
     render() {
         return (
-            <Fragment>
+            <Fragment >
                 <dot-label
                     label={this.label}
                     required={this.required}
@@ -222,6 +222,9 @@ export class DotBinaryFileComponent {
                 >
                     {this.previewImageName ? (
                         <dot-binary-file-preview
+                            onClick={(e: MouseEvent) => {
+                                e.preventDefault();
+                            }}
                             fileName={this.previewImageName}
                             previewUrl={this.previewImageUrl}
                         />

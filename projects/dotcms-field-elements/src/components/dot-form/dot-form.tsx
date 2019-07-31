@@ -45,9 +45,9 @@ export class DotFormComponent {
     @State() status: DotFieldStatus = getOriginalStatus();
     @State() errorMessage = '';
     @State() uploadFileInProgress = false;
+    @State() value = {};
 
     private fieldsStatus: { [key: string]: { [key: string]: boolean } } = {};
-    private value = {};
 
     /**
      * Update the form value when valueChange in any of the child fields.
@@ -61,7 +61,9 @@ export class DotFormComponent {
         const { name, value } = event.detail;
         const process = fieldCustomProcess[tagName];
         if (tagName === 'DOT-BINARY-FILE' && value) {
-            this.uploadFile(event);
+            this.uploadFile(event).then(tempFile => {
+                this.value[name] = tempFile.id;
+            });
         } else {
             this.value[name] = process ? process(value) : value;
         }
@@ -107,6 +109,7 @@ export class DotFormComponent {
     render() {
         return (
             <Fragment>
+                VALUE: {this.value}
                 <dot-form-error-message>{this.errorMessage}</dot-form-error-message>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     {this.layout.map((row: DotCMSContentTypeLayoutRow) => (
@@ -200,25 +203,25 @@ export class DotFormComponent {
         );
     }
 
-    private uploadFile(event: CustomEvent): void {
+    private uploadFile(event: CustomEvent): Promise<DotTempFile> {
         const uploadService = new DotUploadService();
-        const { name, value } = event.detail;
+        const value = event.detail.value;
         const binary: DotBinaryFileComponent = (event.target as unknown) as DotBinaryFileComponent;
-
         this.uploadFileInProgress = true;
-        this.errorMessage = '';
-        uploadService
+        return uploadService
             .uploadFile(value)
             .then((tempFile: DotTempFile) => {
-                this.value[name] = tempFile.id;
+                this.errorMessage = '';
                 binary.previewImageUrl = tempFile.thumbnailUrl;
                 binary.previewImageName = tempFile.fileName;
                 this.uploadFileInProgress = false;
+                return tempFile;
             })
             .catch(({ message, status }: DotHttpErrorResponse) => {
                 binary.clearValue();
                 this.uploadFileInProgress = false;
                 this.errorMessage = message || fallbackErrorMessages[status];
+                return null;
             });
     }
 }
