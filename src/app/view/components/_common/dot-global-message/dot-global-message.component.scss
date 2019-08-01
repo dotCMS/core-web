@@ -1,11 +1,55 @@
 @import "primeng-theme/utils/theme-variables";
 
 :host {
-    display: flex;
     opacity: 0;
     transition: $basic-speed * 2;
     border-right: solid 1px $gray-bg;
-    padding-right: $basic-padding * 2;
+    padding-right: $basic-padding * 3;
+
+    & > * {
+        vertical-align: baseline;
+    }
+    dot-icon {
+        margin-right: $basic-padding;
+    }
+
+    &.loading {
+        //.spinner {
+        //    border-color: ;
+        //}
+
+        dot-spinner {
+            height: 18px;
+            width: 18px;
+            margin-right: $basic-padding;
+
+            svg {
+                stroke: $brand-primary;
+            }
+        }
+
+        .dot-global-message__text {
+            color: $brand-primary;
+        }
+    }
+
+    &.check_circle {
+        dot-icon {
+            color: $success;
+        }
+    }
+
+    &.warning {
+        dot-icon {
+            color: $warn;
+        }
+    }
+
+    &.error {
+        dot-icon {
+            color: $error;
+        }
+    }
 }
 
 :host(.dot-global-message--visible) {
@@ -21,4 +65,28 @@
     line-height: 19px;
     vertical-align: top;
     color: $gray;
+}
+
+.spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    margin-right: $basic-padding;
+    border-top-color: $brand-primary;
+    animation: dot-spin 1s ease-in-out infinite;
+}
+
+@keyframes dot-spin {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes dot-spin {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

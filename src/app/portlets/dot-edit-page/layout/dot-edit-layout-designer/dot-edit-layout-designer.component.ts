@@ -24,7 +24,7 @@ import {
     DotHttpErrorManagerService,
     DotHttpErrorHandled
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { tap, take, takeUntil } from 'rxjs/operators';
+import {tap, take, takeUntil, delay} from 'rxjs/operators';
 import { DotLayoutBody } from '@portlets/dot-edit-page/shared/models/dot-layout-body.model';
 
 @Component({
@@ -174,10 +174,10 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
 
         this.pageViewService
             .save(this.pageState.page.identifier, this.form.value)
-            .pipe(take(1))
+            .pipe(take(1), delay(19000))
             .subscribe(
                 (updatedPage: DotRenderedPage) => {
-                    this.dotGlobalMessageService.display(
+                    this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
                     );
                     this.setupLayout(

@@ -38,6 +38,7 @@ import { DotWorkflowTaskDetailModule } from './view/components/dot-workflow-task
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotMessageDisplayModule } from '@components/dot-message-display/dot-message-display.module';
 import { DotToolbarModule } from '@components/dot-toolbar/dot-toolbar.module';
+import { DotSpinnerModule } from '@components/_common/dot-spinner/dot-spinner.module';
 
 export const CUSTOM_MODULES = [
     DotToolbarModule,
@@ -54,7 +55,8 @@ export const CUSTOM_MODULES = [
     ListingDataTableModule,
     SearchableDropDownModule,
     DotSiteSelectorModule,
-    DotLargeMessageDisplayModule
+    DotLargeMessageDisplayModule,
+    DotSpinnerModule
 ];
 
 export const NGFACES_MODULES = [

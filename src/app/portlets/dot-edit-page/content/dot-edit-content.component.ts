@@ -1,6 +1,6 @@
 import { empty as observableEmpty, Observable, Subject, fromEvent } from 'rxjs';
 
-import { concatMap, catchError, filter, takeUntil, pluck, take } from 'rxjs/operators';
+import {concatMap, catchError, filter, takeUntil, pluck, take, delay} from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -107,7 +107,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 },
                 'error-saving-menu-order': () => {
                     this.reorderMenuUrl = '';
-                    this.dotGlobalMessageService.display(
+                    this.dotGlobalMessageService.error(
                         this.dotMessageService.get('an-unexpected-system-error-occurred')
                     );
                 },
@@ -233,7 +233,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     .save(this.pageState.page.identifier, model)
                     .pipe(take(1))
                     .subscribe(() => {
-                        this.dotGlobalMessageService.display(
+                        this.dotGlobalMessageService.success(
                             this.dotMessageService.get('dot.common.message.saved')
                         );
                         this.reload();
@@ -269,9 +269,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         );
         this.dotEditPageService
             .save(this.pageState.page.identifier, event.model)
-            .pipe(take(1))
+            .pipe(take(1), delay(50000))
             .subscribe(() => {
-                this.dotGlobalMessageService.display(
+                this.dotGlobalMessageService.success(
                     this.dotMessageService.get('dot.common.message.saved')
                 );
                 if (event.type !== PageModelChangeEventType.MOVE_CONTENT && this.pageState.page.remoteRendered) {
