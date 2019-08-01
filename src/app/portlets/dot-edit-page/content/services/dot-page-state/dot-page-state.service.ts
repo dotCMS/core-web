@@ -14,11 +14,11 @@ import {
 import { DotRenderedPage } from '../../../shared/models/dot-rendered-page.model';
 import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
-import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 
 @Injectable()
 export class DotPageStateService {
-    reload$: Subject<DotRenderedPage> = new Subject<DotRenderedPage>();
+    state$: Subject<DotRenderedPageState> = new Subject<DotRenderedPageState>();
 
     constructor(
         private dotRenderHTMLService: DotRenderHTMLService,
@@ -29,52 +29,38 @@ export class DotPageStateService {
     /**
      * Set the page state
      *
-     * @param DotRenderedPage page
-     * @param DotEditPageState state
-     * @returns Observable<any>
-     * @memberof DotRenderHTMLService
+     * @param {DotPage} page
+     * @param {DotPageState} state
+     * @memberof DotPageStateService
      */
-    set(
-        page: DotPage,
-        state: DotPageState,
-        viewAs?: DotEditPageViewAs
-    ): Observable<DotRenderedPageState> {
+    set(page: DotPage, state: DotPageState): void {
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
+
         const pageOpts: DotRenderPageOptions = {
             url: page.pageURI,
             mode: state.mode,
-            viewAs: this.dotRenderHTMLService.getDotEditPageViewAsParams(viewAs)
         };
+
         const pageMode$: Observable<DotRenderedPage> =
             state.mode !== undefined ? this.dotRenderHTMLService.get(pageOpts) : observableOf(null);
 
-        return lockUnlock$.pipe(
-            mergeMap(() =>
-                pageMode$.pipe(
-                    map(
-                        (updatedPage: DotRenderedPage) =>
-                            new DotRenderedPageState(
-                                this.loginService.auth.loginAsUser || this.loginService.auth.user,
-                                updatedPage
-                            )
+        lockUnlock$
+            .pipe(
+                mergeMap(() =>
+                    pageMode$.pipe(
+                        map(
+                            (updatedPage: DotRenderedPage) =>
+                                new DotRenderedPageState(
+                                    this.loginService.auth.loginAsUser ||
+                                        this.loginService.auth.user,
+                                    updatedPage
+                                )
+                        )
                     )
                 )
             )
-        );
-    }
-
-    /**
-     * Get page state
-     *
-     * @param string url
-     * @param number [languageId]
-     * @memberof DotPageStateService
-     */
-    reload(options: DotRenderPageOptions): void {
-        this.get(options)
-            .pipe(take(1))
-            .subscribe((page: DotRenderedPageState) => {
-                this.reload$.next(page);
+            .subscribe((dotRenderedPageState: DotRenderedPageState) => {
+                this.state$.next(dotRenderedPageState);
             });
     }
 
@@ -86,24 +72,40 @@ export class DotPageStateService {
      * @returns Observable<DotRenderedPageState>
      * @memberof DotPageStateService
      */
-    get(options: DotRenderPageOptions | string): Observable<DotRenderedPageState> {
+    get(options: DotRenderPageOptions | string): void {
         if (typeof options === 'string') {
             options = {
                 url: options
             };
         }
 
-        return this.dotRenderHTMLService
-            .get(options)
-            .pipe(
-                map(
-                    (page: DotRenderedPage) =>
-                        new DotRenderedPageState(
-                            this.loginService.auth.loginAsUser || this.loginService.auth.user,
-                            page
-                        )
-                )
-            );
+        this.requestPage(options).subscribe((pageState: DotRenderedPageState) => {
+            this.state$.next(pageState);
+        });
+    }
+
+    requestPage(options: DotRenderPageOptions): Observable<DotRenderedPageState> {
+        return this.dotRenderHTMLService.get(options).pipe(
+            take(1),
+            // tslint:disable-next-line: cyclomatic-complexity
+            map((page: DotRenderedPage) => {
+                const pageState = new DotRenderedPageState(
+                    this.loginService.auth.loginAsUser || this.loginService.auth.user,
+                    page
+                );
+
+                if (
+                    pageState.viewAs.persona &&
+                    !pageState.viewAs.persona.personalized &&
+                    pageState.viewAs.mode === PageMode.EDIT
+                ) {
+                    pageState.state.mode = PageMode.PREVIEW;
+                    pageState.state.locked = false;
+                }
+
+                return pageState;
+            })
+        );
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {

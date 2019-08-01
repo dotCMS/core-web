@@ -67,9 +67,9 @@ export class DotRenderHTMLService {
         });
     }
 
-    public get(options: DotRenderPageOptions): Observable<DotRenderedPage> {
+    get(options: DotRenderPageOptions): Observable<DotRenderedPage> {
         const params: RenderPageServerParam = {
-            ...options.mode ? { mode: this.getPageModeString(options.mode) } : {},
+            ...(options.mode ? { mode: this.getPageModeString(options.mode) } : {}),
             ...(options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {})
         };
 
@@ -82,7 +82,7 @@ export class DotRenderHTMLService {
             .pipe(pluck('entity'));
     }
 
-    public getDotEditPageViewAsParams(viewAs: DotEditPageViewAs): DotEditPageViewAsParams {
+    getDotEditPageViewAsParams(viewAs: DotEditPageViewAs): DotEditPageViewAsParams {
         return viewAs
             ? {
                   persona_id: this.getPropertyValue(viewAs.persona, 'identifier'),
@@ -102,11 +102,13 @@ export class DotRenderHTMLService {
     // tslint:disable-next-line:cyclomatic-complexity
     private getOptionalViewAsParams(viewAsConfig: DotEditPageViewAsParams) {
         const options: any = {
-            ...viewAsConfig.persona_id ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id } : {},
-            ...viewAsConfig.device_inode ? { 'device_inode': viewAsConfig.device_inode } : {}
+            ...(viewAsConfig.persona_id
+                ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id }
+                : {}),
+            ...(viewAsConfig.device_inode ? { device_inode: viewAsConfig.device_inode } : {})
         };
 
-        if (viewAsConfig.language_id ) {
+        if (viewAsConfig.language_id) {
             options.language_id = viewAsConfig.language_id;
         }
 

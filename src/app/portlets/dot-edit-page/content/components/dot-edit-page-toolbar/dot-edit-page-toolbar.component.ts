@@ -37,10 +37,13 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     @Output()
     changeViewAs = new EventEmitter<DotEditPageViewAs>();
+
     @Output()
     changeState = new EventEmitter<DotEditPageState>();
+
     @Output()
     actionFired = new EventEmitter<any>();
+
     @Output()
     whatschange = new EventEmitter<boolean>();
 

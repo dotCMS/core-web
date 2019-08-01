@@ -129,7 +129,7 @@ describe('DotEditPageMainComponent', () => {
         spyOn(component, 'pageState');
         spyOn(dotPageStateService, 'reload').and.callThrough();
 
-        component.pageState.subscribe((res) => {
+        component.pageState$.subscribe((res) => {
             expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
         });
 
