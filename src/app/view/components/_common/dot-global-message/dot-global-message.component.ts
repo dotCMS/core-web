@@ -40,7 +40,6 @@ export class DotGlobalMessageComponent implements OnInit {
             .subscribe((event: DotEvent) => {
                 this.message = event.data;
                 this.visibility = true;
-                // this.dotLoadingIndicatorService.show();
                 this.message.type = this.icons[this.message.type] || '';
                 if (this.message.life) {
                     setTimeout(() => {

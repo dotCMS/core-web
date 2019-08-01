@@ -1,6 +1,6 @@
 import { empty as observableEmpty, Observable, Subject, fromEvent } from 'rxjs';
 
-import {concatMap, catchError, filter, takeUntil, pluck, take, delay} from 'rxjs/operators';
+import { concatMap, catchError, filter, takeUntil, pluck, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -269,7 +269,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         );
         this.dotEditPageService
             .save(this.pageState.page.identifier, event.model)
-            .pipe(take(1), delay(50000))
+            .pipe(take(1))
             .subscribe(() => {
                 this.dotGlobalMessageService.success(
                     this.dotMessageService.get('dot.common.message.saved')
