@@ -566,7 +566,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private setPageState(pageState: DotRenderedPageState): void {
-        console.log('setPageState', pageState);
         this.pageState = pageState;
         this.showIframe = false;
 

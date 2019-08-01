@@ -87,8 +87,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             name: this.messagesKey['modes.persona.no.persona']
         };
 
-        console.log('ngOnChanges', changes.value.firstChange)
-
         if (!changes.value.firstChange) {
             this.getPersonasList();
         }
@@ -107,7 +105,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                console.log('ngOnInit')
                 this.getPersonasList();
             });
     }
@@ -118,7 +115,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     handleFilterChange(filter: string): void {
-        console.log('handleFilterChange')
         this.getPersonasList(filter);
     }
 
@@ -128,7 +124,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     handlePageChange(event): void {
-        console.log('handlePageChange')
         this.getPersonasList(event.filter, event.first);
     }
 
@@ -139,7 +134,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
-        console.log('getPersonasList')
         // Set filter if undefined
         this.paginationService.filter = filter;
         this.paginationService
