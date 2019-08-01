@@ -19,13 +19,11 @@ export class DotRenderedPageState {
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
 
-        const ngModeName = dotRenderedPage.viewAs.mode.replace('_MODE', '');
-        const mode = ngModeName === 'ADMIN' ? PageMode.LIVE : PageMode[ngModeName];
 
         this._state = {
             locked: locked,
             lockedByAnotherUser: lockedByAnotherUser,
-            mode: mode
+            mode: dotRenderedPage.viewAs.mode
         };
     }
 

@@ -24,13 +24,15 @@
 
 <p-overlayPanel
     #searchPanel
-    appendTo="body"
-    [style]="{ 'min-height': overlayPanelMinHeight + 'px' }"
-    [styleClass]="cssClass"
-    (onShow)="showOverlayHandler()"
     (onHide)="hideOverlayHandler()"
+    (onShow)="showOverlayHandler()"
+    [dismissable]="true"
+    [styleClass]="cssClass"
+    [style]="{ 'min-height': overlayPanelMinHeight + 'px' }"
+    appendTo="body"
 >
     <header class="searchable-dropdown__search">
+
         <div class="searchable-dropdown__search-section">
             <dot-icon class="searchable-dropdown__search-icon" name="search"></dot-icon>
             <input

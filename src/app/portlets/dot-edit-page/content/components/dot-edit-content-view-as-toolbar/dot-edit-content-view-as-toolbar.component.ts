@@ -23,6 +23,9 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Output()
     changeViewAs = new EventEmitter<DotEditPageViewAs>();
 
+    @Output()
+    deletePersonalization = new EventEmitter<DotPersona>();
+
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
 

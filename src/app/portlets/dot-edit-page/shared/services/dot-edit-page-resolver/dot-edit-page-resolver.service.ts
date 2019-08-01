@@ -14,6 +14,7 @@ import {
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
+import { PageMode } from '../../models/page-mode.enum';
 
 /**
  * With the url return a string of the edit page html
@@ -39,19 +40,30 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
             return this.dotPageStateService
                 .get({
                     url: route.queryParams.url,
-                    ...(route.queryParams.language_id ? { viewAs: {language_id: route.queryParams.language_id}} : {})
+                    ...(route.queryParams.language_id
+                        ? { viewAs: { language_id: route.queryParams.language_id } }
+                        : {})
                 })
                 .pipe(
                     take(1),
+                    // tslint:disable-next-line: cyclomatic-complexity
                     switchMap((dotRenderedPageState: DotRenderedPageState) => {
                         const currentSection = route.children[0].url[0].path;
                         const isLayout = currentSection === 'layout';
 
-                        if (isLayout) {
-                            return this.checkUserCanGoToLayout(dotRenderedPageState);
-                        } else {
-                            return of(dotRenderedPageState);
+                        if (
+                            dotRenderedPageState.viewAs.persona &&
+                            !dotRenderedPageState.viewAs.persona.personalized &&
+                            dotRenderedPageState.viewAs.mode === PageMode.EDIT
+                        ) {
+                            dotRenderedPageState.state.mode = PageMode.PREVIEW;
+                            dotRenderedPageState.state.locked = false;
                         }
+                            if (isLayout) {
+                                return this.checkUserCanGoToLayout(dotRenderedPageState);
+                            } else {
+                                return of(dotRenderedPageState);
+                            }
                     }),
                     catchError((err: ResponseView) => {
                         return this.errorHandler(err).pipe(map(() => null));

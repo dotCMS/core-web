@@ -19,6 +19,7 @@ import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-in
 import { DotEditPageViewAs } from '@shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 
 @Component({
     selector: 'dot-edit-page-toolbar',
@@ -42,6 +43,9 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     actionFired = new EventEmitter<any>();
     @Output()
     whatschange = new EventEmitter<boolean>();
+
+    @Output()
+    deletePersonalization = new EventEmitter<DotPersona>();
 
     isEnterpriseLicense$: Observable<boolean>;
     isPreview: boolean;

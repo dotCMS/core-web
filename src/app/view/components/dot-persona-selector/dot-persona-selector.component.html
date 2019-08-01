@@ -17,7 +17,7 @@
             [persona]="personaData"
             [selected]="value ? value.name === personaData.name : false"
             (change)="personaChange($event)"
-            (delete)="deletePersonalization($event)"
+            (delete)="delete.emit(personaData)"
         ></dot-persona-selector-option>
     </ng-template>
     <ng-template let-persona="item" pTemplate="select">

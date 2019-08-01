@@ -1,5 +1,5 @@
 export enum PageMode {
-    EDIT = 1,
-    PREVIEW = 2,
-    LIVE = 3
+    EDIT = 'EDIT_MODE',
+    PREVIEW = 'PREVIEW_MODE',
+    LIVE = 'ADMIN_MODE'
 }

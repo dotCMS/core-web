@@ -38,7 +38,7 @@ export const defaultVisitorPersona = {
     stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045',
     title: 'Default Visitor',
     titleImage: 'TITLE_IMAGE_NOT_FOUND',
-    working: false,
+    working: false
 };
 
 /**
@@ -56,11 +56,15 @@ export const defaultVisitorPersona = {
 export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     @Input()
     pageId: string;
+
     @Input()
     value: DotPersona;
 
     @Output()
     selected: EventEmitter<DotPersona> = new EventEmitter();
+
+    @Output()
+    delete: EventEmitter<DotPersona> = new EventEmitter();
 
     @ViewChild('searchableDropdown')
     searchableDropdown: SearchableDropdownComponent;
@@ -77,10 +81,18 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         public dotMessageService: DotMessageService
     ) {}
 
-    ngOnChanges(_changes: SimpleChanges): void {
-        this.value = this.value || { ...defaultVisitorPersona,
+    ngOnChanges(changes: SimpleChanges): void {
+        this.value = this.value || {
+            ...defaultVisitorPersona,
             name: this.messagesKey['modes.persona.no.persona']
         };
+
+        console.log('ngOnChanges', changes.value.firstChange)
+
+        if (!changes.value.firstChange) {
+            this.getPersonasList();
+        }
+
     }
 
     ngOnInit(): void {
@@ -95,6 +107,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
+                console.log('ngOnInit')
                 this.getPersonasList();
             });
     }
@@ -105,6 +118,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     handleFilterChange(filter: string): void {
+        console.log('handleFilterChange')
         this.getPersonasList(filter);
     }
 
@@ -114,6 +128,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     handlePageChange(event): void {
+        console.log('handlePageChange')
         this.getPersonasList(event.filter, event.first);
     }
 
@@ -124,12 +139,16 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     getPersonasList(filter = '', offset = 0): void {
+        console.log('getPersonasList')
         // Set filter if undefined
         this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe((items: DotPersona[]) => {
-            this.personas = items;
-            this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-        });
+        this.paginationService
+            .getWithOffset(offset)
+            .pipe(take(1))
+            .subscribe((items: DotPersona[]) => {
+                this.personas = items;
+                this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
+            });
     }
 
     /**
@@ -139,16 +158,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      */
     personaChange(persona: DotPersona): void {
         this.selected.emit(persona);
-        this.searchableDropdown.toggleOverlayPanel();
-    }
-
-    /**
-     * Call when the selected persona changed and the change event is emmited
-     * @param DotPersona persona
-     * @memberof DotPersonaSelectorComponent
-     */
-    deletePersonalization(_persona: DotPersona): void {
-        // TODO: Confirm & call service
         this.searchableDropdown.toggleOverlayPanel();
     }
 }

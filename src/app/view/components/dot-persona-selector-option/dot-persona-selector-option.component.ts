@@ -11,10 +11,13 @@ import { take } from 'rxjs/operators';
 export class DotPersonaSelectorOptionComponent implements OnInit {
     @Input()
     persona: DotPersona;
+
     @Input()
     selected: boolean;
+
     @Output()
     change = new EventEmitter<DotPersona>();
+
     @Output()
     delete = new EventEmitter<DotPersona>();
 
