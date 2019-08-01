@@ -117,6 +117,7 @@ export class PaginatorService {
      * <url>/orderby=[sortField-value]&direction=[sortOrder-value]&filter=[filter-value]
      * @param url base url
      */
+    // tslint:disable-next-line:cyclomatic-complexity
     public get(url?: string): Observable<any[]> {
         const params: URLSearchParams = new URLSearchParams();
         if (this.filter) {
