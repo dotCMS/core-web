@@ -13,7 +13,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { ResponseView } from 'dotcms-js';
 import * as _ from 'lodash';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
-import { DotRenderedPage } from '../../shared/models/dot-rendered-page.model';
+import { DotPageRender } from '../../shared/models/dot-rendered-page.model';
 import { LoginService } from 'dotcms-js';
 import { DotLayoutSideBar } from '../../shared/models/dot-layout-sidebar.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -176,7 +176,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
             .save(this.pageState.page.identifier, this.form.value)
             .pipe(take(1))
             .subscribe(
-                (updatedPage: DotRenderedPage) => {
+                (updatedPage: DotPageRender) => {
                     this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
                     );

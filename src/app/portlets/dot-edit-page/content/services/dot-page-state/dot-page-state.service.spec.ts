@@ -7,10 +7,10 @@ import { LoginService } from 'dotcms-js';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPageStateService } from './dot-page-state.service';
-import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
+import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { DotRenderedPage } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { mockUser } from '../../../../../test/login-service.mock';
@@ -29,7 +29,7 @@ describe('DotPageStateService', () => {
         injector = DOTTestBed.configureTestingModule({
             providers: [
                 DotPageStateService,
-                DotRenderHTMLService,
+                DotPageRenderService,
                 DotContentletLockerService,
                 {
                     provide: LoginService,
@@ -72,7 +72,7 @@ describe('DotPageStateService', () => {
                 )
             );
 
-            const mockDotRenderedPageCopy: DotRenderedPage = _.cloneDeep(mockDotRenderedPage);
+            const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
             mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.LIVE];
 
             lastConnection[1].mockRespond(
@@ -281,7 +281,7 @@ describe('DotPageStateService', () => {
                     });
                 });
 
-                const mockDotRenderedPageCopy: DotRenderedPage = _.cloneDeep(mockDotRenderedPage);
+                const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
                 mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.EDIT];
 
                 lastConnection[0].mockRespond(
@@ -306,7 +306,7 @@ describe('DotPageStateService', () => {
                     });
                 });
 
-                const mockDotRenderedPageCopy: DotRenderedPage = _.cloneDeep(mockDotRenderedPage);
+                const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
                 mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.EDIT];
 
                 lastConnection[0].mockRespond(

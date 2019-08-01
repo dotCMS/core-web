@@ -1,4 +1,4 @@
-import { DotRenderedPage } from './dot-rendered-page.model';
+import { DotPageRender } from './dot-rendered-page.model';
 import { PageMode } from './page-mode.enum';
 import { User } from 'dotcms-js';
 import { DotPage } from './dot-page.model';
@@ -15,7 +15,7 @@ export interface DotPageState {
 export class DotRenderedPageState {
     private _state: DotPageState;
 
-    constructor(private _user: User, private dotRenderedPage: DotRenderedPage) {
+    constructor(private _user: User, private dotRenderedPage: DotPageRender) {
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
 

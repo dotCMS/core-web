@@ -13,7 +13,7 @@ import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
 import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
-import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
+import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
 import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-changed.module';
@@ -59,7 +59,7 @@ const routes: Routes = [
         DotEditContentHtmlService,
         DotEditContentToolbarHtmlService,
         DotEditPageService,
-        DotRenderHTMLService,
+        DotPageRenderService,
         DotWorkflowService,
         DotPersonalizeService
     ]

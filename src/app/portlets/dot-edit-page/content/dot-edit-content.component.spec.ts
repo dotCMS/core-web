@@ -28,7 +28,7 @@ import {
     DotRenderedPageState
 } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
-import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
+import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { LoginServiceMock, mockUser } from '../../../test/login-service.mock';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
@@ -40,7 +40,7 @@ import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock'
 import { mockResponseView } from '../../../test/response-view.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotEditPageDataService } from '@portlets/dot-edit-page/shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
-import { DotRenderedPage } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
+import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotPageContainer } from '@portlets/dot-edit-page/shared/models/dot-page-container.model';
@@ -173,7 +173,7 @@ describe('DotEditContentComponent', () => {
                 DotHttpErrorManagerService,
                 DotMenuService,
                 DotPageStateService,
-                DotRenderHTMLService,
+                DotPageRenderService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -644,7 +644,7 @@ describe('DotEditContentComponent', () => {
         it(
             'should set live mode',
             fakeAsync(() => {
-                const mockDotRenderedPageCopy: DotRenderedPage = _.cloneDeep(mockDotRenderedPage);
+                const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
                 mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.LIVE];
 
                 spyStateSet(new DotRenderedPageState(mockUser, mockDotRenderedPageCopy));
@@ -1012,7 +1012,7 @@ describe('DotEditContentComponent', () => {
             it(
                 'should go to edit-page and set data for the resolver',
                 fakeAsync(() => {
-                    const copyMockDotRenderedPage: DotRenderedPage = _.cloneDeep(
+                    const copyMockDotRenderedPage: DotPageRender = _.cloneDeep(
                         mockDotRenderedPage
                     );
                     copyMockDotRenderedPage.page.lockedBy = '123';

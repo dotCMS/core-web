@@ -7,7 +7,7 @@ import { DotEditLayoutModule } from './layout/dot-edit-layout.module';
 import { DotTemplateAdditionalActionsModule } from './layout/components/dot-template-additional-actions/dot-template-additional-actions.module';
 import { TemplateContainersCacheService } from './template-containers-cache.service';
 import { DotEditPageMainModule } from './main/dot-edit-page-main/dot-edit-page-main.module';
-import { DotRenderHTMLService } from '@services/dot-render-html/dot-render-html.service';
+import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { DotPageStateService } from './content/services/dot-page-state/dot-page-state.service';
 import { DotEditPageResolver } from './shared/services/dot-edit-page-resolver/dot-edit-page-resolver.service';
@@ -27,7 +27,7 @@ import { DotEditPageDataService } from './shared/services/dot-edit-page-resolver
         DotContentletLockerService,
         DotEditPageResolver,
         DotPageStateService,
-        DotRenderHTMLService,
+        DotPageRenderService,
         PageViewService,
         TemplateContainersCacheService,
         DotEditPageDataService
