@@ -231,7 +231,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     reload(): void {
-        this.dotPageStateService.get(this.route.snapshot.queryParams.url);
+        this.dotPageStateService.reload();
     }
 
     /**
@@ -327,20 +327,8 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveToPage(model: DotPageContainer[]): Observable<string> {
-        const persona = this.pageStateInternal.viewAs.persona;
-        let personalizedModel: DotPageContainerPersonalized[] = model;
-
-        if (persona.personalized) {
-            personalizedModel = model.map((con: DotPageContainer) => {
-                return {
-                    ...con,
-                    personaTag: persona.keyTag
-                };
-            });
-        }
-
         return this.dotEditPageService
-            .save(this.pageStateInternal.page.identifier, personalizedModel || model)
+            .save(this.pageStateInternal.page.identifier, this.getPersonalizedModel(model) || model)
             .pipe(
                 take(1),
                 tap(() => {
@@ -349,6 +337,20 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     );
                 })
             );
+    }
+
+    private getPersonalizedModel(model: DotPageContainer[]): DotPageContainerPersonalized[] {
+        const persona = this.pageStateInternal.viewAs.persona;
+
+        if (persona && persona.personalized) {
+            return model.map((container: DotPageContainer) => {
+                return {
+                    ...container,
+                    personaTag: persona.keyTag
+                };
+            });
+        }
+        return null;
     }
 
     private addContentlet($event: any): void {

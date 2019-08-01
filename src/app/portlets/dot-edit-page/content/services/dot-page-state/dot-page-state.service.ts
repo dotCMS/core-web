@@ -2,7 +2,7 @@ import { of as observableOf, Observable, Subject } from 'rxjs';
 
 import { mergeMap, pluck, take, map } from 'rxjs/operators';
 import { DotPage } from './../../../shared/models/dot-page.model';
-import { LoginService } from 'dotcms-js';
+import { LoginService, User } from 'dotcms-js';
 import {
     DotPageState,
     DotRenderedPageState
@@ -19,6 +19,7 @@ import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 @Injectable()
 export class DotPageStateService {
     state$: Subject<DotRenderedPageState> = new Subject<DotRenderedPageState>();
+    private currentState: DotRenderedPageState;
 
     constructor(
         private dotRenderHTMLService: DotRenderHTMLService,
@@ -26,19 +27,12 @@ export class DotPageStateService {
         private loginService: LoginService
     ) {}
 
-    /**
-     * Set the page state
-     *
-     * @param {DotPage} page
-     * @param {DotPageState} state
-     * @memberof DotPageStateService
-     */
     set(page: DotPage, state: DotPageState): void {
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
 
         const pageOpts: DotRenderPageOptions = {
             url: page.pageURI,
-            mode: state.mode,
+            mode: state.mode
         };
 
         const pageMode$: Observable<DotRenderedPage> =
@@ -60,27 +54,19 @@ export class DotPageStateService {
                 )
             )
             .subscribe((dotRenderedPageState: DotRenderedPageState) => {
-                this.state$.next(dotRenderedPageState);
+                this.setState(dotRenderedPageState);
             });
     }
 
-    /**
-     * Get page state
-     *
-     * @param string url
-     * @param number [languageId]
-     * @returns Observable<DotRenderedPageState>
-     * @memberof DotPageStateService
-     */
-    get(options: DotRenderPageOptions | string): void {
-        if (typeof options === 'string') {
-            options = {
-                url: options
-            };
-        }
-
+    get(options: DotRenderPageOptions): void {
         this.requestPage(options).subscribe((pageState: DotRenderedPageState) => {
-            this.state$.next(pageState);
+            this.setState(pageState);
+        });
+    }
+
+    reload(): void {
+        this.get({
+            url: this.currentState.page.pageURI
         });
     }
 
@@ -89,10 +75,7 @@ export class DotPageStateService {
             take(1),
             // tslint:disable-next-line: cyclomatic-complexity
             map((page: DotRenderedPage) => {
-                const pageState = new DotRenderedPageState(
-                    this.loginService.auth.loginAsUser || this.loginService.auth.user,
-                    page
-                );
+                const pageState = new DotRenderedPageState(this.getCurrentUser(), page);
 
                 if (
                     pageState.viewAs.persona &&
@@ -106,6 +89,15 @@ export class DotPageStateService {
                 return pageState;
             })
         );
+    }
+
+    private getCurrentUser(): User {
+        return this.loginService.auth.loginAsUser || this.loginService.auth.user;
+    }
+
+    private setState(state: DotRenderedPageState): void {
+        this.state$.next(state);
+        this.currentState = state;
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
