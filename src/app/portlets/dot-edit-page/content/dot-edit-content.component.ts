@@ -107,7 +107,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 },
                 'error-saving-menu-order': () => {
                     this.reorderMenuUrl = '';
-                    this.dotGlobalMessageService.error(
+                    this.dotGlobalMessageService.display(
                         this.dotMessageService.get('an-unexpected-system-error-occurred')
                     );
                 },

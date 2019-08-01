@@ -9,7 +9,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
  */
 @Injectable()
 export class DotGlobalMessageService {
-    private messageLife = 50000;
+    private messageLife = 3000;
 
     constructor(
         public dotMessageService: DotMessageService,
