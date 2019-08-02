@@ -10,7 +10,6 @@ import { SiteService } from 'dotcms-js';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditPageService } from '@services/dot-edit-page/dot-edit-page.service';
-import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -204,20 +203,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     settingPageState(newState: DotPageState): void {
         this.dotPageStateService.set(this.pageStateInternal.page, newState);
-    }
-
-    /**
-     * Handle changes in the configuration of "View As" toolbar
-     *
-     * @param DotEditPageViewAs viewAsConfig
-     * @memberof DotEditContentComponent
-     */
-    changeViewAsHandler(viewAsConfig: DotEditPageViewAs): void {
-        this.dotPageStateService.get({
-            url: this.route.snapshot.queryParams.url,
-            mode: this.pageStateInternal.state.mode,
-            viewAs: viewAsConfig
-        });
     }
 
     /**

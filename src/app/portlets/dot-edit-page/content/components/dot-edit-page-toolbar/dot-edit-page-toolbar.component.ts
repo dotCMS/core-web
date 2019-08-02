@@ -16,7 +16,6 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { PageMode } from '../../../shared/models/page-mode.enum';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
-import { DotEditPageViewAs } from '@shared/models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
@@ -33,9 +32,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
 
     @Input()
     pageState: DotRenderedPageState;
-
-    @Output()
-    changeViewAs = new EventEmitter<DotEditPageViewAs>();
 
     @Output()
     changeState = new EventEmitter<DotEditPageState>();

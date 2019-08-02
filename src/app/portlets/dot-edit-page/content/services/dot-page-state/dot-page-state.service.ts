@@ -16,6 +16,7 @@ import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 
 @Injectable()
 export class DotPageStateService {
@@ -116,6 +117,14 @@ export class DotPageStateService {
         this.get({
             viewAs: {
                 language
+            }
+        });
+    }
+
+    setDevice(device: DotDevice): void {
+        this.get({
+            viewAs: {
+                device
             }
         });
     }

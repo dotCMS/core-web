@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
@@ -15,9 +15,6 @@ import { DotPageStateService } from '../../services/dot-page-state/dot-page-stat
     styleUrls: ['./dot-edit-content-view-as-toolbar.component.scss']
 })
 export class DotEditContentViewAsToolbarComponent implements OnInit {
-    @Output()
-    changeViewAs = new EventEmitter<DotEditPageViewAs>();
-
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
 
@@ -79,6 +76,6 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      */
     changeDeviceHandler(device: DotDevice): void {
         this.value.device = device;
-        this.changeViewAs.emit(this.value);
+        this.dotPageStateService.setDevice(device);
     }
 }
