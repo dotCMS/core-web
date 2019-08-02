@@ -11,13 +11,13 @@
 
 .ui-overlaypanel-content {
     padding: $basic-padding * 2 0;
-}
 
-.ui-paginator-bottom {
-    bottom: 0;
-    padding-bottom: $basic-padding * 2;
-    position: absolute;
-    width: 100%;
+    .ui-paginator-bottom {
+        bottom: 0;
+        padding-bottom: $basic-padding * 2;
+        position: absolute;
+        width: 100%;
+    }
 }
 
 dot-searchable-dropdown {
