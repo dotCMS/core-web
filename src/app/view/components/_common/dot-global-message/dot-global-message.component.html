@@ -1,3 +1,3 @@
-<dot-icon *ngIf="this.message.type !== 'loading'" name="{{ message.type }}"></dot-icon>
-<dot-spinner  [size]="'18px'" [borderSize]="'3px'" *ngIf="this.message.type === 'loading'"></dot-spinner>
+<dot-spinner  [size]="'18px'" [borderSize]="'3px'" *ngIf="this.message.type === 'loading' else iconTemplate"></dot-spinner>
+<dot-icon #iconTemplate name="{{ message.type }}"></dot-icon>
 <span class="dot-global-message__text">{{ message.value }}</span>

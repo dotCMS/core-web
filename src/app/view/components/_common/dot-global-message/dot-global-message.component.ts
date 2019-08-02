@@ -36,7 +36,7 @@ export class DotGlobalMessageComponent implements OnInit {
     ngOnInit() {
         this.dotEventsService
             .listen('dot-global-message')
-            .pipe(filter(event => !!event.data))
+            .pipe(filter((event: DotEvent) => !!event.data))
             .subscribe((event: DotEvent) => {
                 this.message = event.data;
                 this.visibility = true;
