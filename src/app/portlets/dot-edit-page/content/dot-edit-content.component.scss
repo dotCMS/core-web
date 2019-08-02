@@ -24,7 +24,7 @@ dot-whats-changed,
     justify-content: space-between;
     padding: $basic-padding * 2;
 
-    & > * {
+    & > div {
         display: flex;
         align-items: center;
     }
