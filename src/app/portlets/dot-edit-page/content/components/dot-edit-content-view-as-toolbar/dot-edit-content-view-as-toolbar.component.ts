@@ -1,10 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-    OnInit
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
@@ -13,6 +7,7 @@ import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-s
 import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
+import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 
 @Component({
     selector: 'dot-edit-content-view-as-toolbar',
@@ -23,9 +18,6 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
     @Output()
     changeViewAs = new EventEmitter<DotEditPageViewAs>();
 
-    @Output()
-    deletePersonalization = new EventEmitter<DotPersona>();
-
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
 
@@ -34,7 +26,8 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
 
     constructor(
         private dotMessageService: DotMessageService,
-        private dotLicenseService: DotLicenseService
+        private dotLicenseService: DotLicenseService,
+        private dotPageStateService: DotPageStateService
     ) {}
 
     ngOnInit(): void {
@@ -64,7 +57,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      */
     changePersonaHandler(persona: DotPersona): void {
         this.value.persona = persona;
-        this.changeViewAs.emit(this.value);
+        this.dotPageStateService.setPersona(persona);
     }
 
     /**
@@ -74,7 +67,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * @memberof DotEditContentViewAsToolbarComponent
      */
     changeLanguageHandler(language: DotLanguage): void {
-        this.value.language = language;
+        this.value.language = language.id;
         this.changeViewAs.emit(this.value);
     }
 

@@ -33,7 +33,6 @@ import {
     PageModelChangeEventType
 } from './services/dot-edit-content-html/models';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
-import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -217,11 +216,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotPageStateService.get({
             url: this.route.snapshot.queryParams.url,
             mode: this.pageStateInternal.state.mode,
-            viewAs: {
-                persona_id: viewAsConfig.persona ? viewAsConfig.persona.identifier : null,
-                language_id: viewAsConfig.language.id,
-                device_inode: viewAsConfig.device ? viewAsConfig.device.inode : null
-            }
+            viewAs: viewAsConfig
         });
     }
 
@@ -274,18 +269,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     isPersonalized(pageState: DotRenderedPageState = null): boolean {
         const state: DotRenderedPageState = pageState || this.pageStateInternal;
         return state.viewAs.persona && state.viewAs.persona.personalized;
-    }
-
-    handleDeletePersonalization(persona: DotPersona): void {
-        const yes = confirm('Are you sure you want to remove the personalization?');
-
-        if (yes) {
-            this.dotPersonalizeService
-                .despersonalized(this.pageStateInternal.page.identifier, persona.keyTag)
-                .subscribe(() => {
-                    this.reload();
-                });
-        }
     }
 
     private shouldSetContainersHeight() {

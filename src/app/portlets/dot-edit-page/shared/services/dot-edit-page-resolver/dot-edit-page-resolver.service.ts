@@ -14,6 +14,7 @@ import {
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotEditPageDataService } from './dot-edit-page-data.service';
 import { take, switchMap, tap, catchError, map } from 'rxjs/operators';
+import { DotPageRenderOptions } from '@services/dot-page-render/dot-page-render.service';
 
 /**
  * With the url return a string of the edit page html
@@ -36,10 +37,14 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
         if (data) {
             return of(data);
         } else {
-            const options = {
+            const options: DotPageRenderOptions = {
                 url: route.queryParams.url,
                 ...(route.queryParams.language_id
-                    ? { viewAs: { language_id: route.queryParams.language_id } }
+                    ? {
+                          viewAs: {
+                              language: route.queryParams.language_id
+                          }
+                      }
                     : {})
             };
             return this.dotPageStateService.requestPage(options).pipe(

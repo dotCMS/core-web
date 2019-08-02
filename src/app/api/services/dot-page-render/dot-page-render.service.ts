@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
+import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 
 /**
  * Get a render page with the received params
@@ -25,9 +27,11 @@ export class DotPageRenderService {
      */
     get(options: DotPageRenderOptions): Observable<DotPageRender> {
         const params: DotPageRenderRequestParams = {
-            ...(options.mode ? { mode: this.getPageModeString(options.mode) } : {}),
+            ...options,
             ...(options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {})
         };
+
+        console.log('getting the page with', params);
 
         return this.coreWebService
             .requestView({
@@ -38,42 +42,35 @@ export class DotPageRenderService {
             .pipe(pluck('entity'));
     }
 
+    // REVISIT THIS METHOD
     // tslint:disable-next-line:cyclomatic-complexity
-    private getOptionalViewAsParams(viewAsConfig: DotPageRenderViewAsParams) {
+    private getOptionalViewAsParams(viewAsConfig: DotPageRenderOptionsViewAs) {
+        const personaIdentifier = viewAsConfig.persona && viewAsConfig.persona.identifier;
+        const deviceInode = viewAsConfig.device && viewAsConfig.device.inode;
+
         const options: any = {
-            ...(viewAsConfig.persona_id
-                ? { 'com.dotmarketing.persona.id': viewAsConfig.persona_id }
-                : {}),
-            ...(viewAsConfig.device_inode ? { device_inode: viewAsConfig.device_inode } : {})
+            ...(personaIdentifier ? { 'com.dotmarketing.persona.id': personaIdentifier } : {}),
+            ...(deviceInode ? { device_inode: deviceInode } : {})
         };
 
-        if (viewAsConfig.language_id) {
-            options.language_id = viewAsConfig.language_id;
+        if (viewAsConfig.language) {
+            options.language_id = viewAsConfig.language;
         }
 
         return options;
     }
+}
 
-    private getPageModeString(pageMode: PageMode): string {
-        const pageModeString = {};
-        pageModeString[PageMode.EDIT] = 'EDIT_MODE';
-        pageModeString[PageMode.PREVIEW] = 'PREVIEW_MODE';
-        pageModeString[PageMode.LIVE] = 'ADMIN_MODE';
-
-        return pageModeString[pageMode];
-    }
+export interface DotPageRenderOptionsViewAs {
+    persona?: DotPersona;
+    language?: number;
+    device?: DotDevice;
 }
 
 export interface DotPageRenderOptions {
-    url: string;
+    url?: string;
     mode?: PageMode;
-    viewAs?: DotPageRenderViewAsParams;
-}
-
-interface DotPageRenderViewAsParams {
-    persona_id?: string;
-    language_id?: number;
-    device_inode?: string;
+    viewAs?: DotPageRenderOptionsViewAs;
 }
 
 interface DotPageRenderRequestParams {

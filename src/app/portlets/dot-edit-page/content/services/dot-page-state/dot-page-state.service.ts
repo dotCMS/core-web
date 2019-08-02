@@ -14,6 +14,7 @@ import {
 import { DotPageRender } from '../../../shared/models/dot-rendered-page.model';
 import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
+import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 
 @Injectable()
@@ -28,6 +29,7 @@ export class DotPageStateService {
     ) {}
 
     set(page: DotPage, state: DotPageState): void {
+        console.log('set', state);
         const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
 
         const pageOpts: DotPageRenderOptions = {
@@ -36,7 +38,7 @@ export class DotPageStateService {
         };
 
         const pageMode$: Observable<DotPageRender> =
-            state.mode !== undefined ? this.dotPageRenderService.get(pageOpts) : observableOf(null);
+            state.mode !== undefined ? this.requestPage(pageOpts) : observableOf(null);
 
         lockUnlock$
             .pipe(
@@ -58,16 +60,18 @@ export class DotPageStateService {
             });
     }
 
-    get(options: DotPageRenderOptions): void {
+    get(options: DotPageRenderOptions = {}): void {
+        if (!options.url) {
+            options.url = this.currentState.page.pageURI;
+        }
+
         this.requestPage(options).subscribe((pageState: DotRenderedPageState) => {
             this.setState(pageState);
         });
     }
 
     reload(): void {
-        this.get({
-            url: this.currentState.page.pageURI
-        });
+        this.get();
     }
 
     requestPage(options: DotPageRenderOptions): Observable<DotRenderedPageState> {
@@ -76,19 +80,36 @@ export class DotPageStateService {
             // tslint:disable-next-line: cyclomatic-complexity
             map((page: DotPageRender) => {
                 const pageState = new DotRenderedPageState(this.getCurrentUser(), page);
-
-                if (
-                    pageState.viewAs.persona &&
-                    !pageState.viewAs.persona.personalized &&
-                    pageState.viewAs.mode === PageMode.EDIT
-                ) {
-                    pageState.state.mode = PageMode.PREVIEW;
-                    pageState.state.locked = false;
-                }
-
+                this.currentState = pageState;
                 return pageState;
             })
         );
+    }
+
+    setPersona(persona: DotPersona): void {
+        const options: DotPageRenderOptions = {
+            mode: this.currentState.viewAs.mode,
+            viewAs: {
+                persona
+            }
+        };
+
+        // All this logic to unlock the page and set a mode is because per UX we can't allow
+        // a non personalized page to show in EDIT MODE and locked, in other hand maybe we
+        // need to move this to the backend.
+        if (!persona.personalized && this.currentState.page.locked) {
+            options.mode = PageMode.PREVIEW;
+
+            this.dotContentletLockerService
+                .unlock(this.currentState.page.inode)
+                .pipe(
+                    take(1),
+                    pluck('message')
+                )
+                .subscribe(() => this.get(options));
+        } else {
+            this.get(options);
+        }
     }
 
     private getCurrentUser(): User {
@@ -97,7 +118,6 @@ export class DotPageStateService {
 
     private setState(state: DotRenderedPageState): void {
         this.state$.next(state);
-        this.currentState = state;
     }
 
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {

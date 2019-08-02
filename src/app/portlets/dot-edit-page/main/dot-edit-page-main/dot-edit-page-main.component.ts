@@ -81,7 +81,7 @@ export class DotEditPageMainComponent implements OnInit, OnDestroy {
                     this.dotPageStateService.get({
                         url: this.route.snapshot.queryParams.url,
                         viewAs: {
-                            language_id: pageState.page.languageId
+                            language: pageState.page.languageId
                         }
                     });
                 }
