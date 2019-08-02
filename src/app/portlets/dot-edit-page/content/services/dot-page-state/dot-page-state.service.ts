@@ -112,6 +112,14 @@ export class DotPageStateService {
         }
     }
 
+    setLanguage(language: number): void {
+        this.get({
+            viewAs: {
+                language
+            }
+        });
+    }
+
     private getCurrentUser(): User {
         return this.loginService.auth.loginAsUser || this.loginService.auth.user;
     }

@@ -66,9 +66,9 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * @param DotLanguage language
      * @memberof DotEditContentViewAsToolbarComponent
      */
-    changeLanguageHandler(language: DotLanguage): void {
-        this.value.language = language.id;
-        this.changeViewAs.emit(this.value);
+    changeLanguageHandler({ id }: DotLanguage): void {
+        this.value.language = id;
+        this.dotPageStateService.setLanguage(id);
     }
 
     /**
