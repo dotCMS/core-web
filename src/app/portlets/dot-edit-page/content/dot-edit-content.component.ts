@@ -111,7 +111,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 },
                 'error-saving-menu-order': () => {
                     this.reorderMenuUrl = '';
-                    this.dotGlobalMessageService.display(
+                    this.dotGlobalMessageService.error(
                         this.dotMessageService.get('an-unexpected-system-error-occurred')
                     );
                 },
@@ -295,14 +295,17 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveToPage(model: DotPageContainer[]): Observable<string> {
+        this.dotGlobalMessageService.loading(
+            this.dotMessageService.get('dot.common.message.saving')
+        );
         return this.dotEditPageService
             .save(this.pageStateInternal.page.identifier, this.getPersonalizedModel(model) || model)
             .pipe(
                 take(1),
                 tap(() => {
-                    this.dotGlobalMessageService.display(
-                        this.dotMessageService.get('dot.common.message.saved')
-                    );
+                    // this.dotGlobalMessageService.success(
+                    //     this.dotMessageService.get('dot.common.message.saved')
+                    // );
                 })
             );
     }
