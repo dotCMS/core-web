@@ -280,7 +280,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 );
                 if (
                     event.type !== PageModelChangeEventType.MOVE_CONTENT &&
-                    this.pageState.page.remoteRendered
+                    this.pageStateInternal.page.remoteRendered
                 ) {
                     this.reload();
                 }
