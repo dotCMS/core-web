@@ -10,11 +10,11 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 
 @Component({
-    selector: 'dot-edit-content-view-as-toolbar',
-    templateUrl: './dot-edit-content-view-as-toolbar.component.html',
-    styleUrls: ['./dot-edit-content-view-as-toolbar.component.scss']
+    selector: 'dot-edit-page-view-as-controller',
+    templateUrl: './dot-edit-page-view-as-controller.component.html',
+    styleUrls: ['./dot-edit-page-view-as-controller.component.scss']
 })
-export class DotEditContentViewAsToolbarComponent implements OnInit {
+export class DotEditPageViewAsControllerComponent implements OnInit {
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
 
@@ -50,7 +50,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * Handle the changes in Persona Selector.
      *
      * @param DotPersona persona
-     * @memberof DotEditContentViewAsToolbarComponent
+     * @memberof DotEditPageViewAsControllerComponent
      */
     changePersonaHandler(persona: DotPersona): void {
         this.value.persona = persona;
@@ -61,7 +61,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * Handle changes in Language Selector.
      *
      * @param DotLanguage language
-     * @memberof DotEditContentViewAsToolbarComponent
+     * @memberof DotEditPageViewAsControllerComponent
      */
     changeLanguageHandler({ id }: DotLanguage): void {
         this.value.language = id;
@@ -72,7 +72,7 @@ export class DotEditContentViewAsToolbarComponent implements OnInit {
      * Handle changes in Device Selector.
      *
      * @param DotDevice device
-     * @memberof DotEditContentViewAsToolbarComponent
+     * @memberof DotEditPageViewAsControllerComponent
      */
     changeDeviceHandler(device: DotDevice): void {
         this.value.device = device;

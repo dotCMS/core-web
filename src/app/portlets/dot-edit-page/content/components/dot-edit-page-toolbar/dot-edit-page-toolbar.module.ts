@@ -9,13 +9,14 @@ import {
 } from 'primeng/primeng';
 import { FormsModule } from '@angular/forms';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
-import { DotEditContentViewAsToolbarModule } from '../dot-edit-content-view-as-toolbar/dot-edit-content-view-as-toolbar.module';
+import { DotEditPageViewAsControllerModule } from '../dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
+
 
 @NgModule({
     imports: [
         CommonModule,
         CheckboxModule,
-        DotEditContentViewAsToolbarModule,
+        DotEditPageViewAsControllerModule,
         FormsModule,
         InputSwitchModule,
         SelectButtonModule,
