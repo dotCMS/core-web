@@ -67,7 +67,6 @@ export class DotEditLayoutAdvancedComponent implements OnInit {
                         this.dotGlobalMessageService.loading(
                             this.dotMessageService.get('dot.common.message.saving')
                         );
-                        debugger;
                     }
                 });
             }

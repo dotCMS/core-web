@@ -6,7 +6,7 @@ import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotSpinnerModule } from '@components/_common/dot-spinner/dot-spinner.module';
 import { By } from '@angular/platform-browser';
 
-fdescribe('DotGlobalMessageComponent', () => {
+describe('DotGlobalMessageComponent', () => {
     let component: DotGlobalMessageComponent;
     let fixture: ComponentFixture<DotGlobalMessageComponent>;
     let dotEventsService: DotEventsService;
