@@ -6,11 +6,10 @@
     border-right: solid 1px $gray-bg;
     padding-right: $basic-padding * 3;
 
-    & > * {
-        vertical-align: baseline;
-    }
-    dot-icon {
+    dot-icon,
+    dot-spinner {
         margin-right: $basic-padding;
+        align-self: center;
     }
 
     &.loading {
@@ -36,30 +35,6 @@
             color: $error;
         }
     }
-
-    .spinner {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        border: 2px solid transparent;
-        border-radius: 50%;
-        margin-right: $basic-padding;
-        border-top-color: $brand-primary;
-        animation: dot-spin 1s ease-in-out infinite;
-    }
-
-    @keyframes dot-spin {
-        to {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
-    @-webkit-keyframes dot-spin {
-        to {
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
 }
 
 :host(.dot-global-message--visible) {
@@ -67,7 +42,5 @@
 }
 
 .dot-global-message__text {
-    line-height: 19px;
-    vertical-align: top;
     color: $gray;
 }
