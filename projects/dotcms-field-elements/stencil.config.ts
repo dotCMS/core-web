@@ -9,7 +9,8 @@ export const config: Config = {
         { type: 'docs' },
         {
             type: 'www',
-            serviceWorker: null // disable service workers
+            serviceWorker: null, // disable service workers
+            // buildDir: '/Users/alfredo-li/code/tomcat8/webapps/ROOT/custom-elements'
         }
     ],
     plugins: [sass()]

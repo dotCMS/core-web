@@ -144,6 +144,7 @@ export class DotFormComponent {
     private handleSubmit(event: Event): void {
         event.preventDefault();
 
+        console.log('----handleSubmit');
         fetch(SUBMIT_FORM_API_URL, {
             method: 'POST',
             headers: {
@@ -156,12 +157,14 @@ export class DotFormComponent {
         })
             .then(async (response: Response) => {
                 if (response.status !== 200) {
+                    console.log('----handleSubmit 400');
                     const error: DotHttpErrorResponse = {
                         message: await response.text(),
                         status: response.status
                     };
                     throw error;
                 }
+                console.log('----handleSubmit 200');
                 return response.text();
             })
             .then((_text: string) => {
@@ -171,6 +174,7 @@ export class DotFormComponent {
                 }
             })
             .catch(({ message, status }: DotHttpErrorResponse) => {
+                console.log('----catch', message);
                 this.errorMessage = message || fallbackErrorMessages[status];
             });
     }
