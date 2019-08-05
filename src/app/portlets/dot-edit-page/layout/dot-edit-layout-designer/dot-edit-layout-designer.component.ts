@@ -61,7 +61,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private dotThemesService: DotThemesService,
         private fb: FormBuilder,
         private loginService: LoginService,
-        private pageViewService: DotPageLayoutService,
+        private dotPageLayoutService: DotPageLayoutService,
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService
     ) {}
@@ -172,7 +172,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
             this.dotMessageService.get('dot.common.message.saving')
         );
 
-        this.pageViewService
+        this.dotPageLayoutService
             .save(this.pageState.page.identifier, this.form.value)
             .pipe(take(1))
             .subscribe(
