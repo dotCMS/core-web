@@ -50,6 +50,7 @@ export class DotThemeSelectorComponent implements OnInit {
 
     current: DotTheme;
     visible = true;
+    contentMinHeight: number;
 
     dialogActions: DotDialogActions;
 
@@ -83,6 +84,7 @@ export class DotThemeSelectorComponent implements OnInit {
                         label: this.dotMessageService.get('dot.common.cancel')
                     }
                 };
+                this.contentMinHeight = this.datagrid.el.nativeElement.parentElement.parentElement.getBoundingClientRect().height - 85;
             });
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.setExtraParams('hostId', this.siteService.currentSite.identifier);

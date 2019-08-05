@@ -1,9 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    ViewChild,
+    OnChanges,
+    SimpleChanges
+} from '@angular/core';
 import { PaginatorService } from '@services/paginator';
 import { DotCMSContentType } from 'dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { LazyLoadEvent, DataTable } from 'primeng/primeng';
 import { take } from 'rxjs/operators';
+import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 
 @Component({
     providers: [PaginatorService],
@@ -11,7 +21,7 @@ import { take } from 'rxjs/operators';
     templateUrl: './dot-form-selector.component.html',
     styleUrls: ['./dot-form-selector.component.scss']
 })
-export class DotFormSelectorComponent implements OnInit {
+export class DotFormSelectorComponent implements OnInit, OnChanges {
     @Input()
     show = false;
 
@@ -21,7 +31,14 @@ export class DotFormSelectorComponent implements OnInit {
     @Output()
     close = new EventEmitter<any>();
 
+    @ViewChild('datatable')
+    datatable: DataTable;
+
+    @ViewChild('dialog')
+    dialog: DotDialogComponent;
+
     items: DotCMSContentType[];
+    contentMinHeight: number;
     messages: {
         [key: string]: string;
     } = {};
@@ -40,6 +57,14 @@ export class DotFormSelectorComponent implements OnInit {
             });
 
         this.paginatorService.url = 'v1/contenttype?type=FORM';
+    }
+    ngOnChanges(changes: SimpleChanges) {
+        setTimeout(() => {
+            if (changes.show.currentValue === true) {
+                this.contentMinHeight =
+                    this.dialog.dialog.nativeElement.getBoundingClientRect().height - 100;
+            }
+        }, 0);
     }
 
     /**

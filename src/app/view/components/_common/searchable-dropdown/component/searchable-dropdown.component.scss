@@ -4,20 +4,20 @@
 .ui-overlaypanel {
     min-height: 300px;
 
-    &.paginator .ui-dataview-content{
+    &.paginator .ui-dataview-content {
         margin-bottom: $basic-padding * 4;
     }
 }
 
 .ui-overlaypanel-content {
     padding: $basic-padding * 2 0;
+}
 
-    .ui-paginator-bottom {
-        bottom: 0;
-        padding-bottom: $basic-padding * 2;
-        position: absolute;
-        width: 100%;
-    }
+.ui-paginator-bottom {
+    bottom: 0;
+    padding-bottom: $basic-padding * 2;
+    position: absolute;
+    width: 100%;
 }
 
 dot-searchable-dropdown {
@@ -31,7 +31,7 @@ dot-searchable-dropdown {
         text-transform: none;
         width: auto;
 
-        &:not([disabled]){
+        &:not([disabled]) {
             &:hover,
             &:active,
             &:focus {
@@ -85,13 +85,12 @@ dot-searchable-dropdown {
                 &.selected {
                     font-weight: bold;
                 }
-    
+
                 &:hover {
                     background-color: $gray-bg;
                 }
             }
         }
-        
     }
 
     .ui-dataview-emptymessage {
