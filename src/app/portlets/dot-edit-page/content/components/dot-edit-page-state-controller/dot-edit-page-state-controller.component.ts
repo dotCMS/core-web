@@ -102,10 +102,10 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
      * @param {PageMode} mode
      * @memberof DotEditPageStateControllerComponent
      */
-    // tslint:disable-next-line: cyclomatic-complexity
     stateSelectorHandler(mode: PageMode): void {
-        if (mode === PageMode.EDIT && this.shouldShowConfirmation()) {
-            this.lock = true;
+        if (this.shouldShowConfirmation(mode)) {
+            this.lock = mode === PageMode.EDIT;
+
             this.showConfirmation().then(({ type, state }: DotConfirmationResponse) => {
                 if (type === DotConfirmationType.PERSONALIZATION) {
                     this.dotPersonalizeService
@@ -123,7 +123,8 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             });
         } else {
             this.updatePageState({
-                mode: this.mode
+                mode: this.mode,
+                locked: mode === PageMode.EDIT || null
             });
         }
     }
@@ -207,9 +208,10 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         return this.pageState.viewAs.persona && !this.isPersonalized();
     }
 
-
-    private shouldShowConfirmation(): boolean {
-        return this.shouldAskToLock() || this.shouldAskPersonalization();
+    private shouldShowConfirmation(mode: PageMode): boolean {
+        return (
+            mode === PageMode.EDIT && (this.shouldAskToLock() || this.shouldAskPersonalization())
+        );
     }
 
     private showLockConfirmDialog(): Promise<any> {
