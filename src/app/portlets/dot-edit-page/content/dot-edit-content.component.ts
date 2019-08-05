@@ -31,7 +31,6 @@ import {
     PageModelChangeEvent,
     PageModelChangeEventType
 } from './services/dot-edit-content-html/models';
-import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
 
 /**
  * Edit content page component, render the html of a page and bind all events to make it ediable.
@@ -70,7 +69,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private dotGlobalMessageService: DotGlobalMessageService,
         private dotMessageService: DotMessageService,
         private dotPageStateService: DotPageStateService,
-        private dotPersonalizeService: DotPersonalizeService,
         private dotRouterService: DotRouterService,
         private dotUiColorsService: DotUiColorsService,
         private ngZone: NgZone,
@@ -167,40 +165,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotUiColorsService.setColors(doc.querySelector('html'));
     }
 
-    /**
-     * Handle the changes of the state gf the page
-     *
-     * @param DotPageState newState
-     * @memberof DotEditContentComponent
-     */
-    // tslint:disable-next-line: cyclomatic-complexity
-    statePageHandler(newState: DotPageState): void {
-        if (newState.mode === PageMode.EDIT && this.shouldAskPersonalization()) {
-            const yes = confirm('Do you want to personalize this page?');
-
-            if (yes) {
-                if (this.shouldHideWhatsChanged(newState.mode)) {
-                    this.showWhatsChanged = false;
-                }
-
-                this.dotPersonalizeService
-                    .personalized(
-                        this.pageStateInternal.page.identifier,
-                        this.pageStateInternal.viewAs.persona.keyTag
-                    )
-                    .subscribe(() => {
-                        this.settingPageState(newState);
-                    });
-            } else {
-                newState.mode = PageMode.PREVIEW;
-                newState.locked = false;
-                this.settingPageState(newState);
-            }
-        } else {
-            this.settingPageState(newState);
-        }
-    }
-
     settingPageState(newState: DotPageState): void {
         this.dotPageStateService.set(this.pageStateInternal.page, newState);
     }
@@ -247,25 +211,12 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         this.dotRouterService.goToSiteBrowser();
     }
 
-    shouldAskPersonalization(): boolean {
-        return this.pageStateInternal.viewAs.persona && !this.isPersonalized();
-    }
-
-    isPersonalized(pageState: DotRenderedPageState = null): boolean {
-        const state: DotRenderedPageState = pageState || this.pageStateInternal;
-        return state.viewAs.persona && state.viewAs.persona.personalized;
-    }
-
     private shouldSetContainersHeight() {
         return (
             this.pageState$ &&
             this.pageStateInternal.layout &&
             this.pageStateInternal.state.mode === PageMode.EDIT
         );
-    }
-
-    private shouldHideWhatsChanged(mode: PageMode): boolean {
-        return (this.showWhatsChanged && mode === PageMode.EDIT) || mode === PageMode.LIVE;
     }
 
     private saveContent(event: PageModelChangeEvent): void {
@@ -303,9 +254,9 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .pipe(
                 take(1),
                 tap(() => {
-                    // this.dotGlobalMessageService.success(
-                    //     this.dotMessageService.get('dot.common.message.saved')
-                    // );
+                    this.dotGlobalMessageService.success(
+                        this.dotMessageService.get('dot.common.message.saved')
+                    );
                 })
             );
     }

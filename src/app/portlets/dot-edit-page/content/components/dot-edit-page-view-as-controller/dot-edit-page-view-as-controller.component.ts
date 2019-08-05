@@ -1,13 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { DotDevice } from '@models/dot-device/dot-device.model';
-import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
+import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
+import { take, map } from 'rxjs/operators';
+import { DotAlertConfirmService } from '@services/dot-alert-confirm';
+import { DotRenderedPageState, PageMode } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-edit-page-view-as-controller',
@@ -15,35 +17,28 @@ import { DotPageStateService } from '../../services/dot-page-state/dot-page-stat
     styleUrls: ['./dot-edit-page-view-as-controller.component.scss']
 })
 export class DotEditPageViewAsControllerComponent implements OnInit {
+    @Input() pageState: DotRenderedPageState;
+
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
-
-    private value: DotEditPageViewAs;
-    private _pageState: DotRenderedPageState;
+    previewDeviceLabel$: Observable<string>;
 
     constructor(
+        private dotAlertConfirmService: DotAlertConfirmService,
         private dotMessageService: DotMessageService,
         private dotLicenseService: DotLicenseService,
-        private dotPageStateService: DotPageStateService
+        private dotPageStateService: DotPageStateService,
+        private dotPersonalizeService: DotPersonalizeService
     ) {}
 
     ngOnInit(): void {
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
-        this.dotMessageService
+        this.previewDeviceLabel$ = this.dotMessageService
             .getMessages(['editpage.viewas.previewing'])
-            .subscribe((messages: { [key: string]: string }) => {
-                this.messages = messages;
-            });
-    }
-
-    @Input()
-    set pageState(pageState: DotRenderedPageState) {
-        this._pageState = pageState;
-        this.value = pageState.viewAs;
-    }
-
-    get pageState(): DotRenderedPageState {
-        return this._pageState;
+            .pipe(
+                take(1),
+                map((messages: { [key: string]: string }) => messages['editpage.viewas.previewing'])
+            );
     }
 
     /**
@@ -53,7 +48,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changePersonaHandler(persona: DotPersona): void {
-        this.value.persona = persona;
+        this.pageState.viewAs.persona = persona;
         this.dotPageStateService.setPersona(persona);
     }
 
@@ -64,7 +59,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changeLanguageHandler({ id }: DotLanguage): void {
-        this.value.language = id;
+        this.pageState.viewAs.language = id;
         this.dotPageStateService.setLanguage(id);
     }
 
@@ -75,7 +70,33 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changeDeviceHandler(device: DotDevice): void {
-        this.value.device = device;
+        this.pageState.viewAs.device = device;
         this.dotPageStateService.setDevice(device);
+    }
+
+    /**
+     * Remove personalization for the current page and set the new state to the page
+     *
+     * @param {DotPersona} { keyTag }
+     * @memberof DotEditPageViewAsControllerComponent
+     */
+    deletePersonalization({ keyTag }: DotPersona): void {
+        this.dotAlertConfirmService.confirm({
+            header: 'Delete personalization',
+            message: `Are you sure you want delete personalization for <b>${
+                this.pageState.viewAs.persona.name
+            }</b>? This action cannot be undone.`,
+            accept: () => {
+                this.dotPersonalizeService
+                    .despersonalized(this.pageState.page.identifier, keyTag)
+                    .pipe(take(1))
+                    .subscribe(() => {
+                        this.dotPageStateService.set(this.pageState.page, {
+                            locked: false,
+                            mode: PageMode.PREVIEW
+                        });
+                    });
+            }
+        });
     }
 }

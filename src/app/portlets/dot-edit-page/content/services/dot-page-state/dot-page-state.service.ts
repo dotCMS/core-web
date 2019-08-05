@@ -29,12 +29,34 @@ export class DotPageStateService {
         private loginService: LoginService
     ) {}
 
-    set(page: DotPage, state: DotPageState): void {
-        console.log('set', state);
-        const lockUnlock$: Observable<string> = this.getLockMode(page.workingInode, state.locked);
+    /**
+     * Get the page state with the options passed
+     *
+     * @param {DotPageRenderOptions} [options={}]
+     * @memberof DotPageStateService
+     */
+    get(options: DotPageRenderOptions = {}): void {
+        if (!options.url) {
+            options.url = this.currentState.page.pageURI;
+        }
+
+        this.requestPage(options).subscribe((pageState: DotRenderedPageState) => {
+            this.setState(pageState);
+        });
+    }
+
+    /**
+     * Set a new page state bet first lock/unlock according to the state received
+     *
+     * @param {DotPage} { workingInode, pageURI }
+     * @param {DotPageState} state
+     * @memberof DotPageStateService
+     */
+    set({ workingInode, pageURI }: DotPage, state: DotPageState): void {
+        const lockUnlock$: Observable<string> = this.getLockMode(workingInode, state.locked);
 
         const pageOpts: DotPageRenderOptions = {
-            url: page.pageURI,
+            url: pageURI,
             mode: state.mode
         };
 
@@ -61,24 +83,25 @@ export class DotPageStateService {
             });
     }
 
-    get(options: DotPageRenderOptions = {}): void {
-        if (!options.url) {
-            options.url = this.currentState.page.pageURI;
-        }
-
-        this.requestPage(options).subscribe((pageState: DotRenderedPageState) => {
-            this.setState(pageState);
-        });
-    }
-
+    /**
+     * Reload the current page state
+     *
+     * @memberof DotPageStateService
+     */
     reload(): void {
         this.get();
     }
 
+    /**
+     * Request an new page state and set the local internal state
+     *
+     * @param {DotPageRenderOptions} options
+     * @returns {Observable<DotRenderedPageState>}
+     * @memberof DotPageStateService
+     */
     requestPage(options: DotPageRenderOptions): Observable<DotRenderedPageState> {
         return this.dotPageRenderService.get(options).pipe(
             take(1),
-            // tslint:disable-next-line: cyclomatic-complexity
             map((page: DotPageRender) => {
                 const pageState = new DotRenderedPageState(this.getCurrentUser(), page);
                 this.currentState = pageState;
@@ -87,6 +110,13 @@ export class DotPageStateService {
         );
     }
 
+    /**
+     * Set the page state of view as to received persona and update the mode and lock state if
+     * persona is not personalized.
+     *
+     * @param {DotPersona} persona
+     * @memberof DotPageStateService
+     */
     setPersona(persona: DotPersona): void {
         const options: DotPageRenderOptions = {
             mode: this.currentState.viewAs.mode,
@@ -98,7 +128,7 @@ export class DotPageStateService {
         // All this logic to unlock the page and set a mode is because per UX we can't allow
         // a non personalized page to show in EDIT MODE and locked, in other hand maybe we
         // need to move this to the backend.
-        if (!persona.personalized && this.currentState.page.locked) {
+        if (this.shouldLockPageToSetPersona(persona)) {
             options.mode = PageMode.PREVIEW;
 
             this.dotContentletLockerService
@@ -113,6 +143,12 @@ export class DotPageStateService {
         }
     }
 
+    /**
+     * Set the page state of view as to received language
+     *
+     * @param {number} language
+     * @memberof DotPageStateService
+     */
     setLanguage(language: number): void {
         this.get({
             viewAs: {
@@ -121,6 +157,12 @@ export class DotPageStateService {
         });
     }
 
+    /**
+     * Set the page state of view as to received device
+     *
+     * @param {DotDevice} device
+     * @memberof DotPageStateService
+     */
     setDevice(device: DotDevice): void {
         this.get({
             viewAs: {
@@ -133,10 +175,6 @@ export class DotPageStateService {
         return this.loginService.auth.loginAsUser || this.loginService.auth.user;
     }
 
-    private setState(state: DotRenderedPageState): void {
-        this.state$.next(state);
-    }
-
     private getLockMode(workingInode: string, lock: boolean): Observable<string> {
         if (lock === true) {
             return this.dotContentletLockerService.lock(workingInode).pipe(pluck('message'));
@@ -145,5 +183,17 @@ export class DotPageStateService {
         }
 
         return observableOf(null);
+    }
+
+    private setState(state: DotRenderedPageState): void {
+        this.state$.next(state);
+    }
+
+    private shouldLockPageToSetPersona(persona: DotPersona): boolean {
+        return (
+            !persona.personalized &&
+            this.currentState.page.locked &&
+            this.currentState.viewAs.mode === PageMode.EDIT
+        );
     }
 }
