@@ -6,7 +6,7 @@ import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-st
 import { DotAlertConfirmService } from './../../../../api/services/dot-alert-confirm/dot-alert-confirm.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
-import { PageViewService } from '@services/page-view/page-view.service';
+import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { TemplateContainersCacheService } from '../../template-containers-cache.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
@@ -61,7 +61,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private dotThemesService: DotThemesService,
         private fb: FormBuilder,
         private loginService: LoginService,
-        private pageViewService: PageViewService,
+        private pageViewService: DotPageLayoutService,
         private templateContainersCacheService: TemplateContainersCacheService,
         public dotMessageService: DotMessageService
     ) {}
