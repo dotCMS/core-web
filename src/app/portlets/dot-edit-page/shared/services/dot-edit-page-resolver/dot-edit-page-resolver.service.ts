@@ -49,10 +49,10 @@ export class DotEditPageResolver implements Resolve<DotRenderedPageState> {
             };
             return this.dotPageStateService.requestPage(options).pipe(
                 take(1),
-                // tslint:disable-next-line: cyclomatic-complexity
                 switchMap((dotRenderedPageState: DotRenderedPageState) => {
                     const currentSection = route.children[0].url[0].path;
                     const isLayout = currentSection === 'layout';
+
                     if (isLayout) {
                         return this.checkUserCanGoToLayout(dotRenderedPageState);
                     } else {
