@@ -1,7 +1,6 @@
 import { of, Observable, Subject } from 'rxjs';
 
 import { mergeMap, pluck, take, map, catchError } from 'rxjs/operators';
-import { DotPage } from './../../../shared/models/dot-page.model';
 import { LoginService, User, ResponseView } from 'dotcms-js';
 import {
     DotPageState,
@@ -59,11 +58,14 @@ export class DotPageStateService {
      * @param {DotPageState} state
      * @memberof DotPageStateService
      */
-    set({ workingInode, pageURI }: DotPage, state: DotPageState): void {
-        const lockUnlock$: Observable<string> = this.getLockMode(workingInode, state.locked);
+    set(state: DotPageState): void {
+        const lockUnlock$: Observable<string> = this.getLockMode(
+            this.currentState.page.inode,
+            state.locked
+        );
 
         const pageOpts: DotPageRenderOptions = {
-            url: pageURI,
+            url: this.currentState.page.pageURI,
             mode: state.mode
         };
 

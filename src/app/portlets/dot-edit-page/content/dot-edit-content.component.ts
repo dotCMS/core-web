@@ -18,7 +18,7 @@ import {
     DotPageContainerPersonalized
 } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
-import { DotPageState, DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { PageMode } from '../shared/models/page-mode.enum';
@@ -163,10 +163,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         const doc = $event.target.contentWindow.document;
         this.dotUiColorsService.setColors(doc.querySelector('html'));
-    }
-
-    settingPageState(newState: DotPageState): void {
-        this.dotPageStateService.set(this.pageStateInternal.page, newState);
     }
 
     /**

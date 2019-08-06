@@ -256,6 +256,6 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private updatePageState(params: DotPageState) {
-        this.dotPageStateService.set(this.pageState.page, params);
+        this.dotPageStateService.set(params);
     }
 }

@@ -91,7 +91,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
                     .despersonalized(this.pageState.page.identifier, keyTag)
                     .pipe(take(1))
                     .subscribe(() => {
-                        this.dotPageStateService.set(this.pageState.page, {
+                        this.dotPageStateService.set({
                             locked: false,
                             mode: PageMode.PREVIEW
                         });
