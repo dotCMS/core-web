@@ -25,36 +25,57 @@ export class DotPageRenderService {
      * @returns {Observable<DotPageRender>}
      * @memberof DotPageRenderService
      */
-    get(options: DotPageRenderOptions): Observable<DotPageRender> {
-        const params: DotPageRenderRequestParams = {
-            ...(options.viewAs ? this.getOptionalViewAsParams(options.viewAs) : {})
-        };
+    get({ viewAs, mode, url }: DotPageRenderOptions): Observable<DotPageRender> {
+        const params: DotPageRenderRequestParams = this.getOptionalViewAsParams(viewAs, mode);
+        console.log(params);
 
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/page/render/${options.url.replace(/^\//, '')}`,
+                url: `v1/page/render/${url.replace(/^\//, '')}`,
                 params: params
             })
             .pipe(pluck('entity'));
     }
 
-    // REVISIT THIS METHOD
-    // tslint:disable-next-line:cyclomatic-complexity
-    private getOptionalViewAsParams(viewAsConfig: DotPageRenderOptionsViewAs) {
-        const personaIdentifier = viewAsConfig.persona && viewAsConfig.persona.identifier;
-        const deviceInode = viewAsConfig.device && viewAsConfig.device.inode;
-
-        const options: any = {
-            ...(personaIdentifier ? { 'com.dotmarketing.persona.id': personaIdentifier } : {}),
-            ...(deviceInode ? { device_inode: deviceInode } : {})
+    private getOptionalViewAsParams(
+        viewAsConfig: DotPageRenderOptionsViewAs,
+        mode: PageMode
+    ): DotPageRenderRequestParams {
+        return {
+            ...this.getPersonaParam(viewAsConfig.persona),
+            ...this.getDeviceParam(viewAsConfig.device),
+            ...this.getLanguageParam(viewAsConfig.language),
+            ...this.getModeParam(mode)
         };
+    }
 
-        if (viewAsConfig.language) {
-            options.language_id = viewAsConfig.language;
-        }
+    private getModeParam(mode: PageMode): { [key: string]: PageMode } {
+        return mode ? { mode } : {};
+    }
 
-        return options;
+    private getPersonaParam(persona: DotPersona): { [key: string]: string } {
+        return persona
+            ? {
+                  'com.dotmarketing.persona.id': persona.identifier || null
+              }
+            : {};
+    }
+
+    private getDeviceParam(device: DotDevice): { [key: string]: string } {
+        return device
+            ? {
+                  device_inode: device.inode
+              }
+            : {};
+    }
+
+    private getLanguageParam(language: number): { [key: string]: string } {
+        return language
+            ? {
+                  language_id: language.toString()
+              }
+            : {};
     }
 }
 
@@ -74,5 +95,5 @@ interface DotPageRenderRequestParams {
     persona_id?: string;
     language_id?: string;
     device_inode?: string;
-    mode: string;
+    mode?: PageMode;
 }
