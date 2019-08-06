@@ -1,11 +1,8 @@
 import { of, Observable, Subject } from 'rxjs';
 
-import { mergeMap, pluck, take, map, catchError } from 'rxjs/operators';
+import { pluck, take, map, catchError } from 'rxjs/operators';
 import { LoginService, User, ResponseView } from 'dotcms-js';
-import {
-    DotPageState,
-    DotRenderedPageState
-} from '../../../shared/models/dot-rendered-page-state.model';
+import { DotRenderedPageState } from '../../../shared/models/dot-rendered-page-state.model';
 import {
     DotPageRenderService,
     DotPageRenderOptions
@@ -52,44 +49,17 @@ export class DotPageStateService {
     }
 
     /**
-     * Set a new page state bet first lock/unlock according to the state received
+     * Lock or unlock the page and set a new state
      *
-     * @param {DotPage} { workingInode, pageURI }
-     * @param {DotPageState} state
+     * @param {DotPageRenderOptions} options
+     * @param {boolean} [lock=null]
      * @memberof DotPageStateService
      */
-    set(state: DotPageState): void {
-        const lockUnlock$: Observable<string> = this.getLockMode(
-            this.currentState.page.inode,
-            state.locked
-        );
-
-        const pageOpts: DotPageRenderOptions = {
-            url: this.currentState.page.pageURI,
-            mode: state.mode
-        };
-
-        const pageMode$: Observable<DotPageRender> =
-            state.mode !== undefined ? this.requestPage(pageOpts) : of(null);
-
-        lockUnlock$
-            .pipe(
-                mergeMap(() =>
-                    pageMode$.pipe(
-                        map(
-                            (updatedPage: DotPageRender) =>
-                                new DotRenderedPageState(
-                                    this.loginService.auth.loginAsUser ||
-                                        this.loginService.auth.user,
-                                    updatedPage
-                                )
-                        )
-                    )
-                ),
-                take(1)
-            )
-            .subscribe((dotRenderedPageState: DotRenderedPageState) => {
-                this.setState(dotRenderedPageState);
+    setLock(options: DotPageRenderOptions, lock: boolean = null): void {
+        this.getLockMode(this.currentState.page.inode, lock)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.get(options);
             });
     }
 

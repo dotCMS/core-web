@@ -6,7 +6,7 @@ import { DotLayout } from './dot-layout.model';
 import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
-export interface DotPageState {
+interface DotPageState {
     locked?: boolean;
     lockedByAnotherUser?: boolean;
     mode: PageMode;

@@ -49,7 +49,7 @@ describe('DotPageStateService', () => {
     describe('set page state', () => {
         it('should set a page locked and live mode', () => {
             service
-                .set(mockDotPage, {
+                .setLock(mockDotPage, {
                     mode: PageMode.LIVE,
                     locked: true
                 })
@@ -96,7 +96,7 @@ describe('DotPageStateService', () => {
             mockDotRenderedPageTest.page.lockedBy = null;
 
             service
-                .set(mockDotPage, {
+                .setLock(mockDotPage, {
                     mode: PageMode.PREVIEW,
                     locked: false
                 })
@@ -137,7 +137,7 @@ describe('DotPageStateService', () => {
 
         it('should set a page preview mode and keep the lock', () => {
             service
-                .set(mockDotPage, {
+                .setLock(mockDotPage, {
                     mode: PageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
@@ -342,7 +342,7 @@ describe('DotPageStateService', () => {
 
         it('should set', () => {
             service
-                .set(mockDotPage, {
+                .setLock(mockDotPage, {
                     mode: PageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
@@ -391,7 +391,7 @@ describe('DotPageStateService', () => {
 
         it('should set', () => {
             service
-                .set(mockDotPage, {
+                .setLock(mockDotPage, {
                     mode: PageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {

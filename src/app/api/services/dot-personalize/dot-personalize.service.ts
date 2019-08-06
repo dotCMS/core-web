@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { pluck } from 'rxjs/operators';
 
-interface DotCMSPersonalizedItem {
+export interface DotCMSPersonalizedItem {
     relationType: string;
     treeOrder: number;
     personalization: string;

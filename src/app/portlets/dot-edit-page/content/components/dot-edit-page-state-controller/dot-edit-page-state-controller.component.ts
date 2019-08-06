@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 
 import { tap, map, take } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { SelectItem } from 'primeng/primeng';
 
@@ -9,21 +9,16 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
+import { DotRenderedPageState, PageMode } from '@portlets/dot-edit-page/shared/models';
 import {
-    DotRenderedPageState,
-    PageMode,
-    DotPageState
-} from '@portlets/dot-edit-page/shared/models';
-import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
+    DotPersonalizeService,
+    DotCMSPersonalizedItem
+} from '@services/dot-personalize/dot-personalize.service';
+import { DotPageRenderOptions } from '@services/dot-page-render/dot-page-render.service';
 
 enum DotConfirmationType {
     LOCK,
     PERSONALIZATION
-}
-
-interface DotConfirmationResponse {
-    type: DotConfirmationType;
-    state: DotPageState;
 }
 
 @Component({
@@ -106,54 +101,32 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         if (this.shouldShowConfirmation(mode)) {
             this.lock = mode === PageMode.EDIT;
 
-            this.showConfirmation().then(({ type, state }: DotConfirmationResponse) => {
-                if (type === DotConfirmationType.PERSONALIZATION) {
-                    this.dotPersonalizeService
-                        .personalized(
-                            this.pageState.page.identifier,
-                            this.pageState.viewAs.persona.keyTag
-                        )
+            this.showConfirmation()
+                .then((type: DotConfirmationType) => {
+                    this.getPersonalize(type)
                         .pipe(take(1))
                         .subscribe(() => {
-                            this.updatePageState(state);
+                            this.updatePageState(
+                                {
+                                    mode: this.mode
+                                },
+                                this.lock
+                            );
                         });
-                } else {
-                    this.updatePageState(state);
-                }
-            });
+                })
+                .catch(() => {
+                    this.lock = this.pageState.state.locked;
+                    this.mode = this.pageState.state.mode;
+                });
         } else {
-            this.updatePageState({
-                mode: this.mode,
-                locked: mode === PageMode.EDIT || null
-            });
+            const lock = mode === PageMode.EDIT || null;
+            this.updatePageState(
+                {
+                    mode: this.mode
+                },
+                lock
+            );
         }
-    }
-
-    private showConfirmation(): Promise<DotConfirmationResponse> {
-        return new Promise((resolve) => {
-            if (this.shouldAskToLock()) {
-                this.showLockConfirmDialog().then(() => {
-                    resolve({
-                        type: DotConfirmationType.LOCK,
-                        state: {
-                            mode: this.mode,
-                            locked: this.lock
-                        }
-                    });
-                });
-            }
-
-            if (this.shouldAskPersonalization()) {
-                this.showPersonalizationConfirmDialog().then(() => {
-                    resolve({
-                        type: DotConfirmationType.PERSONALIZATION,
-                        state: {
-                            mode: this.mode
-                        }
-                    });
-                });
-            }
-        });
     }
 
     private canTakeLock(pageState: DotRenderedPageState): boolean {
@@ -174,14 +147,23 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         };
     }
 
-    private isPersonalized(): boolean {
-        return this.pageState.viewAs.persona && this.pageState.viewAs.persona.personalized;
+    private getPersonalize(type: DotConfirmationType): Observable<DotCMSPersonalizedItem[]> {
+        return type === DotConfirmationType.PERSONALIZATION
+            ? this.dotPersonalizeService.personalized(
+                  this.pageState.page.identifier,
+                  this.pageState.viewAs.persona.keyTag
+              )
+            : of(null);
     }
 
     private getStateModeOptions(pageState: DotRenderedPageState): SelectItem[] {
         return ['edit', 'preview', 'live'].map((mode: string) =>
             this.getModeOption(mode, pageState)
         );
+    }
+
+    private isPersonalized(): boolean {
+        return this.pageState.viewAs.persona && this.pageState.viewAs.persona.personalized;
     }
 
     private setFieldsModels(pageState: DotRenderedPageState): void {
@@ -194,10 +176,12 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
             this.mode = PageMode.PREVIEW;
         }
 
-        this.updatePageState({
-            mode: this.mode,
-            locked: this.lock
-        });
+        this.updatePageState(
+            {
+                mode: this.mode
+            },
+            this.lock
+        );
     }
 
     private shouldAskToLock(): boolean {
@@ -214,14 +198,31 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         );
     }
 
+    private showConfirmation(): Promise<DotConfirmationType> {
+        return new Promise((resolve, reject) => {
+            if (this.shouldAskToLock()) {
+                this.showLockConfirmDialog()
+                    .then(() => {
+                        resolve(DotConfirmationType.LOCK);
+                    })
+                    .catch(() => reject());
+            }
+
+            if (this.shouldAskPersonalization()) {
+                this.showPersonalizationConfirmDialog()
+                    .then(() => {
+                        resolve(DotConfirmationType.PERSONALIZATION);
+                    })
+                    .catch(() => reject());
+            }
+        });
+    }
+
     private showLockConfirmDialog(): Promise<any> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,
-                reject: () => {
-                    this.lock = this.pageState.state.locked;
-                    this.mode = this.pageState.state.mode;
-                },
+                reject: reject,
                 header: this.messages['editpage.content.steal.lock.confirmation.message.header'],
                 message: this.messages['editpage.content.steal.lock.confirmation.message']
             });
@@ -229,13 +230,10 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private showPersonalizationConfirmDialog(): Promise<any> {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             this.dotAlertConfirmService.confirm({
                 accept: resolve,
-                reject: () => {
-                    this.lock = this.pageState.state.locked;
-                    this.mode = this.pageState.state.mode;
-                },
+                reject: reject,
                 header: 'Personalization',
                 message: this.getPersonalizationConfirmMessage()
             });
@@ -255,7 +253,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         return message;
     }
 
-    private updatePageState(params: DotPageState) {
-        this.dotPageStateService.set(params);
+    private updatePageState(options: DotPageRenderOptions, lock: boolean = null) {
+        this.dotPageStateService.setLock(options, lock);
     }
 }
