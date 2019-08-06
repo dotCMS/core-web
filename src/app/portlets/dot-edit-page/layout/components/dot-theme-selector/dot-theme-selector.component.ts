@@ -15,7 +15,7 @@ import { DotTheme } from '../../../shared/models/dot-theme.model';
 import { DataGrid, LazyLoadEvent } from 'primeng/primeng';
 
 import { Site, SiteService } from 'dotcms-js';
-import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { DotDialogActions, DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
 import { PaginatorService } from '@services/paginator';
 
 /**
@@ -25,7 +25,6 @@ import { PaginatorService } from '@services/paginator';
  * @class DotThemeSelectorComponent
  */
 @Component({
-    providers: [PaginatorService],
     selector: 'dot-theme-selector',
     templateUrl: './dot-theme-selector.component.html',
     styleUrls: ['./dot-theme-selector.component.scss']
@@ -44,6 +43,9 @@ export class DotThemeSelectorComponent implements OnInit {
 
     @ViewChild('searchInput')
     searchInput: ElementRef;
+
+    @ViewChild('dialog')
+    dialog: DotDialogComponent;
 
     @ViewChild('dataGrid')
     datagrid: DataGrid;
@@ -84,7 +86,6 @@ export class DotThemeSelectorComponent implements OnInit {
                         label: this.dotMessageService.get('dot.common.cancel')
                     }
                 };
-                this.contentMinHeight = this.datagrid.el.nativeElement.parentElement.parentElement.getBoundingClientRect().height - 85;
             });
         this.paginatorService.url = 'v1/themes';
         this.paginatorService.setExtraParams('hostId', this.siteService.currentSite.identifier);
