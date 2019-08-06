@@ -27,7 +27,6 @@ export class DotPageRenderService {
      */
     get({ viewAs, mode, url }: DotPageRenderOptions): Observable<DotPageRender> {
         const params: DotPageRenderRequestParams = this.getOptionalViewAsParams(viewAs, mode);
-        console.log(params);
 
         return this.coreWebService
             .requestView({
@@ -39,7 +38,7 @@ export class DotPageRenderService {
     }
 
     private getOptionalViewAsParams(
-        viewAsConfig: DotPageRenderOptionsViewAs,
+        viewAsConfig: DotPageRenderOptionsViewAs = {},
         mode: PageMode
     ): DotPageRenderRequestParams {
         return {
