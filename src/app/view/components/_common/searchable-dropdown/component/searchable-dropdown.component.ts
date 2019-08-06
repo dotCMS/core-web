@@ -122,11 +122,11 @@ export class SearchableDropdownComponent
 
     propagateChange = (_: any) => {};
 
-    ngOnChanges(change: SimpleChanges): void {
-        if (this.usePlaceholder(change.placeholder) || change.persistentPlaceholder) {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.usePlaceholder(changes.placeholder) || changes.persistentPlaceholder) {
             this.setLabel();
         }
-        this.setOptions(change);
+        this.setOptions(changes);
     }
 
     ngOnInit(): void {

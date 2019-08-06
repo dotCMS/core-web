@@ -27,10 +27,21 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.deleteLabel$ = this.dotMessageService.getMessages(['modes.persona.personalized']).pipe(
-            take(1),
-            map((messages: { [key: string]: string }) => messages['modes.persona.personalized'])
-        );
+        /*
+            Looks like because we're passing this as a template the requets to get
+            the message key is not happening as expected, setTimeout hack it to work.
+        */
+        setTimeout(() => {
+            this.deleteLabel$ = this.dotMessageService
+                .getMessages(['modes.persona.personalized'])
+                .pipe(
+                    take(1),
+                    map(
+                        (messages: { [key: string]: string }) =>
+                            messages['modes.persona.personalized']
+                    )
+                );
+        }, 0);
     }
 
     @HostListener('click', ['$event'])

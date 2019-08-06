@@ -12,6 +12,12 @@
     cssClass="dot-persona-selector"
     labelPropertyName="name"
 >
+    <ng-template let-persona="item" pTemplate="select">
+        <dot-persona-selected-item
+            [persona]="persona"
+            (selected)="searchableDropdown.toggleOverlayPanel($event)"
+        ></dot-persona-selected-item>
+    </ng-template>
     <ng-template let-personaData="item" pTemplate="listItem">
         <dot-persona-selector-option
             [persona]="personaData"
@@ -19,11 +25,5 @@
             (change)="personaChange($event)"
             (delete)="delete.emit(personaData)"
         ></dot-persona-selector-option>
-    </ng-template>
-    <ng-template let-persona="item" pTemplate="select">
-        <dot-persona-selected-item
-            [persona]="persona"
-            (selected)="searchableDropdown.toggleOverlayPanel($event)"
-        ></dot-persona-selected-item>
     </ng-template>
 </dot-searchable-dropdown>
