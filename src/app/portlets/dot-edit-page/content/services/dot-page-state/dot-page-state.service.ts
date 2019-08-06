@@ -49,21 +49,6 @@ export class DotPageStateService {
     }
 
     /**
-     * Lock or unlock the page and set a new state
-     *
-     * @param {DotPageRenderOptions} options
-     * @param {boolean} [lock=null]
-     * @memberof DotPageStateService
-     */
-    setLock(options: DotPageRenderOptions, lock: boolean = null): void {
-        this.getLockMode(this.currentState.page.inode, lock)
-            .pipe(take(1))
-            .subscribe(() => {
-                this.get(options);
-            });
-    }
-
-    /**
      * Reload the current page state
      *
      * @memberof DotPageStateService
@@ -99,6 +84,60 @@ export class DotPageStateService {
     }
 
     /**
+     * Set the page state of view as to received device
+     *
+     * @param {DotDevice} device
+     * @memberof DotPageStateService
+     */
+    setDevice(device: DotDevice): void {
+        this.get({
+            viewAs: {
+                device
+            }
+        });
+    }
+
+    /**
+     * Lock or unlock the page and set a new state
+     *
+     * @param {DotPageRenderOptions} options
+     * @param {boolean} [lock=null]
+     * @memberof DotPageStateService
+     */
+    setLock(options: DotPageRenderOptions, lock: boolean = null): void {
+        this.getLockMode(this.currentState.page.inode, lock)
+            .pipe(take(1))
+            .subscribe(() => {
+                this.get(options);
+            });
+    }
+
+    /**
+     * Set the page state of view as to received language
+     *
+     * @param {number} language
+     * @memberof DotPageStateService
+     */
+    setLanguage(language: number): void {
+        this.get({
+            viewAs: {
+                language
+            }
+        });
+    }
+
+    /**
+     * Overwrite the local state and emit it
+     *
+     * @param {DotRenderedPageState} state
+     * @memberof DotPageStateService
+     */
+    setLocalState(state: DotRenderedPageState): void {
+        this.currentState = state;
+        this.state$.next(state);
+    }
+
+    /**
      * Set the page state of view as to received persona and update the mode and lock state if
      * persona is not personalized.
      *
@@ -129,34 +168,6 @@ export class DotPageStateService {
         } else {
             this.get(options);
         }
-    }
-
-    /**
-     * Set the page state of view as to received language
-     *
-     * @param {number} language
-     * @memberof DotPageStateService
-     */
-    setLanguage(language: number): void {
-        this.get({
-            viewAs: {
-                language
-            }
-        });
-    }
-
-    /**
-     * Set the page state of view as to received device
-     *
-     * @param {DotDevice} device
-     * @memberof DotPageStateService
-     */
-    setDevice(device: DotDevice): void {
-        this.get({
-            viewAs: {
-                device
-            }
-        });
     }
 
     private getCurrentUser(): User {

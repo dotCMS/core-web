@@ -90,8 +90,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     );
 
                     if (this.route.snapshot.queryParams.url === pageRendered.page.pageURI) {
-                        // CANT LEAVE THIS HERE, JUST TESTING
-                        this.dotPageStateService.state$.next(dotRenderedPageState);
+                        this.dotPageStateService.setLocalState(dotRenderedPageState);
                     } else {
                         this.dotEditPageDataService.set(dotRenderedPageState);
                         this.dotRouterService.goToEditPage(pageRendered.page.pageURI);
