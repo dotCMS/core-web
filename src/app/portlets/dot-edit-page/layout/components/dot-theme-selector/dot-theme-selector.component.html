@@ -1,5 +1,4 @@
 <dot-dialog
-    #dialog
     [(visible)]="visible"
     [actions]="dialogActions"
     (hide)="hideDialog()"
@@ -16,7 +15,6 @@
         <p-dataGrid
             #dataGrid
             [value]="themes | async"
-            [style]="paginatorService.totalRecords > paginatorService.paginationPerPage ? { 'min-height': contentMinHeight + 'px' } : ''"
             [paginator]="paginatorService.totalRecords > paginatorService.paginationPerPage"
             [rows]="paginatorService?.paginationPerPage"
             [totalRecords]="paginatorService?.totalRecords"

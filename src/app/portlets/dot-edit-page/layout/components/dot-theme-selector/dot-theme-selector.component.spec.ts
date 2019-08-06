@@ -18,7 +18,7 @@ import { DotThemesServiceMock } from '../../../../../test/dot-themes-service.moc
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 
-fdescribe('DotThemeSelectorComponent', () => {
+describe('DotThemeSelectorComponent', () => {
     let component: DotThemeSelectorComponent;
     let fixture: ComponentFixture<DotThemeSelectorComponent>;
     let de: DebugElement;
