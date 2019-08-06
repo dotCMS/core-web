@@ -48,7 +48,6 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changePersonaHandler(persona: DotPersona): void {
-        this.pageState.viewAs.persona = persona;
         this.dotPageStateService.setPersona(persona);
     }
 
@@ -59,7 +58,6 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changeLanguageHandler({ id }: DotLanguage): void {
-        this.pageState.viewAs.language = id;
         this.dotPageStateService.setLanguage(id);
     }
 
@@ -70,7 +68,6 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @memberof DotEditPageViewAsControllerComponent
      */
     changeDeviceHandler(device: DotDevice): void {
-        this.pageState.viewAs.device = device;
         this.dotPageStateService.setDevice(device);
     }
 
