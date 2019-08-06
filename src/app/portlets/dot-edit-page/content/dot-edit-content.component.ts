@@ -361,28 +361,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return eventsHandlerMap[event];
     }
 
-    // TODO: this whole method need testing.
-    // private handleSetPageStateFailed(err: ResponseView): void {
-    //     this.dotHttpErrorManagerService
-    //         .handle(err)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res: any) => {
-    //             if (res.forbidden) {
-    //                 this.dotRouterService.goToSiteBrowser();
-    //             } else {
-    //                 this.route.queryParams
-    //                     .pipe(
-    //                         pluck('url'),
-    //                         concatMap((url: string) => this.dotPageStateService.get(url)),
-    //                         takeUntil(this.destroy$)
-    //                     )
-    //                     .subscribe((pageState: DotRenderedPageState) => {
-    //                         this.setPageState(pageState);
-    //                     });
-    //             }
-    //         });
-    // }
-
     private subscribeIframeCustomEvents(): void {
         fromEvent(window.document, 'ng-event')
             .pipe(

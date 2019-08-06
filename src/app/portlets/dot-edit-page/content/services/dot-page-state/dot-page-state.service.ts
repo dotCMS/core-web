@@ -1,8 +1,8 @@
-import { of as observableOf, Observable, Subject } from 'rxjs';
+import { of, Observable, Subject } from 'rxjs';
 
-import { mergeMap, pluck, take, map } from 'rxjs/operators';
+import { mergeMap, pluck, take, map, catchError } from 'rxjs/operators';
 import { DotPage } from './../../../shared/models/dot-page.model';
-import { LoginService, User } from 'dotcms-js';
+import { LoginService, User, ResponseView } from 'dotcms-js';
 import {
     DotPageState,
     DotRenderedPageState
@@ -17,6 +17,11 @@ import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';
+import {
+    DotHttpErrorManagerService,
+    DotHttpErrorHandled
+} from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 @Injectable()
 export class DotPageStateService {
@@ -24,8 +29,10 @@ export class DotPageStateService {
     private currentState: DotRenderedPageState;
 
     constructor(
-        private dotPageRenderService: DotPageRenderService,
         private dotContentletLockerService: DotContentletLockerService,
+        private dotHttpErrorManagerService: DotHttpErrorManagerService,
+        private dotPageRenderService: DotPageRenderService,
+        private dotRouterService: DotRouterService,
         private loginService: LoginService
     ) {}
 
@@ -61,7 +68,7 @@ export class DotPageStateService {
         };
 
         const pageMode$: Observable<DotPageRender> =
-            state.mode !== undefined ? this.requestPage(pageOpts) : observableOf(null);
+            state.mode !== undefined ? this.requestPage(pageOpts) : of(null);
 
         lockUnlock$
             .pipe(
@@ -76,7 +83,8 @@ export class DotPageStateService {
                                 )
                         )
                     )
-                )
+                ),
+                take(1)
             )
             .subscribe((dotRenderedPageState: DotRenderedPageState) => {
                 this.setState(dotRenderedPageState);
@@ -101,11 +109,19 @@ export class DotPageStateService {
      */
     requestPage(options: DotPageRenderOptions): Observable<DotRenderedPageState> {
         return this.dotPageRenderService.get(options).pipe(
+            catchError((err: ResponseView) => {
+                this.handleSetPageStateFailed(err);
+                return of(null);
+            }),
             take(1),
             map((page: DotPageRender) => {
-                const pageState = new DotRenderedPageState(this.getCurrentUser(), page);
-                this.currentState = pageState;
-                return pageState;
+                if (page) {
+                    const pageState = new DotRenderedPageState(this.getCurrentUser(), page);
+                    this.currentState = pageState;
+                    return pageState;
+                }
+
+                return this.currentState;
             })
         );
     }
@@ -182,7 +198,20 @@ export class DotPageStateService {
             return this.dotContentletLockerService.unlock(workingInode).pipe(pluck('message'));
         }
 
-        return observableOf(null);
+        return of(null);
+    }
+
+    private handleSetPageStateFailed(err: ResponseView): void {
+        this.dotHttpErrorManagerService
+            .handle(err)
+            .pipe(take(1))
+            .subscribe((res: DotHttpErrorHandled) => {
+                if (res.forbidden) {
+                    this.dotRouterService.goToSiteBrowser();
+                } else {
+                    this.reload();
+                }
+            });
     }
 
     private setState(state: DotRenderedPageState): void {
