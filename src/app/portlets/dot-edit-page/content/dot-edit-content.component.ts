@@ -21,7 +21,7 @@ import { DotPageContent } from '../shared/models/dot-page-content.model';
 import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { PageMode } from '../shared/models/page-mode.enum';
+import { DotPageMode } from '../shared/models/dot-page-mode.enum';
 import { DotPageRender } from '../shared/models/dot-rendered-page.model';
 import { DotEditPageDataService } from '../shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
@@ -210,7 +210,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         return (
             this.pageState$ &&
             this.pageStateInternal.layout &&
-            this.pageStateInternal.state.mode === PageMode.EDIT
+            this.pageStateInternal.state.mode === DotPageMode.EDIT
         );
     }
 
@@ -439,7 +439,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private shouldEditMode(pageState: DotRenderedPageState): boolean {
-        return pageState.state.mode === PageMode.EDIT && !pageState.state.lockedByAnotherUser;
+        return pageState.state.mode === DotPageMode.EDIT && !pageState.state.lockedByAnotherUser;
     }
 
     private subscribePageModelChange(): void {

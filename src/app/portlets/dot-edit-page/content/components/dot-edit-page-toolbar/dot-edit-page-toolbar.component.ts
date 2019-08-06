@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotRenderedPageState, PageMode } from '@portlets/dot-edit-page/shared/models';
+import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 
 
 @Component({
@@ -38,6 +38,6 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(): void {
-        this.showWhatsChanged = this.pageState.state.mode === PageMode.PREVIEW;
+        this.showWhatsChanged = this.pageState.state.mode === DotPageMode.PREVIEW;
     }
 }

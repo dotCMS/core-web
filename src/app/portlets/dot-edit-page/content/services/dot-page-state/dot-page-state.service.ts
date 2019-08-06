@@ -11,7 +11,7 @@ import { DotPageRender } from '../../../shared/models/dot-rendered-page.model';
 import { Injectable } from '@angular/core';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
-import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 import {
     DotHttpErrorManagerService,
@@ -156,7 +156,7 @@ export class DotPageStateService {
         // a non personalized page to show in EDIT MODE and locked, in other hand maybe we
         // need to move this to the backend.
         if (this.shouldLockPageToSetPersona(persona)) {
-            options.mode = PageMode.PREVIEW;
+            options.mode = DotPageMode.PREVIEW;
 
             this.dotContentletLockerService
                 .unlock(this.currentState.page.inode)
@@ -205,7 +205,7 @@ export class DotPageStateService {
         return (
             !persona.personalized &&
             this.currentState.page.locked &&
-            this.currentState.viewAs.mode === PageMode.EDIT
+            this.currentState.viewAs.mode === DotPageMode.EDIT
         );
     }
 }

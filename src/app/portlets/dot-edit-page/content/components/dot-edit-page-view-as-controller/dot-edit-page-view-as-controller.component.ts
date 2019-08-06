@@ -9,7 +9,7 @@ import { DotPageStateService } from '../../services/dot-page-state/dot-page-stat
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
 import { take, map } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
-import { DotRenderedPageState, PageMode } from '@portlets/dot-edit-page/shared/models';
+import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-edit-page-view-as-controller',
@@ -93,7 +93,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
                     .subscribe(() => {
                         this.dotPageStateService.setLock(
                             {
-                                mode: PageMode.PREVIEW
+                                mode: DotPageMode.PREVIEW
                             },
                             false
                         );

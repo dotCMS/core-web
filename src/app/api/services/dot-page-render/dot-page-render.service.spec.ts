@@ -9,7 +9,7 @@ import { DotPageRenderService, DotPageRenderOptions } from './dot-page-render.se
 import { DotPageRender } from '../../../portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { LoginServiceMock } from '../../../test/login-service.mock';
 import { mockDotRenderedPage } from '../../../test/dot-rendered-page.mock';
-import { PageMode } from '../../../portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPageMode } from '../../../portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 
 describe('DotPageRenderService', () => {
     let editPageService: DotPageRenderService;
@@ -131,7 +131,7 @@ describe('DotPageRenderService', () => {
         let result: DotPageRender;
         const param: DotPageRenderOptions = {
             url: 'about-us',
-            mode: PageMode.EDIT
+            mode: DotPageMode.EDIT
         };
         editPageService
             .get(param)
@@ -212,7 +212,7 @@ describe('DotPageRenderService', () => {
             viewAs: {
                 language_id: 2
             },
-            mode: PageMode.EDIT
+            mode: DotPageMode.EDIT
         };
         editPageService
             .get(param)

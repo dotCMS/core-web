@@ -1,5 +1,5 @@
 import { DotPageRender } from './dot-rendered-page.model';
-import { PageMode } from './page-mode.enum';
+import { DotPageMode } from './dot-page-mode.enum';
 import { User } from 'dotcms-js';
 import { DotPage } from './dot-page.model';
 import { DotLayout } from './dot-layout.model';
@@ -9,7 +9,7 @@ import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-v
 interface DotPageState {
     locked?: boolean;
     lockedByAnotherUser?: boolean;
-    mode: PageMode;
+    mode: DotPageMode;
 }
 
 export class DotRenderedPageState {

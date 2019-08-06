@@ -8,7 +8,7 @@ import { DOTTestBed } from '../../../../../test/dot-test-bed';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPageStateService } from './dot-page-state.service';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
-import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
@@ -50,7 +50,7 @@ describe('DotPageStateService', () => {
         it('should set a page locked and live mode', () => {
             service
                 .setLock(mockDotPage, {
-                    mode: PageMode.LIVE,
+                    mode: DotPageMode.LIVE,
                     locked: true
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
@@ -58,7 +58,7 @@ describe('DotPageStateService', () => {
                     expect(updatedPageState.state).toEqual({
                         locked: true,
                         lockedByAnotherUser: true,
-                        mode: PageMode.LIVE
+                        mode: DotPageMode.LIVE
                     });
                 });
 
@@ -73,7 +73,7 @@ describe('DotPageStateService', () => {
             );
 
             const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
-            mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.LIVE];
+            mockDotRenderedPageCopy.viewAs.mode = DotPageMode[DotPageMode.LIVE];
 
             lastConnection[1].mockRespond(
                 new Response(
@@ -97,7 +97,7 @@ describe('DotPageStateService', () => {
 
             service
                 .setLock(mockDotPage, {
-                    mode: PageMode.PREVIEW,
+                    mode: DotPageMode.PREVIEW,
                     locked: false
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
@@ -105,7 +105,7 @@ describe('DotPageStateService', () => {
                     expect(updatedPageState.state).toEqual({
                         locked: false,
                         lockedByAnotherUser: false,
-                        mode: PageMode.PREVIEW
+                        mode: DotPageMode.PREVIEW
                     });
                 });
 
@@ -138,14 +138,14 @@ describe('DotPageStateService', () => {
         it('should set a page preview mode and keep the lock', () => {
             service
                 .setLock(mockDotPage, {
-                    mode: PageMode.PREVIEW
+                    mode: DotPageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
                     expect(updatedPageState.page).toEqual(mockDotPage);
                     expect(updatedPageState.state).toEqual({
                         locked: true,
                         lockedByAnotherUser: true,
-                        mode: PageMode.PREVIEW
+                        mode: DotPageMode.PREVIEW
                     });
                 });
 
@@ -196,7 +196,7 @@ describe('DotPageStateService', () => {
                 expect(updatedPageState.page).toEqual(noLockedByPage);
                 expect(updatedPageState.state).toEqual({
                     locked: false,
-                    mode: PageMode.PREVIEW,
+                    mode: DotPageMode.PREVIEW,
                     lockedByAnotherUser: false
                 });
             });
@@ -207,7 +207,7 @@ describe('DotPageStateService', () => {
                             entity: {
                                 page: noLockedByPage,
                                 viewAs: {
-                                    mode: PageMode[PageMode.PREVIEW]
+                                    mode: DotPageMode[DotPageMode.PREVIEW]
                                 }
                             }
                         }
@@ -238,7 +238,7 @@ describe('DotPageStateService', () => {
                 expect(updatedPageState.page).toEqual(noLockedByPage);
                 expect(updatedPageState.state).toEqual({
                     locked: false,
-                    mode: PageMode.PREVIEW,
+                    mode: DotPageMode.PREVIEW,
                     lockedByAnotherUser: false
                 });
             });
@@ -249,7 +249,7 @@ describe('DotPageStateService', () => {
                             entity: {
                                 page: noLockedByPage,
                                 viewAs: {
-                                    mode: PageMode[PageMode.PREVIEW]
+                                    mode: DotPageMode[DotPageMode.PREVIEW]
                                 }
                             }
                         }
@@ -276,13 +276,13 @@ describe('DotPageStateService', () => {
                     expect(updatedPageState.page).toEqual(mockDotPage);
                     expect(updatedPageState.state).toEqual({
                         locked: true,
-                        mode: PageMode.EDIT,
+                        mode: DotPageMode.EDIT,
                         lockedByAnotherUser: false
                     });
                 });
 
                 const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
-                mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.EDIT];
+                mockDotRenderedPageCopy.viewAs.mode = DotPageMode[DotPageMode.EDIT];
 
                 lastConnection[0].mockRespond(
                     new Response(
@@ -301,13 +301,13 @@ describe('DotPageStateService', () => {
                     expect(updatedPageState.page).toEqual(mockDotPage);
                     expect(updatedPageState.state).toEqual({
                         locked: true,
-                        mode: PageMode.EDIT,
+                        mode: DotPageMode.EDIT,
                         lockedByAnotherUser: false
                     });
                 });
 
                 const mockDotRenderedPageCopy: DotPageRender = _.cloneDeep(mockDotRenderedPage);
-                mockDotRenderedPageCopy.viewAs.mode = PageMode[PageMode.EDIT];
+                mockDotRenderedPageCopy.viewAs.mode = DotPageMode[DotPageMode.EDIT];
 
                 lastConnection[0].mockRespond(
                     new Response(
@@ -343,7 +343,7 @@ describe('DotPageStateService', () => {
         it('should set', () => {
             service
                 .setLock(mockDotPage, {
-                    mode: PageMode.PREVIEW
+                    mode: DotPageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
                     expect(updatedPageState.user.userId).toEqual('123');
@@ -392,7 +392,7 @@ describe('DotPageStateService', () => {
         it('should set', () => {
             service
                 .setLock(mockDotPage, {
-                    mode: PageMode.PREVIEW
+                    mode: DotPageMode.PREVIEW
                 })
                 .subscribe((updatedPageState: DotRenderedPageState) => {
                     expect(updatedPageState.user.userId).toEqual('login-as-user');

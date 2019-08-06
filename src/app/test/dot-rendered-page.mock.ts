@@ -3,7 +3,7 @@ import { DotPage } from './../portlets/dot-edit-page/shared/models/dot-page.mode
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotLayout } from '@portlets/dot-edit-page/shared/models/dot-layout.model';
 import { mockDotLanguage } from './dot-language.mock';
-import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { CONTAINER_SOURCE } from '@models/container/dot-container.model';
 import { dotcmsContentTypeBasicMock } from './dot-content-types.mock';
 
@@ -110,6 +110,6 @@ export const mockDotRenderedPage: DotPageRender = {
     canCreateTemplate: true,
     viewAs: {
         language: mockDotLanguage,
-        mode: PageMode[PageMode.PREVIEW]
+        mode: DotPageMode[DotPageMode.PREVIEW]
     }
 };

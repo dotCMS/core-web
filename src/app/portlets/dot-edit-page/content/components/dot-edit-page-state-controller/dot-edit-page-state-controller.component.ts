@@ -9,7 +9,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotEditPageLockInfoComponent } from './components/dot-edit-page-lock-info/dot-edit-page-lock-info.component';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
-import { DotRenderedPageState, PageMode } from '@portlets/dot-edit-page/shared/models';
+import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import {
     DotPersonalizeService,
     DotCMSPersonalizedItem
@@ -32,7 +32,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     @Input() pageState: DotRenderedPageState;
 
     lock: boolean;
-    mode: PageMode;
+    mode: DotPageMode;
     options$: Observable<SelectItem[]>;
 
     private messages: { [key: string]: string } = {};
@@ -94,12 +94,12 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     /**
      * Handle state selector change event
      *
-     * @param {PageMode} mode
+     * @param {DotPageMode} mode
      * @memberof DotEditPageStateControllerComponent
      */
-    stateSelectorHandler(mode: PageMode): void {
+    stateSelectorHandler(mode: DotPageMode): void {
         if (this.shouldShowConfirmation(mode)) {
-            this.lock = mode === PageMode.EDIT;
+            this.lock = mode === DotPageMode.EDIT;
 
             this.showConfirmation()
                 .then((type: DotConfirmationType) => {
@@ -119,7 +119,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                     this.mode = this.pageState.state.mode;
                 });
         } else {
-            const lock = mode === PageMode.EDIT || null;
+            const lock = mode === DotPageMode.EDIT || null;
             this.updatePageState(
                 {
                     mode: this.mode
@@ -142,7 +142,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
 
         return {
             label: this.messages[`editpage.toolbar.${mode}.page`],
-            value: PageMode[mode.toLocaleUpperCase()],
+            value: DotPageMode[mode.toLocaleUpperCase()],
             disabled: disabled[mode]
         };
     }
@@ -172,8 +172,8 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private setLockerState() {
-        if (!this.lock && this.mode === PageMode.EDIT) {
-            this.mode = PageMode.PREVIEW;
+        if (!this.lock && this.mode === DotPageMode.EDIT) {
+            this.mode = DotPageMode.PREVIEW;
         }
 
         this.updatePageState(
@@ -192,9 +192,9 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         return this.pageState.viewAs.persona && !this.isPersonalized();
     }
 
-    private shouldShowConfirmation(mode: PageMode): boolean {
+    private shouldShowConfirmation(mode: DotPageMode): boolean {
         return (
-            mode === PageMode.EDIT && (this.shouldAskToLock() || this.shouldAskPersonalization())
+            mode === DotPageMode.EDIT && (this.shouldAskToLock() || this.shouldAskPersonalization())
         );
     }
 

@@ -17,4 +17,4 @@ export * from './dot-rendered-page.model';
 export * from './dot-site.model';
 export * from './dot-template.model';
 export * from './dot-theme.model';
-export * from './page-mode.enum';
+export * from './dot-page-mode.enum';

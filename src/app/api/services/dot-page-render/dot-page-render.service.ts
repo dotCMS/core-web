@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { PageMode } from '@portlets/dot-edit-page/shared/models/page-mode.enum';
+import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 
@@ -39,7 +39,7 @@ export class DotPageRenderService {
 
     private getOptionalViewAsParams(
         viewAsConfig: DotPageRenderOptionsViewAs = {},
-        mode: PageMode
+        mode: DotPageMode
     ): DotPageRenderRequestParams {
         return {
             ...this.getPersonaParam(viewAsConfig.persona),
@@ -49,7 +49,7 @@ export class DotPageRenderService {
         };
     }
 
-    private getModeParam(mode: PageMode): { [key: string]: PageMode } {
+    private getModeParam(mode: DotPageMode): { [key: string]: DotPageMode } {
         return mode ? { mode } : {};
     }
 
@@ -86,7 +86,7 @@ export interface DotPageRenderOptionsViewAs {
 
 export interface DotPageRenderOptions {
     url?: string;
-    mode?: PageMode;
+    mode?: DotPageMode;
     viewAs?: DotPageRenderOptionsViewAs;
 }
 
@@ -94,5 +94,5 @@ interface DotPageRenderRequestParams {
     persona_id?: string;
     language_id?: string;
     device_inode?: string;
-    mode?: PageMode;
+    mode?: DotPageMode;
 }
