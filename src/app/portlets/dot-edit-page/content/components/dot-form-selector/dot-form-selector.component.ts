@@ -56,6 +56,7 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
                 this.messages = messages;
             });
 
+        this.paginatorService.paginationPerPage = 5;
         this.paginatorService.url = 'v1/contenttype?type=FORM';
     }
     ngOnChanges(changes: SimpleChanges) {
