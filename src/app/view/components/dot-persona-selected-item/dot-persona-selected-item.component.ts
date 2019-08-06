@@ -30,7 +30,6 @@ export class DotPersonaSelectedItemComponent implements OnInit {
 
     @HostListener('click', ['$event'])
     onClick($event: MouseEvent) {
-        $event.stopPropagation();
         this.selected.emit($event);
     }
 }

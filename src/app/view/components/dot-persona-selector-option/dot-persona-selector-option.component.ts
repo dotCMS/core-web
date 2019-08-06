@@ -34,8 +34,7 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     }
 
     @HostListener('click', ['$event'])
-    onClick($event: MouseEvent) {
-        $event.stopPropagation();
+    onClick(_$event: MouseEvent) {
         this.change.emit(this.persona);
     }
 
