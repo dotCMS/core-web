@@ -108,15 +108,15 @@ export class SearchableDropdownComponent
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
-    disabled = false;
-    externalItemListTemplate: TemplateRef<any>;
-    externalSelectTemplate: TemplateRef<any>;
-    label: string;
-    options: any[];
-    overlayPanelMinHeight: string;
-    searchPlaceholder$: Observable<string>;
-    value: any;
     valueString = '';
+    value: any;
+    searchPlaceholder$: Observable<string>;
+    overlayPanelMinHeight: string;
+    options: any[];
+    label: string;
+    externalSelectTemplate: TemplateRef<any>;
+    externalItemListTemplate: TemplateRef<any>;
+    disabled = false;
 
     constructor(private dotMessageService: DotMessageService) {}
 

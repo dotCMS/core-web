@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, HostListener } from '@angular/core';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'dot-persona-selector-option',
@@ -21,17 +22,15 @@ export class DotPersonaSelectorOptionComponent implements OnInit {
     @Output()
     delete = new EventEmitter<DotPersona>();
 
-    messagesKey: { [key: string]: string } = {};
+    deleteLabel$: Observable<string>;
 
     constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
-        this.dotMessageService
-            .getMessages(['modes.persona.personalized'])
-            .pipe(take(1))
-            .subscribe((messages: { [key: string]: string }) => {
-                this.messagesKey = messages;
-            });
+        this.deleteLabel$ = this.dotMessageService.getMessages(['modes.persona.personalized']).pipe(
+            take(1),
+            map((messages: { [key: string]: string }) => messages['modes.persona.personalized'])
+        );
     }
 
     @HostListener('click', ['$event'])
