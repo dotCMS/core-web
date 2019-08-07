@@ -65,8 +65,5 @@
     border: 0;
     line-height: $field-height;
     max-height: $field-height;
-    overflow: hidden;
     padding: 0 $ui-trigger-width 0 0;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }

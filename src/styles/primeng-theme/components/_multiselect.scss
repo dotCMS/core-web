@@ -42,6 +42,7 @@
     }
 
     .ui-multiselect-label {
+        @include truncate-text;
         @extend #ui-field-selectable-label;
     }
 }
