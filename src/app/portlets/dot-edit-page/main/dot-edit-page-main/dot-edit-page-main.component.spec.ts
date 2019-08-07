@@ -126,7 +126,6 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {
-        spyOn(component, 'pageState');
         spyOn(dotPageStateService, 'reload').and.callThrough();
 
         component.pageState$.subscribe((res) => {

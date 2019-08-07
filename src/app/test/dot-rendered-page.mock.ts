@@ -109,7 +109,7 @@ export const mockDotRenderedPage: DotPageRender = {
     template: mockDotTemplate,
     canCreateTemplate: true,
     viewAs: {
-        language: mockDotLanguage,
+        language: mockDotLanguage.id,
         mode: DotPageMode[DotPageMode.PREVIEW]
     }
 };
