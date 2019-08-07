@@ -8,15 +8,14 @@ import {
     OnChanges,
     SimpleChanges
 } from '@angular/core';
-import { PaginatorService } from '@services/paginator';
 import { DotCMSContentType } from 'dotcms-models';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LazyLoadEvent, DataTable } from 'primeng/primeng';
 import { take } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
+import { PaginatorService } from '@services/paginator';
 
 @Component({
-    providers: [PaginatorService],
     selector: 'dot-form-selector',
     templateUrl: './dot-form-selector.component.html',
     styleUrls: ['./dot-form-selector.component.scss']
