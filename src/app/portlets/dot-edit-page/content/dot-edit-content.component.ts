@@ -208,7 +208,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private shouldSetContainersHeight() {
         return (
-            this.pageState$ &&
+            this.pageStateInternal &&
             this.pageStateInternal.layout &&
             this.pageStateInternal.state.mode === DotPageMode.EDIT
         );

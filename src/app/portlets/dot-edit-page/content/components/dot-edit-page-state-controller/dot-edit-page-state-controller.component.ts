@@ -48,7 +48,10 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                 'editpage.toolbar.live.page',
                 'editpage.toolbar.preview.page',
                 'editpage.content.steal.lock.confirmation.message.header',
-                'editpage.content.steal.lock.confirmation.message'
+                'editpage.content.steal.lock.confirmation.message',
+                'editpage.personalization.confirm.message',
+                'editpage.personalization.confirm.header',
+                'editpage.personalization.confirm.with.lock'
             ])
             .pipe(
                 tap((messages: { [key: string]: string }) => {
@@ -240,14 +243,16 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
     }
 
     private getPersonalizationConfirmMessage(): string {
-        let message = `<p>Are you sure you want to personalize the content for <b>${
+        let message = this.dotMessageService.get(
+            'editpage.personalization.confirm.message',
             this.pageState.viewAs.persona.name
-        }</b>?</p>`;
+        );
 
         if (this.shouldAskToLock()) {
-            message += `<p><b>NOTE:</b>This page is is locked by <b>${
+            message += this.dotMessageService.get(
+                'editpage.personalization.confirm.with.lock',
                 this.pageState.page.lockedByName
-            }</b>, you'll be also stealing the lock for this user.</p>`;
+            );
         }
         return message;
     }
