@@ -73,6 +73,7 @@ describe('DotEditPageToolbarComponent', () => {
         dotLicenseService = de.injector.get(DotLicenseService);
     });
 
+
     describe('elements', () => {
         beforeEach(() => {
             fixtureHost.detectChanges();

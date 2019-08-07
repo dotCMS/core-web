@@ -945,6 +945,7 @@ describe('DotEditContentComponent', () => {
                 });
                 document.dispatchEvent(customEvent);
 
+
                 expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(
                     copyMockDotRenderedPage.page.pageURI
                 );
