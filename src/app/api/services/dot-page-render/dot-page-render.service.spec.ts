@@ -13,7 +13,6 @@ import { mockDotDevices } from '@tests/dot-device.mock';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 
-
 const url = 'about-us';
 
 describe('DotPageRenderService', () => {

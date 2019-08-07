@@ -39,6 +39,7 @@ describe('DotEditPageToolbarComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
+
             declarations: [TestHostComponent, DotEditPageToolbarComponent],
             imports: [
                 CheckboxModule,
@@ -70,9 +71,13 @@ describe('DotEditPageToolbarComponent', () => {
         de = deHost.query(By.css('dot-edit-page-toolbar'));
         component = de.componentInstance;
 
+
+        de = deHost.query(By.css('dot-edit-page-toolbar'));
+        component = de.componentInstance;
+
+
         dotLicenseService = de.injector.get(DotLicenseService);
     });
-
 
     describe('elements', () => {
         beforeEach(() => {
