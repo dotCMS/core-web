@@ -4,13 +4,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 
-
 import { CoreWebService } from 'dotcms-js';
 import { DotLayout, DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
 
 /**
- * Provide util methods to get and save a PageView object
+ * Provide util methods interact with layout API
  *
  * @export
  * @class DotPageLayoutService

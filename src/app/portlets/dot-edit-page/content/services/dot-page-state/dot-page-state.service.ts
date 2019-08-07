@@ -155,7 +155,7 @@ export class DotPageStateService {
         // All this logic to unlock the page and set a mode is because per UX we can't allow
         // a non personalized page to show in EDIT MODE and locked, in other hand maybe we
         // need to move this to the backend.
-        if (this.shouldLockPageToSetPersona(persona)) {
+        if (this.shouldUnlockPageToSetPersona(persona)) {
             options.mode = DotPageMode.PREVIEW;
 
             this.dotContentletLockerService
@@ -201,7 +201,7 @@ export class DotPageStateService {
         this.state$.next(state);
     }
 
-    private shouldLockPageToSetPersona(persona: DotPersona): boolean {
+    private shouldUnlockPageToSetPersona(persona: DotPersona): boolean {
         return (
             !persona.personalized &&
             this.currentState.page.locked &&
