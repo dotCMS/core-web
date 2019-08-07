@@ -35,10 +35,10 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
     datatable: DataTable;
 
     @ViewChild('dialog')
-    dialog: DotDialogComponent;
+    dotDialog: DotDialogComponent;
 
     items: DotCMSContentType[];
-    contentMinHeight: number;
+    contentMinHeight: string;
     messages: {
         [key: string]: string;
     } = {};
@@ -61,9 +61,15 @@ export class DotFormSelectorComponent implements OnInit, OnChanges {
     }
     ngOnChanges(changes: SimpleChanges) {
         setTimeout(() => {
-            if (changes.show.currentValue === true) {
+            if (changes.show.currentValue) {
                 this.contentMinHeight =
-                    this.dialog.dialog.nativeElement.getBoundingClientRect().height - 100;
+                    this.paginatorService.totalRecords > this.paginatorService.paginationPerPage
+                        ? `${
+                              this.dotDialog.dialog.nativeElement
+                                  .querySelector('.ui-datatable')
+                                  .getBoundingClientRect().height
+                          }px`
+                        : '';
             }
         }, 0);
     }

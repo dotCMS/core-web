@@ -10,7 +10,7 @@
         #datatable
         (onLazyLoad)="loadData($event)"
         [lazy]="true"
-        [style]="paginatorService.totalRecords > paginatorService.paginationPerPage ? { 'min-height': contentMinHeight + 'px' } : ''"
+        [style]="{ 'height': contentMinHeight } "
         [pageLinks]="paginatorService.maxLinksPage"
         [paginator]="paginatorService.totalRecords > paginatorService.paginationPerPage"
         [rows]="paginatorService.paginationPerPage"
