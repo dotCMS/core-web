@@ -123,7 +123,9 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
                         );
                     },
                     () => {
-                        this.lock = this.pageState.state.locked;
+                        this.lock = this.pageState.state.lockedByAnotherUser
+                            ? false
+                            : this.pageState.state.locked;
                         this.mode = this.pageState.state.mode;
                     }
                 );
