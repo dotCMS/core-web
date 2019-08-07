@@ -12,7 +12,7 @@ import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode
 import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-page-render.mock';
 import { mockUser } from '../../../../../test/login-service.mock';
 import * as _ from 'lodash';
 

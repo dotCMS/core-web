@@ -1,5 +1,5 @@
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { mockDotRenderedPage } from './../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';

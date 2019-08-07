@@ -1,6 +1,6 @@
 import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
-import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { async, ComponentFixture } from '@angular/core/testing';
 

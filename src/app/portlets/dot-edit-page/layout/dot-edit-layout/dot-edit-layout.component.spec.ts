@@ -11,7 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { DotPageStateServiceMock } from '../../../../test/dot-page-state.service.mock';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { SiteServiceMock } from '../../../../test/site-service.mock';

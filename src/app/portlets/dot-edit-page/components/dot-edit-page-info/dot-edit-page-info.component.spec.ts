@@ -9,7 +9,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../../test/dot-message-service.mock';
 import { mockUser } from '../../../../test/login-service.mock';
 import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
-import { mockDotRenderedPage } from '../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
 import { SiteServiceMock } from '../../../../test/site-service.mock';
 import { SiteService } from 'dotcms-js';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';

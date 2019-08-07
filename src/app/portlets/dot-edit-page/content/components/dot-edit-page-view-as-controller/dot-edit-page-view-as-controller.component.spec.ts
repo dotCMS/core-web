@@ -16,7 +16,7 @@ import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { mockDotEditPageViewAs } from '../../../../../test/dot-edit-page-view-as.mock';
 import { mockDotPersona } from '../../../../../test/dot-persona.mock';
 import { mockUser, LoginServiceMock } from '../../../../../test/login-service.mock';
-import { mockDotRenderedPage } from '../../../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '../../../../../test/dot-page-render.mock';
 import { DotDeviceSelectorComponent } from '@components/dot-device-selector/dot-device-selector.component';
 import { DotPersonaSelectorComponent } from '@components/dot-persona-selector/dot-persona-selector.component';
 import { DotLanguageSelectorComponent } from '@components/dot-language-selector/dot-language-selector.component';

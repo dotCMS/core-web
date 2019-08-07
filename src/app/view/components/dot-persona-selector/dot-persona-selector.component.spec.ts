@@ -12,7 +12,7 @@ import { mockDotPersona } from '@tests/dot-persona.mock';
 import { DotPersonaSelectedItemModule } from '@components/dot-persona-selected-item/dot-persona-selected-item.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotPersonaSelectorOptionModule } from '@components/dot-persona-selector-option/dot-persona-selector-option.module';
-import { mockDotPage } from '@tests/dot-rendered-page.mock';
+import { mockDotPage } from '@tests/dot-page-render.mock';
 import { of } from 'rxjs';
 import { PaginatorService } from '@services/paginator';
 

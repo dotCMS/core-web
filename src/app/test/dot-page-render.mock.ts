@@ -1,5 +1,5 @@
-import { DotTemplate } from './../portlets/dot-edit-page/shared/models/dot-template.model';
-import { DotPage } from './../portlets/dot-edit-page/shared/models/dot-page.model';
+import { DotTemplate } from '../portlets/dot-edit-page/shared/models/dot-template.model';
+import { DotPage } from '../portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotLayout } from '@portlets/dot-edit-page/shared/models/dot-layout.model';
 import { mockDotLanguage } from './dot-language.mock';

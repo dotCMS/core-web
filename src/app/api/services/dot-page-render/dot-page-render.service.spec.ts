@@ -11,7 +11,7 @@ import { LoginServiceMock } from '@tests/login-service.mock';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 import { mockDotDevices } from '@tests/dot-device.mock';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
-import { mockDotRenderedPage } from '@tests/dot-rendered-page.mock';
+import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
 
 const url = 'about-us';
 

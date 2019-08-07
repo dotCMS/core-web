@@ -31,7 +31,7 @@ import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotWorkflowServiceMock } from '../../../test/dot-workflow-service.mock';
-import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-rendered-page.mock';
+import { mockDotRenderedPage, mockDotPage } from '../../../test/dot-page-render.mock';
 import { mockDotDevices } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
 import { mockResponseView } from '../../../test/response-view.mock';
