@@ -39,7 +39,6 @@ describe('DotEditPageToolbarComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-
             declarations: [TestHostComponent, DotEditPageToolbarComponent],
             imports: [
                 CheckboxModule,

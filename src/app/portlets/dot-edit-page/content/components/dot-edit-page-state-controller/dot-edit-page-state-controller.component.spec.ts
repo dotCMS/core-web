@@ -43,6 +43,7 @@ fdescribe('DotEditPageStateControllerComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     // let componentHost: TestHostComponent;
     // let component: DotEditPageStateControllerComponent;
+
     let de: DebugElement;
     let deHost: DebugElement;
 
@@ -83,6 +84,7 @@ fdescribe('DotEditPageStateControllerComponent', () => {
         // componentHost = fixtureHost.componentInstance;
         de = deHost.query(By.css('dot-edit-page-state-controller'));
         // component = de.componentInstance;
+
         fixtureHost.detectChanges();
     });
 
