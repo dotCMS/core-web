@@ -18,7 +18,9 @@ import { PaginatorService } from '@services/paginator';
 @Component({
     selector: 'dot-form-selector',
     templateUrl: './dot-form-selector.component.html',
-    styleUrls: ['./dot-form-selector.component.scss']
+    styleUrls: ['./dot-form-selector.component.scss'],
+    providers: [PaginatorService]
+
 })
 export class DotFormSelectorComponent implements OnInit, OnChanges {
     @Input()

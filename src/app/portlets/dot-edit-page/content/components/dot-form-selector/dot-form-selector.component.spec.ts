@@ -1,5 +1,5 @@
-import { of as observableOf, Observable } from 'rxjs';
-import { DebugElement, Injectable, Component } from '@angular/core';
+import { of as observableOf } from 'rxjs';
+import { DebugElement, Component } from '@angular/core';
 import { DotFormSelectorComponent } from './dot-form-selector.component';
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { DOTTestBed } from '../../../../../test/dot-test-bed';
@@ -24,18 +24,6 @@ const mockContentType: DotCMSContentType = {
     owner: '123',
     system: false
 };
-
-@Injectable()
-class PaginatorServiceMock {
-    url = '';
-    maxLinksPage = 5;
-    paginationPerPage = 5;
-    totalRecords = 10;
-
-    public getWithOffset(): Observable<any[]> {
-        return null;
-    }
-}
 
 @Component({
     template: `
@@ -62,10 +50,7 @@ describe('DotFormSelectorComponent', () => {
         DOTTestBed.configureTestingModule({
             declarations: [DotFormSelectorComponent, TestHostComponent],
             providers: [
-                {
-                    provide: PaginatorService,
-                    useClass: PaginatorServiceMock
-                },
+                PaginatorService,
                 {
                     provide: DotMessageService,
                     useValue: messageServiceMock
@@ -124,10 +109,14 @@ describe('DotFormSelectorComponent', () => {
 
                 it('should load first page and add paginator CSS class', (done) => {
                     fixture.whenStable().then(() => {
+                        paginatorService.totalRecords = 12;
+                        paginatorService.paginationPerPage = 5;
+                        fixture.detectChanges();
                         expect(paginatorService.getWithOffset).toHaveBeenCalledWith(0);
                         expect(component.items).toEqual([mockContentType]);
-                        expect(component.dotDialog.dialog.nativeElement.classList).toContain('paginator');
-                        fixture.detectChanges();
+                        expect(component.dotDialog.dialog.nativeElement.classList).toContain(
+                            'paginator'
+                        );
                         done();
                     });
                 });
