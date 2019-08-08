@@ -1,0 +1,52 @@
+@import "variables";
+
+:host {
+    display: flex;
+    align-items: center;
+
+    & > * {
+        margin-left: $basic-padding * 2;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+::ng-deep {
+    .ui-dropdown {
+        &:not(.ui-state-disabled) {
+            .ui-dropdown-label,
+            .ui-dropdown-trigger {
+                color: $gray;
+            }
+        }
+    }
+
+    .ui-chkbox:not(.ui-state-disabled){
+        .ui-chkbox-box.ui-state-default {
+            border-color: $gray;
+        }
+    }
+
+    .ui-chkbox-label {
+        color: $gray;
+    }
+}
+
+.device-info {
+    border-right: solid 1px $gray;
+    margin-right: $basic-padding;
+    padding-right: $basic-padding * 2;
+    white-space: nowrap;
+
+    &__label {
+        color: $gray;
+        margin-right: $basic-padding / 4;
+    }
+
+    &__content {
+        font-size: $font-size-small;
+        text-transform: uppercase;
+    }
+}
