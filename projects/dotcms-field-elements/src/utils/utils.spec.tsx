@@ -176,10 +176,9 @@ describe('updateStatus', () => {
     });
 });
 
-// TODO
-// describe('isValidURL', () => {
-//     // new URL is not available in headless browser.
-// });
+xdescribe('isValidURL', () => {
+    // new URL is not available in headless browser.
+});
 
 describe('isFileAllowed', () => {
     it('should return true when file extension is valid', () => {

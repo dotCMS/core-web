@@ -60,7 +60,7 @@ export class DotFormComponent {
         const { name, value } = event.detail;
         const process = fieldCustomProcess[tagName];
         if (tagName === 'DOT-BINARY-FILE' && value) {
-            this.uploadFile(event).then((tempFile) => {
+            this.uploadFile(event).then((tempFile: DotTempFile) => {
                 this.value[name] = tempFile.id;
             });
         } else {
@@ -165,14 +165,18 @@ export class DotFormComponent {
                 return response.text();
             })
             .then((_text: string) => {
-                const formReturnUrl = this.getFormReturnUrl();
-                if (formReturnUrl) {
-                    window.location.href = formReturnUrl;
-                }
+                this.goToSuccessPage();
             })
             .catch(({ message, status }: DotHttpErrorResponse) => {
                 this.errorMessage = message || fallbackErrorMessages[status];
             });
+    }
+
+    private goToSuccessPage(): void {
+        const formReturnUrl = this.getFormReturnUrl();
+        if (formReturnUrl) {
+            window.location.href = formReturnUrl;
+        }
     }
 
     private getFormReturnUrl(): string {
