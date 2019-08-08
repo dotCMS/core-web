@@ -8,5 +8,5 @@ export const mockDotEditPageViewAs: DotEditPageViewAs = {
     language: mockDotLanguage.id,
     device: mockDotDevices[0],
     persona: mockDotPersona,
-    mode: DotPageMode[DotPageMode.EDIT]
+    mode: DotPageMode.EDIT
 };

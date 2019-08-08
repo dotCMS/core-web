@@ -15,7 +15,7 @@ export const mockDotPage: DotPage = {
     languageId: 1,
     liveInode: '456',
     lockMessage: '',
-    lockedBy: 'someone',
+    lockedBy: '123',
     lockedByName: 'Some One',
     lockedOn: new Date(1517330917295),
     pageURI: '/an/url/test',
@@ -110,6 +110,6 @@ export const mockDotRenderedPage: DotPageRender = {
     canCreateTemplate: true,
     viewAs: {
         language: mockDotLanguage.id,
-        mode: DotPageMode[DotPageMode.PREVIEW]
+        mode: DotPageMode.PREVIEW
     }
 };

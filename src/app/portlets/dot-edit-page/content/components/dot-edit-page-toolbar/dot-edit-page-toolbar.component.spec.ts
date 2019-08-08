@@ -37,10 +37,8 @@ describe('DotEditPageToolbarComponent', () => {
     let deHost: DebugElement;
     let dotLicenseService: DotLicenseService;
 
-    let testbed;
-
     beforeEach(async(() => {
-        testbed = DOTTestBed.configureTestingModule({
+        DOTTestBed.configureTestingModule({
             declarations: [TestHostComponent, DotEditPageToolbarComponent],
             imports: [
                 CheckboxModule,
@@ -65,7 +63,7 @@ describe('DotEditPageToolbarComponent', () => {
     }));
 
     beforeEach(() => {
-        fixtureHost = testbed.createComponent(TestHostComponent);
+        fixtureHost = DOTTestBed.createComponent(TestHostComponent);
         deHost = fixtureHost.debugElement;
         componentHost = fixtureHost.componentInstance;
 
