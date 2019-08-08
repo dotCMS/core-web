@@ -24,6 +24,8 @@ export class DotPageStateService {
     state$: Subject<DotRenderedPageState> = new Subject<DotRenderedPageState>();
     private currentState: DotRenderedPageState;
 
+    private isInternalNavigation = false;
+
     constructor(
         private dotContentletLockerService: DotContentletLockerService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
@@ -95,6 +97,15 @@ export class DotPageStateService {
                 device
             }
         });
+    }
+
+    setInternalNavigationState(state: DotRenderedPageState): void {
+        this.currentState = state;
+        this.isInternalNavigation = true;
+    }
+
+    getInternalNavigationState(): DotRenderedPageState {
+        return this.isInternalNavigation ? this.currentState : null;
     }
 
     /**

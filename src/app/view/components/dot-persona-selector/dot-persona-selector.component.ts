@@ -50,7 +50,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     constructor(public paginationService: PaginatorService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.value.firstChange) {
+        if (changes.value && !changes.value.firstChange) {
             this.getPersonasList();
         }
     }
