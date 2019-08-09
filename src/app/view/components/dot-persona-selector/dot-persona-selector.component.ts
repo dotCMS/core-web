@@ -1,15 +1,9 @@
-import {
-    Component,
-    ViewChild,
-    Output,
-    EventEmitter,
-    Input,
-    OnInit,
-    OnChanges,
-    SimpleChanges
-} from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
-import { SearchableDropdownComponent, PaginationEvent } from '@components/_common/searchable-dropdown/component';
+import {
+    SearchableDropdownComponent,
+    PaginationEvent
+} from '@components/_common/searchable-dropdown/component';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { take } from 'rxjs/operators';
 
@@ -25,10 +19,7 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
 })
-export class DotPersonaSelectorComponent implements OnInit, OnChanges {
-    @Input()
-    pageId: string;
-
+export class DotPersonaSelectorComponent implements OnInit {
     @Input()
     value: DotPersona;
 
@@ -49,18 +40,16 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
 
     constructor(public paginationService: PaginatorService) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.value && !changes.value.firstChange) {
-            this.getPersonasList();
-        }
-    }
-
     ngOnInit(): void {
         this.addAction = () => {
             // TODO Implement + action
         };
-        this.paginationService.url = `v1/page/${this.pageId}/personas`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
+    }
+
+    @Input('pageId')
+    set pageId(pageId: string) {
+        this.paginationService.url = `v1/page/${pageId}/personas`;
         this.getPersonasList();
     }
 
