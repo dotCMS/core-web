@@ -20,6 +20,7 @@
         [value]="pageState.viewAs.device"
     ></dot-device-selector>
     <dot-persona-selector
+        #personaSelector
         (selected)="changePersonaHandler($event)"
         (delete)="deletePersonalization($event)"
         [value]="pageState.viewAs.persona"

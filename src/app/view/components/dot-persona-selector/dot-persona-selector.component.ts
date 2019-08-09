@@ -56,7 +56,9 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
 
-        if (!changes.value.firstChange) {
+        if (
+            this.isPersonalizeStateUpdated(changes.value.previousValue, changes.value.currentValue)
+        ) {
             this.getPersonasListCurrentPage();
         }
     }
@@ -96,10 +98,22 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     personaChange(persona: DotPersona): void {
-        if (this.value && this.value.identifier !== persona.identifier) {
+        if (!this.value || this.value.identifier !== persona.identifier) {
             this.selected.emit(persona);
         }
         this.searchableDropdown.toggleOverlayPanel();
+    }
+
+    /**
+     * Refresh the current page in the persona list option
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    getPersonasListCurrentPage(): void {
+        this.paginationService
+            .getCurrentPage()
+            .pipe(take(1))
+            .subscribe(this.setList.bind(this));
     }
 
     private getPersonasList(filter = '', offset = 0): void {
@@ -111,11 +125,8 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .subscribe(this.setList.bind(this));
     }
 
-    private getPersonasListCurrentPage(): void {
-        this.paginationService
-            .getCurrentPage()
-            .pipe(take(1))
-            .subscribe(this.setList.bind(this));
+    private isPersonalizeStateUpdated(prev: DotPersona, current: DotPersona): boolean {
+        return prev && current && prev.personalized !== current.personalized;
     }
 
     private setList(items: DotPersona[]): void {
