@@ -96,7 +96,9 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     personaChange(persona: DotPersona): void {
-        this.selected.emit(persona);
+        if (this.value && this.value.identifier !== persona.identifier) {
+            this.selected.emit(persona);
+        }
         this.searchableDropdown.toggleOverlayPanel();
     }
 
