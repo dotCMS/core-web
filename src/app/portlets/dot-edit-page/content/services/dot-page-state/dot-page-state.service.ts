@@ -51,6 +51,16 @@ export class DotPageStateService {
     }
 
     /**
+     * Get the current state if it was set from internal navigation
+     *
+     * @returns {DotRenderedPageState}
+     * @memberof DotPageStateService
+     */
+    getInternalNavigationState(): DotRenderedPageState {
+        return this.isInternalNavigation ? this.currentState : null;
+    }
+
+    /**
      * Reload the current page state
      *
      * @memberof DotPageStateService
@@ -99,13 +109,15 @@ export class DotPageStateService {
         });
     }
 
+    /**
+     * Set the page state from internal navigation
+     *
+     * @param {DotRenderedPageState} state
+     * @memberof DotPageStateService
+     */
     setInternalNavigationState(state: DotRenderedPageState): void {
         this.currentState = state;
         this.isInternalNavigation = true;
-    }
-
-    getInternalNavigationState(): DotRenderedPageState {
-        return this.isInternalNavigation ? this.currentState : null;
     }
 
     /**
