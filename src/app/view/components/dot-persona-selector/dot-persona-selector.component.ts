@@ -59,7 +59,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
         if (
             this.isPersonalizeStateUpdated(changes.value.previousValue, changes.value.currentValue)
         ) {
-            this.getPersonasListCurrentPage();
+            this.reloadPersonasListCurrentPage();
         }
     }
 
@@ -109,7 +109,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      *
      * @memberof DotPersonaSelectorComponent
      */
-    getPersonasListCurrentPage(): void {
+    reloadPersonasListCurrentPage(): void {
         console.log('getPersonasListCurrentPage');
         this.paginationService
             .getCurrentPage()

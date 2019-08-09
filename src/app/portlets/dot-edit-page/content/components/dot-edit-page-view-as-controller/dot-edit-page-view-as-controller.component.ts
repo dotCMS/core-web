@@ -81,7 +81,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
     /**
      * Remove personalization for the current page and set the new state to the page
      *
-     * @param {DotPersona} { keyTag }
+     * @param {DotPersona} persona
      * @memberof DotEditPageViewAsControllerComponent
      */
     deletePersonalization(persona: DotPersona): void {
