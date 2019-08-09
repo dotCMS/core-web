@@ -1,4 +1,13 @@
-import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    ViewChild,
+    Output,
+    EventEmitter,
+    Input,
+    OnInit,
+    OnChanges,
+    SimpleChanges
+} from '@angular/core';
 import { PaginatorService } from '@services/paginator';
 import {
     SearchableDropdownComponent,
@@ -19,7 +28,10 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
 })
-export class DotPersonaSelectorComponent implements OnInit {
+export class DotPersonaSelectorComponent implements OnInit, OnChanges {
+    @Input()
+    pageId: string;
+
     @Input()
     value: DotPersona;
 
@@ -32,6 +44,7 @@ export class DotPersonaSelectorComponent implements OnInit {
     @ViewChild('searchableDropdown')
     searchableDropdown: SearchableDropdownComponent;
 
+    currentOffset = 0;
     totalRecords: number;
     paginationPerPage = 5;
     personas: DotPersona[];
@@ -40,17 +53,19 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     constructor(public paginationService: PaginatorService) {}
 
+    ngOnChanges(changes: SimpleChanges): void {
+        this.paginationService.url = `v1/page/${this.pageId}/personas`;
+
+        if (!changes.value.firstChange) {
+            this.getPersonasListCurrentPage();
+        }
+    }
+
     ngOnInit(): void {
         this.addAction = () => {
             // TODO Implement + action
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
-    }
-
-    @Input('pageId')
-    set pageId(pageId: string) {
-        this.paginationService.url = `v1/page/${pageId}/personas`;
-        this.getPersonasList();
     }
 
     /**
@@ -70,26 +85,8 @@ export class DotPersonaSelectorComponent implements OnInit {
      * @memberof DotPersonaSelectorComponent
      */
     handlePageChange(event: PaginationEvent): void {
+        this.currentOffset = event.first;
         this.getPersonasList(event.filter, event.first);
-    }
-
-    /**
-     * Call to load a new page.
-     *
-     * @param {string} [filter='']
-     * @param {number} [offset=0]
-     * @memberof DotPersonaSelectorComponent
-     */
-    getPersonasList(filter = '', offset = 0): void {
-        // Set filter if undefined
-        this.paginationService.filter = filter;
-        this.paginationService
-            .getWithOffset(offset)
-            .pipe(take(1))
-            .subscribe((items: DotPersona[]) => {
-                this.personas = items;
-                this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-            });
     }
 
     /**
@@ -101,5 +98,26 @@ export class DotPersonaSelectorComponent implements OnInit {
     personaChange(persona: DotPersona): void {
         this.selected.emit(persona);
         this.searchableDropdown.toggleOverlayPanel();
+    }
+
+    private getPersonasList(filter = '', offset = 0): void {
+        // Set filter if undefined
+        this.paginationService.filter = filter;
+        this.paginationService
+            .getWithOffset(offset)
+            .pipe(take(1))
+            .subscribe(this.setList.bind(this));
+    }
+
+    private getPersonasListCurrentPage(): void {
+        this.paginationService
+            .getCurrentPage()
+            .pipe(take(1))
+            .subscribe(this.setList.bind(this));
+    }
+
+    private setList(items: DotPersona[]): void {
+        this.personas = items;
+        this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
     }
 }
