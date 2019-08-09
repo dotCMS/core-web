@@ -34,7 +34,11 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
     ngOnInit(): void {
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
         this.previewDeviceLabel$ = this.dotMessageService
-            .getMessages(['editpage.viewas.previewing'])
+            .getMessages([
+                'editpage.viewas.previewing',
+                'editpage.personalization.delete.confirm.header',
+                'editpage.personalization.delete.confirm.message'
+            ])
             .pipe(
                 take(1),
                 map((messages: { [key: string]: string }) => messages['editpage.viewas.previewing'])
@@ -77,12 +81,13 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @param {DotPersona} { keyTag }
      * @memberof DotEditPageViewAsControllerComponent
      */
-    deletePersonalization({ keyTag }: DotPersona): void {
+    deletePersonalization({ keyTag, name }: DotPersona): void {
         this.dotAlertConfirmService.confirm({
-            header: 'Delete personalization',
-            message: `Are you sure you want delete personalization for <b>${
-                this.pageState.viewAs.persona.name
-            }</b>? This action cannot be undone.`,
+            header: this.dotMessageService.get('editpage.personalization.delete.confirm.header'),
+            message: this.dotMessageService.get(
+                'editpage.personalization.delete.confirm.message',
+                name
+            ),
             accept: () => {
                 this.dotPersonalizeService
                     .despersonalized(this.pageState.page.identifier, keyTag)
