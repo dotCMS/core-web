@@ -89,7 +89,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
             header: this.dotMessageService.get('editpage.personalization.delete.confirm.header'),
             message: this.dotMessageService.get(
                 'editpage.personalization.delete.confirm.message',
-                name
+                persona.name
             ),
             accept: () => {
                 this.dotPersonalizeService
