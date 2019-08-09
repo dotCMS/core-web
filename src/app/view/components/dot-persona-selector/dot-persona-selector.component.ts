@@ -110,10 +110,23 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     getPersonasListCurrentPage(): void {
+        console.log('getPersonasListCurrentPage');
         this.paginationService
             .getCurrentPage()
             .pipe(take(1))
             .subscribe(this.setList.bind(this));
+    }
+
+    /**
+     * Replace the persona receive in the current page list of personas
+     *
+     * @param {DotPersona} persona
+     * @memberof DotPersonaSelectorComponent
+     */
+    updateCurrentListPage(persona: DotPersona): void {
+        this.personas = this.personas.map((currentPersona: DotPersona) => {
+            return currentPersona.identifier === persona.identifier ? persona : currentPersona;
+        });
     }
 
     private getPersonasList(filter = '', offset = 0): void {

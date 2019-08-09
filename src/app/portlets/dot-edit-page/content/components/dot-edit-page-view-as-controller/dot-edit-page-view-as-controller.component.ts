@@ -84,7 +84,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
      * @param {DotPersona} { keyTag }
      * @memberof DotEditPageViewAsControllerComponent
      */
-    deletePersonalization({ keyTag, name }: DotPersona): void {
+    deletePersonalization(persona: DotPersona): void {
         this.dotAlertConfirmService.confirm({
             header: this.dotMessageService.get('editpage.personalization.delete.confirm.header'),
             message: this.dotMessageService.get(
@@ -93,7 +93,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
             ),
             accept: () => {
                 this.dotPersonalizeService
-                    .despersonalized(this.pageState.page.identifier, keyTag)
+                    .despersonalized(this.pageState.page.identifier, persona.keyTag)
                     .pipe(take(1))
                     .subscribe(() => {
                         this.dotPageStateService.setLock(
@@ -103,9 +103,10 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
                             false
                         );
 
-                        if (!this.pageState.viewAs.persona) {
-                            this.personaSelector.getPersonasListCurrentPage();
-                        }
+                        this.personaSelector.updateCurrentListPage({
+                            ...persona,
+                            personalized: false
+                        });
                     });
             }
         });
