@@ -103,7 +103,7 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
                             false
                         );
 
-                        this.personaSelector.updateCurrentListPage({
+                        this.personaSelector.updatePersonaInCurrentList({
                             ...persona,
                             personalized: false
                         });

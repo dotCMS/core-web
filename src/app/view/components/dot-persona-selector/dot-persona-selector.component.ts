@@ -120,7 +120,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @param {DotPersona} persona
      * @memberof DotPersonaSelectorComponent
      */
-    updateCurrentListPage(persona: DotPersona): void {
+    updatePersonaInCurrentList(persona: DotPersona): void {
         this.personas = this.personas.map((currentPersona: DotPersona) => {
             return currentPersona.identifier === persona.identifier ? persona : currentPersona;
         });
