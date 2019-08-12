@@ -167,18 +167,18 @@ export class DotFormComponent {
                 return response.json();
             })
             .then((jsonResponse) => {
-                const inode = jsonResponse.entity.inode;
-                this.goToSuccessPage(inode);
+                const {inode, identifier } = jsonResponse.entity;
+                this.goToSuccessPage(inode, identifier);
             })
             .catch(({ message, status }: DotHttpErrorResponse) => {
                 this.errorMessage = message || fallbackErrorMessages[status];
             });
     }
 
-    private goToSuccessPage(inode: string): void {
+    private goToSuccessPage(inode: string, identifier: string): void {
         const formReturnUrl = this.getFormReturnUrl();
         if (formReturnUrl) {
-            window.location.href = `${formReturnUrl}?inode=${inode}`;
+            window.location.href = `${formReturnUrl}?inode=${inode}&identifier=${identifier}`;
         }
     }
 
