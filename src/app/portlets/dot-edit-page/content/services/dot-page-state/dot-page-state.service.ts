@@ -232,7 +232,7 @@ export class DotPageStateService {
     private shouldUnlockPageToSetPersona(persona: DotPersona): boolean {
         return (
             !persona.personalized &&
-            this.currentState.page.locked &&
+            this.currentState.state.locked &&
             this.currentState.viewAs.mode === DotPageMode.EDIT
         );
     }
