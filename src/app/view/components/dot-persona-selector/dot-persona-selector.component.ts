@@ -29,36 +29,28 @@ import { take } from 'rxjs/operators';
     templateUrl: 'dot-persona-selector.component.html'
 })
 export class DotPersonaSelectorComponent implements OnInit, OnChanges {
-    @Input()
-    pageId: string;
+    @Input() pageId: string;
 
-    @Input()
-    value: DotPersona;
+    @Input() value: DotPersona;
 
-    @Output()
-    selected: EventEmitter<DotPersona> = new EventEmitter();
+    @Output() selected: EventEmitter<DotPersona> = new EventEmitter();
 
-    @Output()
-    delete: EventEmitter<DotPersona> = new EventEmitter();
+    @Output() delete: EventEmitter<DotPersona> = new EventEmitter();
 
-    @ViewChild('searchableDropdown')
-    searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
-    totalRecords: number;
+    addAction: (item: DotPersona) => void;
+    messagesKey: { [key: string]: string } = {};
     paginationPerPage = 5;
     personas: DotPersona[];
-    messagesKey: { [key: string]: string } = {};
-    addAction: (item: DotPersona) => void;
+    totalRecords: number;
 
     constructor(public paginationService: PaginatorService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
 
-        if (
-            changes.value &&
-            this.isPersonalizeStateUpdated(changes.value.previousValue, changes.value.currentValue)
-        ) {
+        if (changes.value) {
             this.reloadPersonasListCurrentPage();
         }
     }
@@ -134,10 +126,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .getWithOffset(offset)
             .pipe(take(1))
             .subscribe(this.setList.bind(this));
-    }
-
-    private isPersonalizeStateUpdated(prev: DotPersona, current: DotPersona): boolean {
-        return prev && current && prev.personalized !== current.personalized;
     }
 
     private setList(items: DotPersona[]): void {
