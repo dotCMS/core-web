@@ -44,7 +44,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     @ViewChild('searchableDropdown')
     searchableDropdown: SearchableDropdownComponent;
 
-    currentOffset = 0;
     totalRecords: number;
     paginationPerPage = 5;
     personas: DotPersona[];
@@ -87,7 +86,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     handlePageChange(event: PaginationEvent): void {
-        this.currentOffset = event.first;
         this.getPersonasList(event.filter, event.first);
     }
 
@@ -110,7 +108,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
      * @memberof DotPersonaSelectorComponent
      */
     reloadPersonasListCurrentPage(): void {
-        console.log('getPersonasListCurrentPage');
         this.paginationService
             .getCurrentPage()
             .pipe(take(1))
