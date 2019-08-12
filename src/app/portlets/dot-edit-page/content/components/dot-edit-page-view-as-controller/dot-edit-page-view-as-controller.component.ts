@@ -24,7 +24,6 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
 
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
-    previewDeviceLabel$: Observable<string>;
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
@@ -36,16 +35,16 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
 
     ngOnInit(): void {
         this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
-        this.previewDeviceLabel$ = this.dotMessageService
+        this.dotMessageService
             .getMessages([
                 'editpage.viewas.previewing',
                 'editpage.personalization.delete.confirm.header',
                 'editpage.personalization.delete.confirm.message'
             ])
-            .pipe(
-                take(1),
-                map((messages: { [key: string]: string }) => messages['editpage.viewas.previewing'])
-            );
+            .pipe(take(1))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messages = messages;
+            });
     }
 
     /**
