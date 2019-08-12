@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
-import { take, map } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { DotPersonaSelectorComponent } from '@components/dot-persona-selector/dot-persona-selector.component';
