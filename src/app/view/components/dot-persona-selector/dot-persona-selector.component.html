@@ -19,9 +19,17 @@
         ></dot-persona-selected-item>
     </ng-template>
     <ng-template let-personaData="item" pTemplate="listItem">
+        <!--
+            If not value, means user select "Default Visitor" so we select that one using
+            the static keyTag
+        -->
         <dot-persona-selector-option
             [persona]="value && value.identifier === personaData.identifier ? value : personaData"
-            [selected]="value && value.identifier === personaData.identifier"
+            [selected]="
+                value
+                    ? value.identifier === personaData.identifier
+                    : personaData.keyTag === 'dot:persona'
+            "
             (change)="personaChange($event)"
             (delete)="delete.emit(personaData)"
         ></dot-persona-selector-option>
