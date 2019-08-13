@@ -35,6 +35,9 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     @Input()
     value: DotPersona;
 
+    @Input()
+    isEditMode = false;
+
     @Output()
     selected: EventEmitter<DotPersona> = new EventEmitter();
 

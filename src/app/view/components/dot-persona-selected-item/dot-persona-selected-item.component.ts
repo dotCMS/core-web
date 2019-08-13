@@ -2,8 +2,6 @@ import { Component, Input, Output, EventEmitter, HostListener, OnInit } from '@a
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
-import { DotPageStateService } from '@portlets/dot-edit-page/content/services/dot-page-state/dot-page-state.service';
-import { DotPageMode, DotRenderedPageState } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-persona-selected-item',
@@ -14,15 +12,15 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Input()
     persona: DotPersona;
 
+    @Input()
+    isEditMode = false;
+
     @Output()
     selected = new EventEmitter<MouseEvent>();
 
-    isEditMode = false;
     messages: { [key: string]: string } = {};
 
-    constructor(
-        private dotMessageService: DotMessageService,
-        private dotPageStateService: DotPageStateService) {}
+    constructor(private dotMessageService: DotMessageService) {}
 
     ngOnInit() {
         this.dotMessageService
@@ -36,10 +34,6 @@ export class DotPersonaSelectedItemComponent implements OnInit {
                 this.messages = messages;
                 console.log('this.messages', this.messages);
             });
-
-        this.dotPageStateService.state$.subscribe((dotRenderedPageState: DotRenderedPageState) => {
-            this.isEditMode = dotRenderedPageState.state.mode === DotPageMode.EDIT;
-        });
     }
 
     @HostListener('click', ['$event'])

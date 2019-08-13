@@ -20,10 +20,11 @@ import { DotPersonaSelectorComponent } from '@components/dot-persona-selector/do
 export class DotEditPageViewAsControllerComponent implements OnInit {
     @ViewChild('personaSelector') personaSelector: DotPersonaSelectorComponent;
 
-    @Input() pageState: DotRenderedPageState;
-
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
+    isEditMode = false;
+
+    private _pageState: DotRenderedPageState;
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
@@ -45,6 +46,16 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
+    }
+
+    @Input()
+    set pageState(value: DotRenderedPageState) {
+        this._pageState = value;
+        this.isEditMode = value.state.mode === DotPageMode.EDIT;
+    }
+
+    get pageState(): DotRenderedPageState {
+        return this._pageState;
     }
 
     /**
