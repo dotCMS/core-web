@@ -1,122 +1,124 @@
 @import "primeng-theme/utils/extends";
 @import "mixins";
 
-.ui-overlaypanel.paginator {
-    .ui-dataview-content {
-        margin-bottom: $basic-padding * 4;
-    }
-    .ui-paginator-bottom {
-        bottom: 0;
-        padding-bottom: $basic-padding * 2;
-        position: absolute;
-        width: 100%;
-    }
-}
-
-.ui-overlaypanel-content {
-    padding: $basic-padding * 2 0;
-}
-
-dot-searchable-dropdown {
-    .ui-button {
-        @extend #inputtext-normal-border;
-        background: none;
-        border: 0;
-        border-radius: 0;
-        padding-right: $basic-padding * 2;
-        text-align: left;
-        text-transform: none;
-        width: auto;
-
-        &:not([disabled]) {
-            &:hover,
-            &:active,
-            &:focus {
-                @extend #field-hover-state;
-                @extend #inputtext-normal-border;
-                border: 0;
-
-                .ui-button-text,
-                [class^="ui-button-icon"] {
-                    color: $body-font-color;
-                }
-            }
+::ng-deep {
+    .ui-overlaypanel.paginator {
+        .ui-dataview-content {
+            margin-bottom: $basic-padding * 4;
         }
-
-        .ui-button-text,
-        [class^="ui-button-icon"] {
-            color: $body-font-color;
+        .ui-paginator-bottom {
+            @include paginator-bottom-absolute;
         }
-
-        .ui-button-text {
-            font-size: $font-size-large;
-            font-weight: normal;
-            padding: 0;
+    }
+    
+    .ui-overlaypanel-content {
+        padding: $basic-padding * 2 0;
+    }
+    
+    dot-searchable-dropdown {
+        .ui-button {
+            @extend #inputtext-normal-border;
+            background: none;
+            border: 0;
+            border-radius: 0;
+            padding-right: $basic-padding * 2;
+            text-align: left;
             text-transform: none;
-        }
-    }
-}
-
-.searchable-dropdown__data-list {
-    .ui-dataview {
-        position: unset;
-    }
-
-    .ui-dataview-content {
-        width: 100%;
-
-        .ui-g {
-            margin: 0;
-
-            .searchable-dropdown__data-list-item {
-                cursor: pointer;
-                display: block;
-                line-height: normal;
-                padding: $basic-padding $basic-padding * 2;
-                transition: background-color $basic-speed ease-in;
-                width: 100%;
-                @include truncate-text;
-
-                &.selected {
-                    font-weight: bold;
+            width: auto;
+    
+            &:not([disabled]) {
+                &:hover,
+                &:active,
+                &:focus {
+                    @extend #field-hover-state;
+                    @extend #inputtext-normal-border;
+                    border: 0;
+    
+                    .ui-button-text,
+                    [class^="ui-button-icon"] {
+                        color: $body-font-color;
+                    }
                 }
-
-                &:hover {
-                    background-color: $gray-bg;
-                }
+            }
+    
+            .ui-button-text,
+            [class^="ui-button-icon"] {
+                color: $body-font-color;
+            }
+    
+            .ui-button-text {
+                font-size: $font-size-large;
+                font-weight: normal;
+                padding: 0;
+                text-transform: none;
             }
         }
     }
-
-    .ui-dataview-emptymessage {
-        padding: 1em;
+        
+    .searchable-dropdown__data-list {
+        .ui-dataview {
+            position: unset;
+        }
+    
+        .ui-dataview-content {
+            width: 100%;
+    
+            .ui-g {
+                margin: 0;
+    
+                .searchable-dropdown__data-list-item {
+                    cursor: pointer;
+                    display: block;
+                    line-height: normal;
+                    padding: $basic-padding $basic-padding * 2;
+                    transition: background-color $basic-speed ease-in;
+                    width: 100%;
+                    @include truncate-text;
+    
+                    &.selected {
+                        font-weight: bold;
+                    }
+    
+                    &:hover {
+                        background-color: $gray-bg;
+                    }
+                }
+            }
+        }
+    
+        .ui-dataview-emptymessage {
+            padding: 1em;
+        }
+    }
+    
+    .searchable-dropdown__search-section {
+        flex-grow: 1;
+        position: relative;
+    
+        input.searchable-dropdown__search-inputfield {
+            @include form-field-secondary;
+            padding: 0 $basic-padding * 4 0 $basic-padding * 2;
+            width: 100%;
+        }
+    }
+    
+    .searchable-dropdown__search {
+        display: flex;
+        margin: 0 $basic-padding * 2;
+        position: relative;
+    }
+    
+    .searchable-dropdown__search-icon {
+        color: $gray;
+        position: absolute;
+        right: $basic-padding;
+        top: 9px;
+    }
+    
+    .searchable-dropdown__search-action {
+        margin-left: $basic-padding * 2;
     }
 }
 
-.searchable-dropdown__search-section {
-    flex-grow: 1;
-    position: relative;
+    
 
-    input.searchable-dropdown__search-inputfield {
-        @include form-field-secondary;
-        padding: 0 $basic-padding * 4 0 $basic-padding * 2;
-        width: 100%;
-    }
-}
-
-.searchable-dropdown__search {
-    display: flex;
-    margin: 0 $basic-padding * 2;
-    position: relative;
-}
-
-.searchable-dropdown__search-icon {
-    color: $gray;
-    position: absolute;
-    right: $basic-padding;
-    top: 9px;
-}
-
-.searchable-dropdown__search-action {
-    margin-left: $basic-padding * 2;
-}
