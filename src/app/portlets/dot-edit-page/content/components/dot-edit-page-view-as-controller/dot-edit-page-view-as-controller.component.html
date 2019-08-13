@@ -1,4 +1,3 @@
-
 <ng-container *ngIf="isEnterpriseLicense$ | async as isEnterpriseLicense">
     <ng-template [ngIf]="isEnterpriseLicense">
         <div class="device-info" *ngIf="pageState.viewAs.device">
@@ -22,11 +21,9 @@
             [value]="pageState.viewAs.device"
         ></dot-device-selector>
         <dot-persona-selector
-            [isEditMode]="isEditMode"
-            (selected)="changePersonaHandler($event)"
             (delete)="deletePersonalization($event)"
-            [value]="pageState.viewAs.persona"
-            [pageId]="pageState.page.identifier"
+            (selected)="changePersonaHandler($event)"
+            [pageState]="pageState"
         ></dot-persona-selector>
     </ng-template>
 </ng-container>

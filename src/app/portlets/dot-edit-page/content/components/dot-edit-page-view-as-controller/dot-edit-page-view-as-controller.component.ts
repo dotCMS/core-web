@@ -22,9 +22,9 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
 
     isEnterpriseLicense$: Observable<boolean>;
     messages: { [key: string]: string } = {};
-    isEditMode = false;
 
-    private _pageState: DotRenderedPageState;
+    @Input()
+    pageState: DotRenderedPageState;
 
     constructor(
         private dotAlertConfirmService: DotAlertConfirmService,
@@ -46,16 +46,6 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
-    }
-
-    @Input()
-    set pageState(value: DotRenderedPageState) {
-        this._pageState = value;
-        this.isEditMode = value.state.mode === DotPageMode.EDIT;
-    }
-
-    get pageState(): DotRenderedPageState {
-        return this._pageState;
     }
 
     /**
