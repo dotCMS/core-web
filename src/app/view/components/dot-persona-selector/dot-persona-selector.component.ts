@@ -29,6 +29,8 @@ import { take } from 'rxjs/operators';
     templateUrl: 'dot-persona-selector.component.html'
 })
 export class DotPersonaSelectorComponent implements OnInit, OnChanges {
+    @Input() disabled: boolean;
+
     @Input() pageId: string;
 
     @Input() value: DotPersona;

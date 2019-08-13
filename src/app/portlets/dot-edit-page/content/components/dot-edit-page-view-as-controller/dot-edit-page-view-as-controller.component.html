@@ -21,6 +21,7 @@
     ></dot-device-selector>
     <dot-persona-selector
         #personaSelector
+        [disabled]="!pageState.state.haveContent"
         (selected)="changePersonaHandler($event)"
         (delete)="deletePersonalization($event)"
         [value]="pageState.viewAs.persona"

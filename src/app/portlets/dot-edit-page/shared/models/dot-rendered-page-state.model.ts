@@ -5,11 +5,14 @@ import { DotPage } from './dot-page.model';
 import { DotLayout } from './dot-layout.model';
 import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
+import { DotLayoutColumn } from './dot-layout-column.model';
+import { DotPageContainer } from '.';
 
 interface DotPageState {
     locked?: boolean;
     lockedByAnotherUser?: boolean;
     mode: DotPageMode;
+    haveContent: boolean;
 }
 
 export class DotRenderedPageState {
@@ -19,15 +22,15 @@ export class DotRenderedPageState {
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
 
-
         this._state = {
             locked: locked,
             lockedByAnotherUser: lockedByAnotherUser,
-            mode: dotRenderedPage.viewAs.mode
+            mode: dotRenderedPage.viewAs.mode,
+            haveContent: this.haveContent(this.dotRenderedPage)
         };
     }
 
-    get canCreateTemplate(): any {
+    get canCreateTemplate(): boolean {
         return this.dotRenderedPage.canCreateTemplate;
     }
 
@@ -65,5 +68,26 @@ export class DotRenderedPageState {
 
     set dotRenderedPageState(dotRenderedPageState: DotRenderedPageState) {
         this.dotRenderedPage = dotRenderedPageState;
+    }
+
+    private haveContent(page: DotPageRender): boolean {
+        const pageContainers = page.containers;
+        const rows = page.layout.body.rows;
+
+        for (let i = 0; i < rows.length; i++) {
+            const columns = rows[i].columns;
+            if (this.haveContentlets(columns, pageContainers)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private haveContentlets(columns: DotLayoutColumn[], pageContainers: any): boolean {
+        return columns.some((column: DotLayoutColumn) => {
+            return column.containers.some(({identifier, uuid}: DotPageContainer) => {
+                return pageContainers[identifier].contentlets[`uuid-${uuid}`].length
+            });
+        });
     }
 }
