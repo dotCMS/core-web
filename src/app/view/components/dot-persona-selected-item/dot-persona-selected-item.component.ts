@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostListener, OnInit } from '@angular/core';
+import { Component, Input, OnInit, HostBinding } from '@angular/core';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
@@ -12,8 +12,9 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Input()
     persona: DotPersona;
 
-    @Output()
-    selected = new EventEmitter<MouseEvent>();
+    @Input()
+    @HostBinding('class.disabled')
+    disabled: boolean;
 
     messages: { [key: string]: string } = {};
 
@@ -26,10 +27,5 @@ export class DotPersonaSelectedItemComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
-    }
-
-    @HostListener('click', ['$event'])
-    onClick($event: MouseEvent) {
-        this.selected.emit($event);
     }
 }

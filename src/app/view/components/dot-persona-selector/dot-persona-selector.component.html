@@ -14,8 +14,9 @@
 >
     <ng-template let-persona="item" pTemplate="select">
         <dot-persona-selected-item
+            [disabled]="disabled"
             [persona]="persona"
-            (selected)="searchableDropdown.toggleOverlayPanel($event)"
+            (click)="!disabled && searchableDropdown.toggleOverlayPanel($event)"
         ></dot-persona-selected-item>
     </ng-template>
     <ng-template let-personaData="item" pTemplate="listItem">

@@ -22,7 +22,7 @@ import { PaginatorService } from '@services/paginator';
         DotIconModule,
         DotAvatarModule,
         ButtonModule,
-        SharedModule
+        SharedModule,
     ],
     providers: [PaginatorService]
 })

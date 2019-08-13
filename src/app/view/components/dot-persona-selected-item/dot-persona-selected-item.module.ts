@@ -4,10 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { DotPersonaSelectedItemComponent } from './dot-persona-selected-item.component';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
-import { ButtonModule } from 'primeng/button';
+import { TooltipModule, ButtonModule } from 'primeng/primeng';
 
 @NgModule({
-    imports: [CommonModule, FormsModule, DotIconModule, DotAvatarModule, ButtonModule],
+    imports: [
+        ButtonModule,
+        CommonModule,
+        DotAvatarModule,
+        DotIconModule,
+        FormsModule,
+        TooltipModule
+    ],
     declarations: [DotPersonaSelectedItemComponent],
     exports: [DotPersonaSelectedItemComponent]
 })

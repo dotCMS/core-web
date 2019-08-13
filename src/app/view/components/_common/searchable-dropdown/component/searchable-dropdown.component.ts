@@ -82,6 +82,9 @@ export class SearchableDropdownComponent
     @Input()
     multiple: boolean;
 
+    @Input()
+    disabled = false;
+
     @Output()
     change: EventEmitter<any> = new EventEmitter();
 
@@ -116,7 +119,6 @@ export class SearchableDropdownComponent
     label: string;
     externalSelectTemplate: TemplateRef<any>;
     externalItemListTemplate: TemplateRef<any>;
-    disabled = false;
 
     constructor(private dotMessageService: DotMessageService) {}
 
@@ -130,9 +132,9 @@ export class SearchableDropdownComponent
     }
 
     ngOnInit(): void {
-        this.searchPlaceholder$ = this.dotMessageService.getMessages(['search']).pipe(
-            map((messages) => messages['search'])
-        );
+        this.searchPlaceholder$ = this.dotMessageService
+            .getMessages(['search'])
+            .pipe(map((messages) => messages['search']));
         fromEvent(this.searchInput.nativeElement, 'keyup')
             .pipe(debounceTime(500))
             .subscribe((keyboardEvent: Event) => {
