@@ -945,7 +945,10 @@ describe('DotEditContentComponent', () => {
                 });
                 document.dispatchEvent(customEvent);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c8bf31eb9... Remove cache data service tests
                 expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(
                     copyMockDotRenderedPage.page.pageURI
                 );

@@ -43,7 +43,10 @@ fdescribe('DotEditPageStateControllerComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     // let componentHost: TestHostComponent;
     // let component: DotEditPageStateControllerComponent;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c8bf31eb9... Remove cache data service tests
     let de: DebugElement;
     let deHost: DebugElement;
 
@@ -84,7 +87,10 @@ fdescribe('DotEditPageStateControllerComponent', () => {
         // componentHost = fixtureHost.componentInstance;
         de = deHost.query(By.css('dot-edit-page-state-controller'));
         // component = de.componentInstance;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c8bf31eb9... Remove cache data service tests
         fixtureHost.detectChanges();
     });
 
