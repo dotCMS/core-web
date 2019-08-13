@@ -70,6 +70,15 @@ export class DotRenderedPageState {
         this.dotRenderedPage = dotRenderedPageState;
     }
 
+    /*
+        To check if a page have content we need to check the containers inside the layout
+        and map that with all the containers in the page and get the contentlet from there.
+
+        We can't check directly the containers object because we can have containers with
+        contentlets there but if they're not in the layout they're not showing and that's
+        because you can remove a container from a page but if you added back it need to
+        show the contentlet it had.
+    */
     private haveContent(page: DotPageRender): boolean {
         const pageContainers = page.containers;
         const rows = page.layout.body.rows;
@@ -85,8 +94,8 @@ export class DotRenderedPageState {
 
     private haveContentlets(columns: DotLayoutColumn[], pageContainers: any): boolean {
         return columns.some((column: DotLayoutColumn) => {
-            return column.containers.some(({identifier, uuid}: DotPageContainer) => {
-                return pageContainers[identifier].contentlets[`uuid-${uuid}`].length
+            return column.containers.some(({ identifier, uuid }: DotPageContainer) => {
+                return pageContainers[identifier].contentlets[`uuid-${uuid}`].length;
             });
         });
     }
