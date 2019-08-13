@@ -36,7 +36,6 @@ import { mockDotDevices } from '../../../test/dot-device.mock';
 import { mockDotEditPageViewAs } from '../../../test/dot-edit-page-view-as.mock';
 import { mockResponseView } from '../../../test/response-view.mock';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotEditPageDataService } from '@portlets/dot-edit-page/shared/services/dot-edit-page-resolver/dot-edit-page-data.service';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { DotEditPageToolbarComponent } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.component';
 import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
@@ -100,7 +99,6 @@ describe('DotEditContentComponent', () => {
     let de: DebugElement;
     let dotDialogService: DotAlertConfirmService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
-    let dotEditPageDataService: DotEditPageDataService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
     let dotPageStateService: DotPageStateService;
@@ -182,7 +180,6 @@ describe('DotEditContentComponent', () => {
                     provide: SiteService,
                     useValue: siteServiceMock
                 },
-                DotEditPageDataService,
                 {
                     provide: ActivatedRoute,
                     useValue: {
@@ -213,7 +210,6 @@ describe('DotEditContentComponent', () => {
         dotContentletEditorService = de.injector.get(DotContentletEditorService);
         dotDialogService = de.injector.get(DotAlertConfirmService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
-        dotEditPageDataService = de.injector.get(DotEditPageDataService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
         dotUiColorsService = de.injector.get(DotUiColorsService);
@@ -907,7 +903,6 @@ describe('DotEditContentComponent', () => {
                     content: new DotRenderedPageState(mockUser, mockDotRenderedPage)
                 });
 
-                spyOn(dotEditPageDataService, 'set');
                 spyOn(dotEditContentHtmlService, 'renderPage');
             });
 
@@ -929,7 +924,6 @@ describe('DotEditContentComponent', () => {
 
                 tick(2);
 
-                expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
                 // expect(component.pageState.page).toEqual({
                 //     ...mockDotRenderedPage.page,
@@ -951,10 +945,6 @@ describe('DotEditContentComponent', () => {
                 });
                 document.dispatchEvent(customEvent);
 
-                expect(dotEditPageDataService.set).toHaveBeenCalledWith(
-                    new DotRenderedPageState(mockUser, copyMockDotRenderedPage)
-                );
-
                 expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(
                     copyMockDotRenderedPage.page.pageURI
                 );
@@ -971,7 +961,6 @@ describe('DotEditContentComponent', () => {
                 });
                 document.dispatchEvent(customEvent);
 
-                expect(dotEditPageDataService.set).not.toHaveBeenCalled();
                 expect(dotRouterService.goToEditPage).not.toHaveBeenCalled();
             });
         });
