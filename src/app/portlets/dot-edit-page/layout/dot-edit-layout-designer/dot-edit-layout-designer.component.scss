@@ -1,8 +1,6 @@
 @import "mixins";
 @import "variables";
 
-$toolbar-height: 48px;
-
 :host {
     min-width: 750px;
 }
@@ -25,7 +23,7 @@ dot-layout-designer {
 
 .dot-edit-layout__actions {
     display: flex;
-    height: 52px;
+    height: $toolbar-secondary-height;
     justify-content: flex-end;
     padding: $basic-padding * 2;
 }
@@ -39,7 +37,7 @@ dot-layout-designer {
     ::ng-deep {
         .ui-toolbar {
             border-bottom: solid 1px $gray-light;
-            padding: 16px;
+            padding: $basic-padding * 2;
         }
     }
 }

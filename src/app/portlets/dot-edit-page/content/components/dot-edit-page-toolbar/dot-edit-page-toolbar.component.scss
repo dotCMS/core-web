@@ -1,8 +1,6 @@
 @import "variables";
 @import "mixins";
 
-$toolbar-height: 52px;
-
 :host {
     display: block;
     position: relative;
@@ -10,7 +8,7 @@ $toolbar-height: 52px;
 
     ::ng-deep {
         .ui-toolbar {
-            height: $toolbar-height;
+            height: $toolbar-secondary-height;
         }
     }
 }
