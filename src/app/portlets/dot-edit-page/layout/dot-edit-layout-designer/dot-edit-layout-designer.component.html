@@ -8,6 +8,7 @@
 
 <form [formGroup]="form" (ngSubmit)="saveLayout()" novalidate>
     <p-toolbar class="dot-edit-layout__toolbar">
+        <dot-edit-page-info [pageState]="pageState"></dot-edit-page-info>
         <div class="ui-toolbar-group-right">
             <dot-global-message></dot-global-message>
             <input
@@ -51,7 +52,6 @@
     </p-toolbar>
 
     <div class="dot-edit-layout__actions">
-        <dot-edit-page-info [pageState]="pageState"></dot-edit-page-info>
         <div class="dot-edit__layout-actions-right">
             <div *ngIf="!currentTheme; then permission; else noPermission"></div>
             <ng-template #permission>
