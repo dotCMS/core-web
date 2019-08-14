@@ -1,4 +1,4 @@
-<ng-container *ngIf="isEnterpriseLicense$ | async as isEnterpriseLicense">
+<ng-container *ngIf="isEnterpriseLicense$ | async as isEnterpriseLicense; else language">
     <ng-template [ngIf]="isEnterpriseLicense">
         <div class="device-info" *ngIf="pageState.viewAs.device">
             <span class="device-info__label">{{ messages['editpage.viewas.previewing'] }}:</span>
@@ -27,3 +27,11 @@
         ></dot-persona-selector>
     </ng-template>
 </ng-container>
+
+<ng-template #language>
+    <dot-language-selector
+        (selected)="changeLanguageHandler($event)"
+        [value]="pageState.viewAs.language"
+        [contentInode]="pageState.page.inode"
+    ></dot-language-selector>
+</ng-template>
