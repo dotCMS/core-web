@@ -13,6 +13,9 @@ import { SearchableDropdownComponent } from '@components/_common/searchable-drop
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { DotContentService } from '@services/dot-content/dot-content.service';
 
 export const defaultVisitorPersona = {
     archived: false,
@@ -38,7 +41,7 @@ export const defaultVisitorPersona = {
     stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045',
     title: 'Default Visitor',
     titleImage: 'TITLE_IMAGE_NOT_FOUND',
-    working: false,
+    working: false
 };
 
 /**
@@ -54,31 +57,34 @@ export const defaultVisitorPersona = {
     templateUrl: 'dot-persona-selector.component.html'
 })
 export class DotPersonaSelectorComponent implements OnInit, OnChanges {
-    @Input()
-    pageId: string;
-    @Input()
-    value: DotPersona;
+    @Input() pageId: string;
+    @Input() value: DotPersona;
 
-    @Output()
-    selected: EventEmitter<DotPersona> = new EventEmitter();
+    @Output() selected: EventEmitter<DotPersona> = new EventEmitter();
 
-    @ViewChild('searchableDropdown')
-    searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
+    newPersonaForm: FormGroup;
+    fileName: string;
     totalRecords: number;
     paginationPerPage = 5;
     personas: DotPersona[];
     messagesKey: { [key: string]: string } = {};
     addAction: (item: DotPersona) => void;
     selected2: DotPersona;
+    visible = true;
+    dialogActions: DotDialogActions;
 
     constructor(
         public paginationService: PaginatorService,
-        public dotMessageService: DotMessageService
+        public dotMessageService: DotMessageService,
+        public dotContentService: DotContentService,
+        private fb: FormBuilder
     ) {}
 
     ngOnChanges(_changes: SimpleChanges): void {
-        this.value = this.value || { ...defaultVisitorPersona,
+        this.value = this.value || {
+            ...defaultVisitorPersona,
             name: this.messagesKey['modes.persona.no.persona']
         };
     }
@@ -86,6 +92,8 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.addAction = () => {
             // TODO Implement + action
+            console.log('test');
+            this.visible = !this.visible;
         };
         this.paginationService.url = `v1/page/${this.pageId}/personas`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
@@ -95,11 +103,69 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
-                this.value = { ...defaultVisitorPersona,
+                this.value = {
+                    ...defaultVisitorPersona,
                     name: this.messagesKey['modes.persona.no.persona']
                 };
                 this.getPersonasList();
             });
+
+        this.newPersonaForm = this.fb.group({
+            hostFolder: ['', [Validators.required]],
+            keyTag: '',
+            name: ['', [Validators.required]],
+            photo: ['', [Validators.required]]
+        });
+
+        this.dialogActions = {
+            accept: {
+                action: () => {
+                    this.savePersona();
+                },
+                label: 'acept',
+                disabled: !this.newPersonaForm.valid
+            },
+            cancel: {
+                label: 'cancel',
+                action: () => {
+                    this.visible = false;
+                }
+            }
+        };
+
+        // pipe(takeUntil(this.destroy$))
+        this.newPersonaForm.valueChanges.subscribe(() => {
+            this.dialogActions = {
+                ...this.dialogActions,
+                accept: {
+                    ...this.dialogActions.accept,
+                    disabled: !this.newPersonaForm.valid
+                }
+            };
+        });
+    }
+
+    onFileUpload(event: any) {
+        console.log(event);
+        const response = JSON.parse(event.xhr.response);
+        this.fileName = event.files[0].name;
+        this.newPersonaForm.get('photo').setValue(response.tempFiles[0].id);
+        debugger;
+    }
+
+    siteChange(site: any) {
+        console.log(site);
+        this.newPersonaForm.get('hostFolder').setValue(site.identifier);
+        debugger;
+    }
+
+    setkeytag(): void {}
+
+    savePersona(): void {
+        if (this.newPersonaForm.valid) {
+            debugger;
+            this.dotContentService.create(this.newPersonaForm.value);
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import { DotPersonasService } from '@services/dot-personas/dot-personas.service'
 import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
 import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
 import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-persona.selector.module';
+import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-p
         FormsModule,
         DotPersonaSelectorModule,
         DotLanguageSelectorModule,
-        DotDeviceSelectorModule
+        DotDeviceSelectorModule,
+        DotDialogModule
     ],
     providers: [DotDevicesService, DotLanguagesService, DotPersonasService],
     declarations: [DotEditContentViewAsToolbarComponent],

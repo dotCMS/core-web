@@ -28,3 +28,55 @@
         ></dot-persona-selected-item>
     </ng-template>
 </dot-searchable-dropdown>
+<dot-dialog width="520px"
+    header="Add Persona"
+    [visible]="visible"
+    [actions]="dialogActions"
+    (hide)="addAction(null)">
+
+     <!-- <dot-name-property></dot-name-property> -->
+
+
+
+
+    <form [formGroup]="newPersonaForm">
+        <div class="form__group">
+            <label for="label-name"  class="form__label">Host: </label>
+            <dot-site-selector (change)="siteChange($event)"></dot-site-selector>
+        </div>
+
+        <div class="form__group">
+            <label  class="form__label">Name: </label>
+            <input type="text" id="label-name" formControlName="name" name="name" pInputText value="Hello World" />
+        </div>
+
+        <div class="form__group">
+            <label  class="form__label">keyTag: </label>
+            <input type="text" disabled id="keyTag" formControlName="keyTag" name="name" pInputText value="Hello World" />
+        </div>
+
+        <div class="form__group">
+            <label  class="form__label">Upload File : </label>
+            <p-fileUpload
+                mode="basic"
+                name="test"
+                url="/api/v1/temp"
+                accept="image/*"
+                maxFileSize="1000000"
+                (onUpload)="onFileUpload($event)"
+                auto="true">
+
+                <ng-template pTemplate="content">
+                    File: {{fileName}}
+                </ng-template>
+            </p-fileUpload>
+
+            File: {{fileName}}
+        </div>
+
+        newPersonaForm.valid: {{newPersonaForm.valid}}
+
+    </form>
+
+
+</dot-dialog>

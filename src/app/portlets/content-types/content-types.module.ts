@@ -107,7 +107,7 @@ import { DotMaxlengthModule } from '@directives/dot-maxlength/dot-maxlength.modu
         RegexCheckPropertyComponent,
         ValuesPropertyComponent
     ],
-    exports: [ContentTypesPortletComponent],
+    exports: [ContentTypesPortletComponent, NamePropertyComponent],
     imports: [
         ButtonModule,
         CheckboxModule,
