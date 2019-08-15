@@ -28,6 +28,8 @@ import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/share
     templateUrl: 'dot-persona-selector.component.html'
 })
 export class DotPersonaSelectorComponent implements OnInit {
+    @Input() disabled: boolean;
+    
     @Output()
     selected: EventEmitter<DotPersona> = new EventEmitter();
 

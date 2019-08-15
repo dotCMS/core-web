@@ -45,7 +45,7 @@ export class DotEditPageNavComponent implements OnChanges {
         if (this.layoutChanged(changes)) {
             this.model = !this.model
                 ? this.loadNavItems()
-                : observableOf(this.getNavItems(this.pageState, this.isEnterpriseLicense));
+                : observableOf(this.getNavItems(this.pageState.dotRenderedPageState, this.isEnterpriseLicense));
         }
     }
 
@@ -76,7 +76,7 @@ export class DotEditPageNavComponent implements OnChanges {
                 }),
                 map((isEnterpriseLicense: boolean) => {
                     this.isEnterpriseLicense = isEnterpriseLicense;
-                    return this.getNavItems(this.pageState, isEnterpriseLicense);
+                    return this.getNavItems(this.pageState.dotRenderedPageState, isEnterpriseLicense);
                 })
             );
     }

@@ -10,4 +10,5 @@ export interface DotPageRender {
     template?: DotTemplate;
     canCreateTemplate: boolean;
     viewAs: DotEditPageViewAs;
+    haveContent: boolean;
 }

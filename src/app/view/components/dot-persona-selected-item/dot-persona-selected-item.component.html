@@ -1,4 +1,8 @@
-<div class="dot-persona-selector__container">
+<div
+    class="dot-persona-selector__container"
+    [pTooltip]="disabled ? 'Add content to start personalizing' : null"
+    [tooltipPosition]="disabled ? 'bottom' : null"
+>
     <dot-avatar
         [label]="persona?.name || messages['modes.persona.no.persona']"
         [showDot]="persona?.personalized || false"
