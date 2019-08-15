@@ -97,6 +97,10 @@ dot-whats-changed,
     margin-right: $basic-padding;
 }
 
+.dot-edit__what-changed-button {
+    margin-left: $basic-padding * 2;
+}
+
 /*
     When the primeng dialog components resize it adds .ui-unselectable-text to the <body>, we beed to disable
     pointer events in the iframe during the resize of the dialog otherwise resize breaks.

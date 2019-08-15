@@ -11,9 +11,12 @@
 <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
 
 <ng-container *ngIf="pageState$ | async as pageState">
-    <div class="dot-edit__page-actions">
-        <dot-edit-page-info [pageState]="pageState"></dot-edit-page-info>
-        <div>
+    <dot-edit-toolbar>
+        <div class="main-toolbar-left">
+            <dot-edit-page-info [pageState]="pageState"></dot-edit-page-info>
+        </div>
+
+        <div class="main-toolbar-right">
             <dot-global-message></dot-global-message>
             <button
                 pButton
@@ -29,14 +32,26 @@
                 (fired)="reload()"
             ></dot-edit-page-workflows-actions>
         </div>
-    </div>
 
-    <dot-edit-page-toolbar
-        (whatschange)="showWhatsChanged = $event"
-        [pageState]="pageState"
-        class="dot-edit__toolbar"
-    >
-    </dot-edit-page-toolbar>
+        <div class="secondary-toolbar-left">
+            <dot-edit-page-state-controller
+                [pageState]="pageState"
+            ></dot-edit-page-state-controller>
+
+            <p-checkbox
+                class="dot-edit__what-changed-button"
+                [label]="messagesKey['dot.common.whats.changed']"
+                *ngIf="showWhatsChangedCheck && isEnterpriseLicense$ | async"
+                (onChange)="showWhatsChanged = $event"
+            ></p-checkbox>
+            
+        </div>
+
+        <div class="secondary-toolbar-right">
+            <dot-edit-page-view-as-controller [pageState]="pageState">
+            </dot-edit-page-view-as-controller>
+        </div>
+    </dot-edit-toolbar>
 
     <div
         class="dot-edit__page-wrapper"

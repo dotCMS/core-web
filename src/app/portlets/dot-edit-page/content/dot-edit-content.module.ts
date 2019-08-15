@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DialogModule, TooltipModule, ButtonModule } from 'primeng/primeng';
+import { DialogModule, TooltipModule, ButtonModule, CheckboxModule } from 'primeng/primeng';
 
 import { DotContainerContentletService } from './services/dot-container-contentlet.service';
 import { DotDOMHtmlUtilService } from './services/html/dot-dom-html-util.service';
@@ -11,7 +11,6 @@ import { DotDragDropAPIHtmlService } from './services/html/dot-drag-drop-api-htm
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotEditContentHtmlService } from './services/dot-edit-content-html/dot-edit-content-html.service';
 import { DotEditContentToolbarHtmlService } from './services/html/dot-edit-content-toolbar-html.service';
-import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
@@ -23,6 +22,9 @@ import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot
 import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotEditPageWorkflowsActionsModule } from './components/dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
+import { DotEditToolbarModule } from '../main/dot-edit-toolbar/dot-edit-toolbar.module';
+import { DotEditPageViewAsControllerModule } from './components/dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
+import { DotEditPageStateControllerModule } from './components/dot-edit-page-state-controller/dot-edit-page-state-controller.module';
 
 const routes: Routes = [
     {
@@ -37,6 +39,7 @@ const routes: Routes = [
         CommonModule,
         ButtonModule,
         DialogModule,
+        CheckboxModule,
         RouterModule.forChild(routes),
         DotContentletEditorModule,
         DotDirectivesModule,
@@ -46,9 +49,11 @@ const routes: Routes = [
         TooltipModule,
         DotContentletEditorModule,
         DotEditPageInfoModule,
-        DotEditPageToolbarModule,
         DotLoadingIndicatorModule,
-        DotGlobalMessageModule
+        DotGlobalMessageModule,
+        DotEditToolbarModule,
+        DotEditPageViewAsControllerModule,
+        DotEditPageStateControllerModule
     ],
     exports: [DotEditContentComponent],
     providers: [
