@@ -71,6 +71,6 @@ export class DotRenderedPageState {
     get dotRenderedPageState() {
         return {
             ...this.dotRenderedPage
-        }
+        };
     }
 }

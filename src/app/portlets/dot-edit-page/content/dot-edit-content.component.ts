@@ -433,7 +433,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
                 setTimeout(() => {
                     this.showIframe = true;
-
                     const intervalId = setInterval(() => {
                         if (this.iframe) {
                             this.renderPage(pageState);
@@ -458,6 +457,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((event: PageModelChangeEvent) => {
                 this.ngZone.run(() => {
                     this.saveContent(event);
+                    this.dotPageStateService.contentAdded();
 
                     if (this.shouldSetContainersHeight()) {
                         this.dotEditContentHtmlService.setContaintersSameHeight(

@@ -22,6 +22,7 @@ import { DotRouterService } from '@services/dot-router/dot-router.service';
 @Injectable()
 export class DotPageStateService {
     state$: Subject<DotRenderedPageState> = new Subject<DotRenderedPageState>();
+    contentAdded$ = new Subject<DotRenderedPageState>();
     private currentState: DotRenderedPageState;
 
     private isInternalNavigation = false;
@@ -196,6 +197,10 @@ export class DotPageStateService {
         } else {
             this.get(options);
         }
+    }
+
+    contentAdded(): void {
+        this.contentAdded$.next();
     }
 
     private getCurrentUser(): User {

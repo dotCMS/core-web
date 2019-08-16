@@ -46,6 +46,10 @@ export class DotEditPageViewAsControllerComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
+
+        this.dotPageStateService.contentAdded$.subscribe(() => {
+            this.pageState.state.haveContent = true;
+        });
     }
 
     /**
