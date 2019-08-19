@@ -158,6 +158,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     /**
      * Handle the response of the p-fileUpload to update the form.
      *
+     * @param {any} event
      * @memberof DotPersonaSelectorComponent
      */
     onFileUpload(event: any) {
@@ -197,7 +198,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Call when a new persona is added and set the value.
+     * Call when a new persona is added and propagate set it as current.
      *
      * @memberof DotPersonaSelectorComponent
      */
