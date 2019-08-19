@@ -19,7 +19,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { Subject } from 'rxjs';
 import { DotContentService } from '@services/dot-content/dot-content.service';
-import { SiteService } from 'dotcms-js';
+import { Site, SiteService } from 'dotcms-js';
 import * as _ from 'lodash';
 import { DotMessageService } from '@services/dot-messages-service';
 
@@ -51,8 +51,8 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     addAction: (item: DotPersona) => void;
 
     newPersonaForm: FormGroup;
-    fileName: string;
-    visible = true;
+    newPersonaImage: string;
+    addDialogVisible = false;
     dialogActions: DotDialogActions;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -69,14 +69,14 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.addAction = () => {
             this.initPersonaForm();
-            this.visible = true;
+            this.searchableDropdown.toggleOverlayPanel();
+            this.addDialogVisible = true;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
         this.dotMessageService
             .getMessages(['modes.persona.add.persona', 'dot.common.choose', 'dot.common.remove'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
-                debugger;
                 this.messagesKey = messages;
             });
         this.initPersonaForm();
@@ -87,18 +87,17 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     }
 
     onFileUpload(event: any) {
-        console.log(event);
         const response = JSON.parse(event.xhr.response);
-        this.fileName = event.files[0].name;
+        this.newPersonaImage = event.files[0].name;
         this.newPersonaForm.get('photo').setValue(response.tempFiles[0].id);
     }
 
     removeFile(): void {
-        this.fileName = null;
+        this.newPersonaImage = null;
         this.newPersonaForm.get('photo').setValue('');
     }
 
-    siteChange(site: any) {
+    siteChange(site: Site) {
         this.newPersonaForm.get('hostFolder').setValue(site.identifier);
     }
 
@@ -110,10 +109,13 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
 
     savePersona(): void {
         if (this.newPersonaForm.valid) {
-            this.dotContentService.create(this.newPersonaForm.value).subscribe(x => {
-                this.getPersonasList();
-                console.log(x);
-            });
+            this.dotContentService
+                .create(this.newPersonaForm.getRawValue())
+                .subscribe((persona: DotPersona) => {
+                    this.getPersonasList();
+                    this.personaChange(persona);
+                    this.addDialogVisible = false;
+                });
         }
     }
 
@@ -202,9 +204,10 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     }
 
     private initPersonaForm(): void {
+        this.newPersonaImage = null;
         this.newPersonaForm = this.fb.group({
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
-            keyTag: [{ value: '', disabled: true }],
+            keyTag: [{ value: '', disabled: true }, [Validators.required]],
             name: ['', [Validators.required]],
             photo: ['', [Validators.required]],
             contentType: 'persona'
@@ -231,7 +234,7 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
             cancel: {
                 label: 'cancel',
                 action: () => {
-                    this.visible = false;
+                    this.addDialogVisible = false;
                 }
             }
         };

@@ -29,11 +29,11 @@
     </ng-template>
 </dot-searchable-dropdown>
 
-<dot-dialog width="520px" *ngIf="visible"
+<dot-dialog width="500px" *ngIf="addDialogVisible"
     [header]="messagesKey['modes.persona.add.persona']"
-    [visible]="visible"
+    [visible]="addDialogVisible"
     [actions]="dialogActions"
-    (hide)="visible = false">
+    (hide)="addDialogVisible = false">
     <form [formGroup]="newPersonaForm">
         <div class="form__group">
             <label class="form__label">Host: </label>
@@ -56,22 +56,19 @@
 
         <div class="form__group">
             <label class="form__label">Upload File : </label>
-            <p-fileUpload
+            <p-fileUpload  *ngIf="!newPersonaImage"
                 [chooseLabel]="messagesKey['dot.common.choose']"
                 url="/api/v1/temp"
                 accept="image/*"
                 maxFileSize="10000000"
                 (onUpload)="onFileUpload($event)"
-                auto="true">
+                auto="true"
+                mode="basic">
             </p-fileUpload>
-            <div *ngIf="fileName" >
-                <span>{{fileName}}</span>
-                <button tiny pButton [label]="messagesKey['dot.common.remove']" (click)="removeFile()"></button>
+            <div class="form__file-detail" *ngIf="newPersonaImage" >
+                <span>{{newPersonaImage}}</span>
+                <button tiny pButton secondary [label]="messagesKey['dot.common.remove']" (click)="removeFile()"></button>
             </div>
         </div>
-
-        {{messagesKey | json }}
-       <!-- newPersonaForm.valid: {{newPersonaForm.valid}}
-        newPersonaForm.value: {{newPersonaForm.value | json}}-->
     </form>
 </dot-dialog>
