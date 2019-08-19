@@ -1,10 +1,10 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { SiteServiceMock, mockSites } from './../../../test/site-service.mock';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { Component, DebugElement, EventEmitter, Input, Output, Injectable } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DialogModule, ButtonModule } from 'primeng/primeng';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -49,10 +49,6 @@ import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.servic
 import * as _ from 'lodash';
 import { PageModelChangeEventType } from './services/dot-edit-content-html/models';
 import { DotEditPageWorkflowsActionsModule } from './components/dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
-import { DotEditPageViewAsControllerModule } from './components/dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
-import { DotEditPageStateControllerModule } from './components/dot-edit-page-state-controller/dot-edit-page-state-controller.module';
-import { DotEditToolbarModule } from '../main/dot-edit-toolbar/dot-edit-toolbar.module';
-import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 @Component({
     selector: 'dot-global-message',
@@ -77,12 +73,6 @@ class MockDotWhatsChangedComponent {
     languageId: string;
 }
 
-@Injectable()
-class MockDotLicenseService {
-    isEnterprise(): Observable<boolean> {
-        return observableOf(true);
-    }
-}
 @Component({
     selector: 'dot-form-selector',
     template: ''
@@ -103,7 +93,7 @@ function waitForDetectChanges(fixture) {
     tick(10);
 }
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -115,13 +105,12 @@ fdescribe('DotEditContentComponent', () => {
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
-    let dotLicenseService: DotLicenseService;
-    const toolbarComponent: DotEditPageToolbarComponent;
+    let toolbarComponent: DotEditPageToolbarComponent;
     let toolbarElement: DebugElement;
     let dotContentletEditorService: DotContentletEditorService;
     let dotUiColorsService: DotUiColorsService;
 
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
             'dot.common.cancel': 'CANCEL',
             'dot.common.message.saving': 'Saving...',
@@ -153,10 +142,7 @@ fdescribe('DotEditContentComponent', () => {
                 DotEditPageToolbarModule,
                 DotEditPageInfoModule,
                 DotLoadingIndicatorModule,
-                DotEditToolbarModule,
                 DotEditPageWorkflowsActionsModule,
-                DotEditPageViewAsControllerModule,
-                DotEditPageStateControllerModule,
                 RouterTestingModule.withRoutes([
                     {
                         component: DotEditContentComponent,
@@ -194,7 +180,6 @@ fdescribe('DotEditContentComponent', () => {
                     provide: SiteService,
                     useValue: siteServiceMock
                 },
-                { provide: DotLicenseService, useClass: MockDotLicenseService },
                 {
                     provide: ActivatedRoute,
                     useValue: {
@@ -203,11 +188,6 @@ fdescribe('DotEditContentComponent', () => {
                                 data: observableOf({
                                     content: {
                                         ...mockDotRenderedPage,
-                                        state: {
-                                            locked: true,
-                                            lockedByAnotherUser: false,
-                                            mode: 'PREVIEW_MODE'
-                                        }
                                     }
                                 })
                             }
@@ -235,18 +215,16 @@ fdescribe('DotEditContentComponent', () => {
         dotUiColorsService = de.injector.get(DotUiColorsService);
         dotPageStateService = de.injector.get(DotPageStateService);
         dotRouterService = de.injector.get(DotRouterService);
-        dotLicenseService = de.injector.get(DotLicenseService);
+        toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
+        toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
+    });
 
-        waitForDetectChanges(fixture);
-    }));
-
-    it('should have a toolbar', fakeAsync(() => {
-        toolbarElement = de.query(By.css('dot-edit-toolbar'));
+    it('should have a toolbar', () => {
         expect(toolbarElement).not.toBeNull();
-    }));
+    });
 
-    xit('should pass data to the toolbar', fakeAsync(() => {
+    it('should pass data to the toolbar', fakeAsync(() => {
         waitForDetectChanges(fixture);
         expect(toolbarComponent.pageState.page).toEqual(mockDotPage);
     }));
@@ -280,7 +258,7 @@ fdescribe('DotEditContentComponent', () => {
 
     xit('should check isModelUpdated', () => {});
 
-    xit('should show dotLoadingIndicatorService on init', fakeAsync(() => {
+    it('should show dotLoadingIndicatorService on init', fakeAsync(() => {
         const spyLoadingIndicator = spyOn(component.dotLoadingIndicatorService, 'show');
 
         waitForDetectChanges(fixture);
@@ -340,24 +318,24 @@ fdescribe('DotEditContentComponent', () => {
     }));
 
     describe("what's change", () => {
-        let whatsChangedButton: DebugElement;
+        let editPageToolbar: DebugElement;
 
         beforeEach(() => {
+            editPageToolbar = fixture.debugElement.query(By.css('dot-edit-page-toolbar'));
             // component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
         });
 
         it('should not show by default', fakeAsync(() => {
+            waitForDetectChanges(fixture);
             expect(de.query(By.css('dot-whats-changed'))).toBe(null);
             expect(component.showWhatsChanged).toBe(false);
         }));
 
         describe('show', () => {
             beforeEach(fakeAsync(() => {
-                whatsChangedButton = fixture.debugElement.query(
-                    By.css('.dot-edit__what-changed-button')
-                );
-                whatsChangedButton.triggerEventHandler('onChange', true);
                 waitForDetectChanges(fixture);
+                editPageToolbar.triggerEventHandler('whatschange', true);
+                fixture.detectChanges();
             }));
 
             it('should show', () => {
@@ -377,7 +355,7 @@ fdescribe('DotEditContentComponent', () => {
         });
     });
 
-    xdescribe('reload', () => {
+    describe('reload', () => {
         const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
 
         beforeEach(() => {
@@ -409,7 +387,7 @@ fdescribe('DotEditContentComponent', () => {
         });
     });
 
-    xdescribe('set new view as configuration', () => {
+    describe('set new view as configuration', () => {
         beforeEach(() => {
             // component.pageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
         });
@@ -467,7 +445,7 @@ fdescribe('DotEditContentComponent', () => {
         });
     });
 
-    xdescribe('set default page state', () => {
+    describe('set default page state', () => {
         beforeEach(() => {
             spyOn(dotEditContentHtmlService, 'renderPage');
             spyOn(dotEditContentHtmlService, 'initEditMode');
@@ -535,7 +513,7 @@ fdescribe('DotEditContentComponent', () => {
             spyOn(dotEditContentHtmlService, 'initEditMode');
         });
 
-        xit('should set edit mode', fakeAsync(() => {
+        it('should set edit mode', fakeAsync(() => {
             // const customMockDotRenderedPage = {
             //     ...mockDotRenderedPage,
             //     page: {
@@ -928,7 +906,7 @@ fdescribe('DotEditContentComponent', () => {
                 spyOn(dotEditContentHtmlService, 'renderPage');
             });
 
-            xit('should reload the current page', fakeAsync(() => {
+            it('should reload the current page', fakeAsync(() => {
                 waitForDetectChanges(fixture);
 
                 const customEvent = document.createEvent('CustomEvent');
@@ -954,7 +932,7 @@ fdescribe('DotEditContentComponent', () => {
                 expect(dotEditContentHtmlService.renderPage).toHaveBeenCalled();
             }));
 
-            xit('should go to edit-page and set data for the resolver', fakeAsync(() => {
+            it('should go to edit-page and set data for the resolver', fakeAsync(() => {
                 const copyMockDotRenderedPage: DotPageRender = _.cloneDeep(mockDotRenderedPage);
                 copyMockDotRenderedPage.page.lockedBy = '123';
 
@@ -1014,7 +992,7 @@ fdescribe('DotEditContentComponent', () => {
                 expect(component.reload).toHaveBeenCalled();
             });
 
-            xit('should clean the reorder menu url & display error msg (Error saving Menu)', () => {
+            it('should clean the reorder menu url & display error msg (Error saving Menu)', () => {
                 spyOn(dotGlobalMessageService, 'display');
                 fixture.detectChanges();
 
@@ -1057,7 +1035,7 @@ fdescribe('DotEditContentComponent', () => {
             }
         ];
 
-        xit('should call the save endpoint after a model change happens', fakeAsync(() => {
+        it('should call the save endpoint after a model change happens', fakeAsync(() => {
             route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,
@@ -1102,7 +1080,7 @@ fdescribe('DotEditContentComponent', () => {
             expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalledTimes(2);
         }));
 
-        xit('should call the save endpoint and reload iframe after a model change happens and page is remote rendered', fakeAsync(() => {
+        it('should call the save endpoint and reload the iframe after a model change happens and page is remote rendered', fakeAsync(() => {
             route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,
@@ -1136,7 +1114,7 @@ fdescribe('DotEditContentComponent', () => {
             expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalledTimes(1);
         }));
 
-        xit('should not call the save endpoint and reload iframe after content D&D happen and page is remote rendered', fakeAsync(() => {
+        it('should not call the save endpoint and reload the iframe after content D&D happen and page is remote rendered', fakeAsync(() => {
             route.parent.parent.data = observableOf({
                 content: {
                     ...mockDotRenderedPage,

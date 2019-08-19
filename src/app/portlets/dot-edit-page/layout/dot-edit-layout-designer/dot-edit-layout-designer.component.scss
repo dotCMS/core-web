@@ -23,7 +23,7 @@ dot-layout-designer {
 
 .dot-edit-layout__actions {
     display: flex;
-    height: $toolbar-secondary-height;
+    height: $dot-edit-toolbar-height;
     justify-content: flex-end;
     padding: $basic-padding * 2;
 }
