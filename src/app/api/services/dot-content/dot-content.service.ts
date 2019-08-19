@@ -18,8 +18,8 @@ export class DotContentService {
     create(data: any): Observable<any> {
         return this.coreWebService
             .requestView({
-                method: RequestMethod.Post,
-                url: `v1/workflow/actions/b9d89c80-3d88-4311-8365-187323c96436/fire`,
+                method: RequestMethod.Put,
+                url: `v1/workflow/actions/default/fire/NEW`,
                 body: { contentlet: { ...data } }
             })
             .pipe(take(1), pluck('entity'));

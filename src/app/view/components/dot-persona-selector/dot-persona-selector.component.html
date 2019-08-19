@@ -28,55 +28,50 @@
         ></dot-persona-selected-item>
     </ng-template>
 </dot-searchable-dropdown>
-<dot-dialog width="520px"
-    header="Add Persona"
+
+<dot-dialog width="520px" *ngIf="visible"
+    [header]="messagesKey['modes.persona.add.persona']"
     [visible]="visible"
     [actions]="dialogActions"
-    (hide)="addAction(null)">
-
-     <!-- <dot-name-property></dot-name-property> -->
-
-
-
-
+    (hide)="visible = false">
     <form [formGroup]="newPersonaForm">
         <div class="form__group">
-            <label for="label-name"  class="form__label">Host: </label>
+            <label class="form__label">Host: </label>
             <dot-site-selector (change)="siteChange($event)"></dot-site-selector>
         </div>
 
         <div class="form__group">
-            <label  class="form__label">Name: </label>
-            <input type="text" id="label-name" formControlName="name" name="name" pInputText value="Hello World" />
+            <label class="form__label">Name: </label>
+            <input dotAutofocus type="text" (change)="setKeyTag()" formControlName="name" name="name" pInputText />
+            <dot-field-validation-message
+                [message]="'name is mandatory'"
+                [field]="newPersonaForm.get('name')">
+            </dot-field-validation-message>
         </div>
 
         <div class="form__group">
-            <label  class="form__label">keyTag: </label>
-            <input type="text" disabled id="keyTag" formControlName="keyTag" name="name" pInputText value="Hello World" />
+            <label class="form__label">keyTag: </label>
+            <input type="text" formControlName="keyTag" name="keyTag" pInputText />
         </div>
 
         <div class="form__group">
-            <label  class="form__label">Upload File : </label>
+            <label class="form__label">Upload File : </label>
             <p-fileUpload
-                mode="basic"
-                name="test"
+                [chooseLabel]="messagesKey['dot.common.choose']"
                 url="/api/v1/temp"
                 accept="image/*"
-                maxFileSize="1000000"
+                maxFileSize="10000000"
                 (onUpload)="onFileUpload($event)"
                 auto="true">
-
-                <ng-template pTemplate="content">
-                    File: {{fileName}}
-                </ng-template>
             </p-fileUpload>
-
-            File: {{fileName}}
+            <div *ngIf="fileName" >
+                <span>{{fileName}}</span>
+                <button tiny pButton [label]="messagesKey['dot.common.remove']" (click)="removeFile()"></button>
+            </div>
         </div>
 
-        newPersonaForm.valid: {{newPersonaForm.valid}}
-
+        {{messagesKey | json }}
+       <!-- newPersonaForm.valid: {{newPersonaForm.valid}}
+        newPersonaForm.value: {{newPersonaForm.value | json}}-->
     </form>
-
-
 </dot-dialog>

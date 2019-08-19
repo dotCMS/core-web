@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotPersonaSelectorComponent } from './dot-persona-selector.component';
 import { DotPersonaSelectorOptionModule } from '@components/dot-persona-selector-option/dot-persona-selector-option.module';
-import {ButtonModule, FileUploadModule, InputTextModule, SharedModule} from 'primeng/primeng';
+import { ButtonModule, FileUploadModule, InputTextModule, SharedModule } from 'primeng/primeng';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
 import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.module';
 import { DotPersonaSelectedItemModule } from '@components/dot-persona-selected-item/dot-persona-selected-item.module';
 import { PaginatorService } from '@services/paginator';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
+import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
+import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 
 @NgModule({
     declarations: [DotPersonaSelectorComponent],
@@ -29,7 +31,9 @@ import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot
         FileUploadModule,
         InputTextModule,
         ReactiveFormsModule,
-        DotSiteSelectorModule
+        DotSiteSelectorModule,
+        DotFieldValidationMessageModule,
+        DotAutofocusModule
     ],
     providers: [PaginatorService]
 })
