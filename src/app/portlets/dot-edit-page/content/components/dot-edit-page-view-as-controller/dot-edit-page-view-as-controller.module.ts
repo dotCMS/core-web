@@ -10,7 +10,6 @@ import { DotLanguagesService } from '@services/dot-languages/dot-languages.servi
 import { DotDevicesService } from '@services/dot-devices/dot-devices.service';
 import { DotPersonaSelectorModule } from '@components/dot-persona-selector/dot-persona.selector.module';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
-import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 
 @NgModule({
     imports: [
@@ -19,8 +18,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
         FormsModule,
         DotPersonaSelectorModule,
         DotLanguageSelectorModule,
-        DotDeviceSelectorModule,
-        DotDialogModule
+        DotDeviceSelectorModule
     ],
     providers: [DotDevicesService, DotLanguagesService, DotPersonasService, DotPersonalizeService],
     declarations: [DotEditPageViewAsControllerComponent],

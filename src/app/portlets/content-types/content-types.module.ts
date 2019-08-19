@@ -108,7 +108,7 @@ import { DotWorkflowsActionsSelectorFieldModule } from '@components/_common/dot-
         RegexCheckPropertyComponent,
         ValuesPropertyComponent
     ],
-    exports: [ContentTypesPortletComponent, NamePropertyComponent],
+    exports: [ContentTypesPortletComponent],
     imports: [
         ButtonModule,
         CheckboxModule,
