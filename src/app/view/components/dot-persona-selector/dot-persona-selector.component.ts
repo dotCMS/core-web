@@ -49,7 +49,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     totalRecords: number;
     value: DotPersona;
     addAction: (item: DotPersona) => void;
-
     newPersonaForm: FormGroup;
     newPersonaImage: string;
     addDialogVisible = false;
@@ -84,39 +83,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
-    }
-
-    onFileUpload(event: any) {
-        const response = JSON.parse(event.xhr.response);
-        this.newPersonaImage = event.files[0].name;
-        this.newPersonaForm.get('photo').setValue(response.tempFiles[0].id);
-    }
-
-    removeFile(): void {
-        this.newPersonaImage = null;
-        this.newPersonaForm.get('photo').setValue('');
-    }
-
-    siteChange(site: Site) {
-        this.newPersonaForm.get('hostFolder').setValue(site.identifier);
-    }
-
-    setKeyTag(): void {
-        this.newPersonaForm
-            .get('keyTag')
-            .setValue(_.camelCase(this.newPersonaForm.get('name').value));
-    }
-
-    savePersona(): void {
-        if (this.newPersonaForm.valid) {
-            this.dotContentService
-                .create(this.newPersonaForm.getRawValue())
-                .subscribe((persona: DotPersona) => {
-                    this.getPersonasList();
-                    this.personaChange(persona);
-                    this.addDialogVisible = false;
-                });
-        }
     }
 
     @Input('pageState')
@@ -187,6 +153,65 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
         this.personas = this.personas.map((currentPersona: DotPersona) => {
             return currentPersona.identifier === persona.identifier ? persona : currentPersona;
         });
+    }
+
+    /**
+     * Handle the response of the p-fileUpload to update the form.
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    onFileUpload(event: any) {
+        const response = JSON.parse(event.xhr.response);
+        this.newPersonaImage = event.files[0].name;
+        this.newPersonaForm.get('photo').setValue(response.tempFiles[0].id);
+    }
+
+    /**
+     * Remove selected image.
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    removeImage(): void {
+        this.newPersonaImage = null;
+        this.newPersonaForm.get('photo').setValue('');
+    }
+
+    /**
+     * Update the site identifier in th form.
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    siteChange(site: Site) {
+        this.newPersonaForm.get('hostFolder').setValue(site.identifier);
+    }
+
+    /**
+     * Set the key tag attribute with camelCase standard based on the name.
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    setKeyTag(): void {
+        this.newPersonaForm
+            .get('keyTag')
+            .setValue(_.camelCase(this.newPersonaForm.get('name').value));
+    }
+
+    /**
+     * Call when a new persona is added and set the value.
+     *
+     * @memberof DotPersonaSelectorComponent
+     */
+    savePersona(): void {
+        if (this.newPersonaForm.valid) {
+            this.dotContentService
+                .create(this.newPersonaForm.getRawValue())
+                .pipe(take(1))
+                .subscribe((persona: DotPersona) => {
+                    this.getPersonasList();
+                    this.personaChange(persona);
+                    this.addDialogVisible = false;
+                });
+        }
     }
 
     private getPersonasList(filter = '', offset = 0): void {
