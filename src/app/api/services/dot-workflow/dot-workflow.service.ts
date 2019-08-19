@@ -59,4 +59,21 @@ export class DotWorkflowService {
             })
             .pipe(pluck('entity'));
     }
+
+
+    /**
+     * TBD
+     * @param content data
+     * @returns Content
+     */
+    fireDefaultWorkflowAction(data: any): Observable<any> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: `v1/workflow/actions/default/fire/NEW`,
+                body: { contentlet: { ...data } }
+            })
+            .pipe(take(1), pluck('entity'));
+    }
 }
+

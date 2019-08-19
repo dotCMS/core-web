@@ -1,26 +1,13 @@
-import {
-    Component,
-    ViewChild,
-    Output,
-    EventEmitter,
-    Input,
-    OnInit,
-    OnDestroy
-} from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
 import {
     SearchableDropdownComponent,
     PaginationEvent
 } from '@components/_common/searchable-dropdown/component';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
-import { take, takeUntil } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
-import { Subject } from 'rxjs';
-import { DotContentService } from '@services/dot-content/dot-content.service';
-import { Site, SiteService } from 'dotcms-js';
-import * as _ from 'lodash';
+
 import { DotMessageService } from '@services/dot-messages-service';
 
 /**
@@ -35,7 +22,7 @@ import { DotMessageService } from '@services/dot-messages-service';
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
 })
-export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
+export class DotPersonaSelectorComponent implements OnInit {
     @Output() selected: EventEmitter<DotPersona> = new EventEmitter();
 
     @Output() delete: EventEmitter<DotPersona> = new EventEmitter();
@@ -49,27 +36,17 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     totalRecords: number;
     value: DotPersona;
     addAction: (item: DotPersona) => void;
-    newPersonaForm: FormGroup;
-    newPersonaImage: string;
-    addDialogVisible = false;
-    dialogActions: DotDialogActions;
 
-    private destroy$: Subject<boolean> = new Subject<boolean>();
     private _pageState: DotRenderedPageState;
 
     constructor(
         public paginationService: PaginatorService,
-        public dotMessageService: DotMessageService,
-        public dotContentService: DotContentService,
-        private fb: FormBuilder,
-        private siteService: SiteService
+        public dotMessageService: DotMessageService
     ) {}
 
     ngOnInit(): void {
         this.addAction = () => {
-            this.initPersonaForm();
             this.searchableDropdown.toggleOverlayPanel();
-            this.addDialogVisible = true;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
         this.dotMessageService
@@ -78,11 +55,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;
             });
-        this.initPersonaForm();
-    }
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
     }
 
     @Input('pageState')
@@ -155,66 +127,6 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
         });
     }
 
-    /**
-     * Handle the response of the p-fileUpload to update the form.
-     *
-     * @param {any} event
-     * @memberof DotPersonaSelectorComponent
-     */
-    onFileUpload(event: any) {
-        const response = JSON.parse(event.xhr.response);
-        this.newPersonaImage = event.files[0].name;
-        this.newPersonaForm.get('photo').setValue(response.tempFiles[0].id);
-    }
-
-    /**
-     * Remove selected image.
-     *
-     * @memberof DotPersonaSelectorComponent
-     */
-    removeImage(): void {
-        this.newPersonaImage = null;
-        this.newPersonaForm.get('photo').setValue('');
-    }
-
-    /**
-     * Update the site identifier in th form.
-     *
-     * @memberof DotPersonaSelectorComponent
-     */
-    siteChange(site: Site) {
-        this.newPersonaForm.get('hostFolder').setValue(site.identifier);
-    }
-
-    /**
-     * Set the key tag attribute with camelCase standard based on the name.
-     *
-     * @memberof DotPersonaSelectorComponent
-     */
-    setKeyTag(): void {
-        this.newPersonaForm
-            .get('keyTag')
-            .setValue(_.camelCase(this.newPersonaForm.get('name').value));
-    }
-
-    /**
-     * Call when a new persona is added and propagate set it as current.
-     *
-     * @memberof DotPersonaSelectorComponent
-     */
-    savePersona(): void {
-        if (this.newPersonaForm.valid) {
-            this.dotContentService
-                .create(this.newPersonaForm.getRawValue())
-                .pipe(take(1))
-                .subscribe((persona: DotPersona) => {
-                    this.getPersonasList();
-                    this.personaChange(persona);
-                    this.addDialogVisible = false;
-                });
-        }
-    }
-
     private getPersonasList(filter = '', offset = 0): void {
         // Set filter if undefined
         this.paginationService.filter = filter;
@@ -227,42 +139,5 @@ export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     private setList(items: DotPersona[]): void {
         this.personas = items;
         this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-    }
-
-    private initPersonaForm(): void {
-        this.newPersonaImage = null;
-        this.newPersonaForm = this.fb.group({
-            hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
-            keyTag: [{ value: '', disabled: true }, [Validators.required]],
-            name: ['', [Validators.required]],
-            photo: ['', [Validators.required]],
-            contentType: 'persona'
-        });
-
-        this.newPersonaForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.dialogActions = {
-                ...this.dialogActions,
-                accept: {
-                    ...this.dialogActions.accept,
-                    disabled: !this.newPersonaForm.valid
-                }
-            };
-        });
-
-        this.dialogActions = {
-            accept: {
-                action: () => {
-                    this.savePersona();
-                },
-                label: 'accept',
-                disabled: !this.newPersonaForm.valid
-            },
-            cancel: {
-                label: 'cancel',
-                action: () => {
-                    this.addDialogVisible = false;
-                }
-            }
-        };
     }
 }

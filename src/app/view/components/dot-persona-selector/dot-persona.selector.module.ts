@@ -13,6 +13,7 @@ import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
+import { DotAddPersonaDialogModule } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.module';
 
 @NgModule({
     declarations: [DotPersonaSelectorComponent],
@@ -33,7 +34,8 @@ import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.modu
         ReactiveFormsModule,
         DotSiteSelectorModule,
         DotFieldValidationMessageModule,
-        DotAutofocusModule
+        DotAutofocusModule,
+        DotAddPersonaDialogModule
     ],
     providers: [PaginatorService]
 })
