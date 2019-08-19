@@ -30,7 +30,6 @@ import {
     PageModelChangeEvent,
     PageModelChangeEventType
 } from './services/dot-edit-content-html/models';
-import { DotLicenseService } from '@services/dot-license/dot-license.service';
 
 
 /**
@@ -52,9 +51,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     contentletActionsUrl: SafeResourceUrl;
     pageState$: Observable<DotRenderedPageState>;
-    isEnterpriseLicense$: Observable<boolean>;
     showWhatsChanged = false;
-    showWhatsChangedCheck = false;
     editForm = false;
     showIframe = true;
     reorderMenuUrl = '';
@@ -69,7 +66,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         private dotDialogService: DotAlertConfirmService,
         private dotEditPageService: DotEditPageService,
         private dotGlobalMessageService: DotGlobalMessageService,
-        private dotLicenseService: DotLicenseService,
         private dotMessageService: DotMessageService,
         private dotPageStateService: DotPageStateService,
         private dotRouterService: DotRouterService,
@@ -129,7 +125,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.dotLoadingIndicatorService.show();
-        this.isEnterpriseLicense$ = this.dotLicenseService.isEnterprise();
 
         this.getMessages();
         this.setInitalData();
@@ -336,12 +331,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private getMessages(): void {
         this.dotMessageService
             .getMessages([
-                'dot.common.cancel',
                 'editpage.content.contentlet.remove.confirmation_message.message',
                 'editpage.content.contentlet.remove.confirmation_message.header',
                 'dot.common.message.saving',
                 'dot.common.message.saved',
-                'dot.common.whats.changed',
                 'dot.common.content.search',
                 'editpage.content.save.changes.confirmation.header',
                 'editpage.content.save.changes.confirmation.message',
@@ -436,7 +429,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             tap((pageState: DotRenderedPageState) => {
                 this.pageStateInternal = pageState;
                 this.showIframe = false;
-                this.showWhatsChangedCheck = pageState.state.mode === DotPageMode.PREVIEW;
 
                 // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
                 setTimeout(() => {

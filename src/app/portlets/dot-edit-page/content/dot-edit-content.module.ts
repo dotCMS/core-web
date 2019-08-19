@@ -19,12 +19,9 @@ import { DotWhatsChangedModule } from './components/dot-whats-changed/dot-whats-
 
 import { DotFormSelectorModule } from './components/dot-form-selector/dot-form-selector.module';
 import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot-contentlet-editor.module';
-import { DotEditPageInfoModule } from '../components/dot-edit-page-info/dot-edit-page-info.module';
-import { DotEditPageWorkflowsActionsModule } from './components/dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
-import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
-import { DotEditToolbarModule } from '../main/dot-edit-toolbar/dot-edit-toolbar.module';
 import { DotEditPageViewAsControllerModule } from './components/dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
 import { DotEditPageStateControllerModule } from './components/dot-edit-page-state-controller/dot-edit-page-state-controller.module';
+import { DotEditPageToolbarModule } from './components/dot-edit-page-toolbar/dot-edit-page-toolbar.module';
 
 const routes: Routes = [
     {
@@ -43,15 +40,12 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         DotContentletEditorModule,
         DotDirectivesModule,
-        DotEditPageWorkflowsActionsModule,
         DotWhatsChangedModule,
         DotFormSelectorModule,
         TooltipModule,
         DotContentletEditorModule,
-        DotEditPageInfoModule,
         DotLoadingIndicatorModule,
-        DotGlobalMessageModule,
-        DotEditToolbarModule,
+        DotEditPageToolbarModule,
         DotEditPageViewAsControllerModule,
         DotEditPageStateControllerModule
     ],
