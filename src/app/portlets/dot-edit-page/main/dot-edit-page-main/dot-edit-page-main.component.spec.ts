@@ -1,7 +1,7 @@
 import { of as observableOf, Subject } from 'rxjs';
 import { mockUser } from './../../../../test/login-service.mock';
-import { mockDotRenderedPage } from './../../../../test/dot-rendered-page.mock';
-import { PageViewService } from '@services/page-view/page-view.service';
+import { mockDotRenderedPage } from '../../../../test/dot-page-render.mock';
+import { DotPageLayoutService } from '@services/dot-page-layout/dot-page-layout.service';
 import { async, ComponentFixture } from '@angular/core/testing';
 
 import { DotEditPageMainComponent } from './dot-edit-page-main.component';
@@ -85,7 +85,7 @@ describe('DotEditPageMainComponent', () => {
                         }
                     }
                 },
-                { provide: PageViewService, useClass: PageViewServiceMock },
+                { provide: DotPageLayoutService, useClass: PageViewServiceMock },
                 {
                     provide: DotContentletEditorService,
                     useClass: MockDotContentletEditorService
@@ -126,10 +126,9 @@ describe('DotEditPageMainComponent', () => {
     });
 
     it('should call reload pageSte when IframeClose evt happens', () => {
-        spyOn(component, 'pageState');
         spyOn(dotPageStateService, 'reload').and.callThrough();
 
-        component.pageState.subscribe((res) => {
+        component.pageState$.subscribe((res) => {
             expect(res).toEqual(new DotRenderedPageState(mockUser, mockDotRenderedPage));
         });
 

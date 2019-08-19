@@ -9,7 +9,7 @@ import { DotUploadService } from './services/dot-upload.service';
 import { DotHttpErrorResponse } from '../../models/dot-http-error-response.model';
 import { DotBinaryFileComponent } from '../dot-binary-file/dot-binary-file';
 
-const SUBMIT_FORM_API_URL = '/api/content/save/1';
+const SUBMIT_FORM_API_URL = '/api/v1/workflow/actions/default/fire/NEW';
 const fallbackErrorMessages = {
     500: '500 Internal Server Error',
     400: '400 Bad Request',
@@ -60,7 +60,7 @@ export class DotFormComponent {
         const { name, value } = event.detail;
         const process = fieldCustomProcess[tagName];
         if (tagName === 'DOT-BINARY-FILE' && value) {
-            this.uploadFile(event).then(tempFile => {
+            this.uploadFile(event).then((tempFile: DotTempFile) => {
                 this.value[name] = tempFile.id;
             });
         } else {
@@ -145,13 +145,15 @@ export class DotFormComponent {
         event.preventDefault();
 
         fetch(SUBMIT_FORM_API_URL, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                stName: this.variable,
-                ...this.value
+                contentlet: {
+                    contentType: this.variable,
+                    ...this.value
+                }
             })
         })
             .then(async (response: Response) => {
@@ -162,14 +164,29 @@ export class DotFormComponent {
                     };
                     throw error;
                 }
-                return response.text();
+                return response.json();
             })
-            .then((_text: string) => {
-                // Go to success page
+            .then((jsonResponse) => {
+                const {inode, identifier } = jsonResponse.entity;
+                this.goToSuccessPage(inode, identifier);
             })
             .catch(({ message, status }: DotHttpErrorResponse) => {
                 this.errorMessage = message || fallbackErrorMessages[status];
             });
+    }
+
+    private goToSuccessPage(inode: string, identifier: string): void {
+        const formReturnUrl = this.getFormReturnUrl();
+        if (formReturnUrl) {
+            window.location.href = `${formReturnUrl}?inode=${inode}&identifier=${identifier}`;
+        }
+    }
+
+    private getFormReturnUrl(): string {
+        const fieldFormReturn = getFieldsFromLayout(this.layout).filter(
+            (field: DotCMSContentTypeField) => field.variable === 'formReturnPage'
+        )[0];
+        return fieldFormReturn.values;
     }
 
     private resetForm(): void {
@@ -185,20 +202,20 @@ export class DotFormComponent {
     }
 
     private getUpdateValue(): { [key: string]: string } {
-        return getFieldsFromLayout(
-            this.layout
-        ).reduce(
-            (
-                acc: { [key: string]: string },
-                { variable, defaultValue }: DotCMSContentTypeField
-            ) => {
-                return {
-                    ...acc,
-                    [variable]: defaultValue
-                };
-            },
-            {}
-        );
+        return getFieldsFromLayout(this.layout)
+            .filter((field: DotCMSContentTypeField) => field.fixed === false)
+            .reduce(
+                (
+                    acc: { [key: string]: string },
+                    { variable, defaultValue, dataType, values }: DotCMSContentTypeField
+                ) => {
+                    return {
+                        ...acc,
+                        [variable]: defaultValue || (dataType !== 'TEXT' ? values : null)
+                    };
+                },
+                {}
+            );
     }
 
     private uploadFile(event: CustomEvent): Promise<DotTempFile> {

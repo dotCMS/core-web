@@ -1,30 +1,35 @@
-import { of as observableOf } from 'rxjs';
-import { async, ComponentFixture } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DebugElement, Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DebugElement, Component, Input } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
+
+import { of } from 'rxjs';
 import { MenuModule, Menu } from 'primeng/primeng';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
-import {
-    DotWorkflowServiceMock,
-    mockWorkflowsActions
-} from '../../../../../test/dot-workflow-service.mock';
-import { mockDotPage } from '../../../../../test/dot-rendered-page.mock';
 import { LoginService } from 'dotcms-js';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
-import { LoginServiceMock } from '../../../../../test/login-service.mock';
-import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
-import { DotMessageService } from '@services/dot-messages-service';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+
+
+import { DOTTestBed } from '@tests/dot-test-bed';
+import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
+import { LoginServiceMock } from '@tests/login-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { mockDotPage } from '@tests/dot-page-render.mock';
+import { mockWorkflowsActions } from '@tests/dot-workflows-actions.mock';
+
 import { DotEditPageWorkflowsActionsComponent } from './dot-edit-page-workflows-actions.component';
-import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotGlobalMessageService } from '@components/_common/dot-global-message/dot-global-message.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotMessageService } from '@services/dot-messages-service';
+import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
 
 @Component({
     selector: 'dot-test-host-component',
-    template: `<dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>`
+    template: `
+        <dot-edit-page-workflows-actions [page]="page"></dot-edit-page-workflows-actions>
+    `
 })
 class TestHostComponent {
     @Input()
@@ -41,6 +46,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let workflowActionDebugEl: DebugElement;
     let workflowActionComponent: DotEditPageWorkflowsActionsComponent;
     let dotGlobalMessageService: DotGlobalMessageService;
+    let dotWorkflowsActionsService: DotWorkflowsActionsService;
     const messageServiceMock = new MockDotMessageService({
         'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
     });
@@ -61,6 +67,14 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
+                },
+                {
+                    provide: DotWorkflowsActionsService,
+                    useValue: {
+                        getByInode() {
+                            return of(mockWorkflowsActions);
+                        }
+                    }
                 },
                 DotHttpErrorManagerService,
                 DotRouterService
@@ -85,13 +99,14 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         button = workflowActionDebugEl.query(By.css('button'));
 
         dotWorkflowService = workflowActionDebugEl.injector.get(DotWorkflowService);
+        dotWorkflowsActionsService = workflowActionDebugEl.injector.get(DotWorkflowsActionsService);
         spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
     });
 
     describe('button', () => {
         describe('enabled', () => {
             beforeEach(() => {
-                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.callThrough();
+                spyOn(dotWorkflowsActionsService, 'getByInode').and.callThrough();
                 component.page = {
                     ...mockDotPage,
                     ...{
@@ -114,10 +129,10 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
             });
 
             it('should get workflow actions when page changes"', () => {
-                expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledWith(
+                expect(dotWorkflowsActionsService.getByInode).toHaveBeenCalledWith(
                     'cc2cdf9c-a20d-4862-9454-2a76c1132123'
                 );
-                expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(1);
+                expect(dotWorkflowsActionsService.getByInode).toHaveBeenCalledTimes(1);
             });
 
             describe('fire actions', () => {
@@ -168,7 +183,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
                 it('should refresh the action list after fire action', () => {
                     firstButton.click();
-                    expect(dotWorkflowService.getContentWorkflowActions).toHaveBeenCalledTimes(1);
+                    expect(dotWorkflowsActionsService.getByInode).toHaveBeenCalledTimes(1);
                 });
 
                 it('should emit event after action was fired', () => {
@@ -184,9 +199,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         describe('disabled', () => {
             beforeEach(() => {
-                spyOn(dotWorkflowService, 'getContentWorkflowActions').and.returnValue(
-                    observableOf([])
-                );
+                spyOn(dotWorkflowsActionsService, 'getByInode').and.returnValue(of([]));
                 fixture.detectChanges();
             });
 

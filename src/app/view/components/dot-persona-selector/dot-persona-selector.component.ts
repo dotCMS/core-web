@@ -5,49 +5,23 @@ import {
     EventEmitter,
     Input,
     OnInit,
-    OnChanges,
-    SimpleChanges,
     OnDestroy
 } from '@angular/core';
 import { PaginatorService } from '@services/paginator';
-import { SearchableDropdownComponent } from '@components/_common/searchable-dropdown/component';
+import {
+    SearchableDropdownComponent,
+    PaginationEvent
+} from '@components/_common/searchable-dropdown/component';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
-import { DotMessageService } from '@services/dot-messages-service';
 import { take, takeUntil } from 'rxjs/operators';
+import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
+import { Subject } from 'rxjs';
 import { DotContentService } from '@services/dot-content/dot-content.service';
-
 import { SiteService } from 'dotcms-js';
 import * as _ from 'lodash';
-import { Subject } from 'rxjs';
-
-export const defaultVisitorPersona = {
-    archived: false,
-    baseType: 'PERSONA',
-    contentType: 'persona',
-    folder: 'SYSTEM_FOLDER',
-    hasTitleImage: false,
-    host: 'SYSTEM_HOST',
-    hostFolder: 'SYSTEM_HOST',
-    hostName: 'System Host',
-    identifier: '0',
-    inode: '',
-    keyTag: 'dot:persona',
-    languageId: 1,
-    live: false,
-    locked: false,
-    modDate: 0,
-    modUser: 'system',
-    modUserName: 'system user system user',
-    name: 'Default Visitor',
-    personalized: false,
-    sortOrder: 0,
-    stInode: 'c938b15f-bcb6-49ef-8651-14d455a97045',
-    title: 'Default Visitor',
-    titleImage: 'TITLE_IMAGE_NOT_FOUND',
-    working: false
-};
+import { DotMessageService } from '@services/dot-messages-service';
 
 /**
  * It is dropdown of personas, it handle pagination and global search
@@ -61,26 +35,28 @@ export const defaultVisitorPersona = {
     styleUrls: ['./dot-persona-selector.component.scss'],
     templateUrl: 'dot-persona-selector.component.html'
 })
-export class DotPersonaSelectorComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() pageId: string;
-    @Input() value: DotPersona;
-
+export class DotPersonaSelectorComponent implements OnInit, OnDestroy {
     @Output() selected: EventEmitter<DotPersona> = new EventEmitter();
+
+    @Output() delete: EventEmitter<DotPersona> = new EventEmitter();
 
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
 
-    newPersonaForm: FormGroup;
-    fileName: string;
-    totalRecords: number;
+    isEditMode = false;
+    messagesKey: { [key: string]: string } = {};
     paginationPerPage = 5;
     personas: DotPersona[];
-    messagesKey: { [key: string]: string } = {};
+    totalRecords: number;
+    value: DotPersona;
     addAction: (item: DotPersona) => void;
-    selected2: DotPersona;
+
+    newPersonaForm: FormGroup;
+    fileName: string;
     visible = true;
     dialogActions: DotDialogActions;
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
+    private _pageState: DotRenderedPageState;
 
     constructor(
         public paginationService: PaginatorService,
@@ -90,41 +66,21 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges, OnDestroy
         private siteService: SiteService
     ) {}
 
-    ngOnChanges(_changes: SimpleChanges): void {
-        this.value = this.value || {
-            ...defaultVisitorPersona,
-            name: this.messagesKey['modes.persona.no.persona']
-        };
-    }
-
     ngOnInit(): void {
         this.addAction = () => {
             this.initPersonaForm();
             this.visible = true;
         };
-        this.paginationService.url = `v1/page/${this.pageId}/personas`;
         this.paginationService.paginationPerPage = this.paginationPerPage;
-
         this.dotMessageService
-            .getMessages([
-                'modes.persona.no.persona',
-                'modes.persona.selector.title',
-                'modes.persona.add.persona',
-                'dot.common.choose',
-                'dot.common.remove'
-            ])
+            .getMessages(['modes.persona.add.persona', 'dot.common.choose', 'dot.common.remove'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
+                debugger;
                 this.messagesKey = messages;
-                this.value = {
-                    ...defaultVisitorPersona,
-                    name: this.messagesKey['modes.persona.no.persona']
-                };
-                this.getPersonasList();
             });
         this.initPersonaForm();
     }
-
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
@@ -161,9 +117,23 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges, OnDestroy
         }
     }
 
+    @Input('pageState')
+    set pageState(value: DotRenderedPageState) {
+        this._pageState = value;
+        this.paginationService.url = `v1/page/${this.pageState.page.identifier}/personas`;
+        this.isEditMode = this.pageState.state.mode === DotPageMode.EDIT;
+        this.value = this.pageState.viewAs && this.pageState.viewAs.persona;
+        this.reloadPersonasListCurrentPage();
+    }
+
+    get pageState(): DotRenderedPageState {
+        return this._pageState;
+    }
+
     /**
      * Call when the global search changed
-     * @param string filter
+     *
+     * @param {string} filter
      * @memberof DotPersonaSelectorComponent
      */
     handleFilterChange(filter: string): void {
@@ -172,46 +142,63 @@ export class DotPersonaSelectorComponent implements OnInit, OnChanges, OnDestroy
 
     /**
      * Call when the current page changed
-     * @param any event
+     *
+     * @param {PaginationEvent} event
      * @memberof DotPersonaSelectorComponent
      */
-    handlePageChange(event): void {
+    handlePageChange(event: PaginationEvent): void {
         this.getPersonasList(event.filter, event.first);
     }
 
     /**
-     * Call to load a new page.
-     * @param string [filter='']
-     * @param number [offset=0]
-     * @memberof DotPersonaSelectorComponent
-     */
-    getPersonasList(filter = '', offset = 0): void {
-        // Set filter if undefined
-        this.paginationService.filter = filter;
-        this.paginationService.getWithOffset(offset).subscribe((items: DotPersona[]) => {
-            this.personas = items;
-            this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
-        });
-    }
-
-    /**
      * Call when the selected persona changed and the change event is emmited
-     * @param DotPersona persona
+     *
+     * @param {DotPersona} persona
      * @memberof DotPersonaSelectorComponent
      */
     personaChange(persona: DotPersona): void {
-        this.selected.emit(persona);
+        if (!this.value || this.value.identifier !== persona.identifier) {
+            this.selected.emit(persona);
+        }
         this.searchableDropdown.toggleOverlayPanel();
     }
 
     /**
-     * Call when the selected persona changed and the change event is emmited
-     * @param DotPersona persona
+     * Refresh the current page in the persona list option
+     *
      * @memberof DotPersonaSelectorComponent
      */
-    deletePersonalization(_persona: DotPersona): void {
-        // TODO: Confirm & call service
-        this.searchableDropdown.toggleOverlayPanel();
+    reloadPersonasListCurrentPage(): void {
+        this.paginationService
+            .getCurrentPage()
+            .pipe(take(1))
+            .subscribe(this.setList.bind(this));
+    }
+
+    /**
+     * Replace the persona receive in the current page list of personas
+     *
+     * @param {DotPersona} persona
+     * @memberof DotPersonaSelectorComponent
+     */
+    updatePersonaInCurrentList(persona: DotPersona): void {
+        this.personas = this.personas.map((currentPersona: DotPersona) => {
+            return currentPersona.identifier === persona.identifier ? persona : currentPersona;
+        });
+    }
+
+    private getPersonasList(filter = '', offset = 0): void {
+        // Set filter if undefined
+        this.paginationService.filter = filter;
+        this.paginationService
+            .getWithOffset(offset)
+            .pipe(take(1))
+            .subscribe(this.setList.bind(this));
+    }
+
+    private setList(items: DotPersona[]): void {
+        this.personas = items;
+        this.totalRecords = this.totalRecords || this.paginationService.totalRecords;
     }
 
     private initPersonaForm(): void {
