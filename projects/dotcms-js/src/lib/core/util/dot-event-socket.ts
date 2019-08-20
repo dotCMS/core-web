@@ -3,7 +3,7 @@ import { Protocol } from './protocol';
 import { LoggerService } from '../logger.service';
 import { LongPollingProtocol } from './long-polling-protocol';
 import { CoreWebService } from '../core-web.service';
-import { ConfigParams, DotcmsConfig, WebSocketConfigParams } from '../dotcms-config.service';
+import { ConfigParams, DotcmsConfigService, WebSocketConfigParams } from '../dotcms-config.service';
 import { Subject, Observable } from 'rxjs';
 import { DotEventsSocketURL } from './models/dot-event-socket-url';
 import { DotEventMessage } from './models/dot-event-message';
@@ -44,7 +44,7 @@ export class DotEventsSocket {
      */
     constructor(
         private dotEventsSocketURL: DotEventsSocketURL,
-        private dotcmsConfig: DotcmsConfig,
+        private dotcmsConfig: DotcmsConfigService,
         private loggerService: LoggerService,
         private coreWebService: CoreWebService
     ) {
