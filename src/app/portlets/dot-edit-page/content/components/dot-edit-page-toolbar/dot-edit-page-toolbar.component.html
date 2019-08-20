@@ -12,11 +12,11 @@
             type="button"
             class="edit-page-toolbar__cancel"
             [label]="messagesKey['dot.common.cancel']"
-            (click)="cancelToolbar.emit($event)"
+            (click)="cancel.emit($event)"
         ></button>
         <dot-edit-page-workflows-actions
             [page]="pageState.page"
-            (fired)="reload.emit($event)"
+            (fired)="actionFired.emit($event)"
         ></dot-edit-page-workflows-actions>
     </div>
 

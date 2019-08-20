@@ -11,8 +11,8 @@
 <dot-loading-indicator fullscreen="true"></dot-loading-indicator>
 <ng-container *ngIf="pageState$ | async as pageState">
     <dot-edit-page-toolbar
-        (cancelToolbar)="onCancelToolbar()"
-        (reload)="reload()"
+        (cancel)="onCancelToolbar()"
+        (actionFired)="reload()"
         (whatschange)="showWhatsChanged = $event"
         [pageState]="pageState"
         class="dot-edit__toolbar"

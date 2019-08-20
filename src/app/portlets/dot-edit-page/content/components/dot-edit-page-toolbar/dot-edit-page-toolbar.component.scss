@@ -1,11 +1,9 @@
 @import "variables";
 
-:host {
-    .edit-page-toolbar__cancel {
-        margin-right: $basic-padding;
-    }
+.edit-page-toolbar__cancel {
+    margin-right: $basic-padding;
+}
 
-    .dot-edit__what-changed-button {
-        margin-left: $basic-padding * 2;
-    }
+.dot-edit__what-changed-button {
+    margin-left: $basic-padding * 2;
 }

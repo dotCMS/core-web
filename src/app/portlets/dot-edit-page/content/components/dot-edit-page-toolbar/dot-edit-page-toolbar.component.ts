@@ -16,17 +16,16 @@ export class DotEditPageToolbarComponent implements OnInit, OnChanges {
     pageState: DotRenderedPageState;
 
     @Output()
-    cancelToolbar = new EventEmitter<boolean>();
+    cancel = new EventEmitter<boolean>();
 
     @Output()
-    reload = new EventEmitter<boolean>();
+    actionFired = new EventEmitter<boolean>();
 
     @Output()
     whatschange = new EventEmitter<boolean>();
 
     isEnterpriseLicense$: Observable<boolean>;
     showWhatsChanged: boolean;
-    whatschangeLabel$: Observable<string>;
     messagesKey: { [key: string]: string } = {};
 
     constructor(
