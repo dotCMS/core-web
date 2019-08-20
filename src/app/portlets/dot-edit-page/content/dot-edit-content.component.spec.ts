@@ -356,7 +356,7 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('reload', () => {
-        const mockRenderedPageState = new DotPageRenderState(mockUser, mockDotRenderedPage);
+        const mockRenderedPageState = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
 
         beforeEach(() => {
             // component.pageState = null;
@@ -900,7 +900,7 @@ describe('DotEditContentComponent', () => {
         describe('listen load-edit-mode-page event', () => {
             beforeEach(() => {
                 route.parent.parent.data = observableOf({
-                    content: new DotPageRenderState(mockUser, mockDotRenderedPage)
+                    content: new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage))
                 });
 
                 spyOn(dotEditContentHtmlService, 'renderPage');

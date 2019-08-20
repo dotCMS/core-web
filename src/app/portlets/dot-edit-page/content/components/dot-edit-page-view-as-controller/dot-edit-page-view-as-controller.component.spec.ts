@@ -27,6 +27,7 @@ import { MockDotMessageService } from '../../../../../test/dot-message-service.m
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotEditPageViewAsControllerComponent } from './dot-edit-page-view-as-controller.component';
+import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
 @Component({
     selector: 'dot-test-host',
@@ -235,10 +236,12 @@ describe('DotEditPageViewAsControllerComponent', () => {
         });
 
         it('should propagate the values to the selector components on init', () => {
-            componentHost.pageState = new DotPageRenderState(mockUser, {
-                ...mockDotRenderedPage,
-                viewAs: mockDotEditPageViewAs
-            });
+            componentHost.pageState = new DotPageRenderState(mockUser,
+                new DotPageRender({
+                    ...mockDotRenderedPage,
+                    viewAs: mockDotEditPageViewAs
+                })
+            );
             fixtureHost.detectChanges();
 
             // expect(languageSelector.value).toEqual(mockDotPersona);
@@ -247,10 +250,12 @@ describe('DotEditPageViewAsControllerComponent', () => {
         });
 
         it('should show device information', () => {
-            componentHost.pageState = new DotPageRenderState(mockUser, {
-                ...mockDotRenderedPage,
-                viewAs: mockDotEditPageViewAs
-            });
+            componentHost.pageState = new DotPageRenderState(mockUser,
+                new DotPageRender({
+                    ...mockDotRenderedPage,
+                    viewAs: mockDotEditPageViewAs
+                })
+            );
             fixtureHost.detectChanges();
             const label = de.query(By.css('.device-info__label'));
             const content = de.query(By.css('.device-info__content'));

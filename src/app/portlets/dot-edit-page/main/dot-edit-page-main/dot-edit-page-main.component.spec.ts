@@ -19,6 +19,7 @@ import { Injectable, Component, Output, EventEmitter } from '@angular/core';
 import { DotPageStateService } from '../../content/services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
 @Injectable()
 class MockDotContentletEditorService {
@@ -29,7 +30,7 @@ class MockDotContentletEditorService {
 class MockDotPageStateService {
     reload$ = new Subject();
     reload(): void {
-        this.reload$.next(new DotPageRenderState(mockUser, mockDotRenderedPage));
+        this.reload$.next(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage)));
     }
 }
 
@@ -58,7 +59,7 @@ describe('DotEditPageMainComponent', () => {
 
     const mockDotRenderedPageState: DotPageRenderState = new DotPageRenderState(
         mockUser,
-        mockDotRenderedPage
+        new DotPageRender(mockDotRenderedPage)
     );
 
     beforeEach(async(() => {
@@ -129,7 +130,7 @@ describe('DotEditPageMainComponent', () => {
         spyOn(dotPageStateService, 'reload').and.callThrough();
 
         component.pageState$.subscribe((res) => {
-            expect(res).toEqual(new DotPageRenderState(mockUser, mockDotRenderedPage));
+            expect(res).toEqual(new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage)));
         });
 
         dotContentletEditorService.close$.next(true);

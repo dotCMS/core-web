@@ -166,9 +166,11 @@ describe('DotPageStateService', () => {
 
     describe('reload page state', () => {
         it('should emit reload evt with DotRenderedPageState', () => {
-            const renderedPage = new DotPageRenderState(mockUser, {
-                ...mockDotRenderedPage
-            });
+            const renderedPage = new DotPageRenderState(mockUser,
+                new DotPageRender({
+                    ...mockDotRenderedPage
+                })
+            );
             spyOn(service, 'get').and.returnValue(observableOf(renderedPage));
             service.state$.subscribe((page: DotPageRenderState) => {
                 expect(page).toBe(renderedPage);

@@ -39,7 +39,7 @@ class TestHostComponent {
     @Input() pageState: DotPageRenderState = mockDotRenderedPageState;
 }
 
-fdescribe('DotEditPageStateControllerComponent', () => {
+describe('DotEditPageStateControllerComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     // let componentHost: TestHostComponent;
     // let component: DotEditPageStateControllerComponent;

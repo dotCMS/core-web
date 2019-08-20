@@ -23,6 +23,7 @@ import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-re
 import { mockUser } from '../../../../../test/login-service.mock';
 import { PageModelChangeEventType } from './models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
+import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
 @Injectable()
 class MockDotLicenseService {
@@ -157,13 +158,15 @@ describe('DotEditContentHtmlService', () => {
             is not a good architecture.
         */
 
-        const pageState: DotPageRenderState = new DotPageRenderState(mockUser, {
-            ...mockDotRenderedPage,
-            page: {
-                ...mockDotPage,
-                rendered: fakeHTML
-            }
-        });
+        const pageState: DotPageRenderState = new DotPageRenderState(mockUser,
+            new DotPageRender ({
+                ...mockDotRenderedPage,
+                page: {
+                    ...mockDotPage,
+                    rendered: fakeHTML
+                }
+            })
+        );
 
         this.dotEditContentHtmlService.initEditMode(pageState, { nativeElement: fakeIframeEl });
         dotLicenseService = this.injector.get(DotLicenseService);
@@ -369,14 +372,16 @@ describe('DotEditContentHtmlService', () => {
             }
         };
 
-        const pageState: DotPageRenderState = new DotPageRenderState(mockUser, {
-            ...mockDotRenderedPage,
-            page: {
-                ...mockDotPage,
-                rendered: fakeHTML,
-                remoteRendered: true
-            }
-        });
+        const pageState: DotPageRenderState = new DotPageRenderState(mockUser,
+            new DotPageRender ({
+                ...mockDotRenderedPage,
+                page: {
+                    ...mockDotPage,
+                    rendered: fakeHTML,
+                    remoteRendered: true
+                }
+            })
+        );
         this.dotEditContentHtmlService.initEditMode(pageState, { nativeElement: fakeIframeEl });
 
         this.dotEditContentHtmlService.contentletEvents$.next({
