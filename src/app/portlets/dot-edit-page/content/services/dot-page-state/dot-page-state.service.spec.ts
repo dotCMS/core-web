@@ -9,7 +9,7 @@ import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-
 import { DotPageStateService } from './dot-page-state.service';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
-import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
 import { LoginServiceMock } from '../../../../../test/login-service.mock';
 import { mockDotRenderedPage, mockDotPage } from '../../../../../test/dot-page-render.mock';
@@ -166,11 +166,11 @@ describe('DotPageStateService', () => {
 
     describe('reload page state', () => {
         it('should emit reload evt with DotRenderedPageState', () => {
-            const renderedPage = new DotRenderedPageState(mockUser, {
+            const renderedPage = new DotPageRenderState(mockUser, {
                 ...mockDotRenderedPage
             });
             spyOn(service, 'get').and.returnValue(observableOf(renderedPage));
-            service.state$.subscribe((page: DotRenderedPageState) => {
+            service.state$.subscribe((page: DotPageRenderState) => {
                 expect(page).toBe(renderedPage);
             });
 

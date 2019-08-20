@@ -2,10 +2,10 @@ import { RequestMethod } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { pluck, map } from 'rxjs/operators';
 
 import { CoreWebService } from 'dotcms-js';
-import { DotLayout, DotPageRender } from '@portlets/dot-edit-page/shared/models';
+import { DotLayout, DotPageRender, DotPageRenderResponse } from '@portlets/dot-edit-page/shared/models';
 
 
 /**
@@ -33,6 +33,9 @@ export class DotPageLayoutService {
                 method: RequestMethod.Post,
                 url: `v1/page/${pageIdentifier}/layout`
             })
-            .pipe(pluck('entity'));
+            .pipe(
+                pluck('entity'),
+                map((dotPageRenderResponse: DotPageRenderResponse) => new DotPageRender(dotPageRenderResponse))
+            );
     }
 }

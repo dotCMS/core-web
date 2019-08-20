@@ -17,7 +17,7 @@ import { DotEditPageViewAsControllerModule } from '../dot-edit-page-view-as-cont
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageMode } from '@portlets/dot-edit-page/shared/models/dot-page-mode.enum';
-import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -26,7 +26,7 @@ import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-
     `
 })
 class TestHostComponent {
-    @Input() pageState: DotRenderedPageState = mockDotRenderedPageState;
+    @Input() pageState: DotPageRenderState = mockDotRenderedPageState;
 }
 
 describe('DotEditPageToolbarComponent', () => {

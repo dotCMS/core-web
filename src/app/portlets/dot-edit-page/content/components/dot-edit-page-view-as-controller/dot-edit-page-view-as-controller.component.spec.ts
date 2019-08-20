@@ -25,7 +25,7 @@ import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { of } from 'rxjs';
 import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotEditPageViewAsControllerComponent } from './dot-edit-page-view-as-controller.component';
 
 @Component({
@@ -34,7 +34,7 @@ import { DotEditPageViewAsControllerComponent } from './dot-edit-page-view-as-co
 })
 class DotTestHostComponent implements OnInit {
     @Input()
-    pageState: DotRenderedPageState;
+    pageState: DotPageRenderState;
 
     ngOnInit() {}
 }
@@ -141,7 +141,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
             spyOn(dotLicenseService, 'isEnterprise').and.returnValue(of(false));
             // spyOn(component.changeViewAs, 'emit');
 
-            componentHost.pageState = new DotRenderedPageState(
+            componentHost.pageState = new DotPageRenderState(
                 mockUser,
                 JSON.parse(JSON.stringify(mockDotRenderedPage))
             );
@@ -165,7 +165,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
             spyOn(component, 'changeLanguageHandler').and.callThrough();
             // spyOn(component.changeViewAs, 'emit');
 
-            componentHost.pageState = new DotRenderedPageState(
+            componentHost.pageState = new DotPageRenderState(
                 mockUser,
                 JSON.parse(JSON.stringify(mockDotRenderedPage))
             );
@@ -235,7 +235,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
         });
 
         it('should propagate the values to the selector components on init', () => {
-            componentHost.pageState = new DotRenderedPageState(mockUser, {
+            componentHost.pageState = new DotPageRenderState(mockUser, {
                 ...mockDotRenderedPage,
                 viewAs: mockDotEditPageViewAs
             });
@@ -248,7 +248,7 @@ describe('DotEditPageViewAsControllerComponent', () => {
         });
 
         it('should show device information', () => {
-            componentHost.pageState = new DotRenderedPageState(mockUser, {
+            componentHost.pageState = new DotPageRenderState(mockUser, {
                 ...mockDotRenderedPage,
                 viewAs: mockDotEditPageViewAs
             });

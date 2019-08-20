@@ -10,21 +10,20 @@ interface DotPageState {
     locked?: boolean;
     lockedByAnotherUser?: boolean;
     mode: DotPageMode;
-    haveContent: boolean;
 }
 
-export class DotRenderedPageState {
+export class DotPageRenderState extends DotPageRender {
     private _state: DotPageState;
 
     constructor(private _user: User, private dotRenderedPage: DotPageRender) {
+        super(dotRenderedPage);
         const locked = !!dotRenderedPage.page.lockedBy;
         const lockedByAnotherUser = locked ? dotRenderedPage.page.lockedBy !== _user.userId : false;
 
         this._state = {
             locked: locked,
             lockedByAnotherUser: lockedByAnotherUser,
-            mode: dotRenderedPage.viewAs.mode,
-            haveContent: dotRenderedPage.haveContent
+            mode: dotRenderedPage.viewAs.mode
         };
     }
 
@@ -66,11 +65,5 @@ export class DotRenderedPageState {
 
     set dotRenderedPageState(dotRenderedPageState: DotPageRender) {
         this.dotRenderedPage = dotRenderedPageState;
-    }
-
-    get dotRenderedPageState() {
-        return {
-            ...this.dotRenderedPage
-        };
     }
 }

@@ -18,7 +18,7 @@ import {
     DotPageContainerPersonalized
 } from '../shared/models/dot-page-container.model';
 import { DotPageContent } from '../shared/models/dot-page-content.model';
-import { DotRenderedPageState } from '../shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '../shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotPageMode } from '../shared/models/dot-page-mode.enum';
@@ -49,7 +49,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     iframe: ElementRef;
 
     contentletActionsUrl: SafeResourceUrl;
-    pageState$: Observable<DotRenderedPageState>;
+    pageState$: Observable<DotPageRenderState>;
     showWhatsChanged = false;
     editForm = false;
     showIframe = true;
@@ -58,7 +58,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private readonly customEventsHandler;
     private destroy$: Subject<boolean> = new Subject<boolean>();
-    private pageStateInternal: DotRenderedPageState;
+    private pageStateInternal: DotPageRenderState;
 
     constructor(
         private dotContentletEditorService: DotContentletEditorService,
@@ -87,7 +87,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         browse from the page internal links
                     */
 
-                    const dotRenderedPageState = new DotRenderedPageState(
+                    const dotRenderedPageState = new DotPageRenderState(
                         this.pageStateInternal.user,
                         pageRendered
                     );
@@ -400,7 +400,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         });
     }
 
-    private renderPage(pageState: DotRenderedPageState): void {
+    private renderPage(pageState: DotPageRenderState): void {
         if (this.shouldEditMode(pageState)) {
             this.dotEditContentHtmlService.initEditMode(pageState, this.iframe);
         } else {
@@ -426,7 +426,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
         this.pageState$ = content$.pipe(
             takeUntil(this.destroy$),
-            tap((pageState: DotRenderedPageState) => {
+            tap((pageState: DotPageRenderState) => {
                 this.pageStateInternal = pageState;
                 this.showIframe = false;
 
@@ -444,7 +444,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
         );
     }
 
-    private shouldEditMode(pageState: DotRenderedPageState): boolean {
+    private shouldEditMode(pageState: DotPageRenderState): boolean {
         return pageState.state.mode === DotPageMode.EDIT && !pageState.state.lockedByAnotherUser;
     }
 
@@ -457,7 +457,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             .subscribe((event: PageModelChangeEvent) => {
                 this.ngZone.run(() => {
                     this.saveContent(event);
-                    this.dotPageStateService.contentAdded();
+                    this.callPageStateServiceMethod(event);
 
                     if (this.shouldSetContainersHeight()) {
                         this.dotEditContentHtmlService.setContaintersSameHeight(
@@ -466,6 +466,15 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     }
                 });
             });
+    }
+
+    private callPageStateServiceMethod(event: PageModelChangeEvent) {
+        console.log('event.type', event.type);
+        if (event.type === PageModelChangeEventType.ADD_CONTENT) {
+            this.dotPageStateService.contentAdded();
+        } else if (event.type === PageModelChangeEventType.REMOVE_CONTENT) {
+            this.dotPageStateService.contentRemoved();
+        }
     }
 
     private subscribeSwitchSite(): void {

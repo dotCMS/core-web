@@ -1,6 +1,6 @@
 import { of as observableOf, Observable } from 'rxjs';
 import { DotTemplate } from './../../shared/models/dot-template.model';
-import { DotRenderedPageState } from './../../shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from './../../shared/models/dot-rendered-page-state.model';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -26,7 +26,7 @@ interface DotEditPageNavItem {
     styleUrls: ['./dot-edit-page-nav.component.scss']
 })
 export class DotEditPageNavComponent implements OnChanges {
-    @Input() pageState: DotRenderedPageState;
+    @Input() pageState: DotPageRenderState;
 
     isEnterpriseLicense: boolean;
     model: Observable<DotEditPageNavItem[]>;
@@ -45,7 +45,7 @@ export class DotEditPageNavComponent implements OnChanges {
         if (this.layoutChanged(changes)) {
             this.model = !this.model
                 ? this.loadNavItems()
-                : observableOf(this.getNavItems(this.pageState.dotRenderedPageState, this.isEnterpriseLicense));
+                : observableOf(this.getNavItems(this.pageState, this.isEnterpriseLicense));
         }
     }
 
@@ -76,7 +76,7 @@ export class DotEditPageNavComponent implements OnChanges {
                 }),
                 map((isEnterpriseLicense: boolean) => {
                     this.isEnterpriseLicense = isEnterpriseLicense;
-                    return this.getNavItems(this.pageState.dotRenderedPageState, isEnterpriseLicense);
+                    return this.getNavItems(this.pageState, isEnterpriseLicense);
                 })
             );
     }

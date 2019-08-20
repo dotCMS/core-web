@@ -19,7 +19,7 @@ import {
 import { DotCMSContentType } from 'dotcms-models';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { Injectable } from '@angular/core';
-import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockUser } from '../../../../../test/login-service.mock';
 import { PageModelChangeEventType } from './models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
@@ -157,7 +157,7 @@ describe('DotEditContentHtmlService', () => {
             is not a good architecture.
         */
 
-        const pageState: DotRenderedPageState = new DotRenderedPageState(mockUser, {
+        const pageState: DotPageRenderState = new DotPageRenderState(mockUser, {
             ...mockDotRenderedPage,
             page: {
                 ...mockDotPage,
@@ -369,7 +369,7 @@ describe('DotEditContentHtmlService', () => {
             }
         };
 
-        const pageState: DotRenderedPageState = new DotRenderedPageState(mockUser, {
+        const pageState: DotPageRenderState = new DotPageRenderState(mockUser, {
             ...mockDotRenderedPage,
             page: {
                 ...mockDotPage,

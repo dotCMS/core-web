@@ -23,7 +23,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { DotLoadingIndicatorModule } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.module';
 import { DotMenuService } from '@services/dot-menu.service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
+import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotPageStateService } from './services/dot-page-state/dot-page-state.service';
 import { DotPageRenderService } from '@services/dot-page-render/dot-page-render.service';
 import { LoginServiceMock, mockUser } from '../../../test/login-service.mock';
@@ -356,7 +356,7 @@ describe('DotEditContentComponent', () => {
     });
 
     describe('reload', () => {
-        const mockRenderedPageState = new DotRenderedPageState(mockUser, mockDotRenderedPage);
+        const mockRenderedPageState = new DotPageRenderState(mockUser, mockDotRenderedPage);
 
         beforeEach(() => {
             // component.pageState = null;
@@ -900,7 +900,7 @@ describe('DotEditContentComponent', () => {
         describe('listen load-edit-mode-page event', () => {
             beforeEach(() => {
                 route.parent.parent.data = observableOf({
-                    content: new DotRenderedPageState(mockUser, mockDotRenderedPage)
+                    content: new DotPageRenderState(mockUser, mockDotRenderedPage)
                 });
 
                 spyOn(dotEditContentHtmlService, 'renderPage');
