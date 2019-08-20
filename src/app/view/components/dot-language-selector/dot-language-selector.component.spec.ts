@@ -35,7 +35,7 @@ describe('DotLanguageSelectorComponent', () => {
         fixture.detectChanges();
         const decoratedLanguage = {
             ...mockDotLanguage,
-            language: `${mockDotLanguage.language} (${mockDotLanguage.countryCode})`
+            languageLabel: `${mockDotLanguage.language} (${mockDotLanguage.countryCode})`
         };
         expect(component.languagesOptions).toEqual([decoratedLanguage]);
     });
