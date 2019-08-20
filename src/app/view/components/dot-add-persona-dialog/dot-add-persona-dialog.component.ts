@@ -5,7 +5,7 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotCreatePersonaFormComponent } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.component';
 import { FormGroup } from '@angular/forms';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
-import {DotWorkflowService} from '@services/dot-workflow/dot-workflow.service';
+import { DotActionService } from '@services/dot-action/dot-action.service';
 
 @Component({
     selector: 'dot-add-persona-dialog',
@@ -23,7 +23,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
 
     constructor(
         public dotMessageService: DotMessageService,
-        public dotWorkflowService: DotWorkflowService
+        public dotActionService: DotActionService
     ) {}
 
     ngOnInit() {
@@ -57,8 +57,8 @@ export class DotAddPersonaDialogComponent implements OnInit {
 
     savePersona(): void {
         if (this.createPersonaForm.form) {
-            this.dotWorkflowService
-                .fireDefaultWorkflowAction(this.createPersonaForm.form.getRawValue())
+            this.dotActionService
+                .new(this.createPersonaForm.form.getRawValue())
                 .pipe(take(1))
                 .subscribe((persona: DotPersona) => {
                     this.persona.emit(persona);

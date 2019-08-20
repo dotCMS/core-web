@@ -7,8 +7,7 @@ import {
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
 import { take } from 'rxjs/operators';
 import { DotRenderedPageState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
-
-import { DotMessageService } from '@services/dot-messages-service';
+import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.component';
 
 /**
  * It is dropdown of personas, it handle pagination and global search
@@ -28,9 +27,9 @@ export class DotPersonaSelectorComponent implements OnInit {
     @Output() delete: EventEmitter<DotPersona> = new EventEmitter();
 
     @ViewChild('searchableDropdown') searchableDropdown: SearchableDropdownComponent;
+    @ViewChild('personaDialog') personaDialog: DotAddPersonaDialogComponent;
 
     isEditMode = false;
-    messagesKey: { [key: string]: string } = {};
     paginationPerPage = 5;
     personas: DotPersona[];
     totalRecords: number;
@@ -39,22 +38,14 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     private _pageState: DotRenderedPageState;
 
-    constructor(
-        public paginationService: PaginatorService,
-        public dotMessageService: DotMessageService
-    ) {}
+    constructor(public paginationService: PaginatorService) {}
 
     ngOnInit(): void {
         this.addAction = () => {
             this.searchableDropdown.toggleOverlayPanel();
+            this.personaDialog.visible = true;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
-        this.dotMessageService
-            .getMessages(['modes.persona.add.persona', 'dot.common.choose', 'dot.common.remove'])
-            .pipe(take(1))
-            .subscribe((messages: { [key: string]: string }) => {
-                this.messagesKey = messages;
-            });
     }
 
     @Input('pageState')
@@ -125,6 +116,17 @@ export class DotPersonaSelectorComponent implements OnInit {
         this.personas = this.personas.map((currentPersona: DotPersona) => {
             return currentPersona.identifier === persona.identifier ? persona : currentPersona;
         });
+    }
+
+    /**
+     * Propagate the new persona and refresh the persona list
+     *
+     * @param {DotPersona} persona
+     * @memberof DotPersonaSelectorComponent
+     */
+    handleNewPersona(persona: DotPersona): void {
+        this.personaChange(persona);
+        this.getPersonasList();
     }
 
     private getPersonasList(filter = '', offset = 0): void {

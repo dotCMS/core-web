@@ -35,7 +35,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
                 'dot.common.choose',
                 'dot.common.remove',
                 'modes.persona.host',
-                'error.form.mandatory'
+                'modes.persona.name.error.required'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -53,7 +53,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
      * Handle the response of the p-fileUpload to update the form.
      *
      * @param {any} event
-     * @memberof DotPersonaSelectorComponent
+     * @memberof DotCreatePersonaFormComponent
      */
     onFileUpload(event: any) {
         const response = JSON.parse(event.xhr.response);
@@ -64,7 +64,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     /**
      * Remove selected image.
      *
-     * @memberof DotPersonaSelectorComponent
+     * @memberof DotCreatePersonaFormComponent
      */
     removeImage(): void {
         this.imageName = null;
@@ -72,9 +72,9 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Update the site identifier in th form.
+     * Update the site identifier in the form.
      *
-     * @memberof DotPersonaSelectorComponent
+     * @memberof DotCreatePersonaFormComponent
      */
     siteChange(site: Site) {
         this.form.get('hostFolder').setValue(site.identifier);
@@ -83,29 +83,11 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     /**
      * Set the key tag attribute with camelCase standard based on the name.
      *
-     * @memberof DotPersonaSelectorComponent
+     * @memberof DotCreatePersonaFormComponent
      */
     setKeyTag(): void {
         this.form.get('keyTag').setValue(_.camelCase(this.form.get('name').value));
     }
-
-    // /**
-    //  * Call when a new persona is added and propagate set it as current.
-    //  *
-    //  * @memberof DotPersonaSelectorComponent
-    //  */
-    // savePersona(): void {
-    //     if (this.newPersonaForm.valid) {
-    //         this.dotContentService
-    //             .create(this.newPersonaForm.getRawValue())
-    //             .pipe(take(1))
-    //             .subscribe((persona: DotPersona) => {
-    //                 this.getPersonasList();
-    //                 this.personaChange(persona);
-    //                 this.addDialogVisible = false;
-    //             });
-    //     }
-    // }
 
     private initPersonaForm(): void {
         this.imageName = null;
@@ -120,21 +102,5 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.value.emit(this.form);
         });
-        //
-        // this.dialogActions = {
-        //     accept: {
-        //         action: () => {
-        //             this.savePersona();
-        //         },
-        //         label: 'accept',
-        //         disabled: !this.newPersonaForm.valid
-        //     },
-        //     cancel: {
-        //         label: 'cancel',
-        //         action: () => {
-        //             this.addDialogVisible = false;
-        //         }
-        //     }
-        // };
     }
 }

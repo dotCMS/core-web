@@ -1,4 +1,4 @@
-<form [formGroup]="form" *ngIf="messagesKey">
+<form [formGroup]="form" >
     <div class="form__group">
         <label  class="form__label">{{messagesKey['modes.persona.host']}}: </label>
         <dot-site-selector  (change)="siteChange($event)"></dot-site-selector>
@@ -7,10 +7,10 @@
     <div class="form__group">
         <label for="persona-name" class="form__label">{{messagesKey['modes.persona.name']}}: </label>
         <input id="persona-name" dotAutofocus type="text" (change)="setKeyTag()" formControlName="name" name="name" pInputText />
-       <!-- <dot-field-validation-message
-            [message]="messagesKey['error.form.mandatory'].replace('{0}', messagesKey['modes.persona.name'])"
+        <dot-field-validation-message
+            [message]="messagesKey['modes.persona.name.error.required']"
             [field]="form.get('name')">
-        </dot-field-validation-message>-->
+        </dot-field-validation-message>
     </div>
 
     <div class="form__group">
@@ -36,5 +36,3 @@
         </div>
     </div>
 </form>
-
-value: {{form.getRawValue() | json}}

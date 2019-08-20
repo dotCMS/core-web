@@ -29,4 +29,4 @@
     </ng-template>
 </dot-searchable-dropdown>
 
-<dot-add-persona-dialog></dot-add-persona-dialog>
+<dot-add-persona-dialog #personaDialog (persona)="handleNewPersona($event)" ></dot-add-persona-dialog>
