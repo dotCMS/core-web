@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LoggerService } from './logger.service';
 import { Subject } from 'rxjs';
 import { DotEventTypeWrapper } from './models';
 import { DotEventsSocket } from './util/dot-event-socket';
 import { DotEventMessage } from './util/models/dot-event-message';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class DotcmsEventsService {
     private subjects: Subject<any>[] = [];
+    private messagesSub: Subscription;
 
-    constructor(private dotEventsSocket: DotEventsSocket, private loggerService: LoggerService) {
-    }
+    constructor(private dotEventsSocket: DotEventsSocket, private loggerService: LoggerService) {}
 
     /**
      * Close the socket
@@ -20,6 +21,7 @@ export class DotcmsEventsService {
      */
     destroy(): void {
         this.dotEventsSocket.destroy();
+        this.messagesSub.unsubscribe();
     }
 
     /**
@@ -30,11 +32,12 @@ export class DotcmsEventsService {
     start(): void {
         this.loggerService.debug('start DotcmsEventsService', this.dotEventsSocket.isConnected());
         if (!this.dotEventsSocket.isConnected()) {
-
             this.loggerService.debug('Connecting with socket');
 
-            this.dotEventsSocket.connect().subscribe(() => {
-                this.dotEventsSocket.messages().subscribe(
+            this.messagesSub = this.dotEventsSocket
+                .connect()
+                .pipe(switchMap(() => this.dotEventsSocket.messages()))
+                .subscribe(
                     (data: DotEventMessage) => {
                         if (!this.subjects[data.event]) {
                             this.subjects[data.event] = new Subject();
@@ -49,8 +52,7 @@ export class DotcmsEventsService {
                     () => {
                         this.loggerService.debug('Completed');
                     }
-                );
-            });
+                )
         }
     }
 
@@ -75,7 +77,7 @@ export class DotcmsEventsService {
     subscribeToEvents(clientEventTypes: string[]): Observable<DotEventTypeWrapper> {
         const subject: Subject<DotEventTypeWrapper> = new Subject<DotEventTypeWrapper>();
 
-        clientEventTypes.forEach((eventType) =>
+        clientEventTypes.forEach((eventType: string) =>
             this.subscribeTo(eventType).subscribe((data) =>
                 subject.next({
                     data: data,
