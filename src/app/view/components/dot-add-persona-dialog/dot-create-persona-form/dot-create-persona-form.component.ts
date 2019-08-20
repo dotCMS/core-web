@@ -104,8 +104,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
             keyTag: [{ value: '', disabled: true }, [Validators.required]],
             name: ['', [Validators.required]],
-            photo: ['', [Validators.required]],
-            contentType: 'persona'
+            photo: ['', [Validators.required]]
         });
     }
 

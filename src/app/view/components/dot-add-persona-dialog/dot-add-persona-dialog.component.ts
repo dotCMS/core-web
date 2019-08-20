@@ -7,6 +7,8 @@ import { FormGroup } from '@angular/forms';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 
+const PERSONA_CONTENT_TYPE = 'persona';
+
 @Component({
     selector: 'dot-add-persona-dialog',
     templateUrl: './dot-add-persona-dialog.component.html',
@@ -62,7 +64,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
     savePersona(): void {
         if (this.personaForm.form.valid) {
             this.dotWorkflowActionsFireService
-                .new<DotPersona>(this.personaForm.form.getRawValue())
+                .new<DotPersona>(PERSONA_CONTENT_TYPE, this.personaForm.form.getRawValue())
                 .pipe(take(1))
                 .subscribe((persona: DotPersona) => {
                     this.persona.emit(persona);
@@ -79,13 +81,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
      * @memberof DotAddPersonaDialogComponent
      */
     formValueHandler(form: FormGroup): void {
-        this.dialogActions = {
-            ...this.dialogActions,
-            accept: {
-                ...this.dialogActions.accept,
-                disabled: !form.valid
-            }
-        };
+        this.dialogActions.accept.disabled = !form.valid;
     }
 
     /**

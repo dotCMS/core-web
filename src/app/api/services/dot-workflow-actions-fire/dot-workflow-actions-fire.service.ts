@@ -15,7 +15,7 @@ export class DotWorkflowActionsFireService {
      * @returns Observable<any> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
-    fireWorkflowAction(inode: string, actionId: string): Observable<any> {
+    toContentlet(inode: string, actionId: string): Observable<any> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
@@ -25,18 +25,20 @@ export class DotWorkflowActionsFireService {
     }
 
     /**
-     * TBD
-     * @param content data
+     * Create new Content based on teh given Content Type
+     *
+     * @param {contentType} string
+     * @param {[key: string]: any} data
      * @returns Content
      *
      * @memberof DotWorkflowActionsFireService
      */
-    new<T>(data: any): Observable<T> {
+    new<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
                 url: `v1/workflow/actions/default/fire/NEW`,
-                body: { contentlet: { ...data } }
+                body: { contentlet: { contentType: contentType, ...data } }
             })
             .pipe(take(1), pluck('entity'));
     }
