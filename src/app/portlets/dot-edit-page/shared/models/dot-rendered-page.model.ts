@@ -3,17 +3,20 @@ import { DotPage } from './dot-page.model';
 import { DotTemplate } from './dot-template.model';
 import { DotEditPageViewAs } from '@models/dot-edit-page-view-as/dot-edit-page-view-as.model';
 
-export interface DotPageRenderResponse {
-    layout?: DotLayout;
-    page: DotPage;
-    containers?: any;
-    template?: DotTemplate;
-    canCreateTemplate: boolean;
-    viewAs: DotEditPageViewAs;
-    numberContents: number;
+export module DotPageRender {
+    export interface Parameters {
+        layout?: DotLayout;
+        page: DotPage;
+        containers?: any;
+        template?: DotTemplate;
+        canCreateTemplate: boolean;
+        viewAs: DotEditPageViewAs;
+        numberContents: number;
+    }
 }
-export class DotPageRender implements DotPageRenderResponse {
-    constructor(private params: DotPageRenderResponse) {
+
+export class DotPageRender {
+    constructor(private params: DotPageRender.Parameters) {
     }
 
     get layout(): DotLayout {

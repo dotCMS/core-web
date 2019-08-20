@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { pluck, map } from 'rxjs/operators';
 
 import { CoreWebService } from 'dotcms-js';
-import { DotLayout, DotPageRender, DotPageRenderResponse } from '@portlets/dot-edit-page/shared/models';
+import { DotLayout, DotPageRender } from '@portlets/dot-edit-page/shared/models';
 
 
 /**
@@ -35,7 +35,7 @@ export class DotPageLayoutService {
             })
             .pipe(
                 pluck('entity'),
-                map((dotPageRenderResponse: DotPageRenderResponse) => new DotPageRender(dotPageRenderResponse))
+                map((dotPageRenderResponse: DotPageRender.Parameters) => new DotPageRender(dotPageRenderResponse))
             );
     }
 }

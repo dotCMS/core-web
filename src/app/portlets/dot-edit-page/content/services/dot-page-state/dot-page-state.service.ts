@@ -18,11 +18,12 @@ import {
     DotHttpErrorHandled
 } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { PageModelChangeEvent, PageModelChangeEventType } from '../dot-edit-content-html/models';
 
 @Injectable()
 export class DotPageStateService {
     state$: Subject<DotPageRenderState> = new Subject<DotPageRenderState>();
-    hasContent$ = new BehaviorSubject<boolean>(false);
+    haveContent$ = new BehaviorSubject<boolean>(false);
     private currentState: DotPageRenderState;
 
     private isInternalNavigation = false;
@@ -92,7 +93,6 @@ export class DotPageStateService {
             map((page: DotPageRender) => {
                 if (page) {
                     const pageState = new DotPageRenderState(this.getCurrentUser(), page);
-                    console.log('pageState', pageState);
                     this.setCurrentState(pageState);
                     return pageState;
                 }
@@ -123,7 +123,6 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     setInternalNavigationState(state: DotPageRenderState): void {
-        console.log('setInternalNavigationState', state);
         this.setCurrentState(state);
         this.isInternalNavigation = true;
     }
@@ -201,28 +200,39 @@ export class DotPageStateService {
         }
     }
 
+    /**
+     * Call to notify that a content was add into the page
+     */
     contentAdded(): void {
         this.currentState.numberContents++;
 
-        console.log('this.currentState.viewAs.persona', this.currentState.viewAs.persona, this.currentState.numberContents);
         if (this.currentState.numberContents === 1 && !this.currentState.viewAs.persona) {
-            this.hasContent$.next(true);
+            this.haveContent$.next(true);
         }
     }
 
+    /**
+     * Call to notify that a content was remove from the page
+     */
     contentRemoved(): void {
         this.currentState.numberContents--;
 
-        console.log('this.currentState.viewAs.persona', this.currentState.viewAs.persona, this.currentState.numberContents);
         if (this.currentState.numberContents === 0 && !this.currentState.viewAs.persona) {
-            this.hasContent$.next(false);
+            this.haveContent$.next(false);
+        }
+    }
+
+    public updatePageStateHaveContent(event: PageModelChangeEvent) {
+        if (event.type === PageModelChangeEventType.ADD_CONTENT) {
+            this.contentAdded();
+        } else if (event.type === PageModelChangeEventType.REMOVE_CONTENT) {
+            this.contentRemoved();
         }
     }
 
     private setCurrentState(newState: DotPageRenderState): void {
         this.currentState = newState;
-        console.log('setCurrentState', this.currentState.numberContents > 0);
-        this.hasContent$.next(this.currentState.numberContents > 0);
+        this.haveContent$.next(this.currentState.numberContents > 0);
     }
 
     private getCurrentUser(): User {

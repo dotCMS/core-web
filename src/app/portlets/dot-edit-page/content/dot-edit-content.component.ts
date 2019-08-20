@@ -455,9 +455,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$)
             )
             .subscribe((event: PageModelChangeEvent) => {
+                this.dotPageStateService.updatePageStateHaveContent(event);
+
                 this.ngZone.run(() => {
                     this.saveContent(event);
-                    this.callPageStateServiceMethod(event);
 
                     if (this.shouldSetContainersHeight()) {
                         this.dotEditContentHtmlService.setContaintersSameHeight(
@@ -466,15 +467,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     }
                 });
             });
-    }
-
-    private callPageStateServiceMethod(event: PageModelChangeEvent) {
-        console.log('event.type', event.type);
-        if (event.type === PageModelChangeEventType.ADD_CONTENT) {
-            this.dotPageStateService.contentAdded();
-        } else if (event.type === PageModelChangeEventType.REMOVE_CONTENT) {
-            this.dotPageStateService.contentRemoved();
-        }
     }
 
     private subscribeSwitchSite(): void {

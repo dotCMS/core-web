@@ -31,12 +31,12 @@ export class DotPersonaSelectedItemComponent implements OnInit {
             .getMessages([
                 'modes.persona.selector.title.preview',
                 'modes.persona.selector.title.edit',
-                'modes.persona.no.persona'
+                'modes.persona.no.persona',
+                'editpage.personalization.content.add.message'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                console.log('this.messages', this.messages);
             });
     }
 
