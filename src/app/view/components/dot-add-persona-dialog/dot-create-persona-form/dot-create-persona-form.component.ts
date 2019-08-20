@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
+import { DotFileUpload } from '@models/dot-file-upload/dot-file-upload.model';
+import { DotCMSTempFile } from 'dotcms-models';
 
 @Component({
     selector: 'dot-create-persona-form',
@@ -52,13 +54,14 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     /**
      * Handle the response of the p-fileUpload to update the form.
      *
-     * @param {any} event
+     * @param {DotFileUpload} event
      * @memberof DotCreatePersonaFormComponent
      */
-    onFileUpload(event: any) {
+    onFileUpload(event: DotFileUpload) {
         const response = JSON.parse(event.xhr.response);
+        const tempFile: DotCMSTempFile = response.tempFiles[0];
         this.imageName = event.files[0].name;
-        this.form.get('photo').setValue(response.tempFiles[0].id);
+        this.form.get('photo').setValue(tempFile.id);
     }
 
     /**
@@ -74,6 +77,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     /**
      * Update the site identifier in the form.
      *
+     * @param {Site} site
      * @memberof DotCreatePersonaFormComponent
      */
     siteChange(site: Site) {
@@ -89,7 +93,12 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
         this.form.get('keyTag').setValue(_.camelCase(this.form.get('name').value));
     }
 
-    private initPersonaForm(): void {
+    /**
+     * Reset form to default values
+     *
+     * @memberof DotCreatePersonaFormComponent
+     */
+    resetForm(): void {
         this.imageName = null;
         this.form = this.fb.group({
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
@@ -98,7 +107,10 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
             photo: ['', [Validators.required]],
             contentType: 'persona'
         });
+    }
 
+    private initPersonaForm(): void {
+        this.resetForm();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.value.emit(this.form);
         });

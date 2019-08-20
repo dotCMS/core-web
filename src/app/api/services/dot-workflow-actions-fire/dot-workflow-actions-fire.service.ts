@@ -5,7 +5,7 @@ import { pluck, take } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
 
 @Injectable()
-export class DotActionService {
+export class DotWorkflowActionsFireService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
@@ -13,7 +13,7 @@ export class DotActionService {
      *
      * @param string inode
      * @returns Observable<any> // contentlet
-     * @memberof DotActionService
+     * @memberof DotWorkflowActionsFireService
      */
     fireWorkflowAction(inode: string, actionId: string): Observable<any> {
         return this.coreWebService
@@ -29,9 +29,9 @@ export class DotActionService {
      * @param content data
      * @returns Content
      *
-     * @memberof DotActionService
+     * @memberof DotWorkflowActionsFireService
      */
-    new(data: any): Observable<any> {
+    new<T>(data: any): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,

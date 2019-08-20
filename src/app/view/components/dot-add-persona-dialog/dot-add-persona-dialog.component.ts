@@ -5,7 +5,7 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 import { DotCreatePersonaFormComponent } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.component';
 import { FormGroup } from '@angular/forms';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
-import { DotActionService } from '@services/dot-action/dot-action.service';
+import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 
 @Component({
     selector: 'dot-add-persona-dialog',
@@ -13,17 +13,16 @@ import { DotActionService } from '@services/dot-action/dot-action.service';
     styleUrls: ['./dot-add-persona-dialog.component.scss']
 })
 export class DotAddPersonaDialogComponent implements OnInit {
-    @Input() visible = true;
-    @Input() action: (action: any) => void;
+    @Input() visible = false;
     @Output() persona: EventEmitter<DotPersona> = new EventEmitter();
-    @ViewChild('createPersonaForm') createPersonaForm: DotCreatePersonaFormComponent;
+    @ViewChild('personaForm') personaForm: DotCreatePersonaFormComponent;
 
     messagesKey: { [key: string]: string } = {};
     dialogActions: DotDialogActions;
 
     constructor(
         public dotMessageService: DotMessageService,
-        public dotActionService: DotActionService
+        public dotWorkflowActionsFireService: DotWorkflowActionsFireService
     ) {}
 
     ngOnInit() {
@@ -48,25 +47,37 @@ export class DotAddPersonaDialogComponent implements OnInit {
                     cancel: {
                         label: this.messagesKey['dot.common.dialog.reject'],
                         action: () => {
-                            this.visible = false;
+                            this.closeDialog();
                         }
                     }
                 };
             });
     }
 
+    /**
+     * Call endpoint to safe the persona and emit the value.
+     *
+     * @memberof DotAddPersonaDialogComponent
+     */
     savePersona(): void {
-        if (this.createPersonaForm.form) {
-            this.dotActionService
-                .new(this.createPersonaForm.form.getRawValue())
+        if (this.personaForm.form.valid) {
+            this.dotWorkflowActionsFireService
+                .new<DotPersona>(this.personaForm.form.getRawValue())
                 .pipe(take(1))
                 .subscribe((persona: DotPersona) => {
                     this.persona.emit(persona);
-                    this.visible = false;
+                    this.closeDialog();
                 });
         }
     }
 
+    /**
+     * Handle changes in the form to set the disable state of the accept button
+     *
+     * @param {FormGroup} form
+     *
+     * @memberof DotAddPersonaDialogComponent
+     */
     formValueHandler(form: FormGroup): void {
         this.dialogActions = {
             ...this.dialogActions,
@@ -75,5 +86,16 @@ export class DotAddPersonaDialogComponent implements OnInit {
                 disabled: !form.valid
             }
         };
+    }
+
+    /**
+     * Close the dialog and clear the form
+     *
+     * @memberof DotAddPersonaDialogComponent
+     */
+    closeDialog(): void {
+        this.visible = false;
+        this.personaForm.resetForm();
+        this.dialogActions.accept.disabled = true;
     }
 }
