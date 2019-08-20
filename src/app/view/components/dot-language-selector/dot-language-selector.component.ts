@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    OnChanges,
+    SimpleChanges
+} from '@angular/core';
 import { DotLanguagesService } from '@services/dot-languages/dot-languages.service';
 import { DotLanguage } from '@models/dot-language/dot-language.model';
 import { take } from 'rxjs/operators';
@@ -8,7 +16,7 @@ import { take } from 'rxjs/operators';
     templateUrl: './dot-language-selector.component.html',
     styleUrls: ['./dot-language-selector.component.scss']
 })
-export class DotLanguageSelectorComponent implements OnInit {
+export class DotLanguageSelectorComponent implements OnInit, OnChanges {
     @Input()
     value: DotLanguage;
     @Input()
@@ -25,8 +33,16 @@ export class DotLanguageSelectorComponent implements OnInit {
             .get(this.contentInode)
             .pipe(take(1))
             .subscribe((languages: DotLanguage[]) => {
-                this.languagesOptions = this.decorateLabels(languages);
+                this.languagesOptions = languages.map((language: DotLanguage) =>
+                    this.decorateLabel(language)
+                );
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.value && changes.value.currentValue) {
+            this.value = this.decorateLabel(changes.value.currentValue);
+        }
     }
 
     /**
@@ -37,10 +53,8 @@ export class DotLanguageSelectorComponent implements OnInit {
         this.selected.emit(language);
     }
 
-    private decorateLabels(languages: DotLanguage[]): DotLanguage[] {
-        return languages.map((language: DotLanguage) => {
-            const countryCodeLabel = language.countryCode ? ` (${language.countryCode})` : '';
-            return { ...language, language: `${language.language}${countryCodeLabel}` };
-         });
+    private decorateLabel(language: DotLanguage): DotLanguage {
+        const countryCodeLabel = language.countryCode ? ` (${language.countryCode})` : '';
+        return { ...language, language: `${language.language}${countryCodeLabel}` };
     }
 }
