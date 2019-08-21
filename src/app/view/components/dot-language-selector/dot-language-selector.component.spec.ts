@@ -46,7 +46,7 @@ describe('DotLanguageSelectorComponent', () => {
         fixture.detectChanges();
         const icon = de.query(By.css('dot-icon'));
         expect(icon.attributes.name).toBe('language');
-        expect(icon.attributes.size).toBe('big');
+        expect(icon.attributes.big).toBeDefined();
     });
 
     it('should have label', () => {

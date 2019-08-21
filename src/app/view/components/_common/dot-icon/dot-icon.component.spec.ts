@@ -27,11 +27,4 @@ describe('DotIconComponent', () => {
         expect(icon.classList).toContain('material-icons');
         expect(icon.innerText).toBe(comp.name);
     });
-
-    it('should set size', () => {
-        comp.size = 'big';
-        fixture.detectChanges();
-        const icon = de.query(By.css('i')).nativeElement;
-        expect(icon.style.fontSize).toContain('24px');
-    });
 });

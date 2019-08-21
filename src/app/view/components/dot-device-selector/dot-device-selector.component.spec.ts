@@ -58,7 +58,7 @@ describe('DotDeviceSelectorComponent', () => {
         fixture.detectChanges();
         const icon = de.query(By.css('dot-icon'));
         expect(icon.attributes.name).toBe('devices');
-        expect(icon.attributes.size).toBe('big');
+        expect(icon.attributes.big).toBeDefined();
     });
 
     it('should have label', () => {
