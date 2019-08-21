@@ -216,7 +216,7 @@ describe('DotEditContentComponent', () => {
         dotPageStateService = de.injector.get(DotPageStateService);
         dotRouterService = de.injector.get(DotRouterService);
         toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
-        toolbarComponent = toolbarElement.componentInstance;
+        // toolbarComponent = toolbarElement.componentInstance;
         route = de.injector.get(ActivatedRoute);
     });
 
@@ -1078,6 +1078,33 @@ describe('DotEditContentComponent', () => {
             expect(component.reload).not.toHaveBeenCalled();
             expect(dotEditPageService.save).toHaveBeenCalledTimes(2);
             expect(dotEditContentHtmlService.setContaintersSameHeight).toHaveBeenCalledTimes(2);
+        }));
+
+        it('should call the updatePageStateHaveContent after a model change happens', fakeAsync(() => {
+            route.parent.parent.data = observableOf({
+                content: {
+                    ...mockDotRenderedPage,
+                    page: {
+                        ...mockDotRenderedPage.page,
+                        canLock: true
+                    },
+                    state: {
+                        locked: true,
+                        mode: DotPageMode.EDIT
+                    }
+                }
+            });
+
+            spyOn(dotPageStateService, 'updatePageStateHaveContent').and.callFake(() => {});
+
+            waitForDetectChanges(fixture);
+
+            dotEditContentHtmlService.pageModel$.next({
+                model: model,
+                type: PageModelChangeEventType.ADD_CONTENT
+            });
+
+            expect(dotPageStateService.updatePageStateHaveContent).toHaveBeenCalled();
         }));
 
         it('should call the save endpoint and reload the iframe after a model change happens and page is remote rendered', fakeAsync(() => {

@@ -164,7 +164,7 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     setLocalState(state: DotPageRenderState): void {
-        this.currentState = state;
+        this.setCurrentState(state);
         this.state$.next(state);
     }
 
@@ -189,7 +189,7 @@ export class DotPageStateService {
     contentAdded(): void {
         this.currentState.numberContents++;
 
-        if (this.currentState.numberContents === 1 && !this.currentState.viewAs.persona) {
+        if (this.currentState.numberContents === 1 && !this.selectedIsDefaultPersona()) {
             this.haveContent$.next(true);
         }
     }
@@ -200,7 +200,7 @@ export class DotPageStateService {
     contentRemoved(): void {
         this.currentState.numberContents--;
 
-        if (this.currentState.numberContents === 0 && !this.currentState.viewAs.persona) {
+        if (this.currentState.numberContents === 0 && !this.selectedIsDefaultPersona()) {
             this.haveContent$.next(false);
         }
     }
@@ -215,7 +215,14 @@ export class DotPageStateService {
 
     private setCurrentState(newState: DotPageRenderState): void {
         this.currentState = newState;
-        this.haveContent$.next(this.currentState.numberContents > 0);
+
+        if (!this.selectedIsDefaultPersona()) {
+            this.haveContent$.next(this.currentState.numberContents > 0);
+        }
+    }
+
+    private selectedIsDefaultPersona(): boolean {
+        return !!this.currentState.viewAs.persona;
     }
 
     private getCurrentUser(): User {
