@@ -6,7 +6,7 @@ import { pluck, map, take } from 'rxjs/operators';
 import { LoginService, Auth } from './login.service';
 import { LoggerService } from './logger.service';
 import { DotcmsEventsService } from './dotcms-events.service';
-import { DotEventTypeWrapper } from 'dotcms-js/dotcms-js';
+import { DotEventTypeWrapper } from './models/dot-events/dot-event-type-wrapper';
 
 /**
  * Provide methods and data to hable the sites.
@@ -56,8 +56,7 @@ export class SiteService {
 
     /**
      * Manage the response when an event happen
-     * @param void eventTypeWrapper
-     * @returns *
+     *
      * @memberof SiteService
      */
     eventResponse({ name, data }: DotEventTypeWrapper<Site>): void {
@@ -73,7 +72,7 @@ export class SiteService {
 
     /**
      * Refresh the sites list if a event happen
-     * @param any eventTypeWrapper
+     *
      * @memberof SiteService
      */
     siteEventsHandler(site: Site): void {

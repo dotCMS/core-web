@@ -67,6 +67,7 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
     /**
      * Close dialog's component by clearing messages from service
      *
+     * @param {DotLargeMessageDisplayParams} messageToRemove
      * @memberof DotLargeMessageDisplayComponent
      */
     close(messageToRemove: DotLargeMessageDisplayParams) {
