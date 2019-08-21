@@ -8,7 +8,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { By } from '@angular/platform-browser';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
-describe('DotPersonaDropdownSelectorComponent', () => {
+fdescribe('DotPersonaDropdownSelectorComponent', () => {
 
     let component: DotPersonaSelectedItemComponent;
     let fixture: ComponentFixture<DotPersonaSelectedItemComponent>;

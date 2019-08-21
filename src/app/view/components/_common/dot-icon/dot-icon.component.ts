@@ -1,5 +1,11 @@
 import { Component, Input } from '@angular/core';
 
+enum DotIconSize {
+    normal = 18,
+    small = 12,
+    big = 24
+}
+
 /**
  * The DotIconComponent uses google material design icons
  * https://material.io/tools/icons
@@ -12,8 +18,14 @@ import { Component, Input } from '@angular/core';
     templateUrl: './dot-icon.component.html'
 })
 export class DotIconComponent {
-    @Input()
-    name: string;
+    @Input() name: string;
+
+    iconSize = DotIconSize.normal;
 
     constructor() {}
+
+    @Input('size')
+    set size(val: string) {
+        this.iconSize = DotIconSize[val];
+    }
 }
