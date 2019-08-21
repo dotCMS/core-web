@@ -39,12 +39,12 @@ export class DotEventsSocket {
      * Initializes this service with the configuration properties that are
      * necessary for opening the Websocket with the System Events end-point.
      *
-     * @param dotcmsConfig - The dotCMS configuration properties that include
+     * @param dotcmsConfigService - The dotCMS configuration properties that include
      * the Websocket parameters.
      */
     constructor(
         private dotEventsSocketURL: DotEventsSocketURL,
-        private dotcmsConfig: DotcmsConfigService,
+        private dotcmsConfigService: DotcmsConfigService,
         private loggerService: LoggerService,
         private coreWebService: CoreWebService
     ) {
@@ -112,7 +112,7 @@ export class DotEventsSocket {
     }
 
     private init(): Observable<any> {
-        return this.dotcmsConfig.getConfig().pipe(
+        return this.dotcmsConfigService.getConfig().pipe(
             pluck('websocket'),
             tap((webSocketConfigParams: WebSocketConfigParams) => {
                 this.webSocketConfigParams = webSocketConfigParams;
