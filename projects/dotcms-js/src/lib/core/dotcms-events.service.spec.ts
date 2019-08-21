@@ -100,10 +100,11 @@ describe('DotcmsEventsService', () => {
 
         dotcmsEventsService
             .subscribeToEvents(['test_event_1', 'test_event_2'])
-            .subscribe((dotEventTypeWrapper: DotEventTypeWrapper) => {
-                if (dotEventTypeWrapper.eventType === 'test_event_1') {
+            .subscribe((dotEventTypeWrapper: DotEventTypeWrapper<any>) => {
+                console.log(dotEventTypeWrapper);
+                if (dotEventTypeWrapper.name === 'test_event_1') {
                     expect(dotEventTypeWrapper.data).toEqual('test payload_1');
-                } else if (dotEventTypeWrapper.eventType === 'test_event_2') {
+                } else if (dotEventTypeWrapper.name === 'test_event_2') {
                     expect(dotEventTypeWrapper.data).toEqual('test payload_2');
                 } else {
                     expect(true).toBe(false);

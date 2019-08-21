@@ -8,15 +8,15 @@ import {
     AfterViewInit
 } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { DotDialogComponent } from '@components/dot-dialog/dot-dialog.component';
-import { DotcmsEventsService, DotEventData } from 'dotcms-js';
+import { DotcmsEventsService } from 'dotcms-js';
 
 interface DotLargeMessageDisplayParams {
     title: string;
-    width?: string;
-    height?: string;
-    body?: string;
+    width: string;
+    height: string;
+    body: string;
     script?: string;
     code?: {
         lang: string;
@@ -107,12 +107,12 @@ export class DotLargeMessageDisplayComponent implements OnInit, OnDestroy, After
     }
 
     private getMessages(): Observable<DotLargeMessageDisplayParams> {
-        return this.dotcmsEventsService.subscribeTo('LARGE_MESSAGE').pipe(
-            map((messageEvent: DotEventData) => {
-                const { code, width, body, title, height } = messageEvent.data;
-                return { title, height, width, body, code };
-            }),
-            filter((content: DotLargeMessageDisplayParams) => !!content)
-        );
+        return this.dotcmsEventsService
+            .subscribeTo<DotLargeMessageDisplayParams>('LARGE_MESSAGE')
+            .pipe(
+                filter((data: DotLargeMessageDisplayParams) => {
+                    return !!data;
+                })
+            );
     }
 }

@@ -6,6 +6,7 @@ import { pluck, map, take } from 'rxjs/operators';
 import { LoginService, Auth } from './login.service';
 import { LoggerService } from './logger.service';
 import { DotcmsEventsService } from './dotcms-events.service';
+import { DotEventTypeWrapper } from 'dotcms-js/dotcms-js';
 
 /**
  * Provide methods and data to hable the sites.
@@ -39,12 +40,12 @@ export class SiteService {
         };
 
         dotcmsEventsService
-            .subscribeToEvents(['ARCHIVE_SITE', 'UPDATE_SITE'])
-            .subscribe((data) => this.eventResponse(data));
+            .subscribeToEvents<Site>(['ARCHIVE_SITE', 'UPDATE_SITE'])
+            .subscribe((event: DotEventTypeWrapper<Site>) => this.eventResponse(event));
 
         dotcmsEventsService
-            .subscribeToEvents(this.events)
-            .subscribe((data) => this.siteEventsHandler(data));
+            .subscribeToEvents<Site>(this.events)
+            .subscribe(({ data }: DotEventTypeWrapper<Site>) => this.siteEventsHandler(data));
 
         loginService.watchUser((auth: Auth) => {
             if (!auth.isLoginAs) {
@@ -59,16 +60,12 @@ export class SiteService {
      * @returns *
      * @memberof SiteService
      */
-    eventResponse(eventTypeWrapper): void {
-        this.loggerService.debug(
-            'Capturing Site event',
-            eventTypeWrapper.eventType,
-            eventTypeWrapper.data
-        );
-        // TODO the backend needs a change in the response 'data.data'.
-        const siteIdentifier = eventTypeWrapper.data.data.identifier;
+    eventResponse({ name, data }: DotEventTypeWrapper<Site>): void {
+        this.loggerService.debug('Capturing Site event', name, data);
+
+        const siteIdentifier = data.identifier;
         if (siteIdentifier === this.selectedSite.identifier) {
-            if (eventTypeWrapper.eventType !== 'ARCHIVE_SITE') {
+            if (name !== 'ARCHIVE_SITE') {
                 this.loadCurrentSite();
             }
         }
@@ -79,8 +76,8 @@ export class SiteService {
      * @param any eventTypeWrapper
      * @memberof SiteService
      */
-    siteEventsHandler(eventTypeWrapper): void {
-        this._refreshSites$.next(eventTypeWrapper.data.data);
+    siteEventsHandler(site: Site): void {
+        this._refreshSites$.next(site);
     }
 
     /**
@@ -183,16 +180,18 @@ export class SiteService {
 
     private setCurrentSite(site: Site): void {
         if (this.selectedSite) {
-            this._switchSite$.next({...site});
+            this._switchSite$.next({ ...site });
         }
 
         this.selectedSite = site;
     }
 
     private loadCurrentSite(): void {
-        this.getCurrentSite().pipe(take(1)).subscribe((currentSite: Site) => {
-            this.setCurrentSite(currentSite);
-        });
+        this.getCurrentSite()
+            .pipe(take(1))
+            .subscribe((currentSite: Site) => {
+                this.setCurrentSite(currentSite);
+            });
     }
 }
 
@@ -200,4 +199,5 @@ export interface Site {
     hostname: string;
     type: string;
     identifier: string;
+    archived: boolean;
 }
