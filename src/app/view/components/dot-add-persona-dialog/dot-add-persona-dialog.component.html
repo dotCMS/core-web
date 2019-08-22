@@ -2,6 +2,7 @@
             [header]="messagesKey['modes.persona.add.persona']"
             [visible]="visible"
             [actions]="dialogActions"
+            [appendToBody]="true"
             (hide)="closeDialog()">
     <dot-create-persona-form #personaForm (isValid)="handlerFormValidState($event)" ></dot-create-persona-form>
 </dot-dialog>

@@ -90,6 +90,7 @@ describe('DotAddPersonaDialogComponent', () => {
 
         it('should set dialog attributes correctly', () => {
             expect(dotDialog.componentInstance.header).toEqual('Add Persona');
+            expect(dotDialog.componentInstance.appendToBody).toBe(true);
             expect(dotDialog.componentInstance.actions).toEqual({
                 accept: {
                     label: 'Accept',

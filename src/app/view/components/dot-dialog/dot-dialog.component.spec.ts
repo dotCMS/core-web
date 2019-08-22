@@ -102,6 +102,10 @@ describe('DotDialogComponent', () => {
                 const close: DebugElement = de.query(By.css('dot-icon-button'));
                 expect(close === null).toBe(true);
             });
+
+            it('should set appendToBody to false', () => {
+                expect(component.appendToBody).toBe(false);
+            });
         });
 
         describe('show', () => {
@@ -173,6 +177,17 @@ describe('DotDialogComponent', () => {
             it('should show footer', () => {
                 const footer: DebugElement = de.query(By.css('.dialog__footer'));
                 expect(footer === null).toBe(false);
+            });
+
+            it('should append component to body', () => {
+                component.appendToBody = true;
+                hostComponent.show = false;
+                hostFixture.detectChanges();
+                hostComponent.show = true;
+                hostFixture.detectChanges();
+                de = hostDe.query(By.css('dot-dialog'));
+
+                expect(de.nativeElement.parentNode).toBe(document.body);
             });
 
             it('should add CSS class', () => {
