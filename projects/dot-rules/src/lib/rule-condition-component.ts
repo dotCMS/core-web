@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, AfterViewInit, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ServerSideTypeModel } from './services/ServerSideFieldModel';
 import { I18nService } from './services/system/locale/I18n';
 import {
