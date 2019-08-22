@@ -1,5 +1,5 @@
 import { async, ComponentFixture } from '@angular/core/testing';
-import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
+import { DebugElement, Component, Input, Injectable } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import { CheckboxModule, ToolbarModule, ButtonModule } from 'primeng/primeng';
@@ -16,8 +16,18 @@ import { DotRenderedPageState } from '@portlets/dot-edit-page/shared/models/dot-
 import { CommonModule } from '@angular/common';
 import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-toolbar/dot-edit-toolbar.module';
 import { FormsModule } from '@angular/forms';
-import { DotPage, DotPageMode } from '@portlets/dot-edit-page/shared/models';
+import { DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { Observable, of } from 'rxjs';
+import { DotEditPageViewAsControllerModule } from '../dot-edit-page-view-as-controller/dot-edit-page-view-as-controller.module';
+import { DotEditPageStateControllerModule } from '../dot-edit-page-state-controller/dot-edit-page-state-controller.module';
+import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
+import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
+import { SiteService, LoginService } from 'dotcms-js';
+import { SiteServiceMock } from '@tests/site-service.mock';
+import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
+import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
+import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
+import { LoginServiceMock } from '@tests/login-service.mock';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -36,45 +46,6 @@ class MockDotLicenseService {
     }
 }
 
-@Component({
-    selector: 'dot-global-message',
-    template: ''
-})
-class MockGlobalMessageComponent {}
-
-@Component({
-    selector: 'dot-edit-page-state-controller',
-    template: ''
-})
-class MockDotEditPageStateControllerComponent {
-    @Input() pageState: DotRenderedPageState;
-}
-
-@Component({
-    selector: 'dot-edit-page-workflows-actions',
-    template: ''
-})
-class MockDotEditPageWorkflowActionComponent {
-    @Input() page: DotPage;
-    @Output() fired = new EventEmitter<Boolean>();
-}
-
-@Component({
-    selector: 'dot-edit-page-view-as-controller',
-    template: ''
-})
-class MockDotEditPageViewAsControllerComponent {
-    @Input() pageState: DotRenderedPageState;
-}
-
-@Component({
-    selector: 'dot-edit-page-info',
-    template: ''
-})
-class MockDotEditPageInfoComponent {
-    @Input() pageState: DotRenderedPageState;
-}
-
 describe('DotEditPageToolbarComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
@@ -85,22 +56,19 @@ describe('DotEditPageToolbarComponent', () => {
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
-            declarations: [
-                TestHostComponent,
-                DotEditPageToolbarComponent,
-                MockGlobalMessageComponent,
-                MockDotEditPageInfoComponent,
-                MockDotEditPageWorkflowActionComponent,
-                MockDotEditPageStateControllerComponent,
-                MockDotEditPageViewAsControllerComponent
-            ],
+            declarations: [TestHostComponent, DotEditPageToolbarComponent],
             imports: [
                 ButtonModule,
                 CommonModule,
                 CheckboxModule,
                 DotEditToolbarModule,
                 FormsModule,
-                ToolbarModule
+                ToolbarModule,
+                DotEditPageViewAsControllerModule,
+                DotEditPageStateControllerModule,
+                DotGlobalMessageModule,
+                DotEditPageInfoModule,
+                DotEditPageWorkflowsActionsModule
             ],
             providers: [
                 { provide: DotLicenseService, useClass: MockDotLicenseService },
@@ -114,6 +82,18 @@ describe('DotEditPageToolbarComponent', () => {
                 {
                     provide: DotPageStateService,
                     useValue: {}
+                },
+                {
+                    provide: SiteService,
+                    useClass: SiteServiceMock
+                },
+                {
+                    provide: DotWorkflowService,
+                    useClass: DotWorkflowServiceMock
+                },
+                {
+                    provide: LoginService,
+                    useClass: LoginServiceMock
                 }
             ]
         });
@@ -200,7 +180,9 @@ describe('DotEditPageToolbarComponent', () => {
         it('should have pageState attr', () => {
             fixtureHost.detectChanges();
             const dotEditWorkflowActions = de.query(By.css('dot-edit-page-workflows-actions'));
-            expect(dotEditWorkflowActions.componentInstance.page).toBe(mockDotRenderedPageState.page);
+            expect(dotEditWorkflowActions.componentInstance.page).toBe(
+                mockDotRenderedPageState.page
+            );
         });
 
         it('should emit on click', () => {
