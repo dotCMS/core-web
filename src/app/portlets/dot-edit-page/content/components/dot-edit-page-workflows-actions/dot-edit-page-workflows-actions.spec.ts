@@ -101,7 +101,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         dotWorkflowActionsFireService = workflowActionDebugEl.injector.get(DotWorkflowActionsFireService);
         dotWorkflowsActionsService = workflowActionDebugEl.injector.get(DotWorkflowsActionsService);
-        spyOn(dotWorkflowActionsFireService, 'toContentlet').and.callThrough();
+        spyOn(dotWorkflowActionsFireService, 'fireTo').and.callThrough();
     });
 
     describe('button', () => {
@@ -155,19 +155,19 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
                 it('should fire actions on click in the menu items', () => {
                     firstButton.click();
-                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.fireTo).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[0].id
                     );
 
                     secondButton.click();
-                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.fireTo).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[1].id
                     );
 
                     thirdButton.click();
-                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.fireTo).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[2].id
                     );

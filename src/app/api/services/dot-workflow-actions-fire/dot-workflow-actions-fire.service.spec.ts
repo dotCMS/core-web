@@ -14,7 +14,7 @@ fdescribe('DotWorkflowActionsFireService', () => {
 
     it('should create and return a new Content', () => {
         let result;
-        this.dotWorkflowActionsFireService.new('persona', { name: 'Test' }).subscribe(res => {
+        this.dotWorkflowActionsFireService.newContentlet('persona', { name: 'Test' }).subscribe(res => {
             result = res;
         });
 
@@ -43,7 +43,7 @@ fdescribe('DotWorkflowActionsFireService', () => {
 
     it('should create and return a new Content', () => {
         let result;
-        this.dotWorkflowActionsFireService.toContentlet('123', 'new').subscribe(res => {
+        this.dotWorkflowActionsFireService.fireTo('123', 'new').subscribe(res => {
             result = res;
         });
 

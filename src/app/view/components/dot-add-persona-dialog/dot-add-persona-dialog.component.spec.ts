@@ -8,32 +8,40 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
 import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
-import { Component, DebugElement, EventEmitter, Output } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { LoginService } from 'dotcms-js';
+import { LoginService, SiteService } from 'dotcms-js';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { mockDotPersona } from '@tests/dot-persona.mock';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { DotCreatePersonaFormComponent } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.component';
+import { NgControl } from '@angular/forms';
+import { FileUploadModule } from 'primeng/primeng';
+import { SiteServiceMock } from '@tests/site-service.mock';
+import { mockResponseView } from '@tests/response-view.mock';
 
 @Component({
-    selector: 'dot-create-persona-form',
+    selector: 'dot-field-validation-message',
     template: ''
 })
-class MockDotCreatePersonaFormComponent {
-    @Output() isValid = new EventEmitter<boolean>();
-    resetForm = jasmine.createSpy('resetForm');
-    form = {
-        valid: true,
-        getRawValue: () => {
-            return {
-                test: 'test'
-            };
-        }
-    };
+class TestFieldValidationMessageComponent {
+    @Input() field: NgControl;
+    @Input() message: string;
 }
 
-fdescribe('DotAddPersonaDialogComponent', () => {
+@Component({
+    selector: 'dot-site-selector',
+    template: ''
+})
+class MockSiteSelectorComponent {
+    @Input() archive = false;
+    @Input() id = '';
+    @Input() live = true;
+    @Input() system = true;
+}
+
+describe('DotAddPersonaDialogComponent', () => {
     let component: DotAddPersonaDialogComponent;
     let fixture: ComponentFixture<DotAddPersonaDialogComponent>;
     let dotDialog: DebugElement;
@@ -44,14 +52,22 @@ fdescribe('DotAddPersonaDialogComponent', () => {
     });
 
     beforeEach(() => {
+        const siteServiceMock = new SiteServiceMock();
+
         DOTTestBed.configureTestingModule({
-            declarations: [DotAddPersonaDialogComponent, MockDotCreatePersonaFormComponent],
-            imports: [BrowserAnimationsModule, DotDialogModule],
+            declarations: [
+                DotAddPersonaDialogComponent,
+                DotCreatePersonaFormComponent,
+                TestFieldValidationMessageComponent,
+                MockSiteSelectorComponent
+            ],
+            imports: [BrowserAnimationsModule, DotDialogModule, FileUploadModule],
             providers: [
                 DotWorkflowActionsFireService,
                 DotHttpErrorManagerService,
                 { provide: DotMessageService, useValue: messageServiceMock },
-                { provide: LoginService, useClass: LoginServiceMock }
+                { provide: LoginService, useClass: LoginServiceMock },
+                { provide: SiteService, useValue: siteServiceMock }
             ]
         });
 
@@ -95,6 +111,7 @@ fdescribe('DotAddPersonaDialogComponent', () => {
         });
 
         it('should reset persona form, disable accept button and set visible to false on closeDialog', () => {
+            spyOn(component.personaForm, 'resetForm');
             component.closeDialog();
 
             expect(component.personaForm.resetForm).toHaveBeenCalled();
@@ -108,22 +125,40 @@ fdescribe('DotAddPersonaDialogComponent', () => {
             expect(component.closeDialog).toHaveBeenCalled();
         });
 
-        it('should emit the new persona and close dialog if form is valid', () => {
-            spyOn(component, 'closeDialog');
-            spyOn(component.createdPersona, 'emit');
-            spyOn(component.dotWorkflowActionsFireService, 'new').and.returnValue(
-                observableOf(mockDotPersona)
-            );
+        describe('call to dotWorkflowActionsFireService endpoint', () => {
+            let dotHttpErrorManagerService: DotHttpErrorManagerService;
+            let de: DebugElement;
 
-            component.savePersona();
-            expect(component.createdPersona.emit).toHaveBeenCalledWith(mockDotPersona);
-            expect(component.closeDialog).toHaveBeenCalled();
+            beforeEach(() => {
+                de = fixture.debugElement;
+                dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
+                spyOn(component.createdPersona, 'emit');
+                spyOnProperty(component.personaForm.form, 'valid').and.returnValue(true);
+            });
+
+            it('should emit the new persona and close dialog if form is valid', () => {
+                spyOn(component, 'closeDialog');
+                spyOn(component.dotWorkflowActionsFireService, 'newContentlet').and.returnValue(
+                    observableOf(mockDotPersona)
+                );
+
+                component.savePersona();
+                expect(component.createdPersona.emit).toHaveBeenCalledWith(mockDotPersona);
+                expect(component.closeDialog).toHaveBeenCalled();
+            });
+
+            it('should call dotHttpErrorManagerService if endpoint fails', () => {
+                const fake500Response = mockResponseView(500);
+                spyOn(dotHttpErrorManagerService, 'handle');
+
+                spyOn(component.dotWorkflowActionsFireService, 'newContentlet').and.returnValue(
+                    observableThrowError(fake500Response)
+                );
+
+                component.savePersona();
+                expect(component.createdPersona.emit).not.toHaveBeenCalled();
+                expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(fake500Response);
+            });
         });
-
-        xit('should call dotHttpErrorManagerService if endpoint fails', () => {
-            expect(component).toBeTruthy();
-        });
-
-
     });
 });

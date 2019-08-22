@@ -51,7 +51,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
     savePersona(): void {
         if (this.personaForm.form.valid) {
             this.dotWorkflowActionsFireService
-                .new<DotPersona>(PERSONA_CONTENT_TYPE, this.personaForm.form.getRawValue())
+                .newContentlet<DotPersona>(PERSONA_CONTENT_TYPE, this.personaForm.form.getRawValue())
                 .pipe(take(1))
                 .subscribe(
                     (persona: DotPersona) => {

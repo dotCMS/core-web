@@ -70,7 +70,7 @@ export class DotEditPageWorkflowsActionsComponent implements OnInit, OnChanges {
                 command: () => {
                     const currentMenuActions = this.actions;
                     this.actions = this.dotWorkflowActionsFireService
-                        .toContentlet(this.page.workingInode, workflow.id)
+                        .fireTo(this.page.workingInode, workflow.id)
                         .pipe(
                             pluck('inode'),
                             tap(() => {

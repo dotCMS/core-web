@@ -16,7 +16,7 @@ export class DotWorkflowActionsFireService {
      * @returns Observable<any> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
-    toContentlet(inode: string, actionId: string): Observable<any> {
+    fireTo(inode: string, actionId: string): Observable<any> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
@@ -34,7 +34,7 @@ export class DotWorkflowActionsFireService {
      *
      * @memberof DotWorkflowActionsFireService
      */
-    new<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
+    newContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
