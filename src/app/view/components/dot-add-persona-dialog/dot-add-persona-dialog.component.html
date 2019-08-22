@@ -3,5 +3,5 @@
             [visible]="visible"
             [actions]="dialogActions"
             (hide)="closeDialog()">
-    <dot-create-persona-form #personaForm (value)="formValueHandler($event)" ></dot-create-persona-form>
+    <dot-create-persona-form #personaForm (isValid)="handlerFormValidState($event)" ></dot-create-persona-form>
 </dot-dialog>

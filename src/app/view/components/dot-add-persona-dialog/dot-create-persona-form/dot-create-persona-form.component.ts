@@ -14,7 +14,7 @@ import { DotCMSTempFile } from 'dotcms-models';
     styleUrls: ['./dot-create-persona-form.component.scss']
 })
 export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
-    @Output() value: EventEmitter<FormGroup> = new EventEmitter();
+    @Output() isValid: EventEmitter<Boolean> = new EventEmitter();
 
     form: FormGroup;
     imageName: string;
@@ -111,7 +111,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     private initPersonaForm(): void {
         this.resetForm();
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.value.emit(this.form);
+            this.isValid.emit(this.form.valid);
         });
     }
 }

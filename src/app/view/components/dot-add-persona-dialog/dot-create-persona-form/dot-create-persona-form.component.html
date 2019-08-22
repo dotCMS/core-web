@@ -1,11 +1,11 @@
 <form [formGroup]="form" >
     <div class="form__group">
-        <label  class="form__label">{{messagesKey['modes.persona.host']}}: </label>
-        <dot-site-selector  (change)="siteChange($event)"></dot-site-selector>
+        <label class="form__label">{{messagesKey['modes.persona.host']}}: </label>
+        <dot-site-selector (change)="siteChange($event)"></dot-site-selector>
     </div>
 
     <div class="form__group">
-        <label for="persona-name" class="form__label">{{messagesKey['modes.persona.name']}}: </label>
+        <label for="persona-name" class="form__label">{{messagesKey['modes.persona.name']}}:</label>
         <input id="persona-name" dotAutofocus type="text" (change)="setKeyTag()" formControlName="name" name="name" pInputText />
         <dot-field-validation-message
             [message]="messagesKey['modes.persona.name.error.required']"
@@ -14,18 +14,17 @@
     </div>
 
     <div class="form__group">
-        <label for="persona-keytag" class="form__label">{{messagesKey['modes.persona.key.tag']}}: </label>
-        <input id="persona-keytag" type="text" formControlName="keyTag" name="keyTag" pInputText />
+        <label for="persona-keyTag" class="form__label">{{messagesKey['modes.persona.key.tag']}}:</label>
+        <input id="persona-keyTag" type="text" formControlName="keyTag" name="keyTag" pInputText />
     </div>
 
     <div class="form__group">
-        <label for="persona-image" class="form__label">{{messagesKey['modes.persona.upload.file']}}: </label>
+        <label for="persona-image" class="form__label">{{messagesKey['modes.persona.upload.file']}}:</label>
         <p-fileUpload  *ngIf="!imageName"
                        id="persona-image"
                        [chooseLabel]="messagesKey['dot.common.choose']"
                        url="/api/v1/temp"
                        accept="image/*"
-                       maxFileSize="10000000"
                        (onUpload)="onFileUpload($event)"
                        auto="true"
                        mode="basic">

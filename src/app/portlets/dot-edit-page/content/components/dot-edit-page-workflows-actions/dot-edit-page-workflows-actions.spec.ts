@@ -24,6 +24,7 @@ import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
+import {DotWorkflowActionsFireService} from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -42,7 +43,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let de: DebugElement;
     let testbed;
     let button: DebugElement;
-    let dotWorkflowService: DotWorkflowService;
+    let dotWorkflowActionsFireService : DotWorkflowActionsFireService;
     let workflowActionDebugEl: DebugElement;
     let workflowActionComponent: DotEditPageWorkflowsActionsComponent;
     let dotGlobalMessageService: DotGlobalMessageService;
@@ -98,9 +99,9 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         button = workflowActionDebugEl.query(By.css('button'));
 
-        dotWorkflowService = workflowActionDebugEl.injector.get(DotWorkflowService);
+        dotWorkflowActionsFireService = workflowActionDebugEl.injector.get(DotWorkflowActionsFireService);
         dotWorkflowsActionsService = workflowActionDebugEl.injector.get(DotWorkflowsActionsService);
-        spyOn(dotWorkflowService, 'fireWorkflowAction').and.callThrough();
+        spyOn(dotWorkflowActionsFireService, 'toContentlet').and.callThrough();
     });
 
     describe('button', () => {
@@ -154,19 +155,19 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
                 it('should fire actions on click in the menu items', () => {
                     firstButton.click();
-                    expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[0].id
                     );
 
                     secondButton.click();
-                    expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[1].id
                     );
 
                     thirdButton.click();
-                    expect(dotWorkflowService.fireWorkflowAction).toHaveBeenCalledWith(
+                    expect(dotWorkflowActionsFireService.toContentlet).toHaveBeenCalledWith(
                         component.page.workingInode,
                         mockWorkflowsActions[2].id
                     );

@@ -9,9 +9,10 @@ export class DotWorkflowActionsFireService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Updates the workflow actions for a page asset
+     * Fire a workflow action over a contentlet
      *
-     * @param string inode
+     * @param {string} inode
+     * @param {string} actionId
      * @returns Observable<any> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
@@ -25,11 +26,11 @@ export class DotWorkflowActionsFireService {
     }
 
     /**
-     * Create new Content based on teh given Content Type
+     * Fire a "NEW" action over the content type received with the specified data
      *
      * @param {contentType} string
      * @param {[key: string]: any} data
-     * @returns Content
+     * @returns Observable<T>
      *
      * @memberof DotWorkflowActionsFireService
      */
