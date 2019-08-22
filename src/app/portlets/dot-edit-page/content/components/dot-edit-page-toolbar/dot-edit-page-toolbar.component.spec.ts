@@ -25,8 +25,6 @@ import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-ed
 import { SiteService, LoginService } from 'dotcms-js';
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
-import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
-import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
 import { LoginServiceMock } from '@tests/login-service.mock';
 
 @Component({
@@ -86,10 +84,6 @@ describe('DotEditPageToolbarComponent', () => {
                 {
                     provide: SiteService,
                     useClass: SiteServiceMock
-                },
-                {
-                    provide: DotWorkflowService,
-                    useClass: DotWorkflowServiceMock
                 },
                 {
                     provide: LoginService,
