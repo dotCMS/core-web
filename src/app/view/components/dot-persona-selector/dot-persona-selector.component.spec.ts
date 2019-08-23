@@ -43,7 +43,7 @@ class TestPaginatorService {
     }
 }
 
-fdescribe('DotPersonaSelectorComponent', () => {
+describe('DotPersonaSelectorComponent', () => {
     let component: DotPersonaSelectorComponent;
     let hostFixture: ComponentFixture<HostTestComponent>;
     let de: DebugElement;
