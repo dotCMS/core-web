@@ -64,7 +64,9 @@ describe('DotCreatePersonaFormComponent', () => {
     });
 
     it('should load labels correctly', () => {
-        const hostLabel: DebugElement = fixture.debugElement.query(By.css('.form__label'));
+        const hostLabel: DebugElement = fixture.debugElement.query(
+            By.css('label[for="content-type-form-host"]')
+        );
         const nameLabel: DebugElement = fixture.debugElement.query(
             By.css('label[for="persona-name"]')
         );
@@ -95,7 +97,9 @@ describe('DotCreatePersonaFormComponent', () => {
     });
 
     it('should update the dot-site-selector-field value when set the form hostFolder value', () => {
-        const siteSelectorField: DebugElement = fixture.debugElement.query(By.css('dot-site-selector-field'));
+        const siteSelectorField: DebugElement = fixture.debugElement.query(
+            By.css('dot-site-selector-field')
+        );
         component.form.get('hostFolder').setValue(mockSites[0].identifier);
         fixture.detectChanges();
         expect(siteSelectorField.componentInstance.value).toEqual(mockSites[0].identifier);
