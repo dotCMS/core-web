@@ -19,7 +19,6 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Input()
     isEditMode = false;
 
-<<<<<<< HEAD
     @Input()
     @HostBinding('class.disabled')
     disabled: boolean;
@@ -27,8 +26,6 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Output()
     selected = new EventEmitter<MouseEvent>();
 
-=======
->>>>>>> origin/master
     messages: { [key: string]: string } = {};
 
     constructor(private dotMessageService: DotMessageService) {}
