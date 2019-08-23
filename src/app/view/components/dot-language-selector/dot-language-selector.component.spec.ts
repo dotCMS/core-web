@@ -29,7 +29,7 @@ class TestHostComponent {
     contentInode = '123';
 }
 
-fdescribe('DotLanguageSelectorComponent', () => {
+describe('DotLanguageSelectorComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     // let componentHost: TestHostComponent;
     let deHost: DebugElement;
