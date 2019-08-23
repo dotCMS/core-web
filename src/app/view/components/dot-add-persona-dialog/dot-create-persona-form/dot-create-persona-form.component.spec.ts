@@ -16,9 +16,9 @@ import { SiteService } from 'dotcms-js';
 
 const FROM_INITIAL_VALUE = {
     hostFolder: mockSites[0].identifier,
-    keyTag: '',
-    name: '',
-    photo: ''
+    keyTag: null,
+    name: null,
+    photo: null
 };
 
 const mockFileUploadResponse = {

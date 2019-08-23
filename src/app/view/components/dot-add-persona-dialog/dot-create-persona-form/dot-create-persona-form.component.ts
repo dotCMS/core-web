@@ -90,16 +90,18 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
      */
     resetForm(): void {
         this.imageName = null;
-        this.form = this.fb.group({
-            hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
-            keyTag: [{ value: '', disabled: true }, [Validators.required]],
-            name: ['', [Validators.required]],
-            photo: ''
-        });
+        this.form.reset();
+        this.form.get('hostFolder').setValue(this.siteService.currentSite.identifier);
+        console.log(this.form.getRawValue());
     }
 
     private initPersonaForm(): void {
-        this.resetForm();
+        this.form = this.fb.group({
+            hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
+            keyTag: [{ value: null, disabled: true }, [Validators.required]],
+            name: [null, [Validators.required]],
+            photo: null
+        });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.isValid.emit(this.form.valid);
         });
