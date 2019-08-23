@@ -31,7 +31,12 @@ import { DotTheme } from '@portlets/dot-edit-page/shared/models/dot-theme.model'
 import { DotEditLayoutService } from '@portlets/dot-edit-page/shared/services/dot-edit-layout.service';
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
+<<<<<<< HEAD
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
+=======
+import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-toolbar/dot-edit-toolbar.module';
+import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
+>>>>>>> origin/master
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',
@@ -100,6 +105,8 @@ const testConfigObject = {
         DotActionButtonModule,
         DotEditLayoutGridModule,
         DotEditPageInfoModule,
+        DotEditToolbarModule,
+        DotGlobalMessageModule,
         DotFieldValidationMessageModule,
         FormsModule,
         RouterTestingModule,
@@ -143,6 +150,20 @@ describe('DotEditLayoutDesignerComponent', () => {
                 })
             );
             fixture.detectChanges();
+        });
+
+        it('should have dot-edit-toolbar with right content', () => {
+            const dotEditToolbar = fixture.debugElement.query(By.css('dot-edit-toolbar'));
+            const dotEditPageInfo = fixture.debugElement.query(By.css('dot-edit-toolbar .main-toolbar-left dot-edit-page-info'));
+            const dotTemplateActions = fixture.debugElement.query(By.css('dot-edit-toolbar .main-toolbar-right form'));
+            const dotLayoutActions = fixture.debugElement.query(
+                By.css('dot-edit-toolbar .secondary-toolbar-right .dot-edit-layout__toolbar-action-themes')
+            );
+
+            expect(dotEditToolbar).not.toBeNull();
+            expect(dotEditPageInfo).not.toBeNull();
+            expect(dotTemplateActions).not.toBeNull();
+            expect(dotLayoutActions).not.toBeNull();
         });
 
         it('should show dot-edit-page-info', () => {
@@ -492,7 +513,7 @@ describe('DotEditLayoutDesignerComponent', () => {
         });
 
         describe('not show', () => {
-            it('when user can\'t edit the template and set layout mode', () => {
+           it('when user can\'t edit the template and set layout mode', () => {
                 component.pageState = new DotPageRenderState(mockUser, 
                     new DotPageRender({
                         ...mockDotRenderedPage,
@@ -502,6 +523,7 @@ describe('DotEditLayoutDesignerComponent', () => {
                         }
                     })
                 );
+
                 fixture.detectChanges();
                 expect(dotDialogService.alert).not.toHaveBeenCalled();
                 expect(component.setEditLayoutMode).toHaveBeenCalled();

@@ -17,7 +17,7 @@ export class DotToolbarNotificationsComponent implements OnInit {
     @ViewChild(DotDropdownComponent)
     dropdown: DotDropdownComponent;
     existsMoreToLoad = false;
-    notifications: Array<INotification> = [];
+    notifications: INotification[] = [];
     notificationsUnreadCount = 0;
 
     i18nMessages: {
@@ -127,10 +127,12 @@ export class DotToolbarNotificationsComponent implements OnInit {
     }
 
     private subscribeToNotifications(): void {
-        this.dotcmsEventsService.subscribeTo('NOTIFICATION').subscribe((res) => {
-            this.notifications.unshift(<INotification> res.data);
-            this.notificationsUnreadCount++;
-            this.isNotificationsMarkedAsRead = false;
-        });
+        this.dotcmsEventsService
+            .subscribeTo<INotification>('NOTIFICATION')
+            .subscribe((data: INotification) => {
+                this.notifications.unshift(data);
+                this.notificationsUnreadCount++;
+                this.isNotificationsMarkedAsRead = false;
+            });
     }
 }

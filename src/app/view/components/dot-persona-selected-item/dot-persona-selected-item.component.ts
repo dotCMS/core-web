@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, Input, Output, EventEmitter, HostListener, OnInit, HostBinding } from '@angular/core';
+=======
+import { Component, Input, OnInit } from '@angular/core';
+>>>>>>> origin/master
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
@@ -15,6 +19,7 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Input()
     isEditMode = false;
 
+<<<<<<< HEAD
     @Input()
     @HostBinding('class.disabled')
     disabled: boolean;
@@ -22,6 +27,8 @@ export class DotPersonaSelectedItemComponent implements OnInit {
     @Output()
     selected = new EventEmitter<MouseEvent>();
 
+=======
+>>>>>>> origin/master
     messages: { [key: string]: string } = {};
 
     constructor(private dotMessageService: DotMessageService) {}
@@ -38,10 +45,5 @@ export class DotPersonaSelectedItemComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
             });
-    }
-
-    @HostListener('click', ['$event'])
-    onClick($event: MouseEvent) {
-        this.selected.emit($event);
     }
 }
