@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Component, Input, Output, EventEmitter, HostListener, OnInit, HostBinding } from '@angular/core';
-=======
-import { Component, Input, OnInit } from '@angular/core';
->>>>>>> origin/master
+import { Component, Input, Output, EventEmitter, OnInit, HostBinding } from '@angular/core';
 import { DotPersona } from '@models/dot-persona/dot-persona.model';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
