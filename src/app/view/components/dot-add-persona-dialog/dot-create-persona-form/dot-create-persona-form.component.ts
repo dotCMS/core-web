@@ -92,7 +92,6 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
         this.imageName = null;
         this.form.reset();
         this.form.get('hostFolder').setValue(this.siteService.currentSite.identifier);
-        console.log(this.form.getRawValue());
     }
 
     private initPersonaForm(): void {
