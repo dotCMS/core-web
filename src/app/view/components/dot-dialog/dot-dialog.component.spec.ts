@@ -31,6 +31,7 @@ const dispatchKeydownEvent = (key: string) => {
             [header]="header"
             [(visible)]="show"
             [closeable]="closeable"
+            [appendToBody]="appendToBody"
             [hideButtons]="hideButtons">
             <b>Dialog content</b>
         </dot-dialog>
@@ -43,6 +44,7 @@ class TestHostComponent {
     closeable = false;
     actions: DotDialogActions;
     hideButtons =  false;
+    appendToBody = false;
 }
 
 @Component({
@@ -180,12 +182,11 @@ describe('DotDialogComponent', () => {
             });
 
             it('should append component to body', () => {
-                component.appendToBody = true;
                 hostComponent.show = false;
+                hostComponent.appendToBody = true;
                 hostFixture.detectChanges();
                 hostComponent.show = true;
                 hostFixture.detectChanges();
-                de = hostDe.query(By.css('dot-dialog'));
 
                 expect(de.nativeElement.parentNode).toBe(document.body);
             });

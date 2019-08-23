@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Site, SiteService } from 'dotcms-js';
 import { take, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -7,6 +6,7 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { DotFileUpload } from '@models/dot-file-upload/dot-file-upload.model';
 import { DotCMSTempFile } from 'dotcms-models';
+import { SiteService } from 'dotcms-js';
 
 @Component({
     selector: 'dot-create-persona-form',
@@ -75,16 +75,6 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Update the site identifier in the form.
-     *
-     * @param {Site} site
-     * @memberof DotCreatePersonaFormComponent
-     */
-    siteChange(site: Site) {
-        this.form.get('hostFolder').setValue(site.identifier);
-    }
-
-    /**
      * Set the key tag attribute with camelCase standard based on the name.
      *
      * @memberof DotCreatePersonaFormComponent
@@ -104,7 +94,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
             keyTag: [{ value: '', disabled: true }, [Validators.required]],
             name: ['', [Validators.required]],
-            photo: ['', [Validators.required]]
+            photo: ''
         });
     }
 

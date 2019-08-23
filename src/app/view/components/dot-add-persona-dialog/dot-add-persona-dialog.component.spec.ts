@@ -15,11 +15,12 @@ import { LoginService, SiteService } from 'dotcms-js';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 import { of as observableOf, throwError as observableThrowError } from 'rxjs';
-import { DotCreatePersonaFormComponent } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.component';
 import { NgControl } from '@angular/forms';
 import { FileUploadModule } from 'primeng/primeng';
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { mockResponseView } from '@tests/response-view.mock';
+import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
+import { DotCreatePersonaFormModule } from '@components/dot-add-persona-dialog/dot-create-persona-form/dot-create-persona-form.module';
 
 @Component({
     selector: 'dot-field-validation-message',
@@ -28,17 +29,6 @@ import { mockResponseView } from '@tests/response-view.mock';
 class TestFieldValidationMessageComponent {
     @Input() field: NgControl;
     @Input() message: string;
-}
-
-@Component({
-    selector: 'dot-site-selector',
-    template: ''
-})
-class MockSiteSelectorComponent {
-    @Input() archive = false;
-    @Input() id = '';
-    @Input() live = true;
-    @Input() system = true;
 }
 
 describe('DotAddPersonaDialogComponent', () => {
@@ -55,13 +45,14 @@ describe('DotAddPersonaDialogComponent', () => {
         const siteServiceMock = new SiteServiceMock();
 
         DOTTestBed.configureTestingModule({
-            declarations: [
-                DotAddPersonaDialogComponent,
-                DotCreatePersonaFormComponent,
-                TestFieldValidationMessageComponent,
-                MockSiteSelectorComponent
+            declarations: [DotAddPersonaDialogComponent, TestFieldValidationMessageComponent],
+            imports: [
+                BrowserAnimationsModule,
+                DotDialogModule,
+                FileUploadModule,
+                SiteSelectorFieldModule,
+                DotCreatePersonaFormModule
             ],
-            imports: [BrowserAnimationsModule, DotDialogModule, FileUploadModule],
             providers: [
                 DotWorkflowActionsFireService,
                 DotHttpErrorManagerService,
@@ -105,10 +96,8 @@ describe('DotAddPersonaDialogComponent', () => {
         });
 
         it('should handle disable state of the accept button when form value change', () => {
-            spyOn(component, 'handlerFormValidState');
             component.personaForm.isValid.emit(true);
-
-            expect(component.handlerFormValidState).toHaveBeenCalledWith(true);
+            expect(component.dialogActions.accept.disabled).toBe(false);
         });
 
         it('should reset persona form, disable accept button and set visible to false on closeDialog', () => {
@@ -150,7 +139,7 @@ describe('DotAddPersonaDialogComponent', () => {
 
             it('should call dotHttpErrorManagerService if endpoint fails', () => {
                 const fake500Response = mockResponseView(500);
-                spyOn(dotHttpErrorManagerService, 'handle');
+                spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
                 spyOn(component.dotWorkflowActionsFireService, 'newContentlet').and.returnValue(
                     observableThrowError(fake500Response)

@@ -5,14 +5,14 @@ import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-messages-service';
 import { mockSites, SiteServiceMock } from '@tests/site-service.mock';
-import { SiteService } from 'dotcms-js';
 import { By } from '@angular/platform-browser';
 import { FileUploadModule } from 'primeng/primeng';
-import { DotSiteSelectorModule } from '@components/_common/dot-site-selector/dot-site-selector.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder } from '@angular/forms';
+import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
+import { SiteService } from 'dotcms-js';
 
 const FROM_INITIAL_VALUE = {
     hostFolder: mockSites[0].identifier,
@@ -47,7 +47,7 @@ describe('DotCreatePersonaFormComponent', () => {
             imports: [
                 BrowserAnimationsModule,
                 FileUploadModule,
-                DotSiteSelectorModule,
+                SiteSelectorFieldModule,
                 DotFieldValidationMessageModule,
                 DotAutofocusModule
             ],
@@ -78,10 +78,10 @@ describe('DotCreatePersonaFormComponent', () => {
             By.css('dot-field-validation-message')
         );
         const fileUpload: DebugElement = fixture.debugElement.query(By.css('p-fileUpload'));
-        expect(hostLabel.nativeElement.innerText).toEqual('Host:');
-        expect(nameLabel.nativeElement.innerText).toEqual('Name:');
-        expect(keyTagLabel.nativeElement.innerText).toEqual('Key Tag:');
-        expect(imageLabel.nativeElement.innerText).toEqual('Upload File:');
+        expect(hostLabel.nativeElement.innerText).toEqual('Host');
+        expect(nameLabel.nativeElement.innerText).toEqual('Name');
+        expect(keyTagLabel.nativeElement.innerText).toEqual('Key Tag');
+        expect(imageLabel.nativeElement.innerText).toEqual('Upload File');
         expect(validationMessage.componentInstance.message).toEqual('Name is required');
         expect(fileUpload.componentInstance.chooseLabel).toEqual('Choose');
     });
@@ -94,14 +94,14 @@ describe('DotCreatePersonaFormComponent', () => {
         expect(component.form.getRawValue()).toEqual(FROM_INITIAL_VALUE);
     });
 
-    it('should update the form hostFolder on site selector change', () => {
-        const siteSelector: DebugElement = fixture.debugElement.query(By.css('dot-site-selector'));
-        siteSelector.triggerEventHandler('change', mockSites[1]);
+    it('should update the dot-site-selector-field value when set the form hostFolder value', () => {
+        const siteSelectorField: DebugElement = fixture.debugElement.query(By.css('dot-site-selector-field'));
+        component.form.get('hostFolder').setValue(mockSites[0].identifier);
         fixture.detectChanges();
-        expect(component.form.get('hostFolder').value).toEqual(mockSites[1].identifier);
+        expect(siteSelectorField.componentInstance.value).toEqual(mockSites[0].identifier);
     });
 
-    it('should update form name when enter name', () => {
+    it('should update input name when set form name', () => {
         const nameInput: DebugElement = fixture.debugElement.query(By.css('#persona-name'));
         component.form.get('name').setValue('John');
         fixture.detectChanges();
@@ -124,6 +124,14 @@ describe('DotCreatePersonaFormComponent', () => {
         expect(fileUpload.componentInstance.accept).toEqual('image/*');
         expect(fileUpload.componentInstance.auto).toEqual('true');
         expect(fileUpload.componentInstance.mode).toEqual('basic');
+    });
+
+    it('should emit isValid to false when the file upload starts', () => {
+        const fileUpload: DebugElement = fixture.debugElement.query(By.css('p-fileUpload'));
+        spyOn(component.isValid, 'emit');
+        fileUpload.triggerEventHandler('onBeforeUpload', {});
+        fixture.detectChanges();
+        expect(component.isValid.emit).toHaveBeenCalledWith(false);
     });
 
     it('should set the photo id and imageName after image upload', () => {
@@ -159,14 +167,14 @@ describe('DotCreatePersonaFormComponent', () => {
 
     it('should emit if form is invalid after changes', () => {
         spyOn(component.isValid, 'emit');
-        component.form.get('name').setValue('John');
+        component.form.get('photo').setValue('test');
         expect(component.isValid.emit).toHaveBeenCalledWith(false);
     });
 
-    it('should reset from to initial value', () => {
-        component.form.get('name').setValue('John');
-        component.form.get('hostFolder').setValue('test');
+    it('should reset from to initial value and clear imageName', () => {
+        component.form.reset();
         component.resetForm();
         expect(component.form.getRawValue()).toEqual(FROM_INITIAL_VALUE);
+        expect(component.imageName).toEqual(null);
     });
 });

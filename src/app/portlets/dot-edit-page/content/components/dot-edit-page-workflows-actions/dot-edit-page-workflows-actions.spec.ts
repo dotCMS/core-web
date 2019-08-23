@@ -8,7 +8,6 @@ import { of } from 'rxjs';
 import { MenuModule, Menu } from 'primeng/primeng';
 import { LoginService } from 'dotcms-js';
 
-
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
 import { LoginServiceMock } from '@tests/login-service.mock';
@@ -24,7 +23,7 @@ import { DotPage } from '@portlets/dot-edit-page/shared/models/dot-page.model';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotWorkflowsActionsService } from '@services/dot-workflows-actions/dot-workflows-actions.service';
-import {DotWorkflowActionsFireService} from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
+import { DotWorkflowActionsFireService } from '@services/dot-workflow-actions-fire/dot-workflow-actions-fire.service';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -33,8 +32,7 @@ import {DotWorkflowActionsFireService} from '@services/dot-workflow-actions-fire
     `
 })
 class TestHostComponent {
-    @Input()
-    page: DotPage;
+    @Input() page: DotPage;
 }
 
 describe('DotEditPageWorkflowsActionsComponent', () => {
@@ -43,7 +41,7 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
     let de: DebugElement;
     let testbed;
     let button: DebugElement;
-    let dotWorkflowActionsFireService : DotWorkflowActionsFireService;
+    let dotWorkflowActionsFireService: DotWorkflowActionsFireService;
     let workflowActionDebugEl: DebugElement;
     let workflowActionComponent: DotEditPageWorkflowsActionsComponent;
     let dotGlobalMessageService: DotGlobalMessageService;
@@ -52,36 +50,39 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
         'editpage.actions.fire.confirmation': 'The action "{0}" was executed correctly'
     });
 
-    beforeEach(async(() => {
-        testbed = DOTTestBed.configureTestingModule({
-            imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
-            declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
-            providers: [
-                {
-                    provide: DotWorkflowService,
-                    useClass: DotWorkflowServiceMock
-                },
-                {
-                    provide: DotMessageService,
-                    useValue: messageServiceMock
-                },
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                },
-                {
-                    provide: DotWorkflowsActionsService,
-                    useValue: {
-                        getByInode() {
-                            return of(mockWorkflowsActions);
+    beforeEach(
+        async(() => {
+            testbed = DOTTestBed.configureTestingModule({
+                imports: [RouterTestingModule, BrowserAnimationsModule, MenuModule],
+                declarations: [DotEditPageWorkflowsActionsComponent, TestHostComponent],
+                providers: [
+                    {
+                        provide: DotWorkflowService,
+                        useClass: DotWorkflowServiceMock
+                    },
+                    {
+                        provide: DotMessageService,
+                        useValue: messageServiceMock
+                    },
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    {
+                        provide: DotWorkflowsActionsService,
+                        useValue: {
+                            getByInode() {
+                                return of(mockWorkflowsActions);
+                            }
                         }
-                    }
-                },
-                DotHttpErrorManagerService,
-                DotRouterService
-            ]
-        });
-    }));
+                    },
+                    DotHttpErrorManagerService,
+                    DotRouterService,
+                    DotWorkflowActionsFireService
+                ]
+            });
+        })
+    );
 
     beforeEach(() => {
         fixture = testbed.createComponent(TestHostComponent);
@@ -99,7 +100,9 @@ describe('DotEditPageWorkflowsActionsComponent', () => {
 
         button = workflowActionDebugEl.query(By.css('button'));
 
-        dotWorkflowActionsFireService = workflowActionDebugEl.injector.get(DotWorkflowActionsFireService);
+        dotWorkflowActionsFireService = workflowActionDebugEl.injector.get(
+            DotWorkflowActionsFireService
+        );
         dotWorkflowsActionsService = workflowActionDebugEl.injector.get(DotWorkflowsActionsService);
         spyOn(dotWorkflowActionsFireService, 'fireTo').and.callThrough();
     });

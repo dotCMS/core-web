@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { RequestMethod } from '@angular/http';
 import { pluck, take } from 'rxjs/operators';
 import { CoreWebService } from 'dotcms-js';
+import { DotCMSContentlet } from 'dotcms-models';
 
 @Injectable()
 export class DotWorkflowActionsFireService {
@@ -16,7 +17,7 @@ export class DotWorkflowActionsFireService {
      * @returns Observable<any> // contentlet
      * @memberof DotWorkflowActionsFireService
      */
-    fireTo(inode: string, actionId: string): Observable<any> {
+    fireTo(inode: string, actionId: string): Observable<DotCMSContentlet> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,

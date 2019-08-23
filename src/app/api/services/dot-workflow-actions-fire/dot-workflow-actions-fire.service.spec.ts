@@ -1,7 +1,7 @@
 import { DotWorkflowActionsFireService } from './dot-workflow-actions-fire.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
 
-import { ConnectionBackend, Response, ResponseOptions } from '@angular/http';
+import { ConnectionBackend, RequestMethod, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
 describe('DotWorkflowActionsFireService', () => {
@@ -14,9 +14,11 @@ describe('DotWorkflowActionsFireService', () => {
 
     it('should create and return a new Content', () => {
         let result;
-        this.dotWorkflowActionsFireService.newContentlet('persona', { name: 'Test' }).subscribe(res => {
-            result = res;
-        });
+        this.dotWorkflowActionsFireService
+            .newContentlet('persona', { name: 'Test' })
+            .subscribe(res => {
+                result = res;
+            });
 
         this.lastConnection.mockRespond(
             new Response(
@@ -39,6 +41,7 @@ describe('DotWorkflowActionsFireService', () => {
         ]);
 
         expect(this.lastConnection.request.url).toContain('v1/workflow/actions/default/fire/NEW');
+        expect(this.lastConnection.request.method).toEqual(RequestMethod.Put);
     });
 
     it('should create and return a new Content', () => {
@@ -68,5 +71,6 @@ describe('DotWorkflowActionsFireService', () => {
         ]);
 
         expect(this.lastConnection.request.url).toContain('v1/workflow/actions/new/fire?inode=123');
+        expect(this.lastConnection.request.method).toEqual(RequestMethod.Put);
     });
 });
