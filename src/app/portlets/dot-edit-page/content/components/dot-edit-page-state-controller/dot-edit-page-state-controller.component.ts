@@ -176,7 +176,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         );
     }
 
-    private isLocked(pageState: DotRenderedPageState): boolean {
+    private isLocked(pageState: DotPageRenderState): boolean {
         return pageState.state.locked && !this.canTakeLock(pageState);
     }
 
@@ -211,7 +211,7 @@ export class DotEditPageStateControllerComponent implements OnInit, OnChanges {
         );
     }
 
-    private shouldWarnLock(pageState: DotRenderedPageState): boolean {
+    private shouldWarnLock(pageState: DotPageRenderState): boolean {
         return pageState.page.canLock && pageState.state.lockedByAnotherUser;
     }
 
