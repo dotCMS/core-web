@@ -9,6 +9,7 @@
 
 | Property          | Attribute          | Description                                                                    | Type                                  | Default                    |
 | ----------------- | ------------------ | ------------------------------------------------------------------------------ | ------------------------------------- | -------------------------- |
+| `autocomplete`    | `autocomplete`     | (optional) Disables autocomplete interaction                                   | `boolean`                             | `true`                     |
 | `data`            | --                 | Function or array of string to get the data to use for the autocomplete search | `() => string[] \| Promise<string[]>` | `null`                     |
 | `debounce`        | `debounce`         | Duraction in ms to start search into the autocomplete                          | `number`                              | `300`                      |
 | `disabled`        | `disabled`         | (optional) Disables field's interaction                                        | `boolean`                             | `false`                    |

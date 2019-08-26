@@ -63,6 +63,33 @@ describe('dot-autocomplete', () => {
             });
         });
 
+        describe('autocomplete', () => {
+            it('should render', async () => {
+                element.setAttribute('autocomplete', true);
+                const input = await getInput();
+                await input.type('res');
+                await page.waitForChanges();
+
+                const ul = await element.find('ul');
+                expect(ul).toBeDefined();
+            });
+
+            it('should not render', async () => {
+                page = await newE2EPage({
+                    html: '<dot-autocomplete autocomplete=false></dot-autocomplete>'
+                });
+
+                element = await page.find('dot-autocomplete');
+                await page.waitForChanges();
+                const input = await getInput();
+                await input.type('res');
+                await page.waitForChanges();
+
+                const ul = await element.find('ul');
+                expect(ul).toBeNull();
+            });
+        });
+
         describe('threshold', () => {
             let input: E2EElement;
 

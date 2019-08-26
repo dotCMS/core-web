@@ -47,6 +47,9 @@ export class DotTagsComponent {
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true }) disabled = false;
 
+    /** (optional) Disables autocomplete interaction */
+    @Prop({ reflectToAttr: true }) autocomplete = true;
+
     /** Min characters to start search in the autocomplete input */
     @Prop({ reflectToAttr: true }) threshold = 0;
 
@@ -95,6 +98,7 @@ export class DotTagsComponent {
                         class="dot-tags__container"
                     >
                         <dot-autocomplete
+                            autocomplete={this.autocomplete}
                             class={getErrorClass(this.status.dotValid)}
                             data={this.data}
                             debounce={this.debounce}

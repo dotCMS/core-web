@@ -212,6 +212,16 @@ describe('dot-tags', () => {
             });
         });
 
+        describe('autocomplete', () => {
+            it('should set it as defined', async () => {
+                element.setProperty('autocomplete', true);
+                await page.waitForChanges();
+
+                const autocomplete = await getAutoComplete();
+                expect(autocomplete.getAttribute('autocomplete')).toBeDefined();
+            });
+        });
+
         describe('required', () => {
             it('should render', async () => {
                 element.setProperty('required', true);

@@ -22,6 +22,9 @@ interface SelectionFeedback {
 export class DotAutocompleteComponent {
     @Element() el: HTMLElement;
 
+    /** (optional) Disables autocomplete interaction */
+    @Prop({ reflectToAttr: true }) autocomplete = true;
+
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true }) disabled = false;
 
@@ -96,7 +99,10 @@ export class DotAutocompleteComponent {
     private handleBlur(event: FocusEvent): void {
         event.preventDefault();
         setTimeout(() => {
-            if (document.activeElement.parentElement !== this.getResultList()) {
+            if (
+                this.autocomplete &&
+                document.activeElement.parentElement !== this.getResultList()
+            ) {
                 this.clean();
                 this.lostFocus.emit(event);
             }
@@ -105,7 +111,9 @@ export class DotAutocompleteComponent {
 
     private clean(): void {
         this.getInputElement().value = '';
-        this.cleanOptions();
+        if (this.autocomplete) {
+            this.cleanOptions();
+        }
     }
 
     private cleanOptions(): void {
@@ -130,39 +138,42 @@ export class DotAutocompleteComponent {
 
     private initAutocomplete(): void {
         this.clearList();
-        // tslint:disable-next-line:no-unused-expression
-        new autoComplete({
-            data: {
-                src: async () => this.getData()
-            },
-            sort: (a, b) => {
-                if (a.match < b.match) {
-                    return -1;
+
+        if (this.autocomplete) {
+            // tslint:disable-next-line:no-unused-expression
+            new autoComplete({
+                data: {
+                    src: async () => this.getData()
+                },
+                sort: (a, b) => {
+                    if (a.match < b.match) {
+                        return -1;
+                    }
+                    if (a.match > b.match) {
+                        return 1;
+                    }
+                    return 0;
+                },
+                placeHolder: this.placeholder,
+                selector: `#${this.id}`,
+                threshold: this.threshold,
+                searchEngine: 'strict',
+                highlight: true,
+                maxResults: this.maxResults,
+                debounce: this.debounce,
+                resultsList: {
+                    container: () => this.getResultListId(),
+                    destination: this.getInputElement(),
+                    position: 'afterend'
+                },
+                resultItem: ({ match }: SelectionItem) => match,
+                onSelection: ({ event, selection }: SelectionFeedback) => {
+                    event.preventDefault();
+                    this.focusOnInput();
+                    this.emitselect(selection.value);
                 }
-                if (a.match > b.match) {
-                    return 1;
-                }
-                return 0;
-            },
-            placeHolder: this.placeholder,
-            selector: `#${this.id}`,
-            threshold: this.threshold,
-            searchEngine: 'strict',
-            highlight: true,
-            maxResults: this.maxResults,
-            debounce: this.debounce,
-            resultsList: {
-                container: () => this.getResultListId(),
-                destination: this.getInputElement(),
-                position: 'afterend'
-            },
-            resultItem: ({ match }: SelectionItem) => match,
-            onSelection: ({ event, selection }: SelectionFeedback) => {
-                event.preventDefault();
-                this.focusOnInput();
-                this.emitselect(selection.value);
-            }
-        });
+            });
+        }
     }
 
     private clearList(): void {
