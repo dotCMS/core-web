@@ -9,7 +9,7 @@ import { DotAvatarModule } from '@components/_common/dot-avatar/dot-avatar.modul
 import { By } from '@angular/platform-browser';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 
-fdescribe('DotPersonaSelectorOptionComponent', () => {
+describe('DotPersonaSelectorOptionComponent', () => {
     let component: DotPersonaSelectorOptionComponent;
     let fixture: ComponentFixture<DotPersonaSelectorOptionComponent>;
     let de: DebugElement;
@@ -35,7 +35,7 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
         component.persona = mockDotPersona;
     });
 
-    describe('', () => {
+    describe('elements', () => {
         beforeEach(() => {
             fixture.detectChanges();
         });
@@ -48,16 +48,6 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
             expect(avatar.componentInstance.size).toBe(32);
         });
 
-        it('should label set personalized class', () => {
-            const lblElement: DebugElement = de.query(
-                By.css('.dot-persona-selector-option__label')
-            );
-            expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
-            expect(lblElement.nativeElement.classList).toContain(
-                'dot-persona-selector-option__personalized'
-            );
-        });
-
         it('should have personalized button with right properties', () => {
             const btnElement: DebugElement = de.query(By.css('button'));
             expect(btnElement.nativeElement.innerText.indexOf('Personalized'.toUpperCase())).toBe(
@@ -67,8 +57,65 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
             expect(btnElement.attributes.iconPos).toBe('right');
         });
 
-        it('should emit persona when field clicked', () => {
+        it('should label set personalized class', () => {
+            const lblElement: DebugElement = de.query(
+                By.css('.dot-persona-selector-option__label')
+            );
+            expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
+            expect(lblElement.nativeElement.classList).toContain(
+                'dot-persona-selector-option__personalized'
+            );
+        });
+    });
+
+    describe('not personalize', () => {
+        it('should label not set personalized class', () => {
+            component.persona = {
+                ...mockDotPersona,
+                personalized: false
+            };
+            fixture.detectChanges();
+
+            const lblElement: DebugElement = de.query(
+                By.css('.dot-persona-selector-option__label')
+            );
+            expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
+            expect(lblElement.nativeElement.classList).not.toContain(
+                'dot-persona-selector-option__personalized'
+            );
+        });
+
+        it('should not display personalized button when personalized is false', () => {
+            component.persona = {
+                ...mockDotPersona,
+                personalized: false
+            };
+            fixture.detectChanges();
+
+            const btnElement: DebugElement = de.query(By.css('button'));
+            expect(btnElement).toBeNull();
+        });
+
+        it('should not display personalized button when canDespersonalize is false', () => {
+            component.persona = {
+                ...mockDotPersona
+            };
+            component.canDespersonalize = false;
+            fixture.detectChanges();
+
+            const btnElement: DebugElement = de.query(By.css('button'));
+            expect(btnElement).toBeNull();
+        });
+    });
+
+    describe('events', () => {
+        beforeEach(() => {
             spyOn(component.change, 'emit');
+            spyOn(component.delete, 'emit');
+            fixture.detectChanges();
+        });
+
+        it('should emit persona when field clicked', () => {
             de.triggerEventHandler('click', {
                 stopPropagation: () => {}
             });
@@ -76,48 +123,11 @@ fdescribe('DotPersonaSelectorOptionComponent', () => {
         });
 
         it('should emit persona when delete clicked', () => {
-            spyOn(component.delete, 'emit');
             const btnElement: DebugElement = de.query(By.css('button'));
             btnElement.triggerEventHandler('click', {
                 stopPropagation: () => {}
             });
             expect(component.delete.emit).toHaveBeenCalledWith(mockDotPersona);
         });
-    });
-
-    it('should label not set personalized class', () => {
-        component.persona = {
-            ...mockDotPersona,
-            personalized: false
-        };
-        fixture.detectChanges();
-
-        const lblElement: DebugElement = de.query(By.css('.dot-persona-selector-option__label'));
-        expect(lblElement.nativeElement.innerText).toBe(mockDotPersona.name);
-        expect(lblElement.nativeElement.classList).not.toContain(
-            'dot-persona-selector-option__personalized'
-        );
-    });
-
-    it('should not display personalized button when personalized is false', () => {
-        component.persona = {
-            ...mockDotPersona,
-            personalized: false
-        };
-        fixture.detectChanges();
-
-        const btnElement: DebugElement = de.query(By.css('button'));
-        expect(btnElement).toBeNull();
-    });
-
-    it('should not display personalized button when canDespersonalize is false', () => {
-        component.persona = {
-            ...mockDotPersona
-        };
-        component.canDespersonalize = false;
-        fixture.detectChanges();
-
-        const btnElement: DebugElement = de.query(By.css('button'));
-        expect(btnElement).toBeNull();
     });
 });
