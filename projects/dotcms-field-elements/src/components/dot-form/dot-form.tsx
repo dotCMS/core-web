@@ -156,37 +156,36 @@ export class DotFormComponent {
                 }
             })
         })
-            .then(async (response: Response) => {
-                if (response.status !== 200) {
-                    const error: DotHttpErrorResponse = {
-                        message: await response.text(),
-                        status: response.status
-                    };
-                    throw error;
-                }
-                return response.json();
-            })
-            .then((jsonResponse) => {
-                const {inode, identifier } = jsonResponse.entity;
-                this.goToSuccessPage(inode, identifier);
-            })
-            .catch(({ message, status }: DotHttpErrorResponse) => {
-                this.errorMessage = message || fallbackErrorMessages[status];
-            });
+        .then(async (response: Response) => {
+            if (response.status !== 200) {
+                const error: DotHttpErrorResponse = {
+                    message: await response.text(),
+                    status: response.status
+                };
+                throw error;
+            }
+            this.runSuccessCallback();
+        })
+        .catch(({ message, status }: DotHttpErrorResponse) => {
+            this.errorMessage = message || fallbackErrorMessages[status];
+        });
     }
 
-    private goToSuccessPage(inode: string, identifier: string): void {
-        const formReturnUrl = this.getFormReturnUrl();
-        if (formReturnUrl) {
-            window.location.href = `${formReturnUrl}?inode=${inode}&identifier=${identifier}`;
+    private runSuccessCallback(): void {
+        const successCallback = this.getSuccessCallback();
+        if (successCallback) {
+            // tslint:disable-next-line:no-eval
+            eval(successCallback);
         }
     }
 
-    private getFormReturnUrl(): string {
-        const fieldFormReturn = getFieldsFromLayout(this.layout).filter(
-            (field: DotCMSContentTypeField) => field.variable === 'formReturnPage'
+    private getSuccessCallback(): string {
+        const successCallback = getFieldsFromLayout(this.layout).filter(
+            (field: DotCMSContentTypeField) => field.variable === 'successCallback'
         )[0];
-        return fieldFormReturn.values;
+        // return successCallback.values;
+        console.log('---successCallback', successCallback); // TODO: REMOVE THIS LINE
+        return 'console.log("test")'; // TODO: REMOVE THIS LINE
     }
 
     private resetForm(): void {
