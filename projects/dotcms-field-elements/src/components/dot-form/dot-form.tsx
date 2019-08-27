@@ -181,11 +181,9 @@ export class DotFormComponent {
 
     private getSuccessCallback(): string {
         const successCallback = getFieldsFromLayout(this.layout).filter(
-            (field: DotCMSContentTypeField) => field.variable === 'successCallback'
+            (field: DotCMSContentTypeField) => field.variable === 'formSuccessCallback'
         )[0];
-        // return successCallback.values;
-        console.log('---successCallback', successCallback); // TODO: REMOVE THIS LINE
-        return 'console.log("test")'; // TODO: REMOVE THIS LINE
+        return successCallback.values;
     }
 
     private resetForm(): void {
