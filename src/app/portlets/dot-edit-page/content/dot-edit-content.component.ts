@@ -223,9 +223,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     }
 
     private saveContent(event: PageModelChangeEvent): void {
-        this.dotGlobalMessageService.loading(
-            this.dotMessageService.get('dot.common.message.saving')
-        );
         this.saveToPage(event.model)
             .pipe(filter(() => this.shouldReload(event.type)))
             .subscribe(() => {

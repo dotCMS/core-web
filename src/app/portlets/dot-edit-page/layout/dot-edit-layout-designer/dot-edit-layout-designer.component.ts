@@ -55,7 +55,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
         private dotDialogService: DotAlertConfirmService,
         private dotEditLayoutService: DotEditLayoutService,
         private dotEventsService: DotEventsService,
-        private dotGlobalMessageService: DotGlobalMessageService,
+        public dotGlobalMessageService: DotGlobalMessageService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
         private dotThemesService: DotThemesService,
@@ -177,6 +177,7 @@ export class DotEditLayoutDesignerComponent implements OnInit, OnDestroy {
             .pipe(take(1))
             .subscribe(
                 (updatedPage: DotPageRender) => {
+                    console.log('two');
                     this.dotGlobalMessageService.success(
                         this.dotMessageService.get('dot.common.message.saved')
                     );
