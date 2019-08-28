@@ -156,26 +156,32 @@ export class DotFormComponent {
                 }
             })
         })
-        .then(async (response: Response) => {
-            if (response.status !== 200) {
-                const error: DotHttpErrorResponse = {
-                    message: await response.text(),
-                    status: response.status
-                };
-                throw error;
-            }
-            this.runSuccessCallback();
-        })
-        .catch(({ message, status }: DotHttpErrorResponse) => {
-            this.errorMessage = message || fallbackErrorMessages[status];
-        });
+            .then(async (response: Response) => {
+                if (response.status !== 200) {
+                    const error: DotHttpErrorResponse = {
+                        message: await response.text(),
+                        status: response.status
+                    };
+                    throw error;
+                }
+                return response.json();
+            })
+            .then((jsonResponse) => {
+                const { inode, identifier } = jsonResponse.entity;
+                this.runSuccessCallback(inode, identifier);
+            })
+            .catch(({ message, status }: DotHttpErrorResponse) => {
+                this.errorMessage = message || fallbackErrorMessages[status];
+            });
     }
 
-    private runSuccessCallback(): void {
+    private runSuccessCallback(inode: string, identifier: string): void {
         const successCallback = this.getSuccessCallback();
         if (successCallback) {
-            // tslint:disable-next-line:no-eval
-            eval(successCallback);
+            return function() {
+                // tslint:disable-next-line:no-eval
+                return eval(successCallback);
+            }.call({ contentlet: { inode, identifier } });
         }
     }
 
