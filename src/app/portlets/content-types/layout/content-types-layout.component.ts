@@ -4,7 +4,7 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
 import { take } from 'rxjs/internal/operators/take';
 import { MenuItem } from 'primeng/api';
-import {DotEventsService} from '@services/dot-events/dot-events.service';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-content-type-layout',
@@ -28,7 +28,7 @@ export class ContentTypesLayoutComponent implements OnChanges, OnInit {
         private dotMessageService: DotMessageService,
         private dotMenuService: DotMenuService,
         private fieldDragDropService: FieldDragDropService,
-        private dotEventsService: DotEventsService,
+        private dotEventsService: DotEventsService
     ) {}
 
     ngOnInit(): void {
