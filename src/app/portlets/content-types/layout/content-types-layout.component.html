@@ -1,3 +1,11 @@
+<dot-edit-toolbar>
+    <div class="main-toolbar-left">
+        <ng-content select="[test01]" ></ng-content>
+    </div>
+    <div class="main-toolbar-right">
+        <ng-content select="[test02]" ></ng-content>
+    </div>
+</dot-edit-toolbar>
 <p-tabView>
     <p-tabPanel class="content-type__properties" header="{{ i18nMessages['contenttypes.tab.fields.header'] }}">
         <div class="content-type__fields-layout" id="content-type-form-layout">
@@ -5,6 +13,12 @@
                 <ng-content></ng-content>
             </div>
             <div class="content-type__fields-sidebar">
+
+                <p-splitButton
+                    icon="pi pi-plus"
+                    label="{{ i18nMessages['contenttypes.dropzone.rows.add'] }}"
+                    (click)="dotEventsService.notify('add-row'); $event.stopPropagation()"
+                    [model]="actions"></p-splitButton>
                 <dot-content-types-fields-list></dot-content-types-fields-list>
             </div>
         </div>

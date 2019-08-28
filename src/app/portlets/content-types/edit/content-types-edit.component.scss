@@ -7,17 +7,17 @@
 }
 
 dot-api-link {
-    margin-left: $basic-padding;
+    margin-left: $basic-padding * 2;
 }
 
 .content-type__edit-header {
-    margin: $basic-padding * 3 0;
     display: flex;
     flex-shrink: 0;
 }
 
 .content-type__form-header-left {
     flex-grow: 1;
+    display: flex;
 }
 
 .content-type__edit-title {
@@ -48,7 +48,7 @@ dot-api-link {
     color: $gray;
     display: flex;
     font-size: $font-size-small;
-    margin-top: $basic-padding;
+    margin-left: $basic-padding * 3;
 
     dot-copy-button {
         margin-left: $basic-padding / 4;

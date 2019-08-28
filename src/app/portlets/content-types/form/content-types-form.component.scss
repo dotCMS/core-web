@@ -9,7 +9,19 @@
         searchable-dropdown .ui-button {
             width: 100%;
         }
+
+        p-tabview {
+            p-tabviewnav {
+                background-color: $gray-bg;
+            }
+        }
+
+        p-tabviewnav {
+            background-color: $gray-bg;
+        }
     }
+
+
 }
 
 .content-type__form {

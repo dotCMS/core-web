@@ -52,7 +52,7 @@ export class ContentTypeFieldsAddRowComponent implements OnDestroy, OnInit {
     constructor(
         private dotEventsService: DotEventsService,
         private hotkeysService: HotkeysService,
-        public dotMessageService: DotMessageService
+        public dotMessageService: DotMessageService,
     ) {}
 
     ngOnInit(): void {

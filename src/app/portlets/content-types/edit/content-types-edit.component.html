@@ -1,32 +1,78 @@
-<dot-content-type-layout [contentTypeId]="data?.id" *ngIf="isEditMode()">
-    <div class="content-type__edit-header" id="content-type-edit-header">
-        <div class="content-type__form-header-left">
-            <div class="content-type__edit-title">
-                <header>
-                    <h4>{{ data.name }}</h4>
-                    <dot-api-link href="api/v1/contenttype/id/{{data.id}}"></dot-api-link>
-                </header>
-            </div>
+<!--<dot-edit-toolbar>-->
+<!--    <div class="main-toolbar-left">-->
+<!--        <div class="content-type__form-header-left">-->
+<!--            <div class="content-type__edit-title">-->
+<!--                <header>-->
+<!--                    <h4>{{ data.name }}</h4>-->
+<!--                    <dot-api-link href="api/v1/contenttype/id/{{data.id}}"></dot-api-link>-->
+<!--                </header>-->
+<!--            </div>-->
 
-            <div class="content-type__edit-info">
-                {{ messagesKey['contenttypes.content.variable'] }}:
-                <dot-copy-button [copy]="data.variable" [label]="data.variable"></dot-copy-button>
-                <span class="content-type__edit-dot-separator">•</span>
-                {{ messagesKey['contenttypes.form.identifier'] }}: {{ data.id }}
-            </div>
+<!--            <div class="content-type__edit-info">-->
+<!--                {{ messagesKey['contenttypes.content.variable'] }}:-->
+<!--                <dot-copy-button [copy]="data.variable" [label]="data.variable"></dot-copy-button>-->
+<!--                <span class="content-type__edit-dot-separator">•</span>-->
+<!--                {{ messagesKey['contenttypes.form.identifier'] }}: {{ data.id }}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="main-toolbar-right">-->
+<!--        <div class="content-type__edit-actions">-->
+<!--            <button-->
+<!--                type="button"-->
+<!--                pButton-->
+<!--                secondary-->
+<!--                label="{{ messagesKey['contenttypes.action.edit'] }}"-->
+<!--                (click)="startFormDialog()"-->
+<!--                icon="fa fa-edit"-->
+<!--                id="form-edit-button"-->
+<!--            ></button>-->
+<!--            <dot-menu [float]="true" icon="add" [model]="contentTypeActions"></dot-menu>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="secondary-toolbar-left">C</div>-->
+<!--    <div class="secondary-toolbar-right">D</div>-->
+<!--</dot-edit-toolbar>-->
+
+
+
+
+<dot-content-type-layout [contentTypeId]="data?.id" *ngIf="isEditMode()">
+
+    <div class="content-type__form-header-left" test01>
+        <div class="content-type__edit-title">
+            <header>
+                <h4>{{ data.name }}</h4>
+                <dot-api-link href="api/v1/contenttype/id/{{data.id}}"></dot-api-link>
+            </header>
         </div>
-        <div class="content-type__edit-actions">
-            <button
-                type="button"
-                pButton
-                secondary
-                label="{{ messagesKey['contenttypes.action.edit'] }}"
-                (click)="startFormDialog()"
-                icon="fa fa-edit"
-                id="form-edit-button"
-            ></button>
-            <dot-menu [float]="true" icon="add" [model]="contentTypeActions"></dot-menu>
+
+        <div class="content-type__edit-info" >
+            {{ messagesKey['contenttypes.content.variable'] }}:
+            <dot-copy-button [copy]="data.variable" [label]="data.variable"></dot-copy-button>
+            <span class="content-type__edit-dot-separator">•</span>
+            {{ messagesKey['contenttypes.form.identifier'] }}: {{ data.id }}
         </div>
+    </div>
+
+    <div class="content-type__edit-actions" test02>
+        <button
+            type="button"
+            pButton
+            secondary
+            label="{{ messagesKey['contenttypes.action.edit'] }}"
+            (click)="startFormDialog()"
+            icon="fa fa-edit"
+            id="form-edit-button"
+        ></button>
+       <!-- <dot-menu [float]="true" icon="add" [model]="contentTypeActions"></dot-menu>-->
+    </div>
+
+    <div class="content-type__edit-header" id="content-type-edit-header">
+
+
     </div>
     <dot-content-type-fields-drop-zone
         #fieldsDropZone

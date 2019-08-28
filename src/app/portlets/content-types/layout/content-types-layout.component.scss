@@ -9,7 +9,52 @@ $top-height: ($toolbar-height + $tabview-nav-height);
         .ui-tabview-nav {
             position: relative;
             z-index: 1;
+            background-color: $gray-bg;
         }
+
+        .content-type__fields-sidebar{
+            p-splitButton {
+                border-bottom: solid 1px $gray-light;
+                height: 48px;
+
+                .ui-splitbutton {
+                    width: 100%;
+                    height: 48px;
+                    border: 0;
+                    background: transparent;
+                    cursor: pointer;
+                    border-radius: 0;
+
+                    .ui-button.ui-button-icon-only span.pi-caret-down, span{
+                        color: $black;
+                        font-weight: normal;
+                    }
+
+                    span.ui-button-icon-left {
+                        color: $gray;
+                    }
+
+                    .ui-button-text-icon-left .ui-button-text{
+                        padding-left: 50px;
+                    }
+
+                    button{
+                        height: 48px;
+                    }
+                }
+
+                .ui-splitbutton:hover{
+                    background-color: $gray-bg;
+
+
+
+                    .ui-button.ui-button-icon-only span.pi-caret-down, span {
+                        color: $black;
+                    }
+                }
+            }
+        }
+
     }
 
     dot-iframe {
