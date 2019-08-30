@@ -39,6 +39,7 @@ export class DotPersonaSelectorComponent implements OnInit {
     personas: DotPersona[];
     totalRecords: number;
     value: DotPersona;
+    filter ='';
 
     private _pageState: DotPageRenderState;
 
@@ -48,6 +49,7 @@ export class DotPersonaSelectorComponent implements OnInit {
         this.addAction = () => {
             this.searchableDropdown.toggleOverlayPanel();
             this.personaDialog.visible = true;
+            this.personaDialog.personaName = this.personas.length ? '' : this.filter;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
     }
@@ -73,6 +75,7 @@ export class DotPersonaSelectorComponent implements OnInit {
      * @memberof DotPersonaSelectorComponent
      */
     handleFilterChange(filter: string): void {
+        this.filter = filter.trim();
         this.getPersonasList(filter);
     }
 
@@ -136,7 +139,7 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     private getPersonasList(filter = '', offset = 0): void {
         // Set filter if undefined
-        this.paginationService.filter = filter;
+        this.paginationService.filter = filter.trim();
         this.paginationService
             .getWithOffset(offset)
             .pipe(take(1))

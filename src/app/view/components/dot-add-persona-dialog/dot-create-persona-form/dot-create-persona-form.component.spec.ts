@@ -125,7 +125,7 @@ describe('DotCreatePersonaFormComponent', () => {
         const fileUpload: DebugElement = fixture.debugElement.query(By.css('p-fileUpload'));
 
         expect(fileUpload.componentInstance.url).toEqual('/api/v1/temp');
-        expect(fileUpload.componentInstance.accept).toEqual('image/*');
+        expect(fileUpload.componentInstance.accept).toEqual('image/*,.webp');
         expect(fileUpload.componentInstance.auto).toEqual('true');
         expect(fileUpload.componentInstance.mode).toEqual('basic');
     });
