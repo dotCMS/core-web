@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContentTypesPortletComponent } from '.';
+import { DotContentTypesPortletComponent } from '.';
 import { ContentTypesInfoService } from '@services/content-types-info';
 import { CrudService } from '@services/crud';
 import { DotContentTypeService } from '@services/dot-content-type';
@@ -19,7 +19,7 @@ import { DotContentTypesListingRoutingModule } from './dot-content-types-listing
         DotAddToBundleModule,
         DotContentTypesListingRoutingModule
     ],
-    declarations: [ContentTypesPortletComponent],
+    declarations: [DotContentTypesPortletComponent],
     providers: [ContentTypesInfoService, CrudService, DotContentTypeService]
 })
 export class DotContentTypesListingModule {}

@@ -1,4 +1,4 @@
-import { forkJoin as observableForkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 import { map, take, pluck } from 'rxjs/operators';
 import { ListingDataTableComponent } from '@components/listing-data-table/listing-data-table.component';
@@ -24,7 +24,7 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
  * List of Content Types
  * use: listing-data-table.component
  * @export
- * @class ContentTypesPortletComponent
+ * @class DotContentTypesPortletComponent
 
  */
 @Component({
@@ -32,7 +32,7 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
     styleUrls: ['./dot-content-types.component.scss'],
     templateUrl: 'dot-content-types.component.html'
 })
-export class ContentTypesPortletComponent implements OnInit {
+export class DotContentTypesPortletComponent implements OnInit {
     @ViewChild('listing')
     listing: ListingDataTableComponent;
     filterBy: string;
@@ -81,7 +81,7 @@ export class ContentTypesPortletComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        observableForkJoin(
+        forkJoin(
             this.dotMessageService.getMessages(this.i18nKeys),
             this.dotContentTypeService.getAllContentTypes(),
             this.dotLicenseService.isEnterprise(),

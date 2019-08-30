@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContentTypesPortletComponent } from '.';
+import { DotContentTypesPortletComponent } from '.';
 
-const contentTypesRoutes: Routes = [
+const routes: Routes = [
     {
-        component: ContentTypesPortletComponent,
+        component: DotContentTypesPortletComponent,
         path: ''
     }
 ];
 
 @NgModule({
     exports: [RouterModule],
-    imports: [RouterModule.forChild(contentTypesRoutes)]
+    imports: [RouterModule.forChild(routes)]
 })
 export class DotContentTypesListingRoutingModule {}

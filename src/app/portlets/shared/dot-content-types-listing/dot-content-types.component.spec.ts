@@ -7,7 +7,7 @@ import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/c
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesInfoService } from '@services/content-types-info';
-import { ContentTypesPortletComponent } from './dot-content-types.component';
+import { DotContentTypesPortletComponent } from './dot-content-types.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -87,9 +87,9 @@ class MockDotAddToBundleComponent {
     cancel = new EventEmitter<boolean>();
 }
 
-describe('ContentTypesPortletComponent', () => {
-    let comp: ContentTypesPortletComponent;
-    let fixture: ComponentFixture<ContentTypesPortletComponent>;
+describe('DotContentTypesPortletComponent', () => {
+    let comp: DotContentTypesPortletComponent;
+    let fixture: ComponentFixture<DotContentTypesPortletComponent>;
     let de: DebugElement;
     let crudService: CrudService;
     let router: ActivatedRoute;
@@ -117,13 +117,13 @@ describe('ContentTypesPortletComponent', () => {
 
         DOTTestBed.configureTestingModule({
             declarations: [
-                ContentTypesPortletComponent,
+                DotContentTypesPortletComponent,
                 MockDotBaseTypeSelectorComponent,
                 MockDotAddToBundleComponent
             ],
             imports: [
                 RouterTestingModule.withRoutes([
-                    { path: 'test', component: ContentTypesPortletComponent }
+                    { path: 'test', component: DotContentTypesPortletComponent }
                 ]),
                 BrowserAnimationsModule,
                 ListingDataTableModule,
@@ -142,7 +142,7 @@ describe('ContentTypesPortletComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(ContentTypesPortletComponent);
+        fixture = DOTTestBed.createComponent(DotContentTypesPortletComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         router = de.injector.get(ActivatedRoute);
