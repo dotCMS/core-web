@@ -13,7 +13,7 @@ import { CrudService } from '@services/crud';
 import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import {
     DotHttpErrorManagerService,
@@ -63,7 +63,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        private contentTypesInfoService: ContentTypesInfoService,
+        private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: CrudService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotEventsService: DotEventsService,

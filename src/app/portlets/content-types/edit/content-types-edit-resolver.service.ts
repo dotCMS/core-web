@@ -6,7 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { CrudService } from '@services/crud';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotCMSContentType } from 'dotcms-models';
 import { LoginService, ResponseView } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -22,7 +22,7 @@ import { take, map, catchError } from 'rxjs/operators';
 @Injectable()
 export class ContentTypeEditResolver implements Resolve<DotCMSContentType> {
     constructor(
-        private contentTypesInfoService: ContentTypesInfoService,
+        private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: CrudService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,

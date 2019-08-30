@@ -2,7 +2,7 @@ import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { CrudService } from '@services/crud';
 import { LoginService } from 'dotcms-js';
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -32,7 +32,7 @@ describe('ContentTypeEditResolver', () => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
                 ContentTypeEditResolver,
-                ContentTypesInfoService,
+                DotContentTypesInfoService,
                 DotHttpErrorManagerService,
                 { provide: CrudService, useClass: CrudServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },

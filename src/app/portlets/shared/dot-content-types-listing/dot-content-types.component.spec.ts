@@ -6,7 +6,7 @@ import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-co
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotContentTypesPortletComponent } from './dot-content-types.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
@@ -130,7 +130,7 @@ describe('DotContentTypesPortletComponent', () => {
                 DotPushPublishContentTypesDialogModule
             ],
             providers: [
-                ContentTypesInfoService,
+                DotContentTypesInfoService,
                 CrudService,
                 DotAlertConfirmService,
                 FormatDateService,

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ContentTypesEditComponent } from './edit';
 import { ContentTypesFormComponent } from './form';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { ContentTypesLayoutComponent } from './layout';
 import { ContentTypesRoutingModule } from './content-types-routing.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
@@ -155,7 +155,7 @@ import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-tool
     ],
     providers: [
         ContentTypeEditResolver,
-        ContentTypesInfoService,
+        DotContentTypesInfoService,
         DotWorkflowService,
         DragulaService,
         FieldDragDropService,

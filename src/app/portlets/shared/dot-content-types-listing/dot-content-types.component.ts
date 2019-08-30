@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActionHeaderOptions } from '@models/action-header';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DataTableColumn } from '@models/data-table';
 import { DotMessageService } from '@services/dot-messages-service';
 import { StructureTypeView } from '@models/contentlet/structure-type-view.model';
@@ -68,7 +68,7 @@ export class DotContentTypesPortletComponent implements OnInit {
     ];
 
     constructor(
-        private contentTypesInfoService: ContentTypesInfoService,
+        private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: CrudService,
         private dotContentTypeService: DotContentTypeService,
         private dotDialogService: DotAlertConfirmService,

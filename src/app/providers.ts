@@ -2,7 +2,7 @@ import { AccountService } from '@services/account-service';
 import { AuthGuardService } from '@services/guards/auth-guard.service';
 import { ColorUtil } from './api/util/ColorUtil';
 import { ConfirmationService } from 'primeng/primeng';
-import { ContentTypesInfoService } from '@services/content-types-info';
+import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { ContentletGuardService } from '@services/guards/contentlet-guard.service';
 import { CrudService } from '@services/crud/crud.service';
 import { DefaultGuardService } from '@services/guards/default-guard.service';
@@ -37,7 +37,7 @@ const PROVIDERS: any[] = [
     AuthGuardService,
     ColorUtil,
     ConfirmationService,
-    ContentTypesInfoService,
+    DotContentTypesInfoService,
     ContentletGuardService,
     CrudService,
     DefaultGuardService,
