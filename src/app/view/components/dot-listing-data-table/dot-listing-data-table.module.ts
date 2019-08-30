@@ -1,6 +1,6 @@
 import { ActionHeaderModule } from './action-header/action-header.module';
 import { CommonModule } from '@angular/common';
-import { CrudService } from '@services/crud/crud.service';
+import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DotcmsConfigService, LoggerService } from 'dotcms-js';
 import { FormsModule } from '@angular/forms';
 import { FormatDateService } from '@services/format-date-service';
@@ -25,6 +25,6 @@ import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
         ActionMenuButtonModule,
         DotIconModule
     ],
-    providers: [CrudService, FormatDateService, DotcmsConfigService, LoggerService, DotMessageService]
+    providers: [DotCrudService, FormatDateService, DotcmsConfigService, LoggerService, DotMessageService]
 })
 export class DotListingDataTableModule {}

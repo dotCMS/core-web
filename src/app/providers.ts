@@ -4,7 +4,7 @@ import { ColorUtil } from './api/util/ColorUtil';
 import { ConfirmationService } from 'primeng/primeng';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { ContentletGuardService } from '@services/guards/contentlet-guard.service';
-import { CrudService } from '@services/crud/crud.service';
+import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DefaultGuardService } from '@services/guards/default-guard.service';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
@@ -39,7 +39,7 @@ const PROVIDERS: any[] = [
     ConfirmationService,
     DotContentTypesInfoService,
     ContentletGuardService,
-    CrudService,
+    DotCrudService,
     DefaultGuardService,
     DotAlertConfirmService,
     DotContentTypeService,

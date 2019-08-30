@@ -3,7 +3,7 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
-import { CrudService } from '@services/crud';
+import { DotCrudService } from '@services/dot-crud';
 import { LoginService } from 'dotcms-js';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { LoginServiceMock } from '../../../test/login-service.mock';
@@ -23,7 +23,7 @@ const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnaps
 activatedRouteSnapshotMock.paramMap = {};
 
 describe('ContentTypeEditResolver', () => {
-    let crudService: CrudService;
+    let crudService: DotCrudService;
     let contentTypeEditResolver: ContentTypeEditResolver;
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
@@ -34,7 +34,7 @@ describe('ContentTypeEditResolver', () => {
                 ContentTypeEditResolver,
                 DotContentTypesInfoService,
                 DotHttpErrorManagerService,
-                { provide: CrudService, useClass: CrudServiceMock },
+                { provide: DotCrudService, useClass: CrudServiceMock },
                 { provide: LoginService, useClass: LoginServiceMock },
                 {
                     provide: ActivatedRouteSnapshot,
@@ -43,7 +43,7 @@ describe('ContentTypeEditResolver', () => {
             ],
             imports: [RouterTestingModule]
         });
-        crudService = testbed.get(CrudService);
+        crudService = testbed.get(DotCrudService);
         contentTypeEditResolver = testbed.get(ContentTypeEditResolver);
         dotRouterService = testbed.get(DotRouterService);
         dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);

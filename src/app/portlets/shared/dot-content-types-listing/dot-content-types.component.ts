@@ -3,7 +3,7 @@ import { forkJoin } from 'rxjs';
 import { map, take, pluck } from 'rxjs/operators';
 import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
-import { CrudService } from '@services/crud';
+import { DotCrudService } from '@services/dot-crud';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -69,7 +69,7 @@ export class DotContentTypesPortletComponent implements OnInit {
 
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
-        private crudService: CrudService,
+        private crudService: DotCrudService,
         private dotContentTypeService: DotContentTypeService,
         private dotDialogService: DotAlertConfirmService,
         private dotLicenseService: DotLicenseService,

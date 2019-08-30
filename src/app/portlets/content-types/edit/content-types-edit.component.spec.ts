@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesEditComponent } from './content-types-edit.component';
-import { CrudService } from '@services/crud/crud.service';
+import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
 import {
@@ -143,7 +143,7 @@ const getConfig = route => {
                 provide: HotkeysService,
                 useValue: testHotKeysMock
             },
-            CrudService,
+            DotCrudService,
             FieldService,
             DotContentTypesInfoService,
             DotMenuService,
@@ -156,7 +156,7 @@ const getConfig = route => {
 let comp: ContentTypesEditComponent;
 let fixture: ComponentFixture<ContentTypesEditComponent>;
 let de: DebugElement;
-let crudService: CrudService;
+let crudService: DotCrudService;
 let location: Location;
 let dotRouterService: DotRouterService;
 let dotHttpErrorManagerService: DotHttpErrorManagerService;
@@ -180,7 +180,7 @@ describe('ContentTypesEditComponent', () => {
                 comp = fixture.componentInstance;
                 de = fixture.debugElement;
 
-                crudService = de.injector.get(CrudService);
+                crudService = de.injector.get(DotCrudService);
                 location = de.injector.get(Location);
                 dotRouterService = de.injector.get(DotRouterService);
                 dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
@@ -431,7 +431,7 @@ describe('ContentTypesEditComponent', () => {
                 comp = fixture.componentInstance;
                 de = fixture.debugElement;
 
-                crudService = fixture.debugElement.injector.get(CrudService);
+                crudService = fixture.debugElement.injector.get(DotCrudService);
                 location = fixture.debugElement.injector.get(Location);
                 dotRouterService = fixture.debugElement.injector.get(DotRouterService);
                 dotHttpErrorManagerService = fixture.debugElement.injector.get(

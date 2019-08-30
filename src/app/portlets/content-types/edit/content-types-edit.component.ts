@@ -9,7 +9,7 @@ import {
     DotCMSWorkflow
 } from 'dotcms-models';
 import { ContentTypesFormComponent } from '../form';
-import { CrudService } from '@services/crud';
+import { DotCrudService } from '@services/dot-crud';
 import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
 import { FieldService } from '../fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -64,7 +64,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
-        private crudService: CrudService,
+        private crudService: DotCrudService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotEventsService: DotEventsService,
         private dotRouterService: DotRouterService,

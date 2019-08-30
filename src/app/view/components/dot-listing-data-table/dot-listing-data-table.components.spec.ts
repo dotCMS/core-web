@@ -5,7 +5,7 @@ import { ActionMenuButtonComponent } from '../_common/action-menu-button/action-
 import { DotActionButtonComponent } from '../_common/dot-action-button/dot-action-button.component';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { CrudService } from '@services/crud/crud.service';
+import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { SharedModule, MenuModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
@@ -55,7 +55,7 @@ describe('DotListingDataTableComponent', () => {
             ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
-                CrudService,
+                DotCrudService,
                 FormatDateService,
                 PaginatorService,
                 DotAlertConfirmService

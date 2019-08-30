@@ -1,5 +1,5 @@
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-import { CrudService } from '@services/crud/crud.service';
+import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table/dot-listing-data-table.module';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
@@ -91,7 +91,7 @@ describe('DotContentTypesPortletComponent', () => {
     let comp: DotContentTypesPortletComponent;
     let fixture: ComponentFixture<DotContentTypesPortletComponent>;
     let de: DebugElement;
-    let crudService: CrudService;
+    let crudService: DotCrudService;
     let router: ActivatedRoute;
     let dotContentletService: DotContentTypeService;
     let pushPublishService: PushPublishService;
@@ -131,7 +131,7 @@ describe('DotContentTypesPortletComponent', () => {
             ],
             providers: [
                 DotContentTypesInfoService,
-                CrudService,
+                DotCrudService,
                 DotAlertConfirmService,
                 FormatDateService,
                 { provide: DotContentTypeService, useClass: MockDotContentTypeService },
@@ -146,7 +146,7 @@ describe('DotContentTypesPortletComponent', () => {
         comp = fixture.componentInstance;
         de = fixture.debugElement;
         router = de.injector.get(ActivatedRoute);
-        crudService = fixture.debugElement.injector.get(CrudService);
+        crudService = fixture.debugElement.injector.get(DotCrudService);
         dotContentletService = fixture.debugElement.injector.get(DotContentTypeService);
         pushPublishService = fixture.debugElement.injector.get(PushPublishService);
         dotLicenseService = fixture.debugElement.injector.get(DotLicenseService);
