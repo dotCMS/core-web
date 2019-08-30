@@ -67,7 +67,7 @@ class TestContentTypeLayoutComponent {
     template: ''
 })
 class TestContentTypesFormComponent {
-    @Input() data: any;
+    @Input() data: DotCMSContentType;
     @Input() layout: DotCMSContentTypeField[];
     // tslint:disable-next-line:no-output-on-prefix
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
