@@ -2,7 +2,7 @@ import { of as observableOf, Observable } from 'rxjs';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
-import { DebugElement, Component, Input, Injectable } from '@angular/core';
+import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { TabViewModule } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -10,6 +10,12 @@ import { By } from '@angular/platform-browser';
 import { DotMenuService } from '@services/dot-menu.service';
 import { FieldDragDropService } from '../fields/service';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-toolbar/dot-edit-toolbar.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DotCMSContentType } from 'dotcms-models';
+import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
+import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
+import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -28,17 +34,16 @@ class TestContentTypeFieldsRowListComponent {}
     template: ''
 })
 class TestDotIframeComponent {
-    @Input()
-    src: string;
+    @Input() src: string;
 }
 
 @Component({
     selector: 'dot-test-host-component',
-    template: '<dot-content-type-layout [contentTypeId]="contentTypeId"></dot-content-type-layout>'
+    template: '<dot-content-type-layout [contentType]="contentType"></dot-content-type-layout>'
 })
 class TestHostComponent {
-    @Input()
-    contentTypeId: string;
+    @Input() contentType: DotCMSContentType;
+    @Output() openEditDialog: EventEmitter<any> = new EventEmitter();
 }
 
 @Component({
@@ -58,7 +63,14 @@ class FieldDragDropServiceMock {
     setBagOptions() {}
 }
 
-describe('ContentTypesLayoutComponent', () => {
+const fakeContentType: DotCMSContentType = {
+    ...dotcmsContentTypeBasicMock,
+    id: '1234567890',
+    name: 'name',
+    variable: 'helloVariable'
+};
+
+fdescribe('ContentTypesLayoutComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
 
@@ -69,7 +81,10 @@ describe('ContentTypesLayoutComponent', () => {
             'contenttypes.sidebar.layouts.title': 'Layout Title',
             'contenttypes.tab.permissions.header': 'Permissions Tab',
             'contenttypes.tab.publisher.push.history.header': 'Push History',
-            'contenttypes.tab.relationship.header': 'Relationship'
+            'contenttypes.tab.relationship.header': 'Relationship',
+            'contenttypes.action.edit': 'Edit',
+            'contenttypes.content.variable': 'Variable',
+            'contenttypes.form.identifier': 'Identifier'
         });
 
         DOTTestBed.configureTestingModule({
@@ -81,7 +96,14 @@ describe('ContentTypesLayoutComponent', () => {
                 TestContentTypesRelationshipListingComponent,
                 TestHostComponent
             ],
-            imports: [TabViewModule, DotIconModule],
+            imports: [
+                TabViewModule,
+                DotIconModule,
+                DotEditToolbarModule,
+                RouterTestingModule,
+                DotApiLinkModule,
+                DotCopyButtonModule
+            ],
             providers: [
                 { provide: DotMessageService, useValue: messageServiceMock },
                 { provide: DotMenuService, useClass: MockDotMenuService },
@@ -108,17 +130,55 @@ describe('ContentTypesLayoutComponent', () => {
         const fieldDragDropService: FieldDragDropService = fixture.debugElement.injector.get(
             FieldDragDropService
         );
+        fixture.componentInstance.contentType = fakeContentType;
         spyOn(fieldDragDropService, 'setBagOptions');
         fixture.detectChanges();
-
         expect(fieldDragDropService.setBagOptions).toHaveBeenCalledTimes(1);
+    });
+
+    describe('Edit toolBar', () => {
+        beforeEach(() => {
+            fixture.componentInstance.contentType = fakeContentType;
+            fixture.detectChanges();
+        });
+
+        it('should have dot-edit-toolbar', () => {
+            expect(de.query(By.css('dot-edit-toolbar'))).toBeDefined();
+        });
+
+        it('should have elements in the correct place', () => {
+            expect(de.query(By.css('.main-toolbar-left .content-type__title'))).toBeDefined();
+            expect(de.query(By.css('.main-toolbar-left .content-type__info'))).toBeDefined();
+            expect(de.query(By.css('.main-toolbar-right #form-edit-button'))).toBeDefined();
+        });
+
+        it('should have api link component', () => {
+            expect(de.query(By.css('dot-api-link')).componentInstance.link).toBe(
+                '/api/v1/contenttype/id/1234567890'
+            );
+        });
+
+        it('should have copy variable button', () => {
+            expect(de.query(By.css('dot-copy-button')).componentInstance.copy).toBe(
+                'helloVariable'
+            );
+        });
+
+        it('should have edit button', () => {
+            const editButton: DebugElement = fixture.debugElement.query(
+                By.css('#form-edit-button')
+            );
+            expect(editButton.nativeElement.textContent).toBe('Edit');
+            expect(editButton.nativeElement.disabled).toBe(false);
+            expect(editButton).toBeTruthy();
+        });
     });
 
     describe('Tabs', () => {
         let iframe: DebugElement;
 
         beforeEach(() => {
-            fixture.componentInstance.contentTypeId = '2';
+            fixture.componentInstance.contentType = fakeContentType;
             fixture.detectChanges();
         });
 
@@ -188,7 +248,7 @@ describe('ContentTypesLayoutComponent', () => {
 
             it('should set the src attribute', () => {
                 expect(iframe.componentInstance.src).toBe(
-                    '/html/content_types/permissions.jsp?contentTypeId=2&popup=true'
+                    '/html/content_types/permissions.jsp?contentTypeId=1234567890&popup=true'
                 );
             });
         });
@@ -213,7 +273,7 @@ describe('ContentTypesLayoutComponent', () => {
 
             it('should set the src attribute', () => {
                 expect(iframe.componentInstance.src).toBe(
-                    '/html/content_types/push_history.jsp?contentTypeId=2&popup=true'
+                    '/html/content_types/push_history.jsp?contentTypeId=1234567890&popup=true'
                 );
             });
         });
@@ -242,7 +302,7 @@ describe('ContentTypesLayoutComponent', () => {
             it('should set the src attribute', () => {
                 expect(iframe.componentInstance.src).toBe(
                     // tslint:disable-next-line:max-line-length
-                    'c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=2'
+                    'c/portal/layout?p_l_id=1234&p_p_id=content-types&_content_types_struts_action=%2Fext%2Fstructure%2Fview_relationships&_content_types_structure_id=1234567890'
                 );
             });
         });
