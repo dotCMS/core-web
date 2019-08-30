@@ -11,7 +11,7 @@ import { SharedModule, MenuModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { DebugElement, SimpleChange } from '@angular/core';
 import { FormatDateService } from '@services/format-date-service';
-import { ListingDataTableComponent } from './listing-data-table.component';
+import { DotListingDataTableComponent } from './dot-listing-data-table.component';
 import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -23,9 +23,9 @@ import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 
 
-describe('ListingDataTableComponent', () => {
-    let comp: ListingDataTableComponent;
-    let fixture: ComponentFixture<ListingDataTableComponent>;
+describe('DotListingDataTableComponent', () => {
+    let comp: DotListingDataTableComponent;
+    let fixture: ComponentFixture<DotListingDataTableComponent>;
     let de: DebugElement;
     let el: HTMLElement;
 
@@ -38,14 +38,14 @@ describe('ListingDataTableComponent', () => {
             declarations: [
                 ActionHeaderComponent,
                 DotActionButtonComponent,
-                ListingDataTableComponent,
+                DotListingDataTableComponent,
                 ActionMenuButtonComponent
             ],
             imports: [
                 TableModule,
                 SharedModule,
                 RouterTestingModule.withRoutes([
-                    { path: 'test', component: ListingDataTableComponent }
+                    { path: 'test', component: DotListingDataTableComponent }
                 ]),
                 DotIconButtonTooltipModule,
                 MenuModule,
@@ -62,7 +62,7 @@ describe('ListingDataTableComponent', () => {
             ]
         });
 
-        fixture = DOTTestBed.createComponent(ListingDataTableComponent);
+        fixture = DOTTestBed.createComponent(DotListingDataTableComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement.query(By.css('p-table'));
         el = de.nativeElement;

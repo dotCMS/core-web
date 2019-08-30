@@ -4,7 +4,7 @@ import { DotContentTypesPortletComponent } from '.';
 import { ContentTypesInfoService } from '@services/content-types-info';
 import { CrudService } from '@services/crud';
 import { DotContentTypeService } from '@services/dot-content-type';
-import { ListingDataTableModule } from '@components/listing-data-table';
+import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
 import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
@@ -13,7 +13,7 @@ import { DotContentTypesListingRoutingModule } from './dot-content-types-listing
 @NgModule({
     imports: [
         CommonModule,
-        ListingDataTableModule,
+        DotListingDataTableModule,
         PushPublishContentTypesDialogModule,
         DotBaseTypeSelectorModule,
         DotAddToBundleModule,

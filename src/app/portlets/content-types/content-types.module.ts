@@ -7,7 +7,7 @@ import { ContentTypesRoutingModule } from './content-types-routing.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { FormatDateService } from '@services/format-date-service';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
-import { ListingDataTableModule } from '@components/listing-data-table/listing-data-table.module';
+import { DotListingDataTableModule } from '@components/dot-listing-data-table/dot-listing-data-table.module';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
@@ -137,7 +137,7 @@ import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-tool
         FormsModule,
         IFrameModule,
         InputTextModule,
-        ListingDataTableModule,
+        DotListingDataTableModule,
         MdInputTextModule,
         MultiSelectModule,
         OverlayPanelModule,

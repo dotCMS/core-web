@@ -1,7 +1,7 @@
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { CrudService } from '@services/crud/crud.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ListingDataTableModule } from '@components/listing-data-table/listing-data-table.module';
+import { DotListingDataTableModule } from '@components/dot-listing-data-table/dot-listing-data-table.module';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm/dot-alert-confirm.service';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -126,7 +126,7 @@ describe('DotContentTypesPortletComponent', () => {
                     { path: 'test', component: DotContentTypesPortletComponent }
                 ]),
                 BrowserAnimationsModule,
-                ListingDataTableModule,
+                DotListingDataTableModule,
                 PushPublishContentTypesDialogModule
             ],
             providers: [
