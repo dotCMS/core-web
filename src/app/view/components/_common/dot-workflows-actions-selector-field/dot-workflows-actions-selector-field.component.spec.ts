@@ -48,18 +48,18 @@ const mockActionsGrouped = [
         value: 'workflow',
         items: [
             {
-                name: 'Hello',
-                id: '123'
+                label: 'Hello',
+                value: '123'
             },
             {
-                name: 'World',
-                id: '456'
+                label: 'World',
+                value: '456'
             }
         ]
     }
 ];
 
-describe('DotWorkflowsActionsSelectorFieldComponent', () => {
+fdescribe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let fixtureHost: ComponentFixture<FakeFormComponent>;
     let deHost: DebugElement;
     let componentHost: FakeFormComponent;
@@ -71,6 +71,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
     let getSpy: jasmine.Spy;
 
     const getDropdownDebugElement = () => de.query(By.css('p-dropdown'));
+    const getDropdownComponent = () => getDropdownDebugElement().componentInstance;
 
     beforeEach(async(() => {
         DOTTestBed.configureTestingModule({
@@ -127,7 +128,7 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
             describe('basics', () => {
                 beforeEach(() => {
                     fixtureHost.detectChanges();
-                    dropdown = getDropdownDebugElement().componentInstance;
+                    dropdown = getDropdownComponent();
                 });
 
                 it('should have basics', () => {
@@ -142,36 +143,39 @@ describe('DotWorkflowsActionsSelectorFieldComponent', () => {
             describe('disable', () => {
                 it('should be disable when actions list is empty', () => {
                     fixtureHost.detectChanges();
-                    dropdown = getDropdownDebugElement().componentInstance;
+                    dropdown = getDropdownComponent();
                     expect(dropdown.disabled).toBe(true);
                 });
 
                 it('should be enaled when actions list is filled', () => {
                     getSpy.and.returnValue(of(mockActionsGrouped));
                     fixtureHost.detectChanges();
-                    dropdown = getDropdownDebugElement().componentInstance;
+                    dropdown = getDropdownComponent();
                     expect(dropdown.disabled).toBe(false);
                 });
             });
 
             describe('options', () => {
-                it('should have no options', () => {
-                    fixtureHost.detectChanges();
-                    dropdown = getDropdownDebugElement().componentInstance;
-                    expect(dropdown.options).toEqual([]);
-                });
-
-                it('should have options', () => {
+                it('should have', () => {
                     getSpy.and.returnValue(of(mockActionsGrouped));
                     fixtureHost.detectChanges();
-                    dropdown = getDropdownDebugElement().componentInstance;
+                    dropdown = getDropdownComponent();
                     expect(dropdown.options).toEqual([
                         {
                             label: 'Workflow 1',
                             value: 'workflow',
-                            items: [{ name: 'Hello', id: '123' }, { name: 'World', id: '456' }]
+                            items: [
+                                { label: 'Hello', value: '123' },
+                                { label: 'World', value: '456' }
+                            ]
                         }
                     ]);
+                });
+
+                it('should not have', () => {
+                    fixtureHost.detectChanges();
+                    dropdown = getDropdownComponent();
+                    expect(dropdown.options).toEqual([]);
                 });
             });
         });

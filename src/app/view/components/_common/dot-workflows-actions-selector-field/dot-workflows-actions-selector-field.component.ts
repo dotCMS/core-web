@@ -54,15 +54,18 @@ export class DotWorkflowsActionsSelectorFieldComponent
             tap((actions: SelectItemGroup[]) => {
                 const acionsIds = this.getActionsIds(actions);
 
-                if (!acionsIds.includes(this.value)) {
+                if (acionsIds.length && !acionsIds.includes(this.value)) {
                     this.dropdown.clear(null);
                 }
             })
         );
+        this.dotWorkflowsActionsSelectorFieldService.load(this.workflows);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.dotWorkflowsActionsSelectorFieldService.load(changes.workflows.currentValue);
+        if (!changes.workflows.firstChange) {
+            this.dotWorkflowsActionsSelectorFieldService.load(changes.workflows.currentValue);
+        }
     }
 
     /**
