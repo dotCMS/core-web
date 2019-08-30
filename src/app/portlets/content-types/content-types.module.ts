@@ -3,7 +3,6 @@ import { ContentTypesEditComponent } from './edit';
 import { ContentTypesFormComponent } from './form';
 import { ContentTypesInfoService } from '@services/content-types-info';
 import { ContentTypesLayoutComponent } from './layout';
-import { ContentTypesPortletComponent } from './main';
 import { ContentTypesRoutingModule } from './content-types-routing.module';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { FormatDateService } from '@services/format-date-service';
@@ -90,7 +89,6 @@ import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-tool
         ContentTypesFieldsListComponent,
         ContentTypesFormComponent,
         ContentTypesLayoutComponent,
-        ContentTypesPortletComponent,
         DataTypePropertyComponent,
         DefaultValuePropertyComponent,
         DynamicFieldPropertyDirective,
@@ -109,7 +107,6 @@ import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-tool
         RegexCheckPropertyComponent,
         ValuesPropertyComponent
     ],
-    exports: [ContentTypesPortletComponent],
     imports: [
         ButtonModule,
         CheckboxModule,
