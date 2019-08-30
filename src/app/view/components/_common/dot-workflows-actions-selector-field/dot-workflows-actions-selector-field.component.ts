@@ -52,10 +52,9 @@ export class DotWorkflowsActionsSelectorFieldComponent
         this.placeholder$ = this.getPlaceholder();
         this.actions$ = this.dotWorkflowsActionsSelectorFieldService.get().pipe(
             tap((actions: SelectItemGroup[]) => {
-                console.log('tap', actions);
-                const acionsIds = this.getActionsIds(actions);
+                const actionsIds = this.getActionsIds(actions);
 
-                if (acionsIds.length && !acionsIds.includes(this.value)) {
+                if (actionsIds.length && !actionsIds.includes(this.value)) {
                     this.dropdown.clear(null);
                 }
             })
