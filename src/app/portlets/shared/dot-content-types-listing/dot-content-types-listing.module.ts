@@ -6,15 +6,16 @@ import { CrudService } from '@services/crud';
 import { DotContentTypeService } from '@services/dot-content-type';
 import { DotListingDataTableModule } from '@components/dot-listing-data-table';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
-import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog';
+import { DotPushPublishContentTypesDialogModule } from '@components/_common/dot-push-publish-dialog/dot-push-publish-dialog.module';
 import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { DotContentTypesListingRoutingModule } from './dot-content-types-listing-routing.module';
+
 
 @NgModule({
     imports: [
         CommonModule,
         DotListingDataTableModule,
-        PushPublishContentTypesDialogModule,
+        DotPushPublishContentTypesDialogModule,
         DotBaseTypeSelectorModule,
         DotAddToBundleModule,
         DotContentTypesListingRoutingModule

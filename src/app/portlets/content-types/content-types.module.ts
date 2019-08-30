@@ -64,7 +64,7 @@ import { DotWorkflowsSelectorFieldModule } from '@components/_common/dot-workflo
 import { DynamicFieldPropertyDirective } from './fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
 import { IFrameModule } from '@components/_common/iframe';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
-import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog/push-publish-dialog.module';
+import { DotPushPublishContentTypesDialogModule } from '@components/_common/dot-push-publish-dialog/dot-push-publish-dialog.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 import { DotContentTypeFieldsVariablesModule } from './fields/dot-content-type-fields-variables/dot-content-type-fields-variables.module';
@@ -141,7 +141,7 @@ import { DotEditToolbarModule } from '@portlets/dot-edit-page/main/dot-edit-tool
         MdInputTextModule,
         MultiSelectModule,
         OverlayPanelModule,
-        PushPublishContentTypesDialogModule,
+        DotPushPublishContentTypesDialogModule,
         RadioButtonModule,
         ReactiveFormsModule,
         SearchableDropDownModule,

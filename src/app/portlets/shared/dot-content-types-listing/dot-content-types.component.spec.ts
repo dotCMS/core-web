@@ -14,7 +14,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Injectable } from '@angular/core';
-import { PushPublishContentTypesDialogModule } from '@components/_common/push-publish-dialog/push-publish-dialog.module';
+import { DotPushPublishContentTypesDialogModule } from '@components/_common/dot-push-publish-dialog/dot-push-publish-dialog.module';
 import { PushPublishService } from '@services/push-publish/push-publish.service';
 import { DotLicenseService } from '@services/dot-license/dot-license.service';
 import { SelectItem } from 'primeng/primeng';
@@ -127,7 +127,7 @@ describe('DotContentTypesPortletComponent', () => {
                 ]),
                 BrowserAnimationsModule,
                 DotListingDataTableModule,
-                PushPublishContentTypesDialogModule
+                DotPushPublishContentTypesDialogModule
             ],
             providers: [
                 ContentTypesInfoService,
