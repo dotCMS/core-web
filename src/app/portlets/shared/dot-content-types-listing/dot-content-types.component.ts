@@ -29,8 +29,8 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
  */
 @Component({
     selector: 'dot-content-types',
-    styleUrls: ['./content-types.component.scss'],
-    templateUrl: 'content-types.component.html'
+    styleUrls: ['./dot-content-types.component.scss'],
+    templateUrl: 'dot-content-types.component.html'
 })
 export class ContentTypesPortletComponent implements OnInit {
     @ViewChild('listing')

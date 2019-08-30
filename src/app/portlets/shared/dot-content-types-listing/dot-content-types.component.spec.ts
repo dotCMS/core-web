@@ -7,7 +7,7 @@ import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/c
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
 import { ContentTypesInfoService } from '@services/content-types-info';
-import { ContentTypesPortletComponent } from './content-types.component';
+import { ContentTypesPortletComponent } from './dot-content-types.component';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { FormatDateService } from '@services/format-date-service';
 import { DotMessageService } from '@services/dot-messages-service';
