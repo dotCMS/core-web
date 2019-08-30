@@ -33,7 +33,6 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
     templateUrl: 'content-types.component.html'
 })
 export class ContentTypesPortletComponent implements OnInit {
-
     @ViewChild('listing')
     listing: ListingDataTableComponent;
     filterBy: string;
@@ -94,11 +93,11 @@ export class ContentTypesPortletComponent implements OnInit {
                 pluck('filterBy'),
                 take(1)
             )
-        ).subscribe((res) => {
-            const baseTypes: StructureTypeView[] = res[1];
+        ).subscribe(([_messages, contentTypes, isEnterprise, environments, filterBy]) => {
+            const baseTypes: StructureTypeView[] = contentTypes;
             const rowActionsMap = {
-                pushPublish: res[2] && res[3],
-                addToBundle: res[2]
+                pushPublish: isEnterprise && environments,
+                addToBundle: isEnterprise
             };
 
             this.actionHeaderOptions = {
@@ -109,8 +108,8 @@ export class ContentTypesPortletComponent implements OnInit {
 
             this.contentTypeColumns = this.setContentTypeColumns();
             this.rowActions = this.createRowActions(rowActionsMap);
-            if (res[4]) {
-                this.setFilterByContentType(res[4].toString());
+            if (filterBy) {
+                this.setFilterByContentType(filterBy.toString());
             }
         });
     }
