@@ -3,7 +3,7 @@ import { DOTTestBed } from '../../../test/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
-import { TabViewModule } from 'primeng/primeng';
+import { MenuItem, TabViewModule } from 'primeng/primeng';
 import { MockDotMessageService } from '../../../test/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import { DotCMSContentType } from 'dotcms-models';
 import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-content-types-fields-list',
@@ -70,7 +71,7 @@ const fakeContentType: DotCMSContentType = {
     variable: 'helloVariable'
 };
 
-fdescribe('ContentTypesLayoutComponent', () => {
+describe('ContentTypesLayoutComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let de: DebugElement;
 
@@ -84,7 +85,8 @@ fdescribe('ContentTypesLayoutComponent', () => {
             'contenttypes.tab.relationship.header': 'Relationship',
             'contenttypes.action.edit': 'Edit',
             'contenttypes.content.variable': 'Variable',
-            'contenttypes.form.identifier': 'Identifier'
+            'contenttypes.form.identifier': 'Identifier',
+            'contenttypes.dropzone.rows.add': 'Add Row'
         });
 
         DOTTestBed.configureTestingModule({
@@ -225,6 +227,42 @@ fdescribe('ContentTypesLayoutComponent', () => {
 
                 expect(layoutTitle.nativeElement.textContent).toBe('Layout Title');
                 expect(fieldRowList).not.toBeNull();
+            });
+
+            describe('Add Row Button', () => {
+                let splitButton: DebugElement;
+                let dotEventsService: DotEventsService;
+
+                beforeEach(() => {
+                    splitButton = this.pTabPanel.query(
+                        By.css('.content-type__fields-sidebar p-splitButton')
+                    );
+                    dotEventsService = fixture.debugElement.injector.get(DotEventsService);
+                    spyOn(dotEventsService, 'notify');
+                });
+
+                it('should have the correct label', () => {
+                    expect(splitButton.componentInstance.label).toEqual('Add Row');
+                });
+
+                it('should have the correct icon', () => {
+                    expect(splitButton.componentInstance.icon).toEqual('pi pi-plus');
+                });
+
+                it('should fire event service with add row ', () => {
+                    const button = splitButton.query(By.css('button'));
+                    button.nativeElement.click();
+                    expect(dotEventsService.notify).toHaveBeenCalledWith('add-row');
+                });
+
+                it('should set actions correctly', () => {
+                    const addRow: MenuItem = splitButton.componentInstance.model[0];
+                    const addTabDivider: MenuItem = splitButton.componentInstance.model[1];
+                    addRow.command();
+                    expect(dotEventsService.notify).toHaveBeenCalledWith('add-row');
+                    addTabDivider.command();
+                    expect(dotEventsService.notify).toHaveBeenCalledWith('add-tab-divider');
+                });
             });
         });
 
