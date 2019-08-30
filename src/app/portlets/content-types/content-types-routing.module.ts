@@ -6,7 +6,7 @@ import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.serv
 const contentTypesRoutes: Routes = [
     {
         loadChildren:
-            '@portlets/content-types/main/dot-content-types-listing.module#DotContentTypesListingModule',
+            '@portlets/shared/dot-content-types-listing/dot-content-types-listing.module#DotContentTypesListingModule',
         path: ''
     },
     {
