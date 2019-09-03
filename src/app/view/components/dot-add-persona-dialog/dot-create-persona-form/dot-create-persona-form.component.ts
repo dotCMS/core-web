@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
@@ -14,7 +14,7 @@ import { SiteService } from 'dotcms-js';
     styleUrls: ['./dot-create-persona-form.component.scss']
 })
 export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
-    @Input() personaName: string;
+    @Input() personaName = '';
     @Output() isValid: EventEmitter<Boolean> = new EventEmitter();
 
     form: FormGroup;
@@ -98,7 +98,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     private initPersonaForm(): void {
         this.form = this.fb.group({
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
-            keyTag: [{ value: null, disabled: true }, [Validators.required]],
+            keyTag: [{ value: '', disabled: true }, [Validators.required]],
             name: [this.personaName, [Validators.required]],
             photo: null
         });

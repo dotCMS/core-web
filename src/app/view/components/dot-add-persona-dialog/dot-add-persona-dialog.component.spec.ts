@@ -79,6 +79,13 @@ describe('DotAddPersonaDialogComponent', () => {
             dotDialog = fixture.debugElement.query(By.css('dot-dialog'));
         });
 
+        it('should pass personaName to the dot-persona-form  closeDialog on dotDialog hide', () => {
+            component.personaName = 'Test';
+            fixture.detectChanges();
+            const personaForm = fixture.debugElement.query(By.css('dot-create-persona-form'));
+            expect(personaForm.componentInstance.personaName).toEqual('Test');
+        });
+
         it('should set dialog attributes correctly', () => {
             expect(dotDialog.componentInstance.header).toEqual('Add Persona');
             expect(dotDialog.componentInstance.appendToBody).toBe(true);
@@ -114,6 +121,8 @@ describe('DotAddPersonaDialogComponent', () => {
             dotDialog.componentInstance.hide.emit();
             expect(component.closeDialog).toHaveBeenCalled();
         });
+
+
 
         describe('call to dotWorkflowActionsFireService endpoint', () => {
             let dotHttpErrorManagerService: DotHttpErrorManagerService;
