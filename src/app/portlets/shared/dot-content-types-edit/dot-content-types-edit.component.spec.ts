@@ -2,7 +2,7 @@ import { throwError, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture } from '@angular/core/testing';
-import { ContentTypesEditComponent } from './content-types-edit.component';
+import { DotContentTypesEditComponent } from './dot-content-types-edit.component';
 import { DotCrudService } from '@services/dot-crud/dot-crud.service';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { DebugElement, Component, Input, Output, EventEmitter } from '@angular/core';
@@ -11,7 +11,7 @@ import {
     DotCMSContentTypeLayoutRow,
     DotCMSContentType
 } from 'dotcms-models';
-import { FieldService } from '../fields/service';
+import { FieldService } from '../../content-types/fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
@@ -32,7 +32,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { DotEditContentTypeCacheService } from '../fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
+import { DotEditContentTypeCacheService } from '../../content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
 import {
@@ -101,10 +101,10 @@ const messageServiceMock = new MockDotMessageService({
     'contenttypes.dropzone.rows.tab_divider': 'Add tab'
 });
 
-const getConfig = route => {
+const getConfig = (route) => {
     return {
         declarations: [
-            ContentTypesEditComponent,
+            DotContentTypesEditComponent,
             TestContentTypeFieldsDropZoneComponent,
             TestContentTypesFormComponent,
             TestContentTypeLayoutComponent,
@@ -114,7 +114,7 @@ const getConfig = route => {
             RouterTestingModule.withRoutes([
                 {
                     path: 'content-types-angular',
-                    component: ContentTypesEditComponent
+                    component: DotContentTypesEditComponent
                 }
             ]),
             BrowserAnimationsModule,
@@ -153,8 +153,8 @@ const getConfig = route => {
     };
 };
 
-let comp: ContentTypesEditComponent;
-let fixture: ComponentFixture<ContentTypesEditComponent>;
+let comp: DotContentTypesEditComponent;
+let fixture: ComponentFixture<DotContentTypesEditComponent>;
 let de: DebugElement;
 let crudService: DotCrudService;
 let location: Location;
@@ -163,34 +163,32 @@ let dotHttpErrorManagerService: DotHttpErrorManagerService;
 let testHotKeysMock: TestHotkeysMock;
 let dialog: DebugElement;
 
-describe('ContentTypesEditComponent', () => {
+describe('DotContentTypesEditComponent', () => {
     describe('create mode', () => {
-        beforeEach(
-            async(() => {
-                testHotKeysMock = new TestHotkeysMock();
-                const configCreateMode = getConfig({
-                    contentType: {
-                        baseType: 'CONTENT'
-                    }
-                });
+        beforeEach(async(() => {
+            testHotKeysMock = new TestHotkeysMock();
+            const configCreateMode = getConfig({
+                contentType: {
+                    baseType: 'CONTENT'
+                }
+            });
 
-                DOTTestBed.configureTestingModule(configCreateMode);
+            DOTTestBed.configureTestingModule(configCreateMode);
 
-                fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
-                comp = fixture.componentInstance;
-                de = fixture.debugElement;
+            fixture = DOTTestBed.createComponent(DotContentTypesEditComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
 
-                crudService = de.injector.get(DotCrudService);
-                location = de.injector.get(Location);
-                dotRouterService = de.injector.get(DotRouterService);
-                dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
+            crudService = de.injector.get(DotCrudService);
+            location = de.injector.get(Location);
+            dotRouterService = de.injector.get(DotRouterService);
+            dotHttpErrorManagerService = de.injector.get(DotHttpErrorManagerService);
 
-                fixture.detectChanges();
-                dialog = de.query(By.css('dot-dialog'));
+            fixture.detectChanges();
+            dialog = de.query(By.css('dot-dialog'));
 
-                spyOn(comp, 'onDialogHide').and.callThrough();
-            })
-        );
+            spyOn(comp, 'onDialogHide').and.callThrough();
+        }));
 
         it('should have dialog opened by default & has css base-type class', () => {
             expect(dialog).not.toBeNull();
@@ -423,26 +421,24 @@ describe('ContentTypesEditComponent', () => {
     });
 
     describe('edit mode', () => {
-        beforeEach(
-            async(() => {
-                DOTTestBed.configureTestingModule(configEditMode);
+        beforeEach(async(() => {
+            DOTTestBed.configureTestingModule(configEditMode);
 
-                fixture = DOTTestBed.createComponent(ContentTypesEditComponent);
-                comp = fixture.componentInstance;
-                de = fixture.debugElement;
+            fixture = DOTTestBed.createComponent(DotContentTypesEditComponent);
+            comp = fixture.componentInstance;
+            de = fixture.debugElement;
 
-                crudService = fixture.debugElement.injector.get(DotCrudService);
-                location = fixture.debugElement.injector.get(Location);
-                dotRouterService = fixture.debugElement.injector.get(DotRouterService);
-                dotHttpErrorManagerService = fixture.debugElement.injector.get(
-                    DotHttpErrorManagerService
-                );
+            crudService = fixture.debugElement.injector.get(DotCrudService);
+            location = fixture.debugElement.injector.get(Location);
+            dotRouterService = fixture.debugElement.injector.get(DotRouterService);
+            dotHttpErrorManagerService = fixture.debugElement.injector.get(
+                DotHttpErrorManagerService
+            );
 
-                fixture.detectChanges();
+            fixture.detectChanges();
 
-                spyOn(comp, 'onDialogHide').and.callThrough();
-            })
-        );
+            spyOn(comp, 'onDialogHide').and.callThrough();
+        }));
 
         const clickEditButton = () => {
             const contentTypeLayout = de.query(By.css('dot-content-type-layout'));
@@ -616,7 +612,7 @@ describe('ContentTypesEditComponent', () => {
 
         it('should update fields on dropzone event when creating a new row and move a existing field', () => {
             const fieldsReturnByServer: DotCMSContentTypeField[] = currentFieldsInServer.map(
-                field => {
+                (field) => {
                     const newfield = Object.assign({}, field);
 
                     if (!newfield.id) {
@@ -654,7 +650,7 @@ describe('ContentTypesEditComponent', () => {
             expect(comp.layout).toEqual(layout);
         });
 
-        it("should handle 403 when user doesn't have permission to save feld", () => {
+        it('should handle 403 when user doesn\'t have permission to save feld', () => {
             const dropZone = de.query(By.css('dot-content-type-fields-drop-zone'));
             spyOn(dropZone.componentInstance, 'cancelLastDragAndDrop').and.callThrough();
 

@@ -1,7 +1,6 @@
-import { ContentTypesEditComponent } from './edit';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContentTypeEditResolver } from './edit/content-types-edit-resolver.service';
+import { DotContentTypeEditResolver } from '../shared/dot-content-types-edit/dot-content-types-edit-resolver.service';
 
 const contentTypesRoutes: Routes = [
     {
@@ -14,10 +13,11 @@ const contentTypesRoutes: Routes = [
         redirectTo: ''
     },
     {
-        component: ContentTypesEditComponent,
+        loadChildren:
+            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#ContentTypesEditModule',
         path: 'create/:type',
         resolve: {
-            contentType: ContentTypeEditResolver
+            contentType: DotContentTypeEditResolver
         }
     },
     {
@@ -25,10 +25,11 @@ const contentTypesRoutes: Routes = [
         redirectTo: ''
     },
     {
-        component: ContentTypesEditComponent,
+        loadChildren:
+            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#ContentTypesEditModule',
         path: 'edit/:id',
         resolve: {
-            contentType: ContentTypeEditResolver
+            contentType: DotContentTypeEditResolver
         }
     }
 ];

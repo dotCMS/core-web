@@ -16,11 +16,11 @@ import { take, map, catchError } from 'rxjs/operators';
  * With the url return a content type by id or a default content type
  *
  * @export
- * @class ContentTypeEditResolver
+ * @class DotContentTypeEditResolver
  * @implements {Resolve<ContentType>}
  */
 @Injectable()
-export class ContentTypeEditResolver implements Resolve<DotCMSContentType> {
+export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: DotCrudService,

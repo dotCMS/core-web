@@ -8,10 +8,10 @@ import {
     DotCMSContentTypeLayoutRow,
     DotCMSWorkflow
 } from 'dotcms-models';
-import { ContentTypesFormComponent } from '../form';
+import { ContentTypesFormComponent } from '../../content-types/form';
 import { DotCrudService } from '@services/dot-crud';
-import { ContentTypeFieldsDropZoneComponent } from '../fields/index';
-import { FieldService } from '../fields/service';
+import { ContentTypeFieldsDropZoneComponent } from '../../content-types/fields/index';
+import { FieldService } from '../../content-types/fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -24,22 +24,22 @@ import { ResponseView } from 'dotcms-js';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
-import { DotEditContentTypeCacheService } from '../fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
+import { DotEditContentTypeCacheService } from '../../content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 /**
  * Portlet component for edit content types
  *
  * @export
- * @class ContentTypesEditComponent
+ * @class DotContentTypesEditComponent
  * @implements {OnInit}
  */
 @Component({
     selector: 'dot-content-types-edit',
-    templateUrl: './content-types-edit.component.html',
-    styleUrls: ['./content-types-edit.component.scss']
+    templateUrl: './dot-content-types-edit.component.html',
+    styleUrls: ['./dot-content-types-edit.component.scss']
 })
-export class ContentTypesEditComponent implements OnInit, OnDestroy {
+export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     @ViewChild('form')
     contentTypesForm: ContentTypesFormComponent;
 
@@ -140,7 +140,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Handle hide dialog
      *
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     onDialogHide(): void {
         if (!this.isEditMode()) {
@@ -151,7 +151,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Show and set options for dialog
      *
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     startFormDialog(): void {
         this.show = true;
@@ -160,7 +160,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
 
     /**
      * Set the icon, labels and placeholder in the template
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     setTemplateInfo(): void {
         this.dotMessageService.messageMap$.pipe(take(1)).subscribe(() => {
@@ -186,7 +186,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * Set the state for the ok action for the dialog
      *
      * @param {boolean} $event
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     setDialogOkButtonState(formIsValid: boolean): void {
         this.dialogActions = {
@@ -202,7 +202,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * Check if we need to update or create a content type
      *
      * @param {DotCMSContentType} value
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     handleFormSubmit(value: DotCMSContentType): void {
         this.isEditMode() ? this.updateContentType(value) : this.createContentType(value);
@@ -212,7 +212,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * Check if the component is in edit mode
      *
      * @returns boolean
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     isEditMode(): boolean {
         return !!(this.data && this.data.id);
@@ -221,7 +221,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Remove fields from the content type
      * @param DotContentTypeField[] fieldsToDelete Fields to be removed
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     removeFields(fieldsToDelete: DotCMSContentTypeField[]): void {
         this.fieldService
@@ -246,7 +246,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Save fields to the content type
      * @param layout layout to be save
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     saveFields(layout: DotCMSContentTypeLayoutRow[]): void {
         this.loadingFields = true;
@@ -274,7 +274,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
      * Edit the properties of a field
      *
      * @param {DotCMSContentTypeField} fieldsToEdit field to be edit
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     editField(fieldsToEdit: DotCMSContentTypeField): void {
         this.loadingFields = true;
@@ -300,7 +300,7 @@ export class ContentTypesEditComponent implements OnInit, OnDestroy {
     /**
      * Send a notification of Add Row event to be handle elsewhere
      *
-     * @memberof ContentTypesEditComponent
+     * @memberof DotContentTypesEditComponent
      */
     notifyAddEvt(typeEvt: string): void {
         this.dotEventsService.notify(typeEvt);

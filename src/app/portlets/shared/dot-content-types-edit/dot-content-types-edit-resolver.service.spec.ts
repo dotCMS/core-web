@@ -1,6 +1,6 @@
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
-import { ContentTypeEditResolver } from './content-types-edit-resolver.service';
+import { DotContentTypeEditResolver } from './dot-content-types-edit-resolver.service';
 import { async } from '@angular/core/testing';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotCrudService } from '@services/dot-crud';
@@ -22,16 +22,16 @@ const activatedRouteSnapshotMock: any = jasmine.createSpyObj<ActivatedRouteSnaps
 );
 activatedRouteSnapshotMock.paramMap = {};
 
-describe('ContentTypeEditResolver', () => {
+describe('DotContentTypeEditResolver', () => {
     let crudService: DotCrudService;
-    let contentTypeEditResolver: ContentTypeEditResolver;
+    let dotContentTypeEditResolver: DotContentTypeEditResolver;
     let dotRouterService: DotRouterService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
 
     beforeEach(async(() => {
         const testbed = DOTTestBed.configureTestingModule({
             providers: [
-                ContentTypeEditResolver,
+                DotContentTypeEditResolver,
                 DotContentTypesInfoService,
                 DotHttpErrorManagerService,
                 { provide: DotCrudService, useClass: CrudServiceMock },
@@ -44,7 +44,7 @@ describe('ContentTypeEditResolver', () => {
             imports: [RouterTestingModule]
         });
         crudService = testbed.get(DotCrudService);
-        contentTypeEditResolver = testbed.get(ContentTypeEditResolver);
+        dotContentTypeEditResolver = testbed.get(DotContentTypeEditResolver);
         dotRouterService = testbed.get(DotRouterService);
         dotHttpErrorManagerService = testbed.get(DotHttpErrorManagerService);
     }));
@@ -58,7 +58,7 @@ describe('ContentTypeEditResolver', () => {
             })
         );
 
-        contentTypeEditResolver
+        dotContentTypeEditResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((fakeContentType: any) => {
                 expect(fakeContentType).toEqual({
@@ -69,7 +69,7 @@ describe('ContentTypeEditResolver', () => {
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
     });
 
-    it("should redirect to content-types if content type it's not found", () => {
+    it('should redirect to content-types if content type it\'s not found', () => {
         activatedRouteSnapshotMock.paramMap.get = () => 'invalid-id';
 
         spyOn(dotHttpErrorManagerService, 'handle').and.returnValue(
@@ -89,7 +89,7 @@ describe('ContentTypeEditResolver', () => {
             })
         );
 
-        contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
+        dotContentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
 
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', 'invalid-id');
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular', true);
@@ -115,7 +115,7 @@ describe('ContentTypeEditResolver', () => {
             })
         );
 
-        contentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
+        dotContentTypeEditResolver.resolve(activatedRouteSnapshotMock).subscribe();
         expect(crudService.getDataById).toHaveBeenCalledWith('v1/contenttype', '123');
         expect(dotRouterService.gotoPortlet).toHaveBeenCalledWith('/content-types-angular', true);
     });
@@ -126,7 +126,7 @@ describe('ContentTypeEditResolver', () => {
         };
 
         spyOn(crudService, 'getDataById').and.returnValue(observableOf(false));
-        contentTypeEditResolver
+        dotContentTypeEditResolver
             .resolve(activatedRouteSnapshotMock)
             .subscribe((res: DotCMSContentType) => {
                 expect(res).toEqual({
