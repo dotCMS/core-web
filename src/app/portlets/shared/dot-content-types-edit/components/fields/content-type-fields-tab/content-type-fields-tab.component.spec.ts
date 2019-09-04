@@ -1,12 +1,12 @@
 import { async, ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DebugElement, Component} from '@angular/core';
 import { ContentTypeFieldsTabComponent } from '.';
 import { By } from '@angular/platform-browser';
 import { DotCMSContentTypeField, DotCMSContentTypeLayoutRow } from 'dotcms-models';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotMessageService } from '@services/dot-messages-service';
-import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotAlertConfirmService } from '@services/dot-alert-confirm';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 

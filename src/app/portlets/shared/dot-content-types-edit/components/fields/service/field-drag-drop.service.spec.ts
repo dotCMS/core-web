@@ -1,4 +1,4 @@
-import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { FieldDragDropService } from './field-drag-drop.service';
 import { DragulaService } from 'ng2-dragula';
 import { Subject, Observable } from 'rxjs';

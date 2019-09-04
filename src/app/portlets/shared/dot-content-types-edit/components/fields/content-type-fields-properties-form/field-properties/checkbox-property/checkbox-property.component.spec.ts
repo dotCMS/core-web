@@ -2,10 +2,10 @@ import { CheckboxPropertyComponent } from '.';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { async } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
-import { MockDotMessageService } from '../../../../../../../../test/dot-message-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { FormGroup, FormControl } from '@angular/forms';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 

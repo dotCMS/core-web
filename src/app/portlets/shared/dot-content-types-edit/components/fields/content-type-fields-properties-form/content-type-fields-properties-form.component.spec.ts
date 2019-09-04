@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { ContentTypeFieldsPropertiesFormComponent } from './content-type-fields-properties-form.component';
 import { ComponentFixture, async } from '@angular/core/testing';
-import { MockDotMessageService } from '../../../../../../test/dot-message-service.mock';
-import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { FieldPropertyService } from '../service';
 import { DotMessageService } from '@services/dot-messages-service';

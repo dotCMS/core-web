@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { async, ComponentFixture } from '@angular/core/testing';
-import { DOTTestBed } from '../../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DebugElement } from '@angular/core';
 import { ContentTypesFieldsListComponent } from './content-types-fields-list.component';
 import { By } from '@angular/platform-browser';

@@ -1,8 +1,8 @@
 import { CategoriesPropertyComponent } from './categories-property.component';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement, Injectable, Input, Output, EventEmitter, Component } from '@angular/core';
-import { MockDotMessageService } from '../../../../../../../../test/dot-message-service.mock';
-import { DOTTestBed } from '../../../../../../../../test/dot-test-bed';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { PaginatorService } from '@services/paginator';
 import { DotMessageService } from '@services/dot-messages-service';
 import { PaginationEvent } from '@components/_common/searchable-dropdown/component';

@@ -5,8 +5,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RegexCheckPropertyComponent } from './index';
 import { ComponentFixture, async } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { MockDotMessageService } from '../../../../../../../../test/dot-message-service.mock';
-import { DOTTestBed } from '../../../../../../../../test/dot-test-bed';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotMessageService } from '@services/dot-messages-service';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';
 

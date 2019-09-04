@@ -1,7 +1,7 @@
 import { Response, ResponseOptions, ConnectionBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { DotFieldVariablesService } from './dot-field-variables.service';
-import { DOTTestBed } from '../../../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotFieldVariable } from '../models/dot-field-variable.interface';
 import { DotCMSContentTypeField } from 'dotcms-models';
 import { dotcmsContentTypeFieldBasicMock } from '@tests/dot-content-types.mock';

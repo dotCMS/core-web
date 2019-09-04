@@ -1,10 +1,10 @@
 import { of as observableOf, Observable } from 'rxjs';
-import { DOTTestBed } from '../../../../../test/dot-test-bed';
+import { DOTTestBed } from '@tests/dot-test-bed';
 import { ContentTypesLayoutComponent } from './content-types-layout.component';
 import { ComponentFixture } from '@angular/core/testing';
 import { DebugElement, Component, Input, Injectable, Output, EventEmitter } from '@angular/core';
 import { MenuItem, TabViewModule } from 'primeng/primeng';
-import { MockDotMessageService } from '../../../../../test/dot-message-service.mock';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { By } from '@angular/platform-browser';
 import { DotMenuService } from '@services/dot-menu.service';

@@ -7,11 +7,11 @@ import {
     OnDestroy,
     ViewChild
 } from '@angular/core';
-import { DotMessageService } from '../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import {
     DotFieldVariablesService
 } from './services/dot-field-variables.service';
-import { DotHttpErrorManagerService } from '../../../../../../api/services/dot-http-error-manager/dot-http-error-manager.service';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
 import { DotFieldVariable } from './models/dot-field-variable.interface';
 import { ResponseView } from 'dotcms-js';
 import { take, takeUntil } from 'rxjs/operators';

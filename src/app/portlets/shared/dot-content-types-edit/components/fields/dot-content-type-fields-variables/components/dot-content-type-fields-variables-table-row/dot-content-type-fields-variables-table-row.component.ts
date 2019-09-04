@@ -7,7 +7,7 @@ import {
     ViewChild,
     ElementRef
 } from '@angular/core';
-import { DotMessageService } from '../../../../../../../../api/services/dot-messages-service';
+import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import { DotFieldVariable } from '../../models/dot-field-variable.interface';
 
