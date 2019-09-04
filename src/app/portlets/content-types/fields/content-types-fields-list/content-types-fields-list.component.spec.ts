@@ -67,7 +67,7 @@ describe('ContentTypesFieldsListComponent', () => {
         })
     );
 
-    describe('with empty contentBaseType ', () => {
+    describe('with empty Content baseType ', () => {
         beforeEach(() => {
             fixture.detectChanges();
             items = de.queryAll(By.css('li span'));
@@ -104,12 +104,12 @@ describe('ContentTypesFieldsListComponent', () => {
         });
     });
 
-    describe('with FORM contentBaseType ', () => {
+    describe('with FORM Content baseType ', () => {
         let component: ContentTypesFieldsListComponent;
 
         beforeEach(() => {
             component = fixture.componentInstance;
-            component.contentBaseType = 'FORM';
+            component.baseType = 'FORM';
             fixture.detectChanges();
             items = de.queryAll(By.css('li span'));
         });

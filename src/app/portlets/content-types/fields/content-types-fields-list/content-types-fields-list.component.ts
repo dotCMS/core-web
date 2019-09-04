@@ -15,7 +15,7 @@ import { FieldUtil } from '../util/field-util';
     templateUrl: './content-types-fields-list.component.html'
 })
 export class ContentTypesFieldsListComponent implements OnInit {
-    @Input() contentBaseType: string;
+    @Input() baseType: string;
 
     fieldTypes: { clazz: string; name: string }[];
 
@@ -58,7 +58,7 @@ export class ContentTypesFieldsListComponent implements OnInit {
                 let fieldsFiltered = mappedFields.filter(
                     field => field.clazz !== LIVE_DIVIDER_CLAZZ
                 );
-                if (this.contentBaseType === 'FORM') {
+                if (this.baseType === 'FORM') {
                     fieldsFiltered = fieldsFiltered.filter(field => this.isFormField(field));
                 }
 

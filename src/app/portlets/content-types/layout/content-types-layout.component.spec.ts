@@ -23,7 +23,7 @@ import { DotEventsService } from '@services/dot-events/dot-events.service';
     template: ''
 })
 class TestContentTypeFieldsListComponent {
-    @Input() contentBaseType: string;
+    @Input() baseType: string;
 }
 
 @Component({
@@ -217,7 +217,7 @@ describe('ContentTypesLayoutComponent', () => {
                     By.css('dot-content-types-fields-list')
                 );
                 expect(contentTypesFieldsList).not.toBeNull();
-                expect(contentTypesFieldsList.componentInstance.contentBaseType).toEqual('testBaseType');
+                expect(contentTypesFieldsList.componentInstance.baseType).toEqual('testBaseType');
             });
 
             // Hiding the rows list for 5.0
