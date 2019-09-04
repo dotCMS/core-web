@@ -14,7 +14,7 @@ const contentTypesRoutes: Routes = [
     },
     {
         loadChildren:
-            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#ContentTypesEditModule',
+            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#DotContentTypesEditModule',
         path: 'create/:type',
         resolve: {
             contentType: DotContentTypeEditResolver
@@ -26,7 +26,7 @@ const contentTypesRoutes: Routes = [
     },
     {
         loadChildren:
-            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#ContentTypesEditModule',
+            '@portlets/shared/dot-content-types-edit/dot-content-types-edit.module#DotContentTypesEditModule',
         path: 'edit/:id',
         resolve: {
             contentType: DotContentTypeEditResolver
@@ -39,4 +39,4 @@ const contentTypesRoutes: Routes = [
     imports: [RouterModule.forChild(contentTypesRoutes)],
     providers: [DotContentTypeEditResolver]
 })
-export class ContentTypesRoutingModule {}
+export class DotContentTypesRoutingModule {}

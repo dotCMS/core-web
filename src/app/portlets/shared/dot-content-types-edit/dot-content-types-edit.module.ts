@@ -161,4 +161,4 @@ import { FormatDateService } from '@services/format-date-service';
         FormatDateService
     ]
 })
-export class ContentTypesEditModule {}
+export class DotContentTypesEditModule {}
