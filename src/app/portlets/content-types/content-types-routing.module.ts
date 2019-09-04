@@ -36,6 +36,7 @@ const contentTypesRoutes: Routes = [
 
 @NgModule({
     exports: [RouterModule],
-    imports: [RouterModule.forChild(contentTypesRoutes)]
+    imports: [RouterModule.forChild(contentTypesRoutes)],
+    providers: [DotContentTypeEditResolver]
 })
 export class ContentTypesRoutingModule {}

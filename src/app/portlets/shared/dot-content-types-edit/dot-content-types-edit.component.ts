@@ -8,10 +8,10 @@ import {
     DotCMSContentTypeLayoutRow,
     DotCMSWorkflow
 } from 'dotcms-models';
-import { ContentTypesFormComponent } from '../../content-types/form';
+import { ContentTypesFormComponent } from './components/form';
 import { DotCrudService } from '@services/dot-crud';
-import { ContentTypeFieldsDropZoneComponent } from '../../content-types/fields/index';
-import { FieldService } from '../../content-types/fields/service';
+import { ContentTypeFieldsDropZoneComponent } from './components/fields/index';
+import { FieldService } from './components/fields/service';
 import { DotMessageService } from '@services/dot-messages-service';
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -24,7 +24,7 @@ import { ResponseView } from 'dotcms-js';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { Subject } from 'rxjs';
-import { DotEditContentTypeCacheService } from '../../content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
+import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
 /**

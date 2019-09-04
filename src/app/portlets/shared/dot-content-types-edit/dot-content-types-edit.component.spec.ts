@@ -11,7 +11,7 @@ import {
     DotCMSContentTypeLayoutRow,
     DotCMSContentType
 } from 'dotcms-models';
-import { FieldService } from '../../content-types/fields/service';
+import { FieldService } from './components/fields/service';
 import { Location } from '@angular/common';
 import { LoginService, SiteService } from 'dotcms-js';
 import { LoginServiceMock } from '../../../test/login-service.mock';
@@ -32,7 +32,7 @@ import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-ico
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { MenuItem } from 'primeng/primeng';
 import { DotDialogModule } from '@components/dot-dialog/dot-dialog.module';
-import { DotEditContentTypeCacheService } from '../../content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
+import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { SiteServiceMock } from 'src/app/test/site-service.mock';
 import * as _ from 'lodash';
 import {

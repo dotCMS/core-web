@@ -20,7 +20,7 @@ import {
     HintPropertyComponent,
     RegexCheckPropertyComponent,
     ValuesPropertyComponent
-} from '@portlets/content-types/fields/content-type-fields-properties-form/field-properties';
+} from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties';
 import {
     ContentTypeFieldsDropZoneComponent,
     ContentTypesFieldsListComponent,
@@ -29,17 +29,17 @@ import {
     ContentTypeFieldsAddRowModule,
     ContentTypeFieldsPropertiesFormComponent,
     ContentTypesFieldDragabbleItemComponent
-} from '@portlets/content-types/fields';
+} from '@portlets/shared/dot-content-types-edit/components/fields';
 import {
     FieldDragDropService,
     FieldPropertyService,
     FieldService
-} from '@portlets/content-types/fields/service';
+} from '@portlets/shared/dot-content-types-edit/components/fields/service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotContentTypesEditComponent } from './dot-content-types-edit.component';
-import { ContentTypesLayoutComponent } from '../../content-types/layout/content-types-layout.component';
-import { ContentTypesFormComponent } from '../../content-types/form/content-types-form.component';
+import { ContentTypesLayoutComponent } from './components/layout/content-types-layout.component';
+import { ContentTypesFormComponent } from './components/form/content-types-form.component';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotMenuModule } from '@components/_common/dot-menu/dot-menu.module';
@@ -54,11 +54,11 @@ import { DotPageSelectorModule } from '@components/_common/dot-page-selector/dot
 import { DotFieldHelperModule } from '@components/dot-field-helper/dot-field-helper.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
-import { DotContentTypeFieldsVariablesModule } from '@portlets/content-types/fields/dot-content-type-fields-variables/dot-content-type-fields-variables.module';
+import { DotContentTypeFieldsVariablesModule } from '@portlets/shared/dot-content-types-edit/components/fields/dot-content-type-fields-variables/dot-content-type-fields-variables.module';
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { DotIconButtonTooltipModule } from '@components/_common/dot-icon-button-tooltip/dot-icon-button-tooltip.module';
 import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
-import { DynamicFieldPropertyDirective } from '@portlets/content-types/fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
+import { DynamicFieldPropertyDirective } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dynamic-field-property-directive/dynamic-field-property.directive';
 import { DotContentTypesEditRoutingModule } from './dot-content-types-edit-routing.module';
 import { SearchableDropDownModule } from '@components/_common/searchable-dropdown';
 import { DotTextareaContentModule } from '@components/_common/dot-textarea-content/dot-textarea-content.module';
@@ -66,7 +66,7 @@ import { DotAddToBundleModule } from '@components/_common/dot-add-to-bundle';
 import { DotBaseTypeSelectorModule } from '@components/dot-base-type-selector';
 import { DotDirectivesModule } from '@shared/dot-directives.module';
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
-import { DotRelationshipsModule } from '@portlets/content-types/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/dot-relationships.module';
+import { DotRelationshipsModule } from '@portlets/shared/dot-content-types-edit/components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/dot-relationships.module';
 import { DotPushPublishContentTypesDialogModule } from '@components/_common/dot-push-publish-dialog';
 import { DotMaxlengthModule } from '@directives/dot-maxlength/dot-maxlength.module';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
