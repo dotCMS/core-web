@@ -110,7 +110,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             this.contentTypeColumns = this.setContentTypeColumns();
             this.rowActions = this.createRowActions(rowActionsMap);
             if (filterBy) {
-                this.setFilterByContentType(filterBy.toString());
+                this.setFilterByContentType(filterBy as string);
             }
         });
     }
@@ -131,10 +131,10 @@ export class DotContentTypesPortletComponent implements OnInit {
     private setFilterByContentType(contentType: string) {
         this.filterBy = _.startCase(_.toLower(contentType));
         this.listing.paginatorService.setExtraParams('type', this.filterBy);
-        const model = this.actionHeaderOptions.primary.model.filter(
-            (item: ButtonModel) => item.label.toUpperCase() === this.filterBy.toUpperCase()
-        );
-        this.actionHeaderOptions.primary.command = model[0].command;
+
+        this.actionHeaderOptions.primary.command = ($event) => {
+                this.createContentType(null, $event);
+            };
         this.actionHeaderOptions.primary.model = null;
     }
 
@@ -243,7 +243,11 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     private createContentType(type: string, _event?): void {
-        this.router.navigate(['create', type], { relativeTo: this.route });
+        const params = ['create'];
+        if (type) {
+            params.push(type);
+        }
+        this.router.navigate(params, { relativeTo: this.route });
     }
 
     private removeConfirmation(item: any): void {
