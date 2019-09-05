@@ -59,6 +59,7 @@ export class DotAddPersonaDialogComponent implements OnInit {
                         this.closeDialog();
                     },
                     (error: ResponseView) => {
+                        debugger;
                         this.dotHttpErrorManagerService
                             .handle(error)
                             .pipe(take(1))
