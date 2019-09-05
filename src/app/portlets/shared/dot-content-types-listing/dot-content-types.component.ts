@@ -131,9 +131,11 @@ export class DotContentTypesPortletComponent implements OnInit {
     private setFilterByContentType(contentType: string) {
         this.filterBy = _.startCase(_.toLower(contentType));
         this.listing.paginatorService.setExtraParams('type', this.filterBy);
-        this.actionHeaderOptions.primary.model = this.actionHeaderOptions.primary.model.filter(
-            (item: ButtonModel) => item.label === this.filterBy
+        const model = this.actionHeaderOptions.primary.model.filter(
+            (item: ButtonModel) => item.label.toUpperCase() === this.filterBy.toUpperCase()
         );
+        this.actionHeaderOptions.primary.command = model[0].command;
+        this.actionHeaderOptions.primary.model = null;
     }
 
     private getPublishActions(pushPublish: boolean, addToBundle: boolean): DotDataTableAction[] {
