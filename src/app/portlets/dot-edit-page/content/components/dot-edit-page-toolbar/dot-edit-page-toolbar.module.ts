@@ -8,7 +8,7 @@ import { DotEditPageStateControllerModule } from '../dot-edit-page-state-control
 import { DotEditPageInfoModule } from '@portlets/dot-edit-page/components/dot-edit-page-info/dot-edit-page-info.module';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
-import {DotSecondaryToolbarModule} from '@components/dot-secondary-toolbar/dot-secondary-toolbar.module';
+import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 @NgModule({
     imports: [

@@ -33,7 +33,7 @@ import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-re
 import { DotIconButtonModule } from '@components/_common/dot-icon-button/dot-icon-button.module';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models';
 import { DotGlobalMessageModule } from '@components/_common/dot-global-message/dot-global-message.module';
-import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar/dot-secondary-toolbar.module';
+import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 @Component({
     selector: 'dot-template-addtional-actions-menu',

@@ -16,7 +16,7 @@ import { dotcmsContentTypeBasicMock } from '@tests/dot-content-types.mock';
 import { DotApiLinkModule } from '@components/dot-api-link/dot-api-link.module';
 import { DotCopyButtonModule } from '@components/dot-copy-button/dot-copy-button.module';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
-import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar/dot-secondary-toolbar.module';
+import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 @Component({
     selector: 'dot-content-types-fields-list',

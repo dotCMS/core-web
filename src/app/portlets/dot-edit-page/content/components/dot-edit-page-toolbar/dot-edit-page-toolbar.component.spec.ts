@@ -25,7 +25,7 @@ import { SiteService, LoginService } from 'dotcms-js';
 import { SiteServiceMock } from '@tests/site-service.mock';
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
 import { LoginServiceMock } from '@tests/login-service.mock';
-import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar/dot-secondary-toolbar.module';
+import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 @Component({
     selector: 'dot-test-host-component',

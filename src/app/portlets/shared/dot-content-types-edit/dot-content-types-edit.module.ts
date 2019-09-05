@@ -72,7 +72,7 @@ import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.modu
 import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { FormatDateService } from '@services/format-date-service';
-import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar/dot-secondary-toolbar.module';
+import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
 
 @NgModule({
     declarations: [
