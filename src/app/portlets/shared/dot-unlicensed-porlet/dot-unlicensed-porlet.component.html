@@ -1,8 +1,13 @@
-<h3 [innerHTML]="data.title"></h3>
+<dot-icon name="business" [size]="120"></dot-icon>
+
+<h4 [innerHTML]="data.title"></h4>
+<p [innerHTML]="data.description"></p>
 <ul>
     <li *ngFor="let item of data.links">
         <a [href]="item.link" target="_blank">{{ item.text }}</a>
     </li>
 </ul>
 
-<p></p>
+<p>
+    <a class="ui-link" href="https://dotcms.com/licensing/request-a-license-3/index">Request a Trial License</a>
+</p>
