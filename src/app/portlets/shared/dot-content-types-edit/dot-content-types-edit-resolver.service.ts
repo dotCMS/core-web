@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, Observable, of } from 'rxjs';
 import {
     DotHttpErrorManagerService,
     DotHttpErrorHandled
@@ -10,7 +10,12 @@ import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotCMSContentType } from 'dotcms-models';
 import { LoginService, ResponseView } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
-import { take, map, catchError } from 'rxjs/operators';
+import { take, map, catchError, switchMap } from 'rxjs/operators';
+import { DotLicenseService } from '@services/dot-license/dot-license.service';
+
+export interface DotCMSPortletFallback {
+    name: string;
+}
 
 /**
  * With the url return a content type by id or a default content type
@@ -20,13 +25,15 @@ import { take, map, catchError } from 'rxjs/operators';
  * @implements {Resolve<ContentType>}
  */
 @Injectable()
-export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
+export class DotContentTypeEditResolver
+    implements Resolve<DotCMSPortletFallback | DotCMSContentType> {
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: DotCrudService,
         private dotHttpErrorManagerService: DotHttpErrorManagerService,
         private dotRouterService: DotRouterService,
-        private loginService: LoginService
+        private loginService: LoginService,
+        private dotLicenseService: DotLicenseService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotCMSContentType> {

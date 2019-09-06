@@ -1,0 +1,8 @@
+<h3 [innerHTML]="data.title"></h3>
+<ul>
+    <li *ngFor="let item of data.links">
+        <a [href]="item.link" target="_blank">{{ item.text }}</a>
+    </li>
+</ul>
+
+<p></p>
