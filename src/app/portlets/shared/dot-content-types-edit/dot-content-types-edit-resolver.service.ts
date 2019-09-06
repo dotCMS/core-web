@@ -39,7 +39,7 @@ export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
     }
 
     private getFilterByParam(route: ActivatedRouteSnapshot): string {
-        return route.data && route.data.filterBy ? route.data.filterBy : null;
+        return route.data && route.data.filterBy;
     }
 
     private getContentType(id: string): Observable<DotCMSContentType> {
