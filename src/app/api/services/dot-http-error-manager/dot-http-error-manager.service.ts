@@ -139,8 +139,8 @@ export class DotHttpErrorManagerService {
     private handleBadRequestError(response: Response): boolean {
         this.dotDialogService.alert({
             message:
-                response.json()['message'] ||
                 this.getErrorMessage(response) ||
+                response.json()['message'] ||
                 this.dotMessageService.get('dot.common.http.error.400.message'),
             header: this.dotMessageService.get('dot.common.http.error.400.header')
         });
