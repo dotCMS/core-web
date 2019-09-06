@@ -12,10 +12,6 @@ import { LoginService, ResponseView } from 'dotcms-js';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { take, map, catchError } from 'rxjs/operators';
 
-export interface DotCMSPortletFallback {
-    name: string;
-}
-
 /**
  * With the url return a content type by id or a default content type
  *
@@ -24,8 +20,7 @@ export interface DotCMSPortletFallback {
  * @implements {Resolve<ContentType>}
  */
 @Injectable()
-export class DotContentTypeEditResolver
-    implements Resolve<DotCMSPortletFallback | DotCMSContentType> {
+export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
     constructor(
         private contentTypesInfoService: DotContentTypesInfoService,
         private crudService: DotCrudService,
