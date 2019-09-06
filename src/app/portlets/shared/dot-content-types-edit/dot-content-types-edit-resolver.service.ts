@@ -33,15 +33,13 @@ export class DotContentTypeEditResolver implements Resolve<DotCMSContentType> {
         if (route.paramMap.get('id')) {
             return this.getContentType(route.paramMap.get('id'));
         } else {
-            const contentType = this.containsFilterByParam(route)
-                ? route.data.filterBy
-                : route.paramMap.get('type');
+            const contentType = this.getFilterByParam(route) || route.paramMap.get('type');
             return this.getDefaultContentType(contentType);
         }
     }
 
-    private containsFilterByParam(route: ActivatedRouteSnapshot) {
-        return route.data && route.data.filterBy;
+    private getFilterByParam(route: ActivatedRouteSnapshot): string {
+        return route.data && route.data.filterBy ? route.data.filterBy : null;
     }
 
     private getContentType(id: string): Observable<DotCMSContentType> {
