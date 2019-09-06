@@ -1,4 +1,5 @@
 import { forkJoin } from 'rxjs';
+import * as _ from 'lodash';
 
 import { map, take, pluck } from 'rxjs/operators';
 import { DotListingDataTableComponent } from '@components/dot-listing-data-table/dot-listing-data-table.component';
@@ -109,7 +110,7 @@ export class DotContentTypesPortletComponent implements OnInit {
             this.contentTypeColumns = this.setContentTypeColumns();
             this.rowActions = this.createRowActions(rowActionsMap);
             if (filterBy) {
-                this.setFilterByContentType(filterBy.toString());
+                this.setFilterByContentType(filterBy as string);
             }
         });
     }
@@ -128,11 +129,13 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     private setFilterByContentType(contentType: string) {
-        this.filterBy = contentType;
+        this.filterBy = _.startCase(_.toLower(contentType));
         this.listing.paginatorService.setExtraParams('type', this.filterBy);
-        this.actionHeaderOptions.primary.model = this.actionHeaderOptions.primary.model.filter(
-            (item: ButtonModel) => item.label === this.filterBy
-        );
+
+        this.actionHeaderOptions.primary.command = ($event) => {
+                this.createContentType(null, $event);
+            };
+        this.actionHeaderOptions.primary.model = null;
     }
 
     private getPublishActions(pushPublish: boolean, addToBundle: boolean): DotDataTableAction[] {
@@ -240,7 +243,11 @@ export class DotContentTypesPortletComponent implements OnInit {
     }
 
     private createContentType(type: string, _event?): void {
-        this.router.navigate(['create', type], { relativeTo: this.route });
+        const params = ['create'];
+        if (type) {
+            params.push(type);
+        }
+        this.router.navigate(params, { relativeTo: this.route });
     }
 
     private removeConfirmation(item: any): void {

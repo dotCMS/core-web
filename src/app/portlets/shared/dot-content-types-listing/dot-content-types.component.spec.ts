@@ -393,7 +393,7 @@ describe('DotContentTypesPortletComponent', () => {
 
         beforeEach(() => {
             router.data = observableOf({
-                filterBy: 'Form'
+                filterBy: 'FORM'
             });
             fixture.detectChanges();
         });
@@ -406,7 +406,8 @@ describe('DotContentTypesPortletComponent', () => {
         it('should set filterBy params', () => {
             expect(comp.filterBy).toBe('Form');
             expect(comp.listing.paginatorService.extraParams.get('type')).toBe('Form');
-            expect(comp.actionHeaderOptions.primary.model.length).toBe(1);
+            expect(comp.actionHeaderOptions.primary.model).toBe(null);
+            expect(comp.actionHeaderOptions.primary.command).toBeDefined();
         });
     });
 
