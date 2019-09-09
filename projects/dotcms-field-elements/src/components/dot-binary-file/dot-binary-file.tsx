@@ -318,7 +318,7 @@ export class DotBinaryFileComponent {
     }
 
     private handleDroppedFile(file: File): void {
-        if (isFileAllowed(file.name, this.allowedFileTypes)) {
+        if (isFileAllowed(file.name, this.allowedFileTypes.join(','))) {
             this.setValue(file);
             this.binaryTextField.value = file.name;
         } else {

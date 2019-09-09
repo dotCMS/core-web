@@ -99,7 +99,7 @@ export class DotBinaryTextFieldComponent {
         const clipBoardFileName = items[0];
         const clipBoardFile = items[1].getAsFile();
         clipBoardFileName.getAsString((fileName: string) => {
-            if (isFileAllowed(fileName, this.accept.split(','))) {
+            if (isFileAllowed(fileName, this.accept)) {
                 this.value = fileName;
                 this.emitFile(clipBoardFile);
             } else {

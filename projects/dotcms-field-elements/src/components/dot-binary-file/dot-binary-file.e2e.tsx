@@ -289,14 +289,6 @@ describe('dot-binary-file', () => {
                 expect(await dotBinaryText.getProperty('accept')).toEqual('');
                 expect(await dotBinaryButton.getProperty('accept')).toEqual('');
             });
-
-            it('should render and not break when is a unexpected value', async () => {
-                element.setProperty('accept', { test: true });
-                await page.waitForChanges();
-                expect(await element.getProperty('accept')).toEqual(null);
-                expect(await dotBinaryText.getProperty('accept')).toEqual('');
-                expect(await dotBinaryButton.getProperty('accept')).toEqual('');
-            });
         });
 
         describe('buttonLabel', () => {
