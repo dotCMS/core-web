@@ -48,6 +48,7 @@ export class DotBinaryUploadButtonComponent {
         return (
             <Fragment>
                 <input
+                    accept={this.accept.join(', ')}
                     disabled={this.disabled}
                     id={getId(this.name)}
                     onChange={(event: Event) => this.fileChangeHandler(event)}
