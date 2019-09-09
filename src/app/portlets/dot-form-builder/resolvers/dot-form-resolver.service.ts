@@ -43,8 +43,7 @@ export class DotFormResolver implements Resolve<DotUnlicensedPortlet> {
                 'Forms-and-Form-Builder',
                 'Forms-and-Form-Builder-in-Enterprise',
                 'Learn-more-about-dotCMS-Enterprise',
-                'Contact-Us-for-more-Information',
-                'Still-use-legacy-form-builder'
+                'Contact-Us-for-more-Information'
             ])
             .pipe(
                 map((messages: { [key: string]: string }) => {
@@ -59,11 +58,7 @@ export class DotFormResolver implements Resolve<DotUnlicensedPortlet> {
                             {
                                 text: messages['Contact-Us-for-more-Information'],
                                 link: 'https://dotcms.com/contact-us/'
-                            },
-                            {
-                                text: messages['Still-use-legacy-form-builder'],
-                                link: 'https://dotcms.com/contact-us/'
-                            },
+                            }
                         ]
                     };
                 })
