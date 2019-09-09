@@ -9,5 +9,9 @@
 </ul>
 
 <p>
-    <a class="ui-link" href="https://dotcms.com/licensing/request-a-license-3/index">Request a Trial License</a>
+    <a
+        class="ui-link"
+        href="https://dotcms.com/licensing/request-a-license-3/index"
+        [innerText]="requestLicenseLabel$ | async"
+    ></a>
 </p>

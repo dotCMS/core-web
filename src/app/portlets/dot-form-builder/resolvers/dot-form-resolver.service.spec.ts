@@ -18,7 +18,7 @@ const messageServiceMock = new MockDotMessageService({
     'Contact-Us-for-more-Information': 'Link 2',
 });
 
-fdescribe('DotFormResolver', () => {
+describe('DotFormResolver', () => {
     let dotLicenseService: DotLicenseService;
     let service: DotFormResolver;
 

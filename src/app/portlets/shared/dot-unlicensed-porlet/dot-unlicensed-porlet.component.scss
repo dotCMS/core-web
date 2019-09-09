@@ -4,7 +4,6 @@
     align-items: center;
     background-color: $white;
     box-shadow: $md-shadow-4;
-    display: block;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 48px - #{$toolbar-height});
