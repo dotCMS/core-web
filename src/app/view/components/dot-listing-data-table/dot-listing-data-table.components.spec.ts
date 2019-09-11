@@ -216,7 +216,6 @@ describe('DotListingDataTableComponent', () => {
 
         this.columns[2].format = 'date';
         comp.columns = this.columns;
-        comp.columns = this.columns;
         comp.url = this.url;
         comp.multipleSelection = true;
 
