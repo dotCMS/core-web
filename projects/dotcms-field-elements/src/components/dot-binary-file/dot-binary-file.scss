@@ -27,4 +27,11 @@ dot-binary-file {
             background-color: lightgray;
         }
     }
+
+    .dot-binary__error-message {
+        border: 1px solid red;
+        color: red;
+        display: block;
+        margin-top: 1rem;
+    }
 }

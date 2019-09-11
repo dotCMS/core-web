@@ -13,6 +13,7 @@
 | `accept`               | `accept`                   | (optional) Describes a type of file that may be selected by the user, separated by comma  eg: .pdf,.jpg | `string`  | `''`                                                   |
 | `buttonLabel`          | `button-label`             | (optional) Text that be shown in the browse file button                                                 | `string`  | `'Browse'`                                             |
 | `disabled`             | `disabled`                 | (optional) Disables field's interaction                                                                 | `boolean` | `false`                                                |
+| `errorMessage`         | `error-message`            | (optional) Text that be shown in the browse file button                                                 | `string`  | `''`                                                   |
 | `hint`                 | `hint`                     | (optional) Hint text that suggest a clue of the field                                                   | `string`  | `''`                                                   |
 | `label`                | `label`                    | (optional) Text to be rendered next to input field                                                      | `string`  | `''`                                                   |
 | `name`                 | `name`                     | Name that will be used as ID                                                                            | `string`  | `''`                                                   |
@@ -21,6 +22,7 @@
 | `previewImageUrl`      | `preview-image-url`        | (optional) URL of the file uploaded                                                                     | `string`  | `''`                                                   |
 | `required`             | `required`                 | (optional) Determine if it is mandatory                                                                 | `boolean` | `false`                                                |
 | `requiredMessage`      | `required-message`         | (optional) Text that be shown when required is set and condition not met                                | `string`  | `'This field is required'`                             |
+| `sizeMax`              | `size-max`                 | (optional) Set the max file size limit                                                                  | `string`  | `''`                                                   |
 | `validationMessage`    | `validation-message`       | (optional) Text that be shown when the Regular Expression condition not met                             | `string`  | `"The field doesn't comply with the specified format"` |
 
 
