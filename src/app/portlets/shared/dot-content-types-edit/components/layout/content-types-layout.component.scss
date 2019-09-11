@@ -42,6 +42,8 @@ $top-height: ($toolbar-height + $tabview-nav-height + $dot-secondary-toolbar-mai
                         padding-left: 50px;
                         text-transform: none;
                         font-size: $font-size-medium;
+                        min-width: 160px;
+                        text-align: left;
                     }
 
                     button {
