@@ -259,7 +259,7 @@ export class DotBinaryFileComponent {
                 </dot-label>
                 {getTagHint(this.hint)}
                 {getTagError(this.shouldShowErrorMessage(), this.getErrorMessage())}
-                {this.errorMessage ? <div class="dot-binary__error-message">{this.errorMessage}</div> : ''}
+                <dot-error-message>{this.errorMessage}</dot-error-message>
             </Fragment>
         );
     }

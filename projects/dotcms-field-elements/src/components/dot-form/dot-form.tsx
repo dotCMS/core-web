@@ -130,7 +130,7 @@ export class DotFormComponent {
                         </button>
                     </div>
                 </form>
-                <dot-form-error-message>{this.errorMessage}</dot-form-error-message>
+                <dot-error-message>{this.errorMessage}</dot-error-message>
             </Fragment>
         );
     }
