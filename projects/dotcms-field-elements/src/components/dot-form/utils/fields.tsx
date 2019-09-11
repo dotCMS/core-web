@@ -138,7 +138,7 @@ export const DotFormFields = {
     Binary: (field: DotCMSContentTypeField) => (
         <dot-binary-file
             accept={getFieldVariableValue(field.fieldVariables, 'accept')}
-            size-max={getFieldVariableValue(field.fieldVariables, 'maxFileLength')}
+            max-file-length={getFieldVariableValue(field.fieldVariables, 'maxFileLength')}
             hint={field.hint}
             label={field.name}
             name={field.variable}

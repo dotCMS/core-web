@@ -82,7 +82,7 @@ export class DotBinaryFileComponent {
 
     /** (optional) Set the max file size limit  */
     @Prop({ reflectToAttr: true, mutable: true })
-    sizeMax = '';
+    maxFileLength = '';
 
     /** (optional) Text that be shown in the browse file button */
     @Prop({ reflectToAttr: true })

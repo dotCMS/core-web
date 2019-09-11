@@ -230,7 +230,7 @@ export class DotFormComponent {
     private getMaxSize(event: any): string {
         const attributes = [...event.target.attributes];
         const maxSize = attributes.filter((item) => {
-            return item.name === 'size-max';
+            return item.name === 'max-file-length';
         })[0];
         return maxSize && maxSize.value;
     }
