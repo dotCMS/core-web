@@ -10,7 +10,8 @@ import {
     getTagError,
     getTagHint,
     updateStatus,
-    getHintId
+    getHintId,
+    setAttributesToElement
 } from '../../utils';
 
 /**
@@ -38,7 +39,7 @@ export class DotTextfieldComponent {
     label = '';
 
     /** (optional) Placeholder specifies a short hint that describes the expected value of the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ reflectToAttr: true, mutable: true })
     placeholder = '';
 
     /** (optional) Hint text that suggest a clue of the field */
@@ -53,7 +54,7 @@ export class DotTextfieldComponent {
     @Prop() requiredMessage = 'This field is required';
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
-    @Prop() validationMessage = 'The field doesn\'t comply with the specified format';
+    @Prop() validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
     @Prop({ reflectToAttr: true })
@@ -87,6 +88,14 @@ export class DotTextfieldComponent {
         this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
+    }
+
+    componentDidLoad(): void {
+        const htmlElement = this.el.querySelector(`#${getId(this.name)}`);
+        setTimeout(() => {
+            const attrs: Attr[] = Array.from(this.el.attributes);
+            setAttributesToElement(htmlElement, attrs);
+        }, 0);
     }
 
     @Watch('regexCheck')
@@ -155,7 +164,9 @@ export class DotTextfieldComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredMessage
+            ? this.isValid()
+                ? ''
+                : this.requiredMessage
             : this.validationMessage;
     }
 

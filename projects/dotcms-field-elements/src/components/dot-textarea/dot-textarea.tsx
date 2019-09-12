@@ -10,7 +10,8 @@ import {
     updateStatus,
     getId,
     checkProp,
-    getHintId
+    getHintId,
+    setAttributesToElement
 } from '../../utils';
 
 /**
@@ -85,6 +86,14 @@ export class DotTextareaComponent {
         this.validateProps();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
+    }
+
+    componentDidLoad(): void {
+        const htmlElement = this.el.querySelector(`#${getId(this.name)}`);
+        setTimeout(() => {
+            const attrs: Attr[] = Array.from(this.el.attributes);
+            setAttributesToElement(htmlElement, attrs);
+        }, 0);
     }
 
     @Watch('regexCheck')
