@@ -8,7 +8,12 @@ import { DotCMSContentlet } from 'dotcms-models';
 interface DotActionRequestOptions {
     contentType: string;
     data: { [key: string]: any };
-    publish?: boolean;
+    action: ActionToFire;
+}
+
+enum ActionToFire {
+    NEW = 'NEW',
+    PUBLISH = 'PUBLISH'
 }
 
 @Injectable()
@@ -42,7 +47,7 @@ export class DotWorkflowActionsFireService {
      * @memberof DotWorkflowActionsFireService
      */
     newContentlet<T>(contentType: string, data: { [key: string]: any }): Observable<T> {
-        return this.request<T>({ contentType, data });
+        return this.request<T>({ contentType, data, action: ActionToFire.NEW });
     }
 
     /**
@@ -58,15 +63,15 @@ export class DotWorkflowActionsFireService {
         return this.request<T>({
             contentType,
             data,
-            publish: true
+            action: ActionToFire.PUBLISH
         });
     }
 
-    private request<T>({ contentType, data, publish }: DotActionRequestOptions): Observable<T> {
+    private request<T>({ contentType, data, action }: DotActionRequestOptions): Observable<T> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
-                url: `v1/workflow/actions/default/fire/${publish ? 'PUBLISH' : 'NEW'}`,
+                url: `v1/workflow/actions/default/fire/${action}`,
                 body: { contentlet: { contentType: contentType, ...data } }
             })
             .pipe(
