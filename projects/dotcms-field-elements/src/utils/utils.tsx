@@ -28,6 +28,14 @@ export function isStringType(val: string): boolean {
     return typeof val === 'string' && !!val;
 }
 
+export function setAttributesToElement(element: HTMLElement, attributes: Attr[]): void {
+    attributes.forEach(({ name, value }) => {
+        if (name.indexOf('dot') !== -1) {
+            element.setAttribute(name.replace('dot', ''), value);
+        }
+    });
+}
+
 /**
  * Based on a string formatted with comma separated values, returns a label/value DotOption array
  *
@@ -44,8 +52,8 @@ export function getDotOptionsFromFieldValue(rawString: string): DotOption[] {
     const items = isKeyPipeValueFormatValid(rawString)
         ? rawString
               .split(',')
-              .filter(item => !!item.length)
-              .map(item => {
+              .filter((item) => !!item.length)
+              .map((item) => {
                   const [label, value] = item.split('|');
                   return { label, value };
               })
