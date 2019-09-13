@@ -1,5 +1,7 @@
 import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
 
+export const DOT_ATTR_PREFIX = 'dot';
+
 /**
  * Returns CSS classes object based on field Status values
  *
@@ -43,7 +45,7 @@ export function isStringType(val: string): boolean {
 export function setAttributesToElement(element: Element, attributes: Attr[]): void {
     attributes.forEach(({ name, value }) => {
         if (isDotAttribute(name)) {
-            element.setAttribute(name.replace('dot', ''), value);
+            element.setAttribute(name.replace(DOT_ATTR_PREFIX, ''), value);
         }
     });
 }
@@ -216,7 +218,7 @@ export function isFileAllowed(fileName: string, allowedExtensions: string): bool
 }
 
 function isDotAttribute(name: string): boolean {
-    return name.startsWith('dot');
+    return name.startsWith(DOT_ATTR_PREFIX);
 }
 
 function allowAnyFile(allowedExtensions: string[]): boolean {
