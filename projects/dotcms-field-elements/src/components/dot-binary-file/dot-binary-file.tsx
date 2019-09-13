@@ -117,7 +117,8 @@ export class DotBinaryFileComponent {
     @Method()
     reset(): void {
         this.file = '';
-        this.clearField();
+        this.binaryTextField.value = '';
+        this.errorMessage = '';
         this.clearPreviewData();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
@@ -129,7 +130,7 @@ export class DotBinaryFileComponent {
      */
     @Method()
     clearValue(): void {
-        this.clearField();
+        this.binaryTextField.value = '';
         this.errorType = this.required ? DotBinaryMessageError.REQUIRED : null;
         this.setValue('');
         this.clearPreviewData();
