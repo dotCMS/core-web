@@ -346,11 +346,6 @@ export class DotBinaryFileComponent {
         return window.navigator.platform.includes('Win');
     }
 
-    private clearField(): void {
-        this.binaryTextField.value = '';
-        this.errorMessage = '';
-    }
-
     private clearPreviewData(): void {
         this.previewImageUrl = '';
         this.previewImageName = '';
