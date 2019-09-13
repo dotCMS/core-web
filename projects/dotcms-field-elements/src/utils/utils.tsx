@@ -24,10 +24,22 @@ export function getClassNames(
     };
 }
 
+/**
+ * Returns if it is a valid string
+ *
+ * @param string val
+ * @returns boolean
+ */
 export function isStringType(val: string): boolean {
     return typeof val === 'string' && !!val;
 }
 
+/**
+ * Sets attributes with "dot" prefix to the HtmlElement passed
+ *
+ * @param Element element
+ * @param Attr[] attributes
+ */
 export function setAttributesToElement(element: Element, attributes: Attr[]): void {
     attributes.forEach(({ name, value }) => {
         if (isDotAttribute(name)) {

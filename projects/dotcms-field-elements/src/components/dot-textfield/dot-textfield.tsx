@@ -47,7 +47,7 @@ export class DotTextfieldComponent {
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
@@ -57,7 +57,7 @@ export class DotTextfieldComponent {
     @Prop() validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     disabled = false;
 
     /** (optional) Regular expresion that is checked against the value to determine if is valid  */
@@ -91,7 +91,7 @@ export class DotTextfieldComponent {
     }
 
     componentDidLoad(): void {
-        const htmlElement = this.el.querySelector(`#${getId(this.name)}`);
+        const htmlElement = this.el.querySelector('input');
         setTimeout(() => {
             const attrs: Attr[] = Array.from(this.el.attributes);
             setAttributesToElement(htmlElement, attrs);
