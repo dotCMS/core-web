@@ -117,7 +117,7 @@ export class DotBinaryFileComponent {
     @Method()
     reset(): void {
         this.file = '';
-        this.binaryTextField.value = '';
+        this.clearField();
         this.clearPreviewData();
         this.status = getOriginalStatus(this.isValid());
         this.emitStatusChange();
@@ -129,7 +129,7 @@ export class DotBinaryFileComponent {
      */
     @Method()
     clearValue(): void {
-        this.binaryTextField.value = '';
+        this.clearField();
         this.errorType = this.required ? DotBinaryMessageError.REQUIRED : null;
         this.setValue('');
         this.clearPreviewData();
@@ -343,6 +343,11 @@ export class DotBinaryFileComponent {
 
     private isWindowsOS(): boolean {
         return window.navigator.platform.includes('Win');
+    }
+
+    private clearField(): void {
+        this.binaryTextField.value = '';
+        this.errorMessage = '';
     }
 
     private clearPreviewData(): void {
