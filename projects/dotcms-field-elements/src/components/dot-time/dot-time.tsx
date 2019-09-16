@@ -16,7 +16,14 @@ import {
     DotFieldValueEvent,
     DotInputCalendarStatusEvent
 } from '../../models';
-import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
+import {
+    checkProp,
+    getClassNames,
+    getTagError,
+    getTagHint,
+    getHintId,
+    setAttributesToElement
+} from '../../utils';
 
 @Component({
     tag: 'dot-time',
@@ -86,6 +93,15 @@ export class DotTimeComponent {
 
     componentWillLoad(): void {
         this.validateProps();
+    }
+
+    componentDidLoad(): void {
+        const htmlElement = this.el.querySelector('input');
+        setTimeout(() => {
+            const attrs: Attr[] = Array.from(this.el.attributes);
+            const attrException = new Array('dottype'.toUpperCase());
+            setAttributesToElement(htmlElement, attrs, attrException);
+        }, 0);
     }
 
     @Watch('min')
@@ -165,7 +181,9 @@ export class DotTimeComponent {
 
     private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
         return !!this.value
-            ? statusEvent.isValidRange ? '' : this.validationMessage
+            ? statusEvent.isValidRange
+                ? ''
+                : this.validationMessage
             : this.requiredMessage;
     }
 }

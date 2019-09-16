@@ -41,10 +41,15 @@ export function isStringType(val: string): boolean {
  *
  * @param Element element
  * @param Attr[] attributes
+ * @param string[] attrException
  */
-export function setAttributesToElement(element: Element, attributes: Attr[]): void {
+export function setAttributesToElement(
+    element: Element,
+    attributes: Attr[],
+    attrException: string[] = []
+): void {
     attributes.forEach(({ name, value }) => {
-        if (isDotAttribute(name)) {
+        if (isDotAttribute(name) && !attrException.includes(name.toUpperCase())) {
             element.setAttribute(name.replace(DOT_ATTR_PREFIX, ''), value);
         }
     });
