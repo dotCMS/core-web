@@ -16,7 +16,14 @@ import {
     DotFieldValueEvent,
     DotInputCalendarStatusEvent
 } from '../../models';
-import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
+import {
+    checkProp,
+    getClassNames,
+    getTagError,
+    getTagHint,
+    getHintId,
+    setAttributesToElement
+} from '../../utils';
 
 @Component({
     tag: 'dot-date',
@@ -42,7 +49,7 @@ export class DotDateComponent {
     hint = '';
 
     /** (optional) Determine if it is mandatory */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     required = false;
 
     /** (optional) Text that be shown when required is set and condition not met */
@@ -54,7 +61,7 @@ export class DotDateComponent {
     validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     disabled = false;
 
     /** (optional) Min, minimum value that the field will allow to set. Format should be yyyy-mm-dd */
@@ -66,7 +73,7 @@ export class DotDateComponent {
     max = '';
 
     /** (optional) Step specifies the legal number intervals for the input field */
-    @Prop({ reflectToAttr: true })
+    @Prop({ mutable: true, reflectToAttr: true })
     step = '1';
 
     @State() classNames: DotFieldStatusClasses;
@@ -86,6 +93,15 @@ export class DotDateComponent {
 
     componentWillLoad(): void {
         this.validateProps();
+    }
+
+    componentDidLoad(): void {
+        const htmlElement = this.el.querySelector('input');
+        setTimeout(() => {
+            const attrs: Attr[] = Array.from(this.el.attributes);
+            const attrException = new Array('dottype'.toUpperCase());
+            setAttributesToElement(htmlElement, attrs, attrException);
+        }, 0);
     }
 
     @Watch('min')
@@ -165,7 +181,9 @@ export class DotDateComponent {
 
     private getErrorMessage(statusEvent: DotInputCalendarStatusEvent): string {
         return !!this.value
-            ? statusEvent.isValidRange ? '' : this.validationMessage
+            ? statusEvent.isValidRange
+                ? ''
+                : this.validationMessage
             : this.requiredMessage;
     }
 }
