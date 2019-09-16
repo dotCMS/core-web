@@ -22,7 +22,7 @@ import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 
-fdescribe('DotListingDataTableComponent', () => {
+describe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let fixture: ComponentFixture<DotListingDataTableComponent>;
     let de: DebugElement;
