@@ -114,6 +114,11 @@ export const DotFormFields = {
             hint={field.hint}
             label={field.name}
             name={field.variable}
+            ref={(el: HTMLElement) => {
+                field.fieldVariables.forEach(({ key, value }) => {
+                    el.setAttribute(key, value);
+                });
+            }}
             required={field.required}
             value={field.defaultValue}
         />
