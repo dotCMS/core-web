@@ -14,6 +14,11 @@ import { map, pluck } from 'rxjs/operators';
 export class DotTagsService {
     constructor(private coreWebService: CoreWebService) {}
 
+    /**
+     * Return Tags.
+     * @returns Observable<DotTag[]>
+     * @memberof DotTagDotTagsServicesService
+     */
     get(name?: string): Observable<DotTag[]> {
         return this.coreWebService
             .requestView({

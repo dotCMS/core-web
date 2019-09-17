@@ -3,6 +3,12 @@ import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotTag } from '@models/dot-tag';
 import { filter, mergeMap, toArray } from 'rxjs/operators';
 
+/**
+ * The DotAutocompleteTagsComponent provide a dropdown to select tags,
+ * the output is an array of strings with the labels.
+ * @export
+ * @class DotAutocompleteTagsComponent
+ */
 @Component({
     selector: 'dot-autocomplete-tags',
     templateUrl: './dot-autocomplete-tags.component.html',
@@ -10,8 +16,7 @@ import { filter, mergeMap, toArray } from 'rxjs/operators';
 })
 export class DotAutocompleteTagsComponent implements OnInit {
     @Input() inputId: string;
-    @Input() value: any[] = [];
-    @Input() options: any[];
+    @Input() value: string[] = [];
     @Input() placeholder: string;
 
     @Output() onChange = new EventEmitter<any>();
@@ -21,11 +26,18 @@ export class DotAutocompleteTagsComponent implements OnInit {
     constructor(private dotTagsService: DotTagsService) {}
 
     ngOnInit() {
-        this.filterOptions();
+        this.filterTags();
         this.value = this.value === null ? [] : this.value;
     }
 
-    filterOptions(event?: any) {
+    /**
+     * Return the list of tags based on a filter and
+     * checking if is not selected already.
+     *
+     * @param any event
+     * @memberof DotAutocompleteTagsComponent
+     */
+    filterTags(event?: any): void {
         this.dotTagsService
             .get(event ? event.query : '')
             .pipe(
@@ -38,7 +50,13 @@ export class DotAutocompleteTagsComponent implements OnInit {
             });
     }
 
-    checkForTag(event: KeyboardEvent) {
+    /**
+     * Check if the user wants to add a new tag when hit enter.
+     *
+     * @param KeyboardEvent event
+     * @memberof DotAutocompleteTagsComponent
+     */
+    checkForTag(event: KeyboardEvent): void {
         const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
         if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
             this.value.push(input.value);
@@ -46,7 +64,14 @@ export class DotAutocompleteTagsComponent implements OnInit {
             input.value = null;
         }
     }
-    addItem(tag: DotTag) {
+
+    /**
+     * Add new item when is selected in the p-autocomplete dropdown.
+     *
+     * @param DotTag tag
+     * @memberof DotAutocompleteTagsComponent
+     */
+    addItem(tag: DotTag): void {
         this.value.splice(-1, 1);
         if (this.isUniqueTag(tag.label)) {
             this.value.push(tag.label);
@@ -54,7 +79,13 @@ export class DotAutocompleteTagsComponent implements OnInit {
         }
     }
 
-    removeItem(_item: any) {
+    /**
+     * Add new item when is selected in the p-autocomplete dropdown.
+     *
+     * @param DotTag tag
+     * @memberof DotAutocompleteTagsComponent
+     */
+    removeItem(): void {
         this.onChange.emit(this.value);
     }
 

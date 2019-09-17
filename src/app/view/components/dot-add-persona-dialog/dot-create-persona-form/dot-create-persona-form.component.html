@@ -43,7 +43,7 @@
     <div class="form__group">
         <label for="persona-otherTags" class="form__label">{{messagesKey['modes.persona.other.tags']}}</label>
         <dot-autocomplete-tags id="persona-otherTags"
-            [options]="filteredTags"
+            [placeholder]="messagesKey['modes.persona.select.tags.placeholder']"
             (onChange)="updateTags($event)"
         ></dot-autocomplete-tags>
     </div>

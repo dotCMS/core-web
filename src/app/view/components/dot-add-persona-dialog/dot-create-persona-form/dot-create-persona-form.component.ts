@@ -21,7 +21,6 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     form: FormGroup;
     tempUploadedFile: DotCMSTempFile;
     messagesKey: { [key: string]: string } = {};
-    filteredTags: DotTag[];
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -41,7 +40,8 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
                 'dot.common.remove',
                 'modes.persona.host',
                 'modes.persona.name.error.required',
-                'modes.persona.other.tags'
+                'modes.persona.other.tags',
+                'modes.persona.select.tags.placeholder'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -97,6 +97,11 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
         this.form.get('hostFolder').setValue(this.siteService.currentSite.identifier);
     }
 
+    /**
+     * Update tags form value based on dot-autocomplete-tags changes
+     *
+     * @memberof DotCreatePersonaFormComponent
+     */
     updateTags(tags: DotTag[]): void {
         this.form.get('tags').setValue(tags.join(','));
     }
