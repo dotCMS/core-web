@@ -22,8 +22,9 @@ import {
     getTagError,
     getTagHint,
     getHintId,
-    setAttributesToElement
 } from '../../utils';
+import { setDotAttributesToElement, getDotAttributesFromElement } from '../dot-form/utils';
+
 
 @Component({
     tag: 'dot-time',
@@ -96,11 +97,14 @@ export class DotTimeComponent {
     }
 
     componentDidLoad(): void {
+        const attrException = ['dottype'];
         const htmlElement = this.el.querySelector('input');
         setTimeout(() => {
-            const attrs: Attr[] = Array.from(this.el.attributes);
-            const attrException = new Array('dottype'.toUpperCase());
-            setAttributesToElement(htmlElement, attrs, attrException);
+            const attrs = getDotAttributesFromElement(
+                Array.from(this.el.attributes),
+                attrException
+            );
+            setDotAttributesToElement(htmlElement, attrs);
         }, 0);
     }
 
