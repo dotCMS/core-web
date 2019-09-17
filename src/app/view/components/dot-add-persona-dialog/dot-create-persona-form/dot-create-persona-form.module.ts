@@ -11,7 +11,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DotFieldValidationMessageModule } from '@components/_common/dot-field-validation-message/dot-file-validation-message.module';
 import { DotAutofocusModule } from '@directives/dot-autofocus/dot-autofocus.module';
 import { SiteSelectorFieldModule } from '@components/_common/dot-site-selector-field/dot-site-selector-field.module';
-import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotAutocompleteTagsModule } from '@components/_common/dot-autocomplete-tags/dot-autocomplete-tags.module';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { DotAutocompleteTagsModule } from '@components/_common/dot-autocomplete-
         DotAutocompleteTagsModule
     ],
     declarations: [DotCreatePersonaFormComponent],
-    providers: [DotTagsService],
     exports: [DotCreatePersonaFormComponent]
 })
 export class DotCreatePersonaFormModule {}
