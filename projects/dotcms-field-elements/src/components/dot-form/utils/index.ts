@@ -15,7 +15,10 @@ export const DOT_ATTR_PREFIX = 'dot';
  * @param HTMLElement element
  * @param DotCMSContentTypeFieldVariable fieldVariables
  */
-export function setAttributesToTag(element: HTMLElement, fieldVariables: DotCMSContentTypeFieldVariable[]): void {
+export function setAttributesToTag(
+    element: HTMLElement,
+    fieldVariables: DotCMSContentTypeFieldVariable[]
+): void {
     fieldVariables.forEach(({ key, value }) => {
         element.setAttribute(key, value);
     });
@@ -49,25 +52,22 @@ function isDotAttribute(name: string): boolean {
  */
 export function setDotAttributesToElement(element: Element, attributes: Attr[]): void {
     attributes.forEach(({ name, value }) => {
-        if (isDotAttribute(name)) {
-            element.setAttribute(name.replace(DOT_ATTR_PREFIX, ''), value);
-        }
+        element.setAttribute(name.replace(DOT_ATTR_PREFIX, ''), value);
     });
 }
 
 /**
- * Removes attributes from a list
+ * Returns "Dot" attributes from all element's attributes
  *
  * @param Attr[] attributes
  * @param string[] attrException
  * @returns Attr[]
  */
-export function excludeDotAttributesFromElement(
-    attributes: Attr[],
-    attrException: string[]
-): Attr[] {
+export function getDotAttributesFromElement(attributes: Attr[], attrException: string[]): Attr[] {
     const exceptions = attrException.map((attr: string) => attr.toUpperCase());
-    return attributes.filter((item: Attr) => !exceptions.includes(item.name.toUpperCase()));
+    return attributes.filter(
+        (item: Attr) => !exceptions.includes(item.name.toUpperCase()) && isDotAttribute(name)
+    );
 }
 
 /**

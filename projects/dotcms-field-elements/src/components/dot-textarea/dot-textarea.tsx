@@ -10,9 +10,9 @@ import {
     updateStatus,
     getId,
     checkProp,
-    getHintId,
+    getHintId
 } from '../../utils';
-import { setDotAttributesToElement } from '../dot-form/utils';
+import { setDotAttributesToElement, getDotAttributesFromElement } from '../dot-form/utils';
 
 /**
  * Represent a dotcms textarea control.
@@ -53,7 +53,7 @@ export class DotTextareaComponent {
 
     /** (optional) Text that be shown when the Regular Expression condition not met */
     @Prop({ reflectToAttr: true })
-    validationMessage = 'The field doesn\'t comply with the specified format';
+    validationMessage = "The field doesn't comply with the specified format";
 
     /** (optional) Disables field's interaction */
     @Prop({ mutable: true, reflectToAttr: true })
@@ -91,7 +91,8 @@ export class DotTextareaComponent {
     componentDidLoad(): void {
         const htmlElement = this.el.querySelector('textarea');
         setTimeout(() => {
-            setDotAttributesToElement(htmlElement, Array.from(this.el.attributes));
+            const attrs = getDotAttributesFromElement(Array.from(this.el.attributes), []);
+            setDotAttributesToElement(htmlElement, attrs);
         }, 0);
     }
 
@@ -167,7 +168,9 @@ export class DotTextareaComponent {
 
     private getErrorMessage(): string {
         return this.isRegexValid()
-            ? this.isValid() ? '' : this.requiredMessage
+            ? this.isValid()
+                ? ''
+                : this.requiredMessage
             : this.validationMessage;
     }
 

@@ -17,7 +17,7 @@ import {
     DotInputCalendarStatusEvent
 } from '../../models';
 import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
-import { setDotAttributesToElement, excludeDotAttributesFromElement } from '../dot-form/utils';
+import { setDotAttributesToElement, getDotAttributesFromElement } from '../dot-form/utils';
 
 @Component({
     tag: 'dot-date',
@@ -93,7 +93,7 @@ export class DotDateComponent {
         const attrException = ['dottype'];
         const htmlElement = this.el.querySelector('input');
         setTimeout(() => {
-            const attrs = excludeDotAttributesFromElement(
+            const attrs = getDotAttributesFromElement(
                 Array.from(this.el.attributes),
                 attrException
             );
