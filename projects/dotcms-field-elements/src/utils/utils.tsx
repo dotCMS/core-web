@@ -1,7 +1,5 @@
 import { DotOption, DotFieldStatus, DotFieldStatusClasses, DotKeyValueField } from '../models';
 
-export const DOT_ATTR_PREFIX = 'dot';
-
 /**
  * Returns CSS classes object based on field Status values
  *
@@ -34,25 +32,6 @@ export function getClassNames(
  */
 export function isStringType(val: string): boolean {
     return typeof val === 'string' && !!val;
-}
-
-/**
- * Sets attributes with "dot" prefix to the HtmlElement passed
- *
- * @param Element element
- * @param Attr[] attributes
- * @param string[] attrException
- */
-export function setAttributesToElement(
-    element: Element,
-    attributes: Attr[],
-    attrException: string[] = []
-): void {
-    attributes.forEach(({ name, value }) => {
-        if (isDotAttribute(name) && !attrException.includes(name.toUpperCase())) {
-            element.setAttribute(name.replace(DOT_ATTR_PREFIX, ''), value);
-        }
-    });
 }
 
 /**
@@ -220,10 +199,6 @@ export function isFileAllowed(fileName: string, allowedExtensions: string): bool
     const extension = fileName ? fileName.substring(fileName.indexOf('.'), fileName.length) : '';
 
     return allowAnyFile(allowedExtensionsArray) || allowedExtensionsArray.includes(extension);
-}
-
-function isDotAttribute(name: string): boolean {
-    return name.startsWith(DOT_ATTR_PREFIX);
 }
 
 function allowAnyFile(allowedExtensions: string[]): boolean {
