@@ -16,14 +16,8 @@ import {
     DotFieldValueEvent,
     DotInputCalendarStatusEvent
 } from '../../models';
-import {
-    checkProp,
-    getClassNames,
-    getTagError,
-    getTagHint,
-    getHintId,
-    setAttributesToElement
-} from '../../utils';
+import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
+import { setDotAttributesToElement, excludeDotAttributesFromElement } from '../dot-form/utils';
 
 @Component({
     tag: 'dot-date',
@@ -96,11 +90,14 @@ export class DotDateComponent {
     }
 
     componentDidLoad(): void {
+        const attrException = ['dottype'];
         const htmlElement = this.el.querySelector('input');
         setTimeout(() => {
-            const attrs: Attr[] = Array.from(this.el.attributes);
-            const attrException = new Array('dottype'.toUpperCase());
-            setAttributesToElement(htmlElement, attrs, attrException);
+            const attrs = excludeDotAttributesFromElement(
+                Array.from(this.el.attributes),
+                attrException
+            );
+            setDotAttributesToElement(htmlElement, attrs);
         }, 0);
     }
 

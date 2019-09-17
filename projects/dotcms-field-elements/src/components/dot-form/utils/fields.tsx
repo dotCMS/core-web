@@ -1,5 +1,5 @@
 import { DotCMSContentTypeField } from 'dotcms-models';
-import { getFieldVariableValue } from '.';
+import { getFieldVariableValue, setAttributesToTag } from '.';
 
 export const DotFormFields = {
     Text: (field: DotCMSContentTypeField) => (
@@ -8,9 +8,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             ref={(el: HTMLElement) => {
-                field.fieldVariables.forEach(({ key, value }) => {
-                    el.setAttribute(key, value);
-                });
+                setAttributesToTag(el, field.fieldVariables);
             }}
             regex-check={field.regexCheck}
             required={field.required}
@@ -24,9 +22,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             ref={(el: HTMLElement) => {
-                field.fieldVariables.forEach(({ key, value }) => {
-                    el.setAttribute(key, value);
-                });
+                setAttributesToTag(el, field.fieldVariables);
             }}
             regex-check={field.regexCheck}
             required={field.required}
@@ -95,9 +91,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             ref={(el: HTMLElement) => {
-                field.fieldVariables.forEach(({ key, value }) => {
-                    el.setAttribute(key, value);
-                });
+                setAttributesToTag(el, field.fieldVariables);
             }}
             required={field.required}
             value={field.defaultValue}

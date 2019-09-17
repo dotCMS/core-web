@@ -11,8 +11,8 @@ import {
     getId,
     checkProp,
     getHintId,
-    setAttributesToElement
 } from '../../utils';
+import { setDotAttributesToElement } from '../dot-form/utils';
 
 /**
  * Represent a dotcms textarea control.
@@ -91,8 +91,7 @@ export class DotTextareaComponent {
     componentDidLoad(): void {
         const htmlElement = this.el.querySelector('textarea');
         setTimeout(() => {
-            const attrs: Attr[] = Array.from(this.el.attributes);
-            setAttributesToElement(htmlElement, attrs);
+            setDotAttributesToElement(htmlElement, Array.from(this.el.attributes));
         }, 0);
     }
 

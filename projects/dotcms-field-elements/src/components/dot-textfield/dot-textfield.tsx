@@ -11,8 +11,8 @@ import {
     getTagHint,
     updateStatus,
     getHintId,
-    setAttributesToElement
 } from '../../utils';
+import { setDotAttributesToElement } from '../dot-form/utils';
 
 /**
  * Represent a dotcms input control.
@@ -93,8 +93,7 @@ export class DotTextfieldComponent {
     componentDidLoad(): void {
         const htmlElement = this.el.querySelector('input');
         setTimeout(() => {
-            const attrs: Attr[] = Array.from(this.el.attributes);
-            setAttributesToElement(htmlElement, attrs);
+            setDotAttributesToElement(htmlElement, Array.from(this.el.attributes));
         }, 0);
     }
 
