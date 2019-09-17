@@ -20,14 +20,8 @@ import {
 } from '../../models';
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
-import {
-    checkProp,
-    getClassNames,
-    getTagError,
-    getTagHint,
-    getHintId,
-    setAttributesToElement
-} from '../../utils';
+import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
+import { setDotAttributesToElement, getDotAttributesFromElement } from '../dot-form/utils';
 import { dotParseDate } from '../../utils/props/validators';
 
 const DATE_SUFFIX = '-date';
@@ -233,14 +227,10 @@ export class DotDateTimeComponent {
     private setDotAttributes(): void {
         const htmlDateElement = this.el.querySelector('input[type="date"]');
         const htmlTimeElement = this.el.querySelector('input[type="time"]');
-        setTimeout(() => {
-            const attrs: Attr[] = Array.from(this.el.attributes);
-            const attrException = new Array('dottype'.toUpperCase());
-            attrException.push('dotstep'.toUpperCase());
-            attrException.push('dotmin'.toUpperCase());
-            attrException.push('dotmax'.toUpperCase());
-            attrException.push('dotvalue'.toUpperCase());
+        const attrException = ['dottype', 'dotstep', 'dotmin', 'dotmax', 'dotvalue'];
 
+        setTimeout(() => {
+            let attrs: Attr[] = Array.from(this.el.attributes);
             attrs.forEach(({ name, value }) => {
                 switch (name.toUpperCase()) {
                     case 'DOTSTEP':
@@ -258,8 +248,13 @@ export class DotDateTimeComponent {
                 }
             });
 
-            setAttributesToElement(htmlDateElement, attrs, attrException);
-            setAttributesToElement(htmlTimeElement, attrs, attrException);
+            attrs = getDotAttributesFromElement(
+                Array.from(this.el.attributes),
+                attrException
+            );
+
+            setDotAttributesToElement(htmlDateElement, attrs);
+            setDotAttributesToElement(htmlTimeElement, attrs);
         }, 0);
     }
 
