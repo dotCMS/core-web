@@ -30,7 +30,7 @@ export class DotAutocompleteTagsComponent implements OnInit {
             .get(event ? event.query : '')
             .pipe(
                 mergeMap((tags: DotTag[]) => tags),
-                filter((tag: DotTag) => this.isValidOption(tag.label)),
+                filter((tag: DotTag) => this.isUniqueTag(tag.label)),
                 toArray<DotTag>()
             )
             .subscribe((tags: DotTag[]) => {
@@ -40,7 +40,7 @@ export class DotAutocompleteTagsComponent implements OnInit {
 
     checkForTag(event: KeyboardEvent) {
         const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
-        if (event.key === 'Enter' && this.isValidOption(input.value)) {
+        if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
             this.value.push(input.value);
             this.onChange.emit(this.value);
             input.value = null;
@@ -48,18 +48,17 @@ export class DotAutocompleteTagsComponent implements OnInit {
     }
     addItem(tag: DotTag) {
         this.value.splice(-1, 1);
-        if (this.isValidOption(tag.label)) {
+        if (this.isUniqueTag(tag.label)) {
             this.value.push(tag.label);
             this.onChange.emit(this.value);
         }
     }
 
     removeItem(_item: any) {
-        debugger;
         this.onChange.emit(this.value);
     }
 
-    private isValidOption(tag: string): boolean {
+    private isUniqueTag(tag: string): boolean {
         return !!tag && !this.value.includes(tag);
     }
 }
