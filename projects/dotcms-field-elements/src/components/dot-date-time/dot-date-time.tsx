@@ -21,7 +21,7 @@ import {
 import { Components } from '../../components';
 import DotInputCalendar = Components.DotInputCalendar;
 import { checkProp, getClassNames, getTagError, getTagHint, getHintId } from '../../utils';
-import { setDotAttributesToElement, getDotAttributesFromElement } from '../dot-form/utils';
+import { setDotAttributesToElement, getDotAttributesFromElement, DOT_ATTR_PREFIX } from '../dot-form/utils';
 import { dotParseDate } from '../../utils/props/validators';
 
 const DATE_SUFFIX = '-date';
@@ -232,7 +232,7 @@ export class DotDateTimeComponent {
         setTimeout(() => {
             let attrs: Attr[] = Array.from(this.el.attributes);
             attrs.forEach(({ name, value }) => {
-                const attr = name.replace('dot', '');
+                const attr = name.replace(DOT_ATTR_PREFIX, '');
                 if (this[attr]) {
                     this[attr] = value;
                 }
