@@ -1,7 +1,7 @@
 import { of, Observable, Subject, BehaviorSubject } from 'rxjs';
 
-import { pluck, take, map, catchError } from 'rxjs/operators';
-import { LoginService, User, ResponseView } from 'dotcms-js';
+import { pluck, take, map, catchError, tap } from 'rxjs/operators';
+import { LoginService, User, ResponseView, HttpCode } from 'dotcms-js';
 import { DotPageRenderState } from '../../../shared/models/dot-rendered-page-state.model';
 import {
     DotPageRenderService,
@@ -87,8 +87,7 @@ export class DotPageStateService {
     requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
         return this.dotPageRenderService.get(options).pipe(
             catchError((err: ResponseView) => {
-                this.handleSetPageStateFailed(err);
-                return of(null);
+                return this.handleSetPageStateFailed(err);
             }),
             take(1),
             map((page: DotPageRender) => {
@@ -245,17 +244,18 @@ export class DotPageStateService {
         return of(null);
     }
 
-    private handleSetPageStateFailed(err: ResponseView): void {
-        this.dotHttpErrorManagerService
-            .handle(err)
-            .pipe(take(1))
-            .subscribe((res: DotHttpErrorHandled) => {
-                if (res.forbidden) {
+    private handleSetPageStateFailed(err: ResponseView): Observable<DotHttpErrorHandled> {
+        return this.dotHttpErrorManagerService.handle(err).pipe(
+            take(1),
+            tap(({ status }: DotHttpErrorHandled) => {
+                if (status === HttpCode.FORBIDDEN || status === HttpCode.NOT_FOUND) {
                     this.dotRouterService.goToSiteBrowser();
                 } else {
                     this.reload();
                 }
-            });
+            }),
+            map(() => null)
+        );
     }
 
     private setState(state: DotPageRenderState): void {
