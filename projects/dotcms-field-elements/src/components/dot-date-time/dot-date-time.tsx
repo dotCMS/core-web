@@ -232,19 +232,9 @@ export class DotDateTimeComponent {
         setTimeout(() => {
             let attrs: Attr[] = Array.from(this.el.attributes);
             attrs.forEach(({ name, value }) => {
-                switch (name.toUpperCase()) {
-                    case 'DOTSTEP':
-                        this.step = value;
-                        break;
-                    case 'DOTMIN':
-                        this.min = value;
-                        break;
-                    case 'DOTMAX':
-                        this.max = value;
-                        break;
-                    case 'DOTVALUE':
-                        this.value = value;
-                        break;
+                const attr = name.replace('dot', '');
+                if (this[attr]) {
+                    this[attr] = value;
                 }
             });
 
