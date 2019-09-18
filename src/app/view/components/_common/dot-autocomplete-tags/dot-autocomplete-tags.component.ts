@@ -1,33 +1,42 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotTag } from '@models/dot-tag';
-import { filter, mergeMap, toArray } from 'rxjs/operators';
+import { filter, mergeMap, take, toArray } from 'rxjs/operators';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
  * The DotAutocompleteTagsComponent provide a dropdown to select tags,
- * the output is an array of strings with the labels.
+ * the output is an array of DotTag.
  * @export
  * @class DotAutocompleteTagsComponent
  */
 @Component({
     selector: 'dot-autocomplete-tags',
     templateUrl: './dot-autocomplete-tags.component.html',
-    styleUrls: ['./dot-autocomplete-tags.component.css']
+    styleUrls: ['./dot-autocomplete-tags.component.css'],
+    providers: [
+        {
+            multi: true,
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => DotAutocompleteTagsComponent)
+        }
+    ]
 })
-export class DotAutocompleteTagsComponent implements OnInit {
-    @Input() inputId: string;
-    @Input() value: string[] = [];
+export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccessor {
     @Input() placeholder: string;
+    @Input() inputId: string;
+    // @Output() onChange = new EventEmitter<string[]>();
 
-    @Output() onChange = new EventEmitter<any>();
-
+    value: DotTag[] = [];
     filteredOptions: DotTag[];
+    disabled = false;
 
     constructor(private dotTagsService: DotTagsService) {}
 
+    propagateChange = (_: any) => {};
+
     ngOnInit() {
         this.filterTags();
-        this.value = this.value === null ? [] : this.value;
     }
 
     /**
@@ -37,10 +46,11 @@ export class DotAutocompleteTagsComponent implements OnInit {
      * @param any event
      * @memberof DotAutocompleteTagsComponent
      */
-    filterTags(event?: any): void {
+    filterTags(event?: { originalEvent: Event; query: string }): void {
         this.dotTagsService
-            .get(event ? event.query : '')
+            .getSuggestions(event ? event.query : '')
             .pipe(
+                take(1),
                 mergeMap((tags: DotTag[]) => tags),
                 filter((tag: DotTag) => this.isUniqueTag(tag.label)),
                 toArray<DotTag>()
@@ -57,10 +67,12 @@ export class DotAutocompleteTagsComponent implements OnInit {
      * @memberof DotAutocompleteTagsComponent
      */
     checkForTag(event: KeyboardEvent): void {
+        debugger;
         const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
         if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
-            this.value.push(input.value);
-            this.onChange.emit(this.value);
+            this.value.push({ label: input.value });
+            this.propagateChange(this.value);
+            // this.onChange.emit(this.value);
             input.value = null;
         }
     }
@@ -71,25 +83,58 @@ export class DotAutocompleteTagsComponent implements OnInit {
      * @param DotTag tag
      * @memberof DotAutocompleteTagsComponent
      */
-    addItem(tag: DotTag): void {
-        this.value.splice(-1, 1);
-        if (this.isUniqueTag(tag.label)) {
-            this.value.push(tag.label);
-            this.onChange.emit(this.value);
-        }
+    addItem(): void {
+        debugger;
+        this.propagateChange(this.value);
+        // this.value.splice(-1, 1);
+        // if (this.isUniqueTag(tag.label)) {
+        //     this.value.push(tag.label);
+        // this.onChange.emit(this.value);
+        // }
     }
 
     /**
      * Add new item when is selected in the p-autocomplete dropdown.
      *
-     * @param DotTag tag
      * @memberof DotAutocompleteTagsComponent
      */
     removeItem(): void {
-        this.onChange.emit(this.value);
+        this.propagateChange(this.value);
+        // this.onChange.emit(this.value);
+    }
+    /**
+     * Set the function to be called when the control receives a change event.
+     *
+     * @param * fn
+     * @memberof DotAutocompleteTagsComponent
+     */
+    registerOnChange(fn: any): void {
+        this.propagateChange = fn;
     }
 
-    private isUniqueTag(tag: string): boolean {
-        return !!tag && !this.value.includes(tag);
+    /**
+     * Write a new value to the element
+     *
+     * @param string[] value
+     * @memberof DotAutocompleteTagsComponent
+     */
+    writeValue(value: DotTag[]): void {
+        this.value = value ? value : [];
+    }
+
+    /**
+     * Set the function to be called when the control set disable stage.
+     *
+     * @param boolean isDisabled
+     * @memberof DotAutocompleteTagsComponent
+     */
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
+
+    registerOnTouched(): void {}
+
+    private isUniqueTag(label: string): boolean {
+        return !!label && !this.value.filter((tag: DotTag) => tag.label === label);
     }
 }

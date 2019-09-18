@@ -100,6 +100,7 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
     /**
      * Update tags form value based on dot-autocomplete-tags changes
      *
+     * @param {DotTag[]} tags
      * @memberof DotCreatePersonaFormComponent
      */
     updateTags(tags: DotTag[]): void {

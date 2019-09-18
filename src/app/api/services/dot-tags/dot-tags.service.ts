@@ -15,22 +15,20 @@ export class DotTagsService {
     constructor(private coreWebService: CoreWebService) {}
 
     /**
-     * Return Tags.
+     * Get tags suggestions
      * @returns Observable<DotTag[]>
      * @memberof DotTagDotTagsServicesService
      */
-    get(name?: string): Observable<DotTag[]> {
+    getSuggestions(name?: string): Observable<DotTag[]> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: `v1/tags?name=${name ? name : ''}`
+                url: name ? `v1/tags?name=${name}` : 'v1/tags'
             })
             .pipe(
                 pluck('bodyJsonObject'),
                 map(tags => {
-                    const tagsArr = [];
-                    Object.entries(tags).forEach(([_key, value]) => tagsArr.push(value));
-                    return tagsArr;
+                    return Object.entries(tags).map(([_key, value]) => value);
                 })
             );
     }

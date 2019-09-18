@@ -8,10 +8,11 @@
                  [inputId]="inputId"
                  (onKeyUp)="checkForTag($event)"
                  (completeMethod)="filterTags($event)"
-                 (onSelect)="addItem($event)"
+                 (onSelect)="addItem()"
                  (onUnselect)="removeItem()"
+                 [disabled]="disabled"
                  appendTo="body">
-  <ng-template let-value pTemplate="selectedItem">
-    <span style="margin-right: 20px"> {{value}} </span>
-  </ng-template>
+        <ng-template let-tag pTemplate="selectedItem">
+            <span class="autoComplete-selectedItem"> {{tag.label}} </span>
+        </ng-template>
 </p-autoComplete>
