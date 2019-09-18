@@ -114,9 +114,7 @@ export const DotFormFields = {
             label={field.name}
             name={field.variable}
             ref={(el: HTMLElement) => {
-                field.fieldVariables.forEach(({ key, value }) => {
-                    el.setAttribute(key, value);
-                });
+                setAttributesToTag(el, field.fieldVariables);
             }}
             required={field.required}
             value={field.defaultValue}
