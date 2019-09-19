@@ -230,7 +230,8 @@ export class DotContentTypesPortletComponent implements OnInit {
             {
                 fieldName: 'nEntries',
                 header: this.dotMessageService.get('contenttypes.fieldname.entries'),
-                width: '7%'
+                width: '8%',
+                textAlign: 'left'
             },
             {
                 fieldName: 'modDate',
