@@ -87,7 +87,7 @@ class MockDotAddToBundleComponent {
     cancel = new EventEmitter<boolean>();
 }
 
-fdescribe('DotContentTypesPortletComponent', () => {
+describe('DotContentTypesPortletComponent', () => {
     let comp: DotContentTypesPortletComponent;
     let fixture: ComponentFixture<DotContentTypesPortletComponent>;
     let de: DebugElement;
