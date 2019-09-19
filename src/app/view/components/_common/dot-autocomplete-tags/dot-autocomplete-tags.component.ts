@@ -64,7 +64,8 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     checkForTag(event: KeyboardEvent): void {
         if (event.key === 'Enter') {
             this.addItemOnEnter(event.currentTarget as HTMLInputElement);
-        } else if (event.key === 'Backspace') { //  Because of the natual behavior of p-autoComplete
+        } else if (event.key === 'Backspace') {
+            //  Because of the natual behavior of p-autoComplete
             this.recoverDeletedElement();
         }
     }
