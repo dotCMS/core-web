@@ -22,7 +22,7 @@ import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 
-describe('DotListingDataTableComponent', () => {
+fdescribe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let fixture: ComponentFixture<DotListingDataTableComponent>;
     let de: DebugElement;
@@ -124,7 +124,7 @@ describe('DotListingDataTableComponent', () => {
         this.paginatorService.totalRecords = this.items.length;
 
         this.columns = [
-            { fieldName: 'field1', header: 'Field 1', width: '45%' },
+            { fieldName: 'field1', header: 'Field 1', width: '45%', sortable: true },
             { fieldName: 'field2', header: 'Field 2', width: '10%' },
             { fieldName: 'field3', header: 'Field 3', width: '30%' },
             { fieldName: 'nEntries', header: 'Field 4', width: '5%', textContent: 'View Entries' }
@@ -173,8 +173,12 @@ describe('DotListingDataTableComponent', () => {
         const headers = rows[0].querySelectorAll('th');
         expect(5).toEqual(headers.length);
 
-        comp.columns.forEach((_col, index) =>
-            expect(comp.columns[index].header).toEqual(headers[index].textContent.trim())
+        comp.columns.forEach((_col, index) => {
+            const sortableIcon = headers[index].querySelector('p-sortIcon');
+            index === 0 ? expect(sortableIcon).toBeDefined() : expect(sortableIcon).toBeNull();
+            expect(comp.columns[index].header).toEqual(headers[index].textContent.trim());
+        }
+
         );
 
         rows.forEach((row, rowIndex) => {
