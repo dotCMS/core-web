@@ -23,7 +23,7 @@ export class DotTagsService {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Get,
-                url: name ? `v1/tags?name=${name}` : 'v1/tags'
+                url: `v1/tags${name ? `?name=${name}` : ''}`
             })
             .pipe(
                 pluck('bodyJsonObject'),

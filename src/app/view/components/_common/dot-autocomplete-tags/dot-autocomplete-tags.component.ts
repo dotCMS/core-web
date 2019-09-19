@@ -65,29 +65,29 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
         if (event.key === 'Enter') {
             this.addItemOnEnter(event.currentTarget as HTMLInputElement);
         } else if (event.key === 'Backspace') {
-            //  Because of the natual behavior of p-autoComplete
+            //  PrimeNG p-autoComplete remove elements on Backspace keydown, we don't want that in our component so we're fixing this here.
             this.recoverDeletedElement();
         }
     }
 
     /**
-     * Add new item when is selected in the p-autocomplete dropdown.
+     * Add new item when is selected in the p-autocomplete dropdown and propagate change
      *
      * @param DotTag tag
      * @memberof DotAutocompleteTagsComponent
      */
     addItem(): void {
         this.value.unshift(this.value.pop());
-        this.propagateChange(this.formattedValue());
+        this.propagateChange(this.getStringifyLabels());
     }
 
     /**
-     * Add new item when is selected in the p-autocomplete dropdown.
+     * After item is removed in the p-autocomplete dropdown, propagate change and set lastDeletedTag
      *
      * @memberof DotAutocompleteTagsComponent
      */
     removeItem(tag: DotTag): void {
-        this.propagateChange(this.formattedValue());
+        this.propagateChange(this.getStringifyLabels());
         this.lastDeletedTag = tag;
     }
     /**
@@ -111,7 +111,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     writeValue(labels: string): void {
         this.value = labels
             ? labels.split(',').map((text: string) => {
-                  return { label: text };
+                  return this.createNewTag(text);
               })
             : [];
     }
@@ -132,14 +132,14 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
         return !!label && !this.value.filter((tag: DotTag) => tag.label === label).length;
     }
 
-    private formattedValue(): string {
+    private getStringifyLabels(): string {
         return this.value.map((tag: DotTag) => tag.label).join(',');
     }
 
     private addItemOnEnter(input: HTMLInputElement): void {
         if (this.isUniqueTag(input.value)) {
-            this.value.unshift({ label: input.value });
-            this.propagateChange(this.formattedValue());
+            this.value.unshift(this.createNewTag(input.value));
+            this.propagateChange(this.getStringifyLabels());
             this.filterTags({ query: input.value });
             input.value = null;
         }
@@ -147,5 +147,14 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
 
     private recoverDeletedElement(): void {
         this.value.push(this.lastDeletedTag);
+    }
+
+    private createNewTag(label: string): DotTag {
+        return {
+            label: label,
+            siteId: '',
+            siteName: '',
+            persona: null
+        };
     }
 }

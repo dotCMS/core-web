@@ -60,7 +60,20 @@ describe('DotAutocompleteTagsComponent', () => {
         });
 
         describe('events', () => {
-            const preLoadedTags = [{ label: 'enterEvent' }, { label: 'Dotcms' }];
+            const preLoadedTags = [
+                {
+                    label: 'enterEvent',
+                    siteId: '',
+                    siteName: '',
+                    persona: null
+                },
+                {
+                    label: 'Dotcms',
+                    siteId: '',
+                    siteName: '',
+                    persona: null
+                }
+            ];
 
             beforeEach(() => {
                 spyOn(component, 'propagateChange').and.callThrough();
@@ -108,7 +121,12 @@ describe('DotAutocompleteTagsComponent', () => {
 
             it('should call filterTags on completeMethod and remove already selected', () => {
                 spyOn(component, 'filterTags').and.callThrough();
-                component.value.push({ label: 'test' });
+                component.value.push({
+                    label: 'test',
+                    siteId: '',
+                    siteName: '',
+                    persona: null
+                });
                 autoComplete.completeMethod.emit({ query: 'test' });
 
                 expect(component.filterTags).toHaveBeenCalledWith({ query: 'test' });

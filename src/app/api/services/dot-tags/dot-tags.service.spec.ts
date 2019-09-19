@@ -17,7 +17,7 @@ describe('DotTagsService', () => {
         this.backend.connections.subscribe((connection: any) => (this.lastConnection = connection));
     });
 
-    it('should get Languages', () => {
+    it('should get Tags', () => {
         let result;
 
         dotTagsService.getSuggestions().subscribe(res => {
@@ -33,10 +33,10 @@ describe('DotTagsService', () => {
         );
 
         expect(result).toEqual([mockResponse.test, mockResponse.united]);
-        expect(this.lastConnection.request.url).toContain('v1/tags');
+        expect(this.lastConnection.request.url).toEqual('v1/tags');
     });
 
-    it('should get Languages filtered by name ', () => {
+    it('should get Tags filtered by name ', () => {
         let result;
 
         dotTagsService.getSuggestions('test').subscribe(res => {
@@ -52,6 +52,6 @@ describe('DotTagsService', () => {
         );
 
         expect(result).toEqual([mockResponse.test, mockResponse.united]);
-        expect(this.lastConnection.request.url).toContain('v1/tags');
+        expect(this.lastConnection.request.url).toEqual('v1/tags?name=test');
     });
 });

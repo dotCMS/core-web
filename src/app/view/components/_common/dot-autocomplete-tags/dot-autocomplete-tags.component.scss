@@ -1,9 +1,5 @@
 @import "variables";
 
-.autoComplete-selectedItem {
-    margin-right: $basic-padding * 2;
-}
-
 :host {
     min-height: $basic-padding * 12;
     display: flex;
@@ -11,6 +7,7 @@
     ::ng-deep {
         p-autocomplete {
             width: 100%;
+
             .ui-autocomplete {
                 display: flex;
 
@@ -31,14 +28,18 @@
                     }
 
                     .ui-autocomplete-token {
-                        margin: 8px 0 0;
+                        margin: $basic-padding 0 0;
                         padding-left: 0px;
+
+                        span:last-child {
+                            margin-right: $basic-padding * 2;
+                        }
                     }
                 }
 
                 .ui-autocomplete-dropdown {
                     margin-left: auto;
-                    width: 16px;
+                    width: $basic-padding * 2;
                     border: 0;
 
                     .ui-button-icon-left {
