@@ -29,6 +29,8 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     filteredOptions: DotTag[];
     disabled = false;
 
+    private lastDeletedTag: DotTag;
+
     constructor(private dotTagsService: DotTagsService) {}
 
     propagateChange = (_: any) => {};
@@ -60,12 +62,10 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     checkForTag(event: KeyboardEvent): void {
-        const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
-        if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
-            this.value.unshift({ label: input.value });
-            this.propagateChange(this.formattedValue());
-            this.filterTags({ query: input.value });
-            input.value = null;
+        if (event.key === 'Enter') {
+            this.addItemOnEnter(event.currentTarget as HTMLInputElement);
+        } else if (event.key === 'Backspace') { //  Because of the natual behavior of p-autoComplete
+            this.recoverDeletedElement();
         }
     }
 
@@ -85,8 +85,9 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      *
      * @memberof DotAutocompleteTagsComponent
      */
-    removeItem(): void {
+    removeItem(tag: DotTag): void {
         this.propagateChange(this.formattedValue());
+        this.lastDeletedTag = tag;
     }
     /**
      * Set the function to be called when the control receives a change event.
@@ -132,5 +133,18 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
 
     private formattedValue(): string {
         return this.value.map((tag: DotTag) => tag.label).join(',');
+    }
+
+    private addItemOnEnter(input: HTMLInputElement): void {
+        if (this.isUniqueTag(input.value)) {
+            this.value.unshift({ label: input.value });
+            this.propagateChange(this.formattedValue());
+            this.filterTags({ query: input.value });
+            input.value = null;
+        }
+    }
+
+    private recoverDeletedElement(): void {
+        this.value.push(this.lastDeletedTag);
     }
 }

@@ -70,6 +70,7 @@ describe('DotAutocompleteTagsComponent', () => {
             describe('onKeyUp', () => {
                 const enterEvent = { key: 'Enter', currentTarget: { value: 'enterEvent' } };
                 const newEnterEvent = { key: 'Enter', currentTarget: { value: 'newTag' } };
+                const backspaceEvent = { key: 'Backspace' };
                 const qEvent = { key: 'q', currentTarget: { value: 'qEvent' } };
 
                 beforeEach(() => {});
@@ -95,6 +96,13 @@ describe('DotAutocompleteTagsComponent', () => {
                     expect(component.propagateChange).toHaveBeenCalledWith(
                         'newTag,enterEvent,Dotcms'
                     );
+                });
+
+                it('should put back last deleted item but the p-autoComplete ', () => {
+                    autoComplete.onUnselect.emit({label: qEvent.currentTarget.value });
+                    autoComplete.onKeyup({ ...backspaceEvent });
+                    expect(component.value.length).toEqual(3);
+                    expect(component.value[2].label).toEqual(qEvent.currentTarget.value);
                 });
             });
 

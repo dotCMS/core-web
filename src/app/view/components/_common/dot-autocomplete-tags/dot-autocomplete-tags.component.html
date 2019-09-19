@@ -8,7 +8,7 @@
                  (onKeyUp)="checkForTag($event)"
                  (completeMethod)="filterTags($event)"
                  (onSelect)="addItem()"
-                 (onUnselect)="removeItem()"
+                 (onUnselect)="removeItem($event)"
                  [disabled]="disabled"
                  appendTo="body">
         <ng-template let-tag pTemplate="selectedItem">

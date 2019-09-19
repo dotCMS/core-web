@@ -16,19 +16,37 @@
 
                 .ui-autocomplete-multiple-container {
                     position: absolute;
-                    top: $basic-padding * 6;
+                    top: $basic-padding * 5;
+                    left: 0;
+                    right: $basic-padding * 4;
                     overflow: visible;
+                    height: 0;
 
                     .ui-autocomplete-input-token {
                         position: absolute;
-                        top: -$basic-padding * 6;
+                        top: -$basic-padding * 5;
                         left: 0;
+                        right: 0;
                         height: $field-height;
+                    }
+
+                    .ui-autocomplete-token {
+                        margin: 8px 0 0;
+                        padding-left: 0px;
                     }
                 }
 
                 .ui-autocomplete-dropdown {
                     margin-left: auto;
+                    width: 16px;
+                    border: 0;
+
+                    .ui-button-icon-left{
+                        right: 0;
+                        left: auto;
+                        width: 12px;
+
+                    }
                 }
             }
         }
