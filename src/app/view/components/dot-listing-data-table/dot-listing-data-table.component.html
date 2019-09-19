@@ -41,13 +41,13 @@
                 [ngStyle]="{'width': col.width, 'text-align': getAlign(col)}">
                 <div class="listing-datatable__column-icon"  *ngIf="col.icon">
                     <dot-icon name="{{ col.icon(rowData) }}"></dot-icon>
-                    <span>{{ rowData[col.fieldName] }}</span>
+                    <span>{{ col.textContent || rowData[col.fieldName] }}</span>
                 </div>
                 <span *ngIf="!col.icon && col.fieldName !== 'nEntries'">{{ rowData[col.fieldName] }}</span>
                 <a *ngIf="col.fieldName === 'nEntries'"
                    [routerLink]="rowData.variable === 'Host' ? '/c/sites' : '/c/content'"
                    [queryParams]="rowData.variable === 'Host' ? {} : {filter: rowData.variable}">
-                    {{ i18nMessages['dot.common.view.entries'] }}
+                    {{ col.textContent || rowData[col.fieldName] }}
                 </a>
             </td>
             <td class="listing-datatable__action-column" style="width: 5%">

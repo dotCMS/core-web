@@ -79,7 +79,7 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
     ngOnInit(): void {
         this.globalSearch.nativeElement.focus();
 
-        this.dotMessageService.getMessages(['global-search', 'dot.common.view.entries']).subscribe(res => {
+        this.dotMessageService.getMessages(['global-search']).subscribe(res => {
             this.i18nMessages = res;
         });
     }
