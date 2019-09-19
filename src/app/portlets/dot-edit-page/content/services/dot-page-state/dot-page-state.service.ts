@@ -78,31 +78,6 @@ export class DotPageStateService {
     }
 
     /**
-     * Request an new page state and set the local internal state
-     *
-     * @param {DotPageRenderOptions} options
-     * @returns {Observable<DotPageRenderState>}
-     * @memberof DotPageStateService
-     */
-    requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
-        return this.dotPageRenderService.get(options).pipe(
-            catchError((err: ResponseView) => {
-                return this.handleSetPageStateFailed(err);
-            }),
-            take(1),
-            map((page: DotPageRender) => {
-                if (page) {
-                    const pageState = new DotPageRenderState(this.getCurrentUser(), page);
-                    this.setCurrentState(pageState);
-                    return pageState;
-                }
-
-                return this.currentState;
-            })
-        );
-    }
-
-    /**
      * Set the page state of view as to received device
      *
      * @param {DotDevice} device
@@ -216,6 +191,24 @@ export class DotPageStateService {
         } else if (event.type === PageModelChangeEventType.REMOVE_CONTENT) {
             this.contentRemoved();
         }
+    }
+
+    private requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
+        return this.dotPageRenderService.get(options).pipe(
+            catchError((err: ResponseView) => {
+                return this.handleSetPageStateFailed(err);
+            }),
+            take(1),
+            map((page: DotPageRender) => {
+                if (page) {
+                    const pageState = new DotPageRenderState(this.getCurrentUser(), page);
+                    this.setCurrentState(pageState);
+                    return pageState;
+                }
+
+                return this.currentState;
+            })
+        );
     }
 
     private setCurrentState(newState: DotPageRenderState): void {
