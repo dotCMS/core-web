@@ -13,7 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
     selector: 'dot-autocomplete-tags',
     templateUrl: './dot-autocomplete-tags.component.html',
-    styleUrls: ['./dot-autocomplete-tags.component.css'],
+    styleUrls: ['./dot-autocomplete-tags.component.scss'],
     providers: [
         {
             multi: true,
@@ -24,8 +24,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccessor {
     @Input() placeholder: string;
-    @Input() inputId: string;
-    // @Output() onChange = new EventEmitter<string[]>();
 
     value: DotTag[] = [];
     filteredOptions: DotTag[];
@@ -46,7 +44,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @param any event
      * @memberof DotAutocompleteTagsComponent
      */
-    filterTags(event?: { originalEvent: Event; query: string }): void {
+    filterTags(event?: { originalEvent?: Event; query: string }): void {
         this.dotTagsService
             .getSuggestions(event ? event.query : '')
             .pipe(
@@ -67,12 +65,11 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     checkForTag(event: KeyboardEvent): void {
-        debugger;
         const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
         if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
             this.value.push({ label: input.value });
-            this.propagateChange(this.value);
-            // this.onChange.emit(this.value);
+            this.propagateChange(this.formattedValue());
+            this.filterTags({ query: input.value });
             input.value = null;
         }
     }
@@ -84,13 +81,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     addItem(): void {
-        debugger;
-        this.propagateChange(this.value);
-        // this.value.splice(-1, 1);
-        // if (this.isUniqueTag(tag.label)) {
-        //     this.value.push(tag.label);
-        // this.onChange.emit(this.value);
-        // }
+        this.propagateChange(this.formattedValue());
     }
 
     /**
@@ -99,8 +90,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     removeItem(): void {
-        this.propagateChange(this.value);
-        // this.onChange.emit(this.value);
+        this.propagateChange(this.formattedValue());
     }
     /**
      * Set the function to be called when the control receives a change event.
@@ -114,12 +104,18 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
 
     /**
      * Write a new value to the element
+     * Receive strings separated by comma and covert that
+     * to DotTag[]
      *
      * @param string[] value
      * @memberof DotAutocompleteTagsComponent
      */
-    writeValue(value: DotTag[]): void {
-        this.value = value ? value : [];
+    writeValue(labels: string): void {
+        this.value = labels
+            ? labels.split(',').map((text: string) => {
+                  return { label: text };
+              })
+            : [];
     }
 
     /**
@@ -135,6 +131,10 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     registerOnTouched(): void {}
 
     private isUniqueTag(label: string): boolean {
-        return !!label && !this.value.filter((tag: DotTag) => tag.label === label);
+        return !!label && !this.value.filter((tag: DotTag) => tag.label === label).length;
+    }
+
+    private formattedValue(): string {
+        return this.value.map((tag: DotTag) => tag.label).join(',');
     }
 }

@@ -1,0 +1,36 @@
+@import "variables";
+
+.autoComplete-selectedItem {
+    margin-right: $basic-padding * 2;
+}
+
+:host {
+    min-height: $basic-padding * 12;
+    display: flex;
+
+    ::ng-deep {
+        p-autocomplete {
+            width: 100%;
+            .ui-autocomplete {
+                display: flex;
+
+                .ui-autocomplete-multiple-container {
+                    position: absolute;
+                    top: $basic-padding * 6;
+                    overflow: visible;
+
+                    .ui-autocomplete-input-token {
+                        position: absolute;
+                        top: -$basic-padding * 6;
+                        left: 0;
+                        height: $field-height;
+                    }
+                }
+
+                .ui-autocomplete-dropdown {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+}

@@ -17,16 +17,16 @@ const mockResponse = [
 ];
 
 class DotTagsServiceMock {
-    getSuggestions(name?: string): Observable<DotTag[]> {
+    getSuggestions(_name?: string): Observable<DotTag[]> {
         return of(mockResponse);
     }
 }
 
-fdescribe('DotAutocompleteTagsComponent', () => {
+describe('DotAutocompleteTagsComponent', () => {
     let component: DotAutocompleteTagsComponent;
     let fixture: ComponentFixture<DotAutocompleteTagsComponent>;
     let de: DebugElement;
-    let autoComplete: DebugElement;
+    let autoComplete: AutoComplete;
 
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
@@ -38,7 +38,7 @@ fdescribe('DotAutocompleteTagsComponent', () => {
         de = fixture.debugElement;
         component = fixture.componentInstance;
         fixture.detectChanges();
-        autoComplete = de.query(By.css('p-autoComplete'));
+        autoComplete = de.query(By.css('p-autoComplete')).componentInstance as AutoComplete;
     });
 
     it('should set options when load', () => {
@@ -52,43 +52,76 @@ fdescribe('DotAutocompleteTagsComponent', () => {
         });
 
         it('should set all properties correctly', () => {
-            expect(autoComplete.componentInstance.field).toEqual('label');
-            expect(autoComplete.componentInstance.dataKey).toEqual('label');
-            expect(autoComplete.componentInstance.dropdown).toBe(true);
-            expect(autoComplete.componentInstance.multiple).toBe(true);
-            expect(autoComplete.componentInstance.placeholder).toEqual('Custom Placeholder');
-
+            expect(autoComplete.field).toEqual('label');
+            expect(autoComplete.dataKey).toEqual('label');
+            expect(autoComplete.dropdown).toBe(true);
+            expect(autoComplete.multiple).toBe(true);
+            expect(autoComplete.placeholder).toEqual('Custom Placeholder');
         });
 
         describe('events', () => {
-            beforeEach(() => {});
+            const preLoadedTags = [{ label: 'enterEvent' }, { label: 'Dotcms' }];
 
+            beforeEach(() => {
+                spyOn(component, 'propagateChange').and.callThrough();
+                component.value = [...preLoadedTags];
+            });
 
             describe('onKeyUp', () => {
+                const enterEvent = { key: 'Enter', currentTarget: { value: 'enterEvent' } };
+                const newEnterEvent = { key: 'Enter', currentTarget: { value: 'newTag' } };
+                const qEvent = { key: 'q', currentTarget: { value: 'qEvent' } };
+
                 beforeEach(() => {});
 
-                it('should call checkForTag', () => {
-
-                });
-
-                it('should add the tag if is unique and the user hit enter', () => {
-
+                it('should NOT add the tag because user dint hit enter', () => {
+                    autoComplete.onKeyup({ ...qEvent });
+                    expect(component.value.length).toEqual(2);
                 });
 
                 it('should NOT add the tag because is duplicate if the user hit enter', () => {
+                    autoComplete.onKeyup({ ...enterEvent });
+                    expect(component.value[1].label).toEqual(preLoadedTags[1].label);
+                    expect(component.value.length).toEqual(2);
+                });
 
+                it('should call checkForTag if user hit enter should add the tag and clear input value', () => {
+                    spyOn(component, 'checkForTag').and.callThrough();
+                    autoComplete.onKeyup(newEnterEvent);
+
+                    expect(component.checkForTag).toHaveBeenCalledWith(newEnterEvent);
+                    expect(component.value[2].label).toEqual('newTag');
+                    expect(newEnterEvent.currentTarget.value).toBeNull();
+                    expect(component.propagateChange).toHaveBeenCalledWith(
+                        'enterEvent,Dotcms,newTag'
+                    );
                 });
             });
 
             it('should call filterTags on completeMethod and remove already selected', () => {
+                spyOn(component, 'filterTags').and.callThrough();
+                component.value.push({ label: 'test' });
+                autoComplete.completeMethod.emit({ query: 'test' });
 
+                expect(component.filterTags).toHaveBeenCalledWith({ query: 'test' });
+                expect(component.filteredOptions.length).toBe(1);
             });
 
             it('should call addItem on onSelect event and ', () => {
+                spyOn(component, 'addItem').and.callThrough();
+                autoComplete.onSelect.emit();
 
+                expect(component.addItem).toHaveBeenCalledTimes(1);
+                expect(component.propagateChange).toHaveBeenCalledWith('enterEvent,Dotcms');
+            });
+
+            it('should call removeItem on onUnselect event and ', () => {
+                spyOn(component, 'removeItem').and.callThrough();
+                autoComplete.onUnselect.emit();
+
+                expect(component.removeItem).toHaveBeenCalledTimes(1);
+                expect(component.propagateChange).toHaveBeenCalledWith('enterEvent,Dotcms');
             });
         });
     });
-
-    it('', () => {});
 });

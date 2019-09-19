@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 import { DotFileUpload } from '@models/dot-file-upload/dot-file-upload.model';
 import { DotCMSTempFile } from 'dotcms-models';
 import { SiteService } from 'dotcms-js';
-import { DotTag } from '@models/dot-tag';
 
 @Component({
     selector: 'dot-create-persona-form',
@@ -97,23 +96,13 @@ export class DotCreatePersonaFormComponent implements OnInit, OnDestroy {
         this.form.get('hostFolder').setValue(this.siteService.currentSite.identifier);
     }
 
-    /**
-     * Update tags form value based on dot-autocomplete-tags changes
-     *
-     * @param {DotTag[]} tags
-     * @memberof DotCreatePersonaFormComponent
-     */
-    updateTags(tags: DotTag[]): void {
-        this.form.get('tags').setValue(tags.join(','));
-    }
-
     private initPersonaForm(): void {
         this.form = this.fb.group({
             hostFolder: [this.siteService.currentSite.identifier, [Validators.required]],
             keyTag: [{ value: '', disabled: true }, [Validators.required]],
             name: [this.personaName, [Validators.required]],
             photo: null,
-            tags: []
+            tags: null
         });
         this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.isValid.emit(this.form.valid);

@@ -42,11 +42,8 @@
     </div>
     <div class="form__group">
         <label for="persona-other-tags" class="form__label">{{messagesKey['modes.persona.other.tags']}}</label>
-        <dot-autocomplete-tags id="persona-other-tags"
+        <dot-autocomplete-tags id="persona-other-tags" formControlName="tags"
             [placeholder]="messagesKey['modes.persona.select.tags.placeholder']"
-            (onChange)="updateTags($event)"
         ></dot-autocomplete-tags>
     </div>
 </form>
-
-{{form.getRawValue() | json}}
