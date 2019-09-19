@@ -10,7 +10,6 @@
                  (onSelect)="addItem()"
                  (onUnselect)="removeItem()"
                  [disabled]="disabled"
-                 size="100%"
                  appendTo="body">
         <ng-template let-tag pTemplate="selectedItem">
             <span class="autoComplete-selectedItem"> {{tag.label}} </span>

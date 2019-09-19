@@ -1,7 +1,7 @@
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotTag } from '@models/dot-tag';
-import { filter, mergeMap, take, toArray } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
@@ -47,14 +47,9 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     filterTags(event?: { originalEvent?: Event; query: string }): void {
         this.dotTagsService
             .getSuggestions(event ? event.query : '')
-            .pipe(
-                take(1),
-                mergeMap((tags: DotTag[]) => tags),
-                filter((tag: DotTag) => this.isUniqueTag(tag.label)),
-                toArray<DotTag>()
-            )
+            .pipe(take(1))
             .subscribe((tags: DotTag[]) => {
-                this.filteredOptions = tags;
+                this.filteredOptions = tags.filter((tag: DotTag) => this.isUniqueTag(tag.label));
             });
     }
 
@@ -67,7 +62,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     checkForTag(event: KeyboardEvent): void {
         const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
         if (event.key === 'Enter' && this.isUniqueTag(input.value)) {
-            this.value.push({ label: input.value });
+            this.value.unshift({ label: input.value });
             this.propagateChange(this.formattedValue());
             this.filterTags({ query: input.value });
             input.value = null;
@@ -81,6 +76,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     addItem(): void {
+        this.value.unshift(this.value.pop());
         this.propagateChange(this.formattedValue());
     }
 

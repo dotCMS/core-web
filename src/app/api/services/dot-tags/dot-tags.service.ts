@@ -27,7 +27,7 @@ export class DotTagsService {
             })
             .pipe(
                 pluck('bodyJsonObject'),
-                map(tags => {
+                map((tags: { [key: string]: DotTag }) => {
                     return Object.entries(tags).map(([_key, value]) => value);
                 })
             );

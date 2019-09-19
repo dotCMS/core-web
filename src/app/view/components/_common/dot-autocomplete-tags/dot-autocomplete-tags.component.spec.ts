@@ -90,10 +90,10 @@ describe('DotAutocompleteTagsComponent', () => {
                     autoComplete.onKeyup(newEnterEvent);
 
                     expect(component.checkForTag).toHaveBeenCalledWith(newEnterEvent);
-                    expect(component.value[2].label).toEqual('newTag');
+                    expect(component.value[0].label).toEqual('newTag');
                     expect(newEnterEvent.currentTarget.value).toBeNull();
                     expect(component.propagateChange).toHaveBeenCalledWith(
-                        'enterEvent,Dotcms,newTag'
+                        'newTag,enterEvent,Dotcms'
                     );
                 });
             });
@@ -107,12 +107,12 @@ describe('DotAutocompleteTagsComponent', () => {
                 expect(component.filteredOptions.length).toBe(1);
             });
 
-            it('should call addItem on onSelect event and ', () => {
+            it('should call addItem on onSelect event and place last element as first', () => {
                 spyOn(component, 'addItem').and.callThrough();
                 autoComplete.onSelect.emit();
 
                 expect(component.addItem).toHaveBeenCalledTimes(1);
-                expect(component.propagateChange).toHaveBeenCalledWith('enterEvent,Dotcms');
+                expect(component.propagateChange).toHaveBeenCalledWith('Dotcms,enterEvent');
             });
 
             it('should call removeItem on onUnselect event and ', () => {
