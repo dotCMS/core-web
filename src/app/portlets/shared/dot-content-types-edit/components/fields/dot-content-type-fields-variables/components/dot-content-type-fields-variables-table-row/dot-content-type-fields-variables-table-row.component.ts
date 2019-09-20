@@ -46,8 +46,6 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
-        console.log('**', this.keyDisabled)
-
         this.dotMessageService
             .getMessages([
                 'contenttypes.field.variables.key_input.placeholder',
@@ -59,7 +57,6 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
                 this.focusKeyInput();
-                console.log('**', this.keyDisabled)
             });
     }
 
@@ -73,12 +70,9 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
             this.keyCell.nativeElement.click();
             this.keyDisabled = false;
             this.keyCell.nativeElement.disable = true;
-            console.log('----create', this.keyDisabled);
-
         } else if (this.isFieldVariableUpdate($event)) {
             $event.stopPropagation();
             this.keyDisabled = true;
-            console.log('----isFieldVariableUpdate', this.keyDisabled);
             this.valueCell.nativeElement.click();
         }
     }
