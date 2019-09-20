@@ -193,7 +193,14 @@ export class DotPageStateService {
         }
     }
 
-    private requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
+    /**
+     *
+     *
+     * @param {DotPageRenderOptions} options
+     * @returns {Observable<DotPageRenderState>}
+     * @memberof DotPageStateService
+     */
+    requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
         return this.dotPageRenderService.get(options).pipe(
             catchError((err: ResponseView) => {
                 return this.handleSetPageStateFailed(err);
