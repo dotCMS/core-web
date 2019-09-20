@@ -22,12 +22,13 @@ import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot
 import { mockResponseView } from '@tests/response-view.mock';
 import { TestBedStatic } from '@angular/core/testing';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
+import { PageModelChangeEventType } from '../dot-edit-content-html/models';
 
 const getDotPageRenderStateMock = () => {
     return new DotPageRenderState(mockUser, mockDotRenderedPage);
 };
 
-fdescribe('DotPageStateService', () => {
+describe('DotPageStateService', () => {
     let backend: MockBackend;
     let dotContentletLockerService: DotContentletLockerService;
     let dotHttpErrorManagerService: DotHttpErrorManagerService;
@@ -330,7 +331,10 @@ fdescribe('DotPageStateService', () => {
 
                 expect(subscribeCallback).toHaveBeenCalledWith(true);
 
-                service.contentRemoved();
+                service.updatePageStateHaveContent({
+                    type: PageModelChangeEventType.REMOVE_CONTENT,
+                    model: []
+                });
 
                 expect(subscribeCallback).toHaveBeenCalledWith(false);
                 expect(subscribeCallback).toHaveBeenCalledTimes(2);
@@ -350,7 +354,11 @@ fdescribe('DotPageStateService', () => {
 
                 expect(subscribeCallback).toHaveBeenCalledWith(false);
 
-                service.contentAdded();
+                service.updatePageStateHaveContent({
+                    type: PageModelChangeEventType.ADD_CONTENT,
+                    model: []
+                });
+
                 expect(subscribeCallback).toHaveBeenCalledWith(true);
                 expect(subscribeCallback).toHaveBeenCalledTimes(2);
             });
@@ -374,7 +382,11 @@ fdescribe('DotPageStateService', () => {
 
                 expect(subscribeCallback).toHaveBeenCalledWith(false);
 
-                service.contentRemoved();
+                service.updatePageStateHaveContent({
+                    type: PageModelChangeEventType.REMOVE_CONTENT,
+                    model: []
+                });
+
                 expect(subscribeCallback).toHaveBeenCalledTimes(1);
             });
 
@@ -398,7 +410,10 @@ fdescribe('DotPageStateService', () => {
 
                 expect(subscribeCallback).toHaveBeenCalledWith(false);
 
-                service.contentAdded();
+                service.updatePageStateHaveContent({
+                    type: PageModelChangeEventType.ADD_CONTENT,
+                    model: []
+                });
                 expect(subscribeCallback).toHaveBeenCalledTimes(1);
             });
         });

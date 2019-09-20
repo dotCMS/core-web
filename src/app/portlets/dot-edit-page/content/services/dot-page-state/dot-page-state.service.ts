@@ -158,28 +158,6 @@ export class DotPageStateService {
     }
 
     /**
-     * Call to notify that a content was add into the page
-     */
-    contentAdded(): void {
-        this.currentState.numberContents++;
-
-        if (this.currentState.numberContents === 1 && !this.selectedIsDefaultPersona()) {
-            this.haveContent$.next(true);
-        }
-    }
-
-    /**
-     * Call to notify that a content was remove from the page
-     */
-    contentRemoved(): void {
-        this.currentState.numberContents--;
-
-        if (this.currentState.numberContents === 0 && !this.selectedIsDefaultPersona()) {
-            this.haveContent$.next(false);
-        }
-    }
-
-    /**
      * Update page content status
      *
      * @param {PageModelChangeEvent} event
@@ -214,6 +192,22 @@ export class DotPageStateService {
                 return this.currentState;
             })
         );
+    }
+
+    private contentAdded(): void {
+        this.currentState.numberContents++;
+
+        if (this.currentState.numberContents === 1 && !this.selectedIsDefaultPersona()) {
+            this.haveContent$.next(true);
+        }
+    }
+
+    private contentRemoved(): void {
+        this.currentState.numberContents--;
+
+        if (this.currentState.numberContents === 0 && !this.selectedIsDefaultPersona()) {
+            this.haveContent$.next(false);
+        }
     }
 
     private setCurrentState(newState: DotPageRenderState): void {
