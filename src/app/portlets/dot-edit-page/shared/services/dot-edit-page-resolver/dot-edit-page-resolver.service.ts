@@ -60,6 +60,7 @@ export class DotEditPageResolver implements Resolve<DotPageRenderState> {
                         : of(dotRenderedPageState);
                 }),
                 catchError((err: ResponseView) => {
+                    console.log('goToSiteBrowser in resolver')
                     this.dotRouterService.goToSiteBrowser();
                     return this.dotHttpErrorManagerService.handle(err).pipe(map(() => null));
                 })

@@ -1,8 +1,8 @@
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ConnectionBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { LoginService } from 'dotcms-js';
+import { LoginService, HttpCode } from 'dotcms-js';
 
 import { DOTTestBed } from '@tests/dot-test-bed';
 import { DotContentletLockerService } from '@services/dot-contentlet-locker/dot-contentlet-locker.service';
@@ -18,29 +18,37 @@ import * as _ from 'lodash';
 import { mockDotPersona } from '@tests/dot-persona.mock';
 import { DotDevice } from '@shared/models/dot-device/dot-device.model';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
+import { DotHttpErrorManagerService } from '@services/dot-http-error-manager/dot-http-error-manager.service';
+import { mockResponseView } from '@tests/response-view.mock';
+import { TestBedStatic } from '@angular/core/testing';
+import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 const getDotPageRenderStateMock = () => {
     return new DotPageRenderState(mockUser, mockDotRenderedPage);
 };
 
-describe('DotPageStateService', () => {
-    let service: DotPageStateService;
-    let loginService: LoginService;
+fdescribe('DotPageStateService', () => {
     let backend: MockBackend;
-    let dotPageRenderService: DotPageRenderService;
     let dotContentletLockerService: DotContentletLockerService;
+    let dotHttpErrorManagerService: DotHttpErrorManagerService;
+    let dotHttpErrorManagerServiceHandle: jasmine.Spy;
+    let dotPageRenderService: DotPageRenderService;
+    let dotPageRenderServiceGetSpy: jasmine.Spy;
+    let dotRouterService: DotRouterService;
+    let injector: TestBedStatic;
     let lastConnection;
-    let injector;
-    let dotPageRenderServiceGetSpy;
+    let loginService: LoginService;
+    let service: DotPageStateService;
 
     beforeEach(() => {
         lastConnection = [];
 
         injector = DOTTestBed.configureTestingModule({
             providers: [
-                DotPageStateService,
-                DotPageRenderService,
                 DotContentletLockerService,
+                DotHttpErrorManagerService,
+                DotPageRenderService,
+                DotPageStateService,
                 {
                     provide: LoginService,
                     useClass: LoginServiceMock
@@ -48,28 +56,34 @@ describe('DotPageStateService', () => {
             ]
         });
 
-        service = injector.get(DotPageStateService);
         backend = injector.get(ConnectionBackend) as MockBackend;
-        loginService = injector.get(LoginService);
-        dotPageRenderService = injector.get(DotPageRenderService);
-        dotContentletLockerService = injector.get(DotContentletLockerService);
         backend.connections.subscribe((connection: any) => {
             lastConnection.push(connection);
         });
 
+        dotContentletLockerService = injector.get(DotContentletLockerService);
+        dotHttpErrorManagerService = injector.get(DotHttpErrorManagerService);
+        dotPageRenderService = injector.get(DotPageRenderService);
+        dotRouterService = injector.get(DotRouterService);
+        loginService = injector.get(LoginService);
+
         dotPageRenderServiceGetSpy = spyOn(dotPageRenderService, 'get').and.returnValue(
             of(mockDotRenderedPage)
         );
+
+        dotHttpErrorManagerServiceHandle = spyOn(
+            dotHttpErrorManagerService,
+            'handle'
+        ).and.callThrough();
+
+        service = injector.get(DotPageStateService);
     });
 
     describe('$state', () => {
         it('should get state', () => {
             const mock = getDotPageRenderStateMock();
 
-            console.log(mock);
-
             service.state$.subscribe((state: DotPageRenderState) => {
-                console.log(state);
                 expect(state).toEqual(mock);
             });
             service.get({
@@ -191,6 +205,69 @@ describe('DotPageStateService', () => {
         });
     });
 
+    describe('errors', () => {
+        it('should show error 300 message and redirect to site browser', () => {
+            const error300 = mockResponseView(300);
+            dotPageRenderServiceGetSpy.and.returnValue(throwError(error300));
+            dotHttpErrorManagerServiceHandle.and.returnValue(
+                of({
+                    redirected: false,
+                    status: HttpCode.FORBIDDEN
+                })
+            );
+
+            service
+                .requestPage({
+                    url: 'hello/world'
+                })
+                .subscribe(() => {});
+
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(error300);
+            expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show error 404 message and redirect to site browser', () => {
+            const error404 = mockResponseView(400);
+            dotPageRenderServiceGetSpy.and.returnValue(throwError(error404));
+            dotHttpErrorManagerServiceHandle.and.returnValue(
+                of({
+                    redirected: false,
+                    status: HttpCode.NOT_FOUND
+                })
+            );
+
+            service
+                .requestPage({
+                    url: 'hello/world'
+                })
+                .subscribe(() => {});
+
+            expect(dotHttpErrorManagerService.handle).toHaveBeenCalledWith(error404);
+            expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show error 500 and reload', () => {
+            spyOn(service, 'reload');
+            const error500 = mockResponseView(500);
+            dotPageRenderServiceGetSpy.and.returnValue(throwError(error500));
+            dotHttpErrorManagerServiceHandle.and.returnValue(
+                of({
+                    redirected: false,
+                    status: HttpCode.SERVER_ERROR
+                })
+            );
+
+            service
+                .requestPage({
+                    url: 'hello/world'
+                })
+                .subscribe(() => {});
+
+            expect(service.reload).toHaveBeenCalledTimes(1);
+            expect(dotRouterService.goToSiteBrowser).not.toHaveBeenCalled();
+        });
+    });
+
     describe('internal navigation state', () => {
         it('should return content from setted internal state', () => {
             const renderedPage = getDotPageRenderStateMock();
@@ -280,7 +357,7 @@ describe('DotPageStateService', () => {
         });
 
         describe('selected persona is not default', () => {
-            it('should trigger haceContent as false', () => {
+            it('should trigger haveContent as false', () => {
                 const renderedPage = new DotPageRenderState(mockUser, {
                     ...mockDotRenderedPage,
                     ...{

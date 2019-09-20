@@ -202,9 +202,7 @@ export class DotPageStateService {
      */
     requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
         return this.dotPageRenderService.get(options).pipe(
-            catchError((err: ResponseView) => {
-                return this.handleSetPageStateFailed(err);
-            }),
+            catchError((err: ResponseView) => this.handleSetPageStateFailed(err)),
             take(1),
             map((page: DotPageRender.Parameters) => {
                 if (page) {
