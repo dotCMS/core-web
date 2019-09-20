@@ -95,8 +95,6 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         comp.showEditMenu = true;
         fixture.detectChanges();
         const firstRow = de.nativeElement;
-        const keyInput = de.query(By.css('.field-variable-key-input'));
-        expect(keyInput.nativeElement.disabled).toBe(false);
         expect(firstRow.outerHTML).toContain('Enter Key');
         expect(firstRow.outerHTML).toContain('Enter Value');
         expect(firstRow.outerHTML).toContain('Cancel');
