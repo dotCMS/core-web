@@ -98,6 +98,17 @@ describe('DotEditPageResolver', () => {
         expect(dotRouterService.goToSiteBrowser).toHaveBeenCalledTimes(1);
     });
 
+    it('should return DotPageRenderState from local state', () => {
+        const mock = new DotPageRenderState(mockUser, new DotPageRender(mockDotRenderedPage));
+        dotPageStateService.setInternalNavigationState(mock);
+
+        resolver.resolve(route).subscribe((state: DotPageRenderState) => {
+            expect(state).toEqual(mock);
+        });
+
+        expect(dotPageStateServiceRequestPageSpy).not.toHaveBeenCalled();
+    });
+
     describe('handle layout', () => {
         beforeEach(() => {
             route.children = [
