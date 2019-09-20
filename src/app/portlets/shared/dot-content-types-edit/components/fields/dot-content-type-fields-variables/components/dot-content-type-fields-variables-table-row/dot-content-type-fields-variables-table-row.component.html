@@ -48,6 +48,7 @@
         </p-cellEditor>
     </td>
     <td class="content-type-fields__variables-actions">
+        {{saveDisabled}}
         <div id="content-type-fields__variables-actions-edit" *ngIf="showEditMenu">
             <button pButton secondary tiny
                 class="content-type-fields__variables-actions-edit-cancel"
@@ -66,7 +67,7 @@
         </div>
         <div id="content-type-fields__variables-actions-main" *ngIf="!showEditMenu">
             <dot-icon-button icon="delete_outline" (click)="delete.emit(variableIndex)"></dot-icon-button>
-            <dot-icon-button icon="edit" (click)="focusKeyInput(true)"></dot-icon-button>
+            <dot-icon-button icon="edit" (click)="focusKeyInput($event)"></dot-icon-button>
         </div>
     </td>
 </tr>

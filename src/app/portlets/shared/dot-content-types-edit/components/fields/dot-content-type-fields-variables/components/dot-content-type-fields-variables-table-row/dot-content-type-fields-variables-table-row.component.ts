@@ -61,12 +61,16 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
 
     /**
      * Focus on Key input
-     * @param {boolean} [forced]
+     * @param {Event} [$event]
      * @memberof DotContentTypeFieldsVariablesTableRowComponent
      */
-    focusKeyInput(forced?: boolean): void {
-        if (forced || this.isFieldDisabled()) {
+    focusKeyInput($event?: Event): void {
+        if (this.isFieldDisabled()) {
             this.keyCell.nativeElement.click();
+            this.keyCell.nativeElement.disable = true;
+        } else if ($event) {
+            $event.stopPropagation();
+            this.valueCell.nativeElement.click();
         }
     }
 
