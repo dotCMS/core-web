@@ -38,6 +38,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
 
     rowActiveHighlight: Boolean = false;
     showEditMenu: Boolean = false;
+    keyDisabled: Boolean = true;
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
@@ -45,6 +46,8 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
     constructor(public dotMessageService: DotMessageService) {}
 
     ngOnInit(): void {
+        console.log('**', this.keyDisabled)
+
         this.dotMessageService
             .getMessages([
                 'contenttypes.field.variables.key_input.placeholder',
@@ -56,6 +59,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
                 this.focusKeyInput();
+                console.log('**', this.keyDisabled)
             });
     }
 
@@ -67,9 +71,14 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
     focusKeyInput($event?: Event): void {
         if (this.isFieldDisabled()) {
             this.keyCell.nativeElement.click();
+            this.keyDisabled = false;
             this.keyCell.nativeElement.disable = true;
-        } else if ($event) {
+            console.log('----create', this.keyDisabled);
+
+        } else if (this.isFieldVariableUpdate($event)) {
             $event.stopPropagation();
+            this.keyDisabled = true;
+            console.log('----isFieldVariableUpdate', this.keyDisabled);
             this.valueCell.nativeElement.click();
         }
     }
@@ -117,6 +126,10 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
      */
     saveVariable(): void {
         this.save.emit(this.variableIndex);
+    }
+
+    private isFieldVariableUpdate($event: Event): boolean {
+        return typeof $event !== 'undefined';
     }
 
     private isFieldDisabled(): boolean {
