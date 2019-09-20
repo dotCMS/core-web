@@ -59,7 +59,7 @@ class MockCellEditorComponent implements AfterContentInit {
     }
 }
 
-fdescribe('DotContentTypeFieldsVariablesTableRowComponent', () => {
+describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     let comp: DotContentTypeFieldsVariablesTableRowComponent;
     let fixture: ComponentFixture<DotContentTypeFieldsVariablesTableRowComponent>;
     let de: DebugElement;
