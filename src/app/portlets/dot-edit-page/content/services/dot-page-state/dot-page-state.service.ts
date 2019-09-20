@@ -199,7 +199,7 @@ export class DotPageStateService {
                 return this.handleSetPageStateFailed(err);
             }),
             take(1),
-            map((page: DotPageRender) => {
+            map((page: DotPageRender.Parameters) => {
                 if (page) {
                     const pageState = new DotPageRenderState(this.getCurrentUser(), page);
                     this.setCurrentState(pageState);
