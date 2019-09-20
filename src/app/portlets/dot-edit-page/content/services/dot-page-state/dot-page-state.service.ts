@@ -172,7 +172,7 @@ export class DotPageStateService {
     }
 
     /**
-     *
+     * Get the page from API, set local state and return DotPageRenderState
      *
      * @param {DotPageRenderOptions} options
      * @returns {Observable<DotPageRenderState>}
