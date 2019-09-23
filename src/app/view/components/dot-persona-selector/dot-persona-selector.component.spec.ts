@@ -119,8 +119,6 @@ describe('DotPersonaSelectorComponent', () => {
         expect(de.componentInstance.value).toEqual(mockDotPersona);
     });
 
-
-
     it('should call toggle when selected dot-persona-selected-item', () => {
         spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
         hostFixture.whenStable().then(() => {

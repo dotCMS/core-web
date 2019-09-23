@@ -286,6 +286,11 @@ export class SearchableDropdownComponent
         this.disabled = isDisabled;
     }
 
+    /**
+     * Resets height value from Overlay Panel
+     *
+     * @memberof SearchableDropdownComponent
+     */
     resetPanelMinHeight(): void {
         this.overlayPanelMinHeight = '';
     }
