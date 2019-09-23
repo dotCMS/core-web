@@ -5,10 +5,10 @@ import {
     PaginationEvent
 } from '@components/_common/searchable-dropdown/component';
 import { DotPersona } from '@shared/models/dot-persona/dot-persona.model';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 import { DotPageRenderState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
 import { DotAddPersonaDialogComponent } from '@components/dot-add-persona-dialog/dot-add-persona-dialog.component';
-import {IframeOverlayService} from '@components/_common/iframe/service/iframe-overlay.service';
+import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 
 /**
  * It is dropdown of personas, it handle pagination and global search
@@ -43,7 +43,10 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     private _pageState: DotPageRenderState;
     private personaSeachQuery: string;
-    constructor(public paginationService: PaginatorService, public iframeOverlayService: IframeOverlayService) {}
+    constructor(
+        public paginationService: PaginatorService,
+        public iframeOverlayService: IframeOverlayService
+    ) {}
 
     ngOnInit(): void {
         this.addAction = () => {
@@ -142,7 +145,7 @@ export class DotPersonaSelectorComponent implements OnInit {
         this.paginationService.filter = filter;
         this.paginationService
             .getWithOffset(offset)
-            .pipe(take(1))
+            .pipe(take(1), delay(0))
             .subscribe(this.setList.bind(this));
     }
 

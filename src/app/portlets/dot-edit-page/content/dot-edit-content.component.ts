@@ -456,6 +456,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
     private subscribeOverlayService(): void {
         this.iframeOverlayService.overlay
             .pipe(takeUntil(this.destroy$))
-            .subscribe(val => (this.showOverlay = val));
+            .subscribe((val: boolean) => (this.showOverlay = val));
     }
 }

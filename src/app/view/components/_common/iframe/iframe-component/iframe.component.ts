@@ -52,7 +52,9 @@ export class IframeComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.iframeOverlayService.overlay.subscribe(val => (this.showOverlay = val));
+        this.iframeOverlayService.overlay
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((val: boolean) => (this.showOverlay = val));
 
         this.dotIframeService
             .reloaded()
