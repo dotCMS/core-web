@@ -37,7 +37,7 @@ export class DotPersonaSelectorComponent implements OnInit {
     isEditMode = false;
     messagesKey: { [key: string]: string } = {};
     paginationPerPage = 5;
-    personas: DotPersona[];
+    personas: DotPersona[] = [];
     totalRecords: number;
     value: DotPersona;
 
@@ -50,9 +50,11 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     ngOnInit(): void {
         this.addAction = () => {
+            debugger;
             this.searchableDropdown.toggleOverlayPanel();
             this.personaDialog.visible = true;
             this.personaDialog.personaName = this.personas.length ? '' : this.personaSeachQuery;
+            debugger;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
     }
