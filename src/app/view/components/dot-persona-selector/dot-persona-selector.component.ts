@@ -50,11 +50,9 @@ export class DotPersonaSelectorComponent implements OnInit {
 
     ngOnInit(): void {
         this.addAction = () => {
-            debugger;
             this.searchableDropdown.toggleOverlayPanel();
             this.personaDialog.visible = true;
             this.personaDialog.personaName = this.personas.length ? '' : this.personaSeachQuery;
-            debugger;
         };
         this.paginationService.paginationPerPage = this.paginationPerPage;
     }
