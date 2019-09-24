@@ -272,7 +272,7 @@ describe('DotEditPageToolbarComponent', () => {
                 expect(component.whatschange.emit).toHaveBeenCalledWith(false);
             });
 
-            it('should not emit when showWhatsChanged is true', () => {
+            it('should not emit when showWhatsChanged is false', () => {
                 component.showWhatsChanged = false;
                 fixtureHost.detectChanges();
                 const dotEditPageState = de.query(By.css('dot-edit-page-state-controller'));
