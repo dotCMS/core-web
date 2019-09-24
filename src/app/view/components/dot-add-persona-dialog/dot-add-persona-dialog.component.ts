@@ -67,7 +67,6 @@ export class DotAddPersonaDialogComponent implements OnInit {
     }
 
     private savePersona(): void {
-        console.log('savePersona');
         if (this.personaForm.form.valid) {
             this.dotWorkflowActionsFireService
                 .publishContentlet<DotPersona>(PERSONA_CONTENT_TYPE, {
