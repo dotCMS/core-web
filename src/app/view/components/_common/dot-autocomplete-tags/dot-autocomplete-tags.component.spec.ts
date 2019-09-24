@@ -22,7 +22,7 @@ class DotTagsServiceMock {
     }
 }
 
-describe('DotAutocompleteTagsComponent', () => {
+fdescribe('DotAutocompleteTagsComponent', () => {
     let component: DotAutocompleteTagsComponent;
     let fixture: ComponentFixture<DotAutocompleteTagsComponent>;
     let de: DebugElement;
@@ -111,11 +111,17 @@ describe('DotAutocompleteTagsComponent', () => {
                     );
                 });
 
-                it('should put back last deleted item but the p-autoComplete ', () => {
+                it('should put back last deleted item by the p-autoComplete', () => {
                     autoComplete.onUnselect.emit({ label: qEvent.currentTarget.value });
                     autoComplete.onKeyup({ ...backspaceEvent });
                     expect(component.value.length).toEqual(3);
                     expect(component.value[2].label).toEqual(qEvent.currentTarget.value);
+                });
+
+                it('should not do nothing on backspace if there is not a previous deleted element', () => {
+                    component.value = [];
+                    autoComplete.onKeyup({ ...backspaceEvent });
+                    expect(component.value.length).toEqual(0);
                 });
             });
 

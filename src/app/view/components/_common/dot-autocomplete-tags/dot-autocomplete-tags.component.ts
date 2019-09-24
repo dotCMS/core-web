@@ -146,7 +146,10 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     }
 
     private recoverDeletedElement(): void {
-        this.value.push(this.lastDeletedTag);
+        if (this.lastDeletedTag) {
+            this.value.push(this.lastDeletedTag);
+            this.lastDeletedTag = null;
+        }
     }
 
     private createNewTag(label: string): DotTag {
