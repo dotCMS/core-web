@@ -22,7 +22,7 @@ class DotTagsServiceMock {
     }
 }
 
-fdescribe('DotAutocompleteTagsComponent', () => {
+describe('DotAutocompleteTagsComponent', () => {
     let component: DotAutocompleteTagsComponent;
     let fixture: ComponentFixture<DotAutocompleteTagsComponent>;
     let de: DebugElement;
