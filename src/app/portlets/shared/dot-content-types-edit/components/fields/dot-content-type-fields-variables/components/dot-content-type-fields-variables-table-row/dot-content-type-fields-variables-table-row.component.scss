@@ -24,8 +24,6 @@
         }
         input {
             font-size: $font-size-medium;
-            height: auto;
-            margin: 0;
 
             &:disabled {
                 box-shadow: none;
@@ -37,14 +35,17 @@
 
 ::ng-deep .ui-table .ui-table-tbody tr.field-variable-row td {
     height: auto;
-    padding: 20px $basic-padding * 2 $basic-padding;
+    padding: 10px $basic-padding * 2 $basic-padding;
 
     &.content-type-fields__variables-actions {
-
-        padding: 10px 16px 3px;
+        padding: 10px 16px 2px;
 
         & > div {
             text-align: right;
+        }
+
+        #content-type-fields__variables-actions-edit {
+            margin-top: 7px;
         }
 
         button {
