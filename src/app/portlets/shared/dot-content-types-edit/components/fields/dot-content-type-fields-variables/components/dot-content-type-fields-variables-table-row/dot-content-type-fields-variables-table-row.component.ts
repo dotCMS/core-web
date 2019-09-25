@@ -5,7 +5,9 @@ import {
     Output,
     EventEmitter,
     ViewChild,
-    ElementRef
+    ElementRef,
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
@@ -16,7 +18,7 @@ import { DotFieldVariable } from '../../models/dot-field-variable.interface';
     styleUrls: ['./dot-content-type-fields-variables-table-row.component.scss'],
     templateUrl: './dot-content-type-fields-variables-table-row.component.html'
 })
-export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
+export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, OnChanges {
     @ViewChild('saveButton')
     saveButton: ElementRef;
     @ViewChild('keyCell')
@@ -38,10 +40,10 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
 
     rowActiveHighlight: Boolean = false;
     showEditMenu: Boolean = false;
-    keyDisabled: Boolean = true;
     saveDisabled: Boolean = false;
     messages: { [key: string]: string } = {};
     elemRef: ElementRef;
+    isEditing = false;
 
     constructor(public dotMessageService: DotMessageService) {}
 
@@ -56,8 +58,14 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
-                this.focusKeyInput();
+                if (!this.isEditing) {
+                    this.keyCell.nativeElement.click();
+                }
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.isEditing = changes.fieldVariable && !!changes.fieldVariable.currentValue.value;
     }
 
     /**
@@ -65,16 +73,9 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
      * @param {Event} [$event]
      * @memberof DotContentTypeFieldsVariablesTableRowComponent
      */
-    focusKeyInput($event?: Event): void {
-        if (this.isFieldDisabled()) {
-            this.keyCell.nativeElement.click();
-            this.keyDisabled = false;
-            this.keyCell.nativeElement.disable = true;
-        } else if (this.isFieldVariableUpdate($event)) {
-            $event.stopPropagation();
-            this.keyDisabled = true;
-            this.valueCell.nativeElement.click();
-        }
+    focusKeyInput($event: Event): void {
+        $event.stopPropagation();
+        this.valueCell.nativeElement.click();
     }
 
     /**
@@ -120,10 +121,6 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit {
      */
     saveVariable(): void {
         this.save.emit(this.variableIndex);
-    }
-
-    private isFieldVariableUpdate($event: Event): boolean {
-        return typeof $event !== 'undefined';
     }
 
     private isFieldDisabled(): boolean {

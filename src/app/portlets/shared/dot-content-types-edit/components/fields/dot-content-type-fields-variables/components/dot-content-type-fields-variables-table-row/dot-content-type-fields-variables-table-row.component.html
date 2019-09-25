@@ -1,5 +1,5 @@
 <tr class="field-variable-row" [ngClass]="{ 'field-variable-row-highlight': rowActiveHighlight }">
-    <ng-template [ngIf]="fieldVariable.key" [ngIfElse]="editable">
+    <ng-template [ngIf]="isEditing" [ngIfElse]="editable">
         <td>
             {{ fieldVariable.key }}
         </td>
@@ -12,7 +12,6 @@
                         pInputText
                         class="field-variable-key-input"
                         type="text"
-                        [disabled]="keyDisabled"
                         [placeholder]="
                             messages['contenttypes.field.variables.key_input.placeholder']
                         "
