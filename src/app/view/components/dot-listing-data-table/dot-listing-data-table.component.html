@@ -47,7 +47,7 @@
                 <a *ngIf="col.fieldName === 'nEntries'"
                    [routerLink]="rowData.variable === 'Host' ? '/c/sites' : '/c/content'"
                    [queryParams]="rowData.variable === 'Host' ? {} : {filter: rowData.variable}">
-                    {{ col.textContent || rowData[col.fieldName] }}
+                    {{col.textContent}} {{rowData[col.fieldName]}}
                 </a>
             </td>
             <td class="listing-datatable__action-column" style="width: 5%">

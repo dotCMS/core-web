@@ -22,7 +22,7 @@ import { DotMenuModule } from '../_common/dot-menu/dot-menu.module';
 import { DotIconModule } from '../_common/dot-icon/dot-icon.module';
 import { DotIconButtonModule } from '../_common/dot-icon-button/dot-icon-button.module';
 
-describe('DotListingDataTableComponent', () => {
+fdescribe('DotListingDataTableComponent', () => {
     let comp: DotListingDataTableComponent;
     let fixture: ComponentFixture<DotListingDataTableComponent>;
     let de: DebugElement;
@@ -127,7 +127,7 @@ describe('DotListingDataTableComponent', () => {
             { fieldName: 'field1', header: 'Field 1', width: '45%', sortable: true },
             { fieldName: 'field2', header: 'Field 2', width: '10%' },
             { fieldName: 'field3', header: 'Field 3', width: '30%' },
-            { fieldName: 'nEntries', header: 'Field 4', width: '5%', textContent: 'View Entries' }
+            { fieldName: 'nEntries', header: 'Field 4', width: '5%', textContent: 'View' }
         ];
 
         this.url = '/test/';
@@ -177,9 +177,7 @@ describe('DotListingDataTableComponent', () => {
             const sortableIcon = headers[index].querySelector('p-sortIcon');
             index === 0 ? expect(sortableIcon).toBeDefined() : expect(sortableIcon).toBeNull();
             expect(comp.columns[index].header).toEqual(headers[index].textContent.trim());
-        }
-
-        );
+        });
 
         rows.forEach((row, rowIndex) => {
             if (rowIndex) {
@@ -193,8 +191,14 @@ describe('DotListingDataTableComponent', () => {
                     }
                     if (cellIndex === 3) {
                         const anchor = cells[cellIndex].querySelector('a');
-                        expect(anchor.textContent).toContain(comp.columns[cellIndex].textContent);
-                        expect(anchor.href).toContain(item.variable === 'Host' ? '/c/sites' : '/c/content?filter=Banner');
+                        expect(anchor.textContent).toContain(
+                            `${comp.columns[cellIndex].textContent} ${item[
+                                comp.columns[cellIndex].fieldName
+                            ]}`
+                        );
+                        expect(anchor.href).toContain(
+                            item.variable === 'Host' ? '/c/sites' : '/c/content?filter=Banner'
+                        );
                     }
                 });
             }
@@ -245,7 +249,9 @@ describe('DotListingDataTableComponent', () => {
                 cells.forEach((_cell, cellIndex) => {
                     if (cellIndex < 4) {
                         const textContent = cells[cellIndex].textContent;
-                        const itemContent = comp.columns[cellIndex].textContent || item[comp.columns[cellIndex].fieldName];
+                        const itemContent =
+                            comp.columns[cellIndex].textContent ||
+                            item[comp.columns[cellIndex].fieldName];
                         expect(textContent).toContain(itemContent);
                     }
                 });
