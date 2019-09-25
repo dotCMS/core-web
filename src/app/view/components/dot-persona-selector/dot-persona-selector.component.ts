@@ -136,9 +136,9 @@ export class DotPersonaSelectorComponent implements OnInit {
      * @memberof DotPersonaSelectorComponent
      */
     handleNewPersona(persona: DotPersona): void {
+        this.searchableDropdown.resetPanelMinHeight();
         this.personaChange(persona);
         this.getPersonasList();
-        this.searchableDropdown.resetPanelMinHeight();
     }
 
     private getPersonasList(filter = '', offset = 0): void {
