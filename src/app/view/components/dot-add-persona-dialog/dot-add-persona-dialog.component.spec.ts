@@ -152,22 +152,21 @@ describe('DotAddPersonaDialogComponent', () => {
 
             it('should create and emit the new persona and close dialog if form is valid', () => {
                 spyOn(component, 'closeDialog');
-                spyOn(dotWorkflowActionsFireService, 'publishContentlet').and.returnValue(
-                    observableOf(mockDotPersona)
-                );
+                spyOn(
+                    dotWorkflowActionsFireService,
+                    'publishContentletAndWaitForIndex'
+                ).and.returnValue(observableOf(mockDotPersona));
 
                 submitForm();
 
-                expect(dotWorkflowActionsFireService.publishContentlet).toHaveBeenCalledWith(
-                    'persona',
-                    {
-                        hostFolder: 'demo',
-                        keyTag: 'freddy',
-                        name: 'Freddy',
-                        photo: '',
-                        indexPolicy: 'WAIT_FOR'
-                    }
-                );
+                expect(
+                    dotWorkflowActionsFireService.publishContentletAndWaitForIndex
+                ).toHaveBeenCalledWith('persona', {
+                    hostFolder: 'demo',
+                    keyTag: 'freddy',
+                    name: 'Freddy',
+                    photo: ''
+                });
                 expect(component.createdPersona.emit).toHaveBeenCalledWith(mockDotPersona);
                 expect(component.closeDialog).toHaveBeenCalled();
             });
@@ -176,9 +175,10 @@ describe('DotAddPersonaDialogComponent', () => {
                 const fake500Response = mockResponseView(500);
                 spyOn(dotHttpErrorManagerService, 'handle').and.callThrough();
 
-                spyOn(dotWorkflowActionsFireService, 'publishContentlet').and.returnValue(
-                    throwError(fake500Response)
-                );
+                spyOn(
+                    dotWorkflowActionsFireService,
+                    'publishContentletAndWaitForIndex'
+                ).and.returnValue(throwError(fake500Response));
 
                 submitForm();
 
