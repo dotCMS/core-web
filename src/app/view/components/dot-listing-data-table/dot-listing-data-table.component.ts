@@ -129,7 +129,6 @@ export class DotListingDataTableComponent implements OnChanges, OnInit {
      * @memberof ListingDataTableComponent
      */
     loadCurrentPage(): void {
-        debugger;
         this.loading = true;
         if (this.columns) {
             this.paginatorService.getCurrentPage().subscribe(items => this.setItems(items));
