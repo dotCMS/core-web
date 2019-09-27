@@ -129,7 +129,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
         const sameKeyVariableCount = this.variablesList.filter(
             (variable: DotFieldVariable) => variable.key === this.fieldVariable.key
         ).length;
-        return this.isFieldVariableEmpty() || sameKeyVariableCount > 1 ? true : false;
+        return this.isFieldVariableEmpty() || sameKeyVariableCount > 1;
     }
 
     private isFieldVariableEmpty(): boolean {
