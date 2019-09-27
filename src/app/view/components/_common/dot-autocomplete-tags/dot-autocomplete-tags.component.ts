@@ -62,10 +62,8 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     checkForTag(event: KeyboardEvent): void {
-        debugger;
         if (event.key === 'Enter') {
             this.addItemOnEnter(event.currentTarget as HTMLInputElement);
-            event.stopPropagation();
         } else if (event.key === 'Backspace') {
             //  PrimeNG p-autoComplete remove elements on Backspace keydown, we don't want that in our component so we're fixing this here.
             this.recoverDeletedElement();
