@@ -175,6 +175,22 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         expect(comp.cancel.emit).toHaveBeenCalledWith(comp.variableIndex);
     });
 
+    it('should disabled save button when new variable key added is duplicated', () => {
+        comp.variablesList = mockFieldVariables;
+        comp.showEditMenu = true;
+        comp.fieldVariable = { key: '', value: '' };
+        fixture.detectChanges();
+        comp.keyCell.nativeElement.dispatchEvent(new MouseEvent('click'));
+        fixture.detectChanges();
+        const inputKey = de.query(By.css('.field-variable-key-input')).nativeElement;
+        inputKey.value = 'Key1';
+        comp.editFieldInit();
+        const saveBtn = de.query(By.css('.content-type-fields__variables-actions-edit-save'))
+            .nativeElement;
+        fixture.detectChanges();
+        expect(saveBtn.disabled).toBe(true);
+    });
+
     it('should emit save event when button clicked', () => {
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
         comp.showEditMenu = true;
