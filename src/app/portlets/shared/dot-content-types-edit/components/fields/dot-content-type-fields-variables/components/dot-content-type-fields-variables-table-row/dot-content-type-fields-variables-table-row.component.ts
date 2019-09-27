@@ -12,6 +12,8 @@ import {
 import { DotMessageService } from '@services/dot-messages-service';
 import { take } from 'rxjs/operators';
 import { DotFieldVariable } from '../../models/dot-field-variable.interface';
+import { DotMessageDisplayService } from '@components/dot-message-display/services';
+import { DotMessageSeverity, DotMessageType } from '@components/dot-message-display/model';
 
 @Component({
     selector: 'dot-content-type-fields-variables-table-row',
@@ -47,7 +49,10 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     elemRef: ElementRef;
     isEditing = false;
 
-    constructor(public dotMessageService: DotMessageService) {}
+    constructor(
+        public dotMessageService: DotMessageService,
+        private dotMessageDisplayService: DotMessageDisplayService
+    ) {}
 
     ngOnInit(): void {
         this.dotMessageService
@@ -55,7 +60,8 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
                 'contenttypes.field.variables.key_input.placeholder',
                 'contenttypes.field.variables.value_input.placeholder',
                 'contenttypes.action.save',
-                'contenttypes.action.cancel'
+                'contenttypes.action.cancel',
+                'contenttypes.field.variables.error.duplicated.variable'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
@@ -82,12 +88,14 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
 
     /**
      * Sets initial fields properties
+     *
+     * @param {Event} [$event]
      * @memberof DotContentTypeFieldsVariablesTableRowComponent
      */
-    editFieldInit(): void {
+    editFieldInit($event?: Event): void {
         this.rowActiveHighlight = true;
         this.showEditMenu = true;
-        this.saveDisabled = this.isFieldDisabled();
+        this.saveDisabled = this.isFieldDisabled($event);
     }
 
     /**
@@ -125,15 +133,39 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
         this.save.emit(this.variableIndex);
     }
 
-    private isFieldDisabled(): boolean {
-        const sameKeyVariableCount = this.variablesList.filter(
-            (variable: DotFieldVariable) => variable.key === this.fieldVariable.key
-        ).length;
-        return this.isFieldVariableEmpty() || sameKeyVariableCount > 1;
+    private isFieldDisabled($event?: Event): boolean {
+        const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
+
+        if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
+            this.dotMessageDisplayService.push({
+                life: 3000,
+                message: this.messages[
+                    'contenttypes.field.variables.error.duplicated.variable'
+                ].replace('{0}', this.fieldVariable.key),
+                severity: DotMessageSeverity.ERROR,
+                type: DotMessageType.SIMPLE_MESSAGE
+            });
+        }
+        return this.isFieldVariableEmpty() || isKeyVariableDuplicated;
+    }
+
+    private shouldDisplayDuplicatedVariableError(
+        isKeyVariableDuplicated: boolean,
+        $event?: Event
+    ): boolean {
+        return isKeyVariableDuplicated && $event && $event.type === 'blur';
     }
 
     private isFieldVariableEmpty(): boolean {
         return this.fieldVariable.key === '' || this.fieldVariable.value === '';
+    }
+
+    private isFieldVariableKeyDuplicated(): boolean {
+        return (
+            this.variablesList.filter(
+                (variable: DotFieldVariable) => variable.key === this.fieldVariable.key
+            ).length > 1
+        );
     }
 
     private keyInputInvalid($event: KeyboardEvent): boolean {

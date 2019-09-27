@@ -15,7 +15,7 @@
                         [placeholder]="
                             messages['contenttypes.field.variables.key_input.placeholder']
                         "
-                        (blur)="rowActiveHighlight = false"
+                        (blur)="rowActiveHighlight = false; editFieldInit($event)"
                         (focus)="editFieldInit()"
                         (keyup)="editFieldInit()"
                         (keydown.escape)="onCancel($event)"

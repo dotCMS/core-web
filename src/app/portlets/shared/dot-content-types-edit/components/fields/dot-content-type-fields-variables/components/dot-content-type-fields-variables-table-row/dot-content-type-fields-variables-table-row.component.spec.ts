@@ -17,6 +17,7 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { mockFieldVariables } from '@tests/field-variable-service.mock';
 import { DotMessageService } from '@services/dot-messages-service';
 import { PrimeTemplate } from 'primeng/primeng';
+import { DotMessageDisplayService } from '@components/dot-message-display/services';
 
 @Directive({
     // tslint:disable-next-line:directive-selector
@@ -63,13 +64,15 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     let comp: DotContentTypeFieldsVariablesTableRowComponent;
     let fixture: ComponentFixture<DotContentTypeFieldsVariablesTableRowComponent>;
     let de: DebugElement;
+    let dotMessageDisplayService: DotMessageDisplayService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
             'contenttypes.field.variables.key_input.placeholder': 'Enter Key',
             'contenttypes.field.variables.value_input.placeholder': 'Enter Value',
             'contenttypes.action.save': 'Save',
-            'contenttypes.action.cancel': 'Cancel'
+            'contenttypes.action.cancel': 'Cancel',
+            'contenttypes.field.variables.error.duplicated.variable': 'test {0}'
         });
 
         DOTTestBed.configureTestingModule({
@@ -79,13 +82,17 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
                 MockEditableColumnDirective
             ],
             imports: [DotIconButtonModule],
-            providers: [{ provide: DotMessageService, useValue: messageServiceMock }]
+            providers: [
+                { provide: DotMessageService, useValue: messageServiceMock },
+                DotMessageDisplayService
+            ]
         }).compileComponents();
 
         fixture = DOTTestBed.createComponent(DotContentTypeFieldsVariablesTableRowComponent);
         comp = fixture.componentInstance;
         de = fixture.debugElement;
 
+        dotMessageDisplayService = de.injector.get(DotMessageDisplayService);
         comp.fieldVariable = mockFieldVariables[0];
         comp.variableIndex = 0;
     });
@@ -176,19 +183,21 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should disabled save button when new variable key added is duplicated', () => {
-        comp.variablesList = mockFieldVariables;
+        comp.fieldVariable = { key: 'Key1', value: '' };
+        comp.variablesList = [comp.fieldVariable, ...mockFieldVariables];
         comp.showEditMenu = true;
-        comp.fieldVariable = { key: '', value: '' };
         fixture.detectChanges();
         comp.keyCell.nativeElement.dispatchEvent(new MouseEvent('click'));
+        spyOn(dotMessageDisplayService, 'push');
         fixture.detectChanges();
         const inputKey = de.query(By.css('.field-variable-key-input')).nativeElement;
         inputKey.value = 'Key1';
-        comp.editFieldInit();
+        comp.editFieldInit(new Event('blur'));
         const saveBtn = de.query(By.css('.content-type-fields__variables-actions-edit-save'))
             .nativeElement;
         fixture.detectChanges();
         expect(saveBtn.disabled).toBe(true);
+        expect(dotMessageDisplayService.push).toHaveBeenCalled();
     });
 
     it('should emit save event when button clicked', () => {
