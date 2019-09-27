@@ -30,6 +30,8 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     fieldVariable: DotFieldVariable;
     @Input()
     variableIndex: number;
+    @Input()
+    variablesList: DotFieldVariable[] = [];
 
     @Output()
     save: EventEmitter<number> = new EventEmitter(false);
@@ -124,7 +126,14 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     }
 
     private isFieldDisabled(): boolean {
-        return this.fieldVariable.key === '' || this.fieldVariable.value === '' ? true : false;
+        const sameKeyVariableCount = this.variablesList.filter(
+            (variable: DotFieldVariable) => variable.key === this.fieldVariable.key
+        ).length;
+        return this.isFieldVariableEmpty() || sameKeyVariableCount > 1 ? true : false;
+    }
+
+    private isFieldVariableEmpty(): boolean {
+        return this.fieldVariable.key === '' || this.fieldVariable.value === '';
     }
 
     private keyInputInvalid($event: KeyboardEvent): boolean {
