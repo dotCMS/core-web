@@ -60,6 +60,16 @@ class MockCellEditorComponent implements AfterContentInit {
     }
 }
 
+function showEditMenu(
+    fixture: ComponentFixture<DotContentTypeFieldsVariablesTableRowComponent>
+) {
+    fixture.componentInstance.fieldVariable = { key: '', value: '' };
+    fixture.detectChanges();
+    fixture.debugElement.query(By.css('.field-variable-key-input')).triggerEventHandler('focus', {
+        target: { value: '' }
+    });
+}
+
 describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     let comp: DotContentTypeFieldsVariablesTableRowComponent;
     let fixture: ComponentFixture<DotContentTypeFieldsVariablesTableRowComponent>;
@@ -98,7 +108,7 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should load the component', () => {
-        comp.showEditMenu = true;
+        showEditMenu(fixture);
         fixture.detectChanges();
         const inputs = de.queryAll(By.css('input'));
         const btns = de.queryAll(By.css('button'));
@@ -106,7 +116,7 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         expect(inputs[1].nativeElement.placeholder).toContain('Enter Value');
         expect(btns[0].nativeElement.innerText).toContain('CANCEL');
         expect(btns[1].nativeElement.innerText).toContain('SAVE');
-        expect(comp.saveDisabled).toBe(false);
+        expect(comp.saveDisabled).toBe(true);
     });
 
     it('should focus on "Key" input when an empty variable is added', fakeAsync(() => {
@@ -120,7 +130,6 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
 
     it('should focus on "Value" input when "Edit" button clicked', () => {
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
-        comp.showEditMenu = false;
         spyOn(comp.valueCell.nativeElement, 'click');
         fixture.detectChanges();
         de.queryAll(
@@ -132,11 +141,7 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should show edit menu when focus/key.up on a field', () => {
-        comp.fieldVariable = { key: '', value: '' };
-        fixture.detectChanges();
-        de.query(By.css('.field-variable-key-input')).triggerEventHandler('focus', {
-            target: { value: '' }
-        });
+        showEditMenu(fixture);
         expect(comp.rowActiveHighlight).toBe(true);
         expect(comp.showEditMenu).toBe(true);
         expect(comp.saveDisabled).toBe(true);
@@ -167,8 +172,8 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should focus on "Save" button, if entered valid "Key" & "Value"', () => {
+        showEditMenu(fixture);
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
-        comp.showEditMenu = true;
         fixture.detectChanges();
         de.query(By.css('.field-variable-value-input')).nativeElement.dispatchEvent(
             new KeyboardEvent('keydown', { key: 'Enter' })
@@ -177,8 +182,7 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should emit cancel event when press "Escape"', () => {
-        comp.showEditMenu = true;
-        comp.fieldVariable = { key: '', value: '' };
+        showEditMenu(fixture);
         spyOn(comp.cancel, 'emit');
         fixture.detectChanges();
         de.query(By.css('.field-variable-key-input')).nativeElement.dispatchEvent(
@@ -188,9 +192,9 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should disabled save button when new variable key added is duplicated', () => {
+        showEditMenu(fixture);
         comp.fieldVariable = { key: 'Key1', value: '' };
         comp.variablesList = [comp.fieldVariable, ...mockFieldVariables];
-        comp.showEditMenu = true;
         fixture.detectChanges();
         comp.keyCell.nativeElement.dispatchEvent(new MouseEvent('click'));
         spyOn(dotMessageDisplayService, 'push');
@@ -209,8 +213,8 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should emit save event when button clicked', () => {
+        showEditMenu(fixture);
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
-        comp.showEditMenu = true;
         spyOn(comp.save, 'emit');
         fixture.detectChanges();
         de.query(By.css('.content-type-fields__variables-actions-edit-save')).triggerEventHandler(
@@ -221,8 +225,8 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     });
 
     it('should emit cancel event when button clicked', () => {
+        showEditMenu(fixture);
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
-        comp.showEditMenu = true;
         spyOn(comp.cancel, 'emit');
         fixture.detectChanges();
         de.query(By.css('.content-type-fields__variables-actions-edit-cancel')).triggerEventHandler(
@@ -234,7 +238,6 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
 
     it('should emit delete event when button clicked', () => {
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
-        comp.showEditMenu = false;
         spyOn(comp.delete, 'emit');
         fixture.detectChanges();
         de.queryAll(
