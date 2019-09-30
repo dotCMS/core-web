@@ -85,7 +85,6 @@ export class DotAddPersonaDialogComponent implements OnInit {
                             .handle(error)
                             .pipe(take(1))
                             .subscribe();
-                        debugger;
                         this.dialogActions.accept.disabled = !this.personaForm.form.valid;
                     }
                 );
