@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import {
     DebugElement,
     Component,
@@ -109,13 +109,14 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         expect(comp.saveDisabled).toBe(false);
     });
 
-    xit('should focus on "Key" input when an empty variable is added', () => {
+    it('should focus on "Key" input when an empty variable is added', fakeAsync(() => {
         comp.fieldVariable = { key: '', value: '' };
-        spyOn(comp.valueCell.nativeElement, 'click');
         fixture.detectChanges();
+        spyOn(comp.keyCell.nativeElement, 'click');
+        tick();
         expect(comp.saveDisabled).toBe(false);
         expect(comp.keyCell.nativeElement.click).toHaveBeenCalled();
-    });
+    }));
 
     it('should focus on "Value" input when "Edit" button clicked', () => {
         comp.fieldVariable = { key: 'TestKey', value: 'TestValue' };
@@ -133,11 +134,15 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
     it('should show edit menu when focus/key.up on a field', () => {
         comp.fieldVariable = { key: '', value: '' };
         fixture.detectChanges();
-        de.query(By.css('.field-variable-key-input')).triggerEventHandler('focus', {});
+        de.query(By.css('.field-variable-key-input')).triggerEventHandler('focus', {
+            target: { value: '' }
+        });
         expect(comp.rowActiveHighlight).toBe(true);
         expect(comp.showEditMenu).toBe(true);
         expect(comp.saveDisabled).toBe(true);
-        de.query(By.css('.field-variable-key-input')).triggerEventHandler('key.up', {});
+        de.query(By.css('.field-variable-key-input')).triggerEventHandler('key.up', {
+            target: { value: '' }
+        });
         expect(comp.rowActiveHighlight).toBe(true);
         expect(comp.showEditMenu).toBe(true);
         expect(comp.saveDisabled).toBe(true);
@@ -192,7 +197,10 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         fixture.detectChanges();
         const inputKey = de.query(By.css('.field-variable-key-input')).nativeElement;
         inputKey.value = 'Key1';
-        comp.editFieldInit(new Event('blur'));
+        de.query(By.css('.field-variable-key-input')).triggerEventHandler('blur', {
+            type: 'blur',
+            target: { value: 'Key1' }
+        });
         const saveBtn = de.query(By.css('.content-type-fields__variables-actions-edit-save'))
             .nativeElement;
         fixture.detectChanges();

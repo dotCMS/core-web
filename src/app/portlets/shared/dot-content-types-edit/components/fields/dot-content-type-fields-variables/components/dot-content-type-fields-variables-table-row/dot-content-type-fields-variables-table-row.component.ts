@@ -67,7 +67,9 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
                 if (!this.isEditing) {
-                    this.keyCell.nativeElement.click();
+                    setTimeout(() => {
+                        this.keyCell.nativeElement.click();
+                    }, 0);
                 }
             });
     }
@@ -89,13 +91,25 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
     /**
      * Sets initial fields properties
      *
-     * @param {Event} [$event]
+     * @param {Event} $event
      * @memberof DotContentTypeFieldsVariablesTableRowComponent
      */
-    editFieldInit($event?: Event): void {
+    editFieldInit($event: Event): void {
         this.rowActiveHighlight = true;
         this.showEditMenu = true;
-        this.saveDisabled = this.isFieldDisabled($event);
+        const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
+        this.saveDisabled = this.isFieldDisabled() || isKeyVariableDuplicated;
+
+        if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
+            this.dotMessageDisplayService.push({
+                life: 3000,
+                message: this.messages[
+                    'contenttypes.field.variables.error.duplicated.variable'
+                ].replace('{0}', (<HTMLInputElement>$event.target).value),
+                severity: DotMessageSeverity.ERROR,
+                type: DotMessageType.SIMPLE_MESSAGE
+            });
+        }
     }
 
     /**
@@ -133,31 +147,15 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
         this.save.emit(this.variableIndex);
     }
 
-    private isFieldDisabled($event?: Event): boolean {
-        const isKeyVariableDuplicated = this.isFieldVariableKeyDuplicated();
-
-        if (this.shouldDisplayDuplicatedVariableError(isKeyVariableDuplicated, $event)) {
-            this.dotMessageDisplayService.push({
-                life: 3000,
-                message: this.messages[
-                    'contenttypes.field.variables.error.duplicated.variable'
-                ].replace('{0}', this.fieldVariable.key),
-                severity: DotMessageSeverity.ERROR,
-                type: DotMessageType.SIMPLE_MESSAGE
-            });
-        }
-        return this.isFieldVariableEmpty() || isKeyVariableDuplicated;
+    private isFieldDisabled(): boolean {
+        return this.fieldVariable.key === '' || this.fieldVariable.value === '';
     }
 
     private shouldDisplayDuplicatedVariableError(
         isKeyVariableDuplicated: boolean,
-        $event?: Event
+        $event: Event
     ): boolean {
         return isKeyVariableDuplicated && $event && $event.type === 'blur';
-    }
-
-    private isFieldVariableEmpty(): boolean {
-        return this.fieldVariable.key === '' || this.fieldVariable.value === '';
     }
 
     private isFieldVariableKeyDuplicated(): boolean {
