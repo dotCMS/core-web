@@ -67,6 +67,7 @@ export class DotContentTypeFieldsVariablesTableRowComponent implements OnInit, O
             .subscribe((messages: { [key: string]: string }) => {
                 this.messages = messages;
                 if (!this.isEditing) {
+                    // "setTimeout" needs to be set so "keyCell" DOM gets rendered and tests don't fail
                     setTimeout(() => {
                         this.keyCell.nativeElement.click();
                     }, 0);
