@@ -26,7 +26,7 @@ import { SiteServiceMock } from '@tests/site-service.mock';
 import { DotEditPageWorkflowsActionsModule } from '../dot-edit-page-workflows-actions/dot-edit-page-workflows-actions.module';
 import { LoginServiceMock } from '@tests/login-service.mock';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
-import {mockDotPersona} from '@tests/dot-persona.mock';
+import { mockDotPersona } from '@tests/dot-persona.mock';
 
 @Component({
     selector: 'dot-test-host-component',
