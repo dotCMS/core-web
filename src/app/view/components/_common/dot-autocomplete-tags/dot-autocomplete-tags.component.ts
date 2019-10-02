@@ -1,9 +1,10 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
 import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotTag } from '@models/dot-tag';
 import { take } from 'rxjs/operators';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DotMessageService } from '@services/dot-messages-service';
+import {AutoComplete} from 'primeng/autocomplete';
 
 /**
  * The DotAutocompleteTagsComponent provide a dropdown to select tags,
@@ -31,6 +32,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     disabled = false;
     messagesKey: { [key: string]: string } = {};
     inputReference: HTMLInputElement;
+    @ViewChild('autoComplete') autoComplete: AutoComplete;
 
     private lastDeletedTag: DotTag;
 
@@ -156,6 +158,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
             this.propagateChange(this.getStringifyLabels());
             this.filterTags({ query: input.value });
             input.value = null;
+            this.autoComplete.hide();
         }
     }
 

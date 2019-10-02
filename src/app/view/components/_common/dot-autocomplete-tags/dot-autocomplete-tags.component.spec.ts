@@ -133,6 +133,7 @@ describe('DotAutocompleteTagsComponent', () => {
 
                 it('should call checkForTag if user hit enter should add the tag and clear input value', () => {
                     spyOn(component, 'checkForTag').and.callThrough();
+                    spyOn(autoComplete, 'hide').and.callThrough();
                     autoComplete.onKeyup(newEnterEvent);
 
                     expect(component.checkForTag).toHaveBeenCalledWith(newEnterEvent);
@@ -141,6 +142,7 @@ describe('DotAutocompleteTagsComponent', () => {
                     expect(component.propagateChange).toHaveBeenCalledWith(
                         'newTag,enterEvent,Dotcms'
                     );
+                    expect(autoComplete.hide).toHaveBeenCalled();
                 });
 
                 it('should put back last deleted item by the p-autoComplete', () => {
