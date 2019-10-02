@@ -10,10 +10,10 @@
                  (keydown.enter)="$event.stopPropagation()"
                  (onSelect)="addItem()"
                  (onUnselect)="removeItem($event)"
-                 (onBlur)="checkForTagOnBlur($event)"
                  [disabled]="disabled"
                  appendTo="body">
         <ng-template let-tag pTemplate="selectedItem">
             <span>{{tag.label}}</span>
         </ng-template>
 </p-autoComplete>
+<span class="autocomplete-helper" *ngIf="inputReference?.value">Add<dot-icon name="subdirectory_arrow_left" size="12"></dot-icon></span>

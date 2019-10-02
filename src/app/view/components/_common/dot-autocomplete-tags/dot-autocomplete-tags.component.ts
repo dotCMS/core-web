@@ -28,6 +28,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     value: DotTag[] = [];
     filteredOptions: DotTag[];
     disabled = false;
+    inputReference: HTMLInputElement;
 
     private lastDeletedTag: DotTag;
 
@@ -62,22 +63,13 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
      * @memberof DotAutocompleteTagsComponent
      */
     checkForTag(event: KeyboardEvent): void {
+        this.inputReference = event.currentTarget as HTMLInputElement;
         if (event.key === 'Enter') {
-            this.addItemOnEvent(event.currentTarget as HTMLInputElement);
+            this.addItemOnEvent(this.inputReference);
         } else if (event.key === 'Backspace') {
             //  PrimeNG p-autoComplete remove elements on Backspace keydown, we don't want that in our component so we're fixing this here.
             this.recoverDeletedElement();
         }
-    }
-
-    /**
-     * Check if the autocomplete has a value on blur, if so, add the new tag.
-     *
-     * @param KeyboardEvent event
-     * @memberof DotAutocompleteTagsComponent
-     */
-    checkForTagOnBlur(event: KeyboardEvent): void {
-        this.addItemOnEvent(event.currentTarget as HTMLInputElement);
     }
 
     /**

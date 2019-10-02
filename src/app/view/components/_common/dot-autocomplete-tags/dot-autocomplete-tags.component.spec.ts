@@ -10,6 +10,7 @@ import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { Observable, of } from 'rxjs';
 import { DotTag } from '@models/dot-tag';
 import { By } from '@angular/platform-browser';
+import {DotIconModule} from '@components/_common/dot-icon/dot-icon.module';
 
 const mockResponse = [
     { label: 'test', siteId: '1', siteName: 'Site', persona: false },
@@ -22,7 +23,7 @@ class DotTagsServiceMock {
     }
 }
 
-describe('DotAutocompleteTagsComponent', () => {
+fdescribe('DotAutocompleteTagsComponent', () => {
     let component: DotAutocompleteTagsComponent;
     let fixture: ComponentFixture<DotAutocompleteTagsComponent>;
     let de: DebugElement;
@@ -31,7 +32,7 @@ describe('DotAutocompleteTagsComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotAutocompleteTagsComponent],
-            imports: [BrowserAnimationsModule, ChipsModule, AutoCompleteModule, FormsModule],
+            imports: [BrowserAnimationsModule, ChipsModule, AutoCompleteModule, FormsModule, DotIconModule],
             providers: [{ provide: DotTagsService, useClass: DotTagsServiceMock }]
         });
         fixture = DOTTestBed.createComponent(DotAutocompleteTagsComponent);
@@ -43,6 +44,11 @@ describe('DotAutocompleteTagsComponent', () => {
 
     it('should set options when load', () => {
         expect(component.filteredOptions).toEqual(mockResponse);
+    });
+
+    it('should hide add helper if value is null', () => {
+        const helper = de.query(By.css('.autocomplete-helper'));
+        expect(helper).toBeNull();
     });
 
     describe('autoComplete', () => {
@@ -88,6 +94,13 @@ describe('DotAutocompleteTagsComponent', () => {
 
                 beforeEach(() => {});
 
+                it('should show the helper when input has value', () => {
+                    autoComplete.onKeyup({ ...qEvent });
+                    fixture.detectChanges();
+                    const helper = de.query(By.css('.autocomplete-helper'));
+                    expect(helper).not.toBeNull();
+                });
+
                 it('should NOT add the tag because user dint hit enter', () => {
                     autoComplete.onKeyup({ ...qEvent });
                     expect(component.value.length).toEqual(2);
@@ -127,22 +140,6 @@ describe('DotAutocompleteTagsComponent', () => {
                     component.value = [];
                     autoComplete.onKeyup({ ...backspaceEvent });
                     expect(component.value.length).toEqual(0);
-                });
-            });
-
-            describe('onBlur', () => {
-                const newTag = { currentTarget: { value: 'newTag' } };
-                const duplicateTag = { currentTarget: { value: 'Dotcms' } };
-
-                it('should add the tag because onBlur', () => {
-                    autoComplete.onInputBlur(newTag);
-                    fixture.detectChanges();
-                    expect(component.value.length).toEqual(3);
-                });
-
-                it('should NOT add the tag because is duplicate', () => {
-                    autoComplete.onInputBlur(duplicateTag);
-                    expect(component.value.length).toEqual(2);
                 });
             });
 
