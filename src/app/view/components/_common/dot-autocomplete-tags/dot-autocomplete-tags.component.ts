@@ -3,6 +3,7 @@ import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { DotTag } from '@models/dot-tag';
 import { take } from 'rxjs/operators';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DotMessageService } from '@services/dot-messages-service';
 
 /**
  * The DotAutocompleteTagsComponent provide a dropdown to select tags,
@@ -28,15 +29,25 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
     value: DotTag[] = [];
     filteredOptions: DotTag[];
     disabled = false;
+    messagesKey: { [key: string]: string } = {};
     inputReference: HTMLInputElement;
 
     private lastDeletedTag: DotTag;
 
-    constructor(private dotTagsService: DotTagsService) {}
+    constructor(
+        private dotTagsService: DotTagsService,
+        public dotMessageService: DotMessageService
+    ) {}
 
     propagateChange = (_: any) => {};
 
     ngOnInit() {
+        this.dotMessageService
+            .getMessages(['dot.common.add'])
+            .pipe(take(1))
+            .subscribe((messages: { [key: string]: string }) => {
+                this.messagesKey = messages;
+            });
         this.filterTags();
     }
 

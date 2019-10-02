@@ -10,7 +10,9 @@ import { DotTagsService } from '@services/dot-tags/dot-tags.service';
 import { Observable, of } from 'rxjs';
 import { DotTag } from '@models/dot-tag';
 import { By } from '@angular/platform-browser';
-import {DotIconModule} from '@components/_common/dot-icon/dot-icon.module';
+import { DotIconModule } from '@components/_common/dot-icon/dot-icon.module';
+import { DotMessageService } from '@services/dot-messages-service';
+import { MockDotMessageService } from '@tests/dot-message-service.mock';
 
 const mockResponse = [
     { label: 'test', siteId: '1', siteName: 'Site', persona: false },
@@ -23,7 +25,11 @@ class DotTagsServiceMock {
     }
 }
 
-fdescribe('DotAutocompleteTagsComponent', () => {
+const messageServiceMock = new MockDotMessageService({
+    'dot.common.add': 'Add'
+});
+
+describe('DotAutocompleteTagsComponent', () => {
     let component: DotAutocompleteTagsComponent;
     let fixture: ComponentFixture<DotAutocompleteTagsComponent>;
     let de: DebugElement;
@@ -32,8 +38,17 @@ fdescribe('DotAutocompleteTagsComponent', () => {
     beforeEach(() => {
         DOTTestBed.configureTestingModule({
             declarations: [DotAutocompleteTagsComponent],
-            imports: [BrowserAnimationsModule, ChipsModule, AutoCompleteModule, FormsModule, DotIconModule],
-            providers: [{ provide: DotTagsService, useClass: DotTagsServiceMock }]
+            imports: [
+                BrowserAnimationsModule,
+                ChipsModule,
+                AutoCompleteModule,
+                FormsModule,
+                DotIconModule
+            ],
+            providers: [
+                { provide: DotTagsService, useClass: DotTagsServiceMock },
+                { provide: DotMessageService, useValue: messageServiceMock }
+            ]
         });
         fixture = DOTTestBed.createComponent(DotAutocompleteTagsComponent);
         de = fixture.debugElement;
