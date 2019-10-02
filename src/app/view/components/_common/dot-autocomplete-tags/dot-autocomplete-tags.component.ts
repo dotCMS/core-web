@@ -43,7 +43,7 @@ export class DotAutocompleteTagsComponent implements OnInit, ControlValueAccesso
 
     ngOnInit() {
         this.dotMessageService
-            .getMessages(['dot.common.add'])
+            .getMessages(['dot.common.press'])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {
                 this.messagesKey = messages;

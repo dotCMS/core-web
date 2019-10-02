@@ -1,4 +1,5 @@
 @import "variables";
+@import "primeng-theme/utils/extends";
 
 :host {
     min-height: $basic-padding * 12;
@@ -10,8 +11,14 @@
         text-transform: uppercase;
         position: absolute;
         top: 10px;
-        right: $basic-padding * 3;
+        right: 0;
         color: $gray;
+
+        dot-icon {
+            border: 1px solid;
+            padding: 2px;
+            margin-left: $basic-padding / 2;
+        }
     }
 
     ::ng-deep {
@@ -31,6 +38,7 @@
             overflow: visible;
             height: 0;
             padding: 0;
+            width: 100%;
         }
 
         .ui-autocomplete-dropdown {
@@ -52,11 +60,26 @@
             position: absolute;
             right: 0;
             top: -$basic-padding * 5;
+            padding: $basic-padding /2 0;
 
             input {
+                @extend #inputtext-normal-border;
                 width: 100%;
-                margin-right: $basic-padding * 4;
                 text-overflow: ellipsis;
+                padding: 0 $basic-padding * 10 0 0;
+
+                &:hover {
+                    @extend #inputtext-hover-border;
+                }
+
+                &:focus,
+                &:active {
+                    @extend #inputtext-active-border;
+                }
+
+                &:disabled {
+                    @extend #inputtext-disabled-border;
+                }
             }
         }
 

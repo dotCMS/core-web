@@ -26,7 +26,7 @@ class DotTagsServiceMock {
 }
 
 const messageServiceMock = new MockDotMessageService({
-    'dot.common.add': 'Add'
+    'dot.common.press': 'Press'
 });
 
 describe('DotAutocompleteTagsComponent', () => {
@@ -75,7 +75,6 @@ describe('DotAutocompleteTagsComponent', () => {
         it('should set all properties correctly', () => {
             expect(autoComplete.field).toEqual('label');
             expect(autoComplete.dataKey).toEqual('label');
-            expect(autoComplete.dropdown).toBe(true);
             expect(autoComplete.multiple).toBe(true);
             expect(autoComplete.placeholder).toEqual('Custom Placeholder');
         });

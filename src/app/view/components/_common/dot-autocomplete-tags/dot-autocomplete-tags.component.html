@@ -2,7 +2,6 @@
                  [suggestions]="filteredOptions"
                  field="label"
                  dataKey="label"
-                 [dropdown]="true"
                  [multiple]="true"
                  [placeholder]="placeholder"
                  (onKeyUp)="checkForTag($event)"
@@ -11,11 +10,12 @@
                  (onSelect)="addItem()"
                  (onUnselect)="removeItem($event)"
                  [disabled]="disabled"
+                 inputStyleClass="ui-inputtext "
                  appendTo="body">
         <ng-template let-tag pTemplate="selectedItem">
             <span>{{tag.label}}</span>
         </ng-template>
 </p-autoComplete>
 <span class="autocomplete-helper" *ngIf="inputReference?.value?.trim()">
-    {{messagesKey['dot.common.add']}}<dot-icon name="subdirectory_arrow_left" size="12"></dot-icon>
+    {{messagesKey['dot.common.press']}}<dot-icon name="subdirectory_arrow_left" size="12"></dot-icon>
 </span>
