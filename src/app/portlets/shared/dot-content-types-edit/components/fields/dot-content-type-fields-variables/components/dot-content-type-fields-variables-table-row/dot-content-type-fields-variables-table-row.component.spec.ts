@@ -133,16 +133,19 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         expect(comp.saveDisabled).toBe(false);
     });
 
-    xit('should focus on "Key" input when an empty variable is added', () => {
+    it('should focus on "Key" input when an empty variable is added', (done) => {
         hostComponent.fieldVariable = {
             key: '',
             value: ''
         };
         hostComponentfixture.detectChanges();
+        de.query(By.css('.field-variable-key-input')).triggerEventHandler('focus', {});
         spyOn(comp.keyCell.nativeElement, 'click');
+        hostComponentfixture.detectChanges();
         setTimeout(() => {
-            expect(comp.saveDisabled).toBe(false);
+            expect(comp.saveDisabled).toBe(true);
             expect(comp.keyCell.nativeElement.click).toHaveBeenCalled();
+            done();
         }, 0);
     });
 
@@ -220,7 +223,7 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
         expect(dotMessageDisplayService.push).toHaveBeenCalled();
     });
 
-    it('should emit save event when button clicked', () => {
+    it('should emit save event when button clicked and not modify "isEditing" variable when component gets updated', () => {
         hostComponent.fieldVariable = { key: 'Key1', value: 'Value1' };
         hostComponentfixture.detectChanges();
         spyOn(comp.save, 'emit');
@@ -230,7 +233,10 @@ describe('DotContentTypeFieldsVariablesTableRowComponent', () => {
             'click',
             {}
         );
+        hostComponent.variablesList = [];
+        hostComponentfixture.detectChanges();
         expect(comp.save.emit).toHaveBeenCalledWith(comp.variableIndex);
+        expect(comp.isEditing).toBe(true);
     });
 
     it('should emit cancel event when button clicked', () => {
