@@ -39,7 +39,7 @@ describe('DotWorkflowService', () => {
             }
         ]);
         expect(this.lastConnection.request.url).toContain('v1/workflow/schemes');
-        expect(RequestMethod.Get).toBe(this.lastConnection.request.method);
+        expect(this.lastConnection.request.method).toBe(RequestMethod.Get);
     });
 
     it('should get default workflow', () => {
