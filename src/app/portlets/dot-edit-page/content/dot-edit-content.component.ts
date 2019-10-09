@@ -186,19 +186,21 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      * @memberof DotEditContentComponent
      */
     onFormSelected(item: DotCMSContentType): void {
-        this.dotEditContentHtmlService.renderAddedForm(item).subscribe(model => {
-            if (model) {
-                this.dotEditPageService
-                    .save(this.pageStateInternal.page.identifier, model)
-                    .pipe(take(1))
-                    .subscribe(() => {
-                        this.dotGlobalMessageService.success(
-                            this.dotMessageService.get('dot.common.message.saved')
-                        );
-                        this.reload();
-                    });
-            }
-        });
+        this.dotEditContentHtmlService
+            .renderAddedForm(item)
+            .subscribe((model: DotPageContainer[]) => {
+                if (model) {
+                    this.dotEditPageService
+                        .save(this.pageStateInternal.page.identifier, model)
+                        .pipe(take(1))
+                        .subscribe(() => {
+                            this.dotGlobalMessageService.success(
+                                this.dotMessageService.get('dot.common.message.saved')
+                            );
+                            this.reload();
+                        });
+                }
+            });
 
         this.editForm = false;
     }
@@ -295,7 +297,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                     baseTypes: $event.dataset.dotAdd
                 },
                 events: {
-                    load: event => {
+                    load: (event) => {
                         event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
                     }
                 }
@@ -309,7 +311,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 inode: $event.dataset.dotInode
             },
             events: {
-                load: event => {
+                load: (event) => {
                     event.target.contentWindow.ngEditContentletEvents = this.dotEditContentHtmlService.contentletEvents$;
                 }
             }
@@ -353,7 +355,10 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private subscribeIframeCustomEvents(): void {
         fromEvent(window.document, 'ng-event')
-            .pipe(pluck('detail'), takeUntil(this.destroy$))
+            .pipe(
+                pluck('detail'),
+                takeUntil(this.destroy$)
+            )
             .subscribe((customEvent: any) => {
                 if (this.customEventsHandler[customEvent.name]) {
                     this.customEventsHandler[customEvent.name](customEvent.data);
@@ -418,6 +423,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
                 setTimeout(() => {
                     this.showIframe = true;
+                    console.log('showIframe');
                     const intervalId = setInterval(() => {
                         if (this.iframe) {
                             this.renderPage(pageState);
