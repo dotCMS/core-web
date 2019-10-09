@@ -42,7 +42,7 @@ class FakeFormComponent {
     }
 }
 
-describe('DotWorkflowsSelectorFieldComponent', () => {
+fdescribe('DotWorkflowsSelectorFieldComponent', () => {
     let component: DotWorkflowsSelectorFieldComponent;
     let fixture: ComponentFixture<DotWorkflowsSelectorFieldComponent>;
     let de: DebugElement;
