@@ -20,7 +20,7 @@ const messageServiceMock = new MockDotMessageService({
     'editpage.personalization.content.add.message': 'Add content...'
 });
 
-fdescribe('DotPersonaSelectedItemComponent', () => {
+describe('DotPersonaSelectedItemComponent', () => {
     let component: DotPersonaSelectedItemComponent;
     let fixture: ComponentFixture<DotPersonaSelectedItemComponent>;
     let de: DebugElement;
