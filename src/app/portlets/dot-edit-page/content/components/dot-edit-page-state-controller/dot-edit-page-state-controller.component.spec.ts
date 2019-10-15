@@ -17,6 +17,7 @@ import { DotMessageService } from '@services/dot-messages-service';
 import { DotPageStateService } from '../../services/dot-page-state/dot-page-state.service';
 import { DotPersonalizeService } from '@services/dot-personalize/dot-personalize.service';
 import { DotPageRenderState, DotPageMode } from '@portlets/dot-edit-page/shared/models';
+import * as _ from 'lodash';
 
 const mockDotMessageService = new MockDotMessageService({
     'editpage.toolbar.edit.page': 'Edit',
@@ -36,7 +37,7 @@ const mockDotMessageService = new MockDotMessageService({
     `
 })
 class TestHostComponent {
-    pageState: DotPageRenderState = mockDotRenderedPageState;
+    pageState: DotPageRenderState = _.cloneDeep(mockDotRenderedPageState);
 }
 
 describe('DotEditPageStateControllerComponent', () => {
