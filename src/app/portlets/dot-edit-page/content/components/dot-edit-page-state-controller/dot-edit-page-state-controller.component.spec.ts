@@ -175,6 +175,7 @@ describe('DotEditPageStateControllerComponent', () => {
 
     describe('events', () => {
         it('should emit modeChange', () => {
+            fixtureHost.detectChanges();
             spyOn(component.modeChange, 'emit');
 
             const selectButton = de.query(By.css('p-selectButton'));

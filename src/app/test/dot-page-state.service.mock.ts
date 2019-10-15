@@ -3,6 +3,7 @@ import { of, Observable, BehaviorSubject } from 'rxjs';
 
 import { DotPageRenderState } from '@portlets/dot-edit-page/shared/models/dot-rendered-page-state.model';
 import { mockDotRenderedPageState } from './dot-rendered-page-state.mock';
+import { DotPageRenderOptions } from '@services/dot-page-render/dot-page-render.service';
 
 @Injectable()
 export class DotPageStateServiceMock {
@@ -11,4 +12,6 @@ export class DotPageStateServiceMock {
     get(_url: string): Observable<DotPageRenderState> {
         return of(mockDotRenderedPageState);
     }
+
+    setLock(_options: DotPageRenderOptions, _lock: boolean = null): void {}
 }
