@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
-import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output, ElementRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DialogModule, ButtonModule } from 'primeng/primeng';
 import { LoginService, SiteService } from 'dotcms-js';
@@ -40,8 +40,10 @@ import { DOTTestBed } from '@tests/dot-test-bed';
 import { LoginServiceMock, mockUser } from '@tests/login-service.mock';
 import { MockDotMessageService } from '@tests/dot-message-service.mock';
 import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
-import { mockDotRenderedPage } from '@tests/dot-page-render.mock';
+import { mockDotRenderedPage, mockDotLayout } from '@tests/dot-page-render.mock';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
+import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
+import { DotPageMode } from '../shared/models';
 
 @Component({
     selector: 'dot-global-message',
@@ -84,7 +86,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage)
 );
 
-describe('DotEditContentComponent', () => {
+fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -99,6 +101,7 @@ describe('DotEditContentComponent', () => {
     let dotUiColorsService: DotUiColorsService;
     let dotEditPageService: DotEditPageService;
     let iframeOverlayService: IframeOverlayService;
+    let dotLoadingIndicatorService: DotLoadingIndicatorService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -204,6 +207,7 @@ describe('DotEditContentComponent', () => {
         route = de.injector.get(ActivatedRoute);
         dotEditPageService = de.injector.get(DotEditPageService);
         iframeOverlayService = de.injector.get(IframeOverlayService);
+        dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
 
         spyOn(dotPageStateService, 'reload');
     });
@@ -356,131 +360,199 @@ describe('DotEditContentComponent', () => {
                 expect(dotLoadingIndicator.attributes.fullscreen).toBe('true');
             });
         });
-    });
 
-    describe('iframe wrapper', () => {
-        describe('elements', () => {
-            describe('wrappers', () => {
-                it('should show all elements nested correctly', () => {
-                    fixture.detectChanges();
-                    const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
-                    const deviceWrapper = wrapper.query(By.css('.dot-edit__device-wrapper'));
-                    const iframeWrapper = deviceWrapper.query(By.css('.dot-edit__iframe-wrapper'));
+        describe('iframe wrappers', () => {
+            it('should show all elements nested correctly', () => {
+                fixture.detectChanges();
+                const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
+                const deviceWrapper = wrapper.query(By.css('.dot-edit__device-wrapper'));
+                const iframeWrapper = deviceWrapper.query(By.css('.dot-edit__iframe-wrapper'));
 
-                    expect(wrapper).not.toBeNull();
-                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
+                expect(wrapper).not.toBeNull();
+                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(false);
 
-                    expect(deviceWrapper).not.toBeNull();
-                    expect(iframeWrapper).not.toBeNull();
-                });
+                expect(deviceWrapper).not.toBeNull();
+                expect(iframeWrapper).not.toBeNull();
             });
 
-            describe('iframe', () => {
-                function detectChangesForIframeRender(fix) {
-                    fix.detectChanges();
-                    tick(1);
-                    fix.detectChanges();
-                    tick(10);
-                }
-
-                function getIframe() {
-                    return de.query(
-                        By.css(
-                            '.dot-edit__page-wrapper .dot-edit__device-wrapper .dot-edit__iframe-wrapper iframe.dot-edit__iframe'
+            describe('with device selected', () => {
+                beforeEach(() => {
+                    route.parent.parent.data = of({
+                        content: new DotPageRenderState(
+                            mockUser,
+                            new DotPageRender({
+                                ...mockDotRenderedPage,
+                                viewAs: {
+                                    ...mockDotRenderedPage.viewAs,
+                                    device: {
+                                        cssHeight: '100',
+                                        cssWidth: '100',
+                                        name: 'Watch',
+                                        inode: '1234'
+                                    }
+                                }
+                            })
                         )
-                    );
-                }
-
-                it('should show', fakeAsync(() => {
-                    detectChangesForIframeRender(fixture);
-                    const iframeEl = getIframe();
-                    expect(iframeEl).not.toBeNull();
-                }));
-
-                it('should have attr setted', fakeAsync(() => {
-                    detectChangesForIframeRender(fixture);
-                    const iframeEl = getIframe();
-                    expect(iframeEl.attributes.class).toBe('dot-edit__iframe');
-                    expect(iframeEl.attributes.frameborder).toBe('0');
-                    expect(iframeEl.attributes.height).toBe('100%');
-                    expect(iframeEl.attributes.width).toBe('100%');
-                }));
-            });
-
-            describe('dot-overlay-mask', () => {
-                it('should be hidden', () => {
-                    const dotOverlayMask = de.query(By.css('dot-overlay-mask'));
-                    expect(dotOverlayMask).toBeNull();
+                    });
+                    fixture.detectChanges();
                 });
 
-                it('should show', () => {
-                    iframeOverlayService.show();
-                    fixture.detectChanges();
-                    const dotOverlayMask = de.query(
-                        By.css('.dot-edit__iframe-wrapper dot-overlay-mask')
-                    );
-                    expect(dotOverlayMask).not.toBeNull();
-                });
-            });
-
-            describe('dot-whats-changed', () => {
-                it('should be hidden', () => {
-                    const dotWhatsChange = de.query(By.css('dot-whats-changed'));
-                    expect(dotWhatsChange).toBeNull();
+                it('should add "deviced" class to main wrapper', () => {
+                    const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
+                    expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
                 });
 
-                it('should show', () => {
-                    fixture.detectChanges();
-                    const toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
-                    toolbarElement.triggerEventHandler('whatschange', true);
-                    fixture.detectChanges();
-                    const dotWhatsChange = de.query(
-                        By.css('.dot-edit__iframe-wrapper dot-whats-changed')
-                    );
-                    expect(dotWhatsChange).not.toBeNull();
+                it('should add inline styles to iframe', (done) => {
+                    setTimeout(() => {
+                        fixture.detectChanges();
+                        const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
+                        expect(iframeEl.styles).toEqual({
+                            height: '100px',
+                            position: '',
+                            visibility: '',
+                            width: '100px'
+                        });
+                        done();
+                    }, 0);
                 });
             });
         });
 
-        describe('with device selected', () => {
-            beforeEach(() => {
-                route.parent.parent.data = of({
-                    content: new DotPageRenderState(
+        describe('iframe', () => {
+            function detectChangesForIframeRender(fix) {
+                fix.detectChanges();
+                tick(1);
+                fix.detectChanges();
+                tick(10);
+            }
+
+            function getIframe() {
+                return de.query(
+                    By.css(
+                        '.dot-edit__page-wrapper .dot-edit__device-wrapper .dot-edit__iframe-wrapper iframe.dot-edit__iframe'
+                    )
+                );
+            }
+
+            it('should show', fakeAsync(() => {
+                detectChangesForIframeRender(fixture);
+                const iframeEl = getIframe();
+                expect(iframeEl).not.toBeNull();
+            }));
+
+            it('should have attr setted', fakeAsync(() => {
+                detectChangesForIframeRender(fixture);
+                const iframeEl = getIframe();
+                expect(iframeEl.attributes.class).toBe('dot-edit__iframe');
+                expect(iframeEl.attributes.frameborder).toBe('0');
+                expect(iframeEl.attributes.height).toBe('100%');
+                expect(iframeEl.attributes.width).toBe('100%');
+            }));
+
+            describe('render html ', () => {
+                beforeEach(() => {
+                    spyOn(dotEditContentHtmlService, 'renderPage');
+                    spyOn(dotEditContentHtmlService, 'initEditMode');
+                });
+
+                it('should render in preview mode', fakeAsync(() => {
+                    detectChangesForIframeRender(fixture);
+
+                    expect(dotEditContentHtmlService.renderPage).toHaveBeenCalledWith(
+                        mockRenderedPageState,
+                        jasmine.any(ElementRef)
+                    );
+                    expect(dotEditContentHtmlService.initEditMode).not.toHaveBeenCalled();
+                }));
+
+                it('should render in edit mode', fakeAsync(() => {
+                    const state = new DotPageRenderState(
                         mockUser,
                         new DotPageRender({
                             ...mockDotRenderedPage,
+                            page: {
+                                ...mockDotRenderedPage.page,
+                                lockedBy: null
+                            },
                             viewAs: {
-                                ...mockDotRenderedPage.viewAs,
-                                device: {
-                                    cssHeight: '100',
-                                    cssWidth: '100',
-                                    name: 'Watch',
-                                    inode: '1234'
-                                }
+                                mode: DotPageMode.EDIT
                             }
                         })
-                    )
-                });
-                fixture.detectChanges();
-            });
-
-            it('should add "deviced" class to main wrapper', () => {
-                const wrapper = de.query(By.css('.dot-edit__page-wrapper'));
-                expect(wrapper.classes['dot-edit__page-wrapper--deviced']).toBe(true);
-            });
-
-            it('should add inline styles to iframe', (done) => {
-                setTimeout(() => {
-                    fixture.detectChanges();
-                    const iframeEl = de.query(By.css('iframe.dot-edit__iframe'));
-                    expect(iframeEl.styles).toEqual({
-                        height: '100px',
-                        position: '',
-                        visibility: '',
-                        width: '100px'
+                    );
+                    route.parent.parent.data = of({
+                        content: state
                     });
-                    done();
-                }, 0);
+                    detectChangesForIframeRender(fixture);
+
+                    expect(dotEditContentHtmlService.initEditMode).toHaveBeenCalledWith(
+                        state,
+                        jasmine.any(ElementRef)
+                    );
+                    expect(dotEditContentHtmlService.renderPage).not.toHaveBeenCalled();
+                }));
+            });
+
+            describe('events', () => {
+                beforeEach(() => {
+                    route.parent.parent.data = of({
+                        content: new DotPageRenderState(
+                            mockUser,
+                            new DotPageRender({
+                                ...mockDotRenderedPage,
+                                viewAs: {
+                                    mode: DotPageMode.EDIT
+                                }
+                            })
+                        )
+                    });
+                });
+
+                it('should handle load', fakeAsync(() => {
+                    spyOn(dotLoadingIndicatorService, 'hide');
+                    spyOn(dotUiColorsService, 'setColors');
+                    spyOn(dotEditContentHtmlService, 'setContaintersChangeHeightListener');
+                    detectChangesForIframeRender(fixture);
+
+                    expect(dotLoadingIndicatorService.hide).toHaveBeenCalled();
+                    expect(dotUiColorsService.setColors).toHaveBeenCalled();
+                    expect(
+                        dotEditContentHtmlService.setContaintersChangeHeightListener
+                    ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout));
+                }));
+            });
+        });
+
+        describe('dot-overlay-mask', () => {
+            it('should be hidden', () => {
+                const dotOverlayMask = de.query(By.css('dot-overlay-mask'));
+                expect(dotOverlayMask).toBeNull();
+            });
+
+            it('should show', () => {
+                iframeOverlayService.show();
+                fixture.detectChanges();
+                const dotOverlayMask = de.query(
+                    By.css('.dot-edit__iframe-wrapper dot-overlay-mask')
+                );
+                expect(dotOverlayMask).not.toBeNull();
+            });
+        });
+
+        describe('dot-whats-changed', () => {
+            it('should be hidden', () => {
+                const dotWhatsChange = de.query(By.css('dot-whats-changed'));
+                expect(dotWhatsChange).toBeNull();
+            });
+
+            it('should show', () => {
+                fixture.detectChanges();
+                const toolbarElement = de.query(By.css('dot-edit-page-toolbar'));
+                toolbarElement.triggerEventHandler('whatschange', true);
+                fixture.detectChanges();
+                const dotWhatsChange = de.query(
+                    By.css('.dot-edit__iframe-wrapper dot-whats-changed')
+                );
+                expect(dotWhatsChange).not.toBeNull();
             });
         });
     });

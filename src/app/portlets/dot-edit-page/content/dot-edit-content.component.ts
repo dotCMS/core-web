@@ -156,7 +156,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
      */
     onLoad($event): void {
         this.dotLoadingIndicatorService.hide();
-
         if (
             this.shouldSetContainersHeight() &&
             $event.currentTarget.contentDocument.body.innerHTML
@@ -423,7 +422,6 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                 // In order to get the iframe clean up we need to remove it and then re-add it to the DOM
                 setTimeout(() => {
                     this.showIframe = true;
-                    console.log('showIframe');
                     const intervalId = setInterval(() => {
                         if (this.iframe) {
                             this.renderPage(pageState);
