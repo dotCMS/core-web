@@ -434,6 +434,13 @@ fdescribe('DotEditContentComponent', () => {
                 );
             }
 
+            function triggerIframeCustomEvent(detail) {
+                const event = new CustomEvent('ng-event', {
+                    detail
+                });
+                window.document.dispatchEvent(event);
+            }
+
             it('should show', fakeAsync(() => {
                 detectChangesForIframeRender(fixture);
                 const iframeEl = getIframe();
@@ -519,6 +526,49 @@ fdescribe('DotEditContentComponent', () => {
                         dotEditContentHtmlService.setContaintersChangeHeightListener
                     ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout));
                 }));
+
+                fdescribe('custom', () => {
+                    it('should handle remote-render-edit', fakeAsync(() => {
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'remote-render-edit',
+                            data: {
+                                pathname: '/url/from/event'
+                            }
+                        });
+
+                        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(
+                            'url/from/event'
+                        );
+                    }));
+
+                    it('should handle in-iframe', fakeAsync(() => {
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'in-iframe'
+                        });
+
+                        expect(dotPageStateService.reload).toHaveBeenCalled();
+                    }));
+
+                    it('should handle reorder-menu', fakeAsync(() => {
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'reorder-menu',
+                            data: 'some/url/to/reorder/menu'
+                        });
+
+                        fixture.detectChanges();
+
+                        const menu = de.query(By.css('dot-reorder-menu'));
+                        console.log(menu);
+
+                        expect(dotPageStateService.reload).toHaveBeenCalled();
+                    }));
+                });
             });
         });
 
