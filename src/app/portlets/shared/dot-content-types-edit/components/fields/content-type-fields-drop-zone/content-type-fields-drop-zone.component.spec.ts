@@ -129,7 +129,7 @@ function becomeNewField(field) {
     delete field.sortOrder;
 }
 
-fdescribe('ContentTypeFieldsDropZoneComponent', () => {
+describe('ContentTypeFieldsDropZoneComponent', () => {
     const dotLoadingIndicatorServiceMock = new TestDotLoadingIndicatorService();
     let comp: ContentTypeFieldsDropZoneComponent;
     let fixture: ComponentFixture<ContentTypeFieldsDropZoneComponent>;
