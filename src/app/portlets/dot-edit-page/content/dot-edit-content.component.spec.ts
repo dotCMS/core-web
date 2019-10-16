@@ -42,7 +42,8 @@ import { DotWorkflowServiceMock } from '@tests/dot-workflow-service.mock';
 import { mockDotRenderedPage, mockDotLayout } from '@tests/dot-page-render.mock';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotLoadingIndicatorService } from '@components/_common/iframe/dot-loading-indicator/dot-loading-indicator.service';
-import { DotPageMode } from '../shared/models';
+import { DotPageMode, DotPageContainer, DotPageContent } from '../shared/models';
+import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 
 @Component({
     selector: 'dot-global-message',
@@ -85,7 +86,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage)
 );
 
-fdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
@@ -99,6 +100,8 @@ fdescribe('DotEditContentComponent', () => {
     let dotEditPageService: DotEditPageService;
     let iframeOverlayService: IframeOverlayService;
     let dotLoadingIndicatorService: DotLoadingIndicatorService;
+    let dotContentletEditorService: DotContentletEditorService;
+    let dotDialogService: DotAlertConfirmService;
 
     beforeEach(() => {
         const messageServiceMock = new MockDotMessageService({
@@ -113,7 +116,9 @@ fdescribe('DotEditContentComponent', () => {
             'editpage.content.save.changes.confirmation.header': 'Save header',
             'editpage.content.save.changes.confirmation.message': 'Save message',
             'dot.common.content.search': 'Content Search',
-            'an-unexpected-system-error-occurred': 'Error msg'
+            'an-unexpected-system-error-occurred': 'Error msg',
+            'editpage.content.contentlet.remove.confirmation_message.header': 'header',
+            'editpage.content.contentlet.remove.confirmation_message.message': 'message'
         });
 
         DOTTestBed.configureTestingModule({
@@ -203,6 +208,8 @@ fdescribe('DotEditContentComponent', () => {
         dotEditPageService = de.injector.get(DotEditPageService);
         iframeOverlayService = de.injector.get(IframeOverlayService);
         dotLoadingIndicatorService = de.injector.get(DotLoadingIndicatorService);
+        dotContentletEditorService = de.injector.get(DotContentletEditorService);
+        dotDialogService = de.injector.get(DotAlertConfirmService);
 
         spyOn(dotPageStateService, 'reload');
     });
@@ -650,6 +657,193 @@ fdescribe('DotEditContentComponent', () => {
                         const menu = de.query(By.css('dot-reorder-menu'));
                         expect(menu.componentInstance.url).toBe('');
                     }));
+                });
+
+                describe('iframe events', () => {
+                    it('should handle edit event', (done) => {
+                        spyOn(dotContentletEditorService, 'edit').and.callFake((param) => {
+                            expect(param.data.inode).toBe('test_inode');
+
+                            const event: any = {
+                                target: {
+                                    contentWindow: {}
+                                }
+                            };
+                            param.events.load(event);
+                            expect(event.target.contentWindow.ngEditContentletEvents).toBe(dotEditContentHtmlService.contentletEvents$);
+                            done();
+                        });
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'edit',
+                            dataset: {
+                                dotInode: 'test_inode'
+                            },
+                            target: {
+                                contentWindow: {
+                                    ngEditContentletEvents: null
+                                }
+                            }
+                        });
+                    });
+
+                    it('should handle code event', (done) => {
+                        spyOn(dotContentletEditorService, 'edit').and.callFake((param) => {
+
+                            expect(param.data.inode).toBe('test_inode');
+
+                            const event: any = {
+                                target: {
+                                    contentWindow: {}
+                                }
+                            };
+                            param.events.load(event);
+                            expect(event.target.contentWindow.ngEditContentletEvents).toBe(dotEditContentHtmlService.contentletEvents$);
+                            done();
+                        });
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'code',
+                            dataset: {
+                                dotInode: 'test_inode'
+                            },
+                            target: {
+                                contentWindow: {
+                                    ngEditContentletEvents: null
+                                }
+                            }
+                        });
+                    });
+
+                    it('should handle add form event', () => {
+                        component.editForm = false;
+                        spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet').and.callFake(() => {});
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'add',
+                            dataset: {
+                                dotAdd: 'form',
+                                dotIdentifier: 'identifier',
+                                dotUuid: 'uuid'
+                            }
+                        });
+
+                        const container: DotPageContainer = {
+                            identifier: 'identifier',
+                            uuid: 'uuid'
+                        };
+
+                        expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith(container);
+                        expect(component.editForm).toBe(true);
+                    });
+
+                    it('should handle add content event', (done) => {
+                        spyOn(dotEditContentHtmlService, 'setContainterToAppendContentlet').and.callFake(() => {});
+                        spyOn(dotContentletEditorService, 'add').and.callFake((param) => {
+                            expect(param.data).toEqual({
+                                container: 'identifier',
+                                baseTypes:  'content'
+                            });
+
+                            expect(param.header).toEqual('Content Search');
+
+                            const event: any = {
+                                target: {
+                                    contentWindow: {}
+                                }
+                            };
+                            param.events.load(event);
+                            expect(event.target.contentWindow.ngEditContentletEvents).toBe(dotEditContentHtmlService.contentletEvents$);
+                            done();
+                        });
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'add',
+                            dataset: {
+                                dotAdd: 'content',
+                                dotIdentifier: 'identifier',
+                                dotUuid: 'uuid'
+                            },
+                            target: {
+                                contentWindow: {
+                                    ngEditContentletEvents: null
+                                }
+                            }
+                        });
+
+                        const container: DotPageContainer = {
+                            identifier: 'identifier',
+                            uuid: 'uuid'
+                        };
+
+                        expect(dotEditContentHtmlService.setContainterToAppendContentlet).toHaveBeenCalledWith(container);
+                    });
+
+                    it('should handle remove event', (done) => {
+                        spyOn(dotEditContentHtmlService, 'removeContentlet').and.callFake(() => {});
+                        spyOn(dotDialogService, 'confirm').and.callFake((param) => {
+                            expect(param.header).toEqual('header');
+                            expect(param.message).toEqual('message');
+
+                            param.accept();
+
+                            const pageContainer: DotPageContainer = {
+                                identifier: 'container_identifier',
+                                uuid: 'container_uuid'
+                            };
+
+                            const pageContent: DotPageContent = {
+                                inode: 'test_inode',
+                                identifier: 'test_identifier'
+                            };
+                            expect(dotEditContentHtmlService.removeContentlet).toHaveBeenCalledWith(pageContainer, pageContent);
+                            done();
+                        });
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'remove',
+                            dataset: {
+                                dotInode: 'test_inode',
+                                dotIdentifier: 'test_identifier'
+                            },
+                            container: {
+                                dotIdentifier: 'container_identifier',
+                                dotUuid: 'container_uuid'
+                            },
+                        });
+                    });
+
+                    it('should handle select event', () => {
+                        spyOn(dotContentletEditorService, 'clear').and.callFake(() => {});
+
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'select'
+                        });
+
+                        expect(dotContentletEditorService.clear).toHaveBeenCalled();
+                    });
+
+                    it('should handle save event', () => {
+                        fixture.detectChanges();
+
+                        dotEditContentHtmlService.iframeActions$.next({
+                            name: 'save'
+                        });
+
+                        expect(dotPageStateService.reload).toHaveBeenCalled();
+                    });
                 });
             });
         });
