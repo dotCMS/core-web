@@ -19,7 +19,6 @@ import { DotPageStateService } from './services/dot-page-state/dot-page-state.se
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 import { DotPageRender } from '@portlets/dot-edit-page/shared/models/dot-rendered-page.model';
-import { DotContentletEditorService } from '@components/dot-contentlet-editor/services/dot-contentlet-editor.service';
 import { DotEditContentComponent } from './dot-edit-content.component';
 import { DotCMSContentType } from 'dotcms-models';
 import { DotContentletEditorModule } from '@components/dot-contentlet-editor/dot-contentlet-editor.module';
@@ -90,14 +89,12 @@ fdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
-    let dotDialogService: DotAlertConfirmService;
     let dotEditContentHtmlService: DotEditContentHtmlService;
     let dotGlobalMessageService: DotGlobalMessageService;
     let dotPageStateService: DotPageStateService;
     let dotRouterService: DotRouterService;
     let fixture: ComponentFixture<DotEditContentComponent>;
     let route: ActivatedRoute;
-    let dotContentletEditorService: DotContentletEditorService;
     let dotUiColorsService: DotUiColorsService;
     let dotEditPageService: DotEditPageService;
     let iframeOverlayService: IframeOverlayService;
@@ -184,7 +181,7 @@ fdescribe('DotEditContentComponent', () => {
                         },
                         snapshot: {
                             queryParams: {
-                                url: 'an/url/fake'
+                                url: '/an/url/test'
                             }
                         }
                     }
@@ -197,8 +194,6 @@ fdescribe('DotEditContentComponent', () => {
         component = fixture.componentInstance;
         de = fixture.debugElement;
 
-        dotContentletEditorService = de.injector.get(DotContentletEditorService);
-        dotDialogService = de.injector.get(DotAlertConfirmService);
         dotEditContentHtmlService = de.injector.get(DotEditContentHtmlService);
         dotGlobalMessageService = de.injector.get(DotGlobalMessageService);
         dotUiColorsService = de.injector.get(DotUiColorsService);
@@ -527,7 +522,7 @@ fdescribe('DotEditContentComponent', () => {
                     ).toHaveBeenCalledWith(jasmine.objectContaining(mockDotLayout));
                 }));
 
-                fdescribe('custom', () => {
+                describe('custom', () => {
                     it('should handle remote-render-edit', fakeAsync(() => {
                         detectChangesForIframeRender(fixture);
 
@@ -564,9 +559,96 @@ fdescribe('DotEditContentComponent', () => {
                         fixture.detectChanges();
 
                         const menu = de.query(By.css('dot-reorder-menu'));
-                        console.log(menu);
+                        expect(menu.componentInstance.url).toBe('some/url/to/reorder/menu');
+                    }));
+
+                    it('should handle load-edit-mode-page to internal navigation', fakeAsync(() => {
+                        spyOn(dotPageStateService, 'setLocalState').and.callFake(() => {});
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'load-edit-mode-page',
+                            data: mockDotRenderedPage
+                        });
+
+                        fixture.detectChanges();
+
+                        const dotRenderedPageStateExpected = new DotPageRenderState(
+                            mockUser,
+                            mockDotRenderedPage
+                        );
+
+                        expect(dotPageStateService.setLocalState).toHaveBeenCalledWith(dotRenderedPageStateExpected);
+                    }));
+
+                    it('should handle load-edit-mode-page to internal navigation', fakeAsync(() => {
+                        spyOn(dotPageStateService, 'setInternalNavigationState').and.callFake(() => {});
+
+                        detectChangesForIframeRender(fixture);
+
+                        const mockDotRenderedPageCopy = _.cloneDeep(mockDotRenderedPage);
+                        mockDotRenderedPageCopy.page.pageURI = '/another/url/test';
+
+                        triggerIframeCustomEvent({
+                            name: 'load-edit-mode-page',
+                            data: mockDotRenderedPageCopy
+                        });
+
+                        fixture.detectChanges();
+
+                        const dotRenderedPageStateExpected = new DotPageRenderState(
+                            mockUser,
+                            mockDotRenderedPageCopy
+                        );
+
+                        expect(dotPageStateService.setInternalNavigationState).toHaveBeenCalledWith(dotRenderedPageStateExpected);
+                        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith(mockDotRenderedPageCopy.page.pageURI);
+                    }));
+
+                    it('should handle save-menu-order', fakeAsync(() => {
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'save-menu-order'
+                        });
+
+                        fixture.detectChanges();
 
                         expect(dotPageStateService.reload).toHaveBeenCalled();
+
+                        const menu = de.query(By.css('dot-reorder-menu'));
+                        expect(menu.componentInstance.url).toBe('');
+                    }));
+
+                    it('should handle error-saving-menu-order', fakeAsync(() => {
+                        spyOn(dotGlobalMessageService, 'error').and.callFake(() => {});
+
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'error-saving-menu-order'
+                        });
+
+                        fixture.detectChanges();
+                        dotGlobalMessageService.error('Error msg');
+
+                        const menu = de.query(By.css('dot-reorder-menu'));
+                        expect(menu.componentInstance.url).toBe('');
+                    }));
+
+                    it('should handle cancel-save-menu-order', fakeAsync(() => {
+                        spyOn(dotGlobalMessageService, 'error').and.callFake(() => {});
+
+                        detectChangesForIframeRender(fixture);
+
+                        triggerIframeCustomEvent({
+                            name: 'cancel-save-menu-order'
+                        });
+
+                        fixture.detectChanges();
+
+                        const menu = de.query(By.css('dot-reorder-menu'));
+                        expect(menu.componentInstance.url).toBe('');
                     }));
                 });
             });
