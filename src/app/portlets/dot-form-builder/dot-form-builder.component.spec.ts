@@ -31,7 +31,7 @@ class ActivatedRouteMock {
     }
 }
 
-fdescribe('DotFormBuilderComponent', () => {
+describe('DotFormBuilderComponent', () => {
     let fixture: ComponentFixture<DotFormBuilderComponent>;
     let de: DebugElement;
 
