@@ -94,7 +94,7 @@ function waitForDetectChanges(fixture) {
     tick(10);
 }
 
-describe('DotEditContentComponent', () => {
+xdescribe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;
