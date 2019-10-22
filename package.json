@@ -15,7 +15,7 @@
         "build:dev": "ng build --configuration=development",
         "build:prod": "ng build --configuration=production --prod dotcms-ui",
         "build:libs": "ng build dotcms-js; ng build dot-rules; ng build dot-layout-grid",
-        "docker:test": "npm run docker:build;docker run --rm core-web npm test -- dotcms-ui --watch=false",
+        "docker:test": "npm run docker:build;docker run --rm core-web npm test -- dotcms-ui --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox",
         "docker:build": "docker build -t core-web ."
     },
     "repository": {
