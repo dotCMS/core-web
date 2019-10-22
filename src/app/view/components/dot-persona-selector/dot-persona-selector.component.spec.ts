@@ -158,7 +158,6 @@ describe('DotPersonaSelectorComponent', () => {
         hostFixture.whenStable().then(() => {
             spyOn(component.selected, 'emit');
             spyOn(dropdown.componentInstance, 'toggleOverlayPanel');
-            component.disabled = false;
             openOverlay();
             const personaOption = hostFixture.debugElement.query(
                 By.css('dot-persona-selector-option')
