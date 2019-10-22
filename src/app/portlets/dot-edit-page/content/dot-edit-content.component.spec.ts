@@ -86,7 +86,7 @@ const mockRenderedPageState = new DotPageRenderState(
     new DotPageRender(mockDotRenderedPage)
 );
 
-xdescribe('DotEditContentComponent', () => {
+describe('DotEditContentComponent', () => {
     const siteServiceMock = new SiteServiceMock();
     let component: DotEditContentComponent;
     let de: DebugElement;

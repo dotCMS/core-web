@@ -163,7 +163,7 @@ describe('DotPersonaSelectorComponent', () => {
                 By.css('dot-persona-selector-option')
             );
             personaOption.triggerEventHandler('change', defaultPersona);
-            expect(component.selected.emit).toHaveBeenCalledWith('defaultPersona');
+            expect(component.selected.emit).toHaveBeenCalledWith(defaultPersona);
             expect(dropdown.componentInstance.toggleOverlayPanel).toHaveBeenCalled();
         });
     });
