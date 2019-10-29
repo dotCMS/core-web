@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 // App is our top level component
 import { AppComponent } from './app.component';
@@ -41,6 +41,7 @@ import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module
         DotDirectivesModule,
         HotkeyModule.forRoot()
     ],
-    providers: [ENV_PROVIDERS]
+    providers: [ENV_PROVIDERS],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

@@ -1,3 +1,18 @@
+
+<script src="/custom-elements/dotcmsfields.js"></script>
+
+<h1>Fields</h1>
+
+<form>
+    <div *ngFor="let field of data.fields">
+            {{field.name}} |  {{field.fieldType}} | {{field.clazz}} | {{field.variable}}
+    </div>
+</form>
+
+<dot-textfield value="test"></dot-textfield>
+
+
+
 <dot-content-type-layout [contentType]="data" (openEditDialog)="startFormDialog()"  *ngIf="isEditMode()">
     <dot-content-type-fields-drop-zone
         #fieldsDropZone
