@@ -35,7 +35,7 @@ import {
     FieldPropertyService,
     FieldService
 } from '@portlets/shared/dot-content-types-edit/components/fields/service';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotContentTypesEditComponent } from './dot-content-types-edit.component';
 import { ContentTypesLayoutComponent } from './components/layout/content-types-layout.component';
@@ -73,6 +73,7 @@ import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { FormatDateService } from '@services/format-date-service';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
+
 
 @NgModule({
     declarations: [
@@ -159,6 +160,7 @@ import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
         FieldPropertyService,
         FieldService,
         FormatDateService
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DotContentTypesEditModule {}

@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 // App is our top level component
 import { AppComponent } from './app.component';
@@ -19,7 +19,6 @@ import { SharedModule } from './shared/shared.module';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { DotDirectivesModule } from './shared/dot-directives.module';
 import { MdInputTextModule } from '@directives/md-inputtext/md-input-text.module';
-import 'dotcms-field-elements';
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -42,7 +41,6 @@ import 'dotcms-field-elements';
         DotDirectivesModule,
         HotkeyModule.forRoot()
     ],
-    providers: [ENV_PROVIDERS],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    providers: [ENV_PROVIDERS]
 })
 export class AppModule {}

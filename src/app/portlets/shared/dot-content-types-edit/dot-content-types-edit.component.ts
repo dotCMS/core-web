@@ -1,6 +1,6 @@
 import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, HostListener } from '@angular/core';
 
 import {
     DotCMSContentType,
@@ -27,6 +27,10 @@ import { Subject } from 'rxjs';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {DotFieldEvent} from '../../../../../projects/dotcms-field-elements/src/models';
+
 /**
  * Portlet component for edit content types
  *
@@ -40,11 +44,9 @@ import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
     styleUrls: ['./dot-content-types-edit.component.scss']
 })
 export class DotContentTypesEditComponent implements OnInit, OnDestroy {
-    @ViewChild('form')
-    contentTypesForm: ContentTypesFormComponent;
+    @ViewChild('form') contentTypesForm: ContentTypesFormComponent;
 
-    @ViewChild('fieldsDropZone')
-    fieldsDropZone: ContentTypeFieldsDropZoneComponent;
+    @ViewChild('fieldsDropZone') fieldsDropZone: ContentTypeFieldsDropZoneComponent;
 
     contentTypeActions: MenuItem[];
     dialogCloseable = false;
@@ -60,6 +62,9 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
 
     loadingFields = false;
 
+    myFormGroup: FormGroup;
+    dynamicHTML: SafeHtml;
+
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
@@ -72,19 +77,18 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         public dotMessageService: DotMessageService,
         public router: Router,
-        private dotEditContentTypeCacheService: DotEditContentTypeCacheService
+        private dotEditContentTypeCacheService: DotEditContentTypeCacheService,
+        private sanitizer: DomSanitizer
     ) {}
 
     ngOnInit(): void {
         this.route.data
-            .pipe(
-                pluck('contentType'),
-                takeUntil(this.destroy$)
-            )
+            .pipe(pluck('contentType'), takeUntil(this.destroy$))
             .subscribe((contentType: DotCMSContentType) => {
                 this.data = contentType;
                 this.dotEditContentTypeCacheService.set(contentType);
                 this.layout = contentType.layout;
+                this.createForm(this.data.fields);
             });
 
         this.dotMessageService
@@ -226,10 +230,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     removeFields(fieldsToDelete: DotCMSContentTypeField[]): void {
         this.fieldService
             .deleteFields(this.data.id, fieldsToDelete)
-            .pipe(
-                pluck('fields'),
-                take(1)
-            )
+            .pipe(pluck('fields'), take(1))
             .subscribe(
                 (fields: DotCMSContentTypeLayoutRow[]) => {
                     this.layout = fields;
@@ -306,6 +307,41 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         this.dotEventsService.notify(typeEvt);
     }
 
+    @HostListener('valueChange', ['$event'])
+    onValueChange(event: CustomEvent) {
+        const dotFieldValue: DotFieldValueEvent = event.detail;
+        this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
+        //  console.log(this.myFormGroup.value);
+    }
+
+    sendValue(): void {
+        console.log('VALUES', this.myFormGroup.value);
+        console.log('VALID', this.myFormGroup.valid);
+    }
+
+    private createForm(fields: DotCMSContentTypeField[]): void {
+        const group = {};
+        let html = '';
+        fields.filter(this.isNotSystemField).forEach((field: DotCMSContentTypeField) => {
+            group[field.name] = new FormControl('', {
+                validators: field.required ? Validators.required : null
+            });
+            html += this.mapField(field);
+        });
+        this.myFormGroup = new FormGroup(group);
+        console.log(html);
+        this.dynamicHTML = this.sanitizer.bypassSecurityTrustHtml(html);
+        console.log(this.dynamicHTML);
+    }
+
+    private isNotSystemField(field: DotCMSContentTypeField): boolean {
+        return field.dataType !== 'SYSTEM';
+    }
+
+    private mapField(field: any): string {
+        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
+    }
+
     private setEditContentletDialogOptions(messages: { [key: string]: string }): void {
         this.dialogActions = {
             accept: {
@@ -330,10 +366,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
 
         this.crudService
             .postData('v1/contenttype', createdContentType)
-            .pipe(
-                mergeMap((contentTypes: DotCMSContentType[]) => contentTypes),
-                take(1)
-            )
+            .pipe(mergeMap((contentTypes: DotCMSContentType[]) => contentTypes), take(1))
             .subscribe(
                 (contentType: DotCMSContentType) => {
                     this.data = contentType;
@@ -392,4 +425,23 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     private getWorkflowsIds(workflows: DotCMSWorkflow[]): string[] {
         return workflows.map((workflow: DotCMSWorkflow) => workflow.id);
     }
+}
+
+const DotFormFields = {
+    Text: (field: DotCMSContentTypeField) => ` <dot-textfield
+  label= ${field.name}
+  name=${field.variable}
+  required=${field.required}
+></dot-textfield>`,
+    CustomField: (field: DotCMSContentTypeField) => `${field.values}`
+};
+
+const fieldMap = {
+    Text: DotFormFields.Text,
+    'Custom-Field': DotFormFields.CustomField
+};
+
+interface DotFieldValueEvent extends DotFieldEvent {
+    fieldType?: string;
+    value: string | File;
 }

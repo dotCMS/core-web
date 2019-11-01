@@ -1,14 +1,15 @@
+<h4>Text Field</h4>
+{{data.fields[2] | json}}
 
-<h1>Fields</h1>
+<h4>Custom Field</h4>
+{{data.fields[4] | json}}
 
-<form>
-    <div *ngFor="let field of data.fields">
-            {{field.name}} |  {{field.fieldType}} | {{field.clazz}} | {{field.variable}}
-    </div>
+<h3>POC Form</h3>
+
+<form id="plain" (ngSubmit)="sendValue()">
+    <div [innerHTML]="dynamicHTML"></div>
+    <input type="submit">
 </form>
-
-<dot-textfield value="test"></dot-textfield>
-
 
 
 <dot-content-type-layout [contentType]="data" (openEditDialog)="startFormDialog()"  *ngIf="isEditMode()">
