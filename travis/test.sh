@@ -14,5 +14,5 @@ function bell() {
 }
 bell &
 gcloud builds submit \
-  --config=travis/cloudrun-test.yml \
+  --config=travis/cloudrun-test.yml
 exit $?
