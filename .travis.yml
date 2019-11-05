@@ -6,9 +6,17 @@ cache:
   directories:
     - ${HOME}/gcloud/
 
+# https://docs.travis-ci.com/user/environment-variables/
+env:
+  global:
+    - GOOGLE_CREDENTIALS=${TRAVIS_BUILD_DIR}/credentials.json
+    - TRAVIS_COMMIT_SHORT=${TRAVIS_COMMIT::8}
+
 before_install:
-  - echo "before_install"  
-  #- chmod +x travis/install_gcloud.sh
+  - echo "setting .sh files permissions"  
+  - chmod +x travis/environment_vars.sh
+  - chmod +x travis/install_gcloud.sh
+  - chmod +x travis/submit.sh
   
 # Run for PULL REQUEST or for any commit into a master branch or a release branch
 
@@ -20,14 +28,15 @@ before_install:
 #  OR branch =~ ^release-
 
 # https://docs.travis-ci.com/user/build-stages
-#jobs:
-#  include:
-#    - stage: build image
-#      script: bash travis/submit.sh
+jobs:
+  include:
+    - stage: build image
+      script: bash travis/submit.sh
 # Ejecutar test
 
-#install:
- # - travis/install_gcloud.sh
+install:
+  - travis/environment_vars.sh
+  - travis/install_gcloud.sh
 
 # https://docs.travis-ci.com/user/notifications/#configuring-slack-notifications
 # https://docs.travis-ci.com/user/encryption-keys/#usage
