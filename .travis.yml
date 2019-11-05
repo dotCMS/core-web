@@ -6,6 +6,12 @@ cache:
   directories:
     - ${HOME}/gcloud/
 
+  before_install:
+  #- chmod +x travis/environment_vars.sh
+  - chmod +x travis/install_gcloud.sh
+  #- chmod +x travis/printStoragePaths.sh
+  #- chmod +x travis/submit.sh
+  
 # Run for PULL REQUEST or for any commit into a master branch or a release branch
 
 # https://docs.travis-ci.com/user/conditions-v1
