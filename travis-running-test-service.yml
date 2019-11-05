@@ -1,0 +1,7 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: npm test -- dotcms-ui --watch=false
+    ports:
+      - "3000:3000"

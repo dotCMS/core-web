@@ -1,0 +1,12 @@
+steps:
+
+  # Run the integration tests image
+  - name: 'docker/compose:1.24.1'
+    env:
+      - 'IMAGE_BASE_NAME=gcr.io/$PROJECT_ID/core-web-test-image:$_CUSTOM_RUN_ID'
+      - 'EXPORT_REPORTS=true'
+    args: ['-f', './travis-running-test-service.yml',
+           'up',
+           '--abort-on-container-exit']
+
+timeout: 4800s
