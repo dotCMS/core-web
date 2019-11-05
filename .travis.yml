@@ -6,7 +6,7 @@ cache:
   directories:
     - ${HOME}/gcloud/
 
-  before_install:
+before_install:
   - echo "before_install"  
   #- chmod +x travis/install_gcloud.sh
   
@@ -26,8 +26,8 @@ cache:
 #      script: bash travis/submit.sh
 # Ejecutar test
 
-install:
-  - travis/install_gcloud.sh
+#install:
+ # - travis/install_gcloud.sh
 
 # https://docs.travis-ci.com/user/notifications/#configuring-slack-notifications
 # https://docs.travis-ci.com/user/encryption-keys/#usage
