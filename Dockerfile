@@ -9,6 +9,8 @@ WORKDIR /usr/src/app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends chromium
 
+RUN npm i @angular/cli
+
 ENV CHROME_BIN=chromium
 
 COPY package*.json ./
@@ -17,4 +19,4 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build dotcmsjs
+CMD ng build dotcms-js
