@@ -20,3 +20,7 @@ RUN npm install
 COPY . .
 
 CMD ng build dotcms-js
+COPY /dist-lib/dotcms-js ./dist-lib/dotcms-js
+
+CMD ng build dot-layout-grid
+COPY /dist-lib/dot-layout-grid ./dist-lib/dot-layout-grid
