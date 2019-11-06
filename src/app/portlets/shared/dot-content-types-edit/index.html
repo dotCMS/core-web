@@ -1,0 +1,19 @@
+<select id="city" name="city" onchange="emitEvent(this)">
+    <option>San Jose</option>
+    <option>Alajuela</option>
+    <option>Heredia</option>
+</select>
+
+
+<script>
+    function emitEvent(select) {
+        var event = new CustomEvent('valueChange', { 'detail': { 'fieldType': 'city', 'value': select.value}});
+        window.dispatchEvent(event);
+    }
+
+    window.addEventListener("valueChange", proceess);
+
+    function proceess(event){
+        console.log(event.detail);
+    }
+</script>

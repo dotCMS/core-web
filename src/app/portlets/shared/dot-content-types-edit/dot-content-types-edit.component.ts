@@ -1,6 +1,6 @@
 import { take, mergeMap, pluck, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ViewChild, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import {
     DotCMSContentType,
@@ -27,9 +27,9 @@ import { Subject } from 'rxjs';
 import { DotEditContentTypeCacheService } from './components/fields/content-type-fields-properties-form/field-properties/dot-relationships-property/services/dot-edit-content-type-cache.service';
 import { DotDialogActions } from '@components/dot-dialog/dot-dialog.component';
 
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import {DotFieldEvent} from '../../../../../projects/dotcms-field-elements/src/models';
+import { DotFieldEvent } from '../../../../../projects/dotcms-field-elements/src/models';
 
 /**
  * Portlet component for edit content types
@@ -43,10 +43,13 @@ import {DotFieldEvent} from '../../../../../projects/dotcms-field-elements/src/m
     templateUrl: './dot-content-types-edit.component.html',
     styleUrls: ['./dot-content-types-edit.component.scss']
 })
-export class DotContentTypesEditComponent implements OnInit, OnDestroy {
+export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('form') contentTypesForm: ContentTypesFormComponent;
 
     @ViewChild('fieldsDropZone') fieldsDropZone: ContentTypeFieldsDropZoneComponent;
+    @ViewChild('iframeReference') iframeReference: any;
+
+    @ViewChild('testForm') testForm: HTMLFormElement;
 
     contentTypeActions: MenuItem[];
     dialogCloseable = false;
@@ -64,6 +67,30 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
 
     myFormGroup: FormGroup;
     dynamicHTML: SafeHtml;
+    iframeMap: Map<string, string> = new Map<string, string>();
+    // frame = {};
+    angularDojo: any;
+
+    dotFormFields = {
+        Text: (field: DotCMSContentTypeField) => ` <dot-textfield
+  label= ${field.name}
+  name=${field.variable}
+  required=${field.required}
+></dot-textfield>`,
+        CustomField: (field: DotCMSContentTypeField) => {
+            this.iframeMap.set(
+                `iframe_${field.name}`,
+                `data:text/html;charset=utf-8,' ${encodeURI(field.values)}`
+            );
+            //this.iframeMap[] = ;
+            return `<script>function loadHandler(){ console.log('freddy')}</script><iframe id="iframe_${field.name}" onload="()=> {console.log('test2')}" ></iframe>`;
+        }
+    };
+
+    fieldMap = {
+        Text: this.dotFormFields.Text,
+        'Custom-Field': this.dotFormFields.CustomField
+    };
 
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -136,9 +163,21 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         this.setTemplateInfo();
     }
 
+    loadHandler(event: any) {
+        console.log(event);
+        debugger;
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next(true);
         this.destroy$.complete();
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            console.log('hola');
+        });
+        this.addContentToiFrames();
     }
 
     /**
@@ -307,16 +346,73 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         this.dotEventsService.notify(typeEvt);
     }
 
-    @HostListener('valueChange', ['$event'])
-    onValueChange(event: CustomEvent) {
-        const dotFieldValue: DotFieldValueEvent = event.detail;
-        this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
-        //  console.log(this.myFormGroup.value);
-    }
+    // @HostListener('valueChange', ['$event'])
+    // onValueChange(event: CustomEvent) {
+    //     const dotFieldValue: DotFieldValueEvent = event.detail;
+    //    // this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
+    //     //  console.log(this.myFormGroup.value);
+    // }
+
+    /*    addContent(event: any): void {
+        console.log('iframe Loaded', event);
+        const doc: Document = event.currentTarget.contentDocument
+        doc.open();
+        doc.write(`        <select id="city" name="city" onchange="emitEvent(this)">
+    <option>San Jose</option>
+<option>Alajuela</option>
+<option>Heredia</option>
+</select>
+
+
+<script>
+function emitEvent(select) {
+    var event = new CustomEvent('valueChange', { 'detail': { 'fieldType': 'city', 'value': select.value}});
+    document.dispatchEvent(event);
+}
+</script>
+`);
+        doc.close();
+        doc.addEventListener('valueChange', (value: any) => {
+            console.log('Value of Iframe from Angular', value);
+        });
+
+    }*/
 
     sendValue(): void {
         console.log('VALUES', this.myFormGroup.value);
         console.log('VALID', this.myFormGroup.valid);
+    }
+
+    assignDojo(event: any): void {
+        this.angularDojo = event.target.contentWindow.dojo;
+        debugger;
+       // this.iframeReference.nativeElement.contentWindow.dojo = this.angularDojo;
+       // const doc: Document = event.currentTarget.contentDocument;
+
+        const dojoHolder: HTMLIFrameElement = document.getElementById(
+            'dojoHolder'
+        ) as HTMLIFrameElement;
+        dojoHolder.contentWindow['dojo'] = this.angularDojo;
+
+        dojoHolder.contentDocument.open();
+        dojoHolder.contentDocument
+            .write(`<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8/dijit/themes/claro/claro.css"><script>dojo.require("dijit.form.Button");</script><button data-dojo-type="dijit.form.Button" id="helloButton">
+    Hello World!
+</button> <br> <input type="submit" data-dojo-type="dijit/form/Button" onClick="alert('hi')" id="btn1" label="Button 1">
+<select name="select1" data-dojo-type="dijit/form/Select">
+    <option value="TN">Tennessee</option>
+    <option value="VA" selected="selected">Virginia</option>
+    <option value="WA">Washington</option>
+    <option value="FL">Florida</option>
+    <option value="CA">California</option>
+</select>
+`);
+        dojoHolder.contentDocument.close();
+    }
+
+    dojoHolderLoaded(): void {
+        debugger;
+      console.log('dojoHolderLoaded');
     }
 
     private createForm(fields: DotCMSContentTypeField[]): void {
@@ -329,9 +425,37 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
             html += this.mapField(field);
         });
         this.myFormGroup = new FormGroup(group);
-        console.log(html);
         this.dynamicHTML = this.sanitizer.bypassSecurityTrustHtml(html);
-        console.log(this.dynamicHTML);
+        this.testForm.nativeElement.addEventListener('valueChange', (event: CustomEvent) => {
+            const dotFieldValue: DotFieldValueEvent = event.detail;
+            this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
+        });
+    }
+
+    private addContentToiFrames(): void {
+        this.iframeMap.forEach((value: string, key: string) => {
+            const iframe = document.getElementById(key) as HTMLIFrameElement;
+            iframe.src = value;
+            setTimeout(() => {
+                // debugger;
+                // console.log(iframe.contentWindow.document);
+                // iframe.contentDocument.addEventListener('valueChange', () => {
+                //     console.log('test');
+                // });
+                // debugger;
+                // console.log('this.dojoIframe', this.dojoIframe.nativeElement.contentWindow.dojo);
+            }, 2000);
+            /*document.getElementById(key).addEventListener('valueChange', (event: CustomEvent) => {
+                debugger;
+                const dotFieldValue: DotFieldValueEvent = event.detail;
+                this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
+            });*/
+        });
+        window.addEventListener('message', (message: any) => {
+            console.log(message);
+            alert('work');
+            debugger;
+        });
     }
 
     private isNotSystemField(field: DotCMSContentTypeField): boolean {
@@ -339,7 +463,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
     }
 
     private mapField(field: any): string {
-        return fieldMap[field.fieldType] ? fieldMap[field.fieldType](field) : '';
+        return this.fieldMap[field.fieldType] ? this.fieldMap[field.fieldType](field) : '';
     }
 
     private setEditContentletDialogOptions(messages: { [key: string]: string }): void {
@@ -426,20 +550,6 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy {
         return workflows.map((workflow: DotCMSWorkflow) => workflow.id);
     }
 }
-
-const DotFormFields = {
-    Text: (field: DotCMSContentTypeField) => ` <dot-textfield
-  label= ${field.name}
-  name=${field.variable}
-  required=${field.required}
-></dot-textfield>`,
-    CustomField: (field: DotCMSContentTypeField) => `${field.values}`
-};
-
-const fieldMap = {
-    Text: DotFormFields.Text,
-    'Custom-Field': DotFormFields.CustomField
-};
 
 interface DotFieldValueEvent extends DotFieldEvent {
     fieldType?: string;
