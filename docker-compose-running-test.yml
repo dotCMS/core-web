@@ -1,5 +1,8 @@
 version: '2'
 services:
+  app:
+    build: .
+    image: core-web-test-image:latest
   web:
     build: .
     command: npm test -- dotcms-ui --watch=false

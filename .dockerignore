@@ -1,2 +1,5 @@
 dist
+dist-lib
+travis
+travis.yml
 node_modules

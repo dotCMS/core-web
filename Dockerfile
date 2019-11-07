@@ -8,19 +8,13 @@ WORKDIR /usr/src/app
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends chromium
-
-RUN npm i @angular/cli
-
 ENV CHROME_BIN=chromium
 
-COPY package*.json ./
-
-RUN npm install
+RUN npm i -g @angular/cli@7.1.4
 
 COPY . .
 
-CMD ng build dotcms-js
-COPY /dist-lib/dotcms-js ./dist-lib/dotcms-js
+RUN npm install
 
-CMD ng build dot-layout-grid
-COPY /dist-lib/dot-layout-grid ./dist-lib/dot-layout-grid
+RUN ng build dotcms-js
+RUN ng build dot-layout-grid

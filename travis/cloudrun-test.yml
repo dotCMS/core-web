@@ -9,7 +9,7 @@ steps:
       - 'PULL_REQUEST=$_PULL_REQUEST'
       - 'GITHUB_USER=$_GITHUB_USER'
       - 'GITHUB_USER_TOKEN=$_GITHUB_USER_TOKEN'
-    args: ['-f', './travis-running-test-service.yml',
+    args: ['-f', './docker-compose-running-test.yml',
            'up',
            '--abort-on-container-exit']
 
