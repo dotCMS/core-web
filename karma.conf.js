@@ -6,6 +6,7 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['jasmine', '@angular-devkit/build-angular'],
         plugins: [
+            require('karma-html-reporter'),
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
             require('karma-jasmine-html-reporter'),
@@ -20,7 +21,7 @@ module.exports = function(config) {
             fixWebpackSourcePaths: true
         },
 
-        reporters: ['progress', 'kjhtml'],
+        reporters: ['progress', 'kjhtml', 'html'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
