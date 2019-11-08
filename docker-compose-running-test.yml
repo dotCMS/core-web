@@ -1,10 +1,5 @@
 version: '2'
 services:
-  app:
-    build: .
-    image: core-web-test-image:latest
-  web:
-    build: .
-    command: npm test -- dotcms-ui --watch=false
-    ports:
-      - "3000:3000"
+  core-web-test:
+    image: "${IMAGE_BASE_NAME}"
+    command: npm test -- dotcms-ui --watch=false --reporters=html,progress

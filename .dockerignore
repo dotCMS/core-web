@@ -3,3 +3,6 @@ dist-lib
 travis
 travis.yml
 node_modules
+Dockerfile*
+docker-compose*
+README.md
