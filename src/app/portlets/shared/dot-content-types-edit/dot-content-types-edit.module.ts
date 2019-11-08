@@ -73,6 +73,7 @@ import { DotContentTypesInfoService } from '@services/dot-content-types-info';
 import { DotWorkflowService } from '@services/dot-workflow/dot-workflow.service';
 import { FormatDateService } from '@services/format-date-service';
 import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
+import { IframeHolderComponent } from './iframe-holder/iframe-holder.component';
 
 
 @NgModule({
@@ -94,7 +95,8 @@ import { DotSecondaryToolbarModule } from '@components/dot-secondary-toolbar';
         HintPropertyComponent,
         NamePropertyComponent,
         RegexCheckPropertyComponent,
-        ValuesPropertyComponent
+        ValuesPropertyComponent,
+        IframeHolderComponent
     ],
     exports: [DotContentTypesEditComponent],
     entryComponents: [

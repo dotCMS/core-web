@@ -1,18 +1,26 @@
 <h3>POC Form</h3>
 
 <form id="plain" (ngSubmit)="sendValue()" #testForm>
+
+    <template #dynamicComponent></template>
+
     <div [innerHTML]="dynamicHTML"></div>
-    <iframe  (load)="assignDojo($event)" src="/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=0&&dm_rlout=1&r=1572983376860&in_frame=true&frame=detailFrame&container=true&angularCurrentPortlet=content"></iframe>
+<!--    <iframe  (load)="assignDojo($event)" src="/c/portal/layout?p_l_id=71b8a1ca-37b6-4b6e-a43b-c7482f28db6c&p_p_id=content&p_p_action=0&&dm_rlout=1&r=1572983376860&in_frame=true&frame=detailFrame&container=true&angularCurrentPortlet=content"></iframe>-->
     <!--<iframe #iframeReference (load)="addContent($event)" >
     </iframe>-->
-
-    <iframe id="dojoHolder" (load)="dojoHolderLoaded()"></iframe>
-
-    <input type="submit">
+    <dot-iframe-holder (valueChange)="updateForm($event)"></dot-iframe-holder>
+<!--    <iframe id="dojoHolder" (load)="dojoHolderLoaded()"></iframe>--><br/>
+    <input [disabled]="!this.myFormGroup.valid" type="submit">
 
 </form>
 
 <br/><br/><br/>
+<span style="font-weight: bold">Form Value: </span>{{ myFormGroup.value | json}}
+<br/><br/>
+<span style="font-weight: bold">Is Valid: </span>{{ myFormGroup.valid}}
+
+
+<br/><br/>
 
 <dot-content-type-layout [contentType]="data" (openEditDialog)="startFormDialog()"  *ngIf="isEditMode()">
     <dot-content-type-fields-drop-zone

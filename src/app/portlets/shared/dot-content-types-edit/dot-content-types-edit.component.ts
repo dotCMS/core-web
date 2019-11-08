@@ -48,6 +48,7 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterVie
 
     @ViewChild('fieldsDropZone') fieldsDropZone: ContentTypeFieldsDropZoneComponent;
     @ViewChild('iframeReference') iframeReference: any;
+    @ViewChild('dynamicComponent') dynamicComponent: any;
 
     @ViewChild('testForm') testForm: HTMLFormElement;
 
@@ -68,7 +69,6 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterVie
     myFormGroup: FormGroup;
     dynamicHTML: SafeHtml;
     iframeMap: Map<string, string> = new Map<string, string>();
-    // frame = {};
     angularDojo: any;
 
     dotFormFields = {
@@ -83,7 +83,8 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterVie
                 `data:text/html;charset=utf-8,' ${encodeURI(field.values)}`
             );
             //this.iframeMap[] = ;
-            return `<script>function loadHandler(){ console.log('freddy')}</script><iframe id="iframe_${field.name}" onload="()=> {console.log('test2')}" ></iframe>`;
+            // return `<iframe id="iframe_${field.name}" onload="()=> {console.log('test2')}" ></iframe>`;
+            return `<dot-iframe-holder></dot-iframe-holder>`;
         }
     };
 
@@ -163,10 +164,10 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterVie
         this.setTemplateInfo();
     }
 
-    loadHandler(event: any) {
-        console.log(event);
-        debugger;
-    }
+    // loadHandler(event: any) {
+    //     console.log(event);
+    //     debugger;
+    // }
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
@@ -174,9 +175,6 @@ export class DotContentTypesEditComponent implements OnInit, OnDestroy, AfterVie
     }
 
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            console.log('hola');
-        });
         this.addContentToiFrames();
     }
 
@@ -383,36 +381,41 @@ function emitEvent(select) {
         console.log('VALID', this.myFormGroup.valid);
     }
 
-    assignDojo(event: any): void {
-        this.angularDojo = event.target.contentWindow.dojo;
-        debugger;
-       // this.iframeReference.nativeElement.contentWindow.dojo = this.angularDojo;
-       // const doc: Document = event.currentTarget.contentDocument;
-
-        const dojoHolder: HTMLIFrameElement = document.getElementById(
-            'dojoHolder'
-        ) as HTMLIFrameElement;
-        dojoHolder.contentWindow['dojo'] = this.angularDojo;
-
-        dojoHolder.contentDocument.open();
-        dojoHolder.contentDocument
-            .write(`<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8/dijit/themes/claro/claro.css"><script>dojo.require("dijit.form.Button");</script><button data-dojo-type="dijit.form.Button" id="helloButton">
-    Hello World!
-</button> <br> <input type="submit" data-dojo-type="dijit/form/Button" onClick="alert('hi')" id="btn1" label="Button 1">
-<select name="select1" data-dojo-type="dijit/form/Select">
-    <option value="TN">Tennessee</option>
-    <option value="VA" selected="selected">Virginia</option>
-    <option value="WA">Washington</option>
-    <option value="FL">Florida</option>
-    <option value="CA">California</option>
-</select>
-`);
-        dojoHolder.contentDocument.close();
-    }
+    //     assignDojo(event: any): void {
+    //         this.angularDojo = event.target.contentWindow.dojo;
+    //         debugger;
+    //        // this.iframeReference.nativeElement.contentWindow.dojo = this.angularDojo;
+    //        // const doc: Document = event.currentTarget.contentDocument;
+    //
+    //         const dojoHolder: HTMLIFrameElement = document.getElementById(
+    //             'dojoHolder'
+    //         ) as HTMLIFrameElement;
+    //         // dojoHolder.contentWindow['dojo'] = this.angularDojo;
+    //
+    //         dojoHolder.contentDocument.open();
+    //         dojoHolder.contentDocument
+    //             .write(`<script type="text/javascript" src="/html/js/dojo/custom-build/dojo/dojo.js?b=5.0.0"></script><link rel="stylesheet" type="text/css" href="/html/js/dojo/custom-build/dijit/themes/dijit.css"> <script>require(["dojo/parser"], function(parser){
+    //   });  dojo.require("dijit.form.Button");</script><button data-dojo-type="dijit.form.Button" id="helloButton">
+    //     Hello World!
+    // </button> <br> <input type="submit" data-dojo-type="dijit/form/Button" onClick="alert('hi')" id="btn1" label="Button 1">
+    // <select name="select1" data-dojo-type="dijit/form/Select">
+    //     <option value="TN">Tennessee</option>
+    //     <option value="VA" selected="selected">Virginia</option>
+    //     <option value="WA">Washington</option>
+    //     <option value="FL">Florida</option>
+    //     <option value="CA">California</option>
+    // </select>
+    // <script>dojo.parser.parse(document)</script>`);
+    //         dojoHolder.contentDocument.close();
+    //     }
 
     dojoHolderLoaded(): void {
-        debugger;
-      console.log('dojoHolderLoaded');
+        console.log('dojoHolderLoaded');
+    }
+
+    updateForm(event: any) {
+        this.myFormGroup.get(event.name).setValue(event.value);
+        console.log('FROM VALUE: ', this.myFormGroup.value);
     }
 
     private createForm(fields: DotCMSContentTypeField[]): void {
@@ -432,30 +435,32 @@ function emitEvent(select) {
         });
     }
 
+
+
     private addContentToiFrames(): void {
-        this.iframeMap.forEach((value: string, key: string) => {
-            const iframe = document.getElementById(key) as HTMLIFrameElement;
-            iframe.src = value;
-            setTimeout(() => {
-                // debugger;
-                // console.log(iframe.contentWindow.document);
-                // iframe.contentDocument.addEventListener('valueChange', () => {
-                //     console.log('test');
-                // });
-                // debugger;
-                // console.log('this.dojoIframe', this.dojoIframe.nativeElement.contentWindow.dojo);
-            }, 2000);
-            /*document.getElementById(key).addEventListener('valueChange', (event: CustomEvent) => {
-                debugger;
-                const dotFieldValue: DotFieldValueEvent = event.detail;
-                this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
-            });*/
-        });
-        window.addEventListener('message', (message: any) => {
-            console.log(message);
-            alert('work');
-            debugger;
-        });
+        // this.iframeMap.forEach((value: string, key: string) => {
+        //     const iframe = document.getElementById(key) as HTMLIFrameElement;
+        //     iframe.src = value;
+        //     setTimeout(() => {
+        //         // debugger;
+        //         // console.log(iframe.contentWindow.document);
+        //         // iframe.contentDocument.addEventListener('valueChange', () => {
+        //         //     console.log('test');
+        //         // });
+        //         // debugger;
+        //         // console.log('this.dojoIframe', this.dojoIframe.nativeElement.contentWindow.dojo);
+        //     }, 2000);
+        //     /*document.getElementById(key).addEventListener('valueChange', (event: CustomEvent) => {
+        //         debugger;
+        //         const dotFieldValue: DotFieldValueEvent = event.detail;
+        //         this.myFormGroup.get(dotFieldValue.name).setValue(dotFieldValue.value);
+        //     });*/
+        // });
+        // window.addEventListener('message', (message: any) => {
+        //     console.log(message);
+        //     alert('work');
+        //     debugger;
+        // });
     }
 
     private isNotSystemField(field: DotCMSContentTypeField): boolean {
