@@ -12,9 +12,17 @@ ENV CHROME_BIN=chromium
 
 RUN npm i -g @angular/cli@7.1.4
 
-COPY . .
+COPY package.json .
+RUN npm i
 
-RUN npm install
+COPY angular.json .
 
+COPY tsconfig.json .
+
+COPY ./projects/dotcms-js ./projects/dotcms-js  
 RUN ng build dotcms-js
+
+COPY ./projects/dot-layout-grid ./projects/dot-layout-grid 
 RUN ng build dot-layout-grid
+
+
