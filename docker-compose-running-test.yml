@@ -1,8 +1,5 @@
 version: '2'
 services:
-  npm_test:
+  core-web-test:
     image: "${IMAGE_BASE_NAME}"
-    command: npm test -- dotcms-ui --watch=false --reporters=html,progress
-  runnig_test:
-    image: "${IMAGE_BASE_NAME}"
-    command: bash -c "storage.sh"
+    command: sh /usr/src/app/run_and_storage.sh

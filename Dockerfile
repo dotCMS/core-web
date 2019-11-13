@@ -33,3 +33,6 @@ COPY ./src ./src
 
 COPY ./docker/storage.sh ./storage.sh
 RUN chmod 500 ./storage.sh
+
+COPY ./docker/run_and_storage.sh ./run_and_storage.sh
+RUN chmod 500 ./run_and_storage.sh
