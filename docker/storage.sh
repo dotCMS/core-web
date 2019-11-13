@@ -21,7 +21,7 @@ then
     echo "======================================================================================"
     echo " >>>      'GOOGLE_CREDENTIALS_BASE64' environment variable NOT FOUND               <<<"
     echo "======================================================================================"
-    exit 0
+    exit 1
 fi
 
 # Validating if we have something to copy
@@ -30,7 +30,7 @@ if [ -z "$(ls -A $outputFolder)" ]; then
    echo "================================================================"
    echo "           >>> EMPTY [${outputFolder}] FOUND <<<"
    echo "================================================================"
-   exit 0
+   exit 1
 fi
 
 echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d - > $credentialsFile
