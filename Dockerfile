@@ -30,3 +30,6 @@ COPY karma.conf.js .
 COPY ./projects/dot-rules ./projects/dot-rules 
 
 COPY ./src ./src
+
+COPY ./docker/storage.sh ./storage.sh
+RUN chmod 500 ./storage.sh
