@@ -1,5 +1,8 @@
 version: '2'
 services:
-  core-web-test:
+  npm_test:
     image: "${IMAGE_BASE_NAME}"
-    command: bash -c "npm test -- dotcms-ui --watch=false --reporters=html,progress && storage.sh"
+    command: npm test -- dotcms-ui --watch=false --reporters=html,progress
+  runnig_test:
+    image: "${IMAGE_BASE_NAME}"
+    command: bash -c "storage.sh"
