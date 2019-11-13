@@ -18,7 +18,8 @@
         "docker:test": "npm run docker:build;docker run --rm core-web npm test -- dotcms-ui --watch=false",
         "docker:build": "docker build -t core-web .",
         "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "build-storybook": "build-storybook",
+        "deploy-storybook": "storybook-to-ghpages"
     },
     "repository": {
         "type": "git",
@@ -67,6 +68,7 @@
         "@storybook/addon-notes": "^5.2.6",
         "@storybook/addons": "^5.2.6",
         "@storybook/angular": "^5.2.6",
+        "@storybook/storybook-deployer": "^2.8.1",
         "@types/googlemaps": "^3.30.1",
         "@types/jasmine": "~2.8.8",
         "@types/jasminewd2": "~2.0.3",
