@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-outputFolder="/karma_html/HeadlessChrome 78.0.3904 (Mac OS X 10.14.5)"
+outputFolder="/karma_html"
 credentialsFile="./credentials.json"
 buckedProtocol="gs://"
 
