@@ -12,8 +12,7 @@ function bell() {
   done
 }
 bell &
-echo "GOOGLE_CREDENTIALS_BASE64"
-echo $GOOGLE_CREDENTIALS_BASE64
+
 gcloud builds submit \
   --config=travis/cloudrun-test.yml \
   --substitutions=_CUSTOM_RUN_ID=$TRAVIS_COMMIT_SHORT,_GOOGLE_CREDENTIALS_BASE64=$GOOGLE_CREDENTIALS_BASE64 .
