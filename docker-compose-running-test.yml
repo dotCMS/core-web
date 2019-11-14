@@ -2,4 +2,6 @@ version: '2'
 services:
   core-web-test:
     image: "${IMAGE_BASE_NAME}"
+    environment:
+      GOOGLE_CREDENTIALS_BASE64:
     command: sh /usr/src/app/run_and_storage.sh

@@ -1,16 +1,7 @@
 #!/bin/bash
 
-# Examples
-# https://storage.googleapis.com/cicd-246518-tests/0253ef83/mysql/reports/html/integrationTest/index.html
-# https://storage.googleapis.com/cicd-246518-tests/0253ef83/mysql/logs/dotcms.log
-# https://storage.googleapis.com/cicd-246518-tests/0253ef83/unit/reports/html/index.html
-# https://storage.googleapis.com/cicd-246518-tests/0253ef83/unit/logs/dotcms.log
-# https://storage.googleapis.com/cicd-246518-tests/branch-name/mysql/reports/html/integrationTest/index.html
-# https://storage.googleapis.com/cicd-246518-tests/branch-name/mysql/logs/dotcms.log
-# https://storage.googleapis.com/cicd-246518-tests/branch-name/unit/reports/html/index.html
-# https://storage.googleapis.com/cicd-246518-tests/branch-name/unit/logs/dotcms.log
 
-outputFolder="/karma_html/HeadlessChrome 78.0.3904 (Mac OS X 10.14.5)/index.html"
+outputFolder="/karma_html/HeadlessChrome\ 78.0.3904\ \(Mac\ OS\ X\ 10.14.5\)"
 credentialsFile="./credentials.json"
 buckedProtocol="gs://"
 
