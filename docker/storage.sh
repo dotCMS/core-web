@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-outputFolder="/karma_html"
+outputFolder="/usr/src/app/karma_html"
 credentialsFile="./credentials.json"
 buckedProtocol="gs://"
 
