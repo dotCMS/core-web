@@ -4,4 +4,6 @@ services:
     image: "${IMAGE_BASE_NAME}"
     environment:
       GOOGLE_CREDENTIALS_BASE64:
+      CURRENT_BRANCH=$_CURRENT_BRANCH:
+      COMMIT_SHORT=$_COMMIT_SHORT:
     command: sh /usr/src/app/run_and_storage.sh
