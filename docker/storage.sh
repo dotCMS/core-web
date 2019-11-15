@@ -1,5 +1,7 @@
 #!/bin/bash
 
+GOOGLE_STORAGE_JOB_COMMIT_FOLDER="cicd-246518-tests/core-web/${TRAVIS_COMMIT_SHORT}/${DB_TYPE}"
+GOOGLE_STORAGE_JOB_BRANCH_FOLDER="cicd-246518-tests/core-web/${CURRENT_BRANCH}/${DB_TYPE}"
 
 outputFolder="/usr/src/app/karma_html"
 credentialsFile="./credentials.json"
