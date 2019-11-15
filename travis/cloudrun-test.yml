@@ -6,7 +6,7 @@ steps:
       - 'IMAGE_BASE_NAME=gcr.io/$PROJECT_ID/core-web-test-image:$_CUSTOM_RUN_ID'
       - 'EXPORT_REPORTS=true'
       - 'GOOGLE_CREDENTIALS_BASE64=$_GOOGLE_CREDENTIALS_BASE64'
-      - 'CURRENT_BRANCH=$_CURRENT_BRANCH=$CURRENT_BRANCH
+      - 'CURRENT_BRANCH=$_CURRENT_BRANCH=$CURRENT_BRANCH'
       - 'COMMIT_SHORT=$_COMMIT_SHORT
     args: ['-f', './docker-compose-running-test.yml',
            'up',
