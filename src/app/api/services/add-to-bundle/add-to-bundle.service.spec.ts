@@ -6,7 +6,7 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { AddToBundleService } from './add-to-bundle.service';
 import { DotCurrentUserService } from '../dot-current-user/dot-current-user.service';
 
-fdescribe('AddToBundleService', () => {
+describe('AddToBundleService', () => {
     beforeEach(() => {
         this.injector = DOTTestBed.resolveAndCreate([AddToBundleService, DotCurrentUserService]);
 
