@@ -33,6 +33,10 @@ module.exports = function(config) {
                 flags: ['--no-sandbox']
             }
         },
+        htmlReporter: {
+            namedFiles: true,
+            reportName: 'report' 
+        },
         singleRun: false,
         browserDisconnectTimeout: 20000
     });
