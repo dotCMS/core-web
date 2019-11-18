@@ -27,8 +27,8 @@ ENV CHROME_BIN=chromium
 
 RUN npm i -g @angular/cli@7.1.4
 
-COPY package.json .
-RUN npm i
+COPY package*.json ./
+RUN npm ci
 
 COPY angular.json .
 
