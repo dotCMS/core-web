@@ -33,7 +33,7 @@ echo "  >>> Pushing reports and logs to [${buckedProtocol}${GOOGLE_STORAGE_JOB_C
 echo "  >>> Pushing reports and logs to [${buckedProtocol}${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}] <<<"
 echo ""
 
-ls -R 
+ls -R karma_html
 
 gcloud auth activate-service-account --key-file="${credentialsFile}"
 gsutil -m -q cp -a public-read -r ${outputFolder} ${buckedProtocol}${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}
