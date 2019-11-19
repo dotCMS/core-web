@@ -51,3 +51,7 @@ RUN chmod 500 ./storage.sh
 
 COPY ./docker/run_and_storage.sh ./run_and_storage.sh
 RUN chmod 500 ./run_and_storage.sh
+
+COPY ./docker/run_and_storage.sh ./github_satatus.sh
+RUN chmod 500 ./github_satatus.sh
+
