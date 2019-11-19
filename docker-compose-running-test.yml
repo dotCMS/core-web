@@ -6,4 +6,7 @@ services:
       GOOGLE_CREDENTIALS_BASE64:
       CURRENT_BRANCH:
       COMMIT_SHORT:
+      GITHUB_USER=$_GITHUB_USER:
+      GITHUB_USER_TOKEN=$_GITHUB_USER_TOKEN:
+      PULL_REQUEST=$_PULL_REQUEST:
     command: sh /usr/src/app/run_and_storage.sh
