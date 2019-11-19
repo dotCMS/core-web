@@ -8,6 +8,9 @@ steps:
       - 'GOOGLE_CREDENTIALS_BASE64=$_GOOGLE_CREDENTIALS_BASE64'
       - 'CURRENT_BRANCH=$_CURRENT_BRANCH'
       - 'COMMIT_SHORT=$_COMMIT_SHORT'
+      - 'GITHUB_USER=$_GITHUB_USER'
+      - 'GITHUB_USER_TOKEN=$_GITHUB_USER_TOKEN'
+      - 'PULL_REQUEST=$_PULL_REQUEST'
     args: ['-f', './docker-compose-running-test.yml',
            'up',
            '--abort-on-container-exit']
