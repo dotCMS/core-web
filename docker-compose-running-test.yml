@@ -7,5 +7,5 @@ services:
       CURRENT_BRANCH:
       COMMIT_SHORT:
       GITHUB_USER:
-      GITHUB_USER_TOKEN=:
+      GITHUB_USER_TOKEN:
     command: sh /usr/src/app/run_and_storage.sh

@@ -25,7 +25,7 @@ then
   echo "  >>>   Storage folder for job: [${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}]"
   echo "  >>>   Reports URL for job: [${reportsIndexURL}]"
   echo "  >>>   Log URL for job: [${logURL}]"
-  echo "  >>>   GITHUB pull request: [https://github.com/dotCMS/core-web/pulls/${PULL_REQUEST}]"
+  echo "  >>>   GITHUB pull request: [https://github.com/dotCMS/core-web/pulls/${COMMIT_SHORT}]"
   echo "  >>>   Job build status: ${CURRENT_JOB_BUILD_STATUS}"
   echo "  >>>   GITHUB user: ${GITHUB_USER}/${GITHUB_USER_TOKEN}"
   echo "================================================================================"
@@ -46,6 +46,11 @@ then
   # Parse the response json to get the statuses URL
   jsonStatusesAttribute=`echo "$jsonResponse" | grep "${jsonAttribute}\w*\""`
   statusesURL=`echo "$jsonStatusesAttribute" | grep -o "${jsonBaseValue}\w*"`
+
+
+  
+  echo 'statusesURL'
+  echo $statusesURL
 
   # https://developer.github.com/v3/repos/statuses/#create-a-status
   # The state of the status. Can be one of error, failure, pending, or success.
