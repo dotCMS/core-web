@@ -41,7 +41,7 @@ then
 
   # https://developer.github.com/v3/pulls/#get-a-single-pull-request
   jsonResponse=$(curl -u ${GITHUB_USER}:${GITHUB_USER_TOKEN} \
-  --request GET https://api.github.com/repos/dotCMS/core/pulls/${PULL_REQUEST} -s)
+  --request GET https://api.github.com/repos/dotCMS/core-web/pulls/${PULL_REQUEST} -s)
 
   # Parse the response json to get the statuses URL
   jsonStatusesAttribute=`echo "$jsonResponse" | grep "${jsonAttribute}\w*\""`
