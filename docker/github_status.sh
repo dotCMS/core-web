@@ -13,7 +13,7 @@ then
 
   BASE_GOOGLE_URL="https://storage.googleapis.com/"
 
-  reportsIndexURL="${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html    "
+  reportsIndexURL="${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html"
   statusesContext="Travis CI - Test"
 
 
@@ -47,10 +47,11 @@ then
   jsonStatusesAttribute=`echo "$jsonResponse" | grep "${jsonAttribute}\w*\""`
   statusesURL=`echo "$jsonStatusesAttribute" | grep -o "${jsonBaseValue}\w*"`
 
-
-  
   echo 'statusesURL'
   echo $statusesURL
+
+  echo 'reportsIndexURL'
+  echo $reportsIndexURL
 
   # https://developer.github.com/v3/repos/statuses/#create-a-status
   # The state of the status. Can be one of error, failure, pending, or success.
