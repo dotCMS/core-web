@@ -11,8 +11,7 @@ fi
 
 if [ "$COMMIT_SHORT" != "false" ];
 then
-
-  reportsIndexURL="https://storage.googleapis.com/${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html"
+  reportsIndexURL="https://storage.googleapis.com/cicd-246518-tests/core-web/${COMMIT_SHORT}/report.html"
   statusesContext="Travis CI - Test"
 
   echo ""
@@ -39,6 +38,9 @@ then
   jsonResponse=$(curl -u ${GITHUB_USER}:${GITHUB_USER_TOKEN} \
   --request GET https://api.github.com/repos/dotCMS/core-web/pulls/${COMMIT_SHORT} -s)
 
+  echo 'jsonResponse'
+  echo $jsonResponse
+  
   # Parse the response json to get the statuses URL
   jsonStatusesAttribute=`echo "$jsonResponse" | grep "${jsonAttribute}\w*\""`
   statusesURL=`echo "$jsonStatusesAttribute" | grep -o "${jsonBaseValue}\w*"`

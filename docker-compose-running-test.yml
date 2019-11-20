@@ -8,4 +8,5 @@ services:
       COMMIT_SHORT:
       GITHUB_USER:
       GITHUB_USER_TOKEN:
+      PULL_REQUEST:
     command: sh /usr/src/app/run_and_storage.sh
