@@ -1,6 +1,6 @@
 echo 'Running test'
 npm test -- dotcms-ui --watch=false --reporters=html,progress
-npmTestExitValue=$?
+export CURRENT_JOB_BUILD_STATUS=$?
 
 if [ "${GOOGLE_CREDENTIALS_BASE64}" ];
  then
@@ -10,5 +10,5 @@ if [ "${GOOGLE_CREDENTIALS_BASE64}" ];
     echo 'Updating github status'
     bash github_satatus.sh
 
-    exit $npmTestExitValue
+    exit $CURRENT_JOB_BUILD_STATUS
 fi

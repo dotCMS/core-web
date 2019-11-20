@@ -2,7 +2,8 @@
 
 GITHUB_STATUS="failure"
 GITHUB_DESCRIPTION="Tests FAILED"
-if [ ${CURRENT_JOB_BUILD_STATUS} == 0 ]
+
+if [ ${CURRENT_JOB_BUILD_STATUS} == 0 ];
 then
   GITHUB_STATUS="success"
   GITHUB_DESCRIPTION="Tests executed SUCCESSFULLY"
@@ -11,13 +12,8 @@ fi
 if [ "$COMMIT_SHORT" != "false" ];
 then
 
-  BASE_GOOGLE_URL="https://storage.googleapis.com/"
-
-  reportsIndexURL="${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html"
+  reportsIndexURL="https://storage.googleapis.com/${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html"
   statusesContext="Travis CI - Test"
-
-
-#  logURL="${BASE_GOOGLE_URL}${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}/logs/dotcms.log"
 
   echo ""
   echo "================================================================================"
