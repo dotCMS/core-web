@@ -20,7 +20,7 @@ then
   echo "  >>>   Storage folder for job: [${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}]"
   echo "  >>>   Reports URL for job: [${reportsIndexURL}]"
   echo "  >>>   Log URL for job: [${logURL}]"
-  echo "  >>>   GITHUB pull request: [https://github.com/dotCMS/core-web/pulls/${COMMIT_SHORT}]"
+  echo "  >>>   GITHUB pull request: [https://api.github.com/repos/dotCMS/core-web/pulls/${PULL_REQUEST}]"
   echo "  >>>   Job build status: ${CURRENT_JOB_BUILD_STATUS}"
   echo "  >>>   GITHUB user: ${GITHUB_USER}/${GITHUB_USER_TOKEN}"
   echo "================================================================================"
@@ -36,7 +36,7 @@ then
 
   # https://developer.github.com/v3/pulls/#get-a-single-pull-request
   jsonResponse=$(curl -u ${GITHUB_USER}:${GITHUB_USER_TOKEN} \
-  --request GET https://api.github.com/repos/dotCMS/core-web/pulls/${COMMIT_SHORT} -s)
+  --request GET https://api.github.com/repos/dotCMS/core-web/pulls/${PULL_REQUEST} -s)
 
   echo 'jsonResponse'
   echo $jsonResponse
