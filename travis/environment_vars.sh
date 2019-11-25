@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d - > ${GOOGLE_CREDENTIALS_FILE_NAME}

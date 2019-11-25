@@ -36,7 +36,10 @@ else
 fi
 ${HOME}/gcloud/google-cloud-sdk/bin/gcloud -q components update
 
-gcloud auth activate-service-account --key-file="${GOOGLE_CREDENTIALS}"
+credentialsFile=${TRAVIS_BUILD_DIR}/credentials.json
+echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d - > $credentialsFile
+
+gcloud auth activate-service-account --key-file="${credentialsFile}"
 gcloud config set project "${GOOGLE_PROJECT_ID}"
 
 echo "TRAVIS_COMMIT : $TRAVIS_COMMIT_SHORT"
