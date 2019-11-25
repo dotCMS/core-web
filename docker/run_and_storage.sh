@@ -16,7 +16,7 @@ if [ "${GOOGLE_CREDENTIALS_BASE64}" ];
     bash ./testing/storage.sh
 
     echo 'Updating github status'
-    bash ./testing/github_satatus.sh
+    bash ./testing/github_status.sh
 
     exit $CURRENT_JOB_BUILD_STATUS
 fi
