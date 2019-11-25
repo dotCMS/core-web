@@ -11,7 +11,7 @@ steps:
       - 'GITHUB_USER=$_GITHUB_USER'
       - 'GITHUB_USER_TOKEN=$_GITHUB_USER_TOKEN'
       - 'PULL_REQUEST=$_PULL_REQUEST'
-      - 'WORKING_DIR=${_TRAVIS_BUILD_DIR}''
+      - 'WORKING_DIR=${_TRAVIS_BUILD_DIR}'
     args: ['-f', './docker-compose-running-test.yml',
            'up',
            '--abort-on-container-exit']
