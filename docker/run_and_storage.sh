@@ -3,6 +3,9 @@
 export GOOGLE_CREDENTIALS_FILE_NAME="credentials.json"
 export GOOGLE_CREDENTIALS_FILE_PATH="${WORKING_DIR}/${GOOGLE_CREDENTIALS_FILE_NAME}"
 
+export GOOGLE_STORAGE_JOB_COMMIT_FOLDER="cicd-246518-tests/core-web/${COMMIT_SHORT}"
+export GOOGLE_STORAGE_JOB_BRANCH_FOLDER="cicd-246518-tests/core-web/${CURRENT_BRANCH}"
+
 echo 'Running test'
 npm test -- dotcms-ui --watch=false --reporters=html,progress
 export CURRENT_JOB_BUILD_STATUS=$?

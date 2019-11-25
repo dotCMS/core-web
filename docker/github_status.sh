@@ -19,7 +19,6 @@ then
   echo "================================================================================"
   echo "  >>>   Storage folder for job: [${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}]"
   echo "  >>>   Reports URL for job: [${reportsIndexURL}]"
-  echo "  >>>   Log URL for job: [${logURL}]"
   echo "  >>>   GITHUB pull request: [https://api.github.com/repos/dotCMS/core-web/pulls/${PULL_REQUEST}]"
   echo "  >>>   Job build status: ${CURRENT_JOB_BUILD_STATUS}"
   echo "  >>>   GITHUB user: ${GITHUB_USER}/${GITHUB_USER_TOKEN}"
