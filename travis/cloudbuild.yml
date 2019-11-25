@@ -8,6 +8,6 @@ steps:
             '--build-arg', 'BUILD_HASH=$_COMMIT_SHORT',
             '.' ]
 images:
-  - 'gcr.io/$PROJECT_ID/core-web-test-image:$_CUSTOM_RUN_ID'
+  - 'gcr.io/$PROJECT_ID/core-web-test-image:$_COMMIT_SHORT'
 
 timeout: 1200s
