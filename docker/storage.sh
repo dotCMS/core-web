@@ -7,6 +7,7 @@ outputFolder="/usr/src/app/karma_html"
 credentialsFile="./$GOOGLE_CREDENTIALS_FILE_NAME"
 buckedProtocol="gs://"
 
+
 # Do we have service account permissions
 if [ -z "${GOOGLE_CREDENTIALS_BASE64}" ]
 then

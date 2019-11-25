@@ -37,7 +37,6 @@ jobs:
       script: bash travis/test.sh
 
 install:
-  - travis/environment_vars.sh
   - travis/install_gcloud.sh
 
 # https://docs.travis-ci.com/user/notifications/#configuring-slack-notifications

@@ -1,9 +1,7 @@
-export GOOGLE_CREDENTIALS_FILE_NAME=credentials.json
-export GOOGLE_CREDENTIALS_FILE_PATH=${WORKING_DIR}/${GOOGLE_CREDENTIALS_FILE_NAME}
+#!/bin/bash
 
-echo 'GOOGLE_CREDENTIALS_FILE_NAME'
-echo ${GOOGLE_CREDENTIALS_FILE_NAME}
-echo ${GOOGLE_CREDENTIALS_FILE_PATH}
+export GOOGLE_CREDENTIALS_FILE_NAME="credentials.json"
+export GOOGLE_CREDENTIALS_FILE_PATH="${WORKING_DIR}/${GOOGLE_CREDENTIALS_FILE_NAME}"
 
 echo 'Running test'
 npm test -- dotcms-ui --watch=false --reporters=html,progress
