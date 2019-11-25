@@ -12,7 +12,6 @@ env:
     - TRAVIS_COMMIT_SHORT=${TRAVIS_COMMIT::8}
 before_install:
   - echo "setting .sh files +x permission"  
-  - chmod +x travis/environment_vars.sh
   - chmod +x travis/install_gcloud.sh
   - chmod +x travis/submit.sh
   - chmod +x travis/test.sh
