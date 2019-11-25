@@ -2,10 +2,10 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     env:
       - 'COMMIT_SHA=$COMMIT_SHA'
-    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/core-web-test-image:$_CUSTOM_RUN_ID',
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/core-web-test-image:$_COMMIT_SHORT',
             '--build-arg', 'BUILD_FROM=COMMIT',
-            '--build-arg', 'BUILD_ID=$_GIT_BRANCH_COMMIT',
-            '--build-arg', 'BUILD_HASH=$COMMIT_SHA',
+            '--build-arg', 'BUILD_ID=$_CURRENT_BRANCH',
+            '--build-arg', 'BUILD_HASH=$_COMMIT_SHORT',
             '.' ]
 images:
   - 'gcr.io/$PROJECT_ID/core-web-test-image:$_CUSTOM_RUN_ID'

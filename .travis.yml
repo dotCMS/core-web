@@ -10,7 +10,6 @@ cache:
 env:
   global:
     - TRAVIS_COMMIT_SHORT=${TRAVIS_COMMIT::8}
-    - WORKING_DIR=${TRAVIS_BUILD_DIR}
 before_install:
   - echo "setting .sh files +x permission"  
   - chmod +x travis/environment_vars.sh
