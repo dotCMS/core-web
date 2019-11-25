@@ -1,8 +1,5 @@
 #!/bin/bash
 
-bash travis/printStoragePaths.sh
-ignoring_return_value=$?
-
 CURRENT_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
 if [ "$TRAVIS_PULL_REQUEST" = "false" ];
 then

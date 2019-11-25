@@ -45,12 +45,6 @@ then
   jsonStatusesAttribute=`echo "$jsonResponse" | grep "${jsonAttribute}\w*\""`
   statusesURL=`echo "$jsonStatusesAttribute" | grep -o "${jsonBaseValue}\w*"`
 
-  echo 'statusesURL'
-  echo $statusesURL
-
-  echo 'reportsIndexURL'
-  echo $reportsIndexURL
-
   # https://developer.github.com/v3/repos/statuses/#create-a-status
   # The state of the status. Can be one of error, failure, pending, or success.
   curl -u ${GITHUB_USER}:${GITHUB_USER_TOKEN} \
