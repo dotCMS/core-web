@@ -9,4 +9,5 @@ services:
       GITHUB_USER:
       GITHUB_USER_TOKEN:
       PULL_REQUEST:
+      WORKING_DIR:
     command: sh /usr/src/app/run_and_storage.sh

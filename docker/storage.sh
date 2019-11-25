@@ -4,7 +4,7 @@ GOOGLE_STORAGE_JOB_COMMIT_FOLDER="cicd-246518-tests/core-web/${COMMIT_SHORT}"
 GOOGLE_STORAGE_JOB_BRANCH_FOLDER="cicd-246518-tests/core-web/${CURRENT_BRANCH}"
 
 outputFolder="/usr/src/app/karma_html"
-credentialsFile="./${GOOGLE_CREDENTIALS_FILE_NAME}"
+credentialsFile="./$GOOGLE_CREDENTIALS_FILE_NAME"
 buckedProtocol="gs://"
 
 # Do we have service account permissions
