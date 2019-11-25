@@ -10,4 +10,4 @@ services:
       GITHUB_USER_TOKEN:
       PULL_REQUEST:
       WORKING_DIR:
-    command: sh /usr/src/app/run_and_storage.sh
+    command: sh /usr/src/app/testing/run_and_storage.sh

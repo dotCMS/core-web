@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bash printStoragePaths.sh
+bash ./testing/printStoragePaths.sh
 ignoring_return_value=$?
 
 outputFolder="/usr/src/app/karma_html"
