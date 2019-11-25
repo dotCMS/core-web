@@ -9,7 +9,8 @@ cache:
 # https://docs.travis-ci.com/user/environment-variables/
 env:
   global:
-    - GOOGLE_CREDENTIALS=${TRAVIS_BUILD_DIR}/credentials.json
+    - GOOGLE_CREDENTIALS_FILE_NAME=credentials.json
+    - GOOGLE_CREDENTIALS_FILE_PATH=${TRAVIS_BUILD_DIR}/${GOOGLE_CREDENTIALS_FILE_NAME}
     - TRAVIS_COMMIT_SHORT=${TRAVIS_COMMIT::8}
 
 before_install:

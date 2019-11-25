@@ -6,11 +6,10 @@ then
   CURRENT_BRANCH=$TRAVIS_BRANCH
 fi
 
-
 GOOGLE_STORAGE_JOB_COMMIT_FOLDER="cicd-246518-tests/core-web/${TRAVIS_COMMIT_SHORT}"
 GOOGLE_STORAGE_JOB_BRANCH_FOLDER="cicd-246518-tests/core-web/${CURRENT_BRANCH}"
-reportsCommitIndexURL="${BASE_GOOGLE_URL}${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/reports/html/index.html"
-reportsBranchIndexURL="${BASE_GOOGLE_URL}${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}/reports/html/index.html"
+reportsCommitIndexURL="${BASE_GOOGLE_URL}${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}/report.html"
+reportsBranchIndexURL="${BASE_GOOGLE_URL}${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}/report.html"
 
 echo ""
 echo -e "\e[36m==========================================================================================================================\e[0m"
