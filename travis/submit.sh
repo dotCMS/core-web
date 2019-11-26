@@ -18,5 +18,5 @@ bell &
 
 gcloud builds submit \
   --config=travis/cloudbuild.yml \
-  --substitutions=_CURRENT_BRANCH=$CURRENT_BRANCH,_COMMIT_SHORT=$TRAVIS_COMMIT_SHORT .
+  --substitutions=_COMMIT_SHORT=$TRAVIS_COMMIT_SHORT .
 exit $?
