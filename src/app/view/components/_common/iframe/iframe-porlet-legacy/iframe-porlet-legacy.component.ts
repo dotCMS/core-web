@@ -1,11 +1,8 @@
-import {pluck, map, withLatestFrom, mergeMap, takeUntil} from 'rxjs/operators';
+import { pluck, map, withLatestFrom, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
-
 import { BehaviorSubject, Subject } from 'rxjs';
-
 import { SiteService, DotcmsEventsService, LoggerService, DotEventTypeWrapper } from 'dotcms-js';
-
 import { DotLoadingIndicatorService } from '../dot-loading-indicator/dot-loading-indicator.service';
 import { DotMenuService } from '@services/dot-menu.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
