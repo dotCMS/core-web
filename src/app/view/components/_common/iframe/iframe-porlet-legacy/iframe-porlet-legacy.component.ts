@@ -1,8 +1,8 @@
 import {pluck, map, withLatestFrom, mergeMap, takeUntil} from 'rxjs/operators';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import {BehaviorSubject, Subject} from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { SiteService, DotcmsEventsService, LoggerService, DotEventTypeWrapper } from 'dotcms-js';
 
