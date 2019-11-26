@@ -107,7 +107,7 @@ export class IframePortletLegacyComponent implements OnInit {
             'MOVE_FILE_ASSET',
             'COPY_FILE_ASSET',
             'MOVE_PAGE_ASSET',
-            'COPY_PAGE_ASSET',
+            'COPY_PAGE_ASSET'
         ];
 
         this.dotcmsEventsService
