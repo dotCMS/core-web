@@ -1,8 +1,8 @@
-import { pluck, map, withLatestFrom, mergeMap } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import {pluck, map, withLatestFrom, mergeMap, takeUntil} from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 import { SiteService, DotcmsEventsService, LoggerService, DotEventTypeWrapper } from 'dotcms-js';
 
@@ -17,9 +17,11 @@ import { DotContentTypeService } from '@services/dot-content-type/dot-content-ty
     styleUrls: ['./iframe-porlet-legacy.component.scss'],
     templateUrl: 'iframe-porlet-legacy.component.html'
 })
-export class IframePortletLegacyComponent implements OnInit {
+export class IframePortletLegacyComponent implements OnInit, OnDestroy {
     url: BehaviorSubject<string> = new BehaviorSubject('');
     isLoading = false;
+
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private contentletService: DotContentTypeService,
@@ -47,6 +49,11 @@ export class IframePortletLegacyComponent implements OnInit {
         });
         this.setIframeSrc();
         this.bindGlobalEvents();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
@@ -112,6 +119,7 @@ export class IframePortletLegacyComponent implements OnInit {
 
         this.dotcmsEventsService
             .subscribeToEvents<any>(events)
+            .pipe(takeUntil(this.destroy$))
             .subscribe((event: DotEventTypeWrapper<any>) => {
                 if (this.dotRouterService.currentPortlet.id === 'site-browser') {
                     this.loggerService.debug(
@@ -125,6 +133,7 @@ export class IframePortletLegacyComponent implements OnInit {
 
         this.dotcmsEventsService
             .subscribeToEvents<any>(['DELETE_BUNDLE'])
+            .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 if (this.dotRouterService.currentPortlet.id === 'publishing-queue') {
                     this.reloadIframePortlet();
