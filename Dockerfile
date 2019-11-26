@@ -40,9 +40,9 @@ RUN ng build dotcms-js
 COPY ./projects/dot-layout-grid ./projects/dot-layout-grid 
 RUN ng build dot-layout-grid
 
-COPY karma.conf.js .
-
 COPY ./projects/dot-rules ./projects/dot-rules 
+
+COPY karma.conf.js .
 
 COPY ./src ./src
 
