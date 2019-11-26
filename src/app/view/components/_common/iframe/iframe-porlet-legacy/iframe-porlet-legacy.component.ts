@@ -107,7 +107,7 @@ export class IframePortletLegacyComponent implements OnInit {
             'MOVE_FILE_ASSET',
             'COPY_FILE_ASSET',
             'MOVE_PAGE_ASSET',
-            'COPY_PAGE_ASSET'
+            'COPY_PAGE_ASSET',
         ];
 
         this.dotcmsEventsService
@@ -120,6 +120,14 @@ export class IframePortletLegacyComponent implements OnInit {
                         event.data
                     );
                     // TODO: When we finish the migration of the site browser this event will be handle.....
+                }
+            });
+
+        this.dotcmsEventsService
+            .subscribeToEvents<any>(['DELETE_BUNDLE'])
+            .subscribe(() => {
+                if (this.dotRouterService.currentPortlet.id === 'publishing-queue') {
+                    this.reloadIframePortlet();
                 }
             });
     }
