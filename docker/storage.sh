@@ -4,7 +4,6 @@ bash ./testing/printStoragePaths.sh
 ignoring_return_value=$?
 
 outputFolder="/usr/src/app/karma_html"
-credentialsFile="./$GOOGLE_CREDENTIALS_FILE_NAME"
 buckedProtocol="gs://"
 
 
@@ -27,14 +26,14 @@ if [ -z "$(ls -A $outputFolder)" ]; then
    exit 1
 fi
 
-echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d - > $credentialsFile
+echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d - > $GOOGLE_CREDENTIALS_FILE_PATH
 
 echo ""
 echo "  >>> Pushing reports and logs to [${buckedProtocol}${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}] <<<"
 echo "  >>> Pushing reports and logs to [${buckedProtocol}${GOOGLE_STORAGE_JOB_BRANCH_FOLDER}] <<<"
 echo ""
 
-gcloud auth activate-service-account --key-file="${credentialsFile}"
+gcloud auth activate-service-account --key-file="${GOOGLE_CREDENTIALS_FILE_PATH}"
 gsutil -m -q cp -a public-read -r ${outputFolder} ${buckedProtocol}${GOOGLE_STORAGE_JOB_COMMIT_FOLDER}
 
 # When the bucket has the branch name we need to clean up the bucket first
