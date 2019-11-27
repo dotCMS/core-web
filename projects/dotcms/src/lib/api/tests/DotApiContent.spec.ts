@@ -31,6 +31,30 @@ describe('DotApiContent', () => {
             );
         });
 
+        it('should query a content', () => {
+            const params = {
+                query: 'queryTest',
+                options: {
+                    depth: '1',
+                    limit: '10',
+                    offset: '0',
+                    orderBy: '0'
+                }
+            };
+
+            const requestParams = {
+                url:
+                    `/api/content/query/${params.query}/depth/${params.options.depth}` +
+                    `/limit/${params.options.limit}/offset/${params.options.offset}/orderby/${params.options.orderBy}`,
+                method: 'GET',
+                body: ''
+            };
+            dotApiContent.query(params).then((data) => {
+                expect(data).toEqual(responseExpected);
+            });
+            expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+        });
+
         it('should save a content type', () => {
             const requestParams = {
                 url: '/api/content/save/1',
@@ -66,6 +90,24 @@ describe('DotApiContent', () => {
                     })
                 )
             );
+        });
+
+        it('should throw error Query()', () => {
+            const params = {
+                query: 'queryTest',
+                options: {
+                    depth: '1',
+                    limit: '10',
+                    offset: '0',
+                    orderBy: '0'
+                }
+            };
+            dotApiContent.query(params).catch((err: DotCMSError) => {
+                expect(err).toEqual({
+                    statusCode: 500,
+                    message: 'Error'
+                });
+            });
         });
 
         it('should throw error Save()', () => {
