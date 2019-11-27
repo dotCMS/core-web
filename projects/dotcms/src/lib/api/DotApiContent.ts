@@ -5,21 +5,21 @@ function populateQueryUrl(params: DotCMSContentQuery): string {
     let url = '';
 
     const attrs = {
-        depth: `/depth/${params.depth}`,
-        limit: `/limit/${params.limit}`,
-        offset: `/offset/${params.offset}`,
-        orderBy: `/orderby/${params.orderBy}`
+        depth: `/depth/${params.options.depth}`,
+        limit: `/limit/${params.options.limit}`,
+        offset: `/offset/${params.options.offset}`,
+        orderBy: `/orderby/${params.options.orderBy}`
     };
 
-    for (const key of Object.keys(params)) {
-        url += key !== 'query' ? attrs[key] : '';
+    for (const key of Object.keys(params.options)) {
+        url += attrs[key];
     }
 
     return url;
 }
 
 /**
- * Save/Publish the information of DotCMS Content
+ * Query/Save/Publish the information of DotCMS Content
  *
  */
 export class DotApiContent {
@@ -30,9 +30,8 @@ export class DotApiContent {
     }
 
     query(params: DotCMSContentQuery): Promise<Response> {
-        let url = `/api/content/query/${params.query}`;
-        url += populateQueryUrl(params);
-        return this.doRequest(url);
+        const url = `/api/content/query/${params.query}${populateQueryUrl(params)}`;
+        return this.doRequest(url, null, 'GET');
     }
 
     save<Content extends DotCMSContent>(params: Content): Promise<Response> {
@@ -45,11 +44,12 @@ export class DotApiContent {
 
     private async doRequest<Content extends DotCMSContent>(
         url: string,
-        params?: Content
+        params?: Content,
+        httpMethod = 'POST'
     ): Promise<Response> {
         const response = await this.dotCMSHttpClient.request({
             url,
-            method: params ? 'POST' : 'GET',
+            method: httpMethod,
             body: params ? JSON.stringify(params) : ''
         });
 

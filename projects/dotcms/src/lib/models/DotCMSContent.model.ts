@@ -3,9 +3,11 @@ export interface DotCMSContent {
 }
 
 export interface DotCMSContentQuery {
-    depth?: string;
-    limit?: string;
-    offset?: string;
-    orderBy?: string;
     query: string;
+    options: {
+        depth?: string;
+        limit?: string;
+        offset?: string;
+        orderBy?: string;
+    };
 }
