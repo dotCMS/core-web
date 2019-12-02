@@ -55,6 +55,26 @@ describe('DotApiContent', () => {
             expect(httpClient.request).toHaveBeenCalledWith(requestParams);
         });
 
+        it('should query a content with only query and depth', () => {
+            const params = {
+                query: 'queryTest',
+                options: {
+                    depth: '1'
+                }
+            };
+
+            const requestParams = {
+                url:
+                    `/api/content/query/${params.query}/depth/${params.options.depth}`,
+                method: 'GET',
+                body: ''
+            };
+            dotApiContent.query(params).then((data) => {
+                expect(data).toEqual(responseExpected);
+            });
+            expect(httpClient.request).toHaveBeenCalledWith(requestParams);
+        });
+
         it('should save a content type', () => {
             const requestParams = {
                 url: '/api/content/save/1',
