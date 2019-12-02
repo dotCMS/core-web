@@ -14,7 +14,6 @@ import { DotIframeService } from '../service/dot-iframe/dot-iframe.service';
 import { DotUiColorsService } from '@services/dot-ui-colors/dot-ui-colors.service';
 import { DotOverlayMaskModule } from '@components/_common/dot-overlay-mask/dot-overlay-mask.module';
 import { DotcmsEventsServiceMock } from '@tests/dotcms-events-service.mock';
-import { DotRouterService } from '@services/dot-router/dot-router.service';
 
 const fakeHtmlEl = {
     hello: 'html'
@@ -26,7 +25,7 @@ const fakeHtmlEl = {
 })
 class MockDotLoadingIndicatorComponent {}
 
-describe('IframeComponent', () => {
+fdescribe('IframeComponent', () => {
     let comp: IframeComponent;
     let fixture: ComponentFixture<IframeComponent>;
     let de: DebugElement;
@@ -35,7 +34,6 @@ describe('IframeComponent', () => {
     let dotUiColorsService: DotUiColorsService;
     let dotcmsEventsService: DotcmsEventsServiceMock;
     let loginService: LoginService;
-    let dotRouterService: DotRouterService;
 
     dotcmsEventsService = new DotcmsEventsServiceMock();
 
@@ -66,7 +64,6 @@ describe('IframeComponent', () => {
         dotIframeService = de.injector.get(DotIframeService);
         dotUiColorsService = de.injector.get(DotUiColorsService);
         loginService = de.injector.get(LoginService);
-        dotRouterService = de.injector.get(DotRouterService);
 
         spyOn(dotUiColorsService, 'setColors');
 
@@ -99,10 +96,6 @@ describe('IframeComponent', () => {
         });
 
         it('should reload on DELETE_BUNDLE and on publishing-queue portlet websocket event', () => {
-            spyOnProperty(dotRouterService, 'currentPortlet').and.returnValue({
-                id: 'publishing-queue'
-            });
-
             dotcmsEventsService.triggerSubscribeTo('DELETE_BUNDLE', {
                 name: 'DELETE_BUNDLE'
             });

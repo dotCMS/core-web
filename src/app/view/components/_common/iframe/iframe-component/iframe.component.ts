@@ -170,20 +170,13 @@ export class IframeComponent implements OnInit, OnDestroy {
                 filter(
                     (event: DotEventTypeWrapper<any>) =>
                         (this.iframeElement.nativeElement.contentWindow &&
-                            this.isDeleteBundleEvent(event.name)) ||
+                            event.name === 'DELETE_BUNDLE') ||
                         event.name === 'PAGE_RELOAD' // Provinding this event so backend devs can reload the jsp easily
                 )
             )
             .subscribe(() => {
                 this.iframeElement.nativeElement.contentWindow.postMessage('reload');
             });
-    }
-
-    private isDeleteBundleEvent(eventName: string): boolean {
-        return (
-            eventName === 'DELETE_BUNDLE' &&
-            this.dotRouterService.currentPortlet.id === 'publishing-queue'
-        );
     }
 
     private emitKeyDown($event: KeyboardEvent): void {
