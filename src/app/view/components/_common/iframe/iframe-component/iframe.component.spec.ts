@@ -25,7 +25,7 @@ const fakeHtmlEl = {
 })
 class MockDotLoadingIndicatorComponent {}
 
-fdescribe('IframeComponent', () => {
+describe('IframeComponent', () => {
     let comp: IframeComponent;
     let fixture: ComponentFixture<IframeComponent>;
     let de: DebugElement;
