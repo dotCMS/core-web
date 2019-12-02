@@ -151,7 +151,8 @@ export class IframeComponent implements OnInit, OnDestroy {
             'COPY_FILE_ASSET',
             'MOVE_PAGE_ASSET',
             'COPY_PAGE_ASSET',
-            'DELETE_BUNDLE'
+            'DELETE_BUNDLE',
+            'PAGE_RELOAD'
         ];
 
         const webSocketEvents$ = this.dotcmsEventsService
@@ -168,14 +169,21 @@ export class IframeComponent implements OnInit, OnDestroy {
             .pipe(
                 filter(
                     (event: DotEventTypeWrapper<any>) =>
-                        event.name === 'DELETE_BUNDLE' &&
-                        this.dotRouterService.currentPortlet.id === 'publishing-queue' &&
-                        this.iframeElement.nativeElement.contentWindow
+                        (this.iframeElement.nativeElement.contentWindow &&
+                            this.isDeleteBundleEvent(event.name)) ||
+                        event.name === 'PAGE_RELOAD' // Provinding this event so backend devs can reload the jsp easily
                 )
             )
             .subscribe(() => {
                 this.iframeElement.nativeElement.contentWindow.postMessage('reload');
             });
+    }
+
+    private isDeleteBundleEvent(eventName: string): boolean {
+        return (
+            eventName === 'DELETE_BUNDLE' &&
+            this.dotRouterService.currentPortlet.id === 'publishing-queue'
+        );
     }
 
     private emitKeyDown($event: KeyboardEvent): void {
