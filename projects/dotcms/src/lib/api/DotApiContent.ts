@@ -11,6 +11,10 @@ function populateQueryUrl(params: DotCMSContentQuery): string {
         orderBy: `/orderby/${params.options.orderBy}`
     };
 
+    for (const key of Object.keys(params.queryParams)) {
+        url += `+${key}:${params.queryParams[key]}%20`;
+    }
+
     for (const key of Object.keys(params.options)) {
         url += attrs[key];
     }
@@ -30,7 +34,9 @@ export class DotApiContent {
     }
 
     query(params: DotCMSContentQuery): Promise<Response> {
-        const url = `/api/content/query/${params.query}${populateQueryUrl(params)}`;
+        const url = `/api/content/query/+contentType:${params.contentType}%20${populateQueryUrl(
+            params
+        )}`;
         return this.doRequest(url, null, 'GET');
     }
 

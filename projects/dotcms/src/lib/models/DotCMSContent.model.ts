@@ -3,7 +3,8 @@ export interface DotCMSContent {
 }
 
 export interface DotCMSContentQuery {
-    query: string;
+    contentType: string;
+    queryParams?: object;
     options: {
         depth?: string;
         limit?: string;
