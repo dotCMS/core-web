@@ -33,7 +33,11 @@ describe('DotApiContent', () => {
 
         it('should query a content', () => {
             const params = {
-                query: 'queryTest',
+                contentType: 'Blog',
+                queryParams: {
+                    languagueId: 2,
+                    title: 'test'
+                },
                 options: {
                     depth: '1',
                     limit: '10',
@@ -44,7 +48,8 @@ describe('DotApiContent', () => {
 
             const requestParams = {
                 url:
-                    `/api/content/query/${params.query}/depth/${params.options.depth}` +
+                    `/api/content/query/+contentType:${params.contentType}%20+languagueId:${params.queryParams.languagueId}%20` +
+                    `+title:${params.queryParams.title}%20/depth/${params.options.depth}` +
                     `/limit/${params.options.limit}/offset/${params.options.offset}/orderby/${params.options.orderBy}`,
                 method: 'GET',
                 body: ''
@@ -55,9 +60,9 @@ describe('DotApiContent', () => {
             expect(httpClient.request).toHaveBeenCalledWith(requestParams);
         });
 
-        it('should query a content with only query and depth', () => {
+        it('should query a content with only contentType and depth', () => {
             const params = {
-                query: 'queryTest',
+                contentType: 'Blog',
                 options: {
                     depth: '1'
                 }
@@ -65,7 +70,7 @@ describe('DotApiContent', () => {
 
             const requestParams = {
                 url:
-                    `/api/content/query/${params.query}/depth/${params.options.depth}`,
+                    `/api/content/query/+contentType:${params.contentType}%20/depth/${params.options.depth}`,
                 method: 'GET',
                 body: ''
             };
@@ -114,12 +119,13 @@ describe('DotApiContent', () => {
 
         it('should throw error Query()', () => {
             const params = {
-                query: 'queryTest',
+                contentType: 'Blog',
+                queryParams: {
+                    languagueId: 2,
+                    title: 'test'
+                },
                 options: {
-                    depth: '1',
-                    limit: '10',
-                    offset: '0',
-                    orderBy: '0'
+                    depth: '1'
                 }
             };
             dotApiContent.query(params).catch((err: DotCMSError) => {

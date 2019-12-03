@@ -11,8 +11,10 @@ function populateQueryUrl(params: DotCMSContentQuery): string {
         orderBy: `/orderby/${params.options.orderBy}`
     };
 
-    for (const key of Object.keys(params.queryParams)) {
-        url += `+${key}:${params.queryParams[key]}%20`;
+    if (params.queryParams) {
+        for (const key of Object.keys(params.queryParams)) {
+            url += `+${key}:${params.queryParams[key]}%20`;
+        }
     }
 
     for (const key of Object.keys(params.options)) {
