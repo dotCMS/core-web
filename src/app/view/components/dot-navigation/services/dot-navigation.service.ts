@@ -53,7 +53,7 @@ const setActiveUpdatedMenu = (menu: DotMenu, id: string) => {
 
 @Injectable()
 export class DotNavigationService {
-    private _collapsed = false;
+    private _collapsed = true;
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
 
     constructor(
@@ -65,6 +65,14 @@ export class DotNavigationService {
         private loginService: LoginService,
         private router: Router
     ) {
+
+        let navState= localStorage.getItem('dotcms.chrome.navCollapased');
+
+        if(navState!=null && navState=="false"){
+            this._collapsed=false;
+            
+        }
+
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
         });
@@ -189,6 +197,8 @@ export class DotNavigationService {
     toggle(): void {
         this.dotEventsService.notify('dot-side-nav-toggle');
         this._collapsed ? this.expandMenu() : this.collapseMenu();
+        localStorage.setItem('dotcms.chrome.navCollapased', String(this._collapsed));
+
     }
 
     /**
@@ -201,6 +211,9 @@ export class DotNavigationService {
         if (this._collapsed) {
             this._collapsed = false;
         }
+        localStorage.setItem('dotcms.chrome.navCollapased', String(this._collapsed));
+
+        
         const updatedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             menu.isOpen = menu.isOpen ? false : id === menu.id;
             return menu;
