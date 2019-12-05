@@ -114,7 +114,8 @@ export class DotNavigationService {
         this._collapseAfterNavigating=false;
         return x;
     }
-    collapseAfterNavigating(collapse:boolean):void {
+    
+    setCollapseAfterNavigating(collapse:boolean):void {
         this._collapseAfterNavigating=collapse;
     }
 

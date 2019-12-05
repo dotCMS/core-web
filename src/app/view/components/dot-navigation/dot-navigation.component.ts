@@ -62,7 +62,7 @@ export class DotNavigationComponent implements OnInit {
         
         if (this.dotNavigationService.collapsed) {
             this.dotNavigationService.toggle();
-            this.dotNavigationService.collapseAfterNavigating(true);
+            this.dotNavigationService.setCollapseAfterNavigating(true);
         }else{
             console.log("event", event.data)
             this.dotNavigationService.toggle();
