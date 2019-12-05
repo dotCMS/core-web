@@ -55,7 +55,7 @@ const setActiveUpdatedMenu = (menu: DotMenu, id: string) => {
 export class DotNavigationService {
     private _collapsed = true;
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
-
+    private _collapseAfterNavigating=false;
     constructor(
         private dotEventsService: DotEventsService,
         private dotIframeService: DotIframeService,
@@ -108,6 +108,17 @@ export class DotNavigationService {
     get collapsed(): boolean {
         return this._collapsed;
     }
+
+    get getCollapseAfterNavigating(): boolean {
+        let x:boolean  = this._collapseAfterNavigating;
+        this._collapseAfterNavigating=false;
+        return x;
+    }
+    collapseAfterNavigating(collapse:boolean):void {
+        this._collapseAfterNavigating=collapse;
+    }
+
+
 
     get items$(): Observable<DotMenu[]> {
         return this._items$.asObservable();

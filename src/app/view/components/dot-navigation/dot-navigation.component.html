@@ -5,6 +5,7 @@
                 [data]="item"
                 [class.collapsed]="dotNavigationService.collapsed"
                 (menuClick)="onMenuClick($event)"
+                (dblclick)="onDblClick($event)"
                 (itemClick)="onItemClick($event)">
             </dot-nav-item>
         </li>

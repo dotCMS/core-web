@@ -32,6 +32,9 @@ export class DotNavigationComponent implements OnInit {
         if (!$event.originalEvent.ctrlKey && !$event.originalEvent.metaKey) {
             this.dotNavigationService.reloadCurrentPortlet($event.data.id);
         }
+        if(this.dotNavigationService.getCollapseAfterNavigating){
+            this.dotNavigationService.toggle();
+        }
     }
 
     /**
@@ -48,4 +51,23 @@ export class DotNavigationComponent implements OnInit {
         }
 
     }
+
+    /**
+     * Set isOpen to the passed DotMenu item
+     *
+     * @param DotMenu currentItem
+     * @memberof DotNavigationComponent
+     */
+    onDblClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        
+        if (this.dotNavigationService.collapsed) {
+            this.dotNavigationService.toggle();
+            this.dotNavigationService.collapseAfterNavigating(true);
+        }else{
+            console.log("event", event.data)
+            this.dotNavigationService.toggle();
+        }
+    }
+
+
 }
