@@ -39,31 +39,13 @@ export class DotNavigationComponent implements OnInit {
         }
     }
 
-
-
-    onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
-        
-        if (this.clicks === 1) {
-            this.clicks++;
-            this.onDblClick(event);
-          } else {
-            this.clicks++;
-            setTimeout(() => {
-              if (this.clicks==1) {
-                this.onSingleClick(event);
-              }
-              this.clicks=0;
-            }, 250);
-          }
-
-    }
     /**
      * Opens the menu on single click
      *
      * @param DotMenu currentItem
      * @memberof DotNavigationComponent
      */
-    onSingleClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+    onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
         //
         if (this.dotNavigationService.collapsed) {
             this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
@@ -72,24 +54,7 @@ export class DotNavigationComponent implements OnInit {
         }
     }
 
-    /**
-     * Opens the menu but does not navigate when
-     * double-clicked
-     *
-     * @param DotMenu currentItem
-     * @memberof DotNavigationComponent
-     */
-    onDblClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
-        //console.log("dblclick:" , event.data)
-        
-        if (this.dotNavigationService.collapsed) {
-            this.dotNavigationService.setOpen(event.data.id);
-            this.dotNavigationService.setCollapseAfterNavigating(true);
-        }else{
-          
-            this.onSingleClick(event);
-        }
-    }
+
 
     onMenuHover(event: { originalEvent: MouseEvent; data: DotMenu }): void {
         event.originalEvent.stopImmediatePropagation;
@@ -103,6 +68,24 @@ export class DotNavigationComponent implements OnInit {
         if (this.dotNavigationService.collapsed) {
             console.log("out:" + event.data.name)
         }
-        
     }
+
+     /**
+     * Opens the menu but does not navigate when
+     * double-clicked
+     *
+     * @param DotMenu currentItem
+     * @memberof DotNavigationComponent
+     */
+    onRightClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        
+        if (this.dotNavigationService.collapsed) {
+            this.dotNavigationService.setOpen(event.data.id);
+            this.dotNavigationService.setCollapseAfterNavigating(true);
+        }else{
+          
+            this.onMenuClick(event);
+        }
+    }
+
 }

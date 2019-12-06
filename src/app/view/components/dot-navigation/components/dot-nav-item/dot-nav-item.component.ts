@@ -17,6 +17,9 @@ export class DotNavItemComponent {
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
 
     @Output()
+    rightClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
+
+    @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
 
     @Output()
@@ -69,5 +72,17 @@ export class DotNavItemComponent {
             data: data
         });
     }
+
+    onRightClick($event: MouseEvent, data: DotMenu): boolean {
+
+        $event.stopPropagation;
+        this.rightClick.emit({
+            originalEvent: $event,
+            data: data
+        });
+        return false;
+    }
+
+
 
 }
