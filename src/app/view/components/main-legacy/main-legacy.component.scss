@@ -22,7 +22,8 @@
 
 .layout__main,
 .layout__sidebar {
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .layout__main {
