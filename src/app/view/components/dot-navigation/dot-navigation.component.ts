@@ -14,7 +14,7 @@ import { DotNavigationService } from './services/dot-navigation.service';
 export class DotNavigationComponent implements OnInit {
     menu$: Observable<DotMenu[]>;
     clicks: number = 0; 
- 
+    hovering: String = null;
     constructor(public dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
@@ -91,5 +91,18 @@ export class DotNavigationComponent implements OnInit {
         }
     }
 
+    onMenuHover(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        event.originalEvent.stopImmediatePropagation;
+        if (this.dotNavigationService.collapsed) {
+            console.log("hover:" + event.data.name)
+        }
 
+    }
+    onMenuOut(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        event.originalEvent.stopImmediatePropagation;
+        if (this.dotNavigationService.collapsed) {
+            console.log("out:" + event.data.name)
+        }
+        
+    }
 }

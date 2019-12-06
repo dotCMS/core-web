@@ -19,6 +19,11 @@ export class DotNavItemComponent {
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
 
+    @Output()
+    menuHover: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
+
+    @Output()
+    menuOut: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
 
     constructor() {}
 
@@ -38,7 +43,31 @@ export class DotNavItemComponent {
         });
     }
 
-
-
+    /**
+     * Handle click on menu section title
+     *
+     * @param MouseEvent $event
+     * @param DotMenu data
+     * @memberof DotNavItemComponent
+     */
+    onMouseOver($event: MouseEvent, data: DotMenu): void {
+        this.menuHover.emit({
+            originalEvent: $event,
+            data: data
+        });
+    }
+    /**
+     * Handle click on menu section title
+     *
+     * @param MouseEvent $event
+     * @param DotMenu data
+     * @memberof DotNavItemComponent
+     */
+    onMouseOut($event: MouseEvent, data: DotMenu): void {
+        this.menuOut.emit({
+            originalEvent: $event,
+            data: data
+        });
+    }
 
 }
