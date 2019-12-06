@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 import { DotNavigationService } from './services/dot-navigation.service';
 
+
 @Component({
     providers: [],
     selector: 'dot-main-nav',
@@ -12,7 +13,8 @@ import { DotNavigationService } from './services/dot-navigation.service';
 })
 export class DotNavigationComponent implements OnInit {
     menu$: Observable<DotMenu[]>;
-
+    clicks: number = 0; 
+ 
     constructor(public dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
@@ -37,35 +39,55 @@ export class DotNavigationComponent implements OnInit {
         }
     }
 
+
+
+    onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        
+        if (this.clicks === 1) {
+            this.clicks++;
+            this.onDblClick(event);
+          } else {
+            this.clicks++;
+            setTimeout(() => {
+              if (this.clicks==1) {
+                this.onSingleClick(event);
+              }
+              this.clicks=0;
+            }, 250);
+          }
+
+    }
     /**
-     * Set isOpen to the passed DotMenu item
+     * Opens the menu on single click
      *
      * @param DotMenu currentItem
      * @memberof DotNavigationComponent
      */
-    onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+    onSingleClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        //
         if (this.dotNavigationService.collapsed) {
             this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
         }else{
             this.dotNavigationService.setOpen(event.data.id);
         }
-
     }
 
     /**
-     * Set isOpen to the passed DotMenu item
+     * Opens the menu but does not navigate when
+     * double-clicked
      *
      * @param DotMenu currentItem
      * @memberof DotNavigationComponent
      */
     onDblClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
+        //console.log("dblclick:" , event.data)
         
         if (this.dotNavigationService.collapsed) {
-            this.dotNavigationService.toggle();
+            this.dotNavigationService.setOpen(event.data.id);
             this.dotNavigationService.setCollapseAfterNavigating(true);
         }else{
-            console.log("event", event.data)
-            this.dotNavigationService.toggle();
+          
+            this.onSingleClick(event);
         }
     }
 
