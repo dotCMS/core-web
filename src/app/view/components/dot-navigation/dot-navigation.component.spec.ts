@@ -179,10 +179,11 @@ describe('DotNavigationComponent', () => {
                 spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(true);
             });
 
-            it('should set tooltip properties', () => {
+            fit('should set tooltip properties', () => {
                 fixture.detectChanges();
                 expect(navItem.attributes['ng-reflect-disabled']).toBe('false');
                 expect(navItem.attributes['ng-reflect-text']).toBe(dotMenuMock().tabName);
+                expect(navItem.attributes['tooltipStyleClass']).toBe('dot-nav__tooltip');
             });
 
             describe('open submenu', () => {
