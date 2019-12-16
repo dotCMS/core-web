@@ -1,0 +1,12 @@
+.ui-tooltip {
+    &.dot-nav__tooltip {
+        min-width: 100px;
+        max-width: 150px;
+        text-align: center;
+        margin-left: $basic-padding;
+
+        .ui-tooltip-text {
+            padding: $basic-padding $basic-padding * 2;
+        }
+    }
+}
