@@ -19,6 +19,7 @@ import { DotMenu } from '@models/navigation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
+import { TooltipModule } from 'primeng/primeng';
 
 class FakeNavigationService {
     _collapsed = false;
@@ -78,7 +79,7 @@ class FakeNavigationService {
     reloadCurrentPortlet() {}
 }
 
-describe('DotNavigationComponent', () => {
+fdescribe('DotNavigationComponent', () => {
     let fixture: ComponentFixture<DotNavigationComponent>;
     let de: DebugElement;
     let navItem: DebugElement;
@@ -92,7 +93,8 @@ describe('DotNavigationComponent', () => {
                 DotNavIconModule,
                 DotIconModule,
                 RouterTestingModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                TooltipModule
             ],
             providers: [
                 DotMenuService,
@@ -175,34 +177,49 @@ describe('DotNavigationComponent', () => {
         describe('collapsed', () => {
             beforeEach(() => {
                 spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(true);
-                navItem.triggerEventHandler('menuClick', {
-                    originalEvent: {},
-                    data: dotMenuMock()
-                });
+            });
+
+            it('should set tooltip properties', () => {
                 fixture.detectChanges();
+                expect(navItem.attributes['ng-reflect-disabled']).toBe('false');
+                expect(navItem.attributes['ng-reflect-text']).toBe(dotMenuMock().tabName);
             });
 
-            it('should open menu', () => {
-                expect(dotNavigationService.setOpen).toHaveBeenCalledWith('123');
-                const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(
-                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
-                ).toBe(true);
-            });
+            describe('open submenu', () => {
+                beforeEach(() => {
+                    navItem.triggerEventHandler('menuClick', {
+                        originalEvent: {},
+                        data: dotMenuMock()
+                    });
+                    fixture.detectChanges();
+                });
 
-            it('should expand menu', () => {
-                const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(
-                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
-                ).toBe(true);
-                const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
-                expect(
-                    firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')
-                ).toBe(false);
-            });
+                it('should open menu', () => {
+                    expect(dotNavigationService.setOpen).toHaveBeenCalledWith('123');
+                    const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
+                    expect(
+                        firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
+                    ).toBe(true);
+                });
 
-            it('should navigate to portlet when menu is collapsed', () => {
-                expect(dotNavigationService.goTo).toHaveBeenCalledWith('url/link1');
+                it('should expand menu', () => {
+                    const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
+                    expect(
+                        firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
+                    ).toBe(true);
+                    const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
+                    expect(
+                        firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')
+                    ).toBe(false);
+                });
+
+                it('should navigate to portlet when menu is collapsed', () => {
+                    expect(dotNavigationService.goTo).toHaveBeenCalledWith('url/link1');
+                });
+
+                it('should hide tooltip', () => {
+                    expect(navItem.attributes['ng-reflect-disabled']).toBe('true');
+                });
             });
         });
 
