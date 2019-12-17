@@ -1,0 +1,10 @@
+@import "variables";
+
+.ui-overlaypanel {
+    &.dot-nav__fly-Menu {
+        top: 0;
+        left: $navigation-width-collased;
+    }
+}
+
+

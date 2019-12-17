@@ -5,8 +5,12 @@
                 [data]="item"
                 [class.collapsed]="dotNavigationService.collapsed"
                 (menuClick)="onMenuClick($event)"
-                (itemClick)="onItemClick($event)">
+                (itemClick)="onItemClick($event)"
+                (contextmenu)="showSubMenu($event)">
             </dot-nav-item>
         </li>
     </ul>
+    <p-overlayPanel #subMenuPanel>
+        <h3>TEST 2</h3>
+    </p-overlayPanel>
 </nav>

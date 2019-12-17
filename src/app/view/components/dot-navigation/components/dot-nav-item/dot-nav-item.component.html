@@ -8,3 +8,15 @@
     </dot-icon>
 </div>
 <dot-sub-nav [data]="data" (itemClick)="itemClick.emit($event)"></dot-sub-nav>
+<div>
+    <h4>TEST</h4>
+    <dot-sub-nav [data]="data" (itemClick)="itemClick.emit($event)"></dot-sub-nav>
+</div>
+<p-overlayPanel styleClass="dot-nav__fly-menu"  dismissable="true"  #flyMenuPanel>
+    <h4>TEST</h4>
+    <dot-sub-nav [data]="data" (itemClick)="itemClick.emit($event)"></dot-sub-nav>
+</p-overlayPanel>
+<dot-overlay-mask
+    *ngIf="showOverlay"
+    (click)="iframeOverlayService.hide()"
+></dot-overlay-mask>

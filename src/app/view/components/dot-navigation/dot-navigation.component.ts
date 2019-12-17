@@ -47,4 +47,9 @@ export class DotNavigationComponent implements OnInit {
 
         this.dotNavigationService.setOpen(event.data.id);
     }
+
+    showSubMenu(event: MouseEvent): void {
+        event.preventDefault();
+        console.log('test', event);
+    }
 }
