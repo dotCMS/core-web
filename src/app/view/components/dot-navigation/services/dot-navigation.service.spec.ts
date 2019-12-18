@@ -131,7 +131,7 @@ const baseMockAuth: Auth = {
     user: baseMockUser
 };
 
-describe('DotNavigationService', () => {
+fdescribe('DotNavigationService', () => {
     let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;

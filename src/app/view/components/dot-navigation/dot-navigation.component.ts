@@ -44,7 +44,5 @@ export class DotNavigationComponent implements OnInit {
         if (this.dotNavigationService.collapsed) {
             this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
         }
-
-        this.dotNavigationService.setOpen(event.data.id);
     }
 }

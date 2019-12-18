@@ -4,7 +4,7 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, flatMap, toArray, tap } from 'rxjs/operators';
 
-import { Auth } from 'dotcms-js';
+import { Auth, LocalStoreService } from 'dotcms-js';
 import { DotcmsEventsService, LoginService } from 'dotcms-js';
 
 import { DotMenu, DotMenuItem } from '@models/navigation';
@@ -17,7 +17,7 @@ export const replaceSectionsMap = {
     'edit-page': 'site-browser'
 };
 
-const replaceIdForNonMenuSection = (id) => {
+const replaceIdForNonMenuSection = id => {
     return replaceSectionsMap[id];
 };
 
@@ -53,7 +53,8 @@ const setActiveUpdatedMenu = (menu: DotMenu, id: string) => {
 
 @Injectable()
 export class DotNavigationService {
-    private _collapsed = false;
+    private static readonly DOTCMS_NAV_COLLAPSED = 'dotcms.nav.collapsed';
+    private _collapsed: boolean;
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
 
     constructor(
@@ -63,8 +64,15 @@ export class DotNavigationService {
         private dotRouterService: DotRouterService,
         private dotcmsEventsService: DotcmsEventsService,
         private loginService: LoginService,
-        private router: Router
+        private router: Router,
+        private localStoreService: LocalStoreService
     ) {
+        const navState =
+            this.localStoreService.getValue(DotNavigationService.DOTCMS_NAV_COLLAPSED) === 'false'
+                ? false
+                : true;
+        this.setCollapsed(navState);
+
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
         });
@@ -111,8 +119,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     collapseMenu(): void {
-        this._collapsed = true;
-
+        this.setCollapsed(true);
         const closedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             menu.isOpen = false;
             return menu;
@@ -126,8 +133,7 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     expandMenu(): void {
-        this._collapsed = false;
-
+        this.setCollapsed(false);
         const expandedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             let isActive = false;
 
@@ -188,6 +194,7 @@ export class DotNavigationService {
      */
     toggle(): void {
         this.dotEventsService.notify('dot-side-nav-toggle');
+        debugger;
         this._collapsed ? this.expandMenu() : this.collapseMenu();
     }
 
@@ -199,7 +206,7 @@ export class DotNavigationService {
      */
     setOpen(id: string): void {
         if (this._collapsed) {
-            this._collapsed = false;
+            this.setCollapsed(false);
         }
         const updatedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             menu.isOpen = menu.isOpen ? false : id === menu.id;
@@ -262,5 +269,10 @@ export class DotNavigationService {
 
     private setMenu(menu: DotMenu[]) {
         this._items$.next(this.addMenuLinks(menu));
+    }
+
+    private setCollapsed(value: boolean): void {
+        this._collapsed = value;
+        this.localStoreService.storeValue(DotNavigationService.DOTCMS_NAV_COLLAPSED, value);
     }
 }
