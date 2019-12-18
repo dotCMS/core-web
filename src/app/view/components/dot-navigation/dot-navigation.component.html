@@ -8,7 +8,8 @@
                 (itemClick)="onItemClick($event)"
                 [pTooltip]="item.tabName"
                 [tooltipDisabled]="!dotNavigationService.collapsed"
-                tooltipStyleClass="dot-nav__tooltip">
+                tooltipStyleClass="dot-nav__tooltip"
+                [hideDelay]="100000">
             </dot-nav-item>
         </li>
     </ul>

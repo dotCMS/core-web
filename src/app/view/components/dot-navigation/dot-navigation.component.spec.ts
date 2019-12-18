@@ -179,7 +179,7 @@ describe('DotNavigationComponent', () => {
                 spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(true);
             });
 
-            fit('should set tooltip properties', () => {
+            it('should set tooltip properties', () => {
                 fixture.detectChanges();
                 expect(navItem.attributes['ng-reflect-disabled']).toBe('false');
                 expect(navItem.attributes['ng-reflect-text']).toBe(dotMenuMock().tabName);
