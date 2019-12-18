@@ -35,7 +35,8 @@ export class DotNavigationComponent implements OnInit {
     }
 
     /**
-     * Set isOpen to the passed DotMenu item
+     * Open menu with a single click when collapsed
+     * otherwise Set isOpen to the passed DotMenu item
      *
      * @param DotMenu currentItem
      * @memberof DotNavigationComponent
