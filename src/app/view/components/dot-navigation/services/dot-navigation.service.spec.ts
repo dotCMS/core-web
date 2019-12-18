@@ -197,7 +197,7 @@ describe('DotNavigationService', () => {
 
     describe('collapseMenu', () => {
         it('should close all the menu sections', () => {
-            expect(service.collapsed).toBe(false);
+            expect(service.collapsed$).toBe(false);
             let counter = 0;
 
             service.items$.subscribe((menus: DotMenu[]) => {
@@ -210,14 +210,14 @@ describe('DotNavigationService', () => {
             });
 
             service.collapseMenu();
-            expect(service.collapsed).toBe(true);
+            expect(service.collapsed$).toBe(true);
         });
     });
 
     describe('expandMenu', () => {
         it('should expand active menu section', () => {
             service.toggle();
-            expect(service.collapsed).toBe(true);
+            expect(service.collapsed$).toBe(true);
 
             let counter = 0;
             service.items$.subscribe((menus: DotMenu[]) => {
@@ -231,14 +231,14 @@ describe('DotNavigationService', () => {
             });
 
             service.expandMenu();
-            expect(service.collapsed).toBe(false);
+            expect(service.collapsed$).toBe(false);
         });
     });
 
     describe('setOpen', () => {
         it('should expand expecific menu section', () => {
             service.toggle();
-            expect(service.collapsed).toBe(true);
+            expect(service.collapsed$).toBe(true);
 
             let counter = 0;
             service.items$.subscribe((menus: DotMenu[]) => {
@@ -253,7 +253,7 @@ describe('DotNavigationService', () => {
 
             service.setOpen('456');
 
-            expect(service.collapsed).toBe(false);
+            expect(service.collapsed$).toBe(false);
         });
     });
 
@@ -270,10 +270,10 @@ describe('DotNavigationService', () => {
             });
 
             service.toggle();
-            expect(service.collapsed).toBe(true);
+            expect(service.collapsed$).toBe(true);
 
             service.toggle();
-            expect(service.collapsed).toBe(false);
+            expect(service.collapsed$).toBe(false);
 
             expect(dotEventService.notify).toHaveBeenCalledTimes(2);
         });

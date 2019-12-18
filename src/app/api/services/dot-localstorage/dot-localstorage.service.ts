@@ -1,6 +1,20 @@
 import { Injectable } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+
+const getValue = <T>(item): T => {
+    const isNumber = parseInt(item, 0) as unknown;
+
+    if (isNumber) {
+        return isNumber as T;
+    }
+
+    try {
+        return JSON.parse(item);
+    } catch {
+        return (item as unknown) as T;
+    }
+};
 
 @Injectable({
     providedIn: 'root'
@@ -33,22 +47,13 @@ export class DotLocalstorageService {
      *
      * @template T
      * @param {string} key
-     * @returns {(T | string | number)}
+     * @returns {T}
      * @memberof DotLocalstorageService
      */
-    getItem<T>(key: string): T | string | number {
-        const item = localStorage.getItem(key);
+    getItem<T>(key: string): T {
+        const item: string = localStorage.getItem(key);
 
-        const isNumber: number = parseInt(item, 0);
-        if (isNumber) {
-            return isNumber;
-        }
-
-        try {
-            return JSON.parse(item);
-        } catch {
-            return item;
-        }
+        return <T>getValue(item);
     }
 
     /**
@@ -70,7 +75,18 @@ export class DotLocalstorageService {
         localStorage.clear();
     }
 
-    subscribe() {
-        return fromEvent(window, 'storage').pipe(map((e: StorageEvent) => e.newValue === 'true'));
+    /**
+     * Listen for a change of a particular key in the localstorage
+     *
+     * @template T
+     * @param {string} filterBy
+     * @returns {Observable<T>}
+     * @memberof DotLocalstorageService
+     */
+    listen<T>(filterBy: string): Observable<T> {
+        return fromEvent(window, 'storage').pipe(
+            filter(({ key }: StorageEvent) => key === filterBy),
+            map((e: StorageEvent) => <T>getValue(e.newValue))
+        );
     }
 }

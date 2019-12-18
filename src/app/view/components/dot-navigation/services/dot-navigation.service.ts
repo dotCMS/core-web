@@ -69,9 +69,7 @@ export class DotNavigationService {
         private router: Router,
         private dotLocalstorageService: DotLocalstorageService
     ) {
-        this._collapsed$.next(this.dotLocalstorageService.getItem<boolean>(
-            DOTCMS_MENU_STATUS
-        ) as boolean);
+        this._collapsed$.next(this.dotLocalstorageService.getItem<boolean>(DOTCMS_MENU_STATUS));
 
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
@@ -106,12 +104,14 @@ export class DotNavigationService {
                 this.goToFirstPortlet();
             });
 
-        this.dotLocalstorageService.subscribe().subscribe((e) => {
-            e ? this.collapseMenu() : this.expandMenu();
-        });
+        this.dotLocalstorageService
+            .listen<boolean>(DOTCMS_MENU_STATUS)
+            .subscribe((collapsed: boolean) => {
+                collapsed ? this.collapseMenu() : this.expandMenu();
+            });
     }
 
-    get collapsed(): Observable<boolean> {
+    get collapsed$(): Observable<boolean> {
         return this._collapsed$;
     }
 
