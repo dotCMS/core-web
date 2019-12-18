@@ -111,7 +111,7 @@ export class DotNavigationService {
             });
     }
 
-    get collapsed$(): Observable<boolean> {
+    get collapsed$(): BehaviorSubject<boolean> {
         return this._collapsed$;
     }
 
