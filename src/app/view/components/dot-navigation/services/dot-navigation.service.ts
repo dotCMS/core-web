@@ -67,11 +67,11 @@ export class DotNavigationService {
         private router: Router,
         private localStoreService: LocalStoreService
     ) {
-        const navState =
+        this.setCollapsed(
             this.localStoreService.getValue(DotNavigationService.DOTCMS_NAV_COLLAPSED) === 'false'
                 ? false
-                : true;
-        this.setCollapsed(navState);
+                : true
+        );
 
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
@@ -194,7 +194,6 @@ export class DotNavigationService {
      */
     toggle(): void {
         this.dotEventsService.notify('dot-side-nav-toggle');
-        debugger;
         this._collapsed ? this.expandMenu() : this.collapseMenu();
     }
 

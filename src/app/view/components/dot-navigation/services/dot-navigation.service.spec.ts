@@ -10,7 +10,7 @@ import { DotMenuService } from '@services/dot-menu.service';
 import { DotNavigationService } from './dot-navigation.service';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
 
-import { DotcmsEventsService, LoginService, Auth } from 'dotcms-js';
+import { DotcmsEventsService, LoginService, Auth, DotLocalStoreModule } from 'dotcms-js';
 
 import { Observable, Subject, of } from 'rxjs';
 import { skip } from 'rxjs/operators';
@@ -131,7 +131,7 @@ const baseMockAuth: Auth = {
     user: baseMockUser
 };
 
-fdescribe('DotNavigationService', () => {
+describe('DotNavigationService', () => {
     let service: DotNavigationService;
     let dotRouterService: DotRouterService;
     let dotcmsEventsService: DotcmsEventsService;
@@ -139,42 +139,44 @@ fdescribe('DotNavigationService', () => {
     let dotMenuService: DotMenuService;
     let loginService: LoginServiceMock;
     let router;
+    localStorage.clear();
+    beforeEach(
+        async(() => {
+            const testbed = DOTTestBed.configureTestingModule({
+                providers: [
+                    DotNavigationService,
+                    {
+                        provide: DotcmsEventsService,
+                        useClass: DotcmsEventsServiceMock
+                    },
+                    {
+                        provide: DotMenuService,
+                        useClass: DotMenuServiceMock
+                    },
+                    {
+                        provide: LoginService,
+                        useClass: LoginServiceMock
+                    },
+                    {
+                        provide: Router,
+                        useClass: RouterMock
+                    }
+                ],
+                imports: [RouterTestingModule, DotLocalStoreModule]
+            });
 
-    beforeEach(async(() => {
-        const testbed = DOTTestBed.configureTestingModule({
-            providers: [
-                DotNavigationService,
-                {
-                    provide: DotcmsEventsService,
-                    useClass: DotcmsEventsServiceMock
-                },
-                {
-                    provide: DotMenuService,
-                    useClass: DotMenuServiceMock
-                },
-                {
-                    provide: LoginService,
-                    useClass: LoginServiceMock
-                },
-                {
-                    provide: Router,
-                    useClass: RouterMock
-                }
-            ],
-            imports: [RouterTestingModule]
-        });
+            service = testbed.get(DotNavigationService);
+            dotRouterService = testbed.get(DotRouterService);
+            dotcmsEventsService = testbed.get(DotcmsEventsService);
+            dotMenuService = testbed.get(DotMenuService);
+            loginService = testbed.get(LoginService);
+            dotEventService = testbed.get(DotEventsService);
+            router = testbed.get(Router);
 
-        service = testbed.get(DotNavigationService);
-        dotRouterService = testbed.get(DotRouterService);
-        dotcmsEventsService = testbed.get(DotcmsEventsService);
-        dotMenuService = testbed.get(DotMenuService);
-        loginService = testbed.get(LoginService);
-        dotEventService = testbed.get(DotEventsService);
-        router = testbed.get(Router);
-
-        spyOn(dotEventService, 'notify');
-        spyOn(dotMenuService, 'reloadMenu').and.callThrough();
-    }));
+            spyOn(dotEventService, 'notify');
+            spyOn(dotMenuService, 'reloadMenu').and.callThrough();
+        })
+    );
 
     describe('goToFirstPortlet', () => {
         it('should go to first portlet: ', () => {
@@ -192,6 +194,33 @@ fdescribe('DotNavigationService', () => {
         it('should NOT reload current portlet', () => {
             service.reloadCurrentPortlet('123');
             expect(dotRouterService.reloadCurrentPortlet).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('default value', () => {
+        it('should be collapsed by default', () => {
+            expect(service.collapsed).toBe(true);
+        });
+    });
+
+    describe('expandMenu', () => {
+        it('should expand active menu section', () => {
+            service.collapseMenu();
+            expect(service.collapsed).toBe(true);
+
+            let counter = 0;
+            service.items$.subscribe((menus: DotMenu[]) => {
+                if (counter === 0) {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
+                } else {
+                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
+                }
+
+                counter++;
+            });
+
+            service.expandMenu();
+            expect(service.collapsed).toBe(false);
         });
     });
 
@@ -214,30 +243,9 @@ fdescribe('DotNavigationService', () => {
         });
     });
 
-    describe('expandMenu', () => {
-        it('should expand active menu section', () => {
-            service.toggle();
-            expect(service.collapsed).toBe(true);
-
-            let counter = 0;
-            service.items$.subscribe((menus: DotMenu[]) => {
-                if (counter === 0) {
-                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, false]);
-                } else {
-                    expect(menus.map((menu: DotMenu) => menu.isOpen)).toEqual([false, true]);
-                }
-
-                counter++;
-            });
-
-            service.expandMenu();
-            expect(service.collapsed).toBe(false);
-        });
-    });
-
     describe('setOpen', () => {
         it('should expand expecific menu section', () => {
-            service.toggle();
+            service.collapseMenu();
             expect(service.collapsed).toBe(true);
 
             let counter = 0;
