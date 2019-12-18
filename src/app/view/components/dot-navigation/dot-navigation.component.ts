@@ -43,8 +43,8 @@ export class DotNavigationComponent implements OnInit {
     onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
         if (this.dotNavigationService.collapsed) {
             this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
+        } else {
+            this.dotNavigationService.setOpen(event.data.id);
         }
-
-        this.dotNavigationService.setOpen(event.data.id);
     }
 }
