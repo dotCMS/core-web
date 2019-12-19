@@ -19,9 +19,10 @@ import { DotMenu } from '@models/navigation';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
+import { TooltipModule } from 'primeng/primeng';
 
 class FakeNavigationService {
-    _collapsed = false;
+    private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     _routeEvents: BehaviorSubject<NavigationEnd> = new BehaviorSubject(
         new NavigationEnd(0, '', '')
@@ -32,8 +33,8 @@ class FakeNavigationService {
         return this._items$.asObservable();
     }
 
-    get collapsed(): boolean {
-        return this._collapsed;
+    get collapsed$(): BehaviorSubject<boolean> {
+        return this._collapsed$;
     }
 
     onNavigationEnd(): Observable<NavigationEnd> {
@@ -92,7 +93,8 @@ describe('DotNavigationComponent', () => {
                 DotNavIconModule,
                 DotIconModule,
                 RouterTestingModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                TooltipModule
             ],
             providers: [
                 DotMenuService,
@@ -174,7 +176,10 @@ describe('DotNavigationComponent', () => {
     describe('menuClick event ', () => {
         describe('collapsed', () => {
             beforeEach(() => {
-                spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(true);
+                const collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+                spyOnProperty(dotNavigationService, 'collapsed$', 'get').and.returnValue(
+                    collapsed$
+                );
                 navItem.triggerEventHandler('menuClick', {
                     originalEvent: {},
                     data: dotMenuMock()
@@ -182,23 +187,11 @@ describe('DotNavigationComponent', () => {
                 fixture.detectChanges();
             });
 
-            it('should open menu', () => {
-                expect(dotNavigationService.setOpen).toHaveBeenCalledWith('123');
-                const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(
-                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
-                ).toBe(true);
-            });
-
-            it('should expand menu', () => {
-                const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
-                expect(
-                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
-                ).toBe(true);
-                const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
-                expect(
-                    firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--actuve')
-                ).toBe(false);
+            it('should set tooltip properties', () => {
+                fixture.detectChanges();
+                expect(navItem.attributes['ng-reflect-disabled']).toBe('false');
+                expect(navItem.attributes['ng-reflect-text']).toBe(dotMenuMock().tabName);
+                expect(navItem.attributes['tooltipStyleClass']).toBe('dot-nav__tooltip');
             });
 
             it('should navigate to portlet when menu is collapsed', () => {
@@ -208,7 +201,10 @@ describe('DotNavigationComponent', () => {
 
         describe('expanded', () => {
             beforeEach(() => {
-                spyOnProperty(dotNavigationService, 'collapsed', 'get').and.returnValue(false);
+                const collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+                spyOnProperty(dotNavigationService, 'collapsed$', 'get').and.returnValue(
+                    collapsed$
+                );
                 navItem.triggerEventHandler('menuClick', {
                     originalEvent: {},
                     data: dotMenuMock()
@@ -216,8 +212,23 @@ describe('DotNavigationComponent', () => {
                 fixture.detectChanges();
             });
 
+            it('should expand menu', () => {
+                const firstItem: DebugElement = de.query(By.css('.dot-nav__list-item'));
+                expect(
+                    firstItem.nativeElement.classList.contains('dot-nav__list-item--active')
+                ).toBe(true);
+                const firstMenuLink: DebugElement = firstItem.query(By.css('.dot-nav-sub__link'));
+                expect(
+                    firstMenuLink.nativeElement.classList.contains('dot-nav-sub__link--active')
+                ).toBe(false);
+            });
+
             it('should NOT navigate to porlet', () => {
                 expect(dotNavigationService.goTo).not.toHaveBeenCalled();
+            });
+
+            it('should disable tooltip', () => {
+                expect(navItem.attributes['ng-reflect-disabled']).toBe('true');
             });
         });
     });
