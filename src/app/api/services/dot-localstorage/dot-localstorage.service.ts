@@ -27,10 +27,10 @@ export class DotLocalstorageService {
      *
      * @template T
      * @param {string} key
-     * @param {(T | string | number)} value
+     * @param {T} value
      * @memberof DotLocalstorageService
      */
-    setItem<T>(key: string, value: T | string | number): void {
+    setItem<T>(key: string, value: T): void {
         let data;
 
         if (typeof value === 'object') {
