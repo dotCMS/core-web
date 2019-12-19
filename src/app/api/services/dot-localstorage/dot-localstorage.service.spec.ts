@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DotLocalstorageService } from './dot-localstorage.service';
 
-fdescribe('DotLocalstorageService', () => {
+describe('DotLocalstorageService', () => {
     let service: DotLocalstorageService;
     beforeEach(() => {
         TestBed.configureTestingModule({});
