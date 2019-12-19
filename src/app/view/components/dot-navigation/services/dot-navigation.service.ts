@@ -56,7 +56,7 @@ const DOTCMS_MENU_STATUS = 'dotcms.menu.status';
 
 @Injectable()
 export class DotNavigationService {
-    private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(true);
     private _items$: BehaviorSubject<DotMenu[]> = new BehaviorSubject([]);
 
     constructor(
@@ -69,7 +69,10 @@ export class DotNavigationService {
         private router: Router,
         private dotLocalstorageService: DotLocalstorageService
     ) {
-        this._collapsed$.next(this.dotLocalstorageService.getItem<boolean>(DOTCMS_MENU_STATUS));
+        const savedMenuStatus = this.dotLocalstorageService.getItem<boolean>(DOTCMS_MENU_STATUS);
+        this._collapsed$.next(
+            savedMenuStatus === undefined || savedMenuStatus === null ? true : savedMenuStatus
+        );
 
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
@@ -202,11 +205,10 @@ export class DotNavigationService {
      */
     toggle(): void {
         this.dotEventsService.notify('dot-side-nav-toggle');
-        this._collapsed$.getValue() ? this.expandMenu() : this.collapseMenu();
-        this.dotLocalstorageService.setItem<boolean>(
-            DOTCMS_MENU_STATUS,
-            this._collapsed$.getValue()
-        );
+
+        const isCollapsed = this._collapsed$.getValue();
+        isCollapsed ? this.expandMenu() : this.collapseMenu();
+        this.dotLocalstorageService.setItem<boolean>(DOTCMS_MENU_STATUS, isCollapsed);
     }
 
     /**
@@ -216,13 +218,11 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     setOpen(id: string): void {
-        if (this._collapsed$.getValue()) {
+        const isCollapsed = this._collapsed$.getValue();
+        if (isCollapsed) {
             this._collapsed$.next(false);
         }
-        this.dotLocalstorageService.setItem<boolean>(
-            DOTCMS_MENU_STATUS,
-            this._collapsed$.getValue()
-        );
+        this.dotLocalstorageService.setItem<boolean>(DOTCMS_MENU_STATUS, isCollapsed);
         const updatedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             menu.isOpen = menu.isOpen ? false : id === menu.id;
             return menu;
