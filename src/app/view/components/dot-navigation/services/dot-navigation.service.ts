@@ -70,9 +70,7 @@ export class DotNavigationService {
         private dotLocalstorageService: DotLocalstorageService
     ) {
         const savedMenuStatus = this.dotLocalstorageService.getItem<boolean>(DOTCMS_MENU_STATUS);
-        this._collapsed$.next(
-            savedMenuStatus === undefined || savedMenuStatus === null ? true : savedMenuStatus
-        );
+        this._collapsed$.next(savedMenuStatus === false ? false : true);
 
         this.dotMenuService.loadMenu().subscribe((menus: DotMenu[]) => {
             this.setMenu(menus);
