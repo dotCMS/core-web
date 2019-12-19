@@ -12,12 +12,13 @@ describe('DotLocalstorageService', () => {
 
     describe('setItem', () => {
         beforeEach(() => {
-            spyOn(window.localStorage, 'setItem');
+            spyOn(window.localStorage, 'setItem').and.callThrough();
         });
 
         it('should set string', () => {
             service.setItem<string>('hello', 'world');
             expect(window.localStorage.setItem).toHaveBeenCalledWith('hello', 'world');
+            expect(window.localStorage.getItem('hello')).toBe('world');
         });
 
         it('should set object', () => {
@@ -27,12 +28,16 @@ describe('DotLocalstorageService', () => {
                 hola: 'mundo'
             });
             expect(window.localStorage.setItem).toHaveBeenCalledWith('hello', '{"hola":"mundo"}');
+            expect(window.localStorage.getItem('hello')).toBe('{"hola":"mundo"}');
         });
     });
 
     describe('getItem', () => {
+        beforeEach(() => {
+            spyOn(window.localStorage, 'getItem').and.callThrough();
+        });
         it('should get string', () => {
-            spyOn(window.localStorage, 'getItem').and.returnValue('Hola Mundo');
+            window.localStorage.setItem('hello', 'Hola Mundo');
 
             const result = service.getItem<string>('hello');
             expect(window.localStorage.getItem).toHaveBeenCalledWith('hello');
@@ -40,7 +45,7 @@ describe('DotLocalstorageService', () => {
         });
 
         it('should get an array', () => {
-            spyOn(window.localStorage, 'getItem').and.returnValue('["1", "2"]');
+            window.localStorage.setItem('hello', '["1", "2"]');
 
             const result = service.getItem<string[]>('hello');
             expect(window.localStorage.getItem).toHaveBeenCalledWith('hello');
@@ -48,7 +53,7 @@ describe('DotLocalstorageService', () => {
         });
 
         it('should get a boolean', () => {
-            spyOn(window.localStorage, 'getItem').and.returnValue('true');
+            window.localStorage.setItem('hello', 'true');
 
             const result = service.getItem<boolean>('hello');
             expect(window.localStorage.getItem).toHaveBeenCalledWith('hello');
