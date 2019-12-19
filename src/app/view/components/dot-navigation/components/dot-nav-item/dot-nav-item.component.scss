@@ -19,6 +19,28 @@
         dot-sub-nav {
             width: $navigation-width-collased;
         }
+
+        &.dot-nav__item--contextmenu {
+            dot-sub-nav {
+                opacity: 1;
+                position: absolute;
+                left: $navigation-width-collased;
+                width: $navigation-width;
+                margin-top: -$navigation-item-height;
+                z-index: 1001;
+                background: red;
+
+                ::ng-deep .dot-nav-sub {
+                    height: auto!important;
+                    overflow: visible!important;;
+                }
+            }
+
+            dot-overlay-mask {
+                z-index: 1000;
+            }
+
+        }
     }
 }
 

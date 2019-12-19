@@ -1,6 +1,5 @@
-import {Component, Output, EventEmitter, Input, HostListener, ViewChild, OnInit} from '@angular/core';
+import {Component, Output, EventEmitter, Input, HostListener, OnInit, HostBinding} from '@angular/core';
 import { DotMenu, DotMenuItem } from '@models/navigation';
-import { OverlayPanel } from 'primeng/overlaypanel';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 
 
@@ -15,7 +14,7 @@ export class DotNavItemComponent implements OnInit {
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
-    @ViewChild('flyMenuPanel') flyMenuPanel: OverlayPanel;
+    @HostBinding('class.dot-nav__item--contextmenu') contextmenu = false;
     showOverlay = false;
     constructor(public iframeOverlayService: IframeOverlayService) {}
 
@@ -42,9 +41,14 @@ export class DotNavItemComponent implements OnInit {
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
         event.preventDefault();
-        // this.flyMenuPanel.show(event, event.currentTarget);
+        this.contextmenu = true;
         this.showOverlay = true;
-
-
     }
+
+    hideSubNav(): void {
+        this.contextmenu = false;
+        this.showOverlay = false;
+        console.log('hideSubNav');
+    }
+
 }
