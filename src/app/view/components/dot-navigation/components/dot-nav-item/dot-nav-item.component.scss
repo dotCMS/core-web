@@ -10,7 +10,10 @@
         dot-sub-nav,
         .dot-nav__item-label {
             opacity: 0;
-            display: none;
+        }
+
+        .dot-nav__item {
+            max-height: $navigation-item-height;
         }
 
         .dot-nav__item--active {
