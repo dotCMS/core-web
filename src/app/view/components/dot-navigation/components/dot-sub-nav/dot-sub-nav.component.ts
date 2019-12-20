@@ -7,7 +7,6 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
         trigger('expandAnimation', [
             state(
                 'expanded',
-
                 style({
                     height: '!',
                     overflow: 'hidden'

@@ -41,9 +41,7 @@ export class DotToolbarComponent implements OnInit {
         }
     }
 
-    handleMainButtonClick($event): void {
-        // $event.stopPropagation();
-        console.log($event);
+    handleMainButtonClick(): void {
         this.dotNavigationService.toggle();
     }
 }

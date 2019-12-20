@@ -34,7 +34,7 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.setHideFlyOutSubscriptions();
+        this.setHideFlyOutSubscription();
     }
 
     ngOnDestroy(): void {
@@ -82,7 +82,7 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
         this.dotEventsService.notify('hide-sub-nav-fly-outs');
     }
 
-    private setHideFlyOutSubscriptions(): void {
+    private setHideFlyOutSubscription(): void {
         const hideFlyOut$ = merge(
             this.iframeOverlayService.overlay.pipe(filter((val: boolean) => !val)),
             this.dotEventsService.listen('hide-sub-nav-fly-outs')
