@@ -21,7 +21,7 @@ const data: DotMenu = {
     ]
 };
 
-describe('DotSubNavComponent', () => {
+fdescribe('DotSubNavComponent', () => {
     let component: DotSubNavComponent;
     let fixture: ComponentFixture<DotSubNavComponent>;
     let de: DebugElement;

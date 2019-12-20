@@ -17,7 +17,7 @@ const data: DotMenu = {
     active: true
 };
 
-describe('DotNavItemComponent', () => {
+fdescribe('DotNavItemComponent', () => {
     let component: DotNavItemComponent;
     let fixture: ComponentFixture<DotNavItemComponent>;
     let de: DebugElement;

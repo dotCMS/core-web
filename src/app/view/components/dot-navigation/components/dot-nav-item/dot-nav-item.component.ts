@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
-import {merge, Subject} from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 
@@ -34,21 +34,6 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        // this.iframeOverlayService.overlay
-        //     .pipe(takeUntil(this.destroy$), filter((val: boolean) => !val && this.contextmenu))
-        //     .subscribe((val: boolean) => {
-        //         this.contextmenu = val;
-        //         console.log('test2');
-        //     });
-        // this.dotEventsService
-        //     .listen('hide-sub-nav-fly-outs')
-        //     .pipe(takeUntil(this.destroy$), filter(() => this.contextmenu))
-        //     .subscribe(() => {
-        //         console.log('test');
-        //         this.contextmenu = false;
-        //         this.iframeOverlayService.hide();
-        //     });
-
         this.setHideFlyOutSubscriptions();
     }
 
@@ -72,6 +57,12 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
         this.dotEventsService.notify('hide-sub-nav-fly-outs');
     }
 
+    /**
+     * Handle right-click on menu section title
+     *
+     * @param MouseEvent $event
+     * @memberof DotNavItemComponent
+     */
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
         event.preventDefault();
@@ -80,11 +71,12 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
         this.contextmenu = true;
     }
 
-    @HostListener('document:click', ['$event'])
-    handleClick(): void {
-        this.contextmenu = false;
-    }
-
+    /**
+     * Handle click in dot-sub-nav items
+     *
+     * @param { originalEvent: MouseEvent; data: DotMenuItem } $event
+     * @memberof DotNavItemComponent
+     */
     handleItemClick(event: { originalEvent: MouseEvent; data: DotMenuItem }) {
         this.itemClick.emit(event);
         this.dotEventsService.notify('hide-sub-nav-fly-outs');
