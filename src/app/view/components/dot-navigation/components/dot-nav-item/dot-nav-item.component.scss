@@ -5,6 +5,22 @@
 :host {
     display: block;
 
+    ::ng-deep {
+        .ui-tooltip {
+            &.dot-nav__tooltip {
+                margin-left: $basic-padding + $navigation-width-collased - $navigation-width;
+                display: none !important;
+
+                .ui-tooltip-text {
+                    overflow-wrap: break-word;
+                    min-width: 100px;
+                    max-width: 150px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
     &.collapsed {
         dot-icon,
         dot-sub-nav,
@@ -14,6 +30,12 @@
 
         .dot-nav__item {
             max-height: $navigation-item-height;
+
+            &:hover {
+                &:not(.dot-nav__item--active) {
+                    background-color: rgba(var(--color-white_rgb), 0.1);
+                }
+            }
         }
 
         .dot-nav__item--active {
@@ -24,26 +46,58 @@
             width: $navigation-width-collased;
         }
 
-        &.dot-nav__item--contextmenu {
+        ::ng-deep {
+            .ui-tooltip {
+                &.dot-nav__tooltip {
+                    display: block !important;
+                }
+            }
+        }
+
+        &.contextmenu {
+            ::ng-deep {
+                .ui-tooltip {
+                    &.dot-nav__tooltip {
+                        display: none !important;
+                    }
+                }
+            }
+
+            .dot-nav__item {
+                &:not(.dot-nav__item--active) {
+                    background-color: rgba(var(--color-white_rgb), 0.1);
+                }
+            }
+
             dot-sub-nav {
                 opacity: 1;
                 position: absolute;
                 left: $navigation-width-collased;
-                width: $navigation-width;
+                width: auto;
                 margin-top: -$navigation-item-height;
                 z-index: 1001;
-                background: red;
+                background: $white;
+                box-shadow: $md-shadow-1;
 
                 ::ng-deep .dot-nav-sub {
-                    height: auto!important;
-                    overflow: visible!important;;
+                    height: auto !important;
+                    overflow: visible !important;
+
+                    .dot-nav-sub__link {
+                        color: $black;
+                        padding: $basic-padding $basic-padding * 2;
+
+                        &.dot-nav-sub__link--active,
+                        &:hover {
+                            background-color: $gray-bg;
+                        }
+                    }
                 }
             }
 
             dot-overlay-mask {
                 z-index: 1000;
             }
-
         }
     }
 }
@@ -61,7 +115,6 @@ dot-sub-nav {
         display: flex;
         min-height: $navigation-item-height;
         padding: 14px $basic-padding 13px 23px; // top and bottom padding to get min 48px height
-        position: relative;
         transition: background-color $basic-speed ease $basic-speed;
         width: $navigation-width;
         justify-content: space-between;
@@ -69,7 +122,7 @@ dot-sub-nav {
         &-label {
             margin-left: $basic-padding * 2;
             word-break: break-word;
-            flex: 1
+            flex: 1;
         }
     }
 
