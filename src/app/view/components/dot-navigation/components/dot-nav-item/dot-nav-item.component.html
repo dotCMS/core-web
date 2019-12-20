@@ -8,8 +8,3 @@
     </dot-icon>
 </div>
 <dot-sub-nav [data]="data" (itemClick)="itemClick.emit($event)"></dot-sub-nav>
-<dot-overlay-mask
-    *ngIf="showOverlay"
-    (click)="hideSubNav()"
-    (contextmenu)="hideSubNav()"
-></dot-overlay-mask>

@@ -1,27 +1,53 @@
-import {Component, Output, EventEmitter, Input, HostListener, OnInit, HostBinding} from '@angular/core';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    Input,
+    HostListener,
+    OnInit,
+    HostBinding,
+    OnDestroy
+} from '@angular/core';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
-
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-nav-item',
     templateUrl: './dot-nav-item.component.html',
     styleUrls: ['./dot-nav-item.component.scss']
 })
-export class DotNavItemComponent implements OnInit {
+export class DotNavItemComponent implements OnInit, OnDestroy {
     @Input() data: DotMenu;
     @Output()
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
     @HostBinding('class.dot-nav__item--contextmenu') contextmenu = false;
-    showOverlay = false;
-    constructor(public iframeOverlayService: IframeOverlayService) {}
+    private destroy$: Subject<boolean> = new Subject<boolean>();
+
+    constructor(
+        public iframeOverlayService: IframeOverlayService,
+        private dotEventsService: DotEventsService
+    ) {}
 
     ngOnInit() {
         this.iframeOverlayService.overlay
-          //  .pipe(takeUntil(this.destroy$))
-            .subscribe((val: boolean) => (this.showOverlay = val));
+            .pipe(takeUntil(this.destroy$), filter((val: boolean) => !val))
+            .subscribe((val: boolean) => (this.contextmenu = val));
+        this.dotEventsService
+            .listen('hide-sub-nav-fly-outs')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.contextmenu = false;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     /**
@@ -36,19 +62,19 @@ export class DotNavItemComponent implements OnInit {
             originalEvent: $event,
             data: data
         });
+        this.dotEventsService.notify('hide-sub-nav-fly-outs');
     }
 
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
+        this.dotEventsService.notify('hide-sub-nav-fly-outs');
         event.preventDefault();
+        this.iframeOverlayService.show();
         this.contextmenu = true;
-        this.showOverlay = true;
     }
 
-    hideSubNav(): void {
+    @HostListener('document:click', ['$event'])
+    handleClick(): void {
         this.contextmenu = false;
-        this.showOverlay = false;
-        console.log('hideSubNav');
     }
-
 }
