@@ -15,7 +15,6 @@ import { TooltipModule } from 'primeng/primeng';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'dot-test-host-component',
@@ -28,10 +27,9 @@ class TestHostComponent {
         ...dotMenuMock(),
         active: true
     };
-    collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 }
 
-describe('DotNavItemComponent', () => {
+fdescribe('DotNavItemComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let dotEventsService: DotEventsService;

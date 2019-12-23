@@ -20,7 +20,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { dotMenuMock, dotMenuMock1 } from './services/dot-navigation.service.spec';
 import { TooltipModule } from 'primeng/primeng';
-import {IframeOverlayService} from '@components/_common/iframe/service/iframe-overlay.service';
+import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 
 class FakeNavigationService {
     private _collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -95,7 +95,7 @@ describe('DotNavigationComponent', () => {
                 DotIconModule,
                 RouterTestingModule,
                 BrowserAnimationsModule,
-                TooltipModule,
+                TooltipModule
             ],
             providers: [
                 DotMenuService,
