@@ -29,7 +29,7 @@ class TestHostComponent {
     };
 }
 
-fdescribe('DotNavItemComponent', () => {
+describe('DotNavItemComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let dotEventsService: DotEventsService;
