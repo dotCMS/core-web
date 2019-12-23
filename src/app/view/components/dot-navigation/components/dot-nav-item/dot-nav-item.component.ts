@@ -54,7 +54,7 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
             originalEvent: $event,
             data: data
         });
-        this.dotEventsService.notify('hide-sub-nav-fly-outs');
+        this.dotEventsService.notify('hide-sub-nav-fly-out');
     }
 
     /**
@@ -66,9 +66,19 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
         event.preventDefault();
-        this.dotEventsService.notify('hide-sub-nav-fly-outs');
+        this.dotEventsService.notify('hide-sub-nav-fly-out');
         this.iframeOverlayService.show();
         this.contextmenu = true;
+    }
+
+    /**
+     * Handle click on document to hide the fly-out menu
+     *
+     * @memberof DotNavItemComponent
+     */
+    @HostListener('document:click')
+    handleDocumentClick(): void {
+        this.contextmenu = false;
     }
 
     /**
@@ -79,13 +89,13 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
      */
     handleItemClick(event: { originalEvent: MouseEvent; data: DotMenuItem }) {
         this.itemClick.emit(event);
-        this.dotEventsService.notify('hide-sub-nav-fly-outs');
+        this.dotEventsService.notify('hide-sub-nav-fly-out');
     }
 
     private setHideFlyOutSubscription(): void {
         const hideFlyOut$ = merge(
             this.iframeOverlayService.overlay.pipe(filter((val: boolean) => !val)),
-            this.dotEventsService.listen('hide-sub-nav-fly-outs')
+            this.dotEventsService.listen('hide-sub-nav-fly-out')
         ).pipe(takeUntil(this.destroy$), filter(() => this.contextmenu));
 
         hideFlyOut$.subscribe(() => {

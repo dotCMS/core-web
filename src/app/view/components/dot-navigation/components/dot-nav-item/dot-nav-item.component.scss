@@ -5,11 +5,18 @@
 :host {
     display: block;
 
+    &:not(.collapsed) {
+        ::ng-deep {
+            .dot-nav__tooltip {
+                display: none !important;
+            }
+        }
+    }
+
     ::ng-deep {
         .ui-tooltip {
             &.dot-nav__tooltip {
                 margin-left: $basic-padding + $navigation-width-collased - $navigation-width;
-                display: none !important;
 
                 .ui-tooltip-text {
                     overflow-wrap: break-word;
@@ -44,25 +51,23 @@
 
         dot-sub-nav {
             width: $navigation-width-collased;
-        }
 
-        ::ng-deep {
-            .ui-tooltip {
-                &.dot-nav__tooltip {
-                    display: block !important;
+            ::ng-deep .dot-nav-sub {
+                .dot-nav-sub__link {
+                    color: $black;
+                    padding: $basic-padding $basic-padding * 2;
+                }
+
+                .dot-nav-sub__link {
+                    &.dot-nav-sub__link--active,
+                    &:hover {
+                        background-color: $gray-bg;
+                    }
                 }
             }
         }
 
         &.contextmenu {
-            ::ng-deep {
-                .ui-tooltip {
-                    &.dot-nav__tooltip {
-                        display: none !important;
-                    }
-                }
-            }
-
             .dot-nav__item {
                 &:not(.dot-nav__item--active) {
                     background-color: rgba(var(--color-white_rgb), 0.1);
@@ -82,16 +87,6 @@
                 ::ng-deep .dot-nav-sub {
                     height: auto !important;
                     overflow: visible !important;
-
-                    .dot-nav-sub__link {
-                        color: $black;
-                        padding: $basic-padding $basic-padding * 2;
-
-                        &.dot-nav-sub__link--active,
-                        &:hover {
-                            background-color: $gray-bg;
-                        }
-                    }
                 }
             }
 
