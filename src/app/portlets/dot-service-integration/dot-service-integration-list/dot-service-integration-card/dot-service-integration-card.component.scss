@@ -1,0 +1,54 @@
+@import "variables";
+@import "mixins";
+
+:host {
+    box-shadow: $md-shadow-1;
+    display: block;
+    margin-bottom: $basic-padding * 3;
+    margin-right: $basic-padding * 3;
+    width: 300px;
+
+    p-header {
+        display: flex;
+        padding-top: $basic-padding * 2;
+    }
+
+    dot-avatar {
+        border-radius: 16px;
+        box-shadow: $md-shadow-1;
+        margin: 0 $basic-padding * 2 0;
+    }
+    .dot-service-integration-card__name {
+        color: $black;
+        display: block;
+        flex: 1;
+        font-size: $font-size-small;
+        font-weight: $font-weight-semi-bold;
+        line-height: $basic-padding * 2;
+    }
+    .dot-service-integration-card__configurations {
+        color: $gray;
+        display: block;
+        line-height: $basic-padding * 2;
+    }
+
+    ::ng-deep .ui-card-body {
+        color: $gray;
+        padding: 0;
+
+        .ui-card-content {
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: $basic-padding * 2;
+        }
+    }
+
+    ::ng-deep .ui-card-footer {
+        &:hover {
+            background-color: $gray-bg;
+        }
+        border-top: 1px solid $gray-light;
+        padding: 2 * $basic-padding;
+    }
+}
