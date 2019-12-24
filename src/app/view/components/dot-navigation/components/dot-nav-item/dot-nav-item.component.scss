@@ -5,14 +5,6 @@
 :host {
     display: block;
 
-    &:not(.collapsed) {
-        ::ng-deep {
-            .dot-nav__tooltip {
-                display: none !important;
-            }
-        }
-    }
-
     ::ng-deep {
         .ui-tooltip {
             &.dot-nav__tooltip {
@@ -30,7 +22,6 @@
 
     &.collapsed {
         dot-icon,
-        dot-sub-nav,
         .dot-nav__item-label {
             opacity: 0;
         }
@@ -49,44 +40,10 @@
             background-color: $brand-primary;
         }
 
-        dot-sub-nav {
-            width: $navigation-width-collased;
-
-            ::ng-deep .dot-nav-sub {
-                .dot-nav-sub__link {
-                    color: $black;
-                    padding: $basic-padding $basic-padding * 2;
-                }
-
-                .dot-nav-sub__link {
-                    &.dot-nav-sub__link--active,
-                    &:hover {
-                        background-color: $gray-bg;
-                    }
-                }
-            }
-        }
-
         &.contextmenu {
             .dot-nav__item {
                 &:not(.dot-nav__item--active) {
                     background-color: rgba(var(--color-white_rgb), 0.1);
-                }
-            }
-
-            dot-sub-nav {
-                opacity: 1;
-                position: absolute;
-                left: $navigation-width-collased;
-                width: auto;
-                margin-top: -$navigation-item-height;
-                z-index: 1001;
-                background: $white;
-                box-shadow: $md-shadow-1;
-
-                ::ng-deep .dot-nav-sub {
-                    height: auto !important;
-                    overflow: visible !important;
                 }
             }
         }

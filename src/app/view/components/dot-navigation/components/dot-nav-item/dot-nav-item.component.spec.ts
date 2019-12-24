@@ -15,11 +15,12 @@ import { TooltipModule } from 'primeng/primeng';
 import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
 import { DotEventsService } from '@services/dot-events/dot-events.service';
 import { DOTTestBed } from '@tests/dot-test-bed';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'dot-test-host-component',
     template: `
-        <dot-nav-item [data]="menu"></dot-nav-item>
+        <dot-nav-item [data]="menu" [collapsed]="collapsed$ | async"></dot-nav-item>
     `
 })
 class TestHostComponent {
@@ -27,6 +28,7 @@ class TestHostComponent {
         ...dotMenuMock(),
         active: true
     };
+    collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 }
 
 describe('DotNavItemComponent', () => {
@@ -39,6 +41,7 @@ describe('DotNavItemComponent', () => {
     let de: DebugElement;
     let deHost: DebugElement;
     let navItem: DebugElement;
+    let subNav: DebugElement;
 
     beforeEach(
         async(() => {
@@ -67,6 +70,7 @@ describe('DotNavItemComponent', () => {
         dotEventsService = fixture.debugElement.injector.get(DotEventsService);
         iframeOverlayService = fixture.debugElement.injector.get(IframeOverlayService);
         navItem = de.query(By.css('.dot-nav__item'));
+        subNav = de.query(By.css('dot-sub-nav'));
     });
 
     it('should set classes', () => {
@@ -96,13 +100,10 @@ describe('DotNavItemComponent', () => {
     });
 
     describe('dot-sub-nav', () => {
-        let subNav: DebugElement;
-        beforeEach(() => {
-            subNav = de.query(By.css('dot-sub-nav'));
-        });
-
         it('should set data correctly', () => {
             expect(subNav.componentInstance.data).toEqual(componentHost.menu);
+            expect(subNav.nativeElement.classList.contains('collapsed')).toBe(false);
+            expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(false);
         });
 
         it('should notify and emit itemClick on dot-sub-nav itemClick', () => {
@@ -117,18 +118,29 @@ describe('DotNavItemComponent', () => {
 
     describe('Collapsed', () => {
         beforeEach(() => {
-            de.nativeElement.classList.add('collapsed');
+            componentHost.collapsed$.next(true);
+            fixtureHost.detectChanges();
+        });
+
+        it('should set data correctly on sub-nav', () => {
+            expect(subNav.nativeElement.classList.contains('collapsed')).toBe(true);
+            expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(false);
         });
 
         describe('Fly-out Menu', () => {
             beforeEach(() => {
                 spyOn(dotEventsService, 'notify').and.callThrough();
                 spyOn(iframeOverlayService, 'show').and.callThrough();
-                de.nativeElement.dispatchEvent(new MouseEvent('contextmenu'));
+                de.triggerEventHandler('contextmenu', new MouseEvent('contextmenu'));
+                fixtureHost.detectChanges();
+            });
+
+            it('should set data correctly on sub-nav', () => {
+                expect(subNav.nativeElement.classList.contains('collapsed')).toBe(true);
+                expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(true);
             });
 
             it('should open on right click', () => {
-                fixtureHost.detectChanges();
                 expect(component.contextmenu).toBe(true);
                 expect(dotEventsService.notify).toHaveBeenCalledTimes(1);
                 expect(iframeOverlayService.show).toHaveBeenCalledTimes(1);
@@ -156,17 +168,28 @@ describe('DotNavItemComponent', () => {
         beforeEach(() => {});
 
         it('should set tooltip properties', () => {
-            expect(navItem.attributes['ng-reflect-disabled']).toEqual('false');
+            expect(navItem.attributes['ng-reflect-disabled']).toEqual('true');
             expect(navItem.attributes['ng-reflect-text']).toEqual(dotMenuMock().tabName);
             expect(navItem.attributes['tooltipStyleClass']).toEqual('dot-nav__tooltip');
             expect(navItem.attributes['appendTo']).toEqual('target');
         });
 
-        it('should be null and disabled on right-click', () => {
-            de.nativeElement.dispatchEvent(new MouseEvent('contextmenu'));
-            fixtureHost.detectChanges();
-            expect(navItem.attributes['ng-reflect-disabled']).toEqual('true');
-            expect(navItem.attributes['ng-reflect-text']).toEqual(null);
+        describe('collapse', () => {
+            beforeEach(() => {
+                componentHost.collapsed$.next(true);
+                fixtureHost.detectChanges();
+            });
+
+            it('should enable on collapse', () => {
+                expect(navItem.attributes['ng-reflect-disabled']).toEqual('false');
+            });
+
+            it('should be null and disabled on right-click', () => {
+                de.triggerEventHandler('contextmenu', new MouseEvent('contextmenu'));
+                fixtureHost.detectChanges();
+                expect(navItem.attributes['ng-reflect-disabled']).toEqual('true');
+                expect(navItem.attributes['ng-reflect-text']).toEqual(null);
+            });
         });
     });
 });

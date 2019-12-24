@@ -4,6 +4,41 @@
 
 :host {
     display: block;
+
+    &.collapsed {
+        opacity: 0;
+        width: $navigation-width-collased;
+
+        .dot-nav-sub {
+            .dot-nav-sub__link {
+                color: $black;
+                padding: $basic-padding $basic-padding * 2;
+            }
+
+            .dot-nav-sub__link {
+                &.dot-nav-sub__link--active,
+                &:hover {
+                    background-color: $gray-bg;
+                }
+            }
+        }
+
+        &.contextmenu {
+            opacity: 1;
+            position: absolute;
+            left: $navigation-width-collased;
+            width: auto;
+            margin-top: -$navigation-item-height;
+            z-index: 1001;
+            background: $white;
+            box-shadow: $md-shadow-1;
+
+            .dot-nav-sub {
+                height: auto !important;
+                overflow: visible !important;
+            }
+        }
+    }
 }
 
 ul {

@@ -25,6 +25,9 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
+    @HostBinding('class.collapsed')
+    @Input()
+    collapsed: boolean;
     @HostBinding('class.contextmenu') contextmenu = false;
     private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -65,10 +68,13 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
      */
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
-        event.preventDefault();
-        this.dotEventsService.notify('hide-sub-nav-fly-out');
-        this.iframeOverlayService.show();
-        this.contextmenu = true;
+        debugger;
+        if (this.collapsed) {
+            event.preventDefault();
+            this.dotEventsService.notify('hide-sub-nav-fly-out');
+            this.iframeOverlayService.show();
+            this.contextmenu = true;
+        }
     }
 
     /**
