@@ -68,7 +68,6 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
      */
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
-        debugger;
         if (this.collapsed) {
             event.preventDefault();
             this.dotEventsService.notify('hide-sub-nav-fly-out');
