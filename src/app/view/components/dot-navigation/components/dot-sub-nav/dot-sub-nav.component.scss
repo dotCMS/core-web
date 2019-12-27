@@ -18,6 +18,7 @@ ul {
         z-index: 1001;
         background: $white;
         box-shadow: $md-shadow-1;
+        // component animation adds inline styles.
         height: auto !important;
         overflow: visible !important;
 
