@@ -47,6 +47,17 @@
                 }
             }
         }
+
+        &:not(.contextmenu) {
+            ::ng-deep dot-sub-nav {
+                opacity: 0;
+                width: $navigation-width-collased;
+
+                .dot-nav-sub__link {
+                    background-color: $gray-bg;
+                }
+            }
+        }
     }
 }
 

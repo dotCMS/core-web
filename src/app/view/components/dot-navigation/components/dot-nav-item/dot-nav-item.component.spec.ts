@@ -102,8 +102,7 @@ describe('DotNavItemComponent', () => {
     describe('dot-sub-nav', () => {
         it('should set data correctly', () => {
             expect(subNav.componentInstance.data).toEqual(componentHost.menu);
-            expect(subNav.nativeElement.classList.contains('collapsed')).toBe(false);
-            expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(false);
+            expect(subNav.componentInstance.contextmenu).toBe(false);
         });
 
         it('should notify and emit itemClick on dot-sub-nav itemClick', () => {
@@ -123,8 +122,7 @@ describe('DotNavItemComponent', () => {
         });
 
         it('should set data correctly on sub-nav', () => {
-            expect(subNav.nativeElement.classList.contains('collapsed')).toBe(true);
-            expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(false);
+            expect(subNav.componentInstance.contextmenu).toBe(false);
         });
 
         describe('Fly-out Menu', () => {
@@ -136,8 +134,7 @@ describe('DotNavItemComponent', () => {
             });
 
             it('should set data correctly on sub-nav', () => {
-                expect(subNav.nativeElement.classList.contains('collapsed')).toBe(true);
-                expect(subNav.nativeElement.classList.contains('contextmenu')).toBe(true);
+                expect(subNav.componentInstance.contextmenu).toBe(true);
             });
 
             it('should open on right click', () => {
