@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { DotMenu, DotMenuItem } from '@models/navigation';
 import { DotNavigationService } from './services/dot-navigation.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     providers: [],
@@ -16,7 +17,7 @@ export class DotNavigationComponent implements OnInit {
     constructor(public dotNavigationService: DotNavigationService) {}
 
     ngOnInit() {
-        this.menu$ = this.dotNavigationService.items$;
+        this.menu$ = this.dotNavigationService.items$.pipe(map((item) => [...item]));
     }
 
     /**
@@ -42,10 +43,11 @@ export class DotNavigationComponent implements OnInit {
      * @memberof DotNavigationComponent
      */
     onMenuClick(event: { originalEvent: MouseEvent; data: DotMenu }): void {
-        if (this.dotNavigationService.collapsed$.getValue()) {
-            this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
-        } else {
-            this.dotNavigationService.setOpen(event.data.id);
-        }
+        this.dotNavigationService.setOpen(event.data.id);
+        // if (this.dotNavigationService.collapsed$.getValue()) {
+        //     this.dotNavigationService.goTo(event.data.menuItems[0].menuLink);
+        // } else {
+        //     this.dotNavigationService.setOpen(event.data.id);
+        // }
     }
 }

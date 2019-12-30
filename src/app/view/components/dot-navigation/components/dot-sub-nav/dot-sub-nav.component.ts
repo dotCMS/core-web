@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 
@@ -26,13 +26,21 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
     templateUrl: './dot-sub-nav.component.html',
     styleUrls: ['./dot-sub-nav.component.scss']
 })
-export class DotSubNavComponent {
+export class DotSubNavComponent implements OnChanges {
     @Input()
     data: DotMenu;
+    @Input()
+    isOpen: boolean;
+    @Input()
+    collapsed: boolean;
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
 
     constructor() {}
+
+    ngOnChanges() {
+        console.log('ONCHANGE');
+    }
 
     /**
      * Handle click event in a menu sub item

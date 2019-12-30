@@ -8,6 +8,19 @@
 
 ul {
     @include naked-list;
+    display: none;
+
+    &.open {
+        border: solid 3px red;
+        display: block;
+        position: absolute;
+        background-color: white;
+        z-index: 9999999;
+
+        a {
+            color: black;
+        }
+    }
 }
 
 a {

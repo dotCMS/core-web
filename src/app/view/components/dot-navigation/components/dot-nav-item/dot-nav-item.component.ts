@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { DotMenu, DotMenuItem } from '@models/navigation';
 
 @Component({
@@ -6,15 +6,23 @@ import { DotMenu, DotMenuItem } from '@models/navigation';
     templateUrl: './dot-nav-item.component.html',
     styleUrls: ['./dot-nav-item.component.scss']
 })
-export class DotNavItemComponent {
+export class DotNavItemComponent implements OnChanges {
     @Input()
     data: DotMenu;
+    @Input()
+    isOpen = false;
+    @Input()
+    collapsed = false;
     @Output()
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
     itemClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenuItem }> = new EventEmitter();
 
     constructor() {}
+
+    ngOnChanges() {
+        console.log('ONCHNAGE');
+    }
 
     /**
      * Handle click on menu section title

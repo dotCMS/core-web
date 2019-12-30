@@ -216,11 +216,11 @@ export class DotNavigationService {
      * @memberof DotNavigationService
      */
     setOpen(id: string): void {
-        const isCollapsed = this._collapsed$.getValue();
-        if (isCollapsed) {
-            this._collapsed$.next(false);
-        }
-        this.dotLocalstorageService.setItem<boolean>(DOTCMS_MENU_STATUS, isCollapsed);
+        // const isCollapsed = this._collapsed$.getValue();
+        // if (isCollapsed) {
+        //     this._collapsed$.next(false);
+        // }
+        // this.dotLocalstorageService.setItem<boolean>(DOTCMS_MENU_STATUS, isCollapsed);
         const updatedMenu: DotMenu[] = this._items$.getValue().map((menu: DotMenu) => {
             menu.isOpen = menu.isOpen ? false : id === menu.id;
             return menu;

@@ -1,10 +1,20 @@
-<div class="dot-nav__item" (click)="clickHandler($event, data)" [class.dot-nav__item--active]="data.active">
+<div
+    class="dot-nav__item"
+    (click)="clickHandler($event, data)"
+    [class.dot-nav__item--active]="data.active"
+>
     <dot-nav-icon [icon]="data.tabIcon" aria-hidden="true"></dot-nav-icon>
-    <span class="dot-nav__item-label">{{data.tabName}}</span>
+    <span class="dot-nav__item-label">{{ data.tabName }}</span>
     <dot-icon
         class="dot-nav__item-arrow"
-        name="{{data.isOpen ? 'arrow_drop_down' : 'arrow_drop_up'}}"
-        aria-hidden="true">
+        name="{{ data.isOpen ? 'arrow_drop_down' : 'arrow_drop_up' }}"
+        aria-hidden="true"
+    >
     </dot-icon>
 </div>
-<dot-sub-nav [data]="data" (itemClick)="itemClick.emit($event)"></dot-sub-nav>
+<dot-sub-nav
+    [collapsed]="collapsed"
+    [isOpen]="isOpen"
+    [data]="data"
+    (itemClick)="itemClick.emit($event)"
+></dot-sub-nav>

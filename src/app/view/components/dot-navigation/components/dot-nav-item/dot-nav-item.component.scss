@@ -7,7 +7,6 @@
 
     &.collapsed {
         dot-icon,
-        dot-sub-nav,
         .dot-nav__item-label {
             opacity: 0;
         }
@@ -47,7 +46,7 @@ dot-sub-nav {
         &-label {
             margin-left: $basic-padding * 2;
             word-break: break-word;
-            flex: 1
+            flex: 1;
         }
     }
 
