@@ -151,6 +151,7 @@ describe('DotToolbarComponent', () => {
         const button: DebugElement = de.query(By.css('dot-icon-button'));
 
         expect(button.componentInstance.icon).toEqual('arrow_back');
+        button.triggerEventHandler('click', {});
         fixture.detectChanges();
 
         expect(dotNavigationService.toggle).toHaveBeenCalledTimes(1);
