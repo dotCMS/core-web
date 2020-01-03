@@ -42,7 +42,6 @@ export class DotNavItemComponent {
      */
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
-        debugger;
         if (this.collapsed) {
             event.preventDefault();
             this.menuRightClick.emit({
