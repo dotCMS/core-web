@@ -17,7 +17,6 @@ export class DotNavItemComponent {
     @HostBinding('class.collapsed')
     @Input()
     collapsed: boolean;
-    @HostBinding('class.contextmenu') contextmenu = false;
 
     constructor() {}
 
@@ -43,6 +42,7 @@ export class DotNavItemComponent {
      */
     @HostListener('contextmenu', ['$event'])
     showSubMenuPanel(event: MouseEvent) {
+        debugger;
         if (this.collapsed) {
             event.preventDefault();
             this.menuRightClick.emit({
@@ -50,16 +50,6 @@ export class DotNavItemComponent {
                 data: this.data
             });
         }
-    }
-
-    /**
-     * Handle click on document to hide the fly-out menu
-     *
-     * @memberof DotNavItemComponent
-     */
-    @HostListener('document:click')
-    handleDocumentClick(): void {
-        this.contextmenu = false;
     }
 
     /**

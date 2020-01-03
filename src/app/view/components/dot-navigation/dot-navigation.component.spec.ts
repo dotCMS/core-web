@@ -1,4 +1,4 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { DOTTestBed } from '../../../test/dot-test-bed';
 import { By } from '@angular/platform-browser';
@@ -80,7 +80,7 @@ class FakeNavigationService {
     reloadCurrentPortlet() {}
 }
 
-fdescribe('DotNavigationComponent', () => {
+describe('DotNavigationComponent', () => {
     let fixture: ComponentFixture<DotNavigationComponent>;
     let de: DebugElement;
     let navItem: DebugElement;
@@ -221,6 +221,26 @@ fdescribe('DotNavigationComponent', () => {
             it('should NOT navigate to porlet', () => {
                 expect(dotNavigationService.goTo).not.toHaveBeenCalled();
             });
+        });
+    });
+
+    describe('menuRickClick event ', () => {
+        let iframeOverlayService: IframeOverlayService;
+
+        beforeEach(() => {
+            iframeOverlayService = de.injector.get(IframeOverlayService);
+            spyOn(iframeOverlayService, 'show');
+
+            navItem.triggerEventHandler('menuRightClick', {
+                originalEvent: {},
+                data: dotMenuMock()
+            });
+            fixture.detectChanges();
+        });
+
+        it('should call set open and call iframeOverlayService', () => {
+            expect(dotNavigationService.setOpen).toHaveBeenCalledWith(dotMenuMock().id);
+            expect(iframeOverlayService.show).toHaveBeenCalledTimes(1);
         });
     });
 });

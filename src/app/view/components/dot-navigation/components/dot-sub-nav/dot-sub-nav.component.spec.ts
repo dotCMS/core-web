@@ -21,7 +21,7 @@ const data: DotMenu = {
     ]
 };
 
-fdescribe('DotSubNavComponent', () => {
+describe('DotSubNavComponent', () => {
     let component: DotSubNavComponent;
     let fixture: ComponentFixture<DotSubNavComponent>;
     let de: DebugElement;
@@ -84,10 +84,11 @@ fdescribe('DotSubNavComponent', () => {
         link.triggerEventHandler('click', { hello: 'world' });
     });
 
-    it('should set contextmenu class when is true', () => {
+    it('should set contextmenu class when is Open and collapsed', () => {
         const list: DebugElement = de.query(By.css('.dot-nav-sub'));
         expect(list.nativeElement.classList.contains('contextmenu')).toBe(false);
-        component.contextmenu = true;
+        component.collapsed = true;
+        component.data = { ...data, isOpen: true };
         fixture.detectChanges();
         expect(list.nativeElement.classList.contains('contextmenu')).toBe(true);
     });
