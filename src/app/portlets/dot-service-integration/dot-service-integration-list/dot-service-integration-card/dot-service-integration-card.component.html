@@ -1,24 +1,41 @@
-<p-card>
+<p-card
+    *ngIf="messagesKey.edit"
+    [ngClass]="{
+        'dot-service-integration-card__disabled': !serviceIntegration.integrationsCount
+    }"
+>
     <p-header>
         <dot-avatar
-            [label]="label"
-            [showDot]="true"
+            [showDot]="serviceIntegration.integrationsCount ? true : false"
             [size]="32"
-            [url]="'/dA/0ed8e71a-47c7-4b30-a6f2-3796aa71ba49/photo/hiking-profile.jpg'"
+            [url]="serviceIntegration.iconUrl"
         ></dot-avatar>
         <div class="dot-service-integration-card__label-container">
             <span class="dot-service-integration-card__name">
-                {{ 'Asana' }}
+                {{ serviceIntegration.name }}
             </span>
             <span class="dot-service-integration-card__configurations"
-                >{{ '3 Configurations' }}
-                <!-- messages['serviceintegration.configurations'] ||
-                    messages['serviceintegration.no.integration'] -->
+                >{{
+                    serviceIntegration.integrationsCount
+                        ? serviceIntegration.integrationsCount +
+                          ' ' +
+                          messagesKey['service.integration.configurations']
+                        : messagesKey['service.integration.no.configurations']
+                }}
             </span>
         </div>
     </p-header>
-    Asana is the easiest way for teams to coordinate and manage their work. With the new and improved Asana
+    {{ serviceIntegration.description }}
     <p-footer>
-        <button pButton secondary label="Edit"></button>
+        <button
+            pButton
+            secondary
+            [label]="
+                serviceIntegration.integrationsCount
+                    ? messagesKey['edit']
+                    : messagesKey['service.integration.configure']
+            "
+            (click)="actionFired.emit(serviceIntegration.serviceKey)"
+        ></button>
     </p-footer>
 </p-card>

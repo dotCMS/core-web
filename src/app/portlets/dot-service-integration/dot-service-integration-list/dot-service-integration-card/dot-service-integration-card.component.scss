@@ -2,6 +2,15 @@
 @import "mixins";
 
 :host {
+    .dot-service-integration-card__disabled {
+        ::ng-deep .avatar__img {
+            filter: grayscale(1);
+        }
+        .dot-service-integration-card__name {
+            color: $gray;
+        }
+    }
+
     box-shadow: $md-shadow-1;
     display: block;
     margin-bottom: $basic-padding * 3;
