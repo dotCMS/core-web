@@ -80,7 +80,7 @@ class FakeNavigationService {
     reloadCurrentPortlet() {}
 }
 
-describe('DotNavigationComponent', () => {
+fdescribe('DotNavigationComponent', () => {
     let fixture: ComponentFixture<DotNavigationComponent>;
     let de: DebugElement;
     let navItem: DebugElement;

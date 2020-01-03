@@ -1,26 +1,15 @@
-import {
-    Component,
-    Output,
-    EventEmitter,
-    Input,
-    HostListener,
-    OnInit,
-    HostBinding,
-    OnDestroy
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input, HostListener, HostBinding } from '@angular/core';
 import { DotMenu, DotMenuItem } from '@models/navigation';
-import { IframeOverlayService } from '@components/_common/iframe/service/iframe-overlay.service';
-import { merge, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { DotEventsService } from '@services/dot-events/dot-events.service';
 
 @Component({
     selector: 'dot-nav-item',
     templateUrl: './dot-nav-item.component.html',
     styleUrls: ['./dot-nav-item.component.scss']
 })
-export class DotNavItemComponent implements OnInit, OnDestroy {
+export class DotNavItemComponent {
     @Input() data: DotMenu;
+    @Output()
+    menuRightClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
     menuClick: EventEmitter<{ originalEvent: MouseEvent; data: DotMenu }> = new EventEmitter();
     @Output()
@@ -29,21 +18,8 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     @Input()
     collapsed: boolean;
     @HostBinding('class.contextmenu') contextmenu = false;
-    private destroy$: Subject<boolean> = new Subject<boolean>();
 
-    constructor(
-        public iframeOverlayService: IframeOverlayService,
-        private dotEventsService: DotEventsService
-    ) {}
-
-    ngOnInit() {
-        this.setHideFlyOutSubscription();
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next(true);
-        this.destroy$.complete();
-    }
+    constructor() {}
 
     /**
      * Handle click on menu section title
@@ -57,7 +33,6 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
             originalEvent: $event,
             data: data
         });
-        this.dotEventsService.notify('hide-sub-nav-fly-out');
     }
 
     /**
@@ -70,9 +45,10 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
     showSubMenuPanel(event: MouseEvent) {
         if (this.collapsed) {
             event.preventDefault();
-            this.dotEventsService.notify('hide-sub-nav-fly-out');
-            this.iframeOverlayService.show();
-            this.contextmenu = true;
+            this.menuRightClick.emit({
+                originalEvent: event,
+                data: this.data
+            });
         }
     }
 
@@ -94,18 +70,5 @@ export class DotNavItemComponent implements OnInit, OnDestroy {
      */
     handleItemClick(event: { originalEvent: MouseEvent; data: DotMenuItem }) {
         this.itemClick.emit(event);
-        this.dotEventsService.notify('hide-sub-nav-fly-out');
-    }
-
-    private setHideFlyOutSubscription(): void {
-        const hideFlyOut$ = merge(
-            this.iframeOverlayService.overlay.pipe(filter((val: boolean) => !val)),
-            this.dotEventsService.listen('hide-sub-nav-fly-out')
-        ).pipe(takeUntil(this.destroy$), filter(() => this.contextmenu));
-
-        hideFlyOut$.subscribe(() => {
-            this.contextmenu = false;
-            this.iframeOverlayService.hide();
-        });
     }
 }

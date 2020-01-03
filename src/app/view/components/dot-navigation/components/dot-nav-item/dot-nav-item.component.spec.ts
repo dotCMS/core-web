@@ -31,7 +31,7 @@ class TestHostComponent {
     collapsed$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 }
 
-describe('DotNavItemComponent', () => {
+fdescribe('DotNavItemComponent', () => {
     let fixtureHost: ComponentFixture<TestHostComponent>;
     let componentHost: TestHostComponent;
     let dotEventsService: DotEventsService;
