@@ -1,0 +1,81 @@
+@import "variables";
+
+:host {
+    background: $gray-bg;
+    box-shadow: $md-shadow-4;
+    display: flex;
+    height: 100%;
+    padding: $basic-padding * 3;
+
+    .dot-service-integration-configuration__header {
+        display: flex;
+
+        dot-avatar {
+            border-radius: 50%;
+            box-shadow: $md-shadow-1;
+            margin: 0 $basic-padding * 2 0 $basic-padding * 3;
+        }
+
+        .dot-service-integration-configuration__data {
+            font-size: $font-size-small;
+            margin-top: $basic-padding;
+            width: 100%;
+        }
+
+        .dot-service-integration-configuration__name {
+            color: $black;
+            display: block;
+            flex: 1;
+            font-size: $font-size-large;
+            font-weight: $font-weight-semi-bold;
+            line-height: $basic-padding * 2;
+            margin-top: $basic-padding;
+        }
+
+        .dot-service-integration-configuration__configurations {
+            color: $gray;
+            display: block;
+            font-size: $font-size-small;
+            line-height: $basic-padding * 2;
+            margin-bottom: $basic-padding;
+            margin-top: $basic-padding;
+        }
+
+        dot-action-button {
+            margin: 0 $basic-padding * 3 0 $basic-padding * 2;
+        }
+    }
+
+    .dot-service-integration-configuration__body {
+        align-content: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        padding: $basic-padding * 3 $basic-padding * 2 0;
+
+        .dot-service-integration-configuration__item {
+            border: 1px solid $gray-light;
+            display: flex;
+            margin-top: $basic-padding * 2;
+            padding: $basic-padding 0;
+            width: 100%;
+
+            .dot-service-integration-configuration__name {
+                align-self: center;
+                margin-left: $basic-padding * 2;
+                width: 100%;
+            }
+
+            dot-icon-button {
+                margin-right: $basic-padding * 2;
+            }
+        }
+    }
+
+    .dot-service-integration-configuration__container {
+        background-color: $white;
+        box-shadow: $md-shadow-4;
+        overflow-y: auto;
+        padding-top: $basic-padding * 3;
+        width: 100%;
+    }
+}

@@ -9,11 +9,11 @@ import { DotServiceIntegrationService } from '@services/dot-service-integration/
  * Returns service integrations list from the system
  *
  * @export
- * @class DotServiceIntegrationPageResolver
+ * @class DotServiceIntegrationListResolver
  * @implements {Resolve<DotServiceIntegration[]>}
  */
 @Injectable()
-export class DotServiceIntegrationPageResolver implements Resolve<DotServiceIntegration[]> {
+export class DotServiceIntegrationListResolver implements Resolve<DotServiceIntegration[]> {
     constructor(private dotServiceIntegrationService: DotServiceIntegrationService) {}
 
     resolve(): Observable<DotServiceIntegration[]> {

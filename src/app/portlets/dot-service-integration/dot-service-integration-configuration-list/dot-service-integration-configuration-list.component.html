@@ -1,0 +1,39 @@
+<div class="dot-service-integration-configuration__container">
+    <div class="dot-service-integration-configuration__header">
+        <dot-avatar [size]="128" [url]="serviceIntegration.iconUrl"></dot-avatar>
+        <div class="dot-service-integration-configuration__data">
+            <span class="dot-service-integration-configuration__name">
+                {{ serviceIntegration.name }}
+            </span>
+            <span class="dot-service-integration-configuration__configurations"
+                >{{
+                    serviceIntegration.integrationsCount
+                        ? serviceIntegration.integrationsCount +
+                          ' ' +
+                          messagesKey['service.integration.configurations']
+                        : messagesKey['service.integration.no.configurations']
+                }}
+            </span>
+            <div class="dot-service-integration-configuration__description">
+                {{ serviceIntegration.description }}
+            </div>
+        </div>
+        <dot-action-button
+            class="action-header__primary-button"
+            (click)="createConfiguration()"
+        ></dot-action-button>
+    </div>
+    <div class="dot-service-integration-configuration__body">
+        <div class="dot-service-integration-configuration__item" *ngFor="let configurationHost of serviceIntegration.hosts">
+            <div class="dot-service-integration-configuration__name">{{ configurationHost.hostName }}</div>
+            <dot-icon-button
+                icon="delete_outline"
+                (click)="deleteConfiguration(configurationHost.hostId)"
+            ></dot-icon-button>
+            <dot-icon-button
+                icon="edit"
+                (click)="editConfiguration(configurationHost.hostId)"
+            ></dot-icon-button>
+        </div>
+    </div>
+</div>

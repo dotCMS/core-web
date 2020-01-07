@@ -39,7 +39,6 @@ export class DotApiContent {
         const url = `/api/content/query/+contentType:${params.contentType}%20${populateQueryUrl(
             params
         )}`;
-        console.log('---url', url)
         return this.doRequest(url, null, 'GET');
     }
 
