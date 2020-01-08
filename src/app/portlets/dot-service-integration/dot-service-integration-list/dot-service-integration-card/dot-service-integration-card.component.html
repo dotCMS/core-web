@@ -3,11 +3,12 @@
     [ngClass]="{
         'dot-service-integration-card__disabled': !serviceIntegration.integrationsCount
     }"
+    (click)="actionFired.emit(serviceIntegration.serviceKey)"
 >
     <p-header>
         <dot-avatar
             [showDot]="serviceIntegration.integrationsCount ? true : false"
-            [size]="32"
+            [size]="40"
             [url]="serviceIntegration.iconUrl"
         ></dot-avatar>
         <div class="dot-service-integration-card__label-container">
@@ -26,16 +27,4 @@
         </div>
     </p-header>
     {{ serviceIntegration.description }}
-    <p-footer>
-        <button
-            pButton
-            secondary
-            [label]="
-                serviceIntegration.integrationsCount
-                    ? messagesKey['edit']
-                    : messagesKey['service.integration.configure']
-            "
-            (click)="actionFired.emit(serviceIntegration.serviceKey)"
-        ></button>
-    </p-footer>
 </p-card>

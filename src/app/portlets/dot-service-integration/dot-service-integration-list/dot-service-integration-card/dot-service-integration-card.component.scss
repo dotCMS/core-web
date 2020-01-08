@@ -2,43 +2,77 @@
 @import "mixins";
 
 :host {
+    box-shadow: $md-shadow-1;
+    display: block;
+    height: 192px;
+    margin-bottom: $basic-padding * 3;
+    margin-right: $basic-padding * 3;
+    width: 328px;
+
+    &:hover {
+        box-shadow: $md-shadow-3;
+        cursor: pointer;
+    }
+
     .dot-service-integration-card__disabled {
-        ::ng-deep .avatar__img {
-            filter: grayscale(1);
+        background-color: $gray-bg;
+        display: block;
+        height: 100%;
+
+        &:hover {
+            background-color: $white;
+
+            ::ng-deep {
+                .ui-widget-content {
+                    background-color: $white;
+                }
+                .avatar__img {
+                    filter: unset;
+                }
+            }
+            .dot-service-integration-card__name {
+                color: $black;
+            }
         }
+
+        ::ng-deep {
+            .avatar__img {
+                filter: grayscale(1);
+            }
+            .ui-widget-content {
+                background-color: $gray-bg;
+            }
+        }
+
         .dot-service-integration-card__name {
             color: $gray;
         }
     }
 
-    box-shadow: $md-shadow-1;
-    display: block;
-    margin-bottom: $basic-padding * 3;
-    margin-right: $basic-padding * 3;
-    width: 300px;
-
     p-header {
         display: flex;
-        padding-top: $basic-padding * 2;
+        padding-top: $basic-padding * 3;
     }
 
     dot-avatar {
         border-radius: 50%;
-        box-shadow: $md-shadow-1;
+        box-shadow: $md-shadow-2;
         margin: 0 $basic-padding * 2 0;
     }
     .dot-service-integration-card__name {
         color: $black;
         display: block;
         flex: 1;
-        font-size: $font-size-small;
-        font-weight: $font-weight-semi-bold;
+        font-size: $font-size-large;
+        font-weight: bold;
         line-height: $basic-padding * 2;
     }
     .dot-service-integration-card__configurations {
         color: $gray;
         display: block;
+        font-size: $font-size-medium;
         line-height: $basic-padding * 2;
+        margin-top: $basic-padding;
     }
 
     ::ng-deep .ui-card-body {
@@ -47,17 +81,10 @@
 
         .ui-card-content {
             height: 60px;
+            font-size: $font-size-large;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin: $basic-padding * 2;
+            margin: $basic-padding * 3 $basic-padding * 2;
         }
-    }
-
-    ::ng-deep .ui-card-footer {
-        &:hover {
-            background-color: $gray-bg;
-        }
-        border-top: 1px solid $gray-light;
-        padding: 2 * $basic-padding;
     }
 }
