@@ -111,9 +111,13 @@ describe('DotNavItemComponent', () => {
         });
 
         it('should emit menuRightClick on right click', () => {
+            const event = new MouseEvent('contextmenu')
             spyOn(component.menuRightClick, 'emit');
-            de.triggerEventHandler('contextmenu', new MouseEvent('contextmenu'));
-            expect(component.menuRightClick.emit).toHaveBeenCalledTimes(1);
+            de.triggerEventHandler('contextmenu', event);
+            expect(component.menuRightClick.emit).toHaveBeenCalledWith({
+                originalEvent: event,
+                data: component.data
+            });
         });
     });
 
