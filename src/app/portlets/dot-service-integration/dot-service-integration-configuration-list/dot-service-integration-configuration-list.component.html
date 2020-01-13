@@ -1,10 +1,17 @@
 <div class="dot-service-integration-configuration__container">
     <div class="dot-service-integration-configuration__header">
-        <dot-avatar [size]="128" [url]="serviceIntegration.iconUrl"></dot-avatar>
+        <dot-avatar [size]="112" [url]="serviceIntegration.iconUrl"></dot-avatar>
         <div class="dot-service-integration-configuration__data">
             <span class="dot-service-integration-configuration__name">
                 {{ serviceIntegration.name }}
             </span>
+            <div class="dot-service-integration-configuration__service-key">
+                messagesKey['service.integration.key']
+                <dot-copy-button
+                    [copy]="serviceIntegration.serviceKey"
+                    [label]="serviceIntegration.serviceKey"
+                ></dot-copy-button>
+            </div>
             <span class="dot-service-integration-configuration__configurations"
                 >{{
                     serviceIntegration.integrationsCount
@@ -24,8 +31,19 @@
         ></dot-action-button>
     </div>
     <div class="dot-service-integration-configuration__body">
-        <div class="dot-service-integration-configuration__item" *ngFor="let configurationHost of serviceIntegration.hosts">
-            <div class="dot-service-integration-configuration__name">{{ configurationHost.hostName }}</div>
+        <div class="dot-service-integration-configuration__delete_all">
+            <button pButton link label="Delete All" icon="fa fa-trash-o"></button>
+        </div>
+        <div
+            class="dot-service-integration-configuration__item"
+            *ngFor="let configurationHost of serviceIntegration.hosts"
+        >
+            <div class="dot-service-integration-configuration__name">
+                {{ configurationHost.hostName }}
+            </div>
+            <div class="dot-service-integration-configuration__host-key">
+                Key: {{ configurationHost.hostId }}
+            </div>
             <dot-icon-button
                 icon="delete_outline"
                 (click)="deleteConfiguration(configurationHost.hostId)"

@@ -35,6 +35,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit {
             .getMessages([
                 'service.integration.configurations',
                 'service.integration.no.configurations',
+                'service.integration.key',
                 'service.integration.confirmation.title',
                 'service.integration.confirmation.message',
                 'service.integration.confirmation.accept'
