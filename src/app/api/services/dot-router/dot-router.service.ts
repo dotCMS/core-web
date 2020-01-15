@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { PortletNav } from '@models/navigation';
 import { Subject } from 'rxjs';
@@ -10,13 +10,18 @@ export class DotRouterService {
     private _previousSavedURL: string;
     private CUSTOM_PORTLET_ID_PREFIX = 'c_';
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private route: ActivatedRoute) {}
 
     get currentPortlet(): PortletNav {
         return {
             url: this.router.routerState.snapshot.url,
             id: this.getPortletId(this.router.routerState.snapshot.url)
         };
+    }
+
+    get queryParams(): Params {
+        const nav = this.router.getCurrentNavigation();
+        return nav ? nav.finalUrl.queryParams : this.route.snapshot.queryParams;
     }
 
     /**

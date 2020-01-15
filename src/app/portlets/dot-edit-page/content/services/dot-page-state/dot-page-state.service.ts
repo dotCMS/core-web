@@ -182,7 +182,9 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     requestPage(options: DotPageRenderOptions): Observable<DotPageRenderState> {
-        return this.dotPageRenderService.get(options).pipe(
+        const { url, ...extraParams } = this.dotRouterService.queryParams;
+        console.log('requestPage', options, extraParams);
+        return this.dotPageRenderService.get(options, extraParams).pipe(
             catchError((err: ResponseView) => this.handleSetPageStateFailed(err)),
             take(1),
             map((page: DotPageRender.Parameters) => {
