@@ -37,9 +37,8 @@ describe('DotIframeEventsHandler', () => {
                     name: 'edit-page',
                     data: {
                         url: 'some/url',
-                        content: {
-                            languageId: '2'
-                        }
+                        languageId: '2',
+                        hostId: '123'
                     }
                 }
             })
@@ -48,7 +47,8 @@ describe('DotIframeEventsHandler', () => {
         expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
         expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
             url: 'some/url',
-            language_id: '2'
+            language_id: '2',
+            host_id: '123'
         });
     });
 

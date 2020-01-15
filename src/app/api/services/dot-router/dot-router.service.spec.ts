@@ -54,7 +54,7 @@ describe('DotRouterService', () => {
         spyOn(service, 'goToEditPage');
         service.goToMain('/about/us');
 
-        expect(service.goToEditPage).toHaveBeenCalledWith('/about/us');
+        expect(service.goToEditPage).toHaveBeenCalledWith({ url: '/about/us' });
     });
 
     it('should go to edit content type page', () => {
