@@ -42,9 +42,9 @@ export class DotRouterService {
      * @returns Promise<boolean>
      * @memberof DotRouterService
      */
-    goToEditPage(url: string, languageId?: string): Promise<boolean> {
+    goToEditPage(queryParams: Params): Promise<boolean> {
         return this.router.navigate(['/edit-page/content'], {
-            queryParams: !!languageId ? { url: url, language_id: languageId } : { url: url }
+            queryParams
         });
     }
 
@@ -78,7 +78,11 @@ export class DotRouterService {
      * @memberof DotRouterService
      */
     goToMain(userEditPageRedirect?: string): Promise<boolean> {
-        return userEditPageRedirect ? this.goToEditPage(userEditPageRedirect) : this.redirectMain();
+        return userEditPageRedirect
+            ? this.goToEditPage({
+                  url: userEditPageRedirect
+              })
+            : this.redirectMain();
     }
 
     goToLogin(parameters?: any): void {

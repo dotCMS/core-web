@@ -46,7 +46,10 @@ describe('DotIframeEventsHandler', () => {
         );
 
         expect(dotLoadingIndicatorService.show).toHaveBeenCalledTimes(1);
-        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith('some/url', '2');
+        expect(dotRouterService.goToEditPage).toHaveBeenCalledWith({
+            url: 'some/url',
+            language_id: '2'
+        });
     });
 
     it('should create a contentlet', () => {

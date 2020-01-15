@@ -82,7 +82,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
             this.customEventsHandler = {
                 'remote-render-edit': ({ pathname }) => {
                     console.log('remote-render-edit', pathname);
-                    this.dotRouterService.goToEditPage(pathname.slice(1));
+                    this.dotRouterService.goToEditPage({ url: pathname.slice(1) });
                 },
                 'load-edit-mode-page': (pageRendered: DotPageRender) => {
                     console.log('load-edit-mode-page', pageRendered.page.pageURI);
@@ -100,7 +100,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
                         this.dotPageStateService.setLocalState(dotRenderedPageState);
                     } else {
                         this.dotPageStateService.setInternalNavigationState(dotRenderedPageState);
-                        this.dotRouterService.goToEditPage(pageRendered.page.pageURI);
+                        this.dotRouterService.goToEditPage({ url: pageRendered.page.pageURI });
                     }
                 },
                 'in-iframe': () => {
@@ -352,10 +352,7 @@ export class DotEditContentComponent implements OnInit, OnDestroy {
 
     private subscribeIframeCustomEvents(): void {
         fromEvent(window.document, 'ng-event')
-            .pipe(
-                pluck('detail'),
-                takeUntil(this.destroy$)
-            )
+            .pipe(pluck('detail'), takeUntil(this.destroy$))
             .subscribe((customEvent: any) => {
                 if (this.customEventsHandler[customEvent.name]) {
                     this.customEventsHandler[customEvent.name](customEvent.data);
