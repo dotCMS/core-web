@@ -101,7 +101,6 @@ describe('DotPageStateService', () => {
                 url: '/an/url/test'
             });
             service.reload();
-            console.log();
             expect(dotPageRenderServiceGetSpy.calls.mostRecent().args).toEqual([
                 {
                     mode: 'PREVIEW_MODE',

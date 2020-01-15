@@ -42,7 +42,6 @@ export class DotPageStateService {
      * @memberof DotPageStateService
      */
     get(options: DotPageRenderOptions = {}): void {
-        console.log('get');
         if (!options.url) {
             options.url = this.currentState.page.pageURI;
         }
