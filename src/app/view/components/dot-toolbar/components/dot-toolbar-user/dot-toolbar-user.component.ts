@@ -5,7 +5,7 @@ import { LoginService, Auth, LoggerService } from 'dotcms-js';
 import { DotMessageService } from '@services/dot-messages-service';
 import { LOCATION_TOKEN } from 'src/app/providers';
 import { DotNavigationService } from '@components/dot-navigation/services/dot-navigation.service';
-import { retryWhen, map, take } from 'rxjs/operators';
+import { retryWhen, take, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'dot-toolbar-user',
@@ -37,13 +37,12 @@ export class DotToolbarUserComponent implements OnInit {
         this.dotMessageService
             .getMessages(['my-account', 'login-as', 'Logout', 'logout-as'])
             .pipe(
-                map((res: {
+                tap((res: {
                     [key: string]: string;
                 }) => {
                     if (!Object.keys(res).length) {
                         throw new Error('No message keys');
                     }
-                    return res;
                 }),
                 retryWhen((errors) => errors),
                 take(1)
