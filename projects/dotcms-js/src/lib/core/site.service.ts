@@ -152,7 +152,8 @@ export class SiteService {
             .requestView({
                 method: RequestMethod.Put,
                 url: `${this.urls.switchSiteUrl}/${site.identifier}`
-            });
+            })
+            .subscribe();
     }
 
     /**
@@ -178,9 +179,7 @@ export class SiteService {
 
     private setCurrentSite(site: Site): void {
         this.selectedSite = site;
-        if (this.selectedSite) {
-            this._switchSite$.next({ ...site });
-        }
+        this._switchSite$.next({ ...site });
     }
 
     private loadCurrentSite(): void {
