@@ -44,7 +44,7 @@ const PORTLETS_ANGULAR = [
     {
         // canActivate: [MenuGuardService],
         // canActivateChild: [MenuGuardService],
-        path: 'dot-service-integration',
+        path: 'integration-services',
         loadChildren: '@portlets/dot-service-integration/dot-service-integration.module#DotServiceIntegrationModule'
     },
     {

@@ -19,9 +19,7 @@ export class DotServiceIntegrationCardComponent implements OnInit {
         this.dotMessageService
             .getMessages([
                 'service.integration.configurations',
-                'service.integration.no.configurations',
-                'service.integration.configure',
-                'edit'
+                'service.integration.no.configurations'
             ])
             .pipe(take(1))
             .subscribe((messages: { [key: string]: string }) => {

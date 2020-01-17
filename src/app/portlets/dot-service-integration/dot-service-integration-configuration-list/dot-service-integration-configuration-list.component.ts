@@ -64,7 +64,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
     createConfiguration(): void {
         console.log('--createConfiguration');
         this.dotRouterService.gotoPortlet(
-            `/dot-service-integration/${this.serviceIntegration.serviceKey}/new`
+            `/integration-services/${this.serviceIntegration.serviceKey}/new`
         );
     }
 
@@ -72,11 +72,11 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
         $event.stopPropagation();
         console.log('--editConfiguration', configurationId);
         this.dotRouterService.gotoPortlet(
-            `/dot-service-integration/${this.serviceIntegration.serviceKey}/edit/${configurationId}`
+            `/integration-services/${this.serviceIntegration.serviceKey}/edit/${configurationId}`
         );
     }
 
-    deleteConfiguration($event: MouseEvent, configurationId: string): void {
+    deleteConfiguration($event: MouseEvent, configurationId: string, configurationName: string): void {
         $event.stopPropagation();
         this.dotAlertConfirmService.confirm({
             accept: () => {
@@ -92,7 +92,7 @@ export class DotServiceIntegrationConfigurationListComponent implements OnInit, 
             },
             reject: () => {},
             header: this.messagesKey['service.integration.confirmation.title'],
-            message: this.messagesKey['service.integration.confirmation.delete.message'],
+            message: `${this.messagesKey['service.integration.confirmation.delete.message']} <b>${configurationName}</b> ?`,
             footerLabel: {
                 accept: this.messagesKey['service.integration.confirmation.accept']
             }
