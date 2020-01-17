@@ -112,7 +112,7 @@ describe('DotServiceIntegrationListComponent', () => {
         )[0].componentInstance;
         card.actionFired.emit(component.serviceIntegrations[0].serviceKey);
         expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-            `/dot-service-integration/${component.serviceIntegrations[0].serviceKey}`
+            `/integration-services/${component.serviceIntegrations[0].serviceKey}`
         );
     });
 });

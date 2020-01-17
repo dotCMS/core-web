@@ -195,7 +195,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             const addBtn = fixture.debugElement.query(By.css('dot-action-button')).nativeElement;
             addBtn.click();
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/dot-service-integration/${component.serviceIntegration.serviceKey}/new`
+                `/integration-services/${component.serviceIntegration.serviceKey}/new`
             );
         });
 
@@ -209,7 +209,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/dot-service-integration/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
             );
         });
 
@@ -223,7 +223,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             });
             expect(stopPropagationSpy).toHaveBeenCalledTimes(1);
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/dot-service-integration/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
+                `/integration-services/${component.serviceIntegration.serviceKey}/edit/${routeDatamock.integrationService.hosts[0].hostId}`
             );
         });
 
@@ -321,7 +321,7 @@ describe('DotServiceIntegrationConfigurationListComponent', () => {
             ).nativeElement;
             addBtn.click();
             expect(routerService.gotoPortlet).toHaveBeenCalledWith(
-                `/dot-service-integration/${component.serviceIntegration.serviceKey}/new`
+                `/integration-services/${component.serviceIntegration.serviceKey}/new`
             );
         });
     });
