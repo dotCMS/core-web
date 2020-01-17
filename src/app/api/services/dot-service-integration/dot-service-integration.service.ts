@@ -103,4 +103,23 @@ export class DotServiceIntegrationService {
 
         return of('200');
     }
+
+    /**
+     * Delete all configuration of a specific Service Integration
+     * @param {string} serviceKey
+     * @returns Observable<string>
+     * @memberof DotServiceIntegrationService
+     */
+    deleteAllConfigurations(_serviceKey: string): Observable<string> {
+        /*
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Delete,
+                url: `v1/service/integration/${serviceKey}`
+            })
+            .pipe(pluck('entity'));
+            */
+
+        return of('200');
+    }
 }

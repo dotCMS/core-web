@@ -2,11 +2,11 @@
     <div class="dot-service-integration-configuration__header">
         <dot-avatar [size]="112" [url]="serviceIntegration.iconUrl"></dot-avatar>
         <div class="dot-service-integration-configuration__data">
-            <span class="dot-service-integration-configuration__name">
+            <span class="dot-service-integration-configuration__service-name">
                 {{ serviceIntegration.name }}
             </span>
             <div class="dot-service-integration-configuration__service-key">
-                messagesKey['service.integration.key']
+                {{ messagesKey['service.integration.key'] }}
                 <dot-copy-button
                     [copy]="serviceIntegration.serviceKey"
                     [label]="serviceIntegration.serviceKey"
@@ -31,27 +31,53 @@
         ></dot-action-button>
     </div>
     <div class="dot-service-integration-configuration__body">
-        <div class="dot-service-integration-configuration__delete_all">
-            <button pButton link label="Delete All" icon="fa fa-trash-o"></button>
+        <div *ngIf="serviceIntegration.hosts.length">
+            <div class="dot-service-integration-configuration__delete_all">
+                <button
+                    pButton
+                    link
+                    [label]="messagesKey['service.integration.confirmation.delete.all.button']"
+                    icon="fa fa-trash-o"
+                    (click)="deleteAllConfigurations()"
+                ></button>
+            </div>
+            <div
+                class="dot-service-integration-configuration__item"
+                *ngFor="let configurationHost of serviceIntegration.hosts"
+                (click)="editConfiguration($event, configurationHost.hostId)"
+            >
+                <div class="dot-service-integration-configuration__name">
+                    {{ configurationHost.hostName }}
+                </div>
+                <div class="dot-service-integration-configuration__host-key">
+                    {{ messagesKey['service.integration.key'] }} {{ configurationHost.hostId }}
+                </div>
+                <dot-icon-button
+                    icon="delete_outline"
+                    (click)="deleteConfiguration($event, configurationHost.hostId)"
+                ></dot-icon-button>
+                <dot-icon-button
+                    icon="edit"
+                    (click)="editConfiguration($event, configurationHost.hostId)"
+                ></dot-icon-button>
+            </div>
         </div>
         <div
-            class="dot-service-integration-configuration__item"
-            *ngFor="let configurationHost of serviceIntegration.hosts"
+            *ngIf="!serviceIntegration.hosts.length"
+            class="dot-service-integration-configuration__add-configurations"
         >
-            <div class="dot-service-integration-configuration__name">
-                {{ configurationHost.hostName }}
+            <div class="dot-service-integration-configuration__add-configurations-title">
+                {{ messagesKey['service.integration.add.configurations'] }}
             </div>
-            <div class="dot-service-integration-configuration__host-key">
-                Key: {{ configurationHost.hostId }}
-            </div>
-            <dot-icon-button
-                icon="delete_outline"
-                (click)="deleteConfiguration(configurationHost.hostId)"
-            ></dot-icon-button>
-            <dot-icon-button
-                icon="edit"
-                (click)="editConfiguration(configurationHost.hostId)"
-            ></dot-icon-button>
+            <p class="dot-service-integration-configuration__add-configurations-description">
+                {{ messagesKey['service.integration.no.configurations.message'] }}
+            </p>
+            <button
+                pButton
+                secondary
+                [label]="messagesKey['service.integration.add.configurations.button']"
+                (click)="createConfiguration()"
+            ></button>
         </div>
     </div>
 </div>

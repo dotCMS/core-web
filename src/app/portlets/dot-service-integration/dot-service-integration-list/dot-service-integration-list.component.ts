@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DotMessageService } from '@services/dot-messages-service';
-import { take, debounceTime, pluck } from 'rxjs/operators';
-import { fromEvent as observableFromEvent } from 'rxjs';
+import { take, debounceTime, pluck, takeUntil } from 'rxjs/operators';
+import { fromEvent as observableFromEvent, Subject } from 'rxjs';
 import { DotServiceIntegration } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import * as _ from 'lodash';
 import { DotRouterService } from '@services/dot-router/dot-router.service';
@@ -12,12 +12,14 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './dot-service-integration-List.component.html',
     styleUrls: ['./dot-service-integration-List.component.scss']
 })
-export class DotServiceIntegrationListComponent implements OnInit {
+export class DotServiceIntegrationListComponent implements OnInit, OnDestroy {
     @ViewChild('searchInput')
     searchInput: ElementRef;
     messagesKey: { [key: string]: string } = {};
     serviceIntegrations: DotServiceIntegration[];
     serviceIntegrationsCopy: DotServiceIntegration[];
+
+    private destroy$: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         public dotMessageService: DotMessageService,
@@ -34,7 +36,7 @@ export class DotServiceIntegrationListComponent implements OnInit {
             });
 
         this.route.data
-            .pipe(pluck('integrationServices'))
+            .pipe(pluck('integrationServices'), takeUntil(this.destroy$))
             .subscribe((integrations: DotServiceIntegration[]) => {
                 this.serviceIntegrations = integrations;
                 this.serviceIntegrationsCopy = _.cloneDeep(integrations);
@@ -45,6 +47,11 @@ export class DotServiceIntegrationListComponent implements OnInit {
             .subscribe((keyboardEvent: Event) => {
                 this.filterIntegrations(keyboardEvent.target['value']);
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next(true);
+        this.destroy$.complete();
     }
 
     goToIntegration(serviceKey: string): void {

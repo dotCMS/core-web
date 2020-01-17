@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { DotServiceIntegration } from '@shared/models/dot-service-integration/dot-service-integration.model';
 import { DotServiceIntegrationService } from '@services/dot-service-integration/dot-service-integration.service';
 
@@ -19,12 +19,6 @@ export class DotServiceIntegrationConfigurationListResolver
 
     resolve(route: ActivatedRouteSnapshot): Observable<DotServiceIntegration> {
         const serviceKey = route.paramMap.get('serviceKey');
-
-        return this.dotServiceIntegrationService.getConfiguration(serviceKey).pipe(
-            take(1),
-            tap((integration: DotServiceIntegration) => {
-                return integration;
-            })
-        );
+        return this.dotServiceIntegrationService.getConfiguration(serviceKey).pipe(take(1));
     }
 }
